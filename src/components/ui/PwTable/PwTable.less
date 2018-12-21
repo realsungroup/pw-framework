@@ -1,0 +1,59 @@
+@import '../../../styles/variables.less';
+.pw-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid @border-color;
+  border-radius: 4px;
+  padding: 16px;
+  background: #fff;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid @border-color;
+  }
+  &__header-title {
+    &--large {
+      font-size: 30px;
+    }
+    &--middle {
+      font-size: 26px;
+    }
+    &--small {
+      font-size: 22px;
+    }
+  }
+  &__header-icon {
+    margin: 0 8px;
+  }
+  &__action-bar {
+    &--large {
+      padding: 12px 0;
+    }
+    &--middle {
+      padding: 10px 0;
+    }
+    &--small {
+      padding: 8px 0;
+    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+      margin: 0 4px;
+    }
+  }
+  &__action-btns {
+  }
+  &__footer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 44px;
+    border-top: 1px solid @border-color;
+  }
+}

@@ -283,7 +283,8 @@ module.exports = {
             test: lessRegex,
             use: getStyleLoaders(
               {
-                importLoaders: 2
+                importLoaders: 2,
+                javascriptEnabled: true
               },
               'less-loader'
             )
