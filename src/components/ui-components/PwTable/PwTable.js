@@ -1,22 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './PwTable.less';
-import Table from 'antd/lib/table';
-import 'antd/lib/table/style';
-
-import Button from 'antd/lib/button';
-import 'antd/lib/button/style';
-
-import Input from 'antd/lib/input';
-import 'antd/lib/input/style';
-
-import Pagination from 'antd/lib/pagination';
-import 'antd/lib/pagination/style';
 
 import IconWithTooltip from '../IconWithTooltip';
 
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
+
+import { Table, Button, Input, Pagination, Spin } from 'antd';
+
 
 const Search = Input.Search;
 
@@ -114,6 +106,18 @@ export default class PwTable extends React.Component {
     title: PropTypes.string.isRequired,
 
     /**
+     * 表格宽度
+     * 默认：800
+     */
+    width: PropTypes.number,
+
+    /**
+     * 表格高度
+     * 默认：300
+     */
+    height: PropTypes.number,
+
+    /**
      * 是否有下载表格的功能
      * 默认值：true
      */
@@ -191,14 +195,22 @@ export default class PwTable extends React.Component {
     hasSearch: PropTypes.bool,
 
     /**
-     * 是否有分页功能
-     * 默认值：true
+     * 分页配置
+     * 默认值：-
      */
-    hasPagination: PropTypes.bool
+    pagination: PropTypes.object,
+
+    /**
+     * 搜索时的回调
+     */
+    onSearch: PropTypes.func
   };
 
   static defaultProps = {
-    size: 'large',
+    size: 'middle',
+
+    width: 800,
+    height: 400,
 
     hasDownload: true,
     hasRefresh: true,
@@ -207,9 +219,7 @@ export default class PwTable extends React.Component {
     hasAdd: true,
     hasModify: true,
     hasDelete: true,
-    hasSearch: true,
-
-    hasPagination: true
+    hasSearch: true
   };
 
   constructor(props) {
@@ -262,6 +272,41 @@ export default class PwTable extends React.Component {
     };
   };
 
+  renderPagination = () => {
+    const { pagination, size } = this.props;
+    if (pagination) {
+      return (
+        <div className="pw-table__footer">
+          <Pagination
+            style={{ marginLeft: 8 }}
+            {...pagination}
+            size={paginationSizeMap[size]}
+          />
+        </div>
+      );
+    }
+  };
+
+  handleAdd = () => {
+    this.props.onAdd && this.props.onAdd();
+  };
+
+  handleModify = () => {
+    this.props.onModify && this.props.onModify();
+  };
+
+  handleDelete = () => {
+    this.props.onDelete && this.props.onDelete();
+  };
+
+  handleSearchChange = e => {
+    this.props.onSearchChange && this.props.onSearchChange(e.target.value);
+  };
+
+  handleSearch = (value, e) => {
+    this.props.onSearch && this.props.onSearch(value, e);
+  };
+
   render() {
     const {
       size,
@@ -274,9 +319,10 @@ export default class PwTable extends React.Component {
       hasDelete,
       beBtns,
       hasSearch,
-      hasPagination,
+      pagination,
       width,
       height,
+      loading,
       ...restProps
     } = this.props;
 
@@ -291,68 +337,77 @@ export default class PwTable extends React.Component {
 
     const resizeBoxProps = this.getResizeBoxProp();
     return (
-      <ResizableBox {...resizeBoxProps}>
-        <div className="pw-table">
-          <div className="pw-table__header">
-            <div
-              className={`pw-table__header-title pw-table__header-title--${size}`}
-            >
-              {title}
+      <Spin spinning={loading}>
+        <ResizableBox {...resizeBoxProps}>
+          <div className="pw-table">
+            <div className="pw-table__header">
+              <div
+                className={`pw-table__header-title pw-table__header-title--${size}`}
+              >
+                {title}
+              </div>
+              {hasIconBtns && (
+                <IconBtns
+                  hasDownload={hasDownload}
+                  onDownload={this.handleDownload}
+                  hasRefresh={hasRefresh}
+                  onRefresh={this.handleRefresh}
+                  hasAdvSearch={hasAdvSearch}
+                  onAdvSearch={this.handleAdvSearch}
+                  size={size}
+                />
+              )}
             </div>
-            {hasIconBtns && (
-              <IconBtns
-                hasDownload={hasDownload}
-                onDownload={this.handleDownload}
-                hasRefresh={hasRefresh}
-                onRefresh={this.handleRefresh}
-                hasAdvSearch={hasAdvSearch}
-                onAdvSearch={this.handleAdvSearch}
-                size={size}
-              />
+            {hasActionBar && (
+              <div
+                className={`pw-table__action-bar pw-table__action-bar--${size}`}
+              >
+                <div className="pw-table__action-btns">
+                  {beBtns && this.renderBeBtns(beBtns)}
+                  {hasAdd && (
+                    <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
+                      添加
+                    </Button>
+                  )}
+                  {hasModify && (
+                    <Button size={btnSizeMap[size]} onClick={this.handleModify}>
+                      修改
+                    </Button>
+                  )}
+                  {hasDelete && (
+                    <Button
+                      size={btnSizeMap[size]}
+                      type="danger"
+                      onClick={this.handleDelete}
+                    >
+                      删除
+                    </Button>
+                  )}
+                </div>
+                <div className="pw-table__search">
+                  {hasSearch && (
+                    <Search
+                      placeholder="请输入关键词"
+                      onChange={this.handleSearchChange}
+                      size={inputSizeMap[size]}
+                      style={{ width: 150 }}
+                      onSearch={this.handleSearch}
+                    />
+                  )}
+                </div>
+              </div>
             )}
+
+            <Table
+              {...restProps}
+              pagination={false}
+              size={tableSizeMap[size]}
+            />
+
+            {this.renderPagination()}
           </div>
-          {hasActionBar && (
-            <div
-              className={`pw-table__action-bar pw-table__action-bar--${size}`}
-            >
-              <div className="pw-table__action-btns">
-                {beBtns && this.renderBeBtns(beBtns)}
-                {hasAdd && <Button size={btnSizeMap[size]}>添加</Button>}
-                {hasModify && <Button size={btnSizeMap[size]}>修改</Button>}
-                {hasDelete && (
-                  <Button size={btnSizeMap[size]} type="danger">
-                    删除
-                  </Button>
-                )}
-              </div>
-              <div className="pw-table__search">
-                {hasSearch && (
-                  <Search
-                    placeholder="请输入关键词"
-                    size={inputSizeMap[size]}
-                    style={{ width: 150 }}
-                  />
-                )}
-              </div>
-            </div>
-          )}
-
-          <Table {...restProps} pagination={false} size={tableSizeMap[size]} />
-
-          {hasPagination && (
-            <div className="pw-table__footer">
-              <Pagination
-                style={{ marginLeft: 8 }}
-                total={85}
-                pageSize={20}
-                defaultCurrent={1}
-                showSizeChanger
-                size={paginationSizeMap[size]}
-              />
-            </div>
-          )}
-        </div>
-      </ResizableBox>
+        </ResizableBox>
+      </Spin>
     );
   }
 }

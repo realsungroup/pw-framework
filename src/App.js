@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-import PwTable from './components/ui/PwTable';
+import Table from './components/data-components/Table';
 import './App.css';
+
+import { Button, message } from 'antd';
+import http from './util/api';
+import { setItem } from './util/util';
+import 'lz-request/lib/login';
+
 const dataSource = [
   {
     key: '1',
@@ -36,19 +42,46 @@ const columns = [
 ];
 
 class App extends Component {
+  handleLoginClick = async () => {
+    const code = 'demo1';
+    const password = '66287175';
+    console.log(http());
+
+    let res;
+    try {
+      res = await http().login({
+        Code: code,
+        Password: password
+      });
+    } catch (err) {
+      console.log(err);
+
+      return message.error(err.message);
+    }
+    message.success('登录成功');
+    setItem('userInfo', JSON.stringify(res));
+  };
+
   render() {
     return (
-      <div style={{ width: 800, height: 500, margin: 20 }}>
-        <PwTable
-          width={800}
-          height={500}
-          minConstraints={[430, 340]}
-          title="PwTable"
-          dataSource={dataSource}
-          columns={columns}
-          bordered
-          size={'small'}
-        />
+      <div style={{ margin: 20 }}>
+        <Button onClick={this.handleLoginClick}>登录</Button>
+        <div style={{ width: 800, height: 500 }}>
+          <Table
+            title="调休登记"
+            resid={596720928643}
+            defaultPagination={{
+              current: 1,
+              pageSize: 10,
+              showSizeChanger: true,
+              showQuickJumper: true
+            }}
+            size="middle"
+            columnsWidth={{
+              人员工号: 100
+            }}
+          />
+        </div>
       </div>
     );
   }
