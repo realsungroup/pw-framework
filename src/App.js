@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Table from './components/data-components/Table';
+import TableData from './components/data-components/TableData';
 import './App.css';
 
 import { Button, message } from 'antd';
@@ -67,7 +67,7 @@ class App extends Component {
       <div style={{ margin: 20 }}>
         <Button onClick={this.handleLoginClick}>登录</Button>
         <div style={{ width: 800, height: 500 }}>
-          <Table
+          <TableData
             title="调休登记"
             resid={596720928643}
             defaultPagination={{
@@ -80,6 +80,8 @@ class App extends Component {
             columnsWidth={{
               人员工号: 100
             }}
+            hasBeBtns
+            fixedColumns={['人员工号', '员工姓名']}
           />
         </div>
       </div>

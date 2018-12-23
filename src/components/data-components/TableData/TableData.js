@@ -4,11 +4,31 @@ import PwTable from '../../ui-components/PwTable';
 import http, { makeCancelable } from '../../../util/api';
 import { message } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
+import LzBackendBtn from '../../ui-components/LzBackendBtn';
+import { Button } from '../../../../node_modules/antd/lib/radio';
+const { Fragment } = React;
+
+const getResid = (dataMode, resid, subresid) => {
+  return dataMode === 'main' ? resid : subresid;
+};
+
+const btnSizeMap = {
+  large: 'large',
+  middle: 'default',
+  small: 'small'
+};
+
 /**
- * Table
+ * TableData
  */
-export default class Table extends React.Component {
+export default class TableData extends React.Component {
   static propTypes = {
+    /**
+     * 表格尺寸
+     * 默认：'middle'
+     */
+    size: PropTypes.oneOf(['large', 'middle', 'small']),
+
     /**
      * 表格标题
      */
@@ -146,10 +166,36 @@ export default class Table extends React.Component {
      * 是否有后端按钮
      * 默认：false
      */
-    hasBeBtns: PropTypes.bool
+    hasBeBtns: PropTypes.bool,
+
+    /**
+     * 渲染自定义行按钮：为一个函数数组
+     * 默认：-
+     */
+    renderRowBtns: PropTypes.array,
+
+    /**
+     * 操作栏的宽度
+     * 默认：300
+     */
+    actionBarWidth: PropTypes.number,
+
+    /**
+     * 操作栏是否固定在右侧
+     * 默认：true
+     */
+    actionBarFixed: PropTypes.bool,
+
+    /**
+     * 固定列
+     * 默认：-
+     * 如：['姓名', '工号']
+     */
+    fixedColumns: PropTypes.array
   };
 
   static defaultProps = {
+    size: 'middle',
     dataMode: 'main',
     hasAdd: true,
     hasModify: true,
@@ -159,7 +205,9 @@ export default class Table extends React.Component {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    hasBeBtns: false
+    hasBeBtns: false,
+    actionBarWidth: 300,
+    actionBarFixed: true
   };
 
   constructor(props) {
@@ -174,7 +222,9 @@ export default class Table extends React.Component {
       key: '', // 模糊查询关键词
       pagination, // 分页配置
       dataSource: [], // 表格数据
-      columns: [] // 表格列配置信息
+      columns: [], // 表格列配置信息
+      beBtnsMultiple: [], // 后端操作多条记录的按钮
+      beBtnsSingle: [] // 后端操作单条记录的按钮
     };
   }
 
@@ -183,8 +233,8 @@ export default class Table extends React.Component {
   };
 
   componentWillUnmount = () => {
-    this.p1.cancel();
-    this.p2.cancel();
+    this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
   };
 
   getData = () => {
@@ -311,14 +361,30 @@ export default class Table extends React.Component {
     this.getTableData({ page, pageSize });
   };
 
+  // 是否有操作栏
+  hasActionBar = () => {
+    const { beBtnsSingle } = this.state;
+    const {
+      hasRowDelete,
+      hasRowModify,
+      hasRowView,
+      renderRowBtns
+    } = this.props;
+    return !!(
+      hasRowDelete ||
+      hasRowModify ||
+      hasRowView ||
+      beBtnsSingle.length ||
+      renderRowBtns
+    );
+  };
+
   getColumns = columnsInfo => {
     const {
       hasBeSort,
       defaultColumnWidth,
       columnsWidth,
-      hasRowModify,
-      hasRowView,
-      hasRowDelete
+      fixedColumns
     } = this.props;
     const columns = [];
     columnsInfo.forEach(item => {
@@ -341,10 +407,16 @@ export default class Table extends React.Component {
         column.sorter = true;
       }
 
+      // 固定了列
+      if (
+        Array.isArray(fixedColumns) &&
+        fixedColumns.indexOf(item.text) !== -1
+      ) {
+        column.fixed = 'left';
+      }
+
       columns.push(column);
     });
-
-    // const
 
     return columns;
   };
@@ -398,7 +470,7 @@ export default class Table extends React.Component {
   };
 
   getScroll = () => {
-    const { defaultColumnWidth, columnsWidth } = this.props;
+    const { defaultColumnWidth, columnsWidth, actionBarWidth } = this.props;
     const { columns } = this.state;
     const count = columns.length;
     let customWidth = 0,
@@ -411,20 +483,132 @@ export default class Table extends React.Component {
       });
     }
 
-    const x = (count - customCount) * defaultColumnWidth + customWidth;
+    let x = (count - customCount) * defaultColumnWidth + customWidth;
+
+    // 操作栏
+    if (this.hasActionBar()) {
+      x += actionBarWidth;
+    }
     return { x };
+  };
+
+  // 渲染后端按钮
+  renderBeBtns = () => {
+    const { selectedRows } = this.state;
+    const { dataMode, resid, subresid } = this.props;
+    const id = getResid(dataMode, resid, subresid);
+
+    return this.state.beBtnsMultiple.map(btnInfo => (
+      <LzBackendBtn
+        key={btnInfo.Name1}
+        btnInfo={btnInfo}
+        resid={id}
+        onConfirm={this.beBtnConfirm}
+        records={selectedRows}
+      />
+    ));
+  };
+
+  beBtnConfirm = (type, records, formData, defaultRecord) => {
+    // if (type === 1 || type === 5) {
+    //   this.refreshTableData();
+    //   const rowSelection = {
+    //     ...this.state.rowSelection,
+    //     selectedRowKeys: []
+    //   };
+    //   this.setState({ selectedRowKeys: [], selectedRows: [], rowSelection });
+    //   // 编辑记录
+    // } else if (type === 6) {
+    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
+    //     this.openModalWay = 'be';
+    //     this.operationRow('mod', records[0]);
+    //   });
+    //   // 查看记录
+    // } else if (type === 7) {
+    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
+    //     this.openModalWay = 'be';
+    //     this.operationRow('check', records[0]);
+    //   });
+    //   // 添加记录
+    // } else if (type === 8) {
+    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
+    //     this.addRecord(defaultRecord);
+    //   });
+    // }
+  };
+
+  getNewColumns = columns => {
+    let newColumns;
+    if (this.hasActionBar()) {
+      newColumns = columns.concat([this.getActionBar()]);
+    } else {
+      newColumns = columns;
+    }
+    console.log({ newColumns });
+
+    return newColumns;
+  };
+
+  renderModifyBtn = () => {
+    return <Button size={btnSizeMap[this.props.size]}>修改</Button>;
+  };
+
+  renderViewBtn = () => {
+    return <Button size={btnSizeMap[this.props.size]}>查看</Button>;
+  };
+
+  renderDeleteBtn = () => {
+    return <Button size={btnSizeMap[this.props.size]}>删除</Button>;
+  };
+
+  getActionBar = () => {
+    const actionBar = {
+      title: '操作',
+      dataIndex: '操作',
+      key: '操作',
+      align: 'center',
+      width: this.props.actionBarWidth,
+      render: (text, record, rowIndex) => {
+        const { beBtnsSingle } = this.state;
+        const { hasModify, hasRowView, hasRowDelete } = this.props;
+        return (
+          <Fragment>
+            {hasModify && this.renderModifyBtn()}
+            {hasRowView && this.renderViewBtn()}
+            {hasRowDelete && this.renderDeleteBtn()}
+
+            {/* 后端按钮 */}
+            {this.renderBeBtns(beBtnsSingle, record)}
+          </Fragment>
+        );
+      }
+    };
+
+    // 操作栏固定在右侧
+    if (this.props.actionBarFixed) {
+      actionBar.fixed = 'right';
+    }
+    return actionBar;
   };
 
   render() {
     const { title, resid, dataMode, hasAdd, hasModify, hasDelete } = this.props;
-    const { loading, pagination, dataSource, columns } = this.state;
+    const {
+      loading,
+      pagination,
+      dataSource,
+      columns,
+      beBtnsMultiple
+    } = this.state;
+
+    const newColumns = this.getNewColumns(columns);
     return (
       <PwTable
         title={title}
         loading={loading}
         pagination={pagination}
         dataSource={dataSource}
-        columns={columns}
+        columns={newColumns}
         bordered
         rowKey={'REC_ID'}
         scroll={this.getScroll()}
@@ -437,6 +621,7 @@ export default class Table extends React.Component {
         onSearch={this.handleSearch}
         onSearchChange={this.onSearchChange}
         onChange={this.handleTableChange}
+        renderBeBtns={this.renderBeBtns}
       />
     );
   }

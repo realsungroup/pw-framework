@@ -9,7 +9,6 @@ import 'react-resizable/css/styles.css';
 
 import { Table, Button, Input, Pagination, Spin } from 'antd';
 
-
 const Search = Input.Search;
 
 const btnSizeMap = {
@@ -151,9 +150,9 @@ export default class PwTable extends React.Component {
     onAdvSearch: PropTypes.func,
 
     /**
-     * 后端按钮
+     * 渲染后端按钮的函数
      */
-    beBtns: PropTypes.array,
+    renderBeBtns: PropTypes.func,
 
     /**
      * 是否有添加按钮
@@ -226,10 +225,6 @@ export default class PwTable extends React.Component {
     super(props);
     this.state = {};
   }
-
-  renderBeBtns = beBtns => {
-    return beBtns.map(beBtn => {});
-  };
 
   handleDownload = () => {
     this.props.onDownload && this.props.onDownload();
@@ -317,7 +312,7 @@ export default class PwTable extends React.Component {
       hasAdd,
       hasModify,
       hasDelete,
-      beBtns,
+      renderBeBtns,
       hasSearch,
       pagination,
       width,
@@ -327,11 +322,7 @@ export default class PwTable extends React.Component {
     } = this.props;
 
     const hasActionBar =
-      hasAdd ||
-      hasModify ||
-      hasDelete ||
-      (beBtns && beBtns.length) ||
-      hasSearch;
+      hasAdd || hasModify || hasDelete || renderBeBtns || hasSearch;
 
     const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
 
@@ -363,7 +354,7 @@ export default class PwTable extends React.Component {
                 className={`pw-table__action-bar pw-table__action-bar--${size}`}
               >
                 <div className="pw-table__action-btns">
-                  {beBtns && this.renderBeBtns(beBtns)}
+                  {renderBeBtns && renderBeBtns()}
                   {hasAdd && (
                     <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
                       添加

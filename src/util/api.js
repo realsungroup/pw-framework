@@ -64,10 +64,35 @@ export const makeCancelable = promise => {
   };
 };
 
-// 获取后端定义的按钮
+/**
+ * 获取后端按钮
+ */
 http.createApi('getBeBtns', {
   method: 'get',
   url: 'api/menu/GetButton'
+});
+
+/**
+ * 后端按钮点击发送的请求
+ * 参数：{ resid, recids, strCommand }
+ * 1. resid：表资源 id
+ * 2. recids：记录 id 以逗号分隔的字符串
+ * 3. strCommand：后端按钮所带信息的 Code 参数
+ */
+http.createApi('dealButton', {
+  method: 'get',
+  url: 'api/menu/DealButton'
+});
+
+/**
+ * 获取窗体数据
+ * 参数：{ resid, formname }
+ * 1. resid：表资源 id
+ * 2. formname：窗体名称
+ */
+http.createApi('getFormData', {
+  method: 'get',
+  url: 'api/100/table/RetrieveFormDefine'
 });
 
 export default http;
