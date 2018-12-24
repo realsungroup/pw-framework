@@ -293,8 +293,8 @@ export default class TableData extends React.Component {
   };
 
   getTableData = async ({
-    page,
-    pageSize,
+    page = 1,
+    pageSize = 10,
     key = this._searchValue,
     sortOrder = this._sortOrder,
     sortField = this._sortField
@@ -416,7 +416,9 @@ export default class TableData extends React.Component {
     if (this.hasRowSelection(beBtnsMultiple)) {
       rowSelection = {
         selectedRowKeys: [],
-        onChange: this.rowSelectionChange
+        onChange: this.rowSelectionChange,
+        columnWidth: 50,
+        fixed: true
       };
     }
 
@@ -553,7 +555,7 @@ export default class TableData extends React.Component {
 
   getScroll = () => {
     const { defaultColumnWidth, columnsWidth, actionBarWidth } = this.props;
-    const { columns } = this.state;
+    const { columns, rowSelection } = this.state;
     const count = columns.length;
     let customWidth = 0,
       customCount = 0;
@@ -570,6 +572,11 @@ export default class TableData extends React.Component {
     // 操作栏
     if (this.hasActionBar()) {
       x += actionBarWidth;
+    }
+
+    // rowSelection
+    if (rowSelection) {
+      x += 50;
     }
     return { x };
   };
@@ -616,6 +623,13 @@ export default class TableData extends React.Component {
     };
   };
 
+  handleRefresh = () => {
+    this.getTableData({
+      page: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize
+    });
+  };
+
   beBtnConfirm = (type, records, formData, defaultRecord) => {
     // if (type === 1 || type === 5) {
     //   this.refreshTableData();
@@ -645,7 +659,6 @@ export default class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    return columns;
     let newColumns;
     // 添加操作栏
     if (this.hasActionBar()) {
@@ -740,6 +753,9 @@ export default class TableData extends React.Component {
           onDelete={this.handleDelete}
           rowSelection={rowSelection}
           onRow={this.handleOnRow}
+          onRefresh={this.handleRefresh}
+          width={1300}
+          height={850}
         />
         <Modal
           title={modalTitleMap[modalFormMode]}
