@@ -82,6 +82,8 @@ class App extends Component {
             }}
             hasBeBtns
             fixedColumns={['人员工号', '员工姓名']}
+            hasAdd={false}
+            hasDelete={false}
           />
         </div>
       </div>

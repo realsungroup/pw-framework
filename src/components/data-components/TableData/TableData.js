@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PwTable from '../../ui-components/PwTable';
 import http, { makeCancelable } from '../../../util/api';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
+import PwForm from '../../ui-components/PwForm';
 import { Button } from '../../../../node_modules/antd/lib/radio';
+import dealControlArr from '../../../util/controls';
 const { Fragment } = React;
 
 const getResid = (dataMode, resid, subresid) => {
@@ -16,6 +18,12 @@ const btnSizeMap = {
   large: 'large',
   middle: 'default',
   small: 'small'
+};
+
+const modalTitleMap = {
+  add: '添加记录',
+  modify: '修改记录',
+  view: '查看记录'
 };
 
 /**
@@ -191,7 +199,13 @@ export default class TableData extends React.Component {
      * 默认：-
      * 如：['姓名', '工号']
      */
-    fixedColumns: PropTypes.array
+    fixedColumns: PropTypes.array,
+
+    /**
+     * 模态窗中表单的 formname
+     * 默认：default
+     */
+    modalFormName: PropTypes.string
   };
 
   static defaultProps = {
@@ -207,7 +221,8 @@ export default class TableData extends React.Component {
     hasRowDelete: true,
     hasBeBtns: false,
     actionBarWidth: 300,
-    actionBarFixed: true
+    actionBarFixed: true,
+    modalFormName: 'default'
   };
 
   constructor(props) {
@@ -224,7 +239,18 @@ export default class TableData extends React.Component {
       dataSource: [], // 表格数据
       columns: [], // 表格列配置信息
       beBtnsMultiple: [], // 后端操作多条记录的按钮
-      beBtnsSingle: [] // 后端操作单条记录的按钮
+      beBtnsSingle: [], // 后端操作单条记录的按钮
+      beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
+      modalFormData: {
+        // 模态窗中的表单窗体数据
+        subTableArr: [], // 子表
+        allControlArr: [], // 所有控件（input + label）
+        canOpControlArr: [], // 可操作的控件（input）
+        containerControlArr: [] // 容器
+      },
+      modalVisible: false, // 表单模态窗是否显示
+      modalFormMode: '', // 表单模态窗的显示模式：'add'（添加）| 'modify'（修改）| 'view'（查看）
+      rowSelection: null
     };
   }
 
@@ -235,10 +261,18 @@ export default class TableData extends React.Component {
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();
+    this.p4 && this.p4.cancel();
   };
 
   getData = () => {
-    const { hasBeBtns } = this.props;
+    const {
+      hasBeBtns,
+      hasAdd,
+      hasModify,
+      hasRowModify,
+      hasRowView
+    } = this.props;
     const { pagination } = this.state;
     let page, pageSize;
     if (pagination) {
@@ -250,6 +284,11 @@ export default class TableData extends React.Component {
     // 有后端定义按钮
     if (hasBeBtns) {
       this.getBeBtns();
+    }
+
+    // 有打开模态窗表单的按钮
+    if (hasAdd || hasModify || hasRowModify || hasRowView) {
+      this.getFormData();
     }
   };
 
@@ -322,6 +361,25 @@ export default class TableData extends React.Component {
     }
   };
 
+  getFormData = async () => {
+    const { dataMode, resid, subresid, modalFormName } = this.props;
+    const id = getResid(dataMode, resid, subresid);
+    this.p4 = makeCancelable(
+      http().getFormData({
+        resid: id,
+        formname: modalFormName
+      })
+    );
+    let res;
+    try {
+      res = await this.p4.promise;
+    } catch (err) {
+      return message.error(err.message);
+    }
+    const modalFormData = dealControlArr(res.data.columns);
+    this.setState({ modalFormData });
+  };
+
   /**
    * 获取后端定义的按钮
    *
@@ -347,13 +405,32 @@ export default class TableData extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    const { beBtnsMultiple, beBtnsSingle } = extractAndDealBackendBtns(
-      res.data
-    );
+    const {
+      beBtnsMultiple,
+      beBtnsSingle,
+      beBtnsOther
+    } = extractAndDealBackendBtns(res.data);
+
+    // 有行选择
+    let rowSelection = null;
+    if (this.hasRowSelection(beBtnsMultiple)) {
+      rowSelection = {
+        selectedRowKeys: [],
+        onChange: this.rowSelectionChange
+      };
+    }
 
     this.setState({
       beBtnsMultiple,
-      beBtnsSingle
+      beBtnsSingle,
+      beBtnsOther,
+      rowSelection
+    });
+  };
+
+  rowSelectionChange = selectedRowKeys => {
+    this.setState({
+      rowSelection: { ...this.state.rowSelection, selectedRowKeys }
     });
   };
 
@@ -377,6 +454,11 @@ export default class TableData extends React.Component {
       beBtnsSingle.length ||
       renderRowBtns
     );
+  };
+
+  hasRowSelection = beBtnsMultiple => {
+    const { hasModify, hasDelete } = this.props;
+    return !!beBtnsMultiple.length || hasModify || hasDelete;
   };
 
   getColumns = columnsInfo => {
@@ -494,11 +576,12 @@ export default class TableData extends React.Component {
 
   // 渲染后端按钮
   renderBeBtns = () => {
-    const { selectedRows } = this.state;
+    const { selectedRows, beBtnsMultiple, beBtnsOther } = this.state;
     const { dataMode, resid, subresid } = this.props;
     const id = getResid(dataMode, resid, subresid);
+    const arr = [...beBtnsMultiple, ...beBtnsOther];
 
-    return this.state.beBtnsMultiple.map(btnInfo => (
+    return arr.map(btnInfo => (
       <LzBackendBtn
         key={btnInfo.Name1}
         btnInfo={btnInfo}
@@ -507,6 +590,30 @@ export default class TableData extends React.Component {
         records={selectedRows}
       />
     ));
+  };
+
+  // 点击添加按钮
+  handleAdd = () => {
+    this.setState({ modalVisible: true, modalFormMode: 'add' });
+  };
+
+  // 点击修改按钮
+  handleModify = () => {
+    this.setState({ modalVisible: true, modalFormMode: 'modify' });
+  };
+
+  // 点击删除按钮
+  handleDelete = () => {};
+
+  handleModalCancel = () => {
+    this.setState({ modalVisible: false });
+  };
+
+  handleOnRow = record => {
+    return {
+      onClick: () => {}, // 点击行
+      onMouseEnter: () => {} // 鼠标移入行
+    };
   };
 
   beBtnConfirm = (type, records, formData, defaultRecord) => {
@@ -538,26 +645,29 @@ export default class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
+    return columns;
     let newColumns;
+    // 添加操作栏
     if (this.hasActionBar()) {
       newColumns = columns.concat([this.getActionBar()]);
     } else {
       newColumns = columns;
     }
+
     console.log({ newColumns });
 
     return newColumns;
   };
 
-  renderModifyBtn = () => {
+  renderRowModifyBtn = () => {
     return <Button size={btnSizeMap[this.props.size]}>修改</Button>;
   };
 
-  renderViewBtn = () => {
+  renderRowViewBtn = () => {
     return <Button size={btnSizeMap[this.props.size]}>查看</Button>;
   };
 
-  renderDeleteBtn = () => {
+  renderRowDeleteBtn = () => {
     return <Button size={btnSizeMap[this.props.size]}>删除</Button>;
   };
 
@@ -573,9 +683,9 @@ export default class TableData extends React.Component {
         const { hasModify, hasRowView, hasRowDelete } = this.props;
         return (
           <Fragment>
-            {hasModify && this.renderModifyBtn()}
-            {hasRowView && this.renderViewBtn()}
-            {hasRowDelete && this.renderDeleteBtn()}
+            {hasModify && this.renderRowModifyBtn()}
+            {hasRowView && this.renderRowViewBtn()}
+            {hasRowDelete && this.renderRowDeleteBtn()}
 
             {/* 后端按钮 */}
             {this.renderBeBtns(beBtnsSingle, record)}
@@ -598,31 +708,49 @@ export default class TableData extends React.Component {
       pagination,
       dataSource,
       columns,
-      beBtnsMultiple
+      modalVisible,
+      modalFormMode,
+      rowSelection
     } = this.state;
 
     const newColumns = this.getNewColumns(columns);
     return (
-      <PwTable
-        title={title}
-        loading={loading}
-        pagination={pagination}
-        dataSource={dataSource}
-        columns={newColumns}
-        bordered
-        rowKey={'REC_ID'}
-        scroll={this.getScroll()}
-        hasAdd={hasAdd}
-        hasModify={hasModify}
-        hasDelete={hasDelete}
-        onAdd={this.handleAdd}
-        onModify={this.handleModify}
-        onDelete={this.handleDelete}
-        onSearch={this.handleSearch}
-        onSearchChange={this.onSearchChange}
-        onChange={this.handleTableChange}
-        renderBeBtns={this.renderBeBtns}
-      />
+      <Fragment>
+        <PwTable
+          title={title}
+          loading={loading}
+          pagination={pagination}
+          dataSource={dataSource}
+          columns={newColumns}
+          bordered
+          rowKey={'REC_ID'}
+          scroll={this.getScroll()}
+          hasAdd={hasAdd}
+          hasModify={hasModify}
+          hasDelete={hasDelete}
+          onAdd={this.handleAdd}
+          onModify={this.handleModify}
+          onDelete={this.handleDelete}
+          onSearch={this.handleSearch}
+          onSearchChange={this.onSearchChange}
+          onChange={this.handleTableChange}
+          renderOtherBtns={this.renderBeBtns}
+          onAdd={this.handleAdd}
+          onModify={this.handleModify}
+          onDelete={this.handleDelete}
+          rowSelection={rowSelection}
+          onRow={this.handleOnRow}
+        />
+        <Modal
+          title={modalTitleMap[modalFormMode]}
+          visible={modalVisible}
+          footer={null}
+          onCancel={this.handleModalCancel}
+          destroyOnClose
+        >
+          <PwForm />
+        </Modal>
+      </Fragment>
     );
   }
 }

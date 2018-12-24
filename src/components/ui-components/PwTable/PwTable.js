@@ -91,7 +91,7 @@ const IconBtns = React.memo(
 /**
  * PwTable
  */
-export default class PwTable extends React.Component {
+export default class PwTable extends React.PureComponent {
   static propTypes = {
     /**
      * 表格尺寸
@@ -150,9 +150,9 @@ export default class PwTable extends React.Component {
     onAdvSearch: PropTypes.func,
 
     /**
-     * 渲染后端按钮的函数
+     * 渲染其他按钮函数
      */
-    renderBeBtns: PropTypes.func,
+    renderOtherBtns: PropTypes.func,
 
     /**
      * 是否有添加按钮
@@ -312,7 +312,7 @@ export default class PwTable extends React.Component {
       hasAdd,
       hasModify,
       hasDelete,
-      renderBeBtns,
+      renderOtherBtns,
       hasSearch,
       pagination,
       width,
@@ -322,7 +322,7 @@ export default class PwTable extends React.Component {
     } = this.props;
 
     const hasActionBar =
-      hasAdd || hasModify || hasDelete || renderBeBtns || hasSearch;
+      hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
 
     const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
 
@@ -354,7 +354,7 @@ export default class PwTable extends React.Component {
                 className={`pw-table__action-bar pw-table__action-bar--${size}`}
               >
                 <div className="pw-table__action-btns">
-                  {renderBeBtns && renderBeBtns()}
+                  {renderOtherBtns && renderOtherBtns()}
                   {hasAdd && (
                     <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
                       添加

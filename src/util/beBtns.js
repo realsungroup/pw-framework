@@ -22,22 +22,24 @@ import cloneDeep from 'lodash.clonedeep';
 
 /**
  * 一、提取后端两种不同的按钮
- * 1.可以操作多条记录的后端按钮
- * 2.只能操作单条记录的后端按钮
+ * 1.可以操作多条记录的后端按钮：beBtnsMultiple
+ * 2.只能操作单条记录的后端按钮：beBtnsSingle
+ * 3.其他按钮（打开模态窗中的表单）：beBtnsOther
  *
  * 二、并且处理
  * 1.根据 Type 判断是否使用该按钮是否使用 Popconfirm 组件（Type 为 1 | 5 时，该按钮使用 Popconfirm 组件）
  *
  * @param {array} btnsData 后台返回的 “后端按钮” 数据（res.data）
- * @return {object} 返回已经分为两类的后端按钮：{ beBtnsMultiple: array, beBtnsSingle: array }；
+ * @return {object} 返回已经分为三类的后端按钮：{ beBtnsMultiple: array, beBtnsSingle: array }；
  * beBtnsMultiple 表示能够操作多条记录的按钮；
  * beBtnsSingle 表示只能操作一条记录的按钮
  */
 export const extractAndDealBackendBtns = btnsData => {
   const beBtnsMultiple = [],
-    beBtnsSingle = [];
+    beBtnsSingle = [],
+    beBtnsOther = [];
   if (!Array.isArray(btnsData)) {
-    return { beBtnsMultiple, beBtnsSingle };
+    return { beBtnsMultiple, beBtnsSingle, beBtnsOther };
   }
   btnsData.forEach(btnData => {
     if (btnData.Code) {
@@ -45,9 +47,15 @@ export const extractAndDealBackendBtns = btnsData => {
       if (btnData.RecordSelect === 1) {
         beBtnsSingle.push(btnData);
       } else {
-        // 能够操作多条记录的按钮
-        beBtnsMultiple.push(btnData);
+        if (btnData.Type === 1 || btnData.Type === 5) {
+          // 能够操作多条记录的按钮
+          beBtnsMultiple.push(btnData);
+        } else {
+          // 其他按钮
+          beBtnsOther.push(btnData);
+        }
       }
+      // 使用 Popconfirm 组件
       if (btnData.Type === 1 || btnData.Type === 5) {
         btnData.isUsePopconfirm = true;
       } else {
@@ -55,7 +63,7 @@ export const extractAndDealBackendBtns = btnsData => {
       }
     }
   });
-  return { beBtnsMultiple, beBtnsSingle };
+  return { beBtnsMultiple, beBtnsSingle, beBtnsOther };
 };
 
 /**
