@@ -8,6 +8,8 @@ import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 
 import { Table, Button, Input, Pagination, Spin } from 'antd';
+import pureRender from 'pure-render-deepcompare-decorator';
+const { Map, is } = require('immutable');
 
 const Search = Input.Search;
 
@@ -91,7 +93,8 @@ const IconBtns = React.memo(
 /**
  * PwTable
  */
-export default class PwTable extends React.PureComponent {
+@pureRender
+class PwTable extends React.Component {
   static propTypes = {
     /**
      * 表格尺寸
@@ -327,6 +330,9 @@ export default class PwTable extends React.PureComponent {
     const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
 
     const resizeBoxProps = this.getResizeBoxProp();
+
+    console.log('pwTable');
+
     return (
       <Spin spinning={loading}>
         <ResizableBox {...resizeBoxProps}>
@@ -402,3 +408,5 @@ export default class PwTable extends React.PureComponent {
     );
   }
 }
+
+export default PwTable;

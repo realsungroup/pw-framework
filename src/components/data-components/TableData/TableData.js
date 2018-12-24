@@ -329,11 +329,8 @@ export default class TableData extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-
     const columns = this.getColumns(res.cmscolumninfo);
     const dataSource = res.data;
-    console.log({ page });
-
     this.setState({
       columns,
       dataSource,
@@ -666,9 +663,6 @@ export default class TableData extends React.Component {
     } else {
       newColumns = columns;
     }
-
-    console.log({ newColumns });
-
     return newColumns;
   };
 
@@ -727,6 +721,7 @@ export default class TableData extends React.Component {
     } = this.state;
 
     const newColumns = this.getNewColumns(columns);
+
     return (
       <Fragment>
         <PwTable
@@ -764,7 +759,21 @@ export default class TableData extends React.Component {
           onCancel={this.handleModalCancel}
           destroyOnClose
         >
-          <PwForm />
+          <PwForm
+            data={[
+              {
+                id: '姓名',
+                initialValue: '肖磊',
+                rules: [{ required: true, message: '请输入姓名' }],
+                control: {
+                  name: 'Input',
+                  props: {
+                    type: 'text'
+                  }
+                }
+              }
+            ]}
+          />
         </Modal>
       </Fragment>
     );
