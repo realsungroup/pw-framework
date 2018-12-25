@@ -9,7 +9,6 @@ import 'react-resizable/css/styles.css';
 
 import { Table, Button, Input, Pagination, Spin } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
-const { Map, is } = require('immutable');
 
 const Search = Input.Search;
 
