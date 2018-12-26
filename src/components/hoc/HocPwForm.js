@@ -1,7 +1,7 @@
 import React from 'react';
 import { deepCompare } from 'pure-render-deepcompare-decorator';
 
-export default function HocFormItem(WrappedComponent) {
+export default function HocPwForm(WrappedComponent) {
   return class WrapComponent extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
       if (this.props.value !== nextProps.value) {

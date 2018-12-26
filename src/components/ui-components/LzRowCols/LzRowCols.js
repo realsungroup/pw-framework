@@ -2,6 +2,14 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
+const getIndex = (rowIndex, colCount, colIndex) => {
+  if (rowIndex === 0) {
+    return colCount;
+  } else {
+    return rowIndex * colCount + 1 + colIndex;
+  }
+};
+
 /**
  * 渲染多列的组件
  */
@@ -68,7 +76,12 @@ export default class LzRowCols extends React.Component {
                     span={span}
                     key={keyName ? data[keyName] : rowIndex + colIndex + ''}
                   >
-                    {children(data, rowIndex, colIndex)}
+                    {children(
+                      data,
+                      getIndex(rowIndex, colCount, colIndex),
+                      rowIndex,
+                      colIndex
+                    )}
                   </Col>
                 );
               })}

@@ -9,6 +9,7 @@ import http from './util/api';
 import { setItem } from './util/util';
 import 'lz-request/lib/login';
 import moment from 'moment';
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 const dataSource = [
   {
@@ -43,152 +44,156 @@ const columns = [
   }
 ];
 
-// [
-//   {
-//     id: 'name',
-//     label: '姓名',
-//     initialValue: '肖磊',
-//     rules: [{ required: true, message: '请输入姓名' }],
-//     control: {
+const formData = [
+  {
+    id: 'name',
+    label: '姓名',
+    value: '肖磊',
+    rules: [{ required: true, message: '请输入姓名' }],
+    name: 'Input',
+
+    props: {
+      // 控件所接收的 props
+      type: 'text'
+    }
+  },
+  {
+    id: 'desc',
+    label: '自我介绍',
+    value: '',
+    rules: [{ required: true, message: '请输入自我介绍' }],
+    name: 'TextArea',
+
+    props: {
+      placeholder: '我的名字叫xx'
+    }
+  },
+  {
+    id: 'birthday',
+    label: '出生年月',
+    // value: '',
+    rules: [{ required: true, message: '请选择出生年月日' }],
+    name: 'DatePicker',
+
+    props: {}
+  },
+  {
+    id: 'sex',
+    label: '性别',
+    value: 1,
+    rules: [{ required: true, message: '请选择出生年月日' }],
+    name: 'RadioGroup',
+
+    props: {
+      options: [
+        {
+          label: '男',
+          value: 1
+        },
+        {
+          label: '女',
+          value: 0
+        }
+      ]
+    }
+  },
+  {
+    id: 'like',
+    label: '爱好',
+    value: 0,
+    rules: [{ required: true, message: '请选择出生年月日' }],
+    name: 'Select',
+
+    props: {
+      options: [
+        {
+          label: '敲代码',
+          value: 0
+        },
+        {
+          label: '写代码',
+          value: 1
+        },
+        {
+          label: '看代码',
+          value: 2
+        }
+      ]
+    }
+  },
+  {
+    id: 'dictionary',
+    label: '人员工号',
+    value: '',
+    rules: [{ required: true, message: '请选择人员工号' }],
+    name: 'Search',
+
+    props: {
+      onSearch: () => {
+        console.log('searched');
+      },
+      enterButton: true
+    }
+  },
+  {
+    id: 'codetime',
+    label: '开始敲代码的时间',
+    value: moment(),
+    rules: [{ required: true, message: '请选择你开始敲代码的时间' }],
+    name: 'DateTimePicker',
+
+    props: {}
+  },
+  {
+    id: 'images',
+    label: '图片',
+    value: '',
+    rules: [{ required: true, message: '请选择图片' }],
+    name: 'Upload',
+
+    props: {}
+  }
+];
+
+// function getFormData(count) {
+//   let data = [
+//     {
+//       id: `name${i}`,
+//       label: '姓名',
+//       initialValue: '肖磊',
+//       rules: [{ required: true, message: '请输入姓名' }],
 //       name: 'Input',
 //       props: {
 //         type: 'text'
 //       }
-//     }
-//   },
-//   {
-//     id: 'desc',
-//     label: '自我介绍',
-//     initialValue: '',
-//     rules: [{ required: true, message: '请输入自我介绍' }],
-//     control: {
-//       name: 'TextArea',
-//       props: {
-//         placeholder: '我的名字叫xx'
-//       }
-//     }
-//   },
-//   {
-//     id: 'birthday',
-//     label: '出生年月',
-//     // initialValue: '',
-//     rules: [{ required: true, message: '请选择出生年月日' }],
-//     control: {
-//       name: 'DatePicker',
-//       props: {}
-//     }
-//   },
-//   {
-//     id: 'sex',
-//     label: '性别',
-//     initialValue: 1,
-//     rules: [{ required: true, message: '请选择出生年月日' }],
-//     control: {
-//       name: 'RadioGroup',
-//       props: {
-//         options: [
-//           {
-//             label: '男',
-//             value: 1
-//           },
-//           {
-//             label: '女',
-//             value: 0
-//           }
-//         ]
-//       }
-//     }
-//   },
-//   {
-//     id: 'like',
-//     label: '爱好',
-//     initialValue: '敲代码',
-//     rules: [{ required: true, message: '请选择出生年月日' }],
-//     control: {
-//       name: 'Select',
-//       props: {
-//         options: [
-//           {
-//             label: '敲代码',
-//             value: 0
-//           },
-//           {
-//             label: '写代码',
-//             value: 1
-//           },
-//           {
-//             label: '看代码',
-//             value: 2
-//           }
-//         ]
-//       }
-//     }
-//   },
-//   {
-//     id: 'dictionary',
-//     label: '人员工号',
-//     initialValue: '',
-//     rules: [{ required: true, message: '请选择人员工号' }],
-//     control: {
-//       name: 'Search',
-//       props: {
-//         onSearch: () => {
-//           console.log('searched');
-//         },
-//         enterButton: true
-//       }
-//     }
-//   },
-//   {
-//     id: 'codetime',
-//     label: '开始敲代码的时间',
-//     initialValue: moment(),
-//     rules: [
-//       { required: true, message: '请选择你开始敲代码的时间' }
-//     ],
-//     control: {
-//       name: 'DateTimePicker',
-//       props: {}
-//     }
-//   },
-//   {
-//     id: 'images',
-//     label: '图片',
-//     initialValue: '',
-//     rules: [{ required: true, message: '请选择图片' }],
-//     control: {
-//       name: 'Upload',
-//       props: {}
-//     }
-//   }
-// ]
+//     },
 
-function getFormData(count) {
-  let data = [];
-  for (let i = 0; i < count; i++) {
-    data.push({
-      id: `name${i}`,
-      label: '姓名',
-      initialValue: '肖磊',
-      rules: [{ required: true, message: '请输入姓名' }],
-      control: {
-        name: 'Input',
-        props: {
-          type: 'text'
-        }
-      }
-    });
-  }
-  return data;
-}
+//   ];
+// for (let i = 0; i < count; i++) {
+//   data.push({
+//     id: `name${i}`,
+//     label: '姓名',
+//     initialValue: '肖磊',
+//     rules: [{ required: true, message: '请输入姓名' }],
+//     name: 'Input',
+//     props: {
+//       type: 'text'
+//     }
+//   });
+// }
+// return data;
+// }
 
-const formData = getFormData(10);
+// const formData = getFormData(20);
 
 class App extends Component {
+  state = {
+    formData
+  };
+
   handleLoginClick = async () => {
     const code = 'demo1';
     const password = '66287175';
-    console.log(http());
 
     let res;
     try {
@@ -197,12 +202,44 @@ class App extends Component {
         Password: password
       });
     } catch (err) {
-      console.log(err);
-
+      console.error(err);
       return message.error(err.message);
     }
     message.success('登录成功');
     setItem('userInfo', JSON.stringify(res));
+  };
+
+  handleSave = form => {
+    // console.log({ form });
+    // console.log(form.getFieldsValue());
+    form.validateFields((err, values) => {
+      console.log({ err, values });
+    });
+  };
+  handleCancel = form => {
+    form.setFieldsValue({ name0: '欧阳' });
+  };
+
+  handleAddControl = () => {
+    const data = [
+      ...this.state.formData,
+      {
+        id: 'name111',
+        label: '姓名',
+        value: '欧阳',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+        props: {
+          type: 'text'
+        }
+      }
+    ];
+    this.state.formData.push();
+    this.setState({ formData: data });
+  };
+
+  handleDataChange = data => {
+    this.setState({ formData: data });
   };
 
   render() {
@@ -210,6 +247,9 @@ class App extends Component {
       <div style={{ margin: 20 }}>
         <Button onClick={this.handleLoginClick} type="primary">
           登录
+        </Button>
+        <Button onClick={this.handleAddControl} type="primary">
+          添加控件
         </Button>
         <div>
           {/* <TableData
@@ -234,9 +274,11 @@ class App extends Component {
           <PwForm
             labelCol={4}
             wrapperCol={12}
-            colCount={2}
+            colCount={1}
             mode="edit"
-            data={formData}
+            data={this.state.formData}
+            onSave={this.handleSave}
+            onCancel={this.handleCancel}
           />
         </div>
       </div>

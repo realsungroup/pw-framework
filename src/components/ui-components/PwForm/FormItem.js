@@ -9,46 +9,117 @@ import {
   Button,
   Icon
 } from 'antd';
+import DateTimePicker from '../DateTimePicker';
 
 const { TextArea, Search } = Input;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-const renderControl = (item, restProps) => {
-  const { control, id } = item;
-  const { value, onChange } = restProps;
-  console.log({ restProps });
-
-  switch (control.name) {
+const renderControl = (formItemData, restProps) => {
+  const { name, id, props } = formItemData;
+  const { value, onChange, onBlur } = restProps;
+  switch (name) {
     case 'Input': {
       return (
         <Input
-          {...control.props}
+          {...props}
           value={value}
           onChange={e => {
-            console.log({ id, value: e.target.value });
-
             onChange(id, e.target.value);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
           }}
         />
       );
     }
+
     case 'TextArea': {
-      return <TextArea {...control.props} />;
+      return (
+        <TextArea
+          {...props}
+          value={value}
+          onChange={e => {
+            onChange(id, e.target.value);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
+          }}
+        />
+      );
     }
+
     case 'Search': {
-      return <Search {...control.props} />;
+      return (
+        <Search
+          {...props}
+          value={value}
+          onChange={e => {
+            onChange(id, e.target.value);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
+          }}
+        />
+      );
     }
     case 'DatePicker': {
-      return <DatePicker {...control.props} />;
+      return (
+        <DatePicker
+          {...props}
+          value={value}
+          onChange={(date, dateString) => {
+            onChange(id, date);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
+          }}
+        />
+      );
     }
+
+    case 'DateTimePicker': {
+      return (
+        <DateTimePicker
+          {...props}
+          value={value}
+          onChange={(date, dateString) => {
+            onChange(id, date);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
+          }}
+        />
+      );
+    }
+
     case 'RadioGroup': {
-      return <RadioGroup {...control.props} />;
+      return (
+        <RadioGroup
+          {...props}
+          value={value}
+          onChange={e => {
+            onChange(id, e.target.value);
+          }}
+          onBlur={e => {
+            onBlur(id, e.target.value);
+          }}
+        />
+      );
     }
+
     case 'Select': {
       return (
-        <Select>
-          {control.props.options.map(option => (
+        <Select
+          value={value}
+          onChange={(value, option) => {
+            onChange(id, value);
+          }}
+          onBlur={(value, option) => {
+            onBlur(value);
+          }}
+        >
+          {props.options.map(option => (
             <Option key={option.value} value={option.value}>
               {option.label}
             </Option>
@@ -56,9 +127,10 @@ const renderControl = (item, restProps) => {
         </Select>
       );
     }
+
     case 'Upload': {
       return (
-        <Upload {...control.props}>
+        <Upload {...props}>
           <Button>
             <Icon type="upload" /> 上传
           </Button>
@@ -70,56 +142,31 @@ const renderControl = (item, restProps) => {
 
 class FormItem extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value) {
+    if (
+      this.props.value !== nextProps.value ||
+      this.props.help !== nextProps.help ||
+      this.props.mode !== nextProps.mode
+    ) {
       return true;
     }
     return false;
   }
   render() {
-    const { item, ...restProps } = this.props;
-    const {
-      id,
-      label,
-      initialValue,
-      labelCol,
-      wrapperCol,
-      rules,
-      control
-    } = item;
+    const { formItemData, help, ...restProps } = this.props;
+    const { id, label, labelCol, wrapperCol } = formItemData;
     return (
       <Form.Item
         key={id}
         label={label}
+        help={help}
+        validateStatus={help && 'error'}
         labelCol={{ span: labelCol || 8 }}
         wrapperCol={{ span: wrapperCol || 16 }}
       >
-        {renderControl(this.props.item, restProps)}
+        {renderControl(formItemData, restProps)}
       </Form.Item>
     );
   }
 }
-
-// const FormItem = props => {
-//   const { item, ...restProps } = props;
-//   const {
-//     id,
-//     label,
-//     initialValue,
-//     labelCol,
-//     wrapperCol,
-//     rules,
-//     control
-//   } = item;
-//   return (
-//     <Form.Item
-//       key={id}
-//       label={label}
-//       labelCol={{ span: labelCol || 8 }}
-//       wrapperCol={{ span: wrapperCol || 16 }}
-//     >
-//       {renderControl(props.item, restProps)}
-//     </Form.Item>
-//   );
-// };
 
 export default FormItem;
