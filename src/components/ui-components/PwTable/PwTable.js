@@ -92,7 +92,7 @@ const IconBtns = React.memo(
 /**
  * PwTable
  */
-@pureRender
+
 class PwTable extends React.Component {
   static propTypes = {
     /**

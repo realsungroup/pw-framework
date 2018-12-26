@@ -9,7 +9,6 @@ import http from './util/api';
 import { setItem } from './util/util';
 import 'lz-request/lib/login';
 import moment from 'moment';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 const dataSource = [
   {
@@ -138,7 +137,9 @@ const formData = [
   {
     id: 'codetime',
     label: '开始敲代码的时间',
-    value: moment(),
+    // value: () => {
+    //   return moment().format('YYYY-MM-DD');
+    // },
     rules: [{ required: true, message: '请选择你开始敲代码的时间' }],
     name: 'DateTimePicker',
 
@@ -186,9 +187,94 @@ const formData = [
 
 // const formData = getFormData(20);
 
+const newFormData = [
+  {
+    type: '基本信息',
+    data: [
+      {
+        id: 'name',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      },
+      {
+        id: 'name1',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      },
+      {
+        id: 'name2',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      }
+    ]
+  },
+  {
+    type: '基本信息2',
+    data: [
+      {
+        id: 'name22',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      },
+      {
+        id: 'name23',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      },
+      {
+        id: 'name24',
+        label: '姓名',
+        value: '肖磊',
+        rules: [{ required: true, message: '请输入姓名' }],
+        name: 'Input',
+
+        props: {
+          // 控件所接收的 props
+          type: 'text'
+        }
+      }
+    ]
+  }
+];
+
 class App extends Component {
   state = {
-    formData
+    formData: newFormData
   };
 
   handleLoginClick = async () => {
@@ -224,9 +310,9 @@ class App extends Component {
     const data = [
       ...this.state.formData,
       {
-        id: 'name111',
+        id: 'name' + new Date().getTime(),
         label: '姓名',
-        value: '欧阳',
+        value: '',
         rules: [{ required: true, message: '请输入姓名' }],
         name: 'Input',
         props: {
@@ -244,7 +330,7 @@ class App extends Component {
 
   render() {
     return (
-      <div style={{ margin: 20 }}>
+      <div style={{ margin: 20 }} style={{ width: 900 }}>
         <Button onClick={this.handleLoginClick} type="primary">
           登录
         </Button>
@@ -276,6 +362,7 @@ class App extends Component {
             wrapperCol={12}
             colCount={1}
             mode="edit"
+            displayMode="classify"
             data={this.state.formData}
             onSave={this.handleSave}
             onCancel={this.handleCancel}

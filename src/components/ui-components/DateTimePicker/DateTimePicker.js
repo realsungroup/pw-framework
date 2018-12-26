@@ -1,12 +1,11 @@
 import React from 'react';
 import { DatePicker, TimePicker } from 'antd';
 import PropTypes from 'prop-types';
-import pureRender from 'pure-render-deepcompare-decorator';
 
 /**
  * 日期时间选择器
  */
-@pureRender
+
 class DateTimePicker extends React.Component {
   static propTypes = {
     /**

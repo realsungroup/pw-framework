@@ -1,70 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './PwForm.less';
-import { Form, Button } from 'antd';
+import { Form, Button, Collapse } from 'antd';
 import LzRowCols from '../LzRowCols';
 import FormItem from './FormItem';
 import schema from 'async-validator';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
+import PwFormFooter from './PwFormFooter';
 
 const Fragment = React.Fragment;
 
-const PwFormFooter = React.memo(
-  ({ hasEdit, hasSave, hasCancel, onEdit, onSave, onCancel, mode, form }) => {
-    return (
-      <div className="pw-form__footer">
-        {(function() {
-          if (mode === 'edit') {
-            return (
-              <Fragment>
-                {hasCancel && (
-                  <Button onClick={() => onCancel && onCancel(form)}>
-                    取消
-                  </Button>
-                )}
+const Panel = Collapse.Panel;
 
-                {hasSave && (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      onSave && onSave(form);
-                    }}
-                  >
-                    保存
-                  </Button>
-                )}
-              </Fragment>
-            );
-          } else {
-            return (
-              <Fragment>
-                {hasEdit && (
-                  <Button type="primary" onClick={() => onEdit && onEdit()}>
-                    编辑
-                  </Button>
-                )}
-              </Fragment>
-            );
-          }
-        })()}
-      </div>
-    );
-  }
-);
-
-const getValues = data => {
+const getValues = (data, displayMode) => {
   const values = {};
-  data.forEach(item => {
-    values[item.id] = item.value;
-  });
+  if (displayMode === 'default') {
+    data.forEach(item => {
+      values[item.id] = item.value;
+    });
+  } else {
+    data.forEach(typeItem => {
+      typeItem.data.forEach(item => {
+        values[item.id] = item.value;
+      });
+    });
+  }
   return values;
 };
-const getDescriptor = data => {
-  const descriptor = {};
-  data.forEach(item => {
-    descriptor[item.id] = cloneDeep(item.rules);
+
+const getActiveKey = (data, displayMode) => {
+  if (displayMode === 'default') {
+    return [];
+  }
+  const activeKey = [];
+  data.forEach(typeItem => {
+    activeKey.push(typeItem.type);
   });
+  return activeKey;
+};
+
+const getDescriptor = (data, displayMode) => {
+  const descriptor = {};
+  if (displayMode === 'default') {
+    data.forEach(item => {
+      descriptor[item.id] = cloneDeep(item.rules);
+    });
+  } else {
+    data.forEach(typeItem => {
+      typeItem.data.forEach(item => {
+        descriptor[item.id] = cloneDeep(item.rules);
+      });
+    });
+  }
   return descriptor;
 };
 
@@ -96,7 +84,7 @@ class PwForm extends React.Component {
      * 默认：-
      */
     data: PropTypes.array.isRequired,
-    // data 格式
+    // data 格式：displayMode 为 default 时
     // [
     //   {
     //     id: 'name', // 字段名称
@@ -111,6 +99,27 @@ class PwForm extends React.Component {
     //     }
     //   }
     // ];
+
+    // data 格式：displayMode 为 classify 时
+    // [
+    //   {
+    //     type: '基本信息',
+    //     data: [
+    //       {
+    //         id: 'name', // 字段名称
+    //         label: '姓名', // label
+    //         value: '肖磊', // 初始值
+    //         labelCol: 8, // label 所占列
+    //         wrapperCol: 16, // 控件 所占列
+    //         rules: [{ required: true, message: '请输入姓名' }], // 验证规则
+    //         name: 'Input', // 控件名称
+    //         props: { // 控件所接收的 props
+    //           type: 'number'
+    //         }
+    //       }
+    //     ]
+    //   }
+    // ]
 
     /**
      * 列数量
@@ -171,16 +180,20 @@ class PwForm extends React.Component {
     colCount: 1,
     hasEdit: true,
     hasSave: true,
-    hasCancel: true
+    hasCancel: true,
+    displayMode: 'default'
   };
 
   constructor(props) {
     super(props);
-    const values = getValues(props.data);
-    descriptor = getDescriptor(props.data);
+    const { data, displayMode } = props;
+    const values = getValues(data, displayMode);
+    const activeKey = getActiveKey(data, displayMode);
+    descriptor = getDescriptor(data, displayMode);
     this.state = {
       values,
-      helps: {} // 错误提示
+      helps: {}, // 错误提示
+      activeKey
     };
   }
 
@@ -190,8 +203,6 @@ class PwForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.data, this.props.data)) {
-      console.log('111');
-
       const values = getValues(nextProps.data);
       descriptor = getDescriptor(nextProps.data);
       this.setState({ values });
@@ -211,9 +222,8 @@ class PwForm extends React.Component {
      */
     validateFields: callback => {
       const validator = new schema(descriptor);
-      validator.validate(this.form.getFieldsValue(), (err, fields) => {
-        const values = this.form.getFieldsValue();
-
+      const values = this.form.getFieldsValue();
+      validator.validate(values, (err, fields) => {
         const helps = {};
         for (let id in fields) {
           fields[id].forEach(item => {
@@ -231,28 +241,61 @@ class PwForm extends React.Component {
     return cloneDeep(data);
   };
 
-  getControlView = item => {
-    return <div>{item.initialValue}</div>;
+  handleCollapseChange = activeKey => {
+    this.setState({ activeKey });
+  };
+
+  renderFormItems = (data, colCount) => {
+    console.log({ data, colCount });
+
+    return (
+      <Fragment>
+        {colCount === 1 ? (
+          data.map(formItemData => this.renderFormItem(formItemData))
+        ) : (
+          <LzRowCols renderData={data} keyName="id" colCount={colCount}>
+            {formItemData => this.renderFormItem(formItemData)}
+          </LzRowCols>
+        )}
+      </Fragment>
+    );
+  };
+
+  renderForm = () => {
+    const { data, colCount, displayMode } = this.props;
+    // 默认显示模式
+    if (displayMode === 'default') {
+      return this.renderFormItems(data, colCount);
+
+      // 分类显示模式
+    } else if (displayMode === 'classify') {
+      const { activeKey } = this.state;
+      return (
+        <Collapse activeKey={activeKey} onChange={this.handleCollapseChange}>
+          {data.map(typeItem => (
+            <Panel key={typeItem.type} header={typeItem.type}>
+              {this.renderFormItems(typeItem.data, colCount)}
+            </Panel>
+          ))}
+        </Collapse>
+      );
+    }
   };
 
   renderFormItem = formItemData => {
     const { mode } = this.props;
     const { values, helps } = this.state;
-    if (mode === 'edit') {
-      return (
-        <FormItem
-          key={formItemData.id}
-          mode={mode}
-          formItemData={formItemData}
-          value={values[formItemData.id]}
-          onChange={this.handleFormItemChange}
-          onBlur={this.handleFormItemBlur}
-          help={helps[formItemData.id]}
-        />
-      );
-    } else {
-      return this.getControlView(formItemData);
-    }
+    return (
+      <FormItem
+        key={formItemData.id}
+        mode={mode}
+        formItemData={formItemData}
+        value={values[formItemData.id]}
+        onChange={this.handleFormItemChange}
+        onBlur={this.handleFormItemBlur}
+        help={helps[formItemData.id]}
+      />
+    );
   };
 
   handleFormItemChange = (id, value) => {
@@ -266,43 +309,30 @@ class PwForm extends React.Component {
 
   render() {
     const {
-      colCount,
-      labelCol,
-      wrapperCol,
       mode,
       hasEdit,
       hasSave,
       hasCancel,
       onEdit,
       onSave,
-      onCancel,
-      data
+      onCancel
     } = this.props;
-    const { values, descriptor } = this.state;
 
     return (
       <div className="pw-form">
-        <Form>
-          {colCount === 1 ? (
-            data.map(formItemData => this.renderFormItem(formItemData))
-          ) : (
-            <LzRowCols renderData={data} keyName={'id'} colCount={colCount}>
-              {formItemData => this.renderFormItem(formItemData)}
-            </LzRowCols>
-          )}
-
-          <PwFormFooter
-            hasEdit={hasEdit}
-            hasSave={hasSave}
-            hasCancel={hasCancel}
-            onEdit={onEdit}
-            onSave={onSave}
-            onCancel={onCancel}
-            mode={mode}
-            form={this.form}
-            descriptor={descriptor}
-          />
-        </Form>
+        {/* body */}
+        <Form>{this.renderForm()}</Form>
+        {/* footer */}
+        <PwFormFooter
+          hasEdit={hasEdit}
+          hasSave={hasSave}
+          hasCancel={hasCancel}
+          onEdit={onEdit}
+          onSave={onSave}
+          onCancel={onCancel}
+          mode={mode}
+          form={this.form}
+        />
       </div>
     );
   }
