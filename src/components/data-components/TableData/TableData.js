@@ -206,7 +206,12 @@ export default class TableData extends React.Component {
      * 模态窗中表单的 formname
      * 默认：default
      */
-    modalFormName: PropTypes.string
+    modalFormName: PropTypes.string,
+
+    /**
+     * PwForm 表单组件接收的 props
+     */
+    formProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -810,7 +815,15 @@ export default class TableData extends React.Component {
   };
 
   render() {
-    const { title, resid, dataMode, hasAdd, hasModify, hasDelete } = this.props;
+    const {
+      title,
+      resid,
+      dataMode,
+      hasAdd,
+      hasModify,
+      hasDelete,
+      formProps
+    } = this.props;
     const {
       loading,
       pagination,
@@ -858,11 +871,13 @@ export default class TableData extends React.Component {
           footer={null}
           onCancel={this.handleModalCancel}
           destroyOnClose
+          width={formProps.width ? formProps.width + 50 : 800}
         >
           <FormData
             formData={modalFormData}
             operation={modalFormMode}
             record={selectedRecord}
+            formProps={formProps}
           />
         </Modal>
       </Fragment>

@@ -11,12 +11,6 @@ const PwFormFooter = React.memo(
           if (mode === 'edit') {
             return (
               <Fragment>
-                {hasCancel && (
-                  <Button onClick={() => onCancel && onCancel(form)}>
-                    取消
-                  </Button>
-                )}
-
                 {hasSave && (
                   <Button
                     type="primary"
@@ -25,6 +19,11 @@ const PwFormFooter = React.memo(
                     }}
                   >
                     保存
+                  </Button>
+                )}
+                {hasCancel && (
+                  <Button onClick={() => onCancel && onCancel(form)}>
+                    取消
                   </Button>
                 )}
               </Fragment>

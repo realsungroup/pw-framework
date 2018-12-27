@@ -1,10 +1,5 @@
-import http from 'lz-request/lib/lz-request';
-import 'lz-request/lib/login';
-import 'lz-request/lib/addRecords';
-import 'lz-request/lib/getSubTable';
-import 'lz-request/lib/getTable';
-import 'lz-request/lib/modifyRecords';
-import 'lz-request/lib/removeRecords';
+import http from 'lz-request/lib/http';
+
 import { getItem } from './util';
 
 http.setDefaultBaseURL('http://kingofdinner.realsun.me:8102/');
@@ -32,7 +27,10 @@ http.setRequestInterceptors(
 http.setResponseInterceptors(
   function(response) {
     const res = response.data;
-    if (res && (res.error == 0 || res.Error == 0 || res.OpResult === 'Y')) {
+    if (
+      (res && (res.error == 0 || res.Error == 0 || res.OpResult === 'Y')) ||
+      res === 'ok'
+    ) {
       return res;
     } else {
       throw new Error(res.ErrMsg || res.message);

@@ -92,7 +92,7 @@ const IconBtns = React.memo(
 /**
  * PwTable
  */
-
+@pureRender
 class PwTable extends React.Component {
   static propTypes = {
     /**
@@ -225,7 +225,6 @@ class PwTable extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   handleDownload = () => {
@@ -329,8 +328,6 @@ class PwTable extends React.Component {
     const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
 
     const resizeBoxProps = this.getResizeBoxProp();
-
-    console.log('pwTable');
 
     return (
       <Spin spinning={loading}>

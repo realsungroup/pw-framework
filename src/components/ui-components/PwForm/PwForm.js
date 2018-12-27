@@ -74,6 +74,18 @@ class PwForm extends React.Component {
     mode: PropTypes.oneOf(['edit', 'view']),
 
     /**
+     * 宽度
+     * 默认：-
+     */
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+    /**
+     * 高度
+     * 默认：-
+     */
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+    /**
      * 显示模式：'default' 默认显示模式 | 'classify' 折叠面板形式的分类显示模式
      * 默认：'default'
      */
@@ -315,13 +327,15 @@ class PwForm extends React.Component {
       hasCancel,
       onEdit,
       onSave,
-      onCancel
+      onCancel,
+      width,
+      height
     } = this.props;
 
     return (
-      <div className="pw-form">
+      <div className="pw-form" style={{ width, height }}>
         {/* body */}
-        <Form>{this.renderForm()}</Form>
+        <Form className="pw-form__body">{this.renderForm()}</Form>
         {/* footer */}
         <PwFormFooter
           hasEdit={hasEdit}

@@ -297,6 +297,16 @@ class App extends Component {
     setItem('userInfo', JSON.stringify(res));
   };
 
+  handleClearCache = async () => {
+    let res;
+    try {
+      await http().clearCache();
+    } catch (err) {
+      return message.error(err.message);
+    }
+    message.success('清除缓存成功');
+  };
+
   handleSave = form => {
     // console.log({ form });
     // console.log(form.getFieldsValue());
@@ -336,6 +346,9 @@ class App extends Component {
         <Button onClick={this.handleLoginClick} type="primary">
           登录
         </Button>
+        <Button onClick={this.handleClearCache} type="primary">
+          清除缓存
+        </Button>
         <Button onClick={this.handleAddControl} type="primary">
           添加控件
         </Button>
@@ -358,6 +371,7 @@ class App extends Component {
             fixedColumns={['人员工号', '员工姓名']}
             hasAdd={true}
             hasDelete={true}
+            formProps={{ displayMode: 'default', height: 600, width: 800 }}
           />
           {/* <PwForm
             labelCol={4}

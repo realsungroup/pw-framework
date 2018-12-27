@@ -2,136 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PwForm from '../../ui-components/PwForm';
 import http, { makeCancelable } from '../../../util/api';
-import { message, Modal } from 'antd';
+import { message, Modal, Spin } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import { Button } from '../../../../node_modules/antd/lib/radio';
-import dealControlArr, { getRules, ControlCode } from '../../../util/controls';
-import moment from 'moment';
-const { Fragment } = React;
 
-const getControlName = controlData => {
-  const type = controlData.ColValType;
-  switch (type) {
-    // Input
-    case ControlCode.Input:
-    case ControlCode.IncrementalCoding:
-    case ControlCode.AutoCoding: {
-      return 'Input';
-    }
-    // TextArea
-    case ControlCode.LongText: {
-      return 'TextArea';
-    }
-    // DatePicker
-    case ControlCode.Date: {
-      return 'DatePicker';
-    }
-    // RadioGroup
-    case ControlCode.RadioGroup:
-    case ControlCode.Checkbox: {
-      return 'RadioGroup';
-    }
-    // Select
-    case ControlCode.OptionValue:
-    case ControlCode.OptionDictionary:
-    case ControlCode.OptionDepartment: {
-      return 'Select';
-    }
-
-    // Search
-    case ControlCode.AdvDictionary: {
-      return 'Search';
-    }
-    // DateTimePicker
-    case ControlCode.Time: {
-      return 'DateTimePicker';
-    }
-    // Upload
-    case ControlCode.ImageSelect:
-    case ControlCode.FileSelect: {
-      return 'Upload';
-    }
-  }
-};
-
-const getProps = (controlData, name) => {
-  const { FrmReadonly, ColIsReadOnly } = controlData;
-  const props = {};
-
-  // 获取 Select 的 options prop
-  if (name === 'Select') {
-    const type = controlData.ColValType;
-    switch (type) {
-      // 下拉框：Select
-      case ControlCode.OptionValue: {
-        const options = controlData.DisplayOptions;
-        props.options = options.map(option => ({
-          label: option.displayColValue,
-          value: option.valueColValue
-        }));
-      }
-      // 下拉框部门：Select
-      case ControlCode.OptionDepartment: {
-        const labelOptions = controlData.DisplayOptions;
-        const valueOptions = controlData.ValueOptions;
-        props.options = labelOptions.map((label, index) => ({
-          label,
-          value: valueOptions[index]
-        }));
-      }
-      // 下拉字典：Select
-      case ControlCode.OptionDictionary: {
-        const options = controlData.ListOfColOptions;
-        props.options = options.map(option => ({
-          label: option.displayColValue,
-          value: option.valueColValue
-        }));
-      }
-    }
-  }
-
-  // 'Search' 添加搜索按钮
-  if (name === 'Search') {
-    props.enterButton = true;
-  }
-
-  props.disabled = !!(FrmReadonly || ColIsReadOnly);
-
-  return props;
-};
-
-const getValue = (name, record, controlData, operation) => {
-  const value = record[controlData.ColName];
-  if (operation === 'view') {
-    return value;
-  }
-  if (name === 'DateTimePicker') {
-    return moment(value);
-  }
-  return value;
-};
-
-const getData = (operation, record, formData) => {
-  const data = [];
-  const { canOpControlArr } = formData;
-  if (operation === 'add' || operation === 'modify' || operation === 'view') {
-    canOpControlArr.forEach(controlData => {
-      const obj = {
-        id: controlData.ColName,
-        label: controlData.ColDispName,
-        labelCol: 8,
-        wrapperCol: 16,
-        rules: getRules(controlData),
-        name: getControlName(controlData)
-      };
-      obj.value = getValue(obj.name, record, controlData, operation);
-      obj.props = getProps(controlData, obj.name);
-      data.push(obj);
-    });
-  }
-  return data;
-};
+import getDataProp from './util';
 
 /**
  * FormData
@@ -183,20 +59,25 @@ export default class FormData extends React.Component {
 
   constructor(props) {
     super(props);
-    const { operation, record, formData } = props;
-    const data = getData(operation, record, formData);
-
     this.state = {
-      data // 表单控件数据
+      data: null, // 表单控件数据
+      loading: true
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    // 放 didmount 是为了优化 Modal 的显示速度
+    // getDataProp 会耗时，会阻止 Modal 的显示
+    // 若表单数据比较多，Modal 的显示出来的速度就会变慢
+    const { operation, record, formData, formProps } = this.props;
+    const data = getDataProp(operation, record, formData, formProps);
+    this.setState({ data, loading: false });
+  };
 
   componentWillUnmount = () => {};
 
   render() {
-    const { data } = this.state;
+    const { data, loading } = this.state;
     const { formProps, operation } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
@@ -207,6 +88,12 @@ export default class FormData extends React.Component {
       otherProps.hasSave = false;
       otherProps.hasCancel = false;
     }
-    return <PwForm data={data} {...formProps} mode={mode} {...otherProps} />;
+    return (
+      <Spin spinning={loading}>
+        {data && (
+          <PwForm data={data} {...formProps} mode={mode} {...otherProps} />
+        )}
+      </Spin>
+    );
   }
 }
