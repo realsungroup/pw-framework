@@ -593,21 +593,23 @@ export default class TableData extends React.Component {
     });
   };
 
-  // 点击修改按钮
-  handleModify = () => {
-    const { selectedRowKeys } = this.state.rowSelection;
-    if (selectedRowKeys.length !== 1) {
-      return message.error('请选择一条记录');
+  handleModify = record => {
+    let selectedRecord = record;
+    if (!selectedRecord) {
+      const { selectedRowKeys } = this.state.rowSelection;
+      if (selectedRowKeys.length !== 1) {
+        return message.error('请选择一条记录');
+      }
+      const { dataSource } = this.state;
+      selectedRecord = dataSource.find(
+        record => record.REC_ID === selectedRowKeys[0]
+      );
     }
-    const { dataSource } = this.state;
-    const record = dataSource.find(
-      record => record.REC_ID === selectedRowKeys[0]
-    );
 
     this.setState({
       modalVisible: true,
       modalFormMode: 'modify',
-      selectedRecord: record
+      selectedRecord
     });
   };
 
@@ -704,8 +706,15 @@ export default class TableData extends React.Component {
     return newColumns;
   };
 
-  renderRowModifyBtn = () => {
-    return <Button size={btnSizeMap[this.props.size]}>修改</Button>;
+  renderRowModifyBtn = record => {
+    return (
+      <Button
+        size={btnSizeMap[this.props.size]}
+        onClick={() => this.handleModify(record)}
+      >
+        修改
+      </Button>
+    );
   };
 
   renderRowViewBtn = () => {
@@ -767,7 +776,7 @@ export default class TableData extends React.Component {
         const { hasModify, hasRowView, hasRowDelete } = this.props;
         return (
           <Fragment>
-            {hasModify && this.renderRowModifyBtn()}
+            {hasModify && this.renderRowModifyBtn(record)}
             {hasRowView && this.renderRowViewBtn()}
             {hasRowDelete && this.renderRowDeleteBtn(record)}
 
