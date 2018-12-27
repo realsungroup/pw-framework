@@ -792,6 +792,10 @@ export default class TableData extends React.Component {
     this.handleRefresh();
   };
 
+  handleCancel = () => {
+    this.setState({ modalVisible: false });
+  };
+
   getActionBar = () => {
     const actionBar = {
       title: '操作',
@@ -892,6 +896,7 @@ export default class TableData extends React.Component {
             formProps={formProps}
             info={{ dataMode, resid, subresid, hostrecid }}
             onConfirm={this.handleConfirm}
+            onCancel={this.handleCancel}
           />
         </Modal>
       </Fragment>

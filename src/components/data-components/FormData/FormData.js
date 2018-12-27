@@ -94,7 +94,10 @@ export default class FormData extends React.Component {
     this.setState({ data, loading: false });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
+  };
 
   handleSave = form => {
     const { operation, info, record } = this.props;
@@ -117,7 +120,20 @@ export default class FormData extends React.Component {
     });
   };
 
-  handleAdd = id => {};
+  handleAdd = async (id, formData) => {
+    this.p2 = makeCancelable(
+      http().addRecords({
+        resid: id,
+        data: [formData]
+      })
+    );
+    try {
+      await this.p2.promise;
+    } catch (err) {
+      return message.error(err.message);
+    }
+    this.props.onConfirm();
+  };
   handleModify = async (id, formData) => {
     this.p1 = makeCancelable(
       http().modifyRecords({
@@ -154,6 +170,7 @@ export default class FormData extends React.Component {
             mode={mode}
             {...otherProps}
             onSave={this.handleSave}
+            onCancel={this.props.onCancel}
           />
         )}
       </Spin>
