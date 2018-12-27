@@ -717,8 +717,23 @@ export default class TableData extends React.Component {
     );
   };
 
-  renderRowViewBtn = () => {
-    return <Button size={btnSizeMap[this.props.size]}>查看</Button>;
+  renderRowViewBtn = record => {
+    return (
+      <Button
+        size={btnSizeMap[this.props.size]}
+        onClick={() => this.handleView(record)}
+      >
+        查看
+      </Button>
+    );
+  };
+
+  handleView = record => {
+    this.setState({
+      modalVisible: true,
+      modalFormMode: 'view',
+      selectedRecord: record
+    });
   };
 
   renderRowDeleteBtn = record => {
@@ -777,7 +792,7 @@ export default class TableData extends React.Component {
         return (
           <Fragment>
             {hasModify && this.renderRowModifyBtn(record)}
-            {hasRowView && this.renderRowViewBtn()}
+            {hasRowView && this.renderRowViewBtn(record)}
             {hasRowDelete && this.renderRowDeleteBtn(record)}
 
             {/* 后端按钮 */}

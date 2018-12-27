@@ -101,8 +101,11 @@ const getProps = (controlData, name) => {
   return props;
 };
 
-const getValue = (name, record, controlData) => {
+const getValue = (name, record, controlData, operation) => {
   const value = record[controlData.ColName];
+  if (operation === 'view') {
+    return value;
+  }
   if (name === 'DateTimePicker') {
     return moment(value);
   }
@@ -112,7 +115,7 @@ const getValue = (name, record, controlData) => {
 const getData = (operation, record, formData) => {
   const data = [];
   const { canOpControlArr } = formData;
-  if (operation === 'add' || operation === 'modify') {
+  if (operation === 'add' || operation === 'modify' || operation === 'view') {
     canOpControlArr.forEach(controlData => {
       const obj = {
         id: controlData.ColName,
@@ -122,7 +125,7 @@ const getData = (operation, record, formData) => {
         rules: getRules(controlData),
         name: getControlName(controlData)
       };
-      obj.value = getValue(obj.name, record, controlData);
+      obj.value = getValue(obj.name, record, controlData, operation);
       obj.props = getProps(controlData, obj.name);
       data.push(obj);
     });
@@ -194,7 +197,16 @@ export default class FormData extends React.Component {
 
   render() {
     const { data } = this.state;
-    const { formProps } = this.props;
-    return <PwForm data={data} {...formProps} />;
+    const { formProps, operation } = this.props;
+    const mode = operation === 'view' ? 'view' : 'edit';
+    let otherProps = {};
+
+    // 当为查看时，不显示 编辑、保存和取消按钮
+    if (mode === 'view') {
+      otherProps.hasEdit = false;
+      otherProps.hasSave = false;
+      otherProps.hasCancel = false;
+    }
+    return <PwForm data={data} {...formProps} mode={mode} {...otherProps} />;
   }
 }
