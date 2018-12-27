@@ -9,3 +9,7 @@ export const getItem = key => {
 export const removeItem = key => {
   return localStorage.removeItem(key);
 };
+
+export const getResid = (dataMode, resid, subresid) => {
+  return dataMode === 'main' ? resid : subresid;
+};

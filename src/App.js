@@ -362,7 +362,7 @@ class App extends Component {
               showSizeChanger: true,
               showQuickJumper: true
             }}
-            size="middle"
+            size="small"
             columnsWidth={{
               人员工号: 100
             }}

@@ -83,7 +83,8 @@ const isStringArr = arr => {
  * 上传表单数据前先对表单数据进行处理
  * @param {object} formData 表单数据
  */
-export const dealFormData = formData => {
+export const dealFormData = values => {
+  const formData = { ...values };
   for (const key in formData) {
     if (typeof formData[key] === 'boolean') {
       formData[key] = formData[key] ? 'Y' : 'N';
@@ -99,6 +100,7 @@ export const dealFormData = formData => {
       formData[key] = formData[key].format('YYYY-MM-DD HH:mm');
     }
   }
+  return formData;
 };
 
 const numToStr = value => {

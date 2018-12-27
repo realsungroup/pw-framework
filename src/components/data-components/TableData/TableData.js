@@ -9,11 +9,8 @@ import FormData from '../FormData';
 import { Button } from '../../../../node_modules/antd/lib/radio';
 import dealControlArr from '../../../util/controls';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
+import { getResid } from '../../../util/util';
 const { Fragment } = React;
-
-const getResid = (dataMode, resid, subresid) => {
-  return dataMode === 'main' ? resid : subresid;
-};
 
 const btnSizeMap = {
   large: 'large',
@@ -784,6 +781,17 @@ export default class TableData extends React.Component {
     this.handleRefresh();
   };
 
+  handleConfirm = () => {
+    const { modalFormMode } = this.state;
+    if (modalFormMode === 'add') {
+      message.success('添加成功');
+    } else if (modalFormMode === 'modify') {
+      message.success('修改成功');
+    }
+    this.setState({ modalVisible: false });
+    this.handleRefresh();
+  };
+
   getActionBar = () => {
     const actionBar = {
       title: '操作',
@@ -817,12 +825,15 @@ export default class TableData extends React.Component {
   render() {
     const {
       title,
-      resid,
       dataMode,
+      resid,
+      subresid,
       hasAdd,
       hasModify,
       hasDelete,
-      formProps
+      formProps,
+      size,
+      hostrecid
     } = this.props;
     const {
       loading,
@@ -864,6 +875,7 @@ export default class TableData extends React.Component {
           onRefresh={this.handleRefresh}
           width={1300}
           height={850}
+          size={size}
         />
         <Modal
           title={modalTitleMap[modalFormMode]}
@@ -878,6 +890,8 @@ export default class TableData extends React.Component {
             operation={modalFormMode}
             record={selectedRecord}
             formProps={formProps}
+            info={{ dataMode, resid, subresid, hostrecid }}
+            onConfirm={this.handleConfirm}
           />
         </Modal>
       </Fragment>

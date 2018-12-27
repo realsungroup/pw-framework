@@ -6,8 +6,10 @@ import { message, Modal, Spin } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import { Button } from '../../../../node_modules/antd/lib/radio';
+import { dealFormData } from '../../../util/controls';
 
 import getDataProp from './util';
+import { getResid } from '../../../util/util';
 
 /**
  * FormData
@@ -42,7 +44,25 @@ export default class FormData extends React.Component {
      * PwForm 的 props
      * 默认：{}
      */
-    formProps: PropTypes.object
+    formProps: PropTypes.object,
+
+    /**
+     * 添加、修改 所需要的信息：{ dataMode, resid, subresid, hostrecid }
+     * 默认：-
+     */
+    info: PropTypes.object,
+
+    /**
+     * 保存成功后的回调函数
+     * 默认：-
+     */
+    onConfirm: PropTypes.func,
+
+    /**
+     * 点击取消按钮后的回调函数
+     * 默认：-
+     */
+    onCancel: PropTypes.func
   };
 
   static defaultProps = {
@@ -76,6 +96,43 @@ export default class FormData extends React.Component {
 
   componentWillUnmount = () => {};
 
+  handleSave = form => {
+    const { operation, info, record } = this.props;
+    const { dataMode, resid, subresid } = info;
+    const id = getResid(dataMode, resid, subresid);
+
+    form.validateFields((err, values) => {
+      if (err) {
+        return message.error('表单数据有误');
+      }
+      const formData = dealFormData(values);
+      formData.REC_ID = record.REC_ID;
+      // 添加
+      if (this.props.operation === 'add') {
+        this.handleAdd(id, formData);
+        // 修改
+      } else {
+        this.handleModify(id, formData);
+      }
+    });
+  };
+
+  handleAdd = id => {};
+  handleModify = async (id, formData) => {
+    this.p1 = makeCancelable(
+      http().modifyRecords({
+        resid: id,
+        data: [formData]
+      })
+    );
+    try {
+      await this.p1.promise;
+    } catch (err) {
+      return message.error(err.message);
+    }
+    this.props.onConfirm();
+  };
+
   render() {
     const { data, loading } = this.state;
     const { formProps, operation } = this.props;
@@ -91,7 +148,13 @@ export default class FormData extends React.Component {
     return (
       <Spin spinning={loading}>
         {data && (
-          <PwForm data={data} {...formProps} mode={mode} {...otherProps} />
+          <PwForm
+            data={data}
+            {...formProps}
+            mode={mode}
+            {...otherProps}
+            onSave={this.handleSave}
+          />
         )}
       </Spin>
     );
