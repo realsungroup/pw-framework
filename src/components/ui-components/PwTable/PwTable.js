@@ -9,7 +9,7 @@ import 'react-resizable/css/styles.css';
 
 import { Table, Button, Input, Pagination, Spin } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
-
+import ButtonWithConfirm from '../ButtonWithConfirm';
 const Search = Input.Search;
 
 const btnSizeMap = {
@@ -371,13 +371,18 @@ class PwTable extends React.Component {
                     </Button>
                   )}
                   {hasDelete && (
-                    <Button
-                      size={btnSizeMap[size]}
-                      type="danger"
-                      onClick={this.handleDelete}
+                    <ButtonWithConfirm
+                      popConfirmProps={{
+                        onConfirm: this.handleDelete,
+                        title: '您确定要删除吗？'
+                      }}
+                      buttonProps={{
+                        size: btnSizeMap[size],
+                        type: 'danger'
+                      }}
                     >
                       删除
-                    </Button>
+                    </ButtonWithConfirm>
                   )}
                 </div>
                 <div className="pw-table__search">

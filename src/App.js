@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import TableData from './components/data-components/TableData';
+import FormData from './components/data-components/FormData';
+
 import PwForm from './components/ui-components/PwForm';
 import './App.css';
 
@@ -338,7 +340,7 @@ class App extends Component {
           添加控件
         </Button>
         <div>
-          {/* <TableData
+          <TableData
             title="调休登记"
             resid={596720928643}
             defaultPagination={{
@@ -354,10 +356,10 @@ class App extends Component {
             hasBeBtns
             opIsFiexed={false}
             fixedColumns={['人员工号', '员工姓名']}
-            hasAdd={false}
-            hasDelete={false}
-          /> */}
-          <PwForm
+            hasAdd={true}
+            hasDelete={true}
+          />
+          {/* <PwForm
             labelCol={4}
             wrapperCol={12}
             colCount={1}
@@ -366,7 +368,8 @@ class App extends Component {
             data={this.state.formData}
             onSave={this.handleSave}
             onCancel={this.handleCancel}
-          />
+          /> */}
+          {/* <FormData /> */}
         </div>
       </div>
     );

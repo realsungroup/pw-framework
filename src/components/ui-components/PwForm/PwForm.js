@@ -7,7 +7,7 @@ import FormItem from './FormItem';
 import schema from 'async-validator';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
-import PwFormFooter from './PwFormFooter';
+import PwFormFooter from './PwFormFooter/index';
 
 const Fragment = React.Fragment;
 

@@ -5,9 +5,10 @@ import http, { makeCancelable } from '../../../util/api';
 import { message, Modal } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
-import PwForm from '../../ui-components/PwForm';
+import FormData from '../FormData';
 import { Button } from '../../../../node_modules/antd/lib/radio';
 import dealControlArr from '../../../util/controls';
+import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
 const { Fragment } = React;
 
 const getResid = (dataMode, resid, subresid) => {
@@ -241,16 +242,11 @@ export default class TableData extends React.Component {
       beBtnsMultiple: [], // 后端操作多条记录的按钮
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
-      modalFormData: {
-        // 模态窗中的表单窗体数据
-        subTableArr: [], // 子表
-        allControlArr: [], // 所有控件（input + label）
-        canOpControlArr: [], // 可操作的控件（input）
-        containerControlArr: [] // 容器
-      },
+      modalFormData: undefined, // 模态窗中的表单窗体数据
       modalVisible: false, // 表单模态窗是否显示
-      modalFormMode: '', // 表单模态窗的显示模式：'add'（添加）| 'modify'（修改）| 'view'（查看）
-      rowSelection: null
+      modalFormMode: undefined, // 表单模态窗的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
+      rowSelection: null, // 行选择配置
+      selectedRecord: {} // 所选择的记录
     };
   }
 
@@ -263,6 +259,8 @@ export default class TableData extends React.Component {
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
     this.p4 && this.p4.cancel();
+    this.p5 && this.p5.cancel();
+    this.p6 && this.p6.cancel();
   };
 
   getData = () => {
@@ -502,16 +500,6 @@ export default class TableData extends React.Component {
     return columns;
   };
 
-  handleAdd = () => {
-    console.log('add');
-  };
-  handleModify = () => {
-    console.log('modify');
-  };
-  handleDelete = () => {
-    console.log('delete');
-  };
-
   // 搜索
   _searchValue = '';
   handleSearch = value => {
@@ -598,16 +586,66 @@ export default class TableData extends React.Component {
 
   // 点击添加按钮
   handleAdd = () => {
-    this.setState({ modalVisible: true, modalFormMode: 'add' });
+    this.setState({
+      modalVisible: true,
+      modalFormMode: 'add',
+      selectedRecord: {}
+    });
   };
 
   // 点击修改按钮
   handleModify = () => {
-    this.setState({ modalVisible: true, modalFormMode: 'modify' });
+    const { selectedRowKeys } = this.state.rowSelection;
+    if (selectedRowKeys.length !== 1) {
+      return message.error('请选择一条记录');
+    }
+    const { dataSource } = this.state;
+    const record = dataSource.find(
+      record => record.REC_ID === selectedRowKeys[0]
+    );
+
+    this.setState({
+      modalVisible: true,
+      modalFormMode: 'modify',
+      selectedRecord: record
+    });
   };
 
   // 点击删除按钮
-  handleDelete = () => {};
+  handleDelete = async () => {
+    const { selectedRowKeys } = this.state.rowSelection;
+    if (!selectedRowKeys.length) {
+      return message.error('请选择记录');
+    }
+    const { dataSource } = this.state;
+    const records = [];
+    dataSource.forEach(record => {
+      if (selectedRowKeys.indexOf(record.REC_ID) !== -1) {
+        records.push(record);
+      }
+    });
+    const { dataMode, resid, subresid } = this.props;
+    this.p5 = makeCancelable(
+      http().removeRecords({
+        resid: getResid(dataMode, resid, subresid),
+        data: records
+      })
+    );
+    try {
+      await this.p5.promise;
+    } catch (err) {
+      return message.error(err.message);
+    }
+    message.success('删除成功');
+
+    // 清除 selectedRowKeys
+    this.setState({
+      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+    });
+
+    // 刷新表格数据
+    this.handleRefresh();
+  };
 
   handleModalCancel = () => {
     this.setState({ modalVisible: false });
@@ -674,8 +712,47 @@ export default class TableData extends React.Component {
     return <Button size={btnSizeMap[this.props.size]}>查看</Button>;
   };
 
-  renderRowDeleteBtn = () => {
-    return <Button size={btnSizeMap[this.props.size]}>删除</Button>;
+  renderRowDeleteBtn = record => {
+    return (
+      <ButtonWithConfirm
+        popConfirmProps={{
+          title: '您确定要删除吗？',
+          onConfirm: () => this.handleRowDelete([record])
+        }}
+        buttonProps={{
+          type: 'danger'
+        }}
+      >
+        删除
+      </ButtonWithConfirm>
+    );
+  };
+
+  handleRowDelete = async records => {
+    const { dataMode, resid, subresid } = this.props;
+    console.log({ records });
+
+    this.p6 = makeCancelable(
+      http().removeRecords({
+        resid: getResid(dataMode, resid, subresid),
+        data: records
+      })
+    );
+
+    try {
+      await this.p6.promise;
+    } catch (err) {
+      return message.error(err.message);
+    }
+    message.success('删除成功');
+
+    // 清除 selectedRowKeys
+    this.setState({
+      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+    });
+
+    // 刷新表格数据
+    this.handleRefresh();
   };
 
   getActionBar = () => {
@@ -692,7 +769,7 @@ export default class TableData extends React.Component {
           <Fragment>
             {hasModify && this.renderRowModifyBtn()}
             {hasRowView && this.renderRowViewBtn()}
-            {hasRowDelete && this.renderRowDeleteBtn()}
+            {hasRowDelete && this.renderRowDeleteBtn(record)}
 
             {/* 后端按钮 */}
             {this.renderBeBtns(beBtnsSingle, record)}
@@ -717,7 +794,9 @@ export default class TableData extends React.Component {
       columns,
       modalVisible,
       modalFormMode,
-      rowSelection
+      rowSelection,
+      modalFormData,
+      selectedRecord
     } = this.state;
 
     const newColumns = this.getNewColumns(columns);
@@ -743,9 +822,6 @@ export default class TableData extends React.Component {
           onSearchChange={this.onSearchChange}
           onChange={this.handleTableChange}
           renderOtherBtns={this.renderBeBtns}
-          onAdd={this.handleAdd}
-          onModify={this.handleModify}
-          onDelete={this.handleDelete}
           rowSelection={rowSelection}
           onRow={this.handleOnRow}
           onRefresh={this.handleRefresh}
@@ -759,20 +835,10 @@ export default class TableData extends React.Component {
           onCancel={this.handleModalCancel}
           destroyOnClose
         >
-          <PwForm
-            data={[
-              {
-                id: '姓名',
-                initialValue: '肖磊',
-                rules: [{ required: true, message: '请输入姓名' }],
-                control: {
-                  name: 'Input',
-                  props: {
-                    type: 'text'
-                  }
-                }
-              }
-            ]}
+          <FormData
+            formData={modalFormData}
+            operation={modalFormMode}
+            record={selectedRecord}
           />
         </Modal>
       </Fragment>

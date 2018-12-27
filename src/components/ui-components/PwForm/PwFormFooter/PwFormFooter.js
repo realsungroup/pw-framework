@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import './PwFormFooter.less';
 const Fragment = React.Fragment;
 
 const PwFormFooter = React.memo(

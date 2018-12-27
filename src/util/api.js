@@ -35,7 +35,7 @@ http.setResponseInterceptors(
     if (res && (res.error == 0 || res.Error == 0 || res.OpResult === 'Y')) {
       return res;
     } else {
-      throw new Error(res.ErrMsg);
+      throw new Error(res.ErrMsg || res.message);
     }
   },
   function(error) {
