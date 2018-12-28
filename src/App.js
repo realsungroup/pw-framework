@@ -342,7 +342,7 @@ class App extends Component {
 
   render() {
     return (
-      <div style={{ margin: 20 }} style={{ width: 900 }}>
+      <div>
         <Button onClick={this.handleLoginClick} type="primary">
           登录
         </Button>
@@ -363,14 +363,12 @@ class App extends Component {
               showQuickJumper: true
             }}
             size="small"
-            columnsWidth={{
-              人员工号: 100
-            }}
-            hasBeBtns
+            hasBeBtns={false}
+            subtractH={180}
             opIsFiexed={false}
-            fixedColumns={['人员工号', '员工姓名']}
             hasAdd={true}
             hasDelete={true}
+            height={600}
             formProps={{ displayMode: 'default', height: 600, width: 800 }}
           />
           {/* <PwForm

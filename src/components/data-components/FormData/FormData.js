@@ -10,6 +10,7 @@ import { dealFormData } from '../../../util/controls';
 
 import getDataProp from './util';
 import { getResid } from '../../../util/util';
+import TableData from '../TableData';
 
 /**
  * FormData
@@ -81,7 +82,11 @@ export default class FormData extends React.Component {
     super(props);
     this.state = {
       data: null, // 表单控件数据
-      loading: true
+      loading: true,
+      advDicModalVisible: false,
+      tableDataProps: {
+        title: '请选择一条记录'
+      } // TableData 所接收的 props
     };
   }
 
@@ -90,13 +95,24 @@ export default class FormData extends React.Component {
     // getDataProp 会耗时，会阻止 Modal 的显示
     // 若表单数据比较多，Modal 的显示出来的速度就会变慢
     const { operation, record, formData, formProps } = this.props;
-    const data = getDataProp(operation, record, formData, formProps);
+    const data = getDataProp(
+      operation,
+      record,
+      formData,
+      formProps,
+      this.handleSearch
+    );
     this.setState({ data, loading: false });
   };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
+  };
+
+  // 显示高级字典表格
+  handleSearch = AdvDicTableProps => {
+    this.setState({ advDicModalVisible: true, AdvDicTableProps });
   };
 
   handleSave = form => {
@@ -149,8 +165,18 @@ export default class FormData extends React.Component {
     this.props.onConfirm();
   };
 
+  handleModalCancel = () => {
+    this.setState({ advDicModalVisible: false });
+  };
+
   render() {
-    const { data, loading } = this.state;
+    const {
+      data,
+      loading,
+      advDicModalVisible,
+      tableDataProps,
+      AdvDicTableProps
+    } = this.state;
     const { formProps, operation } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
@@ -173,6 +199,18 @@ export default class FormData extends React.Component {
             onCancel={this.props.onCancel}
           />
         )}
+        <Modal
+          title={'请选择一条记录'}
+          visible={advDicModalVisible}
+          footer={null}
+          onCancel={this.handleModalCancel}
+          width={800}
+          destroyOnClose
+        >
+          {advDicModalVisible && (
+            <TableData {...AdvDicTableProps} tableDataProps={tableDataProps} />
+          )}
+        </Modal>
       </Spin>
     );
   }

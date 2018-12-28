@@ -75,7 +75,7 @@ const getControlName = controlData => {
   }
 };
 
-const getProps = (controlData, name) => {
+const getProps = (controlData, name, handleSearch) => {
   const { FrmReadonly, ColIsReadOnly } = controlData;
   const props = {};
 
@@ -113,12 +113,84 @@ const getProps = (controlData, name) => {
 
   // 'Search' 添加搜索按钮
   if (name === 'Search') {
+    const advData = controlData.AdvDictionaryListData[0];
+
+    if (!advData) {
+      alert('advDictionatyData.AdvDictionaryListData 为空数组');
+      return;
+    }
+
+    const resid = advData.ResID2;
+    const cmscolumns = getCmscolumns(advData);
+    const cmswhere = getCmswhere(advData);
+
     props.enterButton = true;
+    props.disabled = true;
+    props.onSearch = () => {
+      handleSearch({
+        resid,
+        cmscolumns,
+        cmswhere,
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false
+      });
+    };
   }
 
   props.disabled = !!(FrmReadonly || ColIsReadOnly);
 
   return props;
+};
+
+// 获取 cmscolumns 查询语句
+const getCmscolumns = advData => {
+  let str = '';
+  const len = advData.MatchAndReferenceCols.length;
+
+  advData.MatchAndReferenceCols.forEach((item, index) => {
+    index === len - 1 ? (str += item.CDZ2_COL2) : (str += item.CDZ2_COL2 + ',');
+  });
+  return str;
+};
+
+// 获取由过滤字段组合成的 cmswhere 查询语句
+const getCmswhere = advData => {
+  const innerFieldNames = advData.DictionaryFilterCol.map(item => {
+    return { col1: item.Column1, col2: item.Column2 };
+  });
+  if (!retFilterFieldValues || innerFieldNames.length === 0) {
+    return;
+  }
+  const colValues = retFilterFieldValues(innerFieldNames);
+  let where = '';
+  colValues.forEach((colValue, index) => {
+    if (index === colValues.length - 1) {
+      colValue.col1Value &&
+        (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
+    } else {
+      colValue.col1Value &&
+        (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+    }
+  });
+  return where;
+};
+
+// 返回高级字典中过滤字段的值
+const retFilterFieldValues = innerFieldNames => {
+  const { getFieldValue } = this.props.form;
+  const colValues = [];
+  innerFieldNames.forEach(innerFieldName => {
+    colValues.push({
+      col1: innerFieldName.col1,
+      col1Value: getFieldValue(innerFieldName.col1),
+      col2: innerFieldName.col2
+    });
+  });
+  return colValues;
 };
 
 const getValue = (name, record, controlData, operation) => {
@@ -132,7 +204,7 @@ const getValue = (name, record, controlData, operation) => {
   return value;
 };
 
-const getData = (canOpControlArr, record, operation) => {
+const getData = (canOpControlArr, record, operation, handleSearch) => {
   const data = [];
   canOpControlArr.forEach(controlData => {
     const obj = {
@@ -144,7 +216,7 @@ const getData = (canOpControlArr, record, operation) => {
       name: getControlName(controlData)
     };
     obj.value = getValue(obj.name, record, controlData, operation);
-    obj.props = getProps(controlData, obj.name);
+    obj.props = getProps(controlData, obj.name, handleSearch);
     data.push(obj);
   });
   return data;
@@ -157,14 +229,14 @@ const getData = (canOpControlArr, record, operation) => {
  * @param {object} formData 窗体数据
  * @param {object} formProps PwForm 组件所接收的其他 props
  */
-const getDataProp = (operation, record, formData, formProps) => {
+const getDataProp = (operation, record, formData, formProps, handleSearch) => {
   let data = [];
   const { canOpControlArr } = formData;
   const { displayMode = 'default' } = formProps;
 
   // 默认布局
   if (displayMode === 'default') {
-    data = getData(canOpControlArr, record, operation);
+    data = getData(canOpControlArr, record, operation, handleSearch);
 
     // 分类布局
   } else if (displayMode === 'classify') {
@@ -174,7 +246,7 @@ const getDataProp = (operation, record, formData, formProps) => {
     klasses.forEach(klass => {
       const obj = {
         type: klass.title,
-        data: getData(klass.renderControlArr, record, operation)
+        data: getData(klass.renderControlArr, record, operation, handleSearch)
       };
       data.push(obj);
     });

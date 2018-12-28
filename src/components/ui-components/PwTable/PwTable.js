@@ -104,7 +104,7 @@ class PwTable extends React.Component {
     /**
      * 表格标题
      */
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
 
     /**
      * 表格宽度
@@ -319,6 +319,7 @@ class PwTable extends React.Component {
       width,
       height,
       loading,
+      onResizeStop,
       ...restProps
     } = this.props;
 
@@ -330,82 +331,76 @@ class PwTable extends React.Component {
     const resizeBoxProps = this.getResizeBoxProp();
 
     return (
-      <Spin spinning={loading}>
-        <ResizableBox {...resizeBoxProps}>
-          <div className="pw-table">
-            <div className="pw-table__header">
-              <div
-                className={`pw-table__header-title pw-table__header-title--${size}`}
-              >
-                {title}
-              </div>
-              {hasIconBtns && (
-                <IconBtns
-                  hasDownload={hasDownload}
-                  onDownload={this.handleDownload}
-                  hasRefresh={hasRefresh}
-                  onRefresh={this.handleRefresh}
-                  hasAdvSearch={hasAdvSearch}
-                  onAdvSearch={this.handleAdvSearch}
-                  size={size}
-                />
-              )}
+      <ResizableBox {...resizeBoxProps} onResizeStop={onResizeStop}>
+        <div className="pw-table">
+          <div className="pw-table__header">
+            <div
+              className={`pw-table__header-title pw-table__header-title--${size}`}
+            >
+              {title}
             </div>
-            {hasActionBar && (
-              <div
-                className={`pw-table__action-bar pw-table__action-bar--${size}`}
-              >
-                <div className="pw-table__action-btns">
-                  {renderOtherBtns && renderOtherBtns()}
-                  {hasAdd && (
-                    <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                      添加
-                    </Button>
-                  )}
-                  {hasModify && (
-                    <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                      修改
-                    </Button>
-                  )}
-                  {hasDelete && (
-                    <ButtonWithConfirm
-                      popConfirmProps={{
-                        onConfirm: this.handleDelete,
-                        title: '您确定要删除吗？'
-                      }}
-                      buttonProps={{
-                        size: btnSizeMap[size],
-                        type: 'danger'
-                      }}
-                    >
-                      删除
-                    </ButtonWithConfirm>
-                  )}
-                </div>
-                <div className="pw-table__search">
-                  {hasSearch && (
-                    <Search
-                      placeholder="请输入关键词"
-                      onChange={this.handleSearchChange}
-                      size={inputSizeMap[size]}
-                      style={{ width: 150 }}
-                      onSearch={this.handleSearch}
-                    />
-                  )}
-                </div>
-              </div>
+            {hasIconBtns && (
+              <IconBtns
+                hasDownload={hasDownload}
+                onDownload={this.handleDownload}
+                hasRefresh={hasRefresh}
+                onRefresh={this.handleRefresh}
+                hasAdvSearch={hasAdvSearch}
+                onAdvSearch={this.handleAdvSearch}
+                size={size}
+              />
             )}
-
-            <Table
-              {...restProps}
-              pagination={false}
-              size={tableSizeMap[size]}
-            />
-
-            {this.renderPagination()}
           </div>
-        </ResizableBox>
-      </Spin>
+          {hasActionBar && (
+            <div
+              className={`pw-table__action-bar pw-table__action-bar--${size}`}
+            >
+              <div className="pw-table__action-btns">
+                {renderOtherBtns && renderOtherBtns()}
+                {hasAdd && (
+                  <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
+                    添加
+                  </Button>
+                )}
+                {hasModify && (
+                  <Button size={btnSizeMap[size]} onClick={this.handleModify}>
+                    修改
+                  </Button>
+                )}
+                {hasDelete && (
+                  <ButtonWithConfirm
+                    popConfirmProps={{
+                      onConfirm: this.handleDelete,
+                      title: '您确定要删除吗？'
+                    }}
+                    buttonProps={{
+                      size: btnSizeMap[size],
+                      type: 'danger'
+                    }}
+                  >
+                    删除
+                  </ButtonWithConfirm>
+                )}
+              </div>
+              <div className="pw-table__search">
+                {hasSearch && (
+                  <Search
+                    placeholder="请输入关键词"
+                    onChange={this.handleSearchChange}
+                    size={inputSizeMap[size]}
+                    style={{ width: 150 }}
+                    onSearch={this.handleSearch}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          <Table {...restProps} pagination={false} size={tableSizeMap[size]} />
+
+          {this.renderPagination()}
+        </div>
+      </ResizableBox>
     );
   }
 }

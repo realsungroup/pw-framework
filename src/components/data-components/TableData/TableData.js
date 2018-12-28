@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PwTable from '../../ui-components/PwTable';
 import http, { makeCancelable } from '../../../util/api';
-import { message, Modal } from 'antd';
+import { message, Modal, Button, Spin } from 'antd';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import FormData from '../FormData';
-import { Button } from '../../../../node_modules/antd/lib/radio';
 import dealControlArr from '../../../util/controls';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
 import { getResid } from '../../../util/util';
+import { getColumns } from './util';
+import './TableData.less';
+
 const { Fragment } = React;
 
 const btnSizeMap = {
@@ -36,9 +38,20 @@ export default class TableData extends React.Component {
     size: PropTypes.oneOf(['large', 'middle', 'small']),
 
     /**
+     * 宽度
+     * 默认
+     */
+    width: PropTypes.number,
+
+    /**
+     * 高度
+     */
+    height: PropTypes.number,
+
+    /**
      * 表格标题
      */
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
 
     /**
      * 数据模式
@@ -208,7 +221,24 @@ export default class TableData extends React.Component {
     /**
      * PwForm 表单组件接收的 props
      */
-    formProps: PropTypes.object
+    formProps: PropTypes.object,
+
+    /**
+     * 高级字典表格的配置
+     * 默认：-
+     */
+    AdvDicTableProps: PropTypes.object,
+
+    /**
+     * 自定义行按钮
+     * 默认：-
+     */
+    customRowBtns: PropTypes.array,
+
+    /**
+     * 表格高度 - scroll.y 的值
+     */
+    subtractH: PropTypes.number
   };
 
   static defaultProps = {
@@ -248,12 +278,16 @@ export default class TableData extends React.Component {
       modalVisible: false, // 表单模态窗是否显示
       modalFormMode: undefined, // 表单模态窗的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
       rowSelection: null, // 行选择配置
-      selectedRecord: {} // 所选择的记录
+      selectedRecord: {}, // 所选择的记录
+      scrollXY: { x: 0, y: 0 }
     };
   }
 
-  componentDidMount = () => {
-    this.getData();
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    await this.getData();
+    await this.getScrollXY();
+    this.setState({ loading: false });
   };
 
   componentWillUnmount = () => {
@@ -265,7 +299,7 @@ export default class TableData extends React.Component {
     this.p6 && this.p6.cancel();
   };
 
-  getData = () => {
+  getData = async () => {
     const {
       hasBeBtns,
       hasAdd,
@@ -279,17 +313,56 @@ export default class TableData extends React.Component {
       page = pagination.current;
       pageSize = pagination.pageSize;
     }
-    this.getTableData({ page, pageSize });
+    await this.getTableData({ page, pageSize });
 
     // 有后端定义按钮
     if (hasBeBtns) {
-      this.getBeBtns();
+      await this.getBeBtns();
     }
 
     // 有打开模态窗表单的按钮
     if (hasAdd || hasModify || hasRowModify || hasRowView) {
-      this.getFormData();
+      await this.getFormData();
     }
+  };
+
+  getScrollXY = async y => {
+    const {
+      defaultColumnWidth,
+      columnsWidth,
+      actionBarWidth,
+      height,
+      subtractH
+    } = this.props;
+    const { columns, rowSelection } = this.state;
+    const count = columns.length;
+    let customWidth = 0,
+      customCount = 0;
+    if (columnsWidth) {
+      const arr = Object.keys(columnsWidth);
+      customCount = arr.length;
+      arr.forEach(key => {
+        customWidth += columnsWidth[key];
+      });
+    }
+
+    let x = (count - customCount) * defaultColumnWidth + customWidth;
+
+    // 操作栏
+    if (this.hasActionBar()) {
+      x += actionBarWidth;
+    }
+
+    // rowSelection
+    if (rowSelection) {
+      x += 50;
+    }
+    const newY = y || height - subtractH;
+    const scrollXY = { x, y: newY };
+    console.log({ scrollXY });
+
+    this.setState({ scrollXY });
+    // return { x, y: newY };
   };
 
   getTableData = async ({
@@ -329,7 +402,18 @@ export default class TableData extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    const columns = this.getColumns(res.cmscolumninfo);
+    const {
+      hasBeSort,
+      defaultColumnWidth,
+      columnsWidth,
+      fixedColumns
+    } = this.props;
+    const columns = getColumns(res.cmscolumninfo, {
+      hasBeSort,
+      defaultColumnWidth,
+      columnsWidth,
+      fixedColumns
+    });
     const dataSource = res.data;
     this.setState({
       columns,
@@ -354,7 +438,18 @@ export default class TableData extends React.Component {
 
   getPagination = defaultPagination => {
     if (defaultPagination) {
-      return { ...defaultPagination, onChange: this.handlePageChange };
+      return {
+        ...defaultPagination,
+        onChange: this.handlePageChange,
+        onShowSizeChange: this.handleShowSizeChange
+      };
+    } else {
+      return {
+        current: 1,
+        pageSize: 10,
+        onChange: this.handlePageChange,
+        onShowSizeChange: this.handleShowSizeChange
+      };
     }
   };
 
@@ -437,6 +532,17 @@ export default class TableData extends React.Component {
     this.getTableData({ page, pageSize });
   };
 
+  handleShowSizeChange = (current, pageSize) => {
+    const pagination = this.getPagination({
+      ...this.state.pagination,
+      current,
+      pageSize
+    });
+    this.setState({ pagination }, () => {
+      this.handleRefresh();
+    });
+  };
+
   // 是否有操作栏
   hasActionBar = () => {
     const { beBtnsSingle } = this.state;
@@ -444,62 +550,22 @@ export default class TableData extends React.Component {
       hasRowDelete,
       hasRowModify,
       hasRowView,
-      renderRowBtns
+      renderRowBtns,
+      customRowBtns
     } = this.props;
     return !!(
       hasRowDelete ||
       hasRowModify ||
       hasRowView ||
       beBtnsSingle.length ||
-      renderRowBtns
+      renderRowBtns ||
+      customRowBtns
     );
   };
 
   hasRowSelection = beBtnsMultiple => {
     const { hasModify, hasDelete } = this.props;
     return !!beBtnsMultiple.length || hasModify || hasDelete;
-  };
-
-  getColumns = columnsInfo => {
-    const {
-      hasBeSort,
-      defaultColumnWidth,
-      columnsWidth,
-      fixedColumns
-    } = this.props;
-    const columns = [];
-    columnsInfo.forEach(item => {
-      const column = {
-        width: defaultColumnWidth,
-        title: item.text,
-        dataIndex: item.id,
-        key: item.id,
-        align: 'center'
-      };
-
-      // 自定义列宽度
-      let width = columnsWidth && columnsWidth[item.text];
-      if (width) {
-        column.width = width;
-      }
-
-      // 开启了后端排序功能
-      if (hasBeSort) {
-        column.sorter = true;
-      }
-
-      // 固定了列
-      if (
-        Array.isArray(fixedColumns) &&
-        fixedColumns.indexOf(item.text) !== -1
-      ) {
-        column.fixed = 'left';
-      }
-
-      columns.push(column);
-    });
-
-    return columns;
   };
 
   // 搜索
@@ -540,38 +606,12 @@ export default class TableData extends React.Component {
     }
   };
 
-  getScroll = () => {
-    const { defaultColumnWidth, columnsWidth, actionBarWidth } = this.props;
-    const { columns, rowSelection } = this.state;
-    const count = columns.length;
-    let customWidth = 0,
-      customCount = 0;
-    if (columnsWidth) {
-      const arr = Object.keys(columnsWidth);
-      customCount = arr.length;
-      arr.forEach(key => {
-        customWidth += columnsWidth[key];
-      });
-    }
-
-    let x = (count - customCount) * defaultColumnWidth + customWidth;
-
-    // 操作栏
-    if (this.hasActionBar()) {
-      x += actionBarWidth;
-    }
-
-    // rowSelection
-    if (rowSelection) {
-      x += 50;
-    }
-    return { x };
-  };
+  getScroll = () => {};
 
   // 渲染后端按钮
   renderBeBtns = () => {
     const { selectedRows, beBtnsMultiple, beBtnsOther } = this.state;
-    const { dataMode, resid, subresid } = this.props;
+    const { dataMode, resid, subresid, size } = this.props;
     const id = getResid(dataMode, resid, subresid);
     const arr = [...beBtnsMultiple, ...beBtnsOther];
 
@@ -582,6 +622,7 @@ export default class TableData extends React.Component {
         resid={id}
         onConfirm={this.beBtnConfirm}
         records={selectedRows}
+        size={size}
       />
     ));
   };
@@ -662,10 +703,20 @@ export default class TableData extends React.Component {
     };
   };
 
-  handleRefresh = () => {
-    this.getTableData({
+  handleRefresh = async () => {
+    this.setState({ loading: true });
+    await this.getTableData({
       page: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize
+    });
+    this.setState({ loading: false });
+  };
+
+  handleResizeStop = (e, data) => {
+    const { subtractH } = this.props;
+    const { height } = data.size;
+    this.setState({
+      scrollXY: { x: this.state.scrollXY.x, y: height - subtractH }
     });
   };
 
@@ -713,6 +764,7 @@ export default class TableData extends React.Component {
       <Button
         size={btnSizeMap[this.props.size]}
         onClick={() => this.handleModify(record)}
+        className="table-data__action-btn"
       >
         修改
       </Button>
@@ -724,6 +776,7 @@ export default class TableData extends React.Component {
       <Button
         size={btnSizeMap[this.props.size]}
         onClick={() => this.handleView(record)}
+        className="table-data__action-btn"
       >
         查看
       </Button>
@@ -746,12 +799,18 @@ export default class TableData extends React.Component {
           onConfirm: () => this.handleRowDelete([record])
         }}
         buttonProps={{
-          type: 'danger'
+          type: 'danger',
+          size: btnSizeMap[this.props.size],
+          className: 'table-data__action-btn'
         }}
       >
         删除
       </ButtonWithConfirm>
     );
+  };
+
+  renderCustomRowBtns = record => {
+    return;
   };
 
   handleRowDelete = async records => {
@@ -805,7 +864,12 @@ export default class TableData extends React.Component {
       width: this.props.actionBarWidth,
       render: (text, record, rowIndex) => {
         const { beBtnsSingle } = this.state;
-        const { hasModify, hasRowView, hasRowDelete } = this.props;
+        const {
+          hasModify,
+          hasRowView,
+          hasRowDelete,
+          customRowBtns
+        } = this.props;
         return (
           <Fragment>
             {hasModify && this.renderRowModifyBtn(record)}
@@ -814,6 +878,8 @@ export default class TableData extends React.Component {
 
             {/* 后端按钮 */}
             {this.renderBeBtns(beBtnsSingle, record)}
+            {/* 自定义按钮 */}
+            {customRowBtns && this.renderCustomRowBtns(customRowBtns, record)}
           </Fragment>
         );
       }
@@ -837,7 +903,10 @@ export default class TableData extends React.Component {
       hasDelete,
       formProps,
       size,
-      hostrecid
+      hostrecid,
+      AdvDicTableProps,
+      width,
+      height
     } = this.props;
     const {
       loading,
@@ -848,46 +917,51 @@ export default class TableData extends React.Component {
       modalFormMode,
       rowSelection,
       modalFormData,
-      selectedRecord
+      selectedRecord,
+      scrollXY
     } = this.state;
 
     const newColumns = this.getNewColumns(columns);
 
     return (
       <Fragment>
-        <PwTable
-          title={title}
-          loading={loading}
-          pagination={pagination}
-          dataSource={dataSource}
-          columns={newColumns}
-          bordered
-          rowKey={'REC_ID'}
-          scroll={this.getScroll()}
-          hasAdd={hasAdd}
-          hasModify={hasModify}
-          hasDelete={hasDelete}
-          onAdd={this.handleAdd}
-          onModify={this.handleModify}
-          onDelete={this.handleDelete}
-          onSearch={this.handleSearch}
-          onSearchChange={this.onSearchChange}
-          onChange={this.handleTableChange}
-          renderOtherBtns={this.renderBeBtns}
-          rowSelection={rowSelection}
-          onRow={this.handleOnRow}
-          onRefresh={this.handleRefresh}
-          width={1300}
-          height={850}
-          size={size}
-        />
+        <Spin spinning={loading}>
+          <PwTable
+            title={title}
+            loading={loading}
+            pagination={pagination}
+            dataSource={dataSource}
+            columns={newColumns}
+            bordered
+            rowKey={'REC_ID'}
+            scroll={scrollXY}
+            hasAdd={hasAdd}
+            hasModify={hasModify}
+            hasDelete={hasDelete}
+            onAdd={this.handleAdd}
+            onModify={this.handleModify}
+            onDelete={this.handleDelete}
+            onSearch={this.handleSearch}
+            onSearchChange={this.onSearchChange}
+            onChange={this.handleTableChange}
+            renderOtherBtns={this.renderBeBtns}
+            rowSelection={rowSelection}
+            onRow={this.handleOnRow}
+            onRefresh={this.handleRefresh}
+            onResizeStop={this.handleResizeStop}
+            size={size}
+            width={width}
+            height={height}
+          />
+        </Spin>
+
         <Modal
           title={modalTitleMap[modalFormMode]}
           visible={modalVisible}
           footer={null}
           onCancel={this.handleModalCancel}
           destroyOnClose
-          width={formProps.width ? formProps.width + 50 : 800}
+          width={formProps && formProps.width ? formProps.width + 50 : 800}
         >
           <FormData
             formData={modalFormData}
@@ -897,6 +971,7 @@ export default class TableData extends React.Component {
             info={{ dataMode, resid, subresid, hostrecid }}
             onConfirm={this.handleConfirm}
             onCancel={this.handleCancel}
+            AdvDicTableProps={AdvDicTableProps}
           />
         </Modal>
       </Fragment>
