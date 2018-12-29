@@ -88,8 +88,6 @@ class DateTimePicker extends React.Component {
       datePickerProps,
       timePickerProps
     } = this.props;
-    console.log('DateTimePicker rendered.');
-
     return (
       <div className="date-time-picker">
         <DatePicker

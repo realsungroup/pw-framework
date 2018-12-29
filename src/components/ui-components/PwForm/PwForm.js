@@ -215,9 +215,11 @@ class PwForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.data, this.props.data)) {
-      const values = getValues(nextProps.data);
-      descriptor = getDescriptor(nextProps.data);
-      this.setState({ values });
+      const values = getValues(nextProps.data, this.props.displayMode);
+      descriptor = getDescriptor(nextProps.data, this.props.displayMode);
+      this.setState({ values }, () => {
+        this.form.validateFields();
+      });
     }
   }
 
@@ -317,7 +319,12 @@ class PwForm extends React.Component {
     });
   };
 
-  handleFormItemBlur = (id, value) => {};
+  handleFormItemBlur = (id, value) => {
+    const values = { ...this.state.values, ...{ [id]: value } };
+    this.setState({ values }, () => {
+      this.form.validateFields();
+    });
+  };
 
   render() {
     const {

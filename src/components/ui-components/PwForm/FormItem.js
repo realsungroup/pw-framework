@@ -41,8 +41,7 @@ class FormItem extends React.Component {
         return <div key={formItemData.id}>{value}</div>;
       }
     }
-    console.log('name:', name);
-    
+
     switch (name) {
       case 'Input': {
         return (

@@ -129,22 +129,25 @@ const getProps = (controlData, name, handleSearch) => {
     props.enterButton = true;
     props.disabled = true;
     props.onSearch = () => {
-      handleSearch({
-        resid,
-        cmscolumns,
-        cmswhere,
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        hasDownload: false,
-        hasRefresh: false,
-        hasAdvSearch: false,
-        subtractH: 165,
-        height: 400
-      });
+      handleSearch(
+        {
+          resid,
+          cmscolumns,
+          cmswhere,
+          hasAdd: false,
+          hasModify: false,
+          hasDelete: false,
+          hasRowModify: false,
+          hasRowView: false,
+          hasRowDelete: false,
+          hasDownload: false,
+          hasRefresh: false,
+          hasAdvSearch: false,
+          subtractH: 165,
+          height: 400
+        },
+        controlData
+      );
     };
   }
 

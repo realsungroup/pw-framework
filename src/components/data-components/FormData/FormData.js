@@ -11,6 +11,10 @@ import { dealFormData } from '../../../util/controls';
 import getDataProp from './util';
 import { getResid } from '../../../util/util';
 import TableData from '../TableData';
+import cloneDeep from 'lodash.clonedeep';
+
+// 临时存放高级字典控件数据 controlData
+let tempControlData = null;
 
 /**
  * FormData
@@ -108,24 +112,69 @@ export default class FormData extends React.Component {
     this.p2 && this.p2.cancel();
   };
 
-  // 自定义高级字典中表格的选择按钮
-  customRowBtns = [this.renderCustomBtn];
-
-  // 渲染表格中的选择按钮
+  // 渲染高级字典中表格的选择按钮
   renderSelectBtn = (record, size) => {
     return (
-      <Button size={size} onClick={() => this.handleSelect(record)}>
+      <Button
+        key={record.REC_ID}
+        size={size}
+        onClick={() => this.handleSelect(record)}
+      >
         选择
       </Button>
     );
   };
 
+  // 自定义高级字典中表格的选择按钮
+  customRowBtns = [this.renderSelectBtn];
+
+  // 点击高级字典表中的行选择按钮
   handleSelect = record => {
-    console.log({ record });
+    message.success('选择成功');
+
+    const advData = tempControlData.AdvDictionaryListData[0];
+
+    // 匹配字段
+    const matchFileds = advData.MatchAndReferenceCols.filter(item => {
+      return item.CDZ2_TYPE === 0;
+    });
+    let values = [];
+    matchFileds.forEach(item => {
+      values.push({
+        value: record[item.CDZ2_COL2],
+        innerFieldName: item.CDZ2_COL1
+      });
+    });
+
+    const { canOpControlArr } = this.props.formData;
+
+    values = values.filter(item =>
+      canOpControlArr.some(
+        controlData => controlData.innerFieldName === item.innerFieldName
+      )
+    );
+
+    const newData = cloneDeep(this.state.data);
+    newData.forEach(item => {
+      let obj;
+      if (
+        (obj = values.find(valueItem => valueItem.innerFieldName === item.id))
+      ) {
+        item.value = obj.value;
+      }
+    });
+    console.log({ values });
+
+    console.log({ newData });
+
+    // getAdvDictionaryVal(values, advDictionatyData);
+
+    this.setState({ data: newData, loading: false, advDicModalVisible: false });
   };
 
   // 显示高级字典表格
-  handleSearch = props => {
+  handleSearch = (props, controlData) => {
+    tempControlData = controlData;
     this.setState({
       advDicModalVisible: true,
       AdvDicTableProps: { ...props, ...this.props.AdvDicTableProps }
@@ -191,7 +240,6 @@ export default class FormData extends React.Component {
     const { formProps, operation } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
-
     // 当为查看时，不显示 编辑、保存和取消按钮
     if (mode === 'view') {
       otherProps.hasEdit = false;
@@ -218,7 +266,12 @@ export default class FormData extends React.Component {
           width={AdvDicTableProps.width ? AdvDicTableProps.width + 50 : 850}
           destroyOnClose
         >
-          {advDicModalVisible && <TableData {...AdvDicTableProps} />}
+          {advDicModalVisible && (
+            <TableData
+              {...AdvDicTableProps}
+              customRowBtns={this.customRowBtns}
+            />
+          )}
         </Modal>
       </Spin>
     );

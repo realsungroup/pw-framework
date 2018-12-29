@@ -557,7 +557,7 @@ export default class TableData extends React.Component {
       hasRowView ||
       beBtnsSingle.length ||
       renderRowBtns ||
-      customRowBtns
+      !!customRowBtns
     );
   };
 
