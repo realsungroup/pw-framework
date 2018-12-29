@@ -218,6 +218,7 @@ class PwForm extends React.Component {
       const values = getValues(nextProps.data, this.props.displayMode);
       descriptor = getDescriptor(nextProps.data, this.props.displayMode);
       this.setState({ values }, () => {
+        // 对新的 values 进行 validate
         this.form.validateFields();
       });
     }
@@ -260,8 +261,6 @@ class PwForm extends React.Component {
   };
 
   renderFormItems = (data, colCount) => {
-    console.log({ data, colCount });
-
     return (
       <Fragment>
         {colCount === 1 ? (

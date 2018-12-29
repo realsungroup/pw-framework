@@ -93,4 +93,16 @@ http.createApi('getFormData', {
   url: 'api/100/table/RetrieveFormDefine'
 });
 
+/**
+ * 导出表格数据
+ * 参数：{ resid, cmswhere, filetype = 'xls' }
+ * 1. resid：表资源 id
+ * 2. cmswhere：查询条件
+ * 3. filetype：导出文件格式（'xls'）
+ */
+http.createApi('exportTableData', {
+  method: 'get',
+  url: 'api/100/table/ExportTableData'
+});
+
 export default http;
