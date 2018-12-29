@@ -9,7 +9,7 @@ import FormData from '../FormData';
 import dealControlArr from '../../../util/controls';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
 import { getResid } from '../../../util/util';
-import { getColumns } from './util';
+import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
 
 const { Fragment } = React;
@@ -237,6 +237,7 @@ export default class TableData extends React.Component {
 
     /**
      * 表格高度 - scroll.y 的值
+     * 默认：0
      */
     subtractH: PropTypes.number
   };
@@ -255,16 +256,26 @@ export default class TableData extends React.Component {
     hasBeBtns: false,
     actionBarWidth: 300,
     actionBarFixed: true,
-    modalFormName: 'default'
+    modalFormName: 'default',
+    subtractH: 0
   };
 
   constructor(props) {
     super(props);
 
-    const { defaultPagination } = props;
+    const { defaultPagination, hasModify, hasDelete } = props;
 
-    const pagination = this.getPagination(defaultPagination);
+    const pagination = getPagination(
+      defaultPagination,
+      this.handlePageChange,
+      this.handleShowSizeChange
+    );
 
+    const rowSelection = getRowSelection(
+      hasModify,
+      hasDelete,
+      this.rowSelectionChange
+    );
     this.state = {
       loading: false,
       key: '', // 模糊查询关键词
@@ -277,9 +288,9 @@ export default class TableData extends React.Component {
       modalFormData: undefined, // 模态窗中的表单窗体数据
       modalVisible: false, // 表单模态窗是否显示
       modalFormMode: undefined, // 表单模态窗的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
-      rowSelection: null, // 行选择配置
+      rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
-      scrollXY: { x: 0, y: 0 }
+      scrollXY: { x: 1000, y: 1000 }
     };
   }
 
@@ -436,23 +447,6 @@ export default class TableData extends React.Component {
     return await this.p1.promise;
   };
 
-  getPagination = defaultPagination => {
-    if (defaultPagination) {
-      return {
-        ...defaultPagination,
-        onChange: this.handlePageChange,
-        onShowSizeChange: this.handleShowSizeChange
-      };
-    } else {
-      return {
-        current: 1,
-        pageSize: 10,
-        onChange: this.handlePageChange,
-        onShowSizeChange: this.handleShowSizeChange
-      };
-    }
-  };
-
   getFormData = async () => {
     const { dataMode, resid, subresid, modalFormName } = this.props;
     const id = getResid(dataMode, resid, subresid);
@@ -533,11 +527,15 @@ export default class TableData extends React.Component {
   };
 
   handleShowSizeChange = (current, pageSize) => {
-    const pagination = this.getPagination({
-      ...this.state.pagination,
-      current,
-      pageSize
-    });
+    const pagination = getPagination(
+      {
+        ...this.state.pagination,
+        current,
+        pageSize
+      },
+      this.handlePageChange,
+      this.handleShowSizeChange
+    );
     this.setState({ pagination }, () => {
       this.handleRefresh();
     });
@@ -809,8 +807,13 @@ export default class TableData extends React.Component {
     );
   };
 
-  renderCustomRowBtns = record => {
-    return;
+  renderCustomRowBtns = (customRowBtns, record) => {
+    return customRowBtns.map(customBtn => {
+      // customBtn 为 function 时
+      if (typeof customBtn === 'function') {
+        return customBtn(record, btnSizeMap[this.props.size]);
+      }
+    });
   };
 
   handleRowDelete = async records => {
@@ -906,7 +909,10 @@ export default class TableData extends React.Component {
       hostrecid,
       AdvDicTableProps,
       width,
-      height
+      height,
+      hasDownload,
+      hasRefresh,
+      hasAdvSearch
     } = this.props;
     const {
       loading,
@@ -924,7 +930,7 @@ export default class TableData extends React.Component {
     const newColumns = this.getNewColumns(columns);
 
     return (
-      <Fragment>
+      <div className="table-data">
         <Spin spinning={loading}>
           <PwTable
             title={title}
@@ -952,6 +958,9 @@ export default class TableData extends React.Component {
             size={size}
             width={width}
             height={height}
+            hasDownload={hasDownload}
+            hasRefresh={hasRefresh}
+            hasAdvSearch={hasAdvSearch}
           />
         </Spin>
 
@@ -974,7 +983,7 @@ export default class TableData extends React.Component {
             AdvDicTableProps={AdvDicTableProps}
           />
         </Modal>
-      </Fragment>
+      </div>
     );
   }
 }

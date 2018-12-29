@@ -33,3 +33,43 @@ export const getColumns = (
 
   return columns;
 };
+
+// 获取行选择配置
+export const getRowSelection = (hasModify, hasDelete, rowSelectionChange) => {
+  if (hasModify || hasDelete) {
+    return {
+      selectedRowKeys: [],
+      onChange: rowSelectionChange,
+      columnWidth: 50,
+      fixed: true
+    };
+  }
+  return null;
+};
+
+/**
+ * 获取分页配置信息
+ * @param {object} defaultPagination 默认分页配置：{ current: 1, pageSize: 10 }
+ * @param {function} onChange 页码变化时的回调函数
+ * @param {function} onShowSizeChange 每页数量发生改变时的回调函数
+ */
+export const getPagination = (
+  defaultPagination,
+  onChange,
+  onShowSizeChange
+) => {
+  if (defaultPagination) {
+    return {
+      ...defaultPagination,
+      onChange,
+      onShowSizeChange
+    };
+  } else {
+    return {
+      current: 1,
+      pageSize: 10,
+      onChange,
+      onShowSizeChange
+    };
+  }
+};

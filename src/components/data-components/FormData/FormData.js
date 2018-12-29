@@ -84,9 +84,7 @@ export default class FormData extends React.Component {
       data: null, // 表单控件数据
       loading: true,
       advDicModalVisible: false,
-      tableDataProps: {
-        title: '请选择一条记录'
-      } // TableData 所接收的 props
+      AdvDicTableProps: {} // 高级字典表格 props
     };
   }
 
@@ -110,9 +108,28 @@ export default class FormData extends React.Component {
     this.p2 && this.p2.cancel();
   };
 
+  // 自定义高级字典中表格的选择按钮
+  customRowBtns = [this.renderCustomBtn];
+
+  // 渲染表格中的选择按钮
+  renderSelectBtn = (record, size) => {
+    return (
+      <Button size={size} onClick={() => this.handleSelect(record)}>
+        选择
+      </Button>
+    );
+  };
+
+  handleSelect = record => {
+    console.log({ record });
+  };
+
   // 显示高级字典表格
-  handleSearch = AdvDicTableProps => {
-    this.setState({ advDicModalVisible: true, AdvDicTableProps });
+  handleSearch = props => {
+    this.setState({
+      advDicModalVisible: true,
+      AdvDicTableProps: { ...props, ...this.props.AdvDicTableProps }
+    });
   };
 
   handleSave = form => {
@@ -170,13 +187,7 @@ export default class FormData extends React.Component {
   };
 
   render() {
-    const {
-      data,
-      loading,
-      advDicModalVisible,
-      tableDataProps,
-      AdvDicTableProps
-    } = this.state;
+    const { data, loading, advDicModalVisible, AdvDicTableProps } = this.state;
     const { formProps, operation } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
@@ -204,12 +215,10 @@ export default class FormData extends React.Component {
           visible={advDicModalVisible}
           footer={null}
           onCancel={this.handleModalCancel}
-          width={800}
+          width={AdvDicTableProps.width ? AdvDicTableProps.width + 50 : 850}
           destroyOnClose
         >
-          {advDicModalVisible && (
-            <TableData {...AdvDicTableProps} tableDataProps={tableDataProps} />
-          )}
+          {advDicModalVisible && <TableData {...AdvDicTableProps} />}
         </Modal>
       </Spin>
     );

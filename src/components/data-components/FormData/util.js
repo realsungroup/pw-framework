@@ -1,5 +1,7 @@
 import { getRules, ControlCode } from '../../../util/controls';
 import moment from 'moment';
+import React from 'react';
+import { Button } from 'antd';
 
 const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {
@@ -136,7 +138,12 @@ const getProps = (controlData, name, handleSearch) => {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        hasDownload: false,
+        hasRefresh: false,
+        hasAdvSearch: false,
+        subtractH: 165,
+        height: 400
       });
     };
   }

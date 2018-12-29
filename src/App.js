@@ -9,7 +9,6 @@ import './App.css';
 import { Button, message } from 'antd';
 import http from './util/api';
 import { setItem } from './util/util';
-import 'lz-request/lib/login';
 import moment from 'moment';
 
 const dataSource = [

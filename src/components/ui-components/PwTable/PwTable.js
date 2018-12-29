@@ -328,29 +328,34 @@ class PwTable extends React.Component {
 
     const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
 
+    const hasHeader = hasIconBtns && title;
+
     const resizeBoxProps = this.getResizeBoxProp();
 
     return (
       <ResizableBox {...resizeBoxProps} onResizeStop={onResizeStop}>
         <div className="pw-table">
-          <div className="pw-table__header">
-            <div
-              className={`pw-table__header-title pw-table__header-title--${size}`}
-            >
-              {title}
+          {hasHeader && (
+            <div className="pw-table__header">
+              <div
+                className={`pw-table__header-title pw-table__header-title--${size}`}
+              >
+                {title}
+              </div>
+              {hasIconBtns && (
+                <IconBtns
+                  hasDownload={hasDownload}
+                  onDownload={this.handleDownload}
+                  hasRefresh={hasRefresh}
+                  onRefresh={this.handleRefresh}
+                  hasAdvSearch={hasAdvSearch}
+                  onAdvSearch={this.handleAdvSearch}
+                  size={size}
+                />
+              )}
             </div>
-            {hasIconBtns && (
-              <IconBtns
-                hasDownload={hasDownload}
-                onDownload={this.handleDownload}
-                hasRefresh={hasRefresh}
-                onRefresh={this.handleRefresh}
-                hasAdvSearch={hasAdvSearch}
-                onAdvSearch={this.handleAdvSearch}
-                size={size}
-              />
-            )}
-          </div>
+          )}
+
           {hasActionBar && (
             <div
               className={`pw-table__action-bar pw-table__action-bar--${size}`}
