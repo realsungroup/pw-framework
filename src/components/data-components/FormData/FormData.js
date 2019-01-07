@@ -12,6 +12,8 @@ import getDataProp from './util';
 import { getResid } from '../../../util/util';
 import TableData from '../TableData';
 import cloneDeep from 'lodash.clonedeep';
+import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
+import { compose } from 'recompose';
 
 // 临时存放高级字典控件数据 controlData
 let tempControlData = null;
@@ -19,7 +21,7 @@ let tempControlData = null;
 /**
  * FormData
  */
-export default class FormData extends React.Component {
+class FormData extends React.Component {
   static propTypes = {
     /**
      * 窗体数据
@@ -186,7 +188,7 @@ export default class FormData extends React.Component {
     const { dataMode, resid, subresid } = info;
     const id = getResid(dataMode, resid, subresid);
 
-    form.validateFields((err, values) => {
+    form.validateFields(async (err, values) => {
       if (err) {
         return message.error('表单数据有误');
       }
@@ -194,41 +196,22 @@ export default class FormData extends React.Component {
       formData.REC_ID = record.REC_ID;
       // 添加
       if (this.props.operation === 'add') {
-        this.handleAdd(id, formData);
+        try {
+          await this.props.onAdd(id, [formData]);
+        } catch (err) {
+          return message.error(err.message);
+        }
+
         // 修改
       } else {
-        this.handleModify(id, formData);
+        try {
+          await this.props.onModify(id, [formData]);
+        } catch (err) {
+          return message.error(err.message);
+        }
       }
+      this.props.onConfirm();
     });
-  };
-
-  handleAdd = async (id, formData) => {
-    this.p2 = makeCancelable(
-      http().addRecords({
-        resid: id,
-        data: [formData]
-      })
-    );
-    try {
-      await this.p2.promise;
-    } catch (err) {
-      return message.error(err.message);
-    }
-    this.props.onConfirm();
-  };
-  handleModify = async (id, formData) => {
-    this.p1 = makeCancelable(
-      http().modifyRecords({
-        resid: id,
-        data: [formData]
-      })
-    );
-    try {
-      await this.p1.promise;
-    } catch (err) {
-      return message.error(err.message);
-    }
-    this.props.onConfirm();
   };
 
   handleModalCancel = () => {
@@ -277,3 +260,12 @@ export default class FormData extends React.Component {
     );
   }
 }
+
+const composedHoc = compose(
+  withHttpAddRecords,
+  withHttpModifyRecords
+);
+export default composedHoc(FormData);
+
+// 等价于：
+// withHttp.addRecords(withHttp.modifyRecords(FormData));

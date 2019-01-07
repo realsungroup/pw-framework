@@ -362,7 +362,7 @@ class App extends Component {
               showQuickJumper: true
             }}
             size="small"
-            hasBeBtns={false}
+            hasBeBtns={true}
             subtractH={180}
             opIsFiexed={false}
             hasAdd={true}
