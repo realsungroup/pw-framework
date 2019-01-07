@@ -17,6 +17,7 @@ import {
   withHttpRemoveRecords
 } from '../../hoc/withHttp';
 import { compose } from 'recompose';
+import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
 
 const { Fragment } = React;
 
@@ -245,7 +246,13 @@ class TableData extends React.Component {
      * 表格高度 - scroll.y 的值
      * 默认：0
      */
-    subtractH: PropTypes.number
+    subtractH: PropTypes.number,
+
+    /**
+     * 高级搜索使用的窗体名称
+     * 默认：'default'
+     */
+    advSearchFormName: PropTypes.string
   };
 
   static defaultProps = {
@@ -263,7 +270,8 @@ class TableData extends React.Component {
     actionBarWidth: 300,
     actionBarFixed: true,
     modalFormName: 'default',
-    subtractH: 0
+    subtractH: 0,
+    advSearchFormName: 'default'
   };
 
   constructor(props) {
@@ -735,6 +743,18 @@ class TableData extends React.Component {
     });
   };
 
+  handleAdvSearch = () => {
+    const {
+      advSearchFormName,
+      onAdvSearchClick,
+      dataMode,
+      resid,
+      subresid
+    } = this.props;
+    const id = getResid(dataMode, resid, subresid);
+    onAdvSearchClick(id, advSearchFormName);
+  };
+
   beBtnConfirm = (type, records, formData, defaultRecord) => {
     // if (type === 1 || type === 5) {
     //   this.refreshTableData();
@@ -920,8 +940,7 @@ class TableData extends React.Component {
       width,
       height,
       hasDownload,
-      hasRefresh,
-      hasAdvSearch
+      hasRefresh
     } = this.props;
     const {
       loading,
@@ -970,7 +989,7 @@ class TableData extends React.Component {
             height={height}
             hasDownload={hasDownload}
             hasRefresh={hasRefresh}
-            hasAdvSearch={hasAdvSearch}
+            onAdvSearch={this.handleAdvSearch}
           />
         </Spin>
 
@@ -1003,6 +1022,8 @@ const composedHoc = compose(
   withHttpGetSubTableData,
   withHttpGetBeBtns,
   withHttpGetFormData,
-  withHttpRemoveRecords
+  withHttpRemoveRecords,
+
+  withAdvSearch
 );
 export default composedHoc(TableData);

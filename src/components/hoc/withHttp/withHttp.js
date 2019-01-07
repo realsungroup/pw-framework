@@ -240,8 +240,8 @@ export const withHttpGetFormData = WrappedComponent => {
       } catch (err) {
         throw new Error(err);
       }
-      const modalFormData = dealControlArr(res.data.columns);
-      return modalFormData;
+      const formData = dealControlArr(res.data.columns);
+      return formData;
     };
     render() {
       return (
