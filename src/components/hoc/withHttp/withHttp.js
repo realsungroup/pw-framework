@@ -227,7 +227,7 @@ export const withHttpGetFormData = WrappedComponent => {
       this.p1 && this.p1.cancel();
     };
 
-    handleGetFormData = async (resid, formName) => {
+    handleHttpGetFormData = async (resid, formName) => {
       this.p1 = makeCancelable(
         http().getFormData({
           resid,
@@ -246,7 +246,7 @@ export const withHttpGetFormData = WrappedComponent => {
     render() {
       return (
         <WrappedComponent
-          onGetFormData={this.handleGetFormData}
+          httpGetFormData={this.handleHttpGetFormData}
           {...this.props}
         />
       );

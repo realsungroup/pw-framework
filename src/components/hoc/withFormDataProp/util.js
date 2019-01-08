@@ -215,17 +215,37 @@ const getValue = (name, record, controlData, operation) => {
   return value;
 };
 
-const getData = (canOpControlArr, record, operation, handleSearch) => {
+const getData = (
+  canOpControlArr,
+  record,
+  operation,
+  handleSearch,
+  rulesControl
+) => {
   const data = [];
   canOpControlArr.forEach(controlData => {
+    // id 在后端表示内部字段
+    const id = controlData.ColName;
     const obj = {
-      id: controlData.ColName,
+      id,
       label: controlData.ColDispName,
       labelCol: 8,
       wrapperCol: 16,
-      rules: getRules(controlData),
       name: getControlName(controlData)
     };
+    // 所有控件都加上验证规则
+    if (typeof rulesControl === 'boolean') {
+      obj.rules = getRules(controlData);
+
+      // 指定的字段加上验证规则
+    } else if (Array.isArray(rulesControl)) {
+      let item = rulesControl.some(innerFieldName => innerFieldName === id);
+      if (item) {
+        obj.rules = getRules(controlData);
+      }
+    } else {
+      throw new Error('rulesControl 类型应该为 `boolean` 或 `array`');
+    }
     obj.value = getValue(obj.name, record, controlData, operation);
     obj.props = getProps(controlData, obj.name, handleSearch);
     data.push(obj);
@@ -238,16 +258,32 @@ const getData = (canOpControlArr, record, operation, handleSearch) => {
  * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
  * @param {object} record 记录
  * @param {object} formData 窗体数据
- * @param {object} formProps PwForm 组件所接收的其他 props
+ * @param {object} formProps PwForm 组件所接收的其他 props，默认：{}
+ * @param {array | boolean} rulesControl
+ * 含有验证规则的控件数据，默认：true，表示所有控件都需要添加验证规则；
+ * 若 rulesControl = ['name', 'age']，则表示只有 'name' 和 'age' 字段才需要添加验证规则，其他字段的控件需不要验证
  */
-const getDataProp = (operation, record, formData, formProps, handleSearch) => {
+const getDataProp = (
+  operation,
+  record,
+  formData,
+  formProps = {},
+  handleSearch,
+  rulesControl = true
+) => {
   let data = [];
   const { canOpControlArr } = formData;
   const { displayMode = 'default' } = formProps;
 
   // 默认布局
   if (displayMode === 'default') {
-    data = getData(canOpControlArr, record, operation, handleSearch);
+    data = getData(
+      canOpControlArr,
+      record,
+      operation,
+      handleSearch,
+      rulesControl
+    );
 
     // 分类布局
   } else if (displayMode === 'classify') {
@@ -257,7 +293,13 @@ const getDataProp = (operation, record, formData, formProps, handleSearch) => {
     klasses.forEach(klass => {
       const obj = {
         type: klass.title,
-        data: getData(klass.renderControlArr, record, operation, handleSearch)
+        data: getData(
+          klass.renderControlArr,
+          record,
+          operation,
+          handleSearch,
+          rulesControl
+        )
       };
       data.push(obj);
     });

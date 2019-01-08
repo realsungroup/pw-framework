@@ -170,7 +170,7 @@ class PwForm extends React.Component {
     hasSave: PropTypes.bool,
 
     /**
-     * 点击保存时的回调函数
+     * 点击保存时的回调函数，如：(form) => {}，form 为包含 getFieldsValue/setFieldsValue/validateFields 方法的对象
      * 默认：-
      */
     onSave: PropTypes.func,
@@ -212,7 +212,9 @@ class PwForm extends React.Component {
     hasSave: true,
     hasCancel: true,
     displayMode: 'default',
-    okText: '保存'
+    saveText: '保存',
+    cancelText: '取消',
+    editText: '编辑'
   };
 
   constructor(props) {

@@ -23,7 +23,18 @@ const withFormDataProp = WrappedComponent => {
       };
     }
 
+    /**
+     * 获取 PwForm 所接收的 data
+     * @param {string} operation 操作：'edit' 编辑 | 'view' 查看
+     * @param {object} record 记录
+     * @param {array} formData 窗体数据
+     * @param {object} formProps PwForm 组件所接收的其他 props
+     */
     handleGetDataProp = (operation, record, formData, formProps) => {
+      // 存储 formData（窗体数据）
+      if (!this._formData) {
+        this._formData = formData;
+      }
       const data = getDataProp(
         operation,
         record,
@@ -80,7 +91,7 @@ const withFormDataProp = WrappedComponent => {
         });
       });
 
-      const { canOpControlArr } = this.props.formData;
+      const { canOpControlArr } = this._formData;
 
       values = values.filter(item =>
         canOpControlArr.some(
@@ -113,7 +124,7 @@ const withFormDataProp = WrappedComponent => {
         <Fragment>
           <WrappedComponent
             {...this.props}
-            onGetDataProp={this.handleGetDataProp}
+            getDataProp={this.handleGetDataProp}
             data={data}
           />
           <Modal

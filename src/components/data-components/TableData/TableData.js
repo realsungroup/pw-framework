@@ -6,7 +6,7 @@ import { message, Modal, Button, Spin } from 'antd';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import FormData from '../FormData';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
-import { getResid, downloadFile } from '../../../util/util';
+import { getResid, downloadFile, getCmsWhere } from '../../../util/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
 import {
@@ -252,7 +252,19 @@ class TableData extends React.Component {
      * 高级搜索使用的窗体名称
      * 默认：'default'
      */
-    advSearchFormName: PropTypes.string
+    advSearchFormName: PropTypes.string,
+
+    /**
+     * 高级搜索中 Drawer 组件所接收的 props
+     * 默认：-
+     */
+    advSearchDrawerProps: PropTypes.object,
+
+    /**
+     * 高级搜索中 PwForm 组件所接收的 props
+     * 默认：-
+     */
+    advSearchFormProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -401,13 +413,16 @@ class TableData extends React.Component {
       onGetSubTableData
     } = this.props;
     let res;
+    const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
+    console.log({ mergedCmsWhere });
+
     try {
       // 获取主表数据
       if (dataMode === 'main') {
         res = await onGetTableData(
           resid,
           key,
-          cmswhere,
+          mergedCmsWhere,
           cmscolumns,
           page - 1,
           pageSize,
@@ -422,7 +437,7 @@ class TableData extends React.Component {
           subresid,
           hostrecid,
           key,
-          cmswhere,
+          mergedCmsWhere,
           cmscolumns,
           page - 1,
           pageSize,
@@ -465,12 +480,12 @@ class TableData extends React.Component {
       resid,
       subresid,
       modalFormName,
-      onGetFormData
+      httpGetFormData
     } = this.props;
     const id = getResid(dataMode, resid, subresid);
     let modalFormData;
     try {
-      modalFormData = await onGetFormData(id, modalFormName);
+      modalFormData = await httpGetFormData(id, modalFormName);
     } catch (err) {
       return message.error(err.message);
     }
@@ -726,12 +741,25 @@ class TableData extends React.Component {
     };
   };
 
-  handleRefresh = async () => {
+  /**
+   * 刷新表格数据
+   * @param {boolean} isFirst 是否刷新的页数为第一页，默认：false
+   */
+  handleRefresh = async (isFirst = false) => {
     this.setState({ loading: true });
-    await this.getTableData({
-      page: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize
-    });
+    const { pagination } = this.state;
+    let obj;
+    // 刷新第一页的表格数据
+    if (isFirst) {
+      obj = { page: 1, pageSize: pagination.pageSize };
+      // 刷新当前页的表格数据
+    } else {
+      obj = {
+        page: pagination.current,
+        pageSize: pagination.pageSize
+      };
+    }
+    await this.getTableData(obj);
     this.setState({ loading: false });
   };
 
@@ -746,13 +774,27 @@ class TableData extends React.Component {
   handleAdvSearch = () => {
     const {
       advSearchFormName,
-      onAdvSearchClick,
+      advSearchDrawerProps,
+      advSearchFormProps,
+      showAdvSearch,
       dataMode,
       resid,
-      subresid
+      subresid,
+      setProps
     } = this.props;
     const id = getResid(dataMode, resid, subresid);
-    onAdvSearchClick(id, advSearchFormName);
+
+    // 显示高级搜索（处于抽屉中的表单）
+    showAdvSearch(id, advSearchFormName, advSearchFormProps, this.getCmsWhere);
+
+    // 设置高级搜索中 Drawer 组件和 PwForm 组件所接收 props
+    setProps(advSearchDrawerProps, advSearchFormProps);
+  };
+
+  _cmsWhere = '';
+  getCmsWhere = cmsWhere => {
+    this._cmsWhere = cmsWhere;
+    this.handleRefresh(true);
   };
 
   beBtnConfirm = (type, records, formData, defaultRecord) => {

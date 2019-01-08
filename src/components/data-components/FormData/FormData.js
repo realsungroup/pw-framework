@@ -96,14 +96,8 @@ class FormData extends React.Component {
     // 放 didmount 是为了优化 Modal 的显示速度
     // onGetDataProp 会耗时，会阻止 Modal 的显示
     // 若表单数据比较多，Modal 的显示出来的速度就会变慢
-    const {
-      operation,
-      record,
-      formData,
-      formProps,
-      onGetDataProp
-    } = this.props;
-    onGetDataProp(operation, record, formData, formProps);
+    const { operation, record, formData, formProps, getDataProp } = this.props;
+    getDataProp(operation, record, formData, formProps);
     this.setState({ loading: false });
   };
 
