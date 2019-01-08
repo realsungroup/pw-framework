@@ -36,6 +36,7 @@ const withRecordForm = (options = {}) => {
        * @param {object} params.record 记录；默认值为：{}
        * @param {object} params.info 添加、修改 所需要的信息
        * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
+       * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
        * @param {function} params.onConfirm 确认后的回调函数
        * @param {function} params.onCancel 取消后的回调函数
        */
@@ -58,6 +59,7 @@ const withRecordForm = (options = {}) => {
           hostrecid: 'C3_888'
         },
         AdvDicTableProps = {},
+        recordFormContainerProps = {},
         onConfirm = () => {},
         onCancel = () => {}
       }) => {
@@ -70,6 +72,7 @@ const withRecordForm = (options = {}) => {
           operation,
           record,
           info,
+          recordFormContainerProps,
           AdvDicTableProps,
           onConfirm,
           onCancel
@@ -94,6 +97,7 @@ const withRecordForm = (options = {}) => {
           operation,
           record,
           info,
+          recordFormContainerProps,
           AdvDicTableProps,
           onConfirm,
           onCancel
@@ -107,6 +111,7 @@ const withRecordForm = (options = {}) => {
               onCancel={onCancel}
               destroyOnClose
               width={formProps && formProps.width ? formProps.width + 50 : 800}
+              {...recordFormContainerProps}
             >
               <FormData
                 formData={formData}
@@ -121,7 +126,28 @@ const withRecordForm = (options = {}) => {
             </Modal>
           );
         } else {
-          return <div>11</div>;
+          return (
+            <Drawer
+              title={title}
+              placement="right"
+              onClose={onCancel}
+              visible={visible}
+              destroyOnClose
+              width={formProps && formProps.width ? formProps.width + 50 : 800}
+              {...recordFormContainerProps}
+            >
+              <FormData
+                formData={formData}
+                operation={operation}
+                record={record}
+                formProps={formProps}
+                info={info}
+                onConfirm={onConfirm}
+                onCancel={onCancel}
+                AdvDicTableProps={AdvDicTableProps}
+              />
+            </Drawer>
+          );
         }
       };
 

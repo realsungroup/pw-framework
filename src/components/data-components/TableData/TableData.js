@@ -287,7 +287,13 @@ class TableData extends React.Component {
      * 可选: 'modal' 模态窗 | 'drawer' 抽屉
      * 默认：'modal'
      */
-    recordFormType: PropTypes.oneOf(['modal', 'drawer'])
+    recordFormType: PropTypes.oneOf(['modal', 'drawer']),
+
+    /**
+     * 记录表单容器（Modal/Drawer）所接收的 props
+     * 默认：-
+     */
+    recordFormContainerProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -307,7 +313,8 @@ class TableData extends React.Component {
     modalFormName: 'default',
     subtractH: 0,
     advSearchFormName: 'default',
-    recordFormType: 'modal'
+    recordFormType: 'modal',
+    recordFormContainerProps: {}
   };
 
   constructor(props) {
@@ -412,7 +419,6 @@ class TableData extends React.Component {
     }
     const newY = y || height - subtractH;
     const scrollXY = { x, y: newY };
-    console.log({ scrollXY });
 
     this.setState({ scrollXY });
     // return { x, y: newY };
@@ -437,8 +443,6 @@ class TableData extends React.Component {
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
-    console.log({ mergedCmsWhere });
-
     try {
       // 获取主表数据
       if (dataMode === 'main') {
