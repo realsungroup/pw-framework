@@ -18,6 +18,7 @@ import {
 } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
+import withDownloadFile from '../../hoc/withDownloadFile/withDownloadFile';
 
 const { Fragment } = React;
 
@@ -264,7 +265,21 @@ class TableData extends React.Component {
      * 高级搜索中 PwForm 组件所接收的 props
      * 默认：-
      */
-    advSearchFormProps: PropTypes.object
+    advSearchFormProps: PropTypes.object,
+
+    // 下载相关
+
+    /**
+     * 下载的文件名称：若此值为 undefined，则会使用 title 作为下载的文件名称
+     * 默认：-
+     */
+    downloadFileName: PropTypes.string,
+
+    /**
+     * 下载的文件类型
+     * 默认：'xls'
+     */
+    fileType: PropTypes.string
   };
 
   static defaultProps = {
@@ -601,22 +616,21 @@ class TableData extends React.Component {
   // 下载
   handleDownload = async () => {
     this.setState({ loading: true });
-    this.p7 = makeCancelable(
-      http().exportTableData({
-        resid: this.props.resid,
-        cmswhere: this.cmswhere,
-        filetype: 'xls'
-      })
-    );
-    let res;
-    try {
-      res = await this.p7.promise;
-    } catch (err) {
-      return message.error(err.message);
-    }
-    downloadFile(
-      window.powerWorks.fileDownloadUrl + res.data,
-      this.props.tableTitle + '.xls'
+    const {
+      title,
+      downloadFileName,
+      downloadFile,
+      resid,
+      cmswhere,
+      fileType
+    } = this.props;
+    const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
+    await downloadFile(
+      (window.powerWorks && window.powerWorks.fileDownloadUrl) || '...',
+      downloadFileName || title,
+      resid,
+      mergedCmsWhere,
+      fileType
     );
     this.setState({ loading: false });
   };
@@ -1065,7 +1079,7 @@ const composedHoc = compose(
   withHttpGetBeBtns,
   withHttpGetFormData,
   withHttpRemoveRecords,
-
-  withAdvSearch
+  withAdvSearch,
+  withDownloadFile
 );
 export default composedHoc(TableData);
