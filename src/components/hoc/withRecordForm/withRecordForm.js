@@ -1,12 +1,8 @@
 import React from 'react';
 import { argumentContainer } from '../util';
-import { withHttpGetFormData } from '../withHttp';
-import { message, Drawer, Modal } from 'antd';
-import PwForm from '../../ui-components/PwForm';
-import withFormDataProp from '../withFormDataProp';
-import { dealFormData } from '../../../util/controls';
-import { getCmsWhere } from '../../../util/util';
+import { Drawer, Modal } from 'antd';
 import FormData from '../../data-components/FormData';
+import withModalDrawer from '../withModalDrawer';
 
 const Fragment = React.Fragment;
 
@@ -63,110 +59,61 @@ const withRecordForm = (options = {}) => {
         onConfirm = () => {},
         onCancel = () => {}
       }) => {
-        this.setState({
-          type,
-          title,
-          visible: true,
-          formProps,
+        const FormDataProps = {
           formData,
           operation,
           record,
+          formProps,
           info,
-          recordFormContainerProps,
-          AdvDicTableProps,
           onConfirm,
-          onCancel
-        });
+          onCancel,
+          AdvDicTableProps
+        };
+        const containerProps = {
+          title,
+          visible: true,
+          destroyOnClose: true,
+          width: formProps && formProps.width ? formProps.width + 50 : 800,
+          ...recordFormContainerProps
+        };
+        console.log({ containerProps });
+
+        if (type === 'modal') {
+          containerProps.footer = null;
+          containerProps.onCancel = onCancel;
+        } else {
+          containerProps.placement = 'right';
+          containerProps.onClose = onCancel;
+        }
+        console.log({ containerProps });
+
+        this.props.openModalOrDrawer(
+          type,
+          containerProps,
+          FormData,
+          FormDataProps
+        );
       };
 
       handleCloseRecordForm = () => {
-        this.setState({ visible: false });
-      };
-
-      handleCancel = () => {
-        this.setState({ visible: false });
-      };
-
-      renderRecordForm = () => {
-        const {
-          visible,
-          type,
-          title,
-          formProps,
-          formData,
-          operation,
-          record,
-          info,
-          recordFormContainerProps,
-          AdvDicTableProps,
-          onConfirm,
-          onCancel
-        } = this.state;
-        if (type === 'modal') {
-          return (
-            <Modal
-              title={title}
-              visible={visible}
-              footer={null}
-              onCancel={onCancel}
-              destroyOnClose
-              width={formProps && formProps.width ? formProps.width + 50 : 800}
-              {...recordFormContainerProps}
-            >
-              <FormData
-                formData={formData}
-                operation={operation}
-                record={record}
-                formProps={formProps}
-                info={info}
-                onConfirm={onConfirm}
-                onCancel={onCancel}
-                AdvDicTableProps={AdvDicTableProps}
-              />
-            </Modal>
-          );
-        } else {
-          return (
-            <Drawer
-              title={title}
-              placement="right"
-              onClose={onCancel}
-              visible={visible}
-              destroyOnClose
-              width={formProps && formProps.width ? formProps.width + 50 : 800}
-              {...recordFormContainerProps}
-            >
-              <FormData
-                formData={formData}
-                operation={operation}
-                record={record}
-                formProps={formProps}
-                info={info}
-                onConfirm={onConfirm}
-                onCancel={onCancel}
-                AdvDicTableProps={AdvDicTableProps}
-              />
-            </Drawer>
-          );
-        }
+        this.props.closeModalOrDrawer()
       };
 
       render() {
         return (
-          <Fragment>
-            <WrappedComponent
-              {...this.props}
-              openRecordForm={this.handleOpenRecordForm}
-              closeRecordForm={this.handleCloseRecordForm}
-            />
-            {this.renderRecordForm()}
-          </Fragment>
+          <WrappedComponent
+            {...this.props}
+            openRecordForm={this.handleOpenRecordForm}
+            closeRecordForm={this.handleCloseRecordForm}
+          />
         );
       }
     }
 
+    const enhancedWithRecordForm = withModalDrawer()(withRecordForm);
+
     return argumentContainer(
-      withRecordForm,
+      enhancedWithRecordForm,
       WrappedComponent,
       'withRecordForm'
     );
