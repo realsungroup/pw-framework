@@ -5,9 +5,10 @@ import dealControlArr from '../../../util/controls';
 import { argumentContainer } from '../util';
 import { withHttpGetFormData } from '../withHttp';
 import { message, Drawer } from 'antd';
+import PwForm from '../../ui-components/PwForm';
 const Fragment = React.Fragment;
 
-// 高级搜索高阶组件
+// 带有抽屉形式的高级搜索高阶组件
 const withAdvSearch = WrappedComponent => {
   class withAdvSearch extends React.Component {
     constructor(props) {
@@ -51,9 +52,8 @@ const withAdvSearch = WrappedComponent => {
             onClose={this.handleClose}
             visible={drawerVisible}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            111
+            {/* <PwForm /> */}
           </Drawer>
         </Fragment>
       );
@@ -63,7 +63,7 @@ const withAdvSearch = WrappedComponent => {
   return argumentContainer(
     enhancedAdvSearch,
     WrappedComponent,
-    'withHttpGetTableData'
+    'withAdvSearch'
   );
 };
 

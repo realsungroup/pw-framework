@@ -4,7 +4,19 @@ import './PwFormFooter.less';
 const Fragment = React.Fragment;
 
 const PwFormFooter = React.memo(
-  ({ hasEdit, hasSave, hasCancel, onEdit, onSave, onCancel, mode, form }) => {
+  ({
+    hasEdit,
+    hasSave,
+    hasCancel,
+    onEdit,
+    onSave,
+    onCancel,
+    mode,
+    form,
+    saveText,
+    cancelText,
+    editText
+  }) => {
     return (
       <div className="pw-form__footer">
         {(function() {
@@ -18,12 +30,12 @@ const PwFormFooter = React.memo(
                       onSave && onSave(form);
                     }}
                   >
-                    保存
+                    {saveText}
                   </Button>
                 )}
                 {hasCancel && (
                   <Button onClick={() => onCancel && onCancel(form)}>
-                    取消
+                    {cancelText}
                   </Button>
                 )}
               </Fragment>
@@ -33,7 +45,7 @@ const PwFormFooter = React.memo(
               <Fragment>
                 {hasEdit && (
                   <Button type="primary" onClick={() => onEdit && onEdit()}>
-                    编辑
+                    {editText}
                   </Button>
                 )}
               </Fragment>

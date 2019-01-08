@@ -13,6 +13,7 @@ import { getResid } from '../../../util/util';
 import TableData from '../TableData';
 import cloneDeep from 'lodash.clonedeep';
 import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
+import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
 
 // 临时存放高级字典控件数据 controlData
@@ -87,101 +88,26 @@ class FormData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null, // 表单控件数据
-      loading: true,
-      advDicModalVisible: false,
-      AdvDicTableProps: {} // 高级字典表格 props
+      loading: true
     };
   }
 
   componentDidMount = () => {
     // 放 didmount 是为了优化 Modal 的显示速度
-    // getDataProp 会耗时，会阻止 Modal 的显示
+    // onGetDataProp 会耗时，会阻止 Modal 的显示
     // 若表单数据比较多，Modal 的显示出来的速度就会变慢
-    const { operation, record, formData, formProps } = this.props;
-    const data = getDataProp(
+    const {
       operation,
       record,
       formData,
       formProps,
-      this.handleSearch
-    );
-    this.setState({ data, loading: false });
+      onGetDataProp
+    } = this.props;
+    onGetDataProp(operation, record, formData, formProps);
+    this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => {
-    this.p1 && this.p1.cancel();
-    this.p2 && this.p2.cancel();
-  };
-
-  // 渲染高级字典中表格的选择按钮
-  renderSelectBtn = (record, size) => {
-    return (
-      <Button
-        key={record.REC_ID}
-        size={size}
-        onClick={() => this.handleSelect(record)}
-      >
-        选择
-      </Button>
-    );
-  };
-
-  // 自定义高级字典中表格的选择按钮
-  customRowBtns = [this.renderSelectBtn];
-
-  // 点击高级字典表中的行选择按钮
-  handleSelect = record => {
-    message.success('选择成功');
-
-    const advData = tempControlData.AdvDictionaryListData[0];
-
-    // 匹配字段
-    const matchFileds = advData.MatchAndReferenceCols.filter(item => {
-      return item.CDZ2_TYPE === 0;
-    });
-    let values = [];
-    matchFileds.forEach(item => {
-      values.push({
-        value: record[item.CDZ2_COL2],
-        innerFieldName: item.CDZ2_COL1
-      });
-    });
-
-    const { canOpControlArr } = this.props.formData;
-
-    values = values.filter(item =>
-      canOpControlArr.some(
-        controlData => controlData.innerFieldName === item.innerFieldName
-      )
-    );
-
-    const newData = cloneDeep(this.state.data);
-    newData.forEach(item => {
-      let obj;
-      if (
-        (obj = values.find(valueItem => valueItem.innerFieldName === item.id))
-      ) {
-        item.value = obj.value;
-      }
-    });
-    console.log({ values });
-
-    console.log({ newData });
-
-    // getAdvDictionaryVal(values, advDictionatyData);
-
-    this.setState({ data: newData, loading: false, advDicModalVisible: false });
-  };
-
-  // 显示高级字典表格
-  handleSearch = (props, controlData) => {
-    tempControlData = controlData;
-    this.setState({
-      advDicModalVisible: true,
-      AdvDicTableProps: { ...props, ...this.props.AdvDicTableProps }
-    });
-  };
+  componentWillUnmount = () => {};
 
   handleSave = form => {
     const { operation, info, record } = this.props;
@@ -214,13 +140,9 @@ class FormData extends React.Component {
     });
   };
 
-  handleModalCancel = () => {
-    this.setState({ advDicModalVisible: false });
-  };
-
   render() {
-    const { data, loading, advDicModalVisible, AdvDicTableProps } = this.state;
-    const { formProps, operation } = this.props;
+    const { loading } = this.state;
+    const { formProps, operation, data } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -231,7 +153,7 @@ class FormData extends React.Component {
     }
     return (
       <Spin spinning={loading}>
-        {data && (
+        {!!data.length && (
           <PwForm
             data={data}
             {...formProps}
@@ -241,21 +163,6 @@ class FormData extends React.Component {
             onCancel={this.props.onCancel}
           />
         )}
-        <Modal
-          title={'请选择一条记录'}
-          visible={advDicModalVisible}
-          footer={null}
-          onCancel={this.handleModalCancel}
-          width={AdvDicTableProps.width ? AdvDicTableProps.width + 50 : 850}
-          destroyOnClose
-        >
-          {advDicModalVisible && (
-            <TableData
-              {...AdvDicTableProps}
-              customRowBtns={this.customRowBtns}
-            />
-          )}
-        </Modal>
       </Spin>
     );
   }
@@ -263,9 +170,7 @@ class FormData extends React.Component {
 
 const composedHoc = compose(
   withHttpAddRecords,
-  withHttpModifyRecords
+  withHttpModifyRecords,
+  withFormDataProp
 );
 export default composedHoc(FormData);
-
-// 等价于：
-// withHttp.addRecords(withHttp.modifyRecords(FormData));

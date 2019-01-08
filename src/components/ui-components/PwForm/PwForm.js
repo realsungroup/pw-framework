@@ -185,7 +185,25 @@ class PwForm extends React.Component {
      * 点击取消时的回调函数
      * 默认：-
      */
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+
+    /**
+     * 确认按钮文案
+     * 默认：'保存'
+     */
+    saveText: PropTypes.string,
+
+    /**
+     * 取消按钮文案
+     * 默认：'取消'
+     */
+    cancelText: PropTypes.string,
+
+    /**
+     * 编辑按钮文案
+     * 默认：'编辑'
+     */
+    editText: PropTypes.string
   };
   static defaultProps = {
     mode: 'edit',
@@ -193,7 +211,8 @@ class PwForm extends React.Component {
     hasEdit: true,
     hasSave: true,
     hasCancel: true,
-    displayMode: 'default'
+    displayMode: 'default',
+    okText: '保存'
   };
 
   constructor(props) {
@@ -335,7 +354,10 @@ class PwForm extends React.Component {
       onSave,
       onCancel,
       width,
-      height
+      height,
+      saveText,
+      cancelText,
+      editText
     } = this.props;
 
     return (
@@ -352,6 +374,9 @@ class PwForm extends React.Component {
           onCancel={onCancel}
           mode={mode}
           form={this.form}
+          saveText={saveText}
+          cancelText={cancelText}
+          editText={editText}
         />
       </div>
     );
