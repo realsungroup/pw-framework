@@ -7,7 +7,7 @@ import cloneDeep from 'lodash.clonedeep';
 
 const Fragment = React.Fragment;
 
-// 处理 formData（窗体数据）得到 PwForm 接受的 data prop
+// 处理 formData（窗体数据）得到 PwForm 接受的 data prop 的高阶组件，且包含高级字典表格
 const withFormDataProp = WrappedComponent => {
   class withFormDataProp extends React.Component {
     constructor(props) {

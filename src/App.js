@@ -368,7 +368,7 @@ class App extends Component {
             hasAdd={true}
             hasDelete={true}
             height={600}
-            formProps={{ displayMode: 'default', width: 800 }}
+            formProps={{ displayMode: 'default', width: 600 }}
             recordFormType="drawer"
           />
           {/* <PwForm

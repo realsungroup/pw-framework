@@ -63,6 +63,11 @@ const withAdvSearch = WrappedComponent => {
       this.setState({ drawerVisible: false });
     };
 
+    /**
+     * 设置高级搜索接收的 props
+     * @param {object} drawerProps 抽屉组件接收的 props
+     * @param {object} formProps PwForm 组件接收的 props
+     */
     handleSetAdvProps = (drawerProps, formProps) => {
       this.setState({ drawerProps, formProps });
     };

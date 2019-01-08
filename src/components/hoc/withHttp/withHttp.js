@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import http, { makeCancelable } from '../../../util/api';
 import { argumentContainer } from '../util';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
@@ -12,6 +11,13 @@ export const withHttpAddRecords = WrappedComponent => {
       this.p1 && this.p1.cancel();
     };
 
+    /**
+     * 添加记录
+     * @param {number} id 资源 id
+     * @param {array} data 需要添加的记录数组
+     * @param {boolean} isEditOrAdd _state 是否由 'added' 改为 'editoradd'，默认值：false
+     * @return {promise} 返回 promise
+     */
     handleHttpAddRecords = (id, data, isEditOrAdd = false) => {
       this.p1 = makeCancelable(
         http().addRecords({

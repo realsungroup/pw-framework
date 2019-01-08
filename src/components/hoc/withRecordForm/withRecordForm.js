@@ -95,6 +95,9 @@ const withRecordForm = (options = {}) => {
         );
       };
 
+      /**
+       * 关闭记录表单
+       */
       handleCloseRecordForm = () => {
         this.props.closeModalOrDrawer()
       };

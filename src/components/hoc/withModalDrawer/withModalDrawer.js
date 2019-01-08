@@ -4,7 +4,7 @@ import { Modal, Drawer } from 'antd';
 
 const Fragment = React.Fragment;
 
-// 带有 Modal/Drawer 形式的容器高阶组件
+// 可选 Modal/Drawer 形式的容器高阶组件
 const withModalDrawer = (options = {}) => {
   const { type = 'modal' } = options;
   return function(WrappedComponent) {
@@ -19,6 +19,13 @@ const withModalDrawer = (options = {}) => {
         };
       }
 
+      /**
+       * 打开 Modal or Drawer：由 type 参数决定
+       * @param {string} type 类型：'Modal' 模态窗 | 'Drawer' 抽屉
+       * @param {object} containerProps 容器（Modal | Drawer）接收的 props
+       * @param {class | function} ChildComponent 放于容器中的子组件
+       * @param {object} childProps 子组件接收的 props
+       */
       handleOpenModalOrDrawer = (
         type,
         containerProps,
@@ -28,6 +35,9 @@ const withModalDrawer = (options = {}) => {
         this.setState({ type, containerProps, ChildComponent, childProps });
       };
 
+      /**
+       * 关闭 Modal or Drawer
+       */
       handleCloseModalOrDrawer = () => {
         this.setState({
           containerProps: { ...this.state.containerProps, visible: false }
