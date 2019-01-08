@@ -6,7 +6,7 @@ import { message, Modal, Button, Spin } from 'antd';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import FormData from '../FormData';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
-import { getResid, downloadFile, getCmsWhere } from '../../../util/util';
+import { getResid, getCmsWhere } from '../../../util/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
 import {
@@ -18,7 +18,8 @@ import {
 } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
-import withDownloadFile from '../../hoc/withDownloadFile/withDownloadFile';
+import withDownloadFile from '../../hoc/withDownloadFile';
+import withRecordForm from '../../hoc/withRecordForm';
 
 const { Fragment } = React;
 
@@ -267,8 +268,7 @@ class TableData extends React.Component {
      */
     advSearchFormProps: PropTypes.object,
 
-    // 下载相关
-
+    // 下载相关 props
     /**
      * 下载的文件名称：若此值为 undefined，则会使用 title 作为下载的文件名称
      * 默认：-
@@ -279,7 +279,15 @@ class TableData extends React.Component {
      * 下载的文件类型
      * 默认：'xls'
      */
-    fileType: PropTypes.string
+    fileType: PropTypes.string,
+
+    // 记录表单相关 props
+    /**
+     * 记录表单所在容器的类型
+     * 可选: 'modal' 模态窗 | 'drawer' 抽屉
+     * 默认：'modal'
+     */
+    recordFormType: PropTypes.oneOf(['modal', 'drawer'])
   };
 
   static defaultProps = {
@@ -298,7 +306,8 @@ class TableData extends React.Component {
     actionBarFixed: true,
     modalFormName: 'default',
     subtractH: 0,
-    advSearchFormName: 'default'
+    advSearchFormName: 'default',
+    recordFormType: 'modal'
   };
 
   constructor(props) {
@@ -327,8 +336,7 @@ class TableData extends React.Component {
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
       modalFormData: undefined, // 模态窗中的表单窗体数据
-      modalVisible: false, // 表单模态窗是否显示
-      modalFormMode: undefined, // 表单模态窗的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
+      recordFormShowMode: undefined, // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
       rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
       scrollXY: { x: 1000, y: 1000 }
@@ -684,13 +692,45 @@ class TableData extends React.Component {
     ));
   };
 
+  openRecordForm = () => {
+    const {
+      dataMode,
+      resid,
+      subresid,
+      formProps,
+      hostrecid,
+      AdvDicTableProps,
+      openRecordForm,
+      recordFormType
+    } = this.props;
+
+    const { recordFormShowMode, modalFormData, selectedRecord } = this.state;
+
+    openRecordForm({
+      type: recordFormType,
+      title: modalTitleMap[recordFormShowMode],
+      formProps,
+      formData: modalFormData,
+      operation: recordFormShowMode,
+      record: selectedRecord,
+      info: { dataMode, resid, subresid, hostrecid },
+      AdvDicTableProps,
+      onConfirm: this.handleConfirm,
+      onCancel: this.handleCancel
+    });
+  };
+
   // 点击添加按钮
   handleAdd = () => {
-    this.setState({
-      modalVisible: true,
-      modalFormMode: 'add',
-      selectedRecord: {}
-    });
+    this.setState(
+      {
+        recordFormShowMode: 'add',
+        selectedRecord: {}
+      },
+      () => {
+        this.openRecordForm();
+      }
+    );
   };
 
   handleModify = record => {
@@ -706,11 +746,15 @@ class TableData extends React.Component {
       );
     }
 
-    this.setState({
-      modalVisible: true,
-      modalFormMode: 'modify',
-      selectedRecord
-    });
+    this.setState(
+      {
+        recordFormShowMode: 'modify',
+        selectedRecord
+      },
+      () => {
+        this.openRecordForm();
+      }
+    );
   };
 
   // 点击删除按钮
@@ -742,10 +786,6 @@ class TableData extends React.Component {
 
     // 刷新表格数据
     this.handleRefresh();
-  };
-
-  handleModalCancel = () => {
-    this.setState({ modalVisible: false });
   };
 
   handleOnRow = record => {
@@ -875,11 +915,15 @@ class TableData extends React.Component {
   };
 
   handleView = record => {
-    this.setState({
-      modalVisible: true,
-      modalFormMode: 'view',
-      selectedRecord: record
-    });
+    this.setState(
+      {
+        recordFormShowMode: 'view',
+        selectedRecord: record
+      },
+      () => {
+        this.openRecordForm();
+      }
+    );
   };
 
   renderRowDeleteBtn = record => {
@@ -909,6 +953,30 @@ class TableData extends React.Component {
     });
   };
 
+  renderRecordForm = () => {
+    // return (
+    //   <Modal
+    //     title={modalTitleMap[recordFormShowMode]}
+    //     visible={modalVisible}
+    //     footer={null}
+    //     onCancel={this.handleModalCancel}
+    //     destroyOnClose
+    //     width={formProps && formProps.width ? formProps.width + 50 : 800}
+    //   >
+    //     <FormData
+    //       formData={modalFormData}
+    //       operation={recordFormShowMode}
+    //       record={selectedRecord}
+    //       formProps={formProps}
+    //       info={{ dataMode, resid, subresid, hostrecid }}
+    //       onConfirm={this.handleConfirm}
+    //       onCancel={this.handleCancel}
+    //       AdvDicTableProps={AdvDicTableProps}
+    //     />
+    //   </Modal>
+    // );
+  };
+
   handleRowDelete = async records => {
     const { dataMode, resid, subresid, httpRemoveRecords } = this.props;
     const id = getResid(dataMode, resid, subresid);
@@ -929,18 +997,18 @@ class TableData extends React.Component {
   };
 
   handleConfirm = () => {
-    const { modalFormMode } = this.state;
-    if (modalFormMode === 'add') {
+    const { recordFormShowMode } = this.state;
+    if (recordFormShowMode === 'add') {
       message.success('添加成功');
-    } else if (modalFormMode === 'modify') {
+    } else if (recordFormShowMode === 'modify') {
       message.success('修改成功');
     }
-    this.setState({ modalVisible: false });
+    this.props.closeRecordForm();
     this.handleRefresh();
   };
 
   handleCancel = () => {
-    this.setState({ modalVisible: false });
+    this.props.closeRecordForm();
   };
 
   getActionBar = () => {
@@ -983,16 +1051,10 @@ class TableData extends React.Component {
   render() {
     const {
       title,
-      dataMode,
-      resid,
-      subresid,
       hasAdd,
       hasModify,
       hasDelete,
-      formProps,
       size,
-      hostrecid,
-      AdvDicTableProps,
       width,
       height,
       hasDownload,
@@ -1003,11 +1065,7 @@ class TableData extends React.Component {
       pagination,
       dataSource,
       columns,
-      modalVisible,
-      modalFormMode,
       rowSelection,
-      modalFormData,
-      selectedRecord,
       scrollXY
     } = this.state;
 
@@ -1048,26 +1106,7 @@ class TableData extends React.Component {
             onAdvSearch={this.handleAdvSearch}
           />
         </Spin>
-
-        <Modal
-          title={modalTitleMap[modalFormMode]}
-          visible={modalVisible}
-          footer={null}
-          onCancel={this.handleModalCancel}
-          destroyOnClose
-          width={formProps && formProps.width ? formProps.width + 50 : 800}
-        >
-          <FormData
-            formData={modalFormData}
-            operation={modalFormMode}
-            record={selectedRecord}
-            formProps={formProps}
-            info={{ dataMode, resid, subresid, hostrecid }}
-            onConfirm={this.handleConfirm}
-            onCancel={this.handleCancel}
-            AdvDicTableProps={AdvDicTableProps}
-          />
-        </Modal>
+        {this.renderRecordForm()}
       </div>
     );
   }
@@ -1080,6 +1119,7 @@ const composedHoc = compose(
   withHttpGetFormData,
   withHttpRemoveRecords,
   withAdvSearch,
-  withDownloadFile
+  withDownloadFile,
+  withRecordForm()
 );
 export default composedHoc(TableData);

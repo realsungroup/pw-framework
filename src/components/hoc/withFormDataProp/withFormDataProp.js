@@ -123,6 +123,8 @@ const withFormDataProp = WrappedComponent => {
             getDataProp={this.handleGetDataProp}
             data={data}
           />
+
+          {/* 高级字典表格 */}
           <Modal
             title={'请选择一条记录'}
             visible={advDicModalVisible}
