@@ -409,8 +409,8 @@ class TableData extends React.Component {
       subresid,
       cmswhere,
       cmscolumns,
-      onGetTableData,
-      onGetSubTableData
+      httpGetTableData,
+      httpGetSubTableData
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -419,7 +419,7 @@ class TableData extends React.Component {
     try {
       // 获取主表数据
       if (dataMode === 'main') {
-        res = await onGetTableData(
+        res = await httpGetTableData(
           resid,
           key,
           mergedCmsWhere,
@@ -432,7 +432,7 @@ class TableData extends React.Component {
         );
       } else {
         // 获取子表数据
-        res = await onGetSubTableData(
+        res = await httpGetSubTableData(
           resid,
           subresid,
           hostrecid,
@@ -504,7 +504,7 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const { dataMode, resid, subresid, onGetBeBtns } = this.props;
+    const { dataMode, resid, subresid, httpGetBeBtns } = this.props;
     let id;
     if (dataMode === 'main') {
       id = resid;
@@ -513,7 +513,7 @@ class TableData extends React.Component {
     }
     let btns;
     try {
-      btns = await onGetBeBtns(id);
+      btns = await httpGetBeBtns(id);
     } catch (err) {
       return message.error(err.message);
     }
@@ -712,10 +712,10 @@ class TableData extends React.Component {
         records.push(record);
       }
     });
-    const { dataMode, resid, subresid, onDelete } = this.props;
+    const { dataMode, resid, subresid, httpRemoveRecords } = this.props;
     const id = getResid(dataMode, resid, subresid);
     try {
-      await onDelete(id, records);
+      await httpRemoveRecords(id, records);
     } catch (err) {
       return message.error(err.message);
     }
@@ -896,10 +896,10 @@ class TableData extends React.Component {
   };
 
   handleRowDelete = async records => {
-    const { dataMode, resid, subresid, onDelete } = this.props;
+    const { dataMode, resid, subresid, httpRemoveRecords } = this.props;
     const id = getResid(dataMode, resid, subresid);
     try {
-      await onDelete(id, records);
+      await httpRemoveRecords(id, records);
     } catch (err) {
       return message.error(err.message);
     }

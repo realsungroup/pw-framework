@@ -1,17 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PwForm from '../../ui-components/PwForm';
-import http, { makeCancelable } from '../../../util/api';
-import { message, Modal, Spin } from 'antd';
-import { extractAndDealBackendBtns } from '../../../util/beBtns';
-import LzBackendBtn from '../../ui-components/LzBackendBtn';
-import { Button } from '../../../../node_modules/antd/lib/radio';
+
+import { message, Spin } from 'antd';
+
 import { dealFormData } from '../../../util/controls';
 
-import getDataProp from './util';
 import { getResid } from '../../../util/util';
-import TableData from '../TableData';
-import cloneDeep from 'lodash.clonedeep';
+
 import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
 import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
@@ -117,7 +113,7 @@ class FormData extends React.Component {
       // 添加
       if (this.props.operation === 'add') {
         try {
-          await this.props.onAdd(id, [formData]);
+          await this.props.httpAddRecords(id, [formData]);
         } catch (err) {
           return message.error(err.message);
         }
@@ -125,7 +121,7 @@ class FormData extends React.Component {
         // 修改
       } else {
         try {
-          await this.props.onModify(id, [formData]);
+          await this.props.httpModifyRecords(id, [formData]);
         } catch (err) {
           return message.error(err.message);
         }

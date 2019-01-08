@@ -31,6 +31,7 @@ export const downloadFile = (href, fileName) => {
  * @param  {...string | object} cmsWhereArr
  * 当 cmsWhereArr 为一个字符串数组时：合并每一个字符串，如：['name = xl', 'age = 22', ...]
  * 当 cmsWhereArr[0] 为一个对象时：生成 cmswhere，如：[{ name: 'xl', age: 22, sex: 1 }]
+ * @return {string} cmsWhere 返回 cmsWhere
  */
 export const getCmsWhere = (...cmsWhereArr) => {
   let cmsWhere = '';

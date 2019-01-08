@@ -1,7 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import http, { makeCancelable } from '../../../util/api';
-import dealControlArr from '../../../util/controls';
 import { argumentContainer } from '../util';
 import { withHttpGetFormData } from '../withHttp';
 import { message, Drawer } from 'antd';

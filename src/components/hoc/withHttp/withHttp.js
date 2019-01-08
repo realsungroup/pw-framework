@@ -12,7 +12,7 @@ export const withHttpAddRecords = WrappedComponent => {
       this.p1 && this.p1.cancel();
     };
 
-    handleAdd = (id, data, isEditOrAdd = false) => {
+    handleHttpAddRecords = (id, data, isEditOrAdd = false) => {
       this.p1 = makeCancelable(
         http().addRecords({
           resid: id,
@@ -24,7 +24,12 @@ export const withHttpAddRecords = WrappedComponent => {
     };
 
     render() {
-      return <WrappedComponent onAdd={this.handleAdd} {...this.props} />;
+      return (
+        <WrappedComponent
+          httpAddRecords={this.handleHttpAddRecords}
+          {...this.props}
+        />
+      );
     }
   }
   return argumentContainer(
@@ -40,7 +45,8 @@ export const withHttpModifyRecords = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleModify = (id, data, isEditOrAdd = false) => {
+
+    handleHttpModifyRecords = (id, data, isEditOrAdd = false) => {
       this.p1 = makeCancelable(
         http().modifyRecords({
           resid: id,
@@ -51,7 +57,12 @@ export const withHttpModifyRecords = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
-      return <WrappedComponent onModify={this.handleModify} {...this.props} />;
+      return (
+        <WrappedComponent
+          httpModifyRecords={this.handleHttpModifyRecords}
+          {...this.props}
+        />
+      );
     }
   }
   return argumentContainer(
@@ -67,7 +78,7 @@ export const withHttpRemoveRecords = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleRemove = async (id, data, isEditOrAdd = false) => {
+    handleHttpRemoveRecords = async (id, data, isEditOrAdd = false) => {
       this.p1 = makeCancelable(
         http().removeRecords({
           resid: id,
@@ -78,7 +89,12 @@ export const withHttpRemoveRecords = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
-      return <WrappedComponent onDelete={this.handleRemove} {...this.props} />;
+      return (
+        <WrappedComponent
+          httpRemoveRecords={this.handleHttpRemoveRecords}
+          {...this.props}
+        />
+      );
     }
   }
   return argumentContainer(
@@ -94,7 +110,7 @@ export const withHttpGetTableData = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleGetTableData = (
+    handleHttpGetTableData = (
       resid,
       key,
       cmswhere,
@@ -122,7 +138,7 @@ export const withHttpGetTableData = WrappedComponent => {
     render() {
       return (
         <WrappedComponent
-          onGetTableData={this.handleGetTableData}
+          httpGetTableData={this.handleHttpGetTableData}
           {...this.props}
         />
       );
@@ -141,7 +157,7 @@ export const withHttpGetSubTableData = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleGetSubTableData = (
+    handleHttpGetSubTableData = (
       resid,
       subresid,
       hostrecid,
@@ -173,7 +189,7 @@ export const withHttpGetSubTableData = WrappedComponent => {
     render() {
       return (
         <WrappedComponent
-          onGetSubTableData={this.handleGetSubTableData}
+          httpGetSubTableData={this.handleHttpGetSubTableData}
           {...this.props}
         />
       );
@@ -192,7 +208,7 @@ export const withHttpGetBeBtns = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleGetBeBtns = async resid => {
+    handleHttpGetBeBtns = async resid => {
       this.p1 = makeCancelable(http().getBeBtns({ resid }));
       let res;
       try {
@@ -209,7 +225,10 @@ export const withHttpGetBeBtns = WrappedComponent => {
     };
     render() {
       return (
-        <WrappedComponent onGetBeBtns={this.handleGetBeBtns} {...this.props} />
+        <WrappedComponent
+          httpGetBeBtns={this.handleHttpGetBeBtns}
+          {...this.props}
+        />
       );
     }
   }
