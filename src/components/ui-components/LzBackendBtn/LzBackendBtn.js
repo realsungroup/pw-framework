@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Popconfirm, message, Button } from 'antd';
 import dealControlArr from '../../../util/controls';
 import http, { makeCancelable } from '../../../util/api';
+import { withHttpGetFormData } from '../../hoc/withHttp';
 
 const btnSizeMap = {
   large: 'large',
@@ -13,7 +14,7 @@ const btnSizeMap = {
 /**
  * 后端按钮
  */
-export default class LzBackendBtn extends React.PureComponent {
+class LzBackendBtn extends React.PureComponent {
   static propTypes = {
     /**
      * 按钮大小
@@ -72,7 +73,6 @@ export default class LzBackendBtn extends React.PureComponent {
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
-    this.p2 && this.p2.cancel();
   };
 
   getDefaultRecord = btnInfo => {
@@ -92,6 +92,8 @@ export default class LzBackendBtn extends React.PureComponent {
     return record;
   };
 
+  _formData = null;
+  _defaultRecord = null;
   onConfirm = async () => {
     const { resid, records, onConfirm, btnInfo } = this.props;
     const { Code, OkMsgCn, FailMsgCn, Type } = btnInfo;
@@ -131,20 +133,26 @@ export default class LzBackendBtn extends React.PureComponent {
 
       // 打开指定的 formName 的表单进行 编辑（6）/ 查看（7）/ 添加（8）
     } else if (Type === 6 || Type === 7 || Type === 8) {
-      let res;
-      this.p2 = makeCancelable(
-        http().getFormData({
-          resid,
-          formname: btnInfo.FormName || 'default'
-        })
-      );
-      try {
-        res = await this.p2.promise;
-      } catch (err) {
-        return message.error(err.message);
+      let formData = this._formData,
+        defaultRecord = this._defaultRecord;
+
+      // 窗体数据或默认记录值不存在
+      if (!formData || !defaultRecord) {
+        try {
+          formData = await this.props.httpGetFormData(
+            resid,
+            btnInfo.FormName || 'default'
+          );
+        } catch (err) {
+          return message.error(err.message);
+        }
+        defaultRecord = this.getDefaultRecord(btnInfo);
+
+        // 缓存 formData 和 defaultRecord
+        this._formData = formData;
+        this._defaultRecord = defaultRecord;
       }
-      const formData = dealControlArr(res.data.columns);
-      const defaultRecord = this.getDefaultRecord(btnInfo);
+
       onConfirm && onConfirm(Type, records, formData, defaultRecord);
     }
   };
@@ -162,23 +170,19 @@ export default class LzBackendBtn extends React.PureComponent {
           okText="确定"
           cancelText="取消"
         >
-          <Button className="operation-btn" size={btnSizeMap[size]}>
-            {btnInfo.Name1}
-          </Button>
+          <Button size={btnSizeMap[size]}>{btnInfo.Name1}</Button>
         </Popconfirm>
       );
 
       // 无 Popconfirm 组件
     } else {
       return (
-        <Button
-          className="operation-btn"
-          size={btnSizeMap[size]}
-          onClick={this.onConfirm}
-        >
+        <Button size={btnSizeMap[size]} onClick={this.onConfirm}>
           {btnInfo.Name1}
         </Button>
       );
     }
   }
 }
+
+export default withHttpGetFormData(LzBackendBtn);

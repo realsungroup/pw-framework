@@ -71,7 +71,7 @@ http.createApi('getBeBtns', {
 });
 
 /**
- * 后端按钮点击发送的请求
+ * 后端按钮点击发送的请求（修改字段）
  * 参数：{ resid, recids, strCommand }
  * 1. resid：表资源 id
  * 2. recids：记录 id 以逗号分隔的字符串

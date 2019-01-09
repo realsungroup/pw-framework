@@ -252,6 +252,12 @@ export const withHttpGetFormData = WrappedComponent => {
       this.p1 && this.p1.cancel();
     };
 
+    /**
+     * 获取窗体数据，且处理窗体数据
+     * @param {number} resid 资源 id
+     * @param {string} formName 窗体名称
+     * @return {promise} 返回 promise，await promise 后的值为 formData
+     */
     handleHttpGetFormData = async (resid, formName) => {
       this.p1 = makeCancelable(
         http().getFormData({

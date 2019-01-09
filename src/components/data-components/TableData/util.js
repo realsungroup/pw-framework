@@ -1,8 +1,50 @@
+const filterColumns = (columnsInfo, cmscolumns) => {
+  const cmscolumnsArr = cmscolumns.split(',');
+  return columnsInfo.filter(item => {
+    return !!cmscolumnsArr.some(id => id === item.id);
+  });
+};
+
+/**
+ * 获取分页配置信息
+ * @param {object} defaultPagination 默认分页配置：{ current: 1, pageSize: 10 }
+ * @param {function} onChange 页码变化时的回调函数
+ * @param {function} onShowSizeChange 每页数量发生改变时的回调函数
+ */
+export const getPagination = (
+  defaultPagination,
+  onChange,
+  onShowSizeChange
+) => {
+  if (defaultPagination) {
+    return {
+      ...defaultPagination,
+      onChange,
+      onShowSizeChange
+    };
+  } else {
+    return {
+      current: 1,
+      pageSize: 10,
+      onChange,
+      onShowSizeChange
+    };
+  }
+};
+
 export const getColumns = (
   columnsInfo,
-  { hasBeSort, defaultColumnWidth, columnsWidth, fixedColumns }
+  { hasBeSort, defaultColumnWidth, columnsWidth, fixedColumns },
+  cmscolumns
 ) => {
   const columns = [];
+
+  // 筛选 cmscolumns
+  if (cmscolumns) {
+    columnsInfo = filterColumns(columnsInfo, cmscolumns);
+  }
+  console.log({ columnsInfo });
+
   columnsInfo.forEach(item => {
     const column = {
       width: defaultColumnWidth,
@@ -45,31 +87,4 @@ export const getRowSelection = (hasModify, hasDelete, rowSelectionChange) => {
     };
   }
   return null;
-};
-
-/**
- * 获取分页配置信息
- * @param {object} defaultPagination 默认分页配置：{ current: 1, pageSize: 10 }
- * @param {function} onChange 页码变化时的回调函数
- * @param {function} onShowSizeChange 每页数量发生改变时的回调函数
- */
-export const getPagination = (
-  defaultPagination,
-  onChange,
-  onShowSizeChange
-) => {
-  if (defaultPagination) {
-    return {
-      ...defaultPagination,
-      onChange,
-      onShowSizeChange
-    };
-  } else {
-    return {
-      current: 1,
-      pageSize: 10,
-      onChange,
-      onShowSizeChange
-    };
-  }
 };

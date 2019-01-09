@@ -209,12 +209,16 @@ class TableData extends React.Component {
       columnsWidth,
       fixedColumns
     } = this.props;
-    const columns = getColumns(res.cmscolumninfo, {
-      hasBeSort,
-      defaultColumnWidth,
-      columnsWidth,
-      fixedColumns
-    });
+    const columns = getColumns(
+      res.cmscolumninfo,
+      {
+        hasBeSort,
+        defaultColumnWidth,
+        columnsWidth,
+        fixedColumns
+      },
+      cmscolumns
+    );
     const dataSource = res.data;
     this.setState({
       columns,
@@ -399,12 +403,13 @@ class TableData extends React.Component {
 
   getScroll = () => {};
 
-  // 渲染后端按钮
+  // 渲染在头部的后端按钮
   renderBeBtns = () => {
-    const { selectedRows, beBtnsMultiple, beBtnsOther } = this.state;
+    const { beBtnsMultiple, beBtnsOther } = this.state;
     const { dataMode, resid, subresid, size } = this.props;
     const id = getResid(dataMode, resid, subresid);
     const arr = [...beBtnsMultiple, ...beBtnsOther];
+    const records = this.getSelectedRecords();
 
     return arr.map(btnInfo => (
       <LzBackendBtn
@@ -412,13 +417,53 @@ class TableData extends React.Component {
         btnInfo={btnInfo}
         resid={id}
         onConfirm={this.beBtnConfirm}
-        records={selectedRows}
+        records={records}
         size={size}
       />
     ));
   };
 
-  openRecordForm = () => {
+  // 渲染行后端按钮
+  renderRowBeBtns = (beBtnsSingle, record) => {
+    const { dataMode, resid, subresid, size } = this.props;
+    const id = getResid(dataMode, resid, subresid);
+    return beBtnsSingle.map(btnInfo => (
+      <LzBackendBtn
+        key={btnInfo.Name1}
+        btnInfo={btnInfo}
+        resid={id}
+        onConfirm={this.beBtnConfirm}
+        records={[record]}
+        size={size}
+      />
+    ));
+  };
+
+  getSelectedRecords = () => {
+    const { rowSelection, dataSource } = this.state;
+    const records = [];
+    if (!rowSelection) {
+      return records;
+    }
+    const { selectedRowKeys } = rowSelection;
+    dataSource.forEach(record => {
+      const item = selectedRowKeys.some(key => key === record.REC_ID);
+      if (item) {
+        records.push(record);
+      }
+    });
+    return records;
+  };
+
+  /**
+   * 打开记录表单，进行 添加/修改/查看 操作
+   * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
+   * @param {object} record 记录
+   * @param {object} formData 窗体数据
+   * 当传这两个参数时，表示点击后端按钮打开记录表单
+   * 不传这两个参数时，表示点击前端定义的按钮打开记录表单
+   */
+  openRecordForm = (operation, record, formData) => {
     const {
       dataMode,
       resid,
@@ -436,9 +481,9 @@ class TableData extends React.Component {
       type: recordFormType,
       title: modalTitleMap[recordFormShowMode],
       formProps,
-      formData: modalFormData,
-      operation: recordFormShowMode,
-      record: selectedRecord,
+      formData: formData || modalFormData,
+      operation: operation || recordFormShowMode,
+      record: record || selectedRecord,
       info: { dataMode, resid, subresid, hostrecid },
       AdvDicTableProps,
       onConfirm: this.handleConfirm,
@@ -585,31 +630,18 @@ class TableData extends React.Component {
   };
 
   beBtnConfirm = (type, records, formData, defaultRecord) => {
-    // if (type === 1 || type === 5) {
-    //   this.refreshTableData();
-    //   const rowSelection = {
-    //     ...this.state.rowSelection,
-    //     selectedRowKeys: []
-    //   };
-    //   this.setState({ selectedRowKeys: [], selectedRows: [], rowSelection });
-    //   // 编辑记录
-    // } else if (type === 6) {
-    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
-    //     this.openModalWay = 'be';
-    //     this.operationRow('mod', records[0]);
-    //   });
-    //   // 查看记录
-    // } else if (type === 7) {
-    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
-    //     this.openModalWay = 'be';
-    //     this.operationRow('check', records[0]);
-    //   });
-    //   // 添加记录
-    // } else if (type === 8) {
-    //   this.setState({ backendBtnOpenModalFormData: formData }, () => {
-    //     this.addRecord(defaultRecord);
-    //   });
-    // }
+    if (type === 1 || type === 5) {
+      this.handleRefresh();
+      // 编辑记录
+    } else if (type === 6) {
+      this.openRecordForm('modify', defaultRecord, formData);
+      // 查看记录
+    } else if (type === 7) {
+      this.openRecordForm('view', defaultRecord, formData);
+      // 添加记录
+    } else if (type === 8) {
+      this.openRecordForm('add', defaultRecord, formData);
+    }
   };
 
   getNewColumns = columns => {
@@ -742,7 +774,7 @@ class TableData extends React.Component {
             {hasRowDelete && this.renderRowDeleteBtn(record)}
 
             {/* 后端按钮 */}
-            {this.renderBeBtns(beBtnsSingle, record)}
+            {this.renderRowBeBtns(beBtnsSingle, record)}
             {/* 自定义按钮 */}
             {customRowBtns && this.renderCustomRowBtns(customRowBtns, record)}
           </Fragment>

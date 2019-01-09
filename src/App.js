@@ -353,8 +353,8 @@ class App extends Component {
         </Button>
         <div>
           <TableData
-            title="刷卡登记"
-            resid={592745258634}
+            title="调休登记"
+            resid={596720928643}
             defaultPagination={{
               current: 1,
               pageSize: 10,
@@ -364,12 +364,14 @@ class App extends Component {
             size="small"
             hasBeBtns={true}
             subtractH={180}
-            opIsFiexed={false}
-            hasAdd={true}
-            hasDelete={true}
+            actionBarFixed
+            hasAdd={false}
+            hasDelete={false}
+            hasModify={false}
             height={600}
             formProps={{ displayMode: 'default', width: 600 }}
             recordFormType="drawer"
+            cmscolumns='EMP_ID,C3_375965124343,C3_375965124625,DATE1,DATE2'
           />
           {/* <PwForm
             labelCol={4}
