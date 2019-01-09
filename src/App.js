@@ -361,17 +361,21 @@ class App extends Component {
               showSizeChanger: true,
               showQuickJumper: true
             }}
+            width={1360}
             size="small"
-            hasBeBtns={true}
+            hasBeBtns={false}
             subtractH={180}
-            actionBarFixed
+            actionBarFixed={false}
+            hasRowEdit
             hasAdd={false}
             hasDelete={false}
             hasModify={false}
+            hasRowModify={true}
             height={600}
-            formProps={{ displayMode: 'default', width: 600 }}
-            recordFormType="drawer"
-            cmscolumns='EMP_ID,C3_375965124343,C3_375965124625,DATE1,DATE2'
+            formProps={{ displayMode: 'default', width: 600, height: 500 }}
+            recordFormType="modal"
+            cmscolumns="EMP_ID,C3_375965124343,C3_375965124625,DATE1,DATE2"
+            rowEditFormName="default2"
           />
           {/* <PwForm
             labelCol={4}

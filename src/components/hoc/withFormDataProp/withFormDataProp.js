@@ -49,6 +49,7 @@ const withFormDataProp = WrappedComponent => {
         rulesControl
       );
       this.setState({ data });
+      return data;
     };
 
     handleSearch = (props, controlData) => {

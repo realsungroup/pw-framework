@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Popconfirm, message, Button } from 'antd';
-import dealControlArr from '../../../util/controls';
 import http, { makeCancelable } from '../../../util/api';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 
@@ -9,6 +8,10 @@ const btnSizeMap = {
   large: 'large',
   middle: 'default',
   small: 'small'
+};
+
+const style = {
+  margin: '0 4px'
 };
 
 /**
@@ -170,14 +173,16 @@ class LzBackendBtn extends React.PureComponent {
           okText="确定"
           cancelText="取消"
         >
-          <Button size={btnSizeMap[size]}>{btnInfo.Name1}</Button>
+          <Button style={style} size={btnSizeMap[size]}>
+            {btnInfo.Name1}
+          </Button>
         </Popconfirm>
       );
 
       // 无 Popconfirm 组件
     } else {
       return (
-        <Button size={btnSizeMap[size]} onClick={this.onConfirm}>
+        <Button style={style} size={btnSizeMap[size]} onClick={this.onConfirm}>
           {btnInfo.Name1}
         </Button>
       );

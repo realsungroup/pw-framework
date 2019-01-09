@@ -14,15 +14,30 @@ export const tableDataDefaultPropTypes = {
   hasBeBtns: false,
   actionBarWidth: 300,
   actionBarFixed: true,
-  modalFormName: 'default',
+  recordFormName: 'default',
+  editFormName: 'default',
   subtractH: 0,
   advSearchFormName: 'default',
   recordFormType: 'modal',
   recordFormContainerProps: {},
-  advSearchValidationFields: []
+  advSearchValidationFields: [],
+  hasRowEdit: false
 };
 
 export const tableDataPropTypes = {
+  /**
+   * 表格标题
+   */
+  title: PropTypes.string,
+
+  /**
+   * 数据模式
+   * 可选：'main' | 'sub'
+   * 默认：'main'
+   * 描述：'main' 表示主表数据；'sub' 表示子表数据
+   */
+  dataMode: PropTypes.oneOf(['main', 'sub']),
+
   /**
    * 表格尺寸
    * 默认：'middle'
@@ -39,19 +54,6 @@ export const tableDataPropTypes = {
    * 高度
    */
   height: PropTypes.number,
-
-  /**
-   * 表格标题
-   */
-  title: PropTypes.string,
-
-  /**
-   * 数据模式
-   * 可选：'main' | 'sub'
-   * 默认：'main'
-   * 描述：'main' 表示主表数据；'sub' 表示子表数据
-   */
-  dataMode: PropTypes.oneOf(['main', 'sub']),
 
   /**
    * 主表id
@@ -120,6 +122,85 @@ export const tableDataPropTypes = {
   defaultPagination: PropTypes.object,
 
   /**
+   * 是否有后端排序功能
+   * 默认：true
+   */
+  hasBeSort: PropTypes.bool,
+
+  /**
+   * 默认列宽度
+   * 默认：200
+   */
+  defaultColumnWidth: PropTypes.number,
+
+  /**
+   * 自定义列宽度
+   * 默认：-
+   * 如：{ '姓名': 100, '工号': 150 }
+   */
+  columnsWidth: PropTypes.object,
+
+  /**
+   * 操作栏的宽度
+   * 默认：300
+   */
+  actionBarWidth: PropTypes.number,
+
+  /**
+   * 操作栏是否固定在右侧（注意：固定列时，不能开启行内编辑功能）
+   * 默认：true
+   */
+  actionBarFixed: PropTypes.bool,
+
+  /**
+   * 固定列
+   * 默认：-
+   * 如：['姓名', '工号']
+   */
+  fixedColumns: PropTypes.array,
+
+  // ===========================================================
+  // 窗体名称相关的 props ============================================
+  // ===========================================================
+  /**
+   * 记录表单所用窗体的窗体名称
+   * 默认：default
+   */
+  recordFormName: PropTypes.string,
+
+  /**
+   * 行内编辑所用窗体的窗体名称
+   * 默认：default
+   */
+  rowEditFormName: PropTypes.string,
+
+  /**
+   * 记录表单中 PwForm 组件接收的 props
+   */
+  formProps: PropTypes.object,
+
+  /**
+   * 高级字典表格的配置
+   * 默认：-
+   */
+  AdvDicTableProps: PropTypes.object,
+
+  /**
+   * 自定义行按钮
+   * 默认：-
+   */
+  customRowBtns: PropTypes.array,
+
+  /**
+   * 表格高度 - scroll.y 的值
+   * 默认：0
+   */
+  subtractH: PropTypes.number,
+
+  // ===========================================================
+  // 按钮相关的 props ============================================
+  // ===========================================================
+  /**
    * 是否有添加按钮
    * 默认：true
    */
@@ -136,6 +217,12 @@ export const tableDataPropTypes = {
    * 默认：true
    */
   hasDelete: PropTypes.bool,
+
+  /**
+   * 是否有行编辑按钮（注意：开启行内编辑时，不能固定操作栏！）
+   * 默认：false
+   */
+  hasRowEdit: PropTypes.bool,
 
   /**
    * 是否有行修改按钮
@@ -167,73 +254,6 @@ export const tableDataPropTypes = {
    */
   renderRowBtns: PropTypes.array,
 
-  /**
-   * 是否有后端排序功能
-   * 默认：true
-   */
-  hasBeSort: PropTypes.bool,
-
-  /**
-   * 默认列宽度
-   * 默认：200
-   */
-  defaultColumnWidth: PropTypes.number,
-
-  /**
-   * 自定义列宽度
-   * 默认：-
-   * 如：{ '姓名': 100, '工号': 150 }
-   */
-  columnsWidth: PropTypes.object,
-
-  /**
-   * 操作栏的宽度
-   * 默认：300
-   */
-  actionBarWidth: PropTypes.number,
-
-  /**
-   * 操作栏是否固定在右侧
-   * 默认：true
-   */
-  actionBarFixed: PropTypes.bool,
-
-  /**
-   * 固定列
-   * 默认：-
-   * 如：['姓名', '工号']
-   */
-  fixedColumns: PropTypes.array,
-
-  /**
-   * 模态窗中表单的 formname
-   * 默认：default
-   */
-  modalFormName: PropTypes.string,
-
-  /**
-   * PwForm 表单组件接收的 props
-   */
-  formProps: PropTypes.object,
-
-  /**
-   * 高级字典表格的配置
-   * 默认：-
-   */
-  AdvDicTableProps: PropTypes.object,
-
-  /**
-   * 自定义行按钮
-   * 默认：-
-   */
-  customRowBtns: PropTypes.array,
-
-  /**
-   * 表格高度 - scroll.y 的值
-   * 默认：0
-   */
-  subtractH: PropTypes.number,
-
   // 高级搜索相关 props
   /**
    * 高级搜索使用的窗体名称
@@ -259,7 +279,9 @@ export const tableDataPropTypes = {
    */
   advSearchValidationFields: PropTypes.array,
 
-  // 下载相关 props
+  // ===========================================================
+  // 下载文件相关 props ==========================================
+  // ===========================================================
   /**
    * 下载的文件名称：若此值为 undefined，则会使用 title 作为下载的文件名称
    * 默认：-
@@ -272,7 +294,9 @@ export const tableDataPropTypes = {
    */
   fileType: PropTypes.string,
 
-  // 记录表单相关 props
+  // ===========================================================
+  // 记录表单相关 props ==========================================
+  // ===========================================================
   /**
    * 记录表单所在容器的类型
    * 可选: 'modal' 模态窗 | 'drawer' 抽屉

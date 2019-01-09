@@ -1,3 +1,7 @@
+import React from 'react';
+import EditableRow from './EditableRow';
+import EditableCell from './EditableCell';
+
 const filterColumns = (columnsInfo, cmscolumns) => {
   const cmscolumnsArr = cmscolumns.split(',');
   return columnsInfo.filter(item => {
@@ -35,7 +39,8 @@ export const getPagination = (
 export const getColumns = (
   columnsInfo,
   { hasBeSort, defaultColumnWidth, columnsWidth, fixedColumns },
-  cmscolumns
+  cmscolumns,
+  hasRowEdit
 ) => {
   const columns = [];
 
@@ -43,7 +48,28 @@ export const getColumns = (
   if (cmscolumns) {
     columnsInfo = filterColumns(columnsInfo, cmscolumns);
   }
-  console.log({ columnsInfo });
+
+  // 开启了行内编辑，自定义单元格所用的组件
+  let components;
+  if (hasRowEdit) {
+    components = {
+      body: {
+        // 渲染表格行
+        row: props => {
+          return <tr {...props} />;
+        },
+        // 渲染单元格
+        cell: props => {
+          const { editing, record, children, ...restProps } = props;
+          return (
+            <td {...restProps}>
+              {editing && record ? record.REC_ID : children}
+            </td>
+          );
+        }
+      }
+    };
+  }
 
   columnsInfo.forEach(item => {
     const column = {
@@ -51,7 +77,8 @@ export const getColumns = (
       title: item.text,
       dataIndex: item.id,
       key: item.id,
-      align: 'center'
+      align: 'center',
+      editable: true
     };
 
     // 自定义列宽度
@@ -72,8 +99,7 @@ export const getColumns = (
 
     columns.push(column);
   });
-
-  return columns;
+  return { columns, components };
 };
 
 // 获取行选择配置

@@ -3,7 +3,7 @@ import PwTable from '../../ui-components/PwTable';
 import { message, Button, Spin } from 'antd';
 import LzBackendBtn from '../../ui-components/LzBackendBtn';
 import ButtonWithConfirm from '../../ui-components/ButtonWithConfirm';
-import { getResid, getCmsWhere } from '../../../util/util';
+import { getResid, getCmsWhere, paa } from '../../../util/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
 import {
@@ -13,6 +13,7 @@ import {
   withHttpGetFormData,
   withHttpRemoveRecords
 } from '../../hoc/withHttp';
+import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
 import withDownloadFile from '../../hoc/withDownloadFile';
@@ -35,7 +36,7 @@ const modalTitleMap = {
   modify: '修改记录',
   view: '查看记录'
 };
-
+let ppp;
 /**
  * TableData
  */
@@ -66,18 +67,20 @@ class TableData extends React.Component {
       pagination, // 分页配置
       dataSource: [], // 表格数据
       columns: [], // 表格列配置信息
+      components: undefined, // 行内编辑中自定义单元行/格的组件
       beBtnsMultiple: [], // 后端操作多条记录的按钮
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
-      modalFormData: undefined, // 模态窗中的表单窗体数据
       recordFormShowMode: undefined, // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
       rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
-      scrollXY: { x: 1000, y: 1000 }
+      scrollXY: { x: 1000, y: 1000 },
+      editingKey: null // 正在进行行内编辑的记录 REC_ID
     };
   }
 
   componentDidMount = async () => {
+    this.initVariables();
     this.setState({ loading: true });
     await this.getData();
     await this.getScrollXY();
@@ -86,13 +89,27 @@ class TableData extends React.Component {
 
   componentWillUnmount = () => {};
 
+  initVariables = () => {
+    const { dataMode, resid, subresid } = this.props;
+
+    // 资源 id
+    this._id = getResid(dataMode, resid, subresid);
+
+    // 记录表单所需的窗体数据
+    this._recordFormData = null;
+
+    // 行内编辑需索的窗体数据
+    this._rowEditFormData = null;
+  };
+
   getData = async () => {
     const {
       hasBeBtns,
       hasAdd,
       hasModify,
       hasRowModify,
-      hasRowView
+      hasRowView,
+      hasRowEdit
     } = this.props;
     const { pagination } = this.state;
     let page, pageSize;
@@ -107,9 +124,11 @@ class TableData extends React.Component {
       await this.getBeBtns();
     }
 
-    // 有打开模态窗表单的按钮
-    if (hasAdd || hasModify || hasRowModify || hasRowView) {
-      await this.getFormData();
+    // 需要获取窗体数据，用于行内编辑或记录记录表单中
+    const isNeedRecordForm = hasAdd || hasModify || hasRowModify || hasRowView;
+    const isNeedEditForm = hasRowEdit;
+    if (isNeedRecordForm || isNeedEditForm) {
+      this.getFormData(isNeedRecordForm, isNeedEditForm);
     }
   };
 
@@ -207,9 +226,10 @@ class TableData extends React.Component {
       hasBeSort,
       defaultColumnWidth,
       columnsWidth,
-      fixedColumns
+      fixedColumns,
+      hasRowEdit
     } = this.props;
-    const columns = getColumns(
+    const { columns, components } = getColumns(
       res.cmscolumninfo,
       {
         hasBeSort,
@@ -217,12 +237,14 @@ class TableData extends React.Component {
         columnsWidth,
         fixedColumns
       },
-      cmscolumns
+      cmscolumns,
+      hasRowEdit
     );
     const dataSource = res.data;
     this.setState({
       columns,
       dataSource,
+      components,
       pagination: {
         ...this.state.pagination,
         current: page,
@@ -232,22 +254,24 @@ class TableData extends React.Component {
     });
   };
 
-  getFormData = async () => {
-    const {
-      dataMode,
-      resid,
-      subresid,
-      modalFormName,
-      httpGetFormData
-    } = this.props;
-    const id = getResid(dataMode, resid, subresid);
-    let modalFormData;
+  /**
+   * 获取窗体数据
+   * @param {boolean} isNeedRecordForm 是否需要获取记录表单所需的窗体数据
+   * @param {boolean} isNeedEditForm 是否需要获取行内编辑所需的窗体数据
+   */
+  getFormData = async (isNeedRecordForm, isNeedEditForm) => {
+    const { recordFormName, rowEditFormName, httpGetFormData } = this.props;
+    const id = this._id;
     try {
-      modalFormData = await httpGetFormData(id, modalFormName);
+      const [recordFormData, rowEditFormData] = await paa([
+        () => isNeedRecordForm && httpGetFormData(id, recordFormName),
+        () => isNeedEditForm && httpGetFormData(id, rowEditFormName)
+      ]);
+      this._recordFormData = recordFormData;
+      this._rowEditFormData = rowEditFormData;
     } catch (err) {
       return message.error(err.message);
     }
-    this.setState({ modalFormData });
   };
 
   /**
@@ -262,8 +286,8 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const { dataMode, resid, subresid, httpGetBeBtns } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const { httpGetBeBtns } = this.props;
+    const id = this._id;
     let btns;
     try {
       btns = await httpGetBeBtns(id);
@@ -406,8 +430,8 @@ class TableData extends React.Component {
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
     const { beBtnsMultiple, beBtnsOther } = this.state;
-    const { dataMode, resid, subresid, size } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const { size } = this.props;
+    const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
 
@@ -425,8 +449,8 @@ class TableData extends React.Component {
 
   // 渲染行后端按钮
   renderRowBeBtns = (beBtnsSingle, record) => {
-    const { dataMode, resid, subresid, size } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const { size } = this.props;
+    const id = this._id;
     return beBtnsSingle.map(btnInfo => (
       <LzBackendBtn
         key={btnInfo.Name1}
@@ -460,8 +484,8 @@ class TableData extends React.Component {
    * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
    * @param {object} record 记录
    * @param {object} formData 窗体数据
-   * 当传这两个参数时，表示点击后端按钮打开记录表单
-   * 不传这两个参数时，表示点击前端定义的按钮打开记录表单
+   * 当传这两个参数时，表示点击 “后端按钮” 打开记录表单
+   * 不传这两个参数时，表示点击 “前端定义的按钮” 打开记录表单
    */
   openRecordForm = (operation, record, formData) => {
     const {
@@ -475,13 +499,17 @@ class TableData extends React.Component {
       recordFormType
     } = this.props;
 
-    const { recordFormShowMode, modalFormData, selectedRecord } = this.state;
+    const { recordFormShowMode, selectedRecord } = this.state;
+
+    if (!this._recordFormData) {
+      return message.info('正在请求窗体数据，请稍等...');
+    }
 
     openRecordForm({
       type: recordFormType,
       title: modalTitleMap[recordFormShowMode],
       formProps,
-      formData: formData || modalFormData,
+      formData: formData || this._recordFormData,
       operation: operation || recordFormShowMode,
       record: record || selectedRecord,
       info: { dataMode, resid, subresid, hostrecid },
@@ -502,6 +530,12 @@ class TableData extends React.Component {
         this.openRecordForm();
       }
     );
+  };
+
+  handleRowEdit = record => {
+    this.setState({
+      editingKey: record.REC_ID
+    });
   };
 
   handleModify = record => {
@@ -541,8 +575,8 @@ class TableData extends React.Component {
         records.push(record);
       }
     });
-    const { dataMode, resid, subresid, httpRemoveRecords } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const { httpRemoveRecords } = this.props;
+    const id = this._id;
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
@@ -603,12 +637,9 @@ class TableData extends React.Component {
       advSearchFormProps,
       openAdvSearch,
       advSearchValidationFields,
-      dataMode,
-      resid,
-      subresid,
       setProps
     } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const id = this._id;
 
     // 打开高级搜索
     openAdvSearch(
@@ -644,15 +675,57 @@ class TableData extends React.Component {
     }
   };
 
+  isEditing = record => {
+    return this.state.editingKey === record.REC_ID;
+  };
+
+  getControlConfig = record => {
+    if (!this._rowEditFormData) {
+      return {};
+    }
+    return this.props.getDataProp('edit', record, this._rowEditFormData, {});
+  };
+
   getNewColumns = columns => {
-    let newColumns;
+    const { hasRowEdit } = this.props;
+    let newColumns = [...columns];
     // 添加操作栏
     if (this.hasActionBar()) {
-      newColumns = columns.concat([this.getActionBar()]);
-    } else {
-      newColumns = columns;
+      newColumns = newColumns.concat([this.getActionBar()]);
+    }
+
+    // 行内编辑
+    if (hasRowEdit) {
+      newColumns = newColumns.map(column => {
+        if (!column.editable) {
+          return column;
+        }
+        return {
+          ...column,
+          onCell: (record, index) => ({
+            record,
+            title: column.title,
+            dataIndex: column.dataIndex,
+            index,
+            editing: this.isEditing(record),
+            controlConfig: this.getControlConfig(record)
+          })
+        };
+      });
     }
     return newColumns;
+  };
+
+  renderRowEditBtn = record => {
+    return (
+      <Button
+        size={btnSizeMap[this.props.size]}
+        onClick={() => this.handleRowEdit(record)}
+        className="table-data__action-btn"
+      >
+        编辑
+      </Button>
+    );
   };
 
   renderRowModifyBtn = record => {
@@ -719,8 +792,8 @@ class TableData extends React.Component {
   };
 
   handleRowDelete = async records => {
-    const { dataMode, resid, subresid, httpRemoveRecords } = this.props;
-    const id = getResid(dataMode, resid, subresid);
+    const { httpRemoveRecords } = this.props;
+    const id = this._id;
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
@@ -763,12 +836,14 @@ class TableData extends React.Component {
         const { beBtnsSingle } = this.state;
         const {
           hasModify,
+          hasRowEdit,
           hasRowView,
           hasRowDelete,
           customRowBtns
         } = this.props;
         return (
           <Fragment>
+            {hasRowEdit && this.renderRowEditBtn(record)}
             {hasModify && this.renderRowModifyBtn(record)}
             {hasRowView && this.renderRowViewBtn(record)}
             {hasRowDelete && this.renderRowDeleteBtn(record)}
@@ -807,7 +882,9 @@ class TableData extends React.Component {
       dataSource,
       columns,
       rowSelection,
-      scrollXY
+      scrollXY,
+      components,
+      editingKey
     } = this.state;
 
     const newColumns = this.getNewColumns(columns);
@@ -817,7 +894,9 @@ class TableData extends React.Component {
         <Spin spinning={loading}>
           <PwTable
             title={title}
+            editingKey={editingKey}
             loading={loading}
+            components={components}
             pagination={pagination}
             dataSource={dataSource}
             columns={newColumns}
@@ -860,6 +939,7 @@ const composedHoc = compose(
   withHttpRemoveRecords,
   withAdvSearch,
   withDownloadFile,
-  withRecordForm()
+  withRecordForm(),
+  withFormDataProp
 );
 export default composedHoc(TableData);

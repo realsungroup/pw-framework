@@ -66,3 +66,25 @@ export const getCmsWhere = (...cmsWhereArr) => {
   }
   return cmsWhere;
 };
+
+/**
+ * 根据传入的函数数组，返回 Promise.all() 所需的 promise 对象数组
+ * @param {array} fnArr 函数数组
+ * 如：
+ * [
+ *   () => {
+ *     if (condition) { 判断是否将这个 promise 添加到数组中
+ *       return somePromise;
+ *     }
+ *   }
+ * ]
+ * @param {boolean} isExecute 是否执行 Promise.all()，默认值：true
+ */
+export const paa = (fnArr, isExecute = true) => {
+  const arr = fnArr.map(fn => fn());
+  const pArr = arr;
+  if (!isExecute) {
+    return pArr;
+  }
+  return Promise.all(pArr);
+};
