@@ -1,7 +1,5 @@
 import { getRules, ControlCode } from '../../../util/controls';
 import moment from 'moment';
-import React from 'react';
-import { Button } from 'antd';
 
 const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {

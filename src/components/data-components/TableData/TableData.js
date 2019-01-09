@@ -556,7 +556,8 @@ class TableData extends React.Component {
       advSearchFormName,
       advSearchDrawerProps,
       advSearchFormProps,
-      showAdvSearch,
+      openAdvSearch,
+      advSearchValidationFields,
       dataMode,
       resid,
       subresid,
@@ -564,8 +565,14 @@ class TableData extends React.Component {
     } = this.props;
     const id = getResid(dataMode, resid, subresid);
 
-    // 显示高级搜索（处于抽屉中的表单）
-    showAdvSearch(id, advSearchFormName, advSearchFormProps, this.getCmsWhere);
+    // 打开高级搜索
+    openAdvSearch(
+      id,
+      advSearchFormName,
+      advSearchFormProps,
+      advSearchValidationFields,
+      this.getCmsWhere
+    );
 
     // 设置高级搜索中 Drawer 组件和 PwForm 组件所接收 props
     setProps(advSearchDrawerProps, advSearchFormProps);

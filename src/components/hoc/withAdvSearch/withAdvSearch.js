@@ -27,12 +27,14 @@ const withAdvSearch = WrappedComponent => {
      * @param {number} resid 资源 id
      * @param {string} formName 窗体名称，如 'default'
      * @param {object} advSearchFormProps 高级查询中 PwForm 所接收的 props
+     * @param {array} advSearchValidationFields 高级查询中需要有验证的字段，如：['name', 'age']
      * @param {function} getCmsWhere 获取 cmswhere 的回调函数
      */
-    handleShowAdvSearch = async (
+    handleOpenAdvSearch = async (
       resid,
       formName,
       advSearchFormProps,
+      advSearchValidationFields,
       getCmsWhere
     ) => {
       let formData, newState;
@@ -48,7 +50,13 @@ const withAdvSearch = WrappedComponent => {
 
         // 获取 PwFrom 所接收的 data prop
         // 使用了 withFormDataProp 高阶组件传入的 getDataProp 方法
-        this.props.getDataProp('edit', {}, formData, advSearchFormProps);
+        this.props.getDataProp(
+          'edit',
+          {},
+          formData,
+          advSearchFormProps,
+          advSearchValidationFields
+        );
         this._getCmsWhere = getCmsWhere;
 
         // 已经获取到了窗体数据
@@ -73,7 +81,9 @@ const withAdvSearch = WrappedComponent => {
     };
 
     handleGetCmsWhere = form => {
-      form.validateFields(async (err, values) => {
+      console.log({ form });
+
+      form.validateFields((err, values) => {
         if (err) {
           return message.error('表单数据有误');
         }
@@ -93,7 +103,7 @@ const withAdvSearch = WrappedComponent => {
       return (
         <Fragment>
           <WrappedComponent
-            showAdvSearch={this.handleShowAdvSearch}
+            openAdvSearch={this.handleOpenAdvSearch}
             setProps={this.handleSetAdvProps}
             {...this.props}
           />

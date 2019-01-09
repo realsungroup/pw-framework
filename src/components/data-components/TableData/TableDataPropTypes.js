@@ -18,7 +18,8 @@ export const tableDataDefaultPropTypes = {
   subtractH: 0,
   advSearchFormName: 'default',
   recordFormType: 'modal',
-  recordFormContainerProps: {}
+  recordFormContainerProps: {},
+  advSearchValidationFields: []
 };
 
 export const tableDataPropTypes = {
@@ -233,6 +234,7 @@ export const tableDataPropTypes = {
    */
   subtractH: PropTypes.number,
 
+  // 高级搜索相关 props
   /**
    * 高级搜索使用的窗体名称
    * 默认：'default'
@@ -250,6 +252,12 @@ export const tableDataPropTypes = {
    * 默认：-
    */
   advSearchFormProps: PropTypes.object,
+
+  /**
+   * 高级搜索中需要验证的字段，如：['name', 'age']
+   * 默认：[]，表示不验证任何字段
+   */
+  advSearchValidationFields: PropTypes.array,
 
   // 下载相关 props
   /**

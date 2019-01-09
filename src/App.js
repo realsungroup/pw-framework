@@ -353,8 +353,8 @@ class App extends Component {
         </Button>
         <div>
           <TableData
-            title="调休登记"
-            resid={596720928643}
+            title="刷卡登记"
+            resid={592745258634}
             defaultPagination={{
               current: 1,
               pageSize: 10,

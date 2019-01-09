@@ -25,8 +25,17 @@ const withFormDataProp = WrappedComponent => {
      * @param {object} record 记录
      * @param {array} formData 窗体数据
      * @param {object} formProps PwForm 组件所接收的其他 props
+     * @param {array | boolean} rulesControl 默认值：true
+     * 含有验证规则的控件数据，默认：true，表示所有控件都需要添加验证规则；
+     * 若 rulesControl = ['name', 'age']，则表示只有 'name' 和 'age' 字段才需要添加验证规则，其他字段的控件需不要验证
      */
-    handleGetDataProp = (operation, record, formData, formProps) => {
+    handleGetDataProp = (
+      operation,
+      record,
+      formData,
+      formProps,
+      rulesControl = true
+    ) => {
       // 存储 formData（窗体数据）
       if (!this._formData) {
         this._formData = formData;
@@ -36,7 +45,8 @@ const withFormDataProp = WrappedComponent => {
         record,
         formData,
         formProps,
-        this.handleSearch
+        this.handleSearch,
+        rulesControl
       );
       this.setState({ data });
     };

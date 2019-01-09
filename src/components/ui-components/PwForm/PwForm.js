@@ -44,12 +44,16 @@ const getDescriptor = (data, displayMode) => {
   const descriptor = {};
   if (displayMode === 'default') {
     data.forEach(item => {
-      descriptor[item.id] = cloneDeep(item.rules);
+      if (item.rules) {
+        descriptor[item.id] = cloneDeep(item.rules);
+      }
     });
   } else {
     data.forEach(typeItem => {
       typeItem.data.forEach(item => {
-        descriptor[item.id] = cloneDeep(item.rules);
+        if (item.rules) {
+          descriptor[item.id] = cloneDeep(item.rules);
+        }
       });
     });
   }
@@ -259,6 +263,7 @@ class PwForm extends React.Component {
     validateFields: callback => {
       const validator = new schema(descriptor);
       const values = this.form.getFieldsValue();
+
       validator.validate(values, (err, fields) => {
         const helps = {};
         for (let id in fields) {

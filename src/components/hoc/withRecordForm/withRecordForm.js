@@ -76,7 +76,6 @@ const withRecordForm = (options = {}) => {
           width: formProps && formProps.width ? formProps.width + 50 : 800,
           ...recordFormContainerProps
         };
-        console.log({ containerProps });
 
         if (type === 'modal') {
           containerProps.footer = null;
@@ -85,7 +84,6 @@ const withRecordForm = (options = {}) => {
           containerProps.placement = 'right';
           containerProps.onClose = onCancel;
         }
-        console.log({ containerProps });
 
         this.props.openModalOrDrawer(
           type,
@@ -99,7 +97,7 @@ const withRecordForm = (options = {}) => {
        * 关闭记录表单
        */
       handleCloseRecordForm = () => {
-        this.props.closeModalOrDrawer()
+        this.props.closeModalOrDrawer();
       };
 
       render() {
