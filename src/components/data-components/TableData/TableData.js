@@ -13,7 +13,6 @@ import {
   withHttpGetFormData,
   withHttpRemoveRecords
 } from '../../hoc/withHttp';
-import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
 import withDownloadFile from '../../hoc/withDownloadFile';
@@ -22,6 +21,8 @@ import {
   tableDataPropTypes,
   tableDataDefaultPropTypes
 } from './TableDataPropTypes';
+import { EditableContext } from './EditableRow';
+import getDataProp from '../../../util/formData2ControlsData';
 
 const { Fragment } = React;
 
@@ -471,8 +472,8 @@ class TableData extends React.Component {
     }
     const { selectedRowKeys } = rowSelection;
     dataSource.forEach(record => {
-      const item = selectedRowKeys.some(key => key === record.REC_ID);
-      if (item) {
+      const result = selectedRowKeys.some(key => key === record.REC_ID);
+      if (result) {
         records.push(record);
       }
     });
@@ -538,6 +539,20 @@ class TableData extends React.Component {
     });
   };
 
+  handleRowSave = (form, oldRecord) => {
+    const { validateFields } = form;
+    validateFields((err, values) => {
+      if (err) {
+        return message.error('表单验证出错');
+      }
+      console.log({ values });
+    });
+  };
+
+  handleRowCancel = () => {
+    this.setState({ editingKey: null });
+  };
+
   handleModify = record => {
     let selectedRecord = record;
     if (!selectedRecord) {
@@ -585,9 +600,11 @@ class TableData extends React.Component {
     message.success('删除成功');
 
     // 清除 selectedRowKeys
-    this.setState({
-      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
-    });
+    if (this.state.rowSelection) {
+      this.setState({
+        rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+      });
+    }
 
     // 刷新表格数据
     this.handleRefresh();
@@ -679,20 +696,16 @@ class TableData extends React.Component {
     return this.state.editingKey === record.REC_ID;
   };
 
-  getControlConfig = record => {
+  getControlsData = record => {
     if (!this._rowEditFormData) {
       return {};
     }
-    return this.props.getDataProp('edit', record, this._rowEditFormData, {});
+    return getDataProp('edit', record, this._rowEditFormData, {});
   };
 
   getNewColumns = columns => {
     const { hasRowEdit } = this.props;
     let newColumns = [...columns];
-    // 添加操作栏
-    if (this.hasActionBar()) {
-      newColumns = newColumns.concat([this.getActionBar()]);
-    }
 
     // 行内编辑
     if (hasRowEdit) {
@@ -708,11 +721,17 @@ class TableData extends React.Component {
             dataIndex: column.dataIndex,
             index,
             editing: this.isEditing(record),
-            controlConfig: this.getControlConfig(record)
+            controlsData: this.getControlsData(record)
           })
         };
       });
     }
+
+    // 添加操作栏
+    if (this.hasActionBar()) {
+      newColumns = newColumns.concat([this.getActionBar()]);
+    }
+
     return newColumns;
   };
 
@@ -725,6 +744,40 @@ class TableData extends React.Component {
       >
         编辑
       </Button>
+    );
+  };
+
+  renderRowSaveBtn = record => {
+    return (
+      <EditableContext.Consumer>
+        {form => (
+          <Button
+            size={btnSizeMap[this.props.size]}
+            onClick={() => this.handleRowSave(form, record)}
+            className="table-data__action-btn"
+          >
+            保存
+          </Button>
+        )}
+      </EditableContext.Consumer>
+    );
+  };
+
+  renderRowCancelBtn = record => {
+    return (
+      <ButtonWithConfirm
+        popConfirmProps={{
+          title: '您确定要取消编辑吗？',
+          onConfirm: () => this.handleRowCancel()
+        }}
+        buttonProps={{
+          type: 'danger',
+          size: btnSizeMap[this.props.size],
+          className: 'table-data__action-btn'
+        }}
+      >
+        取消
+      </ButtonWithConfirm>
     );
   };
 
@@ -833,25 +886,44 @@ class TableData extends React.Component {
       align: 'center',
       width: this.props.actionBarWidth,
       render: (text, record, rowIndex) => {
-        const { beBtnsSingle } = this.state;
-        const {
-          hasModify,
+        const { beBtnsSingle, editingKey } = this.state;
+        let {
           hasRowEdit,
+          hasModify,
           hasRowView,
           hasRowDelete,
-          customRowBtns
+          customRowBtns,
+          hasBeBtns
         } = this.props;
+        let hasRowSaveCancel,
+          hasRowBeBtns = hasBeBtns && !!beBtnsSingle.length,
+          hasCustomRowBtns = !!customRowBtns;
+        if (hasRowEdit) {
+          hasRowSaveCancel = record.REC_ID === editingKey;
+          hasModify = hasModify && !hasRowSaveCancel;
+          hasRowEdit = hasRowEdit && !hasRowSaveCancel;
+          hasRowView = hasRowView && !hasRowSaveCancel;
+          hasRowDelete = hasRowDelete && !hasRowSaveCancel;
+          hasRowBeBtns = hasRowBeBtns && !hasRowSaveCancel;
+          hasCustomRowBtns = hasCustomRowBtns && !hasRowSaveCancel;
+        }
+
         return (
           <Fragment>
             {hasRowEdit && this.renderRowEditBtn(record)}
+
+            {hasRowSaveCancel && this.renderRowSaveBtn(record)}
+            {hasRowSaveCancel && this.renderRowCancelBtn(record)}
+
             {hasModify && this.renderRowModifyBtn(record)}
             {hasRowView && this.renderRowViewBtn(record)}
             {hasRowDelete && this.renderRowDeleteBtn(record)}
 
             {/* 后端按钮 */}
-            {this.renderRowBeBtns(beBtnsSingle, record)}
+            {hasRowBeBtns && this.renderRowBeBtns(beBtnsSingle, record)}
             {/* 自定义按钮 */}
-            {customRowBtns && this.renderCustomRowBtns(customRowBtns, record)}
+            {hasCustomRowBtns &&
+              this.renderCustomRowBtns(customRowBtns, record)}
           </Fragment>
         );
       }
@@ -939,7 +1011,6 @@ const composedHoc = compose(
   withHttpRemoveRecords,
   withAdvSearch,
   withDownloadFile,
-  withRecordForm(),
-  withFormDataProp
+  withRecordForm()
 );
 export default composedHoc(TableData);

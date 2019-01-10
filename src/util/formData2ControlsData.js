@@ -1,4 +1,4 @@
-import { getRules, ControlCode } from '../../../util/controls';
+import { getRules, ControlCode } from './controls';
 import moment from 'moment';
 
 const assortFields = controlArr => {
@@ -225,6 +225,7 @@ const getData = (
     // id 在后端表示内部字段
     const id = controlData.ColName;
     const obj = {
+      controlData: controlData,
       id,
       label: controlData.ColDispName,
       labelCol: 8,
@@ -301,9 +302,8 @@ const getDataProp = (
       };
       data.push(obj);
     });
-
-    console.log({ data });
   }
+
   return data;
 };
 

@@ -5,7 +5,7 @@ import EditableCell from './EditableCell';
 const filterColumns = (columnsInfo, cmscolumns) => {
   const cmscolumnsArr = cmscolumns.split(',');
   return columnsInfo.filter(item => {
-    return !!cmscolumnsArr.some(id => id === item.id);
+    return cmscolumnsArr.some(id => id === item.id);
   });
 };
 
@@ -54,19 +54,21 @@ export const getColumns = (
   if (hasRowEdit) {
     components = {
       body: {
+        row: EditableRow,
         // 渲染表格行
-        row: props => {
-          return <tr {...props} />;
-        },
+        // row: props => {
+        //   return <tr {...props} />;
+        // },
+        cell: EditableCell
         // 渲染单元格
-        cell: props => {
-          const { editing, record, children, ...restProps } = props;
-          return (
-            <td {...restProps}>
-              {editing && record ? record.REC_ID : children}
-            </td>
-          );
-        }
+        // cell: props => {
+        //   const { editing, record, children, ...restProps } = props;
+        //   return (
+        //     <td {...restProps}>
+        //       {editing && record ? record.REC_ID : children}
+        //     </td>
+        //   );
+        // }
       }
     };
   }
