@@ -11,7 +11,7 @@ import { getResid } from '../../../util/util';
 import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
 import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
-import getDataProp from '../../../util/formData2ControlsData';
+import { getDataProp } from '../../../util/formData2ControlsData';
 
 // 临时存放高级字典控件数据 controlData
 let tempControlData = null;
@@ -98,7 +98,7 @@ class FormData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   handleSave = form => {
     const { operation, info, record } = this.props;

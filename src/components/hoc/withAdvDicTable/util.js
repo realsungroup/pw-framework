@@ -23,7 +23,7 @@ export const getCmscolumns = advData => {
   return str;
 };
 
-// 获取由过滤字段组合成的 cmswhere 查询语句
+// 获取由过滤字段组合成的 cmswhere 查询语句，来查询高级字典表格的数据
 export const getCmswhere = advData => {
   const innerFieldNames = advData.DictionaryFilterCol.map(item => {
     return { col1: item.Column1, col2: item.Column2 };

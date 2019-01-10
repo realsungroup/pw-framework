@@ -103,17 +103,6 @@ export const tableDataPropTypes = {
    */
   cmswhere: PropTypes.string,
 
-  /**
-   * 窗体名称
-   * 默认：'default'，相当于：
-   * {
-   *   rowFormName: 'default', //  rowFormName 表示行内编辑所用的窗体名称
-   *   formFormName: 'default' // formFormName 表示表单中所用的窗体名称
-   * }
-   * 如果 formsName 的类型为字符串，则 “行内编辑所用的窗体名称” 和 “表单中所用的窗体名称” 相同
-   */
-  formsName: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-
   // 按钮相关的 props
   /**
    * 默认分页配置
@@ -127,6 +116,10 @@ export const tableDataPropTypes = {
    */
   hasBeSort: PropTypes.bool,
 
+
+  // ===========================================================
+  // 表格列相关的 props ==========================================
+  // ===========================================================
   /**
    * 默认列宽度
    * 默认：200
@@ -141,6 +134,16 @@ export const tableDataPropTypes = {
   columnsWidth: PropTypes.object,
 
   /**
+   * 固定列
+   * 默认：-
+   * 如：['姓名', '工号']
+   */
+  fixedColumns: PropTypes.array,
+
+  // ===========================================================
+  // 操作栏相关的 props ===============================================
+  // ===========================================================
+  /**
    * 操作栏的宽度
    * 默认：300
    */
@@ -152,15 +155,9 @@ export const tableDataPropTypes = {
    */
   actionBarFixed: PropTypes.bool,
 
-  /**
-   * 固定列
-   * 默认：-
-   * 如：['姓名', '工号']
-   */
-  fixedColumns: PropTypes.array,
 
   // ===========================================================
-  // 窗体名称相关的 props ============================================
+  // 窗体名称相关的 props =========================================
   // ===========================================================
   /**
    * 记录表单所用窗体的窗体名称

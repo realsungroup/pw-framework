@@ -12,22 +12,40 @@ const withAdvDicTable = WrappedComponent => {
     constructor(props) {
       super(props);
       this.state = {
-        visible: false,
-        advDicTableProps: {}
+        visible: false, // 是否显示高级字典表格
+        advDicTableProps: {} // 高级字典表格接收的 props
       };
     }
 
-    handleShowAdvDicTable = (form, controlData) => {
+    /**
+     * 显示高级字典表格
+     * @param {object} form 使用 Form.create()(MyForm) 自动收集 MyForm 组件中的表单值功能暴露出来的 form 对象
+     * @param {object} dataItem 描述控件项（打开高级字典的控件为 Search）的数据，如：
+     */
+    // {
+    //   id: 'name', // 字段名称
+    //   label: '姓名', // label
+    //   value: '肖磊', // 初始值
+    //   labelCol: 8, // label 所占列
+    //   wrapperCol: 16, // 控件 所占列
+    //   rules: [{ required: true, message: '请输入姓名' }], // 验证规则
+    //   name: 'Input', // 控件名称
+    //   props: { // 控件所接收的 props
+    //     type: 'number'
+    //   },
+    //   advDicTableProps: { resid: 666, cmsWhere: 'xxx', cmscolumns: 'yyy' } // 高级字典独有的字段
+    // }
+    handleShowAdvDicTable = (form, dataItem) => {
       const state = { visible: true };
 
-      if (!this._form || !this._controlData) {
+      if (!this._form || !this._dataItem) {
+        // 缓存 form、dataItem
         this._form = form;
-        this._controlData = controlData;
+        this._dataItem = dataItem;
       }
 
       if (!this.state.advDicTableProps.resid) {
-        const advDicTableProps = this.getadvDicTableProps();
-        state.advDicTableProps = advDicTableProps;
+        state.advDicTableProps = { ...dataItem.advDicTableProps };
       }
 
       this.setState(state);
@@ -50,17 +68,7 @@ const withAdvDicTable = WrappedComponent => {
         resid,
         cmscolumns,
         cmswhere,
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        hasDownload: false,
-        hasRefresh: false,
-        hasAdvSearch: false,
-        subtractH: 165,
-        height: 400
+
       };
     };
 
@@ -80,22 +88,17 @@ const withAdvDicTable = WrappedComponent => {
     // 点击高级字典表中的行选择按钮
     handleSelect = record => {
       message.success('选择成功');
-
-      const advData = this._controlData.AdvDictionaryListData[0];
-
       // 匹配字段
-      const matchFileds = advData.MatchAndReferenceCols.filter(item => {
-        return item.CDZ2_TYPE === 0;
-      });
+      const { matchFields = [] } = this._dataItem.advDicTableProps;
+      // 得到表单中匹配字段的值
       const values = {};
-      matchFileds.forEach(item => {
+      matchFields.forEach(item => {
         values[item.CDZ2_COL1] = record[item.CDZ2_COL2];
       });
-      this.setState({
-        visible: false
-      });
+
       // 设置值
       this._form.setFieldsValue(values);
+      this.handleCancel();
     };
 
     handleCancel = () => {

@@ -15,8 +15,9 @@ export default class EditableCell extends React.Component {
   static propTypes = {
     /**
      * 所有控件（如：Input）的数据
+     * 默认：[]
      */
-    controlsData: PropTypes.array.isRequired
+    data: PropTypes.array
     // data 格式：displayMode 为 default 时
     // [
     //   {
@@ -34,37 +35,23 @@ export default class EditableCell extends React.Component {
     // ];
   };
 
-  static defaultProps = {};
+  static defaultProps = {
+    data: []
+  };
 
-  getObj = () => {
-    const { controlsData, dataIndex } = this.props;
-    const controlData = controlsData.find(
+  getDataItemAndOptions = () => {
+    const { data, dataIndex } = this.props;
+    const dataItem = data.find(
       controlData => controlData.id === dataIndex
     );
-
-    // 该字段没有控件配置（即没有控件，直接显示记录值）
-    if (!controlData) {
+    if (!dataItem) {
       return;
     }
-
-    const {
-      value,
-      rules,
-      props,
-      name: controlName,
-      ...restOptions
-    } = controlData;
     const options = {
-      initialValue: value,
-      rules: rules
-      // ...restOptions
-    };
-    return {
-      props,
-      options,
-      controlName,
-      controlData
-    };
+      initialValue: dataItem.initialValue,
+      rules: dataIndex.rules
+    }
+    return { dataItem, options };
   };
 
   render() {
@@ -74,15 +61,17 @@ export default class EditableCell extends React.Component {
       title,
       record, // 记录
       index,
-      controlsData, // 所有控件配置
+      data, // 所有控件配置
       ...restProps
     } = this.props;
 
-    let obj;
+    let obj, dataItem, options;
     if (editing) {
-      obj = this.getObj();
-    }
+      obj = this.getDataItemAndOptions();
 
+      dataItem = obj && obj.dataItem;
+      options = obj && obj.options
+    }
     const isRenderControl = editing && !!obj;
 
     return (
@@ -93,18 +82,16 @@ export default class EditableCell extends React.Component {
             <td {...restProps}>
               {isRenderControl ? (
                 <FormItem>
-                  {getFieldDecorator(dataIndex, obj.options)(
+                  {getFieldDecorator(dataIndex, options)(
                     <Control
-                      name={obj.controlName}
-                      controlProps={obj.props}
-                      controlData={obj.controlData}
+                      dataItem={dataItem}
                       form={form}
                     />
                   )}
                 </FormItem>
               ) : (
-                restProps.children
-              )}
+                  restProps.children
+                )}
             </td>
           );
         }}

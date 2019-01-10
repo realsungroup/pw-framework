@@ -374,7 +374,7 @@ class App extends Component {
             height={600}
             formProps={{ displayMode: 'default', width: 600, height: 500 }}
             recordFormType="modal"
-            // cmscolumns="EMP_ID,C3_375965124343,C3_375965124625,DATE1,DATE2"
+            // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
             rowEditFormName="default_rowTest"
           />
           {/* <PwForm

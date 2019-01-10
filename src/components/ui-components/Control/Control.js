@@ -23,38 +23,14 @@ const Option = Select.Option;
 class Control extends React.Component {
   static propTypes = {
     /**
-     * 控件（如：Input）组件接收的 props
+     * 描述控件的数据
      */
-    controlProps: PropTypes.object,
-
-    /**
-     * 控件名称
-     */
-    name: PropTypes.oneOf([
-      'Input',
-      'TextArea',
-      'Search',
-      'DatePicker',
-      'DateTimePicker',
-      'RadioGroup',
-      'Select',
-      'Upload'
-    ]).isRequired,
-
-    /**
-     * 控件值
-     */
-    value: PropTypes.any
-
-    /**
-     * 控件数据
-     */
-    // controlData: PropTypes.object.isRequired,
+    dataItem: PropTypes.object.isRequired,
 
     /**
      * form 对象
      */
-    // form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired
   };
 
   static defaultProps = {};
@@ -65,9 +41,9 @@ class Control extends React.Component {
     this.state = {};
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (nextProps.value !== this.props.value) {
@@ -77,8 +53,8 @@ class Control extends React.Component {
   };
 
   handleSearch = () => {
-    const { controlData, showAdvDicTable, form } = this.props;
-    showAdvDicTable(form, controlData.controlData);
+    const { showAdvDicTable, form, dataItem } = this.props;
+    showAdvDicTable(form, dataItem);
   };
 
   handleChange = value => {
@@ -93,7 +69,9 @@ class Control extends React.Component {
   };
 
   render() {
-    const { name, controlProps, value } = this.props;
+    const { dataItem, value } = this.props;
+    const name = dataItem.name;
+    const props = dataItem.props;
     switch (name) {
       case 'Input': {
         return <Input value={value} onChange={this.handleChange} />;
@@ -116,7 +94,7 @@ class Control extends React.Component {
         return <RadioGroup onChange={this.handleChange} />;
       }
       case 'Select': {
-        const { options } = controlProps;
+        const { options } = props;
         console.log({ options });
 
         return (
@@ -131,7 +109,7 @@ class Control extends React.Component {
       }
       case 'Upload': {
         return (
-          <Upload {...controlProps}>
+          <Upload {...props}>
             <Button>
               <Icon type="upload" /> 上传
             </Button>

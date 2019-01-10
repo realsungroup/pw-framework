@@ -1,5 +1,7 @@
 import { getRules, ControlCode } from './controls';
 import moment from 'moment';
+import cloneDeep from 'lodash.clonedeep';
+
 
 const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {
@@ -75,6 +77,48 @@ const getControlName = controlData => {
   }
 };
 
+// 获取由过滤字段组合成的 cmswhere 查询语句，来查询高级字典表格的数据
+const getCmswhere = advData => {
+  const innerFieldNames = advData.DictionaryFilterCol.map(item => {
+    return { col1: item.Column1, col2: item.Column2 };
+  });
+  if (!retFilterFieldValues || innerFieldNames.length === 0) {
+    return;
+  }
+  const colValues = retFilterFieldValues(innerFieldNames);
+  let where = '';
+  colValues.forEach((colValue, index) => {
+    if (index === colValues.length - 1) {
+      colValue.col1Value &&
+        (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
+    } else {
+      colValue.col1Value &&
+        (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+    }
+  });
+  return where;
+};
+
+// 获取 cmscolumns 查询语句
+const getCmscolumns = advData => {
+  let str = '';
+  const len = advData.MatchAndReferenceCols.length;
+
+  advData.MatchAndReferenceCols.forEach((item, index) => {
+    index === len - 1 ? (str += item.CDZ2_COL2) : (str += item.CDZ2_COL2 + ',');
+  });
+  return str;
+};
+
+// 获取匹配字段
+const getMatchFields = (advData) => {
+  const matchFields = advData.MatchAndReferenceCols.filter(item => {
+    return item.CDZ2_TYPE === 0;
+  });
+  return matchFields;
+}
+
+
 const getProps = (controlData, name, handleSearch) => {
   const { FrmReadonly, ColIsReadOnly } = controlData;
   const props = {};
@@ -121,7 +165,7 @@ const getProps = (controlData, name, handleSearch) => {
     }
 
     const resid = advData.ResID2;
-    const cmscolumns = getCmscolumns(advData);
+    const cmscolumns = getCmsColumns(advData);
     const cmswhere = getCmswhere(advData);
 
     props.enterButton = true;
@@ -156,7 +200,7 @@ const getProps = (controlData, name, handleSearch) => {
 };
 
 // 获取 cmscolumns 查询语句
-const getCmscolumns = advData => {
+const getCmsColumns = advData => {
   let str = '';
   const len = advData.MatchAndReferenceCols.length;
 
@@ -166,27 +210,7 @@ const getCmscolumns = advData => {
   return str;
 };
 
-// 获取由过滤字段组合成的 cmswhere 查询语句
-const getCmswhere = advData => {
-  const innerFieldNames = advData.DictionaryFilterCol.map(item => {
-    return { col1: item.Column1, col2: item.Column2 };
-  });
-  if (!retFilterFieldValues || innerFieldNames.length === 0) {
-    return;
-  }
-  const colValues = retFilterFieldValues(innerFieldNames);
-  let where = '';
-  colValues.forEach((colValue, index) => {
-    if (index === colValues.length - 1) {
-      colValue.col1Value &&
-        (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
-    } else {
-      colValue.col1Value &&
-        (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
-    }
-  });
-  return where;
-};
+
 
 // 返回高级字典中过滤字段的值
 const retFilterFieldValues = innerFieldNames => {
@@ -245,10 +269,42 @@ const getData = (
     } else {
       throw new Error('rulesControl 类型应该为 `boolean` 或 `array`');
     }
-    obj.value = getValue(obj.name, record, controlData, operation);
+    // obj.value = getValue(obj.name, record, controlData, operation);
+    // obj.initialValue = getValue(obj.name, record, controlData, operation);
     obj.props = getProps(controlData, obj.name, handleSearch);
+
+    // 高级字典表格接收的 props
+    if (obj.name === 'Search') {
+      const advData = controlData.AdvDictionaryListData[0];
+      if (!advData) {
+        alert('advDictionatyData.AdvDictionaryListData 为空数组');
+        return;
+      }
+      obj.advDicTableProps = {
+        // 匹配字段
+        resid: advData.ResID2,
+        cmsWhere: getCmswhere(advData),
+        cmscolumns: getCmscolumns(advData),
+        matchFields: getMatchFields(advData), // 匹配字段（即高级字典表中的字段对应表单中的字段，如：[{ CDZ2_COL1: 111, CDZ2_COL2: 222 }, { CDZ2_COL1: 111, CDZ2_COL2: 222 }]）
+        // 得到匹配字段的话，可以由选择的高级字典表中记录得到表单中字段的值（一一对应）
+        // 高级字典默认 props
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        hasDownload: false,
+        hasRefresh: false,
+        hasAdvSearch: false,
+        subtractH: 165,
+        height: 400
+      }
+
+    }
     data.push(obj);
   });
+
   return data;
 };
 
@@ -262,7 +318,7 @@ const getData = (
  * 含有验证规则的控件数据，默认：true，表示所有控件都需要添加验证规则；
  * 若 rulesControl = ['name', 'age']，则表示只有 'name' 和 'age' 字段才需要添加验证规则，其他字段的控件需不要验证
  */
-const getDataProp = (
+export const getDataProp = (
   operation,
   record,
   formData,
@@ -304,7 +360,24 @@ const getDataProp = (
     });
   }
 
+  let isTransformValue = true;
+  if (operation === 'view') {
+    isTransformValue = false;
+  }
+  data = setDataInitialValue(data, record, isTransformValue);
   return data;
 };
 
-export default getDataProp;
+/**
+ * 设置所有控件的 initialValue 属性值
+ * @param {array} data 所有控件数据
+ * @param {object} record 记录
+ * @param {boolean} isTransformValue 是否转换值（如：'2019-01-10' 转换为 moment 对象），默认值：false
+ */
+export const setDataInitialValue = (data, record, isTransformValue = false) => {
+  const newData = cloneDeep(data);
+  newData.forEach(dataItem => {
+    dataItem.initialValue = record[dataItem.id];
+  })
+  return newData;
+}

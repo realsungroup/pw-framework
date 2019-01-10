@@ -22,7 +22,7 @@ import {
   tableDataDefaultPropTypes
 } from './TableDataPropTypes';
 import { EditableContext } from './EditableRow';
-import getDataProp from '../../../util/formData2ControlsData';
+import { getDataProp, setDataInitialValue } from '../../../util/formData2ControlsData';
 
 const { Fragment } = React;
 
@@ -88,7 +88,7 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   initVariables = () => {
     const { dataMode, resid, subresid } = this.props;
@@ -242,7 +242,9 @@ class TableData extends React.Component {
       hasRowEdit
     );
     const dataSource = res.data;
-    this.setState({
+
+
+    const state = {
       columns,
       dataSource,
       components,
@@ -251,8 +253,17 @@ class TableData extends React.Component {
         current: page,
         pageSize,
         total: res.total
-      }
-    });
+      },
+      editingKey: null // 清除正在编辑的行
+    }
+
+    // 有行内编辑，则清除正在编辑的行
+    if (this.props.hasRowEdit) {
+      state.editingKey = null;
+    }
+
+
+    this.setState(state);
   };
 
   /**
@@ -413,20 +424,20 @@ class TableData extends React.Component {
         this._sortOrder = 'desc';
         this.getTableData({
           page: 1,
-          pageSize: this.state.pagination.pageSize
+          pageSize: this.state.pagination.pageSize,
         });
       } else {
         // 降序
         this._sortOrder = 'asc';
         this.getTableData({
           page: 1,
-          pageSize: this.state.pagination.pageSize
+          pageSize: this.state.pagination.pageSize,
         });
       }
     }
   };
 
-  getScroll = () => {};
+  getScroll = () => { };
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
@@ -545,7 +556,7 @@ class TableData extends React.Component {
       if (err) {
         return message.error('表单验证出错');
       }
-      console.log({ values });
+
     });
   };
 
@@ -612,8 +623,8 @@ class TableData extends React.Component {
 
   handleOnRow = record => {
     return {
-      onClick: () => {}, // 点击行
-      onMouseEnter: () => {} // 鼠标移入行
+      onClick: () => { }, // 点击行
+      onMouseEnter: () => { } // 鼠标移入行
     };
   };
 
@@ -698,9 +709,16 @@ class TableData extends React.Component {
 
   getControlsData = record => {
     if (!this._rowEditFormData) {
-      return {};
+      return [];
     }
-    return getDataProp('edit', record, this._rowEditFormData, {});
+    let data;
+    if (!this._rowFormData) {
+      data = getDataProp('edit', record, this._rowEditFormData, {});
+      this._rowFormData = data;
+    } else {
+      data = setDataInitialValue(this._rowFormData, record, true)
+    }
+    return data;
   };
 
   getNewColumns = columns => {
@@ -721,7 +739,7 @@ class TableData extends React.Component {
             dataIndex: column.dataIndex,
             index,
             editing: this.isEditing(record),
-            controlsData: this.getControlsData(record)
+            data: this.getControlsData(record)
           })
         };
       });
