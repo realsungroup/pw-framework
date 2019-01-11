@@ -2,7 +2,6 @@ import { getRules, ControlCode } from './controls';
 import moment from 'moment';
 import cloneDeep from 'lodash.clonedeep';
 
-
 const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {
     return [];
@@ -111,15 +110,14 @@ const getCmscolumns = advData => {
 };
 
 // 获取匹配字段
-const getMatchFields = (advData) => {
+const getMatchFields = advData => {
   const matchFields = advData.MatchAndReferenceCols.filter(item => {
     return item.CDZ2_TYPE === 0;
   });
   return matchFields;
-}
+};
 
-
-const getProps = (controlData, name, handleSearch) => {
+const getProps = (controlData, name) => {
   const { FrmReadonly, ColIsReadOnly } = controlData;
   const props = {};
 
@@ -157,41 +155,8 @@ const getProps = (controlData, name, handleSearch) => {
 
   // 'Search' 添加搜索按钮
   if (name === 'Search') {
-    const advData = controlData.AdvDictionaryListData[0];
-
-    if (!advData) {
-      alert('advDictionatyData.AdvDictionaryListData 为空数组');
-      return;
-    }
-
-    const resid = advData.ResID2;
-    const cmscolumns = getCmsColumns(advData);
-    const cmswhere = getCmswhere(advData);
-
     props.enterButton = true;
     props.disabled = true;
-    // Input.Search 控件点击搜索或按下回车时的回调
-    props.onSearch = () => {
-      handleSearch(
-        {
-          resid,
-          cmscolumns,
-          cmswhere,
-          hasAdd: false,
-          hasModify: false,
-          hasDelete: false,
-          hasRowModify: false,
-          hasRowView: false,
-          hasRowDelete: false,
-          hasDownload: false,
-          hasRefresh: false,
-          hasAdvSearch: false,
-          subtractH: 165,
-          height: 400
-        },
-        controlData
-      );
-    };
   }
 
   props.disabled = !!(FrmReadonly || ColIsReadOnly);
@@ -210,8 +175,6 @@ const getCmsColumns = advData => {
   return str;
 };
 
-
-
 // 返回高级字典中过滤字段的值
 const retFilterFieldValues = innerFieldNames => {
   const { getFieldValue } = this.props.form;
@@ -226,24 +189,7 @@ const retFilterFieldValues = innerFieldNames => {
   return colValues;
 };
 
-const getValue = (name, record, controlData, operation) => {
-  const value = record[controlData.ColName];
-  if (operation === 'view') {
-    return value;
-  }
-  if (name === 'DateTimePicker') {
-    return moment(value);
-  }
-  return value;
-};
-
-const getData = (
-  canOpControlArr,
-  record,
-  operation,
-  handleSearch,
-  rulesControl
-) => {
+const getData = (canOpControlArr, rulesControl) => {
   const data = [];
   canOpControlArr.forEach(controlData => {
     // id 在后端表示内部字段
@@ -269,9 +215,7 @@ const getData = (
     } else {
       throw new Error('rulesControl 类型应该为 `boolean` 或 `array`');
     }
-    // obj.value = getValue(obj.name, record, controlData, operation);
-    // obj.initialValue = getValue(obj.name, record, controlData, operation);
-    obj.props = getProps(controlData, obj.name, handleSearch);
+    obj.props = getProps(controlData, obj.name);
 
     // 高级字典表格接收的 props
     if (obj.name === 'Search') {
@@ -299,8 +243,7 @@ const getData = (
         hasAdvSearch: false,
         subtractH: 165,
         height: 400
-      }
-
+      };
     }
     data.push(obj);
   });
@@ -309,60 +252,41 @@ const getData = (
 };
 
 /**
- * 获取 PwForm 接收的 data prop
- * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
- * @param {object} record 记录
+ * 获取表单接收的 data prop
  * @param {object} formData 窗体数据
- * @param {object} formProps PwForm 组件所接收的其他 props，默认：{}
+ * @param {object} record 记录
+ * @param {boolean} isTransformValue 是否转换控件的值，默认值：false，即值为 record 中值
+ * @param {boolean} isClassifyLayout 是否返回分类布局所需的数据，默认值：false
  * @param {array | boolean} rulesControl
  * 含有验证规则的控件数据，默认：true，表示所有控件都需要添加验证规则；
  * 若 rulesControl = ['name', 'age']，则表示只有 'name' 和 'age' 字段才需要添加验证规则，其他字段的控件需不要验证
  */
 export const getDataProp = (
-  operation,
-  record,
   formData,
-  formProps = {},
-  handleSearch,
+  record,
+  isTransformValue = false,
+  isClassifyLayout = false,
   rulesControl = true
 ) => {
   let data = [];
   const { canOpControlArr } = formData;
-  const { displayMode = 'default' } = formProps;
 
   // 默认布局
-  if (displayMode === 'default') {
-    data = getData(
-      canOpControlArr,
-      record,
-      operation,
-      handleSearch,
-      rulesControl
-    );
+  if (!isClassifyLayout) {
+    data = getData(canOpControlArr, rulesControl);
 
     // 分类布局
-  } else if (displayMode === 'classify') {
+  } else {
     const klasses = assortFields(canOpControlArr);
     console.log({ klasses });
 
     klasses.forEach(klass => {
       const obj = {
         type: klass.title,
-        data: getData(
-          klass.renderControlArr,
-          record,
-          operation,
-          handleSearch,
-          rulesControl
-        )
+        data: getData(klass.renderControlArr, rulesControl)
       };
       data.push(obj);
     });
-  }
-
-  let isTransformValue = true;
-  if (operation === 'view') {
-    isTransformValue = false;
   }
   data = setDataInitialValue(data, record, isTransformValue);
   return data;
@@ -378,6 +302,11 @@ export const setDataInitialValue = (data, record, isTransformValue = false) => {
   const newData = cloneDeep(data);
   newData.forEach(dataItem => {
     dataItem.initialValue = record[dataItem.id];
-  })
+    if (isTransformValue) {
+      if (dataItem.name === 'DateTimePicker') {
+        dataItem.initialValue = moment(dataItem.initialValue);
+      }
+    }
+  });
   return newData;
-}
+};

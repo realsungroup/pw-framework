@@ -14,12 +14,10 @@ const Fragment = React.Fragment;
 export default class EditableCell extends React.Component {
   static propTypes = {
     /**
-     * 所有控件（如：Input）的数据
-     * 默认：[]
+     * 控件（如：Input）的数据
+     * 默认：{}
      */
-    data: PropTypes.array
-    // data 格式：displayMode 为 default 时
-    // [
+    dataItem: PropTypes.object
     //   {
     //     id: 'name', // 字段名称
     //     label: '姓名', // label
@@ -32,26 +30,10 @@ export default class EditableCell extends React.Component {
     //       type: 'number'
     //     }
     //   }
-    // ];
   };
 
   static defaultProps = {
-    data: []
-  };
-
-  getDataItemAndOptions = () => {
-    const { data, dataIndex } = this.props;
-    const dataItem = data.find(
-      controlData => controlData.id === dataIndex
-    );
-    if (!dataItem) {
-      return;
-    }
-    const options = {
-      initialValue: dataItem.initialValue,
-      rules: dataIndex.rules
-    }
-    return { dataItem, options };
+    dataItem: {}
   };
 
   render() {
@@ -61,18 +43,19 @@ export default class EditableCell extends React.Component {
       title,
       record, // 记录
       index,
-      data, // 所有控件配置
+      dataItem, // 控件数据
       ...restProps
     } = this.props;
 
-    let obj, dataItem, options;
-    if (editing) {
-      obj = this.getDataItemAndOptions();
+    const isRenderControl = editing && !!dataItem;
 
-      dataItem = obj && obj.dataItem;
-      options = obj && obj.options
+    let options;
+    if (isRenderControl) {
+      options = {
+        initialValue: dataItem.initialValue,
+        rules: dataItem.rules
+      };
     }
-    const isRenderControl = editing && !!obj;
 
     return (
       <EditableContext.Consumer>
@@ -83,15 +66,12 @@ export default class EditableCell extends React.Component {
               {isRenderControl ? (
                 <FormItem>
                   {getFieldDecorator(dataIndex, options)(
-                    <Control
-                      dataItem={dataItem}
-                      form={form}
-                    />
+                    <Control dataItem={dataItem} form={form} />
                   )}
                 </FormItem>
               ) : (
-                  restProps.children
-                )}
+                restProps.children
+              )}
             </td>
           );
         }}

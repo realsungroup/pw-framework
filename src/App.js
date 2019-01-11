@@ -365,7 +365,7 @@ class App extends Component {
             size="small"
             hasBeBtns={false}
             subtractH={180}
-            actionBarFixed={false}
+            actionBarFixed={true}
             hasRowEdit
             hasAdd={false}
             hasDelete={false}

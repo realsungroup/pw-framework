@@ -9,29 +9,16 @@ import { dealFormData } from '../../../util/controls';
 import { getResid } from '../../../util/util';
 
 import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
-import withFormDataProp from '../../hoc/withFormDataProp';
 import { compose } from 'recompose';
-import { getDataProp } from '../../../util/formData2ControlsData';
 
-// 临时存放高级字典控件数据 controlData
-let tempControlData = null;
+const { Fragment } = React;
 
 /**
  * FormData
  */
 class FormData extends React.Component {
   static propTypes = {
-    /**
-     * 窗体数据
-     * 默认：{ subTableArr:[], allControlArr: [], canOpControlArr: [], containerControlArr: [] }
-     */
-    formData: PropTypes.object,
-    // formData = {
-    //   subTableArr: [], // 子表控件
-    //   allControlArr: [], // 所有控件（可操作的控件 + label）
-    //   canOpControlArr: [], // 可操作的控件（如 input）
-    //   containerControlArr: [] // 容器控件
-    // }
+    data: PropTypes.array,
 
     /**
      * 表单记录
@@ -84,21 +71,15 @@ class FormData extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      loading: true
+      loading: false
     };
   }
 
-  componentDidMount = () => {
-    // 放 didmount 是为了优化 Modal 的显示速度
-    // onGetDataProp 会耗时，会阻止 Modal 的显示
-    // 若表单数据比较多，Modal 的显示出来的速度就会变慢
-    const { operation, record, formData, formProps } = this.props;
-    getDataProp(operation, record, formData, formProps);
-    this.setState({ loading: false });
-  };
+  componentDidMount = () => {};
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   handleSave = form => {
     const { operation, info, record } = this.props;
@@ -134,6 +115,8 @@ class FormData extends React.Component {
   render() {
     const { loading } = this.state;
     const { formProps, operation, data } = this.props;
+    console.log('FormData rendered');
+    console.log({ data });
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -143,7 +126,7 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     return (
-      <Spin spinning={loading}>
+      <Fragment>
         {!!data.length && (
           <PwForm
             data={data}
@@ -154,14 +137,13 @@ class FormData extends React.Component {
             onCancel={this.props.onCancel}
           />
         )}
-      </Spin>
+      </Fragment>
     );
   }
 }
 
 const composedHoc = compose(
   withHttpAddRecords,
-  withHttpModifyRecords,
-  withFormDataProp
+  withHttpModifyRecords
 );
 export default composedHoc(FormData);

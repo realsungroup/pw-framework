@@ -22,7 +22,10 @@ import {
   tableDataDefaultPropTypes
 } from './TableDataPropTypes';
 import { EditableContext } from './EditableRow';
-import { getDataProp, setDataInitialValue } from '../../../util/formData2ControlsData';
+import {
+  getDataProp,
+  setDataInitialValue
+} from '../../../util/formData2ControlsData';
 
 const { Fragment } = React;
 
@@ -88,7 +91,7 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   initVariables = () => {
     const { dataMode, resid, subresid } = this.props;
@@ -101,6 +104,15 @@ class TableData extends React.Component {
 
     // 行内编辑需索的窗体数据
     this._rowEditFormData = null;
+
+    /**
+     * 缓存已处理的窗体数据
+     */
+    // 缓存已处理的记录表单窗体数据（记录表单所需的 data）
+    this._dealedRecordFormData = null;
+
+    // 缓存已处理的行内编辑窗体数据（行内编辑表单所需的 data）
+    this._dealedRowEditFormData = null;
   };
 
   getData = async () => {
@@ -243,7 +255,6 @@ class TableData extends React.Component {
     );
     const dataSource = res.data;
 
-
     const state = {
       columns,
       dataSource,
@@ -255,13 +266,12 @@ class TableData extends React.Component {
         total: res.total
       },
       editingKey: null // 清除正在编辑的行
-    }
+    };
 
     // 有行内编辑，则清除正在编辑的行
     if (this.props.hasRowEdit) {
       state.editingKey = null;
     }
-
 
     this.setState(state);
   };
@@ -272,7 +282,12 @@ class TableData extends React.Component {
    * @param {boolean} isNeedEditForm 是否需要获取行内编辑所需的窗体数据
    */
   getFormData = async (isNeedRecordForm, isNeedEditForm) => {
-    const { recordFormName, rowEditFormName, httpGetFormData } = this.props;
+    const {
+      recordFormName,
+      rowEditFormName,
+      httpGetFormData,
+      formProps
+    } = this.props;
     const id = this._id;
     try {
       const [recordFormData, rowEditFormData] = await paa([
@@ -281,6 +296,15 @@ class TableData extends React.Component {
       ]);
       this._recordFormData = recordFormData;
       this._rowEditFormData = rowEditFormData;
+
+      // 缓存记录表单和行内编辑表单所接收的 data prop
+      const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
+      this._dealedRecordFormData = getDataProp(
+        this._recordFormData,
+        {},
+        recordFormIsClassifyLayout
+      );
+      this._dealedRowEditFormData = getDataProp(this._rowEditFormData, {});
     } catch (err) {
       return message.error(err.message);
     }
@@ -424,20 +448,20 @@ class TableData extends React.Component {
         this._sortOrder = 'desc';
         this.getTableData({
           page: 1,
-          pageSize: this.state.pagination.pageSize,
+          pageSize: this.state.pagination.pageSize
         });
       } else {
         // 降序
         this._sortOrder = 'asc';
         this.getTableData({
           page: 1,
-          pageSize: this.state.pagination.pageSize,
+          pageSize: this.state.pagination.pageSize
         });
       }
     }
   };
 
-  getScroll = () => { };
+  getScroll = () => {};
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
@@ -495,11 +519,11 @@ class TableData extends React.Component {
    * 打开记录表单，进行 添加/修改/查看 操作
    * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
    * @param {object} record 记录
-   * @param {object} formData 窗体数据
-   * 当传这两个参数时，表示点击 “后端按钮” 打开记录表单
-   * 不传这两个参数时，表示点击 “前端定义的按钮” 打开记录表单
+   * @param {object} data 控件数据
+   * 当传参数时，表示点击 “后端按钮” 打开记录表单
+   * 不传参数时，表示点击 “前端定义的按钮” 打开记录表单
    */
-  openRecordForm = (operation, record, formData) => {
+  openRecordForm = (operation, record, data) => {
     const {
       dataMode,
       resid,
@@ -513,17 +537,25 @@ class TableData extends React.Component {
 
     const { recordFormShowMode, selectedRecord } = this.state;
 
-    if (!this._recordFormData) {
+    if (!this._recordFormData || !this._dealedRecordFormData) {
       return message.info('正在请求窗体数据，请稍等...');
     }
+
+    const newOperation = operation || recordFormShowMode;
+
+    const newRecord = record || selectedRecord;
+
+    let newData = data || this._dealedRecordFormData;
+    const isTransformValue = ['add', 'modify'].indexOf(newOperation) !== -1;
+    newData = setDataInitialValue(newData, newRecord, isTransformValue);
 
     openRecordForm({
       type: recordFormType,
       title: modalTitleMap[recordFormShowMode],
       formProps,
-      formData: formData || this._recordFormData,
-      operation: operation || recordFormShowMode,
-      record: record || selectedRecord,
+      data: newData,
+      operation: newOperation,
+      record: newRecord,
       info: { dataMode, resid, subresid, hostrecid },
       AdvDicTableProps,
       onConfirm: this.handleConfirm,
@@ -556,7 +588,7 @@ class TableData extends React.Component {
       if (err) {
         return message.error('表单验证出错');
       }
-
+      console.log({ values });
     });
   };
 
@@ -623,8 +655,8 @@ class TableData extends React.Component {
 
   handleOnRow = record => {
     return {
-      onClick: () => { }, // 点击行
-      onMouseEnter: () => { } // 鼠标移入行
+      onClick: () => {}, // 点击行
+      onMouseEnter: () => {} // 鼠标移入行
     };
   };
 
@@ -707,18 +739,12 @@ class TableData extends React.Component {
     return this.state.editingKey === record.REC_ID;
   };
 
-  getControlsData = record => {
-    if (!this._rowEditFormData) {
-      return [];
+  getDataItem = (record, dataIndex) => {
+    if (!this._rowEditFormData || !this._dealedRowEditFormData) {
+      return {};
     }
-    let data;
-    if (!this._rowFormData) {
-      data = getDataProp('edit', record, this._rowEditFormData, {});
-      this._rowFormData = data;
-    } else {
-      data = setDataInitialValue(this._rowFormData, record, true)
-    }
-    return data;
+    const data = setDataInitialValue(this._dealedRowEditFormData, record, true);
+    return data.find(dataItem => dataItem.id === dataIndex);
   };
 
   getNewColumns = columns => {
@@ -739,7 +765,7 @@ class TableData extends React.Component {
             dataIndex: column.dataIndex,
             index,
             editing: this.isEditing(record),
-            data: this.getControlsData(record)
+            dataItem: this.getDataItem(record, column.dataIndex)
           })
         };
       });

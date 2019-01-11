@@ -1,10 +1,7 @@
 import React from 'react';
 import { argumentContainer } from '../util';
-import { Drawer, Modal } from 'antd';
 import FormData from '../../data-components/FormData';
 import withModalDrawer from '../withModalDrawer';
-
-const Fragment = React.Fragment;
 
 // 显示记录表单的高阶组件
 const withRecordForm = (options = {}) => {
@@ -27,7 +24,7 @@ const withRecordForm = (options = {}) => {
        * @param {string} params.type 记录表单所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉；默认值为：'modal'
        * @param {string} params.title 容器的 title；默认值为：''
        * @param {object} params.formProps PwForm 表单组件接收的 props
-       * @param {object} params.formData 窗体数据
+       * @param {object} params.data 表单接收的 data prop（所有控件数据）
        * @param {string} params.operation 对表单的操作：'add' 添加 | 'modify' 修改 | 'view' 查看；默认值为：'add'
        * @param {object} params.record 记录；默认值为：{}
        * @param {object} params.info 添加、修改 所需要的信息
@@ -40,12 +37,7 @@ const withRecordForm = (options = {}) => {
         type = 'modal',
         title = '',
         formProps = {},
-        formData = {
-          subTableArr: [],
-          allControlArr: [],
-          canOpControlArr: [],
-          containerControlArr: []
-        },
+        data = [],
         operation = 'add',
         record = {},
         info = {
@@ -60,7 +52,7 @@ const withRecordForm = (options = {}) => {
         onCancel = () => {}
       }) => {
         const FormDataProps = {
-          formData,
+          data,
           operation,
           record,
           formProps,
@@ -85,6 +77,9 @@ const withRecordForm = (options = {}) => {
           containerProps.onClose = onCancel;
         }
 
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
         this.props.openModalOrDrawer(
           type,
           containerProps,

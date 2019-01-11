@@ -47,6 +47,8 @@ const withModalDrawer = (options = {}) => {
       renderContainer = () => {
         const { type, containerProps, ChildComponent, childProps } = this.state;
         const isRender = ChildComponent;
+        console.log({ childProps });
+
         if (!isRender) {
           return null;
         }
