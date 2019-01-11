@@ -86,16 +86,19 @@ const isStringArr = arr => {
 export const dealFormData = values => {
   const formData = { ...values };
   for (const key in formData) {
+    // 是否项
     if (typeof formData[key] === 'boolean') {
       formData[key] = formData[key] ? 'Y' : 'N';
+
+      // 文件地址
     } else if (Array.isArray(formData[key])) {
       if (isStringArr(formData[key])) {
         formData[key] = formData[key].join(',');
       } else {
-        formData[key] = formData[key]
-          .map(item => JSON.stringify(item))
-          .join(FILESEPARATOR); // 文件分隔符：";file;"
+        formData[key] = formData[key].map(item => item.url).join(FILESEPARATOR); // 文件分隔符：";file;"
       }
+
+      // 日期时间
     } else if (formData[key] instanceof moment) {
       formData[key] = formData[key].format('YYYY-MM-DD HH:mm');
     }

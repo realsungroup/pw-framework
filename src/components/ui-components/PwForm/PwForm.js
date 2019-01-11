@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import './PwForm.less';
 import { Form, Button, Collapse } from 'antd';
 import LzRowCols from '../LzRowCols';
-import FormItem from './FormItem';
+// import FormItem from './FormItem';
 import schema from 'async-validator';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
 import PwFormFooter from './PwFormFooter/index';
+import Control from '../../ui-components/Control';
 
 const Fragment = React.Fragment;
 
 const Panel = Collapse.Panel;
+const FormItem = Form.Item;
 
 const getValues = (data, displayMode) => {
   const values = {};
@@ -223,64 +225,15 @@ class PwForm extends React.Component {
 
   constructor(props) {
     super(props);
-    const { data, displayMode } = props;
-    const values = getValues(data, displayMode);
-    const activeKey = getActiveKey(data, displayMode);
-    descriptor = getDescriptor(data, displayMode);
-    this.state = {
-      values,
-      helps: {}, // 错误提示
-      activeKey
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
-    this.form.validateFields();
-  }
+  componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.data, this.props.data)) {
-      const values = getValues(nextProps.data, this.props.displayMode);
-      descriptor = getDescriptor(nextProps.data, this.props.displayMode);
-      this.setState({ values }, () => {
-        // 对新的 values 进行 validate
-        this.form.validateFields();
-      });
     }
   }
-
-  form = {
-    getFieldsValue: () => {
-      return this.state.values;
-    },
-    setFieldsValue: values => {
-      this.setState({ values: { ...this.state.values, ...values } });
-    },
-    /**
-     * 验证字段的函数
-     * callback：验证完成后的回调
-     */
-    validateFields: callback => {
-      const validator = new schema(descriptor);
-      const values = this.form.getFieldsValue();
-
-      validator.validate(values, (err, fields) => {
-        const helps = {};
-        for (let id in fields) {
-          fields[id].forEach(item => {
-            helps[id] = `${item.message} `;
-          });
-        }
-
-        this.setState({ helps });
-        callback && callback(err, values);
-      });
-    }
-  };
-
-  getData = data => {
-    return cloneDeep(data);
-  };
 
   handleCollapseChange = activeKey => {
     this.setState({ activeKey });
@@ -290,10 +243,10 @@ class PwForm extends React.Component {
     return (
       <Fragment>
         {colCount === 1 ? (
-          data.map(formItemData => this.renderFormItem(formItemData))
+          data.map(dateItem => this.renderFormItem(dateItem))
         ) : (
           <LzRowCols renderData={data} keyName="id" colCount={colCount}>
-            {formItemData => this.renderFormItem(formItemData)}
+            {dateItem => this.renderFormItem(dateItem)}
           </LzRowCols>
         )}
       </Fragment>
@@ -321,34 +274,27 @@ class PwForm extends React.Component {
     }
   };
 
-  renderFormItem = formItemData => {
-    const { mode } = this.props;
-    const { values, helps } = this.state;
+  renderFormItem = dataItem => {
+    const { id, label, labelCol, wrapperCol } = dataItem;
+    const { form, mode } = this.props;
+    const { getFieldDecorator } = form;
+    const options = {
+      initialValue: dataItem.initialValue,
+      rules: dataItem.rules
+    };
+
     return (
       <FormItem
-        key={formItemData.id}
-        mode={mode}
-        formItemData={formItemData}
-        value={values[formItemData.id]}
-        onChange={this.handleFormItemChange}
-        onBlur={this.handleFormItemBlur}
-        help={helps[formItemData.id]}
-      />
+        key={id}
+        label={label}
+        labelCol={{ span: labelCol || 8 }}
+        wrapperCol={{ span: wrapperCol || 16 }}
+      >
+        {getFieldDecorator(dataItem.id, options)(
+          <Control dataItem={dataItem} form={form} displayMode={mode} />
+        )}
+      </FormItem>
     );
-  };
-
-  handleFormItemChange = (id, value) => {
-    const values = { ...this.state.values, ...{ [id]: value } };
-    this.setState({ values }, () => {
-      this.form.validateFields();
-    });
-  };
-
-  handleFormItemBlur = (id, value) => {
-    const values = { ...this.state.values, ...{ [id]: value } };
-    this.setState({ values }, () => {
-      this.form.validateFields();
-    });
   };
 
   render() {
@@ -380,7 +326,7 @@ class PwForm extends React.Component {
           onSave={onSave}
           onCancel={onCancel}
           mode={mode}
-          form={this.form}
+          form={this.props.form}
           saveText={saveText}
           cancelText={cancelText}
           editText={editText}
@@ -390,4 +336,4 @@ class PwForm extends React.Component {
   }
 }
 
-export default PwForm;
+export default Form.create()(PwForm);

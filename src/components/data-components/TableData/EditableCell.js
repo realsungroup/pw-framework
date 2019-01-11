@@ -66,7 +66,11 @@ export default class EditableCell extends React.Component {
               {isRenderControl ? (
                 <FormItem>
                   {getFieldDecorator(dataIndex, options)(
-                    <Control dataItem={dataItem} form={form} />
+                    <Control
+                      dataItem={dataItem}
+                      form={form}
+                      displayMode="edit"
+                    />
                   )}
                 </FormItem>
               ) : (

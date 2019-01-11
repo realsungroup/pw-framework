@@ -60,13 +60,7 @@ class FormData extends React.Component {
   static defaultProps = {
     record: {},
     operation: 'add',
-    formProps: {},
-    formData: {
-      subTableArr: [],
-      allControlArr: [],
-      canOpControlArr: [],
-      containerControlArr: []
-    }
+    formProps: {}
   };
 
   constructor(props) {
@@ -93,7 +87,7 @@ class FormData extends React.Component {
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
       // 添加
-      if (this.props.operation === 'add') {
+      if (operation === 'add') {
         try {
           await this.props.httpAddRecords(id, [formData]);
         } catch (err) {
@@ -113,10 +107,7 @@ class FormData extends React.Component {
   };
 
   render() {
-    const { loading } = this.state;
     const { formProps, operation, data } = this.props;
-    console.log('FormData rendered');
-    console.log({ data });
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮

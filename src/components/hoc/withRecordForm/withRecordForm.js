@@ -77,9 +77,6 @@ const withRecordForm = (options = {}) => {
           containerProps.onClose = onCancel;
         }
 
-        console.log('====================================');
-        console.log(data);
-        console.log('====================================');
         this.props.openModalOrDrawer(
           type,
           containerProps,

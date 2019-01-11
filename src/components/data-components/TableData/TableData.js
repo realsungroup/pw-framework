@@ -40,7 +40,6 @@ const modalTitleMap = {
   modify: '修改记录',
   view: '查看记录'
 };
-let ppp;
 /**
  * TableData
  */
@@ -933,7 +932,7 @@ class TableData extends React.Component {
         const { beBtnsSingle, editingKey } = this.state;
         let {
           hasRowEdit,
-          hasModify,
+          hasRowModify,
           hasRowView,
           hasRowDelete,
           customRowBtns,
@@ -942,10 +941,11 @@ class TableData extends React.Component {
         let hasRowSaveCancel,
           hasRowBeBtns = hasBeBtns && !!beBtnsSingle.length,
           hasCustomRowBtns = !!customRowBtns;
+
         if (hasRowEdit) {
           hasRowSaveCancel = record.REC_ID === editingKey;
-          hasModify = hasModify && !hasRowSaveCancel;
           hasRowEdit = hasRowEdit && !hasRowSaveCancel;
+          hasRowModify = hasRowModify && !hasRowSaveCancel;
           hasRowView = hasRowView && !hasRowSaveCancel;
           hasRowDelete = hasRowDelete && !hasRowSaveCancel;
           hasRowBeBtns = hasRowBeBtns && !hasRowSaveCancel;
@@ -959,7 +959,7 @@ class TableData extends React.Component {
             {hasRowSaveCancel && this.renderRowSaveBtn(record)}
             {hasRowSaveCancel && this.renderRowCancelBtn(record)}
 
-            {hasModify && this.renderRowModifyBtn(record)}
+            {hasRowModify && this.renderRowModifyBtn(record)}
             {hasRowView && this.renderRowViewBtn(record)}
             {hasRowDelete && this.renderRowDeleteBtn(record)}
 

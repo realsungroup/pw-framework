@@ -8,10 +8,14 @@ import {
   Select,
   Upload,
   Button,
-  Icon
+  Icon,
+  Checkbox,
+  message
 } from 'antd';
 import DateTimePicker from '../../ui-components/DateTimePicker';
 import withAdvDicTable from '../../hoc/withAdvDicTable';
+import { FILESEPARATOR } from '../../../util/constants';
+import withUploadFile from '../../hoc/withUploadFile';
 
 const { TextArea, Search } = Input;
 const RadioGroup = Radio.Group;
@@ -30,10 +34,19 @@ class Control extends React.Component {
     /**
      * form 对象
      */
-    form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired,
+
+    /**
+     * 控件显示状态
+     * 可选：'edit' 编辑状态 | 'view' 查看状态
+     * 默认：'view'
+     */
+    displayMode: PropTypes.oneOf(['edit', 'view'])
   };
 
-  static defaultProps = {};
+  static defaultProps = {
+    displayMode: 'view'
+  };
 
   constructor(props) {
     super(props);
@@ -41,9 +54,9 @@ class Control extends React.Component {
     this.state = {};
   }
 
-  componentDidMount = () => { };
+  componentDidMount = () => {};
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (nextProps.value !== this.props.value) {
@@ -61,66 +74,128 @@ class Control extends React.Component {
     this.triggerChange(value);
   };
 
-  triggerChange = changedValue => {
+  triggerChange = (changedValue, isRemoveFile = false) => {
+    const { dataItem, value } = this.props;
+    const { name } = dataItem;
+    if (name === 'Upload' && !isRemoveFile) {
+      const uid = value.length ? -(value.length + 1) : -1;
+      changedValue = [
+        ...value,
+        {
+          uid: uid,
+          name: changedValue,
+          status: 'done',
+          url: changedValue
+        }
+      ];
+      console.log({ changedValue });
+    }
+
     const { onChange } = this.props;
     if (onChange) {
       onChange(changedValue);
     }
   };
 
+  // 上传文件（注意：不能使用 async 函数）
+  handleUploadFile = fileInfo => {
+    const { uploadFile } = this.props;
+    try {
+      uploadFile(
+        fileInfo,
+        (err, fileUrl) => {
+          if (err) {
+            return message.error(err.message);
+          }
+          message.success('上传成功');
+          this.triggerChange(fileUrl);
+        },
+        'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'
+      );
+    } catch (err) {
+      return message.error(err.message);
+    }
+  };
+
+  handleRemoveFile = file => {
+    const { value } = this.props;
+    const index = value.findIndex(item => item.uid === file.uid);
+    if (index === -1) {
+      return message.error('删除出错');
+    }
+    let changedValue = [...value];
+    if (changedValue.length === 1) {
+      changedValue = [];
+    } else {
+      changedValue = changedValue.splice(index, 1);
+    }
+    this.triggerChange(changedValue, true);
+  };
+
   render() {
-    const { dataItem, value } = this.props;
+    const { dataItem, value, displayMode } = this.props;
     const name = dataItem.name;
     const props = dataItem.props;
-    switch (name) {
-      case 'Input': {
-        return <Input value={value} onChange={this.handleChange} />;
-      }
-      case 'TextArea': {
-        return <TextArea onChange={this.handleChange} />;
-      }
-      case 'Search': {
-        return (
-          <Search onChange={this.handleChange} onSearch={this.handleSearch} />
-        );
-      }
-      case 'DatePicker': {
-        return <DatePicker onChange={this.handleChange} />;
-      }
-      case 'DateTimePicker': {
-        return <DateTimePicker onChange={this.handleChange} />;
-      }
-      case 'RadioGroup': {
-        return <RadioGroup onChange={this.handleChange} />;
-      }
-      case 'Select': {
-        const { options } = props;
-        console.log({ options });
 
-        return (
-          <Select onChange={this.handleChange}>
-            {options.map(option => (
-              <Option key={option.value} value={option.value}>
-                {option.label}
-              </Option>
-            ))}
-          </Select>
-        );
-      }
-      case 'Upload': {
-        return (
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> 上传
-            </Button>
-          </Upload>
-        );
-      }
-      default: {
-        return null;
+    if (displayMode === 'view') {
+      return <span>{value}</span>;
+    } else {
+      switch (name) {
+        case 'Input': {
+          return <Input value={value} onChange={this.handleChange} />;
+        }
+        case 'TextArea': {
+          return <TextArea value={value} onChange={this.handleChange} />;
+        }
+        case 'Search': {
+          return (
+            <Search onChange={this.handleChange} onSearch={this.handleSearch} />
+          );
+        }
+        case 'DatePicker': {
+          const valueProp = value ? { value: value } : null;
+          return <DatePicker {...valueProp} onChange={this.handleChange} />;
+        }
+        case 'DateTimePicker': {
+          const valueProp = value ? { value: value } : null;
+          return <DateTimePicker {...valueProp} onChange={this.handleChange} />;
+        }
+        case 'Checkbox': {
+          const checked = value;
+          return <Checkbox checked={checked} onChange={this.handleChange} />;
+        }
+        case 'Select': {
+          const { options } = props;
+          return (
+            <Select value={value} onChange={this.handleChange}>
+              {options.map(option => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+          );
+        }
+        case 'Upload': {
+          return (
+            <Upload
+              {...props}
+              fileList={value}
+              customRequest={this.handleUploadFile}
+              onRemove={this.handleRemoveFile}
+            >
+              <Button>
+                <Icon type="upload" /> 上传
+              </Button>
+            </Upload>
+          );
+        }
+        default: {
+          return null;
+        }
       }
     }
   }
 }
 
-export default withAdvDicTable(Control);
+export default withUploadFile()(withAdvDicTable(Control));

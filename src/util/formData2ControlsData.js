@@ -1,6 +1,7 @@
 import { getRules, ControlCode } from './controls';
 import moment from 'moment';
 import cloneDeep from 'lodash.clonedeep';
+import { FILESEPARATOR } from './constants';
 
 const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {
@@ -49,9 +50,12 @@ const getControlName = controlData => {
       return 'DatePicker';
     }
     // RadioGroup
-    case ControlCode.RadioGroup:
-    case ControlCode.Checkbox: {
+    case ControlCode.RadioGroup: {
       return 'RadioGroup';
+    }
+    //
+    case ControlCode.Checkbox: {
+      return 'Checkbox';
     }
     // Select
     case ControlCode.OptionValue:
@@ -127,11 +131,18 @@ const getProps = (controlData, name) => {
     switch (type) {
       // 下拉框：Select
       case ControlCode.OptionValue: {
-        const options = controlData.DisplayOptions;
-        props.options = options.map(option => ({
-          label: option.displayColValue,
-          value: option.valueColValue
+        // const options = controlData.DisplayOptions;
+        // props.options = options.map(option => ({
+        //   label: option.displayColValue,
+        //   value: option.valueColValue
+        // }));
+        const labelOptions = controlData.DisplayOptions;
+        const valueOptions = controlData.ValueOptions;
+        props.options = labelOptions.map((label, index) => ({
+          label,
+          value: valueOptions[index]
         }));
+        break;
       }
       // 下拉框部门：Select
       case ControlCode.OptionDepartment: {
@@ -141,9 +152,12 @@ const getProps = (controlData, name) => {
           label,
           value: valueOptions[index]
         }));
+        break;
       }
       // 下拉字典：Select
       case ControlCode.OptionDictionary: {
+        console.log('333');
+
         const options = controlData.ListOfColOptions;
         props.options = options.map(option => ({
           label: option.displayColValue,
@@ -292,6 +306,32 @@ export const getDataProp = (
   return data;
 };
 
+const trueValues = ['Y'];
+// const falseValues = ['', undefined, null, 'N'];
+// 获取是否项是否被选中
+const getChecked = value => {
+  if (trueValues.indexOf(value) !== -1) {
+    return true;
+  }
+  return false;
+};
+
+// 获取文件列表，value：字符串，里面含有 n 个文件地址，以 ';file;' 分隔
+const getFileList = value => {
+  let ret = [];
+  if (!value) {
+    return ret;
+  }
+  const urls = value.split(FILESEPARATOR);
+  ret = urls.map((url, index) => ({
+    uid: -(index + 1),
+    name: url,
+    status: 'done',
+    url: url
+  }));
+  return ret;
+};
+
 /**
  * 设置所有控件的 initialValue 属性值
  * @param {array} data 所有控件数据
@@ -303,8 +343,23 @@ export const setDataInitialValue = (data, record, isTransformValue = false) => {
   newData.forEach(dataItem => {
     dataItem.initialValue = record[dataItem.id];
     if (isTransformValue) {
-      if (dataItem.name === 'DateTimePicker') {
-        dataItem.initialValue = moment(dataItem.initialValue);
+      // 日期时间选择器/日期选择器
+      if (
+        dataItem.name === 'DateTimePicker' ||
+        dataItem.name === 'DatePicker'
+      ) {
+        dataItem.initialValue =
+          dataItem.initialValue && moment(dataItem.initialValue);
+      }
+
+      // Checkbox
+      if (dataItem.name === 'Checkbox') {
+        dataItem.initialValue = getChecked(dataItem.initialValue);
+      }
+
+      // 上传文件
+      if (dataItem.name === 'Upload') {
+        dataItem.initialValue = getFileList(dataItem.initialValue);
       }
     }
   });
