@@ -1,12 +1,12 @@
 import React from 'react';
-import { EditableContext } from './EditableRow';
+import { EditableContext } from '../EditableRow';
 import { Form, Input } from 'antd';
-import Control from '../../ui-components/Control';
+import Control from '../../../ui-components/Control';
 import PropTypes from 'prop-types';
+import './EditableCell.less'
 
 const FormItem = Form.Item;
 
-const Fragment = React.Fragment;
 
 /**
  * 可编辑的单元格
@@ -17,7 +17,7 @@ export default class EditableCell extends React.Component {
      * 控件（如：Input）的数据
      * 默认：{}
      */
-    dataItem: PropTypes.object
+    dataItem: PropTypes.object,
     //   {
     //     id: 'name', // 字段名称
     //     label: '姓名', // label
@@ -30,6 +30,17 @@ export default class EditableCell extends React.Component {
     //       type: 'number'
     //     }
     //   }
+    /**
+     * 是否处于编辑状态
+     * 默认：-
+     */
+    editing: PropTypes.bool,
+
+    /**
+     * 记录
+     */
+    record: PropTypes.object,
+
   };
 
   static defaultProps = {
@@ -74,8 +85,9 @@ export default class EditableCell extends React.Component {
                   )}
                 </FormItem>
               ) : (
-                restProps.children
-              )}
+                  restProps.children
+                )}
+
             </td>
           );
         }}

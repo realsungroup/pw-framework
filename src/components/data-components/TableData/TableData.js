@@ -26,6 +26,7 @@ import {
   getDataProp,
   setDataInitialValue
 } from '../../../util/formData2ControlsData';
+import classNames from 'classnames'
 
 const { Fragment } = React;
 
@@ -90,7 +91,7 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   initVariables = () => {
     const { dataMode, resid, subresid } = this.props;
@@ -460,7 +461,7 @@ class TableData extends React.Component {
     }
   };
 
-  getScroll = () => {};
+  getScroll = () => { };
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
@@ -654,8 +655,8 @@ class TableData extends React.Component {
 
   handleOnRow = record => {
     return {
-      onClick: () => {}, // 点击行
-      onMouseEnter: () => {} // 鼠标移入行
+      onClick: () => { }, // 点击行
+      onMouseEnter: () => { } // 鼠标移入行
     };
   };
 
@@ -1006,7 +1007,7 @@ class TableData extends React.Component {
     const newColumns = this.getNewColumns(columns);
 
     return (
-      <div className="table-data">
+      <div className='table-data'>
         <Spin spinning={loading}>
           <PwTable
             title={title}
@@ -1042,7 +1043,7 @@ class TableData extends React.Component {
             onAdvSearch={this.handleAdvSearch}
           />
         </Spin>
-      </div>
+      </div >
     );
   }
 }
