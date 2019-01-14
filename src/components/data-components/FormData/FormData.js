@@ -107,7 +107,14 @@ class FormData extends React.Component {
   };
 
   render() {
-    const { formProps, operation, data } = this.props;
+    const {
+      formProps,
+      operation,
+      data,
+      record,
+      beforeSaveFields,
+      info
+    } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -116,6 +123,7 @@ class FormData extends React.Component {
       otherProps.hasSave = false;
       otherProps.hasCancel = false;
     }
+    const { resid } = info;
     return (
       <Fragment>
         {!!data.length && (
@@ -126,6 +134,10 @@ class FormData extends React.Component {
             {...otherProps}
             onSave={this.handleSave}
             onCancel={this.props.onCancel}
+            operation={operation}
+            record={record}
+            beforeSaveFields={beforeSaveFields}
+            resid={resid}
           />
         )}
       </Fragment>

@@ -536,7 +536,9 @@ class TableData extends React.Component {
       hostrecid,
       AdvDicTableProps,
       openRecordForm,
-      recordFormType
+      recordFormType,
+      beforeSaveFields,
+      recordFormContainerProps
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -561,7 +563,9 @@ class TableData extends React.Component {
       operation: newOperation,
       record: newRecord,
       info: { dataMode, resid, subresid, hostrecid },
+      beforeSaveFields,
       AdvDicTableProps,
+      recordFormContainerProps,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });

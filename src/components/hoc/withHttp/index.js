@@ -5,7 +5,8 @@ import {
   withHttpGetTableData,
   withHttpGetSubTableData,
   withHttpGetBeBtns,
-  withHttpGetFormData
+  withHttpGetFormData,
+  withHttpBeforeSave
 } from './withHttp';
 
 export {
@@ -15,5 +16,6 @@ export {
   withHttpGetTableData,
   withHttpGetSubTableData,
   withHttpGetBeBtns,
-  withHttpGetFormData
+  withHttpGetFormData,
+  withHttpBeforeSave
 };

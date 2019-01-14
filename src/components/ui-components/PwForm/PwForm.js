@@ -15,59 +15,6 @@ const Fragment = React.Fragment;
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
-const getValues = (data, displayMode) => {
-  const values = {};
-  if (displayMode === 'default') {
-    data.forEach(item => {
-      values[item.id] = item.value;
-    });
-  } else {
-    data.forEach(typeItem => {
-      typeItem.data.forEach(item => {
-        values[item.id] = item.value;
-      });
-    });
-  }
-  return values;
-};
-
-const getActiveKey = (data, displayMode) => {
-  if (displayMode === 'default') {
-    return [];
-  }
-  const activeKey = [];
-  data.forEach(typeItem => {
-    activeKey.push(typeItem.type);
-  });
-  return activeKey;
-};
-
-const getDescriptor = (data, displayMode) => {
-  const descriptor = {};
-  if (displayMode === 'default') {
-    data.forEach(item => {
-      if (item.rules) {
-        descriptor[item.id] = cloneDeep(item.rules);
-      }
-    });
-  } else {
-    data.forEach(typeItem => {
-      typeItem.data.forEach(item => {
-        if (item.rules) {
-          descriptor[item.id] = cloneDeep(item.rules);
-        }
-      });
-    });
-  }
-  return descriptor;
-};
-
-// 验证规则
-// let descriptor = {
-//   name: [{ required: true, message: '请输入姓名' }],
-//   age: [{required: true, message: '请输入年龄'}]
-// }
-let descriptor = {};
 /**
  * PwForm
  */
@@ -276,12 +223,22 @@ class PwForm extends React.Component {
 
   renderFormItem = dataItem => {
     const { id, label, labelCol, wrapperCol } = dataItem;
-    const { form, mode } = this.props;
+    const {
+      form,
+      mode,
+      resid,
+      operation,
+      record,
+      beforeSaveFields
+    } = this.props;
     const { getFieldDecorator } = form;
     const options = {
       initialValue: dataItem.initialValue,
       rules: dataItem.rules
     };
+
+    const hasBeforeSave =
+      !!beforeSaveFields && beforeSaveFields.indexOf(dataItem.id) !== -1;
 
     return (
       <FormItem
@@ -291,7 +248,16 @@ class PwForm extends React.Component {
         wrapperCol={{ span: wrapperCol || 16 }}
       >
         {getFieldDecorator(dataItem.id, options)(
-          <Control dataItem={dataItem} form={form} displayMode={mode} />
+          <Control
+            dataItem={dataItem}
+            form={form}
+            displayMode={mode}
+            resid={resid}
+            record={record}
+            operation={operation}
+            hasBeforeSave={hasBeforeSave}
+            beforeSaveFields={hasBeforeSave}
+          />
         )}
       </FormItem>
     );

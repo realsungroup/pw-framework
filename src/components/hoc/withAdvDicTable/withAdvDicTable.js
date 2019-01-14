@@ -35,13 +35,14 @@ const withAdvDicTable = WrappedComponent => {
     //   },
     //   advDicTableProps: { resid: 666, cmsWhere: 'xxx', cmscolumns: 'yyy' } // 高级字典独有的字段
     // }
-    handleShowAdvDicTable = (form, dataItem) => {
+    handleShowAdvDicTable = (form, dataItem, afterSelect) => {
       const state = { visible: true };
 
       if (!this._form || !this._dataItem) {
         // 缓存 form、dataItem
         this._form = form;
         this._dataItem = dataItem;
+        this._afterSelect = afterSelect;
       }
 
       if (!this.state.advDicTableProps.resid) {
@@ -67,8 +68,7 @@ const withAdvDicTable = WrappedComponent => {
       return {
         resid,
         cmscolumns,
-        cmswhere,
-
+        cmswhere
       };
     };
 
@@ -98,6 +98,7 @@ const withAdvDicTable = WrappedComponent => {
 
       // 设置值
       this._form.setFieldsValue(values);
+      this._afterSelect && this._afterSelect();
       this.handleCancel();
     };
 
@@ -115,6 +116,7 @@ const withAdvDicTable = WrappedComponent => {
           <WrappedComponent
             {...this.props}
             showAdvDicTable={this.handleShowAdvDicTable}
+            afterSelect={this.handleAfterSelect}
           />
 
           {/* 高级字典表格 */}

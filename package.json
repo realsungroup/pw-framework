@@ -40,7 +40,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
-    "lz-request": "^0.3.0",
+    "lz-request": "^0.4.2",
     "mini-css-extract-plugin": "0.4.3",
     "moment": "^2.23.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",

@@ -368,17 +368,23 @@ class App extends Component {
             actionBarFixed={true}
             advSearchContainerType="drawer"
             //hasRowEdit
-            hasAdd={false}
+            hasAdd={true}
             hasDelete={false}
             hasModify={false}
             hasRowModify={true}
             hasAdvSearch={true}
             height={600}
-            formProps={{ displayMode: 'default', width: 800, height: 700 }}
-            recordFormType="modal"
+            recordFormContainerProps={{
+              // width: 800,
+              // height: 500,
+              // placement: 'bottom'
+            }}
+            formProps={{ displayMode: 'default' }}
+            recordFormType="drawer"
             // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
             recordFormName="default_rowTest"
             rowEditFormName="default_rowTest"
+            beforeSaveFields={['C3_600449702200']}
           />
           {/* <PwForm
             labelCol={4}

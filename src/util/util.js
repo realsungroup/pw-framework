@@ -1,3 +1,4 @@
+import moment from 'moment';
 export const setItem = (key, value) => {
   return localStorage.setItem(key, value);
 };
@@ -11,7 +12,7 @@ export const removeItem = key => {
 };
 
 export const getResid = (dataMode, resid, subresid) => {
-  return dataMode === "main" ? resid : subresid;
+  return dataMode === 'main' ? resid : subresid;
 };
 
 /**
@@ -20,9 +21,9 @@ export const getResid = (dataMode, resid, subresid) => {
  * @param {string} fileName 下载的文件名称
  */
 export const downloadFile = (href, fileName) => {
-  const el = document.createElement("a");
-  el.setAttribute("href", href);
-  el.setAttribute("download", fileName);
+  const el = document.createElement('a');
+  el.setAttribute('href', href);
+  el.setAttribute('download', fileName);
   el.click();
 };
 
@@ -34,7 +35,7 @@ export const downloadFile = (href, fileName) => {
  * @return {string} cmsWhere 返回 cmsWhere
  */
 export const getCmsWhere = (...cmsWhereArr) => {
-  let cmsWhere = "";
+  let cmsWhere = '';
   // 如：['name = xl', 'age = 22', ...]
   if (cmsWhereArr.length > 1) {
     const arr = cmsWhereArr.filter(where => where);
@@ -42,12 +43,12 @@ export const getCmsWhere = (...cmsWhereArr) => {
     arr.forEach((where, index) => {
       if (where) {
         cmsWhere += `${where}`;
-        cmsWhere += index === len_1 ? "" : " and ";
+        cmsWhere += index === len_1 ? '' : ' and ';
       }
     });
 
     // 如：[{ name: 'xl', age: 22, sex: 1 }]
-  } else if (typeof cmsWhereArr[0] === "object" && cmsWhereArr.length === 1) {
+  } else if (typeof cmsWhereArr[0] === 'object' && cmsWhereArr.length === 1) {
     const formData = cmsWhereArr[0];
     const arr = Object.keys(formData).filter(
       key => formData[key] || formData[key] === 0
@@ -56,13 +57,13 @@ export const getCmsWhere = (...cmsWhereArr) => {
       let value = formData[key];
       if (value) {
         cmsWhere += `${key} = '${value}'`;
-        cmsWhere += index === arr.length - 1 ? "" : " and ";
+        cmsWhere += index === arr.length - 1 ? '' : ' and ';
       }
     });
 
     // 其他参数
   } else {
-    return "";
+    return '';
   }
   return cmsWhere;
 };
@@ -82,7 +83,7 @@ export const getCmsWhere = (...cmsWhereArr) => {
  */
 export const paa = (fnArr, isExecute = true) => {
   if (!Array.isArray(fnArr)) {
-    throw new Error("fnArr 时必传的");
+    throw new Error('fnArr 时必传的');
   }
   const arr = fnArr.map(fn => fn && fn());
   const pArr = arr;
@@ -90,4 +91,12 @@ export const paa = (fnArr, isExecute = true) => {
     return pArr;
   }
   return Promise.all(pArr);
+};
+
+/**
+ * 判断字符串是否以日期字符串开头
+ * @param {string} s 字符串
+ */
+export const isDateString = s => {
+  return /^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}/.test(s);
 };

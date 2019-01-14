@@ -338,7 +338,7 @@ export const setDataInitialValue = (data, record, isTransformValue = false) => {
   const newData = cloneDeep(data);
   newData.forEach(dataItem => {
     dataItem.initialValue = record[dataItem.id];
-    if (isTransformValue) {
+    if (false) {
       // 日期时间选择器/日期选择器
       if (
         dataItem.name === 'DateTimePicker' ||

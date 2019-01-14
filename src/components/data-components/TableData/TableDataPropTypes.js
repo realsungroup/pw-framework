@@ -324,5 +324,5 @@ export const tableDataPropTypes = {
    * 默认：-
    * 例如：['C3_592244738975', 'C3_592244739145']
    */
-  cFFillFormInnerFieldNames: PropTypes.array
+  beforeSaveFields: PropTypes.array
 };

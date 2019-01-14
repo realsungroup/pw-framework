@@ -28,6 +28,7 @@ const withRecordForm = (options = {}) => {
        * @param {string} params.operation 对表单的操作：'add' 添加 | 'modify' 修改 | 'view' 查看；默认值为：'add'
        * @param {object} params.record 记录；默认值为：{}
        * @param {object} params.info 添加、修改 所需要的信息
+       * @param {array} params.beforeSaveFields 能够通过计算公式获取保存之前的记录的内容字段数组
        * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
        * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
        * @param {function} params.onConfirm 确认后的回调函数
@@ -46,11 +47,14 @@ const withRecordForm = (options = {}) => {
           subresid: 777,
           hostrecid: 'C3_888'
         },
+        beforeSaveFields = [],
         AdvDicTableProps = {},
         recordFormContainerProps = {},
         onConfirm = () => {},
         onCancel = () => {}
       }) => {
+        console.log({ recordFormContainerProps });
+
         const FormDataProps = {
           data,
           operation,
@@ -59,14 +63,14 @@ const withRecordForm = (options = {}) => {
           info,
           onConfirm,
           onCancel,
-          AdvDicTableProps
+          AdvDicTableProps,
+          beforeSaveFields
         };
         const containerProps = {
           title,
           visible: true,
           destroyOnClose: true,
-          width: formProps && formProps.width ? formProps.width + 50 : 800,
-          ...recordFormContainerProps
+          width: formProps && formProps.width ? formProps.width + 50 : 800
         };
 
         if (type === 'modal') {
@@ -79,7 +83,7 @@ const withRecordForm = (options = {}) => {
 
         this.props.openModalOrDrawer(
           type,
-          containerProps,
+          { ...containerProps, ...recordFormContainerProps },
           FormData,
           FormDataProps
         );

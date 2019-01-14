@@ -2,7 +2,10 @@ import React from 'react';
 import http, { makeCancelable } from '../../../util/api';
 import { argumentContainer } from '../util';
 import { extractAndDealBackendBtns } from '../../../util/beBtns';
-import dealControlArr from '../../../util/controls';
+import dealControlArr, { dealFormData } from '../../../util/controls';
+import { message } from 'antd';
+import { isDateString } from '../../../util/util';
+import moment from 'moment';
 
 // 添加记录
 export const withHttpAddRecords = WrappedComponent => {
@@ -288,4 +291,92 @@ export const withHttpGetFormData = WrappedComponent => {
     WrappedComponent,
     'withHttpGetFormData'
   );
+};
+
+// 保存前获取表单数据（通过计算公式），且将获取到的数据填写到表单中
+export const withHttpBeforeSave = (options = {}) => {
+  const { resid } = options;
+
+  return function(WrappedComponent) {
+    class withHttpBeforeSave extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          resid
+        };
+      }
+
+      componentWillUnmount = () => {
+        this.p1 && this.p1.cancel();
+      };
+
+      /**
+       * 保存前获取表单数据（通过计算公式）
+       * @param {number} resid 资源 id
+       * @param {object} form form 对象
+       * @param {string} operation 操作
+       */
+      handleHttpBeforeSave = async (resid, record, form, operation) => {
+        const formData = dealFormData(form.getFieldsValue());
+        console.log({ resid });
+
+        formData.REC_ID = record.REC_ID || 0;
+        const data = [formData];
+        if (operation === 'add') {
+          this.p1 = makeCancelable(
+            http().beforeSaveAdd({
+              resid: resid || this.state.resid,
+              data
+            })
+          );
+        } else if (operation === 'modify') {
+          this.p1 = makeCancelable(
+            http().beforeSaveModify({
+              resid: resid || this.state.resid,
+              data
+            })
+          );
+        } else {
+          console.log({ operation });
+          throw new Error('`operation` 值应为 `add` 或 `modify`');
+        }
+
+        let res;
+        try {
+          res = await this.p1.promise;
+        } catch (err) {
+          console.error({ err });
+          return message.error(err.message);
+        }
+
+        const fields = Object.keys(form.getFieldsValue());
+        const newFormData = {};
+
+        fields.forEach(fieldName => {
+          const value = res.data[fieldName];
+          if (isDateString(value)) {
+            newFormData[fieldName] = moment(value);
+          } else {
+            newFormData[fieldName] = value;
+          }
+        });
+
+        form.setFieldsValue(newFormData);
+      };
+      render() {
+        return (
+          <WrappedComponent
+            httpBeforeSave={this.handleHttpBeforeSave}
+            {...this.props}
+          />
+        );
+      }
+    }
+    return argumentContainer(
+      withHttpBeforeSave,
+      WrappedComponent,
+      'withHttpBeforeSave'
+    );
+  };
 };
