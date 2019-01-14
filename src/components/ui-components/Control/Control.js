@@ -141,17 +141,20 @@ class Control extends React.Component {
     if (displayMode === 'view') {
       switch (name) {
         case 'Upload': {
-          const arr = value.split(';file;');
+          let urls = [];
+          if (value) {
+            urls = value.split(';file;');
+          }
           return (
             <Fragment>
-              {arr.map(item => (
+              {urls.map(url => (
                 <a
                   target="blank"
                   style={{ display: 'block' }}
-                  key={item}
-                  href={item}
+                  key={url}
+                  href={url}
                 >
-                  {item}
+                  {url}
                 </a>
               ))}
             </Fragment>
