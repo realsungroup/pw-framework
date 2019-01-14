@@ -20,6 +20,7 @@ import withUploadFile from '../../hoc/withUploadFile';
 const { TextArea, Search } = Input;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+const { Fragment } = React;
 
 /**
  * Control
@@ -138,7 +139,28 @@ class Control extends React.Component {
     const props = dataItem.props;
 
     if (displayMode === 'view') {
-      return <span>{value}</span>;
+      switch (name) {
+        case 'Upload': {
+          const arr = value.split(';file;');
+          return (
+            <Fragment>
+              {arr.map(item => (
+                <a
+                  target="blank"
+                  style={{ display: 'block' }}
+                  key={item}
+                  href={item}
+                >
+                  {item}
+                </a>
+              ))}
+            </Fragment>
+          );
+        }
+        default: {
+          return <span>{value}</span>;
+        }
+      }
     } else {
       switch (name) {
         case 'Input': {
