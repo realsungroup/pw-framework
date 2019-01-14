@@ -156,8 +156,6 @@ const getProps = (controlData, name) => {
       }
       // 下拉字典：Select
       case ControlCode.OptionDictionary: {
-        console.log('333');
-
         const options = controlData.ListOfColOptions;
         props.options = options.map(option => ({
           label: option.displayColValue,
@@ -292,8 +290,6 @@ export const getDataProp = (
     // 分类布局
   } else {
     const klasses = assortFields(canOpControlArr);
-    console.log({ klasses });
-
     klasses.forEach(klass => {
       const obj = {
         type: klass.title,

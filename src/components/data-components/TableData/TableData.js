@@ -26,7 +26,6 @@ import {
   getDataProp,
   setDataInitialValue
 } from '../../../util/formData2ControlsData';
-import classNames from 'classnames'
 
 const { Fragment } = React;
 
@@ -91,7 +90,7 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   initVariables = () => {
     const { dataMode, resid, subresid } = this.props;
@@ -233,6 +232,8 @@ class TableData extends React.Component {
         );
       }
     } catch (err) {
+      console.log(111);
+
       return message.error(err.message);
     }
     const {
@@ -289,25 +290,26 @@ class TableData extends React.Component {
       formProps
     } = this.props;
     const id = this._id;
+    let arr;
     try {
-      const [recordFormData, rowEditFormData] = await paa([
+      arr = await paa([
         () => isNeedRecordForm && httpGetFormData(id, recordFormName),
         () => isNeedEditForm && httpGetFormData(id, rowEditFormName)
       ]);
-      this._recordFormData = recordFormData;
-      this._rowEditFormData = rowEditFormData;
-
-      // 缓存记录表单和行内编辑表单所接收的 data prop
-      const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
-      this._dealedRecordFormData = getDataProp(
-        this._recordFormData,
-        {},
-        recordFormIsClassifyLayout
-      );
-      this._dealedRowEditFormData = getDataProp(this._rowEditFormData, {});
     } catch (err) {
       return message.error(err.message);
     }
+    const [recordFormData, rowEditFormData] = arr;
+    this._recordFormData = recordFormData;
+    this._rowEditFormData = rowEditFormData;
+
+    // 缓存记录表单和行内编辑表单所接收的 data prop
+    const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
+    this._dealedRecordFormData =
+      recordFormData &&
+      getDataProp(this._recordFormData, {}, recordFormIsClassifyLayout);
+    this._dealedRowEditFormData =
+      rowEditFormData && getDataProp(this._rowEditFormData, {});
   };
 
   /**
@@ -328,6 +330,8 @@ class TableData extends React.Component {
     try {
       btns = await httpGetBeBtns(id);
     } catch (err) {
+      console.log(111);
+
       return message.error(err.message);
     }
     const { beBtnsMultiple, beBtnsSingle, beBtnsOther } = btns;
@@ -461,7 +465,7 @@ class TableData extends React.Component {
     }
   };
 
-  getScroll = () => { };
+  getScroll = () => {};
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
@@ -638,6 +642,8 @@ class TableData extends React.Component {
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
+      console.log(111);
+
       return message.error(err.message);
     }
     message.success('删除成功');
@@ -655,8 +661,8 @@ class TableData extends React.Component {
 
   handleOnRow = record => {
     return {
-      onClick: () => { }, // 点击行
-      onMouseEnter: () => { } // 鼠标移入行
+      onClick: () => {}, // 点击行
+      onMouseEnter: () => {} // 鼠标移入行
     };
   };
 
@@ -692,26 +698,25 @@ class TableData extends React.Component {
 
   handleAdvSearch = () => {
     const {
+      advSearchContainerType,
       advSearchFormName,
-      advSearchDrawerProps,
+      advSearchContainerProps,
       advSearchFormProps,
       openAdvSearch,
-      advSearchValidationFields,
-      setProps
+      advSearchValidationFields
     } = this.props;
     const id = this._id;
 
     // 打开高级搜索
     openAdvSearch(
+      advSearchContainerType,
       id,
       advSearchFormName,
-      advSearchFormProps,
       advSearchValidationFields,
-      this.getCmsWhere
+      this.getCmsWhere,
+      advSearchContainerProps,
+      advSearchFormProps
     );
-
-    // 设置高级搜索中 Drawer 组件和 PwForm 组件所接收 props
-    setProps(advSearchDrawerProps, advSearchFormProps);
   };
 
   _cmsWhere = '';
@@ -894,6 +899,8 @@ class TableData extends React.Component {
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
+      console.log(111);
+
       return message.error(err.message);
     }
     message.success('删除成功');
@@ -991,7 +998,8 @@ class TableData extends React.Component {
       width,
       height,
       hasDownload,
-      hasRefresh
+      hasRefresh,
+      hasAdvSearch
     } = this.props;
     const {
       loading,
@@ -1007,7 +1015,7 @@ class TableData extends React.Component {
     const newColumns = this.getNewColumns(columns);
 
     return (
-      <div className='table-data'>
+      <div className="table-data">
         <Spin spinning={loading}>
           <PwTable
             title={title}
@@ -1041,9 +1049,10 @@ class TableData extends React.Component {
             hasDownload={hasDownload}
             hasRefresh={hasRefresh}
             onAdvSearch={this.handleAdvSearch}
+            hasAdvSearch={hasAdvSearch}
           />
         </Spin>
-      </div >
+      </div>
     );
   }
 }
@@ -1054,7 +1063,7 @@ const composedHoc = compose(
   withHttpGetBeBtns,
   withHttpGetFormData,
   withHttpRemoveRecords,
-  withAdvSearch,
+  withAdvSearch(),
   withDownloadFile,
   withRecordForm()
 );

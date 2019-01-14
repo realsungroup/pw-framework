@@ -366,11 +366,13 @@ class App extends Component {
             hasBeBtns={false}
             subtractH={180}
             actionBarFixed={true}
+            advSearchContainerType="drawer"
             //hasRowEdit
             hasAdd={false}
             hasDelete={false}
             hasModify={false}
             hasRowModify={true}
+            hasAdvSearch={true}
             height={600}
             formProps={{ displayMode: 'default', width: 800, height: 700 }}
             recordFormType="modal"

@@ -21,7 +21,9 @@ export const tableDataDefaultPropTypes = {
   recordFormType: 'modal',
   recordFormContainerProps: {},
   advSearchValidationFields: [],
-  hasRowEdit: false
+  hasRowEdit: false,
+  hasAdvSearch: true,
+  advSearchContainerType: 'drawer'
 };
 
 export const tableDataPropTypes = {
@@ -116,7 +118,6 @@ export const tableDataPropTypes = {
    */
   hasBeSort: PropTypes.bool,
 
-
   // ===========================================================
   // 表格列相关的 props ==========================================
   // ===========================================================
@@ -154,7 +155,6 @@ export const tableDataPropTypes = {
    * 默认：true
    */
   actionBarFixed: PropTypes.bool,
-
 
   // ===========================================================
   // 窗体名称相关的 props =========================================
@@ -253,16 +253,28 @@ export const tableDataPropTypes = {
 
   // 高级搜索相关 props
   /**
+   * 是否有高级搜索功能
+   * 默认：true
+   */
+  hasAdvSearch: PropTypes.bool,
+
+  /**
+   * 高级搜索所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+   * 默认：'drawer'
+   */
+  advSearchContainerType: PropTypes.oneOf(['modal', 'drawer']),
+
+  /**
    * 高级搜索使用的窗体名称
    * 默认：'default'
    */
   advSearchFormName: PropTypes.string,
 
   /**
-   * 高级搜索中 Drawer 组件所接收的 props
+   * 高级搜索中容器组件所接收的 props
    * 默认：-
    */
-  advSearchDrawerProps: PropTypes.object,
+  advSearchContainerProps: PropTypes.object,
 
   /**
    * 高级搜索中 PwForm 组件所接收的 props
@@ -305,5 +317,12 @@ export const tableDataPropTypes = {
    * 记录表单容器（Modal/Drawer）所接收的 props
    * 默认：-
    */
-  recordFormContainerProps: PropTypes.object
+  recordFormContainerProps: PropTypes.object,
+
+  /**
+   * 内部字段数组（修改了该数组内的内部字段所对应的控件的值之后，会调用 api 请求后端使用计算公式计算出保存前的记录）
+   * 默认：-
+   * 例如：['C3_592244738975', 'C3_592244739145']
+   */
+  cFFillFormInnerFieldNames: PropTypes.array
 };
