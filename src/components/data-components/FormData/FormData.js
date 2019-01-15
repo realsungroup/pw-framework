@@ -189,7 +189,8 @@ class FormData extends React.Component {
     }
     const { resid } = info;
 
-    const hasSubTables = Array.isArray(subTableArr) && !!subTableArr.length;
+    const hasSubTables =
+      Array.isArray(subTableArr) && !!subTableArr.length && operation !== 'add';
 
     return (
       <Fragment>

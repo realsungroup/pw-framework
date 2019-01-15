@@ -378,7 +378,7 @@ class App extends Component {
             recordFormContainerProps={{
               // width: 800,
               height: 500,
-              placement: 'top'
+              placement: 'bottom'
             }}
             formProps={{ displayMode: 'default', height: 400 }}
             recordFormType="drawer"
@@ -406,6 +406,7 @@ class App extends Component {
               }
             ]}
             hasResizeableBox={true}
+            hasZoomInOut={false}
           />
           {/* <PwForm
             labelCol={4}

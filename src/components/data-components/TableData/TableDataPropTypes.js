@@ -27,7 +27,8 @@ export const tableDataDefaultPropTypes = {
   formProps: {},
   hasResizeableBox: false,
   width: '100%',
-  height: '100%'
+  height: '100%',
+  hasZoomInOut: true
 };
 
 export const tableDataPropTypes = {
@@ -353,8 +354,14 @@ export const tableDataPropTypes = {
   beforeSaveFields: PropTypes.array,
 
   /**
-   * 是否有缩放表格功能
+   * 是否有缩放表格功能（放大缩小功能与 hasResizeableBox 不能同时开启）
    * 默认：false
    */
-  hasResizeableBox: PropTypes.bool
+  hasResizeableBox: PropTypes.bool,
+
+  /**
+   * 是否有放大缩小按钮（放大缩小功能与 hasResizeableBox 不能同时开启）
+   * 默认：true
+   */
+  hasZoomInOut: PropTypes.bool
 };

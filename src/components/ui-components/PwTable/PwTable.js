@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './PwTable.less';
 
 import IconWithTooltip from '../IconWithTooltip';
@@ -10,6 +9,7 @@ import 'react-resizable/css/styles.css';
 import { Table, Button, Input, Pagination, Spin } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
 import ButtonWithConfirm from '../ButtonWithConfirm';
+import { propTypes, defaultProps } from './PwTablePropTypes';
 const Search = Input.Search;
 
 const btnSizeMap = {
@@ -53,6 +53,10 @@ const IconBtns = React.memo(
     onRefresh,
     hasAdvSearch,
     onAdvSearch,
+    hasZoomInOut,
+    zoomStatus,
+    onZoomIn,
+    onZoomOut,
     size
   }) => {
     return (
@@ -84,6 +88,24 @@ const IconBtns = React.memo(
             style={{ fontSize: iconSizeMap[size] }}
           />
         )}
+        {hasZoomInOut && zoomStatus === 0 && (
+          <IconWithTooltip
+            className="pw-table__header-icon"
+            tip="放大"
+            iconClass="icon-scale-max"
+            onClick={onZoomIn}
+            style={{ fontSize: iconSizeMap[size] }}
+          />
+        )}
+        {hasZoomInOut && zoomStatus === 1 && (
+          <IconWithTooltip
+            className="pw-table__header-icon"
+            tip="缩小"
+            iconClass="icon-scale-normal"
+            onClick={onZoomOut}
+            style={{ fontSize: iconSizeMap[size] }}
+          />
+        )}
       </div>
     );
   }
@@ -94,137 +116,15 @@ const IconBtns = React.memo(
  */
 @pureRender
 class PwTable extends React.Component {
-  static propTypes = {
-    /**
-     * 表格尺寸
-     * 默认：'large'
-     */
-    size: PropTypes.oneOf(['large', 'middle', 'small']),
+  static propTypes = propTypes;
 
-    /**
-     * 表格标题
-     */
-    title: PropTypes.string,
-
-    /**
-     * 表格宽度
-     * 默认：800
-     */
-    width: PropTypes.number,
-
-    /**
-     * 表格高度
-     * 默认：300
-     */
-    height: PropTypes.number,
-
-    /**
-     * 是否有下载表格的功能
-     * 默认值：true
-     */
-    hasDownload: PropTypes.bool,
-
-    /**
-     * 点击下载表格时的回调
-     * */
-    onDownload: PropTypes.func,
-
-    /**
-     * 是否有刷新表格数据的功能
-     * 默认值：true
-     */
-    hasRefresh: PropTypes.bool,
-
-    /**
-     * 点击刷新时的回调
-     * */
-    onRefresh: PropTypes.func,
-
-    /**
-     * 是否有高级搜索的功能
-     * 默认值：true
-     */
-    hasAdvSearch: PropTypes.bool,
-
-    /**
-     * 点击高级搜索时的回调
-     */
-    onAdvSearch: PropTypes.func,
-
-    /**
-     * 渲染其他按钮函数
-     */
-    renderOtherBtns: PropTypes.func,
-
-    /**
-     * 是否有添加按钮
-     * 默认值：true
-     */
-    hasAdd: PropTypes.bool,
-
-    /**
-     * 点击添加时的回调
-     */
-    onAdd: PropTypes.func,
-
-    /**
-     * 是否有修改按钮
-     * 默认值：true
-     */
-    hasModify: PropTypes.bool,
-
-    /**
-     * 点击修改时的回调
-     */
-    onModify: PropTypes.func,
-
-    /**
-     * 是否有删除按钮
-     * 默认值：true
-     */
-    hasDelete: PropTypes.bool,
-
-    /**
-     * 点击删除时的回调
-     */
-    onDelete: PropTypes.func,
-
-    /**
-     * 是否有搜索栏
-     * 默认值：true
-     */
-    hasSearch: PropTypes.bool,
-
-    /**
-     * 分页配置
-     * 默认值：-
-     */
-    pagination: PropTypes.object,
-
-    /**
-     * 搜索时的回调
-     */
-    onSearch: PropTypes.func
-  };
-
-  static defaultProps = {
-    size: 'middle',
-
-    width: 800,
-    height: 400,
-
-    hasDownload: true,
-    hasRefresh: true,
-    hasAdvSearch: true,
-
-    hasAdd: true,
-    hasModify: true,
-    hasDelete: true,
-    hasSearch: true
-  };
+  static defaultProps = defaultProps;
 
   constructor(props) {
     super(props);
+    this.state = {
+      zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+    };
   }
 
   handleDownload = () => {
@@ -239,33 +139,14 @@ class PwTable extends React.Component {
     this.props.onAdvSearch && this.props.onAdvSearch();
   };
 
-  getResizeBoxProp = () => {
-    const {
-      width,
-      height,
-      handleSize,
-      lockAspectRatio,
-      axis,
-      minConstraints,
-      maxConstraints,
-      onResizeStop,
-      onResizeStart,
-      onResize,
-      draggableOpts
-    } = this.props;
-    return {
-      width,
-      height,
-      handleSize,
-      lockAspectRatio,
-      axis,
-      minConstraints,
-      maxConstraints,
-      onResizeStop,
-      onResizeStart,
-      onResize,
-      draggableOpts
-    };
+  handleZoomIn = () => {
+    this.setState({ zoomStatus: 1 });
+    this.props.onZoomIn && this.props.onZoomIn();
+  };
+
+  handleZoomOut = () => {
+    this.setState({ zoomStatus: 0 });
+    this.props.onZoomOut && this.props.onZoomOut();
   };
 
   renderPagination = () => {
@@ -319,20 +200,21 @@ class PwTable extends React.Component {
       width,
       height,
       onResizeStop,
+      hasZoomInOut,
+      onZoomIn,
+      onZoomOut,
       ...restProps
     } = this.props;
 
     const hasActionBar =
       hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
 
-    const hasIconBtns = hasDownload || hasRefresh || hasAdvSearch;
+    const hasIconBtns =
+      hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut;
 
     const hasHeader = hasIconBtns && title;
 
-    const resizeBoxProps = this.getResizeBoxProp();
-
     return (
-      // <ResizableBox {...resizeBoxProps} onResizeStop={onResizeStop}>
       <div className="pw-table">
         {hasHeader && (
           <div className="pw-table__header">
@@ -349,7 +231,11 @@ class PwTable extends React.Component {
                 onRefresh={this.handleRefresh}
                 hasAdvSearch={hasAdvSearch}
                 onAdvSearch={this.handleAdvSearch}
+                hasZoomInOut={hasZoomInOut}
+                onZoomIn={this.handleZoomIn}
+                onZoomOut={this.handleZoomOut}
                 size={size}
+                zoomStatus={this.state.zoomStatus}
               />
             )}
           </div>
@@ -402,7 +288,6 @@ class PwTable extends React.Component {
 
         {this.renderPagination()}
       </div>
-      // </ResizableBox>
     );
   }
 }

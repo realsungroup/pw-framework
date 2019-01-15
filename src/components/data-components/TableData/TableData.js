@@ -27,6 +27,7 @@ import {
   setDataInitialValue
 } from '../../../util/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
+import withZoomInOut from '../../hoc/withZoomInOut';
 import { makeCancelable } from '../../../util/api';
 
 const { Fragment } = React;
@@ -731,6 +732,14 @@ class TableData extends React.Component {
     );
   };
 
+  handleZoomIn = () => {
+    this.props.hasResizeableBox || this.props.zoomIn();
+  };
+
+  handleZoomOut = () => {
+    this.props.hasResizeableBox || this.props.zoomOut();
+  };
+
   _cmsWhere = '';
   getCmsWhere = cmsWhere => {
     this._cmsWhere = cmsWhere;
@@ -1010,7 +1019,8 @@ class TableData extends React.Component {
       hasAdvSearch,
       width,
       height,
-      hasResizeableBox
+      hasResizeableBox,
+      hasZoomInOut
     } = this.props;
     const {
       pagination,
@@ -1024,7 +1034,7 @@ class TableData extends React.Component {
     const newColumns = this.getNewColumns(columns);
 
     let style = {};
-    if (!hasResizeableBox) {
+    if (!hasResizeableBox && !hasZoomInOut) {
       style = { width, height };
     }
 
@@ -1059,6 +1069,9 @@ class TableData extends React.Component {
           hasRefresh={hasRefresh}
           onAdvSearch={this.handleAdvSearch}
           hasAdvSearch={hasAdvSearch}
+          hasZoomInOut={hasZoomInOut}
+          onZoomIn={this.handleZoomIn}
+          onZoomOut={this.handleZoomOut}
         />
       </div>
     );
@@ -1094,6 +1107,7 @@ const composedHoc = compose(
   withHttpRemoveRecords,
   withAdvSearch(),
   withDownloadFile,
-  withRecordForm()
+  withRecordForm(),
+  withZoomInOut()
 );
 export default composedHoc(TableData);
