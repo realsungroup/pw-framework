@@ -26,6 +26,8 @@ import {
   getDataProp,
   setDataInitialValue
 } from '../../../util/formData2ControlsData';
+import { ResizableBox } from 'react-resizable';
+import { makeCancelable } from '../../../util/api';
 
 const { Fragment } = React;
 
@@ -90,7 +92,9 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+  };
 
   initVariables = () => {
     const { dataMode, resid, subresid } = this.props;
@@ -232,9 +236,7 @@ class TableData extends React.Component {
         );
       }
     } catch (err) {
-      console.log(111);
-
-      return message.error(err.message);
+      return console.error(err);
     }
     const {
       hasBeSort,
@@ -290,14 +292,19 @@ class TableData extends React.Component {
       formProps
     } = this.props;
     const id = this._id;
-    let arr;
+    let arr,
+      pArr = [];
+    if (isNeedRecordForm) {
+      pArr.push(httpGetFormData(id, recordFormName));
+    }
+    if (isNeedEditForm) {
+      pArr.push(httpGetFormData(id, rowEditFormName));
+    }
     try {
-      arr = await paa([
-        () => isNeedRecordForm && httpGetFormData(id, recordFormName),
-        () => isNeedEditForm && httpGetFormData(id, rowEditFormName)
-      ]);
+      this.p1 = makeCancelable(Promise.all(pArr));
+      arr = await this.p1.promise;
     } catch (err) {
-      return message.error(err.message);
+      return console.error(err);
     }
     const [recordFormData, rowEditFormData] = arr;
     this._recordFormData = recordFormData;
@@ -330,9 +337,7 @@ class TableData extends React.Component {
     try {
       btns = await httpGetBeBtns(id);
     } catch (err) {
-      console.log(111);
-
-      return message.error(err.message);
+      return console.error(err);
     }
     const { beBtnsMultiple, beBtnsSingle, beBtnsOther } = btns;
 
@@ -527,7 +532,7 @@ class TableData extends React.Component {
    * 当传参数时，表示点击 “后端按钮” 打开记录表单
    * 不传参数时，表示点击 “前端定义的按钮” 打开记录表单
    */
-  openRecordForm = (operation, record, data) => {
+  openRecordForm = (operation, record, data, recordFormData) => {
     const {
       dataMode,
       resid,
@@ -538,7 +543,8 @@ class TableData extends React.Component {
       openRecordForm,
       recordFormType,
       beforeSaveFields,
-      recordFormContainerProps
+      recordFormContainerProps,
+      subTableArrProps
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -555,6 +561,8 @@ class TableData extends React.Component {
     const isTransformValue = ['add', 'modify'].indexOf(newOperation) !== -1;
     newData = setDataInitialValue(newData, newRecord, isTransformValue);
 
+    const { subTableArr } = recordFormData || this._recordFormData;
+
     openRecordForm({
       type: recordFormType,
       title: modalTitleMap[recordFormShowMode],
@@ -566,6 +574,8 @@ class TableData extends React.Component {
       beforeSaveFields,
       AdvDicTableProps,
       recordFormContainerProps,
+      subTableArr,
+      subTableArrProps,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });
@@ -646,9 +656,7 @@ class TableData extends React.Component {
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
-      console.log(111);
-
-      return message.error(err.message);
+      return console.error(err);
     }
     message.success('删除成功');
 
@@ -903,9 +911,7 @@ class TableData extends React.Component {
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
-      console.log(111);
-
-      return message.error(err.message);
+      return console.error(err);
     }
     message.success('删除成功');
 
@@ -992,21 +998,21 @@ class TableData extends React.Component {
     return actionBar;
   };
 
-  render() {
+  renderPwTable = () => {
     const {
       title,
       hasAdd,
       hasModify,
       hasDelete,
       size,
-      width,
-      height,
       hasDownload,
       hasRefresh,
-      hasAdvSearch
+      hasAdvSearch,
+      width,
+      height,
+      hasResizeableBox
     } = this.props;
     const {
-      loading,
       pagination,
       dataSource,
       columns,
@@ -1015,49 +1021,68 @@ class TableData extends React.Component {
       components,
       editingKey
     } = this.state;
-
     const newColumns = this.getNewColumns(columns);
 
+    let style = {};
+    if (!hasResizeableBox) {
+      style = { width, height };
+    }
+
     return (
-      <div className="table-data">
-        <Spin spinning={loading}>
-          <PwTable
-            title={title}
-            editingKey={editingKey}
-            loading={loading}
-            components={components}
-            pagination={pagination}
-            dataSource={dataSource}
-            columns={newColumns}
-            bordered
-            rowKey={'REC_ID'}
-            scroll={scrollXY}
-            hasAdd={hasAdd}
-            hasModify={hasModify}
-            hasDelete={hasDelete}
-            onAdd={this.handleAdd}
-            onModify={this.handleModify}
-            onDelete={this.handleDelete}
-            onSearch={this.handleSearch}
-            onDownload={this.handleDownload}
-            onSearchChange={this.onSearchChange}
-            onChange={this.handleTableChange}
-            renderOtherBtns={this.renderBeBtns}
-            rowSelection={rowSelection}
-            onRow={this.handleOnRow}
-            onRefresh={this.handleRefresh}
-            onResizeStop={this.handleResizeStop}
-            size={size}
-            width={width}
-            height={height}
-            hasDownload={hasDownload}
-            hasRefresh={hasRefresh}
-            onAdvSearch={this.handleAdvSearch}
-            hasAdvSearch={hasAdvSearch}
-          />
-        </Spin>
+      <div className="table-data" style={style}>
+        <PwTable
+          title={title}
+          editingKey={editingKey}
+          components={components}
+          pagination={pagination}
+          dataSource={dataSource}
+          columns={newColumns}
+          bordered
+          rowKey={'REC_ID'}
+          scroll={scrollXY}
+          hasAdd={hasAdd}
+          hasModify={hasModify}
+          hasDelete={hasDelete}
+          onAdd={this.handleAdd}
+          onModify={this.handleModify}
+          onDelete={this.handleDelete}
+          onSearch={this.handleSearch}
+          onDownload={this.handleDownload}
+          onSearchChange={this.onSearchChange}
+          onChange={this.handleTableChange}
+          renderOtherBtns={this.renderBeBtns}
+          rowSelection={rowSelection}
+          onRow={this.handleOnRow}
+          onRefresh={this.handleRefresh}
+          size={size}
+          hasDownload={hasDownload}
+          hasRefresh={hasRefresh}
+          onAdvSearch={this.handleAdvSearch}
+          hasAdvSearch={hasAdvSearch}
+        />
       </div>
     );
+  };
+
+  render() {
+    const { width, height, hasResizeableBox } = this.props;
+    const { loading } = this.state;
+
+    if (hasResizeableBox) {
+      return (
+        <Spin spinning={loading}>
+          <ResizableBox
+            width={width}
+            height={height}
+            onResizeStop={this.handleResizeStop}
+          >
+            {this.renderPwTable()}
+          </ResizableBox>
+        </Spin>
+      );
+    } else {
+      return <Spin spinning={loading}>{this.renderPwTable()}</Spin>;
+    }
   }
 }
 

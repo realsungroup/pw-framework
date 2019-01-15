@@ -31,6 +31,8 @@ const withRecordForm = (options = {}) => {
        * @param {array} params.beforeSaveFields 能够通过计算公式获取保存之前的记录的内容字段数组
        * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
        * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
+       * @param {array} params.subTableArr 表单中子表
+       * @param {object} params.subTableArrProps 表单中子表
        * @param {function} params.onConfirm 确认后的回调函数
        * @param {function} params.onCancel 取消后的回调函数
        */
@@ -50,11 +52,11 @@ const withRecordForm = (options = {}) => {
         beforeSaveFields = [],
         AdvDicTableProps = {},
         recordFormContainerProps = {},
+        subTableArr = [],
+        subTableArrProps = [],
         onConfirm = () => {},
         onCancel = () => {}
       }) => {
-        console.log({ recordFormContainerProps });
-
         const FormDataProps = {
           data,
           operation,
@@ -64,7 +66,9 @@ const withRecordForm = (options = {}) => {
           onConfirm,
           onCancel,
           AdvDicTableProps,
-          beforeSaveFields
+          beforeSaveFields,
+          subTableArr,
+          subTableArrProps
         };
         const containerProps = {
           title,

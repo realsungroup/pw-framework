@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './PwForm.less';
-import { Form, Button, Collapse } from 'antd';
+import { Form, Collapse } from 'antd';
 import LzRowCols from '../LzRowCols';
-// import FormItem from './FormItem';
-import schema from 'async-validator';
-import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
 import PwFormFooter from './PwFormFooter/index';
 import Control from '../../ui-components/Control';
@@ -276,11 +273,12 @@ class PwForm extends React.Component {
       height,
       saveText,
       cancelText,
-      editText
+      editText,
+      className
     } = this.props;
 
     return (
-      <div className="pw-form" style={{ width, height }}>
+      <div className={`pw-form ${className}`} style={{ width, height }}>
         {/* body */}
         <Form className="pw-form__body">{this.renderForm()}</Form>
         {/* footer */}

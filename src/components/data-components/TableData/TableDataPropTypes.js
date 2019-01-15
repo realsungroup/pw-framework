@@ -23,7 +23,11 @@ export const tableDataDefaultPropTypes = {
   advSearchValidationFields: [],
   hasRowEdit: false,
   hasAdvSearch: true,
-  advSearchContainerType: 'drawer'
+  advSearchContainerType: 'drawer',
+  formProps: {},
+  hasResizeableBox: false,
+  width: '100%',
+  height: '100%'
 };
 
 export const tableDataPropTypes = {
@@ -47,15 +51,16 @@ export const tableDataPropTypes = {
   size: PropTypes.oneOf(['large', 'middle', 'small']),
 
   /**
-   * 宽度
-   * 默认
+   * 表格宽度
+   * 默认：'100%'
    */
-  width: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
   /**
-   * 高度
+   * 表格高度
+   * 默认：'100%'
    */
-  height: PropTypes.number,
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
   /**
    * 主表id
@@ -173,6 +178,7 @@ export const tableDataPropTypes = {
 
   /**
    * 记录表单中 PwForm 组件接收的 props
+   * 默认：{}
    */
   formProps: PropTypes.object,
 
@@ -319,10 +325,36 @@ export const tableDataPropTypes = {
    */
   recordFormContainerProps: PropTypes.object,
 
+  // ===========================================================
+  // 记录表单中的子表相关 props ===================================
+  // ===========================================================
+
+  /**
+   * 记录表单中的子表配置
+   * 默认：-
+   */
+  subTableArrProps: PropTypes.array,
+  // [
+  //   {
+  //     subTableName: '子表',
+  //     subResid: 666,
+  //     tableProps: {
+  //       width: 777,
+  //       height: 888
+  //     }
+  //   }
+  // ]
+
   /**
    * 内部字段数组（修改了该数组内的内部字段所对应的控件的值之后，会调用 api 请求后端使用计算公式计算出保存前的记录）
    * 默认：-
    * 例如：['C3_592244738975', 'C3_592244739145']
    */
-  beforeSaveFields: PropTypes.array
+  beforeSaveFields: PropTypes.array,
+
+  /**
+   * 是否有缩放表格功能
+   * 默认：false
+   */
+  hasResizeableBox: PropTypes.bool
 };

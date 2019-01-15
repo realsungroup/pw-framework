@@ -301,6 +301,7 @@ class App extends Component {
     try {
       await http().clearCache();
     } catch (err) {
+      console.error(err);
       return message.error(err.message);
     }
     message.success('清除缓存成功');
@@ -377,7 +378,7 @@ class App extends Component {
             recordFormContainerProps={{
               // width: 800,
               height: 500,
-              placement: 'bottom'
+              placement: 'top'
             }}
             formProps={{ displayMode: 'default', height: 400 }}
             recordFormType="drawer"
@@ -395,6 +396,16 @@ class App extends Component {
               'C3_600449800714',
               'C3_600449820713'
             ]}
+            subTableArrProps={[
+              {
+                subTableName: '子表',
+                subResid: 596647249456,
+                tableProps: {
+                  height: 340
+                }
+              }
+            ]}
+            hasResizeableBox={true}
           />
           {/* <PwForm
             labelCol={4}

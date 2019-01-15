@@ -20,7 +20,9 @@ const withAdvDicTable = WrappedComponent => {
     /**
      * 显示高级字典表格
      * @param {object} form 使用 Form.create()(MyForm) 自动收集 MyForm 组件中的表单值功能暴露出来的 form 对象
-     * @param {object} dataItem 描述控件项（打开高级字典的控件为 Search）的数据，如：
+     * @param {object} dataItem 描述控件项（打开高级字典的控件为 Search）的数据，如下所示
+     * @param {function} afterSelect 选择完一条记录之后的回调函数
+     *
      */
     // {
     //   id: 'name', // 字段名称
@@ -39,7 +41,7 @@ const withAdvDicTable = WrappedComponent => {
       const state = { visible: true };
 
       if (!this._form || !this._dataItem) {
-        // 缓存 form、dataItem
+        // 缓存 form、dataItem、afterSelect
         this._form = form;
         this._dataItem = dataItem;
         this._afterSelect = afterSelect;

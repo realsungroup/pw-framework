@@ -272,7 +272,7 @@ export const withHttpGetFormData = WrappedComponent => {
       try {
         res = await this.p1.promise;
       } catch (err) {
-        throw new Error(err);
+        console.error(err);
       }
       const formData = dealControlArr(res.data.columns);
       return formData;
