@@ -376,15 +376,25 @@ class App extends Component {
             height={600}
             recordFormContainerProps={{
               // width: 800,
-              // height: 500,
-              // placement: 'bottom'
+              height: 500,
+              placement: 'bottom'
             }}
-            formProps={{ displayMode: 'default' }}
+            formProps={{ displayMode: 'default', height: 400 }}
             recordFormType="drawer"
             // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
             recordFormName="default_rowTest"
             rowEditFormName="default_rowTest"
-            beforeSaveFields={['C3_600449702200']}
+            // ['C3_600449702200', 'C3_600449702200']
+            beforeSaveFields={[
+              // 'C3_600449702200',
+              'C3_600449723545',
+              'C3_600449744490',
+              'C3_600449756846',
+              'C3_600449776309',
+              'C3_600449791836',
+              'C3_600449800714',
+              'C3_600449820713'
+            ]}
           />
           {/* <PwForm
             labelCol={4}

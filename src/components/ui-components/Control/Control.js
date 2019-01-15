@@ -63,6 +63,13 @@ const getFileList = value => {
   return ret;
 };
 
+const beforeSaveOnChangeControls = [
+  'Checkbox',
+  'Select',
+  'DatePicker',
+  'DateTimePicker'
+];
+
 /**
  * Control
  */
@@ -137,6 +144,16 @@ class Control extends React.Component {
   };
 
   handleChange = value => {
+    const { dataItem, hasBeforeSave } = this.props;
+    // Checkbox/Select/DatePicker/DateTimePicker beforeSave
+    if (beforeSaveOnChangeControls.indexOf(dataItem.name) !== -1) {
+      if (hasBeforeSave) {
+        setTimeout(() => {
+          this.handleBeforeSave();
+        }, 0);
+      }
+    }
+
     this.triggerChange(value);
   };
 
@@ -259,7 +276,11 @@ class Control extends React.Component {
         }
         case 'Search': {
           return (
-            <Search onChange={this.handleChange} onSearch={this.handleSearch} />
+            <Search
+              onChange={this.handleChange}
+              onSearch={this.handleSearch}
+              onBlur={this.handleBeforeSave}
+            />
           );
         }
         case 'DatePicker': {
@@ -268,7 +289,13 @@ class Control extends React.Component {
         }
         case 'DateTimePicker': {
           const valueProp = getDatePickerValueProp(value);
-          return <DateTimePicker {...valueProp} onChange={this.handleChange} />;
+          return (
+            <DateTimePicker
+              {...valueProp}
+              onChange={this.handleChange}
+              onBlur={this.handleBeforeSave}
+            />
+          );
         }
         case 'Checkbox': {
           const checked = getCheckboxChecked(value);
