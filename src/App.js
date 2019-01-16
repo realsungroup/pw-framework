@@ -401,6 +401,7 @@ class App extends Component {
             ]}
             hasResizeableBox={true}
             hasZoomInOut={false}
+            bordered={true}
           />
           {/* <PwForm
             labelCol={4}

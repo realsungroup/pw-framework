@@ -223,7 +223,7 @@ export const withHttpGetBeBtns = WrappedComponent => {
       try {
         res = await this.p1.promise;
       } catch (err) {
-        throw new Error(err);
+        return console.error(err.message);
       }
       const {
         beBtnsMultiple,
@@ -272,7 +272,7 @@ export const withHttpGetFormData = WrappedComponent => {
       try {
         res = await this.p1.promise;
       } catch (err) {
-        console.error(err);
+        return console.error(err);
       }
       const formData = dealControlArr(res.data.columns);
       return formData;
@@ -346,8 +346,7 @@ export const withHttpBeforeSave = (options = {}) => {
         try {
           res = await this.p1.promise;
         } catch (err) {
-          console.error({ err });
-          return message.error(err.message);
+          return console.error({ err });
         }
 
         const fields = Object.keys(form.getFieldsValue());

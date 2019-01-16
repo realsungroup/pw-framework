@@ -14,7 +14,8 @@ import {
   withHttpRemoveRecords
 } from '../../hoc/withHttp';
 import { compose } from 'recompose';
-import withAdvSearch from '../../hoc/withAdvSearch/withAdvSearch';
+import withAdvSearch from '../../hoc/withAdvSearch';
+import withImport from '../../hoc/withImport';
 import withDownloadFile from '../../hoc/withDownloadFile';
 import withRecordForm from '../../hoc/withRecordForm';
 import {
@@ -419,6 +420,11 @@ class TableData extends React.Component {
       page: 1,
       pageSize: this.state.pagination.pageSize
     });
+  };
+
+  // 导入
+  handleImport = () => {
+    this.props.openImportView && this.props.openImportView(this._id);
   };
 
   // 下载
@@ -1020,7 +1026,9 @@ class TableData extends React.Component {
       width,
       height,
       hasResizeableBox,
-      hasZoomInOut
+      hasZoomInOut,
+      hasImport,
+      bordered
     } = this.props;
     const {
       pagination,
@@ -1057,6 +1065,7 @@ class TableData extends React.Component {
           onModify={this.handleModify}
           onDelete={this.handleDelete}
           onSearch={this.handleSearch}
+          onImport={this.handleImport}
           onDownload={this.handleDownload}
           onSearchChange={this.onSearchChange}
           onChange={this.handleTableChange}
@@ -1065,6 +1074,7 @@ class TableData extends React.Component {
           onRow={this.handleOnRow}
           onRefresh={this.handleRefresh}
           size={size}
+          hasImport={hasImport}
           hasDownload={hasDownload}
           hasRefresh={hasRefresh}
           onAdvSearch={this.handleAdvSearch}
@@ -1072,6 +1082,7 @@ class TableData extends React.Component {
           hasZoomInOut={hasZoomInOut}
           onZoomIn={this.handleZoomIn}
           onZoomOut={this.handleZoomOut}
+          bordered={bordered}
         />
       </div>
     );
@@ -1108,6 +1119,7 @@ const composedHoc = compose(
   withAdvSearch(),
   withDownloadFile,
   withRecordForm(),
-  withZoomInOut()
+  withZoomInOut(),
+  withImport
 );
 export default composedHoc(TableData);

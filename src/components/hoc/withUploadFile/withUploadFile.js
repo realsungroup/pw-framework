@@ -1,6 +1,7 @@
 import React from 'react';
 import { argumentContainer } from '../util';
-import { message } from 'antd';
+import http, { makeCancelable } from '../../../util/api';
+import axios from 'axios';
 
 // 上传文件
 export const uploadFile = (file, url) => {
@@ -33,15 +34,49 @@ const withUploadFile = (options = {}) => {
         this._url = url;
       }
 
-      handleUploadFile = (fileInfo, callback, url = this._url) => {
-        const file = fileInfo.file;
+      componentWillUnmount = () => {
+        this.p1 && this.p1.cancel();
+      };
+
+      handleUploadFile = (file, success, fail, url = this._url) => {
         // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
-        uploadFile(file, url)
-          .then(fileUrl => {
-            callback(null, fileUrl);
+        // uploadFile(file, url)
+        //   .then(fileUrl => {
+        //     success && success(fileUrl);
+        //   })
+        //   .catch(err => {
+        //     fail && fail(err);
+        //   });
+
+        let formData = new FormData();
+        formData.append('file', file, file.name);
+
+        // this.p1 = makeCancelable(
+        //   http({
+        //     baseURL: url
+        //   }).uploadFile(formData)
+        // );
+        // this.p1.promise
+        //   .then(data => {
+        //     const fileUrl = data.httpfilename;
+        //     success && success(fileUrl);
+        //   })
+        //   .catch(err => {
+        //     console.error(err);
+        //     fail && fail(err);
+        //   });
+
+        axios
+          .post(url, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(data => {
+            console.log({ data });
           })
           .catch(err => {
-            callback(err);
+            console.log({ err });
           });
       };
 
@@ -53,7 +88,7 @@ const withUploadFile = (options = {}) => {
           />
         );
       }
-    };
+    }
 
     return argumentContainer(
       withUploadFile,

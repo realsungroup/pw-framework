@@ -21,7 +21,7 @@ const withModalDrawer = (options = {}) => {
 
       /**
        * 打开 Modal or Drawer：由 type 参数决定
-       * @param {string} type 类型：'Modal' 模态窗 | 'Drawer' 抽屉
+       * @param {string} type 类型：'modal' 模态窗 | 'drawer' 抽屉
        * @param {object} containerProps 容器（Modal | Drawer）接收的 props
        * @param {class | function} ChildComponent 放于容器中的子组件
        * @param {object} childProps 子组件接收的 props

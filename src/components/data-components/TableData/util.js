@@ -55,20 +55,7 @@ export const getColumns = (
     components = {
       body: {
         row: EditableRow,
-        // 渲染表格行
-        // row: props => {
-        //   return <tr {...props} />;
-        // },
         cell: EditableCell
-        // 渲染单元格
-        // cell: props => {
-        //   const { editing, record, children, ...restProps } = props;
-        //   return (
-        //     <td {...restProps}>
-        //       {editing && record ? record.REC_ID : children}
-        //     </td>
-        //   );
-        // }
       }
     };
   }

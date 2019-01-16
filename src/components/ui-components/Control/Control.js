@@ -94,7 +94,7 @@ class Control extends React.Component {
 
     /**
      * 上传文件的地址
-     * 默认：'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'
+     * 默认：'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'（基地址：'http://kingofdinner.realsun.me:8081'）
      */
     uploadUrl: PropTypes.string,
 
@@ -167,16 +167,18 @@ class Control extends React.Component {
   // 上传文件（注意：不能使用 async 函数）
   handleUploadFile = fileInfo => {
     const { uploadFile, uploadUrl } = this.props;
+    const file = fileInfo.file;
     try {
       uploadFile(
-        fileInfo,
-        (err, fileUrl) => {
-          if (err) {
-            return message.error(err.message);
-          }
+        file,
+        fileUrl => {
           const value = this.getFileListValue('add', fileUrl);
           this.handleChange(value);
           message.success('上传成功');
+        },
+        err => {
+          console.error(err);
+          message.error('上传失败');
         },
         uploadUrl
       );

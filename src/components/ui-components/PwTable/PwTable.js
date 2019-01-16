@@ -1,116 +1,21 @@
 import React from 'react';
 import './PwTable.less';
 
-import IconWithTooltip from '../IconWithTooltip';
-
-import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 
-import { Table, Button, Input, Pagination, Spin } from 'antd';
+import { Table, Button, Input, Pagination } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
 import ButtonWithConfirm from '../ButtonWithConfirm';
 import { propTypes, defaultProps } from './PwTablePropTypes';
 import { getRang } from './util';
+import IconBtns from './IconBtns';
+import {
+  btnSizeMap,
+  tableSizeMap,
+  paginationSizeMap,
+  inputSizeMap
+} from './map';
 const Search = Input.Search;
-
-const btnSizeMap = {
-  large: 'large',
-  middle: 'default',
-  small: 'small'
-};
-
-const tableSizeMap = {
-  large: 'default',
-  middle: 'middle',
-  small: 'small'
-};
-
-const paginationSizeMap = {
-  large: '',
-  middle: '',
-  small: 'small'
-};
-
-const inputSizeMap = {
-  large: 'large',
-  middle: 'default',
-  small: 'small'
-};
-
-const iconSizeMap = {
-  large: 20,
-  middle: 18,
-  small: 16
-};
-
-/**
- * 字体图标按钮
- */
-const IconBtns = React.memo(
-  ({
-    hasDownload,
-    onDownload,
-    hasRefresh,
-    onRefresh,
-    hasAdvSearch,
-    onAdvSearch,
-    hasZoomInOut,
-    zoomStatus,
-    onZoomIn,
-    onZoomOut,
-    size
-  }) => {
-    return (
-      <div className="pw-table__header-icon-wrap">
-        {hasDownload && (
-          <IconWithTooltip
-            className="pw-table__header-icon"
-            tip="下载"
-            iconClass="icon-export"
-            onClick={onDownload}
-            style={{ fontSize: iconSizeMap[size] }}
-          />
-        )}
-        {hasRefresh && (
-          <IconWithTooltip
-            className="pw-table__header-icon"
-            tip="刷新"
-            iconClass="icon-refresh"
-            onClick={onRefresh}
-            style={{ fontSize: iconSizeMap[size] }}
-          />
-        )}
-        {hasAdvSearch && (
-          <IconWithTooltip
-            className="pw-table__header-icon"
-            tip="高级搜索"
-            iconClass="icon-adv-search"
-            onClick={onAdvSearch}
-            style={{ fontSize: iconSizeMap[size] }}
-          />
-        )}
-        {hasZoomInOut && zoomStatus === 0 && (
-          <IconWithTooltip
-            className="pw-table__header-icon"
-            tip="放大"
-            iconClass="icon-scale-max"
-            onClick={onZoomIn}
-            style={{ fontSize: iconSizeMap[size] }}
-          />
-        )}
-        {hasZoomInOut && zoomStatus === 1 && (
-          <IconWithTooltip
-            className="pw-table__header-icon"
-            tip="缩小"
-            iconClass="icon-scale-normal"
-            onClick={onZoomOut}
-            style={{ fontSize: iconSizeMap[size] }}
-          />
-        )}
-      </div>
-    );
-  }
-);
 
 /**
  * PwTable
@@ -127,6 +32,10 @@ class PwTable extends React.Component {
       zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
     };
   }
+
+  handleImport = () => {
+    this.props.onImport && this.props.onImport();
+  };
 
   handleDownload = () => {
     this.props.onDownload && this.props.onDownload();
@@ -212,6 +121,8 @@ class PwTable extends React.Component {
       hasZoomInOut,
       onZoomIn,
       onZoomOut,
+      hasImport,
+      onImport,
       ...restProps
     } = this.props;
 
@@ -235,6 +146,8 @@ class PwTable extends React.Component {
             {hasIconBtns && (
               <IconBtns
                 hasDownload={hasDownload}
+                hasImport={hasImport}
+                onImport={this.handleImport}
                 onDownload={this.handleDownload}
                 hasRefresh={hasRefresh}
                 onRefresh={this.handleRefresh}

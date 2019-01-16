@@ -34,7 +34,8 @@ export const tableDataDefaultPropTypes = {
     pageSize: 10,
     showSizeChanger: true,
     showQuickJumper: true
-  }
+  },
+  bordered: true
 };
 
 export const tableDataPropTypes = {
@@ -71,16 +72,19 @@ export const tableDataPropTypes = {
 
   /**
    * 主表id
+   * 默认：-
    */
   resid: PropTypes.number.isRequired,
 
   /**
    * 预设查询编号
+   * 默认：-
    */
   mtsid: PropTypes.number,
 
   /**
    * 子表 id
+   * 默认：-
    */
   subresid: (props, propName, componentName) => {
     // 当 dataMode 为 "sub" 时，subresid 是必传的
@@ -93,6 +97,7 @@ export const tableDataPropTypes = {
 
   /**
    * 主表记录编号
+   * 默认：-
    */
   hostrecid: (props, propName, componentName) => {
     // 当 dataMode 为 "sub" 时，hostrecid 是必传的
@@ -369,5 +374,11 @@ export const tableDataPropTypes = {
    * 是否有放大缩小按钮（放大缩小功能与 hasResizeableBox 不能同时开启）
    * 默认：true
    */
-  hasZoomInOut: PropTypes.bool
+  hasZoomInOut: PropTypes.bool,
+
+  /**
+   * 是否有边框
+   * 默认：true
+   */
+  bordered: PropTypes.bool
 };

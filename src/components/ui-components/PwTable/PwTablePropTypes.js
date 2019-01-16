@@ -13,7 +13,9 @@ export const defaultProps = {
   hasAdd: true,
   hasModify: true,
   hasDelete: true,
-  hasSearch: true
+  hasSearch: true,
+
+  hasImport: true
 };
 
 export const propTypes = {
@@ -50,6 +52,12 @@ export const propTypes = {
    * 点击下载表格时的回调
    * */
   onDownload: PropTypes.func,
+
+  /**
+   * 是否有导入功能
+   * 默认：true
+   */
+  hasImport: PropTypes.bool,
 
   /**
    * 是否有刷新表格数据的功能

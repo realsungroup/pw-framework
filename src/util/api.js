@@ -105,4 +105,14 @@ http.createApi('exportTableData', {
   url: 'api/100/table/ExportTableData'
 });
 
+/**
+ * 导出表格数据
+ * 参数：{ resid }
+ * 1. resid：表资源 id
+ */
+http.createApi('getImportConfigs', {
+  method: 'get',
+  url: 'api/Resource/GetImportConfigs'
+});
+
 export default http;
