@@ -356,12 +356,6 @@ class App extends Component {
           <TableData
             title="调休登记"
             resid={596720928643}
-            defaultPagination={{
-              current: 1,
-              pageSize: 10,
-              showSizeChanger: true,
-              showQuickJumper: true
-            }}
             width={1360}
             size="small"
             hasBeBtns={false}
@@ -401,7 +395,7 @@ class App extends Component {
                 subTableName: '子表',
                 subResid: 596647249456,
                 tableProps: {
-                  height: 340
+                  height: 350
                 }
               }
             ]}

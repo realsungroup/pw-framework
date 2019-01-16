@@ -155,6 +155,10 @@ class FormData extends React.Component {
     const tab =
       (subTableProps && subTableProps.subTableName) || subTable.subResid;
 
+    const props = {
+      hasZoomInOut: false
+    };
+
     return (
       <TabPane tab={tab} key={index}>
         <TableData
@@ -163,6 +167,7 @@ class FormData extends React.Component {
           subresid={subTable.subResid}
           hostrecid={record.REC_ID}
           size="small"
+          {...props}
           {...tableProps}
         />
       </TabPane>

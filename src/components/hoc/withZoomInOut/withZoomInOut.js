@@ -35,7 +35,7 @@ const withZoomInOut = (options = {}) => {
       };
 
       render() {
-        const { width, height } = this.props;
+        const { width = '100%', height = '100%' } = this.props;
         return (
           <div
             className="with-zoom-in-out"

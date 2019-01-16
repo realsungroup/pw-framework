@@ -10,6 +10,7 @@ import { Table, Button, Input, Pagination, Spin } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
 import ButtonWithConfirm from '../ButtonWithConfirm';
 import { propTypes, defaultProps } from './PwTablePropTypes';
+import { getRang } from './util';
 const Search = Input.Search;
 
 const btnSizeMap = {
@@ -151,6 +152,9 @@ class PwTable extends React.Component {
 
   renderPagination = () => {
     const { pagination, size } = this.props;
+    const rang = getRang(pagination);
+    const hasTotal = pagination.current && pagination.total;
+
     if (pagination) {
       return (
         <div className="pw-table__footer">
@@ -159,6 +163,11 @@ class PwTable extends React.Component {
             {...pagination}
             size={paginationSizeMap[size]}
           />
+          {hasTotal && (
+            <span>
+              第 {rang.start} - {rang.end} 条，总共 {pagination.total} 条
+            </span>
+          )}
         </div>
       );
     }

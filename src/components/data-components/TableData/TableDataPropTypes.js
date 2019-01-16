@@ -28,7 +28,13 @@ export const tableDataDefaultPropTypes = {
   hasResizeableBox: false,
   width: '100%',
   height: '100%',
-  hasZoomInOut: true
+  hasZoomInOut: true,
+  defaultPagination: {
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+    showQuickJumper: true
+  }
 };
 
 export const tableDataPropTypes = {
@@ -114,7 +120,7 @@ export const tableDataPropTypes = {
   // 按钮相关的 props
   /**
    * 默认分页配置
-   * -
+   * 默认：{ current: 1, pageSize: 10 }
    */
   defaultPagination: PropTypes.object,
 
