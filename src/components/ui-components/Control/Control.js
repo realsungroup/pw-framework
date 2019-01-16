@@ -143,41 +143,25 @@ class Control extends React.Component {
     showAdvDicTable(form, dataItem, this.handleBeforeSave);
   };
 
+  /**
+   * 控件值发生改变的回调
+   * @param {string | moment} value 改变后的值
+   */
   handleChange = value => {
     const { dataItem, hasBeforeSave } = this.props;
     // Checkbox/Select/DatePicker/DateTimePicker beforeSave
-    if (beforeSaveOnChangeControls.indexOf(dataItem.name) !== -1) {
-      if (hasBeforeSave) {
+    if (hasBeforeSave) {
+      if (beforeSaveOnChangeControls.indexOf(dataItem.name) !== -1) {
         setTimeout(() => {
           this.handleBeforeSave();
         }, 0);
       }
     }
-
     this.triggerChange(value);
   };
 
-  triggerChange = (changedValue, isRemoveFile = false) => {
-    const { dataItem, value } = this.props;
-    const { name } = dataItem;
-    if (name === 'Upload' && !isRemoveFile) {
-      const uid = value.length ? -(value.length + 1) : -1;
-      changedValue = [
-        ...value,
-        {
-          uid: uid,
-          name: changedValue,
-          status: 'done',
-          url: changedValue
-        }
-      ];
-      console.log({ changedValue });
-    }
-
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(changedValue);
-    }
+  triggerChange = changedValue => {
+    this.props.onChange && this.props.onChange(changedValue);
   };
 
   // 上传文件（注意：不能使用 async 函数）
@@ -190,29 +174,54 @@ class Control extends React.Component {
           if (err) {
             return message.error(err.message);
           }
+          const value = this.getFileListValue('add', fileUrl);
+          this.handleChange(value);
           message.success('上传成功');
-          this.triggerChange(fileUrl);
         },
         uploadUrl
       );
     } catch (err) {
-      return message.error(err.message);
+      return console.error(err);
     }
   };
 
-  handleRemoveFile = file => {
-    const { value } = this.props;
-    const index = value.findIndex(item => item.uid === file.uid);
-    if (index === -1) {
-      return message.error('删除出错');
-    }
-    let changedValue = [...value];
-    if (changedValue.length === 1) {
-      changedValue = [];
+  /**
+   * 获取 添加/移除 文件后的 上传控件所接收的 fileList 的值
+   * @param {string} operation 对控件的操作：'add' 添加了文件 | 'remove' 移除了文件
+   * @param {string | object} param2 当 operation 为 'add' 时，param2 为新增文件的地址；当 operation 为 'remove' 时，param2 为 file（将要删除的文件详情）
+   */
+  getFileListValue = (operation = 'add', param2) => {
+    const fileList = getFileList(this.props.value);
+    let value;
+    // 添加
+    if (operation === 'add') {
+      const uid = fileList.length ? -(fileList.length + 1) : -1;
+      value = [
+        ...fileList,
+        {
+          uid: uid,
+          name: param2,
+          status: 'done',
+          url: param2
+        }
+      ];
+
+      // 移除
     } else {
-      changedValue = changedValue.splice(index, 1);
+      const file = param2;
+      const index = fileList.findIndex(item => item.uid === file.uid);
+      if (index === -1) {
+        return message.error('删除出错');
+      }
+      value = [...fileList];
+      value.splice(index, 1);
     }
-    this.triggerChange(changedValue, true);
+    return value;
+  };
+
+  handleRemoveFile = file => {
+    const value = this.getFileListValue('remove', file);
+    this.handleChange(value);
   };
 
   handleBeforeSave = () => {
@@ -314,7 +323,7 @@ class Control extends React.Component {
           );
         }
         case 'Upload': {
-          const fileList = getFileList();
+          const fileList = getFileList(value);
           return (
             <Upload
               {...props}
