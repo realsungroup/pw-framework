@@ -35,7 +35,9 @@ export const tableDataDefaultPropTypes = {
     showSizeChanger: true,
     showQuickJumper: true
   },
-  bordered: true
+  bordered: true,
+  importContainerProps: {},
+  importContainerType: 'drawer'
 };
 
 export const tableDataPropTypes = {
@@ -348,9 +350,9 @@ export const tableDataPropTypes = {
   subTableArrProps: PropTypes.array,
   // [
   //   {
-  //     subTableName: '子表',
-  //     subResid: 666,
-  //     tableProps: {
+  //     subTableName: '子表', // 必选（若不选则标签页标题为子表的 resid）
+  //     subResid: 666, // 必选
+  //     tableProps: { // 可选，TableData 组件接收的 props
   //       width: 777,
   //       height: 888
   //     }
@@ -380,5 +382,21 @@ export const tableDataPropTypes = {
    * 是否有边框
    * 默认：true
    */
-  bordered: PropTypes.bool
+  bordered: PropTypes.bool,
+
+  // ===========================================================
+  // 导入数据功能相关 props ======================================
+  // ===========================================================
+  /**
+   * 导入功能的容器类型
+   * 可选：'modal' 模态窗 | 'drawer' 抽屉
+   * 默认：'drawer'
+   */
+  importContainerType: PropTypes.oneOf(['modal', 'drawer']),
+
+  /**
+   * 导入功能的容器接收的 props
+   * 默认：{}
+   */
+  importContainerProps: PropTypes.object
 };

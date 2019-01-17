@@ -20,15 +20,10 @@ const withImport = WrappedComponent => {
      * 打开导入窗口界面
      * @param {number} resid 资源 id
      */
-    handleOpenImportView = async (
-      resid,
-      type = 'drawer',
-      containerProps = {
-        title: '导入数据',
-        width: 500
-      }
-    ) => {
+    handleOpenImportView = async (resid, type = 'drawer', containerProps) => {
       const importContainerProps = {
+        title: '导入数据',
+        width: 500,
         ...containerProps
       };
       if (type === 'modal') {

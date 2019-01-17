@@ -424,7 +424,13 @@ class TableData extends React.Component {
 
   // 导入
   handleImport = () => {
-    this.props.openImportView && this.props.openImportView(this._id);
+    const {
+      openImportView,
+      importContainerType,
+      importContainerProps
+    } = this.props;
+    openImportView &&
+      openImportView(this._id, importContainerType, importContainerProps);
   };
 
   // 下载
