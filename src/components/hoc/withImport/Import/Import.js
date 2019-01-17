@@ -10,8 +10,34 @@ import {
   Tooltip
 } from 'antd';
 import PropTypes from 'prop-types';
-import { getImportConfigs, importFile, importingService } from 'Util/api';
+import http, { makeCancelable } from '../../../../util/api';
 import './Import.less';
+
+// 导入文件
+export const importFile = (resid, cfgid, srctype, file) => {
+  const upUrlStr =
+    'http://kingofdinner.realsun.me:8102/' +
+    `api/Resource/ImportFileByConfig?resid=${resid}&cfgid=${cfgid}&srctype=xls`;
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return new Promise((resolve, reject) => {
+    let fd = new FormData();
+    fd.append('file', file, file.name);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', upUrlStr);
+    xhr.setRequestHeader('accessToken', userInfo.AccessToken);
+    xhr.setRequestHeader('usercode', userInfo.UserCode);
+    xhr.onload = () => {
+      var data = JSON.parse(xhr.response);
+      if (xhr.status === 200) {
+        resolve(data);
+      } else {
+        reject(data);
+      }
+    };
+    xhr.send(fd);
+  });
+};
+
 /**
  * 数据导入组件
  */
@@ -39,14 +65,22 @@ export default class Import extends React.Component {
 
   componentWillUnmount = () => {
     this.getTaskStatus = null;
+    this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();
+    this.p4 && this.p4.cancel();
+    this.p5 && this.p5.cancel();
   };
 
   getData = async () => {
     let res;
+    this.p1 = makeCancelable(
+      http().getImportConfigs({ resid: this.props.resid })
+    );
     try {
-      res = await getImportConfigs(this.props.resid);
+      res = await this.p1.promise;
     } catch (err) {
-      return message.error(err.message);
+      return message.error(err);
     }
     res.data.forEach(item => {
       item.opViewStatus = 'chooseFile'; // 操作视图状态：'chooseFile' 选择文件状态；'opBtns' 有操作按钮状态
@@ -55,7 +89,7 @@ export default class Import extends React.Component {
     this.setState({ list: res.data });
   };
 
-  selectedItem; //
+  selectedItem;
   importFile = (resid, cfgid, fileInfo, item) => {
     const file = fileInfo.file;
     // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
@@ -81,8 +115,14 @@ export default class Import extends React.Component {
   getTaskStatus = item => {
     item.timer = setTimeout(async () => {
       let res;
+      this.p4 = makeCancelable(
+        http().importingService({
+          ImportTaskId: item.taskId,
+          cmd: 'GetImportStatus'
+        })
+      );
       try {
-        res = await importingService(item.taskId, 'GetImportStatus');
+        res = await this.p4.promise;
       } catch (err) {
         return message.error(err.message);
       }
@@ -124,8 +164,14 @@ export default class Import extends React.Component {
 
   handlePause = async item => {
     let res;
+    this.p5 = makeCancelable(
+      http().importingService({
+        ImportTaskId: item.taskId,
+        cmd: 'PauseImport'
+      })
+    );
     try {
-      res = await importingService(item.taskId, 'PauseImport');
+      res = await this.p5.promise;
     } catch (err) {
       return message.error(err.message);
     }
@@ -144,10 +190,16 @@ export default class Import extends React.Component {
 
   handleStart = async item => {
     let res;
+    this.p2 = makeCancelable(
+      http().importingService({
+        ImportTaskId: item.taskId,
+        cmd: 'ResumeImport'
+      })
+    );
     try {
-      res = await importingService(item.taskId, 'ResumeImport');
+      res = await this.p2.promise;
     } catch (err) {
-      return message.error(err.message);
+      return console.error(err);
     }
     if (res.error !== 0) {
       return message.error(res.message);
@@ -160,8 +212,14 @@ export default class Import extends React.Component {
 
   handleTerminate = async item => {
     let res;
+    this.p3 = makeCancelable(
+      http().importingService({
+        ImportTaskId: item.taskId,
+        cmd: 'TerminateImport'
+      })
+    );
     try {
-      res = await importingService(item.taskId, 'TerminateImport');
+      res = await this.p3.promise;
     } catch (err) {
       return message.error(err.message);
     }
@@ -259,48 +317,25 @@ export default class Import extends React.Component {
     const { list, errMsgModalVisible, errMsgItem } = this.state;
     return (
       <Fragment>
-        <Modal
-          visible={true}
-          footer={''}
-          width={800}
-          className="lz-import-data"
-          closable
-          footer={
-            <div style={{ textAlign: 'right' }}>
-              关闭后窗口后不会中断数据的导入
-              <Button style={{ marginLeft: 10 }} onClick={this.props.onClose}>
-                关闭
-              </Button>
-            </div>
-          }
-          closable={false}
-        >
-          <List
-            dataSource={list}
-            renderItem={item => (
-              <List.Item>
-                <div className="lz-import-data__item-wrap">
-                  <span className="lz-import-data__title">
-                    {item.IMOUT_NAME}
-                  </span>
-                  <div className="lz-import-data__progress">
-                    {this.renderProgress(item)}
-                  </div>
-                  <div className="lz-import-data__op-area">
-                    {this.renderOpArea(item)}
-                  </div>
+        <List
+          dataSource={list}
+          renderItem={item => (
+            <List.Item>
+              <div className="with-import__item-wrap">
+                <span className="with-import__title">{item.IMOUT_NAME}</span>
+                <div className="with-import__progress">
+                  {this.renderProgress(item)}
                 </div>
-              </List.Item>
-            )}
-          />
-        </Modal>
-        <Modal
-          visible={errMsgModalVisible}
-          footer={''}
-          onCancel={() => this.setState({ errMsgModalVisible: false })}
-        >
-          {errMsgItem.errMsg}
-        </Modal>
+                <div className="with-import__op-area">
+                  {this.renderOpArea(item)}
+                </div>
+              </div>
+            </List.Item>
+          )}
+        />
+        {errMsgModalVisible && (
+          <pre style={{ color: '#f00' }}>{errMsgItem.errMsg}</pre>
+        )}
       </Fragment>
     );
   }

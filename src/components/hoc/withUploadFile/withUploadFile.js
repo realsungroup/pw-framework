@@ -40,16 +40,15 @@ const withUploadFile = (options = {}) => {
 
       handleUploadFile = (file, success, fail, url = this._url) => {
         // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
-        // uploadFile(file, url)
-        //   .then(fileUrl => {
-        //     success && success(fileUrl);
-        //   })
-        //   .catch(err => {
-        //     fail && fail(err);
-        //   });
-
         let formData = new FormData();
         formData.append('file', file, file.name);
+        uploadFile(file, url)
+          .then(fileUrl => {
+            success && success(fileUrl);
+          })
+          .catch(err => {
+            fail && fail(err);
+          });
 
         // this.p1 = makeCancelable(
         //   http({
@@ -65,19 +64,6 @@ const withUploadFile = (options = {}) => {
         //     console.error(err);
         //     fail && fail(err);
         //   });
-
-        axios
-          .post(url, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(data => {
-            console.log({ data });
-          })
-          .catch(err => {
-            console.log({ err });
-          });
       };
 
       render() {

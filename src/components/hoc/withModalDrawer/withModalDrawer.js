@@ -32,7 +32,12 @@ const withModalDrawer = (options = {}) => {
         ChildComponent,
         childProps
       ) => {
-        this.setState({ type, containerProps, ChildComponent, childProps });
+        this.setState({
+          type,
+          containerProps: { ...containerProps, visible: true },
+          ChildComponent,
+          childProps
+        });
       };
 
       /**
@@ -46,7 +51,7 @@ const withModalDrawer = (options = {}) => {
 
       renderContainer = () => {
         const { type, containerProps, ChildComponent, childProps } = this.state;
-        const isRender = ChildComponent;
+        const isRender = !!ChildComponent;
 
         if (!isRender) {
           return null;

@@ -115,4 +115,15 @@ http.createApi('getImportConfigs', {
   url: 'api/Resource/GetImportConfigs'
 });
 
+/**
+ * 导入数据服务
+ * 参数：{ ImportTaskId, cmd }
+ * 1. ImportTaskId：任务 id
+ * 2. cmd：数据服务类型：'GetImportStatus' 获取实时状态；'PauseImport' 暂停；'ResumeImport' 恢复；'TerminateImport' 终止
+ */
+http.createApi('importingService', {
+  method: 'get',
+  url: 'api/Resource/ImportingService'
+});
+
 export default http;
