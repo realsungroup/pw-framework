@@ -9,7 +9,7 @@ import { getDataProp } from '../../../util/formData2ControlsData';
 import withModalDrawer from '../withModalDrawer';
 const Fragment = React.Fragment;
 
-// 带有抽屉形式的高级搜索高阶组件
+// 显示高级搜索的高阶组件
 const withAdvSearch = (options = {}) => {
   const { type = 'drawer' } = options;
   return function(WrappedComponent) {

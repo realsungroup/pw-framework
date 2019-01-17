@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
+import { propTypes, defaultProps } from './propTypes';
 
 const getIndex = (rowIndex, colCount, colIndex) => {
   if (rowIndex === 0) {
@@ -14,32 +14,8 @@ const getIndex = (rowIndex, colCount, colIndex) => {
  * 渲染多列的组件
  */
 export default class LzRowCols extends React.Component {
-  static propTypes = {
-    /**
-     * 要被处理渲染的数据
-     * 默认：[]
-     */
-    renderData: PropTypes.array,
-
-    /**
-     * 列数量
-     * 默认：1
-     */
-    colCount: PropTypes.number,
-
-    /**
-     * 在 renderData 对象数组中标识每一个元素的键值
-     * 默认：''
-     */
-    keyName: PropTypes.string
-  };
-
-  static defaultProps = {
-    renderData: [],
-    colCount: 1,
-    keyName: ''
-  };
-
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
   constructor(props) {
     super(props);
     this.state = {};

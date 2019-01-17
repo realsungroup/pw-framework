@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popconfirm, Button } from 'antd';
-import PropTypes from 'prop-types';
+import { propTypes, defaultProps } from './propTypes';
 
 /**
  * 带有 Popconfirm 的 Button 组件
@@ -16,18 +16,7 @@ const ButtonWithConfirm = React.memo(
   }
 );
 
-ButtonWithConfirm.propTypes = {
-  /**
-   * PopConfirm 组件接收的 props
-   * 默认：-
-   */
-  popConfirmProps: PropTypes.object,
-
-  /**
-   * Button 组件接收的 props
-   * 默认：-
-   */
-  buttonProps: PropTypes.object
-};
+ButtonWithConfirm.propTypes = propTypes;
+ButtonWithConfirm.defaultProps = defaultProps;
 
 export default ButtonWithConfirm;

@@ -1,47 +1,14 @@
 import React from 'react';
 import { DatePicker, TimePicker } from 'antd';
-import PropTypes from 'prop-types';
-
+import { propTypes, defaultProps } from './propTypes';
 /**
  * 日期时间选择器
  */
 
 class DateTimePicker extends React.Component {
-  static propTypes = {
-    /**
-     * 日期显示格式化
-     * 默认：'YYYY-MM-DD'
-     */
-    dateFormat: PropTypes.string,
+  static propTypes = propTypes;
 
-    /**
-     * 时间显示格式化
-     * 默认：'HH:mm'
-     */
-    timeFormat: PropTypes.string,
-
-    /**
-     * 组件间的间隔(px)
-     * 默认：4
-     */
-    space: PropTypes.number,
-
-    /**
-     * date picker props
-     */
-    datePickerProps: PropTypes.object,
-
-    /**
-     * time picker props
-     */
-    timePickerProps: PropTypes.object
-  };
-
-  static defaultProps = {
-    dateFormat: 'YYYY-MM-DD',
-    timeFormat: 'HH:mm',
-    space: 4
-  };
+  static defaultProps = defaultProps;
 
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {

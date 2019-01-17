@@ -3,7 +3,7 @@ import { argumentContainer } from '../util';
 import http, { makeCancelable } from '../../../util/api';
 import axios from 'axios';
 
-// 上传文件
+// 上传文件的高阶组件
 export const uploadFile = (file, url) => {
   return new Promise((resolve, reject) => {
     let fd = new FormData();

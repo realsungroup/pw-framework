@@ -1,10 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
-  Form,
   Input,
   DatePicker,
-  Radio,
   Select,
   Upload,
   Button,
@@ -19,9 +16,9 @@ import withUploadFile from '../../hoc/withUploadFile';
 import { withHttpBeforeSave } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import moment from 'moment';
+import { defaultProps, propTypes } from './propTypes';
 
 const { TextArea, Search } = Input;
-const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const { Fragment } = React;
 
@@ -74,52 +71,8 @@ const beforeSaveOnChangeControls = [
  * Control
  */
 class Control extends React.Component {
-  static propTypes = {
-    /**
-     * 描述控件的数据
-     */
-    dataItem: PropTypes.object.isRequired,
-
-    /**
-     * form 对象
-     */
-    form: PropTypes.object.isRequired,
-
-    /**
-     * 控件显示状态
-     * 可选：'edit' 编辑状态 | 'view' 查看状态
-     * 默认：'view'
-     */
-    displayMode: PropTypes.oneOf(['edit', 'view']),
-
-    /**
-     * 上传文件的地址
-     * 默认：'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'（基地址：'http://kingofdinner.realsun.me:8081'）
-     */
-    uploadUrl: PropTypes.string,
-
-    /**
-     * 操作
-     * 可选：'add' 添加 | 'modify' | 'view' 查看
-     */
-    operation: PropTypes.string,
-
-    /**
-     * 资源 id
-     */
-    resid: PropTypes.number,
-
-    /**
-     * 是否能够通过计算公式获取保存之前的记录
-     */
-    hasBeforeSave: PropTypes.bool
-  };
-
-  static defaultProps = {
-    displayMode: 'view',
-    uploadUrl:
-      'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'
-  };
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
 
   constructor(props) {
     super(props);

@@ -6,7 +6,7 @@ import 'react-resizable/css/styles.css';
 import { Table, Button, Input, Pagination } from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
 import ButtonWithConfirm from '../ButtonWithConfirm';
-import { propTypes, defaultProps } from './PwTablePropTypes';
+import { propTypes, defaultProps } from './propTypes';
 import { getRang } from './util';
 import IconBtns from './IconBtns';
 import {

@@ -1,10 +1,8 @@
 import React from 'react';
-import Tooltip from 'antd/lib/tooltip';
-import 'antd/lib/tooltip/style';
-import PropTypes from 'prop-types';
-
+import { Tooltip } from 'antd';
+import { propTypes, defaultProps } from './propTypes';
 /**
- * 带有 tooltip 的字体图标
+ * 带有 tooltip 的字体图标按钮
  */
 const IconWithTooltip = React.memo(props => {
   const {
@@ -26,17 +24,8 @@ const IconWithTooltip = React.memo(props => {
   );
 });
 
-IconWithTooltip.propTypes = {
-  /**
-   * 提示信息
-   */
-  tip: PropTypes.string.isRequired,
-  /**
-   * 字体图标类名
-   */
-  iconClass: PropTypes.string.isRequired
-};
+IconWithTooltip.propTypes = propTypes;
 
-IconWithTooltip.defaultProps = {};
+IconWithTooltip.defaultProps = defaultProps;
 
 export default IconWithTooltip;

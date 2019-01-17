@@ -1,44 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## power-works 基础组件库
 
-## Available Scripts
+### 一、单元组件
 
-In the project directory, you can run:
+`单元组件` 是在 `高阶组件` 、 `ui 组件` 的基础上封装的通用组件
 
-### `npm start`
+#### 1. TableData 组件 `封装了对表格的常见的操作`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/data-components/TableData/TableDataPropTypes.js)
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+#### 2. FormData 组件 `显示记录的表单，且具有增改查功能`
 
-### `npm test`
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/data-components/FormData/FormDataPropTypes.js)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 二、高阶组件
 
-### `npm run build`
+`高阶组件` 是封装了通用的逻辑
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 1. withAdvDicTable `显示高级字典表格的高阶组件`
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withAdvDicTable/README.md)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 2. withAdvSearch `显示高级搜索的高阶组件`
 
-### `npm run eject`
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withAdvSearch/README.md)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### 3. withDownloadFile `带有下载文件功能的高阶组件`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withDownloadFile/README.md)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### 4. withHttp `常用 api 的封装的高阶组件`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withHttp/README.md)
 
-## Learn More
+#### 5. withImport `提供导入表格数据的高阶组件`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withImport/README.md)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### 6. withModalDrawer `提供 Modal 或 Drawer 容器放置其他组件的高阶组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withModalDrawer/README.md)
+
+#### 7. withRecordForm `显示记录表单的高阶组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withRecordForm/README.md)
+
+#### 8. withZoomInOut `放大（放大到父元素大小）缩小（缩小到原来大小）高阶组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/hoc/withZoomInOut/README.md)
+
+### 三、ui 组件
+
+`ui 组件` 是在 `ant design 组件库` 基础上封装的适用于公司的 `ui` 组件
+
+#### 1. ButtonWithConfirm `带有 Popconfirm 的 Button 组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/ButtonWithConfirm/propTypes.js)
+
+#### 2. Control `表单控件组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/Control/propTypes.js)
+
+#### 3. DateTimePicker `基于 ant design 的日期时间选择器`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/DateTimePicker/propTypes.js)
+
+#### 4. DateTimePicker `基于 ant design 的日期时间选择器`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/DateTimePicker/propTypes.js)
+
+#### 5. IconWithTooltip `带有 tooltip 的字体图标按钮`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/IconWithTooltip/propTypes.js)
+
+#### 6. IconWithTooltip `带有 tooltip 的字体图标按钮`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/IconWithTooltip/propTypes.js)
+
+#### 7. LzBackendBtn `后端按钮`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/LzBackendBtn/propTypes.js)
+
+#### 8. LzRowCols `渲染多列的组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/LzRowCols/propTypes.js)
+
+#### 9. PwForm `基于 ant design 的表单组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/PwForm/PwFormPropTypes.js)
+
+#### 10. PwTable `基于 ant design 的表格组件`
+
+[文档](https://github.com/realsungroup/pw-components/blob/master/src/components/ui-components/PwTable/PwTablePropTypes.js)
