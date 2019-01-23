@@ -1044,7 +1044,7 @@ window[592759803717] = {
       hasDownloadExcel: true,
       isSortBE: true,
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 50, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -1336,7 +1336,7 @@ window[593256465860] = {
         社会工龄: 100,
         一级部门: 150,
         岗位编码: 100,
-        岗位名称: 100,
+        岗位名称: 150,
         '管理/工人': 150,
         合同类别: 150,
         家庭电话: 150,
@@ -1350,7 +1350,7 @@ window[593256465860] = {
       },
       tableSize: 'small',
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -1551,7 +1551,7 @@ window[593258257430] = {
       //   tableInnerHeight: 200
       // },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2038,7 +2038,7 @@ window[595621883547] = {
         结束时间: 330
       },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2296,7 +2296,7 @@ window[596628732654] = {
         登记小时限额: 150
       },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2463,7 +2463,7 @@ window[596658515396] = {
         登记小时限额: 150
       },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2527,7 +2527,7 @@ window[596628777520] = {
         结束时间: 330
       },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2618,7 +2618,7 @@ window[596904256141] = {
         act: 100
       },
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2725,7 +2725,7 @@ window[597167759556] = {
       // fixedCols: ['考勤日期', '员工姓名'],
       isSortBE: true,
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2764,7 +2764,7 @@ window[597167738777] = {
       // fixedCols: ['考勤日期', '员工姓名'],
       isSortBE: true,
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       btnsVisible: {
@@ -2839,7 +2839,7 @@ window[597173970236] = {
       // fixedCols: ['考勤日期', '员工姓名'],
       isSortBE: true,
       pagination: {
-        pageSize: 10, // 默认每页数量
+        pageSize: 30, // 默认每页数量
         current: 0 // 当前页数
       },
       customColumnWidth: {
