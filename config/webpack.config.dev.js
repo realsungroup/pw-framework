@@ -17,9 +17,10 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
-const AutoDllPlugin = require('autodll-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
+
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -446,7 +447,9 @@ module.exports = {
         formatter: typescriptFormatter
       }),
     themePlugin,
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
+    // new HardSourceWebpackPlugin()
+
   ].filter(Boolean),
 
   // Some libraries import Node modules but don't use them in the browser.

@@ -177,7 +177,8 @@ export const approved = {
     current: 0 // 当前页数
   },
   btnsVisible: {
-    check: true
+    check: true,
+    del: true
   },
   customColumnWidth,
   tableSize: 'small'
