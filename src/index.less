@@ -1,0 +1,46 @@
+@import url('./assets/iconfont/iconfont.less');
+@import url('./product-components/att/style/style.less');
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #e8ecef !important;
+}
+
+.icon-default-app {
+  font-size: 50px;
+}
+
+.app {
+  &__nonuse-ie,
+  &__nonuse-tag span,
+  &__nonuse-tag i {
+    font-size: 30px;
+    text-align: center;
+  }
+  &__nonuse-tag {
+    display: inline-block;
+    margin: 50px 10px;
+  } // warning-bar
+  &__warning-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 50px;
+    background: #fdf38c;
+    z-index: 1000;
+    border-bottom: 1px solid #eee;
+  }
+  &__warning-bar-close,
+  &__warning-bar-copy {
+    margin-left: 20px;
+  }
+}

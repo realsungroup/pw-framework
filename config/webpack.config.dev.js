@@ -17,6 +17,9 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const AutoDllPlugin = require('autodll-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -37,6 +40,18 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 const lessRegex = /\.less$/;
+
+const AntDesignThemePlugin = require('antd-theme-webpack-plugin');
+const options = {
+  antDir: path.join(__dirname, '../node_modules/antd'),
+  stylesDir: path.join(__dirname, '../src/styles'),
+  varFile: path.join(__dirname, '../src/styles/variables.less'),
+  mainLessFile: path.join(__dirname, '../src/styles/index.less'),
+  themeVariables: ['@primary-color'],
+  indexFileName: 'index.html',
+  generateOnce: false
+};
+const themePlugin = new AntDesignThemePlugin(options);
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -149,7 +164,9 @@ module.exports = {
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web'
+      'react-native': 'react-native-web',
+      Util: path.resolve(__dirname, '../src/util/'),
+      UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -354,6 +371,16 @@ module.exports = {
       inject: true,
       template: paths.appHtml
     }),
+    // new AutoDllPlugin({
+    //   inject: true, // will inject the DLL bundle to index.html
+    //   debug: true,
+    //   filename: '[name]_[hash].js',
+    //   path: './dll',
+    //   context: path.join(__dirname, '..'),
+    //   entry: {
+    //     vendor: ['react', 'react-dom', 'moment']
+    //   }
+    // }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -417,7 +444,9 @@ module.exports = {
         watch: paths.appSrc,
         silent: true,
         formatter: typescriptFormatter
-      })
+      }),
+    themePlugin,
+    new BundleAnalyzerPlugin()
   ].filter(Boolean),
 
   // Some libraries import Node modules but don't use them in the browser.
