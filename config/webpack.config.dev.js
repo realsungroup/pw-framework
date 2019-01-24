@@ -167,7 +167,8 @@ module.exports = {
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
       Util: path.resolve(__dirname, '../src/util/'),
-      UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/')
+      UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/'),
+      Api: path.resolve(__dirname, '../src/util1/api.js')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -236,7 +237,6 @@ module.exports = {
               customize: require.resolve(
                 'babel-preset-react-app/webpack-overrides'
               ),
-
               plugins: [
                 [
                   require.resolve('babel-plugin-named-asset-import'),
@@ -251,6 +251,14 @@ module.exports = {
                 [
                   require.resolve('@babel/plugin-proposal-decorators'),
                   { legacy: true }
+                ],
+
+                [
+                  'import',
+                  {
+                    libraryName: 'antd',
+                    style: true // or 'css'
+                  }
                 ]
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -447,9 +455,8 @@ module.exports = {
         formatter: typescriptFormatter
       }),
     themePlugin,
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin()
     // new HardSourceWebpackPlugin()
-
   ].filter(Boolean),
 
   // Some libraries import Node modules but don't use them in the browser.

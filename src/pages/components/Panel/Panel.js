@@ -1,12 +1,14 @@
-import React from 'react'
-import './Panel.less'
+import React from 'react';
+import './Panel.less';
 
-const Panel = ({ className, style, children }) => (
-  <div className={className}>{children}</div>
-)
+const Panel = ({ className, children, ...restProps }) => (
+  <div className={`panel ${className}`} {...restProps}>
+    {children}
+  </div>
+);
 
 Panel.defaultProps = {
-  className: 'common-panel'
-}
+  className: 'panel'
+};
 
-export default Panel
+export default Panel;

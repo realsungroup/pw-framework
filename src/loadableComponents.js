@@ -7,8 +7,8 @@ const minLoading = <span>加载中...</span>;
 /**
  * 页面组件
  */
-export const Container = Loadable({
-  loader: () => import('./pages/Container'),
+export const PageContainer = Loadable({
+  loader: () => import('./pages/PageContainer'),
   loading() {
     return <Loading loading={true} />;
   }

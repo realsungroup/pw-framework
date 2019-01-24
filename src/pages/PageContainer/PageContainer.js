@@ -1,5 +1,4 @@
 import React from 'react';
-import './Container.less';
 import SearchBox from '../components/SearchBox';
 import PageHeader from '../components/PageHeader';
 import UserInfo from '../components/UserInfo';
@@ -17,6 +16,8 @@ import {
 import { message, Input, Button, Icon } from 'antd';
 import { retrieveReminderNum, defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
+import PageBody from '../components/PageBody';
+import './PageContainer.less';
 
 const domainLoginConfig = window.domainLogin;
 
@@ -140,7 +141,7 @@ export default class Container extends React.Component {
       username = user.Data;
     }
     return (
-      <React.Fragment>
+      <div className="page-container">
         {username && (
           <LockScreen
             className="app-lock-screen-wrap"
@@ -186,19 +187,21 @@ export default class Container extends React.Component {
           reminderNum={reminderNum}
           lockScreenRef={this.lockScreenRef}
         />
-        <Route path="/" exact component={Home} />
-        {/* <Route path="/home" component={Home} /> */}
-        {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
-        {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
-        {/* <Route path="/workbench-setting" component={WorkbenchSetting} /> */}
-        {/* <Route path="/reminder" component={Reminder} /> */}
-        {/* <Route path="/report-table" component={ReportTable} /> */}
-        {/* <Route path="/person-center" component={PersonCenter} /> */}
-        {/* <Route
+        <PageBody>
+          <Route path="/" exact component={Home} />
+          {/* <Route path="/home" component={Home} /> */}
+          {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
+          {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
+          {/* <Route path="/workbench-setting" component={WorkbenchSetting} /> */}
+          {/* <Route path="/reminder" component={Reminder} /> */}
+          {/* <Route path="/report-table" component={ReportTable} /> */}
+          {/* <Route path="/person-center" component={PersonCenter} /> */}
+          {/* <Route
           path="/task-notice/:taskCatalog/:taskType"
           component={TaskNotice}
         /> */}
-      </React.Fragment>
+        </PageBody>
+      </div>
     );
   }
 }

@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './lib/locales/zh-CN';
 import en_US from './lib/locales/en-US';
 
-import { Container, Login, NotFound } from './loadableComponents';
+import { PageContainer, Login, NotFound } from './loadableComponents';
 
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -157,22 +157,28 @@ class App extends Component {
               <div style={{ minWidth: 1024 }}>
                 <Router>
                   <Switch>
-                    <PrivateRoute exact path="/" component={Container} />
-                    <PrivateRoute path="/home" component={Container} />
+                    <PrivateRoute exact path="/" component={PageContainer} />
+                    <PrivateRoute path="/home" component={PageContainer} />
                     <PrivateRoute
                       path="/fnmodule/:hostrecid"
-                      component={Container}
+                      component={PageContainer}
                     />
                     <PrivateRoute
                       path="/workbench-setting"
-                      component={Container}
+                      component={PageContainer}
                     />
-                    <PrivateRoute path="/reminder" component={Container} />
-                    <PrivateRoute path="/report-table" component={Container} />
-                    <PrivateRoute path="/person-center" component={Container} />
+                    <PrivateRoute path="/reminder" component={PageContainer} />
+                    <PrivateRoute
+                      path="/report-table"
+                      component={PageContainer}
+                    />
+                    <PrivateRoute
+                      path="/person-center"
+                      component={PageContainer}
+                    />
                     <PrivateRoute
                       path="/task-notice/:taskCatalog/:taskType"
-                      component={Container}
+                      component={PageContainer}
                     />
                     <Route path="/login" component={Login} />
                     <Route path="*" component={NotFound} />

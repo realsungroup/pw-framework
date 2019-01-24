@@ -1,0 +1,27 @@
+@import url('../../../../styles/variables.less');
+
+
+.reminder-list {
+  padding: 16px 0;
+  &__no-data {
+    line-height: 72px;
+    text-align: center;
+  }
+  &__item {
+    height: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0 16px;
+    h4,
+    div {
+      transition: 0.3s;
+    }
+    &:hover {
+      background: @primary-color;
+      h4,
+      div {
+        color: #fff !important;
+      }
+    }
+  }
+}
