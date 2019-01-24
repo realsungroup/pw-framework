@@ -6,20 +6,18 @@ import UserInfo from '../components/UserInfo';
 import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
 import {
-  Home,
-  FnModule,
-  WorkbenchSetting,
-  TaskNotice,
-  PersonCenter,
-  Reminder,
-  ReportTable,
-  TableData
+  Home
+  // FnModule,
+  // WorkbenchSetting,
+  // TaskNotice,
+  // PersonCenter,
+  // Reminder,
+  // ReportTable
 } from '../../loadableComponents';
 import { message, Input, Button, Icon } from 'antd';
 import { retrieveReminderNum, defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
 
-let keyIndex = 0;
 const domainLoginConfig = window.domainLogin;
 
 export default class Container extends React.Component {
@@ -189,17 +187,17 @@ export default class Container extends React.Component {
           lockScreenRef={this.lockScreenRef}
         />
         <Route path="/" exact component={Home} />
-        <Route path="/home" component={Home} />
-        <Route path="/fnmodule/:ids" component={FnModule} />
+        {/* <Route path="/home" component={Home} /> */}
+        {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
         {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
-        <Route path="/workbench-setting" component={WorkbenchSetting} />
-        <Route path="/reminder" component={Reminder} />
-        <Route path="/report-table" component={ReportTable} />
-        <Route path="/person-center" component={PersonCenter} />
-        <Route
+        {/* <Route path="/workbench-setting" component={WorkbenchSetting} /> */}
+        {/* <Route path="/reminder" component={Reminder} /> */}
+        {/* <Route path="/report-table" component={ReportTable} /> */}
+        {/* <Route path="/person-center" component={PersonCenter} /> */}
+        {/* <Route
           path="/task-notice/:taskCatalog/:taskType"
           component={TaskNotice}
-        />
+        /> */}
       </React.Fragment>
     );
   }

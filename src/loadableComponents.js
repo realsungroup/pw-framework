@@ -21,26 +21,26 @@ export const Home = Loadable({
   }
 });
 
-export const FnModule = Loadable({
-  loader: () => import('./pages/FnModule/FnModule'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const FnModule = Loadable({
+//   loader: () => import('./pages/FnModule/FnModule'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
-export const WorkbenchSetting = Loadable({
-  loader: () => import('./pages/WorkbenchSetting'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const WorkbenchSetting = Loadable({
+//   loader: () => import('./pages/WorkbenchSetting'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
-export const TaskNotice = Loadable({
-  loader: () => import('./pages/TaskNotice'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const TaskNotice = Loadable({
+//   loader: () => import('./pages/TaskNotice'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
 export const Login = Loadable({
   loader: () => import('./pages/Login'),
@@ -49,26 +49,26 @@ export const Login = Loadable({
   }
 });
 
-export const PersonCenter = Loadable({
-  loader: () => import('./pages/PersonCenter'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const PersonCenter = Loadable({
+//   loader: () => import('./pages/PersonCenter'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
-export const Reminder = Loadable({
-  loader: () => import('./pages/Reminder'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const Reminder = Loadable({
+//   loader: () => import('./pages/Reminder'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
-export const ReportTable = Loadable({
-  loader: () => import('./pages/ReportTable'),
-  loading() {
-    return <Loading loading={true} />;
-  }
-});
+// export const ReportTable = Loadable({
+//   loader: () => import('./pages/ReportTable'),
+//   loading() {
+//     return <Loading loading={true} />;
+//   }
+// });
 
 export const NotFound = Loadable({
   loader: () => import('./pages/NotFound'),
@@ -90,168 +90,168 @@ export const UnitOne = Loadable({
 /**
  * 单元组件
  */
-export const TableData = Loadable({
-  loader: () =>
-    import('./common-components/components/data-components/TableData'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const TableData = Loadable({
+//   loader: () =>
+//     import('./common-components/components/data-components/TableData'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzUnitComponentContainer = Loadable({
-  loader: () => import('./lib/unit-component/LzUnitComponentContainer'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzUnitComponentContainer = Loadable({
+//   loader: () => import('./lib/unit-component/LzUnitComponentContainer'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzCards = Loadable({
-  loader: () => import('./lib/unit-component/LzCards'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzCards = Loadable({
+//   loader: () => import('./lib/unit-component/LzCards'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzClassifyFieldTabs = Loadable({
-  loader: () => import('./lib/unit-component/LzClassifyFieldTabs'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzClassifyFieldTabs = Loadable({
+//   loader: () => import('./lib/unit-component/LzClassifyFieldTabs'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzMenuContainer = Loadable({
-  loader: () => import('./lib/unit-component/LzMenuContainer'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzMenuContainer = Loadable({
+//   loader: () => import('./lib/unit-component/LzMenuContainer'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTable = Loadable({
-  loader: () => import('./lib/unit-component/LzTable'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTable = Loadable({
+//   loader: () => import('./lib/unit-component/LzTable'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTableV2 = Loadable({
-  loader: () => import('./lib/unit-component/LzTableV2'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTableV2 = Loadable({
+//   loader: () => import('./lib/unit-component/LzTableV2'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTableChart = Loadable({
-  loader: () => import('./lib/unit-component/LzTableChart'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTableChart = Loadable({
+//   loader: () => import('./lib/unit-component/LzTableChart'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTabs = Loadable({
-  loader: () => import('./lib/unit-component/LzTabs'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTabs = Loadable({
+//   loader: () => import('./lib/unit-component/LzTabs'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTableFilter = Loadable({
-  loader: () => import('./lib/unit-component/LzTableFilter'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTableFilter = Loadable({
+//   loader: () => import('./lib/unit-component/LzTableFilter'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTabsTableFilter = Loadable({
-  loader: () => import('./lib/unit-component/LzTabsTableFilter'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTabsTableFilter = Loadable({
+//   loader: () => import('./lib/unit-component/LzTabsTableFilter'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzNavigate = Loadable({
-  loader: () => import('./lib/unit-component/LzNavigate'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzNavigate = Loadable({
+//   loader: () => import('./lib/unit-component/LzNavigate'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzFormUnitContainer = Loadable({
-  loader: () => import('./lib/unit-component/LzFormUnitContainer'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzFormUnitContainer = Loadable({
+//   loader: () => import('./lib/unit-component/LzFormUnitContainer'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzMenuForms = Loadable({
-  loader: () => import('./lib/unit-component/LzMenuForms'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzMenuForms = Loadable({
+//   loader: () => import('./lib/unit-component/LzMenuForms'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzSteps = Loadable({
-  loader: () => import('./lib/unit-component/LzSteps'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzSteps = Loadable({
+//   loader: () => import('./lib/unit-component/LzSteps'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
 /**
  * 容器组件/通用组件
  */
-export const BarModeContainer = Loadable({
-  loader: () =>
-    import('./lib/unit-component/components/LzForm/BarModeContainer'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const BarModeContainer = Loadable({
+//   loader: () =>
+//     import('./lib/unit-component/components/LzForm/BarModeContainer'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzForm = Loadable({
-  loader: () => import('./lib/unit-component/components/LzForm'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzForm = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzForm'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzFormControl = Loadable({
-  loader: () => import('./lib/unit-component/components/LzFormControl'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzFormControl = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzFormControl'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzFormItem = Loadable({
-  loader: () => import('./lib/unit-component/components/LzFormItem'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzFormItem = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzFormItem'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzTree = Loadable({
-  loader: () => import('./lib/unit-component/components/LzTree'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzTree = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzTree'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzCalendar = Loadable({
-  loader: () => import('./lib/unit-component/components/LzCalendar'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzCalendar = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzCalendar'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzList = Loadable({
-  loader: () => import('./lib/unit-component/components/LzList'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzList = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzList'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
-export const LzSelectRecords = Loadable({
-  loader: () => import('./lib/unit-component/components/LzSelectRecords'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const LzSelectRecords = Loadable({
+//   loader: () => import('./lib/unit-component/components/LzSelectRecords'),
+//   loading() {
+//     return minLoading;
+//   }
+// });

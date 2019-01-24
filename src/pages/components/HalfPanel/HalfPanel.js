@@ -1,8 +1,8 @@
 import React from 'react';
 import './HalfPanel.less';
 
-const HalfPanel = ({ title, iconUrl, children, className, prefix }) => (
-  <div className={`half-panel ${className}`}>
+const HalfPanel = ({ title, children, className, prefix, ...restProps }) => (
+  <div className={`half-panel ${className}`} {...restProps}>
     {title && (
       <div className="half-panel-title">
         {prefix ? prefix : <div className="half-panel-title-icon-default" />}

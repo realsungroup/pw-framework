@@ -14,7 +14,7 @@ export default class HomeBody extends React.PureComponent {
             title="任务栏"
             prefix={<i className="iconfont icon-renwulan" />}
           >
-            <TaskNotice />
+            111
           </HalfPanel>
           <HalfPanel
             title="工作台"
