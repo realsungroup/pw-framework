@@ -2,7 +2,6 @@ import React from 'react';
 import './PwForm.less';
 import { Form, Collapse } from 'antd';
 import LzRowCols from '../LzRowCols';
-import isEqual from 'lodash.isequal';
 import PwFormFooter from './PwFormFooter/index';
 import Control from '../../ui-components/Control';
 import { propTypes, defaultProps } from './propTypes';
@@ -30,8 +29,8 @@ class PwForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.data.length === 0 &&
-      this.props.data.length !== 0 &&
+      nextProps.data.length !== 0 &&
+      this.props.data.length === 0 &&
       nextProps.displayMode === 'classify'
     ) {
       const activeKey = this.getActiveKey(nextProps.data);
