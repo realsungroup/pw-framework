@@ -2,11 +2,11 @@ import React from 'react';
 import './HalfPanel.less';
 
 const HalfPanel = ({ title, children, className, prefix, ...restProps }) => (
-  <div className={`half-panel ${className}`} {...restProps}>
+  <div className={`half-panel ${className ? className : ''}`} {...restProps}>
     {title && (
-      <div className="half-panel-title">
-        {prefix ? prefix : <div className="half-panel-title-icon-default" />}
-        <div className="half-panel-title-text">{title}</div>
+      <div className="half-panel__title">
+        {!!prefix && prefix}
+        <div className="half-panel__title-text">{title}</div>
       </div>
     )}
     {children}

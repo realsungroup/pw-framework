@@ -19,7 +19,6 @@ import {
 import './RightBtns.less';
 import ColorPicker from '../../ColorPicker';
 import classNames from 'classnames';
-import RightBtnsTaskList from './RightBtnsTaskList';
 import {
   setThemeColor,
   setLanguage,
@@ -32,10 +31,6 @@ import changelog from '../../../../changelog.md';
 import ReactMarkdown from 'react-markdown';
 
 const FormItem = Form.Item;
-
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
 
 class RightBtns extends React.Component {
   state = {
@@ -59,19 +54,7 @@ class RightBtns extends React.Component {
     versionDescVisible: false
   };
 
-  componentDidMount = () => {
-    // 数据分析是否有未完成的任务
-    // this.getDataAnalyseData();
-    // setTimeout(() => {
-    //   const btn = document.querySelector('.page-header-v2-btn-icon.icon-task');
-    //   btn.dispatchEvent(
-    //     new Event('click', { bubbles: true, cancelable: false })
-    //   );
-    //   document.body.dispatchEvent(
-    //     new Event('click', { bubbles: true, cancelable: false })
-    //   );
-    // }, 1000);
-  };
+  componentDidMount = () => {};
 
   getDataAnalyseData = async () => {
     let res;
@@ -364,7 +347,6 @@ class RightBtns extends React.Component {
     } = this.state;
 
     const { getFieldDecorator } = this.props.form;
-    const { reminderNum } = this.props;
     return (
       <React.Fragment>
         <div
@@ -373,28 +355,7 @@ class RightBtns extends React.Component {
           })}
         >
           <HeaderBtn
-            iconClass="icon-message"
-            text={reminderNum}
-            onClick={this.handleMessageBtnClick}
-            tip="提醒"
-          />
-          {/* <Popover
-            placement="bottomRight"
-            title={<div style={{ textAlign: 'right' }}>任务列表</div>}
-            trigger="click"
-            content={
-              <RightBtnsTaskList dataAnalyseTaskIds={dataAnalyseTaskIds} />
-            }
-            trigger="click"
-          >
-            <HeaderBtn
-              iconClass="icon-task"
-              onClick={this.handleTaskBtnClick}
-              tip="任务"
-            />
-          </Popover> */}
-
-          <HeaderBtn
+            className="right-btns__header-btn"
             iconClass="icon-report-table"
             onClick={this.handleReportTableBtnClick}
             tip="报表"
@@ -406,10 +367,15 @@ class RightBtns extends React.Component {
             okText="确定"
             cancelText="取消"
           >
-            <HeaderBtn iconClass="icon-lock-screen" tip="锁屏" />
+            <HeaderBtn
+              className="right-btns__header-btn"
+              iconClass="icon-lock-screen"
+              tip="锁屏"
+            />
           </Popconfirm>
 
           <HeaderBtn
+            className="right-btns__header-btn"
             iconClass="icon-setting"
             onClick={this.handleSettingBtnClick}
             tip="设置"
@@ -421,7 +387,11 @@ class RightBtns extends React.Component {
             okText="确定"
             cancelText="取消"
           >
-            <HeaderBtn iconClass="icon-signout" tip="退出登录" />
+            <HeaderBtn
+              className="right-btns__header-btn"
+              iconClass="icon-signout"
+              tip="退出登录"
+            />
           </Popconfirm>
         </div>
 
@@ -431,11 +401,13 @@ class RightBtns extends React.Component {
           })}
         >
           <HeaderBtn
+            className="right-btns__header-btn"
             iconClass="icon-mod-password"
             onClick={this.handleModifyPasswordBtnClick}
             tip="修改密码"
           />
           <HeaderBtn
+            className="right-btns__header-btn"
             iconClass="icon-clear-cache"
             onClick={this.clearCacheBtnClick}
             tip="清除缓存"
@@ -465,6 +437,7 @@ class RightBtns extends React.Component {
             trigger="click"
           >
             <HeaderBtn
+              className="right-btns__header-btn"
               iconClass="icon-theme"
               onClick={() => this.setState({ pickerVisible: true })}
               tip="更换主题色"
@@ -489,12 +462,14 @@ class RightBtns extends React.Component {
             trigger="click"
           >
             <HeaderBtn
+              className="right-btns__header-btn"
               iconClass="icon-language"
               onClick={() => this.setState({ languageVisible: true })}
               tip="更换语言"
             />
           </Popover>
           <HeaderBtn
+            className="right-btns__header-btn"
             iconClass="icon-about"
             onClick={this.handleAboutClick}
             tip="关于"
@@ -625,12 +600,7 @@ class RightBtns extends React.Component {
             </FormItem>
 
             <FormItem>
-              <Button
-                className="btn-submit"
-                type="primary"
-                htmlType="submit"
-                // disabled={hasErrors(getFieldsError())}
-              >
+              <Button className="btn-submit" type="primary" htmlType="submit">
                 提交
               </Button>
             </FormItem>

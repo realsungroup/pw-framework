@@ -29,7 +29,8 @@ export default class ReminderList extends React.PureComponent {
     } catch (err) {
       return console.error(err);
     }
-    this.setState({ list: res.data, loading: false });
+    const list = [...res.data, ...res.data];
+    this.setState({ list, loading: false });
   };
 
   render() {
@@ -37,6 +38,7 @@ export default class ReminderList extends React.PureComponent {
     return (
       <Spin spinning={loading}>
         <div className="reminder-list">
+          <div className="reminder-list__title">提醒</div>
           {!!list.length ? (
             <List
               dataSource={list}

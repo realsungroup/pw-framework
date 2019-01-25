@@ -154,7 +154,7 @@ class App extends Component {
         >
           <LocaleProvider locale={localeAntd}>
             <IntlProvider locale={locale} messages={messages}>
-              <div style={{ minWidth: 1024 }}>
+              <div>
                 <Router>
                   <Switch>
                     <PrivateRoute exact path="/" component={PageContainer} />

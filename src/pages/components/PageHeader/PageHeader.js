@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import logoImg from '../../../assets/logo.png';
 import { setThemeColor, setLanguage } from 'Util/api';
+import UserInfo from '../../components/UserInfo';
 
 class PageHeader extends React.Component {
   state = {
@@ -127,42 +128,49 @@ class PageHeader extends React.Component {
   };
 
   render() {
-    const { title, reminderNum, lockScreenRef } = this.props;
-
+    const { reminderNum, lockScreenRef } = this.props;
     const { loading, isInTop } = this.state;
+
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const userData = {
+      userName: user.SysUserInfo.UserName
+    };
 
     const rightBtns = (
       <RightBtns reminderNum={reminderNum} lockScreenRef={lockScreenRef} />
     );
-
     return (
       <div
-        className={classNames('page-header-v2', {
+        className={classNames('page-header', {
           'in-top': isInTop
         })}
       >
-        <div className="page-header-v2-logo">
+        <div className="page-header__logo">
           <Link to="/" className="iconfont icon-logo" />
         </div>
-        <div className="page-header-v2-center-logo">
-          <img src={logoImg} alt="logo" className="page-header-v2__logo-img" />
+
+        <div className="page-header__client-logo">
+          <Link to="/">
+            <img src={logoImg} alt="logo" className="page-header__logo-img" />
+          </Link>
         </div>
 
         {rightBtns && (
-          <div className="page-header-v2-right-btns">
+          <div className="page-header__right-btns">
             {Array.isArray(rightBtns) && rightBtns.length > 0 ? (
               rightBtns.map((btn, idx) => (
-                <div key={idx} className="page-header-v2-right-btn">
+                <div key={idx} className="page-header-right-btn">
                   {btn}
                 </div>
               ))
             ) : (
-              <div className="page-header-v2-right-btn">{rightBtns}</div>
+              <div className="page-header-right-btn">{rightBtns}</div>
             )}
           </div>
         )}
-        {title && <div className="page-header-v2-title">{title}</div>}
-        <Loading loading={loading} />
+        <div className="page-header__user">
+          <UserInfo userName={userData.userName} />
+        </div>
       </div>
     );
   }

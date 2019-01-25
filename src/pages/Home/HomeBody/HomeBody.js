@@ -8,7 +8,7 @@ import './HomeBody.less';
 export default class HomeBody extends React.PureComponent {
   render() {
     return (
-      <div>
+      <div className="home-body">
         <HalfPanel
           title="任务栏"
           prefix={<i className="iconfont icon-renwulan" />}
