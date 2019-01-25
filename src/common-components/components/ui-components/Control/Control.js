@@ -85,7 +85,10 @@ class Control extends React.Component {
   componentWillUnmount = () => {};
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if (nextProps.value !== this.props.value) {
+    if (
+      nextProps.value !== this.props.value ||
+      nextProps.mode !== this.props.mode
+    ) {
       return true;
     }
     return false;
@@ -188,11 +191,11 @@ class Control extends React.Component {
   };
 
   render() {
-    const { dataItem, value, displayMode } = this.props;
+    const { dataItem, value, mode } = this.props;
     const name = dataItem.name;
     const props = dataItem.props;
 
-    if (displayMode === 'view') {
+    if (mode === 'view') {
       switch (name) {
         case 'Upload': {
           let urls = [];

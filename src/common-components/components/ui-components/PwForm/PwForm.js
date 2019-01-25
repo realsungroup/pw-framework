@@ -19,15 +19,31 @@ class PwForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    const { data } = props;
+    const activeKey = this.getActiveKey(data);
+    this.state = {
+      activeKey
+    };
   }
 
   componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.data, this.props.data)) {
+    if (
+      nextProps.data.length === 0 &&
+      this.props.data.length !== 0 &&
+      nextProps.displayMode === 'classify'
+    ) {
+      const activeKey = this.getActiveKey(nextProps.data);
+      this.setState({ activeKey });
     }
   }
+
+  getActiveKey = data => {
+    const activeKey = [];
+    data.forEach(item => activeKey.push(item.type));
+    return activeKey;
+  };
 
   handleCollapseChange = activeKey => {
     this.setState({ activeKey });
@@ -98,7 +114,7 @@ class PwForm extends React.Component {
           <Control
             dataItem={dataItem}
             form={form}
-            displayMode={mode}
+            mode={mode}
             resid={resid}
             record={record}
             operation={operation}

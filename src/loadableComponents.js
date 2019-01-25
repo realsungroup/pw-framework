@@ -49,12 +49,12 @@ export const Login = Loadable({
   }
 });
 
-// export const PersonCenter = Loadable({
-//   loader: () => import('./pages/PersonCenter'),
-//   loading() {
-//     return <Loading loading={true} />;
-//   }
-// });
+export const PersonCenter = Loadable({
+  loader: () => import('./pages/PersonCenter'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
 
 // export const Reminder = Loadable({
 //   loader: () => import('./pages/Reminder'),

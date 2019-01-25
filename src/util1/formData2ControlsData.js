@@ -263,6 +263,60 @@ const getData = (canOpControlArr, rulesControl) => {
   return data;
 };
 
+const trueValues = ['Y'];
+// const falseValues = ['', undefined, null, 'N'];
+// 获取是否项是否被选中
+const getChecked = value => {
+  if (trueValues.indexOf(value) !== -1) {
+    return true;
+  }
+  return false;
+};
+
+// 获取文件列表，value：字符串，里面含有 n 个文件地址，以 ';file;' 分隔
+const getFileList = value => {
+  let ret = [];
+  if (!value) {
+    return ret;
+  }
+  const urls = value.split(FILESEPARATOR);
+  ret = urls.map((url, index) => ({
+    uid: -(index + 1),
+    name: url,
+    status: 'done',
+    url: url
+  }));
+  return ret;
+};
+
+/**
+ * 设置所有控件的 initialValue 属性值
+ * @param {array} data 所有控件数据
+ * @param {object} record 记录
+ * @param {boolean} isTransformValue 是否转换值（如：'2019-01-10' 转换为 moment 对象），默认值：false
+ * @param {boolean} isClassifyLayout 是否是分类布局，默认值：false
+ */
+export const setDataInitialValue = (
+  data,
+  record,
+  isTransformValue = false,
+  isClassifyLayout = false
+) => {
+  const newData = cloneDeep(data);
+  if (isClassifyLayout) {
+    newData.forEach(item => {
+      item.data.forEach(dataItem => {
+        dataItem.initialValue = record[dataItem.id];
+      });
+    });
+  } else {
+    newData.forEach(dataItem => {
+      dataItem.initialValue = record[dataItem.id];
+    });
+  }
+  return newData;
+};
+
 /**
  * 获取表单接收的 data prop
  * @param {object} formData 窗体数据
@@ -298,66 +352,6 @@ export const getDataProp = (
       data.push(obj);
     });
   }
-  data = setDataInitialValue(data, record, isTransformValue);
+  data = setDataInitialValue(data, record, isTransformValue, isClassifyLayout);
   return data;
-};
-
-const trueValues = ['Y'];
-// const falseValues = ['', undefined, null, 'N'];
-// 获取是否项是否被选中
-const getChecked = value => {
-  if (trueValues.indexOf(value) !== -1) {
-    return true;
-  }
-  return false;
-};
-
-// 获取文件列表，value：字符串，里面含有 n 个文件地址，以 ';file;' 分隔
-const getFileList = value => {
-  let ret = [];
-  if (!value) {
-    return ret;
-  }
-  const urls = value.split(FILESEPARATOR);
-  ret = urls.map((url, index) => ({
-    uid: -(index + 1),
-    name: url,
-    status: 'done',
-    url: url
-  }));
-  return ret;
-};
-
-/**
- * 设置所有控件的 initialValue 属性值
- * @param {array} data 所有控件数据
- * @param {object} record 记录
- * @param {boolean} isTransformValue 是否转换值（如：'2019-01-10' 转换为 moment 对象），默认值：false
- */
-export const setDataInitialValue = (data, record, isTransformValue = false) => {
-  const newData = cloneDeep(data);
-  newData.forEach(dataItem => {
-    dataItem.initialValue = record[dataItem.id];
-    if (false) {
-      // 日期时间选择器/日期选择器
-      if (
-        dataItem.name === 'DateTimePicker' ||
-        dataItem.name === 'DatePicker'
-      ) {
-        dataItem.initialValue =
-          dataItem.initialValue && moment(dataItem.initialValue);
-      }
-
-      // Checkbox
-      if (dataItem.name === 'Checkbox') {
-        dataItem.initialValue = getChecked(dataItem.initialValue);
-      }
-
-      // 上传文件
-      if (dataItem.name === 'Upload') {
-        dataItem.initialValue = getFileList(dataItem.initialValue);
-      }
-    }
-  });
-  return newData;
 };

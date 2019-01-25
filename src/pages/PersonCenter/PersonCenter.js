@@ -1,28 +1,28 @@
-import React, { Fragment } from 'react';
-import PageBody from '../components/PageBody';
+import React from 'react';
 import HalfPanel from '../components/HalfPanel';
+import { Tabs, message, Spin } from 'antd';
+import PwForm from 'CommonComponents/components/ui-components/PwForm';
+import { getDataProp, setDataInitialValue } from 'Util1/formData2ControlsData';
+import { withHttpGetFormData } from 'CommonComponents/components/hoc/withHttp';
+import http, { makeCancelable } from 'Api';
+import { dealFormData } from 'Util1/controls';
 import './PersonCenter.less';
-import { Tabs, message, Button, Spin, Popconfirm } from 'antd';
-import { getFormData, getTableData, modRecord } from '../../util/api';
-import dealControlArr from 'Util/controls';
-import { clone } from '../../util/util';
-import LzFormWithFooter from '../../lib/unit-component/components/LzFormWithFooter';
-import { clearCache } from 'Util/api';
 
 const TabPane = Tabs.TabPane;
 
-// 本页面的配置信息在 public/business.js 文件中
-const tabsConfig = window.personCenterResIds;
+// 本页面的配置信息在 public/app.config.js 文件中
+const tabsConfig = window.pwConfig.personCenterResIds;
 
-export default class PersonCenter extends React.Component {
+class PersonCenter extends React.Component {
   constructor() {
     super();
     this.state = {
+      data: [],
       tabsConfig,
-      formPropsArr: [], // 传给 LzForm 组件需的 props
       activeKey: '0',
-      mod: 'view', // 模式：'view' 表示查看模式；'edit' 表示编辑模式
-      spinning: true
+      mode: 'view', // 模式：'view' 表示查看模式；'edit' 表示编辑模式
+      loading: true,
+      record: {}
     };
   }
 
@@ -30,119 +30,108 @@ export default class PersonCenter extends React.Component {
     this.getData(this.state.activeKey);
   }
 
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+  };
+
   getData = async activeKey => {
-    this.setState({ spinning: true, mod: 'view', operation: 'check' });
+    this.setState({ spinning: true, mode: 'view' });
     const tabConfig = this.state.tabsConfig[activeKey];
     const resid = tabConfig.resid,
       formName = tabConfig.formName || 'default';
-    let resTableData, resFormData, res;
+
+    let resTableData, formData, res;
+    const pArr = [
+      http().getTable({ resid }),
+      this.props.httpGetFormData(resid, formName)
+    ];
+    this.p1 = makeCancelable(Promise.all(pArr));
     try {
-      res = await Promise.all([
-        getTableData(resid),
-        getFormData(resid, formName)
-      ]);
-      resTableData = res[0];
-      resFormData = res[1];
+      res = await this.p1.promise;
     } catch (err) {
       return message.error(err.message);
     }
-    const record = resTableData.data[0];
-    const formFormData = dealControlArr(resFormData.data.columns);
-
-    const { formPropsArr } = this.state;
-    formPropsArr[activeKey] = {
-      record,
-      formFormData,
-      resid
-    };
-    this.setState({ formPropsArr, activeKey, spinning: false });
+    resTableData = res[0];
+    formData = res[1];
+    const record = resTableData.data[0] || {};
+    const data = getDataProp(formData, record, false, true);
+    this.setState({ data, record, activeKey, loading: false });
   };
 
   onChange = activeKey => {
     this.getData(activeKey);
   };
 
-  toEdit = () => {
-    this.setState({ mod: 'edit', operation: 'mod' });
+  handleEdit = () => {
+    this.setState({ mode: 'edit' });
   };
 
-  toView = () => {
-    const { activeKey } = this.state;
-    const form = this[`formRef${activeKey}`].props.form;
+  handleCancel = form => {
     form.resetFields();
-    this.setState({ mod: 'view', operation: 'check' });
+    this.setState({ mode: 'view' });
   };
 
-  save = (form, record) => {
-    const { activeKey, tabsConfig } = this.state;
-    form.validateFields(async (err, values) => {
-      if (!err) {
-        this.setState({ spinning: true });
-        const resid = tabsConfig[activeKey].resid;
-        values.REC_ID = record.REC_ID;
-        try {
-          await modRecord(resid, values);
-        } catch (err) {
-          this.setState({ spinning: false });
-          return message.error(err.message);
-        }
-        message.success('修改成功');
-        this.setState({ spinning: false, mod: 'view', operation: 'check' });
+  handleSave = form => {
+    this.setState({ loading: true });
+    const { validateFields } = form;
+    validateFields(async (err, values) => {
+      const { tabsConfig, activeKey, record } = this.state;
+
+      if (err) {
+        this.setState({ loading: false });
+        return message.error('表单有误');
       }
+      const formData = dealFormData(values);
+      formData.REC_ID = record.REC_ID;
+      const tabConfig = tabsConfig[activeKey];
+      const resid = tabConfig.resid;
+
+      this.p2 = makeCancelable(
+        http().modifyRecords({ resid, data: [formData] })
+      );
+      let res;
+      try {
+        res = await this.p2.promise;
+      } catch (err) {
+        this.setState({ loading: false });
+        return console.error(err);
+      }
+      message.success('修改成功');
+
+      const data = setDataInitialValue(this.state.data, values, false, true);
+      this.setState({ loading: false, mode: 'view', data });
     });
   };
 
-  saveCallback = async () => {
-    let res;
-    try {
-      res = await clearCache();
-    } catch (err) {
-      return message.error(err.message);
-    }
-    if (res !== 'ok') {
-      message.error('清除缓存失败');
-    }
-  };
-
   render() {
-    const { tabsConfig, activeKey, formPropsArr, spinning } = this.state;
-    const lzFormProps = formPropsArr[activeKey];
-
+    const { tabsConfig, activeKey, loading, data, mode } = this.state;
     return (
-      <PageBody>
+      <div className="person-center">
         <HalfPanel title="个人中心" className="person-center-halfpanel">
           <div className="person-center-tabs">
-            <Spin spinning={spinning}>
+            <Spin spinning={loading}>
               <Tabs type="card" onChange={this.onChange} activeKey={activeKey}>
                 {tabsConfig &&
                   tabsConfig.length > 0 &&
                   tabsConfig.map((tabConfig, index) => (
                     <TabPane tab={tabConfig.title} key={index}>
-                      {lzFormProps && (
-                        <LzFormWithFooter
-                          ref={`lzForm${activeKey}`}
-                          wrappedComponentRef={inst =>
-                            (this[`formRef${activeKey}`] = inst)
-                          }
-                          displayMod="classify"
-                          record={lzFormProps.record}
-                          formFormData={lzFormProps.formFormData}
-                          resid={lzFormProps.resid}
-                          height={500}
-                          cancelBtn
-                          delBtn={false}
-                          operation={'mod'}
-                          dataMode="main"
-                          saveCallback={this.saveCallback}
-                        />
-                      )}
+                      <PwForm
+                        data={data}
+                        displayMode="classify"
+                        mode={mode}
+                        onEdit={this.handleEdit}
+                        onCancel={this.handleCancel}
+                        onSave={this.handleSave}
+                      />
                     </TabPane>
                   ))}
               </Tabs>
             </Spin>
           </div>
         </HalfPanel>
-      </PageBody>
+      </div>
     );
   }
 }
+
+export default withHttpGetFormData(PersonCenter);

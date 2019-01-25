@@ -5,11 +5,12 @@ import UserInfo from '../components/UserInfo';
 import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
 import {
-  Home
+  Home,
+  PersonCenter
+
   // FnModule,
   // WorkbenchSetting,
   // TaskNotice,
-  // PersonCenter,
   // Reminder,
   // ReportTable
 } from '../../loadableComponents';
@@ -189,13 +190,14 @@ export default class Container extends React.Component {
         />
         <PageBody>
           <Route path="/" exact component={Home} />
+          <Route path="/person-center" component={PersonCenter} />
+
           {/* <Route path="/home" component={Home} /> */}
           {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
           {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
           {/* <Route path="/workbench-setting" component={WorkbenchSetting} /> */}
           {/* <Route path="/reminder" component={Reminder} /> */}
           {/* <Route path="/report-table" component={ReportTable} /> */}
-          {/* <Route path="/person-center" component={PersonCenter} /> */}
           {/* <Route
           path="/task-notice/:taskCatalog/:taskType"
           component={TaskNotice}

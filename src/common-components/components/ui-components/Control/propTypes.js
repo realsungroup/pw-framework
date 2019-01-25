@@ -22,7 +22,7 @@ export const propTypes = {
    * 可选：'edit' 编辑状态 | 'view' 查看状态
    * 默认：'view'
    */
-  displayMode: PropTypes.oneOf(['edit', 'view']),
+  mode: PropTypes.oneOf(['edit', 'view']),
 
   /**
    * 上传文件的地址
