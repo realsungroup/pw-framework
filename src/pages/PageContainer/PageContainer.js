@@ -6,10 +6,10 @@ import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
 import {
   Home,
-  PersonCenter
+  PersonCenter,
+  WorkbenchSetting
 
   // FnModule,
-  // WorkbenchSetting,
   // TaskNotice,
   // Reminder,
   // ReportTable
@@ -191,11 +191,11 @@ export default class Container extends React.Component {
         <PageBody>
           <Route path="/" exact component={Home} />
           <Route path="/person-center" component={PersonCenter} />
+          <Route path="/workbench-setting" component={WorkbenchSetting} />
 
           {/* <Route path="/home" component={Home} /> */}
           {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
           {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
-          {/* <Route path="/workbench-setting" component={WorkbenchSetting} /> */}
           {/* <Route path="/reminder" component={Reminder} /> */}
           {/* <Route path="/report-table" component={ReportTable} /> */}
           {/* <Route

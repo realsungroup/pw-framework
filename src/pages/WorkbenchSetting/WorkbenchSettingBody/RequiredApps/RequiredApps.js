@@ -5,9 +5,9 @@ import './RequiredApps.less';
 
 const RequiredApps = ({ apps }) => (
   <Panel>
-    <div className="workbench-setting-required-apps">
+    <div className="required-apps">
       {apps.map((app, idx) => (
-        <div key={idx} className="workbench-setting-required-app-wrapper">
+        <div key={idx} className="required-apps__app-wrap">
           <Application
             appData={app}
             active={false}

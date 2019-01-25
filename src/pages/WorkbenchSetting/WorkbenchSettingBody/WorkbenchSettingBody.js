@@ -1,12 +1,11 @@
 import React from 'react';
-import { getAllAppLinks, getUserDesktop } from '../../../util/api';
+import { getUserDesktop } from '../../../util/api';
 import { Spin, message } from 'antd';
 import PageBody from '../../components/PageBody';
 import HalfPanel from '../../components/HalfPanel';
 import RequiredApps from './RequiredApps';
 import OptionalApps from './OptionalApps';
-import requiredIcon from './images/required.png';
-import optionalIcon from './images/optional.png';
+import './WrokbenchSettingBody.less';
 
 export default class WorkbenchBody extends React.PureComponent {
   state = {
@@ -48,22 +47,20 @@ export default class WorkbenchBody extends React.PureComponent {
     const { requiredApps, selectedApps, loading } = this.state;
 
     return (
-      <PageBody>
-        <Spin spinning={loading}>
-          <div style={{ textAlign: 'center' }}>
-            <HalfPanel title="必要的功能">
-              <RequiredApps apps={requiredApps} />
-            </HalfPanel>
-            <HalfPanel title="可选的功能">
-              <OptionalApps
-                selectedApps={selectedApps}
-                onRemoveApp={this.handleRemoveApp}
-                onConfirmSelection={this.handleConfirmSelection}
-              />
-            </HalfPanel>
-          </div>
-        </Spin>
-      </PageBody>
+      <Spin spinning={loading}>
+        <div className="workbench-setting-body">
+          <HalfPanel title="必要的功能">
+            <RequiredApps apps={requiredApps} />
+          </HalfPanel>
+          <HalfPanel title="可选的功能">
+            <OptionalApps
+              selectedApps={selectedApps}
+              onRemoveApp={this.handleRemoveApp}
+              onConfirmSelection={this.handleConfirmSelection}
+            />
+          </HalfPanel>
+        </div>
+      </Spin>
     );
   }
 }

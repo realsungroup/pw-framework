@@ -1,19 +1,25 @@
-.workbench-setting-optional-apps {
+.optional-apps {
   width: 100%;
   padding: 22px;
-  height: ~"calc(100vh - 204px)";
+  height: ~'calc(100vh - 204px)';
   overflow-y: auto;
-  .app-list {
+  margin-top: 16px;
+  &__app-list {
     margin-top: 44px;
     overflow: hidden;
   }
+  &__add-apps {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    display: block;
+    cursor: pointer;
+    margin-left: auto;
+  }
 }
 
-.workbench-setting-add-apps {
-  width: 22px;
-  height: 22px;
-  font-size: 22px;
-  display: block;
-  cursor: pointer;
-  margin-left: auto;
+@media screen and (max-width: 1066px) {
+  .optional-apps {
+    height: auto;
+  }
 }

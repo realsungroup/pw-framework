@@ -1,15 +1,20 @@
-.workbench-setting-required-apps {
+.required-apps {
   width: 100%;
   padding: 10px 20px 20px;
   height: ~'calc(100vh - 204px)';
   overflow-y: auto;
-  text-align: left;
+  margin-top: 16px;
+  &__app-wrap {
+    display: inline-block;
+    margin-top: 10px;
+    width: 150px;
+    text-align: center;
+    line-height: normal;
+  }
 }
 
-.workbench-setting-required-app-wrapper {
-  display: inline-block;
-  margin-top: 10px;
-  width: 25%;
-  text-align: center;
-  line-height: normal;
+@media screen and (max-width: 1066px) {
+  .required-apps {
+    height: auto;
+  }
 }

@@ -34,8 +34,6 @@ export default class OptionalApps extends React.Component {
 
   onExpand = expandedKeys => {
     console.log('onExpand', expandedKeys);
-    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
     this.setState({
       expandedKeys,
       autoExpandParent: false
@@ -107,17 +105,6 @@ export default class OptionalApps extends React.Component {
         }
       }
     }
-
-    console.log('this.addFnList:', this.addFnList);
-    console.log('this.removeFnList:', this.removeFnList);
-
-    // 添加
-    // if (e.checked) {
-    //   res = await this.addApp(e);
-    //   // 删除
-    // } else {
-    //   res = await this.delApp(e);
-    // }
     this.setState({ checkedKeys });
   };
 
@@ -239,17 +226,15 @@ export default class OptionalApps extends React.Component {
   render() {
     const { selectedApps, onRemoveApp } = this.props;
     const { modalVisible, spinning, fnTreeData } = this.state;
-
     return (
       <Panel>
-        <div className="workbench-setting-optional-apps">
+        <div className="optional-apps">
           <i
-            className="workbench-setting-add-apps iconfont icon-add"
+            className="optional-apps__add-apps iconfont icon-add"
             onClick={this.openModal}
           />
-
           {/* 已选的功能列表 */}
-          <div className="app-list">
+          <div className="optional-apps__app-list">
             {selectedApps.map((app, idx) => (
               <SelectedApp
                 key={app.ResID || idx}
@@ -261,7 +246,6 @@ export default class OptionalApps extends React.Component {
           {/* 所有的功能 */}
           <Modal
             visible={modalVisible}
-            className="lz-optional-apps-modal"
             onCancel={this.onClose}
             destroyOnClose={true}
             title={
@@ -291,11 +275,6 @@ export default class OptionalApps extends React.Component {
               </Tree>
             </Spin>
           </Modal>
-          {/* <AppSelector
-            isOpen={isAppSelectorOpen}
-            onClose={this.closeAppSelector}
-            onConfirmSelection={onConfirmSelection}
-          /> */}
         </div>
       </Panel>
     );

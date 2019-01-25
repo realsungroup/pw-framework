@@ -2,13 +2,12 @@ import React from 'react';
 import { message } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import RightBtns from './RightBtns';
-import './PageHeader.less';
-import Loading from 'react-fullscreen-loading';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import logoImg from '../../../assets/logo.png';
 import { setThemeColor, setLanguage } from 'Util/api';
 import UserInfo from '../../components/UserInfo';
+import './PageHeader.less';
 
 class PageHeader extends React.Component {
   state = {

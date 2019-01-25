@@ -28,12 +28,12 @@ export const Home = Loadable({
 //   }
 // });
 
-// export const WorkbenchSetting = Loadable({
-//   loader: () => import('./pages/WorkbenchSetting'),
-//   loading() {
-//     return <Loading loading={true} />;
-//   }
-// });
+export const WorkbenchSetting = Loadable({
+  loader: () => import('./pages/WorkbenchSetting'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
 
 // export const TaskNotice = Loadable({
 //   loader: () => import('./pages/TaskNotice'),
