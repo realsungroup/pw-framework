@@ -2,7 +2,7 @@
 .home-workbench-body {
   width: 100%;
   padding: 10px 20px 40px;
-  height: ~'calc(100vh - 204px)'; // height: 656px;
+  height: ~'calc(100vh - 184px)'; // height: 656px;
   overflow-y: auto;
   .work-bench-body-category {
     height: auto;
@@ -35,7 +35,7 @@
 .home-workbench-app-wrapper {
   display: inline-block;
   width: 25%;
-  // width: 150px;
+  width: 150px;
   text-align: center;
   margin-top: 30px;
   line-height: normal;
@@ -44,8 +44,8 @@
   }
 }
 
-@media screen and (min-width: 700px) {
-  .home-workbench-app-wrapper {
-    width: 150px;
+@media screen and (max-width: 1066px) {
+  .home-workbench-body {
+    height: auto;
   }
 }
