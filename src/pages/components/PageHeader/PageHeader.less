@@ -101,7 +101,7 @@
       display: none;
     }
     &__client-logo {
-      display: inline-block;
+      float: left;
       transform: none;
       position: static;
     }
@@ -111,19 +111,22 @@
 @media screen and (max-width: 700px) {
   .page-header {
     padding: 0;
+    padding-right: 16px;
     height: 60px;
-    &__user {
-      display: none;
+    &__client-logo {
+      float: left;
+      height: 100%;
+      line-height: 60px;
+      transform: scale(0.5);
     }
     &__right-btns {
+      float: right;
       border: none;
       padding: 0;
       margin: 0;
     }
-    &__client-logo {
-      height: 100%;
-      line-height: 60px;
-      transform: scale(0.6);
+    &__user {
+      display: none;
     }
   }
 }

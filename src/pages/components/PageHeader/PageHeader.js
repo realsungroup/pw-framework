@@ -150,7 +150,7 @@ class PageHeader extends React.Component {
         </div>
 
         <div className="page-header__client-logo">
-          <Link to="/">
+          <Link to="/" style={{ display: 'block' }}>
             <img src={logoImg} alt="logo" className="page-header__logo-img" />
           </Link>
         </div>
