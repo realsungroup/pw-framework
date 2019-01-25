@@ -21,12 +21,12 @@ export const Home = Loadable({
   }
 });
 
-// export const FnModule = Loadable({
-//   loader: () => import('./pages/FnModule/FnModule'),
-//   loading() {
-//     return <Loading loading={true} />;
-//   }
-// });
+export const GetConfig = Loadable({
+  loader: () => import('./pages/GetConfig/GetConfig'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
 
 export const WorkbenchSetting = Loadable({
   loader: () => import('./pages/WorkbenchSetting'),
@@ -90,13 +90,13 @@ export const UnitOne = Loadable({
 /**
  * 单元组件
  */
-// export const TableData = Loadable({
-//   loader: () =>
-//     import('./common-components/components/data-components/TableData'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
+export const TableData = Loadable({
+  loader: () =>
+    import('./common-components/components/data-components/TableData'),
+  loading() {
+    return minLoading;
+  }
+});
 
 // export const LzUnitComponentContainer = Loadable({
 //   loader: () => import('./lib/unit-component/LzUnitComponentContainer'),

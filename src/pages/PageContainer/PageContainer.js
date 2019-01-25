@@ -7,15 +7,14 @@ import { getItem } from '../../util/localCache';
 import {
   Home,
   PersonCenter,
-  WorkbenchSetting
-
-  // FnModule,
+  WorkbenchSetting,
+  GetConfig
   // TaskNotice,
   // Reminder,
   // ReportTable
 } from '../../loadableComponents';
 import { message, Input, Button, Icon } from 'antd';
-import { retrieveReminderNum, defaultLogin, domainLogin } from 'Util/api';
+import { defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
@@ -34,7 +33,6 @@ export default class Container extends React.Component {
   }
 
   componentDidMount = () => {
-    this.retrieveReminderNum();
     let userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       try {
@@ -64,16 +62,6 @@ export default class Container extends React.Component {
         message.error('设置主题色出错，请刷新页面');
       }
     }, 0);
-  };
-
-  retrieveReminderNum = async () => {
-    let res;
-    try {
-      res = await retrieveReminderNum();
-    } catch (err) {
-      return message.error(err.message);
-    }
-    this.setState({ reminderNum: res.data });
   };
 
   unloadCallback = () => {
@@ -190,18 +178,11 @@ export default class Container extends React.Component {
         />
         <PageBody>
           <Route path="/" exact component={Home} />
+          <Route path="/home" component={Home} />
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
-
-          {/* <Route path="/home" component={Home} /> */}
-          {/* <Route path="/fnmodule/:ids" component={FnModule} /> */}
-          {/* <Route path="/fnmodule/:ids" key={keyIndex++} component={FnModule} /> */}
-          {/* <Route path="/reminder" component={Reminder} /> */}
+          <Route path="/fnmodule/:ids" component={GetConfig} />
           {/* <Route path="/report-table" component={ReportTable} /> */}
-          {/* <Route
-          path="/task-notice/:taskCatalog/:taskType"
-          component={TaskNotice}
-        /> */}
         </PageBody>
       </div>
     );

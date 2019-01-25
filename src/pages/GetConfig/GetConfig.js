@@ -1,6 +1,6 @@
 import React from 'react';
 import { message } from 'antd';
-import UnitOne from '../../lib/module-component/UnitOne';
+import Functions from '../Functions';
 import { getModuleComponentConfig } from '../../util/api';
 import merge from 'deepmerge';
 import config from './config';
@@ -111,26 +111,13 @@ export default class FnModule extends React.Component {
     return merge(beConfig, feConfig, { arrayMerge: combineMerge });
   };
 
-  // 渲染模板组件
-  renderModuleComponent = () => {
-    if (!this.state.isRequest) {
-      return;
-    }
-    let newConfig;
-    newConfig = this.mergeConfig();
-    switch (newConfig.name) {
-      case 'unitOne': {
-        return (
-          <UnitOne key={UnitOne.title} config={newConfig} {...this.props} />
-        );
-      }
-      default: {
-        return <div>配置信息有误</div>;
-      }
-    }
-  };
-
   render() {
-    return <React.Fragment>{this.renderModuleComponent()}</React.Fragment>;
+    if (!this.state.isRequest) {
+      return null;
+    }
+    const newConfig = this.mergeConfig();
+    console.log({ newConfig });
+
+    return <Functions config={newConfig} {...this.props} />;
   }
 }
