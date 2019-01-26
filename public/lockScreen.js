@@ -1,1 +1,0 @@
-window.lockScreenWaitTime = 600;
