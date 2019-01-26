@@ -3,7 +3,7 @@ import http, { dealNextExtractData } from '../util/http';
 
 const { path } = appConfig;
 const { baseUrl8055, baseUrlEnterprise } = path;
-const baseUrl = window.baseUrl;
+const baseUrl = window.pwConfig.baseURL;
 const GET = 'GET';
 const POST = 'POST';
 

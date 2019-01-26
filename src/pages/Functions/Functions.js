@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Functions.less';
 
-// 导入需要使用的组件
-import { TableData } from '../../loadableComponents';
+// 从 导出中心 导入所有的组件
+import * as components from '../../export-center';
 
 /**
  * 模块功能组件：根据配置信息来调用具体的组件
@@ -23,6 +23,7 @@ export default class Functions extends React.Component {
     // {
     //   title: '人员信息',
     //   name: 'TableData', // 使用组件的名称
+    //   hasBackBtn: false, // 没有返回上一页的按钮
     //   props: { // TableData 组件接收的 props
     //     resid: 666
     //   }
@@ -42,14 +43,15 @@ export default class Functions extends React.Component {
 
   // 渲染组件
   renderComponent = (name, props) => {
-    switch (name) {
-      case 'TableData': {
-        return <TableData {...props} />;
-      }
-      default: {
-        return `没有名为 ${name} 的单元组件`;
-      }
+    if (!name) {
+      return '该功能模块没有进行配置，请在 public/functions.config.js 文件中进行配置';
     }
+    const C = components[name];
+    if (!C) {
+      return `没有名为 ${name} 的单元组件`;
+    }
+    props = props || {};
+    return <C {...props} />;
   };
 
   render() {

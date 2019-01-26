@@ -19,7 +19,8 @@ import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
 
-const domainLoginConfig = window.domainLogin;
+const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig;
+const time = lockScreenWaitTime;
 
 export default class Container extends React.Component {
   constructor(props) {
@@ -134,7 +135,7 @@ export default class Container extends React.Component {
         {username && (
           <LockScreen
             className="app-lock-screen-wrap"
-            time={window.lockScreenWaitTime}
+            time={time}
             maskShow={this.handleMaskShow}
             ref={this.lockScreenRef}
           >

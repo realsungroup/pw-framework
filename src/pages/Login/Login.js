@@ -2,36 +2,30 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { defaultLogin } from '../../util/auth';
 import { preLoadImg } from '../../util/imgUtil';
-import { Spin, message, Modal, Button, Input, Select } from 'antd';
+import { Spin, message, Button, Input, Form, Icon, Radio } from 'antd';
 import accountIcon from './images/account.png';
 import passwordIcon from './images/password.png';
 import './Login.less';
+import './Login.css';
 import { domainLogin } from 'Util/api';
-import { getItem, setItem } from 'Util/util';
-
+import { getItem, setItem } from 'Util1/util';
 import loginLeft from './images/login-left.png';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail, setLanguage } from 'Util/api';
 import FmWrap from '../components/FmWrap';
 
-const domainLoginConfig = window.domainLogin;
+const { domainLoginConfig, defaultLoginMode, enterprisecode } = window.pwConfig;
 
-const { enterprisecode } = window.powerWorks;
-const Option = Select.Option;
-
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     let loginMode = getItem('loginMode');
     if (!loginMode) {
-      loginMode = window.defaultLoginMode;
-      setItem('loginMode', window.defaultLoginMode);
+      loginMode = defaultLoginMode;
+      setItem('loginMode', defaultLoginMode);
     }
     let language = getItem('language') || '中文';
     this.state = {
-      userName: '',
-      password: '',
-      errorMsg: '',
       ready: false,
       redirectToReferrer: false,
       loginMode, // 登录模式：'normal' 普通登录 | 'domain' 域登录
@@ -43,9 +37,9 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    preLoadImg([accountIcon, passwordIcon], () => {
-      this.setState({ ready: true });
-    });
+    // preLoadImg([accountIcon, passwordIcon], () => {
+    //   this.setState({ ready: true });
+    // });
     this.setThemeColor(window.themeColor);
   }
 
@@ -94,66 +88,68 @@ export default class Login extends React.Component {
   };
 
   handleSubmit = () => {
-    this.login();
-  };
-
-  login = async () => {
-    const { userName, password, loginMode } = this.state;
-
-    let res;
-    // 普通方式登录
-    if (loginMode === 'normal') {
-      try {
-        res = await defaultLogin(userName, password);
-      } catch (err) {
-        console.error(err.message);
+    const { validateFields } = this.props.form;
+    validateFields(async (err, values) => {
+      if (err) {
+        return message.error('请填写账号或密码');
       }
-    } else {
-      // 域登录
-      const domain = domainLoginConfig.domain;
-      const usernameSuffix = domainLoginConfig.usernameSuffix;
-      const domainUserField = domainLoginConfig.domainUserField;
-      try {
-        res = await domainLogin(
-          userName + usernameSuffix,
-          password,
-          domain,
-          domainUserField
-        );
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
-    const result = res.OpResult;
-    if (result === 'Y') {
-      setItem('userInfo', JSON.stringify(res));
-      // 登录成功
-      const userInfo = JSON.parse(getItem('userInfo'));
-      const userLanguage = userInfo.UserInfo.EMP_LANGUAGE;
-
-      const language = getItem('language');
-
-      if (userLanguage !== language) {
-        let res;
+      console.log({ values });
+      const { loginMode } = this.state;
+      const { userName, password } = values;
+      let res;
+      // 普通方式登录
+      if (loginMode === 'normal') {
         try {
-          res = await setLanguage(language);
+          res = await defaultLogin(userName, password);
         } catch (err) {
-          return message.error(err.message);
+          message.error(err.message);
+          return console.error(err.message);
         }
-        if (res.OpResult !== 'Y') {
-          message.error(res.ErrorMsg);
-        } else {
-          userInfo.UserInfo.EMP_LANGUAGE = language;
-          setItem('userInfo', JSON.stringify(userInfo));
+      } else {
+        // 域登录
+        const domain = domainLoginConfig.domain;
+        const usernameSuffix = domainLoginConfig.usernameSuffix;
+        const domainUserField = domainLoginConfig.domainUserField;
+        try {
+          res = await domainLogin(
+            userName + usernameSuffix,
+            password,
+            domain,
+            domainUserField
+          );
+        } catch (err) {
+          message.error(err.message);
+          return console.error(err.message);
         }
       }
-      this.setState({
-        redirectToReferrer: true
-      });
-    } else if (result === 'N') {
-      const errorMsg = res.ErrorMsg;
-      return this.setState({ errorMsg });
-    }
+      const result = res.OpResult;
+      if (result === 'Y') {
+        setItem('userInfo', JSON.stringify(res));
+        // 登录成功
+        const userInfo = JSON.parse(getItem('userInfo'));
+        const userLanguage = userInfo.UserInfo.EMP_LANGUAGE;
+        const language = getItem('language');
+        if (userLanguage !== language) {
+          let res;
+          try {
+            res = await setLanguage(language);
+          } catch (err) {
+            return message.error(err.message);
+          }
+          if (res.OpResult !== 'Y') {
+            message.error(res.ErrorMsg);
+          } else {
+            userInfo.UserInfo.EMP_LANGUAGE = language;
+            setItem('userInfo', JSON.stringify(userInfo));
+          }
+        }
+        this.setState({
+          redirectToReferrer: true
+        });
+      } else if (result === 'N') {
+        return message.error(res.ErrorMsg);
+      }
+    });
   };
 
   loginModeChange = () => {
@@ -165,144 +161,99 @@ export default class Login extends React.Component {
   };
 
   handleLanguageSelectChange = value => {
+    value = value.target.value;
     setItem('language', value);
     document.location.href = '/login';
   };
 
-  render() {
-    const {
-      userName,
-      password,
-      errorMsg,
-      ready,
-      redirectToReferrer,
-      loginMode,
-      registerEmail,
-      language
-    } = this.state;
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+  renderAddonAfterNode = () => {
+    const usernameSuffix = domainLoginConfig.usernameSuffix;
+    const { loginMode } = this.state;
+    if (loginMode === 'domain') {
+      return usernameSuffix;
+    }
+  };
 
+  render() {
+    const { ready, redirectToReferrer, loginMode, language } = this.state;
+    // 进入登录页的源路由
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    // 登录成功后，通过 Redirect 组件跳转到源路由
     if (redirectToReferrer) {
       return <Redirect to={from} />;
     }
-    const usernameSuffix = domainLoginConfig.usernameSuffix;
+    const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-        <Spin spinning={!ready}>
-          <div className="login-left-part">
-            <img src={loginLeft} alt="" />
-          </div>
-          <div className="login-right-part">
-            <img src={logoImg} alt="logo" className="login__logo-img" />
-            {/* 切换为 普通登录/域登录 */}
-            <div className="login__options">
-              <div>
-                <span>
-                  <FmWrap id="s1" />{' '}
-                </span>
-                <a href="javascript:;" onClick={this.loginModeChange}>
-                  {loginMode === 'normal' ? (
-                    <FmWrap id="s3" />
-                  ) : (
-                    <FmWrap id="s2" />
-                  )}
-                </a>
-              </div>
-
-              <div>
-                <Select
-                  onChange={this.handleLanguageSelectChange}
-                  value={language}
-                  style={{ width: 120 }}
-                >
-                  <Option value="中文">中文</Option>
-                  <Option value="English">English</Option>
-                </Select>
-              </div>
+        <div className="login__left-part">
+          {/* <img src={loginLeft} alt="" /> */}
+        </div>
+        <div className="login__right-part">
+          <img src={logoImg} alt="logo" className="login__logo-img" />
+          {/* 切换为 普通登录/域登录 */}
+          <div className="login__options">
+            <div className="login__options-login-mode">
+              <a href="javascript:;" onClick={this.loginModeChange}>
+                {loginMode === 'normal' ? (
+                  <FmWrap id="s2" />
+                ) : (
+                  <FmWrap id="s3" />
+                )}
+              </a>
             </div>
-
-            <div className="login-input">
-              <div style={{ marginTop: 10 }} className="login-input-item">
-                <div className="login-input-icon">
-                  <img
-                    className="login-input-icon-inner"
-                    src={accountIcon}
-                    alt=""
-                  />
-                </div>
-
-                <input
-                  type="text"
-                  className="login-input-box"
-                  placeholder="请输入您的账号"
-                  value={userName}
-                  onChange={this.handleUserNameChange}
-                />
-
-                {loginMode === 'domain' ? (
-                  <span style={{ fontWeight: 'bold' }}>{usernameSuffix}</span>
-                ) : null}
-              </div>
-
-              <div className="login-input-item">
-                <div className="login-input-icon">
-                  <img
-                    className="login-input-icon-inner"
-                    src={passwordIcon}
-                    alt=""
-                  />
-                </div>
-
-                <input type="hidden" />
-                <input
-                  type="password"
-                  className="login-input-box"
-                  placeholder="请输入您的密码"
-                  value={password}
-                  onChange={this.handlePasswordChange}
-                />
-              </div>
-
-              {errorMsg && <div className="login-fail">{errorMsg}</div>}
-              <div className="login-right-part-row">
-                <div
-                  className="login-forget-password"
-                  onClick={this.handleForgetPass}
-                >
-                  忘记密码？
-                  <Modal
-                    title="找回密码"
-                    visible={this.state.resetPassModalVisible}
-                    footer={
-                      <div className="login__reset-pass-modal">
-                        <Button onClick={this.handleResetPassConfirm}>
-                          确认
-                        </Button>
-                      </div>
-                    }
-                    onCancel={this.handleResetPassModalCancel}
-                    maskClosable
-                  >
-                    <Input
-                      type="email"
-                      placeholder="请输入注册邮箱"
-                      value={registerEmail}
-                      onChange={this.handleRegisterEmailChange}
-                    />
-                  </Modal>
-                </div>
-                <div className="login-register" onClick={() => {}}>
-                  注册
-                </div>
-              </div>
+            <div>
+              <Radio.Group
+                value={language}
+                onChange={this.handleLanguageSelectChange}
+              >
+                <Radio.Button value="中文">中文</Radio.Button>
+                <Radio.Button value="EngLish">EngLish</Radio.Button>
+              </Radio.Group>
             </div>
-            <button className="login-submit-btn" onClick={this.handleSubmit}>
-              登 录
-            </button>
-            <div className="login-copyright">Copyright © 2008 ~ 2018 </div>
           </div>
-        </Spin>
+
+          <Form className="login__form">
+            <Form.Item>
+              {getFieldDecorator('userName', {
+                rules: [{ required: true, message: '请输入用户名' }]
+              })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="用户名"
+                  addonAfter={this.renderAddonAfterNode()}
+                />
+              )}
+            </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: '请输入密码' }]
+              })(
+                <Input.Password
+                  prefix={
+                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="密码"
+                />
+              )}
+            </Form.Item>
+            <Form.Item>
+              <Button
+                block
+                type="primary"
+                className="login__submit-btn"
+                onClick={this.handleSubmit}
+              >
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+          <div className="login__copyright">Copyright © 2008 ~ 2018 </div>
+        </div>
       </div>
     );
   }
 }
+
+export default Form.create()(Login);
