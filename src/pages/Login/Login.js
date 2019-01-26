@@ -1,18 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { defaultLogin } from '../../util/auth';
-import { preLoadImg } from '../../util/imgUtil';
-import { Spin, message, Button, Input, Form, Icon, Radio } from 'antd';
-import accountIcon from './images/account.png';
-import passwordIcon from './images/password.png';
-import './Login.less';
-import './Login.css';
+import { message, Button, Input, Form, Icon, Radio } from 'antd';
 import { domainLogin } from 'Util/api';
 import { getItem, setItem } from 'Util1/util';
-import loginLeft from './images/login-left.png';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail, setLanguage } from 'Util/api';
 import FmWrap from '../components/FmWrap';
+import './Login.less';
+import './Login.css';
 
 const { domainLoginConfig, defaultLoginMode, enterprisecode } = window.pwConfig;
 
@@ -185,9 +181,7 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-        <div className="login__left-part">
-          {/* <img src={loginLeft} alt="" /> */}
-        </div>
+        <div className="login__left-part" />
         <div className="login__right-part">
           <img src={logoImg} alt="logo" className="login__logo-img" />
           {/* 切换为 普通登录/域登录 */}
