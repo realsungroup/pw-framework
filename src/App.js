@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './lib/locales/zh-CN';
 import en_US from './lib/locales/en-US';
 
-import { PageContainer, Login, NotFound } from './loadableComponents';
+import { PageContainer, Login, NotFound } from './pages/loadablePage';
 
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';

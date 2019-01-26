@@ -116,8 +116,6 @@ export default class FnModule extends React.Component {
       return null;
     }
     const newConfig = this.mergeConfig();
-    console.log({ newConfig });
-
     return <Functions config={newConfig} {...this.props} />;
   }
 }

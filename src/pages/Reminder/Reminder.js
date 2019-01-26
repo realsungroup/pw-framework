@@ -1,144 +1,33 @@
 import React from 'react';
-
+import FunctionsHeader from '../components/FunctionsHeader';
+import qs from 'qs';
 import './Reminder.less';
-import { Tabs, message, Button, Spin, Popconfirm, Tag } from 'antd';
-import { retrieveDataOfHasReminder } from 'Util/api';
-import { LzTable, LzUnitComponentContainer } from '../../loadableComponents';
-const TabPane = Tabs.TabPane;
 
 export default class Reminder extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log({ props });
+    const { resid, title, count } = this.resolveQueryString();
     this.state = {
-      tabsData: [],
-      activeKey: '',
-      hasLoading: false
+      resid, // 某个提醒的表的 resid
+      title, // 提醒的标题
+      count // 提醒的数量
     };
   }
 
-  componentDidMount() {
-    this.retrieveDataOfHasReminder();
-  }
+  componentDidMount() {}
 
-  retrieveDataOfHasReminder = async () => {
-    this.setState({ tabsData: [] });
-    let res;
-    try {
-      res = await retrieveDataOfHasReminder();
-    } catch (err) {
-      return message.error(err.message);
-    }
-    const tabsData = this.dealData(res.data);
-    let activeKey = '';
-    if (tabsData.length) {
-      activeKey = tabsData[0].title;
-    }
-    this.setState({ tabsData, activeKey, hasLoading: true });
-  };
-
-  dealData = arr => {
-    const tabsData = [];
-    arr.forEach(item =>
-      tabsData.push({
-        title: item.REMINDER_TITLE,
-        resid: parseInt(item.REMINDER_RESID, 10),
-        mtsid: parseInt(item.REMINDER_MTSID, 10),
-        taskNum: item.REMINDER_TASKNUM
-      })
-    );
-    return tabsData;
-  };
-
-  handleTabsChange = activeKey => {
-    this.setState({ activeKey });
-  };
-
-  handleRefreshClick = async () => {
-    await this.retrieveDataOfHasReminder();
-    message.success('刷新成功');
-  };
-
-  back = () => {
-    this.props.history.goBack();
-  };
-
-  renderContent = () => {
-    const { tabsData, activeKey } = this.state;
-    return (
-      <div className="reminder__content">
-        <div className="reminder__content-header">
-          <div className="reminder__content-header-left">
-            <i
-              className="iconfont icon-refresh"
-              onClick={this.handleRefreshClick}
-            />
-          </div>
-        </div>
-        {!!tabsData.length && (
-          <Tabs
-            tabPosition="left"
-            className="reminder__tabs"
-            type="card"
-            tabBarStyle={{ width: '20%', marginTop: 10 }}
-            activeKey={activeKey}
-            onChange={this.handleTabsChange}
-          >
-            {!!tabsData.length &&
-              tabsData.map(paneData => {
-                return (
-                  <TabPane
-                    tab={
-                      <div>
-                        <span className="reminder__tab-title">
-                          {paneData.title}
-                        </span>
-                        <span className="reminder__task-num">
-                          {paneData.taskNum}
-                        </span>
-                      </div>
-                    }
-                    key={paneData.title}
-                  >
-                    <LzTable
-                      willReceiveProps
-                      tableTitle={paneData.title}
-                      resid={paneData.resid}
-                      mtsid={paneData.mtsid}
-                      isBackEndBtnsVisible={true}
-                      opIsFixed={true}
-                      pagination={{ current: 0, pageSize: 10 }}
-                      fixedCols={['考勤日期', '员工姓名']}
-                      customColumnWidth={{
-                        考勤日期: 100,
-                        员工姓名: 100,
-                        员工工号: 150,
-                        部门名称: 250,
-                        考勤月份: 100,
-                        班次名称: 100,
-                        排班小时: 100,
-                        成本中心2: 100,
-                      }}
-                      tableSize="small"
-                      isSortBE
-                      hasDownloadExcel
-                    />
-                  </TabPane>
-                );
-              })}
-          </Tabs>
-        )}
-      </div>
-    );
+  resolveQueryString = () => {
+    const querystring = this.props.location.search;
+    return qs.parse(querystring);
   };
 
   render() {
+    const { resid, title, count } = this.state;
     return (
-      <div className="unit-one reminder">
-        <div className="unit-one-header">
-          <i className="back-btn iconfont icon-back" onClick={this.back} />
-          <span className="header-title">提醒</span>
-        </div>
-        <LzUnitComponentContainer
+      <div className="reminder">
+        <FunctionsHeader title={title} />
+        {/* <LzUnitComponentContainer
           style={{
             position: 'absolute',
             top: '50px',
@@ -154,7 +43,7 @@ export default class Reminder extends React.Component {
           ) : (
             this.renderContent()
           )}
-        </LzUnitComponentContainer>
+        </LzUnitComponentContainer> */}
       </div>
     );
   }

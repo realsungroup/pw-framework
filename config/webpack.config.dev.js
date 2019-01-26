@@ -168,9 +168,8 @@ module.exports = {
       'react-native': 'react-native-web',
       Util: path.resolve(__dirname, '../src/util/'),
       UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/'),
-      Api: path.resolve(__dirname, '../src/util1/api.js'),
-      Util1: path.resolve(__dirname, '../src/util1'),
-      CommonComponents: path.resolve(__dirname, '../src/common-components/')
+      Util20: path.resolve(__dirname, '../src/util20'),
+      Common: path.resolve(__dirname, '../src/components/common')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

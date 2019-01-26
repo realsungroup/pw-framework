@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FunctionsHeader from '../components/FunctionsHeader';
 import './Functions.less';
 
-// 从 导出中心 导入所有的组件
+// 从 “导出中心” 导入所有的组件
 import * as components from '../../export-center';
 
 /**
@@ -58,12 +59,13 @@ export default class Functions extends React.Component {
     const { name, props, title, hasBackBtn = true } = this.props.config;
     return (
       <div className="functions">
-        <div className="functions__header">
+        <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />
+        {/* <div className="functions__header">
           {hasBackBtn && (
             <i className="back-btn iconfont icon-back" onClick={this.back} />
           )}
           <span className="functions__header-title">{title}</span>
-        </div>
+        </div> */}
         {this.renderComponent(name, props)}
       </div>
     );

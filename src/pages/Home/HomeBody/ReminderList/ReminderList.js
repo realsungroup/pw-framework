@@ -1,7 +1,8 @@
 import React from 'react';
-import './ReminderList.less';
-import http, { makeCancelable } from 'Api';
+import http, { makeCancelable } from 'Util20/api';
 import { Spin, List } from 'antd';
+import { Link } from 'react-router-dom';
+import './ReminderList.less';
 
 export default class ReminderList extends React.PureComponent {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class ReminderList extends React.PureComponent {
     } catch (err) {
       return console.error(err);
     }
-    const list = [...res.data, ...res.data];
+    const list = [...res.data];
     this.setState({ list, loading: false });
   };
 
@@ -43,13 +44,22 @@ export default class ReminderList extends React.PureComponent {
             <List
               dataSource={list}
               renderItem={item => (
-                <List.Item
-                  key={item.REMINDER_TITLE}
-                  className="reminder-list__item"
+                <Link
+                  to={{
+                    pathname: '/reminder',
+                    search: `?resid=${item.REMINDER_RESID}&title=${
+                      item.REMINDER_TITLE
+                    }&count=${item.REMINDER_TASKNUM}`
+                  }}
                 >
-                  <List.Item.Meta title={item.REMINDER_TITLE} />
-                  <div>{item.REMINDER_TASKNUM}</div>
-                </List.Item>
+                  <List.Item
+                    key={item.REMINDER_TITLE}
+                    className="reminder-list__item"
+                  >
+                    <List.Item.Meta title={item.REMINDER_TITLE} />
+                    <div>{item.REMINDER_TASKNUM}</div>
+                  </List.Item>
+                </Link>
               )}
             />
           ) : (

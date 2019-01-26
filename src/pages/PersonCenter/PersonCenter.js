@@ -1,11 +1,11 @@
 import React from 'react';
 import HalfPanel from '../components/HalfPanel';
 import { Tabs, message, Spin } from 'antd';
-import PwForm from 'CommonComponents/components/ui-components/PwForm';
-import { getDataProp, setDataInitialValue } from 'Util1/formData2ControlsData';
-import { withHttpGetFormData } from 'CommonComponents/components/hoc/withHttp';
-import http, { makeCancelable } from 'Api';
-import { dealFormData } from 'Util1/controls';
+import PwForm from 'Common/ui/PwForm';
+import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
+import { withHttpGetFormData } from 'Common/hoc/withHttp';
+import http, { makeCancelable } from 'Util20/api';
+import { dealFormData } from 'Util20/controls';
 import './PersonCenter.less';
 
 const TabPane = Tabs.TabPane;

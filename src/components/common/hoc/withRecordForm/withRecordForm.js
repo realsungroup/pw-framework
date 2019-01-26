@@ -1,0 +1,124 @@
+import React from 'react';
+import { argumentContainer } from '../util';
+import FormData from '../../data/FormData';
+import withModalDrawer from '../withModalDrawer';
+
+// 显示记录表单的高阶组件
+const withRecordForm = (options = {}) => {
+  const { type = 'modal' } = options;
+
+  return function(WrappedComponent) {
+    class withRecordForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          type,
+          visible: false
+        };
+      }
+
+      /**
+       * 打开记录表单
+       * @param {object} params Modal/FormData/Drawer 组件所接收的对象
+       *
+       * @param {string} params.type 记录表单所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉；默认值为：'modal'
+       * @param {string} params.title 容器的 title；默认值为：''
+       * @param {object} params.formProps PwForm 表单组件接收的 props
+       * @param {object} params.data 表单接收的 data prop（所有控件数据）
+       * @param {string} params.operation 对表单的操作：'add' 添加 | 'modify' 修改 | 'view' 查看；默认值为：'add'
+       * @param {object} params.record 记录；默认值为：{}
+       * @param {object} params.info 添加、修改 所需要的信息
+       * @param {array} params.beforeSaveFields 能够通过计算公式获取保存之前的记录的内容字段数组
+       * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
+       * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
+       * @param {array} params.subTableArr 表单中子表
+       * @param {object} params.subTableArrProps 表单中子表
+       * @param {function} params.onConfirm 确认后的回调函数
+       * @param {function} params.onCancel 取消后的回调函数
+       */
+      handleOpenRecordForm = ({
+        type = 'modal',
+        title = '',
+        formProps = {},
+        data = [],
+        operation = 'add',
+        record = {},
+        info = {
+          dataMode: 'main',
+          resid: 666,
+          subresid: 777,
+          hostrecid: 'C3_888'
+        },
+        beforeSaveFields = [],
+        AdvDicTableProps = {},
+        recordFormContainerProps = {},
+        subTableArr = [],
+        subTableArrProps = [],
+        onConfirm = () => {},
+        onCancel = () => {}
+      }) => {
+        const FormDataProps = {
+          data,
+          operation,
+          record,
+          formProps,
+          info,
+          onConfirm,
+          onCancel,
+          AdvDicTableProps,
+          beforeSaveFields,
+          subTableArr,
+          subTableArrProps
+        };
+        const containerProps = {
+          title,
+          visible: true,
+          destroyOnClose: true,
+          width: formProps && formProps.width ? formProps.width + 50 : 800
+        };
+
+        if (type === 'modal') {
+          containerProps.footer = null;
+          containerProps.onCancel = onCancel;
+        } else {
+          containerProps.placement = 'right';
+          containerProps.onClose = onCancel;
+        }
+
+        this.props.openModalOrDrawer(
+          type,
+          { ...containerProps, ...recordFormContainerProps },
+          FormData,
+          FormDataProps
+        );
+      };
+
+      /**
+       * 关闭记录表单
+       */
+      handleCloseRecordForm = () => {
+        this.props.closeModalOrDrawer();
+      };
+
+      render() {
+        return (
+          <WrappedComponent
+            {...this.props}
+            openRecordForm={this.handleOpenRecordForm}
+            closeRecordForm={this.handleCloseRecordForm}
+          />
+        );
+      }
+    }
+
+    const enhancedWithRecordForm = withModalDrawer()(withRecordForm);
+
+    return argumentContainer(
+      enhancedWithRecordForm,
+      WrappedComponent,
+      'withRecordForm'
+    );
+  };
+};
+
+export default withRecordForm;

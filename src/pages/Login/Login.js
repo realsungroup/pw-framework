@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { defaultLogin } from '../../util/auth';
 import { message, Button, Input, Form, Icon, Radio } from 'antd';
 import { domainLogin } from 'Util/api';
-import { getItem, setItem } from 'Util1/util';
+import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail, setLanguage } from 'Util/api';
 import FmWrap from '../components/FmWrap';

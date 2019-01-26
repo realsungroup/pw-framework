@@ -8,11 +8,12 @@ import {
   Home,
   PersonCenter,
   WorkbenchSetting,
-  GetConfig
+  GetConfig,
+  Reminder
+
   // TaskNotice,
-  // Reminder,
   // ReportTable
-} from '../../loadableComponents';
+} from '../loadablePage';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
@@ -183,6 +184,7 @@ export default class Container extends React.Component {
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
           <Route path="/fnmodule/:ids" component={GetConfig} />
+          <Route path="/reminder" component={Reminder} />
           {/* <Route path="/report-table" component={ReportTable} /> */}
         </PageBody>
       </div>
