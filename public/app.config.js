@@ -73,5 +73,27 @@ pwConfig.themeColor = {
 // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 pwConfig.lockScreenWaitTime = 600;
 
+/**
+ * logo 配置
+ */
+// 首页 logo 配置
+pwConfig.logoIcon = {
+  // logo 字体图标颜色模式：
+  // 'normal' 表示使用字体图标自带的颜色，不使用主题色
+  // 'theme' 表示使用主题色
+  colorMode: 'normal',
+  // 字体图标类名
+  className: 'icon-OECHSLER',
+  // 尺寸：px
+  size: 72
+};
+
+// 登录页 logo 配置
+pwConfig.loginLogoIcon = {
+  colorMode: 'normal',
+  className: 'icon-OECHSLER',
+  size: 90
+};
+
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;

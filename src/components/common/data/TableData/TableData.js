@@ -17,7 +17,8 @@ import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch';
 import withImport from '../../hoc/withImport';
 import withDownloadFile from '../../hoc/withDownloadFile';
-import withRecordForm from '../../hoc/withRecordForm';
+import { withRecordForm } from '../../hoc/withRecordForm';
+
 import {
   tableDataPropTypes,
   tableDataDefaultPropTypes
@@ -27,6 +28,8 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
 import withZoomInOut from '../../hoc/withZoomInOut';
 import { makeCancelable } from 'Util20/api';
+
+console.log({ withRecordForm });
 
 const { Fragment } = React;
 
@@ -1112,6 +1115,7 @@ class TableData extends React.Component {
     }
   }
 }
+console.log({ withRecordForm });
 
 const composedHoc = compose(
   withHttpGetTableData,
@@ -1125,4 +1129,5 @@ const composedHoc = compose(
   withZoomInOut(),
   withImport
 );
+
 export default composedHoc(TableData);

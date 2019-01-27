@@ -4,7 +4,7 @@ import FormData from '../../data/FormData';
 import withModalDrawer from '../withModalDrawer';
 
 // 显示记录表单的高阶组件
-const withRecordForm = (options = {}) => {
+export function withRecordForm(options = {}) {
   const { type = 'modal' } = options;
 
   return function(WrappedComponent) {
@@ -119,6 +119,4 @@ const withRecordForm = (options = {}) => {
       'withRecordForm'
     );
   };
-};
-
-export default withRecordForm;
+}

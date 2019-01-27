@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import TableData from './common-components/components/data-components/TableData';
+import { TableData } from 'Common/loadableCommon';
 import { Button, message } from 'antd';
-import http from './common-components/util/api';
-import { setItem } from './common-components/util/util';
+import http from 'Util20/api';
+import { setItem } from 'Util20/util';
 import './App.css';
 
 class App extends Component {
@@ -69,7 +69,7 @@ class App extends Component {
             formProps={{ displayMode: 'default', height: 400 }}
             recordFormType="drawer"
             // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
-            recordFormName="default_rowTest"
+            recordFormName="default"
             rowEditFormName="default_rowTest"
             // ['C3_600449702200', 'C3_600449702200']
             beforeSaveFields={[

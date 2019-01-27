@@ -135,4 +135,13 @@ http.createApi('getReminderData', {
   url: 'api/Resource/RetrieveDataOfHasReminder'
 });
 
+/**
+ * 获取 OrgChart 所需的节点
+ *
+ */
+http.createApi('getNodesData', {
+  method: 'post',
+  url: '/api/OrgChart/GetNodesData'
+});
+
 export default http;

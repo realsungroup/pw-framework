@@ -5,7 +5,7 @@ import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
 import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
 import { compose } from 'recompose';
-import TableData from '../TableData';
+import { TableData } from '../../loadableCommon';
 import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './FormDataPropTypes';

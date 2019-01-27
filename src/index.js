@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.less';
-import App from './App';
+import App from './App.OrgChartData.dev';
 import * as serviceWorker from './serviceWorker';
+import './index.css';
 
 // 使用自定义 loading
 import loadingGif from './assets/loading.gif';
