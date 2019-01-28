@@ -37,13 +37,7 @@ class App extends Component {
   render() {
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <Button onClick={this.handleLoginClick} type="primary">
-          登录
-        </Button>
-        <Button onClick={this.handleClearCache} type="primary">
-          清除缓存
-        </Button>
-        <div style={{ width: '100%', height: '100%', }}>
+        <div style={{ width: '100%', height: 800 }}>
           <OrgChartData
             resid={461598195535}
             template="luba"
@@ -54,6 +48,12 @@ class App extends Component {
             enableDragDrop
           />
         </div>
+        <Button onClick={this.handleLoginClick} type="primary">
+          登录
+        </Button>
+        <Button onClick={this.handleClearCache} type="primary">
+          清除缓存
+        </Button>
       </div>
     );
   }

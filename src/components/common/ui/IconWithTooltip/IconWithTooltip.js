@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 import { propTypes, defaultProps } from './propTypes';
+import classNames from 'classnames';
 /**
  * 带有 tooltip 的字体图标按钮
  */
@@ -13,10 +14,11 @@ const IconWithTooltip = React.memo(props => {
     placement = 'top',
     ...restProps
   } = props;
+  const className_ = classNames('iconfont', iconClass, className);
   return (
     <Tooltip title={tip} placement={placement}>
       <i
-        className={`iconfont ${iconClass} ${className}`}
+        className={className_}
         {...restProps}
         style={{ cursor: 'pointer', ...style }}
       />

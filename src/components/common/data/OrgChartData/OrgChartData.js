@@ -8,6 +8,8 @@ import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
 import FormData from 'Common/data/FormData';
 import withModalDrawer from 'Common/hoc/withModalDrawer';
+import { modifyIcon } from './icon';
+import OrgChartTools from './OrgChartTools';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
@@ -16,9 +18,6 @@ const drawerTitleMap = {
   view: '查看',
   modify: '修改'
 };
-
-var modifyIcon =
-  '<svg class="icon" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#7A7A7A" d="M768.4872723 388.36148148l-177.72756385-173.29417481-379.8296652 379.42431288-66.20106903 242.16158815v0.40049778l241.7538086-67.25328593z m-28.96448475-321.74171023l-95.19710814 95.04054993 178.29675614 172.64973749 92.37420563-92.29653334c48.48693097-48.40561778 48.48693097-126.98449541 0-175.39132681-48.40440415-48.40683141-127.06823585-48.40683141-175.47385363-0.00242727zM79.02913422 878.71032889h872.33270519v114.97563022h-872.33270519z"  /></svg>';
 
 /**
  * 组织图标组件
@@ -29,23 +28,27 @@ class OrgChartData extends React.Component {
   constructor(props) {
     super(props);
 
-    const { recordFormType, enableDragDrop } = props;
+    const { recordFormType, enableDragDrop, level, rootIds } = props;
 
     this.state = {
       loading: true,
       drawerVisible: false,
       recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
-      enableDragDrop // 是否能够拖动节点
+      enableDragDrop, // 是否能够拖动节点
+      level, // 显示的层数
+      rootIds // 根节点 id
     };
   }
 
   componentDidMount = () => {
-    this.initVariables();
-    this.getData();
+    // 自定义空表单
     this.EditForm = function() {};
     this.EditForm.prototype.init = () => {};
     this.EditForm.prototype.show = () => {};
     this.EditForm.prototype.hide = () => {};
+
+    this.initVariables();
+    this.getData();
   };
 
   initVariables = () => {
@@ -55,14 +58,14 @@ class OrgChartData extends React.Component {
 
   getData = async () => {
     const { resid, nodeId, parentNodeId, httpGetFormData } = this.props;
-
+    const { level, rootIds } = this.state;
     const pArr = [
       http().getNodesData({
         resid,
         ColumnOfID: nodeId,
         ColumnOfPID: parentNodeId,
-        ProductID: 0,
-        Levels: 8
+        ProductID: rootIds,
+        Levels: level
       }),
       httpGetFormData(resid, 'default')
     ];
@@ -83,10 +86,10 @@ class OrgChartData extends React.Component {
 
     const nodes = resNodes.nodes;
     nodes.forEach(item => (item.pid = item.parentId));
+
+    this._formData = { ...resFormData };
     this._nodes = nodes;
     this._data = getDataProp(resFormData, {}, false, false);
-
-    console.log({ nodes: this._nodes, data: this._data });
 
     setTimeout(() => {
       this.renderOrgChart(nodes);
@@ -96,7 +99,6 @@ class OrgChartData extends React.Component {
   componentWillUnmount = () => {};
 
   handleAdd = (sender, node) => {
-    console.log({ sender, node });
     this.handleAddNode(sender, node);
     return false;
   };
@@ -159,9 +161,14 @@ class OrgChartData extends React.Component {
 
   openRecordForm = (operation, node, sender) => {
     const { recordFormType } = this.state;
-    const { resid, isClassifyLayout } = this.props;
+    const {
+      resid,
+      isClassifyLayout,
+      recordFormContainerProps,
+      formProps
+    } = this.props;
     const containerProps = {
-      width: 500
+      ...recordFormContainerProps
     };
 
     if (recordFormType === 'drawer') {
@@ -178,11 +185,24 @@ class OrgChartData extends React.Component {
     );
 
     const childProps = {
+      ...formProps,
       data,
       record,
       operation,
       info: { dataMode: 'main', resid },
-      onConfirm: this.handleRecordFormConfirm
+      onConfirm: this.handleRecordFormConfirm,
+      subTableArr: this._formData.subTableArr,
+      subTableArrProps: [
+        {
+          subTableName: '子表标题', // 必选（若不选则标签页标题为子表的 resid）
+          subResid: 227186227531, // 必选
+          tableProps: {
+            // 可选，TableData 组件接收的 props
+            width: 777,
+            height: 888
+          }
+        }
+      ]
     };
     this.props.openModalOrDrawer(
       recordFormType,
@@ -244,7 +264,7 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = nodes => {
-    const { template, lazyLoading, level, isExpandAllChildren } = this.props;
+    const { template, lazyLoading } = this.props;
     const { enableDragDrop } = this.state;
     const options = {
       template,
@@ -257,7 +277,6 @@ class OrgChartData extends React.Component {
       nodeBinding: {
         field_0: 'name',
         field_1: 'title',
-        field_2: 'phone',
         img_0: 'image'
       },
 
@@ -291,14 +310,6 @@ class OrgChartData extends React.Component {
       onClick: this.handleNodeClick
     };
 
-    // 显示 n 层 nodes
-    if (level) {
-      options.collapse = {
-        level: level,
-        allChildren: !isExpandAllChildren
-      };
-    }
-
     return options;
   };
 
@@ -308,14 +319,21 @@ class OrgChartData extends React.Component {
     this.setState({ loading: false });
   };
 
+  handleTemplateChange = template => {
+    this.chart.draw({
+      template
+    });
+  };
+
   render() {
     const { loading } = this.state;
     const { id } = this.props;
     return (
-      <Spin spinning={loading}>
-        <div className="org-chart-data" id={id} />
+      <div className="org-chart-data">
+        <div id={id} />
+        <OrgChartTools templateChange={this.handleTemplateChange} />
         <div id="editForm" style={{ display: 'none' }} />
-      </Spin>
+      </div>
     );
   }
 }

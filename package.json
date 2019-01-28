@@ -80,6 +80,7 @@
     "react-contextmenu": "^2.10.0",
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.7.0",
+    "react-draggable": "^3.1.1",
     "react-fullscreen-loading": "0.0.4",
     "react-immutable-render-mixin": "^0.9.7",
     "react-infinite-scroller": "^1.2.4",
