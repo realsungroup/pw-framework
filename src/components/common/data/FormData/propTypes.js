@@ -1,12 +1,17 @@
 import PropTypes from 'prop-types';
 
 export const defaultProps = {
+  data: [],
   record: {},
   operation: 'add',
   formProps: {}
 };
 
 export const propTypes = {
+  /**
+   * PwForm 接收的 data prop
+   * 默认：[]
+   */
   data: PropTypes.array,
 
   /**
@@ -34,7 +39,7 @@ export const propTypes = {
   info: PropTypes.object,
 
   /**
-   * 保存成功后的回调函数
+   * 保存成功后的回调函数：(formData, form) => {}；formData 表示修改后的表单数据；form 表示对象
    * 默认：-
    */
   onConfirm: PropTypes.func,

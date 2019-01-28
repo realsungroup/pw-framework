@@ -5,7 +5,10 @@ export const defaultProps = {
   parentNodeId: 'pid',
   template: 'ana',
   lazyLoading: true,
-  isExpandAllChildren: true
+  isExpandAllChildren: true,
+  isClassifyLayout: false,
+  recordFormType: 'drawer',
+  enableDragDrop: false
 };
 
 export const propTypes = {
@@ -53,7 +56,7 @@ export const propTypes = {
    * 是否使用懒加载
    * 默认：true
    */
-  lazyLoading: PropTypes.oneOf([true, false]),
+  lazyLoading: PropTypes.bool,
 
   /**
    * 显示 n 层节点
@@ -65,5 +68,23 @@ export const propTypes = {
    * 是否展开所有的子节点
    * 默认：true
    */
-  isExpandAllChildren: PropTypes.oneOf([true, false])
+  isExpandAllChildren: PropTypes.bool,
+
+  /**
+   * 记录表单是否使用分类布局
+   * 默认：false
+   */
+  isClassifyLayout: PropTypes.bool,
+
+  /**
+   * 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+   * 默认：drawer
+   */
+  recordFormType: PropTypes.oneOf(['modal', 'drawer']),
+
+  /**
+   * 是否可拖拽节点
+   * 默认：false
+   */
+  enableDragDrop: PropTypes.bool
 };

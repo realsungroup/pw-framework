@@ -51,6 +51,7 @@ class App extends Component {
             // level={2}
             isExpandAllChildren={true}
             parentNodeId="parentId"
+            enableDragDrop
           />
         </div>
       </div>

@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { TableData } from '../../loadableCommon';
 import classNames from 'classnames';
 import './FormData.less';
-import { propTypes, defaultProps } from './FormDataPropTypes';
+import { propTypes, defaultProps } from './propTypes';
 
 const { Fragment } = React;
 const TabPane = Tabs.TabPane;
@@ -29,7 +29,7 @@ class FormData extends React.Component {
 
   componentDidMount = () => {
     const { subTableArr } = this.props;
-    if (!!subTableArr.length) {
+    if (subTableArr && !!subTableArr.length) {
       // 等待抽屉动画完成，再去请求子表数据（否则会卡顿）
       setTimeout(() => {
         this.setState({ defaultActiveKey: '0' });
@@ -68,7 +68,7 @@ class FormData extends React.Component {
           return message.error(err.message);
         }
       }
-      this.props.onConfirm();
+      this.props.onConfirm && this.props.onConfirm(formData, form);
     });
   };
 

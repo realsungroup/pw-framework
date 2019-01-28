@@ -2,14 +2,23 @@ import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
-import { message, Spin, Modal } from 'antd';
+import { message, Spin, Modal, Drawer } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
-import { withRecordForm } from '../../hoc/withRecordForm';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
+import FormData from 'Common/data/FormData';
+import withModalDrawer from 'Common/hoc/withModalDrawer';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
+
+const drawerTitleMap = {
+  view: '查看',
+  modify: '修改'
+};
+
+var modifyIcon =
+  '<svg class="icon" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#7A7A7A" d="M768.4872723 388.36148148l-177.72756385-173.29417481-379.8296652 379.42431288-66.20106903 242.16158815v0.40049778l241.7538086-67.25328593z m-28.96448475-321.74171023l-95.19710814 95.04054993 178.29675614 172.64973749 92.37420563-92.29653334c48.48693097-48.40561778 48.48693097-126.98449541 0-175.39132681-48.40440415-48.40683141-127.06823585-48.40683141-175.47385363-0.00242727zM79.02913422 878.71032889h872.33270519v114.97563022h-872.33270519z"  /></svg>';
 
 /**
  * 组织图标组件
@@ -19,17 +28,29 @@ class OrgChartData extends React.Component {
   static defaultProps = defaultProps;
   constructor(props) {
     super(props);
+
+    const { recordFormType, enableDragDrop } = props;
+
     this.state = {
-      loading: true
+      loading: true,
+      drawerVisible: false,
+      recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+      enableDragDrop // 是否能够拖动节点
     };
   }
 
   componentDidMount = () => {
+    this.initVariables();
     this.getData();
     this.EditForm = function() {};
     this.EditForm.prototype.init = () => {};
     this.EditForm.prototype.show = () => {};
     this.EditForm.prototype.hide = () => {};
+  };
+
+  initVariables = () => {
+    this._nodes = []; // 节点数据
+    this._data = []; // 控件数据
   };
 
   getData = async () => {
@@ -100,11 +121,7 @@ class OrgChartData extends React.Component {
     const newNode = {
       ...resNode,
       id: resNode[this.props.nodeId],
-      pid,
-      name: '',
-      title: '',
-      phone: '',
-      image: ''
+      pid
     };
 
     setTimeout(() => {
@@ -114,31 +131,78 @@ class OrgChartData extends React.Component {
     message.success('添加成功');
   };
 
-  handleUpdate = async (sender, oldNode, newNode) => {
-    this.setState({ loading: true });
-    console.log({ sender, oldNode, newNode });
-    const values = { ...newNode };
-    this.p2 = makeCancelable(
-      http().modifyRecords({
-        resid: this.props.resid,
-        data: [values]
-      })
-    );
-    try {
-      await this.p2.promise;
-    } catch (err) {
-      this.setState({ loading: false });
-      message.error(err.message);
-      console.error(err);
-      return false;
-    }
-    this.setState({ loading: false });
-    message.success('修改成功');
-  };
+  // handleUpdate = async (sender, oldNode, newNode) => {
+  //   this.setState({ loading: true });
+  //   console.log({ sender, oldNode, newNode });
+  //   const values = { ...newNode };
+  //   this.p2 = makeCancelable(
+  //     http().modifyRecords({
+  //       resid: this.props.resid,
+  //       data: [values]
+  //     })
+  //   );
+  //   try {
+  //     await this.p2.promise;
+  //   } catch (err) {
+  //     this.setState({ loading: false });
+  //     message.error(err.message);
+  //     console.error(err);
+  //     return false;
+  //   }
+  //   this.setState({ loading: false });
+  //   message.success('修改成功');
+  // };
 
   handleNodeClick = (sender, node) => {
-    this.props.openRecordForm({
-      title: '查看记录'
+    this.openRecordForm('view', node, sender);
+  };
+
+  openRecordForm = (operation, node, sender) => {
+    const { recordFormType } = this.state;
+    const { resid, isClassifyLayout } = this.props;
+    const containerProps = {
+      width: 500
+    };
+
+    if (recordFormType === 'drawer') {
+      containerProps.onClose = this.handleRecordFormClose;
+    }
+
+    // const operation = 'view';
+    const record = { ...node };
+    const data = setDataInitialValue(
+      this._data,
+      record,
+      false,
+      isClassifyLayout
+    );
+
+    const childProps = {
+      data,
+      record,
+      operation,
+      info: { dataMode: 'main', resid },
+      onConfirm: this.handleRecordFormConfirm
+    };
+    this.props.openModalOrDrawer(
+      recordFormType,
+      containerProps,
+      FormData,
+      childProps
+    );
+  };
+
+  handleRecordFormClose = () => {
+    this.props.closeModalOrDrawer();
+  };
+
+  handleRecordFormConfirm = (formData, form) => {
+    message.success('修改成功');
+    this.props.closeModalOrDrawer();
+    this.chart.updateNode({
+      ...formData,
+      id: formData[this.props.nodeId],
+      pid: formData[this.props.parentNodeId]
     });
   };
 
@@ -172,13 +236,23 @@ class OrgChartData extends React.Component {
     this.chart.removeNode(nodeId);
   };
 
-  getOrgChartOptions = nodes => {
-    console.log({ nodes });
+  handleModifyClick = id => {
+    const { nodeId } = this.props;
+    id = parseInt(id, 10);
+    const node = this._nodes.find(node => node[nodeId] === id);
+    this.openRecordForm('modify', node);
+  };
 
+  getOrgChartOptions = nodes => {
     const { template, lazyLoading, level, isExpandAllChildren } = this.props;
+    const { enableDragDrop } = this.state;
     const options = {
       template,
       enableDelete: true,
+
+      // 可拖动节点
+      enableDragDrop,
+
       lazyLoading,
       nodeBinding: {
         field_0: 'name',
@@ -186,28 +260,34 @@ class OrgChartData extends React.Component {
         field_2: 'phone',
         img_0: 'image'
       },
+
+      // 节点数据
       nodes,
 
       // 增删查改
       nodeMenu: {
-        details: { text: 'Details' },
-        edit: { text: 'Edit' },
-        add: { text: 'Add' },
-        remove: { text: 'Remove' }
+        modify: {
+          icon: modifyIcon,
+          text: '修改',
+          onClick: this.handleModifyClick
+        },
+        add: { text: '添加' },
+        remove: { text: '移除' }
       },
 
-      // 自定义表单
+      // 自定义表单：此自定义表单用于覆盖默认的表单
       editUI: new this.EditForm(),
 
       // 添加节点
       onAdd: this.handleAdd,
 
       // 修改节点
-      onUpdate: this.handleUpdate,
+      // onUpdate: this.handleUpdate,
 
       // 删除节点
       onRemove: this.handleRemove,
 
+      // 查看节点表单
       onClick: this.handleNodeClick
     };
 
@@ -239,11 +319,9 @@ class OrgChartData extends React.Component {
     );
   }
 }
-console.log(111);
 
-const resWithRecordForm = withRecordForm();
 const composedHoc = compose(
   withHttpGetFormData,
-  resWithRecordForm
+  withModalDrawer()
 );
 export default composedHoc(OrgChartData);
