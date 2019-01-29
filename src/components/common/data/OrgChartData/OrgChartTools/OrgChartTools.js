@@ -6,72 +6,47 @@ import { Radio } from 'antd';
 import Draggable from 'react-draggable';
 import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
-
+import { FNLIST, TEMPLATES, ORIENTATIONS } from './constants';
 const RadioGroup = Radio.Group;
-
 const prefix = 'org-chart-tools';
-
-// 功能列表
-const list = [
-  {
-    key: 'template',
-    tip: '模板',
-    iconClass: 'icon-about'
-  }
-];
-
-const templates = [
-  {
-    value: 'luba',
-    label: 'luba'
-  },
-  {
-    value: 'derek',
-    label: 'derek'
-  },
-  {
-    value: 'olivia',
-    label: 'olivia'
-  },
-  {
-    value: 'diva',
-    label: 'diva'
-  },
-  {
-    value: 'mila',
-    label: 'mila'
-  },
-  {
-    value: 'polina',
-    label: 'polina'
-  },
-  {
-    value: 'mery',
-    label: 'mery'
-  },
-  {
-    value: 'rony',
-    label: 'rony'
-  },
-  {
-    value: 'belinda',
-    label: 'belinda'
-  },
-  {
-    value: 'ula',
-    label: 'ula'
-  },
-  {
-    value: 'ana',
-    label: 'ana'
-  }
-];
+const Fragment = React.Fragment;
 
 /**
  * 组织图
  */
 export default class OrgChartTools extends React.Component {
   static propTypes = {
+    /**
+     * 选择的模板
+     */
+    selectedTemplate: PropTypes.oneOf([
+      'luba',
+      'derek',
+      'olivia',
+      'diva',
+      'mila',
+      'polina',
+      'mery',
+      'rony',
+      'belinda',
+      'ula',
+      'ana'
+    ]),
+
+    /**
+     * 选择的方向
+     */
+    selectedOrientation: PropTypes.oneOf([
+      'top',
+      'bottom',
+      'right',
+      'left',
+      'top_left',
+      'bottom_left',
+      'right_top',
+      'left_top'
+    ]),
+
     /**
      * 模板改变的回调函数
      */
@@ -86,16 +61,18 @@ export default class OrgChartTools extends React.Component {
     super(props);
 
     this.state = {
-      activeKey: 'template',
-      selectedTemplate: 'luba' // 已选择的模板
+      activeKey: 'template' // 已选中的功能
     };
   }
 
   handleTemplateChange = e => {
     const value = e.target.value;
-    this.setState({ selectedTemplate: value }, () => {
-      this.props.templateChange && this.props.templateChange(value);
-    });
+    this.props.templateChange && this.props.templateChange(value);
+  };
+
+  handleOrientationChange = e => {
+    const value = e.target.value;
+    this.props.orientationChange && this.props.orientationChange(value);
   };
 
   handleTabsChange = activeKey => {
@@ -103,15 +80,20 @@ export default class OrgChartTools extends React.Component {
   };
 
   renderTemplateContent = () => {
-    const { selectedTemplate } = this.state;
+    const { activeKey } = this.state;
+    const { selectedTemplate } = this.props;
 
     return (
-      <div key="template" className={`${prefix}__template`}>
+      <div
+        className={classNames(`${prefix}__template`, {
+          [`${prefix}__content--hide`]: activeKey !== 'template'
+        })}
+      >
         <RadioGroup
           onChange={this.handleTemplateChange}
           value={selectedTemplate}
         >
-          {templates.map(template => (
+          {TEMPLATES.map(template => (
             <div key={template.value}>
               <Radio value={template.value}>{template.label}</Radio>
             </div>
@@ -121,9 +103,37 @@ export default class OrgChartTools extends React.Component {
     );
   };
 
+  renderOrientationContent = () => {
+    const { activeKey } = this.state;
+    const { selectedOrientation } = this.props;
+
+    return (
+      <div
+        className={classNames(`${prefix}__orientation`, {
+          [`${prefix}__content--hide`]: activeKey !== 'orientation'
+        })}
+      >
+        <RadioGroup
+          onChange={this.handleOrientationChange}
+          value={selectedOrientation}
+        >
+          {ORIENTATIONS.map(orientation => (
+            <div key={orientation.value}>
+              <Radio value={orientation.value}>{orientation.label}</Radio>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+    );
+  };
+
+  handleFnClick = activeKey => {
+    this.setState({ activeKey });
+  };
+
   render() {
-    const { className } = this.props;
-    const { activeKey, boundRight, boundBottom } = this.state;
+    const { template } = this.props;
+    const { activeKey } = this.state;
 
     return (
       <Draggable
@@ -143,16 +153,20 @@ export default class OrgChartTools extends React.Component {
             maxConstraints={[250, 500]}
             className={prefix}
           >
-            <div className={`${prefix}__wrap`}>
+            <div className={`${prefix}__wrap ${prefix}__wrap--${template}`}>
               <div className={`${prefix}__header`}>工具栏</div>
               <div className={`${prefix}__body`}>
                 <ul className={`${prefix}__list`}>
-                  {list.map(item => {
+                  {FNLIST.map(item => {
                     const className = classNames(`${prefix}__list-item`, {
                       [`${prefix}__list-item--selected`]: activeKey === item.key
                     });
                     return (
-                      <li key={item.key} className={className}>
+                      <li
+                        key={item.key}
+                        className={className}
+                        onClick={() => this.handleFnClick(item.key)}
+                      >
                         <IconWithTooltip
                           tip={item.tip}
                           iconClass={item.iconClass}
@@ -165,6 +179,7 @@ export default class OrgChartTools extends React.Component {
                 </ul>
                 <div className={`${prefix}__content`}>
                   {this.renderTemplateContent()}
+                  {this.renderOrientationContent()}
                 </div>
               </div>
             </div>

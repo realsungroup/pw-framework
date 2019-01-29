@@ -9,9 +9,10 @@ export const defaultProps = {
   isClassifyLayout: false,
   recordFormType: 'drawer',
   enableDragDrop: false,
-  rootId: '0',
+  rootIds: ['0'],
   level: 8,
-  recordFormContainerProps: {}
+  recordFormContainerProps: {},
+  orientation: 'top'
 };
 
 export const propTypes = {
@@ -56,6 +57,21 @@ export const propTypes = {
   ]),
 
   /**
+   * 方向
+   * 默认：'top'
+   */
+  orientation: PropTypes.oneOf([
+    'top',
+    'bottom',
+    'right',
+    'left',
+    'top_left',
+    'bottom_left',
+    'right_top',
+    'left_top'
+  ]),
+
+  /**
    * 是否使用懒加载
    * 默认：true
    */
@@ -86,10 +102,10 @@ export const propTypes = {
   level: PropTypes.number,
 
   /**
-   * 根节点 id：可以用多个根节点 id，使用 “,” 隔开
-   * 默认：'0'
+   * 根节点 id：可以用多个根节点 id
+   * 默认：['0']
    */
-  rootIds: PropTypes.string,
+  rootIds: PropTypes.array,
 
   /**
    * 显示的字段：在卡片上显示的字段（支持最多 6 个字段）

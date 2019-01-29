@@ -46,6 +46,11 @@ class App extends Component {
             isExpandAllChildren={true}
             parentNodeId="parentId"
             enableDragDrop
+            showFields={{
+              field_0: 'name',
+              field_1: 'title',
+              img_0: 'image'
+            }}
           />
         </div>
         <Button onClick={this.handleLoginClick} type="primary">

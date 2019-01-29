@@ -2,7 +2,7 @@ import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
-import { message, Spin, Modal, Drawer } from 'antd';
+import { message, Modal } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
@@ -14,11 +14,6 @@ import OrgChartTools from './OrgChartTools';
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
 
-const drawerTitleMap = {
-  view: '查看',
-  modify: '修改'
-};
-
 /**
  * 组织图标组件
  */
@@ -28,7 +23,14 @@ class OrgChartData extends React.Component {
   constructor(props) {
     super(props);
 
-    const { recordFormType, enableDragDrop, level, rootIds } = props;
+    const {
+      recordFormType,
+      enableDragDrop,
+      level,
+      rootIds,
+      template,
+      orientation
+    } = props;
 
     this.state = {
       loading: true,
@@ -36,7 +38,9 @@ class OrgChartData extends React.Component {
       recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
       enableDragDrop, // 是否能够拖动节点
       level, // 显示的层数
-      rootIds // 根节点 id
+      rootIds, // 根节点 id
+      template, // 使用的模板
+      orientation // 方向
     };
   }
 
@@ -64,7 +68,7 @@ class OrgChartData extends React.Component {
         resid,
         ColumnOfID: nodeId,
         ColumnOfPID: parentNodeId,
-        ProductID: rootIds,
+        ProductID: rootIds.join(','),
         Levels: level
       }),
       httpGetFormData(resid, 'default')
@@ -264,21 +268,19 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = nodes => {
-    const { template, lazyLoading } = this.props;
-    const { enableDragDrop } = this.state;
+    const { lazyLoading, showFields } = this.props;
+    const { enableDragDrop, template, orientation } = this.state;
     const options = {
       template,
       enableDelete: true,
+
+      orientation: BALKANGraph.orientation[orientation],
 
       // 可拖动节点
       enableDragDrop,
 
       lazyLoading,
-      nodeBinding: {
-        field_0: 'name',
-        field_1: 'title',
-        img_0: 'image'
-      },
+      nodeBinding: showFields,
 
       // 节点数据
       nodes,
@@ -320,18 +322,31 @@ class OrgChartData extends React.Component {
   };
 
   handleTemplateChange = template => {
-    this.chart.draw({
-      template
+    this.chart.config.template = template;
+    this.setState({ template }, () => {
+      this.chart.draw();
+    });
+  };
+
+  handleOrientationChange = orientation => {
+    this.chart.config.orientation = BALKANGraph.orientation[orientation];
+    this.setState({ orientation }, () => {
+      this.chart.draw();
     });
   };
 
   render() {
-    const { loading } = this.state;
+    const { template, orientation } = this.state;
     const { id } = this.props;
     return (
       <div className="org-chart-data">
         <div id={id} />
-        <OrgChartTools templateChange={this.handleTemplateChange} />
+        <OrgChartTools
+          templateChange={this.handleTemplateChange}
+          orientationChange={this.handleOrientationChange}
+          selectedTemplate={template}
+          selectedOrientation={orientation}
+        />
         <div id="editForm" style={{ display: 'none' }} />
       </div>
     );
