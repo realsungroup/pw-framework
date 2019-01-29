@@ -3,12 +3,12 @@ export const FNLIST = [
   {
     key: 'template',
     tip: '模板',
-    iconClass: 'icon-about'
+    iconClass: 'icon-org-chart-template'
   },
   {
     key: 'orientation',
     tip: '方向',
-    iconClass: 'icon-about'
+    iconClass: 'icon-org-chart-layout'
   }
 ];
 

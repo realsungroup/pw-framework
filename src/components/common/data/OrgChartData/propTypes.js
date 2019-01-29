@@ -12,7 +12,8 @@ export const defaultProps = {
   rootIds: ['0'],
   level: 8,
   recordFormContainerProps: {},
-  orientation: 'top'
+  orientation: 'top',
+  padding: 0
 };
 
 export const propTypes = {
@@ -115,6 +116,10 @@ export const propTypes = {
   //如： {
   //   field_0: 'name',
   //   field_1: 'title',
+  //   field_2: 'age',
+  //   field_3: 'sex',
+  //   field_4: 'phone',
+  //   field_5: 'email',
   //   img_0: 'image'
   // }
 
@@ -137,5 +142,11 @@ export const propTypes = {
    * PwForm 组件接收的 props
    * 默认：{}
    */
-  formProps: PropTypes.object
+  formProps: PropTypes.object,
+
+  /**
+   * OrgChart 的 padding
+   * 默认：-200
+   */
+  padding: PropTypes.number
 };

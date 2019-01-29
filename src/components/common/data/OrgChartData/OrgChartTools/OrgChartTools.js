@@ -17,7 +17,14 @@ const Fragment = React.Fragment;
 export default class OrgChartTools extends React.Component {
   static propTypes = {
     /**
+     * 状态：'max' 最大化状态 | 'min' 最小化状态
+     * 默认：'max'
+     */
+    status: PropTypes.oneOf(['max', 'min']),
+
+    /**
      * 选择的模板
+     * 默认：'luba'
      */
     selectedTemplate: PropTypes.oneOf([
       'luba',
@@ -35,6 +42,7 @@ export default class OrgChartTools extends React.Component {
 
     /**
      * 选择的方向
+     * 默认：'top'
      */
     selectedOrientation: PropTypes.oneOf([
       'top',
@@ -54,7 +62,9 @@ export default class OrgChartTools extends React.Component {
   };
 
   static defaultProps = {
-    dataItem: {}
+    status: 'max',
+    selectedTemplate: 'luba',
+    selectedOrientation: 'top'
   };
 
   constructor(props) {
@@ -131,9 +141,20 @@ export default class OrgChartTools extends React.Component {
     this.setState({ activeKey });
   };
 
+  handleMin = () => {
+    this.props.onMin && this.props.onMin();
+  };
+
+  handleMax = () => {
+    this.props.onMax && this.props.onMax();
+  };
+
   render() {
-    const { template } = this.props;
+    const { status, selectedTemplate } = this.props;
     const { activeKey } = this.state;
+
+    const width = status === 'max' ? 250 : 30;
+    const height = status === 'max' ? 300 : 30;
 
     return (
       <Draggable
@@ -145,46 +166,67 @@ export default class OrgChartTools extends React.Component {
         onStop={this.handleStop}
         bounds="parent"
       >
-        <div className={`${prefix}__resize-wrap`}>
-          <ResizableBox
-            width={250}
-            height={300}
-            minConstraints={[250, 250]}
-            maxConstraints={[250, 500]}
-            className={prefix}
-          >
-            <div className={`${prefix}__wrap ${prefix}__wrap--${template}`}>
-              <div className={`${prefix}__header`}>工具栏</div>
-              <div className={`${prefix}__body`}>
-                <ul className={`${prefix}__list`}>
-                  {FNLIST.map(item => {
-                    const className = classNames(`${prefix}__list-item`, {
-                      [`${prefix}__list-item--selected`]: activeKey === item.key
-                    });
-                    return (
-                      <li
-                        key={item.key}
-                        className={className}
-                        onClick={() => this.handleFnClick(item.key)}
-                      >
-                        <IconWithTooltip
-                          tip={item.tip}
-                          iconClass={item.iconClass}
-                          placement="right"
-                          style={{ fontSize: 18 }}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className={`${prefix}__content`}>
-                  {this.renderTemplateContent()}
-                  {this.renderOrientationContent()}
+        {status === 'max' ? (
+          <div className={`${prefix}__resize-wrap`}>
+            <ResizableBox
+              width={width}
+              height={height}
+              minConstraints={[width, height]}
+              maxConstraints={[width, height]}
+              className={prefix}
+              disabled
+            >
+              <div className={`${prefix}__wrap ${prefix}__wrap--${selectedTemplate}`}>
+                <div className={`${prefix}__header`}>
+                  工具栏{' '}
+                  <i
+                    className="iconfont icon-org-chart-min-btn"
+                    onClick={this.handleMin}
+                  />
+                </div>
+                <div className={`${prefix}__body`}>
+                  <ul className={`${prefix}__list`}>
+                    {FNLIST.map(item => {
+                      const className = classNames(`${prefix}__list-item`, {
+                        [`${prefix}__list-item--selected`]:
+                          activeKey === item.key
+                      });
+                      return (
+                        <li
+                          key={item.key}
+                          className={className}
+                          onClick={() => this.handleFnClick(item.key)}
+                        >
+                          <IconWithTooltip
+                            tip={item.tip}
+                            iconClass={item.iconClass}
+                            placement="right"
+                            style={{ fontSize: 18 }}
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <div className={`${prefix}__content`}>
+                    {this.renderTemplateContent()}
+                    {this.renderOrientationContent()}
+                  </div>
                 </div>
               </div>
-            </div>
-          </ResizableBox>
-        </div>
+            </ResizableBox>
+          </div>
+        ) : (
+          <div
+            style={{ width, height }}
+            className={classNames('org-chart-tools__config', {
+              'org-chart-tools__config--color-black':
+                selectedTemplate !== 'luba'
+            })}
+            onClick={this.handleMax}
+          >
+            <i className="iconfont icon-org-chart-config" />
+          </div>
+        )}
       </Draggable>
     );
   }

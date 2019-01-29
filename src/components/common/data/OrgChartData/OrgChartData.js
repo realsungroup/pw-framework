@@ -29,18 +29,21 @@ class OrgChartData extends React.Component {
       level,
       rootIds,
       template,
-      orientation
+      orientation,
+      padding
     } = props;
 
     this.state = {
       loading: true,
       drawerVisible: false,
+      toolsStatus: 'max', // 工具栏的状态：'max' 最大化状态 | 'min' 最小化状态
       recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
       enableDragDrop, // 是否能够拖动节点
       level, // 显示的层数
       rootIds, // 根节点 id
       template, // 使用的模板
-      orientation // 方向
+      orientation, // 方向
+      padding // OrgChart 的 padding
     };
   }
 
@@ -269,8 +272,9 @@ class OrgChartData extends React.Component {
 
   getOrgChartOptions = nodes => {
     const { lazyLoading, showFields } = this.props;
-    const { enableDragDrop, template, orientation } = this.state;
+    const { enableDragDrop, template, orientation, padding } = this.state;
     const options = {
+      padding,
       template,
       enableDelete: true,
 
@@ -285,15 +289,28 @@ class OrgChartData extends React.Component {
       // 节点数据
       nodes,
 
-      // 增删查改
       nodeMenu: {
+        // 增删改
         modify: {
           icon: modifyIcon,
           text: '修改',
           onClick: this.handleModifyClick
         },
         add: { text: '添加' },
-        remove: { text: '移除' }
+        remove: { text: '移除' },
+
+        // 导出以某个节点为根节点的文件
+        pdf: { text: '导出 PDF' },
+        png: { text: '导出 PNG' },
+        svg: { text: '导出 SVG' }
+      },
+
+      // 导出文件的菜单
+      menu: {
+        pdf: { text: '导出 PDF' },
+        png: { text: '导出 PNG' },
+        svg: { text: '导出 SVG' },
+        csv: { text: '导出 CSV' }
       },
 
       // 自定义表单：此自定义表单用于覆盖默认的表单
@@ -335,17 +352,28 @@ class OrgChartData extends React.Component {
     });
   };
 
+  handleMin = () => {
+    this.setState({ toolsStatus: 'min' });
+  };
+
+  handleMax = () => {
+    this.setState({ toolsStatus: 'max' });
+  };
+
   render() {
-    const { template, orientation } = this.state;
+    const { template, orientation, toolsStatus } = this.state;
     const { id } = this.props;
     return (
       <div className="org-chart-data">
         <div id={id} />
         <OrgChartTools
+          status={toolsStatus}
           templateChange={this.handleTemplateChange}
           orientationChange={this.handleOrientationChange}
           selectedTemplate={template}
           selectedOrientation={orientation}
+          onMin={this.handleMin}
+          onMax={this.handleMax}
         />
         <div id="editForm" style={{ display: 'none' }} />
       </div>
