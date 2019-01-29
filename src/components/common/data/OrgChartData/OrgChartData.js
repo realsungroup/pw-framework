@@ -58,6 +58,13 @@ class OrgChartData extends React.Component {
     this.getData();
   };
 
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();
+    this.p4 && this.p4.cancel();
+  };
+
   initVariables = () => {
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
@@ -71,7 +78,7 @@ class OrgChartData extends React.Component {
         resid,
         ColumnOfID: nodeId,
         ColumnOfPID: parentNodeId,
-        ProductID: rootIds.join(','),
+        ProductIDs: rootIds.join(','),
         Levels: level
       }),
       httpGetFormData(resid, 'default')
@@ -102,8 +109,6 @@ class OrgChartData extends React.Component {
       this.renderOrgChart(nodes);
     });
   };
-
-  componentWillUnmount = () => {};
 
   handleAdd = (sender, node) => {
     this.handleAddNode(sender, node);
@@ -139,28 +144,6 @@ class OrgChartData extends React.Component {
     });
     message.success('添加成功');
   };
-
-  // handleUpdate = async (sender, oldNode, newNode) => {
-  //   this.setState({ loading: true });
-  //   console.log({ sender, oldNode, newNode });
-  //   const values = { ...newNode };
-  //   this.p2 = makeCancelable(
-  //     http().modifyRecords({
-  //       resid: this.props.resid,
-  //       data: [values]
-  //     })
-  //   );
-  //   try {
-  //     await this.p2.promise;
-  //   } catch (err) {
-  //     this.setState({ loading: false });
-  //     message.error(err.message);
-  //     console.error(err);
-  //     return false;
-  //   }
-  //   this.setState({ loading: false });
-  //   message.success('修改成功');
-  // };
 
   handleNodeClick = (sender, node) => {
     this.openRecordForm('view', node, sender);
@@ -349,6 +332,13 @@ class OrgChartData extends React.Component {
     this.chart.config.orientation = BALKANGraph.orientation[orientation];
     this.setState({ orientation }, () => {
       this.chart.draw();
+      const svg = document
+        .getElementById(this.props.id)
+        .getElementsByTagName('svg')[0];
+      console.log('====================================');
+      console.log(svg);
+      console.log('====================================');
+      // svg.click();
     });
   };
 
