@@ -14,6 +14,10 @@ export const getResid = (dataMode, resid, subresid) => {
   return dataMode === 'main' ? resid : subresid;
 };
 
+export const clone = obj => {
+  return JSON.parse(JSON.stringify(obj));
+};
+
 /**
  * 根据地址下载文件
  * @param {string} href 文件地址

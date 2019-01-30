@@ -2,7 +2,8 @@ import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
-import { message, Modal, Spin } from 'antd';
+import { clone } from 'Util20/util';
+import { message, Modal, Spin, Button } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
@@ -37,6 +38,16 @@ const getRootIds = (nodes, id, pid) => {
     }
   }
   return ret;
+};
+
+const filterFields = (nodes, id, pid) => {
+  nodes.forEach(node => {
+    node[id] = node.id;
+    node[pid] = node.pid;
+    delete node.id;
+    delete node.pid;
+  });
+  return nodes;
 };
 
 /**
@@ -423,12 +434,49 @@ class OrgChartData extends React.Component {
     chartWrap.appendChild(element);
   };
 
+  handleSaveOrgClick = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '您确定要保存该结构吗？',
+      onOk: this.handleSaveOrgChartData
+    });
+  };
+
+  handleSaveOrgChartData = async () => {
+    this.setState({ loading: true });
+    const { nodeId, parentNodeId, resid } = this.props;
+    let nodes = clone(this.chart.config.nodes);
+    nodes = filterFields(nodes, nodeId, parentNodeId);
+    this.p6 = makeCancelable(
+      http().modifyRecords({
+        resid,
+        data: nodes
+      })
+    );
+    try {
+      await this.p6.promise;
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+    message.success('保存成功');
+  };
+
   render() {
     const { template, orientation, toolsStatus, loading } = this.state;
     const { chartId, chartWrapId } = this.props;
     return (
       <Spin spinning={loading}>
         <div className="org-chart-data" id={chartWrapId}>
+          <Button
+            onClick={this.handleSaveOrgClick}
+            type="primary"
+            className="org-chart-data__save-btn"
+          >
+            保存结构
+          </Button>
           <OrgChartTools
             status={toolsStatus}
             templateChange={this.handleTemplateChange}

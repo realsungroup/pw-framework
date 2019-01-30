@@ -43,7 +43,7 @@ class App extends Component {
             template="luba"
             chartId="org-chart"
             chartWrapId="org-chart-wrap"
-            level={2}
+            level={3}
             isExpandAllChildren={true}
             parentNodeId="parentId"
             enableDragDrop

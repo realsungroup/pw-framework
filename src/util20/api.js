@@ -28,7 +28,12 @@ http.setResponseInterceptors(
   function(response) {
     const res = response.data;
     if (
-      (res && (res.error == 0 || res.Error == 0 || res.OpResult === 'Y')) ||
+      (res &&
+        (res.error === 0 ||
+          res.error === '0' ||
+          res.Error === 0 ||
+          res.Error === '0' ||
+          res.OpResult === 'Y')) ||
       res === 'ok'
     ) {
       return res;
