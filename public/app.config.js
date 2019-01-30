@@ -11,9 +11,6 @@ var pwConfig = {};
 pwConfig.baseURL = 'http://kingofdinner.realsun.me:8102/';
 // 导出 Excel 文件下载基地址
 pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
-// 上传文件的基地址
-pwConfig.uploadFileUrl =
-  'http://172.21.2.27:802/rispweb/rispservice/SvcUploadFile2.aspx?savepath=D:\\HRWEBofRegalCZ\\HRWEBofRegalCZ\\rispweb\\upfiles&httppath=http://172.21.2.27:802/upfiles';
 
 /**
  * 个人中心配置
