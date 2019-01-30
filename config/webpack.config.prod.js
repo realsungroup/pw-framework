@@ -235,7 +235,9 @@ module.exports = {
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
       Util: path.resolve(__dirname, '../src/util/'),
-      UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/')
+      UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/'),
+      Util20: path.resolve(__dirname, '../src/util20'),
+      Common: path.resolve(__dirname, '../src/components/common')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
