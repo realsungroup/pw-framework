@@ -107,8 +107,9 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "run-s run-build add-suffix",
     "test": "node scripts/test.js",
+    "run-build": "node scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js"
   },
   "eslintConfig": {
