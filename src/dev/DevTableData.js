@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { TableData } from 'Common/loadableCommon';
+import ReactDOM from 'react-dom';
 import { Button, message } from 'antd';
 import http from 'Util20/api';
 import { setItem } from 'Util20/util';
-import './App.css';
+import * as serviceWorker from '../serviceWorker';
+// 使用自定义 loading
+import loadingGif from '../assets/loading.gif';
+import { Spin } from 'antd';
+import { TableData } from 'Common/loadableCommon';
+
+Spin.setDefaultIndicator(
+  <img style={{ width: 69, height: 75 }} src={loadingGif} alt="" />
+);
 
 class App extends Component {
   handleLoginClick = async () => {
@@ -69,7 +77,7 @@ class App extends Component {
             formProps={{ displayMode: 'default', height: 400 }}
             recordFormType="drawer"
             // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
-            recordFormName="default"
+            recordFormName="default_rowTest"
             rowEditFormName="default_rowTest"
             // ['C3_600449702200', 'C3_600449702200']
             beforeSaveFields={[
@@ -102,3 +110,6 @@ class App extends Component {
 }
 
 export default App;
+
+ReactDOM.render(<App />, document.getElementById('root'));
+serviceWorker.unregister();

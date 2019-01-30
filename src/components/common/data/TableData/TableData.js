@@ -29,8 +29,6 @@ import { ResizableBox } from 'react-resizable';
 import withZoomInOut from '../../hoc/withZoomInOut';
 import { makeCancelable } from 'Util20/api';
 
-console.log({ withRecordForm });
-
 const { Fragment } = React;
 
 const btnSizeMap = {
@@ -1115,7 +1113,6 @@ class TableData extends React.Component {
     }
   }
 }
-console.log({ withRecordForm });
 
 const composedHoc = compose(
   withHttpGetTableData,

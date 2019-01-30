@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './FunctionsHeader.less';
+import { withRouter } from 'react-router-dom';
 
-const FunctionsHeader = ({ title, hasBackBtn, className }) => (
+const FunctionsHeader = ({ title, hasBackBtn, className, history }) => (
   <div className={`functions-header ${className ? className : ''}`}>
     {hasBackBtn && (
       <i
         className="back-btn iconfont icon-back"
-        onClick={() => this.props.history.goBack()}
+        onClick={() => {
+          console.log('history:', history);
+          history.goBack();
+        }}
       />
     )}
     <span className="functions-header__title">{title}</span>
@@ -24,4 +28,4 @@ FunctionsHeader.defaultProps = {
   hasBackBtn: true
 };
 
-export default FunctionsHeader;
+export default withRouter(FunctionsHeader);

@@ -3,6 +3,14 @@ import { Button, message } from 'antd';
 import OrgChartData from './components/common/data/OrgChartData';
 import http from 'Util20/api';
 import { setItem } from 'Util20/util';
+import ReactDOM from 'react-dom';
+import * as serviceWorker from '../serviceWorker';
+// 使用自定义 loading
+import loadingGif from './assets/loading.gif';
+import { Spin } from 'antd';
+Spin.setDefaultIndicator(
+  <img style={{ width: 69, height: 75 }} src={loadingGif} alt="" />
+);
 
 class App extends Component {
   handleLoginClick = async () => {
@@ -65,4 +73,5 @@ class App extends Component {
   }
 }
 
-export default App;
+ReactDOM.render(<App />, document.getElementById('root'));
+serviceWorker.unregister();

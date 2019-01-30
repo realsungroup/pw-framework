@@ -95,5 +95,11 @@ pwConfig.loginLogoIcon = {
   size: 90
 };
 
+/**
+ * 上传文件配置
+ */
+// 对象空间名称
+pwConfig.bucketname = 'nutritiontower';
+
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;

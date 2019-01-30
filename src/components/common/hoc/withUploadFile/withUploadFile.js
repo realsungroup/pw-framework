@@ -1,18 +1,17 @@
 import React from 'react';
 import { argumentContainer } from '../util';
-import http, { makeCancelable } from 'Util20/api';
 
 // 上传文件的高阶组件
 export const uploadFile = (file, url) => {
   return new Promise((resolve, reject) => {
     let fd = new FormData();
     fd.append('file', file, file.name);
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.onload = () => {
-      var data = JSON.parse(xhr.response);
-      if (xhr.status === 200) {
-        var imgUrl = data.httpfilename;
+      const data = JSON.parse(xhr.response);
+      if (xhr.status === 200 && (data.error === 0 || data.error === '0')) {
+        const imgUrl = data.data;
         resolve(imgUrl);
       } else {
         reject(data);
@@ -21,6 +20,17 @@ export const uploadFile = (file, url) => {
     xhr.send(fd);
   });
 };
+
+function getUploadFile(baseURL, bucketname, srctype) {
+  return `${baseURL}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+    bucketname
+  )}&srctype=${encodeURIComponent(srctype)}
+  `;
+}
+
+function getFileType(file) {
+  return file.type.split('/')[1];
+}
 
 // 带有上传功能的高阶组件
 const withUploadFile = (options = {}) => {
@@ -41,7 +51,10 @@ const withUploadFile = (options = {}) => {
         // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
         let formData = new FormData();
         formData.append('file', file, file.name);
-        uploadFile(file, url)
+        const type = getFileType(file);
+
+        const { bucketname, baseURL } = window.pwConfig;
+        uploadFile(file, getUploadFile(baseURL, bucketname, type))
           .then(fileUrl => {
             success && success(fileUrl);
           })

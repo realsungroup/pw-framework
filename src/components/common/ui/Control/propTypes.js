@@ -25,12 +25,6 @@ export const propTypes = {
   mode: PropTypes.oneOf(['edit', 'view']),
 
   /**
-   * 上传文件的地址
-   * 默认：'http://kingofdinner.realsun.me:8081/rispweb/rispservice/SvcUploadFile2.aspx?savepath=C:\\web\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:8081/rispweb/upfiles'（基地址：'http://kingofdinner.realsun.me:8081'）
-   */
-  uploadUrl: PropTypes.string,
-
-  /**
    * 操作
    * 可选：'add' 添加 | 'modify' | 'view' 查看
    */

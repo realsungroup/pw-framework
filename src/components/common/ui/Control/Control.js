@@ -122,7 +122,7 @@ class Control extends React.Component {
 
   // 上传文件（注意：不能使用 async 函数）
   handleUploadFile = fileInfo => {
-    const { uploadFile, uploadUrl } = this.props;
+    const { uploadFile } = this.props;
     const file = fileInfo.file;
     try {
       uploadFile(
@@ -135,8 +135,7 @@ class Control extends React.Component {
         err => {
           console.error(err);
           message.error('上传失败');
-        },
-        uploadUrl
+        }
       );
     } catch (err) {
       return console.error(err);
