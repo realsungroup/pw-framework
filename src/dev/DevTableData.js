@@ -56,7 +56,7 @@ class App extends Component {
           <TableData
             title="调休登记"
             resid={596720928643}
-            width={1360}
+            // width={1360}
             size="small"
             hasBeBtns={false}
             subtractH={180}
@@ -68,7 +68,7 @@ class App extends Component {
             hasModify={false}
             hasRowModify={true}
             hasAdvSearch={true}
-            height={600}
+            // height={600}
             recordFormContainerProps={{
               // width: 800,
               height: 500,
