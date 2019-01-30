@@ -259,6 +259,8 @@ export const clearCache = () => {
 
 // 获取主表数据
 export const getMainTableData = (resid, options = {}) => {
+  console.log({ baseUrl });
+
   const url = baseUrl + appConfig.path.getData;
   const params = {
     resid,

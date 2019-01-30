@@ -4,3 +4,6 @@
 
 // common
 export { TableData } from '../components/common/loadableCommon';
+
+// lib
+export { LzTable } from '../loadableComponents';
