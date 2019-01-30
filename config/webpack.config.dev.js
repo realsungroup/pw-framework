@@ -19,8 +19,14 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const program = require('commander');
+
+program
+  .option('-b, --is-open-bundle-analyzer-plugin', '是否开启包分析插件')
+  .option('-e, --entryname <name>', 'dev 文件夹中的入口文件');
+program.parse(process.argv);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -90,11 +96,10 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 };
 
 const getConfigEntry = () => {
-  const argvArr = process.argv;
-  const devFile = argvArr[2];
+  const devEntry = program.entryname;
   // 是在 dev 目录下的文件
-  if (devFile) {
-    return path.resolve(__dirname, `../src/dev/${devFile}.js`);
+  if (devEntry && typeof devEntry === 'string') {
+    return path.resolve(__dirname, `../src/dev/${devEntry}.js`);
   }
   return paths.appIndexJs;
 };
@@ -466,7 +471,7 @@ module.exports = {
         formatter: typescriptFormatter
       }),
     themePlugin,
-    new BundleAnalyzerPlugin()
+    program.isOpenBundleAnalyzerPlugin ? new BundleAnalyzerPlugin() : null
     // new HardSourceWebpackPlugin()
   ].filter(Boolean),
 
