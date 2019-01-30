@@ -137,11 +137,18 @@ http.createApi('getReminderData', {
 
 /**
  * 获取 OrgChart 所需的节点
- *
  */
 http.createApi('getNodesData', {
   method: 'post',
   url: '/api/OrgChart/GetNodesData'
+});
+
+/**
+ * 获取移动后的节点
+ */
+http.createApi('getMoveNodes', {
+  method: 'post',
+  url: '/api/OrgChart/GetMoveNodesData'
 });
 
 export default http;

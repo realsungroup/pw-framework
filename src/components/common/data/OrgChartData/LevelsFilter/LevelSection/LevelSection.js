@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './OrgChartTools.less';
-import { ResizableBox } from 'react-resizable';
+import './LevelSection.less';
 import { Radio } from 'antd';
-import Draggable from 'react-draggable';
-import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
 import { FNLIST, TEMPLATES, ORIENTATIONS } from './constants';
-const RadioGroup = Radio.Group;
 const prefix = 'org-chart-tools';
 const Fragment = React.Fragment;
 

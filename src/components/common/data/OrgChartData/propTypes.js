@@ -10,13 +10,23 @@ export const defaultProps = {
   recordFormType: 'drawer',
   enableDragDrop: false,
   rootIds: ['0'],
-  level: 8,
+  level: 16,
   recordFormContainerProps: {},
   orientation: 'top',
   padding: 0
 };
 
 export const propTypes = {
+  /**
+   * OrgChart 的 id
+   */
+  chartId: PropTypes.string.isRequired,
+
+  /**
+   * OrgChart 父节点的 id
+   */
+  chartWrapId: PropTypes.string.isRequired,
+
   /**
    * 节点 id 对应的字段
    * 默认：'id'
@@ -33,11 +43,6 @@ export const propTypes = {
    * 资源 id
    */
   resid: PropTypes.number.isRequired,
-
-  /**
-   * OrgChartData 的 id
-   */
-  id: PropTypes.string.isRequired,
 
   /**
    * 节点所使用的模板

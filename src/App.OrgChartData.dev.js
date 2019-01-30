@@ -41,8 +41,9 @@ class App extends Component {
           <OrgChartData
             resid={461598195535}
             template="luba"
-            id="org-chart"
-            // level={2}
+            chartId="org-chart"
+            chartWrapId="org-chart-wrap"
+            level={2}
             isExpandAllChildren={true}
             parentNodeId="parentId"
             enableDragDrop

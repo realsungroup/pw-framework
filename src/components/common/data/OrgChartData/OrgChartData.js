@@ -2,7 +2,7 @@ import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
-import { message, Modal } from 'antd';
+import { message, Modal, Spin } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
@@ -10,12 +10,37 @@ import FormData from 'Common/data/FormData';
 import withModalDrawer from 'Common/hoc/withModalDrawer';
 import { modifyIcon } from './icon';
 import OrgChartTools from './OrgChartTools';
+import LevelsJumpBtns from './LevelsJumpBtns';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
 
 /**
- * 组织图标组件
+ * 根据节点数据获取最顶层节点的 id
+ * @param {array} nodes 节点数据
+ * @param {string} id id 字段
+ * @param {string} pid pid 字段
+ */
+const getRootIds = (nodes, id, pid) => {
+  const ret = [];
+  const len = nodes.length;
+  for (let i = 0; i < len; i++) {
+    let hasPid = false;
+    for (let j = 0; j < len; j++) {
+      if (nodes[i][pid] === nodes[j][id]) {
+        hasPid = true;
+        break;
+      }
+    }
+    if (hasPid) {
+      ret.push(nodes[i][id]);
+    }
+  }
+  return ret;
+};
+
+/**
+ * 组织图组件
  */
 class OrgChartData extends React.Component {
   static propTypes = propTypes;
@@ -27,11 +52,12 @@ class OrgChartData extends React.Component {
       recordFormType,
       enableDragDrop,
       level,
-      rootIds,
       template,
       orientation,
       padding
     } = props;
+
+    this.init(props);
 
     this.state = {
       loading: true,
@@ -40,7 +66,6 @@ class OrgChartData extends React.Component {
       recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
       enableDragDrop, // 是否能够拖动节点
       level, // 显示的层数
-      rootIds, // 根节点 id
       template, // 使用的模板
       orientation, // 方向
       padding // OrgChart 的 padding
@@ -48,13 +73,6 @@ class OrgChartData extends React.Component {
   }
 
   componentDidMount = () => {
-    // 自定义空表单
-    this.EditForm = function() {};
-    this.EditForm.prototype.init = () => {};
-    this.EditForm.prototype.show = () => {};
-    this.EditForm.prototype.hide = () => {};
-
-    this.initVariables();
     this.getData();
   };
 
@@ -65,20 +83,28 @@ class OrgChartData extends React.Component {
     this.p4 && this.p4.cancel();
   };
 
-  initVariables = () => {
+  init = props => {
+    this._rootIds = props.rootIds;
+
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
+
+    // 自定义空表单
+    this.EditForm = function() {};
+    this.EditForm.prototype.init = () => {};
+    this.EditForm.prototype.show = () => {};
+    this.EditForm.prototype.hide = () => {};
   };
 
   getData = async () => {
     const { resid, nodeId, parentNodeId, httpGetFormData } = this.props;
-    const { level, rootIds } = this.state;
+    const { level } = this.state;
     const pArr = [
       http().getNodesData({
         resid,
         ColumnOfID: nodeId,
         ColumnOfPID: parentNodeId,
-        ProductIDs: rootIds.join(','),
+        ProductIDs: this._rootIds.join(','),
         Levels: level
       }),
       httpGetFormData(resid, 'default')
@@ -317,7 +343,10 @@ class OrgChartData extends React.Component {
 
   renderOrgChart = nodes => {
     const options = this.getOrgChartOptions(nodes);
-    this.chart = new OrgChart(document.getElementById(this.props.id), options);
+    this.chart = new OrgChart(
+      document.getElementById(this.props.chartId),
+      options
+    );
     this.setState({ loading: false });
   };
 
@@ -332,13 +361,6 @@ class OrgChartData extends React.Component {
     this.chart.config.orientation = BALKANGraph.orientation[orientation];
     this.setState({ orientation }, () => {
       this.chart.draw();
-      const svg = document
-        .getElementById(this.props.id)
-        .getElementsByTagName('svg')[0];
-      console.log('====================================');
-      console.log(svg);
-      console.log('====================================');
-      // svg.click();
     });
   };
 
@@ -350,23 +372,81 @@ class OrgChartData extends React.Component {
     this.setState({ toolsStatus: 'max' });
   };
 
+  /**
+   * direction：0 表示向上 | 1 表示向下
+   */
+  handleLevelMove = async direction => {
+    this.setState({ loading: true });
+    const { level } = this.state;
+    const { resid, nodeId, parentNodeId } = this.props;
+
+    this.p5 = makeCancelable(
+      http().getMoveNodes({
+        resid,
+        Levels: level,
+        MoveDirection: direction,
+        MoveLevels: 1,
+        ColumnOfID: nodeId,
+        ColumnOfPID: parentNodeId,
+        ProductIDs: this._rootIds.join(',')
+      })
+    );
+    let res;
+    try {
+      res = await this.p5.promise;
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    const nodes = res.nodes;
+
+    // 设置新的根节点 id
+    this._rootIds = getRootIds(nodes, nodeId, parentNodeId);
+
+    // 更新图表
+    this.updateChart();
+
+    this.renderOrgChart(nodes);
+  };
+
+  updateChart = () => {
+    const { chartId, chartWrapId } = this.props;
+    // 移除节点
+    const chart = document.getElementById(chartId);
+    chart && chart.remove();
+    // 添加节点
+    const chartWrap = document.getElementById(chartWrapId);
+    const element = document.createElement('div');
+    element.setAttribute('id', chartId);
+    chartWrap.appendChild(element);
+  };
+
   render() {
-    const { template, orientation, toolsStatus } = this.state;
-    const { id } = this.props;
+    const { template, orientation, toolsStatus, loading } = this.state;
+    const { chartId, chartWrapId } = this.props;
     return (
-      <div className="org-chart-data">
-        <div id={id} />
-        <OrgChartTools
-          status={toolsStatus}
-          templateChange={this.handleTemplateChange}
-          orientationChange={this.handleOrientationChange}
-          selectedTemplate={template}
-          selectedOrientation={orientation}
-          onMin={this.handleMin}
-          onMax={this.handleMax}
-        />
-        <div id="editForm" style={{ display: 'none' }} />
-      </div>
+      <Spin spinning={loading}>
+        <div className="org-chart-data" id={chartWrapId}>
+          <OrgChartTools
+            status={toolsStatus}
+            templateChange={this.handleTemplateChange}
+            orientationChange={this.handleOrientationChange}
+            selectedTemplate={template}
+            selectedOrientation={orientation}
+            onMin={this.handleMin}
+            onMax={this.handleMax}
+          />
+          <LevelsJumpBtns
+            onLevelUp={() => this.handleLevelMove(0)}
+            onLevelDown={() => this.handleLevelMove(1)}
+            template={template}
+          />
+          <div id="editForm" style={{ display: 'none' }} />
+          <div id={chartId} />
+        </div>
+      </Spin>
     );
   }
 }

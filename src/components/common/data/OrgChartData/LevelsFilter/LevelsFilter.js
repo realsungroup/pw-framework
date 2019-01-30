@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './OrgChartLevels.less';
+import './LevelsFilter.less';
 import { ResizableBox } from 'react-resizable';
 import { Radio } from 'antd';
 import Draggable from 'react-draggable';
@@ -24,9 +24,9 @@ export default class LevelsFilter extends React.Component {
     level: PropTypes.number,
 
     /**
-     * 
+     *
      */
-    start: PropTypes.number,
+    start: PropTypes.number
   };
 
   static defaultProps = {};
@@ -39,7 +39,7 @@ export default class LevelsFilter extends React.Component {
 
   render() {
     return (
-      <div className={className}>
+      <div className="levels-filter">
         <LevelSection />
       </div>
     );
