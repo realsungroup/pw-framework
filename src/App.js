@@ -8,8 +8,8 @@ import { Icon, LocaleProvider, Button, message } from 'antd';
 
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
-import zh_CN from './lib/locales/zh-CN';
-import en_US from './lib/locales/en-US';
+import zh_CN from './locales/zh-CN';
+import en_US from './locales/en-US';
 
 import { PageContainer, Login, NotFound } from './pages/loadablePage';
 

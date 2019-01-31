@@ -1,10 +1,10 @@
 import React from 'react';
 import { getUserDesktop } from '../../../util/api';
 import { Spin, message } from 'antd';
-import PageBody from '../../components/PageBody';
 import HalfPanel from '../../components/HalfPanel';
 import RequiredApps from './RequiredApps';
 import OptionalApps from './OptionalApps';
+import { FormattedMessage as FM } from 'react-intl';
 import './WrokbenchSettingBody.less';
 
 export default class WorkbenchBody extends React.PureComponent {
@@ -49,10 +49,14 @@ export default class WorkbenchBody extends React.PureComponent {
     return (
       <Spin spinning={loading}>
         <div className="workbench-setting-body">
-          <HalfPanel title="必要的功能">
+          <HalfPanel
+            title={<FM id="Setting.leftTitle" defaultMessage="必要的功能" />}
+          >
             <RequiredApps apps={requiredApps} />
           </HalfPanel>
-          <HalfPanel title="可选的功能">
+          <HalfPanel
+            title={<FM id="Setting.rightTitle" defaultMessage="可选的功能" />}
+          >
             <OptionalApps
               selectedApps={selectedApps}
               onRemoveApp={this.handleRemoveApp}

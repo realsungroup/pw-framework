@@ -27,31 +27,32 @@ import {
 } from 'Util/api';
 import { version } from '../../../../../package.json';
 import changelog from '../../../../changelog.md';
-
 import ReactMarkdown from 'react-markdown';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 
 const FormItem = Form.Item;
 
 class RightBtns extends React.Component {
-  state = {
-    visible: false,
-    oldpass: '',
-    newpass: '',
-    newpass2: '',
-    confirmDirty: false,
-    pickerVisible: false,
-    color: '', // 当前主题色
-    languageVisible: false,
-    language: JSON.parse(localStorage.getItem('userInfo')).UserInfo
-      .EMP_LANGUAGE, // 语言
-    isRotate: false,
-    aboutModalVisible: false,
-    checked: true,
-
-    // 数据分析
-    dataAnalyseTaskIds: [], // 数据分析任务 id 列表
-    versionDescVisible: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+      oldpass: '',
+      newpass: '',
+      newpass2: '',
+      confirmDirty: false,
+      pickerVisible: false,
+      color: '', // 当前主题色
+      languageVisible: false,
+      language: localStorage.getItem('language'), // 语言
+      isRotate: false,
+      aboutModalVisible: false,
+      checked: true,
+      // 数据分析
+      dataAnalyseTaskIds: [], // 数据分析任务 id 列表
+      versionDescVisible: false
+    };
+  }
 
   componentDidMount = () => {};
 
@@ -112,14 +113,15 @@ class RightBtns extends React.Component {
   };
 
   clearCacheBtnClick = async () => {
+    const { intl } = this.props;
     try {
       const response = await clearCache();
       removeItem('formsData');
       if (response === 'ok') {
-        message.success('清除缓存成功');
+        message.success(intl.messages['RightBtns.success']);
       }
-    } catch (error) {
-      message.error('清除缓存失败');
+    } catch (err) {
+      message.error(err.message);
     }
   };
 
@@ -259,13 +261,14 @@ class RightBtns extends React.Component {
   };
 
   renderSelectedColor = async () => {
+    const { intl } = this.props;
     this.setState({ loading: true });
     setTimeout(() => {
       window.less
         .modifyVars(this.vars)
         .then(() => {
           this.setState({ loading: false, pickerVisible: false });
-          message.success('修改主题成功');
+          message.success(intl.messages['RightBtns.success']);
         })
         .catch(err => {
           this.setState({ loading: false });
@@ -296,6 +299,7 @@ class RightBtns extends React.Component {
   };
 
   handleRadioGroupChange = async e => {
+    const { intl } = this.props;
     const value = e.target.value;
     let res;
     try {
@@ -306,10 +310,10 @@ class RightBtns extends React.Component {
     if (res.OpResult === 'Y') {
       this.modLanguage(value);
       this.setState({ language: value });
-      message.success('切换语言成功，即将重新加载本页');
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
+      message.success(intl.messages['RightBtns.success']);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -323,6 +327,7 @@ class RightBtns extends React.Component {
       }
       userInfo.UserInfo.EMP_LANGUAGE = language;
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem('language', language);
     }
   };
 
@@ -345,8 +350,8 @@ class RightBtns extends React.Component {
       aboutModalVisible,
       versionDescVisible
     } = this.state;
-
     const { getFieldDecorator } = this.props.form;
+    const { intl } = this.props;
     return (
       <React.Fragment>
         <div
@@ -358,19 +363,22 @@ class RightBtns extends React.Component {
             className="right-btns__header-btn"
             iconClass="icon-report-table"
             onClick={this.handleReportTableBtnClick}
-            tip="报表"
+            tip={<FM id="RightBtns.Report" defaultMessage="报表" />}
           />
           <Popconfirm
             placement="bottomRight"
-            title={'您确定要锁定屏幕吗？'}
+            title={
+              <FM
+                id="RightBtns.sureLock"
+                defaultMessage="您确定要锁定屏幕吗？"
+              />
+            }
             onConfirm={this.handleLockBtnClick}
-            okText="确定"
-            cancelText="取消"
           >
             <HeaderBtn
               className="right-btns__header-btn"
               iconClass="icon-lock-screen"
-              tip="锁屏"
+              tip={<FM id="RightBtns.LockScreen" defaultMessage="锁屏" />}
             />
           </Popconfirm>
 
@@ -378,19 +386,22 @@ class RightBtns extends React.Component {
             className="right-btns__header-btn"
             iconClass="icon-setting"
             onClick={this.handleSettingBtnClick}
-            tip="设置"
+            tip={<FM id="RightBtns.Settings" defaultMessage="设置" />}
           />
           <Popconfirm
             placement="bottomRight"
-            title={'您确定要退出登录吗？'}
+            title={
+              <FM
+                id="RightBtns.sureLogoff"
+                defaultMessage="您确定要退出登录吗？"
+              />
+            }
             onConfirm={this.handleLogoutBtnClick}
-            okText="确定"
-            cancelText="取消"
           >
             <HeaderBtn
               className="right-btns__header-btn"
               iconClass="icon-signout"
-              tip="退出登录"
+              tip={<FM id="RightBtns.Logoff" defaultMessage="退出登录" />}
             />
           </Popconfirm>
         </div>
@@ -404,18 +415,25 @@ class RightBtns extends React.Component {
             className="right-btns__header-btn"
             iconClass="icon-mod-password"
             onClick={this.handleModifyPasswordBtnClick}
-            tip="修改密码"
+            tip={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
           />
           <HeaderBtn
             className="right-btns__header-btn"
             iconClass="icon-clear-cache"
             onClick={this.clearCacheBtnClick}
-            tip="清除缓存"
+            tip={<FM id="RightBtns.ClearCache" defaultMessage="清除缓存" />}
           />
 
           <Popover
             placement="bottomRight"
-            title={<div style={{ textAlign: 'right' }}>选择主题色</div>}
+            title={
+              <div style={{ textAlign: 'right' }}>
+                <FM
+                  id="RightBtns.SelectThemeColor"
+                  defaultMessage="选择主题色"
+                />
+              </div>
+            }
             trigger="click"
             content={
               <React.Fragment>
@@ -429,7 +447,7 @@ class RightBtns extends React.Component {
                     className="color-picker-btn"
                     onClick={this.renderSelectedColor}
                   >
-                    确定
+                    <FM id="RightBtns.OK" defaultMessage="确定" />
                   </Button>
                 </div>
               </React.Fragment>
@@ -440,13 +458,22 @@ class RightBtns extends React.Component {
               className="right-btns__header-btn"
               iconClass="icon-theme"
               onClick={() => this.setState({ pickerVisible: true })}
-              tip="更换主题色"
+              tip={
+                <FM
+                  id="RightBtns.ChangeThemeColor"
+                  defaultMessage="更换主题色"
+                />
+              }
             />
           </Popover>
 
           <Popover
             placement="bottomRight"
-            title={<div style={{ textAlign: 'right' }}>选择语言</div>}
+            title={
+              <div style={{ textAlign: 'right' }}>
+                <FM id="RightBtns.SelectLanguage" defaultMessage="选择语言" />
+              </div>
+            }
             trigger="click"
             content={
               <Radio.Group
@@ -462,14 +489,16 @@ class RightBtns extends React.Component {
               className="right-btns__header-btn"
               iconClass="icon-language"
               onClick={() => this.setState({ languageVisible: true })}
-              tip="更换语言"
+              tip={
+                <FM id="RightBtns.ChangeLanguage" defaultMessage="更换语言" />
+              }
             />
           </Popover>
           <HeaderBtn
             className="right-btns__header-btn"
             iconClass="icon-about"
             onClick={this.handleAboutClick}
-            tip="关于"
+            tip={<FM id="RightBtns.About" defaultMessage="关于" />}
           />
         </div>
 
@@ -514,11 +543,17 @@ class RightBtns extends React.Component {
               style={{ marginLeft: 30 }}
             >
               <strong>Power Works</strong>
-              <strong>版本：{version}</strong>
+              <strong>
+                <FM id="RightBtns.Version" defaultMessage="版本：" />
+                {version}
+              </strong>
             </div>
             <div className="right-btns__about-modal-btn">
               <Button size="small" onClick={this.handleVersionDescBtnClick}>
-                版本更新说明
+                <FM
+                  id="RightBtns.VersionUpdate"
+                  defaultMessage="版本更新说明"
+                />
               </Button>
             </div>
           </div>
@@ -535,7 +570,7 @@ class RightBtns extends React.Component {
           visible={visible}
           maskClosable={false}
           width={'400px'}
-          title={'修改密码'}
+          title={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
           footer={''}
           destroyOnClose={true}
           onCancel={this.handleCancel}
@@ -543,7 +578,17 @@ class RightBtns extends React.Component {
           <Form className="input-pass1" onSubmit={this.handleSubmit}>
             <FormItem className="pass1">
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: '请输入原密码！' }]
+                rules: [
+                  {
+                    required: true,
+                    message: (
+                      <FM
+                        id="RightBtns.OriginalPasswordTip"
+                        defaultMessage="请输入原密码"
+                      />
+                    )
+                  }
+                ]
               })(
                 <Input
                   className="input-pass"
@@ -551,14 +596,22 @@ class RightBtns extends React.Component {
                     <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
                   type="password"
-                  placeholder="原密码"
+                  placeholder={intl.messages['RightBtns.OriginalPassword']}
                 />
               )}
             </FormItem>
             <FormItem className="pass">
               {getFieldDecorator('password1', {
                 rules: [
-                  { required: true, message: '请输入新密码！' },
+                  {
+                    required: true,
+                    message: (
+                      <FM
+                        id="RightBtns.NewPasswordTip"
+                        defaultMessage="请输入新密码"
+                      />
+                    )
+                  },
                   {
                     validator: this.validateToNextPassword
                   }
@@ -570,14 +623,22 @@ class RightBtns extends React.Component {
                     <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
                   type="password"
-                  placeholder="新密码"
+                  placeholder={intl.messages['RightBtns.NewPassword']}
                 />
               )}
             </FormItem>
             <FormItem className="pass">
               {getFieldDecorator('password2', {
                 rules: [
-                  { required: true, message: '请再次输入新密码！' },
+                  {
+                    required: true,
+                    message: (
+                      <FM
+                        id="RightBtns.NewPasswordAgainTip"
+                        defaultMessage="请再次输入新密码"
+                      />
+                    )
+                  },
                   {
                     validator: this.compareToFirstPassword
                   }
@@ -590,7 +651,7 @@ class RightBtns extends React.Component {
                   }
                   type="password"
                   onChange={this.newpassChange2}
-                  placeholder="新密码"
+                  placeholder={intl.messages['RightBtns.NewPassword']}
                   onBlur={this.handleConfirmBlur}
                 />
               )}
@@ -598,7 +659,7 @@ class RightBtns extends React.Component {
 
             <FormItem>
               <Button className="btn-submit" type="primary" htmlType="submit">
-                提交
+                <FM id="RightBtns.Submit" defaultMessage="提交" />
               </Button>
             </FormItem>
           </Form>
@@ -608,4 +669,4 @@ class RightBtns extends React.Component {
   }
 }
 const RightBtn = Form.create()(RightBtns);
-export default withRouter(RightBtn);
+export default injectIntl(withRouter(RightBtn));

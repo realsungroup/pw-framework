@@ -3,6 +3,7 @@ import http, { makeCancelable } from 'Util20/api';
 import { Spin, List } from 'antd';
 import { Link } from 'react-router-dom';
 import './ReminderList.less';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default class ReminderList extends React.PureComponent {
   constructor(props) {
@@ -39,7 +40,9 @@ export default class ReminderList extends React.PureComponent {
     return (
       <Spin spinning={loading}>
         <div className="reminder-list">
-          <div className="reminder-list__title">提醒</div>
+          <div className="reminder-list__title">
+            <FM id="HomeBody.reminder" defaultMessage="提醒" />
+          </div>
           {!!list.length ? (
             <List
               dataSource={list}
@@ -63,7 +66,9 @@ export default class ReminderList extends React.PureComponent {
               )}
             />
           ) : (
-            <div className="reminder-list__no-data">暂无提醒数据</div>
+            <div className="reminder-list__no-data">
+              <FM id="HomeBody.noData" defaultMessage="暂无提醒数据" />
+            </div>
           )}
         </div>
       </Spin>

@@ -37,7 +37,7 @@ class PageHeader extends React.Component {
   };
 
   render() {
-    const { reminderNum, lockScreenRef } = this.props;
+    const { lockScreenRef } = this.props;
     const { isInTop } = this.state;
 
     const user = JSON.parse(localStorage.getItem('userInfo'));
@@ -45,7 +45,6 @@ class PageHeader extends React.Component {
       userName: user.SysUserInfo.UserName
     };
 
-    const rightBtns = <RightBtns lockScreenRef={lockScreenRef} />;
     return (
       <div
         className={classNames('page-header', {
@@ -61,20 +60,9 @@ class PageHeader extends React.Component {
             <img src={logoImg} alt="logo" className="page-header__logo-img" />
           </Link>
         </div>
-
-        {rightBtns && (
-          <div className="page-header__right-btns">
-            {Array.isArray(rightBtns) && rightBtns.length > 0 ? (
-              rightBtns.map((btn, idx) => (
-                <div key={idx} className="page-header-right-btn">
-                  {btn}
-                </div>
-              ))
-            ) : (
-              <div className="page-header-right-btn">{rightBtns}</div>
-            )}
-          </div>
-        )}
+        <div className="page-header__right-btns">
+          <RightBtns lockScreenRef={lockScreenRef} />
+        </div>
         <div className="page-header__user">
           <UserInfo userName={userData.userName} />
         </div>

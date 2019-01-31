@@ -6,11 +6,17 @@ import { domainLogin } from 'Util/api';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail, setLanguage } from 'Util/api';
-import FmWrap from '../components/FmWrap';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
+
 import './Login.less';
 import './Login.css';
 
-const { domainLoginConfig, defaultLoginMode, enterprisecode } = window.pwConfig;
+const {
+  domainLoginConfig,
+  defaultLoginMode,
+  enterprisecode,
+  themeColor
+} = window.pwConfig;
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,9 +26,12 @@ class Login extends React.Component {
       loginMode = defaultLoginMode;
       setItem('loginMode', defaultLoginMode);
     }
-    let language = getItem('language') || '中文';
+    let language = getItem('language');
+    if (!language) {
+      language = '中文';
+      setItem('language', '中文');
+    }
     this.state = {
-      ready: false,
       redirectToReferrer: false,
       loginMode, // 登录模式：'normal' 普通登录 | 'domain' 域登录
       enterprisecode, // 企业编号
@@ -33,10 +42,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    // preLoadImg([accountIcon, passwordIcon], () => {
-    //   this.setState({ ready: true });
-    // });
-    this.setThemeColor(window.themeColor);
+    this.setThemeColor(themeColor);
   }
 
   setThemeColor = themeColor => {
@@ -48,7 +54,7 @@ class Login extends React.Component {
           message.error(err.message);
         });
     } catch (err) {
-      message.error('设置主题色出错，请刷新页面');
+      message.error(err.message);
     }
   };
 
@@ -87,7 +93,7 @@ class Login extends React.Component {
     const { validateFields } = this.props.form;
     validateFields(async (err, values) => {
       if (err) {
-        return message.error('请填写账号或密码');
+        return;
       }
       console.log({ values });
       const { loginMode } = this.state;
@@ -171,7 +177,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { ready, redirectToReferrer, loginMode, language } = this.state;
+    const { redirectToReferrer, loginMode, language } = this.state;
     // 进入登录页的源路由
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     // 登录成功后，通过 Redirect 组件跳转到源路由
@@ -179,6 +185,7 @@ class Login extends React.Component {
       return <Redirect to={from} />;
     }
     const { getFieldDecorator } = this.props.form;
+    const { intl } = this.props;
     return (
       <div className="login">
         <div className="login__left-part" />
@@ -189,9 +196,9 @@ class Login extends React.Component {
             <div className="login__options-login-mode">
               <a href="javascript:;" onClick={this.loginModeChange}>
                 {loginMode === 'normal' ? (
-                  <FmWrap id="s2" />
+                  <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
-                  <FmWrap id="s3" />
+                  <FM id="Login.DomainLogin" defaultMessage="域登录" />
                 )}
               </a>
             </div>
@@ -201,7 +208,7 @@ class Login extends React.Component {
                 onChange={this.handleLanguageSelectChange}
               >
                 <Radio.Button value="中文">中文</Radio.Button>
-                <Radio.Button value="EngLish">EngLish</Radio.Button>
+                <Radio.Button value="English">English</Radio.Button>
               </Radio.Group>
             </div>
           </div>
@@ -209,26 +216,43 @@ class Login extends React.Component {
           <Form className="login__form">
             <Form.Item>
               {getFieldDecorator('userName', {
-                rules: [{ required: true, message: '请输入用户名' }]
+                rules: [
+                  {
+                    required: true,
+                    message: (
+                      <FM
+                        id="Login.userNameTip"
+                        defaultMessage="请输入用户名"
+                      />
+                    )
+                  }
+                ]
               })(
                 <Input
                   prefix={
                     <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder="用户名"
+                  placeholder={intl.messages['Login.UsernamePlaceholder']}
                   addonAfter={this.renderAddonAfterNode()}
                 />
               )}
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: '请输入密码' }]
+                rules: [
+                  {
+                    required: true,
+                    message: (
+                      <FM id="Login.passwordTip" defaultMessage="请输入密码" />
+                    )
+                  }
+                ]
               })(
                 <Input.Password
                   prefix={
                     <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder="密码"
+                  placeholder={intl.messages['Login.PassworkPlaceholder']}
                 />
               )}
             </Form.Item>
@@ -239,7 +263,7 @@ class Login extends React.Component {
                 className="login__submit-btn"
                 onClick={this.handleSubmit}
               >
-                登录
+                <FM id="Login.Login" defaultMessage="登录" />
               </Button>
             </Form.Item>
           </Form>
@@ -250,4 +274,4 @@ class Login extends React.Component {
   }
 }
 
-export default Form.create()(Login);
+export default injectIntl(Form.create()(Login));

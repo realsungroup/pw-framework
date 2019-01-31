@@ -1,0 +1,73 @@
+// HomeBody
+const HomeBody = {
+  'HomeBody.Taskbar': '任务栏',
+  'HomeBody.Bench': '工作台',
+  'HomeBody.reminder': '提醒',
+  'HomeBody.noData': '暂无提醒数据'
+};
+
+// Login
+const Login = {
+  'Login.NormalLogin': '普通登录',
+  'Login.DomainLogin': '域登录',
+  'Login.UsernamePlaceholder': '用户名',
+  'Login.PassworkPlaceholder': '密码',
+  'Login.Login': '登录',
+  'Login.userNameTip': '请输入用户名',
+  'Login.passwordTip': '请输入密码'
+};
+
+// RightBtns
+const RightBtns = {
+  'RightBtns.Report': '报表',
+  'RightBtns.LockScreen': '锁定屏幕',
+  'RightBtns.Settings': '设置',
+  'RightBtns.Logoff': '退出登录',
+  'RightBtns.ChangePassword': '修改密码',
+  'RightBtns.ClearCache': '清除缓存',
+  'RightBtns.ChangeThemeColor': '修改主题色',
+  'RightBtns.SelectThemeColor': '选择主题色',
+  'RightBtns.ChangeLanguage': '更换语言/Change Language',
+  'RightBtns.SelectLanguage': '选择语言/Select Language',
+  'RightBtns.About': '关于',
+  'RightBtns.OK': '确定',
+  'RightBtns.success': '操作成功',
+  'RightBtns.sureLock': '您确定要锁定屏幕吗?',
+  'RightBtns.sureLogoff': '您确定要退出登录吗?',
+  'RightBtns.Version': '版本：',
+  'RightBtns.VersionUpdate': '版本更新介绍',
+  'RightBtns.ChangePassword': '修改密码',
+  'RightBtns.OriginalPassword': '原密码',
+  'RightBtns.NewPassword': '新密码',
+  'RightBtns.Submit': '提交',
+  'RightBtns.OriginalPasswordTip': '请输入原密码',
+  'RightBtns.NewPasswordTip': '请输入新密码',
+  'RightBtns.NewPasswordAgainTip': '请再次输入新密码'
+};
+
+// PersonCenter
+const PersonCenter = {
+  'PersonCenter.title': '个人中心'
+};
+
+// Setting
+const Setting = {
+  'Setting.leftTitle': 'Necessary Functionality',
+  'Setting.rightTitle': 'Optional Functionality'
+};
+
+export default {
+  ...HomeBody,
+  ...Login,
+  ...RightBtns,
+  ...PersonCenter,
+  ...Setting,
+  add: '添加',
+  edit: '编辑',
+  save: '保存',
+  cancel: '取消',
+  view: '查看',
+  modify: '修改',
+  delete: '删除',
+  choose: '选择'
+};

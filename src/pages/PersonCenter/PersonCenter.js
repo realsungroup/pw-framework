@@ -7,6 +7,7 @@ import { withHttpGetFormData } from 'Common/hoc/withHttp';
 import http, { makeCancelable } from 'Util20/api';
 import { dealFormData } from 'Util20/controls';
 import './PersonCenter.less';
+import { FormattedMessage as FM } from 'react-intl';
 
 const TabPane = Tabs.TabPane;
 
@@ -107,7 +108,10 @@ class PersonCenter extends React.Component {
     const { tabsConfig, activeKey, loading, data, mode } = this.state;
     return (
       <div className="person-center">
-        <HalfPanel title="个人中心" className="person-center-halfpanel">
+        <HalfPanel
+          title={<FM id="PersonCenter.title" defaultMessage="个人中心" />}
+          className="person-center-halfpanel"
+        >
           <div className="person-center-tabs">
             <Spin spinning={loading}>
               <Tabs type="card" onChange={this.onChange} activeKey={activeKey}>
