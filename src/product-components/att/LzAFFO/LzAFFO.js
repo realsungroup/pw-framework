@@ -35,6 +35,7 @@ export default class LzAFFO extends React.Component {
   }
 
   componentDidMount = () => {
+    window.lzCustomEvent = window.lzCustomEvent ? window.lzCustomEvent : {};
     window.lzCustomEvent.ee = new EventEmitter();
     // 监听 批量添加完成
     window.lzCustomEvent.ee.addListener('batchAdd', this.retHandleBatchAdd());

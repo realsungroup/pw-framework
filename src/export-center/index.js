@@ -14,5 +14,9 @@ export {
   LzDataHandling,
   LzDataAnalyse,
   LzMyCA,
-  LzClassifySet
+  LzClassifySet,
+  LzAFFO,
+  LzWorkOvertime,
+  LzTabsDataDashboard,
+  LzTeamSet
 } from '../product-components/att/loadableComponents';
