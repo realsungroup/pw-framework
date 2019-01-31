@@ -102,9 +102,9 @@
       display: none;
     }
     &__client-logo {
-      float: left;
-      transform: none;
-      position: static;
+      left: 16px;
+      top: 50%;
+      transform: translate(0, -50%);
     }
   }
 }
@@ -115,10 +115,9 @@
     padding-right: 16px;
     height: 60px;
     &__client-logo {
-      float: left;
+      transform: translate(-32px, -50%) scale(0.5);
       height: 100%;
       line-height: 60px;
-      transform: scale(0.5);
     }
     &__right-btns {
       float: right;

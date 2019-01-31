@@ -1,13 +1,13 @@
 import React from 'react';
-import { message } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 import logoImg from '../../../assets/logo.png';
-import { setThemeColor, setLanguage } from 'Util/api';
 import UserInfo from '../../components/UserInfo';
 import './PageHeader.less';
+
+const { homeLogoSize } = window.pwConfig;
 
 class PageHeader extends React.Component {
   state = {
@@ -57,7 +57,12 @@ class PageHeader extends React.Component {
 
         <div className="page-header__client-logo">
           <Link to="/" style={{ display: 'block' }}>
-            <img src={logoImg} alt="logo" className="page-header__logo-img" />
+            <img
+              src={logoImg}
+              alt="logo"
+              className="page-header__logo-img"
+              style={{ height: homeLogoSize }}
+            />
           </Link>
         </div>
         <div className="page-header__right-btns">

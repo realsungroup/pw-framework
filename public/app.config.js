@@ -61,7 +61,7 @@ pwConfig.businessOptionalResIds = [
  */
 // 默认主题色
 pwConfig.themeColor = {
-  '@primary-color': 'rgba(102,68,135,1)'
+  '@primary-color': '#004a95'
 };
 
 /**
@@ -73,24 +73,11 @@ pwConfig.lockScreenWaitTime = 600;
 /**
  * logo 配置
  */
-// 首页 logo 配置
-pwConfig.logoIcon = {
-  // logo 字体图标颜色模式：
-  // 'normal' 表示使用字体图标自带的颜色，不使用主题色
-  // 'theme' 表示使用主题色
-  colorMode: 'normal',
-  // 字体图标类名
-  className: 'icon-OECHSLER',
-  // 尺寸：px
-  size: 72
-};
+// 首页 logo 尺寸
+pwConfig.homeLogoSize = 42;
 
-// 登录页 logo 配置
-pwConfig.loginLogoIcon = {
-  colorMode: 'normal',
-  className: 'icon-OECHSLER',
-  size: 90
-};
+// 登录页 logo 尺寸
+pwConfig.loginLogoSize = 42;
 
 /**
  * 上传文件配置
