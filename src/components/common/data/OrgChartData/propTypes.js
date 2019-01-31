@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 export const defaultProps = {
-  nodeId: 'id',
-  parentNodeId: 'pid',
+  idField: 'id',
+  pidField: 'pid',
   template: 'ana',
   lazyLoading: true,
   isExpandAllChildren: true,
@@ -31,13 +31,13 @@ export const propTypes = {
    * 节点 id 对应的字段
    * 默认：'id'
    */
-  nodeId: PropTypes.string,
+  idField: PropTypes.string,
 
   /**
    * 父节点 id 对应的字段
    * 默认：'pid'
    */
-  parentNodeId: PropTypes.string,
+  pidField: PropTypes.string,
 
   /**
    * 资源 id

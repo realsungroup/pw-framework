@@ -19,31 +19,42 @@ const BALKANGraph = window.BALKANGraph;
 /**
  * 根据节点数据获取最顶层节点的 id
  * @param {array} nodes 节点数据
- * @param {string} id id 字段
- * @param {string} pid pid 字段
+ * @param {string} idField id 对应的字段
+ * @param {string} pidField pid 对应的字段
  */
-const getRootIds = (nodes, id, pid) => {
+const getRootIds = (nodes, idField, pidField) => {
   const ret = [];
-  const len = nodes.length;
+  const len = Array.isArray(nodes) ? nodes.length : 0;
   for (let i = 0; i < len; i++) {
     let hasPid = false;
     for (let j = 0; j < len; j++) {
-      if (nodes[i][pid] === nodes[j][id]) {
+      if (nodes[i][pidField] === nodes[j][idField]) {
         hasPid = true;
         break;
       }
     }
-    if (hasPid) {
-      ret.push(nodes[i][id]);
+    if (!hasPid) {
+      ret.push(nodes[i][idField]);
     }
   }
   return ret;
 };
 
-const filterFields = (nodes, id, pid) => {
+const dealNodes = (nodes, idField, pidField, rootIds) => {
+  nodes.forEach(item => {
+    item.id = parseInt(item[idField], 10);
+    item.pid = parseInt(item[pidField], 10);
+    if (rootIds.indexOf(item[idField]) !== -1) {
+      delete item.pid;
+    }
+  });
+  return nodes;
+};
+
+const filterFields = (nodes, idField, pidField) => {
   nodes.forEach(node => {
-    node[id] = node.id;
-    node[pid] = node.pid;
+    node[idField] = node.id;
+    node[pidField] = node.pid;
     delete node.id;
     delete node.pid;
   });
@@ -92,10 +103,11 @@ class OrgChartData extends React.Component {
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
     this.p4 && this.p4.cancel();
+    this.p5 && this.p5.cancel();
   };
 
   init = props => {
-    this._rootIds = props.rootIds;
+    this._rootIds = [...props.rootIds];
 
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
@@ -108,13 +120,13 @@ class OrgChartData extends React.Component {
   };
 
   getData = async () => {
-    const { resid, nodeId, parentNodeId, httpGetFormData } = this.props;
+    const { resid, idField, pidField, httpGetFormData } = this.props;
     const { level } = this.state;
     const pArr = [
       http().getNodesData({
         resid,
-        ColumnOfID: nodeId,
-        ColumnOfPID: parentNodeId,
+        ColumnOfID: idField,
+        ColumnOfPID: pidField,
         ProductIDs: this._rootIds.join(','),
         Levels: level
       }),
@@ -135,16 +147,12 @@ class OrgChartData extends React.Component {
     // 窗体数据
     const resFormData = res[1];
 
-    const nodes = resNodes.nodes;
-    nodes.forEach(item => (item.pid = item.parentId));
+    const nodes = dealNodes(resNodes.nodes, idField, pidField, this._rootIds);
+    this._nodes = nodes;
 
     this._formData = { ...resFormData };
-    this._nodes = nodes;
     this._data = getDataProp(resFormData, {}, false, false);
-
-    setTimeout(() => {
-      this.renderOrgChart(nodes);
-    });
+    this.renderOrgChart(nodes);
   };
 
   handleAdd = (sender, node) => {
@@ -389,16 +397,15 @@ class OrgChartData extends React.Component {
   handleLevelMove = async direction => {
     this.setState({ loading: true });
     const { level } = this.state;
-    const { resid, nodeId, parentNodeId } = this.props;
-
+    const { resid, idField, pidField } = this.props;
     this.p5 = makeCancelable(
       http().getMoveNodes({
         resid,
         Levels: level,
         MoveDirection: direction,
         MoveLevels: 1,
-        ColumnOfID: nodeId,
-        ColumnOfPID: parentNodeId,
+        ColumnOfID: idField,
+        ColumnOfPID: pidField,
         ProductIDs: this._rootIds.join(',')
       })
     );
@@ -410,15 +417,21 @@ class OrgChartData extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-
-    const nodes = res.nodes;
+    if (!res.nodes) {
+      this.setState({ loading: false });
+      return message.info('已经到最底层了');
+    }
 
     // 设置新的根节点 id
-    this._rootIds = getRootIds(nodes, nodeId, parentNodeId);
+    this._rootIds = getRootIds(res.nodes, idField, pidField);
 
-    // 更新图表
+    const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
+    this._nodes = nodes;
+
+    // 更新图表所在的父节点
     this.updateChart();
 
+    // 渲染图表
     this.renderOrgChart(nodes);
   };
 

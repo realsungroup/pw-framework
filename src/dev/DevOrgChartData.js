@@ -53,13 +53,15 @@ class App extends Component {
             chartWrapId="org-chart-wrap"
             level={3}
             isExpandAllChildren={true}
-            parentNodeId="parentId"
+            pidField="parentId"
+            idField="id"
             enableDragDrop
             showFields={{
-              field_0: 'name',
+              field_0: 'names',
               field_1: 'title',
               img_0: 'image'
             }}
+            rootIds={[61, 67]}
           />
         </div>
         <Button onClick={this.handleLoginClick} type="primary">

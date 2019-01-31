@@ -34,7 +34,6 @@ const FormItem = Form.Item;
 
 class RightBtns extends React.Component {
   state = {
-    messageCount: 20,
     visible: false,
     oldpass: '',
     newpass: '',
@@ -270,7 +269,8 @@ class RightBtns extends React.Component {
         })
         .catch(err => {
           this.setState({ loading: false });
-          message.error(err.message);
+          console.error(err);
+          return message.error(err.message);
         });
     }, 200);
     let res;
@@ -297,7 +297,6 @@ class RightBtns extends React.Component {
 
   handleRadioGroupChange = async e => {
     const value = e.target.value;
-    this.setState({ language: value });
     let res;
     try {
       res = await setLanguage(value);
@@ -306,10 +305,11 @@ class RightBtns extends React.Component {
     }
     if (res.OpResult === 'Y') {
       this.modLanguage(value);
+      this.setState({ language: value });
       message.success('切换语言成功，即将重新加载本页');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
     }
   };
 
@@ -449,17 +449,14 @@ class RightBtns extends React.Component {
             title={<div style={{ textAlign: 'right' }}>选择语言</div>}
             trigger="click"
             content={
-              <React.Fragment>
-                <Radio.Group
-                  value={language}
-                  onChange={this.handleRadioGroupChange}
-                >
-                  <Radio.Button value="中文">中文</Radio.Button>
-                  <Radio.Button value="English">English</Radio.Button>
-                </Radio.Group>
-              </React.Fragment>
+              <Radio.Group
+                value={language}
+                onChange={this.handleRadioGroupChange}
+              >
+                <Radio.Button value="中文">中文</Radio.Button>
+                <Radio.Button value="English">English</Radio.Button>
+              </Radio.Group>
             }
-            trigger="click"
           >
             <HeaderBtn
               className="right-btns__header-btn"

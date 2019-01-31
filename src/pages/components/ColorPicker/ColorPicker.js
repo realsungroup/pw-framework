@@ -1,6 +1,8 @@
 import React from 'react';
 import { SketchPicker } from 'react-color';
 
+const { themeColor } = window.pwConfig;
+
 export default class ColorPicker extends React.Component {
   render() {
     const { onChangeComplete, color } = this.props;
@@ -11,7 +13,7 @@ export default class ColorPicker extends React.Component {
           onChangeComplete(color.hex, color);
         }}
         presetColors={[
-          window.themeColor['@primary-color'],
+          themeColor['@primary-color'],
           '#D0021B',
           '#F5A623',
           '#F8E71C',
