@@ -1,6 +1,5 @@
 import React from 'react';
 import Panel from '../../../components/Panel';
-import AppSelector from './AppSelector';
 import {
   getAllAppLinks,
   removeFns,
@@ -8,11 +7,12 @@ import {
 } from '../../../../util/api';
 import SelectedApp from './SelectedApp';
 import { Modal, Button, Tree, message, Spin } from 'antd';
-
 import './OptionalApps.less';
 import { clone } from '../../../../lib/util/util';
-const TreeNode = Tree.TreeNode;
+import { FormattedMessage as FM } from 'react-intl';
 
+const TreeNode = Tree.TreeNode;
+const { businessOptionalResIds } = window.pwConfig;
 export default class OptionalApps extends React.Component {
   state = {
     modalVisible: false,
@@ -171,7 +171,7 @@ export default class OptionalApps extends React.Component {
   };
 
   getAllAppLinks = async () => {
-    const residStr = window.businessOptionalResIds.join(',');
+    const residStr = businessOptionalResIds.join(',');
     let res;
     try {
       res = await getAllAppLinks(residStr);
@@ -250,12 +250,14 @@ export default class OptionalApps extends React.Component {
             destroyOnClose={true}
             title={
               <div className="header">
-                <span className="title">可选功能</span>
+                <span className="title">
+                  <FM id="Setting.rightTitle" defaultMessage="可选的功能" />
+                </span>
               </div>
             }
             footer={
               <Button type="primary" block onClick={this.chooseFn}>
-                确定
+                <FM id="common.ok" defaultMessage="确定" />
               </Button>
             }
           >

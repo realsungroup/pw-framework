@@ -5,10 +5,11 @@ const common = {
   'common.view': 'View',
   'common.delete': 'Delete',
   'common.sureDelete': 'Are you sure to delete',
-
   'common.deleteSuccess': 'Delete success',
   'common.addSuccess': 'Add success',
-  'common.modifySuccess': 'Modify success'
+  'common.modifySuccess': 'Modify success',
+  'common.ok': '确定',
+  'common.cancel': '取消'
 };
 
 // HomeBody

@@ -76,10 +76,10 @@ class Login extends React.Component {
 
   handleResetPassConfirm = async () => {
     const { registerEmail } = this.state;
-    let res;
     try {
-      res = await resetPassByEmail(registerEmail, enterprisecode);
+      await resetPassByEmail(registerEmail, enterprisecode);
     } catch (err) {
+      console.error(err);
       return message.error(err.message);
     }
   };
@@ -95,7 +95,6 @@ class Login extends React.Component {
       if (err) {
         return;
       }
-      console.log({ values });
       const { loginMode } = this.state;
       const { userName, password } = values;
       let res;
@@ -186,7 +185,6 @@ class Login extends React.Component {
     }
     const { getFieldDecorator } = this.props.form;
     const { intl } = this.props;
-    console.log({ intl });
     return (
       <div className="login">
         <div className="login__left-part" />

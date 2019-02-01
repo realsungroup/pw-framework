@@ -10,9 +10,6 @@ import {
   WorkbenchSetting,
   GetConfig,
   Reminder
-
-  // TaskNotice,
-  // ReportTable
 } from '../loadablePage';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
@@ -87,6 +84,7 @@ export default class Container extends React.Component {
       try {
         res = await defaultLogin(this.userCode, password);
       } catch (err) {
+        console.error(err);
         return message.error(err.message);
       }
 
@@ -103,6 +101,7 @@ export default class Container extends React.Component {
           domainUserField
         );
       } catch (err) {
+        console.error(err);
         return message.error(err.message);
       }
     }
@@ -133,6 +132,7 @@ export default class Container extends React.Component {
     }
     return (
       <div className="page-container">
+        {/* 锁屏 */}
         {username && (
           <LockScreen
             className="app-lock-screen-wrap"
@@ -148,18 +148,12 @@ export default class Container extends React.Component {
               <div className="app-lock-screen__username">{username}</div>
 
               <div className="app-lock-screen__input">
-                <Input
-                  id="pass"
-                  name="pass"
-                  type="password"
+                <Input.Password
                   value={password}
                   onChange={this.handlePassChange}
-                  placeholder="请输入密码"
                   style={{ width: 200, marginRight: 10 }}
-                  autoComplete="new-password"
                   onPressEnter={this.handleSubmit}
                 />
-
                 <Button
                   type="primary"
                   shape="circle"
@@ -172,6 +166,7 @@ export default class Container extends React.Component {
             </div>
           </LockScreen>
         )}
+        {/* 页面 */}
         <PageHeader
           searchBox={searchBox}
           title={userInfo}

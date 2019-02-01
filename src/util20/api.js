@@ -38,7 +38,7 @@ http.setResponseInterceptors(
     ) {
       return res;
     } else {
-      throw new Error(res.ErrMsg || res.message);
+      throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
     }
   },
   function(error) {
