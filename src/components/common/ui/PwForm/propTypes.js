@@ -8,8 +8,11 @@ export const defaultProps = {
   hasCancel: true,
   displayMode: 'default',
   saveText: '保存',
+  enSaveText: 'Save',
   cancelText: '取消',
-  editText: '编辑'
+  enCancelText: 'Cancel',
+  editText: '编辑',
+  enEditText: 'Edit'
 };
 
 export const propTypes = {

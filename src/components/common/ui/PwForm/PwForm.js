@@ -4,7 +4,9 @@ import LzRowCols from '../LzRowCols';
 import PwFormFooter from './PwFormFooter/index';
 import Control from '../Control';
 import { propTypes, defaultProps } from './propTypes';
+import { injectIntl } from 'react-intl';
 import './PwForm.less';
+import { getIntlVal } from 'Util20/util';
 
 const Fragment = React.Fragment;
 const Panel = Collapse.Panel;
@@ -140,9 +142,12 @@ class PwForm extends React.Component {
       saveText,
       cancelText,
       editText,
-      className
+      className,
+      enSaveText,
+      enCancelText,
+      enEditText
     } = this.props;
-
+    const { intl } = this.props;
     return (
       <div className={`pw-form ${className}`} style={{ width, height }}>
         {/* body */}
@@ -157,13 +162,13 @@ class PwForm extends React.Component {
           onCancel={onCancel}
           mode={mode}
           form={this.props.form}
-          saveText={saveText}
-          cancelText={cancelText}
-          editText={editText}
+          saveText={getIntlVal(intl.locale, enSaveText, saveText)}
+          cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
+          editText={getIntlVal(intl.locale, enEditText, editText)}
         />
       </div>
     );
   }
 }
 
-export default Form.create()(PwForm);
+export default injectIntl(Form.create()(PwForm));

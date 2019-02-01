@@ -40,8 +40,11 @@ const btnSizeMap = {
 
 const modalTitleMap = {
   add: '添加记录',
+  enadd: 'Add Record',
   modify: '修改记录',
-  view: '查看记录'
+  enmodify: 'Modify Record',
+  view: '查看记录',
+  enview: 'View Record'
 };
 /**
  * TableData
@@ -560,7 +563,7 @@ class TableData extends React.Component {
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
-
+    const { intl } = this.props;
     if (!this._recordFormData || !this._dealedRecordFormData) {
       return message.info('正在请求窗体数据，请稍等...');
     }
@@ -577,7 +580,7 @@ class TableData extends React.Component {
 
     openRecordForm({
       type: recordFormType,
-      title: modalTitleMap[recordFormShowMode],
+      title: modalTitleMap[intl.locale + recordFormShowMode],
       formProps,
       data: newData,
       operation: newOperation,
