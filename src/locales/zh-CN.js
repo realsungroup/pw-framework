@@ -8,8 +8,8 @@ const common = {
 
   'common.deleteSuccess': '删除成功',
   'common.addSuccess': '添加成功',
-  'common.modifySuccess': '修改成功',
-}
+  'common.modifySuccess': '修改成功'
+};
 
 // HomeBody
 const HomeBody = {
@@ -72,13 +72,16 @@ const Setting = {
 // TableData
 const TableData = {
   'TableData.pleaseSelectARecord': '请选择一条记录',
-  'TableData.sureCancelEdit': '您确定要取消编辑吗？',
+  'TableData.sureCancelEdit': '您确定要取消编辑吗？'
 };
 
-// PwTable
-const PwTable = {
-  
-}
+// OrgChartData
+const OrgChartData = {
+  'OrgChartData.setting': '设置',
+  'OrgChartData.saveStructure': '保存结构',
+  'OrgChartData.up': '上一层',
+  'OrgChartData.down': '下一层'
+};
 
 export default {
   ...common,
@@ -88,6 +91,7 @@ export default {
   ...PersonCenter,
   ...Setting,
   ...TableData,
+  ...OrgChartData,
   add: '添加',
   edit: '编辑',
   save: '保存',

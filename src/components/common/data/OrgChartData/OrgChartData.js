@@ -12,6 +12,7 @@ import withModalDrawer from 'Common/hoc/withModalDrawer';
 import { modifyIcon } from './icon';
 import OrgChartTools from './OrgChartTools';
 import LevelsJumpBtns from './LevelsJumpBtns';
+import { FormattedMessage as FM } from 'react-intl';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
@@ -488,7 +489,7 @@ class OrgChartData extends React.Component {
             type="primary"
             className="org-chart-data__save-btn"
           >
-            保存结构
+            <FM id="OrgChartData.saveStructure" defaultMessage="保存结构" />
           </Button>
           <OrgChartTools
             status={toolsStatus}

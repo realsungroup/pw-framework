@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './LevelsJumpBtns.less';
-import { Radio } from 'antd';
 import IconWithTooltip from 'Common/ui/IconWithTooltip';
-import classNames from 'classnames';
-
+import { FormattedMessage as FM } from 'react-intl';
 /**
  * 层级跳转按钮
  */
@@ -47,14 +45,14 @@ export default class LevelsJumpBtns extends React.Component {
     return (
       <div className="levels-jump-btns">
         <IconWithTooltip
-          tip="上一层"
+          tip={<FM id="OrgChartData.up" defaultMessage="上一层" />}
           iconClass="icon-org-chart-arrow-up"
           onClick={this.handleLevelUp}
           className={`${template === 'luba' ? 'luba' : ''}`}
         />
         <br />
         <IconWithTooltip
-          tip="下一层"
+          tip={<FM id="OrgChartData.down" defaultMessage="下一层" />}
           iconClass="icon-org-chart-arrow-down"
           placement="bottom"
           onClick={this.handleLevelDown}

@@ -7,9 +7,10 @@ import Draggable from 'react-draggable';
 import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
 import { FNLIST, TEMPLATES, ORIENTATIONS } from './constants';
+import { FormattedMessage as FM } from 'react-intl';
+
 const RadioGroup = Radio.Group;
 const prefix = 'org-chart-tools';
-const Fragment = React.Fragment;
 
 /**
  * 组织图
@@ -176,9 +177,11 @@ export default class OrgChartTools extends React.Component {
               className={prefix}
               disabled
             >
-              <div className={`${prefix}__wrap ${prefix}__wrap--${selectedTemplate}`}>
+              <div
+                className={`${prefix}__wrap ${prefix}__wrap--${selectedTemplate}`}
+              >
                 <div className={`${prefix}__header`}>
-                  工具栏{' '}
+                  <FM id="OrgChartData.setting" defaultMessage="设置" />
                   <i
                     className="iconfont icon-org-chart-min-btn"
                     onClick={this.handleMin}

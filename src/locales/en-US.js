@@ -8,7 +8,7 @@ const common = {
 
   'common.deleteSuccess': 'Delete success',
   'common.addSuccess': 'Add success',
-  'common.modifySuccess': 'Modify success',
+  'common.modifySuccess': 'Modify success'
 };
 
 // HomeBody
@@ -74,6 +74,14 @@ const TableData = {
   'TableData.pleaseSelectARecord': 'Please select a record'
 };
 
+// OrgChartData
+const OrgChartData = {
+  'OrgChartData.setting': 'Setting',
+  'OrgChartData.saveStructure': 'Save Structure',
+  'OrgChartData.up': 'Up',
+  'OrgChartData.down': 'Down'
+};
+
 export default {
   ...common,
   ...HomeBody,
@@ -82,6 +90,7 @@ export default {
   ...PersonCenter,
   ...Setting,
   ...TableData,
+  ...OrgChartData,
   add: 'add',
   edit: 'edit',
   cancel: 'cancel',
