@@ -72,6 +72,17 @@ const dealNodes = (nodes, idField, pidField, rootIds) => {
   return nodes;
 };
 
+const dealTags = tags => {
+  for (let key in tags) {
+    if (tags[key].groupState) {
+      tags[key].groupState = BALKANGraph.EXPAND;
+    } else {
+      tags[key].groupState = BALKANGraph.COLLAPSE;
+    }
+  }
+  return tags;
+};
+
 const filterFields = (nodes, idField, pidField) => {
   nodes.forEach(node => {
     node[idField] = node.id;
@@ -164,7 +175,16 @@ class OrgChartData extends React.Component {
         ColumnOfID: idField,
         ColumnOfPID: pidField,
         ProductIDs: this._rootIds.join(','),
-        Levels: level
+        Levels: level,
+        tags: [
+          {
+            ResourceOfTag: '602358161328',
+            SourceColumnOfGroupName: 'C3_602358186727',
+            SourceColumnOfTagName: 'C3_602358186916',
+            ColumnOfTagName: 'C3_602347242284',
+            IsGroupTag: true
+          }
+        ]
       }),
       httpGetFormData(resid, 'default')
     ];
@@ -183,12 +203,15 @@ class OrgChartData extends React.Component {
     const resFormData = res[1];
 
     const nodes = dealNodes(resNodes.nodes, idField, pidField, this._rootIds);
+
+    const tags = dealTags(resNodes.tags);
+
     this._nodes = nodes;
 
     this._formData = { ...resFormData };
     this._data = getDataProp(resFormData, {}, false, false);
 
-    this.renderOrgChart(nodes);
+    this.renderOrgChart(nodes, tags);
   };
 
   handleAdd = (sender, node) => {
@@ -198,7 +221,7 @@ class OrgChartData extends React.Component {
 
   handleAddNode = async (sender, node) => {
     const pid = Number(node.pid);
-    const records = { [this.props.parentNodeId]: pid };
+    const records = { [this.props.pidField]: pid };
     this.p4 = makeCancelable(
       http().addRecords({
         resid: this.props.resid,
@@ -339,7 +362,7 @@ class OrgChartData extends React.Component {
     this.openRecordForm('modify', node);
   };
 
-  getOrgChartOptions = nodes => {
+  getOrgChartOptions = (nodes, tags) => {
     const { lazyLoading, showFields, intl } = this.props;
     const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
@@ -347,7 +370,7 @@ class OrgChartData extends React.Component {
       padding,
       template,
 
-      scaleMin: 0.1,
+      scaleMin: 0.3,
       mouseScroolBehaviour: BALKANGraph.action.zoom,
 
       enableDelete: true,
@@ -368,6 +391,8 @@ class OrgChartData extends React.Component {
 
       // 节点数据
       nodes,
+
+      tags,
 
       nodeMenu: {
         // 增删改
@@ -411,12 +436,15 @@ class OrgChartData extends React.Component {
     return options;
   };
 
-  renderOrgChart = nodes => {
-    const options = this.getOrgChartOptions(nodes);
+  renderOrgChart = (nodes, tags) => {
+    console.log({ tags });
+    const options = this.getOrgChartOptions(nodes, tags);
+    console.log({ options });
     this.chart = new OrgChart(
       document.getElementById(this.props.chartId),
       options
     );
+    console.log({ options });
     this.setState({ loading: false });
   };
 
@@ -506,7 +534,16 @@ class OrgChartData extends React.Component {
         ColumnOfID: idField,
         ColumnOfPID: pidField,
         ProductIDs: this._rootIds.join(','),
-        Levels: value
+        Levels: value,
+        tags: [
+          {
+            ResourceOfTag: '602358161328',
+            SourceColumnOfGroupName: 'C3_602358186727',
+            SourceColumnOfTagName: 'C3_602358186916',
+            ColumnOfTagName: 'C3_602347242284',
+            IsGroupTag: true
+          }
+        ]
       })
     );
 
@@ -526,11 +563,13 @@ class OrgChartData extends React.Component {
     const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
     this._nodes = nodes;
 
+    const tags = dealTags(res.tags);
+
     // 更新图表所在的父节点
     this.updateChart();
 
     // 渲染图表
-    this.renderOrgChart(nodes);
+    this.renderOrgChart(nodes, tags);
   };
 
   updateChart = () => {
