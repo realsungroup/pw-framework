@@ -2,8 +2,8 @@ import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
-import { clone } from 'Util20/util';
-import { message, Modal, Spin, Button } from 'antd';
+import { clone, getIntlVal } from 'Util20/util';
+import { message, Modal, Spin, Button, Slider } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
@@ -12,10 +12,30 @@ import withModalDrawer from 'Common/hoc/withModalDrawer';
 import { modifyIcon } from './icon';
 import OrgChartTools from './OrgChartTools';
 import LevelsJumpBtns from './LevelsJumpBtns';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
+
+// img_0
+OrgChart.templates.rony.img_0 =
+  '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="50" y="-40" width="80" height="80"></image>';
+
+// field_n
+OrgChart.templates.rony.field_0 =
+  '<text class="field_0" width="130" text-anchor="middle" text-overflow="ellipsis" x="80" style="font-size: 16px;" fill="#000" y="70">{val}</text>';
+
+OrgChart.templates.rony.field_1 =
+  '<text class="field_1" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="100" >{val}</text>';
+
+OrgChart.templates.rony.field_2 =
+  '<text class="field_2" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="130">{val}</text>';
+
+OrgChart.templates.rony.field_3 =
+  '<text class="field_3" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="160">{val}</text>';
+
+OrgChart.templates.rony.field_4 =
+  '<text class="field_4" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="190">{val}</text>';
 
 /**
  * 根据节点数据获取最顶层节点的 id
@@ -80,7 +100,7 @@ class OrgChartData extends React.Component {
       padding
     } = props;
 
-    this.init(props);
+    this.init();
 
     this.state = {
       loading: true,
@@ -107,8 +127,8 @@ class OrgChartData extends React.Component {
     this.p5 && this.p5.cancel();
   };
 
-  init = props => {
-    this._rootIds = [...props.rootIds];
+  init = () => {
+    this._rootIds = [];
 
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
@@ -121,8 +141,23 @@ class OrgChartData extends React.Component {
   };
 
   getData = async () => {
-    const { resid, idField, pidField, httpGetFormData } = this.props;
+    const {
+      resid,
+      idField,
+      pidField,
+      httpGetFormData,
+      rootIdsResid
+    } = this.props;
     const { level } = this.state;
+    this.p6 = makeCancelable(http().getTable({ resid: rootIdsResid }));
+    let res;
+    try {
+      res = await this.p6.promise;
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    this._rootIds = res.data.map(item => item.C3_602347243263);
     const pArr = [
       http().getNodesData({
         resid,
@@ -135,7 +170,6 @@ class OrgChartData extends React.Component {
     ];
 
     this.p1 = makeCancelable(Promise.all(pArr));
-    let res;
     try {
       res = await this.p1.promise;
     } catch (err) {
@@ -153,6 +187,7 @@ class OrgChartData extends React.Component {
 
     this._formData = { ...resFormData };
     this._data = getDataProp(resFormData, {}, false, false);
+
     this.renderOrgChart(nodes);
   };
 
@@ -192,6 +227,7 @@ class OrgChartData extends React.Component {
   };
 
   handleNodeClick = (sender, node) => {
+    console.log({ node });
     this.openRecordForm('view', node, sender);
   };
 
@@ -204,14 +240,13 @@ class OrgChartData extends React.Component {
       formProps
     } = this.props;
     const containerProps = {
+      destroyOnClose: true,
       ...recordFormContainerProps
     };
 
     if (recordFormType === 'drawer') {
       containerProps.onClose = this.handleRecordFormClose;
     }
-
-    // const operation = 'view';
     const record = { ...node };
     const data = setDataInitialValue(
       this._data,
@@ -257,15 +292,20 @@ class OrgChartData extends React.Component {
     this.props.closeModalOrDrawer();
     this.chart.updateNode({
       ...formData,
-      id: formData[this.props.nodeId],
-      pid: formData[this.props.parentNodeId]
+      id: formData[this.props.idField],
+      pid: formData[this.props.pidField]
     });
   };
 
   handleRemove = (sender, nodeId) => {
+    const { intl } = this.props;
     Modal.confirm({
-      title: '提示',
-      content: '是否删除该节点？',
+      title: getIntlVal(intl.locale, 'Prompt', '提示'),
+      content: getIntlVal(
+        intl.locale,
+        'Are you sure to delete this node?',
+        '是否删除该节点？'
+      ),
       onOk: () => this.handleRemoveConfirmOk(sender, nodeId)
     });
     return false;
@@ -293,18 +333,23 @@ class OrgChartData extends React.Component {
   };
 
   handleModifyClick = id => {
-    const { nodeId } = this.props;
+    const { idField } = this.props;
     id = parseInt(id, 10);
-    const node = this._nodes.find(node => node[nodeId] === id);
+    const node = this._nodes.find(node => node[idField] === id);
     this.openRecordForm('modify', node);
   };
 
   getOrgChartOptions = nodes => {
-    const { lazyLoading, showFields } = this.props;
+    const { lazyLoading, showFields, intl } = this.props;
+    const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
     const options = {
       padding,
       template,
+
+      scaleMin: 0.1,
+      mouseScroolBehaviour: BALKANGraph.action.zoom,
+
       enableDelete: true,
 
       orientation: BALKANGraph.orientation[orientation],
@@ -312,8 +357,14 @@ class OrgChartData extends React.Component {
       // 可拖动节点
       enableDragDrop,
 
-      lazyLoading,
       nodeBinding: showFields,
+
+      // 高性能
+      lazyLoading,
+      // showXScroll: BALKANGraph.scroll.visible,
+      // mouseScroolBehaviour: BALKANGraph.action.xScroll,
+      // layout: BALKANGraph.mixed,
+      // scaleInitial: BALKANGraph.match.width,
 
       // 节点数据
       nodes,
@@ -322,24 +373,24 @@ class OrgChartData extends React.Component {
         // 增删改
         modify: {
           icon: modifyIcon,
-          text: '修改',
+          text: getIntlVal(locale, 'Modify', '修改'),
           onClick: this.handleModifyClick
         },
-        add: { text: '添加' },
-        remove: { text: '移除' },
+        add: { text: getIntlVal(locale, 'Add', '添加') },
+        remove: { text: getIntlVal(locale, 'Delete', '移除') },
 
         // 导出以某个节点为根节点的文件
-        pdf: { text: '导出 PDF' },
-        png: { text: '导出 PNG' },
-        svg: { text: '导出 SVG' }
+        pdf: { text: getIntlVal(locale, 'Export PDF', '导出 PDF') },
+        png: { text: getIntlVal(locale, 'Export PNG', '导出 PNG') },
+        svg: { text: getIntlVal(locale, 'Export SVG', '导出 SVG') }
       },
 
       // 导出文件的菜单
       menu: {
-        pdf: { text: '导出 PDF' },
-        png: { text: '导出 PNG' },
-        svg: { text: '导出 SVG' },
-        csv: { text: '导出 CSV' }
+        pdf: { text: getIntlVal(locale, 'Export PDF', '导出 PDF') },
+        png: { text: getIntlVal(locale, 'Export PNG', '导出 PNG') },
+        svg: { text: getIntlVal(locale, 'Export SVG', '导出 SVG') },
+        csv: { text: getIntlVal(locale, 'Export CSV', '导出 CSV') }
       },
 
       // 自定义表单：此自定义表单用于覆盖默认的表单
@@ -357,7 +408,6 @@ class OrgChartData extends React.Component {
       // 查看节点表单
       onClick: this.handleNodeClick
     };
-
     return options;
   };
 
@@ -436,6 +486,53 @@ class OrgChartData extends React.Component {
     this.renderOrgChart(nodes);
   };
 
+  handleLevelChange = e => {
+    const value = e.target.value;
+    if (
+      /^\d.$/.test(value) &&
+      (parseInt(value, 10) > 16 || parseInt(value, 10) <= 0)
+    ) {
+      return;
+    }
+    this.setState({ level: value });
+  };
+
+  handleLevelConfirm = async value => {
+    this.setState({ loading: true });
+    const { resid, idField, pidField } = this.props;
+    this.p7 = makeCancelable(
+      http().getNodesData({
+        resid,
+        ColumnOfID: idField,
+        ColumnOfPID: pidField,
+        ProductIDs: this._rootIds.join(','),
+        Levels: value
+      })
+    );
+
+    let res;
+    try {
+      res = await this.p7.promise;
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    if (!res.nodes) {
+      this.setState({ loading: false });
+      return message.info('111');
+    }
+
+    const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
+    this._nodes = nodes;
+
+    // 更新图表所在的父节点
+    this.updateChart();
+
+    // 渲染图表
+    this.renderOrgChart(nodes);
+  };
+
   updateChart = () => {
     const { chartId, chartWrapId } = this.props;
     // 移除节点
@@ -449,9 +546,14 @@ class OrgChartData extends React.Component {
   };
 
   handleSaveOrgClick = () => {
+    const { intl } = this.props;
     Modal.confirm({
-      title: '提示',
-      content: '您确定要保存该结构吗？',
+      title: getIntlVal(intl.locale, 'Prompt', '提示'),
+      content: getIntlVal(
+        intl.locale,
+        'Are you sure to save structure?',
+        '您确定要保存该结构吗？'
+      ),
       onOk: this.handleSaveOrgChartData
     });
   };
@@ -479,7 +581,7 @@ class OrgChartData extends React.Component {
   };
 
   render() {
-    const { template, orientation, toolsStatus, loading } = this.state;
+    const { template, orientation, toolsStatus, loading, level } = this.state;
     const { chartId, chartWrapId } = this.props;
     return (
       <Spin spinning={loading}>
@@ -499,6 +601,9 @@ class OrgChartData extends React.Component {
             selectedOrientation={orientation}
             onMin={this.handleMin}
             onMax={this.handleMax}
+            level={level}
+            onLevelChange={this.handleLevelChange}
+            onLevelConfirm={this.handleLevelConfirm}
           />
           <LevelsJumpBtns
             onLevelUp={() => this.handleLevelMove(0)}
@@ -515,6 +620,7 @@ class OrgChartData extends React.Component {
 
 const composedHoc = compose(
   withHttpGetFormData,
-  withModalDrawer()
+  withModalDrawer(),
+  injectIntl
 );
 export default composedHoc(OrgChartData);

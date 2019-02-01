@@ -6,7 +6,7 @@ export const propTypes = {
   /**
    * 提示信息
    */
-  tip: PropTypes.string.isRequired,
+  tip: PropTypes.node.isRequired,
   /**
    * 字体图标类名
    */

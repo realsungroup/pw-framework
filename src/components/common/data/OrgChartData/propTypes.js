@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 export const defaultProps = {
   idField: 'id',
   pidField: 'pid',
-  template: 'ana',
+  template: 'rony',
   lazyLoading: true,
   isExpandAllChildren: true,
   isClassifyLayout: false,
   recordFormType: 'drawer',
   enableDragDrop: false,
-  rootIds: ['0'],
+  // rootIds: ['0'],
   level: 16,
   recordFormContainerProps: {},
   orientation: 'top',
@@ -26,6 +26,11 @@ export const propTypes = {
    * OrgChart 父节点的 id
    */
   chartWrapId: PropTypes.string.isRequired,
+
+  /**
+   * 获取根节点的资源 id
+   */
+  rootIdsResid: PropTypes.number.isRequired,
 
   /**
    * 节点 id 对应的字段
@@ -46,7 +51,7 @@ export const propTypes = {
 
   /**
    * 节点所使用的模板
-   * 默认：'ana'
+   * 默认：'rony'
    */
   template: PropTypes.oneOf([
     'luba',
@@ -111,7 +116,7 @@ export const propTypes = {
    * 根节点 id：可以用多个根节点 id
    * 默认：['0']
    */
-  rootIds: PropTypes.array,
+  // rootIds: PropTypes.array,
 
   /**
    * 显示的字段：在卡片上显示的字段（支持最多 6 个字段）

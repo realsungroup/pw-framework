@@ -3,20 +3,28 @@ export const FNLIST = [
   {
     key: 'template',
     tip: '模板',
+    enTip: 'Template',
     iconClass: 'icon-org-chart-template'
   },
   {
     key: 'orientation',
     tip: '方向',
+    enTip: 'Orientation',
     iconClass: 'icon-org-chart-layout'
+  },
+  {
+    key: 'level',
+    tip: '层级数',
+    enTip: 'level',
+    iconClass: 'icon-org-chart-level'
   }
 ];
 
 // 模板
 export const TEMPLATES = [
   {
-    value: 'luba',
-    label: 'luba'
+    value: 'rony',
+    label: 'rony'
   },
   {
     value: 'derek',
@@ -42,10 +50,7 @@ export const TEMPLATES = [
     value: 'mery',
     label: 'mery'
   },
-  {
-    value: 'rony',
-    label: 'rony'
-  },
+
   {
     value: 'belinda',
     label: 'belinda'
@@ -57,6 +62,10 @@ export const TEMPLATES = [
   {
     value: 'ana',
     label: 'ana'
+  },
+  {
+    value: 'luba',
+    label: 'luba'
   }
 ];
 

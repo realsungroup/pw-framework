@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './OrgChartTools.less';
 import { ResizableBox } from 'react-resizable';
-import { Radio } from 'antd';
+import { Radio, Input } from 'antd';
 import Draggable from 'react-draggable';
 import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
 import { FNLIST, TEMPLATES, ORIENTATIONS } from './constants';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 
 const RadioGroup = Radio.Group;
 const prefix = 'org-chart-tools';
@@ -15,7 +16,7 @@ const prefix = 'org-chart-tools';
 /**
  * 组织图
  */
-export default class OrgChartTools extends React.Component {
+class OrgChartTools extends React.Component {
   static propTypes = {
     /**
      * 状态：'max' 最大化状态 | 'min' 最小化状态
@@ -138,6 +139,27 @@ export default class OrgChartTools extends React.Component {
     );
   };
 
+  renderLevelContent = () => {
+    const { activeKey } = this.state;
+    const { level, onLevelChange, onLevelConfirm } = this.props;
+
+    return (
+      <div
+        className={classNames(`${prefix}__level`, {
+          [`${prefix}__content--hide`]: activeKey !== 'level'
+        })}
+      >
+        <div>层级数</div>
+        <Input.Search
+          enterButton={'确定'}
+          value={level}
+          onChange={onLevelChange}
+          onSearch={onLevelConfirm}
+        />
+      </div>
+    );
+  };
+
   handleFnClick = activeKey => {
     this.setState({ activeKey });
   };
@@ -194,6 +216,7 @@ export default class OrgChartTools extends React.Component {
                         [`${prefix}__list-item--selected`]:
                           activeKey === item.key
                       });
+                      const { locale } = this.props.intl;
                       return (
                         <li
                           key={item.key}
@@ -201,7 +224,7 @@ export default class OrgChartTools extends React.Component {
                           onClick={() => this.handleFnClick(item.key)}
                         >
                           <IconWithTooltip
-                            tip={item.tip}
+                            tip={getIntlVal(locale, item.enTip, item.tip)}
                             iconClass={item.iconClass}
                             placement="right"
                             style={{ fontSize: 18 }}
@@ -213,6 +236,7 @@ export default class OrgChartTools extends React.Component {
                   <div className={`${prefix}__content`}>
                     {this.renderTemplateContent()}
                     {this.renderOrientationContent()}
+                    {this.renderLevelContent()}
                   </div>
                 </div>
               </div>
@@ -234,3 +258,5 @@ export default class OrgChartTools extends React.Component {
     );
   }
 }
+
+export default injectIntl(OrgChartTools);

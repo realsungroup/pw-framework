@@ -8,8 +8,9 @@ const common = {
   'common.deleteSuccess': 'Delete success',
   'common.addSuccess': 'Add success',
   'common.modifySuccess': 'Modify success',
-  'common.ok': '确定',
-  'common.cancel': '取消'
+  'common.ok': 'OK',
+  'common.cancel': 'Cancel',
+  'common.prompt': 'Prompt'
 };
 
 // HomeBody
@@ -80,7 +81,8 @@ const OrgChartData = {
   'OrgChartData.setting': 'Setting',
   'OrgChartData.saveStructure': 'Save Structure',
   'OrgChartData.up': 'Up',
-  'OrgChartData.down': 'Down'
+  'OrgChartData.down': 'Down',
+  'OrgChartData.sureSaveSturcture': 'Are you sure to save structure?'
 };
 
 export default {

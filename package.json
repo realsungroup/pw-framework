@@ -40,6 +40,7 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
+    "happypack": "^5.0.1",
     "hoist-non-react-statics": "^3.2.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "html2canvas": "^1.0.0-alpha.12",

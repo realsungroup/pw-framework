@@ -9,7 +9,8 @@ const common = {
   'common.addSuccess': '添加成功',
   'common.modifySuccess': '修改成功',
   'common.ok': '确定',
-  'common.cancel': '取消'
+  'common.cancel': '取消',
+  'common.prompt': '提示'
 };
 
 // HomeBody
@@ -81,7 +82,8 @@ const OrgChartData = {
   'OrgChartData.setting': '设置',
   'OrgChartData.saveStructure': '保存结构',
   'OrgChartData.up': '上一层',
-  'OrgChartData.down': '下一层'
+  'OrgChartData.down': '下一层',
+  'OrgChartData.sureSaveSturcture': '您确定要保存该结构吗？'
 };
 
 export default {
