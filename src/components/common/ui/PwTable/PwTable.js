@@ -13,6 +13,9 @@ import {
 } from './map';
 import './PwTable.less';
 import 'react-resizable/css/styles.css';
+import { getIntlVal } from 'Util20/util';
+import { injectIntl, FormattedMessage as FM } from 'react-intl';
+
 const Search = Input.Search;
 
 /**
@@ -58,7 +61,7 @@ class PwTable extends React.Component {
   };
 
   renderPagination = () => {
-    const { pagination, size } = this.props;
+    const { pagination, size, intl } = this.props;
     const rang = getRang(pagination);
     const hasTotal = pagination.current && pagination.total;
 
@@ -70,11 +73,14 @@ class PwTable extends React.Component {
             {...pagination}
             size={paginationSizeMap[size]}
           />
-          {hasTotal && (
-            <span>
-              第 {rang.start} - {rang.end} 条，总共 {pagination.total} 条
-            </span>
-          )}
+          {hasTotal &&
+            getIntlVal(
+              intl.locale,
+              `${rang.start} ~ ${rang.end} ，${
+                pagination.total
+              } Records Totally`,
+              `${rang.start} ~ ${rang.end} ，${pagination.total} 条记录`
+            )}
         </div>
       );
     }
@@ -132,6 +138,8 @@ class PwTable extends React.Component {
 
     const hasHeader = hasIconBtns && title;
 
+    const { locale } = this.props.intl;
+
     return (
       <div className="pw-table">
         {hasHeader && (
@@ -167,33 +175,41 @@ class PwTable extends React.Component {
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                  添加
+                  <FM id="common.add" defaultMessage="添加" />
                 </Button>
               )}
               {hasModify && (
                 <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                  修改
+                  <FM id="common.modify" defaultMessage="修改" />
                 </Button>
               )}
               {hasDelete && (
                 <ButtonWithConfirm
                   popConfirmProps={{
                     onConfirm: this.handleDelete,
-                    title: '您确定要删除吗？'
+                    title: getIntlVal(
+                      locale,
+                      'Are you sure to delete?',
+                      '您确定要删除吗？'
+                    )
                   }}
                   buttonProps={{
                     size: btnSizeMap[size],
                     type: 'danger'
                   }}
                 >
-                  删除
+                  <FM id="common.delete" defaultMessage="删除" />
                 </ButtonWithConfirm>
               )}
             </div>
             <div className="pw-table__search">
               {hasSearch && (
                 <Search
-                  placeholder="请输入关键词"
+                  placeholder={getIntlVal(
+                    locale,
+                    'Enter the key',
+                    '请输入关键词'
+                  )}
                   onChange={this.handleSearchChange}
                   size={inputSizeMap[size]}
                   style={{ width: 150 }}
@@ -212,4 +228,4 @@ class PwTable extends React.Component {
   }
 }
 
-export default PwTable;
+export default injectIntl(PwTable);

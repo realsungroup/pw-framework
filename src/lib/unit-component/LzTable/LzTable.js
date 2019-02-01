@@ -44,7 +44,6 @@ import { EditableContext, EditableFormRow } from './LzEditableFormRow';
 import LzEditableCell from './LzEditableCell';
 import LzAdvSearch from './LzAdvSearch';
 import { clone, getToken } from '../../util/util';
-import FmWrap from '../../../pages/components/FmWrap';
 import { LzForm } from '../../../loadableComponents';
 import './LzTable.less';
 import { extractAndDealBackendBtns, filterBackEndBtns } from 'Util/backendBtns';
@@ -66,6 +65,7 @@ import {
 import LzImportData from './LzImportData';
 import IconWithTooltip from '../../../pages/components/IconWithTooltip';
 import { downloadFile } from 'Util/util';
+import { FormattedMessage as FmWrap } from 'react-intl';
 
 const Search = Input.Search;
 let controlData;

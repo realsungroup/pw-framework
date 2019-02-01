@@ -28,6 +28,7 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
 import withZoomInOut from '../../hoc/withZoomInOut';
 import { makeCancelable } from 'Util20/api';
+import { injectIntl, FormattedMessage as FM } from 'react-intl';
 
 const { Fragment } = React;
 
@@ -615,7 +616,7 @@ class TableData extends React.Component {
     const { validateFields } = form;
     validateFields((err, values) => {
       if (err) {
-        return message.error('表单验证出错');
+        return;
       }
       console.log({ values });
     });
@@ -626,11 +627,12 @@ class TableData extends React.Component {
   };
 
   handleModify = record => {
+    const { intl } = this.props;
     let selectedRecord = record;
     if (!selectedRecord) {
       const { selectedRowKeys } = this.state.rowSelection;
       if (selectedRowKeys.length !== 1) {
-        return message.error('请选择一条记录');
+        return message.error(intl.messages['TableData.pleaseSelectARecord']);
       }
       const { dataSource } = this.state;
       selectedRecord = dataSource.find(
@@ -651,9 +653,10 @@ class TableData extends React.Component {
 
   // 点击删除按钮
   handleDelete = async () => {
+    const { intl } = this.props;
     const { selectedRowKeys } = this.state.rowSelection;
     if (!selectedRowKeys.length) {
-      return message.error('请选择记录');
+      return message.error(intl.messages['TableData.pleaseSelectARecord']);
     }
     const { dataSource } = this.state;
     const records = [];
@@ -669,7 +672,7 @@ class TableData extends React.Component {
     } catch (err) {
       return console.error(err);
     }
-    message.success('删除成功');
+    message.success(intl.messages['TableData.deleteSuccess']);
 
     // 清除 selectedRowKeys
     if (this.state.rowSelection) {
@@ -822,7 +825,7 @@ class TableData extends React.Component {
         onClick={() => this.handleRowEdit(record)}
         className="table-data__action-btn"
       >
-        编辑
+        <FM id="TableData.Edit" defaultMessage="编辑" />
       </Button>
     );
   };
@@ -836,7 +839,7 @@ class TableData extends React.Component {
             onClick={() => this.handleRowSave(form, record)}
             className="table-data__action-btn"
           >
-            保存
+            <FM id="TableData.Save" defaultMessage="保存" />
           </Button>
         )}
       </EditableContext.Consumer>
@@ -847,7 +850,12 @@ class TableData extends React.Component {
     return (
       <ButtonWithConfirm
         popConfirmProps={{
-          title: '您确定要取消编辑吗？',
+          title: (
+            <FM
+              id="TableData.sureCancelEdit"
+              defaultMessage="您确定要取消编辑吗？"
+            />
+          ),
           onConfirm: () => this.handleRowCancel()
         }}
         buttonProps={{
@@ -856,7 +864,7 @@ class TableData extends React.Component {
           className: 'table-data__action-btn'
         }}
       >
-        取消
+        <FM id="TableData.Cancel" defaultMessage="取消" />
       </ButtonWithConfirm>
     );
   };
@@ -868,7 +876,7 @@ class TableData extends React.Component {
         onClick={() => this.handleModify(record)}
         className="table-data__action-btn"
       >
-        修改
+        <FM id="common.modify" defaultMessage="修改" />
       </Button>
     );
   };
@@ -880,7 +888,7 @@ class TableData extends React.Component {
         onClick={() => this.handleView(record)}
         className="table-data__action-btn"
       >
-        查看
+        <FM id="common.view" defaultMessage="查看" />
       </Button>
     );
   };
@@ -898,10 +906,13 @@ class TableData extends React.Component {
   };
 
   renderRowDeleteBtn = record => {
+    const { locale } = this.props.intl;
     return (
       <ButtonWithConfirm
         popConfirmProps={{
-          title: '您确定要删除吗？',
+          title: (
+            <FM id="common.sureDelete" defaultMessage="您确定要删除吗？" />
+          ),
           onConfirm: () => this.handleRowDelete([record])
         }}
         buttonProps={{
@@ -910,7 +921,7 @@ class TableData extends React.Component {
           className: 'table-data__action-btn'
         }}
       >
-        删除
+        <FM id="common.delete" defaultMessage="删除" />
       </ButtonWithConfirm>
     );
   };
@@ -925,14 +936,14 @@ class TableData extends React.Component {
   };
 
   handleRowDelete = async records => {
-    const { httpRemoveRecords } = this.props;
+    const { httpRemoveRecords, intl } = this.props;
     const id = this._id;
     try {
       await httpRemoveRecords(id, records);
     } catch (err) {
       return console.error(err);
     }
-    message.success('删除成功');
+    message.success(intl.messages['common.deleteSuccess']);
 
     // 清除 selectedRowKeys
     this.setState({
@@ -944,11 +955,12 @@ class TableData extends React.Component {
   };
 
   handleConfirm = () => {
+    const { intl } = this.props;
     const { recordFormShowMode } = this.state;
     if (recordFormShowMode === 'add') {
-      message.success('添加成功');
+      message.success(intl.messages['common.addSuccess']);
     } else if (recordFormShowMode === 'modify') {
-      message.success('修改成功');
+      message.success(intl.messages['common.modifySuccess']);
     }
     this.props.closeRecordForm();
     this.handleRefresh();
@@ -960,7 +972,7 @@ class TableData extends React.Component {
 
   getActionBar = () => {
     const actionBar = {
-      title: '操作',
+      title: <FM id="common.operation" defaultMessage="操作" />,
       dataIndex: '操作',
       key: '操作',
       align: 'center',
@@ -1124,7 +1136,8 @@ const composedHoc = compose(
   withDownloadFile,
   withRecordForm(),
   withZoomInOut(),
-  withImport
+  withImport,
+  injectIntl
 );
 
 export default composedHoc(TableData);

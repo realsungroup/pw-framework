@@ -9,7 +9,7 @@ import { propTypes, defaultProps } from './propTypes';
 const ButtonWithConfirm = React.memo(
   ({ popConfirmProps = {}, buttonProps = {}, children }) => {
     return (
-      <Popconfirm okText="确定" cancelText="取消" {...popConfirmProps}>
+      <Popconfirm {...popConfirmProps}>
         <Button {...buttonProps}>{children}</Button>
       </Popconfirm>
     );

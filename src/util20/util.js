@@ -18,6 +18,10 @@ export const clone = obj => {
   return JSON.parse(JSON.stringify(obj));
 };
 
+export const getIntlVal = (locale, enString, zhString) => {
+  return locale === 'zh' ? zhString : enString;
+};
+
 /**
  * 根据地址下载文件
  * @param {string} href 文件地址

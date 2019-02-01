@@ -186,6 +186,7 @@ class Login extends React.Component {
     }
     const { getFieldDecorator } = this.props.form;
     const { intl } = this.props;
+    console.log({ intl });
     return (
       <div className="login">
         <div className="login__left-part" />

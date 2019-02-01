@@ -1,3 +1,16 @@
+// common
+const common = {
+  'common.operation': '操作',
+  'common.modify': '修改',
+  'common.view': '查看',
+  'common.delete': '删除',
+  'TableData.sureDelete': '您确定要删除吗？',
+
+  'common.deleteSuccess': '删除成功',
+  'common.addSuccess': '添加成功',
+  'common.modifySuccess': '修改成功',
+}
+
 // HomeBody
 const HomeBody = {
   'HomeBody.Taskbar': '任务栏',
@@ -56,12 +69,25 @@ const Setting = {
   'Setting.rightTitle': 'Optional Functionality'
 };
 
+// TableData
+const TableData = {
+  'TableData.pleaseSelectARecord': '请选择一条记录',
+  'TableData.sureCancelEdit': '您确定要取消编辑吗？',
+};
+
+// PwTable
+const PwTable = {
+  
+}
+
 export default {
+  ...common,
   ...HomeBody,
   ...Login,
   ...RightBtns,
   ...PersonCenter,
   ...Setting,
+  ...TableData,
   add: '添加',
   edit: '编辑',
   save: '保存',

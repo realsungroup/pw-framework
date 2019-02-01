@@ -6,8 +6,9 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { withHttpGetFormData } from 'Common/hoc/withHttp';
 import http, { makeCancelable } from 'Util20/api';
 import { dealFormData } from 'Util20/controls';
+import { getIntlVal } from 'Util20/util';
 import './PersonCenter.less';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 
 const TabPane = Tabs.TabPane;
 
@@ -106,6 +107,7 @@ class PersonCenter extends React.Component {
 
   render() {
     const { tabsConfig, activeKey, loading, data, mode } = this.state;
+    const { locale } = this.props.intl;
     return (
       <div className="person-center">
         <HalfPanel
@@ -118,7 +120,14 @@ class PersonCenter extends React.Component {
                 {tabsConfig &&
                   tabsConfig.length > 0 &&
                   tabsConfig.map((tabConfig, index) => (
-                    <TabPane tab={tabConfig.title} key={index}>
+                    <TabPane
+                      tab={getIntlVal(
+                        locale,
+                        tabConfig.enTitle,
+                        tabConfig.title
+                      )}
+                      key={index}
+                    >
                       <PwForm
                         data={data}
                         displayMode="classify"
@@ -138,4 +147,4 @@ class PersonCenter extends React.Component {
   }
 }
 
-export default withHttpGetFormData(PersonCenter);
+export default injectIntl(withHttpGetFormData(PersonCenter));

@@ -1,3 +1,16 @@
+// common
+const common = {
+  'common.operation': 'Operation',
+  'common.modify': 'Modify',
+  'common.view': 'View',
+  'common.delete': 'Delete',
+  'common.sureDelete': 'Are you sure to delete',
+
+  'common.deleteSuccess': 'Delete success',
+  'common.addSuccess': 'Add success',
+  'common.modifySuccess': 'Modify success',
+};
+
 // HomeBody
 const HomeBody = {
   'HomeBody.Taskbar': 'Taskbar',
@@ -56,12 +69,19 @@ const Setting = {
   'Setting.rightTitle': 'Optional Functionality'
 };
 
+// TableData
+const TableData = {
+  'TableData.pleaseSelectARecord': 'Please select a record'
+};
+
 export default {
+  ...common,
   ...HomeBody,
   ...Login,
   ...RightBtns,
   ...PersonCenter,
   ...Setting,
+  ...TableData,
   add: 'add',
   edit: 'edit',
   cancel: 'cancel',

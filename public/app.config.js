@@ -19,6 +19,7 @@ pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
 pwConfig.personCenterResIds = [
   {
     title: '基本信息', // 标题：必选
+    enTitle: 'Basic Info',
     resid: 1300, // resid：必选
     formName: 'default' // 窗体名称：可选；不设置时默认为 'default'
   }
