@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import './index.css';
+import './index.less';
+
 
 // 使用自定义 loading
 import loadingGif from './assets/loading.gif';
