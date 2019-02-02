@@ -15,8 +15,14 @@ export const FNLIST = [
   {
     key: 'level',
     tip: '层级数',
-    enTip: 'level',
+    enTip: 'Level',
     iconClass: 'icon-org-chart-level'
+  },
+  {
+    key: 'mode',
+    tip: '模式',
+    enTip: 'Mode',
+    iconClass: 'icon-org-chart-mode'
   }
 ];
 
@@ -102,5 +108,19 @@ export const ORIENTATIONS = [
   {
     value: 'left_top',
     label: 'left_top'
+  }
+];
+
+// 模式
+export const MODES = [
+  {
+    value: 'normal',
+    label: '普通模式',
+    enLabel: 'normal'
+  },
+  {
+    value: 'grouping',
+    label: '分组模式',
+    enLabel: 'grouping'
   }
 ];

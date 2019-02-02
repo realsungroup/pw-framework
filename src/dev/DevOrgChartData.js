@@ -95,6 +95,15 @@ class App extends Component {
               recordFormContainerProps={{ width: 500 }}
               rootIds={[61, 67]}
               rootIdsResid={602348168470}
+              groupingConfig={[
+                {
+                  resourceOfTag: '602358161328',
+                  sourceColumnOfGroupName: 'C3_602358186727',
+                  sourceColumnOfTagName: 'C3_602358186916',
+                  columnOfTagName: 'C3_602347242284',
+                  isGroupTag: true
+                }
+              ]}
             />
           </div>
           <Button onClick={this.handleLoginClick} type="primary">

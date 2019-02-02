@@ -108,10 +108,11 @@ class OrgChartData extends React.Component {
       level,
       template,
       orientation,
-      padding
+      padding,
+      mode
     } = props;
 
-    this.init();
+    this.init(props);
 
     this.state = {
       loading: true,
@@ -122,7 +123,8 @@ class OrgChartData extends React.Component {
       level, // 显示的层数
       template, // 使用的模板
       orientation, // 方向
-      padding // OrgChart 的 padding
+      padding, // OrgChart 的 padding
+      mode
     };
   }
 
@@ -138,9 +140,9 @@ class OrgChartData extends React.Component {
     this.p5 && this.p5.cancel();
   };
 
-  init = () => {
+  init = props => {
     this._rootIds = [];
-
+    this._mode = props.mode;
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
 
@@ -151,6 +153,7 @@ class OrgChartData extends React.Component {
     this.EditForm.prototype.hide = () => {};
   };
 
+  // 获取根节点 id -> 获取节点数据 + 获取窗体数据
   getData = async () => {
     const {
       resid,
@@ -159,7 +162,6 @@ class OrgChartData extends React.Component {
       httpGetFormData,
       rootIdsResid
     } = this.props;
-    const { level } = this.state;
     this.p6 = makeCancelable(http().getTable({ resid: rootIdsResid }));
     let res;
     try {
@@ -169,26 +171,7 @@ class OrgChartData extends React.Component {
       return message.error(err.message);
     }
     this._rootIds = res.data.map(item => item.C3_602347243263);
-    const pArr = [
-      http().getNodesData({
-        resid,
-        ColumnOfID: idField,
-        ColumnOfPID: pidField,
-        ProductIDs: this._rootIds.join(','),
-        Levels: level,
-        tags: [
-          {
-            ResourceOfTag: '602358161328',
-            SourceColumnOfGroupName: 'C3_602358186727',
-            SourceColumnOfTagName: 'C3_602358186916',
-            ColumnOfTagName: 'C3_602347242284',
-            IsGroupTag: true
-          }
-        ]
-      }),
-      httpGetFormData(resid, 'default')
-    ];
-
+    const pArr = [this.getNodes(), httpGetFormData(resid, 'default')];
     this.p1 = makeCancelable(Promise.all(pArr));
     try {
       res = await this.p1.promise;
@@ -197,20 +180,51 @@ class OrgChartData extends React.Component {
       message.error(err.message);
       return console.error(err);
     }
-    // 节点数据
-    const resNodes = res[0];
     // 窗体数据
     const resFormData = res[1];
-
-    const nodes = dealNodes(resNodes.nodes, idField, pidField, this._rootIds);
-
-    const tags = dealTags(resNodes.tags);
-
-    this._nodes = nodes;
-
     this._formData = { ...resFormData };
     this._data = getDataProp(resFormData, {}, false, false);
 
+    // 节点数据
+    const resNodes = res[0];
+    this.afterGetNodes(resNodes);
+  };
+
+  // 获取节点数据
+  getNodes = async () => {
+    const { level, mode } = this.state;
+    const { idField, pidField, resid, groupingConfig } = this.props;
+    const options = {
+      resid,
+      ColumnOfID: idField,
+      ColumnOfPID: pidField,
+      ProductIDs: this._rootIds.join(','),
+      Levels: level
+    };
+
+    // 分组模式，添加 tags 参数
+    if (this._mode === 'grouping' && Array.isArray(groupingConfig)) {
+      options.tags = groupingConfig;
+    }
+    this.p8 = makeCancelable(http().getNodesData(options));
+    return this.p8.promise;
+  };
+
+  // 获取节点数据之后
+  afterGetNodes = res => {
+    const { idField, pidField } = this.props;
+    // 设置新的根节点 id
+    this._rootIds = getRootIds(res.nodes, idField, pidField);
+
+    const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
+    this._nodes = nodes;
+
+    const tags = dealTags(res.tags);
+
+    // 更新图表所在的父节点
+    this.updateChart();
+
+    // 渲染图表
     this.renderOrgChart(nodes, tags);
   };
 
@@ -250,7 +264,6 @@ class OrgChartData extends React.Component {
   };
 
   handleNodeClick = (sender, node) => {
-    console.log({ node });
     this.openRecordForm('view', node, sender);
   };
 
@@ -437,14 +450,11 @@ class OrgChartData extends React.Component {
   };
 
   renderOrgChart = (nodes, tags) => {
-    console.log({ tags });
     const options = this.getOrgChartOptions(nodes, tags);
-    console.log({ options });
     this.chart = new OrgChart(
       document.getElementById(this.props.chartId),
       options
     );
-    console.log({ options });
     this.setState({ loading: false });
   };
 
@@ -501,17 +511,7 @@ class OrgChartData extends React.Component {
       return message.info('已经到最底层了');
     }
 
-    // 设置新的根节点 id
-    this._rootIds = getRootIds(res.nodes, idField, pidField);
-
-    const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
-    this._nodes = nodes;
-
-    // 更新图表所在的父节点
-    this.updateChart();
-
-    // 渲染图表
-    this.renderOrgChart(nodes);
+    this.afterGetNodes(res);
   };
 
   handleLevelChange = e => {
@@ -527,29 +527,9 @@ class OrgChartData extends React.Component {
 
   handleLevelConfirm = async value => {
     this.setState({ loading: true });
-    const { resid, idField, pidField } = this.props;
-    this.p7 = makeCancelable(
-      http().getNodesData({
-        resid,
-        ColumnOfID: idField,
-        ColumnOfPID: pidField,
-        ProductIDs: this._rootIds.join(','),
-        Levels: value,
-        tags: [
-          {
-            ResourceOfTag: '602358161328',
-            SourceColumnOfGroupName: 'C3_602358186727',
-            SourceColumnOfTagName: 'C3_602358186916',
-            ColumnOfTagName: 'C3_602347242284',
-            IsGroupTag: true
-          }
-        ]
-      })
-    );
-
     let res;
     try {
-      res = await this.p7.promise;
+      res = await this.getNodes();
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
@@ -557,19 +537,9 @@ class OrgChartData extends React.Component {
     }
     if (!res.nodes) {
       this.setState({ loading: false });
-      return message.info('111');
+      return message.error('error');
     }
-
-    const nodes = dealNodes(res.nodes, idField, pidField, this._rootIds);
-    this._nodes = nodes;
-
-    const tags = dealTags(res.tags);
-
-    // 更新图表所在的父节点
-    this.updateChart();
-
-    // 渲染图表
-    this.renderOrgChart(nodes, tags);
+    this.afterGetNodes(res);
   };
 
   updateChart = () => {
@@ -619,6 +589,20 @@ class OrgChartData extends React.Component {
     message.success('保存成功');
   };
 
+  handleModeChange = async e => {
+    const value = e.target.value;
+    this._mode = value;
+    let res;
+    try {
+      res = await this.getNodes();
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.afterGetNodes(res);
+    this.forceUpdate();
+  };
+
   render() {
     const { template, orientation, toolsStatus, loading, level } = this.state;
     const { chartId, chartWrapId } = this.props;
@@ -643,6 +627,8 @@ class OrgChartData extends React.Component {
             level={level}
             onLevelChange={this.handleLevelChange}
             onLevelConfirm={this.handleLevelConfirm}
+            mode={this._mode}
+            onModeChange={this.handleModeChange}
           />
           <LevelsJumpBtns
             onLevelUp={() => this.handleLevelMove(0)}
