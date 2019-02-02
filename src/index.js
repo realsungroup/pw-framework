@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './index.less';
-
+import 'antd/dist/antd.css';
 
 // 使用自定义 loading
 import loadingGif from './assets/loading.gif';
