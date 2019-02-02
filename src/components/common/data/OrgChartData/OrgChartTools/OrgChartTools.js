@@ -64,7 +64,7 @@ class OrgChartTools extends React.Component {
   };
 
   static defaultProps = {
-    status: 'max',
+    status: 'min',
     selectedTemplate: 'luba',
     selectedOrientation: 'top'
   };
@@ -73,7 +73,7 @@ class OrgChartTools extends React.Component {
     super(props);
 
     this.state = {
-      activeKey: 'template' // 已选中的功能
+      activeKey: 'mode' // 已选中的功能
     };
   }
 
@@ -257,10 +257,10 @@ class OrgChartTools extends React.Component {
                     })}
                   </ul>
                   <div className={`${prefix}__content`}>
-                    {this.renderTemplateContent()}
-                    {this.renderOrientationContent()}
-                    {this.renderLevelContent()}
                     {this.renderModeContent()}
+                    {this.renderLevelContent()}
+                    {this.renderOrientationContent()}
+                    {this.renderTemplateContent()}
                   </div>
                 </div>
               </div>

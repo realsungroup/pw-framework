@@ -126,7 +126,8 @@ class OrgChartData extends React.Component {
       template,
       orientation,
       padding,
-      mode
+      mode,
+      settingStatus
     } = props;
 
     this.init(props);
@@ -134,7 +135,7 @@ class OrgChartData extends React.Component {
     this.state = {
       loading: true,
       drawerVisible: false,
-      toolsStatus: 'max', // 工具栏的状态：'max' 最大化状态 | 'min' 最小化状态
+      settingStatus, // 工具栏的状态：'max' 最大化状态 | 'min' 最小化状态
       recordFormType, // 记录表单的容器类型：'modal' 模态窗 | 'drawer' 抽屉
       enableDragDrop, // 是否能够拖动节点
       level, // 显示的层数
@@ -538,11 +539,11 @@ class OrgChartData extends React.Component {
   };
 
   handleMin = () => {
-    this.setState({ toolsStatus: 'min' });
+    this.setState({ settingStatus: 'min' });
   };
 
   handleMax = () => {
-    this.setState({ toolsStatus: 'max' });
+    this.setState({ settingStatus: 'max' });
   };
 
   /**
@@ -701,7 +702,7 @@ class OrgChartData extends React.Component {
   };
 
   render() {
-    const { template, orientation, toolsStatus, loading, level } = this.state;
+    const { template, orientation, settingStatus, loading, level } = this.state;
     const { chartId, chartWrapId } = this.props;
     return (
       <Spin spinning={loading}>
@@ -711,7 +712,7 @@ class OrgChartData extends React.Component {
             onClick={this.handleAdvSearch}
           />
           <OrgChartTools
-            status={toolsStatus}
+            status={settingStatus}
             templateChange={this.handleTemplateChange}
             orientationChange={this.handleOrientationChange}
             selectedTemplate={template}

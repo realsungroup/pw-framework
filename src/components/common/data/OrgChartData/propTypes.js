@@ -15,7 +15,8 @@ export const defaultProps = {
   orientation: 'top',
   padding: 0,
   mode: 'normal',
-  advSearchFormName: 'search'
+  advSearchFormName: 'search',
+  settingStatus: 'min'
 };
 
 export const propTypes = {
@@ -193,5 +194,11 @@ export const propTypes = {
    * 关键字段（在拖拽提示中会使用到）
    * 默认：-
    */
-  keyField: PropTypes.string.isRequired
+  keyField: PropTypes.string.isRequired,
+
+  /**
+   * 设置栏状态：'max' 最大化 | 'min' 最小化
+   * 默认：'min'
+   */
+  settingStatus: PropTypes.oneOf(['max', 'min'])
 };

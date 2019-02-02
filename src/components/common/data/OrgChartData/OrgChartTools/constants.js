@@ -1,16 +1,10 @@
 // 功能列表
 export const FNLIST = [
   {
-    key: 'template',
-    tip: '模板',
-    enTip: 'Template',
-    iconClass: 'icon-org-chart-template'
-  },
-  {
-    key: 'orientation',
-    tip: '方向',
-    enTip: 'Orientation',
-    iconClass: 'icon-org-chart-layout'
+    key: 'mode',
+    tip: '模式',
+    enTip: 'Mode',
+    iconClass: 'icon-org-chart-mode'
   },
   {
     key: 'level',
@@ -19,10 +13,16 @@ export const FNLIST = [
     iconClass: 'icon-org-chart-level'
   },
   {
-    key: 'mode',
-    tip: '模式',
-    enTip: 'Mode',
-    iconClass: 'icon-org-chart-mode'
+    key: 'orientation',
+    tip: '方向',
+    enTip: 'Orientation',
+    iconClass: 'icon-org-chart-layout'
+  },
+  {
+    key: 'template',
+    tip: '模板',
+    enTip: 'Template',
+    iconClass: 'icon-org-chart-template'
   }
 ];
 
