@@ -20,23 +20,23 @@ const BALKANGraph = window.BALKANGraph;
 
 // img_0
 OrgChart.templates.rony.img_0 =
-  '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="50" y="-40" width="80" height="80"></image>';
+  '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="50" y="-10" width="80" height="80" clip-path="url(#2tjzm4d9b9p3iurqaq5mg)"></image>';
 
 // field_n
 OrgChart.templates.rony.field_0 =
-  '<text class="field_0" width="130" text-anchor="middle" text-overflow="ellipsis" x="80" style="font-size: 16px;" fill="#000" y="70">{val}</text>';
+  '<text class="field_0" width="130" text-anchor="middle" text-overflow="ellipsis" x="80" style="font-size: 16px;" fill="#000" y="100">{val}</text>';
 
 OrgChart.templates.rony.field_1 =
-  '<text class="field_1" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="100" >{val}</text>';
+  '<text class="field_1" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="130" >{val}</text>';
 
 OrgChart.templates.rony.field_2 =
-  '<text class="field_2" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="130">{val}</text>';
+  '<text class="field_2" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="160">{val}</text>';
 
 OrgChart.templates.rony.field_3 =
-  '<text class="field_3" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="160">{val}</text>';
+  '<text class="field_3" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="190">{val}</text>';
 
 OrgChart.templates.rony.field_4 =
-  '<text class="field_4" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="190">{val}</text>';
+  '<text class="field_4" width="130" text-anchor="middle" text-overflow="ellipsis" x="80"  style="font-size: 16px;" fill="#000" y="210">{val}</text>';
 
 /**
  * 根据节点数据获取最顶层节点的 id
