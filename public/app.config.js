@@ -84,7 +84,7 @@ pwConfig.loginLogoSize = 42;
  * 上传文件配置
  */
 // 对象空间名称
-pwConfig.bucketname = 'nutritiontower';
+pwConfig.bucketname = 'realsun';
 
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;
