@@ -13,6 +13,7 @@ import { modifyIcon } from './icon';
 import OrgChartTools from './OrgChartTools';
 import LevelsJumpBtns from './LevelsJumpBtns';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
+import withAdvSearch from '../../hoc/withAdvSearch';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
@@ -61,6 +62,13 @@ const getRootIds = (nodes, idField, pidField) => {
   return ret;
 };
 
+/**
+ * 移除根节点的 pid 属性
+ * @param {array} nodes 节点数据
+ * @param {string} idField id 对应的字段
+ * @param {string} pidField pid 对应的字段
+ * @param {array} rootIds 根节点 id 数组
+ */
 const dealNodes = (nodes, idField, pidField, rootIds) => {
   nodes.forEach(item => {
     item.id = parseInt(item[idField], 10);
@@ -72,6 +80,10 @@ const dealNodes = (nodes, idField, pidField, rootIds) => {
   return nodes;
 };
 
+/**
+ * 处理 tags 对象中每条数据的 groupState 属性
+ * @param {object} tags 后端返回的 tags 对象
+ */
 const dealTags = tags => {
   for (let key in tags) {
     if (tags[key].groupState) {
@@ -82,7 +94,12 @@ const dealTags = tags => {
   }
   return tags;
 };
-
+/**
+ * 筛选字段：删除节点的 id 和 pid 数据
+ * @param {array} nodes 节点数据
+ * @param {string} idField id 对应的字段
+ * @param {string} pidField pid 对应的字段
+ */
 const filterFields = (nodes, idField, pidField) => {
   nodes.forEach(node => {
     node[idField] = node.id;
@@ -142,9 +159,10 @@ class OrgChartData extends React.Component {
 
   init = props => {
     this._rootIds = [];
-    this._mode = props.mode;
+    this._mode = props.mode; // 模式：'normal' 普通模式 | 'grouping' 分组模式
     this._nodes = []; // 节点数据
     this._data = []; // 控件数据
+    this._cmswhere = ''; // 查询条件
 
     // 自定义空表单
     this.EditForm = function() {};
@@ -192,14 +210,15 @@ class OrgChartData extends React.Component {
 
   // 获取节点数据
   getNodes = async () => {
-    const { level, mode } = this.state;
+    const { level } = this.state;
     const { idField, pidField, resid, groupingConfig } = this.props;
     const options = {
       resid,
       ColumnOfID: idField,
       ColumnOfPID: pidField,
       ProductIDs: this._rootIds.join(','),
-      Levels: level
+      Levels: level,
+      cmswhere: this._cmswhere
     };
 
     // 分组模式，添加 tags 参数
@@ -258,7 +277,6 @@ class OrgChartData extends React.Component {
 
     setTimeout(() => {
       this.chart.addNode(newNode);
-      // this.chart.draw(BALKANGraph.action.init);
     });
     message.success('添加成功');
   };
@@ -444,9 +462,56 @@ class OrgChartData extends React.Component {
       onRemove: this.handleRemove,
 
       // 查看节点表单
-      onClick: this.handleNodeClick
+      onClick: this.handleNodeClick,
+
+      onUpdate: this.handleDragNode
     };
     return options;
+  };
+
+  handleDragNode = (sender, oldNode, newNode) => {
+    console.log({ newNode });
+    const { keyField, intl } = this.props;
+    const newParentNode = this._nodes.find(
+      node => node.id === parseInt(newNode.pid, 10)
+    );
+    const zhTip = `您确定要将 ${newNode[keyField]} 拖拽到 ${
+      newParentNode[keyField]
+    } 下面吗？`;
+    const enTip = `Are you sure you want to drag ${newNode[keyField]} under ${
+      newParentNode[keyField]
+    }`;
+    Modal.confirm({
+      title: getIntlVal(intl.locale, 'Prompt', '提示'),
+      content: getIntlVal(intl.locale, enTip, zhTip),
+      onOk: () => this.updateNode(sender, oldNode, newNode)
+    });
+    return false;
+  };
+
+  updateNode = async (sender, oldNode, newNode) => {
+    this.setState({ loading: true });
+    const { resid, idField, pidField } = this.props;
+    const values = filterFields([{ ...newNode }], idField, pidField);
+    let res;
+    this.p9 = makeCancelable(
+      http().modifyRecords({
+        resid,
+        data: values
+      })
+    );
+    try {
+      res = await this.p9.promise;
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    const node = res.data[0];
+    node.id = node[idField];
+    node.pid = node[pidField];
+    this.setState({ loading: false });
+    this.chart.updateNode(node);
   };
 
   renderOrgChart = (nodes, tags) => {
@@ -486,18 +551,22 @@ class OrgChartData extends React.Component {
   handleLevelMove = async direction => {
     this.setState({ loading: true });
     const { level } = this.state;
-    const { resid, idField, pidField } = this.props;
-    this.p5 = makeCancelable(
-      http().getMoveNodes({
-        resid,
-        Levels: level,
-        MoveDirection: direction,
-        MoveLevels: 1,
-        ColumnOfID: idField,
-        ColumnOfPID: pidField,
-        ProductIDs: this._rootIds.join(',')
-      })
-    );
+    const { resid, idField, pidField, groupingConfig } = this.props;
+    const options = {
+      resid,
+      Levels: level,
+      MoveDirection: direction,
+      MoveLevels: 1,
+      ColumnOfID: idField,
+      ColumnOfPID: pidField,
+      ProductIDs: this._rootIds.join(','),
+      cmswhere: this._cmswhere
+    };
+    if (this._mode === 'grouping' && Array.isArray(groupingConfig)) {
+      options.tags = groupingConfig;
+    }
+
+    this.p5 = makeCancelable(http().getMoveNodes(options));
     let res;
     try {
       res = await this.p5.promise;
@@ -567,6 +636,33 @@ class OrgChartData extends React.Component {
     });
   };
 
+  triggerCmswhereChange = async cmswhere => {
+    this._cmswhere = cmswhere;
+    this.setState({ loading: true });
+    let res;
+    try {
+      res = await this.getNodes();
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.afterGetNodes(res);
+  };
+
+  handleAdvSearch = () => {
+    const { resid, advSearchFormName } = this.props;
+    this.props.openAdvSearch(
+      'drawer',
+      resid,
+      advSearchFormName,
+      [],
+      this.triggerCmswhereChange,
+      {
+        width: 500
+      }
+    );
+  };
+
   handleSaveOrgChartData = async () => {
     this.setState({ loading: true });
     const { nodeId, parentNodeId, resid } = this.props;
@@ -590,6 +686,7 @@ class OrgChartData extends React.Component {
   };
 
   handleModeChange = async e => {
+    this.setState({ loading: true });
     const value = e.target.value;
     this._mode = value;
     let res;
@@ -609,13 +706,10 @@ class OrgChartData extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="org-chart-data" id={chartWrapId}>
-          <Button
-            onClick={this.handleSaveOrgClick}
-            type="primary"
-            className="org-chart-data__save-btn"
-          >
-            <FM id="OrgChartData.saveStructure" defaultMessage="保存结构" />
-          </Button>
+          <i
+            className="org-chart-data__adv-search-btn iconfont icon-adv-search"
+            onClick={this.handleAdvSearch}
+          />
           <OrgChartTools
             status={toolsStatus}
             templateChange={this.handleTemplateChange}
@@ -646,6 +740,7 @@ class OrgChartData extends React.Component {
 const composedHoc = compose(
   withHttpGetFormData,
   withModalDrawer(),
-  injectIntl
+  injectIntl,
+  withAdvSearch()
 );
 export default composedHoc(OrgChartData);

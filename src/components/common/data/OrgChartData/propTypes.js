@@ -14,7 +14,8 @@ export const defaultProps = {
   recordFormContainerProps: {},
   orientation: 'top',
   padding: 0,
-  mode: 'normal'
+  mode: 'normal',
+  advSearchFormName: 'search'
 };
 
 export const propTypes = {
@@ -170,7 +171,7 @@ export const propTypes = {
   /**
    * 分组配置
    */
-  groupingConfig: PropTypes.array
+  groupingConfig: PropTypes.array,
   // [
   //   {
   //     resourceOfTag: '111', // tag 的资源 id
@@ -181,4 +182,16 @@ export const propTypes = {
   //     isGroupTag: true // 是否分组
   //   }
   // ]
+
+  /**
+   * 高级搜索窗体名称
+   * 默认：'search'
+   */
+  advSearchFormName: PropTypes.string,
+
+  /**
+   * 关键字段（在拖拽提示中会使用到）
+   * 默认：-
+   */
+  keyField: PropTypes.string.isRequired
 };

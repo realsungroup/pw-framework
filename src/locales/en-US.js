@@ -10,7 +10,8 @@ const common = {
   'common.modifySuccess': 'Modify success',
   'common.ok': 'OK',
   'common.cancel': 'Cancel',
-  'common.prompt': 'Prompt'
+  'common.prompt': 'Prompt',
+  'common.advSearch': 'Advanced Search'
 };
 
 // HomeBody
