@@ -7,6 +7,9 @@ import { dealFormData } from 'Util20/controls';
 import { getCmsWhere } from 'Util20/util';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import withModalDrawer from '../withModalDrawer';
+import { FormattedMessage as FM } from 'react-intl';
+import { compose } from 'recompose';
+
 const Fragment = React.Fragment;
 
 // 显示高级搜索的高阶组件
@@ -77,31 +80,27 @@ const withAdvSearch = (options = {}) => {
         this.setState(newState, () => {
           const { type, containerProps, formProps, data, visible } = this.state;
 
-          const modalProps = {};
+          const newContainerProps = {
+            title: <FM id="common.advSearch" defaultMessage="高级搜索" />,
+            placement: 'right',
+            visible,
+            onClose: this.handleClose,
+            onCancel: this.handleClose,
+            width: 500,
+            footer: null,
+            ...containerProps
+          };
 
           // 打开容器
-          this.props.openModalOrDrawer(
-            type,
-            {
-              title: '高级搜索',
-              placement: 'right',
-              visible,
-              onClose: this.handleClose,
-              onCancel: this.handleClose,
-              width: 500,
-              footer: null,
-              ...containerProps
-            },
-            PwForm,
-            {
-              saveText: '搜索',
-              hasEdit: false,
-              hasCancel: false,
-              onSave: this.handleGetCmsWhere,
-              data: data,
-              ...formProps
-            }
-          );
+          this.props.openModalOrDrawer(type, newContainerProps, PwForm, {
+            saveText: '搜索',
+            enSaveText: 'Search',
+            hasEdit: false,
+            hasCancel: false,
+            onSave: this.handleGetCmsWhere,
+            data: data,
+            ...formProps
+          });
         });
       };
 
@@ -136,31 +135,15 @@ const withAdvSearch = (options = {}) => {
               openAdvSearch={this.handleOpenAdvSearch}
               {...this.props}
             />
-            {/* <Drawer
-              title="高级搜索"
-              placement="right"
-              onClose={this.handleClose}
-              visible={drawerVisible}
-              width={500}
-              {...drawerProps}
-            >
-              <PwForm
-                saveText="搜索"
-                hasEdit={false}
-                hasCancel={false}
-                onSave={this.handleGetCmsWhere}
-                data={data}
-                {...formProps}
-              />
-            </Drawer> */}
           </Fragment>
         );
       }
     }
 
-    const enhancedAdvSearch = withHttpGetFormData(
-      withModalDrawer()(withAdvSearch)
-    );
+    const enhancedAdvSearch = compose(
+      withHttpGetFormData,
+      withModalDrawer()
+    )(withAdvSearch);
     return argumentContainer(
       enhancedAdvSearch,
       WrappedComponent,
