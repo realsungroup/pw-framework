@@ -17,6 +17,9 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from '../locales/zh-CN';
 import en_US from '../locales/en-US';
 import { IntlProvider, addLocaleData } from 'react-intl';
+
+import '../antd-media.less';
+
 addLocaleData([...en, ...zh]);
 
 // 自定义 Spin 组件所用图片

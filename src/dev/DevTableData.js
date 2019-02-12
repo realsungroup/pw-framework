@@ -29,7 +29,7 @@ class App extends Component {
           recordFormContainerProps={{
             // width: 800,
             height: 500,
-            placement: 'bottom'
+            placement: 'right'
           }}
           formProps={{ displayMode: 'default', height: 400 }}
           recordFormType="drawer"
