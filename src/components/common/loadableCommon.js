@@ -9,3 +9,9 @@ export const TableData = Loadable({
     return minLoading;
   }
 });
+export const OrgChartData = Loadable({
+  loader: () => import('./data/OrgChartData'),
+  loading() {
+    return minLoading;
+  }
+});

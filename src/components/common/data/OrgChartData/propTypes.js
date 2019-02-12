@@ -13,7 +13,10 @@ export const defaultProps = {
   level: 16,
   recordFormContainerProps: {},
   orientation: 'top',
-  padding: 0
+  padding: 0,
+  mode: 'normal',
+  advSearchFormName: 'search',
+  settingStatus: 'min'
 };
 
 export const propTypes = {
@@ -158,5 +161,44 @@ export const propTypes = {
    * OrgChart 的 padding
    * 默认：-200
    */
-  padding: PropTypes.number
+  padding: PropTypes.number,
+
+  /**
+   * 显示模式：'normal' 普通模式 | 'grouping' 分组模式
+   * 默认：'normal'
+   */
+  mode: PropTypes.oneOf(['normal', 'grouping']),
+
+  /**
+   * 分组配置
+   */
+  groupingConfig: PropTypes.array,
+  // [
+  //   {
+  //     resourceOfTag: '111', // tag 的资源 id
+  //     sourceColumnOfGroupName: '222', // 分组名称的字段名
+  //     sourceColumnOfTagName: '333', // tag 名称的字段名
+  //     columnOfTagName: '444',
+  //     sourceColumnOfTemplate: '', // 分组所用模板名称
+  //     isGroupTag: true // 是否分组
+  //   }
+  // ]
+
+  /**
+   * 高级搜索窗体名称
+   * 默认：'search'
+   */
+  advSearchFormName: PropTypes.string,
+
+  /**
+   * 关键字段（在拖拽提示中会使用到）
+   * 默认：-
+   */
+  keyField: PropTypes.string.isRequired,
+
+  /**
+   * 设置栏状态：'max' 最大化 | 'min' 最小化
+   * 默认：'min'
+   */
+  settingStatus: PropTypes.oneOf(['max', 'min'])
 };

@@ -6,7 +6,7 @@ import { Radio, Input } from 'antd';
 import Draggable from 'react-draggable';
 import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
-import { FNLIST, TEMPLATES, ORIENTATIONS } from './constants';
+import { FNLIST, TEMPLATES, ORIENTATIONS, MODES } from './constants';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { getIntlVal } from 'Util20/util';
 
@@ -64,7 +64,7 @@ class OrgChartTools extends React.Component {
   };
 
   static defaultProps = {
-    status: 'max',
+    status: 'min',
     selectedTemplate: 'luba',
     selectedOrientation: 'top'
   };
@@ -73,7 +73,7 @@ class OrgChartTools extends React.Component {
     super(props);
 
     this.state = {
-      activeKey: 'template' // 已选中的功能
+      activeKey: 'mode' // 已选中的功能
     };
   }
 
@@ -160,6 +160,29 @@ class OrgChartTools extends React.Component {
     );
   };
 
+  renderModeContent = () => {
+    const { activeKey } = this.state;
+    const { mode, onModeChange, intl } = this.props;
+
+    return (
+      <div
+        className={classNames(`${prefix}__mode`, {
+          [`${prefix}__content--hide`]: activeKey !== 'mode'
+        })}
+      >
+        <RadioGroup onChange={onModeChange} value={mode}>
+          {MODES.map(mode => (
+            <div key={mode.value}>
+              <Radio value={mode.value}>
+                {getIntlVal(intl.locale, mode.enLabel, mode.label)}
+              </Radio>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+    );
+  };
+
   handleFnClick = activeKey => {
     this.setState({ activeKey });
   };
@@ -234,9 +257,10 @@ class OrgChartTools extends React.Component {
                     })}
                   </ul>
                   <div className={`${prefix}__content`}>
-                    {this.renderTemplateContent()}
-                    {this.renderOrientationContent()}
+                    {this.renderModeContent()}
                     {this.renderLevelContent()}
+                    {this.renderOrientationContent()}
+                    {this.renderTemplateContent()}
                   </div>
                 </div>
               </div>

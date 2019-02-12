@@ -60,7 +60,9 @@ export default class Functions extends React.Component {
     return (
       <div className="functions">
         <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />
-        {this.renderComponent(name, props)}
+        <div className="functions__body">
+          {this.renderComponent(name, props)}
+        </div>
       </div>
     );
   }

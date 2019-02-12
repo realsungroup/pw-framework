@@ -10,7 +10,8 @@ const common = {
   'common.modifySuccess': '修改成功',
   'common.ok': '确定',
   'common.cancel': '取消',
-  'common.prompt': '提示'
+  'common.prompt': '提示',
+  'common.advSearch': '高级搜索'
 };
 
 // HomeBody
