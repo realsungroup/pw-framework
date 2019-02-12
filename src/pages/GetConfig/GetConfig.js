@@ -33,7 +33,6 @@ export default class FnModule extends React.Component {
   constructor(props) {
     super(props);
     const { resid: resId, recid: recId } = this.resolveQueryString();
-    console.log({ resId, recId });
     this.state = {
       resId,
       recId

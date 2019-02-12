@@ -2,6 +2,8 @@
 
 开发组件的目录：当你想要开发一个新组件时，可以在此目录下新建 `xxx.js` 文件，脱离实际 power-works 业务环境进行开发组件，从而减少开发时的打包时间以及 power-works 配置的时间。
 
+- 注意：不要改动 Template.js 和 TemplateWrap.js 这两个文件！！！
+
 #### 新建开发组件的步骤
 
 1. 复制 Template.js 文件，粘贴到本目录下（在 vscode 下，会被命名为 `Template.1.js`）
