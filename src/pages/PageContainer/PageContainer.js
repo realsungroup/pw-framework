@@ -178,9 +178,8 @@ export default class Container extends React.Component {
           <Route path="/home" component={Home} />
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
-          <Route path="/fnmodule/:ids" component={GetConfig} />
+          <Route path="/fnmodule" component={GetConfig} />
           <Route path="/reminder" component={Reminder} />
-          {/* <Route path="/report-table" component={ReportTable} /> */}
         </PageBody>
       </div>
     );

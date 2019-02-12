@@ -4,6 +4,7 @@ import Functions from '../Functions';
 import { getModuleComponentConfig } from '../../util/api';
 import merge from 'deepmerge';
 import config from './config';
+import qs from 'qs';
 
 const emptyTarget = value => (Array.isArray(value) ? [] : {});
 const clone = (value, options) => merge(emptyTarget(value), value, options);
@@ -26,14 +27,13 @@ function combineMerge(target, source, options) {
 }
 
 /**
- * 功能模块页
+ * 获取配置信息
  */
 export default class FnModule extends React.Component {
   constructor(props) {
     super(props);
-    const ids = props.match.params.ids.split('-');
-    const resId = ids[0];
-    const recId = ids[1];
+    const { resid: resId, recid: recId } = this.resolveQueryString();
+    console.log({ resId, recId });
     this.state = {
       resId,
       recId
@@ -43,6 +43,11 @@ export default class FnModule extends React.Component {
   state = {
     beConfig: {}, // 后端模板组件配置信息
     isRequest: false // 是否请求了后端配置
+  };
+
+  resolveQueryString = () => {
+    const querystring = this.props.location.search.substring(1);
+    return qs.parse(querystring);
   };
 
   async componentDidMount() {

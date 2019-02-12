@@ -12,7 +12,8 @@ const SingApp = ({ app }) => {
   return (
     <Link
       to={{
-        pathname: `/fnmodule/${app.ResID || app.resid}-${app.REC_ID}`
+        pathname: `/fnmodule`,
+        search: `?resid=${app.ResID || app.resid}&recid=${app.REC_ID}`
       }}
     >
       <div className="home-workbench-app-wrapper">

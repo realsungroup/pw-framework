@@ -159,10 +159,7 @@ class App extends Component {
                   <Switch>
                     <PrivateRoute exact path="/" component={PageContainer} />
                     <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute
-                      path="/fnmodule/:hostrecid"
-                      component={PageContainer}
-                    />
+                    <PrivateRoute path="/fnmodule" component={PageContainer} />
                     <PrivateRoute
                       path="/workbench-setting"
                       component={PageContainer}
@@ -174,10 +171,6 @@ class App extends Component {
                     />
                     <PrivateRoute
                       path="/person-center"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute
-                      path="/task-notice/:taskCatalog/:taskType"
                       component={PageContainer}
                     />
                     <Route path="/login" component={Login} />

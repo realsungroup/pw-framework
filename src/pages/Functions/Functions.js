@@ -60,12 +60,6 @@ export default class Functions extends React.Component {
     return (
       <div className="functions">
         <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />
-        {/* <div className="functions__header">
-          {hasBackBtn && (
-            <i className="back-btn iconfont icon-back" onClick={this.back} />
-          )}
-          <span className="functions__header-title">{title}</span>
-        </div> */}
         {this.renderComponent(name, props)}
       </div>
     );
