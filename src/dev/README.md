@@ -9,4 +9,4 @@
 1. 复制 Template.js 文件，粘贴到本目录下（在 vscode 下，会被命名为 `Template.1.js`）
 2. 重命名 `Template.1.js` 文件为 `Devxxx.js`（xxx 根据实际组件名称进行修改），`Devxxx.js` 文件就是入口文件
 3. 在 `Devxxx.js` 中引入你要开发的组件，且使用
-4. 使用 `npm start Devxxx`，就可以开始开心地开始开发了！😃
+4. 使用 `npm start -- -e Devxxx`，就可以开始开心地开始开发了！😃
