@@ -253,8 +253,9 @@ const getData = (canOpControlArr, rulesControl) => {
         hasDownload: false,
         hasRefresh: false,
         hasAdvSearch: false,
-        subtractH: 165,
-        height: 400
+        subtractH: 140,
+        height: 450,
+        hasResizeableBox: true
       };
     }
     data.push(obj);

@@ -3,7 +3,7 @@ import PwTable from '../../ui/PwTable';
 import { message, Button, Spin } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
-import { getResid, getCmsWhere } from 'Util20/util';
+import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
 import {
@@ -19,10 +19,7 @@ import withImport from '../../hoc/withImport';
 import withDownloadFile from '../../hoc/withDownloadFile';
 import { withRecordForm } from '../../hoc/withRecordForm';
 
-import {
-  tableDataPropTypes,
-  tableDataDefaultPropTypes
-} from './TableDataPropTypes';
+import { defaultProps, propTypes } from './propTypes';
 import { EditableContext } from './EditableRow';
 import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
@@ -50,9 +47,9 @@ const modalTitleMap = {
  * TableData
  */
 class TableData extends React.Component {
-  static propTypes = tableDataPropTypes;
+  static propTypes = propTypes;
 
-  static defaultProps = tableDataDefaultPropTypes;
+  static defaultProps = defaultProps;
 
   constructor(props) {
     super(props);
@@ -93,6 +90,7 @@ class TableData extends React.Component {
     this.setState({ loading: true });
     await this.getData();
     await this.getScrollXY();
+
     this.setState({ loading: false });
   };
 
@@ -157,6 +155,7 @@ class TableData extends React.Component {
       defaultColumnWidth,
       columnsWidth,
       actionBarWidth,
+      width,
       height,
       subtractH
     } = this.props;
@@ -183,11 +182,23 @@ class TableData extends React.Component {
     if (rowSelection) {
       x += 50;
     }
-    const newY = y || height - subtractH;
-    const scrollXY = { x, y: newY };
+
+    // this.boxW this.boxH
+    if (this.tableDataRef && !this.boxW && !this.boxH) {
+      const parent = this.tableDataRef.parentNode;
+      this.boxW =
+        typeof width === 'number'
+          ? width
+          : parent.clientWidth * percentString2decimal(width);
+      this.boxH =
+        typeof height === 'number'
+          ? height
+          : parent.clientHeight * percentString2decimal(height);
+    }
+
+    const scrollXY = { x, y: this.boxH - subtractH };
 
     this.setState({ scrollXY });
-    // return { x, y: newY };
   };
 
   getTableData = async ({
@@ -718,10 +729,9 @@ class TableData extends React.Component {
   };
 
   handleResizeStop = (e, data) => {
-    const { subtractH } = this.props;
     const { height } = data.size;
     this.setState({
-      scrollXY: { x: this.state.scrollXY.x, y: height - subtractH }
+      scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH }
     });
   };
 
@@ -1066,66 +1076,74 @@ class TableData extends React.Component {
     }
 
     return (
-      <div className="table-data" style={style}>
-        <PwTable
-          title={title}
-          editingKey={editingKey}
-          components={components}
-          pagination={pagination}
-          dataSource={dataSource}
-          columns={newColumns}
-          bordered
-          rowKey={'REC_ID'}
-          scroll={scrollXY}
-          hasAdd={hasAdd}
-          hasModify={hasModify}
-          hasDelete={hasDelete}
-          onAdd={this.handleAdd}
-          onModify={this.handleModify}
-          onDelete={this.handleDelete}
-          onSearch={this.handleSearch}
-          onImport={this.handleImport}
-          onDownload={this.handleDownload}
-          onSearchChange={this.onSearchChange}
-          onChange={this.handleTableChange}
-          renderOtherBtns={this.renderBeBtns}
-          rowSelection={rowSelection}
-          onRow={this.handleOnRow}
-          onRefresh={this.handleRefresh}
-          size={size}
-          hasImport={hasImport}
-          hasDownload={hasDownload}
-          hasRefresh={hasRefresh}
-          onAdvSearch={this.handleAdvSearch}
-          hasAdvSearch={hasAdvSearch}
-          hasZoomInOut={hasZoomInOut}
-          onZoomIn={this.handleZoomIn}
-          onZoomOut={this.handleZoomOut}
-          bordered={bordered}
-        />
-      </div>
+      <PwTable
+        title={title}
+        editingKey={editingKey}
+        components={components}
+        pagination={pagination}
+        dataSource={dataSource}
+        columns={newColumns}
+        bordered
+        rowKey={'REC_ID'}
+        scroll={scrollXY}
+        hasAdd={hasAdd}
+        hasModify={hasModify}
+        hasDelete={hasDelete}
+        onAdd={this.handleAdd}
+        onModify={this.handleModify}
+        onDelete={this.handleDelete}
+        onSearch={this.handleSearch}
+        onImport={this.handleImport}
+        onDownload={this.handleDownload}
+        onSearchChange={this.onSearchChange}
+        onChange={this.handleTableChange}
+        renderOtherBtns={this.renderBeBtns}
+        rowSelection={rowSelection}
+        onRow={this.handleOnRow}
+        onRefresh={this.handleRefresh}
+        size={size}
+        hasImport={hasImport}
+        hasDownload={hasDownload}
+        hasRefresh={hasRefresh}
+        onAdvSearch={this.handleAdvSearch}
+        hasAdvSearch={hasAdvSearch}
+        hasZoomInOut={hasZoomInOut}
+        onZoomIn={this.handleZoomIn}
+        onZoomOut={this.handleZoomOut}
+        bordered={bordered}
+      />
     );
   };
 
+  setTableDataRef = element => {
+    this.tableDataRef = element;
+  };
+
   render() {
-    const { width, height, hasResizeableBox } = this.props;
+    const { hasResizeableBox, width, height } = this.props;
     const { loading } = this.state;
 
-    if (hasResizeableBox) {
-      return (
+    return (
+      <div
+        className="table-data"
+        style={{ width, height }}
+        ref={this.setTableDataRef}
+      >
         <Spin spinning={loading}>
-          <ResizableBox
-            width={width}
-            height={height}
-            onResizeStop={this.handleResizeStop}
-          >
-            {this.renderPwTable()}
-          </ResizableBox>
+          {hasResizeableBox && this.boxW && this.boxH ? (
+            <ResizableBox
+              width={this.boxW}
+              height={this.boxH}
+              onResizeStop={this.handleResizeStop}
+            >
+              {this.renderPwTable()}
+            </ResizableBox>
+          ) : (
+            this.renderPwTable()
+          )}
         </Spin>
-      );
-    } else {
-      return <Spin spinning={loading}>{this.renderPwTable()}</Spin>;
-    }
+      </div>
+    );
   }
 }
 

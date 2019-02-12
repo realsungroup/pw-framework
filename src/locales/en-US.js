@@ -1,5 +1,6 @@
 // common
 const common = {
+  'common.add': 'Add',
   'common.operation': 'Operation',
   'common.modify': 'Modify',
   'common.view': 'View',

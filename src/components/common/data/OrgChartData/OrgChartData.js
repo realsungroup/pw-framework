@@ -465,6 +465,7 @@ class OrgChartData extends React.Component {
       // 查看节点表单
       onClick: this.handleNodeClick,
 
+      // 更新节点（拖拽）
       onUpdate: this.handleDragNode
     };
     return options;

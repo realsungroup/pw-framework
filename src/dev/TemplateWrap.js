@@ -81,7 +81,7 @@ class TemplateWrap extends Component {
     return (
       <LocaleProvider locale={localeAntd}>
         <IntlProvider locale={locale} messages={messages}>
-          <div style={{ margin: 16 }}>
+          <div style={{ height: '100%', width: '100%' }}>
             <Button
               style={style}
               onClick={this.handleLoginClick}

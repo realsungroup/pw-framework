@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const tableDataDefaultPropTypes = {
+export const defaultProps = {
   size: 'middle',
   dataMode: 'main',
   hasAdd: true,
@@ -25,10 +25,10 @@ export const tableDataDefaultPropTypes = {
   hasAdvSearch: true,
   advSearchContainerType: 'drawer',
   formProps: {},
-  hasResizeableBox: false,
+  hasResizeableBox: true,
   width: '100%',
   height: '100%',
-  hasZoomInOut: true,
+  hasZoomInOut: false,
   defaultPagination: {
     current: 1,
     pageSize: 10,
@@ -40,7 +40,7 @@ export const tableDataDefaultPropTypes = {
   importContainerType: 'drawer'
 };
 
-export const tableDataPropTypes = {
+export const propTypes = {
   /**
    * 表格标题
    */
@@ -368,13 +368,13 @@ export const tableDataPropTypes = {
 
   /**
    * 是否有缩放表格功能（放大缩小功能与 hasResizeableBox 不能同时开启）
-   * 默认：false
+   * 默认：true
    */
   hasResizeableBox: PropTypes.bool,
 
   /**
    * 是否有放大缩小按钮（放大缩小功能与 hasResizeableBox 不能同时开启）
-   * 默认：true
+   * 默认：false
    */
   hasZoomInOut: PropTypes.bool,
 

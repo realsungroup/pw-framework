@@ -1,5 +1,6 @@
 // common
 const common = {
+  'common.add': '添加',
   'common.operation': '操作',
   'common.modify': '修改',
   'common.view': '查看',

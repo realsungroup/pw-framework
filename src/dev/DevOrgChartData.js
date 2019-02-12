@@ -15,7 +15,7 @@ class App extends Component {
           chartId="org-chart"
           chartWrapId="org-chart-wrap"
           level={3}
-          isExpandAllChildren={true}
+          isExpandAllChildren
           pidField="C3_602347244770"
           idField="C3_602347243263"
           enableDragDrop
@@ -23,14 +23,24 @@ class App extends Component {
             field_0: 'C3_602347243459',
             field_1: 'C3_602347246317',
             field_2: 'C3_602347244217',
-            field_3: 'C3_602347243840',
-            field_4: 'C3_602347242079',
-
+            field_3: 'C3_602416916077',
+            field_4: 'C3_602417234378',
             img_0: 'C3_602350177952'
           }}
           recordFormContainerProps={{ width: 500 }}
           rootIds={[61, 67]}
           rootIdsResid={602348168470}
+          groupingConfig={[
+            {
+              resourceOfTag: '602364331868',
+              sourceColumnOfGroupName: 'C3_602416511957',
+              sourceColumnOfTagName: 'C3_602358186916',
+              columnOfTagName: 'C3_602347242284',
+              isGroupTag: true,
+              cmswhere: ''
+            }
+          ]}
+          keyField="C3_602347243459"
         />
       </TemplateWrap>
     );

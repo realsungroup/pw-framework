@@ -107,3 +107,12 @@ export const paa = (fnArr, isExecute = true) => {
 export const isDateString = s => {
   return /^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}/.test(s);
 };
+
+/**
+ * 百分比字符串转小数
+ * @param {string} string 百分比字符串
+ * @return {number} 小数
+ */
+export const percentString2decimal = string => {
+  return parseInt(string, 10) / 100;
+};

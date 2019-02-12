@@ -3,6 +3,7 @@ import { argumentContainer } from '../util';
 import { message, Modal, Button } from 'antd';
 import TableData from '../../data/TableData';
 import { getCmscolumns, getCmswhere } from './util';
+import { FormattedMessage as FM } from 'react-intl';
 
 const Fragment = React.Fragment;
 
@@ -123,7 +124,12 @@ const withAdvDicTable = WrappedComponent => {
 
           {/* 高级字典表格 */}
           <Modal
-            title={'请选择一条记录'}
+            title={
+              <FM
+                id="TableData.pleaseSelectARecord"
+                defaultMessage="请选择一条记录"
+              />
+            }
             visible={visible}
             footer={null}
             onCancel={this.handleCancel}
@@ -133,6 +139,7 @@ const withAdvDicTable = WrappedComponent => {
             <TableData
               {...advDicTableProps}
               customRowBtns={this.customRowBtns}
+              size="small"
             />
           </Modal>
         </Fragment>
