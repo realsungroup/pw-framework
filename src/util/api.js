@@ -48,7 +48,8 @@ export const defaultLogin = async (code, password) => {
 
 // 域登录
 export const domainLogin = async (code, password, domain, domainUserField) => {
-  let url = window.domainLogin.baseUrl + path.login;
+  const baseUrl = window.pwConfig.domainLoginConfig.baseUrl;
+  let url = baseUrl + path.login;
   const params = {
     code,
     password,
