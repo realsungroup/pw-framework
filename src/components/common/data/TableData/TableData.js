@@ -183,7 +183,9 @@ class TableData extends React.Component {
       x += 50;
     }
 
-    // this.boxW this.boxH
+    // 计算：this.boxW 和 this.boxH
+    // ResizableBox 接收的 with 和 height 属性类型为 number
+    // 所以，当 width 和 height 用的字符串类型时（百分比），需要转换一下
     if (this.tableDataRef && !this.boxW && !this.boxH) {
       const parent = this.tableDataRef.parentNode;
       this.boxW =
@@ -729,9 +731,20 @@ class TableData extends React.Component {
   };
 
   handleResizeStop = (e, data) => {
-    const { height } = data.size;
+    const { height, width } = data.size;
+
+    const pagination = { ...this.state.pagination };
+    // 表格宽度小于 700px 时
+    if (width <= 700) {
+      pagination.showQuickJumper = false;
+      pagination.showSizeChanger = false;
+    } else {
+      pagination.showQuickJumper = true;
+      pagination.showSizeChanger = true;
+    }
     this.setState({
-      scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH }
+      scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH },
+      pagination
     });
   };
 
@@ -1069,11 +1082,6 @@ class TableData extends React.Component {
       editingKey
     } = this.state;
     const newColumns = this.getNewColumns(columns);
-
-    let style = {};
-    if (!hasResizeableBox && !hasZoomInOut) {
-      style = { width, height };
-    }
 
     return (
       <PwTable
