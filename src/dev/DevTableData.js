@@ -11,6 +11,7 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          actionBarWidth={200}
           title="调休登记"
           resid={596720928643}
           // width={1360}

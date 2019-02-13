@@ -383,8 +383,10 @@ class TableData extends React.Component {
     });
   };
 
-  handlePageChange = (page, pageSize) => {
-    this.getTableData({ page, pageSize });
+  handlePageChange = async (page, pageSize) => {
+    this.setState({ loading: true });
+    await this.getTableData({ page, pageSize });
+    this.setState({ loading: false });
   };
 
   handleShowSizeChange = (current, pageSize) => {
