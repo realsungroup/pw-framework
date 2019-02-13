@@ -11,6 +11,8 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import './Login.less';
 import './Login.css';
 
+const { loginLogoSize } = window.pwConfig;
+
 const {
   domainLoginConfig,
   defaultLoginMode,
@@ -189,7 +191,12 @@ class Login extends React.Component {
       <div className="login">
         <div className="login__left-part" />
         <div className="login__right-part">
-          <img src={logoImg} alt="logo" className="login__logo-img" />
+          <img
+            style={{ height: loginLogoSize }}
+            src={logoImg}
+            alt="logo"
+            className="login__logo-img"
+          />
           {/* 切换为 普通登录/域登录 */}
           <div className="login__options">
             <div className="login__options-login-mode">
