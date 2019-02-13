@@ -8,7 +8,7 @@ var pwConfig = {};
  * 地址
  */
 //  请求的基地址
-pwConfig.baseURL = 'http://kingofdinner.realsun.me:8102/';
+pwConfig.baseURL = 'http://ivf.dybhealth.com:9001/';
 // 导出 Excel 文件下载基地址
 pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
 
@@ -48,13 +48,12 @@ pwConfig.enterprisecode = '???';
  */
 // 获取多个业务可选功能的 resid 数组
 pwConfig.businessOptionalResIds = [
-  593979035940,
-  594468536480,
-  593979020171,
-  594399052677,
-  593979050146,
-  593979062893,
-  597176310158
+  588416941524,
+  591275219130,
+  591275423757,
+  591276041921,
+  591276266594,
+  591276371907
 ];
 
 /**
@@ -62,7 +61,7 @@ pwConfig.businessOptionalResIds = [
  */
 // 默认主题色
 pwConfig.themeColor = {
-  '@primary-color': '#004a95'
+  '@primary-color': 'rgb(142,145, 232)'
 };
 
 /**
