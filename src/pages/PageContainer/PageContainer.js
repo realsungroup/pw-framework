@@ -117,9 +117,19 @@ export default class Container extends React.Component {
   render() {
     const { reminderNum, password } = this.state;
     const user = JSON.parse(getItem('userInfo'));
-    const userData = {
-      userName: user.SysUserInfo.UserName
-    };
+    let userData;
+
+    // 读取用户信息报错时
+    // 说明没登录
+    // 进入登录页面
+    try {
+      userData = {
+        userName: user.SysUserInfo.UserName
+      };
+    } catch (err) {
+      document.location.href = '/login';
+    }
+
     const searchBox = <SearchBox placeholder="" />;
     const userInfo = (
       <UserInfo userName={userData.userName} userRank={userData.userRank} />
