@@ -34,6 +34,7 @@ class PersonCenter extends React.Component {
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
   };
 
   getData = async activeKey => {
@@ -51,7 +52,7 @@ class PersonCenter extends React.Component {
     try {
       res = await this.p1.promise;
     } catch (err) {
-      return message.error(err.message);
+      return console.error(err);
     }
     resTableData = res[0];
     formData = res[1];
