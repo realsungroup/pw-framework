@@ -6,6 +6,7 @@ import RequiredApps from './RequiredApps';
 import OptionalApps from './OptionalApps';
 import { FormattedMessage as FM } from 'react-intl';
 import './WrokbenchSettingBody.less';
+import http, { makeCancelable } from 'Util20/api';
 
 export default class WorkbenchBody extends React.PureComponent {
   state = {
@@ -19,6 +20,10 @@ export default class WorkbenchBody extends React.PureComponent {
     this.loadApps();
   }
 
+  componentWillUnmount() {
+    this.p1 && this.p1.cancel();
+  }
+
   handleConfirmSelection = () => {
     this.loadApps();
   };
@@ -30,12 +35,14 @@ export default class WorkbenchBody extends React.PureComponent {
   };
 
   loadApps = async () => {
+    this.p1 = makeCancelable(http().getUserDesktop());
     let res;
     try {
-      res = await getUserDesktop();
+      res = await this.p1.promise;
     } catch (err) {
+      this.setState({ loading: false });
       console.error(err.message);
-      message.error(err.message);
+      return message.error(err.message);
     }
     const requiredApps = res.data || [],
       selectedApps = res.userdefined || [];
