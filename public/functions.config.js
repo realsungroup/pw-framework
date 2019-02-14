@@ -6,9 +6,10 @@ window[588425594397] = {
     tableDataProps: {
       resid: 586639160406,
       subtractH: 100,
-      actionBarFixed: false,
+      actionBarFixed: true,
       height: 500,
-      size: 'small'
+      size: 'small',
+      actionBarWidth: 400
     }
   }
 };
