@@ -52,7 +52,7 @@ class PersonCenter extends React.Component {
     try {
       res = await this.p1.promise;
     } catch (err) {
-      return message.error(err.message);
+      return console.error(err);
     }
     resTableData = res[0];
     formData = res[1];
