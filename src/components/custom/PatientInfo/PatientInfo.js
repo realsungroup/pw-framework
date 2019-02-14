@@ -48,6 +48,14 @@ class PatientInfo extends React.Component {
     });
   };
 
+  handleHistoryClick = record => {
+    // this.setState({
+    //   modalVisible: true,
+    //   record: { ...record },
+    //   navListResidField: 'C3_603466838675'
+    // });
+  };
+
   customRowBtns = [
     (record, size) => {
       return (
@@ -72,6 +80,18 @@ class PatientInfo extends React.Component {
           问卷调查
         </Button>
       );
+    },
+    (record, size) => {
+      return (
+        <Button
+          key="历史记录"
+          style={customBtnStyle}
+          size={size}
+          onClick={() => this.handleHistoryClick(record)}
+        >
+          历史记录
+        </Button>
+      );
     }
   ];
 
@@ -94,7 +114,6 @@ class PatientInfo extends React.Component {
                 displayMod: 'classify',
                 modalWidth: 1000
               }}
-              displayMod="classify"
               hasFieldsLabel
               navListResid={record[navListResidField]}
               resid={586639160406}
@@ -108,6 +127,7 @@ class PatientInfo extends React.Component {
               advSearchConfig={{
                 containerName: 'drawer'
               }}
+              displayMod="classify"
             />
           </LzModal>
         )}
