@@ -1,6 +1,14 @@
 // 节日登记
 window[588425594397] = {
-  title: '节日登记',
+  title: '患者信息',
   name: 'PatientInfo',
-  props: {}
+  props: {
+    tableDataProps: {
+      resid: 586639160406,
+      subtractH: 100,
+      actionBarFixed: false,
+      height: 500,
+      size: 'small'
+    }
+  }
 };

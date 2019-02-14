@@ -19,13 +19,10 @@ class PatientInfo extends React.Component {
   componentWillUnmount = () => {};
 
   render() {
+    const { tableDataProps } = this.props;
     return (
       <div className="patient-info">
-        <TableData
-          resid={586639160406}
-          subtractH={100}
-          actionBarFixed={false}
-        />
+        <TableData {...tableDataProps} />
       </div>
     );
   }
