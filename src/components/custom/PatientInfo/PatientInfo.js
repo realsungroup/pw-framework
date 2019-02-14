@@ -20,8 +20,12 @@ class PatientInfo extends React.Component {
 
   render() {
     return (
-      <div className="my-patient-cd">
-        <TableData resid={586639160406} />
+      <div className="patient-info">
+        <TableData
+          resid={586639160406}
+          subtractH={100}
+          actionBarFixed={false}
+        />
       </div>
     );
   }
