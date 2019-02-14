@@ -2,7 +2,8 @@ import http from 'lz-request/lib/http';
 
 import { getItem } from './util';
 
-http.setDefaultBaseURL('http://kingofdinner.realsun.me:8102/');
+const baseURL = window.pwConfig.baseURL;
+http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
 http.setRequestInterceptors(
