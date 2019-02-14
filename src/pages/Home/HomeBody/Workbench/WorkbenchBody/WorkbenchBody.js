@@ -1,5 +1,4 @@
 import React from 'react';
-import { getUserDesktop } from '../../../../../util/api';
 import { appMode } from '../../../../../util/appMode.config';
 import Application from '../../../../components/Application';
 import { Link } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { Spin } from 'antd';
 import './WorkbenchBody.less';
 import Swiper from 'swiper/dist/js/swiper.js';
 import 'swiper/dist/css/swiper.css';
+import http, { makeCancelable } from 'Util20/api';
 
 const SingApp = ({ app }) => {
   return (
@@ -69,13 +69,14 @@ export default class WorkbenchBody extends React.PureComponent {
     });
   }
 
-  componentDidUpdate() {}
+  componentWillUnmount() {
+    this.p1 && this.p1.cancel();
+  }
 
   loadApps = async () => {
+    this.p1 = makeCancelable(http().getUserDesktop());
     try {
-      const getApps = getUserDesktop();
-      const appsRes = await getApps;
-
+      const appsRes = await this.p1.promise;
       const apps = this.dealApps([
         ...appsRes.data,
         ...(appsRes.userdefined || [])

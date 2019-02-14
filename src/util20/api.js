@@ -193,4 +193,13 @@ http.createApi('setLanguage', {
   url: '/api/Account/SaveUserLanguage'
 });
 
+/**
+ * 获取用户当前应用（必要功能和已选功能）
+ * 参数：-
+ */
+http.createApi('getUserDesktop', {
+  method: 'get',
+  url: '/api/Resource/RetrieveUserDesktop'
+});
+
 export default http;
