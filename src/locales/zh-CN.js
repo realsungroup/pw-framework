@@ -5,7 +5,7 @@ const common = {
   'common.modify': '修改',
   'common.view': '查看',
   'common.delete': '删除',
-  'TableData.sureDelete': '您确定要删除吗？',
+  'common.sureDelete': '您确定要删除吗？',
   'common.deleteSuccess': '删除成功',
   'common.addSuccess': '添加成功',
   'common.modifySuccess': '修改成功',
