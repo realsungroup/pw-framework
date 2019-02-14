@@ -10,13 +10,4 @@ export { LzTable } from '../loadableComponents';
 
 // 定制组件
 
-export {
-  LzDataHandling,
-  LzDataAnalyse,
-  LzMyCA,
-  LzClassifySet,
-  LzAFFO,
-  LzWorkOvertime,
-  LzTabsDataDashboard,
-  LzTeamSet
-} from '../product-components/att/loadableComponents';
+export { PatientInfo } from '../components/custom/loadableCustom';
