@@ -154,30 +154,28 @@ class App extends Component {
         >
           <LocaleProvider locale={localeAntd}>
             <IntlProvider locale={locale} messages={messages}>
-              <div>
-                <Router>
-                  <Switch>
-                    <PrivateRoute exact path="/" component={PageContainer} />
-                    <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute path="/fnmodule" component={PageContainer} />
-                    <PrivateRoute
-                      path="/workbench-setting"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute path="/reminder" component={PageContainer} />
-                    <PrivateRoute
-                      path="/report-table"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute
-                      path="/person-center"
-                      component={PageContainer}
-                    />
-                    <Route path="/login" component={Login} />
-                    <Route path="*" component={NotFound} />
-                  </Switch>
-                </Router>
-              </div>
+              <Router>
+                <Switch>
+                  <PrivateRoute exact path="/" component={PageContainer} />
+                  <PrivateRoute path="/home" component={PageContainer} />
+                  <PrivateRoute path="/fnmodule" component={PageContainer} />
+                  <PrivateRoute
+                    path="/workbench-setting"
+                    component={PageContainer}
+                  />
+                  <PrivateRoute path="/reminder" component={PageContainer} />
+                  <PrivateRoute
+                    path="/report-table"
+                    component={PageContainer}
+                  />
+                  <PrivateRoute
+                    path="/person-center"
+                    component={PageContainer}
+                  />
+                  <Route path="/login" component={Login} />
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </Router>
             </IntlProvider>
           </LocaleProvider>
         </NonsupportIE>
