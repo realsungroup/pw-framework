@@ -157,4 +157,40 @@ http.createApi('getMoveNodes', {
   url: '/api/OrgChart/GetMoveNodesData'
 });
 
+/**
+ * 默认登录
+ * 参数：{ Code, Password }
+ * 1. Code：用户名
+ * 2. Password：密码
+ */
+http.createApi('defaultLogin', {
+  method: 'post',
+  url: '/api/Account/Login'
+});
+
+/**
+ * 域登录
+ * 参数：{ code, password, domain, domainUserField, loginMethod = 'domain' }
+ * 1. code：用户名
+ * 2. password：密码
+ * 3. domain：域
+ * 4. domainUserField：域用户字段
+ * 5. loginMethod：登录方式（值确定为 'domain'）
+ */
+http.createApi('domainLogin', {
+  method: 'post',
+  baseURL: window.pwConfig.domainLoginConfig.baseUrl,
+  url: '/api/Account/Login'
+});
+
+/**
+ * 设置用户语言
+ * 参数：{ language }
+ * 1. language：语言
+ */
+http.createApi('setLanguage', {
+  method: 'post',
+  url: '/api/Account/SaveUserLanguage'
+});
+
 export default http;

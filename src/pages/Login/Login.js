@@ -1,13 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { defaultLogin } from '../../util/auth';
 import { message, Button, Input, Form, Icon, Radio } from 'antd';
-import { domainLogin } from 'Util/api';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo.png';
-import { resetPassByEmail, setLanguage } from 'Util/api';
+import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
-
+import http from 'Util20/api';
 import './Login.less';
 import './Login.css';
 
@@ -105,7 +103,10 @@ class Login extends React.Component {
       // 普通方式登录
       if (loginMode === 'normal') {
         try {
-          res = await defaultLogin(userName, password);
+          res = await http().defaultLogin({
+            Code: userName,
+            Password: password
+          });
         } catch (err) {
           this.setState({ loading: false });
           message.error(err.message);
@@ -117,12 +118,13 @@ class Login extends React.Component {
         const usernameSuffix = domainLoginConfig.usernameSuffix;
         const domainUserField = domainLoginConfig.domainUserField;
         try {
-          res = await domainLogin(
-            userName + usernameSuffix,
+          res = await http().domainLogin({
+            code: userName + usernameSuffix,
             password,
+            loginMethod: 'domain',
             domain,
             domainUserField
-          );
+          });
         } catch (err) {
           this.setState({ loading: false });
           message.error(err.message);
@@ -139,7 +141,7 @@ class Login extends React.Component {
         if (userLanguage !== language) {
           let res;
           try {
-            res = await setLanguage(language);
+            res = await http().setLanguage({ language });
           } catch (err) {
             return message.error(err.message);
           }
@@ -163,7 +165,8 @@ class Login extends React.Component {
   loginModeChange = () => {
     const loginMode = this.state.loginMode === 'normal' ? 'domain' : 'normal';
     this.setState({
-      loginMode
+      loginMode,
+      loading: false
     });
     setItem('loginMode', loginMode);
   };
@@ -175,9 +178,9 @@ class Login extends React.Component {
   };
 
   renderAddonAfterNode = () => {
-    const usernameSuffix = domainLoginConfig.usernameSuffix;
     const { loginMode } = this.state;
     if (loginMode === 'domain') {
+      const usernameSuffix = domainLoginConfig.usernameSuffix;
       return usernameSuffix;
     }
   };
