@@ -34,6 +34,7 @@ class PersonCenter extends React.Component {
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
   };
 
   getData = async activeKey => {
