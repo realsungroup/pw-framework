@@ -1,6 +1,6 @@
 import React from 'react';
 import http, { makeCancelable } from 'Util20/api';
-import { Spin, List } from 'antd';
+import { Spin, List, message } from 'antd';
 import { Link } from 'react-router-dom';
 import './ReminderList.less';
 import { FormattedMessage as FM } from 'react-intl';
@@ -29,7 +29,9 @@ export default class ReminderList extends React.PureComponent {
     try {
       res = await this.p1.promise;
     } catch (err) {
-      return console.error(err);
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
     }
     const list = [...res.data];
     this.setState({ list, loading: false });

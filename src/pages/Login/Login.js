@@ -39,7 +39,8 @@ class Login extends React.Component {
       enterprisecode, // 企业编号
       resetPassModalVisible: false, // 重置密码模态框是否显示
       registerEmail: '', // 注册邮箱
-      language
+      language,
+      loading: false
     };
   }
 
@@ -97,6 +98,7 @@ class Login extends React.Component {
       if (err) {
         return;
       }
+      this.setState({ loading: true });
       const { loginMode } = this.state;
       const { userName, password } = values;
       let res;
@@ -105,6 +107,7 @@ class Login extends React.Component {
         try {
           res = await defaultLogin(userName, password);
         } catch (err) {
+          this.setState({ loading: false });
           message.error(err.message);
           return console.error(err.message);
         }
@@ -121,6 +124,7 @@ class Login extends React.Component {
             domainUserField
           );
         } catch (err) {
+          this.setState({ loading: false });
           message.error(err.message);
           return console.error(err.message);
         }
@@ -150,6 +154,7 @@ class Login extends React.Component {
           redirectToReferrer: true
         });
       } else if (result === 'N') {
+        this.setState({ loading: false });
         return message.error(res.ErrorMsg);
       }
     });
@@ -178,7 +183,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { redirectToReferrer, loginMode, language } = this.state;
+    const { redirectToReferrer, loginMode, language, loading } = this.state;
     // 进入登录页的源路由
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     // 登录成功后，通过 Redirect 组件跳转到源路由
@@ -268,6 +273,7 @@ class Login extends React.Component {
                 type="primary"
                 className="login__submit-btn"
                 onClick={this.handleSubmit}
+                loading={loading}
               >
                 <FM id="Login.Login" defaultMessage="登录" />
               </Button>
