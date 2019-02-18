@@ -3,11 +3,7 @@ import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
 import './PatientInfo.less';
 import { Button } from 'antd';
-import {
-  LzModal,
-  LzUnitComponentContainer,
-  LzMenuForms
-} from '../loadableCustom';
+import { LzModal, LzMenuForms } from '../loadableCustom';
 
 const customBtnStyle = {
   margin: '0 4px'

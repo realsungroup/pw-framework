@@ -237,7 +237,8 @@ module.exports = {
       Util: path.resolve(__dirname, '../src/util/'),
       UnitComponent: path.resolve(__dirname, '../src/lib/unit-component/'),
       Util20: path.resolve(__dirname, '../src/util20'),
-      Common: path.resolve(__dirname, '../src/components/common')
+      Common: path.resolve(__dirname, '../src/components/common'),
+      Custom: path.resolve(__dirname, '../src/components/custom')
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
