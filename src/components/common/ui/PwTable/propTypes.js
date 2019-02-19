@@ -15,7 +15,13 @@ export const defaultProps = {
   hasDelete: true,
   hasSearch: true,
 
-  hasImport: true
+  hasImport: true,
+
+  addText: '添加',
+  enAddText: 'Add',
+
+  modifyText: '修改',
+  enModifyText: 'Modify'
 };
 
 export const propTypes = {
@@ -150,5 +156,36 @@ export const propTypes = {
   /**
    * 点击缩小按钮的回调
    */
-  onZoomOut: PropTypes.func
+  onZoomOut: PropTypes.func,
+
+  /**
+   * 添加按钮文字
+   * 默认：'添加'
+   */
+  addText: PropTypes.string,
+
+  /**
+   * 添加按钮文字（英文）
+   * 默认：'Add'
+   */
+  enAddText: PropTypes.string,
+
+  /**
+   * 修改按钮文字
+   * 默认：'修改'
+   */
+  modifyText: PropTypes.string,
+
+  /**
+   * 修改按钮文字（英文）
+   * 默认：'Modify'
+   */
+  enModifyText: PropTypes.string,
+
+  /**
+   * action bar 区域额外的内容
+   * 默认：-
+   * 可选：jsx 或 (tableData: []) => {}
+   */
+  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };

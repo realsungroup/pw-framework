@@ -132,11 +132,18 @@ class PwTable extends React.Component {
       modifyText,
       enModifyText,
       intl,
+      actionBarExtra,
+      dataSource,
       ...restProps
     } = this.props;
 
     const hasActionBar =
-      hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
+      hasAdd ||
+      hasModify ||
+      hasDelete ||
+      renderOtherBtns ||
+      hasSearch ||
+      actionBarExtra;
 
     const hasIconBtns =
       hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut;
@@ -209,6 +216,19 @@ class PwTable extends React.Component {
                 </ButtonWithConfirm>
               )}
             </div>
+
+            {actionBarExtra && (
+              <div className="pw-table__action-bar-extra">
+                {(function() {
+                  if (typeof actionBarExtra === 'function') {
+                    return actionBarExtra(dataSource);
+                  } else {
+                    return actionBarExtra;
+                  }
+                })()}
+              </div>
+            )}
+
             <div className="pw-table__search">
               {hasSearch && (
                 <Search
@@ -227,7 +247,12 @@ class PwTable extends React.Component {
           </div>
         )}
 
-        <Table {...restProps} pagination={false} size={tableSizeMap[size]} />
+        <Table
+          dataSource={dataSource}
+          {...restProps}
+          pagination={false}
+          size={tableSizeMap[size]}
+        />
 
         {this.renderPagination()}
       </div>

@@ -11,6 +11,10 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          actionBarExtra={tableData => {
+            console.log({ tableData });
+            return 'hhh';
+          }}
           actionBarWidth={200}
           title="调休登记"
           resid={596720928643}

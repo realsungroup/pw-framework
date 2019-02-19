@@ -482,5 +482,12 @@ export const propTypes = {
    * 导入功能的容器接收的 props
    * 默认：{}
    */
-  importContainerProps: PropTypes.object
+  importContainerProps: PropTypes.object,
+
+  /**
+   * action bar 区域额外的内容
+   * 默认：-
+   * 可选：jsx 或 (tableData: []) => {}
+   */
+  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };
