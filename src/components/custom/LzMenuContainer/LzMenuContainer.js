@@ -348,7 +348,9 @@ export default class LzMenuContainer extends React.Component {
                   {menu.subMenuList.map(subMenu => (
                     <Menu.Item key={subMenu.RES_ID}>
                       <Icon type="align-right" theme="outlined" />
-                      <span>{subMenu.RES_NAME}</span>
+                      <span>
+                        {subMenu.RES_NAME}（{subMenu.totalCount}）
+                      </span>
                     </Menu.Item>
                   ))}
                 </SubMenu>
