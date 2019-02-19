@@ -2,8 +2,9 @@ import React from 'react';
 import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
 import './PatientInfo.less';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { LzModal, LzMenuForms } from '../loadableCustom';
+import http, { makeCancelable } from 'Util20/api';
 
 const customBtnStyle = {
   margin: '0 4px'
@@ -20,13 +21,44 @@ class PatientInfo extends React.Component {
     this.state = {
       modalVisible: false,
       record: {},
-      navListResidField: ''
+      navListResidField: '',
+      cdLen: 0,
+      ucLen: 0
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = async () => {
+    const { resid } = this.props.tableDataProps;
+    this.p1 = makeCancelable(
+      http().getTable({
+        resid,
+        cmswhere: `C3_600539035945 = 'UC'`
+      })
+    );
+    this.p2 = makeCancelable(
+      http().getTable({
+        resid,
+        cmswhere: `C3_600539035945 = 'CD'`
+      })
+    );
+    const pArr = [this.p1.promise, this.p2.promise];
 
-  componentWillUnmount = () => {};
+    let res;
+    try {
+      res = await Promise.all(pArr);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    const ucLen = res[0].total;
+    const cdLen = res[1].total;
+    this.setState({ ucLen, cdLen });
+  };
+
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
+  };
 
   handleInputCaseClick = record => {
     this.setState({
@@ -95,13 +127,26 @@ class PatientInfo extends React.Component {
     this.setState({ modalVisible: false });
   };
 
+  renderActionBarExtra = () => {
+    const { cdLen, ucLen } = this.state;
+    return (
+      <div>
+        <span style={{ margin: '0 4px' }}>CD：{cdLen}</span>
+        <span style={{ margin: '0 4px' }}>UC：{ucLen}</span>
+      </div>
+    );
+  };
+
   render() {
     const { tableDataProps } = this.props;
     const { modalVisible, record, navListResidField } = this.state;
-    console.log('fdsafdsa', record.C3_603466824586);
     return (
       <div className="patient-info">
-        <TableData {...tableDataProps} customRowBtns={this.customRowBtns} />
+        <TableData
+          {...tableDataProps}
+          customRowBtns={this.customRowBtns}
+          actionBarExtra={this.renderActionBarExtra}
+        />
         {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
             <LzMenuForms
