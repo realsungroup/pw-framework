@@ -22,8 +22,8 @@ class PatientInfo extends React.Component {
       modalVisible: false,
       record: {},
       navListResidField: '',
-      cdLen: 0,
-      ucLen: 0
+      cdLen: {},
+      ucLen: {}
     };
   }
 
@@ -139,14 +139,23 @@ class PatientInfo extends React.Component {
 
   render() {
     const { tableDataProps } = this.props;
-    const { modalVisible, record, navListResidField } = this.state;
+    const {
+      modalVisible,
+      record,
+      navListResidField,
+      ucLen,
+      cdLen
+    } = this.state;
     return (
       <div className="patient-info">
-        <TableData
-          {...tableDataProps}
-          customRowBtns={this.customRowBtns}
-          actionBarExtra={this.renderActionBarExtra}
-        />
+        {typeof ucLen === 'number' && typeof cdLen === 'number' && (
+          <TableData
+            {...tableDataProps}
+            customRowBtns={this.customRowBtns}
+            actionBarExtra={this.renderActionBarExtra}
+          />
+        )}
+
         {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
             <LzMenuForms
