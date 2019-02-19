@@ -31,7 +31,7 @@ class LabExaminationChart extends React.Component {
 
     this.state = {
       loading: false,
-      option: {},
+      option: null,
       tableData: [],
       columns: []
     };
@@ -58,7 +58,7 @@ class LabExaminationChart extends React.Component {
     // 图例配置
     const legend = { data: [] };
     fields.forEach(field => {
-      const obj = { type: 'line', data: [] };
+      const obj = { name: field.title, type: 'line', data: [] };
       newData.forEach(item => {
         const value = item[field.field];
         obj.data.push(value);
@@ -81,7 +81,8 @@ class LabExaminationChart extends React.Component {
         }
       },
       xAxis,
-      series
+      series,
+      legend
     };
 
     option.xAxis = xAxis;
@@ -106,14 +107,15 @@ class LabExaminationChart extends React.Component {
     const { loading, option, tableData, columns } = this.state;
     return (
       <Spin spinning={loading}>
-        {/* <Table dataSource={tableData} columns={columns} rowKey="REC_ID" /> */}
         <div className="lab-examination-chart">
-          <EchartsOfReact
-            id="lab-examination-chart"
-            defaultWidth={'100%'}
-            defaultHeight={600}
-            option={option}
-          />
+          {option && (
+            <EchartsOfReact
+              id="lab-examination-chart"
+              defaultWidth={'100%'}
+              defaultHeight={600}
+              option={option}
+            />
+          )}
         </div>
       </Spin>
     );

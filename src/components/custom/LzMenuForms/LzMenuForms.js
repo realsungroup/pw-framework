@@ -37,6 +37,7 @@ export default class LzMenuForms extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
+    console.log({ navListRes: res });
     res.data.length && this.dealNavList(res.data[0]);
   };
 
