@@ -1,25 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { message, Button, Timeline } from 'antd';
+import { message, Button, Timeline, Modal, Tree } from 'antd';
 import './MenuMultiple.less';
 import LzFormWithFooter from 'UnitComponent/components/LzFormWithFooter';
 import { getFormData, getSubTableData } from 'Util/api';
 import dealControlArr from 'Util/controls';
 import LzFormModalContainer from 'UnitComponent/components/LzFormModalContainer';
 import LzAdvSearch from 'UnitComponent/LzTable/LzAdvSearch';
-import HeightWeightChart from 'Custom/HeightWeightChart';
+import HeightWeightChart from './HeightWeightChart';
+import LabExaminationChart from './LabExaminationChart';
 import { LzModal } from '../../loadableCustom';
+const { TreeNode } = Tree;
 
-const modalTitleMap = {
-  身高: '身高曲线',
-  体重: '体重曲线'
-};
-
-const hasChart = formTitle => {
+// 含有 “生长发育评估” 的表才有身高、体重按钮
+const hasHeightWeightChartBtn = formTitle => {
   return formTitle.indexOf('生长发育评估') !== -1;
 };
 
+// 实验室检查表才有选择字段按钮
+const hasChooseFieldBtn = formTitle => {
+  return formTitle.indexOf('实验室检查') !== -1;
+};
+
+const assortFields = controlArr => {
+  if (!controlArr || !controlArr.length) {
+    return [];
+  }
+  const filteredControlArr = controlArr.filter(
+    control => control.ColResDataSort
+  );
+  const klasses = [];
+  filteredControlArr.forEach(control => {
+    let i;
+    if (
+      !klasses.some((klass, index) => {
+        if (klass.title === control.ColResDataSort) {
+          i = index;
+          return true;
+        }
+      })
+    ) {
+      klasses.push({
+        title: control.ColResDataSort,
+        renderControlArr: [control]
+      });
+    } else {
+      klasses[i].renderControlArr.push(control);
+    }
+  });
+  return klasses;
+};
+
+const getCanChooseFields = canOpControlArr => {
+  const arr = assortFields(canOpControlArr);
+  return arr;
+};
 /**
  * MenuMultiple
  */
@@ -82,7 +118,11 @@ export default class MenuMultiple extends React.Component {
       modalVisible: false,
       advSearchVisible: false, // 高级搜索是否显示
       chartType: '身高', // 图表类型
-      chartVisible: false
+      chartVisible: false,
+      chooseFieldModalVisible: false, // 选择字段的模态窗是否显示
+      fields: [], // 已选择的需要在实验室检查中显示的字段
+      treeData: [], // 选择字段的树节点数据
+      selectedKeys: [] // 已选中的树节点
     };
   }
 
@@ -117,13 +157,23 @@ export default class MenuMultiple extends React.Component {
       return;
     }
     let res;
+    const pArr = [
+      getFormData(subresid, 'default'),
+      getFormData(subresid, 'title-choose')
+    ];
     try {
-      res = await getFormData(subresid, 'default');
+      res = await Promise.all(pArr);
     } catch (err) {
       return message.error(err.message);
     }
-    const formFormData = dealControlArr(res.data.columns);
-    this.setState({ formFormData });
+    const formFormData = dealControlArr(res[0].data.columns);
+    const chooseFieldFormData = dealControlArr(res[1].data.columns);
+
+    const treeData = getCanChooseFields(chooseFieldFormData.canOpControlArr);
+
+    this._canOpControlArr = chooseFieldFormData.canOpControlArr;
+
+    this.setState({ formFormData, treeData });
   };
 
   handleAddClick = () => {
@@ -151,14 +201,18 @@ export default class MenuMultiple extends React.Component {
     this.setState({ chartType, chartVisible: true });
   };
 
+  handleOpenChooseFieldModal = () => {
+    this.setState({ chooseFieldModalVisible: true });
+  };
+
   renderForm = () => {
-    const { selectedRecord, formFormData, operation } = this.state;
+    const { selectedRecord, formFormData } = this.state;
     const { formTitle } = this.props;
     const header = (
       <div className="menu-multiple-form-header">
         <span className="menu-multiple-form-header-title">{formTitle}</span>
 
-        {hasChart(formTitle) && (
+        {hasHeightWeightChartBtn(formTitle) && (
           <Button
             style={{ margin: '0 4px' }}
             type="primary"
@@ -167,13 +221,23 @@ export default class MenuMultiple extends React.Component {
             身高曲线图
           </Button>
         )}
-        {hasChart(formTitle) && (
+        {hasHeightWeightChartBtn(formTitle) && (
           <Button
             style={{ margin: '0 4px' }}
             type="primary"
             onClick={() => this.handleOpenChart('体重')}
           >
             体重曲线图
+          </Button>
+        )}
+
+        {hasChooseFieldBtn(formTitle) && (
+          <Button
+            style={{ margin: '0 4px' }}
+            type="primary"
+            onClick={() => this.handleOpenChooseFieldModal()}
+          >
+            选择字段
           </Button>
         )}
 
@@ -223,6 +287,53 @@ export default class MenuMultiple extends React.Component {
     this.setState({ advSearchVisible: false });
   };
 
+  renderTreeNodes = data =>
+    data.map(item => {
+      if (item.renderControlArr) {
+        return (
+          <TreeNode title={item.title} key={item.title} dataRef={item}>
+            {this.renderTreeNodes(item.renderControlArr)}
+          </TreeNode>
+        );
+      }
+      return (
+        <TreeNode key={item.ColName} title={item.ColDispName} dataRef={item} />
+      );
+    });
+
+  getTreeRef = element => {
+    this.treeRef = element;
+  };
+
+  handleCompleteFieldsChoose = () => {
+    const { selectedKeys } = this.state;
+    const newSelectedKeys = selectedKeys.filter(
+      key => key.indexOf('C3_') !== -1
+    );
+
+    if (!selectedKeys.length) {
+      return message.error('您未选择字段');
+    }
+
+    const fields = [];
+
+    this._canOpControlArr.forEach(item => {
+      const curItem = newSelectedKeys.some(key => key === item.ColName);
+      if (curItem) {
+        fields.push({
+          field: item.ColName,
+          title: item.ColDispName
+        });
+      }
+    });
+
+    this.setState({ chartVisible: true, fields });
+  };
+
+  handleNodeCheck = selectedKeys => {
+    this.setState({ selectedKeys });
+  };
+
   render() {
     const {
       selectedRecord,
@@ -232,9 +343,20 @@ export default class MenuMultiple extends React.Component {
       formFormData,
       advSearchVisible,
       chartVisible,
-      chartType
+      chartType,
+      fields,
+      chooseFieldModalVisible,
+      treeData,
+      selectedKeys
     } = this.state;
-    const { resid, subresid, hostrecid, advSearchConfig, record } = this.props;
+    const {
+      resid,
+      subresid,
+      hostrecid,
+      advSearchConfig,
+      record,
+      formTitle
+    } = this.props;
     const modalProps = {
       dataMode: 'sub',
       operation: 'add',
@@ -245,6 +367,7 @@ export default class MenuMultiple extends React.Component {
       onConfirm: this.addRecordCb,
       formFormData
     };
+
     return (
       <div className="menu-multiple">
         <div className="form-wrap">
@@ -295,16 +418,40 @@ export default class MenuMultiple extends React.Component {
             defaultScaleStatus="max"
             onClose={() => this.setState({ chartVisible: false })}
           >
-            <HeightWeightChart
-              sex={record.C3_589053299408}
-              chartType={chartType}
-              userData={recordList}
-              recordMonthField={'C3_603833255097'}
-              recordHeightField={'C3_586880026948'}
-              recordWeightField={'C3_586880035091'}
-            />
+            {formTitle === '实验室检查' ? (
+              <LabExaminationChart
+                data={recordList}
+                fields={fields}
+                dateField={innerFieldName}
+              />
+            ) : (
+              <HeightWeightChart
+                sex={record.C3_589053299408}
+                chartType={chartType}
+                userData={recordList}
+                recordMonthField={'C3_603833255097'}
+                recordHeightField={'C3_586880026948'}
+                recordWeightField={'C3_586880035091'}
+              />
+            )}
           </LzModal>
         )}
+
+        <Modal
+          title="选择字段"
+          visible={chooseFieldModalVisible}
+          onCancel={() => this.setState({ chooseFieldModalVisible: false })}
+          onOk={this.handleCompleteFieldsChoose}
+        >
+          <Tree
+            checkable
+            ref={this.getTreeRef}
+            selectedKeys={selectedKeys}
+            onCheck={this.handleNodeCheck}
+          >
+            {this.renderTreeNodes(treeData)}
+          </Tree>
+        </Modal>
       </div>
     );
   }
