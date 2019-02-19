@@ -127,11 +127,23 @@ class PwTable extends React.Component {
       onZoomOut,
       hasImport,
       onImport,
+      addText,
+      enAddText,
+      modifyText,
+      enModifyText,
+      intl,
+      actionBarExtra,
+      dataSource,
       ...restProps
     } = this.props;
 
     const hasActionBar =
-      hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
+      hasAdd ||
+      hasModify ||
+      hasDelete ||
+      renderOtherBtns ||
+      hasSearch ||
+      actionBarExtra;
 
     const hasIconBtns =
       hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut;
@@ -175,12 +187,14 @@ class PwTable extends React.Component {
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                  <FM id="common.add" defaultMessage="添加" />
+                  {/* 添加 */}
+                  {getIntlVal(intl.locale, enAddText, addText)}
                 </Button>
               )}
               {hasModify && (
                 <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                  <FM id="common.modify" defaultMessage="修改" />
+                  {/* 修改 */}
+                  {getIntlVal(intl.locale, enModifyText, modifyText)}
                 </Button>
               )}
               {hasDelete && (
@@ -202,6 +216,19 @@ class PwTable extends React.Component {
                 </ButtonWithConfirm>
               )}
             </div>
+
+            {actionBarExtra && (
+              <div className="pw-table__action-bar-extra">
+                {(function() {
+                  if (typeof actionBarExtra === 'function') {
+                    return actionBarExtra(dataSource);
+                  } else {
+                    return actionBarExtra;
+                  }
+                })()}
+              </div>
+            )}
+
             <div className="pw-table__search">
               {hasSearch && (
                 <Search
@@ -220,7 +247,12 @@ class PwTable extends React.Component {
           </div>
         )}
 
-        <Table {...restProps} pagination={false} size={tableSizeMap[size]} />
+        <Table
+          dataSource={dataSource}
+          {...restProps}
+          pagination={false}
+          size={tableSizeMap[size]}
+        />
 
         {this.renderPagination()}
       </div>

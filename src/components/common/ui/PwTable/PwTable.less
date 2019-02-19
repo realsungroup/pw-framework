@@ -28,6 +28,7 @@
     margin: 0 8px;
   }
   &__action-bar {
+    overflow: hidden;
     &--large {
       padding: 12px 0;
     }
@@ -37,14 +38,16 @@
     &--small {
       padding: 8px 0;
     }
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     button {
       margin: 0 4px;
     }
   }
-  &__action-btns {}
+  &__action-btns {
+    float: left;
+  }
+  &__search {
+    float: right;
+  }
   &__footer {
     display: flex;
     align-items: center;

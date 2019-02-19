@@ -11,6 +11,10 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          actionBarExtra={tableData => {
+            console.log({ tableData });
+            return 'hhh';
+          }}
           actionBarWidth={200}
           title="调休登记"
           resid={596720928643}
@@ -60,6 +64,10 @@ class App extends Component {
           hasResizeableBox={true}
           hasZoomInOut={false}
           bordered={true}
+          addText="添加基本信息"
+          enAddText="add base info"
+          rowModifyText="修改基本信息"
+          enRowModifyText="modify base info"
         />
       </TemplateWrap>
     );
