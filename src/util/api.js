@@ -174,7 +174,7 @@ export const getAllAppLinks = (parentresids, isGetCount = true) => {
   const url = baseUrl + path.getAllAppLinks;
   const params = {
     parentresids,
-    getresourcedata: 0,
+    getresourcedata: 1,
     getrecordcount: isGetCount ? 1 : 0
   };
   return dealNextExtractData(http(url, GET, params, dataType.HostTableDataEM));
