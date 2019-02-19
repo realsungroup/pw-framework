@@ -60,6 +60,10 @@ class App extends Component {
           hasResizeableBox={true}
           hasZoomInOut={false}
           bordered={true}
+          addText="添加基本信息"
+          enAddText="add base info"
+          rowModifyText="修改基本信息"
+          enRowModifyText="modify base info"
         />
       </TemplateWrap>
     );

@@ -26,6 +26,7 @@ import { ResizableBox } from 'react-resizable';
 import withZoomInOut from '../../hoc/withZoomInOut';
 import { makeCancelable } from 'Util20/api';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 
 const { Fragment } = React;
 
@@ -898,25 +899,27 @@ class TableData extends React.Component {
   };
 
   renderRowModifyBtn = record => {
+    const { intl, rowModifyText, enRowModifyText } = this.props;
     return (
       <Button
         size={btnSizeMap[this.props.size]}
         onClick={() => this.handleModify(record)}
         className="table-data__action-btn"
       >
-        <FM id="common.modify" defaultMessage="修改" />
+        {getIntlVal(intl.locale, enRowModifyText, rowModifyText)}
       </Button>
     );
   };
 
   renderRowViewBtn = record => {
+    const { intl, rowViewText, enRowViewText } = this.props;
     return (
       <Button
         size={btnSizeMap[this.props.size]}
         onClick={() => this.handleView(record)}
         className="table-data__action-btn"
       >
-        <FM id="common.view" defaultMessage="查看" />
+        {getIntlVal(intl.locale, enRowViewText, rowViewText)}
       </Button>
     );
   };
@@ -934,7 +937,8 @@ class TableData extends React.Component {
   };
 
   renderRowDeleteBtn = record => {
-    const { locale } = this.props.intl;
+    const { intl, rowDeleteText, enRowDeleteText } = this.props;
+
     return (
       <ButtonWithConfirm
         popConfirmProps={{
@@ -949,7 +953,7 @@ class TableData extends React.Component {
           className: 'table-data__action-btn'
         }}
       >
-        <FM id="common.delete" defaultMessage="删除" />
+        {getIntlVal(intl.locale, enRowDeleteText, rowDeleteText)}
       </ButtonWithConfirm>
     );
   };
@@ -1085,6 +1089,8 @@ class TableData extends React.Component {
     } = this.state;
     const newColumns = this.getNewColumns(columns);
 
+    const { addText, enAddText, modifyText, enModifyText } = this.props;
+
     return (
       <PwTable
         title={title}
@@ -1121,6 +1127,10 @@ class TableData extends React.Component {
         onZoomIn={this.handleZoomIn}
         onZoomOut={this.handleZoomOut}
         bordered={bordered}
+        addText={addText}
+        enAddText={enAddText}
+        modifyText={modifyText}
+        enModifyText={enModifyText}
       />
     );
   };

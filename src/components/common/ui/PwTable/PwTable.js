@@ -127,6 +127,11 @@ class PwTable extends React.Component {
       onZoomOut,
       hasImport,
       onImport,
+      addText,
+      enAddText,
+      modifyText,
+      enModifyText,
+      intl,
       ...restProps
     } = this.props;
 
@@ -175,12 +180,14 @@ class PwTable extends React.Component {
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                  <FM id="common.add" defaultMessage="添加" />
+                  {/* 添加 */}
+                  {getIntlVal(intl.locale, enAddText, addText)}
                 </Button>
               )}
               {hasModify && (
                 <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                  <FM id="common.modify" defaultMessage="修改" />
+                  {/* 修改 */}
+                  {getIntlVal(intl.locale, enModifyText, modifyText)}
                 </Button>
               )}
               {hasDelete && (

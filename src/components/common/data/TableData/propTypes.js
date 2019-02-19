@@ -37,7 +37,19 @@ export const defaultProps = {
   },
   bordered: true,
   importContainerProps: {},
-  importContainerType: 'drawer'
+  importContainerType: 'drawer',
+  rowEditText: '编辑',
+  enEditText: 'Edit',
+  rowModifyText: '修改',
+  enRowModifyText: 'Modify',
+  rowViewText: '查看',
+  enRowViewText: 'View',
+  rowDeleteText: '删除',
+  enRowDeleteText: 'Delete',
+  addText: '添加',
+  enAddText: 'Add',
+  modifyText: '修改',
+  enModifyText: 'Modify'
 };
 
 export const propTypes = {
@@ -224,10 +236,34 @@ export const propTypes = {
   hasAdd: PropTypes.bool,
 
   /**
+   * 添加按钮文字
+   * 默认：'添加'
+   */
+  addText: PropTypes.string,
+
+  /**
+   * 添加按钮文字（英文）
+   * 默认：'Add'
+   */
+  enAddText: PropTypes.string,
+
+  /**
    * 是否有修改按钮
    * 默认：true
    */
   hasModify: PropTypes.bool,
+
+  /**
+   * 修改按钮文字
+   * 默认：'修改'
+   */
+  modifyText: PropTypes.string,
+
+  /**
+   * 修改按钮文字（英文）
+   * 默认：'Modify'
+   */
+  enModifyText: PropTypes.string,
 
   /**
    * 是否有删除按钮
@@ -242,10 +278,34 @@ export const propTypes = {
   hasRowEdit: PropTypes.bool,
 
   /**
+   * 行编辑按钮文字
+   * 默认：'编辑'
+   */
+  rowEditText: PropTypes.string,
+
+  /**
+   * 行编辑按钮文字（英文）
+   * 默认：'Edit'
+   */
+  enRowEditText: PropTypes.string,
+
+  /**
    * 是否有行修改按钮
    * 默认：true
    */
   hasRowModify: PropTypes.bool,
+
+  /**
+   * 行修改按钮文字
+   * 默认：'修改'
+   */
+  rowModifyText: PropTypes.string,
+
+  /**
+   * 行修改按钮文字（英文）
+   * 默认：'Modify'
+   */
+  enRowModifyText: PropTypes.string,
 
   /**
    * 是否有行查看按钮
@@ -254,10 +314,34 @@ export const propTypes = {
   hasRowView: PropTypes.bool,
 
   /**
+   * 行查看按钮文字
+   * 默认：'查看'
+   */
+  rowViewText: PropTypes.string,
+
+  /**
+   * 行查看按钮文字（英文）
+   * 默认：'View'
+   */
+  enRowViewText: PropTypes.string,
+
+  /**
    * 是否有行删除按钮
    * 默认：true
    */
   hasRowDelete: PropTypes.bool,
+
+  /**
+   * 行删除按钮文字
+   * 默认：'删除'
+   */
+  rowDeleteText: PropTypes.string,
+
+  /**
+   * 行删除按钮文字（英文）
+   * 默认：'View'
+   */
+  enRowDeleteText: PropTypes.string,
 
   /**
    * 是否有后端按钮
