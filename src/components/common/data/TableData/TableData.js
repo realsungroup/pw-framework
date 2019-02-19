@@ -332,7 +332,7 @@ class TableData extends React.Component {
     const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
     this._dealedRecordFormData =
       recordFormData &&
-      getDataProp(this._recordFormData, {}, recordFormIsClassifyLayout);
+      getDataProp(this._recordFormData, {}, undefined, recordFormIsClassifyLayout);
     this._dealedRowEditFormData =
       rowEditFormData && getDataProp(this._rowEditFormData, {});
   };
