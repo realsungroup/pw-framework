@@ -1,13 +1,25 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Modal, Input, message, Spin, Button, Timeline } from 'antd';
+import { message, Button, Timeline } from 'antd';
 import './MenuMultiple.less';
-import LzFormWithFooter from '../../components/LzFormWithFooter';
-import { getFormData, addSubRecord, getSubTableData } from '../../../util/api';
+import LzFormWithFooter from 'UnitComponent/components/LzFormWithFooter';
+import { getFormData, getSubTableData } from 'Util/api';
 import dealControlArr from 'Util/controls';
-import LzFormModalContainer from '../../components/LzFormModalContainer';
-import LzAdvSearch from '../../LzTable/LzAdvSearch';
+import LzFormModalContainer from 'UnitComponent/components/LzFormModalContainer';
+import LzAdvSearch from 'UnitComponent/LzTable/LzAdvSearch';
+import HeightWeightChart from 'Custom/HeightWeightChart';
+import { LzModal } from '../../loadableCustom';
+
+const modalTitleMap = {
+  身高: '身高曲线',
+  体重: '体重曲线'
+};
+
+const hasChart = formTitle => {
+  return formTitle.indexOf('生长发育评估') !== -1;
+};
+
 /**
  * MenuMultiple
  */
@@ -68,7 +80,9 @@ export default class MenuMultiple extends React.Component {
       recordList: [],
       innerFieldName: '',
       modalVisible: false,
-      advSearchVisible: false // 高级搜索是否显示
+      advSearchVisible: false, // 高级搜索是否显示
+      chartType: '身高', // 图表类型
+      chartVisible: false
     };
   }
 
@@ -133,14 +147,41 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList(this.state.selectedRecord, wheres);
   };
 
+  handleOpenChart = (chartType = '身高') => {
+    this.setState({ chartType, chartVisible: true });
+  };
+
   renderForm = () => {
     const { selectedRecord, formFormData, operation } = this.state;
+    const { formTitle } = this.props;
     const header = (
       <div className="menu-multiple-form-header">
-        <span className="menu-multiple-form-header-title">
-          {this.props.formTitle}
-        </span>
-        <Button type="primary" onClick={this.handleAddClick}>
+        <span className="menu-multiple-form-header-title">{formTitle}</span>
+
+        {hasChart(formTitle) && (
+          <Button
+            style={{ margin: '0 4px' }}
+            type="primary"
+            onClick={() => this.handleOpenChart('身高')}
+          >
+            身高曲线图
+          </Button>
+        )}
+        {hasChart(formTitle) && (
+          <Button
+            style={{ margin: '0 4px' }}
+            type="primary"
+            onClick={() => this.handleOpenChart('体重')}
+          >
+            体重曲线图
+          </Button>
+        )}
+
+        <Button
+          style={{ margin: '0 4px' }}
+          type="primary"
+          onClick={this.handleAddClick}
+        >
           添加
         </Button>
       </div>
@@ -189,9 +230,11 @@ export default class MenuMultiple extends React.Component {
       innerFieldName,
       modalVisible,
       formFormData,
-      advSearchVisible
+      advSearchVisible,
+      chartVisible,
+      chartType
     } = this.state;
-    const { resid, subresid, hostrecid, advSearchConfig } = this.props;
+    const { resid, subresid, hostrecid, advSearchConfig, record } = this.props;
     const modalProps = {
       dataMode: 'sub',
       operation: 'add',
@@ -246,6 +289,22 @@ export default class MenuMultiple extends React.Component {
           onClose={this.closeAdvSearch}
           cssSelector=".lz-menu-container"
         />
+
+        {chartVisible && (
+          <LzModal
+            defaultScaleStatus="max"
+            onClose={() => this.setState({ chartVisible: false })}
+          >
+            <HeightWeightChart
+              sex={record.C3_589053299408}
+              chartType={chartType}
+              userData={recordList}
+              recordMonthField={'C3_603833255097'}
+              recordHeightField={'C3_586880026948'}
+              recordWeightField={'C3_586880035091'}
+            />
+          </LzModal>
+        )}
       </div>
     );
   }

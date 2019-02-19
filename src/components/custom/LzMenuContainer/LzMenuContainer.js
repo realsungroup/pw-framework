@@ -6,8 +6,8 @@ import { Modal, Input, message, Spin, Menu, Icon, Avatar } from 'antd';
 import './LzMenuContainer.less';
 import { LzTable } from '../../../loadableComponents';
 import MenuMultiple from './MenuMultiple';
-import { getMainTableData, getSubTableData } from '../../util/api';
-import LzRowCols from '../components/LzRowCols';
+import { getMainTableData } from 'Util/api';
+import LzRowCols from 'UnitComponent/components/LzRowCols';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -191,14 +191,15 @@ export default class LzMenuContainer extends React.Component {
         return <LzTable {...props} key={props.hostrecid} />;
       } else {
         const { subresid, resid, hostrecid } = this.state;
-        const { advSearchConfig } = this.props;
+        const { advSearchConfig, record } = this.props;
         const formTitle = this.getFormTitle(this.props.menuList, subresid);
         const props = {
           formTitle,
           key: subresid,
           resid,
           subresid,
-          hostrecid
+          hostrecid,
+          record
         };
         return <MenuMultiple {...props} advSearchConfig={advSearchConfig} />;
       }

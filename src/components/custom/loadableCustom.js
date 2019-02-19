@@ -25,7 +25,7 @@ export const LzModal = Loadable({
 });
 
 export const LzMenuForms = Loadable({
-  loader: () => import('../../lib/unit-component/LzMenuForms'),
+  loader: () => import('./LzMenuForms'),
   loading() {
     return minLoading;
   }
