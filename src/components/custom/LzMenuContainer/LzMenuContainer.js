@@ -191,7 +191,7 @@ export default class LzMenuContainer extends React.Component {
         return <LzTable {...props} key={props.hostrecid} />;
       } else {
         const { subresid, resid, hostrecid } = this.state;
-        const { advSearchConfig, record } = this.props;
+        const { advSearchConfig, record, displayMod } = this.props;
         const formTitle = this.getFormTitle(this.props.menuList, subresid);
         const props = {
           formTitle,
@@ -199,7 +199,8 @@ export default class LzMenuContainer extends React.Component {
           resid,
           subresid,
           hostrecid,
-          record
+          record,
+          displayMod
         };
         return <MenuMultiple {...props} advSearchConfig={advSearchConfig} />;
       }

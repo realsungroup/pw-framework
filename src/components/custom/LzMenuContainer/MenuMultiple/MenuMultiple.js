@@ -207,7 +207,7 @@ export default class MenuMultiple extends React.Component {
 
   renderForm = () => {
     const { selectedRecord, formFormData } = this.state;
-    const { formTitle } = this.props;
+    const { formTitle, displayMod } = this.props;
     const header = (
       <div className="menu-multiple-form-header">
         <span className="menu-multiple-form-header-title">{formTitle}</span>
@@ -252,6 +252,7 @@ export default class MenuMultiple extends React.Component {
     );
     const { resid, subresid, hostrecid } = this.props;
     const props = {
+      displayMod,
       dataMode: 'sub',
       header,
       key: selectedRecord && selectedRecord.REC_ID,
