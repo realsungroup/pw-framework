@@ -165,12 +165,17 @@ export const getFormData = (resid, formName) => {
   return dealNextExtractData(http(url, GET, params, dataType.HostTableDataEM));
 };
 
-// 获取所有可选的功能
-export const getAllAppLinks = parentresids => {
+/**
+ * 获取所有 app
+ * @param {string} parentresids 父节点 id
+ * @param {boolean} isGetCount 是否获取记录数量
+ */
+export const getAllAppLinks = (parentresids, isGetCount = true) => {
   const url = baseUrl + path.getAllAppLinks;
   const params = {
     parentresids,
-    getresourcedata: 0
+    getresourcedata: 0,
+    getrecordcount: isGetCount ? 1 : 0
   };
   return dealNextExtractData(http(url, GET, params, dataType.HostTableDataEM));
 };
