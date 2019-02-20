@@ -82,7 +82,15 @@ class LabExaminationChart extends React.Component {
       },
       xAxis,
       series,
-      legend
+      legend,
+      dataZoom: [
+        {
+          type: 'inside'
+        },
+        {
+          type: 'slider'
+        }
+      ]
     };
 
     option.xAxis = xAxis;

@@ -6,10 +6,8 @@ import { message } from 'antd';
 import EchartsOfReact from 'echarts-of-react';
 
 const resids = {
-  // manHeight: 589202100504,
-  manHeight: 603827735342,
-  // manWeight: 589147033510,
-  manWeight: 603827735342,
+  manHeight: 589202100504,
+  manWeight: 589147033510,
   womanHeight: 589202110279,
   womanWeight: 589202127006
 };
@@ -164,7 +162,8 @@ class HeightWeightChart extends React.Component {
     // 用户曲线数据
     const seriesUser = {
       data: [],
-      type: 'line'
+      type: 'line',
+      name: chartType
     };
 
     let field = recordHeightField;
@@ -192,6 +191,8 @@ class HeightWeightChart extends React.Component {
   };
 
   getOption = data => {
+    const { chartType } = this.props;
+
     const { monthAgeField } = this.state.params;
 
     // 对月龄排序（升序）
@@ -204,7 +205,10 @@ class HeightWeightChart extends React.Component {
     // 选项配置
     const option = {
       yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLabel: {
+          formatter: `{value} ${chartType === '体重' ? 'kg' : 'cm'}`
+        }
       },
 
       // x 轴坐标配置
@@ -217,13 +221,16 @@ class HeightWeightChart extends React.Component {
 
       // 图例
       legend: {
-        data: []
+        data: [chartType]
       },
 
       dataZoom: [
         {
-          type: 'slider'
-        }
+          type: 'inside',
+        },
+        {
+          type: 'slider',
+        },
       ]
     };
 
@@ -260,13 +267,13 @@ class HeightWeightChart extends React.Component {
         return {
           resid: resids.manHeight,
           monthAgeField: 'C3_589223007049',
-          '3rd': 'C3_589157035703',
-          '10th': 'C3_589157043361',
-          '25th': 'C3_589157048902',
-          '50th': 'C3_589157057987',
-          '75th': 'C3_589157067324',
-          '90th': 'C3_589157072664',
-          '97th': 'C3_589157084108'
+          '3rd': 'C3_589223007245',
+          '10th': 'C3_589223007395',
+          '25th': 'C3_589223007546',
+          '50th': 'C3_589223007705',
+          '75th': 'C3_589223007850',
+          '90th': 'C3_589223008011',
+          '97th': 'C3_589223008159'
         };
       } else {
         return {
@@ -286,25 +293,25 @@ class HeightWeightChart extends React.Component {
         return {
           resid: resids.womanHeight,
           monthAgeField: 'C3_589202247307',
-          '3rd': 'C3_589157035703',
-          '10th': 'C3_589157043361',
-          '25th': 'C3_589157048902',
-          '50th': 'C3_589157057987',
-          '75th': 'C3_589157067324',
-          '90th': 'C3_589157072664',
-          '97th': 'C3_589157084108'
+          '3rd': 'C3_589202247481',
+          '10th': 'C3_589202247640',
+          '25th': 'C3_589202247792',
+          '50th': 'C3_589202247940',
+          '75th': 'C3_589202248090',
+          '90th': 'C3_589202248245',
+          '97th': 'C3_589202248395'
         };
       } else {
         return {
           resid: resids.womanWeight,
           monthAgeField: 'C3_589202274135',
-          '3rd': 'C3_589157035703',
-          '10th': 'C3_589157043361',
-          '25th': 'C3_589157048902',
-          '50th': 'C3_589157057987',
-          '75th': 'C3_589157067324',
-          '90th': 'C3_589157072664',
-          '97th': 'C3_589157084108'
+          '3rd': 'C3_589202274292',
+          '10th': 'C3_589202274445',
+          '25th': 'C3_589202274616',
+          '50th': 'C3_589202274760',
+          '75th': 'C3_589202275059',
+          '90th': 'C3_589202274911',
+          '97th': 'C3_589202275209'
         };
       }
     }

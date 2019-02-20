@@ -77,11 +77,11 @@ class PatientInfo extends React.Component {
   };
 
   handleHistoryClick = record => {
-    // this.setState({
-    //   modalVisible: true,
-    //   record: { ...record },
-    //   navListResidField: 'C3_603466838675'
-    // });
+    this.setState({
+      modalVisible: true,
+      record: { ...record },
+      navListResidField: 'C3_603566638673'
+    });
   };
 
   customRowBtns = [
