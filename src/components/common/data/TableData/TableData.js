@@ -332,7 +332,12 @@ class TableData extends React.Component {
     const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
     this._dealedRecordFormData =
       recordFormData &&
-      getDataProp(this._recordFormData, {}, undefined, recordFormIsClassifyLayout);
+      getDataProp(
+        this._recordFormData,
+        {},
+        undefined,
+        recordFormIsClassifyLayout
+      );
     this._dealedRowEditFormData =
       rowEditFormData && getDataProp(this._rowEditFormData, {});
   };
@@ -590,7 +595,15 @@ class TableData extends React.Component {
 
     let newData = data || this._dealedRecordFormData;
     const isTransformValue = ['add', 'modify'].indexOf(newOperation) !== -1;
-    newData = setDataInitialValue(newData, newRecord, isTransformValue);
+
+    const isClassifyLayout = this.props.formProps.displayMode === 'classify';
+
+    newData = setDataInitialValue(
+      newData,
+      newRecord,
+      isTransformValue,
+      isClassifyLayout
+    );
 
     const { subTableArr } = recordFormData || this._recordFormData;
 
