@@ -7,7 +7,7 @@ import EchartsOfReact from 'echarts-of-react';
 
 const resids = {
   manHeight: 589202100504,
-  manWeight: 589147033510,
+  manWeight: 603827735342,
   womanHeight: 589202110279,
   womanWeight: 589202127006
 };
@@ -113,7 +113,6 @@ class HeightWeightChart extends React.Component {
       return message.error(err.message);
     }
     const option = this.getOption(res.data);
-    console.log({ option });
     this.setState({ option });
   };
 
