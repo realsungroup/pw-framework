@@ -87,6 +87,48 @@ const getSelectValue = (value, props) => {
   }
 };
 
+const getSelectViewValue = (value, controlData, props) => {
+  if (!value) {
+    return value;
+  }
+
+  let options = controlData.ListOfColOptions;
+  if (options.length) {
+    // 多选
+    if (props.mode === 'multiple') {
+      // value: '男,女'
+      // [ {  } ]
+
+      let valueArr = value.split(',');
+      valueArr = valueArr.map(valueArrItem => {
+        const obj = options.find(
+          option => option.valueColValue === valueArrItem
+        );
+        if (obj) {
+          return obj.displayColValue;
+        }
+      });
+      return valueArr.join(',');
+    }
+
+    const obj = options.find(option => option.valueColValue === value);
+    if (obj) {
+      return obj.displayColValue;
+    }
+    return value;
+  } else {
+    const options = controlData.DisplayOptions;
+    const valueOptions = controlData.ValueOptions;
+
+    options = controlData.DisplayOptions;
+    const obj = options.find(option => option.valueColValue === value);
+    if (obj) {
+      return obj.valueColValue;
+    }
+    return value;
+  }
+};
+
 /**
  * Control
  */
@@ -234,6 +276,13 @@ class Control extends React.Component {
                 </a>
               ))}
             </Fragment>
+          );
+        }
+        case 'Select': {
+          return (
+            <span>
+              {getSelectViewValue(value, dataItem.controlData, props)}
+            </span>
           );
         }
         default: {
