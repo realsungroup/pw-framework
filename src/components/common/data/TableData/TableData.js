@@ -560,6 +560,45 @@ class TableData extends React.Component {
     return records;
   };
 
+  getTitle = () => {
+    const {
+      intl,
+      addText,
+      enAddText,
+      modifyText,
+      enModifyText,
+      viewText,
+      enViewText
+    } = this.props;
+    const { recordFormShowMode } = this.state;
+    let title = '';
+    // 中文记录表单标题
+    if (intl.locale === 'zh') {
+      switch (recordFormShowMode) {
+        case 'add':
+          title = addText;
+          break;
+        case 'modify':
+          title = modifyText;
+          break;
+        case 'view':
+          title = viewText;
+      }
+    } else {
+      switch (recordFormShowMode) {
+        case 'add':
+          title = enAddText;
+          break;
+        case 'modify':
+          title = enModifyText;
+          break;
+        case 'view':
+          title = enViewText;
+      }
+    }
+    return title;
+  };
+
   /**
    * 打开记录表单，进行 添加/修改/查看 操作
    * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
@@ -607,9 +646,13 @@ class TableData extends React.Component {
 
     const { subTableArr } = recordFormData || this._recordFormData;
 
+    const title = this.getTitle();
+
+    console.log({ title });
+
     openRecordForm({
       type: recordFormType,
-      title: modalTitleMap[intl.locale + recordFormShowMode],
+      title,
       formProps,
       data: newData,
       operation: newOperation,
