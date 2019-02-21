@@ -67,6 +67,26 @@ const beforeSaveOnChangeControls = [
   'DateTimePicker'
 ];
 
+const getSelectValue = (value, props) => {
+  // 多选
+  if (props.mode === 'multiple') {
+    if (!value) {
+      return [];
+    }
+
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    // 多个选项以 “,” 分隔
+    return value.split(',');
+
+    // 单选
+  } else {
+    return value;
+  }
+};
+
 /**
  * Control
  */
@@ -269,8 +289,10 @@ class Control extends React.Component {
         }
         case 'Select': {
           const { options } = props;
+          const newValue = getSelectValue(value, props);
+
           return (
-            <Select value={value} onChange={this.handleChange}>
+            <Select value={newValue} onChange={this.handleChange} {...props}>
               {options.map(option => (
                 <Option key={option.value} value={option.value}>
                   {option.label}

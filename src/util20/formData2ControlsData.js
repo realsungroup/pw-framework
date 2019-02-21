@@ -127,6 +127,12 @@ const getProps = (controlData, name) => {
 
   // 获取 Select 的 options prop
   if (name === 'Select') {
+    const isMultiple = !!controlData.ColParam10;
+    // 多选 Select
+    if (isMultiple) {
+      props.mode = 'multiple';
+    }
+
     const type = controlData.ColValType;
     switch (type) {
       // 下拉框：Select
