@@ -22,9 +22,9 @@ class App extends Component {
           size="small"
           hasBeBtns={false}
           subtractH={180}
-          actionBarFixed={true}
+          actionBarFixed={false}
           advSearchContainerType="drawer"
-          //hasRowEdit
+          hasRowEdit
           hasAdd={true}
           hasDelete={false}
           hasModify={false}

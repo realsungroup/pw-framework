@@ -3,6 +3,7 @@ const common = {
   'common.add': '添加',
   'common.operation': '操作',
   'common.modify': '修改',
+  'common.Edit': '编辑',
   'common.view': '查看',
   'common.delete': '删除',
   'common.sureDelete': '您确定要删除吗？',
