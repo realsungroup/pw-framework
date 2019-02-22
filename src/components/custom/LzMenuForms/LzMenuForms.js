@@ -30,14 +30,16 @@ export default class LzMenuForms extends React.Component {
   }
 
   getNavList = async () => {
-    const { navListResid } = this.props;
+    const { navListResid, record } = this.props;
+
+    const cmswhere = `people_number = '${record.C3_588423759886}'`;
+
     let res;
     try {
-      res = await getAllAppLinks(navListResid);
+      res = await getAllAppLinks(navListResid, true, cmswhere);
     } catch (err) {
       return message.error(err.message);
     }
-    console.log({ navListRes: res });
     res.data.length && this.dealNavList(res.data[0]);
   };
 

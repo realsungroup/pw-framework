@@ -6,12 +6,17 @@ import { message } from 'antd';
 import EchartsOfReact from 'echarts-of-react';
 
 const resids = {
+  // 男生身高基线表 resid
   manHeight: 589202100504,
+  // 男生体重基线表 resid
   manWeight: 603827735342,
+  // 女生身高基线表 resid
   womanHeight: 589202110279,
+  // 女生体重基线表 resid
   womanWeight: 589202127006
 };
 
+// 获取 x 轴刻度数据
 const getXAxisData = () => {
   const ret = [];
   for (let i = 0; i < 217; i++) {
@@ -30,14 +35,6 @@ const getXAxisData = () => {
   }
   return ret;
 };
-
-// 3rd
-// 10th
-// 25th
-// 50th
-// 75th
-// 90th
-// 97th
 
 /**
  * 身高体重
@@ -130,13 +127,13 @@ class HeightWeightChart extends React.Component {
       recordMonthField
     } = this.props;
 
-    let series3rd = { data: [], type: 'line' },
-      series10th = { data: [], type: 'line' },
-      series25th = { data: [], type: 'line' },
-      series50th = { data: [], type: 'line' },
-      series75th = { data: [], type: 'line' },
-      series90th = { data: [], type: 'line' },
-      series97th = { data: [], type: 'line' };
+    let series3rd = { data: [], type: 'line', color: ['#ff0000'] },
+      series10th = { data: [], type: 'line', color: ['#ff0000'] },
+      series25th = { data: [], type: 'line', color: ['#ff0000'] },
+      series50th = { data: [], type: 'line', color: ['#ff0000'] },
+      series75th = { data: [], type: 'line', color: ['#ff0000'] },
+      series90th = { data: [], type: 'line', color: ['#ff0000'] },
+      series97th = { data: [], type: 'line', color: ['#ff0000'] };
 
     data.forEach(record => {
       series3rd.data.push(record[params['3rd']]);
@@ -162,7 +159,8 @@ class HeightWeightChart extends React.Component {
     const seriesUser = {
       data: [],
       type: 'line',
-      name: chartType
+      name: chartType,
+      color: ['#0000ff']
     };
 
     let field = recordHeightField;
@@ -189,6 +187,7 @@ class HeightWeightChart extends React.Component {
     return ret;
   };
 
+  // 获取 echarts 所需的 option
   getOption = data => {
     const { chartType } = this.props;
 
@@ -225,40 +224,24 @@ class HeightWeightChart extends React.Component {
 
       dataZoom: [
         {
-          type: 'inside',
+          type: 'inside'
         },
         {
-          type: 'slider',
-        },
+          type: 'slider'
+        }
       ]
     };
 
     return option;
   };
 
-  getDataItem = (record, _age) => {
-    const { params } = this.state;
-    const monthAgeField = params.monthAgeField;
-
-    const monthAge3rdValue = record[monthAgeField];
-
-    const age = parseInt(monthAge3rdValue, 10) / 12;
-    if (age !== _age) {
-      return {
-        value: ' '
-      };
-    } else {
-      _age++;
-      return {
-        // 突出年龄
-        value: age + '岁',
-        textStyle: {
-          color: 'red'
-        }
-      };
-    }
-  };
-
+  // 获取参数
+  // {
+  //   resid: 111, // 男身高（或其他）表资源 id
+  //   monthAgeField: 'xxx', // 月龄的内部字段
+  //   3rd: 'xxx', // 3rd 内部字段
+  //   ...
+  // }
   getParams = () => {
     const { sex, chartType } = this.props;
     if (sex === '男') {
