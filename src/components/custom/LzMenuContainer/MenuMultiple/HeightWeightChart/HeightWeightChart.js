@@ -9,7 +9,7 @@ const resids = {
   // 男生身高基线表 resid
   manHeight: 589202100504,
   // 男生体重基线表 resid
-  manWeight: 603827735342,
+  manWeight: 604158334390,
   // 女生身高基线表 resid
   womanHeight: 589202110279,
   // 女生体重基线表 resid
