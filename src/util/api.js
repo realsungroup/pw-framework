@@ -170,12 +170,13 @@ export const getFormData = (resid, formName) => {
  * @param {string} parentresids 父节点 id
  * @param {boolean} isGetCount 是否获取记录数量
  */
-export const getAllAppLinks = (parentresids, isGetCount = true) => {
+export const getAllAppLinks = (parentresids, isGetCount = true, cmswhere) => {
   const url = baseUrl + path.getAllAppLinks;
   const params = {
     parentresids,
     getresourcedata: 1,
-    getrecordcount: isGetCount ? 1 : 0
+    getrecordcount: isGetCount ? 1 : 0,
+    cmswhere
   };
   return dealNextExtractData(http(url, GET, params, dataType.HostTableDataEM));
 };
