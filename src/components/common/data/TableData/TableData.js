@@ -910,7 +910,7 @@ class TableData extends React.Component {
         onClick={() => this.handleRowEdit(record)}
         className="table-data__action-btn"
       >
-        <FM id="TableData.Edit" defaultMessage="编辑" />
+        <FM id="common.Edit" defaultMessage="编辑" />
       </Button>
     );
   };

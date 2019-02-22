@@ -3,6 +3,7 @@ const common = {
   'common.add': 'Add',
   'common.operation': 'Operation',
   'common.modify': 'Modify',
+  'common.Edit': 'Edit',
   'common.view': 'View',
   'common.delete': 'Delete',
   'common.sureDelete': 'Are you sure to delete',
