@@ -1,5 +1,7 @@
 // common
 const common = {
+  'common.Cancel': '取消',
+  'common.Save': '保存',
   'common.add': '添加',
   'common.operation': '操作',
   'common.modify': '修改',

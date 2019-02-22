@@ -1,5 +1,7 @@
 // common
 const common = {
+  'common.Cancel': 'Cancel',
+  'common.Save': 'Save',
   'common.add': 'Add',
   'common.operation': 'Operation',
   'common.modify': 'Modify',

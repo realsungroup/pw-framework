@@ -15,13 +15,13 @@ class App extends Component {
             console.log({ tableData });
             return 'hhh';
           }}
-          actionBarWidth={200}
+          actionBarWidth={300}
           title="调休登记"
           resid={596720928643}
           // width={1360}
           size="small"
           hasBeBtns={false}
-          subtractH={180}
+          subtractH={200}
           actionBarFixed={false}
           advSearchContainerType="drawer"
           hasRowEdit

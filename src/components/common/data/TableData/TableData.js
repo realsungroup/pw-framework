@@ -924,7 +924,7 @@ class TableData extends React.Component {
             onClick={() => this.handleRowSave(form, record)}
             className="table-data__action-btn"
           >
-            <FM id="TableData.Save" defaultMessage="保存" />
+            <FM id="common.Save" defaultMessage="保存" />
           </Button>
         )}
       </EditableContext.Consumer>
@@ -949,7 +949,7 @@ class TableData extends React.Component {
           className: 'table-data__action-btn'
         }}
       >
-        <FM id="TableData.Cancel" defaultMessage="取消" />
+        <FM id="common.Cancel" defaultMessage="取消" />
       </ButtonWithConfirm>
     );
   };
