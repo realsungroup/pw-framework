@@ -430,7 +430,11 @@ export default class MenuMultiple extends React.Component {
                 sex={record.C3_589053299408}
                 chartType={chartType}
                 userData={recordList}
-                recordMonthField={'C3_603833255097'}
+                recordMonthField={
+                  record.C3_589053299408 === '男'
+                    ? 'C3_603833255097'
+                    : 'C3_603833299862'
+                }
                 recordHeightField={'C3_586880026948'}
                 recordWeightField={'C3_586880035091'}
               />
