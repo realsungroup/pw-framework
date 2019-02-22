@@ -8,13 +8,26 @@ import Swiper from 'swiper/dist/js/swiper.js';
 import 'swiper/dist/css/swiper.css';
 import http, { makeCancelable } from 'Util20/api';
 
+const { openFuncInSelfResids } = window.pwConfig;
+
+const getTarget = resid => {
+  // 在新 tab 中打开功能页面
+  if (openFuncInSelfResids.indexOf(resid) === -1) {
+    return { target: '_blank' };
+  }
+  return {};
+};
+
 const SingApp = ({ app }) => {
   return (
     <Link
       to={{
         pathname: `/fnmodule`,
-        search: `?resid=${app.ResID || app.resid}&recid=${app.REC_ID}`
+        search: `?resid=${app.ResID || app.resid}&recid=${app.REC_ID}&title=${
+          app.title
+        }`
       }}
+      {...getTarget(parseInt(app.ResID || app.resid, 10))}
     >
       <div className="home-workbench-app-wrapper">
         <Application appData={app} iconStyle={{ fontSize: 48 }} />
