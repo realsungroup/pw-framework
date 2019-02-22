@@ -161,7 +161,7 @@ class HeightWeightChart extends React.Component {
       type: 'line',
       name: chartType,
       color: ['#0000ff'],
-      symbolSize: 6
+      symbolSize: 10
     };
 
     let field = recordHeightField;
