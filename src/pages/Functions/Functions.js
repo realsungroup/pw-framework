@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FunctionsHeader from '../components/FunctionsHeader';
 import './Functions.less';
+import withTitle from 'Common/hoc/withTitle';
+import { getItem } from 'Util20/util';
 
 // 从 “导出中心” 导入所有的组件
 import * as components from '../../export-center';
@@ -9,7 +11,7 @@ import * as components from '../../export-center';
 /**
  * 模块功能组件：根据配置信息来调用具体的组件
  */
-export default class Functions extends React.Component {
+class Functions extends React.Component {
   static propTypes = {
     /**
      * 组件的配置
@@ -22,7 +24,8 @@ export default class Functions extends React.Component {
     }).isRequired
     // 如：
     // {
-    //   title: '人员信息',
+    //   title: '人员信息', // 标题
+    //   enTitle: 'Staff Info', // 英文标题
     //   name: 'TableData', // 使用组件的名称
     //   hasBackBtn: false, // 没有返回上一页的按钮
     //   props: { // TableData 组件接收的 props
@@ -36,6 +39,16 @@ export default class Functions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const { config, modifyDocumentTitle } = this.props;
+    const language = getItem('language') || '中文';
+    if (language === '中文') {
+      modifyDocumentTitle(config.title);
+    } else {
+      modifyDocumentTitle(config.enTitle);
+    }
   }
 
   back = () => {
@@ -67,3 +80,5 @@ export default class Functions extends React.Component {
     );
   }
 }
+
+export default withTitle()(Functions);
