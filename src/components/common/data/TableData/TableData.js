@@ -24,9 +24,10 @@ import { EditableContext } from './EditableRow';
 import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
 import withZoomInOut from '../../hoc/withZoomInOut';
-import { makeCancelable } from 'Util20/api';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal } from 'Util20/util';
+import { dealFormData } from 'Util20/controls';
+import http, { makeCancelable } from 'Util20/api';
 
 const { Fragment } = React;
 
@@ -36,14 +37,6 @@ const btnSizeMap = {
   small: 'small'
 };
 
-const modalTitleMap = {
-  add: '添加记录',
-  enadd: 'Add Record',
-  modify: '修改记录',
-  enmodify: 'Modify Record',
-  view: '查看记录',
-  enview: 'View Record'
-};
 /**
  * TableData
  */
@@ -97,6 +90,7 @@ class TableData extends React.Component {
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
   };
 
   initVariables = () => {
@@ -689,11 +683,29 @@ class TableData extends React.Component {
 
   handleRowSave = (form, oldRecord) => {
     const { validateFields } = form;
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (err) {
         return;
       }
-      console.log({ values });
+      const { dataMode, resid, subresid } = this.props;
+      const id = getResid(dataMode, resid, subresid);
+      const formData = dealFormData(values);
+      formData.REC_ID = oldRecord.REC_ID;
+      this.p2 = makeCancelable(
+        http().modifyRecords({
+          resid: id,
+          data: [formData]
+        })
+      );
+      try {
+        await this.p2.promise;
+      } catch (err) {
+        console.error(err);
+        return message.error(err.message);
+      }
+      message.success('修改成功');
+      this.setState({ editingKey: null });
+      this.handleRefresh();
     });
   };
 
