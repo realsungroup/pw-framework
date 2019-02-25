@@ -1,14 +1,15 @@
 import React from 'react';
-import { appMode } from '../../../../../util/appMode.config';
 import Application from '../../../../components/Application';
 import { Link } from 'react-router-dom';
-import { Spin } from 'antd';
 import './WorkbenchBody.less';
+import { Spin, Drawer, Menu } from 'antd';
 import Swiper from 'swiper/dist/js/swiper.js';
 import 'swiper/dist/css/swiper.css';
 import http, { makeCancelable } from 'Util20/api';
+import { connect } from 'react-redux';
 
 const { openFuncInSelfResids } = window.pwConfig;
+const SubMenu = Menu.SubMenu;
 
 const getTarget = resid => {
   // 在新 tab 中打开功能页面
@@ -18,14 +19,14 @@ const getTarget = resid => {
   return {};
 };
 
-const SingApp = ({ app }) => {
+const SingApp = ({ app, type }) => {
   return (
     <Link
       to={{
         pathname: `/fnmodule`,
-        search: `?resid=${app.ResID || app.resid}&recid=${app.REC_ID}&title=${
-          app.title
-        }`
+        search: `?resid=${app.ResID || app.resid}&recid=${
+          app.REC_ID
+        }&type=${type}&title=${app.title}`
       }}
       {...getTarget(parseInt(app.ResID || app.resid, 10))}
     >
@@ -36,13 +37,12 @@ const SingApp = ({ app }) => {
   );
 };
 
-export default class WorkbenchBody extends React.PureComponent {
-  state = {
-    loading: true,
-    apps: []
-  };
+class WorkbenchBody extends React.PureComponent {
   async componentDidMount() {
-    await this.loadApps();
+    this.setState({
+      drawerVisible: false
+    });
+    // await this.loadApps();
     let initialSlide = localStorage.getItem('initialSlide');
 
     initialSlide =
@@ -85,6 +85,17 @@ export default class WorkbenchBody extends React.PureComponent {
   componentWillUnmount() {
     this.p1 && this.p1.cancel();
   }
+
+  handleAppClick = (app, type) => {
+    const resid = parseInt(app.ResId || app.resid, 10);
+    const target = getTarget(resid).target || 'self';
+    window.open(
+      `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${type}&title=${
+        app.title
+      }`,
+      target
+    );
+  };
 
   loadApps = async () => {
     this.p1 = makeCancelable(http().getUserDesktop());
@@ -136,16 +147,17 @@ export default class WorkbenchBody extends React.PureComponent {
     }
   };
 
+  handleSwitchClick = () => {
+    this.setState({ drawerVisible: !this.state.drawerVisible });
+  };
+
   render() {
-    const { apps, loading } = this.state;
+    const { PageHeaderReducers } = this.props;
+    const { apps } = PageHeaderReducers;
 
     return (
-      <Spin spinning={loading}>
-        <div
-          className={`swiper-container home-workbench-body ${
-            appMode.homeWorkBench.withHeader ? 'home-workbench-with-header' : ''
-          }`}
-        >
+      <Spin spinning={false}>
+        <div className="swiper-container home-workbench-body">
           <div className="swiper-wrapper">
             {apps.map(item => {
               return (
@@ -161,7 +173,11 @@ export default class WorkbenchBody extends React.PureComponent {
                   </div>
                   <div className="work-bench-body-category__apps">
                     {item.apps.map(app => (
-                      <SingApp app={app} key={app.ResID || app.resid} />
+                      <SingApp
+                        app={app}
+                        key={app.ResID || app.resid}
+                        type={item.typeName}
+                      />
                     ))}
                   </div>
                 </div>
@@ -174,3 +190,7 @@ export default class WorkbenchBody extends React.PureComponent {
     );
   }
 }
+
+const mapStateToProps = state => ({ ...state });
+
+export default connect(mapStateToProps)(WorkbenchBody);
