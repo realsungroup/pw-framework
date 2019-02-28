@@ -366,7 +366,9 @@ export default class MenuMultiple extends React.Component {
       hostrecid,
       onCancel: this.cancelAddRecord,
       onConfirm: this.addRecordCb,
-      formFormData
+      formFormData,
+      displayMod: 'classify',
+      modalWidth: 1000
     };
 
     return (
