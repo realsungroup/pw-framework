@@ -237,7 +237,7 @@ export default class MenuMultiple extends React.Component {
             type="primary"
             onClick={() => this.handleOpenChooseFieldModal()}
           >
-            选择字段
+            选择检查项
           </Button>
         )}
 
