@@ -39,7 +39,7 @@ export default (state = defaultState, action) => {
     case GET_NAVLIST_APP: {
       let apps = [];
       if (!data.error) {
-        apps = dealApps([...data.data, ...(data.data.userdefined || [])]);
+        apps = dealApps([...data.data, ...(data.userdefined || [])]);
       }
       return { ...state, apps };
     }
