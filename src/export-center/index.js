@@ -5,18 +5,8 @@
 // common
 export { TableData, OrgChartData } from '../components/common/loadableCommon';
 
+// custom
+export { TypeIn } from '../components/custom/loadableCustom';
+
 // lib
-export { LzTable, LzFormUnit } from '../loadableComponents';
-
-// 定制组件
-
-// export {
-//   LzDataHandling,
-//   LzDataAnalyse,
-//   LzMyCA,
-//   LzClassifySet,
-//   LzAFFO,
-//   LzWorkOvertime,
-//   LzTabsDataDashboard,
-//   LzTeamSet
-// } from '../product-components/att/loadableComponents';
+export { LzTable } from '../loadableComponents';

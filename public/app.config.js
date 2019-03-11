@@ -47,15 +47,7 @@ pwConfig.enterprisecode = '???';
  * 业务功能配置
  */
 // 获取多个业务可选功能的 resid 数组
-pwConfig.businessOptionalResIds = [
-  593979035940,
-  594468536480,
-  593979020171,
-  594399052677,
-  593979050146,
-  593979062893,
-  597176310158
-];
+pwConfig.businessOptionalResIds = [590510290223];
 
 /**
  * 主题
