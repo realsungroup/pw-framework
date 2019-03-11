@@ -5,8 +5,12 @@
 // common
 export { TableData, OrgChartData } from '../components/common/loadableCommon';
 
+// custom
+
+export { LzMenuContainerB } from '../components/custom/loadableCustom';
+
 // lib
-export { LzTable } from '../loadableComponents';
+export { LzTable, LzTableV2 } from '../loadableComponents';
 
 // 定制组件
 
