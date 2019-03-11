@@ -8,7 +8,7 @@ var pwConfig = {};
  * 地址
  */
 //  请求的基地址
-pwConfig.baseURL = 'http://kingofdinner.realsun.me:8102/';
+pwConfig.baseURL = 'http://ivf.dybhealth.com:8099/';
 // 导出 Excel 文件下载基地址
 pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
 
@@ -90,7 +90,7 @@ pwConfig.bucketname = 'realsun';
  * 工作台配置
  */
 // 在本页面打开功能页面的功能 resid
-pwConfig.openFuncInSelfResids = [597167932280];
+pwConfig.openFuncInSelfResids = [];
 
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;
