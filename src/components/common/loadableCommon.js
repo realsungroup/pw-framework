@@ -9,6 +9,14 @@ export const TableData = Loadable({
     return minLoading;
   }
 });
+
+export const FormData = Loadable({
+  loader: () => import('./data/FormData'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const OrgChartData = Loadable({
   loader: () => import('./data/OrgChartData'),
   loading() {
