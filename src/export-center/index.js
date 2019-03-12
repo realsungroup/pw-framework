@@ -3,10 +3,7 @@
  */
 
 // common
-export { TableData, OrgChartData } from '../components/common/loadableCommon';
-
-// custom
-export { TypeIn } from '../components/custom/loadableCustom';
+// export { TableData, OrgChartData } from '../components/common/loadableCommon';
 
 // lib
-export { LzTable } from '../loadableComponents';
+export { LzTable, LzMenuContainer } from '../loadableComponents';
