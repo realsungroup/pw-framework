@@ -70,9 +70,9 @@ class PageHeader extends React.Component {
     const resid = parseInt(app.ResID || app.resid, 10);
     const target = getTarget(resid).target || 'self';
     window.open(
-      `/fnmodule?resid=${app.ResId || app.resid}&recid=${
-        app.REC_ID
-      }&type=${type}&title=${app.title}`,
+      `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${type}&title=${
+        app.title
+      }`,
       target
     );
   };
