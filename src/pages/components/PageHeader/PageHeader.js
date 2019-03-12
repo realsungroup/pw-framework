@@ -67,9 +67,8 @@ class PageHeader extends React.Component {
   };
 
   handleAppClick = (app, type) => {
-    const resid = parseInt(app.ResId || app.resid, 10);
+    const resid = parseInt(app.ResID || app.resid, 10);
     const target = getTarget(resid).target || 'self';
-    console.log({ target });
     window.open(
       `/fnmodule?resid=${app.ResId || app.resid}&recid=${
         app.REC_ID
