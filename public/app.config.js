@@ -8,7 +8,8 @@ var pwConfig = {};
  * 地址
  */
 //  请求的基地址
-pwConfig.baseURL = 'http://ivf.dybhealth.com:8099/';
+// pwConfig.baseURL = 'http://ivf.dybhealth.com:8099/';
+pwConfig.baseURL = 'http://wux-hr03:9091/';
 // 导出 Excel 文件下载基地址
 pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
 
@@ -47,7 +48,8 @@ pwConfig.enterprisecode = '???';
  * 业务功能配置
  */
 // 获取多个业务可选功能的 resid 数组
-pwConfig.businessOptionalResIds = [590510290223];
+// pwConfig.businessOptionalResIds = [590510290223];
+pwConfig.businessOptionalResIds = [591549158605];
 
 /**
  * 主题
