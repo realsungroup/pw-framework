@@ -1,7 +1,7 @@
 import React from 'react';
 import { SketchPicker } from 'react-color';
 
-const { themeColor } = window.pwConfig;
+const { themeColor } = window.pwConfig[process.env.NODE_ENV];
 
 export default class ColorPicker extends React.Component {
   render() {

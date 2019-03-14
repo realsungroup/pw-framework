@@ -9,14 +9,13 @@ import http from 'Util20/api';
 import './Login.less';
 import './Login.css';
 
-const { loginLogoSize } = window.pwConfig;
-
 const {
+  loginLogoSize,
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
   themeColor
-} = window.pwConfig;
+} = window.pwConfig[process.env.NODE_ENV];
 
 class Login extends React.Component {
   constructor(props) {

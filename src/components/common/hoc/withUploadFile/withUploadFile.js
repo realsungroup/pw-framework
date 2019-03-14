@@ -53,7 +53,7 @@ const withUploadFile = (options = {}) => {
         formData.append('file', file, file.name);
         const type = getFileType(file);
 
-        const { bucketname, baseURL } = window.pwConfig;
+        const { bucketname, baseURL } = window.pwConfig[process.env.NODE_ENV];
         uploadFile(file, getUploadFile(baseURL, bucketname, type))
           .then(fileUrl => {
             success && success(fileUrl);

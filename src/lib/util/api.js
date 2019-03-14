@@ -2,7 +2,7 @@ import appConfig, { dataType } from '../../util/http.config';
 import http, { dealNextExtractData } from '../../util/http';
 
 const { path } = appConfig;
-const baseUrl = window.pwConfig.baseURL;
+const baseUrl = window.pwConfig[process.env.NODE_ENV].baseURL;
 const GET = 'GET';
 const POST = 'POST';
 

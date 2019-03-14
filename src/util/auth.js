@@ -38,7 +38,7 @@ const { baseUrl8055, baseUrlEnterprise } = path;
 const GET = 'GET';
 const POST = 'POST';
 
-const baseUrl = window.pwConfig.baseURL;
+const baseUrl = window.pwConfig[process.env.NODE_ENV].baseURL;
 
 // 默认登录
 export const defaultLogin = async (code, password) => {
