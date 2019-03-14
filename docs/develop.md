@@ -16,19 +16,19 @@
     |           |-- loadableCommon.js     # 通用组件按需加载文件
     |       |-- custom                    # 定制组件 [需要改]
     |           |-- loadableCustom.js     # 定制组件按需加载文件
-    |       |-- export-center             # 导出中心
-    |           |-- index.js              # 导出中心文件 [需要改]
-    |       |-- lib                       # 旧版本组件 [禁止修改]
-    |       |-- locales                   # 国际化 [需要改]
-    |           |-- en-US.js              # 英文
-    |           |-- zh-CN.js              # 中文
-    |       |-- pages                     # 页面组件 [禁止修改]
-    |       |-- product-components        # 雷柏考勤系统定制组件 [禁止修改]
-    |       |-- redux                     # redux [禁止修改]
-    |       |-- style                     # 样式 [禁止修改]
-    |       |-- util                      # 旧版本工具文件夹 [禁止修改]
-    |       |-- util20                    # 工具文件夹 [禁止修改]
-    |       |-- 其他文件夹                 # [禁止修改]
+    |   |-- export-center             # 导出中心
+    |       |-- index.js              # 导出中心文件 [需要改]
+    |   |-- lib                       # 旧版本组件 [禁止修改]
+    |   |-- locales                   # 国际化 [需要改]
+    |       |-- en-US.js              # 英文
+    |       |-- zh-CN.js              # 中文
+    |   |-- pages                     # 页面组件 [禁止修改]
+    |   |-- product-components        # 雷柏考勤系统定制组件 [禁止修改]
+    |   |-- redux                     # redux [禁止修改]
+    |   |-- style                     # 样式 [禁止修改]
+    |   |-- util                      # 旧版本工具文件夹 [禁止修改]
+    |   |-- util20                    # 工具文件夹 [禁止修改]
+    |   |-- 其他文件夹                 # [禁止修改]
 
     |-- README.md
 ```
