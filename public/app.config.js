@@ -2,9 +2,7 @@
  * 应用配置文件
  */
 
-console.log('hhh')
-
-var pwConfig = {
+window.pwConfig = {
   // 开发环境
   development: {
     // 地址
@@ -57,10 +55,14 @@ var pwConfig = {
     loginLogoSize: 42, // 登录页 logo 尺寸
 
     // 上传文件配置
-    bucketname: 'realsun', // 对象空间名称
+    upload: {
+      mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 本地存储
+      bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
+      url: 'http://kingofdinner.realsun.me:8102/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+    },
 
     // 工作台配置
-    openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [597167932280] // 在本页面打开功能页面的功能 resid
   },
   // 生产环境
   production: {
@@ -114,11 +116,13 @@ var pwConfig = {
     loginLogoSize: 42, // 登录页 logo 尺寸
 
     // 上传文件配置
-    bucketname: 'realsun', // 对象空间名称
+    upload: {
+      mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 本地存储
+      bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
+      url: 'http://kingofdinner.realsun.me:8102/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+    },
 
     // 工作台配置
-    openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [597167932280] // 在本页面打开功能页面的功能 resid
   }
 };
-
-window.pwConfig = pwConfig;
