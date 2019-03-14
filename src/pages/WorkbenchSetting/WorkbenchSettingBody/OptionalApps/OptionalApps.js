@@ -12,7 +12,7 @@ import { clone } from '../../../../lib/util/util';
 import { FormattedMessage as FM } from 'react-intl';
 
 const TreeNode = Tree.TreeNode;
-const { businessOptionalResIds } = window.pwConfig;
+const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
 export default class OptionalApps extends React.Component {
   state = {
     modalVisible: false,

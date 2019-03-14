@@ -3,7 +3,7 @@ import http, { dealNextExtractData } from '../util/http';
 
 const { path } = appConfig;
 const { baseUrl8055, baseUrlEnterprise } = path;
-const baseUrl = window.pwConfig.baseURL;
+const baseUrl = window.pwConfig[process.env.NODE_ENV].baseURL;
 const GET = 'GET';
 const POST = 'POST';
 
@@ -48,7 +48,7 @@ export const defaultLogin = async (code, password) => {
 
 // 域登录
 export const domainLogin = async (code, password, domain, domainUserField) => {
-  const baseUrl = window.pwConfig.domainLoginConfig.baseUrl;
+  const baseUrl = window.pwConfig[process.env.NODE_ENV].domainLoginConfig.baseUrl;
   let url = baseUrl + path.login;
   const params = {
     code,

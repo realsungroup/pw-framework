@@ -72,8 +72,8 @@ const PersonCenter = {
 
 // Setting
 const Setting = {
-  'Setting.leftTitle': 'Necessary Functionality',
-  'Setting.rightTitle': 'Optional Functionality'
+  'Setting.leftTitle': '必要功能',
+  'Setting.rightTitle': '可选功能'
 };
 
 // TableData

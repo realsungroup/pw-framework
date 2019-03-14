@@ -13,7 +13,7 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 const TabPane = Tabs.TabPane;
 
 // 本页面的配置信息在 public/app.config.js 文件中
-const tabsConfig = window.pwConfig.personCenterResIds;
+const tabsConfig = window.pwConfig[process.env.NODE_ENV].personCenterResIds;
 
 class PersonCenter extends React.Component {
   constructor() {
