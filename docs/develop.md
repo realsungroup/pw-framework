@@ -9,16 +9,13 @@
     |   |-- functions.config.js           # 功能模块配置文件 [需要改]
     |-- src                               # 源码
     |   |-- components                    # 组件
-
     |       |-- common                    # 通用组件 [禁止修改]
     |           |-- data                  # 与后端数据相关的组件
     |           |-- hoc                   # 高阶组件
     |           |-- ui                    # ui 组件
     |           |-- loadableCommon.js     # 通用组件按需加载文件
-
     |       |-- custom                    # 定制组件 [需要改]
     |           |-- loadableCustom.js     # 定制组件按需加载文件
-
     |       |-- export-center             # 导出中心
     |           |-- index.js              # 导出中心文件 [需要改]
     |       |-- lib                       # 旧版本组件 [禁止修改]
