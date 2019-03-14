@@ -2,7 +2,7 @@ import http from 'lz-request/lib/http';
 
 import { getItem } from './util';
 
-const baseURL = window.pwConfig.baseURL;
+const baseURL = window.pwConfig[process.env.NODE_ENV].baseURL;
 http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
@@ -179,7 +179,7 @@ http.createApi('defaultLogin', {
  */
 http.createApi('domainLogin', {
   method: 'post',
-  baseURL: window.pwConfig.domainLoginConfig.baseUrl,
+  baseURL: window.pwConfig[process.env.NODE_ENV].domainLoginConfig.baseUrl,
   url: '/api/Account/Login'
 });
 

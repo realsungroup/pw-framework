@@ -8,7 +8,7 @@ import 'swiper/dist/css/swiper.css';
 import http, { makeCancelable } from 'Util20/api';
 import { connect } from 'react-redux';
 
-const { openFuncInSelfResids } = window.pwConfig;
+const { openFuncInSelfResids } = window.pwConfig[process.env.NODE_ENV];
 const SubMenu = Menu.SubMenu;
 
 const getTarget = resid => {

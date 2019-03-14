@@ -17,7 +17,10 @@ import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
 
-const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig;
+const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig[
+  process.env.NODE_ENV
+];
+
 const time = lockScreenWaitTime;
 
 export default class Container extends React.Component {

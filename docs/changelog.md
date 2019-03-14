@@ -1,3 +1,26 @@
+## 更新日志
+
+pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/) 规范：
+
+```
+版本格式：主版本号.次版本号.修订号，版本号递增规则如下：
+1. 主版本号：当你做了不兼容的 API 修改，
+2. 次版本号：当你做了向下兼容的功能性新增，
+3. 修订号：当你做了向下兼容的问题修正。
+先行版本号及版本编译元数据可以加到“主版本号.次版本号.修订号”的后面，作为延伸。
+```
+
+# v21.0.0（2019/3/14）
+
+- `app.config.js` 中添加 `开发环境` 和 `生产环境` 配置
+
+```
+*升级提示：
+1. 切换到要升级的项目分支 xxx：git checkout xxx
+2. 更新本地 xxx 分支代码：git pull origin xxx
+3. 将 master 分支合并到 xxx 分支：git pull origin master
+4. 将原来的配置转移到 window.pwConfig.development 对象和 window.pwConfig.production 对象中：
+
 /**
  * 应用配置文件
  */
@@ -125,3 +148,15 @@ window.pwConfig = {
     openFuncInSelfResids: [597167932280] // 在本页面打开功能页面的功能 resid
   }
 };
+
+5. 完成！
+```
+
+# v20.0.0
+
+- 重构通用组件
+- 规范了开发目录
+
+# v10.x.x
+
+- 第一个版本
