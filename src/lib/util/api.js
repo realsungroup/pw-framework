@@ -189,10 +189,33 @@ export const modRecord = (resid, data) => {
   return dealNextExtractData(http(url, POST, params, dataType.FixOneDataEM));
 };
 
+function getUploadUrl(uploadConfig, srctype) {
+  const { mode, bucketname, url } = uploadConfig;
+  // 云对象存储
+  if (mode === 'cloud') {
+    return `${url}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+      bucketname
+    )}&srctype=${encodeURIComponent(srctype)}
+    `;
+
+    // 服务器本地存储文件
+  } else if (mode === 'local') {
+    return url;
+  } else {
+    alert(`window.pwConfig.${process.env.NODE_ENV}.upload.mode 设置有误`);
+  }
+}
+
+function getFileType(file) {
+  return file.type.split('/')[1];
+}
+
 // 上传文件
 export const uploadFile = file => {
   return new Promise((resolve, reject) => {
-    let upUrlStr = window.uploadFileUrl;
+    const type = getFileType(file);
+    const { upload } = window.pwConfig[process.env.NODE_ENV];
+    let upUrlStr = getUploadUrl(upload, type);
 
     let fd = new FormData();
     fd.append('file', file, file.name);

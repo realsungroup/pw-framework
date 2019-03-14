@@ -21,11 +21,21 @@ export const uploadFile = (file, url) => {
   });
 };
 
-function getUploadFile(baseURL, bucketname, srctype) {
-  return `${baseURL}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
-    bucketname
-  )}&srctype=${encodeURIComponent(srctype)}
-  `;
+function getUploadUrl(uploadConfig, srctype) {
+  const { mode, bucketname, url } = uploadConfig;
+  // 云对象存储
+  if (mode === 'cloud') {
+    return `${url}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+      bucketname
+    )}&srctype=${encodeURIComponent(srctype)}
+    `;
+
+    // 服务器本地存储文件
+  } else if (mode === 'local') {
+    return url;
+  } else {
+    alert(`window.pwConfig.${process.env.NODE_ENV}.upload.mode 设置有误`);
+  }
 }
 
 function getFileType(file) {
@@ -53,29 +63,14 @@ const withUploadFile = (options = {}) => {
         formData.append('file', file, file.name);
         const type = getFileType(file);
 
-        const { bucketname, baseURL } = window.pwConfig[process.env.NODE_ENV];
-        uploadFile(file, getUploadFile(baseURL, bucketname, type))
+        const { upload } = window.pwConfig[process.env.NODE_ENV];
+        uploadFile(file, getUploadUrl(upload, type))
           .then(fileUrl => {
             success && success(fileUrl);
           })
           .catch(err => {
             fail && fail(err);
           });
-
-        // this.p1 = makeCancelable(
-        //   http({
-        //     baseURL: url
-        //   }).uploadFile(formData)
-        // );
-        // this.p1.promise
-        //   .then(data => {
-        //     const fileUrl = data.httpfilename;
-        //     success && success(fileUrl);
-        //   })
-        //   .catch(err => {
-        //     console.error(err);
-        //     fail && fail(err);
-        //   });
       };
 
       render() {

@@ -56,7 +56,7 @@ window.pwConfig = {
 
     // 上传文件配置
     upload: {
-      mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 本地存储
+      mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 服务器本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
       url: 'http://kingofdinner.realsun.me:8102/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
