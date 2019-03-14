@@ -27,4 +27,10 @@ power-works 基础框架
 1. 切换至主分支：git checkout master
 2. 新建分支：git branch xxx（xxx 为项目名称）
 3. 切换至新分支进行开发：git checkout xxx
-4. 修改配置文件
+4. 修改 `public/app.config.js` 配置文件（[查看配置文件文档](./docs/app-config.md)）
+5. 然后进行功能模块开发（[查看功能模块开发文档](./docs/develop.md)）
+
+三、部署项目
+
+1. 打包项目：`npm run build`，执行完之后，会在项目根目录生成一个 `build` 文件夹
+2. 将 `build` 文件夹压缩，然后发给部署该项目的人
