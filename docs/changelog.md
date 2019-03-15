@@ -14,6 +14,11 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 
 - `TableData` 组件添加 `hasSearch` 配置
 
+```
+*升级提示
+git pull origin master
+```
+
 # v21.0.0（2019/3/14）
 
 - `app.config.js` 中添加 `开发环境` 和 `生产环境` 配置
