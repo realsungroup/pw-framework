@@ -1555,21 +1555,54 @@ window[601728701208] = {
     ]
   }
 };
-//长期供应商
-window[605891224706] = {
-  title: '供应商登记',
-  name: 'LzAFFOS',
-  // cFFillFormInnerFieldNames: ['C3_489231990680'],
+// 保安登记
+window[605900163561] = {
+  title: '保安登记',
+  name: 'LzRegister',
+  cFFillFormInnerFieldNames: ['C3_489231990680'],
   props: {
     tabPanes: [
-      // 申请中
+      //待访问 
       {
-        tabName: '申请中',
+        tabName: '待访问',
         componentInfo: {
           props: {
             rowColors: [
               {
-                innerFieldName: 'C3_59345742160', // 内部字段
+                innerFieldName: 'C3_593457421602', // 内部字段
+                colors: [
+                  {
+                    value: '正常',
+                    color: ''
+                  },
+                  {
+                    value: '异常',
+                    color: '#ff0000'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+};
+// 前台记录
+window[605871880758] = {
+  title: '前台记录',
+  name: 'LzRecord',
+  cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    tabPanes: [
+      //待处理
+      {
+        tabName: '待处理',
+        componentInfo: {
+          props: {
+            rowColors: [
+              {
+                innerFieldName: 'C3_593457421602', // 内部字段
                 colors: [
                   {
                     value: '正常',
