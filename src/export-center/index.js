@@ -16,7 +16,8 @@ export { LzTable } from '../loadableComponents';
 export {
   LzAFFOS,
   LzStepY,
-  LzStepAflY
+  LzStepAflY,
+  ViProvider
 } from '../components/custom/loadableCustom';
 
 export { LzTeamSet } from '../product-components/att/loadableComponents';

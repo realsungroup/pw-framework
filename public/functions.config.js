@@ -1451,6 +1451,7 @@ window[605803889644] = {
   name: 'LzAFFOS',
   // cFFillFormInnerFieldNames: ['C3_489231990680'],
   props: {
+    resids: [],
     tabPanes: [
       // 申请中
       {
@@ -1478,7 +1479,40 @@ window[605803889644] = {
     ]
   }
 };
-
+// 长期供应商登记
+window[605891224706] = {
+  title: '供应商维护',
+  name: 'ViProvider',
+  // cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    resids: []
+    // tabPanes: [
+    //   // 申请中
+    //   {
+    //     tabName: '申请中',
+    //     componentInfo: {
+    //       props: {
+    //         rowColors: [
+    //           {
+    //             innerFieldName: 'C3_59345742160', // 内部字段
+    //             colors: [
+    //               {
+    //                 value: '正常',
+    //                 color: ''
+    //               },
+    //               {
+    //                 value: '异常',
+    //                 color: '#ff0000'
+    //               }
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     }
+    //   }
+    // ]
+  }
+};
 // 请假信息
 window[601728701208] = {
   title: '请假信息',

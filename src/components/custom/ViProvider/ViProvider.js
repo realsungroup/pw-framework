@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { message, Tabs } from 'antd';
-import './LzAFFOS.less';
+import './ViProvider.less';
 // import TableData from '../../../lib/unit-component/TableData';
 import { TableData } from '../../common/loadableCommon';
 import {
@@ -17,7 +17,7 @@ const TabPane = Tabs.TabPane;
 /**
  * 访客申请
  */
-export default class LzAFFOS extends React.Component {
+export default class ViProvider extends React.Component {
   static propTypes = {
     /**
      * 标签页配置

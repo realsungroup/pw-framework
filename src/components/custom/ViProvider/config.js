@@ -47,7 +47,7 @@ const customColumnWidth = {
 
 // 申请中
 export const inApplication = {
-  resid: 605801028375,
+  resid: 605891650522,
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮
@@ -83,7 +83,7 @@ export const inApplication = {
 };
 // 审批中
 export const inExaminationAndApproval = {
-  resid: 605803642531,
+  resid: 605891699222,
   hasSearch: true,
   hasBeBtns: true,
   hasAdd: false,
@@ -121,7 +121,7 @@ export const inExaminationAndApproval = {
 };
 // 已审核
 export const approved = {
-  resid: 605803707282,
+  resid: 605891735751,
   hasSearch: true,
   hasAdd: false,
   height: 500,
@@ -159,7 +159,7 @@ export const approved = {
 
 // 已拒绝
 export const refused = {
-  resid: 605803740920,
+  resid: 605891789909,
   height: 500,
   hasAdd: false,
   hasSearch: true,
@@ -197,7 +197,7 @@ export const refused = {
 
 // 历史记录
 export const history = {
-  resid: 605803785490,
+  resid: 605891824806,
   hasAdd: false,
   hasSearch: true,
   height: 500,
