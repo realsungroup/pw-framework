@@ -8,17 +8,10 @@ export { TableData, OrgChartData } from '../components/common/loadableCommon';
 // lib
 export { LzTable } from '../loadableComponents';
 
-// 定制组件
-
 export {
-  LzDataHandling,
-  LzDataAnalyse,
-  LzMyCA,
-  LzClassifySet,
-  LzAFFO,
   LzAFFOS,
-  LzWorkOvertime,
-  LzTabsDataDashboard,
-  LzTeamSet
-} from '../product-components/att/loadableComponents';
+  LzStepY,
+  LzStepAflY
+} from '../components/custom/loadableCustom';
 
+export { LzTeamSet } from '../product-components/att/loadableComponents';
