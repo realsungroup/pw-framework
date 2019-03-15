@@ -12,6 +12,12 @@ export const propTypes = {
   size: PropTypes.oneOf(['large', 'middle', 'small']),
 
   /**
+   * 后端按钮类型
+   * 可选：'multiple' 操作多条记录的后端按钮 | 'single' 操作一条记录的后端按钮
+   */
+  backendBtnType: PropTypes.oneOf(['multiple', 'single']).isRequired,
+
+  /**
    * 后端按钮信息
    */
   btnInfo: PropTypes.object.isRequired,

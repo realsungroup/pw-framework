@@ -512,6 +512,7 @@ class TableData extends React.Component {
 
     return arr.map(btnInfo => (
       <LzBackendBtn
+        backendBtnType="multiple"
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
@@ -528,6 +529,7 @@ class TableData extends React.Component {
     const id = this._id;
     return beBtnsSingle.map(btnInfo => (
       <LzBackendBtn
+        backendBtnType="single"
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
@@ -595,13 +597,20 @@ class TableData extends React.Component {
 
   /**
    * 打开记录表单，进行 添加/修改/查看 操作
+   * @param {string} backendBtnType 后端按钮类型：'single' 行后端按钮；'multiple' 表格头部的后端按钮
    * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
    * @param {object} record 记录
    * @param {object} data 控件数据
    * 当传参数时，表示点击 “后端按钮” 打开记录表单
    * 不传参数时，表示点击 “前端定义的按钮” 打开记录表单
    */
-  openRecordForm = (operation, record, data, recordFormData) => {
+  openRecordForm = (
+    backendBtnType,
+    operation,
+    record,
+    data,
+    recordFormData
+  ) => {
     const {
       dataMode,
       resid,
@@ -642,7 +651,10 @@ class TableData extends React.Component {
 
     const title = this.getTitle();
 
-    console.log({ title });
+    let newHostRecid = hostrecid;
+    if (backendBtnType === 'single') {
+      newHostRecid = record.REC_ID;
+    }
 
     openRecordForm({
       type: recordFormType,
@@ -651,7 +663,7 @@ class TableData extends React.Component {
       data: newData,
       operation: newOperation,
       record: newRecord,
-      info: { dataMode, resid, subresid, hostrecid },
+      info: { dataMode, resid, subresid, hostrecid: newHostRecid },
       beforeSaveFields,
       AdvDicTableProps,
       recordFormContainerProps,
@@ -856,18 +868,24 @@ class TableData extends React.Component {
     this.handleRefresh(true);
   };
 
-  beBtnConfirm = (type, records, formData, defaultRecord) => {
+  beBtnConfirm = (
+    backendBtnType,
+    type,
+    records,
+    controlData,
+    defaultRecord
+  ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
     } else if (type === 6) {
-      this.openRecordForm('modify', defaultRecord, formData);
+      this.openRecordForm(backendBtnType, 'modify', defaultRecord, controlData);
       // 查看记录
     } else if (type === 7) {
-      this.openRecordForm('view', defaultRecord, formData);
+      this.openRecordForm(backendBtnType, 'view', records[0], controlData);
       // 添加记录
     } else if (type === 8) {
-      this.openRecordForm('add', defaultRecord, formData);
+      this.openRecordForm(backendBtnType, 'add', defaultRecord, controlData);
     }
   };
 

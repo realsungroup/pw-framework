@@ -3,6 +3,7 @@ import { Popconfirm, message, Button } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { propTypes, defaultProps } from './propTypes';
+import { getDataProp } from 'Util20/formData2ControlsData';
 
 const btnSizeMap = {
   large: 'large',
@@ -45,7 +46,7 @@ class LzBackendBtn extends React.PureComponent {
   _formData = null;
   _defaultRecord = null;
   onConfirm = async () => {
-    const { resid, records, onConfirm, btnInfo } = this.props;
+    const { resid, records, onConfirm, btnInfo, backendBtnType } = this.props;
     const { Code, OkMsgCn, FailMsgCn, Type } = btnInfo;
 
     // 点击后端按钮，请求后台
@@ -73,13 +74,13 @@ class LzBackendBtn extends React.PureComponent {
         return message.error(FailMsgCn);
       }
       message.success(OkMsgCn);
-      onConfirm && onConfirm(Type, records);
+      onConfirm && onConfirm(backendBtnType, Type, records);
 
       // 跳转地址的按钮
     } else if (Type === 4) {
       const { url } = this.props;
       window.open(url, '_blank');
-      onConfirm && onConfirm(Type);
+      onConfirm && onConfirm(backendBtnType, Type);
 
       // 打开指定的 formName 的表单进行 编辑（6）/ 查看（7）/ 添加（8）
     } else if (Type === 6 || Type === 7 || Type === 8) {
@@ -101,9 +102,17 @@ class LzBackendBtn extends React.PureComponent {
         // 缓存 formData 和 defaultRecord
         this._formData = formData;
         this._defaultRecord = defaultRecord;
+        this._controlData = getDataProp(this._formData, {}, false, false);
       }
 
-      onConfirm && onConfirm(Type, records, formData, defaultRecord);
+      onConfirm &&
+        onConfirm(
+          backendBtnType,
+          Type,
+          records,
+          this._controlData,
+          defaultRecord
+        );
     }
   };
 
