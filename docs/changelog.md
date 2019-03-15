@@ -13,6 +13,8 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 # v21.1.0（2019/3/15）
 
 - `TableData` 组件添加 `hasSearch` 配置
+- 修复在 `TableData` 组件中点击后端按钮，不会获取记录表单中的子表数据的 bug
+- 修复在 `TableData` 组件中点击后端按钮，请求传参错误的 bug
 
 ```
 *升级提示
