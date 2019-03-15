@@ -21,7 +21,9 @@ export {
   LzMyCA,
   LzClassifySet,
   LzAFFO,
+  LzAFFOS,
   LzWorkOvertime,
   LzTabsDataDashboard,
   LzTeamSet
 } from '../product-components/att/loadableComponents';
+

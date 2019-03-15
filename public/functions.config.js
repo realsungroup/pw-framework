@@ -1444,6 +1444,41 @@ window[592755014348] = {
   }
 };
 
+
+// 袁巧云申请
+window[605803889644] = {
+  title: '访客申请',
+  name: 'LzAFFOS',
+  // cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    tabPanes: [
+      // 申请中
+      {
+        tabName: '申请中',
+        componentInfo: {
+          props: {
+            rowColors: [
+              {
+                innerFieldName: 'C3_59345742160', // 内部字段
+                colors: [
+                  {
+                    value: '正常',
+                    color: ''
+                  },
+                  {
+                    value: '异常',
+                    color: '#ff0000'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+};
+
 // 请假信息
 window[601728701208] = {
   title: '请假信息',

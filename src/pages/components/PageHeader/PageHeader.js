@@ -13,8 +13,9 @@ import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 
 const SubMenu = Menu.SubMenu;
-const { homeLogoSize } = window.pwConfig;
-const { openFuncInSelfResids } = window.pwConfig;
+const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
+  process.env.NODE_ENV
+];
 
 const getTarget = resid => {
   // 在新 tab 中打开功能页面
