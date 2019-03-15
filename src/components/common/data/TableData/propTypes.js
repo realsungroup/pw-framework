@@ -219,6 +219,17 @@ export const propTypes = {
    * 默认：-
    */
   customRowBtns: PropTypes.array,
+  // 如：
+  // [
+  //   (record, btnSize) => {
+  //     return <Button>按钮1</Button>
+  //   },
+  //   (record, btnSize) => {
+  //     return <Button>按钮2</Button>
+  //   }
+  // ]
+  // record 表示当前记录
+  // btnSize 表示按钮尺寸
 
   /**
    * 表格高度 - scroll.y 的值

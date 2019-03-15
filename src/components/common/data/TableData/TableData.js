@@ -1139,6 +1139,7 @@ class TableData extends React.Component {
       hasDownload,
       hasRefresh,
       hasAdvSearch,
+      hasSearch,
       hasZoomInOut,
       hasImport,
       bordered,
@@ -1189,6 +1190,7 @@ class TableData extends React.Component {
         hasRefresh={hasRefresh}
         onAdvSearch={this.handleAdvSearch}
         hasAdvSearch={hasAdvSearch}
+        hasSearch={hasSearch}
         hasZoomInOut={hasZoomInOut}
         onZoomIn={this.handleZoomIn}
         onZoomOut={this.handleZoomOut}
