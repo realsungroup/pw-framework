@@ -2,15 +2,6 @@ import React from 'react';
 import Loadable from 'react-loadable';
 
 const minLoading = <span>加载中...</span>;
-
-
-export const LzAFFOS = Loadable({
-  loader: () => import('./LzAFFOS'),
-  loading() {
-    return minLoading;
-  }
-});
-
 export const LzStepY = Loadable({
   loader: () => import('./LzStepY'),
   loading() {
@@ -35,7 +26,6 @@ export const Card = Loadable({
     return minLoading;
   }
 });
-
 export const LzRegister = Loadable({
     loader: () => import('./LzRegister'),
     loading() {
@@ -54,9 +44,11 @@ export const LzApproval = Loadable({
       return minLoading;
     }
   });
-  export const ViProvider = Loadable({
-    loader: () => import('./ViProvider'),
+  export const LzAFFOS = Loadable({
+    loader: () => import('./LzAFFOS'),
     loading() {
       return minLoading;
     }
   });
+  
+

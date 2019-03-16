@@ -48,152 +48,71 @@ const customColumnWidth = {
 // 待处理
 export const inApplication = {
   resid: 605892972967,
+  formProps: {
+    height: 500,
+  },
   hasAdd: false,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
-  hasRowView: false,
+  hasRowView: true,
   hasRowDelete: false,
+  hasBeBtns: true,
+  recordFormType: 'drawer',
+  recordFormContainerProps: {
+    placement: 'bottom',
+    height: 600
+  },
+  subTableArrProps: [{
+    subTableName: '前台登记记录',
+    subResid: 606058778224,
+    tableProps: {
+      hasAdd: true,
+      hasModify: false,
+      hasDelete: false,
+      hasRowModify: true,
+      hasRowView: false,
+      hasRowDelete: false,
+      width: 700,
+      height: 500,
+      defaultColumnWidth: 100,
+      actionBarWidth: 100
+    }
+  }]
 };
 
 // 已处理
 export const applyForAbnormal = {
   resid: 605892990971,
+  formProps: {
+    height: 500,
+  },
   hasAdd: false,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
-  hasRowView: false,
+  hasRowView: true,
   hasRowDelete: false,
-};
-
-// 已访问
-export const approved = {
-  resid: 605802654230,
-  exceptTableInnerHeight: 400,
-  addBtn: false,
-  opIsFixed: true,
-  isSearch: true,
-  hasRefresh: true,
-  hasDownloadExcel: true,
-  isSortBE: true,
-
-  pagination: {
-    pageSize: 10, // 默认每页数量
-    current: 0 // 当前页数
+  hasBeBtns: true,
+  recordFormType: 'drawer',
+  recordFormContainerProps: {
+    placement: 'bottom',
+    height: 600
   },
-  btnsVisible: {
-    check: true,
-    del: true
-  },
-  customColumnWidth,
-  tableSize: 'small'
-};
-
-// 已拒绝
-export const refused = {
-  resid: 593444682727,
-  exceptTableInnerHeight: 400,
-  addBtn: false,
-  opIsFixed: true,
-  isSearch: true,
-  hasRefresh: true,
-  hasDownloadExcel: true,
-  pagination: {
-    pageSize: 10, // 默认每页数量
-    current: 0 // 当前页数
-  },
-  btnsVisible: {
-    check: true
-  },
-  advSearchConfig,
-  customColumnWidth,
-  tableSize: 'small',
-  isSortBE: true
-};
-
-// 历史记录
-export const history = {
-  resid: 593446259764,
-  exceptTableInnerHeight: 400,
-  addBtn: false,
-  opIsFixed: true,
-  hasDownloadExcel: true,
-  pagination: {
-    pageSize: 10, // 默认每页数量
-    current: 0 // 当前页数
-  },
-  isSearch: true,
-  hasRefresh: true,
-  advSearchConfig,
-  customColumnWidth,
-  tableSize: 'small',
-  isSortBE: true
-};
-
-// 审批中
-export const inExaminationAndApproval = {
-  resid: 596816381916,
-  exceptTableInnerHeight: 400,
-  addBtn: false,
-  opIsFixed: true,
-  hasDownloadExcel: true,
-  pagination: {
-    pageSize: 10, // 默认每页数量
-    current: 0 // 当前页数
-  },
-  isSearch: true,
-  hasRefresh: true,
-  advSearchConfig,
-  customColumnWidth,
-  tableSize: 'small',
-  isBackEndBtnsVisible: true,
-  customBtns: [
-    {
-      text: '撤销', // 按钮名称
-      popConfirmProps: {
-        title: '确定撤销？'
-      }, // PopConfirm 组件配置
-      onClick: async (record, callback) => {
-        // 点击回调
-        const newRecord = { C3_593523276035: 'Y', REC_ID: record.REC_ID };
-        let res;
-        try {
-          res = await modRecord(593444507094, newRecord);
-        } catch (err) {
-          return message.error(err.message);
-        }
-        message.success('撤销成功');
-        callback && callback();
-      }
+  subTableArrProps: [{
+    subTableName: '前台登记记录',
+    subResid: 606058778224,
+    tableProps: {
+      hasAdd: true,
+      hasModify: false,
+      hasDelete: false,
+      hasRowModify: true,
+      hasRowView: false,
+      hasRowDelete: false,
+      width: 700,
+      height: 500,
+      defaultColumnWidth: 100,
+      actionBarWidth: 100
     }
-  ],
-  formTabsSubTableProps: [
-    {
-      tabName: '审批记录', // 标题
-      componentInfo: {
-        name: 'LzTable', // 组件名称
-        props: {
-          // 组件接受的 props
-          subresid: 593202125987, // 必传
-          // 其他参数为 LzTable 所能接受的参数
-          btnsVisible: {
-            check: true
-          },
-          opIsFixed: true,
-          tableSize: 'small',
-          customColumnWidth: {
-            审批序号: 100,
-            审批节点: 100,
-            审批结果: 100,
-            审批人: 100,
-            审批时间: 100,
-            日剩余加班额度: 150,
-            累计加班小时: 150,
-            月剩余加班额度: 150
-          }
-        }
-      }
-    }
-  ]
+  }]
 };

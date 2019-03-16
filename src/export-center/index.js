@@ -9,15 +9,21 @@ export { TableData, OrgChartData } from '../components/common/loadableCommon';
 export { LzRegister } from '../components/custom/loadableCustom';
 export { LzRecord } from '../components/custom/loadableCustom';
 export { LzApproval } from '../components/custom/loadableCustom';
+export { LzAFFOS } from '../components/custom/loadableCustom';
 
 // lib
 export { LzTable } from '../loadableComponents';
 
+// 组件
+
 export {
-  LzAFFOS,
-  LzStepY,
-  LzStepAflY,
-  ViProvider
-} from '../components/custom/loadableCustom';
+  LzDataHandling,
+  LzDataAnalyse,
+  LzMyCA,
+  LzClassifySet,
+  LzAFFO,
+  LzWorkOvertime,
+  LzTabsDataDashboard,
+} from '../product-components/att/loadableComponents';
 
 export { LzTeamSet } from '../product-components/att/loadableComponents';
