@@ -22,3 +22,9 @@ export const LzApproval = Loadable({
       return minLoading;
     }
   });
+export const LzAFFOS = Loadable({
+    loader: () => import('./LzAFFOS'),
+    loading() {
+      return minLoading;
+    }
+  });

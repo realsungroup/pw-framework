@@ -9,11 +9,12 @@ export { TableData, OrgChartData } from '../components/common/loadableCommon';
 export { LzRegister } from '../components/custom/loadableCustom';
 export { LzRecord } from '../components/custom/loadableCustom';
 export { LzApproval } from '../components/custom/loadableCustom';
+export { LzAFFOS } from '../components/custom/loadableCustom';
 
 // lib
 export { LzTable } from '../loadableComponents';
 
-// 定制组件
+// 组件
 
 export {
   LzDataHandling,
@@ -21,7 +22,6 @@ export {
   LzMyCA,
   LzClassifySet,
   LzAFFO,
-  LzAFFOS,
   LzWorkOvertime,
   LzTabsDataDashboard,
   LzTeamSet
