@@ -1654,6 +1654,39 @@ window[605871880758] = {
     ]
   }
 };
+// 审批
+window[605893340481] = {
+  title: '审批',
+  name: 'LzApproval',
+  cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    tabPanes: [
+      //待审批
+      {
+        tabName: '待审批',
+        componentInfo: {
+          props: {
+            rowColors: [
+              {
+                innerFieldName: 'C3_593457421602', // 内部字段
+                colors: [
+                  {
+                    value: '正常',
+                    color: ''
+                  },
+                  {
+                    value: '异常',
+                    color: '#ff0000'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+};
 
 //打印
 window[603827488844] = {
