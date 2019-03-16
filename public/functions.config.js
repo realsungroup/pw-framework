@@ -1485,7 +1485,6 @@ window[605891224706] = {
   name: 'ViProvider',
   // cFFillFormInnerFieldNames: ['C3_489231990680'],
   props: {
-    resids: []
     // tabPanes: [
     //   // 申请中
     //   {
