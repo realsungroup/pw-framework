@@ -111,7 +111,8 @@ class LzBackendBtn extends React.PureComponent {
           Type,
           records,
           this._controlData,
-          defaultRecord
+          defaultRecord,
+          formData
         );
     }
   };
