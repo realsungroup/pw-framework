@@ -48,12 +48,15 @@ const customColumnWidth = {
 // 申请中
 export const inApplication = {
   resid: 605891650522,
+  height: 500,
+  formProps:{
+    height:500,
+ },
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮
   hasModify: false,
   hasDelete: false,
-  height: 500,
   hasRowView: false,
   hasBeBtns: true,
   recordFormType: 'drawer',
@@ -63,8 +66,8 @@ export const inApplication = {
   },
   subTableArrProps: [
     {
-      subTableName: '访客信息',
-      subResid: 605716014733,
+      subTableName: '供应商信息',
+      subResid: 606068632909,
       tableProps: {
         hasAdd: true,
         hasModify: false,
@@ -73,8 +76,8 @@ export const inApplication = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
-        height: 500,
+        width: 680,
+        height:300,
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -84,6 +87,10 @@ export const inApplication = {
 // 审批中
 export const inExaminationAndApproval = {
   resid: 605891699222,
+  height: 500,
+  formProps:{
+    height:500,
+ },
   hasSearch: true,
   hasBeBtns: true,
   hasAdd: false,
@@ -93,7 +100,6 @@ export const inExaminationAndApproval = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  height: 500,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -101,36 +107,39 @@ export const inExaminationAndApproval = {
   },
   subTableArrProps: [
     {
-      subTableName: '访客信息',
-      subResid: 605716014733,
+      subTableName: '供应商信息',
+      subResid: 606068632909,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
-        height: 500,
+        width: 680,
+        height:500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
     }
   ]
 };
-// 已审核
+// 已审批
 export const approved = {
   resid: 605891735751,
+  formProps:{
+    height:500,
+ },
   hasSearch: true,
   hasAdd: false,
-  height: 500,
   hasBeBtns: true,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 100,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -138,20 +147,20 @@ export const approved = {
   },
   subTableArrProps: [
     {
-      subTableName: '访客信息',
-      subResid: 605716014733,
+      subTableName: '供应商信息',
+      subResid: 606068632909,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        
       }
     }
   ]
@@ -161,6 +170,9 @@ export const approved = {
 export const refused = {
   resid: 605891789909,
   height: 500,
+  formProps:{
+    height:500,
+ },
   hasAdd: false,
   hasSearch: true,
   hasBeBtns: true,
@@ -169,6 +181,7 @@ export const refused = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 100,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -176,20 +189,19 @@ export const refused = {
   },
   subTableArrProps: [
     {
-      subTableName: '访客信息',
-      subResid: 605716014733,
+      subTableName: '供应商信息',
+      subResid: 606068632909,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
       }
     }
   ]
@@ -198,15 +210,19 @@ export const refused = {
 // 历史记录
 export const history = {
   resid: 605891824806,
+  height: 500,
+  formProps:{
+    height:500,
+ },
   hasAdd: false,
   hasSearch: true,
-  height: 500,
   hasBeBtns: true,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 100,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -214,20 +230,19 @@ export const history = {
   },
   subTableArrProps: [
     {
-      subTableName: '访客信息',
-      subResid: 605716014733,
+      subTableName: '供应商信息',
+      subResid: 606068632909,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
       }
     }
   ]
