@@ -24,6 +24,6 @@ export {
   LzAFFO,
   LzWorkOvertime,
   LzTabsDataDashboard,
-  LzTeamSet
 } from '../product-components/att/loadableComponents';
 
+export { LzTeamSet } from '../product-components/att/loadableComponents';

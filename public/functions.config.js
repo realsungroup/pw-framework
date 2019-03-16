@@ -1451,6 +1451,7 @@ window[605803889644] = {
   name: 'LzAFFOS',
   // cFFillFormInnerFieldNames: ['C3_489231990680'],
   props: {
+    resids: [],
     tabPanes: [
       // 申请中
       {
@@ -1478,7 +1479,39 @@ window[605803889644] = {
     ]
   }
 };
-
+// 长期供应商登记
+window[605891224706] = {
+  title: '供应商维护',
+  name: 'ViProvider',
+  // cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    // tabPanes: [
+    //   // 申请中
+    //   {
+    //     tabName: '申请中',
+    //     componentInfo: {
+    //       props: {
+    //         rowColors: [
+    //           {
+    //             innerFieldName: 'C3_59345742160', // 内部字段
+    //             colors: [
+    //               {
+    //                 value: '正常',
+    //                 color: ''
+    //               },
+    //               {
+    //                 value: '异常',
+    //                 color: '#ff0000'
+    //               }
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     }
+    //   }
+    // ]
+  }
+};
 // 请假信息
 window[601728701208] = {
   title: '请假信息',
@@ -1621,37 +1654,14 @@ window[605871880758] = {
     ]
   }
 };
-//审批
-window[605893340481] = {
-  title: '审批',
-  name: 'LzApproval',
-  cFFillFormInnerFieldNames: ['C3_489231990680'],
-  props: {
-    tabPanes: [
-      //待审批
-      {
-        tabName: '待审批',
-        componentInfo: {
-          props: {
-            rowColors: [
-              {
-                innerFieldName: 'C3_593457421602', // 内部字段
-                colors: [
-                  {
-                    value: '正常',
-                    color: ''
-                  },
-                  {
-                    value: '异常',
-                    color: '#ff0000'
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
-    ]
-  }
+
+//打印
+window[603827488844] = {
+  name: 'LzStepAflY', // 组件名称，这里为定制组件名称
+  title: '打印信息', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  // props: {
+  //   resid: 777
+  // } // 组件所接收的 props
 };
 

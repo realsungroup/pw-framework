@@ -36,23 +36,30 @@ const advSearchConfig = {
   ]
 };
 
-
+const customColumnWidth = {
+  员工工号: 120,
+  员工姓名: 100,
+  产线名称: 250,
+  填单人: 100,
+  记录状态: 100,
+  审批状态: 100
+};
 
 // 申请中
 export const inApplication = {
-  resid: 605801028375,
+  resid: 605891650522,
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮
   hasModify: false,
   hasDelete: false,
+  height: 500,
   hasRowView: false,
   hasBeBtns: true,
-  height:600,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height:800,
+    height: 600
   },
   subTableArrProps: [
     {
@@ -66,6 +73,8 @@ export const inApplication = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
+        width: 700,
+        height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -74,7 +83,7 @@ export const inApplication = {
 };
 // 审批中
 export const inExaminationAndApproval = {
-  resid: 605803642531,
+  resid: 605891699222,
   hasSearch: true,
   hasBeBtns: true,
   hasAdd: false,
@@ -110,9 +119,9 @@ export const inExaminationAndApproval = {
     }
   ]
 };
-// 已审批
+// 已审核
 export const approved = {
-  resid: 605803707282,
+  resid: 605891735751,
   hasSearch: true,
   hasAdd: false,
   height: 500,
@@ -150,7 +159,7 @@ export const approved = {
 
 // 已拒绝
 export const refused = {
-  resid: 605803740920,
+  resid: 605891789909,
   height: 500,
   hasAdd: false,
   hasSearch: true,
@@ -188,7 +197,7 @@ export const refused = {
 
 // 历史记录
 export const history = {
-  resid: 605803785490,
+  resid: 605891824806,
   hasAdd: false,
   hasSearch: true,
   height: 500,

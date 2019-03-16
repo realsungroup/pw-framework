@@ -16,11 +16,11 @@ class App extends Component {
             return 'hhh';
           }}
           actionBarWidth={300}
-          title="调休登记"
+          title="11111"
           resid={596720928643}
           // width={1360}
           size="small"
-          hasBeBtns={false}
+          // hasBeBtns={false}
           subtractH={200}
           actionBarFixed={false}
           advSearchContainerType="drawer"
@@ -64,7 +64,7 @@ class App extends Component {
           hasResizeableBox={true}
           hasZoomInOut={false}
           bordered={true}
-          addText="添加基本信息"
+          // addText="添加基本信息"
           enAddText="add base info"
           rowModifyText="修改基本信息"
           enRowModifyText="modify base info"
