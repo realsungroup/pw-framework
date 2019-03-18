@@ -74,10 +74,16 @@ class FormData extends React.Component {
 
   renderSubTables = () => {
     const { defaultActiveKey } = this.state;
-    const { subTableArr } = this.props;
+    const { subTableArr, data, width } = this.props;
 
     return (
-      <Tabs defaultActiveKey={defaultActiveKey} className="form-data__tabs">
+      <Tabs
+        defaultActiveKey={defaultActiveKey}
+        className={classNames('form-data__tabs', {
+          'form-data__tabs--full': !data.length
+        })}
+        style={{ width: width.tabsWidth }}
+      >
         {subTableArr.map((subTable, index) =>
           this.renderTabPane(subTable, index)
         )}
@@ -123,7 +129,8 @@ class FormData extends React.Component {
       record,
       beforeSaveFields,
       info,
-      subTableArr
+      subTableArr,
+      width
     } = this.props;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
@@ -139,26 +146,28 @@ class FormData extends React.Component {
       Array.isArray(subTableArr) && !!subTableArr.length && operation !== 'add';
 
     return (
-      <Fragment>
+      <div className="form-data">
         {!!data.length && (
-          <PwForm
-            data={data}
-            {...formProps}
-            mode={mode}
-            {...otherProps}
-            onSave={this.handleSave}
-            onCancel={this.props.onCancel}
-            operation={operation}
-            record={record}
-            beforeSaveFields={beforeSaveFields}
-            resid={resid}
-            className={classNames({
-              'form-data__pwform--left': hasSubTables
-            })}
-          />
+          <div
+            style={{ width: width.formWidth }}
+            className="form-data__form-wrap"
+          >
+            <PwForm
+              data={data}
+              {...formProps}
+              mode={mode}
+              {...otherProps}
+              onSave={this.handleSave}
+              onCancel={this.props.onCancel}
+              operation={operation}
+              record={record}
+              beforeSaveFields={beforeSaveFields}
+              resid={resid}
+            />
+          </div>
         )}
         {hasSubTables && this.renderSubTables()}
-      </Fragment>
+      </div>
     );
   }
 }

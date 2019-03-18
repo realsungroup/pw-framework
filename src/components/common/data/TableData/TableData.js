@@ -626,9 +626,13 @@ class TableData extends React.Component {
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
-    const { intl } = this.props;
-    if (!this._recordFormData || !this._dealedRecordFormData) {
-      return message.info('正在请求窗体数据，请稍等...');
+    const { intl, recordFormFormWidth, recordFormTabsWidth } = this.props;
+
+    // 点击前端按钮时
+    if (!backendBtnType) {
+      if (!this._recordFormData || !this._dealedRecordFormData) {
+        return message.info('正在请求窗体数据，请稍等...');
+      }
     }
 
     const newOperation = operation || recordFormShowMode;
@@ -669,6 +673,8 @@ class TableData extends React.Component {
       recordFormContainerProps,
       subTableArr,
       subTableArrProps,
+      recordFormFormWidth,
+      recordFormTabsWidth,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });
@@ -873,19 +879,38 @@ class TableData extends React.Component {
     type,
     records,
     controlData,
-    defaultRecord
+    defaultRecord,
+    recordFormData
   ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
     } else if (type === 6) {
-      this.openRecordForm(backendBtnType, 'modify', defaultRecord, controlData);
+      this.openRecordForm(
+        backendBtnType,
+        'modify',
+        defaultRecord,
+        controlData,
+        recordFormData
+      );
       // 查看记录
     } else if (type === 7) {
-      this.openRecordForm(backendBtnType, 'view', records[0], controlData);
+      this.openRecordForm(
+        backendBtnType,
+        'view',
+        records[0],
+        controlData,
+        recordFormData
+      );
       // 添加记录
     } else if (type === 8) {
-      this.openRecordForm(backendBtnType, 'add', defaultRecord, controlData);
+      this.openRecordForm(
+        backendBtnType,
+        'add',
+        defaultRecord,
+        controlData,
+        recordFormData
+      );
     }
   };
 

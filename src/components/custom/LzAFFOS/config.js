@@ -48,6 +48,8 @@ export const inApplication = {
   hasDelete: false,
   hasRowView: false,
   hasBeBtns: true,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   height:500,
   formProps:{
     height:500,
@@ -70,6 +72,8 @@ export const inApplication = {
         hasRowView: false,
         hasRowDelete: false,
         height: 400,
+        // recordFormFormWidth: '35%',
+        // recordFormTabsWidth: '65%',
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -113,6 +117,17 @@ export const inExaminationAndApproval = {
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
+    
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
+      }
     }
   ]
 };
@@ -150,9 +165,36 @@ export const approved = {
         height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
+      },
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
-  ]
+  ],
+  // formTabsSubTableProps: [
+  //   {
+  //     tabName: '审批记录', // 标题
+  //     componentInfo: {
+  //       name: 'TableData', // 组件名称
+  //       props: {
+  //         // 组件接受的 props
+  //         subresid: 605989494375, // 必传
+  //         // 其他参数为 LzTable 所能接受的参数
+  //         btnsVisible: {
+  //           check: true
+  //         },
+  //         tableSize: 'small'
+  //       }
+  //     }
+  //   }
+  // ],
 };
 
 // 已拒绝
@@ -171,6 +213,7 @@ export const refused = {
   hasRowView: true,
   hasRowDelete: false,
   recordFormType: 'drawer',
+  actionBarWidth: 100,
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -210,7 +253,7 @@ export const history = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  actionBarWidth: 100,
+  // actionBarWidth: 100,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -231,6 +274,16 @@ export const history = {
         height: 500,
         defaultColumnWidth: 100,
         
+      }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
   ]

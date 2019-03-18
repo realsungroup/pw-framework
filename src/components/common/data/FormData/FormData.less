@@ -1,15 +1,18 @@
 .form-data {
-  &__pwform--left {
-    display: inline-block;
-    width: 49%;
-    height: 100%;
-    overflow: auto;
-  }
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
   &__tabs {
-    display: inline-block;
-    width: 49%;
+    float: left;
     height: 100%;
     vertical-align: top;
     overflow: auto;
+    &--full {
+      width: 100% !important;
+    }
+  }
+  &__form-wrap {
+    float: left;
+    height: 100%;
   }
 }

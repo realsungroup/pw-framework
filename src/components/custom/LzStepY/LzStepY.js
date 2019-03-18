@@ -109,7 +109,9 @@ export default class LzStepY extends React.Component {
   };
 
   complete = async () => {
-    this.props.onComplete();
+    console.log(11111)
+
+    // this.props.onComplete();
   };
 
   render() {
@@ -132,7 +134,7 @@ export default class LzStepY extends React.Component {
               onClick={this.complete}
               disabled={current !== lastIndex}
             >
-              完成
+              完成/打印
             </Button>
             <Button
               type="primary"

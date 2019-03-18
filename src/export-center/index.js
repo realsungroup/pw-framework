@@ -24,7 +24,13 @@ export {
   LzClassifySet,
   LzAFFO,
   LzWorkOvertime,
-  LzTabsDataDashboard,
+  LzTabsDataDashboard
 } from '../product-components/att/loadableComponents';
 
 export { LzTeamSet } from '../product-components/att/loadableComponents';
+export {
+  LzStepY,
+  LzStepAflY,
+  LzSelectPersons,
+  Card
+} from '../components/custom/loadableCustom';
