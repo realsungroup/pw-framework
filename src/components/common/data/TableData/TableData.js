@@ -626,7 +626,7 @@ class TableData extends React.Component {
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
-    const { intl } = this.props;
+    const { intl, recordFormFormWidth, recordFormTabsWidth } = this.props;
 
     // 点击前端按钮时
     if (!backendBtnType) {
@@ -673,6 +673,8 @@ class TableData extends React.Component {
       recordFormContainerProps,
       subTableArr,
       subTableArrProps,
+      recordFormFormWidth,
+      recordFormTabsWidth,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });
