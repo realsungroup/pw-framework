@@ -51,4 +51,11 @@ export const LzApproval = Loadable({
     }
   });
   
+  export const ViProvider = Loadable({
+    loader: () => import('./ViProvider'),
+    loading() {
+      return minLoading;
+    }
+  });
+  
 

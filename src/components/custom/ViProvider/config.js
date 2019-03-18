@@ -48,7 +48,7 @@ const customColumnWidth = {
 // 申请中
 export const inApplication = {
   resid: 605891650522,
-  height: 500,
+  height:800,
   formProps:{
     height:500,
  },
@@ -76,8 +76,7 @@ export const inApplication = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        width: 680,
-        height:300,
+        // height:300,
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -117,7 +116,6 @@ export const inExaminationAndApproval = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 680,
         height:500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
@@ -157,7 +155,6 @@ export const approved = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 680,
         height: 500,
         defaultColumnWidth: 100,
         
@@ -199,7 +196,6 @@ export const refused = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 680,
         height: 500,
         defaultColumnWidth: 100,
       }
@@ -240,7 +236,6 @@ export const history = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 680,
         height: 500,
         defaultColumnWidth: 100,
       }
