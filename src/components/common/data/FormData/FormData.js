@@ -74,10 +74,15 @@ class FormData extends React.Component {
 
   renderSubTables = () => {
     const { defaultActiveKey } = this.state;
-    const { subTableArr } = this.props;
+    const { subTableArr, data } = this.props;
 
     return (
-      <Tabs defaultActiveKey={defaultActiveKey} className="form-data__tabs">
+      <Tabs
+        defaultActiveKey={defaultActiveKey}
+        className={classNames('form-data__tabs', {
+          'form-data__tabs--full': !data.length
+        })}
+      >
         {subTableArr.map((subTable, index) =>
           this.renderTabPane(subTable, index)
         )}
