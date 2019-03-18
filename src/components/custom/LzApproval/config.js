@@ -77,7 +77,6 @@ export const inApplication = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
-      width: 700,
       height: 500,
       defaultColumnWidth: 100,
       actionBarWidth: 100
@@ -112,7 +111,6 @@ export const applyForAbnormal = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
-      width: 700,
       height: 500,
       defaultColumnWidth: 100,
       actionBarWidth: 100
@@ -150,7 +148,6 @@ export const refused = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
-      width: 700,
       height: 500,
       defaultColumnWidth: 100,
       actionBarWidth: 100
@@ -186,7 +183,6 @@ export const history = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
-      width: 700,
       height: 500,
       defaultColumnWidth: 100,
       actionBarWidth: 100

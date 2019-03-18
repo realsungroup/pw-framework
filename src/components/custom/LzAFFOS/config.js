@@ -48,16 +48,19 @@ export const inApplication = {
   hasDelete: false,
   hasRowView: false,
   hasBeBtns: true,
-  height:600,
+  height:500,
+  formProps:{
+    height:500,
+ },
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height:800,
+    height:600,
   },
   subTableArrProps: [
     {
       subTableName: '访客信息',
-      subResid: 605716014733,
+      subResid: 606066688508,
       tableProps: {
         hasAdd: true,
         hasModify: false,
@@ -66,6 +69,8 @@ export const inApplication = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
+        width: 680,
+        height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -84,7 +89,10 @@ export const inExaminationAndApproval = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  height: 500,
+  height:500,
+  formProps:{
+    height:600,
+ },
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -93,16 +101,16 @@ export const inExaminationAndApproval = {
   subTableArrProps: [
     {
       subTableName: '访客信息',
-      subResid: 605716014733,
+      subResid: 606066688508,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
@@ -115,7 +123,6 @@ export const approved = {
   resid: 605803707282,
   hasSearch: true,
   hasAdd: false,
-  height: 500,
   hasBeBtns: true,
   hasModify: false,
   hasDelete: false,
@@ -123,6 +130,10 @@ export const approved = {
   hasRowView: true,
   hasRowDelete: false,
   recordFormType: 'drawer',
+  height:500,
+  formProps:{
+    height:500,
+ },
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -130,16 +141,15 @@ export const approved = {
   subTableArrProps: [
     {
       subTableName: '访客信息',
-      subResid: 605716014733,
+      subResid: 606066688508,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        // hasRowEdit: true,
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
@@ -151,7 +161,10 @@ export const approved = {
 // 已拒绝
 export const refused = {
   resid: 605803740920,
-  height: 500,
+  height:500,
+  formProps:{
+    height:500,
+ },
   hasAdd: false,
   hasSearch: true,
   hasBeBtns: true,
@@ -168,7 +181,7 @@ export const refused = {
   subTableArrProps: [
     {
       subTableName: '访客信息',
-      subResid: 605716014733,
+      subResid: 606066688508,
       tableProps: {
         hasAdd: true,
         hasModify: false,
@@ -177,7 +190,7 @@ export const refused = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 100
@@ -191,13 +204,17 @@ export const history = {
   resid: 605803785490,
   hasAdd: false,
   hasSearch: true,
-  height: 500,
+  height:500,
+  formProps:{
+    height:500,
+ },
   hasBeBtns: true,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 100,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -206,19 +223,19 @@ export const history = {
   subTableArrProps: [
     {
       subTableName: '访客信息',
-      subResid: 605716014733,
+      subResid: 606066688508,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        width: 700,
+        width: 680,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        
       }
     }
   ]
