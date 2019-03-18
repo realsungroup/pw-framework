@@ -4,10 +4,23 @@ export const defaultProps = {
   data: [],
   record: {},
   operation: 'add',
-  formProps: {}
+  formProps: {},
+  width: {
+    formWidth: '30%',
+    tabsWidth: '70%'
+  }
 };
 
 export const propTypes = {
+  /**
+   * 宽度配置
+   * 默认：width = { formWidth: '50%', tabsWidth: '50%' }
+   */
+  width: PropTypes.shape({
+    formWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    tabsWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  }),
+
   /**
    * PwForm 接收的 data prop
    * 默认：[]
