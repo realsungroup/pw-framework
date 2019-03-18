@@ -1444,7 +1444,6 @@ window[592755014348] = {
   }
 };
 
-
 // 袁巧云申请
 window[605803889644] = {
   title: '访客申请',
@@ -1595,7 +1594,7 @@ window[605900163561] = {
   cFFillFormInnerFieldNames: ['C3_489231990680'],
   props: {
     tabPanes: [
-      //待访问 
+      //待访问
       {
         tabName: '待访问',
         componentInfo: {
@@ -1659,9 +1658,40 @@ window[605871880758] = {
 window[603827488844] = {
   name: 'LzStepAflY', // 组件名称，这里为定制组件名称
   title: '打印信息', // 功能模块名称
-  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  hasBackBtn: true // 是否有返回上一页的按钮，默认为 true
   // props: {
   //   resid: 777
   // } // 组件所接收的 props
 };
-
+//保安访客登记
+window[606071626403] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '保安访客登记', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 606071751596,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false
+  } // 组件所接收的 props
+};
+//前台访客登记
+window[606071640940] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '前台访客登记', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 606071814271,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false
+  } // 组件所接收的 props
+};
