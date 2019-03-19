@@ -48,9 +48,10 @@ export const inApplication = {
   hasDelete: false,
   hasRowView: false,
   hasBeBtns: true,
+  subtractH: 166,
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
-  height:500,
+  // height:500,
   formProps:{
     height:500,
  },
@@ -85,14 +86,17 @@ export const inExaminationAndApproval = {
   resid: 605803642531,
   hasSearch: true,
   hasBeBtns: true,
+  subtractH: 166,
   hasAdd: false,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
   hasRowView: true,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   hasRowDelete: false,
   hasBeBtns: true,
-  height:500,
+  // height:500,
   formProps:{
     height:600,
  },
@@ -115,7 +119,7 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        actionBarWidth: 200
       }
     
     },
@@ -135,6 +139,7 @@ export const inExaminationAndApproval = {
 export const approved = {
   resid: 605803707282,
   hasSearch: true,
+  subtractH: 166,
   hasAdd: false,
   hasBeBtns: true,
   hasModify: false,
@@ -142,6 +147,9 @@ export const approved = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 200,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormType: 'drawer',
   height:500,
   formProps:{
@@ -164,7 +172,7 @@ export const approved = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        
       },
     },
     {
@@ -200,7 +208,8 @@ export const approved = {
 // 已拒绝
 export const refused = {
   resid: 605803740920,
-  height:500,
+  // height:500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -213,7 +222,9 @@ export const refused = {
   hasRowView: true,
   hasRowDelete: false,
   recordFormType: 'drawer',
-  actionBarWidth: 100,
+  actionBarWidth: 200,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -243,7 +254,8 @@ export const history = {
   resid: 605803785490,
   hasAdd: false,
   hasSearch: true,
-  height:500,
+  // height:500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -253,8 +265,10 @@ export const history = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  // actionBarWidth: 100,
+  actionBarWidth: 200,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600

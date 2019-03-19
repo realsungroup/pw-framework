@@ -149,7 +149,7 @@ class FormData extends React.Component {
       <div className="form-data">
         {!!data.length && (
           <div
-            style={{ width: width.formWidth }}
+            style={{ width: hasSubTables ? width.formWidth : '100%' }}
             className="form-data__form-wrap"
           >
             <PwForm

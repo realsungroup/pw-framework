@@ -12,8 +12,9 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 
 # v21.2.0（2019/3/18）
 
-- 修复在 `TableData` 组件中记录表单在只有右侧 tabs 时，tabs 宽度为 50% 的 bug
 - `TableData` 组件添加 `recordFormFormWidth` 和 `recordFormTabsWidth` 配置
+- 修复在 `TableData` 组件中记录表单在只有右侧 tabs 时，tabs 宽度为 50% 的 bug
+- 修复 `TableData` 在添加记录时，表单宽度为 50% 的 bug
 
 # v21.1.1（2019/3/16）
 

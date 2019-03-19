@@ -63,20 +63,20 @@ export default class ViProvider extends React.Component {
           onChange={this.handleTabsChange}
         >
           <TabPane tab="申请中" key="申请中">
-            <TableData {...inApplication}/>
+          <div style={{height:'calc(100vh-220px)'}}><TableData {...inApplication}/></div>
           </TabPane>
 
           <TabPane tab="审批中" key="审批中">
-            <TableData {...inExaminationAndApproval}/>
+          <div style={{height:'calc(100vh-220px)'}}><TableData {...inExaminationAndApproval}/></div>
           </TabPane>
           <TabPane tab="已审批" key="已审批">
-            <TableData {...approved}/>
+          <div style={{height:'calc(100vh-220px)'}}><TableData {...approved}/></div>
           </TabPane>
           <TabPane tab="已拒绝" key="已拒绝">
-            <TableData {...refused}/>
+          <div style={{height:'calc(100vh-220px)'}}><TableData {...refused}/></div>
           </TabPane>
           <TabPane tab="历史记录" key="历史记录">
-            <TableData {...history}/>
+          <div style={{height:'calc(100vh-220px)'}}><TableData {...history}/></div>
           </TabPane>
         </Tabs>
         {!!abnormalNum && (
