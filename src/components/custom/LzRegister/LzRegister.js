@@ -78,30 +78,37 @@ export default class LzRegister extends React.Component {
     const { activeKey, abnormalNum } = this.state;
     return (
       <div className="lz-register">
+
         <Tabs
           activeKey={activeKey}
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
           <TabPane tab="待访问" key="待访问">
+          <div style={{height:'calc(100vh - 220px)'}}>
             <TableData
               {...inApplication}
               // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
               // wrappedComponentRef={form => (this.inApplicationRef = form)}
               ref={this.inApplicationRef}
             />
+          </div>       
           </TabPane>
           <TabPane tab="访问中" key="访问中" forceRender={true}>
-            <TableData
+          <div style={{height:'calc(100vh - 220px)'}}>
+          <TableData
               {...applyForAbnormal}
               getTableData={this.getTableData}
               // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
               // wrappedComponentRef={form => (this.abnormalRef = form)}
               ref={this.abnormalRef}
             />
+          </div>            
           </TabPane>
           <TabPane tab="已访问" key="已访问">
-            <TableData {...refused} />
+            <div style={{height:'calc(100vh - 220px)'}}>
+              <TableData {...refused} />
+            </div> 
           </TabPane>
         </Tabs>
         {!!abnormalNum && (

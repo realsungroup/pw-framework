@@ -57,3 +57,9 @@ export const LzApproval = Loadable({
       return minLoading;
     }
   });
+  export const LzProApp = Loadable({
+    loader: () => import('./LzProApp'),
+    loading() {
+      return minLoading;
+    }
+  });

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { message, Tabs } from 'antd';
-import './LzRecord.less';
+import './LzProApp.less';
 import classNames from 'classnames';
 import {TableData} from '../../common/loadableCommon'
 import EventEmitter from 'wolfy87-eventemitter';
@@ -17,16 +17,16 @@ import {
 const TabPane = Tabs.TabPane;
 
 /**
- * 前台记录
+ * 审批
  */
-export default class LzRecord extends React.Component {
+export default class LzProApp extends React.Component {
   static propTypes = {};
   static defaultProps = {};
   constructor(props) {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '待处理'
+      activeKey: '待审批'
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -49,10 +49,10 @@ export default class LzRecord extends React.Component {
       normalRecords,
       abnormalRecords
     ) {
-      let activeKey = '已处理';
+      let activeKey = '已审批';
 
       if (!abnormalRecords.length) {
-        activeKey = '待处理';
+        activeKey = '待审批';
       }
       if (normalRecords.length) {
         that.inApplicationRef.current.refreshTableData(true);
@@ -76,14 +76,14 @@ export default class LzRecord extends React.Component {
   render() {
     const { activeKey, abnormalNum } = this.state;
     return (
-      <div className="lz-record">
+      <div className="lz-proapp">
         <Tabs
           activeKey={activeKey}
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="待处理" key="待处理">
-          <div style={{height:'calc(100vh - 220px)'}}>
+          <TabPane className='test1' tab="待审批" key="待审批">
+          <div className='test2' style={{height:'calc(100vh - 220px)'}}>
             <TableData
               {...inApplication}
               // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
@@ -92,8 +92,7 @@ export default class LzRecord extends React.Component {
             />
           </div>
           </TabPane>
-          <div style={{height:'calc(100vh - 220px)'}}></div>
-          <TabPane tab="已处理" key="已处理" forceRender={true}>
+          <TabPane tab="已审批" key="已审批" forceRender={true}>
           <div style={{height:'calc(100vh - 220px)'}}>
             <TableData
               {...applyForAbnormal}
@@ -102,7 +101,17 @@ export default class LzRecord extends React.Component {
               // wrappedComponentRef={form => (this.abnormalRef = form)}
               ref={this.abnormalRef}
             />
-          </div>  
+          </div>
+          </TabPane>
+          <TabPane tab="已拒绝" key="已拒绝">
+          <div style={{height:'calc(100vh - 220px)'}}>
+            <TableData {...refused} />
+          </div>
+          </TabPane>
+          <TabPane tab="历史记录" key="历史记录">
+          <div style={{height:'calc(100vh - 220px)'}}>
+            <TableData {...history} />
+          </div>
           </TabPane>
         </Tabs>
         {!!abnormalNum && (

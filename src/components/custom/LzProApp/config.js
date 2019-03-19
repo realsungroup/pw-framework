@@ -9,7 +9,7 @@ import {
 
 // 待审批
 export const inApplication = {
-  resid: 605961664222,
+  resid: 606243045601,
   formProps: {
     height: 550,
   },
@@ -29,7 +29,7 @@ export const inApplication = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '访客信息',
+    subTableName: '供应商信息',
     subResid: 606302353251,
     tableProps: {
       hasAdd: false,
@@ -44,7 +44,7 @@ export const inApplication = {
 };
 // 已审批
 export const applyForAbnormal = {
-  resid: 605961680112,
+  resid: 606243075484,
   formProps: {
     height: 550,
   },
@@ -64,7 +64,7 @@ export const applyForAbnormal = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '访客信息',
+    subTableName: '供应商信息',
     subResid: 606302353251,
     tableProps: {
       hasAdd: false,
@@ -82,7 +82,7 @@ export const applyForAbnormal = {
 
 // 已拒绝
 export const refused = {
-  resid: 605961692597,
+  resid: 606243102338,
   formProps:{
     height:550,
  },
@@ -102,7 +102,7 @@ export const refused = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '访客信息',
+    subTableName: '供应商信息',
     subResid: 606302353251,
     tableProps: {
       hasAdd: false,
@@ -118,7 +118,7 @@ export const refused = {
 
 // 历史记录
 export const history = {
-  resid: 605961710013,
+  resid: 606243117327,
   formProps:{
     height:550,
   },
@@ -138,7 +138,7 @@ export const history = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '访客信息',
+    subTableName: '供应商信息',
     subResid: 606302353251,
     tableProps: {
       hasAdd: false,
