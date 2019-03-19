@@ -48,7 +48,10 @@ export const inApplication = {
   hasDelete: false,
   hasRowView: false,
   hasBeBtns: true,
-  height:500,
+  subtractH: 166,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
+  // height:500,
   formProps:{
     height:500,
  },
@@ -70,6 +73,8 @@ export const inApplication = {
         hasRowView: false,
         hasRowDelete: false,
         height: 400,
+        // recordFormFormWidth: '35%',
+        // recordFormTabsWidth: '65%',
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
@@ -81,14 +86,17 @@ export const inExaminationAndApproval = {
   resid: 605803642531,
   hasSearch: true,
   hasBeBtns: true,
+  subtractH: 166,
   hasAdd: false,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
   hasRowView: true,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   hasRowDelete: false,
   hasBeBtns: true,
-  height:500,
+  // height:500,
   formProps:{
     height:600,
  },
@@ -111,7 +119,18 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        actionBarWidth: 200
+      }
+    
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
   ]
@@ -120,6 +139,7 @@ export const inExaminationAndApproval = {
 export const approved = {
   resid: 605803707282,
   hasSearch: true,
+  subtractH: 166,
   hasAdd: false,
   hasBeBtns: true,
   hasModify: false,
@@ -127,6 +147,9 @@ export const approved = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
+  actionBarWidth: 200,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormType: 'drawer',
   height:500,
   formProps:{
@@ -149,16 +172,44 @@ export const approved = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        
+      },
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
-  ]
+  ],
+  // formTabsSubTableProps: [
+  //   {
+  //     tabName: '审批记录', // 标题
+  //     componentInfo: {
+  //       name: 'TableData', // 组件名称
+  //       props: {
+  //         // 组件接受的 props
+  //         subresid: 605989494375, // 必传
+  //         // 其他参数为 LzTable 所能接受的参数
+  //         btnsVisible: {
+  //           check: true
+  //         },
+  //         tableSize: 'small'
+  //       }
+  //     }
+  //   }
+  // ],
 };
 
 // 已拒绝
 export const refused = {
   resid: 605803740920,
-  height:500,
+  // height:500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -171,6 +222,9 @@ export const refused = {
   hasRowView: true,
   hasRowDelete: false,
   recordFormType: 'drawer',
+  actionBarWidth: 200,
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -200,7 +254,8 @@ export const history = {
   resid: 605803785490,
   hasAdd: false,
   hasSearch: true,
-  height:500,
+  // height:500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -210,8 +265,10 @@ export const history = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  actionBarWidth: 100,
+  actionBarWidth: 200,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -231,6 +288,16 @@ export const history = {
         height: 500,
         defaultColumnWidth: 100,
         
+      }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
   ]

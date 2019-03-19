@@ -48,7 +48,8 @@ const customColumnWidth = {
 // 申请中
 export const inApplication = {
   resid: 605891650522,
-  height:800,
+  subtractH: 166,
+  // height:800,
   formProps:{
     height:500,
  },
@@ -60,6 +61,8 @@ export const inApplication = {
   hasRowView: false,
   hasBeBtns: true,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -78,7 +81,7 @@ export const inApplication = {
         hasRowDelete: false,
         // height:300,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        actionBarWidth: 200
       }
     }
   ]
@@ -86,7 +89,8 @@ export const inApplication = {
 // 审批中
 export const inExaminationAndApproval = {
   resid: 605891699222,
-  height: 500,
+  // height: 500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -100,6 +104,8 @@ export const inExaminationAndApproval = {
   hasRowDelete: false,
   hasBeBtns: true,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -118,7 +124,17 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height:500,
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        actionBarWidth: 200
+      }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
   ]
@@ -126,6 +142,7 @@ export const inExaminationAndApproval = {
 // 已审批
 export const approved = {
   resid: 605891735751,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -137,8 +154,10 @@ export const approved = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  actionBarWidth: 100,
+  actionBarWidth: 200,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -159,6 +178,16 @@ export const approved = {
         defaultColumnWidth: 100,
         
       }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
+      }
     }
   ]
 };
@@ -166,7 +195,8 @@ export const approved = {
 // 已拒绝
 export const refused = {
   resid: 605891789909,
-  height: 500,
+  // height: 500,
+  subtractH: 166,
   formProps:{
     height:500,
  },
@@ -178,8 +208,10 @@ export const refused = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  actionBarWidth: 100,
+  actionBarWidth: 200,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -199,6 +231,16 @@ export const refused = {
         height: 500,
         defaultColumnWidth: 100,
       }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
+      }
     }
   ]
 };
@@ -206,7 +248,9 @@ export const refused = {
 // 历史记录
 export const history = {
   resid: 605891824806,
-  height: 500,
+  // height: 500,
+  subtractH: 166,
+  actionBarWidth: 200,
   formProps:{
     height:500,
  },
@@ -218,8 +262,9 @@ export const history = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  actionBarWidth: 100,
   recordFormType: 'drawer',
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -238,6 +283,16 @@ export const history = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
+      }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowView: true,
       }
     }
   ]

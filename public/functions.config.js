@@ -1478,7 +1478,7 @@ window[605803889644] = {
     ]
   }
 };
-// 长期供应商登记
+// 供应商申请
 window[605891224706] = {
   title: '供应商维护',
   name: 'ViProvider',
@@ -1637,6 +1637,7 @@ window[606071640940] = {
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     resid: 606071814271,
+    recordFormFormWidth: '90%',
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1653,3 +1654,23 @@ window[606249673489] = {
   title: '供应商审批', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
 };
+//606242031630供应商保安登记
+window[606242031630] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '供应商保安登记', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  recordFormFormWidth: '100%',
+  props: {
+    resid: 606244496074,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: true
+  } // 组件所接收的 props
+};
+
+
+
