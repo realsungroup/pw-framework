@@ -1676,7 +1676,8 @@ window[606071626403] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: false
+    hasRowDelete: false,
+    recordFormFormWidth: '90%',
   } // 组件所接收的 props
 };
 //前台访客登记
@@ -1701,7 +1702,6 @@ window[606242031630] = {
   name: 'TableData', // 组件名称，这里为定制组件名称
   title: '供应商保安登记', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
-  recordFormFormWidth: '100%',
   props: {
     resid: 606244496074,
     hasAdd: true,
@@ -1710,7 +1710,8 @@ window[606242031630] = {
     hasDelete: false,
     hasRowModify: true,
     hasRowView: false,
-    hasRowDelete: true
+    hasRowDelete: true,
+    recordFormFormWidth: '90%',
   } // 组件所接收的 props
 };
 
