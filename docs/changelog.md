@@ -13,6 +13,7 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 # v21.2.1（2019/3/20）
 
 - 修复 `TableData` 组件中后端修改按钮记录表单不显示字段值的 bug
+- 修复 `TableData` 组件中记录表单的 title 显示错误的 bug
 
 # v21.2.0（2019/3/18）
 
