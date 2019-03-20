@@ -71,7 +71,7 @@ class TableData extends React.Component {
       beBtnsMultiple: [], // 后端操作多条记录的按钮
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
-      recordFormShowMode: undefined, // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
+      recordFormShowMode: '', // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
       rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
       scrollXY: { x: 1000, y: 1000 },
@@ -516,7 +516,25 @@ class TableData extends React.Component {
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
-        onConfirm={this.beBtnConfirm}
+        onConfirm={(
+          backendBtnType,
+          type,
+          records,
+          controlData,
+          defaultRecord,
+          recordFormData
+        ) => {
+          this.setState({ recordFormShowMode: '' }, () => {
+            this.beBtnConfirm(
+              backendBtnType,
+              type,
+              records,
+              controlData,
+              defaultRecord,
+              recordFormData
+            );
+          });
+        }}
         records={records}
         size={size}
       />
@@ -541,16 +559,19 @@ class TableData extends React.Component {
           defaultRecord,
           recordFormData
         ) => {
-          this.setState({ selectedRecord: record }, () => {
-            this.beBtnConfirm(
-              backendBtnType,
-              type,
-              records,
-              controlData,
-              defaultRecord,
-              recordFormData
-            );
-          });
+          this.setState(
+            { selectedRecord: record, recordFormShowMode: '' },
+            () => {
+              this.beBtnConfirm(
+                backendBtnType,
+                type,
+                records,
+                controlData,
+                defaultRecord,
+                recordFormData
+              );
+            }
+          );
         }}
         records={[record]}
         size={size}
@@ -597,6 +618,8 @@ class TableData extends React.Component {
           break;
         case 'view':
           title = viewText;
+        default:
+          title = '';
       }
     } else {
       switch (recordFormShowMode) {
@@ -608,6 +631,8 @@ class TableData extends React.Component {
           break;
         case 'view':
           title = enViewText;
+        default:
+          title = '';
       }
     }
     return title;
