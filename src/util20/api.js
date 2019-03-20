@@ -202,4 +202,13 @@ http.createApi('getUserDesktop', {
   url: '/api/Resource/RetrieveUserDesktop'
 });
 
+/**
+ * 获取当前用户综合管理树
+ * 参数：-
+ */
+http.createApi('getUserFunctionTree', {
+  method: 'get',
+  url: '/api/Resource/GetUserFunctionTree'
+});
+
 export default http;

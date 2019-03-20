@@ -116,3 +116,45 @@ export const isDateString = s => {
 export const percentString2decimal = string => {
   return parseInt(string, 10) / 100;
 };
+
+/**
+ * 表格数据转换为树数据
+ * @param tableData 表格数据
+ * @param idField id 字段
+ * @param pidField pid 字段
+ * @param parentNode 父节点数据
+ */
+export const table2Tree = (tableData, idField, pidField, parentNode) => {
+  const ret = [];
+  if (!tableData) {
+    return ret;
+  }
+
+  // parentNode 存在
+  if (parentNode) {
+    tableData.forEach(tableItem => {
+      if (tableItem[pidField] === parentNode[idField]) {
+        parentNode.children && parentNode.children.push({ ...tableItem });
+      }
+    });
+
+    // parentNode 不存在
+  } else {
+    tableData.forEach(tableItem => {
+      const index = ret.findIndex(
+        item => item[idField] === tableItem[pidField]
+      );
+
+      if (index === -1) {
+        ret.push({ ...tableItem, children: [] });
+      } else {
+        ret[index].children.push(tableItem);
+        ret[index].children[
+          ret[index].children.length - 1
+        ].children = table2Tree(tableData, idField, pidField, tableItem);
+      }
+    });
+  }
+
+  return ret;
+};

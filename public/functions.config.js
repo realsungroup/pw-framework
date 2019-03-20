@@ -1678,7 +1678,13 @@ window[606071626403] = {
     hasRowView: true,
     hasRowDelete: false,
     recordFormFormWidth: '90%'
-  } // 组件所接收的 props
+  },
+  subTableArrProps:[
+    {
+      subTableName: '物品信息',
+      subResid: 606413909447,
+    }
+  ] // 组件所接收的 props
 };
 //前台访客登记
 window[606071640940] = {

@@ -533,7 +533,25 @@ class TableData extends React.Component {
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
-        onConfirm={this.beBtnConfirm}
+        onConfirm={(
+          backendBtnType,
+          type,
+          records,
+          controlData,
+          defaultRecord,
+          recordFormData
+        ) => {
+          this.setState({ selectedRecord: record }, () => {
+            this.beBtnConfirm(
+              backendBtnType,
+              type,
+              records,
+              controlData,
+              defaultRecord,
+              recordFormData
+            );
+          });
+        }}
         records={[record]}
         size={size}
       />
@@ -637,7 +655,12 @@ class TableData extends React.Component {
 
     const newOperation = operation || recordFormShowMode;
 
-    const newRecord = record || selectedRecord;
+    let newRecord;
+    if (operation === 'add') {
+      newRecord = record;
+    } else {
+      newRecord = selectedRecord;
+    }
 
     let newData = data || this._dealedRecordFormData;
     const isTransformValue = ['add', 'modify'].indexOf(newOperation) !== -1;
