@@ -1626,8 +1626,14 @@ window[606071626403] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    recordFormFormWidth: '90%',
-  } // 组件所接收的 props
+    recordFormFormWidth: '90%'
+  },
+  subTableArrProps:[
+    {
+      subTableName: '物品信息',
+      subResid: 606413909447,
+    }
+  ] // 组件所接收的 props
 };
 //前台访客登记
 window[606071640940] = {
@@ -1660,16 +1666,13 @@ window[606242031630] = {
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     resid: 606244496074,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
     hasDelete: false,
     hasRowModify: true,
     hasRowView: false,
     hasRowDelete: true,
-    recordFormFormWidth: '90%',
+    recordFormFormWidth: '90%'
   } // 组件所接收的 props
 };
-
-
-

@@ -10,6 +10,10 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 先行版本号及版本编译元数据可以加到“主版本号.次版本号.修订号”的后面，作为延伸。
 ```
 
+# v21.2.1（2019/3/20）
+
+- 修复 `TableData` 组件中后端修改按钮记录表单不显示字段值的 bug
+
 # v21.2.0（2019/3/18）
 
 - `TableData` 组件添加 `recordFormFormWidth` 和 `recordFormTabsWidth` 配置
