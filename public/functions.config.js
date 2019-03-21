@@ -1667,24 +1667,29 @@ window[603827488844] = {
 window[606071626403] = {
   name: 'TableData', // 组件名称，这里为定制组件名称
   title: '保安访客登记', // 功能模块名称
-  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  hasBackBtn: true,// 是否有返回上一页的按钮，默认为 true
   props: {
     resid: 606071751596,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
+    hasBackBtn: true,
     hasDelete: false,
-    hasRowModify: false,
+    hasRowModify: true,
     hasRowView: true,
     hasRowDelete: false,
-    recordFormFormWidth: '90%'
-  },
-  subTableArrProps:[
-    {
-      subTableName: '物品信息',
-      subResid: 606413909447,
-    }
-  ] // 组件所接收的 props
+    recordFormFormWidth: '40%',
+    subTableArrProps: [
+      {
+        subTableName: '物品信息',
+        subResid: 606413909447,
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false
+      }
+    ]
+  }
+  // 组件所接收的 props
 };
 //前台访客登记
 window[606071640940] = {
