@@ -49,7 +49,9 @@ export const defaultProps = {
   addText: '添加',
   enAddText: 'Add',
   modifyText: '修改',
-  enModifyText: 'Modify'
+  enModifyText: 'Modify',
+  recordFormFormWidth: '50%',
+  recordFormTabsWidth: '50%'
 };
 
 export const propTypes = {
@@ -219,6 +221,17 @@ export const propTypes = {
    * 默认：-
    */
   customRowBtns: PropTypes.array,
+  // 如：
+  // [
+  //   (record, btnSize) => {
+  //     return <Button>按钮1</Button>
+  //   },
+  //   (record, btnSize) => {
+  //     return <Button>按钮2</Button>
+  //   }
+  // ]
+  // record 表示当前记录
+  // btnSize 表示按钮尺寸
 
   /**
    * 表格高度 - scroll.y 的值
@@ -410,6 +423,25 @@ export const propTypes = {
   // ===========================================================
   // 记录表单相关 props ==========================================
   // ===========================================================
+
+  /**
+   * 记录表单中左侧表单的宽度
+   * 默认：'50%'
+   */
+  recordFormFormWidth: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+
+  /**
+   * 记录表单中右侧 tabs 的宽度
+   * 默认：'50%'
+   */
+  recordFormTabsWidth: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+
   /**
    * 记录表单所在容器的类型
    * 可选: 'modal' 模态窗 | 'drawer' 抽屉

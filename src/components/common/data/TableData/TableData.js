@@ -71,7 +71,7 @@ class TableData extends React.Component {
       beBtnsMultiple: [], // 后端操作多条记录的按钮
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
-      recordFormShowMode: undefined, // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
+      recordFormShowMode: '', // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
       rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
       scrollXY: { x: 1000, y: 1000 },
@@ -512,10 +512,29 @@ class TableData extends React.Component {
 
     return arr.map(btnInfo => (
       <LzBackendBtn
+        backendBtnType="multiple"
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
-        onConfirm={this.beBtnConfirm}
+        onConfirm={(
+          backendBtnType,
+          type,
+          records,
+          controlData,
+          defaultRecord,
+          recordFormData
+        ) => {
+          this.setState({ recordFormShowMode: '' }, () => {
+            this.beBtnConfirm(
+              backendBtnType,
+              type,
+              records,
+              controlData,
+              defaultRecord,
+              recordFormData
+            );
+          });
+        }}
         records={records}
         size={size}
       />
@@ -528,10 +547,32 @@ class TableData extends React.Component {
     const id = this._id;
     return beBtnsSingle.map(btnInfo => (
       <LzBackendBtn
+        backendBtnType="single"
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
-        onConfirm={this.beBtnConfirm}
+        onConfirm={(
+          backendBtnType,
+          type,
+          records,
+          controlData,
+          defaultRecord,
+          recordFormData
+        ) => {
+          this.setState(
+            { selectedRecord: record, recordFormShowMode: '' },
+            () => {
+              this.beBtnConfirm(
+                backendBtnType,
+                type,
+                records,
+                controlData,
+                defaultRecord,
+                recordFormData
+              );
+            }
+          );
+        }}
         records={[record]}
         size={size}
       />
@@ -577,6 +618,8 @@ class TableData extends React.Component {
           break;
         case 'view':
           title = viewText;
+        default:
+          title = '';
       }
     } else {
       switch (recordFormShowMode) {
@@ -588,6 +631,8 @@ class TableData extends React.Component {
           break;
         case 'view':
           title = enViewText;
+        default:
+          title = '';
       }
     }
     return title;
@@ -595,13 +640,20 @@ class TableData extends React.Component {
 
   /**
    * 打开记录表单，进行 添加/修改/查看 操作
+   * @param {string} backendBtnType 后端按钮类型：'single' 行后端按钮；'multiple' 表格头部的后端按钮
    * @param {string} operation 操作：'add' 添加 | 'modify' 修改 | 'view' 查看
    * @param {object} record 记录
    * @param {object} data 控件数据
    * 当传参数时，表示点击 “后端按钮” 打开记录表单
    * 不传参数时，表示点击 “前端定义的按钮” 打开记录表单
    */
-  openRecordForm = (operation, record, data, recordFormData) => {
+  openRecordForm = (
+    backendBtnType,
+    operation,
+    record,
+    data,
+    recordFormData
+  ) => {
     const {
       dataMode,
       resid,
@@ -617,14 +669,23 @@ class TableData extends React.Component {
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
-    const { intl } = this.props;
-    if (!this._recordFormData || !this._dealedRecordFormData) {
-      return message.info('正在请求窗体数据，请稍等...');
+    const { intl, recordFormFormWidth, recordFormTabsWidth } = this.props;
+
+    // 点击前端按钮时
+    if (!backendBtnType) {
+      if (!this._recordFormData || !this._dealedRecordFormData) {
+        return message.info('正在请求窗体数据，请稍等...');
+      }
     }
 
     const newOperation = operation || recordFormShowMode;
 
-    const newRecord = record || selectedRecord;
+    let newRecord;
+    if (operation === 'add') {
+      newRecord = record;
+    } else {
+      newRecord = selectedRecord;
+    }
 
     let newData = data || this._dealedRecordFormData;
     const isTransformValue = ['add', 'modify'].indexOf(newOperation) !== -1;
@@ -642,7 +703,10 @@ class TableData extends React.Component {
 
     const title = this.getTitle();
 
-    console.log({ title });
+    let newHostRecid = hostrecid;
+    if (backendBtnType === 'single') {
+      newHostRecid = record.REC_ID;
+    }
 
     openRecordForm({
       type: recordFormType,
@@ -651,12 +715,14 @@ class TableData extends React.Component {
       data: newData,
       operation: newOperation,
       record: newRecord,
-      info: { dataMode, resid, subresid, hostrecid },
+      info: { dataMode, resid, subresid, hostrecid: newHostRecid },
       beforeSaveFields,
       AdvDicTableProps,
       recordFormContainerProps,
       subTableArr,
       subTableArrProps,
+      recordFormFormWidth,
+      recordFormTabsWidth,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });
@@ -856,18 +922,43 @@ class TableData extends React.Component {
     this.handleRefresh(true);
   };
 
-  beBtnConfirm = (type, records, formData, defaultRecord) => {
+  beBtnConfirm = (
+    backendBtnType,
+    type,
+    records,
+    controlData,
+    defaultRecord,
+    recordFormData
+  ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
     } else if (type === 6) {
-      this.openRecordForm('modify', defaultRecord, formData);
+      this.openRecordForm(
+        backendBtnType,
+        'modify',
+        defaultRecord,
+        controlData,
+        recordFormData
+      );
       // 查看记录
     } else if (type === 7) {
-      this.openRecordForm('view', defaultRecord, formData);
+      this.openRecordForm(
+        backendBtnType,
+        'view',
+        records[0],
+        controlData,
+        recordFormData
+      );
       // 添加记录
     } else if (type === 8) {
-      this.openRecordForm('add', defaultRecord, formData);
+      this.openRecordForm(
+        backendBtnType,
+        'add',
+        defaultRecord,
+        controlData,
+        recordFormData
+      );
     }
   };
 
@@ -1139,6 +1230,7 @@ class TableData extends React.Component {
       hasDownload,
       hasRefresh,
       hasAdvSearch,
+      hasSearch,
       hasZoomInOut,
       hasImport,
       bordered,
@@ -1189,6 +1281,7 @@ class TableData extends React.Component {
         hasRefresh={hasRefresh}
         onAdvSearch={this.handleAdvSearch}
         hasAdvSearch={hasAdvSearch}
+        hasSearch={hasSearch}
         hasZoomInOut={hasZoomInOut}
         onZoomIn={this.handleZoomIn}
         onZoomOut={this.handleZoomOut}
