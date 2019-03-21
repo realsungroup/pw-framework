@@ -1,10 +1,12 @@
 import React from 'react';
-import classNames from 'classnames';
 import './BMContent.less';
 import { propTypes, defaultProps } from './propTypes';
-import { message, Spin } from 'antd';
+import { message, Spin, Tabs } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
-import { table2Tree } from 'Util20/util';
+import { TableData } from 'Common/loadableCommon';
+import classNames from 'classnames';
+
+const TabPane = Tabs.TabPane;
 
 /**
  * 业务管理内容
@@ -15,7 +17,10 @@ class BMContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      hasSubTable: false, // 是否有子表
+      subTables: [], // 子表
+      selectedRecord: null
     };
   }
 
@@ -23,12 +28,33 @@ class BMContent extends React.Component {
     this.getData();
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+  };
 
   getData = async () => {
-    this.setState({ loading: true });
-
-    this.setState({ loading: false });
+    const { resid } = this.props;
+    this.p1 = makeCancelable(
+      http().getResourceRelation({
+        resid
+      })
+    );
+    let res;
+    try {
+      res = await this.p1.promise;
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    let hasSubTable = false;
+    if (res.data.length) {
+      hasSubTable = true;
+      res.data.forEach(item => {
+        item.resid = item.resid;
+        item.resName = item.ResName;
+      });
+    }
+    this.setState({ hasSubTable, subTables: res.data });
   };
 
   handleSelectedMenuItem = menuItem => {
@@ -36,10 +62,33 @@ class BMContent extends React.Component {
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, subTables, selectedRecord } = this.state;
+    const { resid } = this.props;
     return (
       <Spin spinning={loading}>
-        <div className="bm-content" />
+        <div className="bm-content">
+          <div className="bm-content__main-table">
+            <TableData resid={resid} dataMode="main" subtractH={160} />
+          </div>
+          {!!subTables.length && (
+            <div className="bm-content__sub-table">
+              <Tabs>
+                {subTables.map(subTable => (
+                  <TabPane tab={subTable.resName} key={subTable.resid}>
+                    {selectedRecord && (
+                      <TableData
+                        resid={resid}
+                        subresid={subTable.resid}
+                        dataMode="sub"
+                        hostrecid={selectedRecord.REC_ID}
+                      />
+                    )}
+                  </TabPane>
+                ))}
+              </Tabs>
+            </div>
+          )}
+        </div>
       </Spin>
     );
   }
