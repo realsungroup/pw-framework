@@ -211,4 +211,13 @@ http.createApi('getUserFunctionTree', {
   url: '/api/Resource/GetUserFunctionTree'
 });
 
+/**
+ * 根据 resid 获取资源的子表 id
+ * 参数：resid
+ */
+http.createApi('getResourceRelation', {
+  method: 'get',
+  url: '/api/Resource/GetResourceRelation'
+});
+
 export default http;
