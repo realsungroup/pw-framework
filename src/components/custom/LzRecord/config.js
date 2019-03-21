@@ -58,6 +58,7 @@ export const inApplication = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
+  actionBarWidth: 150,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -67,7 +68,7 @@ export const inApplication = {
     subTableName: '前台登记记录',
     subResid: 606058778224,
     tableProps: {
-      hasAdd: true,
+      hasAdd: false,
       hasModify: false,
       hasDelete: false,
       hasRowModify: true,

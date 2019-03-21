@@ -234,7 +234,7 @@ export const refused = {
       subTableName: '访客信息',
       subResid: 606066688508,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         // hasRowEdit: true,
