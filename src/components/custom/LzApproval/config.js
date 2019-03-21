@@ -30,7 +30,7 @@ export const inApplication = {
   },
   subTableArrProps: [{
     subTableName: '访客信息',
-    subResid: 606302353251,
+    subResid: 606066688508,
     tableProps: {
       hasAdd: false,
       hasModify: false,
@@ -65,7 +65,7 @@ export const applyForAbnormal = {
   },
   subTableArrProps: [{
     subTableName: '访客信息',
-    subResid: 606302353251,
+    subResid: 606066688508,
     tableProps: {
       hasAdd: false,
       hasModify: false,
@@ -103,7 +103,7 @@ export const refused = {
   },
   subTableArrProps: [{
     subTableName: '访客信息',
-    subResid: 606302353251,
+    subResid: 606066688508,
     tableProps: {
       hasAdd: false,
       hasModify: false,
@@ -139,7 +139,7 @@ export const history = {
   },
   subTableArrProps: [{
     subTableName: '访客信息',
-    subResid: 606302353251,
+    subResid: 606066688508,
     tableProps: {
       hasAdd: false,
       hasModify: false,

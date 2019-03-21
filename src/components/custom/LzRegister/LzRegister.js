@@ -84,8 +84,8 @@ export default class LzRegister extends React.Component {
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="待访问" key="待访问">
-          <div style={{height:'calc(100vh - 220px)'}}>
+          <TabPane tab="待访问" key="待访问" className='test1'>
+          <div style={{height:'calc(100vh - 220px)'}} className='test2'>
             <TableData
               {...inApplication}
               // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
