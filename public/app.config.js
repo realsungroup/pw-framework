@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ivf.dybhealth.com:8099/', // 请求的基地址
+    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -58,7 +58,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://wux-hr03:9091/', // 请求的基地址
+    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置

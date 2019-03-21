@@ -1,17 +1,19 @@
-// // 录入
-// window[590765309983] = {
-//   name: 'TypeIn',
-//   title: '录入',
-//   enTitle: 'Type in',
+// 录入
+window[590765309983] = {
+  name: 'TableData',
+  title: '录入',
+  enTitle: 'Type in',
 
-//   props: {
-//     displayMod: 'classify',
-//     resid: 590510705335,
-//     operation: 'add',
-//     record: {},
-//     formName: 'default'
-//   }
-// };
+  props: {
+    resid: 605617716920,
+    hasBeBtns: true,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowView: true,
+    // operation: 'add',
+  }
+};
 
 // // 违纪信息
 // window[592305842055] = {
@@ -169,186 +171,186 @@
 // };
 
 // 违纪管理
-window[590765309983] = {
-  title: '违纪管理',
+// window[590765309983] = {
+//   title: '违纪管理',
 
-  name: 'LzMenuContainer',
-  props: {
-    noDataTip: '暂无数据，请选择员工',
-    resid: 590671418888,
-    searchFields: [
-      {
-        text: '工号',
-        innerFieldName: 'C3_227192472953'
-      }
-    ],
-    userInfoFields: [
-      {
-        label: '姓名',
-        innerFieldName: 'C3_227192484125'
-      },
-      {
-        label: '工号',
-        innerFieldName: 'C3_227192472953'
-      },
-      {
-        label: '职务',
-        innerFieldName: 'C3_417990929305'
-      },
-      {
-        label: '部门',
-        innerFieldName: 'C3_227212499515'
-      }
-    ],
-    defaultComponetProps: {
-      resid: 590671418888,
-      subresid: 590863325025,
-      advSearchConfig: {
-        // 高级搜索配置
-        defaultVisible: false,
-        containerName: 'drawer',
-        drawerWidth: 500,
-        labelWidth: '24%',
-        rowWidth: '100%',
-        dateRanges: [
-          // date
-          {
-            title: '违纪日期',
-            visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-            innerFieldName: 'C3_590511645885' // 内部字段
-          }
-        ],
-        tag: [
-          // tag
-          {
-            title: '状态',
-            op: 'or', // 操作符：'or' | 'and'
-            tags: [
-              {
-                label: '待提交',
-                value: '待提交',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013' // 内部字段名
-              },
-              {
-                label: '已提交',
-                value: '已提交',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013'
-              },
-              {
-                label: '审批中',
-                value: '审批中',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013'
-              },
-              {
-                label: '已通过',
-                value: '已通过',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013'
-              },
-              {
-                label: '已拒绝',
-                value: '已拒绝',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013'
-              },
-              {
-                label: '已撤销',
-                value: '已撤销',
-                isSelected: false,
-                innerFieldName: 'C3_590514418013'
-              }
-            ]
-          }
-        ]
-      },
-      dataMode: 'sub',
-      viewMode: 'forms',
-      tableTitle: '违纪记录',
-      advDicTableProps: {
-        lzTableStyle: {
-          width: 1100
-        },
-        customColumnWidth: {
-          依据: 600
-        }
-      },
-      addBtn: true,
-      isSearch: false,
-      colCount: 2,
-      formsName: 'default4',
-      isBackEndBtnsVisible: true,
-      cFFillFormInnerFieldNames: ['C3_590512169985'],
-      associatedFields: [
-        ['C3_590516276367', 'C3_592335819161'],
-        ['C3_590515131157', 'C3_592336006704']
-      ],
-      backendBtnsHide: [
-        {
-          btnName: '提交',
-          innerFieldNames: ['C3_591373760332'],
-          values: ['Y']
-        },
-        {
-          btnName: '撤销',
-          innerFieldNames: ['C3_590512213622', 'C3_591373760332'],
-          values: ['Y', null]
-        },
-        {
-          btnName: '修改',
-          innerFieldNames: ['C3_591373760332'],
-          values: ['Y']
-        },
-        {
-          btnName: '删除',
-          innerFieldNames: ['C3_591373611399'],
-          values: ['Y']
-        }
-      ],
-      formHeaderRecords: [
-        {
-          innerFieldName: 'C3_590512169985',
-          style: {
-            fontWeight: 'bold'
-          }
-        },
-        {
-          innerFieldName: 'C3_590514418013',
-          style: {
-            padding: '4px 8px',
-            border: '1px solid #004a95',
-            borderRadius: 6
-          }
-        }
-      ]
-    }
-  }
-};
+//   name: 'LzMenuContainer',
+//   props: {
+//     noDataTip: '暂无数据，请选择员工',
+//     resid: 590671418888,
+//     searchFields: [
+//       {
+//         text: '工号',
+//         innerFieldName: 'C3_227192472953'
+//       }
+//     ],
+//     userInfoFields: [
+//       {
+//         label: '姓名',
+//         innerFieldName: 'C3_227192484125'
+//       },
+//       {
+//         label: '工号',
+//         innerFieldName: 'C3_227192472953'
+//       },
+//       {
+//         label: '职务',
+//         innerFieldName: 'C3_417990929305'
+//       },
+//       {
+//         label: '部门',
+//         innerFieldName: 'C3_227212499515'
+//       }
+//     ],
+//     defaultComponetProps: {
+//       resid: 590671418888,
+//       subresid: 590863325025,
+//       advSearchConfig: {
+//         // 高级搜索配置
+//         defaultVisible: false,
+//         containerName: 'drawer',
+//         drawerWidth: 500,
+//         labelWidth: '24%',
+//         rowWidth: '100%',
+//         dateRanges: [
+//           // date
+//           {
+//             title: '违纪日期',
+//             visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
+//             innerFieldName: 'C3_590511645885' // 内部字段
+//           }
+//         ],
+//         tag: [
+//           // tag
+//           {
+//             title: '状态',
+//             op: 'or', // 操作符：'or' | 'and'
+//             tags: [
+//               {
+//                 label: '待提交',
+//                 value: '待提交',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013' // 内部字段名
+//               },
+//               {
+//                 label: '已提交',
+//                 value: '已提交',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013'
+//               },
+//               {
+//                 label: '审批中',
+//                 value: '审批中',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013'
+//               },
+//               {
+//                 label: '已通过',
+//                 value: '已通过',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013'
+//               },
+//               {
+//                 label: '已拒绝',
+//                 value: '已拒绝',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013'
+//               },
+//               {
+//                 label: '已撤销',
+//                 value: '已撤销',
+//                 isSelected: false,
+//                 innerFieldName: 'C3_590514418013'
+//               }
+//             ]
+//           }
+//         ]
+//       },
+//       dataMode: 'sub',
+//       viewMode: 'forms',
+//       tableTitle: '违纪记录',
+//       advDicTableProps: {
+//         lzTableStyle: {
+//           width: 1100
+//         },
+//         customColumnWidth: {
+//           依据: 600
+//         }
+//       },
+//       addBtn: true,
+//       isSearch: false,
+//       colCount: 2,
+//       formsName: 'default4',
+//       isBackEndBtnsVisible: true,
+//       cFFillFormInnerFieldNames: ['C3_590512169985'],
+//       associatedFields: [
+//         ['C3_590516276367', 'C3_592335819161'],
+//         ['C3_590515131157', 'C3_592336006704']
+//       ],
+//       backendBtnsHide: [
+//         {
+//           btnName: '提交',
+//           innerFieldNames: ['C3_591373760332'],
+//           values: ['Y']
+//         },
+//         {
+//           btnName: '撤销',
+//           innerFieldNames: ['C3_590512213622', 'C3_591373760332'],
+//           values: ['Y', null]
+//         },
+//         {
+//           btnName: '修改',
+//           innerFieldNames: ['C3_591373760332'],
+//           values: ['Y']
+//         },
+//         {
+//           btnName: '删除',
+//           innerFieldNames: ['C3_591373611399'],
+//           values: ['Y']
+//         }
+//       ],
+//       formHeaderRecords: [
+//         {
+//           innerFieldName: 'C3_590512169985',
+//           style: {
+//             fontWeight: 'bold'
+//           }
+//         },
+//         {
+//           innerFieldName: 'C3_590514418013',
+//           style: {
+//             padding: '4px 8px',
+//             border: '1px solid #004a95',
+//             borderRadius: 6
+//           }
+//         }
+//       ]
+//     }
+//   }
+// };
 
 // 录入
-window[596209113106] = {
-  title: '录入',
+// window[596209113106] = {
+//   title: '录入',
 
-  name: 'LzFormUnitContainer',
-  props: {
-    // displayMod: 'classify',
-    resid: 590863325025,
-    operation: 'add',
-    record: {},
-    formName: 'default-in-1',
-    colCount: 2,
-    barFormProps: {
-      barMode: {
-        count: 3,
-        isLabelVisible: false,
-        styles: [{ color: 'ff0000' }, { color: '00ff00' }, { color: '0000ff' }]
-      },
-      colCount: 2
-    }
-  }
-};
+//   name: 'LzFormUnitContainer',
+//   props: {
+//     // displayMod: 'classify',
+//     resid: 590863325025,
+//     operation: 'add',
+//     record: {},
+//     formName: 'default-in-1',
+//     colCount: 2,
+//     barFormProps: {
+//       barMode: {
+//         count: 3,
+//         isLabelVisible: false,
+//         styles: [{ color: 'ff0000' }, { color: '00ff00' }, { color: '0000ff' }]
+//       },
+//       colCount: 2
+//     }
+//   }
+// };
 
 // 统计分析与录入
 window[592305842055] = {
