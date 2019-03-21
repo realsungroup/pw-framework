@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { message, Tabs } from 'antd';
-import './LzApproval.less';
+import './LzProApp.less';
 import classNames from 'classnames';
 import {TableData} from '../../common/loadableCommon'
 import EventEmitter from 'wolfy87-eventemitter';
@@ -19,7 +19,7 @@ const TabPane = Tabs.TabPane;
 /**
  * 审批
  */
-export default class LzApproval extends React.Component {
+export default class LzProApp extends React.Component {
   static propTypes = {};
   static defaultProps = {};
   constructor(props) {
@@ -76,14 +76,14 @@ export default class LzApproval extends React.Component {
   render() {
     const { activeKey, abnormalNum } = this.state;
     return (
-      <div className="lz-approval">
+      <div className="lz-proapp">
         <Tabs
           activeKey={activeKey}
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="待审批" key="待审批">
-          <div style={{height:'calc(100vh - 220px)'}}>
+          <TabPane className='test1' tab="待审批" key="待审批">
+          <div className='test2' style={{height:'calc(100vh - 220px)'}}>
             <TableData
               {...inApplication}
               // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140

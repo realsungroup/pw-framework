@@ -151,10 +151,10 @@ window[597167738777] = {
 };
 
 // 数据处理
-window[594754848652] = {
-  title: '数据处理',
-  name: 'LzDataHandling',
-  props: {}
+  window[594754848652] = {
+    title: '数据处理',
+    name: 'LzDataHandling',
+    props: {}
 };
 
 // 数据分析
@@ -1482,34 +1482,6 @@ window[605803889644] = {
 window[605891224706] = {
   title: '供应商维护',
   name: 'ViProvider',
-  // cFFillFormInnerFieldNames: ['C3_489231990680'],
-  props: {
-    // tabPanes: [
-    //   // 申请中
-    //   {
-    //     tabName: '申请中',
-    //     componentInfo: {
-    //       props: {
-    //         rowColors: [
-    //           {
-    //             innerFieldName: 'C3_59345742160', // 内部字段
-    //             colors: [
-    //               {
-    //                 value: '正常',
-    //                 color: ''
-    //               },
-    //               {
-    //                 value: '异常',
-    //                 color: '#ff0000'
-    //               }
-    //             ]
-    //           }
-    //         ]
-    //       }
-    //     }
-    //   }
-    // ]
-  }
 };
 // 请假信息
 window[601728701208] = {
@@ -1589,69 +1561,18 @@ window[601728701208] = {
 };
 // 保安登记
 window[605900163561] = {
-  title: '保安登记',
+  title: '保安查询',
   name: 'LzRegister',
-  cFFillFormInnerFieldNames: ['C3_489231990680'],
-  props: {
-    tabPanes: [
-      //待访问
-      {
-        tabName: '待访问',
-        componentInfo: {
-          props: {
-            rowColors: [
-              {
-                innerFieldName: 'C3_593457421602', // 内部字段
-                colors: [
-                  {
-                    value: '正常',
-                    color: ''
-                  },
-                  {
-                    value: '异常',
-                    color: '#ff0000'
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
-    ]
-  }
 };
 // 前台记录
 window[605871880758] = {
-  title: '前台记录',
+  title: '前台查询',
   name: 'LzRecord',
-  cFFillFormInnerFieldNames: ['C3_489231990680'],
-  props: {
-    tabPanes: [
-      //待处理
-      {
-        tabName: '待处理',
-        componentInfo: {
-          props: {
-            rowColors: [
-              {
-                innerFieldName: 'C3_593457421602', // 内部字段
-                colors: [
-                  {
-                    value: '正常',
-                    color: ''
-                  },
-                  {
-                    value: '异常',
-                    color: '#ff0000'
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
-    ]
-  }
+};
+// 访客审批
+window[605893340481] = {
+  title: '访客审批',
+  name: 'LzApproval',
 };
 
 //打印
@@ -1705,8 +1626,15 @@ window[606071640940] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: false
+    hasRowDelete: false,
+    recordFormFormWidth: '90%',
   } // 组件所接收的 props
+};
+//供应商审批
+window[606249673489] = {
+  name: 'LzProApp', // 组件名称
+  title: '供应商审批', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
 };
 //606242031630供应商保安登记
 window[606242031630] = {
