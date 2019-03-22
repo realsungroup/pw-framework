@@ -9,3 +9,9 @@ export const TypeIn = Loadable({
     return minLoading;
   }
 });
+export const TableDataWrap = Loadable({
+  loader: () => import('./TableDataWrap'),
+  loading() {
+    return minLoading;
+  }
+});
