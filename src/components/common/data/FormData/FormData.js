@@ -98,7 +98,9 @@ class FormData extends React.Component {
     const subTableProps = subTableArrProps.find(
       item => item.subResid === subTable.subResid
     );
+
     const { tableProps = {} } = subTableProps || {};
+
     const tab =
       (subTableProps && subTableProps.subTableName) || subTable.subResid;
 

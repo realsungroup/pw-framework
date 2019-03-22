@@ -33,13 +33,16 @@ class BusinessManagement extends React.Component {
     this.getData();
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+  };
 
   getData = async () => {
     this.setState({ loading: true });
+    this.p1 = makeCancelable(http().getUserFunctionTree());
     let res;
     try {
-      res = await http().getUserFunctionTree();
+      res = await this.p1.promise;
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
@@ -57,9 +60,11 @@ class BusinessManagement extends React.Component {
 
   handleSelectedMenuItem = menuItem => {
     const openedTabs = [...this.state.openedTabs, menuItem];
+    const activeKey = menuItem.RES_ID + '';
+
     this.setState({
       openedTabs,
-      activeKey: menuItem.RES_ID + ''
+      activeKey
     });
   };
 
@@ -95,7 +100,20 @@ class BusinessManagement extends React.Component {
   };
 
   handleTabsEdit = (targetKey, action) => {
-    console.log({ targetKey, action });
+    if (action === 'remove') {
+      const { openedTabs } = this.state;
+      const index = openedTabs.findIndex(
+        item => item.RES_ID === parseInt(targetKey, 10)
+      );
+      openedTabs.splice(index, 1);
+
+      const len = openedTabs.length;
+      let activeKey = '';
+      if (len) {
+        activeKey = openedTabs[len - 1].RES_ID + '';
+      }
+      this.setState({ openedTabs: [...openedTabs], activeKey });
+    }
   };
 
   handleCollapse = collapsed => {
@@ -131,7 +149,10 @@ class BusinessManagement extends React.Component {
                     onEdit={this.handleTabsEdit}
                   >
                     {openedTabs.map(menuItem => (
-                      <TabPane tab={menuItem.RES_NAME} key={menuItem.RES_ID}>
+                      <TabPane
+                        tab={menuItem.RES_NAME}
+                        key={menuItem.RES_ID + ''}
+                      >
                         <BMContent
                           key={menuItem.RES_ID}
                           resid={menuItem.RES_ID}
