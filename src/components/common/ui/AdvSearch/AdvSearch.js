@@ -61,7 +61,9 @@ class AdvSearch extends React.Component {
       searchList: [
         ...this.state.searchList,
         {
-          logicSymbol: '并且'
+          logicSymbol: '并且',
+          compareSymbol: '',
+          field: ''
         }
       ]
     });
@@ -78,6 +80,11 @@ class AdvSearch extends React.Component {
     this.setState({ searchList: newSearchList });
   };
 
+  handleSelectFieldChange = (value, searchItem) => {
+    const { searchList } = this.state;
+    searchItem.value
+  };
+
   render() {
     const { fields } = this.props;
     const { searchList } = this.state;
@@ -91,14 +98,23 @@ class AdvSearch extends React.Component {
             >
               {!!index && searchItem.logicSymbol}
             </span>
-            <Select className="adv-search__select-field">
+            <Select
+              className="adv-search__select-field"
+              size="small"
+              placeholder="字段"
+              onChange={value => this.handleSelectFieldChange(value, index)}
+            >
               {fields.map(fieldItem => (
                 <Option key={fieldItem} value={fieldItem}>
                   {fieldItem}
                 </Option>
               ))}
             </Select>
-            <Select className="adv-search__compare-symbol">
+            <Select
+              className="adv-search__compare-symbol"
+              size="small"
+              placeholder="比较符"
+            >
               {compareSymbols.map(compareSymbol => (
                 <Option key={compareSymbol.symbol} value={compareSymbol.symbol}>
                   {compareSymbol.name}

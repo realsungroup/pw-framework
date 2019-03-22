@@ -11,7 +11,7 @@ class App extends Component {
       <TemplateWrap>
         <div
           style={{
-            width: 300,
+            width: 600,
             height: 600,
             marginLeft: 20,
             border: '1px solid #000'
