@@ -229,7 +229,7 @@ class AdvSearch extends React.Component {
         </div>
         <div className="adv-search__confirm-btn">
           <Button type="primary" block onClick={this.handleConfirm}>
-            确定
+            {this.props.confirmText}
           </Button>
         </div>
       </div>

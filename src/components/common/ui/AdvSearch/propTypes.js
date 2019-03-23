@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 
 export const defaultProps = {
-  fields: []
+  fields: [],
+  confirmText: '确定',
+  enConfirmText: 'Confirm'
 };
 
 export const propTypes = {
@@ -15,8 +17,8 @@ export const propTypes = {
       field: PropTypes.string, // 字段名称
       control: PropTypes.string // 所用控件名称
     })
-  )
-
+  ),
+  // 如：
   // [
   //   'name',
   //   {
@@ -29,4 +31,15 @@ export const propTypes = {
   //     control: 'Checkbox'
   //   }
   // ]
+  /**
+   * 确定按钮文本（中文）
+   * 默认：'确定'
+   */
+  confirmText: PropTypes.string,
+
+  /**
+   * 确定按钮文本（英文）
+   * 默认：'Confirm'
+   */
+  enCofirmText: PropTypes.string
 };
