@@ -155,6 +155,13 @@ class AdvSearch extends React.Component {
     this.props.onConfirm && this.props.onConfirm(where);
   };
 
+  handleRemoveSearchItem = index => {
+    const { searchList } = this.state;
+    const newSearchList = [...searchList];
+    newSearchList.splice(index, 1);
+    this.setState({ searchList: newSearchList });
+  };
+
   renderValueControl = searchItem => {
     const { control, value } = searchItem;
     switch (control) {
@@ -212,6 +219,13 @@ class AdvSearch extends React.Component {
               ))}
             </Select>
             {this.renderValueControl(searchItem)}
+            {!!index && (
+              <Icon
+                type="close"
+                className="adv-search__remove-search-item"
+                onClick={() => this.handleRemoveSearchItem(index)}
+              />
+            )}
           </div>
         ))}
 
