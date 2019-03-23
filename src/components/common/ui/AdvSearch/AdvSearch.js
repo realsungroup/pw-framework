@@ -158,7 +158,19 @@ class AdvSearch extends React.Component {
   handleRemoveSearchItem = index => {
     const { searchList } = this.state;
     const newSearchList = [...searchList];
-    newSearchList.splice(index, 1);
+
+    if (index === 0) {
+      newSearchList.splice(index, 1, {
+        logicSymbol: '',
+        compareSymbol: '',
+        field: '',
+        control: 'Input',
+        value: ''
+      });
+    } else {
+      newSearchList.splice(index, 1);
+    }
+
     this.setState({ searchList: newSearchList });
   };
 
@@ -198,6 +210,7 @@ class AdvSearch extends React.Component {
               className="adv-search__select-field"
               size="small"
               placeholder="字段"
+              value={searchItem.field}
               onChange={value => this.handleSelectFieldChange(value, index)}
             >
               {fields.map(fieldItem => (
@@ -210,6 +223,7 @@ class AdvSearch extends React.Component {
               className="adv-search__compare-symbol"
               size="small"
               placeholder="比较符"
+              value={searchItem.compareSymbol}
               onChange={value => this.handleCompareSymbolChange(value, index)}
             >
               {compareSymbols.map(compareSymbol => (
@@ -219,13 +233,11 @@ class AdvSearch extends React.Component {
               ))}
             </Select>
             {this.renderValueControl(searchItem)}
-            {!!index && (
-              <Icon
-                type="close"
-                className="adv-search__remove-search-item"
-                onClick={() => this.handleRemoveSearchItem(index)}
-              />
-            )}
+            <Icon
+              type="close"
+              className="adv-search__remove-search-item"
+              onClick={() => this.handleRemoveSearchItem(index)}
+            />
           </div>
         ))}
 
