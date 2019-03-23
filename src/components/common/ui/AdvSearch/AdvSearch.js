@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Icon } from 'antd';
+import { Select, Icon, Input, Button } from 'antd';
 import { defaultProps, propTypes } from './propTypes';
 import './AdvSearch.less';
 
@@ -32,6 +32,11 @@ const compareSymbols = [
   }
 ];
 
+const logicSymbolMap = {
+  and: '并且',
+  or: '或者'
+};
+
 /**
  * 高级搜索组件
  */
@@ -45,8 +50,11 @@ class AdvSearch extends React.Component {
     this.state = {
       searchList: [
         {
-          logicSymbol: '并且',
-          compareSymbol: ''
+          logicSymbol: '',
+          compareSymbol: '',
+          field: '',
+          control: 'Input',
+          value: ''
         }
       ] // 搜索列表
     };
@@ -61,9 +69,11 @@ class AdvSearch extends React.Component {
       searchList: [
         ...this.state.searchList,
         {
-          logicSymbol: '并且',
+          logicSymbol: 'and',
           compareSymbol: '',
-          field: ''
+          field: '',
+          control: 'Input',
+          value: ''
         }
       ]
     });
@@ -75,14 +85,98 @@ class AdvSearch extends React.Component {
     const searchItem = searchList[index];
     newSearchList.splice(index, 1, {
       ...searchItem,
-      logicSymbol: searchItem.logicSymbol === '并且' ? '或者' : '并且'
+      logicSymbol: searchItem.logicSymbol === 'and' ? 'or' : 'and'
     });
     this.setState({ searchList: newSearchList });
   };
 
-  handleSelectFieldChange = (value, searchItem) => {
+  handleSelectFieldChange = (value, index) => {
     const { searchList } = this.state;
-    searchItem.value
+    const { fields } = this.props;
+    const fieldIndex = fields.findIndex(fieldItem => {
+      let field = typeof fieldItem === 'string' ? fieldItem : fieldItem.field;
+      if (field === value) {
+        return true;
+      }
+    });
+    const selectedField = fields[fieldIndex];
+    let control, field;
+    if (typeof selectedField === 'string') {
+      control = 'Input';
+      field = selectedField;
+    } else if (typeof selectedField === 'object') {
+      control = selectedField.control;
+      field = selectedField.field;
+    }
+    const newSearchItem = { ...searchList[index], field, control };
+    const newSearchList = [...searchList];
+    newSearchList.splice(index, 1, newSearchItem);
+    this.setState({ searchList: newSearchList });
+  };
+
+  handleCompareSymbolChange = (value, index) => {
+    const { searchList } = this.state;
+    const newSearchItem = { ...searchList[index], compareSymbol: value };
+    const newSearchList = [...searchList];
+    newSearchList.splice(index, 1, newSearchItem);
+    this.setState({ searchList: newSearchList });
+  };
+
+  handleValueControlChange = (value, searchItem) => {
+    const { searchList } = this.state;
+    const searchItemIndex = searchList.findIndex(item => item === searchItem);
+    const newSearchItem = { ...searchItem, value };
+    const newSearchList = [...searchList];
+    newSearchList.splice(searchItemIndex, 1, newSearchItem);
+    this.setState({ searchList: newSearchList });
+  };
+
+  handleConfirm = () => {
+    const { searchList } = this.state;
+    const searchArr = searchList.filter(
+      searchItem => searchItem.field && searchItem.compareSymbol
+    );
+    if (!searchArr.length) {
+      return this.props.onConfirm && this.props.onConfirm('');
+    }
+
+    const whereArr = [];
+    searchArr.forEach(searchItem => {
+      const logicSymbol = searchItem.logicSymbol
+        ? searchItem.logicSymbol + ' '
+        : '';
+      const where = `${logicSymbol}(${searchItem.field} ${
+        searchItem.compareSymbol
+      } '${searchItem.value}')`;
+      whereArr.push(where);
+    });
+    const where = whereArr.reduce((where, curWhere, index) => {
+      if (index === 0) {
+        return `${curWhere}`;
+      }
+      return `${where} ${curWhere}`;
+    }, '');
+    console.log({ where });
+    this.props.onConfirm && this.props.onConfirm(where);
+  };
+
+  renderValueControl = searchItem => {
+    const { control, value } = searchItem;
+    switch (control) {
+      case 'Input': {
+        return (
+          <Input
+            className="adv-search__value-control"
+            size="small"
+            value={value}
+            placeholder="值"
+            onChange={e =>
+              this.handleValueControlChange(e.target.value, searchItem)
+            }
+          />
+        );
+      }
+    }
   };
 
   render() {
@@ -96,7 +190,7 @@ class AdvSearch extends React.Component {
               className="adv-search__search-item-logic"
               onClick={() => index && this.handleSwitchLoginSymbol(index)}
             >
-              {!!index && searchItem.logicSymbol}
+              {!!index && logicSymbolMap[searchItem.logicSymbol]}
             </span>
             <Select
               className="adv-search__select-field"
@@ -104,16 +198,21 @@ class AdvSearch extends React.Component {
               placeholder="字段"
               onChange={value => this.handleSelectFieldChange(value, index)}
             >
-              {fields.map(fieldItem => (
-                <Option key={fieldItem} value={fieldItem}>
-                  {fieldItem}
-                </Option>
-              ))}
+              {fields.map(fieldItem => {
+                const field =
+                  typeof fieldItem === 'string' ? fieldItem : fieldItem.field;
+                return (
+                  <Option key={field} value={field}>
+                    {field}
+                  </Option>
+                );
+              })}
             </Select>
             <Select
               className="adv-search__compare-symbol"
               size="small"
               placeholder="比较符"
+              onChange={value => this.handleCompareSymbolChange(value, index)}
             >
               {compareSymbols.map(compareSymbol => (
                 <Option key={compareSymbol.symbol} value={compareSymbol.symbol}>
@@ -121,12 +220,17 @@ class AdvSearch extends React.Component {
                 </Option>
               ))}
             </Select>
-            <div className="adb-search__control" />
+            {this.renderValueControl(searchItem)}
           </div>
         ))}
 
         <div className="adv-search__add-btn" onClick={this.handleAddSearchItem}>
           <Icon type="plus" />
+        </div>
+        <div className="adv-search__confirm-btn">
+          <Button type="primary" block onClick={this.handleConfirm}>
+            确定
+          </Button>
         </div>
       </div>
     );
