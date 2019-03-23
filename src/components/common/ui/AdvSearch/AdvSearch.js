@@ -94,20 +94,15 @@ class AdvSearch extends React.Component {
     const { searchList } = this.state;
     const { fields } = this.props;
     const fieldIndex = fields.findIndex(fieldItem => {
-      let field = typeof fieldItem === 'string' ? fieldItem : fieldItem.field;
-      if (field === value) {
+      if (fieldItem.value === value) {
         return true;
       }
     });
     const selectedField = fields[fieldIndex];
-    let control, field;
-    if (typeof selectedField === 'string') {
-      control = 'Input';
-      field = selectedField;
-    } else if (typeof selectedField === 'object') {
-      control = selectedField.control;
-      field = selectedField.field;
-    }
+
+    const control = selectedField.control;
+    const field = selectedField.value;
+
     const newSearchItem = { ...searchList[index], field, control };
     const newSearchList = [...searchList];
     newSearchList.splice(index, 1, newSearchItem);
@@ -198,15 +193,11 @@ class AdvSearch extends React.Component {
               placeholder="字段"
               onChange={value => this.handleSelectFieldChange(value, index)}
             >
-              {fields.map(fieldItem => {
-                const field =
-                  typeof fieldItem === 'string' ? fieldItem : fieldItem.field;
-                return (
-                  <Option key={field} value={field}>
-                    {field}
-                  </Option>
-                );
-              })}
+              {fields.map(fieldItem => (
+                <Option key={fieldItem.value} value={fieldItem.value}>
+                  {fieldItem.label}
+                </Option>
+              ))}
             </Select>
             <Select
               className="adv-search__compare-symbol"

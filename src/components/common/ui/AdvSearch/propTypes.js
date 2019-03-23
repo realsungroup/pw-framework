@@ -12,23 +12,28 @@ export const propTypes = {
    * 默认：[]
    */
   fields: PropTypes.arrayOf(
-    PropTypes.string,
     PropTypes.shape({
-      field: PropTypes.string, // 字段名称
-      control: PropTypes.string // 所用控件名称
+      label: PropTypes.string, // 字段名称
+      value: PropTypes.string, // 字段值
+      control: PropTypes.oneOf(['Input']) // 所用控件名称
     })
   ),
   // 如：
   // [
-  //   'name',
   //   {
-  //     field: 'birthday',
-  //     control: 'DatePicker',
+  //     label: '姓名',
+  //     value: 'name',
+  //     control: 'Input'
   //   },
-  //   'age',
   //   {
-  //     field: 'married',
-  //     control: 'Checkbox'
+  //     label: '年龄',
+  //     value: 'age',
+  //     control: 'Input'
+  //   },
+  //   {
+  //     label: '出生日期',
+  //     value: 'birthday',
+  //     control: 'DatePicker'
   //   }
   // ]
   /**

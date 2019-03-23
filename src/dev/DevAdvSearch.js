@@ -17,7 +17,20 @@ class App extends Component {
             border: '1px solid #000'
           }}
         >
-          <AdvSearch fields={['name', 'age', 'sex']} />
+          <AdvSearch
+            fields={[
+              {
+                label: '姓名',
+                value: 'name',
+                control: 'Input'
+              },
+              {
+                label: '年龄',
+                value: 'age',
+                control: 'Input'
+              }
+            ]}
+          />
         </div>
       </TemplateWrap>
     );
