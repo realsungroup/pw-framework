@@ -32,7 +32,7 @@ window[606493652444] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166,
+    subtractH: 166
   }
 };
 
@@ -492,4 +492,219 @@ window[592244969643] = {
       ['C3_592244739346', 'C3_592306124239']
     ]
   }
+};
+
+// 袁巧云申请
+window[605803889644] = {
+  title: '访客申请',
+  name: 'LzAFFOS',
+  // cFFillFormInnerFieldNames: ['C3_489231990680'],
+  props: {
+    resids: [],
+    tabPanes: [
+      // 申请中
+      {
+        tabName: '申请中',
+        componentInfo: {
+          props: {
+            rowColors: [
+              {
+                innerFieldName: 'C3_59345742160', // 内部字段
+                colors: [
+                  {
+                    value: '正常',
+                    color: ''
+                  },
+                  {
+                    value: '异常',
+                    color: '#ff0000'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+};
+// 供应商申请
+window[605891224706] = {
+  title: '供应商维护',
+  name: 'ViProvider'
+};
+// 请假信息
+window[601728701208] = {
+  title: '请假信息',
+  name: 'LzTable',
+  props: {
+    tableTitle: '请假信息',
+    tableSize: 'small',
+    exceptTableInnerHeight: 360,
+    resid: 601728118057,
+    opIsFixed: true,
+    hasDownloadExcel: true,
+    isSortBE: true,
+    formsName: {
+      rowFormName: 'default-edit', //  rowFormName 表示行内编辑所用的窗体名称
+      formFormName: 'default' // formFormName 表示表单中所用的窗体名称
+    },
+    customColumnWidth: {
+      人员工号: 120,
+      员工姓名: 120,
+      所属部门: 250,
+      登记小时: 100,
+      项目名称: 100,
+      同步: 100,
+      考勤月份: 100,
+      请假项目: 100,
+      登记小时限额: 100
+    },
+    pagination: {
+      pageSize: 10, // 默认每页数量
+      current: 0 // 当前页数
+    },
+    btnsVisible: {
+      del: true,
+      mod: true
+    },
+    isSearch: true,
+    cFFillFormInnerFieldNames: ['C3_425213166775', 'EMP_ID'],
+    associatedFields: [['C3_596649436965', 'C3_596648784210']],
+    advSearchConfig: {
+      containerName: 'drawer', // 高级搜索所在容器的名字：'normal' 在表格里面；'drawer' 在抽屉容器里面
+      defaultVisible: false, // 默认是否显示
+      drawerWidth: 500, // 抽屉的宽度
+      labelWidth: '24%', // label 宽度
+      rowWidth: '100%', // row 宽度
+      dateRanges: [
+        {
+          title: '开始时间',
+          innerFieldName: 'DATE1', // 内部字段
+          visible: [false, false, false, false]
+        }
+      ],
+      search: [
+        // search
+        {
+          title: '工号/姓名',
+          innerFieldNames: ['EMP_ID', 'C3_375965124343']
+        },
+        {
+          title: '请假项目',
+          innerFieldNames: ['C3_425213166775']
+        }
+      ]
+    },
+    productComponents: [
+      {
+        iconClass: 'icon-add',
+        componentInfo: {
+          name: 'LzStepsAfl',
+          props: {
+            resid: 592744962876
+          }
+        }
+      }
+    ]
+  }
+};
+// 保安登记
+window[605900163561] = {
+  title: '保安查询',
+  name: 'LzRegister'
+};
+// 前台记录
+window[605871880758] = {
+  title: '前台查询',
+  name: 'LzRecord'
+};
+// 访客审批
+window[605893340481] = {
+  title: '访客审批',
+  name: 'LzApproval'
+};
+
+//打印
+window[603827488844] = {
+  name: 'LzStepAflY', // 组件名称，这里为定制组件名称
+  title: '打印信息', // 功能模块名称
+  hasBackBtn: true // 是否有返回上一页的按钮，默认为 true
+  // props: {
+  //   resid: 777
+  // } // 组件所接收的 props
+};
+//保安访客登记
+window[606071626403] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '保安访客登记', // 功能模块名称
+  // hasBackBtn: true,// 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 606071751596,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: false,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    // recordFormFormWidth: '45%',
+    subTableArrProps: [
+      {
+        subTableName: '物品信息',
+        subResid: 606413909447,
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false
+      }
+    ]
+  }
+  // 组件所接收的 props
+};
+//前台访客登记
+window[606071640940] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '前台访客登记', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 606071814271,
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    recordFormFormWidth: '90%'
+  } // 组件所接收的 props
+};
+//供应商审批
+window[606249673489] = {
+  name: 'LzProApp', // 组件名称
+  title: '供应商审批', // 功能模块名称
+  hasBackBtn: true // 是否有返回上一页的按钮，默认为 true
+};
+//606242031630供应商保安登记
+window[606242031630] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '供应商保安登记', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 606244496074,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: true,
+    recordFormFormWidth: '90%'
+  } // 组件所接收的 props
 };
