@@ -160,8 +160,8 @@ window[590765309983] = {
         },
         {
           btnName: '撤销',
-          innerFieldNames: ['C3_590512213622', 'C3_591373760332'],
-          values: ['Y', null]
+          innerFieldNames: ['C3_590512213622', 'C3_591373760332','C3_605619907534'],
+          values: ['Y', null,'Y']
         },
         {
           btnName: '修改',
@@ -170,9 +170,14 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373611399'],
+          innerFieldNames: ['C3_591373611399','C3_605619907534'],
+          values: ['Y','Y']
+        },
+        {
+          btnName: '撤销',
+          innerFieldNames: ['C3_605619907534'],
           values: ['Y']
-        }
+        },
       ],
       formHeaderRecords: [
         {
@@ -418,78 +423,78 @@ window[592305842055] = {
 };
 
 // 主表左侧导航多表单测试
-window[592400266558] = {
-  title: '录入',
+// window[592400266558] = {
+//   title: '录入',
 
-  name: 'LzMenuForms',
-  props: {
-    mode: 'multiple',
-    advSearchConfig: {
-      // 高级搜索配置
-      defaultVisible: false,
-      containerName: 'drawer',
-      drawerWidth: 500,
-      labelWidth: '24%',
-      rowWidth: '100%',
-      dateRanges: [
-        // date
-        {
-          title: '事件日期',
-          visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-          innerFieldName: 'C3_591545408070' // 内部字段
-        }
-      ]
-    },
-    searchFields: [
-      {
-        text: '工号',
-        innerFieldName: 'C3_227192472953'
-      }
-    ],
-    navListResid: 591533333401,
-    resid: 591533160636,
-    hasFieldsLabel: false,
-    userFieldsViewConfig: {
-      mode: 'inline',
-      colCount: 2
-    },
-    userInfoFields: [
-      {
-        label: '姓名',
-        innerFieldName: 'C3_227192484125'
-      },
-      {
-        label: '工号',
-        innerFieldName: 'C3_227192472953'
-      },
-      {
-        label: '职务',
-        innerFieldName: 'C3_417990929305'
-      },
-      {
-        label: '部门',
-        innerFieldName: 'C3_227212499515'
-      }
-    ]
-  }
-};
+//   name: 'LzMenuForms',
+//   props: {
+//     mode: 'multiple',
+//     advSearchConfig: {
+//       // 高级搜索配置
+//       defaultVisible: false,
+//       containerName: 'drawer',
+//       drawerWidth: 500,
+//       labelWidth: '24%',
+//       rowWidth: '100%',
+//       dateRanges: [
+//         // date
+//         {
+//           title: '事件日期',
+//           visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
+//           innerFieldName: 'C3_591545408070' // 内部字段
+//         }
+//       ]
+//     },
+//     searchFields: [
+//       {
+//         text: '工号',
+//         innerFieldName: 'C3_227192472953'
+//       }
+//     ],
+//     navListResid: 591533333401,
+//     resid: 591533160636,
+//     hasFieldsLabel: false,
+//     userFieldsViewConfig: {
+//       mode: 'inline',
+//       colCount: 2
+//     },
+//     userInfoFields: [
+//       {
+//         label: '姓名',
+//         innerFieldName: 'C3_227192484125'
+//       },
+//       {
+//         label: '工号',
+//         innerFieldName: 'C3_227192472953'
+//       },
+//       {
+//         label: '职务',
+//         innerFieldName: 'C3_417990929305'
+//       },
+//       {
+//         label: '部门',
+//         innerFieldName: 'C3_227212499515'
+//       }
+//     ]
+//   }
+// };
 
 // 计算公式取值
-window[592244969643] = {
-  title: '计算公式取值',
+// window[592244969643] = {
+//   title: '计算公式取值',
 
-  name: 'LzTable',
-  props: {
-    resid: 592244695755,
-    addBtn: true,
-    cFFillFormInnerFieldNames: ['C3_592244738975', 'C3_592244739145'],
-    btnsVisible: {
-      mod: true
-    },
-    // isGetFormDefaultValues: true,
-    associatedFields: [
-      ['C3_592244739145', 'C3_592306113509'],
-      ['C3_592244739346', 'C3_592306124239']
-    ]
-  }
-};
+//   name: 'LzTable',
+//   props: {
+//     resid: 592244695755,
+//     addBtn: true,
+//     cFFillFormInnerFieldNames: ['C3_592244738975', 'C3_592244739145'],
+//     btnsVisible: {
+//       mod: true
+//     },
+//     // isGetFormDefaultValues: true,
+//     associatedFields: [
+//       ['C3_592244739145', 'C3_592306113509'],
+//       ['C3_592244739346', 'C3_592306124239']
+//     ]
+//   }
+// };
