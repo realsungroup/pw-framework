@@ -1,23 +1,21 @@
 // 管理员确认
-// window[606476781618] = {
-//   name: 'TableDataWrap',
-//   title: '录入',
-//   props: {
-//     resid: 605617716920,
-//     hasBeBtns: true,
-//     hasAdd: false,
-//     hasModify: false,
-//     hasDelete: false,
-//     hasRowView: true,
-//     hasRowModify: false,
-//     hasRowView: true,
-//     hasRowDelete: false,
-//     // height:500,
-//     subtractH: 166,
+window[606476781618] = {
+  name: 'TableDataWrap',
+  title: '录入',
+  props: {
+    resid: 605617716920,
+    hasBeBtns: true,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowView: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    subtractH: 166,
 
-//     // operation: 'add',
-//   }
-// };
+  }
+};
 // // 606496690009 到期违章清单
 window[606493652444] = {
   name: 'TableDataWrap',
