@@ -2733,7 +2733,11 @@ class LzTable extends React.Component {
       if (value) {
         Modal.confirm({
           title: '提醒',
-          content: value
+          content: value,
+          onOk: () => {
+            this.refreshTableData();
+            Modal.destroyAll();
+          }
         });
       } else {
         message.success('操作成功');
