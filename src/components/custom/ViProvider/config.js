@@ -50,9 +50,9 @@ export const inApplication = {
   resid: 605891650522,
   subtractH: 166,
   // height:800,
-  formProps:{
-    height:500,
- },
+  formProps: {
+    height: 500
+  },
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮
@@ -75,15 +75,16 @@ export const inApplication = {
         hasAdd: true,
         hasModify: false,
         hasDelete: false,
-        // hasRowEdit: true,
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        // height:300,
         defaultColumnWidth: 100,
-        actionBarWidth: 200
+        actionBarWidth: 200,
+        recordFormFormWidth: '40%',
+        recordFormTabsWidth: '60%'
       }
-    }
+    },
+    
   ]
 };
 // 审批中
@@ -91,9 +92,9 @@ export const inExaminationAndApproval = {
   resid: 605891699222,
   // height: 500,
   subtractH: 166,
-  formProps:{
-    height:500,
- },
+  formProps: {
+    height: 500
+  },
   hasSearch: true,
   hasBeBtns: true,
   hasAdd: false,
@@ -122,7 +123,7 @@ export const inExaminationAndApproval = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
-        height:500,
+        height: 500,
         defaultColumnWidth: 100,
         actionBarWidth: 200
       }
@@ -130,11 +131,11 @@ export const inExaminationAndApproval = {
     {
       subTableName: '审批记录',
       subResid: 605989494375,
-      tableProps:{
+      tableProps: {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: true
       }
     }
   ]
@@ -143,9 +144,9 @@ export const inExaminationAndApproval = {
 export const approved = {
   resid: 605891735751,
   subtractH: 166,
-  formProps:{
-    height:500,
- },
+  formProps: {
+    height: 500
+  },
   hasSearch: true,
   hasAdd: false,
   hasBeBtns: true,
@@ -175,18 +176,17 @@ export const approved = {
         hasRowView: false,
         hasRowDelete: false,
         height: 500,
-        defaultColumnWidth: 100,
-        
+        defaultColumnWidth: 100
       }
     },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
-      tableProps:{
+      tableProps: {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: true
       }
     }
   ]
@@ -197,9 +197,9 @@ export const refused = {
   resid: 605891789909,
   // height: 500,
   subtractH: 166,
-  formProps:{
-    height:500,
- },
+  formProps: {
+    height: 500
+  },
   hasAdd: false,
   hasSearch: true,
   hasBeBtns: true,
@@ -229,17 +229,17 @@ export const refused = {
         hasRowView: false,
         hasRowDelete: false,
         height: 500,
-        defaultColumnWidth: 100,
+        defaultColumnWidth: 100
       }
     },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
-      tableProps:{
+      tableProps: {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: true
       }
     }
   ]
@@ -251,9 +251,9 @@ export const history = {
   // height: 500,
   subtractH: 166,
   actionBarWidth: 200,
-  formProps:{
-    height:500,
- },
+  formProps: {
+    height: 500
+  },
   hasAdd: false,
   hasSearch: true,
   hasBeBtns: true,
@@ -282,17 +282,17 @@ export const history = {
         hasRowView: false,
         hasRowDelete: false,
         height: 500,
-        defaultColumnWidth: 100,
+        defaultColumnWidth: 100
       }
     },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
-      tableProps:{
+      tableProps: {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: true
       }
     }
   ]

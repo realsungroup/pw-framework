@@ -12,8 +12,7 @@ window[606476781618] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166,
-
+    subtractH: 166
   }
 };
 // // 606496690009 到期违章清单
@@ -634,7 +633,7 @@ window[603827488844] = {
 };
 //保安访客登记
 window[606071626403] = {
-  name: 'TableData', // 组件名称，这里为定制组件名称
+  name: 'TableDataWrap', // 组件名称，这里为定制组件名称
   title: '保安访客登记', // 功能模块名称
   // hasBackBtn: true,// 是否有返回上一页的按钮，默认为 true
   props: {
@@ -647,6 +646,10 @@ window[606071626403] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: false,
+    formProps: {
+      height: 500
+    },
+    subtractH: 166,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -657,9 +660,15 @@ window[606071626403] = {
       {
         subTableName: '物品信息',
         subResid: 606413909447,
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false
+        tableProps: {
+          hasAdd: true,
+          hasModify: false,
+          hasDelete: false
+        }
+
+        // hasRowModify: false,
+        // hasRowView: false,
+        // hasRowDelete: false
       }
     ]
   }
@@ -691,7 +700,7 @@ window[606249673489] = {
 };
 //606242031630供应商保安登记
 window[606242031630] = {
-  name: 'TableData', // 组件名称，这里为定制组件名称
+  name: 'TableDataWrap', // 组件名称，这里为定制组件名称
   title: '供应商保安登记', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
@@ -703,6 +712,29 @@ window[606242031630] = {
     hasRowModify: true,
     hasRowView: false,
     hasRowDelete: true,
-    recordFormFormWidth: '90%'
+    formProps:{
+      height:500,
+   },
+    recordFormFormWidth: '40%',
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    subTableArrProps: [
+      {
+        subTableName: '物品信息',
+        subResid: 606413909447,
+        tableProps: {
+          hasAdd: true,
+          hasModify: false,
+          hasDelete: false
+        },
+
+        // hasRowModify: false,
+        // hasRowView: false,
+        // hasRowDelete: false
+      }
+    ]
   } // 组件所接收的 props
 };
