@@ -157,8 +157,8 @@ window[590765309983] = {
         },
         {
           btnName: '撤销',
-          innerFieldNames: ['C3_590512213622', 'C3_591373760332'],
-          values: ['Y', null]
+          innerFieldNames: ['C3_590512213622', 'C3_591373760332','C3_605619907534'],
+          values: ['Y', null,'Y']
         },
         {
           btnName: '修改',
@@ -167,8 +167,8 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373611399'],
-          values: ['Y']
+          innerFieldNames: ['C3_591373611399','C3_605619907534'],
+          values: ['Y','Y']
         }
       ],
       formHeaderRecords: [
