@@ -14,6 +14,11 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 
 - 修复 `TableData` 组件中记录表单子表不能添加数据的 bug
 
+```
+*升级提示
+git pull origin master
+```
+
 # v21.2.2（2019/3/21）
 
 - 修复 `TableData` 组件中记录表单中子表不能配置的 bug
