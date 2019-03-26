@@ -220,4 +220,12 @@ http.createApi('getResourceRelation', {
   url: '/api/Resource/GetResourceRelation'
 });
 
+/**
+ * 获取用户默认的仪表盘
+ */
+http.createApi('getDefaultDashboard', {
+  method: 'get',
+  url: '/api/Resource/GetUserDefaultReport'
+});
+
 export default http;
