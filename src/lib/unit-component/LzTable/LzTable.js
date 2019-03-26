@@ -2734,6 +2734,7 @@ class LzTable extends React.Component {
         message.success(value);
       } else {
         message.success('操作成功');
+        this.refreshTableData();
       }
     } else {
       message.error('操作失败');
