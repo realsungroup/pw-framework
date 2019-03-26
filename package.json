@@ -1,6 +1,6 @@
 {
   "name": "pw-components",
-  "version": "21.2.1",
+  "version": "21.2.3",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
