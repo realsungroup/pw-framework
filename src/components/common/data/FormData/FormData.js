@@ -3,13 +3,12 @@ import PwForm from '../../ui/PwForm';
 import { message, Tabs } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
-import { withHttpAddRecords, withHttpModifyRecords } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import { TableData } from '../../loadableCommon';
 import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
-
+import http, { makeCancelable } from 'Util20/api';
 const { Fragment } = React;
 const TabPane = Tabs.TabPane;
 
@@ -37,11 +36,13 @@ class FormData extends React.Component {
     }
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    this.p1 && this.p1.cancel();
+  };
 
   handleSave = form => {
     const { operation, info, record } = this.props;
-    const { dataMode, resid, subresid } = info;
+    const { dataMode, resid, subresid, hostrecid } = info;
     const id = getResid(dataMode, resid, subresid);
 
     form.validateFields(async (err, values) => {
@@ -52,8 +53,17 @@ class FormData extends React.Component {
       formData.REC_ID = record.REC_ID;
       // 添加
       if (operation === 'add') {
+        const params = {
+          resid: id,
+          data: [formData]
+        };
+        if (dataMode === 'sub') {
+          params.hostresid = resid;
+          params.hostrecid = hostrecid;
+        }
+        this.p1 = makeCancelable(http().addRecords(params));
         try {
-          await this.props.httpAddRecords(id, [formData]);
+          await this.p1.promise;
         } catch (err) {
           console.error(err);
           return message.error(err.message);
@@ -61,8 +71,17 @@ class FormData extends React.Component {
 
         // 修改
       } else {
+        const params = {
+          resid: id,
+          data: [formData]
+        };
+        if (dataMode === 'sub') {
+          params.hostresid = resid;
+          params.hostrecid = hostrecid;
+        }
+        this.p1 = makeCancelable(http().modifyRecords(params));
         try {
-          await this.props.httpModifyRecords(id, [formData]);
+          await this.p1.promise;
         } catch (err) {
           console.error(err);
           return message.error(err.message);
@@ -174,8 +193,4 @@ class FormData extends React.Component {
   }
 }
 
-const composedHoc = compose(
-  withHttpAddRecords,
-  withHttpModifyRecords
-);
-export default composedHoc(FormData);
+export default FormData;
