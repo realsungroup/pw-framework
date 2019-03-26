@@ -2732,7 +2732,7 @@ class LzTable extends React.Component {
       const value = res.data[0].C3_606500587548;
       if (value) {
         Modal.confirm({
-          title: '提示',
+          title: '提醒',
           content: value
         });
       } else {
