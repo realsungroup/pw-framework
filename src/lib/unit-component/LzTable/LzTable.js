@@ -2731,7 +2731,10 @@ class LzTable extends React.Component {
     if (res.data.length) {
       const value = res.data[0].C3_606500587548;
       if (value) {
-        message.success(value);
+        Modal.confirm({
+          title: '提示',
+          content: value
+        });
       } else {
         message.success('操作成功');
         this.refreshTableData();
