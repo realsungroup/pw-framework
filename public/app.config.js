@@ -49,7 +49,7 @@ window.pwConfig = {
     upload: {
       mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 服务器本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
-      url: 'http://kingofdinner.realsun.me:8102/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+      url: 'http://pwhrapi1.realsun.me/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
@@ -58,7 +58,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
+    baseURL: 'http://wux-hr03:9091/', // 请求的基地址
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -75,7 +75,7 @@ window.pwConfig = {
     defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
-      baseUrl: 'http://172.21.2.27:801/', // 域登录基地址
+      baseUrl: 'http://wux-hr03:9091/', // 域登录基地址
       usernameSuffix: '', // 域登录用户名的后缀
       domain: 'rbc.int', // 域名
       domainUserField: 'emp_id' // 域用户字段
@@ -83,7 +83,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {

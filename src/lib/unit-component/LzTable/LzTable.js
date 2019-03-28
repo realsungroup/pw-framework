@@ -2722,7 +2722,7 @@ class LzTable extends React.Component {
     try {
       res = await http().modifyRecords({
         resid: 590863325025,
-        data: [{ C3_606500587548: 'Y', REC_ID: record.REC_ID }]
+        data: [{ C3_591373760332: 'Y', REC_ID: record.REC_ID }]
       });
     } catch (err) {
       console.error(err);
