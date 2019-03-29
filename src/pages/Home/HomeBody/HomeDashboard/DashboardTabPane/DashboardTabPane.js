@@ -44,12 +44,14 @@ const calcRows = async rows => {
           }
           pArr.push(http().getFieldAggregateValue(params));
         } else {
-          return http().getTable({
-            resid,
-            sortField: categoryField,
-            sortOrder: sort,
-            cmswhere: where
-          });
+          pArr.push(
+            http().getTable({
+              resid,
+              sortField: categoryField,
+              sortOrder: sort,
+              cmswhere: where
+            })
+          );
         }
       });
     });
