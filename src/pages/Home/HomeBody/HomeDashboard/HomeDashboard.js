@@ -2,17 +2,28 @@ import React from 'react';
 import './HomeDashboard.less';
 import { Button, Tabs } from 'antd';
 import { getItem } from 'Util20/util';
-import DashboardPage from 'lz-components-and-utils/lib/DashboardPage';
+
 import { FormattedMessage as FM } from 'react-intl';
+import DashboardTabPane from './DashboardTabPane';
 
 const biBaseURL = window.pwConfig[process.env.NODE_ENV].biBaseURL;
 const baseURL = window.pwConfig[process.env.NODE_ENV].baseURL;
 const { TabPane } = Tabs;
 
-const getHref = biBaseURL => {
+/**
+ * 获取编辑仪表盘跳转的地址
+ * @param {string} dashboardName 仪表盘名称
+ * @param {number} dashboardId 仪表盘 id
+ * @param {number} dashboardClassifyId 仪表盘所属的分组 id
+ */
+const getHref = (dashboardName, dashboardId, dashboardClassifyId) => {
   const userInfo = JSON.parse(getItem('userInfo'));
   const { AccessToken, UserCode } = userInfo;
-  return `${biBaseURL}/home?u=${UserCode}&a=${AccessToken}`;
+  let separator = '';
+  if (biBaseURL.charAt(biBaseURL.length - 1) !== '/') {
+    separator = '/';
+  }
+  return `${biBaseURL}${separator}dashboard?o=edit&dashboardId=${dashboardId}&dashboardName=${dashboardName}&dashboardClassifyId=${dashboardClassifyId}&u=${UserCode}&a=${AccessToken}`;
 };
 
 const getRows = dashboard => {
@@ -30,11 +41,13 @@ const getRows = dashboard => {
 };
 
 export default class HomeDashboard extends React.PureComponent {
+  state = {};
+
   render() {
     const { defaultDashboards } = this.props;
 
     if (!defaultDashboards.length) {
-      const url = getHref(biBaseURL);
+      const url = `${biBaseURL}/home`;
 
       return (
         <div className="home-dashboard">
@@ -50,29 +63,36 @@ export default class HomeDashboard extends React.PureComponent {
       );
     }
 
-    console.log({ defaultDashboards });
     return (
       <div className="home-dashboard">
         <Tabs className="home-dashboard__tabs" tabPosition="top">
-          {defaultDashboards.map(dashboard => (
-            <TabPane tab={dashboard.ReportTitle} key={dashboard.MtsHostID}>
-              <Button
-                href={getHref()}
-                target="black"
-                type="primary"
-                className="home-dashboard__modify-dashboard"
-              >
-                编辑
-              </Button>
-              <div className="home-dashboard__dashboard-page-wrap">
-                <DashboardPage
-                  baseURL={baseURL}
-                  rows={getRows(dashboard)}
-                  mode="view"
-                />
-              </div>
-            </TabPane>
-          ))}
+          {defaultDashboards.map(dashboard => {
+            const dashboardId = dashboard.MtsHostID;
+            const dashboardName = dashboard.ReportTitle;
+            const dashboardClassifyId = dashboard.MTS_RPT_GROUPID;
+            return (
+              <TabPane tab={dashboardName} key={dashboardId}>
+                {dashboard.IsUserDefault && (
+                  <Button
+                    href={getHref(
+                      dashboardName,
+                      dashboardId,
+                      dashboardClassifyId
+                    )}
+                    target="black"
+                    type="primary"
+                    className="home-dashboard__modify-dashboard"
+                  >
+                    编辑
+                  </Button>
+                )}
+
+                <div className="home-dashboard__dashboard-page-wrap">
+                  <DashboardTabPane rows={getRows(dashboard)} />
+                </div>
+              </TabPane>
+            );
+          })}
         </Tabs>
       </div>
     );

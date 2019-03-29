@@ -236,4 +236,19 @@ http.createApi('getUserDefaultDashboards', {
   url: '/api/Resource/GetUserDefaultReports'
 });
 
+/**
+ * 获取字段聚合后的值
+ * 参数：{ resid, fields, groupby, cmswhere, orderby, dblink, innStart, intMaxRecords, strTableName, getresourcedata }
+ * 1. resid：资源id
+ * 2. fields：需要聚合的字段
+ * 3. groupby：group by 字段
+ * 4. cmswhere：where 语句
+ * 5. orderby：排序
+ * 6. ...
+ */
+http.createApi('getFieldAggregateValue', {
+  method: 'get',
+  url: '/api/100/table/GetDataBySqlParts'
+});
+
 export default http;
