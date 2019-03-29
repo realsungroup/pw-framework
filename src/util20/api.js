@@ -228,4 +228,12 @@ http.createApi('getDefaultDashboard', {
   url: '/api/Resource/GetUserDefaultReport'
 });
 
+/**
+ * 获取用户所有的默认仪表盘
+ */
+http.createApi('getUserDefaultDashboards', {
+  method: 'get',
+  url: '/api/Resource/GetUserDefaultReports'
+});
+
 export default http;

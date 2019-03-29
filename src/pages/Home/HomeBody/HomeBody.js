@@ -11,7 +11,7 @@ const TabPane = Tabs.TabPane;
 
 export default class HomeBody extends React.PureComponent {
   state = {
-    defaultDashboard: null,
+    defaultDashboards: [],
     loading: false,
     activeKey: '仪表盘'
   };
@@ -22,7 +22,7 @@ export default class HomeBody extends React.PureComponent {
 
   getData = async () => {
     this.setState({ loading: true });
-    this.p1 = makeCancelable(http().getDefaultDashboard());
+    this.p1 = makeCancelable(http().getUserDefaultDashboards());
     let res;
     try {
       res = await this.p1.promise;
@@ -30,10 +30,10 @@ export default class HomeBody extends React.PureComponent {
       console.error(err);
       return message.error(err.message);
     }
-    const defaultDashboard = res.data || null;
-    const activeKey = defaultDashboard ? '仪表盘' : '工作台';
+    const defaultDashboards = res.data || [];
+    const activeKey = defaultDashboards.length ? '仪表盘' : '工作台';
 
-    this.setState({ defaultDashboard, activeKey, loading: false });
+    this.setState({ defaultDashboards, activeKey, loading: false });
   };
 
   handleTabsChange = activeKey => {
@@ -41,7 +41,7 @@ export default class HomeBody extends React.PureComponent {
   };
 
   render() {
-    const { defaultDashboard, activeKey } = this.state;
+    const { defaultDashboards, activeKey } = this.state;
 
     return (
       <div className="home-body">
@@ -54,7 +54,7 @@ export default class HomeBody extends React.PureComponent {
             tab={<FM id="HomeBody.Dashboard" defaultMessage="仪表盘" />}
             key="仪表盘"
           >
-            <HomeDashboard defaultDashboard={defaultDashboard} />
+            <HomeDashboard defaultDashboards={defaultDashboards} />
           </TabPane>
           <TabPane
             tab={<FM id="HomeBody.Bench" defaultMessage="工作台" />}
@@ -63,20 +63,6 @@ export default class HomeBody extends React.PureComponent {
             <Workbench />
           </TabPane>
         </Tabs>
-        {/* <HalfPanel
-          title={<FM id="HomeBody.Taskbar" defaultMessage="任务栏" />}
-          prefix={<i className="iconfont icon-renwulan" />}
-        >
-          <Panel className="home-body__left-panel">
-            <ReminderList />
-          </Panel>
-        </HalfPanel>
-        <HalfPanel
-          title={<FM id="HomeBody.Bench" defaultMessage="工作台" />}
-          prefix={<i className="iconfont icon-gongzuotai" />}
-        >
-          <Workbench />
-        </HalfPanel> */}
       </div>
     );
   }
