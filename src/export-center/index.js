@@ -10,6 +10,9 @@ export { LzTable } from '../loadableComponents';
 
 // 定制组件
 
+export { Arrange,List} from '../components/custom/loadableCustom';
+
+
 export {
   LzDataHandling,
   LzDataAnalyse,
@@ -18,5 +21,5 @@ export {
   LzAFFO,
   LzWorkOvertime,
   LzTabsDataDashboard,
-  LzTeamSet
+  LzTeamSet,
 } from '../product-components/att/loadableComponents';

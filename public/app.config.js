@@ -3,10 +3,11 @@
  */
 
 window.pwConfig = {
+  
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:8102/', // 请求的基地址
+    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -18,7 +19,7 @@ window.pwConfig = {
         formName: 'default' // 窗体名称：可选；不设置时默认为 'default'
       }
     ],
-
+    
     // 登录页配置
     defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
@@ -32,13 +33,14 @@ window.pwConfig = {
 
     // 业务功能配置
     businessOptionalResIds: [
-      593979035940,
-      594468536480,
-      593979020171,
-      594399052677,
-      593979050146,
-      593979062893,
-      597176310158
+      // 593979035940,
+      // 594468536480,
+      // 593979020171,
+      // 594399052677,
+      // 593979050146,
+      // 593979062893,
+      // 597176310158,
+      607080839926,
     ], // 获取多个业务可选功能的 resid 数组
 
     // 主题
@@ -102,7 +104,8 @@ window.pwConfig = {
       594399052677,
       593979050146,
       593979062893,
-      597176310158
+      597176310158,
+      607080839926,
     ], // 获取多个业务可选功能的 resid 数组
 
     // 主题
