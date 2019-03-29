@@ -77,3 +77,34 @@ export const LzProApp = Loadable({
     return minLoading;
   }
 });
+export const MyQuery = Loadable({
+  loader: () => import('./MyQuery'),
+  loading() {
+    return minLoading;
+  }
+});
+export const QueryTable = Loadable({
+  loader: () => import('./QueryTable'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Paging = Loadable({
+  loader: () => import('./Paging'),
+  loading() {
+    return minLoading;
+  }
+});
+// QueryType
+export const QueryType = Loadable({
+  loader: () => import('./QueryType'),
+  loading() {
+    return minLoading;
+  }
+});
+export const QueryCreate = Loadable({
+  loader: () => import('./QueryCreate'),
+  loading() {
+    return minLoading;
+  }
+});

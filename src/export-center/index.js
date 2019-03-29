@@ -16,7 +16,7 @@ export { LzRecord } from '../components/custom/loadableCustom';
 export { LzApproval } from '../components/custom/loadableCustom';
 export { LzAFFOS } from '../components/custom/loadableCustom';
 export { ViProvider } from '../components/custom/loadableCustom';
-export { LzProApp } from '../components/custom/loadableCustom';
+export { LzProApp ,MyQuery,QueryTable,Paging,QueryType,QueryCreate} from '../components/custom/loadableCustom';
 
 // 组件
 

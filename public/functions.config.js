@@ -730,11 +730,19 @@ window[606242031630] = {
           hasModify: false,
           hasDelete: false
         },
-
-        // hasRowModify: false,
-        // hasRowView: false,
-        // hasRowDelete: false
       }
     ]
   } // 组件所接收的 props
+};
+//问卷调查
+window[607189885707] = {
+  name: 'MyQuery'
+};
+//问卷分类
+window[607190580237] = {
+  name: 'QueryType'
+};
+//创建问卷
+window[607189943193] = {
+  name: 'QueryCreate'
 };
