@@ -1527,8 +1527,14 @@ window[607170104270] = {
   name: "TableData",
   props: {
     resid: 607188956037,
+    hasAdd:false,
+    hasModify:false,
+    hasDelete:false,
     hasBeBtns:true,
     opIsFixed: true,
+    hasRowDelete:false,
+    hasRowModify:false,
+    hasRowView:true,
   }
 };
 
@@ -1538,11 +1544,14 @@ window[607168385734] = {
   name: "TableData",
   props: {
     resid: 607189025758,
-    addBtn: true,
-    hasBeBtns:true,
-    btnsVisible: {
-      check: true
-    }
+  //  hasImportData:true,
+  hasBeBtns:true,
+   hasAdd:false,
+   hasModify: false,
+   hasDelete: false,
+   hasRowModify: false,
+   hasRowView: false,
+   hasRowDelete: false,
   }
 };
 //试卷管理
@@ -1552,7 +1561,9 @@ window[607170235566] = {
   props: {
     resid: 607188968490,
     hasBeBtns:true,
-    addBtn:true,
+    hasAdd:true,
+    hasModify:false,
+    hasDelete:false,
   }
 };
 
@@ -1562,11 +1573,10 @@ window[607170415939] = {
   name: "TableData",
   props: {
     resid: 607188996053,
-    btnsVisible:{
-      mod:true
-    },
-    addBtn:true,
-    opIsFixed: true,
+    hasAdd:false,
+    hasDelete:false,
+    hasModify:false,
+    hasBeBtns:true,
   }
 };
 
@@ -1576,11 +1586,12 @@ window[607170472378] = {
   name: "TableData",
   props: {
     resid: 607188982819,
-    opIsFixed: true,
-    addBtn:true,
-    btnsVisible:{
-      mod:true,
-    }
+    hasAdd:true,
+    hasModify:false,
+    hasDelete:false,
+    hasRowView:true,
+    hasRowDelete:true,
+    hasRowModify:true
   },
 
 };
@@ -1593,7 +1604,9 @@ window[607170185691] = {
     resid: 607188943833,
     addBtn:true,
     hasBeBtns:true,
-    opIsFixed:true,
+    hasAdd:true,
+    hasModify:false,
+    hasDelete:false,
   }
 };
 
@@ -1603,9 +1616,16 @@ window[607183152969] = {
   name: "TableData",
   props: {
     resid: 607189040461,
-    btnsVisible:{
-      mod:true
-    },
-    opIsFixed:true,
+    hasDelete:false,
+    hasModify:false,
   }
 };
+
+//试卷题型管理
+window[607264812668]={
+  title:'添加试卷题型',
+  name:"TableData",
+  props:{
+
+  }
+}
