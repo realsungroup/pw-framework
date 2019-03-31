@@ -521,5 +521,12 @@ export const propTypes = {
    * 默认：-
    * 可选：jsx 或 (tableData: []) => {}
    */
-  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
+  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+
+  /**
+   * header 区域额外的内容
+   * 默认：-
+   * 可选：jsx 或 (tableData: []) => {}
+   */
+  headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };

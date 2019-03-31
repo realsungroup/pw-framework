@@ -1234,7 +1234,8 @@ class TableData extends React.Component {
       hasZoomInOut,
       hasImport,
       bordered,
-      actionBarExtra
+      actionBarExtra,
+      headerExtra
     } = this.props;
     const {
       pagination,
@@ -1291,6 +1292,7 @@ class TableData extends React.Component {
         modifyText={modifyText}
         enModifyText={enModifyText}
         actionBarExtra={actionBarExtra}
+        headerExtra={headerExtra}
       />
     );
   };
