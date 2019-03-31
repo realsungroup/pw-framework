@@ -1297,19 +1297,15 @@ class TableData extends React.Component {
     );
   };
 
-  setTableDataRef = element => {
-    this.tableDataRef = element;
-  };
-
   render() {
-    const { hasResizeableBox, width, height } = this.props;
+    const { hasResizeableBox, width, height, wrappedComponentRef } = this.props;
     const { loading } = this.state;
 
     return (
       <div
         className="table-data"
         style={{ width, height }}
-        ref={this.setTableDataRef}
+        ref={wrappedComponentRef}
       >
         <Spin spinning={loading}>
           {hasResizeableBox && this.boxW && this.boxH ? (
@@ -1339,8 +1335,8 @@ const composedHoc = compose(
   withDownloadFile,
   withRecordForm(),
   withZoomInOut(),
-  withImport,
-  injectIntl
+  injectIntl,
+  withImport
 );
 
 export default composedHoc(TableData);

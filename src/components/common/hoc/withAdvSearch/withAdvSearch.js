@@ -129,13 +129,17 @@ const withAdvSearch = (options = {}) => {
       };
 
       render() {
+        const name = WrappedComponent.displayName || WrappedComponent.name;
+        const otherProps = {};
+        if (name === this.props.refTargetComponentName) {
+          otherProps.ref = this.props.wrappedComponentRef;
+        }
         return (
-          <Fragment>
-            <WrappedComponent
-              openAdvSearch={this.handleOpenAdvSearch}
-              {...this.props}
-            />
-          </Fragment>
+          <WrappedComponent
+            openAdvSearch={this.handleOpenAdvSearch}
+            {...this.props}
+            {...otherProps}
+          />
         );
       }
     }

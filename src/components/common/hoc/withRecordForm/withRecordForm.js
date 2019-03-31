@@ -109,9 +109,15 @@ export function withRecordForm(options = {}) {
       };
 
       render() {
+        const name = WrappedComponent.displayName || WrappedComponent.name;
+        const otherProps = {};
+        if (name === this.props.refTargetComponentName) {
+          otherProps.ref = this.props.wrappedComponentRef;
+        }
         return (
           <WrappedComponent
             {...this.props}
+            {...otherProps}
             openRecordForm={this.handleOpenRecordForm}
             closeRecordForm={this.handleCloseRecordForm}
           />

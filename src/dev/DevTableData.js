@@ -11,6 +11,8 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          refTargetComponentName="TableData"
+          wrappedComponentRef={element => (this.tableDataRef = element)}
           actionBarExtra={tableData => {
             console.log({ tableData });
             return 'hhh';
@@ -74,6 +76,9 @@ class App extends Component {
             <button onClick={() => console.log('批量添加')}>批量添加</button>
           }
         />
+        <button onClick={() => this.tableDataRef.handleRefresh(true)}>
+          刷新表格数据
+        </button>
       </TemplateWrap>
     );
   }

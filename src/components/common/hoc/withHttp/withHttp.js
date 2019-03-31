@@ -97,10 +97,16 @@ export const withHttpRemoveRecords = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpRemoveRecords={this.handleHttpRemoveRecords}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -144,10 +150,16 @@ export const withHttpGetTableData = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetTableData={this.handleHttpGetTableData}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -195,10 +207,16 @@ export const withHttpGetSubTableData = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetSubTableData={this.handleHttpGetSubTableData}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -232,10 +250,16 @@ export const withHttpGetBeBtns = WrappedComponent => {
       return { beBtnsMultiple, beBtnsSingle, beBtnsOther };
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetBeBtns={this.handleHttpGetBeBtns}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -277,10 +301,16 @@ export const withHttpGetFormData = WrappedComponent => {
       return formData;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetFormData={this.handleHttpGetFormData}
           {...this.props}
+          {...otherProps}
         />
       );
     }
