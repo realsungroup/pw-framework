@@ -12,10 +12,18 @@ export const Arrange = Loadable({
     }
   });
 
-  export const  List= Loadable({
-    loader: () => import('./List'),
+  export const  Pop= Loadable({
+    loader: () => import('./Pop'),
     loading() {
       return minLoading;
     }
   });
+
+  export const  AddTitle= Loadable({
+    loader: () => import('./AddTitle'),
+    loading() {
+      return minLoading;
+    }
+  });
+    
     

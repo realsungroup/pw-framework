@@ -1521,20 +1521,20 @@ window[601728701208] = {
   }
 };
 
-//成绩管理
+//个人成绩管理
 window[607170104270] = {
-  title: "成绩管理",
+  title: "个人成绩管理",
   name: "TableData",
   props: {
     resid: 607188956037,
-    hasAdd:false,
-    hasModify:false,
-    hasDelete:false,
-    hasBeBtns:true,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+    hasBeBtns: true,
     opIsFixed: true,
-    hasRowDelete:false,
-    hasRowModify:false,
-    hasRowView:true,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
   }
 };
 
@@ -1544,14 +1544,14 @@ window[607168385734] = {
   name: "TableData",
   props: {
     resid: 607189025758,
-  //  hasImportData:true,
-  hasBeBtns:true,
-   hasAdd:false,
-   hasModify: false,
-   hasDelete: false,
-   hasRowModify: false,
-   hasRowView: false,
-   hasRowDelete: false,
+    //  hasImportData:true,
+    hasBeBtns: true,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false
   }
 };
 //试卷管理
@@ -1560,10 +1560,10 @@ window[607170235566] = {
   name: "TableData",
   props: {
     resid: 607188968490,
-    hasBeBtns:true,
-    hasAdd:true,
-    hasModify:false,
-    hasDelete:false,
+    hasBeBtns: true,
+    hasAdd: true,
+    hasModify: false,
+    hasDelete: false
   }
 };
 
@@ -1573,10 +1573,10 @@ window[607170415939] = {
   name: "TableData",
   props: {
     resid: 607188996053,
-    hasAdd:false,
-    hasDelete:false,
-    hasModify:false,
-    hasBeBtns:true,
+    hasAdd: false,
+    hasDelete: false,
+    hasModify: false,
+    hasBeBtns: true,
   }
 };
 
@@ -1586,14 +1586,13 @@ window[607170472378] = {
   name: "TableData",
   props: {
     resid: 607188982819,
-    hasAdd:true,
-    hasModify:false,
-    hasDelete:false,
-    hasRowView:true,
-    hasRowDelete:true,
-    hasRowModify:true
-  },
-
+    hasAdd: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowView: true,
+    hasRowDelete: true,
+    hasRowModify: true
+  }
 };
 //考试安排
 window[607170185691] = {
@@ -1602,11 +1601,11 @@ window[607170185691] = {
   props: {
     tableTitle: "考试安排",
     resid: 607188943833,
-    addBtn:true,
-    hasBeBtns:true,
-    hasAdd:true,
-    hasModify:false,
-    hasDelete:false,
+    addBtn: true,
+    hasBeBtns: true,
+    hasAdd: true,
+    hasModify: false,
+    hasDelete: false
   }
 };
 
@@ -1616,24 +1615,49 @@ window[607183152969] = {
   name: "TableData",
   props: {
     resid: 607189040461,
-    hasDelete:false,
-    hasModify:false,
+    hasDelete: false,
+    hasModify: false
   }
 };
 
 //试卷题型管理
-window[607264812668]={
-  title:'添加试卷题型',
-  name:"TableData",
+window[607264812668] = {
+  title: "添加试卷题目",
+  name: "TableData",
+  props: {}
+};
+//测试-试卷题目添加
+window[607272422322] = {
+  title: "测试-试卷题目添加",
+  name: "Arrange",
+  props: {}
+};
+//测试-选择参加考试人员
+window[607377356382] = {
+  title: "测试-选择参加考试人员",
+  name: "Pop",
+  props: {}
+};
+//测试-考试成绩汇总
+window[607384570024]={
+  title:'测试-考试成绩汇总',
+  name:'TableData',
+  props:{
+    resid:607385902612,
+    hasAdd:false,
+    hasModify:false,
+    hasDelete:false,
+    hasRowDelete:false,
+    hasRowModify:false,
+    hasRowView:false,
+    hasBeBtns:true,
+  }
+}
+//测试-添加题库题目
+window[607431486196]={
+  title:'测试-题库题目添加',
+  name:'AddTitle',
   props:{
 
   }
 }
- window[607272422322]={
-   title:'测试-试卷题目添加',
-   name:'Arrange',
-   props:{
-     
-   }
-
- }
