@@ -1202,7 +1202,7 @@ class TableData extends React.Component {
     if (storeWay === 'be') {
       const id = this._id;
       this.p4 = makeCancelable(
-        http().removeRecords({ resid: id, records: [record] })
+        http().removeRecords({ resid: id, data: [record] })
       );
       try {
         await this.p4.promise;
