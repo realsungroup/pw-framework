@@ -88,13 +88,27 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
+  componentWillReceiveProps = async nextProps => {
+    if (
+      this.props.resid !== nextProps.resid ||
+      this.props.subresid !== nextProps.subresid ||
+      this.props.dataMode !== nextProps.dataMode ||
+      this.props.hostrecid !== nextProps.hostrecid
+    ) {
+      this.setState({ loading: true });
+      this.initVariables(nextProps);
+      await this.getData(nextProps);
+      this.setState({ loading: false });
+    }
+  };
+
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
   };
 
-  initVariables = () => {
-    const { dataMode, resid, subresid } = this.props;
+  initVariables = props => {
+    const { dataMode, resid, subresid } = props || this.props;
 
     // 资源 id
     this._id = getResid(dataMode, resid, subresid);
@@ -115,7 +129,7 @@ class TableData extends React.Component {
     this._dealedRowEditFormData = null;
   };
 
-  getData = async () => {
+  getData = async props => {
     const {
       hasBeBtns,
       hasAdd,
@@ -123,7 +137,7 @@ class TableData extends React.Component {
       hasRowModify,
       hasRowView,
       hasRowEdit
-    } = this.props;
+    } = props || this.props;
     const { pagination } = this.state;
     let page, pageSize;
     if (pagination) {
@@ -840,7 +854,9 @@ class TableData extends React.Component {
 
   handleOnRow = record => {
     return {
-      onClick: () => {}, // 点击行
+      onClick: () => {
+        this.props.onRowClick && this.props.onRowClick(record);
+      }, // 点击行
       onMouseEnter: () => {} // 鼠标移入行
     };
   };
