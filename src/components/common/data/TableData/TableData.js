@@ -23,7 +23,7 @@ import { defaultProps, propTypes } from './propTypes';
 import { EditableContext } from './EditableRow';
 import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
-import withZoomInOut from '../../hoc/withZoomInOut';
+// import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
@@ -47,15 +47,12 @@ class TableData extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const { defaultPagination, hasModify, hasDelete } = props;
-
+    const { defaultPagination, hasModify, hasDelete, width, height } = props;
     const pagination = getPagination(
       defaultPagination,
       this.handlePageChange,
       this.handleShowSizeChange
     );
-
     const rowSelection = getRowSelection(
       hasModify,
       hasDelete,
@@ -75,7 +72,9 @@ class TableData extends React.Component {
       rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
       scrollXY: { x: 1000, y: 1000 },
-      editingKey: null // 正在进行行内编辑的记录 REC_ID
+      editingKey: null, // 正在进行行内编辑的记录 REC_ID
+      width,
+      height
     };
   }
 
@@ -897,7 +896,9 @@ class TableData extends React.Component {
     }
     this.setState({
       scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH },
-      pagination
+      pagination,
+      width,
+      height
     });
   };
 
@@ -1314,8 +1315,8 @@ class TableData extends React.Component {
   };
 
   render() {
-    const { hasResizeableBox, width, height, wrappedComponentRef } = this.props;
-    const { loading } = this.state;
+    const { hasResizeableBox } = this.props;
+    const { loading, width, height } = this.state;
 
     return (
       <div
@@ -1350,7 +1351,7 @@ const composedHoc = compose(
   withAdvSearch(),
   withDownloadFile,
   withRecordForm(),
-  withZoomInOut(),
+  // withZoomInOut(),
   injectIntl,
   withImport
 );
