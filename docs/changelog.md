@@ -10,6 +10,16 @@ pw-framework 的版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/
 先行版本号及版本编译元数据可以加到“主版本号.次版本号.修订号”的后面，作为延伸。
 ```
 
+# v21.3.0（2019/4/1）
+
+- 添加 BusinessManagement 组件
+- TableData 组件添加 headerExtra 配置
+- 修复高阶组件深层次嵌套不能对被增强的组件使用 ref 的 bug
+- 添加 TableData 组件 onRowClick 属性以及相关 props 变化后，会重新请求表格相关数据的功能
+- 修复 TableData 设置 height 样式出问题的 bug
+- 修复 TableData 组件计算 scrollXY 错误的 bug
+- 添加 TableData 组件添加在添加记录时，记录表单的记录和子表数据可以同时添加的功能
+
 # v21.2.3（2019/3/26）
 
 - 修复 `TableData` 组件中记录表单子表不能添加数据的 bug
