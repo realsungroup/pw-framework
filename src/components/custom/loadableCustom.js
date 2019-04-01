@@ -25,5 +25,26 @@ export const Arrange = Loadable({
       return minLoading;
     }
   });
+
+  export const  EditTitle= Loadable({
+    loader: () => import('./EditTitle'),
+    loading() {
+      return minLoading;
+    }
+  });
+  
+  export const  ExamSet= Loadable({
+    loader: () => import('./ExamSet'),
+    loading() {
+      return minLoading;
+    }
+  });
+
+  export const  Choice= Loadable({
+    loader: () => import('./Choice'),
+    loading() {
+      return minLoading;
+    }
+  });
     
     

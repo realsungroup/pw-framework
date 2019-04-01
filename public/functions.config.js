@@ -1546,7 +1546,7 @@ window[607168385734] = {
     resid: 607189025758,
     //  hasImportData:true,
     hasBeBtns: true,
-    hasAdd: false,
+    hasAdd: true,
     hasModify: false,
     hasDelete: false,
     hasRowModify: false,
@@ -1642,6 +1642,7 @@ window[607377356382] = {
 window[607384570024]={
   title:'测试-考试成绩汇总',
   name:'TableData',
+  customRowBtns:true,
   props:{
     resid:607385902612,
     hasAdd:false,
@@ -1651,6 +1652,7 @@ window[607384570024]={
     hasRowModify:false,
     hasRowView:false,
     hasBeBtns:true,
+    
   }
 }
 //测试-添加题库题目
@@ -1660,4 +1662,17 @@ window[607431486196]={
   props:{
 
   }
+}
+//测试-修改题目
+window[607454092932]={
+  title:'测试-题目修改',
+  name:'EditTitle',
+  props:{
+
+  }
+}
+
+window[607459194551]={
+  title:'试卷设置',
+  name:'ExamSet',
 }

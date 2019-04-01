@@ -10,7 +10,7 @@ export { LzTable } from '../loadableComponents';
 
 // 定制组件
 
-export { Arrange,Pop,AddTitle} from '../components/custom/loadableCustom';
+export { Arrange,Pop,AddTitle,EditTitle,ExamSet,Choice} from '../components/custom/loadableCustom';
 
 
 export {
