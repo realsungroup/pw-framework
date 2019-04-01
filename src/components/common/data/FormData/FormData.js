@@ -125,6 +125,10 @@ class FormData extends React.Component {
           });
         });
 
+        if (dataObj.subdata) {
+          dataObj.subdata.reverse();
+        }
+
         data = [dataObj];
 
         this.p1 = makeCancelable(http().saveRecordAndSubTables({ data }));
