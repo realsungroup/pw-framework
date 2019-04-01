@@ -52,7 +52,8 @@ export const defaultProps = {
   modifyText: '修改',
   enModifyText: 'Modify',
   recordFormFormWidth: '50%',
-  recordFormTabsWidth: '50%'
+  recordFormTabsWidth: '50%',
+  hasImport: true
 };
 
 export const propTypes = {
@@ -512,6 +513,13 @@ export const propTypes = {
   // ===========================================================
   // 导入数据功能相关 props ======================================
   // ===========================================================
+
+  /**
+   * 是否有导入功能
+   * 默认：true
+   */
+  hasImport: PropTypes.bool,
+
   /**
    * 导入功能的容器类型
    * 可选：'modal' 模态窗 | 'drawer' 抽屉

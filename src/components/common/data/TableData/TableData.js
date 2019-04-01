@@ -50,7 +50,9 @@ class TableData extends React.Component {
     const rowSelection = getRowSelection(
       hasModify,
       hasDelete,
-      this.rowSelectionChange
+      [],
+      this.rowSelectionChange,
+      true
     );
     this.state = {
       loading: false,
@@ -75,9 +77,11 @@ class TableData extends React.Component {
   componentDidMount = async () => {
     this.initVariables();
     this.setState({ loading: true });
+
     await this.getData();
     await this.getScrollXY();
 
+    console.log('width:', this.tableDataRef.clientWidth);
     this.setState({ loading: false });
   };
 
@@ -99,6 +103,7 @@ class TableData extends React.Component {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
+    this.p4 && this.p4.cancel();
   };
 
   getDataSource = () => {
@@ -125,6 +130,10 @@ class TableData extends React.Component {
 
     // 缓存已处理的行内编辑窗体数据（行内编辑表单所需的 data）
     this._dealedRowEditFormData = null;
+
+    // scroll = { x, y }
+    this._x = 0;
+    this._y = 0;
   };
 
   getData = async props => {
@@ -212,7 +221,19 @@ class TableData extends React.Component {
 
     const scrollXY = { x, y: this.boxH - subtractH };
 
-    this.setState({ scrollXY });
+    this._x = x;
+    this._y = y;
+
+    const { hasModify, hasDelete } = this.props;
+    const newRowSelection = getRowSelection(
+      hasModify,
+      hasDelete,
+      this.state.rowSelection.selectedRowKeys,
+      this.rowSelectionChange,
+      this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
+    );
+
+    this.setState({ scrollXY, rowSelection: newRowSelection });
   };
 
   getTableData = async ({
@@ -542,8 +563,6 @@ class TableData extends React.Component {
       }
     }
   };
-
-  getScroll = () => {};
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
@@ -946,11 +965,24 @@ class TableData extends React.Component {
       pagination.showQuickJumper = true;
       pagination.showSizeChanger = true;
     }
+
+    this._x = this.state.scrollXY.x;
+
+    const { hasModify, hasDelete } = this.props;
+    const newRowSelection = getRowSelection(
+      hasModify,
+      hasDelete,
+      this.state.rowSelection.selectedRowKeys,
+      this.rowSelectionChange,
+      this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
+    );
+
     this.setState({
       scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH },
       pagination,
       width,
-      height
+      height,
+      newRowSelection
     });
   };
 
@@ -1325,7 +1357,11 @@ class TableData extends React.Component {
     };
 
     // 操作栏固定在右侧
-    if (this.props.actionBarFixed) {
+    if (
+      this.props.actionBarFixed &&
+      this.tableDataRef &&
+      this._x + 32 >= this.tableDataRef.clientWidth
+    ) {
       actionBar.fixed = 'right';
     }
     return actionBar;

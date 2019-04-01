@@ -78,6 +78,7 @@ class BMContent extends React.Component {
               subtractH={190}
               height={520}
               onRowClick={this.handleRowClick}
+              hasBeBtns
             />
           </div>
           {!!subTables.length && (
@@ -93,6 +94,7 @@ class BMContent extends React.Component {
                         hostrecid={selectedRecord.REC_ID}
                         subtractH={190}
                         height={520}
+                        hasBeBtns
                       />
                     ) : (
                       <div
