@@ -251,4 +251,42 @@ http.createApi('getFieldAggregateValue', {
   url: '/api/100/table/GetDataBySqlParts'
 });
 
+/**
+ * 获取表格列定义数据
+ * 参数：{ resid }
+ * 1. resid：资源id
+ */
+http.createApi('getTableColumnDefine', {
+  method: 'get',
+  url: '/api/100/table/RetrieveColumnsDefineByArray'
+});
+
+/**
+ * 保存主表记录以及多张子表记录
+ * 参数：{ data }。data 如下
+ */
+// 如：
+// "data": [
+//   {
+//     "resid": "577814681716", // 主表 id
+//     "maindata": { // 主表记录
+//       "REC_ID": "585417447165",
+//       "C3_577815790581": 80,
+//       "C3_577835493318": "10001",
+//       "_state": "modified", // 修改
+//       "_id": 1
+//     },
+//     "subdata": [ // 子表数据
+//       {
+//         "resid": "577816887354", // 子表 id
+//         "maindata": { "C3_577887174694": "hantao", "_state": "added", "_id": 1 } // 子表记录
+//       }
+//     ]
+//   }
+// ]
+http.createApi('saveRecordAndSubTables', {
+  method: 'post',
+  url: '/api/200/table/Save'
+});
+
 export default http;

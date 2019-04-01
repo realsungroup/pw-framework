@@ -6,13 +6,7 @@ import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
 import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableData.less';
-import {
-  withHttpGetTableData,
-  withHttpGetSubTableData,
-  withHttpGetBeBtns,
-  withHttpGetFormData,
-  withHttpRemoveRecords
-} from '../../hoc/withHttp';
+import { withHttpGetBeBtns, withHttpGetFormData } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch';
 import withImport from '../../hoc/withImport';
@@ -104,6 +98,11 @@ class TableData extends React.Component {
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();
+  };
+
+  getDataSource = () => {
+    return this.state.dataSource;
   };
 
   initVariables = props => {
@@ -135,8 +134,10 @@ class TableData extends React.Component {
       hasModify,
       hasRowModify,
       hasRowView,
-      hasRowEdit
+      hasRowEdit,
+      storeWay
     } = props || this.props;
+
     const { pagination } = this.state;
     let page, pageSize;
     if (pagination) {
@@ -145,9 +146,12 @@ class TableData extends React.Component {
     }
     await this.getTableData({ page, pageSize });
 
-    // 有后端定义按钮
-    if (hasBeBtns) {
-      await this.getBeBtns();
+    // 存储方式为后端储存时，才请求后端按钮
+    if (storeWay !== 'fe') {
+      // 有后端定义按钮
+      if (hasBeBtns) {
+        await this.getBeBtns();
+      }
     }
 
     // 需要获取窗体数据，用于行内编辑或记录记录表单中
@@ -225,44 +229,62 @@ class TableData extends React.Component {
       subresid,
       cmswhere,
       cmscolumns,
-      httpGetTableData,
-      httpGetSubTableData
+      storeWay
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
-    try {
-      // 获取主表数据
-      if (dataMode === 'main') {
-        res = await httpGetTableData(
-          resid,
-          key,
-          mergedCmsWhere,
-          cmscolumns,
-          page - 1,
-          pageSize,
-          sortOrder,
-          sortField,
-          1
-        );
-      } else {
-        // 获取子表数据
-        res = await httpGetSubTableData(
-          resid,
-          subresid,
-          hostrecid,
-          key,
-          mergedCmsWhere,
-          cmscolumns,
-          page - 1,
-          pageSize,
-          sortOrder,
-          sortField,
-          1
-        );
+
+    // 存储方式为后端存储
+    if (storeWay !== 'fe') {
+      try {
+        // 获取主表数据
+        if (dataMode === 'main') {
+          const params = {
+            resid,
+            key,
+            cmswhere: mergedCmsWhere,
+            cmscolumns,
+            pageindex: page - 1,
+            pagesize: pageSize,
+            sortOrder,
+            sortField,
+            getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
+          };
+          this.p3 = makeCancelable(http().getTable(params));
+          res = await this.p3.promise;
+
+          // 获取子表数据
+        } else {
+          const params = {
+            resid,
+            subresid,
+            hostrecid,
+            key,
+            cmswhere: mergedCmsWhere,
+            cmscolumns,
+            pageindex: page - 1,
+            pagesize: pageSize,
+            sortOrder,
+            sortField,
+            getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
+          };
+          this.p3 = makeCancelable(http().getSubTable(params));
+          res = await this.p3.promise;
+        }
+      } catch (err) {
+        return console.error(err);
       }
-    } catch (err) {
-      return console.error(err);
+    } else {
+      // 存储方式为前端存储，则只获取表格列定义数据
+      this.p3 = makeCancelable(http().getTableColumnDefine({ resid }));
+      try {
+        res = await this.p3.promise;
+      } catch (err) {
+        return console.error(err);
+      }
+      console.log({ res });
     }
+
     const {
       hasBeSort,
       defaultColumnWidth,
@@ -270,18 +292,26 @@ class TableData extends React.Component {
       fixedColumns,
       hasRowEdit
     } = this.props;
+
+    const secondParams = {
+      hasBeSort,
+      defaultColumnWidth,
+      columnsWidth,
+      fixedColumns
+    };
+
+    let dataSource = res.data;
+    if (storeWay === 'fe') {
+      secondParams.hasBeSort = false;
+      dataSource = [];
+    }
+
     const { columns, components } = getColumns(
       res.cmscolumninfo,
-      {
-        hasBeSort,
-        defaultColumnWidth,
-        columnsWidth,
-        fixedColumns
-      },
+      secondParams,
       cmscolumns,
       hasRowEdit
     );
-    const dataSource = res.data;
 
     const state = {
       columns,
@@ -678,7 +708,8 @@ class TableData extends React.Component {
       recordFormType,
       beforeSaveFields,
       recordFormContainerProps,
-      subTableArrProps
+      subTableArrProps,
+      storeWay
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -736,6 +767,7 @@ class TableData extends React.Component {
       subTableArrProps,
       recordFormFormWidth,
       recordFormTabsWidth,
+      storeWay,
       onConfirm: this.handleConfirm,
       onCancel: this.handleCancel
     });
@@ -819,7 +851,7 @@ class TableData extends React.Component {
 
   // 点击删除按钮
   handleDelete = async () => {
-    const { intl } = this.props;
+    const { intl, storeWay } = this.props;
     const { selectedRowKeys } = this.state.rowSelection;
     if (!selectedRowKeys.length) {
       return message.error(intl.messages['TableData.pleaseSelectARecord']);
@@ -831,13 +863,36 @@ class TableData extends React.Component {
         records.push(record);
       }
     });
-    const { httpRemoveRecords } = this.props;
-    const id = this._id;
-    try {
-      await httpRemoveRecords(id, records);
-    } catch (err) {
-      return console.error(err);
+
+    // 后端存储，则发送请求删除记录
+    if (storeWay === 'be') {
+      const id = this._id;
+      this.p4 = makeCancelable(
+        http().removeRecords({
+          resid: id,
+          data: records
+        })
+      );
+      try {
+        await this.p4.promise;
+      } catch (err) {
+        return console.error(err);
+      }
+      // 刷新表格数据
+      this.handleRefresh();
+
+      // 前端存储，则只修改 dataSource
+    } else {
+      const newDataSource = [...dataSource];
+      newDataSource.forEach(record => {
+        const index = records.findIndex(item => record.REC_ID === item.REC_ID);
+        if (index !== -1) {
+          newDataSource.splice(index, 1);
+        }
+      });
+      this.setState({ dataSource: newDataSource });
     }
+
     message.success(intl.messages['TableData.deleteSuccess']);
 
     // 清除 selectedRowKeys
@@ -846,9 +901,6 @@ class TableData extends React.Component {
         rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
       });
     }
-
-    // 刷新表格数据
-    this.handleRefresh();
   };
 
   handleOnRow = record => {
@@ -1121,7 +1173,7 @@ class TableData extends React.Component {
           title: (
             <FM id="common.sureDelete" defaultMessage="您确定要删除吗？" />
           ),
-          onConfirm: () => this.handleRowDelete([record])
+          onConfirm: () => this.handleRowDelete(record)
         }}
         buttonProps={{
           type: 'danger',
@@ -1143,35 +1195,77 @@ class TableData extends React.Component {
     });
   };
 
-  handleRowDelete = async records => {
-    const { httpRemoveRecords, intl } = this.props;
-    const id = this._id;
-    try {
-      await httpRemoveRecords(id, records);
-    } catch (err) {
-      return console.error(err);
+  handleRowDelete = async record => {
+    const { intl, storeWay } = this.props;
+
+    // 后端存储，发送删除行请求
+    if (storeWay === 'be') {
+      const id = this._id;
+      this.p4 = makeCancelable(
+        http().removeRecords({ resid: id, records: [record] })
+      );
+      try {
+        await this.p4.promise;
+      } catch (err) {
+        return console.error(err);
+      }
+      // 刷新表格数据
+      this.handleRefresh();
+
+      // 前端存储，只修改 dataSource
+    } else {
+      const { dataSource } = this.state;
+      const index = dataSource.findIndex(
+        reocrdItem => reocrdItem.REC_ID === record.REC_ID
+      );
+      const newDataSource = [...dataSource];
+      newDataSource.splice(index, 1);
+      this.setState({ dataSource: newDataSource });
     }
+
     message.success(intl.messages['common.deleteSuccess']);
 
     // 清除 selectedRowKeys
     this.setState({
       rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
     });
-
-    // 刷新表格数据
-    this.handleRefresh();
   };
 
-  handleConfirm = () => {
-    const { intl } = this.props;
-    const { recordFormShowMode } = this.state;
-    if (recordFormShowMode === 'add') {
+  handleConfirm = (operation, formData, record, form) => {
+    this.props.closeRecordForm();
+    const { intl, storeWay } = this.props;
+    if (operation === 'add') {
       message.success(intl.messages['common.addSuccess']);
-    } else if (recordFormShowMode === 'modify') {
+    } else if (operation === 'modify') {
       message.success(intl.messages['common.modifySuccess']);
     }
-    this.props.closeRecordForm();
-    this.handleRefresh();
+    // 后端存储，则刷新表格数据
+    if (storeWay === 'be') {
+      this.handleRefresh();
+
+      // 前端存储，则修改 dataSource
+    } else {
+      this.handleDealDataSource(operation, formData, record);
+    }
+  };
+
+  handleDealDataSource = (operation, formData, record) => {
+    const { dataSource } = this.state;
+    // 添加
+    if (operation === 'add') {
+      this.setState({
+        dataSource: [...dataSource, { ...formData, REC_ID: dataSource.length }]
+      });
+
+      // 修改
+    } else if (operation === 'modify') {
+      const newDataSource = [...dataSource];
+      const index = newDataSource.findIndex(
+        recordItem => recordItem.REC_ID === record.REC_ID
+      );
+      newDataSource.splice(index, 1, { ...formData });
+      this.setState({ dataSource: newDataSource });
+    }
   };
 
   handleCancel = () => {
@@ -1343,11 +1437,8 @@ class TableData extends React.Component {
 }
 
 const composedHoc = compose(
-  withHttpGetTableData,
-  withHttpGetSubTableData,
   withHttpGetBeBtns,
   withHttpGetFormData,
-  withHttpRemoveRecords,
   withAdvSearch(),
   withDownloadFile,
   withRecordForm(),

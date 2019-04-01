@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 export const defaultProps = {
   size: 'middle',
   dataMode: 'main',
+  storeWay: 'be',
   hasAdd: true,
   hasModify: true,
   hasDelete: true,
@@ -69,6 +70,14 @@ export const propTypes = {
   dataMode: PropTypes.oneOf(['main', 'sub']),
 
   /**
+   * 表格数据存储方式
+   * 可选：'fe' | 'be'
+   * 默认：'be'
+   * 描述：'fe' 表示表格数据存储在前端，每次添加、修改表格数据时，只是在前端添加，而不发送请求进行后端数据的添加；'be' 表示数据存储在后端，每次添加、修改都会发送请求，修改后端数据库的表格数据
+   */
+  storeWay: PropTypes.oneOf(['fe', 'be']),
+
+  /**
    * 表格尺寸
    * 默认：'middle'
    */
@@ -103,8 +112,8 @@ export const propTypes = {
    * 默认：-
    */
   subresid: (props, propName, componentName) => {
-    // 当 dataMode 为 "sub" 时，subresid 是必传的
-    if (props.dataMode === 'sub') {
+    // 当 dataMode 为 "sub" 且 storeWay 为 "be" 时，subresid 是必传的
+    if (props.dataMode === 'sub' && props.storeWay === 'be') {
       return typeof props[propName] === 'number'
         ? null
         : new Error('lz-table: subresid 无效，subresid 必须为 number 类型');
@@ -116,8 +125,8 @@ export const propTypes = {
    * 默认：-
    */
   hostrecid: (props, propName, componentName) => {
-    // 当 dataMode 为 "sub" 时，hostrecid 是必传的
-    if (props.dataMode === 'sub') {
+    // 当 dataMode 为 "sub" 且 storeWay 为 "be" 时，hostrecid 是必传的
+    if (props.dataMode === 'sub' && props.storeWay === 'be') {
       return typeof props[propName] === 'number'
         ? null
         : new Error('lz-table: hostrecid 无效，hostrecid 必须为 number 类型');
