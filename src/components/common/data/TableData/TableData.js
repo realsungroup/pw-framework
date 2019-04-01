@@ -1321,7 +1321,7 @@ class TableData extends React.Component {
       <div
         className="table-data"
         style={{ width, height }}
-        ref={wrappedComponentRef}
+        ref={element => (this.tableDataRef = element)}
       >
         <Spin spinning={loading}>
           {hasResizeableBox && this.boxW && this.boxH ? (
