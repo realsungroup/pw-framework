@@ -50,7 +50,7 @@ class BMContent extends React.Component {
     if (res.data.length) {
       hasSubTable = true;
       res.data.forEach(item => {
-        item.resid = item.resid;
+        item.resid = item.ResID;
         item.resName = item.ResName;
       });
     }
@@ -61,6 +61,10 @@ class BMContent extends React.Component {
     this.setState({ openedTabs: [...this.state.opendedTabs, menuItem] });
   };
 
+  handleRowClick = record => {
+    this.setState({ selectedRecord: record });
+  };
+
   render() {
     const { loading, subTables, selectedRecord } = this.state;
     const { resid } = this.props;
@@ -68,20 +72,38 @@ class BMContent extends React.Component {
       <Spin spinning={loading}>
         <div className="bm-content">
           <div className="bm-content__main-table">
-            <TableData resid={resid} dataMode="main" subtractH={160} />
+            <TableData
+              resid={resid}
+              dataMode="main"
+              subtractH={190}
+              height={520}
+              onRowClick={this.handleRowClick}
+            />
           </div>
           {!!subTables.length && (
             <div className="bm-content__sub-table">
               <Tabs>
                 {subTables.map(subTable => (
                   <TabPane tab={subTable.resName} key={subTable.resid}>
-                    {selectedRecord && (
+                    {selectedRecord && selectedRecord ? (
                       <TableData
                         resid={resid}
-                        subresid={subTable.resid}
+                        subresid={parseInt(subTable.resid, 10)}
                         dataMode="sub"
                         hostrecid={selectedRecord.REC_ID}
+                        subtractH={190}
+                        height={520}
                       />
+                    ) : (
+                      <div
+                        style={{
+                          height: 200,
+                          lineHeight: '200px',
+                          textAlign: 'center'
+                        }}
+                      >
+                        请选择一条记录
+                      </div>
                     )}
                   </TabPane>
                 ))}
