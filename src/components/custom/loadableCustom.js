@@ -108,3 +108,15 @@ export const QueryCreate = Loadable({
     return minLoading;
   }
 });
+export const QuerySet = Loadable({
+  loader: () => import('./QuerySet'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Choice = Loadable({
+  loader: () => import('./Choice'),
+  loading() {
+    return minLoading;
+  }
+});

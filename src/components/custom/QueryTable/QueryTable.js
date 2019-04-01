@@ -59,21 +59,21 @@ class QueryTable extends Component {
                   <span>
                     <Icon type="sync" /> {item.status}
                   </span>
-                  <span>答卷：{item.answercount}</span>
+                  <span className="answercount">答卷:{item.answercount}</span>
                   <span>{item.sendtime}</span>
                 </div>
               </div>
               <div className="queryItem-bottom">
                 <div className="queryItem-left">
-                  <Button type="primary">
+                  <Button className="stepBtn" type="primary">
                     <Icon type="setting" />
                     设计问卷
                   </Button>
-                  <Button type="primary">
+                  <Button className="stepBtn"  type="primary">
                     <Icon type="file-done" />
                     发送问卷
                   </Button>
-                  <Button type="primary">
+                  <Button className="stepBtn"  type="primary">
                     <Icon type="download" />
                     分析&下载
                   </Button>

@@ -746,3 +746,13 @@ window[607190580237] = {
 window[607189943193] = {
   name: 'QueryCreate'
 };
+//问卷设置
+// 607263861075
+window[607263861075] = {
+  title:'问卷设置',
+  name: 'QuerySet'
+};
+// 607427743437  单选
+window[607427743437] = {
+  name: 'Choice'
+};

@@ -1,22 +1,37 @@
 import React from 'react';
-import { Button, Icon, Input, Select, Tag } from 'antd';
+import { Button, Icon, Input, Select, Tag, Modal } from 'antd';
 import './MyQuery.less';
 import QueryTable from '../QueryTable';
-import Paging from '../Paging'
+import TableData from '../../common/data/TableData';
+import Paging from '../Paging';
 const Option = Select.Option;
 const CheckableTag = Tag.CheckableTag;
 class MyQuery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      wid:300
     };
   }
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+  delFloder = ()=>{
+     alert("你确定要删除整个文件夹么")
+     //这里弹出的框点击后，标签就会自动消失。到时候只需保证用户再次进来的时候这个文件夹不存在就好了。
+  };
   render() {
     return (
       <div className="query">
         <div className="query-top">
-          <Button type="primary" shape="round" href="..">
+          <Button type="primary" shape="round">
             <Icon type="plus" />
             创建问卷
           </Button>
@@ -37,27 +52,42 @@ class MyQuery extends React.Component {
         </div>
         {/* <hr style={{color:"#e4f0fb"}}/> */}
         <div className="folder">
-          <Button type="primary" shape="round">
-            管理文件夹
+          <Button
+            type="primary"
+            shape="round"
+            icon="plus"
+            onClick={this.showModal}
+          >
+            新建文件夹
           </Button>
-          <Tag className="personalTags" size="lagre">
+          <Modal
+            title="新建文件夹"
+            // borderstyle= {color}
+            width={this.state.wid}
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+          >
+            <label>文件夹名称:</label>
+            <Input />
+          </Modal>
+          <Tag className="personalTags" size="large">
             全部
           </Tag>
-          <Tag className="personalTags" size="lagre">
+          <Tag className="personalTags" size="large">
             离职原因调查
           </Tag>
-          <Tag className="personalTags" size="lagre">
+          <Tag   closable onClose={this.delFloder} className="personalTags" size="large">
             满意度调查
           </Tag>
-          <Tag className="personalTags" size="lagre" selected>
+          <Tag className="personalTags" size="large">
             其他
           </Tag>
-          <Tag className="personalTags" size="lagre" color="#108ee9">
+          <Tag className="personalTags" size="large" color="#108ee9">
             选中的标签
           </Tag>
         </div>
-        <QueryTable/>
-        <Paging/>
+        <QueryTable />
+        <Paging />
       </div>
     );
   }
