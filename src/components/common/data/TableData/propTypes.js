@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
 
+/**
+ * 可使用的实例方法参照：./README.md
+ */
+
 export const defaultProps = {
   size: 'middle',
   dataMode: 'main',
@@ -53,7 +57,14 @@ export const defaultProps = {
   enModifyText: 'Modify',
   recordFormFormWidth: '50%',
   recordFormTabsWidth: '50%',
-  hasImport: true
+  hasImport: true,
+  advSearch: {
+    searchComponent: 'both',
+    containerType: 'drawer',
+    formName: 'default',
+    validationFields: [],
+    fields: []
+  }
 };
 
 export const propTypes = {
@@ -384,6 +395,77 @@ export const propTypes = {
    * 默认：true
    */
   hasAdvSearch: PropTypes.bool,
+
+  /**
+   * 高级搜索配置
+   * 默认：
+   * {
+   *   searchComponent: 'both',
+   *   containerType: 'drawer',
+   *   formName: 'default',
+   *   validationFields: [],
+   *   fields: []
+   * }
+   */
+  advSearch: PropTypes.shape({
+    /**
+     * 高级搜索使用的组件
+     * 'PwForm' 表示使用 PwForm 组件，其对应后端的窗体；'AdvSearch' 表示使用 AdvSearch 组件；'both' 表示使用两种组件
+     * 默认：'both'
+     */
+    searchComponent: PropTypes.oneOfType([
+      PropTypes.oneOf(['PwForm', 'AdvSearch', 'both']),
+      PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string, // 标题
+          name: PropTypes.oneOf(['PwForm', 'AdvSearch']), // 高级搜索所使用的组件
+          order: PropTypes.number // 排序
+        })
+      )
+    ]),
+
+    /**
+     * 高级搜索所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+     * 默认：'drawer'
+     */
+    containerType: PropTypes.oneOf(['modal', 'drawer']),
+
+    /**
+     * 高级搜索中容器组件所接收的 props
+     * 默认：-
+     */
+    containerProps: PropTypes.object,
+
+    /**
+     * 高级搜索使用的窗体名称（当 searchComponent 为 PwForm 时）
+     * 默认：'default'
+     */
+    formName: PropTypes.string,
+
+    /**
+     * 高级搜索中 PwForm 组件所接收的 props
+     * 默认：-
+     */
+    formProps: PropTypes.object,
+
+    /**
+     * 高级搜索中需要验证的字段，如：['name', 'age']（当 searchComponent 为 PwForm 时）
+     * 默认：[]，表示不验证任何字段
+     */
+    validationFields: PropTypes.array,
+
+    /**
+     * AdvSearch 组件接收的 fields props
+     * 默认：[]
+     */
+    fields: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string, // label
+        value: PropTypes.string, // value
+        control: PropTypes.oneOf(['Input']) // 所用控件
+      })
+    )
+  }),
 
   /**
    * 高级搜索所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉

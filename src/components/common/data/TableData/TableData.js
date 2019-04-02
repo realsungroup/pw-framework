@@ -225,13 +225,16 @@ class TableData extends React.Component {
     this._y = y;
 
     const { hasModify, hasDelete } = this.props;
-    const newRowSelection = getRowSelection(
-      hasModify,
-      hasDelete,
-      this.state.rowSelection.selectedRowKeys,
-      this.rowSelectionChange,
-      this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
-    );
+    let newRowSelection = null;
+    if (rowSelection) {
+      newRowSelection = getRowSelection(
+        hasModify,
+        hasDelete,
+        this.state.rowSelection.selectedRowKeys,
+        this.rowSelectionChange,
+        this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
+      );
+    }
 
     this.setState({ scrollXY, rowSelection: newRowSelection });
   };
@@ -969,43 +972,51 @@ class TableData extends React.Component {
     this._x = this.state.scrollXY.x;
 
     const { hasModify, hasDelete } = this.props;
-    const newRowSelection = getRowSelection(
-      hasModify,
-      hasDelete,
-      this.state.rowSelection.selectedRowKeys,
-      this.rowSelectionChange,
-      this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
-    );
+    const { rowSelection } = this.state;
+    let newRowSelection = null;
+    if (rowSelection) {
+      newRowSelection = getRowSelection(
+        hasModify,
+        hasDelete,
+        this.state.rowSelection.selectedRowKeys,
+        this.rowSelectionChange,
+        this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
+      );
+    }
 
     this.setState({
       scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH },
       pagination,
       width,
       height,
-      newRowSelection
+      rowSelection: newRowSelection
     });
   };
 
   handleAdvSearch = () => {
-    const {
-      advSearchContainerType,
-      advSearchFormName,
-      advSearchContainerProps,
-      advSearchFormProps,
-      openAdvSearch,
-      advSearchValidationFields
-    } = this.props;
+    const { openAdvSearch, advSearch } = this.props;
     const id = this._id;
+    const {
+      searchComponent,
+      containerType,
+      containerProps,
+      formName,
+      formProps,
+      validationFields,
+      fields
+    } = advSearch;
 
     // 打开高级搜索
     openAdvSearch(
-      advSearchContainerType,
+      searchComponent,
+      containerType,
       id,
-      advSearchFormName,
-      advSearchValidationFields,
+      formName,
+      validationFields,
       this.getCmsWhere,
-      advSearchContainerProps,
-      advSearchFormProps
+      containerProps,
+      formProps,
+      fields
     );
   };
 

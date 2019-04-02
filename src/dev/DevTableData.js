@@ -17,6 +17,27 @@ class App extends Component {
             console.log({ tableData });
             return 'hhh';
           }}
+          advSearch={{
+            searchComponent: [
+              {
+                title: '搜索1',
+                name: 'PwForm',
+                order: 2
+              },
+              {
+                title: '搜索2',
+                name: 'AdvSearch',
+                order: 1
+              }
+            ],
+            containerType: 'drawer',
+            formName: 'default',
+            validationFields: [],
+            fields: [
+              { label: '姓名', value: 'name', control: 'Input' },
+              { label: '年龄', value: 'age', control: 'Input' }
+            ]
+          }}
           actionBarWidth={300}
           title="调休登记"
           resid={596720928643}
@@ -24,7 +45,7 @@ class App extends Component {
           size="small"
           hasBeBtns={false}
           subtractH={200}
-          actionBarFixed={false}
+          actionBarFixed={true}
           advSearchContainerType="drawer"
           hasRowEdit
           hasAdd={true}
