@@ -32,6 +32,7 @@ export default class EditTitle extends Component {
     });
   };
   render() {
+    const { size } = this.state;
     return (
       <div>
         <Button type="primary" onClick={this.showModal}>
@@ -45,48 +46,30 @@ export default class EditTitle extends Component {
           onCancel={this.handleCancel}
         >
           <div>
-            <label>题目类型:</label>
-            <Select
-              defaultValue="单选题"
-              style={{ width: 120 }}
-              onChange={handleChange}
-            >
-              <Option value="单选题">单选题</Option>
-              <Option value="多选题">多选题</Option>
-              <Option value="判断题">判断题</Option>
-              <Option value="填空题">填空题</Option>
-              <Option value="问答题">问答题</Option>
-            </Select>
             <label>题目难度:</label>
-            <Select
-              defaultValue="低难度"
-              style={{ width: 120 }}
-              onChange={handleChange}
+            <Radio.Group
+              value={size}
+              onChange={this.onChange}
+              style={{ marginBottom: 16 }}
             >
-              <Option value="低难度">中难度</Option>
-              <Option value="中难度">中难度</Option>
-              <Option value="高难度">高难度</Option>
-            </Select>
+              <Radio.Button value="small">低难度</Radio.Button>
+              <Radio.Button value="default">中难度</Radio.Button>
+              <Radio.Button value="large">高难度</Radio.Button>
+            </Radio.Group>
           </div>
           <div>
             <label>试题题目:</label>
             <Input />
           </div>
           <div>
-            <label>答案选项:</label>
-            <Input />
-          </div>
-          <div>
-            <label>选项个数:</label>
-            <Input />
-          </div>
-          <div>
             <label>试题答案</label>
+            <br></br>
             <RadioGroup name="radiogroup" defaultValue={1}>
-              <Radio value={1}>A</Radio>
-              <Radio value={2}>B</Radio>
-              <Radio value={3}>C</Radio>
-              <Radio value={4}>D</Radio>
+              <Radio value={1}>A</Radio><Input className='input'></Input>
+              <Radio value={2}>B</Radio><Input className='input'></Input>
+              <br></br>
+              <Radio value={3}>C</Radio><Input className='input'></Input>
+              <Radio value={4}>D</Radio><Input className='input'></Input>
             </RadioGroup>
           </div>
         </Modal>

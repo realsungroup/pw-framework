@@ -66,6 +66,12 @@ class ExamSet extends Component {
         <div className="queryHeader" onClick={this.showModal}>
           <h1>入职考试</h1>
         </div>
+        <label>单选题</label>
+        <Choice />
+        <Choice />
+        <Choice />
+        <Choice />
+        <Choice />
         <Choice />
         <Modal
           visible={this.state.visible}
@@ -78,7 +84,6 @@ class ExamSet extends Component {
           <Input />
         </Modal>
         <div className="addStyle">
-          <Button>导入添加题目</Button>
           <Button onClick={this.addSingle}>单独添加题目</Button>
           <Modal
             title="单独添加"

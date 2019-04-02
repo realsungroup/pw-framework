@@ -1534,7 +1534,7 @@ window[607170104270] = {
     opIsFixed: true,
     hasRowDelete: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
   }
 };
 
@@ -1543,13 +1543,13 @@ window[607168385734] = {
   title: "考试培训",
   name: "TableData",
   props: {
-    resid: 607189025758,
+    resid: 607189025758 ,
     //  hasImportData:true,
     hasBeBtns: true,
     hasAdd: true,
     hasModify: false,
     hasDelete: false,
-    hasRowModify: false,
+    hasRowModify: true,
     hasRowView: false,
     hasRowDelete: false
   }
@@ -1563,7 +1563,8 @@ window[607170235566] = {
     hasBeBtns: true,
     hasAdd: true,
     hasModify: false,
-    hasDelete: false
+    hasDelete: false,
+    hasRowView:false,
   }
 };
 
@@ -1572,11 +1573,12 @@ window[607170415939] = {
   title: "题库管理",
   name: "TableData",
   props: {
-    resid: 607188996053,
+    resid: 607195640786,
     hasAdd: false,
     hasDelete: false,
     hasModify: false,
     hasBeBtns: true,
+    hasRowView:false,
   }
 };
 
@@ -1602,6 +1604,7 @@ window[607170185691] = {
     tableTitle: "考试安排",
     resid: 607188943833,
     addBtn: true,
+    hasRowView:false,
     hasBeBtns: true,
     hasAdd: true,
     hasModify: false,
@@ -1626,12 +1629,7 @@ window[607264812668] = {
   name: "TableData",
   props: {}
 };
-//测试-试卷题目添加
-window[607272422322] = {
-  title: "测试-试卷题目添加",
-  name: "Arrange",
-  props: {}
-};
+
 //测试-选择参加考试人员
 window[607377356382] = {
   title: "测试-选择参加考试人员",
@@ -1667,12 +1665,28 @@ window[607431486196]={
 window[607454092932]={
   title:'测试-题目修改',
   name:'EditTitle',
-  props:{
-
-  }
 }
-
+//试卷设置
 window[607459194551]={
   title:'试卷设置',
   name:'ExamSet',
+}
+//我的考试
+window[607168416937]={
+  title:'我的考试',
+  name:'TableData',
+  props:{
+    resid:607526453157,
+    hasBeBtns:true,
+    hasAdd:false,
+    hasDelete:false,
+    hasModify:false,
+    hasRowDelete:false,
+    hasRowModify:false,
+    hasRowView:false,
+  }
+}
+
+window[607272422322]={
+  name:'Arrange'
 }
