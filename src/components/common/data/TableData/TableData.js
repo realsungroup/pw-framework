@@ -355,7 +355,38 @@ class TableData extends React.Component {
       state.editingKey = null;
     }
 
+    // 前端按钮是否有显示的权限
+    this.setUpBtnAuth(res.ResourceData);
+
     this.setState(state);
+  };
+
+  setUpBtnAuth = ({
+    hasAdd,
+    hasAdvSearch,
+    hasBeBtns,
+    hasDelete,
+    hasDownload,
+    hasImport,
+    hasModify,
+    hasRefresh,
+    hasRowDelete,
+    hasRowModify,
+    hasRowView,
+    hasSearch
+  }) => {
+    this._hasAdd = hasAdd;
+    this._hasAdvSearch = hasAdvSearch;
+    this._hasBeBtns = hasBeBtns;
+    this._hasDelete = hasDelete;
+    this._hasDownload = hasDownload;
+    this._hasImport = hasImport;
+    this._hasModify = hasModify;
+    this._hasRefresh = hasRefresh;
+    this._hasRowDelete = hasRowDelete;
+    this._hasRowModify = hasRowModify;
+    this._hasRowView = hasRowView;
+    this._hasSearch = hasSearch;
   };
 
   /**
@@ -1339,9 +1370,11 @@ class TableData extends React.Component {
         if (hasRowEdit) {
           hasRowSaveCancel = record.REC_ID === editingKey;
           hasRowEdit = hasRowEdit && !hasRowSaveCancel;
-          hasRowModify = hasRowModify && !hasRowSaveCancel;
-          hasRowView = hasRowView && !hasRowSaveCancel;
-          hasRowDelete = hasRowDelete && !hasRowSaveCancel;
+          hasRowModify =
+            hasRowModify && !hasRowSaveCancel && this._hasRowModify;
+          hasRowView = hasRowView && !hasRowSaveCancel && this._hasRowView;
+          hasRowDelete =
+            hasRowDelete && !hasRowSaveCancel && this._hasRowDelete;
           hasRowBeBtns = hasRowBeBtns && !hasRowSaveCancel;
           hasCustomRowBtns = hasCustomRowBtns && !hasRowSaveCancel;
         }
@@ -1419,9 +1452,9 @@ class TableData extends React.Component {
         bordered
         rowKey={'REC_ID'}
         scroll={scrollXY}
-        hasAdd={hasAdd}
-        hasModify={hasModify}
-        hasDelete={hasDelete}
+        hasAdd={hasAdd && this._hasAdd}
+        hasModify={hasModify && this._hasModify}
+        hasDelete={hasDelete && this._hasDelete}
         onAdd={this.handleAdd}
         onModify={this.handleModify}
         onDelete={this.handleDelete}
@@ -1435,13 +1468,13 @@ class TableData extends React.Component {
         onRow={this.handleOnRow}
         onRefresh={this.handleRefresh}
         size={size}
-        hasImport={hasImport}
-        hasDownload={hasDownload}
-        hasRefresh={hasRefresh}
+        hasImport={hasImport && this._hasImport}
+        hasDownload={hasDownload && this._hasDownload}
+        hasRefresh={hasRefresh && this._hasRefresh}
         onAdvSearch={this.handleAdvSearch}
-        hasAdvSearch={hasAdvSearch}
-        hasSearch={hasSearch}
-        hasZoomInOut={hasZoomInOut}
+        hasAdvSearch={hasAdvSearch && this._hasAdvSearch}
+        hasSearch={hasSearch && this._hasSearch}
+        // hasZoomInOut={hasZoomInOut}
         onZoomIn={this.handleZoomIn}
         onZoomOut={this.handleZoomOut}
         bordered={bordered}
