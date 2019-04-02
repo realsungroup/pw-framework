@@ -1,15 +1,13 @@
 import React from 'react';
-import classNames from 'classnames';
 import './BusinessManagement.less';
 import { propTypes, defaultProps } from './propTypes';
 import { message, Tabs, Menu, Layout, Icon, Spin } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
-import { table2Tree } from 'Util20/util';
 import BMContent from './BMContent';
+import arrayToTree from 'array-to-tree';
 
-const { Fragment } = React;
 const TabPane = Tabs.TabPane;
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 /**
@@ -48,13 +46,11 @@ class BusinessManagement extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    let menuList = [];
-
-    for (let i = 0; i < 20; i++) {
-      menuList.push(res.data[i]);
-    }
-
-    menuList = table2Tree(menuList, 'RES_ID', 'RES_PID');
+    let menuList = res.data;
+    menuList = arrayToTree(menuList, {
+      parentProperty: 'RES_PID',
+      customID: 'RES_ID'
+    });
     this.setState({ menuList, loading: false });
   };
 
@@ -137,12 +133,13 @@ class BusinessManagement extends React.Component {
               collapsible
               collapsed={collapsed}
               onCollapse={this.handleCollapse}
+              style={{ width: 256 }}
             >
               <div className="business-management__title">
                 {!collapsed && '业务管理'}
               </div>
 
-              <Menu theme="dark" mode="inline">
+              <Menu mode="horizontal" theme="dark" mode="inline">
                 {menuList.map(menuItem => this.renderMenuItem(menuItem))}
               </Menu>
             </Sider>
