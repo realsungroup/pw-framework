@@ -4,7 +4,6 @@ import { propTypes, defaultProps } from './propTypes';
 import { message, Spin, Tabs } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import { TableData } from 'Common/loadableCommon';
-import classNames from 'classnames';
 
 const TabPane = Tabs.TabPane;
 

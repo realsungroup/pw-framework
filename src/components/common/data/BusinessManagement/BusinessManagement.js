@@ -83,7 +83,8 @@ class BusinessManagement extends React.Component {
           key={menuItem.RES_ID}
           title={
             <span>
-              <Icon type="folder" />
+              <i className={`iconfont ${menuItem.RES_ICONNAME}`} />
+              {/* <Icon type="folder" /> */}
               <span>{menuItem.RES_NAME}</span>
             </span>
           }
@@ -97,7 +98,8 @@ class BusinessManagement extends React.Component {
         key={menuItem.RES_ID}
         onClick={() => this.handleSelectedMenuItem(menuItem)}
       >
-        <Icon type="file" />
+        <i className={`iconfont ${menuItem.RES_ICONNAME}`} />
+        {/* <Icon type="file" /> */}
         <span>{menuItem.RES_NAME}</span>
       </Menu.Item>
     );
