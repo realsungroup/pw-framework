@@ -1,7 +1,7 @@
 import React from 'react';
 import './BusinessManagement.less';
 import { propTypes, defaultProps } from './propTypes';
-import { message, Tabs, Menu, Layout, Icon, Spin } from 'antd';
+import { message, Tabs, Menu, Layout, Input, Spin } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import BMContent from './BMContent';
 import arrayToTree from 'array-to-tree';
@@ -19,14 +19,21 @@ const SubMenu = Menu.SubMenu;
 class BusinessManagement extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
+
+  state = {};
+
   constructor(props) {
     super(props);
     this.state = {
+      originMenuList: [],
       menuList: [],
       loading: false,
       openedTabs: [], // 打开的标签页
       activeKey: '',
-      collapsed: false
+      collapsed: false,
+      arr: [], // menuList 的数组形式
+      searchValue: '', // 搜索值
+      openKeys: [] // 打开的 subMenu key
     };
   }
 
@@ -54,12 +61,17 @@ class BusinessManagement extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    let menuList = res.data;
-    menuList = arrayToTree(menuList, {
+    let arr = [...res.data];
+    const menuList = arrayToTree([...res.data], {
       parentProperty: 'RES_PID',
       customID: 'RES_ID'
     });
-    this.setState({ menuList, loading: false });
+    this.setState({
+      arr,
+      menuList,
+      originMenuList: [...menuList],
+      loading: false
+    });
   };
 
   handleSelectedMenuItem = menuItem => {
@@ -79,8 +91,16 @@ class BusinessManagement extends React.Component {
     });
   };
 
+  handleOpenChange = openKeys => {
+    this.setState({ openKeys });
+  };
+
   renderMenuItem = menuItem => {
-    if (menuItem.children && menuItem.children.length) {
+    if (
+      typeof menuItem === 'object' &&
+      menuItem.children &&
+      menuItem.children.length
+    ) {
       return (
         <SubMenu
           key={menuItem.RES_ID}
@@ -97,14 +117,16 @@ class BusinessManagement extends React.Component {
       );
     }
     return (
-      <Menu.Item
-        key={menuItem.RES_ID}
-        onClick={() => this.handleSelectedMenuItem(menuItem)}
-      >
-        <i className={`iconfont ${menuItem.RES_ICONNAME}`} />
-        {/* <Icon type="file" /> */}
-        <span>{menuItem.RES_NAME}</span>
-      </Menu.Item>
+      typeof menuItem === 'object' && (
+        <Menu.Item
+          key={menuItem.RES_ID}
+          onClick={() => this.handleSelectedMenuItem(menuItem)}
+        >
+          <i className={`iconfont ${menuItem.RES_ICONNAME}`} />
+          {/* <Icon type="file" /> */}
+          <span>{menuItem.RES_NAME}</span>
+        </Menu.Item>
+      )
     );
   };
 
@@ -133,8 +155,83 @@ class BusinessManagement extends React.Component {
     this.setState({ collapsed });
   };
 
+  handleSearch = value => {
+    const { originMenuList, arr } = this.state;
+    const { intl } = this.props;
+
+    const prop = intl.locale === 'zh' ? 'RES_NAME' : 'RES_NAME_EN';
+
+    const list = [...originMenuList];
+    const menuList = [];
+    let openKeys = [];
+    list.forEach(item => {
+      const parentKeys = [];
+      let keys = [];
+      if (typeof item === 'object') {
+        this.getItemFromTree(
+          item,
+          prop,
+          value,
+          null,
+          menuList,
+          keys,
+          'RES_ID',
+          parentKeys
+        );
+      }
+      openKeys.push(...keys);
+    });
+    this.setState({ menuList, openKeys: Array.from(new Set(openKeys)) });
+  };
+
+  getItemFromTree = (
+    data,
+    matchField,
+    matchValue,
+    parentData,
+    arr,
+    keyArr,
+    keyField,
+    parentKeys
+  ) => {
+    parentKeys.push(String(data[keyField]));
+    if (data[matchField].indexOf(matchValue) !== -1) {
+      if (parentData) {
+        keyArr.push(...parentKeys);
+      } else {
+        arr.push(data);
+      }
+    }
+    // 搜索 children
+    if (data.children && data.children.length) {
+      data.children.forEach(item => {
+        if (typeof item === 'object') {
+          this.getItemFromTree(
+            item,
+            matchField,
+            matchValue,
+            data,
+            arr,
+            keyArr,
+            keyField,
+            parentKeys
+          );
+        }
+      });
+    } else {
+      return;
+    }
+  };
+
   render() {
-    const { loading, menuList, openedTabs, activeKey, collapsed } = this.state;
+    const {
+      loading,
+      menuList,
+      openedTabs,
+      activeKey,
+      collapsed,
+      openKeys
+    } = this.state;
     const { intl, enTitle, title } = this.props;
 
     return (
@@ -150,8 +247,21 @@ class BusinessManagement extends React.Component {
               <div className="business-management__title">
                 {!collapsed && getIntlVal(intl.locale, enTitle, title)}
               </div>
+              <div className="business-management__menu-search">
+                <Input.Search
+                  onSearch={this.handleSearch}
+                  className="business-management__input-search"
+                  enterButton={false}
+                />
+              </div>
 
-              <Menu mode="horizontal" theme="dark" mode="inline">
+              <Menu
+                mode="horizontal"
+                theme="dark"
+                mode="inline"
+                openKeys={openKeys}
+                onOpenChange={this.handleOpenChange}
+              >
                 {menuList.map(menuItem => this.renderMenuItem(menuItem))}
               </Menu>
             </Sider>
