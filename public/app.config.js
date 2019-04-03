@@ -70,7 +70,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:8102/', // 请求的基地址
+    baseURL: 'http://172.21.2.27:801/', // 请求的基地址
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -84,7 +84,7 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://172.21.2.27:801/', // 域登录基地址
@@ -92,6 +92,7 @@ window.pwConfig = {
       domain: 'rbc.int', // 域名
       domainUserField: 'emp_id' // 域用户字段
     },
+
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
@@ -120,9 +121,10 @@ window.pwConfig = {
 
     // 上传文件配置
     upload: {
-      mode: 'cloud', // 模式：'cloud' 云对象存储；'local' 本地存储
+      mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
-      url: 'http://kingofdinner.realsun.me:8102/' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+      url:
+        'http://172.21.2.27:802/rispweb/rispservice/SvcUploadFile2.aspx?savepath=D:\\HRWEBofRegalCZ\\HRWEBofRegalCZ\\rispweb\\upfiles&httppath=http://172.21.2.27:802/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
