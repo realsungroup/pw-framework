@@ -9,7 +9,8 @@ import {
   PersonCenter,
   WorkbenchSetting,
   GetConfig,
-  Reminder
+  Reminder,
+  ReportTable
 } from '../loadablePage';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
@@ -193,6 +194,7 @@ export default class Container extends React.Component {
           <Route path="/workbench-setting" component={WorkbenchSetting} />
           <Route path="/fnmodule" component={GetConfig} />
           <Route path="/reminder" component={Reminder} />
+          <Route path="/report-table" component={ReportTable} />
         </PageBody>
       </div>
     );

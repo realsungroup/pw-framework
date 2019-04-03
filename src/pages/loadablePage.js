@@ -51,6 +51,13 @@ export const Login = Loadable({
   }
 });
 
+export const ReportTable = Loadable({
+  loader: () => import('./ReportTable'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
 export const NotFound = Loadable({
   loader: () => import('./NotFound'),
   loading() {
