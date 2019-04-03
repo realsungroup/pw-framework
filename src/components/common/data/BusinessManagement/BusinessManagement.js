@@ -37,7 +37,12 @@ class BusinessManagement extends React.Component {
 
   getData = async () => {
     this.setState({ loading: true });
-    this.p1 = makeCancelable(http().getUserFunctionTree());
+    const { rootId } = this.props;
+    const params = {};
+    if (rootId) {
+      params.rootid = rootId;
+    }
+    this.p1 = makeCancelable(http().getUserFunctionTree(params));
     let res;
     try {
       res = await this.p1.promise;

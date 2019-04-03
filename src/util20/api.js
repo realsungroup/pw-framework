@@ -204,7 +204,8 @@ http.createApi('getUserDesktop', {
 
 /**
  * 获取当前用户综合管理树
- * 参数：-
+ * 参数：{ rootid }
+ * 1. rootid：根节点 id
  */
 http.createApi('getUserFunctionTree', {
   method: 'get',

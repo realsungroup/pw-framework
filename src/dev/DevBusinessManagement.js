@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <BusinessManagement />
+        <BusinessManagement rootId={308175022132} />
       </TemplateWrap>
     );
   }
