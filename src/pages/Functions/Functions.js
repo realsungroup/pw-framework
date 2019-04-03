@@ -69,10 +69,16 @@ class Functions extends React.Component {
   };
 
   render() {
-    const { name, props, title, hasBackBtn = true } = this.props.config;
+    const {
+      name,
+      props,
+      title,
+      hasBackBtn = true,
+      hasHeader = true
+    } = this.props.config;
     return (
       <div className="functions">
-        <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />
+        {hasHeader && <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />}
         <div className="functions__body">
           {this.renderComponent(name, props)}
         </div>
