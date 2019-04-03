@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
 
+/**
+ * 可使用的实例方法参照：./README.md
+ */
+
 export const defaultProps = {
   size: 'middle',
   dataMode: 'main',
+  storeWay: 'be',
   hasAdd: true,
   hasModify: true,
   hasDelete: true,
@@ -49,7 +54,17 @@ export const defaultProps = {
   addText: '添加',
   enAddText: 'Add',
   modifyText: '修改',
-  enModifyText: 'Modify'
+  enModifyText: 'Modify',
+  recordFormFormWidth: '50%',
+  recordFormTabsWidth: '50%',
+  hasImport: true,
+  advSearch: {
+    searchComponent: 'both',
+    containerType: 'drawer',
+    formName: 'default',
+    validationFields: [],
+    fields: []
+  }
 };
 
 export const propTypes = {
@@ -65,6 +80,14 @@ export const propTypes = {
    * 描述：'main' 表示主表数据；'sub' 表示子表数据
    */
   dataMode: PropTypes.oneOf(['main', 'sub']),
+
+  /**
+   * 表格数据存储方式
+   * 可选：'fe' | 'be'
+   * 默认：'be'
+   * 描述：'fe' 表示表格数据存储在前端，每次添加、修改表格数据时，只是在前端添加，而不发送请求进行后端数据的添加；'be' 表示数据存储在后端，每次添加、修改都会发送请求，修改后端数据库的表格数据
+   */
+  storeWay: PropTypes.oneOf(['fe', 'be']),
 
   /**
    * 表格尺寸
@@ -101,8 +124,8 @@ export const propTypes = {
    * 默认：-
    */
   subresid: (props, propName, componentName) => {
-    // 当 dataMode 为 "sub" 时，subresid 是必传的
-    if (props.dataMode === 'sub') {
+    // 当 dataMode 为 "sub" 且 storeWay 为 "be" 时，subresid 是必传的
+    if (props.dataMode === 'sub' && props.storeWay === 'be') {
       return typeof props[propName] === 'number'
         ? null
         : new Error('lz-table: subresid 无效，subresid 必须为 number 类型');
@@ -114,8 +137,8 @@ export const propTypes = {
    * 默认：-
    */
   hostrecid: (props, propName, componentName) => {
-    // 当 dataMode 为 "sub" 时，hostrecid 是必传的
-    if (props.dataMode === 'sub') {
+    // 当 dataMode 为 "sub" 且 storeWay 为 "be" 时，hostrecid 是必传的
+    if (props.dataMode === 'sub' && props.storeWay === 'be') {
       return typeof props[propName] === 'number'
         ? null
         : new Error('lz-table: hostrecid 无效，hostrecid 必须为 number 类型');
@@ -219,6 +242,17 @@ export const propTypes = {
    * 默认：-
    */
   customRowBtns: PropTypes.array,
+  // 如：
+  // [
+  //   (record, btnSize) => {
+  //     return <Button>按钮1</Button>
+  //   },
+  //   (record, btnSize) => {
+  //     return <Button>按钮2</Button>
+  //   }
+  // ]
+  // record 表示当前记录
+  // btnSize 表示按钮尺寸
 
   /**
    * 表格高度 - scroll.y 的值
@@ -363,6 +397,77 @@ export const propTypes = {
   hasAdvSearch: PropTypes.bool,
 
   /**
+   * 高级搜索配置
+   * 默认：
+   * {
+   *   searchComponent: 'both',
+   *   containerType: 'drawer',
+   *   formName: 'default',
+   *   validationFields: [],
+   *   fields: []
+   * }
+   */
+  advSearch: PropTypes.shape({
+    /**
+     * 高级搜索使用的组件
+     * 'PwForm' 表示使用 PwForm 组件，其对应后端的窗体；'AdvSearch' 表示使用 AdvSearch 组件；'both' 表示使用两种组件
+     * 默认：'both'
+     */
+    searchComponent: PropTypes.oneOfType([
+      PropTypes.oneOf(['PwForm', 'AdvSearch', 'both']),
+      PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string, // 标题
+          name: PropTypes.oneOf(['PwForm', 'AdvSearch']), // 高级搜索所使用的组件
+          order: PropTypes.number // 排序
+        })
+      )
+    ]),
+
+    /**
+     * 高级搜索所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+     * 默认：'drawer'
+     */
+    containerType: PropTypes.oneOf(['modal', 'drawer']),
+
+    /**
+     * 高级搜索中容器组件所接收的 props
+     * 默认：-
+     */
+    containerProps: PropTypes.object,
+
+    /**
+     * 高级搜索使用的窗体名称（当 searchComponent 为 PwForm 时）
+     * 默认：'default'
+     */
+    formName: PropTypes.string,
+
+    /**
+     * 高级搜索中 PwForm 组件所接收的 props
+     * 默认：-
+     */
+    formProps: PropTypes.object,
+
+    /**
+     * 高级搜索中需要验证的字段，如：['name', 'age']（当 searchComponent 为 PwForm 时）
+     * 默认：[]，表示不验证任何字段
+     */
+    validationFields: PropTypes.array,
+
+    /**
+     * AdvSearch 组件接收的 fields props
+     * 默认：[]
+     */
+    fields: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string, // label
+        value: PropTypes.string, // value
+        control: PropTypes.oneOf(['Input']) // 所用控件
+      })
+    )
+  }),
+
+  /**
    * 高级搜索所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
    * 默认：'drawer'
    */
@@ -410,6 +515,25 @@ export const propTypes = {
   // ===========================================================
   // 记录表单相关 props ==========================================
   // ===========================================================
+
+  /**
+   * 记录表单中左侧表单的宽度
+   * 默认：'50%'
+   */
+  recordFormFormWidth: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+
+  /**
+   * 记录表单中右侧 tabs 的宽度
+   * 默认：'50%'
+   */
+  recordFormTabsWidth: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+
   /**
    * 记录表单所在容器的类型
    * 可选: 'modal' 模态窗 | 'drawer' 抽屉
@@ -471,6 +595,13 @@ export const propTypes = {
   // ===========================================================
   // 导入数据功能相关 props ======================================
   // ===========================================================
+
+  /**
+   * 是否有导入功能
+   * 默认：true
+   */
+  hasImport: PropTypes.bool,
+
   /**
    * 导入功能的容器类型
    * 可选：'modal' 模态窗 | 'drawer' 抽屉
@@ -489,5 +620,12 @@ export const propTypes = {
    * 默认：-
    * 可选：jsx 或 (tableData: []) => {}
    */
-  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
+  actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+
+  /**
+   * header 区域额外的内容
+   * 默认：-
+   * 可选：jsx 或 (tableData: []) => {}
+   */
+  headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };

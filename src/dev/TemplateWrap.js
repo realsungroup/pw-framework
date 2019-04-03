@@ -19,6 +19,7 @@ import en_US from '../locales/en-US';
 import { IntlProvider, addLocaleData } from 'react-intl';
 
 import '../antd-media.less';
+import './TemplateWrap.less';
 
 addLocaleData([...en, ...zh]);
 

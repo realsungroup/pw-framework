@@ -23,7 +23,8 @@ const HomeBody = {
   'HomeBody.Taskbar': 'Taskbar',
   'HomeBody.Bench': 'Bench',
   'HomeBody.reminder': 'reminder',
-  'HomeBody.noData': 'No reminder data'
+  'HomeBody.noData': 'No reminder data',
+  'HomeBody.Dashboard': 'Dashboard'
 };
 
 // Login
@@ -62,7 +63,8 @@ const RightBtns = {
   'RightBtns.Submit': 'Submit',
   'RightBtns.OriginalPasswordTip': 'Enter the original password',
   'RightBtns.NewPasswordTip': 'Enter the new password',
-  'RightBtns.NewPasswordAgainTip': 'Enter the new password again'
+  'RightBtns.NewPasswordAgainTip': 'Enter the new password again',
+  'RightBtns.Reminder': 'Reminder'
 };
 
 // PersonCenter

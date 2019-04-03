@@ -13,8 +13,9 @@ import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 
 const SubMenu = Menu.SubMenu;
-const { homeLogoSize } = window.pwConfig;
-const { openFuncInSelfResids } = window.pwConfig;
+const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
+  process.env.NODE_ENV
+];
 
 const getTarget = resid => {
   // 在新 tab 中打开功能页面
@@ -67,13 +68,12 @@ class PageHeader extends React.Component {
   };
 
   handleAppClick = (app, type) => {
-    const resid = parseInt(app.ResId || app.resid, 10);
+    const resid = parseInt(app.ResID || app.resid, 10);
     const target = getTarget(resid).target || 'self';
-    console.log({ target });
     window.open(
-      `/fnmodule?resid=${app.ResId || app.resid}&recid=${
-        app.REC_ID
-      }&type=${type}&title=${app.title}`,
+      `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${type}&title=${
+        app.title
+      }`,
       target
     );
   };

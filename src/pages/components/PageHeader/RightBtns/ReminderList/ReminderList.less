@@ -1,0 +1,50 @@
+@import url('../../../../../styles/variables.less');
+.reminder-list {
+  min-width: 300px;
+  min-height: 200px;
+  padding: 0 0 16px;
+  &__title {
+    &::before {
+      content: '';
+      width: 10px;
+      height: 18px;
+      display: inline-block;
+      background: @primary-color;
+      margin-right: 8px;
+      position: relative;
+      top: 2px;
+    }
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 27px;
+    margin-bottom: 16px;
+  }
+  &__no-data {
+    line-height: 72px;
+    text-align: center;
+  }
+  &__item {
+    height: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0 16px;
+    h4,
+    div {
+      transition: 0.3s;
+    }
+    &:hover {
+      background: @primary-color;
+      h4,
+      div {
+        color: #fff !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1066px) {
+  .reminder-list {
+    height: auto;
+  }
+}

@@ -2,7 +2,7 @@ import http from 'lz-request/lib/http';
 
 import { getItem } from './util';
 
-const baseURL = window.pwConfig.baseURL;
+const baseURL = window.pwConfig[process.env.NODE_ENV].baseURL;
 http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
@@ -179,7 +179,7 @@ http.createApi('defaultLogin', {
  */
 http.createApi('domainLogin', {
   method: 'post',
-  baseURL: window.pwConfig.domainLoginConfig.baseUrl,
+  baseURL: window.pwConfig[process.env.NODE_ENV].domainLoginConfig.baseUrl,
   url: '/api/Account/Login'
 });
 
@@ -200,6 +200,93 @@ http.createApi('setLanguage', {
 http.createApi('getUserDesktop', {
   method: 'get',
   url: '/api/Resource/RetrieveUserDesktop'
+});
+
+/**
+ * 获取当前用户综合管理树
+ * 参数：-
+ */
+http.createApi('getUserFunctionTree', {
+  method: 'get',
+  url: '/api/Resource/GetUserFunctionTree'
+});
+
+/**
+ * 根据 resid 获取资源的子表 id
+ * 参数：resid
+ */
+http.createApi('getResourceRelation', {
+  method: 'get',
+  url: '/api/Resource/GetResourceRelation'
+});
+
+/**
+ * 获取用户默认的仪表盘
+ */
+http.createApi('getDefaultDashboard', {
+  method: 'get',
+  url: '/api/Resource/GetUserDefaultReport'
+});
+
+/**
+ * 获取用户所有的默认仪表盘
+ */
+http.createApi('getUserDefaultDashboards', {
+  method: 'get',
+  url: '/api/Resource/GetUserDefaultReports'
+});
+
+/**
+ * 获取字段聚合后的值
+ * 参数：{ resid, fields, groupby, cmswhere, orderby, dblink, innStart, intMaxRecords, strTableName, getresourcedata }
+ * 1. resid：资源id
+ * 2. fields：需要聚合的字段
+ * 3. groupby：group by 字段
+ * 4. cmswhere：where 语句
+ * 5. orderby：排序
+ * 6. ...
+ */
+http.createApi('getFieldAggregateValue', {
+  method: 'get',
+  url: '/api/100/table/GetDataBySqlParts'
+});
+
+/**
+ * 获取表格列定义数据
+ * 参数：{ resid }
+ * 1. resid：资源id
+ */
+http.createApi('getTableColumnDefine', {
+  method: 'get',
+  url: '/api/100/table/RetrieveColumnsDefineByArray'
+});
+
+/**
+ * 保存主表记录以及多张子表记录
+ * 参数：{ data }。data 如下
+ */
+// 如：
+// "data": [
+//   {
+//     "resid": "577814681716", // 主表 id
+//     "maindata": { // 主表记录
+//       "REC_ID": "585417447165",
+//       "C3_577815790581": 80,
+//       "C3_577835493318": "10001",
+//       "_state": "modified", // 修改
+//       "_id": 1
+//     },
+//     "subdata": [ // 子表数据
+//       {
+//         "resid": "577816887354", // 子表 id
+//         "maindata": { "C3_577887174694": "hantao", "_state": "added", "_id": 1 } // 子表记录
+//       }
+//     ]
+//   }
+// ]
+http.createApi('saveRecordAndSubTables', {
+  method: 'post',
+  url: '/api/200/table/Save'
 });
 
 export default http;

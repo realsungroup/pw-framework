@@ -11,9 +11,32 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          refTargetComponentName="TableData"
+          wrappedComponentRef={element => (this.tableDataRef = element)}
           actionBarExtra={tableData => {
             console.log({ tableData });
             return 'hhh';
+          }}
+          advSearch={{
+            searchComponent: [
+              {
+                title: '搜索1',
+                name: 'PwForm',
+                order: 2
+              },
+              {
+                title: '搜索2',
+                name: 'AdvSearch',
+                order: 1
+              }
+            ],
+            containerType: 'drawer',
+            formName: 'default',
+            validationFields: [],
+            fields: [
+              { label: '姓名', value: 'name', control: 'Input' },
+              { label: '年龄', value: 'age', control: 'Input' }
+            ]
           }}
           actionBarWidth={300}
           title="调休登记"
@@ -22,7 +45,7 @@ class App extends Component {
           size="small"
           hasBeBtns={false}
           subtractH={200}
-          actionBarFixed={false}
+          actionBarFixed={true}
           advSearchContainerType="drawer"
           hasRowEdit
           hasAdd={true}
@@ -68,7 +91,15 @@ class App extends Component {
           enAddText="add base info"
           rowModifyText="修改基本信息"
           enRowModifyText="modify base info"
+          actionBarExtra={<button>添加</button>}
+          hasRefresh
+          headerExtra={
+            <button onClick={() => console.log('批量添加')}>批量添加</button>
+          }
         />
+        <button onClick={() => this.tableDataRef.handleRefresh(true)}>
+          刷新表格数据
+        </button>
       </TemplateWrap>
     );
   }

@@ -44,10 +44,16 @@ const withDownloadFile = WrappedComponent => {
     };
 
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           {...this.props}
           downloadFile={this.handleDownloadFile}
+          {...otherProps}
         />
       );
     }

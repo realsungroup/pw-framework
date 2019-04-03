@@ -33,6 +33,9 @@ export function withRecordForm(options = {}) {
        * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
        * @param {array} params.subTableArr 表单中子表
        * @param {object} params.subTableArrProps 表单中子表
+       * @param {number | string} params.recordFormFormWidth 表单中左侧表单的宽度
+       * @param {number | string} params.recordFormTabsWidth 表单中右侧子表的宽度
+       * @param {string} params.storeWay 添加、修改的数据所使用的存储方式
        * @param {function} params.onConfirm 确认后的回调函数
        * @param {function} params.onCancel 取消后的回调函数
        */
@@ -54,6 +57,9 @@ export function withRecordForm(options = {}) {
         recordFormContainerProps = {},
         subTableArr = [],
         subTableArrProps = [],
+        recordFormFormWidth,
+        recordFormTabsWidth,
+        storeWay = 'be',
         onConfirm = () => {},
         onCancel = () => {}
       }) => {
@@ -67,8 +73,13 @@ export function withRecordForm(options = {}) {
           onCancel,
           AdvDicTableProps,
           beforeSaveFields,
+          width: {
+            formWidth: recordFormFormWidth,
+            tabsWidth: recordFormTabsWidth
+          },
           subTableArr,
-          subTableArrProps
+          subTableArrProps,
+          storeWay
         };
         const containerProps = {
           title,
@@ -101,9 +112,15 @@ export function withRecordForm(options = {}) {
       };
 
       render() {
+        const name = WrappedComponent.displayName || WrappedComponent.name;
+        const otherProps = {};
+        if (name === this.props.refTargetComponentName) {
+          otherProps.ref = this.props.wrappedComponentRef;
+        }
         return (
           <WrappedComponent
             {...this.props}
+            {...otherProps}
             openRecordForm={this.handleOpenRecordForm}
             closeRecordForm={this.handleCloseRecordForm}
           />
