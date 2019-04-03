@@ -9,7 +9,11 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <BusinessManagement rootId={308175022132} />
+        <BusinessManagement
+          rootId={308175022132}
+          title="标题党"
+          enTitle="biaotidang"
+        />
       </TemplateWrap>
     );
   }

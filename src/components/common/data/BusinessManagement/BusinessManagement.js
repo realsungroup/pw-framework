@@ -5,6 +5,9 @@ import { message, Tabs, Menu, Layout, Icon, Spin } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import BMContent from './BMContent';
 import arrayToTree from 'array-to-tree';
+import { injectIntl, FormattedMessage as FM } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
+import { compose } from 'recompose';
 
 const TabPane = Tabs.TabPane;
 const { Content, Sider } = Layout;
@@ -132,6 +135,8 @@ class BusinessManagement extends React.Component {
 
   render() {
     const { loading, menuList, openedTabs, activeKey, collapsed } = this.state;
+    const { intl, enTitle, title } = this.props;
+
     return (
       <Spin spinning={loading}>
         <div className="business-management">
@@ -143,7 +148,7 @@ class BusinessManagement extends React.Component {
               style={{ width: 256 }}
             >
               <div className="business-management__title">
-                {!collapsed && '业务管理'}
+                {!collapsed && getIntlVal(intl.locale, enTitle, title)}
               </div>
 
               <Menu mode="horizontal" theme="dark" mode="inline">
@@ -181,4 +186,4 @@ class BusinessManagement extends React.Component {
   }
 }
 
-export default BusinessManagement;
+export default compose(injectIntl)(BusinessManagement);
