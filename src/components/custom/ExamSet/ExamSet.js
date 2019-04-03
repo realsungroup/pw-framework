@@ -66,6 +66,11 @@ class ExamSet extends Component {
         <div className="queryHeader" onClick={this.showModal}>
           <h1>入职考试</h1>
         </div>
+        <div className="button">
+          <Button>单选题</Button>
+          <Button>多选题</Button>
+          <Button>判断题</Button>
+        </div>
         <label>单选题</label>
         <Choice />
         <Choice />
@@ -85,6 +90,7 @@ class ExamSet extends Component {
         </Modal>
         <div className="addStyle">
           <Button onClick={this.addSingle}>单独添加题目</Button>
+          <Button onClick={this.addSingle}>保存试卷</Button>
           <Modal
             title="单独添加"
             visible={this.state.visible2}
@@ -93,18 +99,24 @@ class ExamSet extends Component {
           >
             <Tabs defaultActiveKey="1" onChange={this.showTabs}>
               <TabPane tab="单选题" key="1">
-                <div>标题1</div>
+                <div>
+                  题目:<Input className="choice" />
+                </div>
                 <RadioGroup
                   onChange={this.radioChange}
                   value={this.state.value}
                 >
                   <Radio value={1}>A</Radio>
+                  <Input className="choose" />
                   <br />
                   <Radio value={2}>B</Radio>
+                  <Input className="choose" />
                   <br />
                   <Radio value={3}>C</Radio>
+                  <Input className="choose" />
                   <br />
                   <Radio value={4}>D</Radio>
+                  <Input className="choose" />
                 </RadioGroup>
               </TabPane>
               <TabPane tab="多选题" key="2">

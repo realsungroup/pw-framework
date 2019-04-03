@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Radio, Button, Icon } from "antd";
+import { Radio, Button,} from "antd";
 import "./Choice.less";
 
 const RadioGroup = Radio.Group;
@@ -12,7 +12,7 @@ class Choice extends Component {
     return (
       <div className="choice">
         <div>
-          <span className="mark">*</span>1.标题
+          <span className="mark">*</span>1.FINISAR在？年成立
         </div>
         <RadioGroup onChange={this.radioChange} value={this.state.value}>
           <Radio value={1}>A</Radio>

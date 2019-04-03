@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Tabs, Modal, Button, Radio, Checkbox, Row, Col, Input,Select} from "antd";
+import {
+  Tabs,
+  Modal,
+  Button,
+  Radio,
+  Checkbox,
+  Row,
+  Col,
+  Input,
+  Select
+} from "antd";
 import TableData from "../../common/data/TableData";
 import "./AddTitle.less";
 
@@ -62,140 +72,222 @@ export default class AddTitle extends Component {
         >
           <Tabs defaultActiveKey="1" onChange={callback} width="100px">
             <TabPane tab="单选题" key="1">
-            <label>题目难易度:</label>
-              <Select
-                defaultValue="低难度"
-                style={{ width: 120 }}
-                onChange={handleChange}
-              >
-                <Option value="low">低难度</Option>
-                <Option value="middle">中难度</Option>
-                <Option value="high">高难度</Option>
-              </Select>
-              <br></br>
-              <label>
-                题目:
-                <Input className="title" placeholder="请输入题目" />
-              </label>
-              <RadioGroup onChange={this.onChange} value={this.state.value}>
-                <Radio value={1}>
-                  A<Input className="choose" placeholder="请输入选项内容" />
-                </Radio>
-                <Radio value={2}>
-                  B<Input className="choose" placeholder="请输入选项内容" />
-                </Radio>
-                <Radio value={3}>
-                  C<Input className="choose" placeholder="请输入选项内容" />
-                </Radio>
-                <Radio value={4}>
-                  D<Input className="choose" placeholder="请输入选项内容" />
-                </Radio>
-              </RadioGroup>
+              <label>题目难易度:</label>
+              <Button type="primary" className="button">
+                低难度
+              </Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
+              <br />
+              <div className="score">
+                <label>题目分值:</label>
+                <Input className="choose" />
+              </div>
+              <div>
+                <label>
+                  题目:
+                  <Input
+                    className="title title-title"
+                    placeholder="请输入题目"
+                  />
+                </label>
+              </div>
+              <div>
+                <RadioGroup onChange={this.onChange} value={this.state.value}>
+                <label>选项:</label>
+                  <ul>
+                    <li>
+                      <Radio value={1}>
+                        A
+                        <Input
+                          className="choose"
+                          placeholder="请输入选项内容"
+                        />
+                      </Radio>
+                    </li>
+                    <li>
+                      <Radio value={2}>
+                        B
+                        <Input
+                          className="choose"
+                          placeholder="请输入选项内容"
+                        />
+                      </Radio>
+                    </li>
+                    <li>
+                      <Radio value={3}>
+                        C
+                        <Input
+                          className="choose"
+                          placeholder="请输入选项内容"
+                        />
+                      </Radio>
+                    </li>
+                    <li>
+                      <Radio value={4}>
+                        D
+                        <Input
+                          className="choose"
+                          placeholder="请输入选项内容"
+                        />
+                      </Radio>
+                    </li>
+                    <li>
+                      <Button>添加选项</Button>
+                    </li>
+                  </ul>
+                </RadioGroup>
+              </div>
+              <div>
+                <label>正确答案:</label>
+                <Input className='choose'></Input>
+              </div>
             </TabPane>
             <TabPane tab="多选题" key="2">
-            <label>题目难易度:</label>
-              <Select
-                defaultValue="低难度"
-                style={{ width: 120 }}
-                onChange={handleChange}
-              >
-                <Option value="low">低难度</Option>
-                <Option value="middle">中难度</Option>
-                <Option value="high">高难度</Option>
-              </Select>
-              <br></br>
-              <label>
-                题目:
-                <Input className="title" placeholder="请输入题目" />
-              </label>
+              <label>题目难易度:</label>
+              <Button type="primary" className="button">
+                低难度
+              </Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
+              <br />
+              <div className="score">
+                <label>题目分值:</label>
+                <Input className="choose" />
+              </div>
+              <div>
+                <label>
+                  题目:
+                  <Input
+                    className="title title-title"
+                    placeholder="请输入题目"
+                  />
+                </label>
+              </div>
               <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
                 <Row>
-                  <Col span={8}>
-                    <Checkbox value="A">
-                      A<Input className="choose" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="B">
-                      B<Input className="choose" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="C">
-                      C<Input className="choose" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="D">
-                      D<Input className="choose" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="E">
-                      E<Input className="choose" />
-                    </Checkbox>
-                  </Col>
+                  <label>选项:</label>
+                  <ul>
+                    <li>
+                      <Col span={8}>
+                        <Checkbox value="A">A</Checkbox>
+                        <Input className="choose" />
+                      </Col>
+                    </li>
+                    <li>
+                      <Col span={8}>
+                        <Checkbox value="B">B</Checkbox>
+                        <Input className="choose" />
+                      </Col>
+                    </li>
+                    <li>
+                      <Col span={8}>
+                        <Checkbox value="C">C</Checkbox>
+                        <Input className="choose" />
+                      </Col>
+                    </li>
+                    <li>
+                      <Col span={8}>
+                        <Checkbox value="D">D</Checkbox>
+                        <Input className="choose" />
+                      </Col>
+                    </li>
+                    <li>
+                      <Col span={8}>
+                        <Checkbox value="E">E</Checkbox>
+                        <Input className="choose" />
+                      </Col>
+                    </li>
+                    <li>
+                      <Button>添加选项</Button>
+                    </li>
+                  </ul>
                 </Row>
               </Checkbox.Group>
-              ,
+              <div>
+                <label>正确答案:</label>
+                <Input className='choose'></Input>
+              </div>        
             </TabPane>
             <TabPane tab="判断题" key="3">
-            <label>题目难易度:</label>
-              <Select
-                defaultValue="低难度"
-                style={{ width: 120 }}
-                onChange={handleChange}
-              >
-                <Option value="low">低难度</Option>
-                <Option value="middle">中难度</Option>
-                <Option value="high">高难度</Option>
-              </Select>
-              <br></br>
-              <label>
-                题目:
-                <Input className="title" placeholder="请输入题目" />
-              </label>
+              <label>题目难易度:</label>
+              <Button type="primary" className="button">
+                低难度
+              </Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
+              <br />
+              <div className="score">
+                <label>题目分值:</label>
+                <Input className="choose" />
+              </div>
+              <div>
+                <label>
+                  题目:
+                  <Input
+                    className="title title-title"
+                    placeholder="请输入题目"
+                  />
+                </label>
+              </div>
               <RadioGroup onChange={this.onChange} value={this.state.value}>
                 <Radio value={1}>正确</Radio>
                 <Radio value={2}>错误</Radio>
               </RadioGroup>
             </TabPane>
             <TabPane tab="填空题" key="4">
-            <label>题目难易度:</label>
-              <Select
-                defaultValue="低难度"
-                style={{ width: 120 }}
-                onChange={handleChange}
-              >
-                <Option value="low">低难度</Option>
-                <Option value="middle">中难度</Option>
-                <Option value="high">高难度</Option>
-              </Select>
-              <br></br>
-              <label>
-                题目:
-                <Input className="title" placeholder="Finisar在______成立" />
-              </label>
-              ______的内容是:<Input />
+              <label>题目难易度:</label>
+              <Button type="primary" className="button">
+                低难度
+              </Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
+              <br />
+              <div className="score">
+                <label>题目分值:</label>
+                <Input className="choose" />
+              </div>
+              <div>
+                <label>题目:</label>
+                <Input
+                  className="title title-title"
+                  placeholder="Finisar在______成立"
+                />
+              </div>
+              <div>
+                <label>______的内容是:</label>
+              <Input className='title title-title' />
+              </div>
             </TabPane>
             <TabPane tab="问答题" key="5">
-            <label>题目难易度:</label>
-              <Select
-                defaultValue="低难度"
-                style={{ width: 120 }}
-                onChange={handleChange}
-              >
-                <Option value="low">低难度</Option>
-                <Option value="middle">中难度</Option>
-                <Option value="high">高难度</Option>
-              </Select>
-              <br></br>
-              <label>
-                题目:
-                <Input className="title" placeholder="请输入题目" />
-              </label>
-              <label>答案：</label>
-              <Input placeholder="输入答题内容" />
+              <label>题目难易度:</label>
+              <Button type="primary" className="button">
+                低难度
+              </Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
+              <br />
+              <div className="score">
+                <label>题目分值:</label>
+                <Input className="choose" />
+              </div>
+              <div>
+                <br />
+                <div>
+                  <label>题目:</label>
+                  <Input
+                    className="title title-title"
+                    placeholder="请输入题目"
+                  />
+                </div>
+                <div>
+                  <label>答案:</label>
+                  <Input
+                    className="title title-title"
+                    placeholder="输入答题内容"
+                  />
+                </div>
+              </div>
             </TabPane>
           </Tabs>
           {/* <TableData resid='607188996053' ></TableData> */}
