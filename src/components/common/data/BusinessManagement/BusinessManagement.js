@@ -78,17 +78,14 @@ class BusinessManagement extends React.Component {
     const index = this.state.openedTabs.findIndex(
       openedTab => openedTab.RES_ID === menuItem.RES_ID
     );
-    if (index !== -1) {
-      return;
+
+    const activeKey = menuItem.RES_ID + '';
+    const state = { activeKey };
+    if (index === -1) {
+      state.openedTabs = [...this.state.openedTabs, menuItem];
     }
 
-    const openedTabs = [...this.state.openedTabs, menuItem];
-    const activeKey = menuItem.RES_ID + '';
-
-    this.setState({
-      openedTabs,
-      activeKey
-    });
+    this.setState(state);
   };
 
   handleOpenChange = openKeys => {
