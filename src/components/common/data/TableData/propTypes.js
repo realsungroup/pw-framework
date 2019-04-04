@@ -63,6 +63,7 @@ export const defaultProps = {
     containerType: 'drawer',
     formName: 'default',
     validationFields: [],
+    isUseTableFields: true,
     fields: []
   }
 };
@@ -404,6 +405,7 @@ export const propTypes = {
    *   containerType: 'drawer',
    *   formName: 'default',
    *   validationFields: [],
+   *   isUseTableFields: true,
    *   fields: []
    * }
    */
@@ -455,7 +457,13 @@ export const propTypes = {
     validationFields: PropTypes.array,
 
     /**
-     * AdvSearch 组件接收的 fields props
+     * AdvSearch 组件是否接收使用表格中的字段（若 isUseTableFields 为 true，则 fields 会与表格中的字段合并，然后传给 AdvSearch 组件）
+     * 默认：true
+     */
+    isUseTableFields: PropTypes.bool,
+
+    /**
+     * AdvSearch 组件接收的 fields props（若 isUseTableFields 为 true，则会与表格中的字段合并，然后传给 AdvSearch 组件）
      * 默认：[]
      */
     fields: PropTypes.arrayOf(

@@ -33,6 +33,7 @@ class App extends Component {
             containerType: 'drawer',
             formName: 'default',
             validationFields: [],
+            isUseTableFields: true,
             fields: [
               { label: '姓名', value: 'name', control: 'Input' },
               { label: '年龄', value: 'age', control: 'Input' }

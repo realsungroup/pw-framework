@@ -134,6 +134,9 @@ class TableData extends React.Component {
     // scroll = { x, y }
     this._x = 0;
     this._y = 0;
+
+    // 后端返回的表格列数据
+    this._columns = [];
   };
 
   getData = async props => {
@@ -357,6 +360,9 @@ class TableData extends React.Component {
 
     // 前端按钮是否有显示的权限
     this.setUpBtnAuth(res.ResourceData);
+
+    // 保存列数据
+    this._columns = [...res.cmscolumninfo];
 
     this.setState(state);
   };
@@ -1034,8 +1040,21 @@ class TableData extends React.Component {
       formName,
       formProps,
       validationFields,
+      isUseTableFields,
       fields
     } = advSearch;
+
+    let newFields = [];
+    if (isUseTableFields) {
+      newFields = this._columns.map(col => ({
+        label: col.text,
+        value: col.id,
+        control: 'Input'
+      }));
+    }
+    if (Array.isArray(fields)) {
+      newFields = [...newFields, ...fields];
+    }
 
     // 打开高级搜索
     openAdvSearch(
@@ -1047,7 +1066,7 @@ class TableData extends React.Component {
       this.getCmsWhere,
       containerProps,
       formProps,
-      fields
+      newFields
     );
   };
 
