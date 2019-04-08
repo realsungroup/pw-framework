@@ -46,5 +46,14 @@ export const Arrange = Loadable({
       return minLoading;
     }
   });
+
+  export const  Refer= Loadable({
+    loader: () => import('./Refer'),
+    loading() {
+      return minLoading;
+    }
+  });
+
+  
     
     

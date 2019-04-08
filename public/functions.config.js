@@ -1526,7 +1526,7 @@ window[607170104270] = {
   title: "个人成绩管理",
   name: "TableData",
   props: {
-    resid: 607188956037,
+    resid: 607171365403,
     hasAdd: false,
     hasModify: false,
     hasDelete: false,
@@ -1596,6 +1596,7 @@ window[607170472378] = {
     hasRowModify: true
   }
 };
+
 //考试安排
 window[607170185691] = {
   title: "考试安排",
@@ -1636,6 +1637,7 @@ window[607377356382] = {
   name: "Pop",
   props: {}
 };
+
 //测试-考试成绩汇总
 window[607384570024]={
   title:'测试-考试成绩汇总',
@@ -1650,27 +1652,26 @@ window[607384570024]={
     hasRowModify:false,
     hasRowView:false,
     hasBeBtns:true,
-    
   }
 }
 //测试-添加题库题目
 window[607431486196]={
   title:'测试-题库题目添加',
   name:'AddTitle',
-  props:{
-
-  }
 }
+
 //测试-修改题目
 window[607454092932]={
   title:'测试-题目修改',
   name:'EditTitle',
 }
+
 //试卷设置
 window[607459194551]={
   title:'试卷设置',
   name:'ExamSet',
 }
+
 //我的考试
 window[607168416937]={
   title:'我的考试',
@@ -1689,4 +1690,10 @@ window[607168416937]={
 
 window[607272422322]={
   name:'Arrange'
+}
+
+//提交提示框
+window[608035661913]={
+  name:'Refer'
+
 }
