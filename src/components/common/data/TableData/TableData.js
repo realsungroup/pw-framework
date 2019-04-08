@@ -1062,7 +1062,7 @@ class TableData extends React.Component {
   };
 
   handleAdvSearch = () => {
-    const { openAdvSearch, advSearch } = this.props;
+    const { openAdvSearch, advSearch, baseURL } = this.props;
     const id = this._id;
     const {
       searchComponent,
@@ -1097,7 +1097,8 @@ class TableData extends React.Component {
       this.getCmsWhere,
       containerProps,
       formProps,
-      newFields
+      newFields,
+      baseURL
     );
   };
 

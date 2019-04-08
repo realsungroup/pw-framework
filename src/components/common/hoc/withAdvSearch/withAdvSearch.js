@@ -87,13 +87,23 @@ const withAdvSearch = (options = {}) => {
         };
       }
 
-      getData = async (resid, formName, getCmsWhere, validationFields = []) => {
+      getData = async (
+        resid,
+        formName,
+        getCmsWhere,
+        validationFields = [],
+        baseURL
+      ) => {
         // 第一次打开高级搜索，还没有获取窗体数据
         if (!this._data) {
           let formData;
           try {
             // 使用 withHttpGetFormData 高阶组件传入的 httpGetFormData 方法获取窗体数据
-            formData = await this.props.httpGetFormData(resid, formName);
+            formData = await this.props.httpGetFormData(
+              resid,
+              formName,
+              baseURL
+            );
           } catch (err) {
             return message.error(err.message);
           }
@@ -123,7 +133,8 @@ const withAdvSearch = (options = {}) => {
         getCmsWhere,
         containerProps = {},
         formProps = {},
-        fields = []
+        fields = [],
+        baseURL
       ) => {
         let component;
         if (Array.isArray(searchComponent)) {
@@ -133,14 +144,26 @@ const withAdvSearch = (options = {}) => {
         }
         switch (component) {
           case 'PwForm': {
-            await this.getData(resid, formName, getCmsWhere, validationFields);
+            await this.getData(
+              resid,
+              formName,
+              getCmsWhere,
+              validationFields,
+              baseURL
+            );
             break;
           }
           case 'AdvSearch': {
             break;
           }
           case 'both': {
-            await this.getData(resid, formName, getCmsWhere, validationFields);
+            await this.getData(
+              resid,
+              formName,
+              getCmsWhere,
+              validationFields,
+              baseURL
+            );
             break;
           }
           default: {
