@@ -65,7 +65,8 @@ export const defaultProps = {
     validationFields: [],
     isUseTableFields: true,
     fields: []
-  }
+  },
+  hasRowSelection: false
 };
 
 export const propTypes = {
@@ -635,5 +636,11 @@ export const propTypes = {
    * 默认：-
    * 可选：jsx 或 (tableData: []) => {}
    */
-  headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
+  headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+
+  /**
+   * 是否有 rowSelection
+   * 默认：false
+   */
+  hasRowSelection: PropTypes.bool
 };

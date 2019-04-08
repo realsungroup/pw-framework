@@ -41,13 +41,21 @@ class TableData extends React.Component {
 
   constructor(props) {
     super(props);
-    const { defaultPagination, hasModify, hasDelete, width, height } = props;
+    const {
+      defaultPagination,
+      hasModify,
+      hasDelete,
+      width,
+      height,
+      hasRowSelection
+    } = props;
     const pagination = getPagination(
       defaultPagination,
       this.handlePageChange,
       this.handleShowSizeChange
     );
     const rowSelection = getRowSelection(
+      hasRowSelection,
       hasModify,
       hasDelete,
       [],
@@ -227,10 +235,11 @@ class TableData extends React.Component {
     this._x = x;
     this._y = y;
 
-    const { hasModify, hasDelete } = this.props;
+    const { hasModify, hasDelete, hasRowSelection } = this.props;
     let newRowSelection = null;
     if (rowSelection) {
       newRowSelection = getRowSelection(
+        hasRowSelection,
         hasModify,
         hasDelete,
         this.state.rowSelection.selectedRowKeys,
@@ -1008,11 +1017,12 @@ class TableData extends React.Component {
 
     this._x = this.state.scrollXY.x;
 
-    const { hasModify, hasDelete } = this.props;
+    const { hasModify, hasDelete, hasRowSelection } = this.props;
     const { rowSelection } = this.state;
     let newRowSelection = null;
     if (rowSelection) {
       newRowSelection = getRowSelection(
+        hasRowSelection,
         hasModify,
         hasDelete,
         this.state.rowSelection.selectedRowKeys,

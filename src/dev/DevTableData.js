@@ -11,6 +11,7 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
+          hasRowSelection
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}
           actionBarExtra={tableData => {

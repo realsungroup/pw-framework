@@ -100,13 +100,14 @@ export const getColumns = (
 
 // 获取行选择配置
 export const getRowSelection = (
+  hasRowSelection,
   hasModify,
   hasDelete,
   selectedRowKeys,
   rowSelectionChange,
   fixed
 ) => {
-  if (hasModify || hasDelete) {
+  if (hasRowSelection || hasModify || hasDelete) {
     return {
       selectedRowKeys,
       onChange: rowSelectionChange,
