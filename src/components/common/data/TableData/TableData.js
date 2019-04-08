@@ -265,10 +265,17 @@ class TableData extends React.Component {
       subresid,
       cmswhere,
       cmscolumns,
-      storeWay
+      storeWay,
+      baseURL
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
+
+    const httpParams = {};
+
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
 
     // 存储方式为后端存储
     if (storeWay !== 'fe') {
@@ -286,7 +293,7 @@ class TableData extends React.Component {
             sortField,
             getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
           };
-          this.p3 = makeCancelable(http().getTable(params));
+          this.p3 = makeCancelable(http(httpParams).getTable(params));
           res = await this.p3.promise;
 
           // 获取子表数据
@@ -304,7 +311,7 @@ class TableData extends React.Component {
             sortField,
             getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
           };
-          this.p3 = makeCancelable(http().getSubTable(params));
+          this.p3 = makeCancelable(http(httpParams).getSubTable(params));
           res = await this.p3.promise;
         }
       } catch (err) {
@@ -312,7 +319,9 @@ class TableData extends React.Component {
       }
     } else {
       // 存储方式为前端存储，则只获取表格列定义数据
-      this.p3 = makeCancelable(http().getTableColumnDefine({ resid }));
+      this.p3 = makeCancelable(
+        http(httpParams).getTableColumnDefine({ resid })
+      );
       try {
         res = await this.p3.promise;
       } catch (err) {
@@ -414,16 +423,17 @@ class TableData extends React.Component {
       recordFormName,
       rowEditFormName,
       httpGetFormData,
-      formProps
+      formProps,
+      baseURL
     } = this.props;
     const id = this._id;
     let arr,
       pArr = [];
     if (isNeedRecordForm) {
-      pArr.push(httpGetFormData(id, recordFormName));
+      pArr.push(httpGetFormData(id, recordFormName, baseURL));
     }
     if (isNeedEditForm) {
-      pArr.push(httpGetFormData(id, rowEditFormName));
+      pArr.push(httpGetFormData(id, rowEditFormName, baseURL));
     }
     try {
       this.p1 = makeCancelable(Promise.all(pArr));
@@ -461,11 +471,11 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const { httpGetBeBtns } = this.props;
+    const { httpGetBeBtns, baseURL } = this.props;
     const id = this._id;
     let btns;
     try {
-      btns = await httpGetBeBtns(id);
+      btns = await httpGetBeBtns(id, baseURL);
     } catch (err) {
       return console.error(err);
     }
@@ -866,12 +876,18 @@ class TableData extends React.Component {
       if (err) {
         return;
       }
-      const { dataMode, resid, subresid } = this.props;
+      const { dataMode, resid, subresid, baseURL } = this.props;
       const id = getResid(dataMode, resid, subresid);
       const formData = dealFormData(values);
       formData.REC_ID = oldRecord.REC_ID;
+
+      const httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+
       this.p2 = makeCancelable(
-        http().modifyRecords({
+        http(httpParams).modifyRecords({
           resid: id,
           data: [formData]
         })
@@ -919,7 +935,7 @@ class TableData extends React.Component {
 
   // 点击删除按钮
   handleDelete = async () => {
-    const { intl, storeWay } = this.props;
+    const { intl, storeWay, baseURL } = this.props;
     const { selectedRowKeys } = this.state.rowSelection;
     if (!selectedRowKeys.length) {
       return message.error(intl.messages['TableData.pleaseSelectARecord']);
@@ -932,11 +948,16 @@ class TableData extends React.Component {
       }
     });
 
+    const httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+
     // 后端存储，则发送请求删除记录
     if (storeWay === 'be') {
       const id = this._id;
       this.p4 = makeCancelable(
-        http().removeRecords({
+        http(httpParams).removeRecords({
           resid: id,
           data: records
         })
@@ -1299,13 +1320,19 @@ class TableData extends React.Component {
   };
 
   handleRowDelete = async record => {
-    const { intl, storeWay } = this.props;
+    const { intl, storeWay, baseURL } = this.props;
+
+    const httpParams = {};
+
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
 
     // 后端存储，发送删除行请求
     if (storeWay === 'be') {
       const id = this._id;
       this.p4 = makeCancelable(
-        http().removeRecords({ resid: id, data: [record] })
+        http(httpParams).removeRecords({ resid: id, data: [record] })
       );
       try {
         await this.p4.promise;

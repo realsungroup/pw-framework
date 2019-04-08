@@ -11,7 +11,8 @@ class App extends Component {
     return (
       <TemplateWrap>
         <TableData
-          hasRowSelection
+          baseURL="http://localhost:3001"
+          hasRowSelection={false}
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}
           actionBarExtra={tableData => {
@@ -50,7 +51,7 @@ class App extends Component {
           actionBarFixed={true}
           advSearchContainerType="drawer"
           hasRowEdit
-          hasAdd={true}
+          hasAdd={false}
           hasDelete={false}
           hasModify={false}
           hasRowModify={true}
@@ -94,7 +95,9 @@ class App extends Component {
           rowModifyText="修改基本信息"
           enRowModifyText="modify base info"
           actionBarExtra={({ dataSource, selectedRowKeys }) => (
-            <button onClick={() => console.log({ dataSource, selectedRowKeys })}>
+            <button
+              onClick={() => console.log({ dataSource, selectedRowKeys })}
+            >
               添加
             </button>
           )}

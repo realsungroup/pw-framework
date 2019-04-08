@@ -642,5 +642,11 @@ export const propTypes = {
    * 是否有 rowSelection
    * 默认：false
    */
-  hasRowSelection: PropTypes.bool
+  hasRowSelection: PropTypes.bool,
+
+  /**
+   * 基地址
+   * 默认：-
+   */
+  baseURL: PropTypes.string
 };
