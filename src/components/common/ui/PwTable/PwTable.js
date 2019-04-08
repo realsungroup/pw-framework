@@ -153,6 +153,8 @@ class PwTable extends React.Component {
 
     const { locale } = this.props.intl;
 
+    const ctx = this;
+
     return (
       <div className="pw-table">
         {hasHeader && (
@@ -235,7 +237,12 @@ class PwTable extends React.Component {
               <div className="pw-table__action-bar-extra">
                 {(function() {
                   if (typeof actionBarExtra === 'function') {
-                    return actionBarExtra(dataSource);
+                    return actionBarExtra({
+                      dataSource,
+                      selectedRowKeys:
+                        ctx.props.rowSelection &&
+                        ctx.props.rowSelection.selectedRowKeys
+                    });
                   } else {
                     return actionBarExtra;
                   }

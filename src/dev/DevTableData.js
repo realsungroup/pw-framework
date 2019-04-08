@@ -93,7 +93,11 @@ class App extends Component {
           enAddText="add base info"
           rowModifyText="修改基本信息"
           enRowModifyText="modify base info"
-          actionBarExtra={<button>添加</button>}
+          actionBarExtra={({ dataSource, selectedRowKeys }) => (
+            <button onClick={() => console.log({ dataSource, selectedRowKeys })}>
+              添加
+            </button>
+          )}
           hasRefresh
           headerExtra={
             <button onClick={() => console.log('批量添加')}>批量添加</button>
