@@ -29,6 +29,7 @@ import { version } from '../../../../../package.json';
 import changelog from '../../../../changelog.md';
 import ReactMarkdown from 'react-markdown';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
+import ReminderList from './ReminderList';
 
 const FormItem = Form.Item;
 
@@ -359,6 +360,29 @@ class RightBtns extends React.Component {
             'to-more-btns-status': isRotate
           })}
         >
+          <Popover
+            placement="bottomRight"
+            title={
+              <div style={{ textAlign: 'right' }}>
+                <FM id="RightBtns.Reminder" defaultMessage="提醒" />
+              </div>
+            }
+            trigger="click"
+            content={
+              <React.Fragment>
+                <ReminderList />
+              </React.Fragment>
+            }
+            trigger="click"
+          >
+            <HeaderBtn
+              className="right-btns__header-btn"
+              iconClass="icon-message"
+              onClick={() => this.setState({ pickerVisible: true })}
+              tip={<FM id="RightBtns.Reminder" defaultMessage="提醒" />}
+            />
+          </Popover>
+
           <HeaderBtn
             className="right-btns__header-btn"
             iconClass="icon-report-table"

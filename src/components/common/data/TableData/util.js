@@ -38,7 +38,14 @@ export const getPagination = (
 
 export const getColumns = (
   columnsInfo,
-  { hasBeSort, defaultColumnWidth, columnsWidth, fixedColumns },
+  {
+    hasBeSort,
+    defaultColumnWidth,
+    columnsWidth,
+    fixedColumns,
+    scrollX,
+    tableDataWidth
+  },
   cmscolumns,
   hasRowEdit
 ) => {
@@ -92,13 +99,20 @@ export const getColumns = (
 };
 
 // 获取行选择配置
-export const getRowSelection = (hasModify, hasDelete, rowSelectionChange) => {
-  if (hasModify || hasDelete) {
+export const getRowSelection = (
+  hasRowSelection,
+  hasModify,
+  hasDelete,
+  selectedRowKeys,
+  rowSelectionChange,
+  fixed
+) => {
+  if (hasRowSelection || hasModify || hasDelete) {
     return {
-      selectedRowKeys: [],
+      selectedRowKeys,
       onChange: rowSelectionChange,
       columnWidth: 50,
-      fixed: true
+      fixed
     };
   }
   return null;

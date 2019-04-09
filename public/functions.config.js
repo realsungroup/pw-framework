@@ -738,3 +738,24 @@ window[606242031630] = {
     ]
   } // 组件所接收的 props
 };
+
+window[608050884937] = {
+  name:"TableData",
+  title: '内部推荐',
+  props: {
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    // hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,  
+  } // 组件所接收的 props
+
+    // batchBtn: {
+    //   btnName: '一键提交',
+    //   title: '一键提交'
+    // },
+  // resid:"603301655900" // 功能模块名称
+}

@@ -97,10 +97,16 @@ export const withHttpRemoveRecords = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpRemoveRecords={this.handleHttpRemoveRecords}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -144,10 +150,16 @@ export const withHttpGetTableData = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetTableData={this.handleHttpGetTableData}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -195,10 +207,16 @@ export const withHttpGetSubTableData = WrappedComponent => {
       return this.p1.promise;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetSubTableData={this.handleHttpGetSubTableData}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -216,8 +234,13 @@ export const withHttpGetBeBtns = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleHttpGetBeBtns = async resid => {
-      this.p1 = makeCancelable(http().getBeBtns({ resid }));
+    handleHttpGetBeBtns = async (resid, baseURL) => {
+      const httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+
+      this.p1 = makeCancelable(http(httpParams).getBeBtns({ resid }));
       let res;
       try {
         res = await this.p1.promise;
@@ -232,10 +255,16 @@ export const withHttpGetBeBtns = WrappedComponent => {
       return { beBtnsMultiple, beBtnsSingle, beBtnsOther };
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetBeBtns={this.handleHttpGetBeBtns}
           {...this.props}
+          {...otherProps}
         />
       );
     }
@@ -260,9 +289,14 @@ export const withHttpGetFormData = WrappedComponent => {
      * @param {string} formName 窗体名称
      * @return {promise} 返回 promise，await promise 后的值为 formData
      */
-    handleHttpGetFormData = async (resid, formName) => {
+    handleHttpGetFormData = async (resid, formName, baseURL) => {
+      const httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+
       this.p1 = makeCancelable(
-        http().getFormData({
+        http(httpParams).getFormData({
           resid,
           formname: formName
         })
@@ -277,10 +311,16 @@ export const withHttpGetFormData = WrappedComponent => {
       return formData;
     };
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           httpGetFormData={this.handleHttpGetFormData}
           {...this.props}
+          {...otherProps}
         />
       );
     }

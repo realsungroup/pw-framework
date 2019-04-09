@@ -53,7 +53,10 @@ window.pwConfig = {
     },
 
     // 工作台配置
-    openFuncInSelfResids: [] // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+
+    // bi 系统配置
+    biBaseURL: 'http://localhost:3001/' // bi 系统基地址
   },
   // 生产环境
   production: {
@@ -106,6 +109,9 @@ window.pwConfig = {
     },
 
     // 工作台配置
-    openFuncInSelfResids: [] // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+
+    // bi 系统配置
+    biBaseURL: 'http://localhost:3001/' // bi 系统基地址
   }
 };

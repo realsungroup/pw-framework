@@ -45,9 +45,15 @@ const withImport = WrappedComponent => {
     };
 
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           {...this.props}
+          {...otherProps}
           openImportView={this.handleOpenImportView}
         />
       );

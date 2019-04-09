@@ -134,6 +134,7 @@ class PwTable extends React.Component {
       intl,
       actionBarExtra,
       dataSource,
+      headerExtra,
       ...restProps
     } = this.props;
 
@@ -146,11 +147,13 @@ class PwTable extends React.Component {
       actionBarExtra;
 
     const hasIconBtns =
-      hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut;
+      hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut || headerExtra;
 
-    const hasHeader = hasIconBtns && title;
+    const hasHeader = hasIconBtns || title;
 
     const { locale } = this.props.intl;
+
+    const ctx = this;
 
     return (
       <div className="pw-table">
@@ -162,21 +165,34 @@ class PwTable extends React.Component {
               {title}
             </div>
             {hasIconBtns && (
-              <IconBtns
-                hasDownload={hasDownload}
-                hasImport={hasImport}
-                onImport={this.handleImport}
-                onDownload={this.handleDownload}
-                hasRefresh={hasRefresh}
-                onRefresh={this.handleRefresh}
-                hasAdvSearch={hasAdvSearch}
-                onAdvSearch={this.handleAdvSearch}
-                hasZoomInOut={hasZoomInOut}
-                onZoomIn={this.handleZoomIn}
-                onZoomOut={this.handleZoomOut}
-                size={size}
-                zoomStatus={this.state.zoomStatus}
-              />
+              <div className="pw-table__header-icon-wrap">
+                <IconBtns
+                  hasDownload={hasDownload}
+                  hasImport={hasImport}
+                  onImport={this.handleImport}
+                  onDownload={this.handleDownload}
+                  hasRefresh={hasRefresh}
+                  onRefresh={this.handleRefresh}
+                  hasAdvSearch={hasAdvSearch}
+                  onAdvSearch={this.handleAdvSearch}
+                  hasZoomInOut={hasZoomInOut}
+                  onZoomIn={this.handleZoomIn}
+                  onZoomOut={this.handleZoomOut}
+                  size={size}
+                  zoomStatus={this.state.zoomStatus}
+                />
+                {headerExtra && (
+                  <React.Fragment>
+                    {(function() {
+                      if (typeof headerExtra === 'function') {
+                        return headerExtra(dataSource);
+                      } else {
+                        return headerExtra;
+                      }
+                    })()}
+                  </React.Fragment>
+                )}
+              </div>
             )}
           </div>
         )}
@@ -221,7 +237,12 @@ class PwTable extends React.Component {
               <div className="pw-table__action-bar-extra">
                 {(function() {
                   if (typeof actionBarExtra === 'function') {
-                    return actionBarExtra(dataSource);
+                    return actionBarExtra({
+                      dataSource,
+                      selectedRowKeys:
+                        ctx.props.rowSelection &&
+                        ctx.props.rowSelection.selectedRowKeys
+                    });
                   } else {
                     return actionBarExtra;
                   }

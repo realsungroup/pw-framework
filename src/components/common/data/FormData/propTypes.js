@@ -8,7 +8,8 @@ export const defaultProps = {
   width: {
     formWidth: '30%',
     tabsWidth: '70%'
-  }
+  },
+  storeWay: 'be'
 };
 
 export const propTypes = {
@@ -52,7 +53,7 @@ export const propTypes = {
   info: PropTypes.object,
 
   /**
-   * 保存成功后的回调函数：(formData, form) => {}；formData 表示修改后的表单数据；form 表示对象
+   * 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示操作；formData 表示修改后的表单数据；record 表示 当前记录；form 表示对象
    * 默认：-
    */
   onConfirm: PropTypes.func,
@@ -71,5 +72,12 @@ export const propTypes = {
   /**
    * 表单中子表接收的 props
    */
-  subTableArrProps: PropTypes.array
+  subTableArrProps: PropTypes.array,
+
+  /**
+   * 添加、修改的数据所使用的存储方式
+   * 可选：'be' 后端存储；'fe' 前端存储
+   * 默认：'be'
+   */
+  storeWay: PropTypes.oneOf(['be', 'fe'])
 };
