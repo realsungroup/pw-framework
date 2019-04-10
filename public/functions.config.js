@@ -740,17 +740,19 @@ window[606242031630] = {
 };
 
 window[608050884937] = {
-  name:"TableData",
+  name:"TableDataInner",
   title: '内部推荐',
   props: {
-    recordFormFormWidth: '90%',
-    hasAdd: false,
-    // hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasRowModify: false,
-    hasRowView: false,
-    hasRowDelete: false,  
+    // baseURL:"https://finisar.realsun.me:9092/"
+    // recordFormFormWidth: '90%',
+    // hasAdd: false,
+    // hasBeBtns: false,
+    // hasModify: false,
+    // hasDelete: false,
+    // hasRowModify: false,
+    // hasRowView: false,
+    // hasRowDelete: false,  
+    
   } // 组件所接收的 props
 
     // batchBtn: {

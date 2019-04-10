@@ -8,7 +8,7 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData } from '../components/common/loadableCommon';
-export { TableDataWrap } from '../components/custom/loadableCustom';
+export { TableDataWrap,TableDataInner } from '../components/custom/loadableCustom';
 
 // custom
 export { LzRegister } from '../components/custom/loadableCustom';

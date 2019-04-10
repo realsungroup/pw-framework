@@ -15,6 +15,12 @@ export const TableDataWrap = Loadable({
     return minLoading;
   }
 });
+export const TableDataInner = Loadable({
+  loader: () => import('./TableDataInner'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const LzStepY = Loadable({
   loader: () => import('./LzStepY'),
