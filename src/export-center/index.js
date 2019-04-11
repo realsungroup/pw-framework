@@ -17,6 +17,8 @@ export { LzApproval } from '../components/custom/loadableCustom';
 export { LzAFFOS } from '../components/custom/loadableCustom';
 export { ViProvider } from '../components/custom/loadableCustom';
 export { LzProApp } from '../components/custom/loadableCustom';
+export { ExamManage } from '../components/custom/loadableCustom';
+export { EditTitle } from '../components/custom/loadableCustom';
 
 // 组件
 

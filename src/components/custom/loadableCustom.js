@@ -83,3 +83,18 @@ export const LzProApp = Loadable({
     return minLoading;
   }
 });
+export const ExamManage = Loadable({
+  loader: () => import('./ExamManage'),
+  loading() {
+    return minLoading;
+  }
+});
+export const EditTitle = Loadable({
+  loader: () => import('./EditTitle'),
+  loading() {
+    return minLoading;
+  }
+});
+
+
+
