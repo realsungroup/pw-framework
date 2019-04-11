@@ -87,9 +87,9 @@ class TableDataInner extends React.Component {
               hasAdd={false}
               hasBeBtns={false}
               hasDelete={false}
-              hasRowModify={false}
+              hasRowModify={true}
               hasRowView={false}
-              hasRowDelete={false}
+              hasRowDelete={true}
               hasModify={false}
               subtractH={216}
               height={600}
@@ -121,7 +121,7 @@ class TableDataInner extends React.Component {
               getcolumninfo="1"
               pageSize="10"
               page="1"
-              hasRowSelection={true}
+              hasRowSelection={false}
               hasAdd={false}
               hasBeBtns={false}
               hasDelete={false}
@@ -131,7 +131,7 @@ class TableDataInner extends React.Component {
               hasModify={false}
               subtractH={216}
               height={600}
-              actionBarFixed={true}
+              actionBarFixed={false}
              
             />
           </TabPane>

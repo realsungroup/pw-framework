@@ -590,6 +590,7 @@ class TableData extends React.Component {
     if (baseURL) {
       url = baseURL;
     }
+    console.log({baseURL})
     await downloadFile(
       url,
       downloadFileName || title,
