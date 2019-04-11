@@ -70,7 +70,7 @@ class TableDataInner extends React.Component {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: "calc(100vh - 220px)" }}
+        style={{ height: "calc(100vh - 180px)" }}
       >
         <Tabs defaultActiveKey="1" style={{width:"100%",height:"100%",backgroundColor:"#fff"}}>
           <TabPane tab="未通知" key="1" style={{width:"100%",height:"100%"}}>
