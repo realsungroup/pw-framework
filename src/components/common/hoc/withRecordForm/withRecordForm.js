@@ -19,7 +19,7 @@ export function withRecordForm(options = {}) {
 
       /**
        * 打开记录表单
-       * @param {object} params Modal/FormData/Drawer 组件所接收的对象
+       * @param {object} params 参数
        *
        * @param {string} params.type 记录表单所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉；默认值为：'modal'
        * @param {string} params.title 容器的 title；默认值为：''
@@ -32,7 +32,7 @@ export function withRecordForm(options = {}) {
        * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
        * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
        * @param {array} params.subTableArr 表单中子表
-       * @param {object} params.subTableArrProps 表单中子表
+       * @param {object} params.subTableArrProps 表单中子表接收的 props
        * @param {number | string} params.recordFormFormWidth 表单中左侧表单的宽度
        * @param {number | string} params.recordFormTabsWidth 表单中右侧子表的宽度
        * @param {string} params.storeWay 添加、修改的数据所使用的存储方式

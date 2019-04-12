@@ -627,7 +627,7 @@ export const propTypes = {
   /**
    * action bar 区域额外的内容
    * 默认：-
-   * 可选：jsx 或 ({ dataSource: [], selectedRowKeys: [] }) => {} dataSource 表示表格数据，selectedRowKeys 表示选中行的 key（即 REC_ID）
+   * 可选：jsx 或 ({ dataSource: [], selectedRowKeys: [], data: [] }) => {} dataSource 表示表格数据，selectedRowKeys 表示选中行的 key（即 REC_ID），data 表示 PwForm 接收的 data props
    */
   actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 

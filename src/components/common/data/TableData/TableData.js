@@ -457,6 +457,7 @@ class TableData extends React.Component {
       );
     this._dealedRowEditFormData =
       rowEditFormData && getDataProp(this._rowEditFormData, {});
+    this.forceUpdate();
   };
 
   /**
@@ -1545,6 +1546,12 @@ class TableData extends React.Component {
         modifyText={modifyText}
         enModifyText={enModifyText}
         actionBarExtra={actionBarExtra}
+        actionBarExtraParams={{
+          dataSource,
+          selectedRowKeys:
+            this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
+          data: this._dealedRecordFormData
+        }}
         headerExtra={headerExtra}
       />
     );
