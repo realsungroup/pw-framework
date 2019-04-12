@@ -95,6 +95,12 @@ export const EditTitle = Loadable({
     return minLoading;
   }
 });
+export const EditButton = Loadable({
+  loader: () => import('./EditButton'),
+  loading() {
+    return minLoading;
+  }
+});
 
 
 

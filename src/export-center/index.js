@@ -19,7 +19,7 @@ export { ViProvider } from '../components/custom/loadableCustom';
 export { LzProApp } from '../components/custom/loadableCustom';
 export { ExamManage } from '../components/custom/loadableCustom';
 export { EditTitle } from '../components/custom/loadableCustom';
-
+export { EditButton } from '../components/custom/loadableCustom';
 // 组件
 
 export {
