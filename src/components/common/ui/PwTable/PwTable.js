@@ -133,6 +133,7 @@ class PwTable extends React.Component {
       enModifyText,
       intl,
       actionBarExtra,
+      actionBarExtraParams,
       dataSource,
       headerExtra,
       ...restProps
@@ -237,12 +238,7 @@ class PwTable extends React.Component {
               <div className="pw-table__action-bar-extra">
                 {(function() {
                   if (typeof actionBarExtra === 'function') {
-                    return actionBarExtra({
-                      dataSource,
-                      selectedRowKeys:
-                        ctx.props.rowSelection &&
-                        ctx.props.rowSelection.selectedRowKeys
-                    });
+                    return actionBarExtra(actionBarExtraParams);
                   } else {
                     return actionBarExtra;
                   }

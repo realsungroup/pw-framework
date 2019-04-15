@@ -19,7 +19,7 @@ export function withRecordForm(options = {}) {
 
       /**
        * 打开记录表单
-       * @param {object} params Modal/FormData/Drawer 组件所接收的对象
+       * @param {object} params 参数
        *
        * @param {string} params.type 记录表单所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉；默认值为：'modal'
        * @param {string} params.title 容器的 title；默认值为：''
@@ -32,11 +32,11 @@ export function withRecordForm(options = {}) {
        * @param {object} params.AdvDicTableProps 高级字典表格所接收的 props
        * @param {object} params.recordFormContainerProps 记录表单容器（Modal/Drawer）所接收的 props
        * @param {array} params.subTableArr 表单中子表
-       * @param {object} params.subTableArrProps 表单中子表
+       * @param {object} params.subTableArrProps 表单中子表接收的 props
        * @param {number | string} params.recordFormFormWidth 表单中左侧表单的宽度
        * @param {number | string} params.recordFormTabsWidth 表单中右侧子表的宽度
        * @param {string} params.storeWay 添加、修改的数据所使用的存储方式
-       * @param {function} params.onConfirm 确认后的回调函数
+       * @param {function} params.onSuccess 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示什么操作；formData 表示保存的表单数据；record 表示记录；form 自动收集数据的 form 对象
        * @param {function} params.onCancel 取消后的回调函数
        */
       handleOpenRecordForm = ({
@@ -60,7 +60,7 @@ export function withRecordForm(options = {}) {
         recordFormFormWidth,
         recordFormTabsWidth,
         storeWay = 'be',
-        onConfirm = () => {},
+        onSuccess = () => {},
         onCancel = () => {}
       }) => {
         const FormDataProps = {
@@ -69,7 +69,7 @@ export function withRecordForm(options = {}) {
           record,
           formProps,
           info,
-          onConfirm,
+          onSuccess,
           onCancel,
           AdvDicTableProps,
           beforeSaveFields,
