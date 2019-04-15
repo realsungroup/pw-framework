@@ -6,6 +6,17 @@
 
 ### 二、可调用的实例方法
 
+- 获取 TableData 实例
+
+```javascript
+<TableData
+  wrappedComponentRef={element => (this.tableDataRef = element)}
+  refTargetComponentName="TableData"
+/>
+```
+
+此时，`this.tableDataRef` 就是 TableData 的实例了
+
 #### 1. tableDataRef.getDataSource():Array<any>
 
 获取表格数据

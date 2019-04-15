@@ -582,11 +582,17 @@ class TableData extends React.Component {
       downloadFile,
       resid,
       cmswhere,
-      fileType
+      fileType,
+      baseURL
     } = this.props;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
+    let url = window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
+    if (baseURL) {
+      url = baseURL;
+    }
+    console.log({baseURL})
     await downloadFile(
-      (window.powerWorks && window.powerWorks.fileDownloadUrl) || '...',
+      url,
       downloadFileName || title,
       resid,
       mergedCmsWhere,
