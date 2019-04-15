@@ -1,39 +1,40 @@
-import React from "react";
-import { TableData } from "../../common/loadableCommon";
-import Base64 from "base-64";
-import { message, Modal, Form, Input ,Button} from "antd";
-import http from "../../../util20/api";
-const socket = require("socket.io-client")("http://localhost:5000");
+import React from 'react';
+import TableData from '../../common/data/TableData';
+import Base64 from 'base-64';
+import { message, Modal, Form, Input, Button } from 'antd';
+import http from '../../../util20/api';
+import { withRecordForm } from '../../common/hoc/withRecordForm';
+const socket = require('socket.io-client')('http://localhost:5000');
 
 class TableDataWrap extends React.Component {
   state = {
     visible: false,
     record: null,
-    readOnly:true
+    readOnly: true
   };
   btnStartRead = params => {};
   componentDidMount = () => {
-    socket.emit("startRead");
+    socket.emit('startRead');
     let card;
-    socket.on("card message", async msg => {
+    socket.on('card message', async msg => {
       var result = Base64.decode(msg);
-      card = eval("(" + result + ")");
+      card = eval('(' + result + ')');
 
       if (card) {
         let res;
         try {
           res = await http().getTable({
             resid: 606066688508,
-            cmswhere: "C3_608392189420 = " + card.cardno
+            cmswhere: 'C3_608392189420 = ' + card.cardno
           });
           if (res.data) {
-            message.success("查询成功！");
+            message.success('查询成功！');
             await this.setState({
               record: res.data
             });
             this.open();
           } else {
-            message.error("查无此人！");
+            message.error('查无此人！');
           }
         } catch (error) {}
       }
@@ -51,34 +52,50 @@ class TableDataWrap extends React.Component {
     //     console.log(data)
     // });
   };
-  open =  () => {
-     this.setState({
+  open = () => {
+    this.setState({
       visible: true
     });
   };
-  onHandleAdd = () => {
-    this.setState({
-      readOnly:false,
-      visible: true
+
+  handleOpenRecordForm = (dataSource, selectedKeys, data, recordFormData) => {
+    console.log({ data });
+    this.props.openRecordForm({
+      title: '标题啊啊',
+      type: 'drawer',
+      data,
+      operation: 'add',
+      recordFormContainerProps: {
+        height: 600,
+        placement: 'bottom',
+        onClose: () => this.props.closeRecordForm()
+      },
+      formProps: {
+        height: 500
+      },
+      subTableArr: recordFormData.subTableArr,
+      subTableArrProps: [
+        {
+          subTableName: '物品信息',
+          subResid: 606413909447,
+          tableProps: {
+            hasAdd: true,
+            hasModify: false,
+            hasDelete: false
+          }
+        }
+      ],
+      info: { dataMode: 'sub', resid: this.props.resid },
+      storeWay: 'fe'
     });
-  }
-  // handleOpenRecordForm = ({ dataSource, selectedKeys, data }) => {
-  //   console.log({ props: this.props });
-  //   this.props.openRecordForm({
-  //     title: '标题啊啊',
-  //     data,
-  //     operation: 'add',
-  //     recordFormContainerProps: {
-  //       placement: 'bottom',
-  //       onClose: () => this.props.closeRecordForm()
-  //     }
-  //   });
-  // };
+  };
+
   handleOk = () => {
     this.setState({
       visible: false
     });
   };
+
   handleCancel = () => {
     this.setState({
       visible: false
@@ -86,36 +103,37 @@ class TableDataWrap extends React.Component {
   };
 
   render() {
-    const { visible, record,readOnly } = this.state;
+    const { visible, record, readOnly } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <div
         className="table-data-wrap"
-        style={{ height: "calc(100vh - 220px)" }}
+        style={{ height: 'calc(100vh - 220px)' }}
       >
-
-        <TableData {...this.props}  
-          // actionBarExtra={params => (
-          //   <button onClick={() => this.handleOpenRecordForm(params)}>
-          //     添加
-          //   </button>
-          // )}
-        
-        // {/* actionBarExtra={({
-        //         dataSource: dataSource,
-        //         selectedRowKeys: selectedRowKeys
-        //       }) => {
-        //         return (
-        //           <Button
-        //             onClick={() => {
-        //               this.onHandleAdd();
-        //             }}
-        //           >
-        //             添加
-        //           </Button>
-        //         ); */}
-              // }}
-              />
+        <TableData
+          {...this.props}
+          actionBarExtra={({
+            dataSource,
+            selectedRowKeys,
+            data,
+            recordFormData
+          }) => {
+            return (
+              <Button
+                onClick={() =>
+                  this.handleOpenRecordForm(
+                    dataSource,
+                    selectedRowKeys,
+                    data,
+                    recordFormData
+                  )
+                }
+              >
+                添加
+              </Button>
+            );
+          }}
+        />
         <Modal
           title="填写登记单"
           visible={visible}
@@ -125,32 +143,32 @@ class TableDataWrap extends React.Component {
           onCancel={this.handleCancel}
           destroyOnClose
         >
-        {/* <div style={{width:"40%"}}> */}
+          {/* <div style={{width:"40%"}}> */}
           <Form.Item label="姓名">
-            {getFieldDecorator("name", {
+            {getFieldDecorator('name', {
               initialValue: [record && record[0].C3_605716828937],
               rules: [
                 {
                   required: true,
-                  message: "Please input your E-mail!"
+                  message: 'Please input your E-mail!'
                 }
               ]
             })(<Input readOnly={readOnly} />)}
           </Form.Item>
           <Form.Item label="身份证号">
-            {getFieldDecorator("cardno", {
+            {getFieldDecorator('cardno', {
               initialValue: [record && record[0].C3_608392189420],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
           {/* </div> */}
-          
-        {/* <div style={{width:"40%"}}>
+
+          {/* <div style={{width:"40%"}}>
         <TableData  {...this.props}   
               />
         </div> */}
@@ -160,4 +178,7 @@ class TableDataWrap extends React.Component {
   }
 }
 
-export default Form.create({})(TableDataWrap);
+// export default withRecordForm()(TableDataWrap);
+
+// export default Form.create()(TableDataWrap);
+export default withRecordForm()(Form.create()(TableDataWrap));

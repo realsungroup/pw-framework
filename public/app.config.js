@@ -53,7 +53,8 @@ window.pwConfig = {
     },
 
     // 工作台配置
-    openFuncInSelfResids: [] // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [], // 在本页面打开功能页面的功能 resid
+    biBaseURL: ''
   },
   // 生产环境
   production: {
@@ -107,6 +108,7 @@ window.pwConfig = {
     },
 
     // 工作台配置
-    openFuncInSelfResids: [] // 在本页面打开功能页面的功能 resid
+    openFuncInSelfResids: [], // 在本页面打开功能页面的功能 resid
+    biBaseURL: ''
   }
 };
