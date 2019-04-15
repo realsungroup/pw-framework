@@ -36,7 +36,7 @@ export function withRecordForm(options = {}) {
        * @param {number | string} params.recordFormFormWidth 表单中左侧表单的宽度
        * @param {number | string} params.recordFormTabsWidth 表单中右侧子表的宽度
        * @param {string} params.storeWay 添加、修改的数据所使用的存储方式
-       * @param {function} params.onConfirm 确认后的回调函数
+       * @param {function} params.onSuccess 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示什么操作；formData 表示保存的表单数据；record 表示记录；form 自动收集数据的 form 对象
        * @param {function} params.onCancel 取消后的回调函数
        */
       handleOpenRecordForm = ({

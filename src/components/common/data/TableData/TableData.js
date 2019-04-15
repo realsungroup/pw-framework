@@ -850,7 +850,7 @@ class TableData extends React.Component {
       recordFormFormWidth,
       recordFormTabsWidth,
       storeWay,
-      onConfirm: this.handleConfirm,
+      onSuccess: this.handleSuccess,
       onCancel: this.handleCancel
     });
   };
@@ -1366,7 +1366,7 @@ class TableData extends React.Component {
     });
   };
 
-  handleConfirm = (operation, formData, record, form) => {
+  handleSuccess = (operation, formData, record, form) => {
     this.props.closeRecordForm();
     const { intl, storeWay } = this.props;
     if (operation === 'add') {

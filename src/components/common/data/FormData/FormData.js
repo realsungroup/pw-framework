@@ -140,8 +140,8 @@ class FormData extends React.Component {
         }
       }
 
-      this.props.onConfirm &&
-        this.props.onConfirm(operation, formData, record, form);
+      this.props.onSuccess &&
+        this.props.onSuccess(operation, formData, record, form);
     });
   };
 
