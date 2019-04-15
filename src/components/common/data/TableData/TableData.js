@@ -89,7 +89,6 @@ class TableData extends React.Component {
     await this.getData();
     await this.getScrollXY();
 
-    console.log('width:', this.tableDataRef.clientWidth);
     this.setState({ loading: false });
   };
 
@@ -327,7 +326,6 @@ class TableData extends React.Component {
       } catch (err) {
         return console.error(err);
       }
-      console.log({ res });
     }
 
     const {
@@ -1550,7 +1548,8 @@ class TableData extends React.Component {
           dataSource,
           selectedRowKeys:
             this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
-          data: this._dealedRecordFormData
+          data: this._dealedRecordFormData,
+          recordFormData: this._recordFormData
         }}
         headerExtra={headerExtra}
       />
