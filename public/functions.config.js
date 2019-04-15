@@ -689,7 +689,7 @@ window[606071640940] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    recordFormFormWidth: '90%'
+    recordFormFormWidth: '90%',
   } // 组件所接收的 props
 };
 //供应商审批
@@ -760,4 +760,15 @@ window[608050884937] = {
     //   title: '一键提交'
     // },
   // resid:"603301655900" // 功能模块名称
+}
+// 607189885707
+window[607189885707] = {
+  name:"MyQuery",
+  title: '问卷系统',
+}
+
+// 608635796671
+window[608635796671] = {
+  name:"QuerySet",
+  title: '问卷设置',
 }

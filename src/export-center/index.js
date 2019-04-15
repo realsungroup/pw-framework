@@ -37,3 +37,14 @@ export {
   LzSelectPersons,
   Card
 } from '../components/custom/loadableCustom';
+
+
+// 问卷系统组件
+export {
+  MyQuery,
+  QueryTable,
+  Paging,
+  QueryType,
+  QuerySet,
+  // Choice
+} from '../components/custom/loadableCustom';

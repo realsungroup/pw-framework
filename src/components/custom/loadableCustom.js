@@ -83,3 +83,50 @@ export const LzProApp = Loadable({
     return minLoading;
   }
 });
+
+
+
+
+//导出问卷系统的组件
+export const MyQuery = Loadable({
+  loader: () => import('./MyQuery'),
+  loading() {
+    return minLoading;
+  }
+});
+export const QueryTable = Loadable({
+  loader: () => import('./QueryTable'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Paging = Loadable({
+  loader: () => import('./Paging'),
+  loading() {
+    return minLoading;
+  }
+});
+// export const xxxxx组件名 = Loadable({
+//   loader: () => import('./xxx组件名'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
+export const QueryType = Loadable({
+  loader: () => import('./QueryType'),
+  loading() {
+    return minLoading;
+  }
+});
+export const QuerySet = Loadable({
+  loader: () => import('QuerySet'),
+  loading() {
+    return minLoading;
+  }
+});
+// export const Choice = Loadable({
+//   loader: () => import('Choice'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
