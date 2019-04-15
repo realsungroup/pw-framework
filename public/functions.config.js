@@ -633,7 +633,7 @@ window[603827488844] = {
 };
 //保安访客登记
 window[606071626403] = {
-  name: 'TableDataWrap', // 组件名称，这里为定制组件名称
+  name: 'TableDataVisitor', // 组件名称，这里为定制组件名称
   title: '保安访客登记', // 功能模块名称
   // hasBackBtn: true,// 是否有返回上一页的按钮，默认为 true
   props: {
