@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import TableData from "../../common/data/TableData";
 import { Tabs, Modal, Button, message } from "antd";
-import EditTitle from "../EditTitle";
 import http from "../../../util20/api";
+import SetScore from "../SetScore";
+import "./ExamManage.less";
 
 const TabPane = Tabs.TabPane;
 function callback(key) {
@@ -10,18 +11,17 @@ function callback(key) {
 }
 
 export default class ExamManage extends Component {
-  state = { visible: false ,record:""};
+  state = { visible: false, record: "" };
 
-  showModal = (record) => {
-    console.log("record",record)
-    if(record){
+  showModal = record => {
+    console.log("record", record);
+    if (record) {
       this.setState({
         visible: true,
-        record:record
+        record: record
       });
     }
   };
-
 
   handleClose = e => {
     console.log(e);
@@ -37,44 +37,43 @@ export default class ExamManage extends Component {
     });
   };
 
-  handleOk = async (e) => {
+  handleOk = async e => {
     let res;
-    console.log("this.state.dataSource",this.state.dataSource)
+    console.log("this.state.dataSource", this.state.dataSource);
     let data = this.state.dataSource;
-    let Reldata= [];
+    let Reldata = [];
     data.map(item => {
-      this.state.selectedRowKeys.map((items) => {
-       if( item.REC_ID === items){
-        item.C3_601650474946 = this.state.date; 
-        item.C3_604408361317 = 'Y'
-        Reldata.push(item)
-       }
-      })
+      this.state.selectedRowKeys.map(items => {
+        if (item.REC_ID === items) {
+          item.C3_601650474946 = this.state.date;
+          item.C3_604408361317 = "Y";
+          Reldata.push(item);
+        }
+      });
     });
   };
-  onHandleMessage = async(dataSource, selectedRowKeys) => {
-    console.log("dataSource",dataSource,selectedRowKeys)
-    console.log("recoed",this.state.record)
+  onHandleMessage = async (dataSource, selectedRowKeys) => {
+    console.log("dataSource", dataSource, selectedRowKeys);
+    console.log("recoed", this.state.record);
     if (selectedRowKeys.length > 0) {
       let res;
       let data = this.state.dataSource;
-      let Reldata= [];
-      dataSource.map((item) => {
-        item.C3_607172879503 = this.state.record.C3_607171749463
-      })
+      let Reldata = [];
+      dataSource.map(item => {
+        item.C3_607172879503 = this.state.record.C3_607171749463;
+      });
       // data.map(item => {
       //   this.state.selectedRowKeys.map((items) => {
       //    if( item.REC_ID === items){
-      //     item.C3_601650474946 = this.state.date; 
+      //     item.C3_601650474946 = this.state.date;
       //     item.C3_604408361317 = 'Y'
       //     Reldata.push(item)
       //    }
       //   })
       // });
       try {
-        res = await http(
+        res = await http().addRecords({
           // baseURL: "https://finisar.realsun.me:9092/"
-      ).addRecords({
           resid: 607188996053,
           data: dataSource,
           isEditoRAdd: false
@@ -82,20 +81,20 @@ export default class ExamManage extends Component {
         this.setState({
           visible: false
         });
-        if(res.Error===0){
+        if (res.Error === 0) {
           this.tableDataRef.handleRefresh();
-          message.success("操作成功！")
-        }else{
-          message.error(res.message)
+          message.success("操作成功！");
+        } else {
+          message.error(res.message);
         }
       } catch (error) {
-        message.error(error)
+        message.error(error);
       }
 
       this.setState({
         visible: true,
         dataSource: dataSource,
-        selectedRowKeys: selectedRowKeys,
+        selectedRowKeys: selectedRowKeys
       });
     } else {
       message.error("请先勾选记录！");
@@ -113,7 +112,6 @@ export default class ExamManage extends Component {
           {...this.props}
           resid="607188968490"
           hasRowSelection={true}
-          hasAdd={false}
           hasRowModify={true}
           hasRowView={false}
           hasRowDelete={true}
@@ -121,11 +119,28 @@ export default class ExamManage extends Component {
           subtractH={196}
           height={600}
           actionBarFixed={true}
+          actionBarExtra={({
+            dataSource: dataSource,
+            selectedRowKeys: selectedRowKeys
+          }) => {
+            return (
+              <div className="import-button">
+                <Button>下载导入模板</Button>
+                <Button>导入试卷</Button>
+              </div>
+            );
+          }}
           customRowBtns={[
             (record, btnSize) => {
-              return <Button onClick={() => {
-                this.showModal(record)
-              } }>添加题目</Button>;
+              return (
+                <Button
+                  onClick={() => {
+                    this.showModal(record);
+                  }}
+                >
+                  添加题目
+                </Button>
+              );
             },
             (record, btnSize) => {
               return (
@@ -139,7 +154,7 @@ export default class ExamManage extends Component {
               );
             },
             (record, btnSize) => {
-              return <Button onClick={this.showModal2}>题型分数设置</Button>;
+              return <SetScore>分数设置</SetScore>;
             }
           ]}
         />
@@ -231,9 +246,6 @@ export default class ExamManage extends Component {
               />
             </TabPane>
           </Tabs>
-        </Modal>
-        <Modal>
-          
         </Modal>
       </div>
     );

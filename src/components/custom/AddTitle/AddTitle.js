@@ -32,7 +32,6 @@ const RadioGroup = Radio.Group;
 
 export default class AddTitle extends Component {
   state = { visible: false, value: 1 };
-
   onChange = e => {
     console.log("radio checked", e.target.value);
     this.setState({
@@ -44,7 +43,6 @@ export default class AddTitle extends Component {
       visible: true
     });
   };
-
   handleOk = e => {
     console.log(e);
     this.setState({
@@ -59,10 +57,8 @@ export default class AddTitle extends Component {
   };
   render() {
     return (
-      <div  className='btns'> 
-        <Button type="primary" onClick={this.showModal}>
-          添加题库题目
-        </Button>
+      <div className="btns">
+        <Button onClick={this.showModal}>添加题库题目</Button>
         <Modal
           width="1000px"
           title="添加题库题目"
@@ -73,27 +69,22 @@ export default class AddTitle extends Component {
           <Tabs defaultActiveKey="1" onChange={callback} width="100px">
             <TabPane tab="单选题" key="1">
               <label>题目难易度:</label>
-              <Button type="primary" className="button">
-                低难度
-              </Button>
+              <Button className="button">低难度</Button>
               <Button className="button">中难度</Button>
               <Button className="button">高难度</Button>
               <div className="score">
                 <label>题目分值:</label>
-                <Input className="choose" />
+                <Input className="input-score" />
               </div>
               <div>
                 <label>
                   题目:
-                  <Input
-                    className="title title-title"
-                    placeholder="请输入题目"
-                  />
+                  <Input className="title" placeholder="请输入题目" />
                 </label>
               </div>
               <div>
                 <RadioGroup onChange={this.onChange} value={this.state.value}>
-                <label>选项:</label>
+                  <label>选项:</label>
                   <ul>
                     <li>
                       <Radio value={1}>
@@ -103,7 +94,7 @@ export default class AddTitle extends Component {
                           placeholder="请输入选项内容"
                         />
                       </Radio>
-                      <Icon type="minus-circle" style={{fontSize:20}}/>
+                      <Icon type="minus-circle" style={{ fontSize: 20 }} />
                     </li>
                     <li>
                       <Radio value={2}>
@@ -113,7 +104,7 @@ export default class AddTitle extends Component {
                           placeholder="请输入选项内容"
                         />
                       </Radio>
-                      <Icon type="minus-circle" style={{fontSize:20}}/>
+                      <Icon type="minus-circle" style={{ fontSize: 20 }} />
                     </li>
                     <li>
                       <Radio value={3}>
@@ -123,7 +114,7 @@ export default class AddTitle extends Component {
                           placeholder="请输入选项内容"
                         />
                       </Radio>
-                      <Icon type="minus-circle" style={{fontSize:20}}/>
+                      <Icon type="minus-circle" style={{ fontSize: 20 }} />
                     </li>
                     <li>
                       <Radio value={4}>
@@ -133,7 +124,7 @@ export default class AddTitle extends Component {
                           placeholder="请输入选项内容"
                         />
                       </Radio>
-                      <Icon type="minus-circle" style={{fontSize:20}}/>
+                      <Icon type="minus-circle" style={{ fontSize: 20 }} />
                     </li>
                     <li>
                       <Button>添加选项</Button>
@@ -143,92 +134,73 @@ export default class AddTitle extends Component {
               </div>
               <div>
                 <label>正确答案:</label>
-                <Input className='choose'></Input>
+                <Input className="choose" />
               </div>
             </TabPane>
             <TabPane tab="多选题" key="2">
               <label>题目难易度:</label>
-              <Button type="primary" className="button">
-                低难度
-              </Button>
+              <Button className="button">低难度</Button>
               <Button className="button">中难度</Button>
               <Button className="button">高难度</Button>
               <div className="score">
                 <label>题目分值:</label>
-                <Input className="choose" />
+                <Input className="input-score" />
               </div>
               <div>
                 <label>
                   题目:
-                  <Input
-                    className="title title-title"
-                    placeholder="请输入题目"
-                  />
+                  <Input className="title" placeholder="请输入题目" />
                 </label>
               </div>
               <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
-                <Row>
-                  <label>选项:</label>
-                  <ul>
-                    <li>
-                      <Col span={8}>
-                        <Checkbox value="A">A</Checkbox>
-                        <Input className="choose" />
-                      </Col>
-                    </li>
-                    <li>
-                      <Col span={8}>
-                        <Checkbox value="B">B</Checkbox>
-                        <Input className="choose" />
-                      </Col>
-                    </li>
-                    <li>
-                      <Col span={8}>
-                        <Checkbox value="C">C</Checkbox>
-                        <Input className="choose" />
-                      </Col>
-                    </li>
-                    <li>
-                      <Col span={8}>
-                        <Checkbox value="D">D</Checkbox>
-                        <Input className="choose" />
-                      </Col>
-                    </li>
-                    <li>
-                      <Col span={8}>
-                        <Checkbox value="E">E</Checkbox>
-                        <Input className="choose" />
-                      </Col>
-                    </li>
-                    <li>
-                      <Button>添加选项</Button>
-                    </li>
-                  </ul>
-                </Row>
+                <label>选项:</label>
+                <ul>
+                  <li>
+                    <Checkbox onChange={onChange} value="A">A</Checkbox>
+                    <Input className="choose" />
+                    <Icon type="minus-circle" style={{ fontSize: 20 }} />
+                  </li>
+                  <li>
+                    <Checkbox onChange={onChange} value="B">B</Checkbox>
+                    <Input className="choose" />
+                    <Icon type="minus-circle" style={{ fontSize: 20 }} />
+                  </li>
+                  <li>
+                    <Checkbox onChange={onChange} value='C'>C</Checkbox>
+                    <Input className="choose" />
+                    <Icon type="minus-circle" style={{ fontSize: 20 }} />
+                  </li>
+                  <li>
+                    <Checkbox onChange={onChange} valu='D'>D</Checkbox>
+                    <Input className="choose" />
+                    <Icon type="minus-circle" style={{ fontSize: 20 }} />
+                  </li>
+                  <li>
+                    <Checkbox onChange={onChange} value='E'>E</Checkbox>
+                    <Input className="choose" />
+                    <Icon type="minus-circle" style={{ fontSize: 20 }} />
+                  </li>
+                  <li><Button>添加选项</Button></li>
+                </ul>
               </Checkbox.Group>
               <div>
                 <label>正确答案:</label>
-                <Input className='choose'></Input>
-              </div>        
+                <Input className="choose" />
+              </div>
             </TabPane>
             <TabPane tab="判断题" key="3">
               <label>题目难易度:</label>
-              <Button type="primary" className="button">
-                低难度
-              </Button>
+              <Button className="button">低难度</Button>
               <Button className="button">中难度</Button>
               <Button className="button">高难度</Button>
               <div className="score">
                 <label>题目分值:</label>
-                <Input className="choose" />
+                <Input className="input-score" />
               </div>
               <div>
                 <label>
                   题目:
-                  <Input
-                    className="title title-title"
-                    placeholder="请输入题目"
-                  />
+                  <Input className="title" placeholder="请输入题目" />
                 </label>
               </div>
               <RadioGroup onChange={this.onChange} value={this.state.value}>
@@ -236,7 +208,7 @@ export default class AddTitle extends Component {
                 <Radio value={2}>错误</Radio>
               </RadioGroup>
             </TabPane>
-            <TabPane tab="填空题" key="4">
+            {/* <TabPane tab="填空题" key="4">
               <label>题目难易度:</label>
               <Button type="primary" className="button">
                 低难度
@@ -245,21 +217,21 @@ export default class AddTitle extends Component {
               <Button className="button">高难度</Button>
               <div className="score">
                 <label>题目分值:</label>
-                <Input className="score-input" />
+                <Input className="input-score" />
               </div>
               <div>
                 <label>题目:</label>
                 <Input
-                  className="title title-title"
+                  className="title"
                   placeholder="Finisar在______成立"
                 />
               </div>
               <div>
-                <label>______的内容是:</label>
-              <Input className='title title-title' />
+                <label>内容是:</label>
+              <Input className='title' />
               </div>
-            </TabPane>
-            <TabPane tab="问答题" key="5">
+            </TabPane> */}
+            {/* <TabPane tab="问答题" key="5">
               <label>题目难易度:</label>
               <Button type="primary" className="button">
                 低难度
@@ -268,7 +240,7 @@ export default class AddTitle extends Component {
               <Button className="button">高难度</Button>
               <div className="score">
                 <label>题目分值:</label>
-                <Input className="choose" />
+                <Input className='input-score'/>
               </div>
               <div>
                 <div>
@@ -286,7 +258,7 @@ export default class AddTitle extends Component {
                   />
                 </div>
               </div>
-            </TabPane>
+            </TabPane> */}
           </Tabs>
         </Modal>
       </div>

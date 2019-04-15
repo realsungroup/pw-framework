@@ -776,36 +776,104 @@ window[607170472378] = {
   }
 };
 //试卷管理
-window[607170235566]={
-  name:'ExamManage',
-  title:'试卷管理',
-  props:{
-    resid:607188968490,
-    hasModify:false,
-  }
-}
+window[607170235566] = {
+  name: "ExamManage",
+  title: "试卷管理",
+  props: {
+    resid: 607188968490,
+    hasModify: false,
+  },
+};
 
 //考试安排
-window[607170185691]={
-  name:'TableData',
-  title:'考试安排',
-  props:{
-    resid:607188943833,
-    hasModify:false,
-    hasDelete:false,
-    hasRowView:false,
-    subtractH:167,
-    height:600,
-  }
-}
+window[607170185691] = {
+  name: "ExamArrange",
+  title: "考试安排",
+};
 //题库管理
-window[607170415939]={
-  name:'EditTitle',
-  title:'题库管理',
+window[607170415939] = {
+  name: "EditTitle",
+  title: "题库管理",
+  props: {
+    resid: 607599734723,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false
+  }
+};
+
+//设计试卷
+
+//考试培训
+window[607168385734] = {
+  name: "Training",
+  title: "考试培训"
+};
+//我的考试
+window[607168416937] = {
+  name: "MyExam",
+  title: "我的考试",
+  props: {
+    resid: 607188943833,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false
+  }
+};
+//人员信息
+window[607183152969] = {
+  name: "TableData",
+  title: "人员信息",
+  props: {
+    resid: 607189040461,
+    hasModify: false,
+    hasDelete: false
+  }
+};
+//我的错题
+window[607562749445] = {
+  name: "TableData",
+  title: "我的错题",
+  props: {
+    resid: 607185752828,
+    hasAdd: false,
+    hasDelete: false,
+    hasModify: false,
+    hasRowDelete: false,
+    hasRowModify: false
+  }
+};
+//题型分数设置
+window[607697832715] = {
+  name: "SetScore",
+  title: "题型分数设置",
+  props: {
+    resid: 607698018138
+  }
+};
+//考试成绩汇总
+window[607384570024]={
+  name:'Result',
+  title:'成绩汇总',
   props:{
-    resid:607599734723,
+    resid:607385902612,
     hasAdd:false,
     hasModify:false,
     hasDelete:false,
+  }
+}
+//个人成绩管理
+window[607170104270]={
+  name:'TableData',
+  title:'个人成绩管理',
+  props: {
+    resid: 608648690156 ,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd:false,
+    hasRowDelete:false,
+    hasRowModify:false,
+    hasRowView:false,
+    height:300,
   }
 }

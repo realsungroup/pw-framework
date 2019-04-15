@@ -37,7 +37,7 @@ export default class EditButton extends Component {
     const { size } = this.state;
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>
+        <Button onClick={this.showModal}>
           修改题目
         </Button>
         <Modal
@@ -48,16 +48,10 @@ export default class EditButton extends Component {
           onCancel={this.handleCancel}
         >
           <div>
-            <label>题目难度:</label>
-            <Radio.Group
-              value={size}
-              onChange={this.onChange}
-              style={{ marginBottom: 16, marginLeft: 10 }}
-            >
-              <Radio.Button value="small">低难度</Radio.Button>
-              <Radio.Button value="default">中难度</Radio.Button>
-              <Radio.Button value="large">高难度</Radio.Button>
-            </Radio.Group>
+            <label>题目难易度:</label>
+              <Button className="button">低难度</Button>
+              <Button className="button">中难度</Button>
+              <Button className="button">高难度</Button>
           </div>
           <div className="exam-title">
             <label>试题题目:</label>
@@ -101,7 +95,7 @@ export default class EditButton extends Component {
                   />
                 </li>
                 <li>
-                  <Button>添加</Button>
+                  <Button>添加选项</Button>
                 </li>
               </ul>
             </RadioGroup>

@@ -101,6 +101,51 @@ export const EditButton = Loadable({
     return minLoading;
   }
 });
+export const ExamSet = Loadable({
+  loader: () => import('./ExamSet'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Training = Loadable({
+  loader: () => import('./Training'),
+  loading() {
+    return minLoading;
+  }
+});
+export const SetScore = Loadable({
+  loader: () => import('./SetScore'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Result = Loadable({
+  loader: () => import('./Result'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamArrange = Loadable({
+  loader: () => import('./ExamArrange'),
+  loading() {
+    return minLoading;
+  }
+});
+export const MyExam = Loadable({
+  loader: () => import('./MyExam'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Selected = Loadable({
+  loader: () => import('./Selected'),
+  loading() {
+    return minLoading;
+  }
+});
+ 
+
+
 
 
 
