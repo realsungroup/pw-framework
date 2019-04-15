@@ -56,8 +56,8 @@ class FormData extends React.Component {
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
 
-      // 后端存储且无子表，则发送请求
-      if (storeWay === 'be' && !hasSubTables) {
+      // 后端存储，则发送请求
+      if (storeWay === 'be') {
         // 添加
         if (operation === 'add') {
           const params = {
