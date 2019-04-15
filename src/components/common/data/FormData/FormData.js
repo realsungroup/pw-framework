@@ -95,8 +95,8 @@ class FormData extends React.Component {
           }
         }
 
-        // 后端存储，且有子表，则连子表数据一起发送到后端
-      } else if (storeWay === 'be' && hasSubTables) {
+        // 前端存储，且有子表，则连子表数据一起发送到后端
+      } else if (storeWay === 'fe' && hasSubTables) {
         const arr = subTableArr
           .map((subTable, index) => ({
             resid: subTable.subResid,
