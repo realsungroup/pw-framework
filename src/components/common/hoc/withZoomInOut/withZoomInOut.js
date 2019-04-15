@@ -36,6 +36,11 @@ const withZoomInOut = (options = {}) => {
 
       render() {
         const { width = '100%', height = '100%' } = this.props;
+        const name = WrappedComponent.displayName || WrappedComponent.name;
+        const otherProps = {};
+        if (name === this.props.refTargetComponentName) {
+          otherProps.ref = this.props.wrappedComponentRef;
+        }
         return (
           <div
             className="with-zoom-in-out"
@@ -44,6 +49,7 @@ const withZoomInOut = (options = {}) => {
           >
             <WrappedComponent
               {...this.props}
+              {...otherProps}
               zoomIn={this.handleZoomIn}
               zoomOut={this.handleZoomOut}
             />

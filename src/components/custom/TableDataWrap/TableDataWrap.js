@@ -62,7 +62,18 @@ class TableDataWrap extends React.Component {
       visible: true
     });
   }
-  
+  // handleOpenRecordForm = ({ dataSource, selectedKeys, data }) => {
+  //   console.log({ props: this.props });
+  //   this.props.openRecordForm({
+  //     title: '标题啊啊',
+  //     data,
+  //     operation: 'add',
+  //     recordFormContainerProps: {
+  //       placement: 'bottom',
+  //       onClose: () => this.props.closeRecordForm()
+  //     }
+  //   });
+  // };
   handleOk = () => {
     this.setState({
       visible: false
@@ -83,20 +94,28 @@ class TableDataWrap extends React.Component {
         style={{ height: "calc(100vh - 220px)" }}
       >
 
-        <TableData {...this.props}   actionBarExtra={({
-                dataSource: dataSource,
-                selectedRowKeys: selectedRowKeys
-              }) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.onHandleAdd();
-                    }}
-                  >
-                    添加
-                  </Button>
-                );
-              }}/>
+        <TableData {...this.props}  
+          // actionBarExtra={params => (
+          //   <button onClick={() => this.handleOpenRecordForm(params)}>
+          //     添加
+          //   </button>
+          // )}
+        
+        // {/* actionBarExtra={({
+        //         dataSource: dataSource,
+        //         selectedRowKeys: selectedRowKeys
+        //       }) => {
+        //         return (
+        //           <Button
+        //             onClick={() => {
+        //               this.onHandleAdd();
+        //             }}
+        //           >
+        //             添加
+        //           </Button>
+        //         ); */}
+              // }}
+              />
         <Modal
           title="填写登记单"
           visible={visible}

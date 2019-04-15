@@ -27,7 +27,7 @@ const IconBtns = React.memo(
     size
   }) => {
     return (
-      <div className="pw-table__header-icon-wrap">
+      <React.Fragment>
         {hasImport && (
           <IconWithTooltip
             className="pw-table__header-icon"
@@ -82,7 +82,7 @@ const IconBtns = React.memo(
             style={{ fontSize: iconSizeMap[size] }}
           />
         )}
-      </div>
+      </React.Fragment>
     );
   }
 );

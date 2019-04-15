@@ -23,7 +23,8 @@ const HomeBody = {
   'HomeBody.Taskbar': '任务栏',
   'HomeBody.Bench': '工作台',
   'HomeBody.reminder': '提醒',
-  'HomeBody.noData': '暂无提醒数据'
+  'HomeBody.noData': '暂无提醒数据',
+  'HomeBody.Dashboard': '仪表盘'
 };
 
 // Login
@@ -62,7 +63,8 @@ const RightBtns = {
   'RightBtns.Submit': '提交',
   'RightBtns.OriginalPasswordTip': '请输入原密码',
   'RightBtns.NewPasswordTip': '请输入新密码',
-  'RightBtns.NewPasswordAgainTip': '请再次输入新密码'
+  'RightBtns.NewPasswordAgainTip': '请再次输入新密码',
+  'RightBtns.Reminder': '提醒'
 };
 
 // PersonCenter

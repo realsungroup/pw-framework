@@ -27,8 +27,9 @@ const withDownloadFile = WrappedComponent => {
       fileType = 'xls'
     ) => {
       this.setState({ loading: true });
+
       this.p1 = makeCancelable(
-        http().exportTableData({
+        http({ baseURL: baseUrl }).exportTableData({
           resid,
           cmswhere: cmsWhere,
           filetype: fileType
@@ -44,10 +45,16 @@ const withDownloadFile = WrappedComponent => {
     };
 
     render() {
+      const name = WrappedComponent.displayName || WrappedComponent.name;
+      const otherProps = {};
+      if (name === this.props.refTargetComponentName) {
+        otherProps.ref = this.props.wrappedComponentRef;
+      }
       return (
         <WrappedComponent
           {...this.props}
           downloadFile={this.handleDownloadFile}
+          {...otherProps}
         />
       );
     }
