@@ -60,7 +60,7 @@ export function withRecordForm(options = {}) {
         recordFormFormWidth,
         recordFormTabsWidth,
         storeWay = 'be',
-        onConfirm = () => {},
+        onSuccess = () => {},
         onCancel = () => {}
       }) => {
         const FormDataProps = {
@@ -69,7 +69,7 @@ export function withRecordForm(options = {}) {
           record,
           formProps,
           info,
-          onConfirm,
+          onSuccess,
           onCancel,
           AdvDicTableProps,
           beforeSaveFields,
