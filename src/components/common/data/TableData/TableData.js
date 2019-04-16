@@ -1546,8 +1546,7 @@ class TableData extends React.Component {
         actionBarExtra={actionBarExtra}
         actionBarExtraParams={{
           dataSource,
-          selectedRowKeys:
-            this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
+          selectedRowKeys: rowSelection && rowSelection.selectedRowKeys,
           data: this._dealedRecordFormData,
           recordFormData: this._recordFormData
         }}
