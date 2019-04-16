@@ -119,14 +119,8 @@ export const QueryType = Loadable({
   }
 });
 export const QuerySet = Loadable({
-  loader: () => import('QuerySet'),
+  loader: () => import('./QuerySet'),
   loading() {
     return minLoading;
   }
 });
-// export const Choice = Loadable({
-//   loader: () => import('Choice'),
-//   loading() {
-//     return minLoading;
-//   }
-// });

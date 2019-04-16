@@ -45,6 +45,5 @@ export {
   QueryTable,
   Paging,
   QueryType,
-  QuerySet,
-  // Choice
+  QuerySet
 } from '../components/custom/loadableCustom';
