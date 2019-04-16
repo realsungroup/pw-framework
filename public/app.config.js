@@ -30,7 +30,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655,608290060436], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
@@ -38,7 +38,7 @@ window.pwConfig = {
     }, // 默认主题色
 
     // 锁屏
-    lockScreenWaitTime: 600, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
+    lockScreenWaitTime: 6000, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 
     // logo 配置
     homeLogoSize: 42, // 首页 logo 尺寸
@@ -86,7 +86,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655,608290060436], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
