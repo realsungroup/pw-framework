@@ -1,9 +1,10 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
-import { TableData } from "../../common/loadableCommon";
+import { TableData} from "../../common/loadableCommon";
 import { Button, Modal, DatePicker, message, Tabs } from "antd";
 import { saveMultipleRecord } from "../../../util/api";
 import http from "../../../util20/api";
+import TableDataWrap from '../TableDataWrap'
 const TabPane = Tabs.TabPane;
 
 class TableDataInner extends React.Component {
@@ -70,11 +71,11 @@ class TableDataInner extends React.Component {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: "calc(100vh - 180px)" }}
+        style={{ height: "calc(100vh - 160px)" }}
       >
         <Tabs defaultActiveKey="1" style={{width:"100%",height:"100%",backgroundColor:"#fff"}}>
           <TabPane tab="未通知" key="1" style={{width:"100%",height:"100%"}}>
-            <TableData
+            <TableDataWrap
               refTargetComponentName="TableData"
               wrappedComponentRef={element => (this.tableDataRef = element)}
               {...this.props}
@@ -91,8 +92,8 @@ class TableDataInner extends React.Component {
               hasRowView={false}
               hasRowDelete={true}
               hasModify={false}
-              subtractH={216}
-              height={600}
+              subtractH={240}
+              height={790}
               actionBarFixed={true}
               hasZoomInOut={true}
               actionBarExtra={({
@@ -112,7 +113,7 @@ class TableDataInner extends React.Component {
             />
           </TabPane>
           <TabPane tab="已通知" key="2">
-            <TableData
+            <TableDataWrap
               refTargetComponentName="TableData"
               wrappedComponentRef={element => (this.tableDataRef = element)}
               {...this.props}
@@ -132,7 +133,6 @@ class TableDataInner extends React.Component {
               subtractH={216}
               height={600}
               actionBarFixed={false}
-             
             />
           </TabPane>
           <Modal

@@ -79,7 +79,7 @@ export default class ExamManage extends Component {
           isEditoRAdd: false
         });
         this.setState({
-          visible: false
+          visible: true
         });
         if (res.Error === 0) {
           this.tableDataRef.handleRefresh();

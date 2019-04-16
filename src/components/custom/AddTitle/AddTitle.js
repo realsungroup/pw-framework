@@ -16,6 +16,49 @@ import "./AddTitle.less";
 
 const Option = Select.Option;
 
+const questions=[
+  {
+    type:1,
+    typeName:'单选题',
+    topic:'题目标题',
+    options:[
+      {
+        value:'值1',
+        label:'1',
+        isWrite:false,
+      },
+      {
+        value:'值2',
+        label:'2',
+        isWrite:false
+      },
+      {
+        value:'值3',
+        label:'3',
+        isWrite:false
+      },
+    ],
+    isSelectedDo:true,
+  },
+  {
+    type:'2',
+    typeName:'多选题',
+    options:[
+      {
+        value:'值1',
+        label:'1'
+      },
+      {
+        value:'值2',
+        label:'2'
+      },
+      {
+        value:'值3',
+        label:'3'
+      }
+    ]
+  }
+]
 function handleChange(value) {
   console.log(`selected ${value}`);
 }
@@ -55,7 +98,20 @@ export default class AddTitle extends Component {
       visible: false
     });
   };
+
+  renderSingle=()=>{
+    return<div className='exam-set_single'>{
+
+    }</div>
+  }
+  renderMulti=()=>{
+    return<div className='exam-set_multi'>多选题</div>
+  }
+
+
+
   render() {
+
     return (
       <div className="btns">
         <Button onClick={this.showModal}>添加题库题目</Button>
