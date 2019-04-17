@@ -124,9 +124,3 @@ export const QuerySet = Loadable({
     return minLoading;
   }
 });
-// export const Choice = Loadable({
-//   loader: () => import('Choice'),
-//   loading() {
-//     return minLoading;
-//   }
-// });

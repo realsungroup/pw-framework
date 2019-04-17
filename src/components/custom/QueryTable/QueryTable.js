@@ -51,14 +51,14 @@ class QueryTable extends Component {
             <div className="queryItem" key={item.query_id}>
               <div className="queryItem-top">
                 <div className="queryItem-left">
-                  <span>{item.quey_name}</span>
+                  <span>{item.query_name}</span>
                   <span>ID:{item.query_id}</span>
                   <span>
                     <Button
                       size="small"
                       icon="copy"
                       className="copy"
-                      data-clipboard-text={item.quey_name}
+                      data-clipboard-text={item.query_name}
                     >
                       复制链接
                     </Button>
