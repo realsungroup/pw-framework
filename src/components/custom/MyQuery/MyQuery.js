@@ -22,7 +22,7 @@ class MyQuery extends React.Component {
   getFloders = () => {
     http()
       .getTable({
-        resid: 608311951778
+        resid: 608822887704
       })
       .then(res => {
         console.log('文件夹', res.data);
@@ -55,7 +55,7 @@ class MyQuery extends React.Component {
   getData = async () => {
     http()
       .getTable({
-        resid: 608313337472
+        resid: 608822905547
       })
       .then(res => {
         console.log('问卷', res.data);
@@ -151,8 +151,8 @@ class MyQuery extends React.Component {
     console.log(floderId);
     http()
       .getTable({
-        resid: 608313337472,
-        cmswhere: 'query_in_floder =' + floderId
+        resid: 608822905547,
+        cmswhere: 'floder_id =' + floderId
       })
       .then(res => {
         this.setState({ questionnaire: res.data });
@@ -223,18 +223,19 @@ class MyQuery extends React.Component {
             <Tabs defaultActiveKey="1" onChange={this.callback}>
               <TabPane tab="文件夹操作" key="1">
                 <TableData
-                  resid={608311951778}
+                  resid={608822887704}
                   hasModify={false}
                   hasDelete={false}
                   width={1200}
                   hasAdvSearch={false}
                   height={400}
                   subtractH={190}
+                  hasAdd={false}
                 />
               </TabPane>
               <TabPane tab="操作问卷" key="2">
                 <TableData
-                  resid={608313337472}
+                  resid={608822905547}
                   hasModify={false}
                   hasDelete={false}
                   width={1200}

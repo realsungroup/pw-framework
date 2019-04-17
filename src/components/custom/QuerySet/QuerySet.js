@@ -145,9 +145,6 @@ class QuerySet extends Component {
       visible2: false
     });
   };
-  showTabs = key => {
-    console.log(key);
-  };
   radioChange = e => {
     this.setState({
       radiovalue: e.target.value
@@ -268,7 +265,6 @@ class QuerySet extends Component {
       <div className="query-set__single" style={{ marginTop: 15 }}>
         <div>
           <Input
-            value={singlechoice.topic}
             onChange={this.SingleTopicChange}
             placeholder="输入题目"
           />
