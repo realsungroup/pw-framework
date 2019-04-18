@@ -114,6 +114,7 @@ const filterFields = (nodes, idField, pidField) => {
  * 组织图组件
  */
 class OrgChartData extends React.Component {
+  static displayName = 'OrgChartData';
   static propTypes = propTypes;
   static defaultProps = defaultProps;
   constructor(props) {
