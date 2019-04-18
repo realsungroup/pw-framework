@@ -35,6 +35,8 @@ const btnSizeMap = {
  * TableData
  */
 class TableData extends React.Component {
+  static displayName = 'TableData';
+
   static propTypes = propTypes;
 
   static defaultProps = defaultProps;
