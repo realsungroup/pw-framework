@@ -374,6 +374,13 @@ class TableData extends React.Component {
       state.editingKey = null;
     }
 
+    // 没有返回 ResourceData，报错
+    if (!res.ResourceData) {
+      return message.error(
+        '后端未返回 ResourceData 参数（用于确定前端按钮是否有显示的权限）'
+      );
+    }
+
     // 前端按钮是否有显示的权限
     this.setUpBtnAuth(res.ResourceData);
 
