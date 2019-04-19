@@ -9,14 +9,17 @@ import {
   Radio,
   Checkbox,
   Upload,
-  Icon
+  Icon,
+  DatePicker
 } from 'antd';
 import Choice from '../Choice';
+import http from '../../../util20/api';
 const TabPane = Tabs.TabPane;
 const { TextArea } = Input;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
 // 默认的题目数据结构
 let questions = [
@@ -24,6 +27,7 @@ let questions = [
     type: 1, // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
     typeName: '单选题',
     topic: '', // 题目标题
+    isRequired: 1,
     options: [
       {
         label: 1,
@@ -45,13 +49,13 @@ let questions = [
         value: '',
         isWrite: false
       }
-    ],
-    isHaveTo: true // 题目是否为可选的
+    ]
   },
   {
     type: 2,
     typeName: '多选题',
     topic: '',
+    isRequired: 1,
     options: [
       {
         label: 1,
@@ -73,15 +77,14 @@ let questions = [
         value: '',
         isWrite: false
       }
-    ],
-    isHaveTo: true // 题目是否为可选的
+    ]
   },
   {
     type: 3,
     typeName: '问答题',
     topic: '',
     answer: '',
-    isHaveTo: true // 题目是否为可选的
+    isRequired: 1
   }
 ];
 
@@ -122,25 +125,138 @@ class QuerySet extends Component {
     const { activeQuestionType, questions } = this.state;
     switch (activeQuestionType) {
       case '1': {
-        console.log(questions[0]);
+        const singleQuestion = questions[0];
+        let data; // 最终的 data
+        const dataObj = {};
+        dataObj.resid = 608828418560;
+        dataObj.maindata = {
+          query_id: '608897493977',
+          question_topic: questions[0].topic,
+          question_type: questions[0].typeName,
+          question_must: questions[0].isRequired,
+          _id: 1,
+          _state: 'added'
+        };
+
+        // 求 subdata
+        dataObj.subdata = [];
+        singleQuestion.options.forEach((option, index) => {
+          // console.log('循环出来的数组',index)
+          const obj = {
+            resid: 608828722533,
+            maindata: {
+              option_content: option.value,
+              _id: index + 1,
+              _state: 'added'
+            }
+          };
+          dataObj.subdata.push(obj);
+        });
+
+        data = [dataObj];
+
+        http()
+          .saveRecordAndSubTables({
+            data
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error('添加错误原因', err);
+          });
         break;
       }
       case '2': {
-        console.log(questions[1]);
+        // console.log(questions[1]);
+        const multiQuestion = questions[1];
+        let data; // 最终的 data
+        const dataObj = {};
+        dataObj.resid = 608828418560;
+        dataObj.maindata = {
+          query_id: '608897493977',
+          question_topic: questions[1].topic,
+          question_type: questions[1].typeName,
+          question_must: questions[1].isRequired,
+          _id: 1,
+          _state: 'added'
+        };
+
+        // 求 subdata
+        dataObj.subdata = [];
+        multiQuestion.options.forEach((option, index) => {
+          // console.log('循环出来的数组',index)
+          const obj = {
+            resid: 608828722533,
+            maindata: {
+              option_content: option.value,
+              _id: index + 1,
+              _state: 'added'
+            }
+          };
+          dataObj.subdata.push(obj);
+        });
+
+        data = [dataObj];
+
+        http()
+          .saveRecordAndSubTables({
+            data
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error('添加错误原因', err);
+          });
+
         break;
       }
       case '3': {
         console.log(questions[2]);
+        let data; // 最终的 data
+        const dataObj = {};
+        dataObj.resid = 608828418560;
+        dataObj.maindata = {
+          query_id: '608897493977',
+          question_topic: questions[2].topic,
+          question_type: questions[2].typeName,
+          question_must: questions[2].isRequired,
+          _id: 1,
+          _state: 'added'
+        };
+        //求subdata
+        dataObj.subdata = [
+          {
+            resid: 608828722533,
+            maindata: {
+              option_cntent: questions[2].answer,
+              _id: 1,
+              _state: 'added'
+            }
+          }
+        ];
+        data = [dataObj];
+        http()
+          .saveRecordAndSubTables({
+            data
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error('添加错误原因', err);
+          });
         break;
       }
     }
     this.setState({
-      visible2:false,
-    })
+      visible2: false
+    });
   };
 
   handleCancel2 = e => {
-    console.log(e);
+    // console.log(e);
     this.setState({
       visible2: false
     });
@@ -157,6 +273,7 @@ class QuerySet extends Component {
     this.setState({
       questions: newQuestions
     });
+    // console.log('单选内容',questions)
   };
   // 监听多选题干变化;
   MultiTopicChange = e => {
@@ -236,7 +353,7 @@ class QuerySet extends Component {
     const newQuestions = [...this.state.questions];
     newQuestions[0].options.splice(index, 1);
     this.setState({ questions: newQuestions });
-    console.log('删除后的数组',questions)
+    console.log('删除后的数组', questions);
   };
 
   //多选删除选项
@@ -245,17 +362,44 @@ class QuerySet extends Component {
     newQuestions[1].options.splice(index, 1);
     this.setState({ questions: newQuestions });
   };
+
   //监听单选选项变化
   handleSingleOptionValueChange = (value, index) => {
     const newQuestions = [...this.state.questions];
     newQuestions[0].options[index].value = value;
     this.setState({ questions: newQuestions });
   };
+
   //监听多选选项变化
   handleMultiOptionValueChange = (value, index) => {
     const newQuestions = [...this.state.questions];
     newQuestions[1].options[index].value = value;
     this.setState({ questions: newQuestions });
+  };
+
+  //是否选做变化
+  handleChange = (value, questionIndex) => {
+    const { questions } = this.state;
+    questions[questionIndex].isRequired = value;
+    this.setState({
+      questions: questions
+    });
+    // console.log(questions)
+  };
+
+  renderIsRequired = (value, questionIndex) => {
+    return (
+      <div style={{ textAlign: 'center', marginTop: 10 }}>
+        <Radio.Group
+          value={value}
+          buttonStyle="solid"
+          onChange={e => this.handleChange(e.target.value, questionIndex)}
+        >
+          <Radio.Button value={1}>必做题</Radio.Button>
+          <Radio.Button value={0}>选做题</Radio.Button>
+        </Radio.Group>
+      </div>
+    );
   };
 
   renderSingle = () => {
@@ -264,10 +408,7 @@ class QuerySet extends Component {
     return (
       <div className="query-set__single" style={{ marginTop: 15 }}>
         <div>
-          <Input
-            onChange={this.SingleTopicChange}
-            placeholder="输入题目"
-          />
+          <Input onChange={this.SingleTopicChange} placeholder="输入题目" />
         </div>
         <ul>
           {singlechoice.options.map((option, index) => {
@@ -312,6 +453,7 @@ class QuerySet extends Component {
             );
           })}
         </ul>
+        {this.renderIsRequired(singlechoice.isRequired, 0)}
       </div>
     );
   };
@@ -362,6 +504,18 @@ class QuerySet extends Component {
             );
           })}
         </ul>
+        {this.renderIsRequired(multichoice.isRequired, 1)}
+
+        {/* <div style={{ textAlign: 'center', marginTop: 10 }}>
+          <Radio.Group
+            value={multichoice.isRequired}
+            buttonStyle="solid"
+            onChange={this.handleChange}
+          >
+            <Radio.Button value={true}>必做题</Radio.Button>
+            <Radio.Button value={false}>选做题</Radio.Button>
+          </Radio.Group>
+        </div> */}
       </div>
     );
   };
@@ -375,8 +529,9 @@ class QuerySet extends Component {
           <Input placeholder="请输入题干" onChange={this.AnswerTopicChange} />
         </div>
         <div>
-          <TextArea style={{ marginTop: 10 }} />
+          <TextArea style={{ marginTop: 10 }} disabled />
         </div>
+        {this.renderIsRequired(answers.isRequired, 2)}
       </div>
     );
   };
@@ -427,29 +582,57 @@ class QuerySet extends Component {
           width={this.state.wid}
           cancelText="取消"
         >
-          <label>标题</label>
-          <Input />
-          <label>说明</label>
-          <TextArea />
-          <label>外观</label>
-          {/* <Upload name="avatar" action="//jsonplaceholder.typicode.com/posts/" className="avatar-uploader"></Upload> */}
-          <div className="upload">
-            <Icon type="plus" />
+          <div className='query-set__modal'>
+            <label className="query-set__setTitle">标题</label>
+            <Input onChange={this.handlequerSetTittleChange} />
           </div>
-          <label>礼品设置</label>
-          <div>
-            <RadioGroup>
-              <Radio value={1}>
-                礼品份数:
-                <Input style={{ width: 30, height: 20 }} />
-                <span className="prasetip">份</span>
-              </Radio>
-              <Radio value={2}>
-                中奖率:
-                <Input style={{ width: 30, height: 20 }} />
-                <span className="prasetip">%</span>
-              </Radio>
-            </RadioGroup>
+          <div  className='query-set__modal'>
+            <label className="query-set__setTitle">所属文件夹</label>
+            <div>
+              <Select style={{ width: '100%' }}>
+                <Option value="新闻类">新闻类</Option>
+                <Option value="英语类">英语类</Option>
+                <Option value="语文类">语文类</Option>
+                <Option value="Yiminghe">体育类</Option>
+              </Select>
+            </div>
+          </div>
+          <div className='query-set__modal'>
+            <label className="query-set__setTitle">说明</label>
+            <TextArea />
+          </div>
+          <div className='query-set__modal'>
+            <label className="query-set__setTitle">外观</label>
+            {/* <Upload name="avatar" action="//jsonplaceholder.typicode.com/posts/" className="avatar-uploader"></Upload> */}
+            <div className="upload">
+              <Icon type="plus" />
+            </div>
+          </div>
+          <div className='query-set__modal'>
+            <label className="query-set__setTitle">时间设置</label>
+            <div>
+              <span className="query-set__datalabel">开始时间</span>
+              <DatePicker className="query-set__data" />
+              <span className="query-set__datalabel">结束时间</span>
+              <DatePicker className="query-set__data" />
+            </div>
+          </div>
+          <div className='query-set__modal'>
+            <label className="query-set__setTitle">礼品设置</label>
+            <div>
+              <RadioGroup>
+                <Radio value={1}>
+                  礼品份数:
+                  <Input style={{ width: 30, height: 20 }} />
+                  <span className="prasetip">份</span>
+                </Radio>
+                <Radio value={2}>
+                  中奖率:
+                  <Input style={{ width: 30, height: 20 }} />
+                  <span className="prasetip">%</span>
+                </Radio>
+              </RadioGroup>
+            </div>
           </div>
         </Modal>
         <div className="addStyle">
@@ -493,12 +676,6 @@ class QuerySet extends Component {
                 </Button>
               </div>
             )}
-            <div style={{ textAlign: 'center', marginTop: 10 }}>
-              <Radio.Group defaultValue="must" buttonStyle="solid">
-                <Radio.Button value="must">必做题</Radio.Button>
-                <Radio.Button value="may">选做题</Radio.Button>
-              </Radio.Group>
-            </div>
           </Modal>
         </div>
       </div>

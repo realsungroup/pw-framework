@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, Modal, Input, Popconfirm, message } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
+import { Link } from 'react-router-dom';
 import http from '../../../util20/api';
 
 /**
@@ -32,7 +33,7 @@ class QueryTable extends Component {
       visible: false
     });
   };
-  componentDidMount(){
+  componentDidMount() {
     const clipboard = new ClipboardJS('.copy');
     clipboard.on('success', function(e) {
       message.success('复制成功,可以到任意地方粘贴去啦~~~');
@@ -69,15 +70,25 @@ class QueryTable extends Component {
                     <Icon type="sync" /> {item.query_status}
                   </span>
                   <span className="answercount">答卷:{item.answercount}</span>
-                  <span>{item.startTime}</span>
+                  <span>{item.start_time}</span>
                 </div>
               </div>
               <div className="queryItem-bottom">
                 <div className="queryItem-left">
-                  <Button className="stepBtn" type="primary">
-                    <Icon type="setting" />
-                    设计问卷
-                  </Button>
+                  <Link
+                    to={{
+                      pathnme: '/fnmodule',
+                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页`,
+                      state: {
+                        aaa: 111
+                      }
+                    }}
+                  >
+                    <Button className="stepBtn" type="primary">
+                      <Icon type="setting" />
+                      设计问卷
+                    </Button>
+                  </Link>
                   {item.query_status == '已发送' ? (
                     <Button className="stepBtn" type="primary">
                       <Icon type="pause" />

@@ -47,9 +47,7 @@ class MyQuery extends React.Component {
   componentWillUpdate() {
     //页面将要更新时执行的函数
   }
-  componentDidUpdate() {
-    
-  }
+  componentDidUpdate() {}
 
   //获取问卷
   getData = async () => {
@@ -72,12 +70,9 @@ class MyQuery extends React.Component {
   deleQuery = item => {
     console.log('问卷对象', item);
     const recid = item.REC_ID;
-    // console.log(recid)
-    // Alert.alert("提示","确定要操作此问卷么吗？")
-    // message.deleQuery('确定删除此问卷吗？')
     http()
       .removeRecords({
-        resid: 608313337472,
+        resid: 608822905547,
         data: [
           {
             REC_ID: recid
@@ -129,8 +124,7 @@ class MyQuery extends React.Component {
     } else {
       http()
         .getTable({
-          resid: 608313337472,
-          // cmswhere: '`'+'query_status =' + status +'`'
+          resid: 608822905547,
           cmswhere: `query_status = '${status}'`
         })
         .then(res => {
@@ -144,6 +138,7 @@ class MyQuery extends React.Component {
         });
     }
   };
+
   //筛选查询渲染
   sortShow = item => {
     //  console.log('筛选',item)
@@ -153,6 +148,22 @@ class MyQuery extends React.Component {
       .getTable({
         resid: 608822905547,
         cmswhere: 'floder_id =' + floderId
+      })
+      .then(res => {
+        this.setState({ questionnaire: res.data });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  //问卷名搜索渲染
+  handleSearchChange = value => {
+    console.log({ value });
+    http()
+      .getTable({
+        resid: 608822905547,
+        cmswhere: `query_name LIKE '%${value}%'`
       })
       .then(res => {
         this.setState({ questionnaire: res.data });
@@ -188,7 +199,7 @@ class MyQuery extends React.Component {
           </Modal>
           <Input.Search
             style={{ width: 480, padding: 10 }}
-            defaultValue="请输入问卷名进行搜索..."
+            onSearch={this.handleSearchChange}
           />
           <Select
             defaultValue="问卷状态"
@@ -196,7 +207,7 @@ class MyQuery extends React.Component {
             onChange={this.queryStatusChange}
           >
             <Option value="问卷状态">问卷状态</Option>
-            <Option value="已暂停">已暂停</Option>
+            <Option value="已停止">已停止</Option>
             <Option value="已发送">已发送</Option>
             <Option value="草稿">草稿</Option>
           </Select>
@@ -230,10 +241,12 @@ class MyQuery extends React.Component {
                   hasAdvSearch={false}
                   height={400}
                   subtractH={190}
-                  hasAdd={false}
+                  actionBarFixed={false}
+                  hasRowView={false}
+                  recordFormName={'前端窗体'}
                 />
               </TabPane>
-              <TabPane tab="操作问卷" key="2">
+              <TabPane tab="移动问卷" key="2">
                 <TableData
                   resid={608822905547}
                   hasModify={false}
@@ -243,6 +256,8 @@ class MyQuery extends React.Component {
                   subtractH={190}
                   hasRowView={false}
                   hasAdd={false}
+                  actionBarFixed={false}
+                  recordFormName={'default1'}
                 />
               </TabPane>
             </Tabs>
@@ -261,10 +276,7 @@ class MyQuery extends React.Component {
             );
           })}
         </div>
-        <QueryTable
-          questionnaire={questionnaire}
-          onDelete={this.deleQuery}
-        />
+        <QueryTable questionnaire={questionnaire} onDelete={this.deleQuery} />
         <Paging />
       </div>
     );

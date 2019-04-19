@@ -157,8 +157,12 @@ window[590765309983] = {
         },
         {
           btnName: '撤销',
-          innerFieldNames: ['C3_590512213622', 'C3_591373760332','C3_605619907534'],
-          values: ['Y', null,'Y']
+          innerFieldNames: [
+            'C3_590512213622',
+            'C3_591373760332',
+            'C3_605619907534'
+          ],
+          values: ['Y', null, 'Y']
         },
         {
           btnName: '修改',
@@ -167,8 +171,8 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373611399','C3_605619907534'],
-          values: ['Y','Y']
+          innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
+          values: ['Y', 'Y']
         }
       ],
       formHeaderRecords: [
@@ -689,7 +693,7 @@ window[606071640940] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    recordFormFormWidth: '90%',
+    recordFormFormWidth: '90%'
   } // 组件所接收的 props
 };
 //供应商审批
@@ -712,9 +716,9 @@ window[606242031630] = {
     hasRowModify: true,
     hasRowView: false,
     hasRowDelete: true,
-    formProps:{
-      height:500,
-   },
+    formProps: {
+      height: 500
+    },
     recordFormFormWidth: '40%',
     recordFormType: 'drawer',
     recordFormContainerProps: {
@@ -729,7 +733,7 @@ window[606242031630] = {
           hasAdd: true,
           hasModify: false,
           hasDelete: false
-        },
+        }
 
         // hasRowModify: false,
         // hasRowView: false,
@@ -740,7 +744,7 @@ window[606242031630] = {
 };
 
 window[608050884937] = {
-  name:"TableDataInner",
+  name: 'TableDataInner',
   title: '内部推荐',
   props: {
     // baseURL:"https://finisar.realsun.me:9092/"
@@ -751,24 +755,28 @@ window[608050884937] = {
     // hasDelete: false,
     // hasRowModify: false,
     // hasRowView: false,
-    // hasRowDelete: false,  
-    
+    // hasRowDelete: false,
   } // 组件所接收的 props
 
-    // batchBtn: {
-    //   btnName: '一键提交',
-    //   title: '一键提交'
-    // },
+  // batchBtn: {
+  //   btnName: '一键提交',
+  //   title: '一键提交'
+  // },
   // resid:"603301655900" // 功能模块名称
-}
+};
 // 607189885707
 window[607189885707] = {
-  name:"MyQuery",
-  title: '问卷系统',
-}
+  name: 'MyQuery',
+  title: '问卷系统'
+};
 
 // 608635796671
 window[608635796671] = {
-  name:"QuerySet",
-  title: '问卷设置',
-}
+  name: 'QuerySet',
+  title: '问卷设置'
+};
+
+// window['问卷设置'] = {
+//   title: '问卷设置',
+//   name: 'QuerySet'
+// };
