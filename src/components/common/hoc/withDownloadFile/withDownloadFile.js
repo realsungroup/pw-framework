@@ -27,8 +27,9 @@ const withDownloadFile = WrappedComponent => {
       fileType = 'xls'
     ) => {
       this.setState({ loading: true });
+
       this.p1 = makeCancelable(
-        http().exportTableData({
+        http({ baseURL: baseUrl }).exportTableData({
           resid,
           cmswhere: cmsWhere,
           filetype: fileType

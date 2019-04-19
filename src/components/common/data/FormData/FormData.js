@@ -56,8 +56,8 @@ class FormData extends React.Component {
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
 
-      // 后端存储且无子表，则发送请求
-      if (storeWay === 'be' && !hasSubTables) {
+      // 后端存储，则发送请求
+      if (storeWay === 'be') {
         // 添加
         if (operation === 'add') {
           const params = {
@@ -95,8 +95,8 @@ class FormData extends React.Component {
           }
         }
 
-        // 后端存储，且有子表，则连子表数据一起发送到后端
-      } else if (storeWay === 'be' && hasSubTables) {
+        // 前端存储，且有子表，则连子表数据一起发送到后端
+      } else if (storeWay === 'fe' && hasSubTables) {
         const arr = subTableArr
           .map((subTable, index) => ({
             resid: subTable.subResid,
@@ -140,8 +140,8 @@ class FormData extends React.Component {
         }
       }
 
-      this.props.onConfirm &&
-        this.props.onConfirm(operation, formData, record, form);
+      this.props.onSuccess &&
+        this.props.onSuccess(operation, formData, record, form);
     });
   };
 

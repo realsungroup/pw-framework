@@ -15,6 +15,13 @@ export const TableDataWrap = Loadable({
     return minLoading;
   }
 });
+export const TableDataVisitor = Loadable({
+  loader: () => import('./TableDataVisitor'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const TableDataInner = Loadable({
   loader: () => import('./TableDataInner'),
   loading() {

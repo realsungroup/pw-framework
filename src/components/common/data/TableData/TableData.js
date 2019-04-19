@@ -89,7 +89,6 @@ class TableData extends React.Component {
     await this.getData();
     await this.getScrollXY();
 
-    console.log('width:', this.tableDataRef.clientWidth);
     this.setState({ loading: false });
   };
 
@@ -327,7 +326,6 @@ class TableData extends React.Component {
       } catch (err) {
         return console.error(err);
       }
-      console.log({ res });
     }
 
     const {
@@ -457,6 +455,7 @@ class TableData extends React.Component {
       );
     this._dealedRowEditFormData =
       rowEditFormData && getDataProp(this._rowEditFormData, {});
+    this.forceUpdate();
   };
 
   /**
@@ -582,11 +581,17 @@ class TableData extends React.Component {
       downloadFile,
       resid,
       cmswhere,
-      fileType
+      fileType,
+      baseURL
     } = this.props;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
+    let url = window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
+    if (baseURL) {
+      url = baseURL;
+    }
+    console.log({baseURL})
     await downloadFile(
-      (window.powerWorks && window.powerWorks.fileDownloadUrl) || '...',
+      url,
       downloadFileName || title,
       resid,
       mergedCmsWhere,
@@ -846,7 +851,7 @@ class TableData extends React.Component {
       recordFormFormWidth,
       recordFormTabsWidth,
       storeWay,
-      onConfirm: this.handleConfirm,
+      onSuccess: this.handleSuccess,
       onCancel: this.handleCancel
     });
   };
@@ -1362,7 +1367,7 @@ class TableData extends React.Component {
     });
   };
 
-  handleConfirm = (operation, formData, record, form) => {
+  handleSuccess = (operation, formData, record, form) => {
     this.props.closeRecordForm();
     const { intl, storeWay } = this.props;
     if (operation === 'add') {
@@ -1540,6 +1545,13 @@ class TableData extends React.Component {
         modifyText={modifyText}
         enModifyText={enModifyText}
         actionBarExtra={actionBarExtra}
+        actionBarExtraParams={{
+          dataSource,
+          selectedRowKeys:
+            this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
+          data: this._dealedRecordFormData,
+          recordFormData: this._recordFormData
+        }}
         headerExtra={headerExtra}
       />
     );
