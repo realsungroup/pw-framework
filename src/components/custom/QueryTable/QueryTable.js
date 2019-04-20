@@ -77,12 +77,10 @@ class QueryTable extends Component {
                 <div className="queryItem-left">
                   <Link
                     to={{
-                      pathnme: '/fnmodule',
-                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页`,
-                      state: {
-                        aaa: 111
-                      }
+                      pathname: '/fnmodule',
+                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`,
                     }}
+                    target='_self'
                   >
                     <Button className="stepBtn" type="primary">
                       <Icon type="setting" />

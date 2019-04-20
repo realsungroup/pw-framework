@@ -183,20 +183,26 @@ class MyQuery extends React.Component {
       // <Router>
       <div className="query">
         <div className="query-top">
-          {/* <Link to="/querytype"> */}
-          <Button type="primary" onClick={this.typeShow}>
-            <Icon type="plus" />
-            创建问卷
-          </Button>
-          {/* </Link> */}
-          <Modal
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=`
+            }}
+            target="_self"
+          >
+            <Button type="primary">
+              <Icon type="plus" />
+              创建问卷
+            </Button>
+          </Link>
+          {/* <Modal
             title="选择问卷类型"
             width={this.state.typewid}
             visible={this.state.visibleType}
             onCancel={this.handleCancel}
           >
             <QueryType />
-          </Modal>
+          </Modal> */}
           <Input.Search
             style={{ width: 480, padding: 10 }}
             onSearch={this.handleSearchChange}
@@ -225,7 +231,6 @@ class MyQuery extends React.Component {
           </Button>
           <Modal
             title="管理文件夹"
-            // borderstyle= {color}
             width={this.state.wid}
             visible={this.state.visible}
             onCancel={this.handleCancel}
