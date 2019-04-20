@@ -810,7 +810,7 @@ class QuerySet extends Component {
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete">
+          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
             删除
           </Button>
           <Button size="small" icon="arrow-up">
@@ -854,7 +854,7 @@ class QuerySet extends Component {
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete" onClick={(item)=>{this.delCurrentQuestion(item.question_id)}}>
+          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
             删除
           </Button>
           <Button size="small" icon="arrow-up">
@@ -888,7 +888,7 @@ class QuerySet extends Component {
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete" onClick={(item)=>{this.delCurrentQuestion(item.question_id)}}>
+          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
             删除
           </Button>
           <Button size="small" icon="arrow-up">
@@ -908,16 +908,20 @@ class QuerySet extends Component {
     );
   }
   delCurrentQuestion(questionID){
+    const {queryId} = this.state;
+    console.log("试题ID",questionID)
      http().removeRecords({
        resid:608828418560,
        data:[{
          REC_ID:questionID,
        }]
      }).then(res=>{
-      //  console.log(message)
-      // if(res.Error){
-
-      // }
+       console.log(res)
+      if(res.Error){
+         console.log("删除失败")
+      }else{
+        this.getThisQueryQuestions(queryId);
+      }
      }).catch(err=>{
        console.error(err)
      })
