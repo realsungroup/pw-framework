@@ -156,7 +156,6 @@ window[590765309983] = {
           values: ["Y"]
         },
         {
-<<<<<<< HEAD
           btnName: '撤销',
           innerFieldNames: [
             'C3_590512213622',
@@ -164,15 +163,6 @@ window[590765309983] = {
             'C3_605619907534'
           ],
           values: ['Y', null, 'Y']
-=======
-          btnName: "撤销",
-          innerFieldNames: [
-            "C3_590512213622",
-            "C3_591373760332",
-            "C3_605619907534"
-          ],
-          values: ["Y", null, "Y"]
->>>>>>> f579d3b54b004e9b27db579b8b1044a550add66b
         },
         {
           btnName: "修改",
@@ -180,15 +170,9 @@ window[590765309983] = {
           values: ["Y"]
         },
         {
-<<<<<<< HEAD
           btnName: '删除',
           innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
           values: ['Y', 'Y']
-=======
-          btnName: "删除",
-          innerFieldNames: ["C3_591373611399", "C3_605619907534"],
-          values: ["Y", "Y"]
->>>>>>> f579d3b54b004e9b27db579b8b1044a550add66b
         }
       ],
       formHeaderRecords: [
