@@ -16,6 +16,7 @@ const TabPane = Tabs.TabPane;
  * 显示记录的表单，且具有增改查功能
  */
 class FormData extends React.Component {
+  static displayName = 'FormData';
   static propTypes = propTypes;
   static defaultProps = defaultProps;
   constructor(props) {

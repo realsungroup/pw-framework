@@ -35,6 +35,8 @@ const btnSizeMap = {
  * TableData
  */
 class TableData extends React.Component {
+  static displayName = 'TableData';
+
   static propTypes = propTypes;
 
   static defaultProps = defaultProps;
@@ -372,6 +374,13 @@ class TableData extends React.Component {
     // 有行内编辑，则清除正在编辑的行
     if (this.props.hasRowEdit) {
       state.editingKey = null;
+    }
+
+    // 没有返回 ResourceData，报错
+    if (!res.ResourceData) {
+      return message.error(
+        '后端未返回 ResourceData 参数（用于确定前端按钮是否有显示的权限）'
+      );
     }
 
     // 前端按钮是否有显示的权限
@@ -1547,8 +1556,7 @@ class TableData extends React.Component {
         actionBarExtra={actionBarExtra}
         actionBarExtraParams={{
           dataSource,
-          selectedRowKeys:
-            this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
+          selectedRowKeys: rowSelection && rowSelection.selectedRowKeys,
           data: this._dealedRecordFormData,
           recordFormData: this._recordFormData
         }}

@@ -154,8 +154,6 @@ class PwTable extends React.Component {
 
     const { locale } = this.props.intl;
 
-    const ctx = this;
-
     return (
       <div className="pw-table">
         {hasHeader && (
