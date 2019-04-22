@@ -10,7 +10,8 @@ import {
   Checkbox,
   Icon,
   DatePicker,
-  Switch
+  Switch,
+  message
 } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -20,11 +21,7 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { RangePicker } = DatePicker;
-const dateFormat = 'YYYY-MM-DD'
-
-//判断有没有传ID  如果传了，则根据ID 去查询数据，然后渲染。 如果无ID，则渲染最初模型。
-
-//
+const dateFormat = 'YYYY-MM-DD';
 
 // 默认的题目数据结构
 let questions = [
@@ -32,7 +29,7 @@ let questions = [
     type: 1, // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
     typeName: '单选题',
     topic: '', // 题目标题
-    isRequired: 1,
+    isRequired: '1',
     options: [
       {
         label: 1,
@@ -60,7 +57,7 @@ let questions = [
     type: 2,
     typeName: '多选题',
     topic: '',
-    isRequired: 1,
+    isRequired: '1',
     options: [
       {
         label: 1,
@@ -89,7 +86,7 @@ let questions = [
     typeName: '问答题',
     topic: '',
     answer: '',
-    isRequired: 1
+    isRequired: '1'
   }
 ];
 
@@ -112,7 +109,9 @@ class QuerySet extends Component {
       giftRate: '',
       queryId: '', //跳转时传过来的ID,
       AllQuestions: [],
-      questionOptions: []
+      currentQuestion: {},
+      CurrentQuestionVisible: false,
+      currentactiveQuestionMust: ''
     };
   }
   showModal = () => {
@@ -123,6 +122,12 @@ class QuerySet extends Component {
   addSingle = () => {
     this.setState({
       visible2: true
+    });
+  };
+  // 关闭编辑模态框
+  handleEditModal = () => {
+    this.setState({
+      CurrentQuestionVisible: false
     });
   };
   //点击设置保存时
@@ -230,7 +235,7 @@ class QuerySet extends Component {
               option_content: option.value,
               _id: index + 1,
               _state: 'added',
-              option_write:option.isWrite,
+              option_write: option.isWrite
             }
           };
           dataObj.subdata.push(obj);
@@ -275,7 +280,7 @@ class QuerySet extends Component {
               option_content: option.value,
               _id: index + 1,
               _state: 'added',
-              option_write:option.isWrite,
+              option_write: option.isWrite
             }
           };
           dataObj.subdata.push(obj);
@@ -315,7 +320,7 @@ class QuerySet extends Component {
           {
             resid: 608828722533,
             maindata: {
-              option_cntent: questions[2].answer,
+              option_content: questions[2].answer,
               _id: 1,
               _state: 'added'
             }
@@ -500,9 +505,9 @@ class QuerySet extends Component {
             return (
               <li key={index}>
                 <Radio className="raio">
-                  {option.isWrite ? (
+                  {option.isWrite == '0' ? (
                     <Input
-                      placeholder="其他"
+                      placeholder="请输入选项内容"
                       style={{ width: 800 }}
                       value={option.value}
                       onChange={e =>
@@ -515,13 +520,14 @@ class QuerySet extends Component {
                   ) : (
                     <Input
                       value={option.value}
+                      placeholder="其他"
                       onChange={e =>
                         this.handleSingleOptionValueChange(
                           e.target.value,
                           index
                         )
                       }
-                      placeholder="输入选项内容"
+                      // placeholder="输入选项内容"
                       style={{ width: 800 }}
                     />
                   )}
@@ -559,9 +565,9 @@ class QuerySet extends Component {
                   style={{ width: 20, height: 30 }}
                   className="checkbox"
                 />
-                {option.isWrite ? (
+                {option.isWrite == '0' ? (
                   <Input
-                    placeholder="其他"
+                    placeholder="输入选项内容"
                     style={{ width: 800 }}
                     value={option.value}
                     onChange={e =>
@@ -574,7 +580,7 @@ class QuerySet extends Component {
                     onChange={e =>
                       this.handleMultiOptionValueChange(e.target.value, index)
                     }
-                    placeholder="输入选项内容"
+                    placeholder="其他"
                     style={{ width: 800 }}
                   />
                 )}
@@ -687,12 +693,6 @@ class QuerySet extends Component {
         console.error(err);
       });
   };
-  //获取指定问卷信息并放在state中
-  // componentWillUpdate(){
-  //   const quertString = window.location.search;
-  //   const qsObj = qs.parse(quertString.substring(1));
-  //   this.getThisquery(qsObj.id);
-  // };
   getThisquery = queryId => {
     console.log('文卷ID', queryId);
     http()
@@ -764,7 +764,7 @@ class QuerySet extends Component {
   //循环遍历所有的题目
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    // console.log('渲染时的问卷试题', AllQuestions);
+    console.log('渲染时的问卷试题', AllQuestions);
     return AllQuestions.map(item => {
       switch (item.question_type) {
         case '单选题': {
@@ -779,6 +779,76 @@ class QuerySet extends Component {
       }
     });
   }
+  //上移某道题
+  upCurrentQuestion(questionID, questionOrder) {
+    const {AllQuestions,queryId} = this.state;
+    
+    let tempAllQuestions = this.state.AllQuestions;
+    // console.log(questionID, questionOrder);
+    if (questionOrder >= 2) {
+      let neworder = questionOrder - 1;
+      let index = questionOrder-2;
+      // console.log("上边那到题",tempAllQuestions[index]);
+      const recid = tempAllQuestions[index].REC_ID;
+      // console.log(neworder);
+      http()
+        .modifyRecords({
+          resid: '608828418560',
+          data: [
+            {
+              REC_ID: questionID,
+              question_order: neworder
+            },
+            {
+              REC_ID:recid,
+              question_order:neworder+1
+             },
+
+          ]
+        })
+        .then(res => {
+         this.getThisQueryQuestions(queryId);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      return message.info('已经是第一项了，不能再上移了');
+    }
+  }
+  // 下移某道题
+  downCurrentQuestion(questionID, questionOrder) {
+    const { AllQuestions , queryId} = this.state;
+    console.log(AllQuestions.length);
+    if (questionOrder >= AllQuestions.length) {
+      return message.info('已经是最后一题了，不能再下移了');
+    } else {
+        // 下一道题的索引
+        let index = questionOrder
+        // console.log(AllQuestions[index]);
+        const recid = AllQuestions[index].REC_ID;
+      http()
+        .modifyRecords({
+          resid: '608828418560',
+          data: [
+            {
+              REC_ID: questionID,
+              question_order: questionOrder + 1
+            },
+            {
+             REC_ID:recid,
+             question_order:questionOrder-1
+            },
+          ]
+        })
+        .then(res => {
+          this.getThisQueryQuestions(queryId);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  }
   renderGetSingleChoice(item) {
     return (
       <div className="choice" key={item.question_id}>
@@ -787,16 +857,24 @@ class QuerySet extends Component {
           {item.question_topic}
         </div>
         <RadioGroup key={item.question_id}>
-          {item.subdata.map((option) => {
+          {item.subdata.map(option => {
             return (
               <div key={option.option_id}>
                 {option.option_write == '0' ? (
-                  <Radio  value={option.option_content}>
+                  <Radio value={option.option_content}>
                     {option.option_content}
                   </Radio>
                 ) : (
-                  <Radio  value={option.option_content}>
-                    {option.option_content} <Input className="WriteInut" style={{borderRadius: 0,border:'none',borderBottom:"1px solid #000"}}></Input>
+                  <Radio value={option.option_content}>
+                    {option.option_content}{' '}
+                    <Input
+                      className="WriteInut"
+                      style={{
+                        borderRadius: 0,
+                        border: 'none',
+                        borderBottom: '1px solid #000'
+                      }}
+                    />
                   </Radio>
                 )}
               </div>
@@ -804,19 +882,43 @@ class QuerySet extends Component {
           })}
         </RadioGroup>
         <div className="choiceActionBox">
-          <Button size="small" icon="form">
+          <Button
+            size="small"
+            icon="form"
+            onClick={() => {
+              this.showThisQuestionModal(item);
+            }}
+          >
             编辑
           </Button>
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() => {
+              this.delCurrentQuestion(item.question_id);
+            }}
+          >
             删除
           </Button>
-          <Button size="small" icon="arrow-up">
+          <Button
+            size="small"
+            icon="arrow-up"
+            onClick={() => {
+              this.upCurrentQuestion(item.question_id, item.question_order);
+            }}
+          >
             上移
           </Button>
-          <Button size="small" icon="arrow-down">
+          <Button
+            size="small"
+            icon="arrow-down"
+            onClick={() => {
+              this.downCurrentQuestion(item.question_id, item.question_order);
+            }}
+          >
             下移
           </Button>
           <Button size="small" icon="up-circle">
@@ -848,13 +950,25 @@ class QuerySet extends Component {
           })}
         </CheckboxGroup>
         <div className="choiceActionBox">
-          <Button size="small" icon="form">
+          <Button
+            size="small"
+            icon="form"
+            onClick={() => {
+              this.showThisQuestionModal(item);
+            }}
+          >
             编辑
           </Button>
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() => {
+              this.delCurrentQuestion(item.question_id);
+            }}
+          >
             删除
           </Button>
           <Button size="small" icon="arrow-up">
@@ -876,19 +990,31 @@ class QuerySet extends Component {
   renderGetAnswerChoice(item) {
     return (
       <div className="choice" key={item.question_id}>
-        <div className="query-set__questionTopic" >
+        <div className="query-set__questionTopic">
           {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <TextArea />
         <div className="choiceActionBox">
-          <Button size="small" icon="form">
+          <Button
+            size="small"
+            icon="form"
+            onClick={() => {
+              this.showThisQuestionModal(item);
+            }}
+          >
             编辑
           </Button>
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id)}}>
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() => {
+              this.delCurrentQuestion(item.question_id);
+            }}
+          >
             删除
           </Button>
           <Button size="small" icon="arrow-up">
@@ -907,25 +1033,329 @@ class QuerySet extends Component {
       </div>
     );
   }
-  delCurrentQuestion(questionID){
-    const {queryId} = this.state;
-    console.log("试题ID",questionID)
-     http().removeRecords({
-       resid:608828418560,
-       data:[{
-         REC_ID:questionID,
-       }]
-     }).then(res=>{
-       console.log(res)
-      if(res.Error){
-         console.log("删除失败")
-      }else{
-        this.getThisQueryQuestions(queryId);
-      }
-     }).catch(err=>{
-       console.error(err)
-     })
+  //删除当前的这道试题
+  delCurrentQuestion(questionID) {
+    const { queryId } = this.state;
+    console.log('试题ID', questionID);
+    http()
+      .removeRecords({
+        resid: 608828418560,
+        data: [
+          {
+            REC_ID: questionID
+          }
+        ]
+      })
+      .then(res => {
+        console.log(res);
+        if (res.Error) {
+          console.log('删除失败');
+        } else {
+          this.getThisQueryQuestions(queryId);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
+  //显示当前题目的模态框
+  showThisQuestionModal(item) {
+    const { currentQuestion } = this.state;
+    this.setState({
+      CurrentQuestionVisible: true,
+      currentQuestion: item,
+      currentactiveQuestionMust: item.question_must
+    });
+    console.log('当前问题', currentQuestion);
+  }
+  //renderCurrentQuestion 判断当前的题目类型，
+  renderCurrentQuestion(currentQuestionType) {
+    switch (currentQuestionType) {
+      case '单选题': {
+        return this.renderCurrentSingleQuestion();
+      }
+      case '多选题': {
+        return this.renderCurrentMultiQuestion();
+      }
+      case '问答题': {
+        return this.renderCurrentAnswerQuestion();
+      }
+    }
+  }
+  delcurrentOption(optionId, index) {
+    const { currentQuestion } = this.state;
+    console.log('当前选项的Id', optionId);
+    currentQuestion.subdata.splice(index, 1);
+    this.setState({
+      currentQuestion: currentQuestion
+    });
+  }
+  //编辑中添加选项
+  addCurrentQuestionOption(questiontype) {
+    const tempCurrentQuestion = this.state.currentQuestion;
+    const option = {
+      option_content: '',
+      option_write: '0'
+    };
+    tempCurrentQuestion.subdata.push(option);
+    this.setState({
+      currentQuestion: tempCurrentQuestion
+    });
+  }
+  //编辑中添加可填写选项
+  addCurrentQuestionWiteOption() {
+    const tempCurrentQuestion = this.state.currentQuestion;
+    const option = {
+      option_content: '',
+      option_write: '1'
+    };
+    tempCurrentQuestion.subdata.push(option);
+    this.setState({
+      currentQuestion: tempCurrentQuestion
+    });
+  }
+  //编辑中选项内容的变化
+  handleCurrentQuestionOptionChange(value, index) {
+    const tempcurrentQuestion = this.state.currentQuestion;
+    tempcurrentQuestion.subdata[index].option_content = value;
+    // console.log(value)
+    this.setState({
+      currentQuestion: tempcurrentQuestion
+    });
+    console.log(this.state.currentQuestion);
+  }
+  //编辑中题干内容的变化
+  handleCurrentQuestionTopci(value) {
+    const tempcurrentQuestion = this.state.currentQuestion;
+    tempcurrentQuestion.question_topic = value;
+    this.setState({
+      currentQuestion: tempcurrentQuestion
+    });
+    // console.log("题干变化后的",this.state.currentQuestion)
+  }
+  //编辑中选做的变化
+  handleCurrentQuestionMustChange(value) {
+    //  console.log(this.state.currentQuestion);
+    const { currentQuestion } = this.state;
+    currentQuestion.question_must = value;
+    let tempcurrentQuestion = currentQuestion;
+    this.setState({
+      currentQuestion: tempcurrentQuestion,
+      currentactiveQuestionMust: value
+    });
+    console.log('变化后的当前问卷', this.state.currentQuestion);
+  }
+  //渲染当前单选题的内容
+  renderCurrentSingleQuestion() {
+    const { currentQuestion } = this.state;
+    // console.log(currentQuestion);
+    return (
+      <div className="query-set__single" style={{ marginTop: 15 }}>
+        <div>
+          <Input
+            onChange={e => {
+              this.handleCurrentQuestionTopci(e.target.value);
+            }}
+            value={currentQuestion.question_topic}
+          />
+        </div>
+        <ul>
+          {currentQuestion.subdata.map((option, index) => {
+            // console.log(option)
+            return (
+              <li key={option.option_id}>
+                <Radio className="raio">
+                  <Input
+                    value={option.option_content}
+                    onChange={e =>
+                      this.handleCurrentQuestionOptionChange(
+                        e.target.value,
+                        index
+                      )
+                    }
+                    style={{ width: 800 }}
+                  />
+                  <Button
+                    icon="delet"
+                    onClick={() => {
+                      this.delcurrentOption(option.option_id, index);
+                    }}
+                  >
+                    删除
+                  </Button>
+                </Radio>
+              </li>
+            );
+          })}
+        </ul>
+        <div style={{ textAlign: 'center', marginTop: 10 }}>
+          <Radio.Group
+            value={this.state.currentactiveQuestionMust}
+            buttonStyle="solid"
+            onChange={e => {
+              this.handleCurrentQuestionMustChange(e.target.value);
+            }}
+          >
+            <Radio.Button value={'1'}>必做题</Radio.Button>
+            <Radio.Button value={'0'}>选做题</Radio.Button>
+          </Radio.Group>
+        </div>
+      </div>
+    );
+  }
+
+  //渲染当前多选题的内容
+  renderCurrentMultiQuestion() {
+    const { currentQuestion } = this.state;
+    console.log(currentQuestion);
+    return (
+      <div className="query-set__multi" style={{ marginTop: 15 }}>
+        <div>
+          <Input
+            placeholder="请输入题干"
+            onChange={e => {
+              this.handleCurrentQuestionTopci(e.target.value);
+            }}
+            value={currentQuestion.question_topic}
+          />
+        </div>
+        <ul>
+          {currentQuestion.subdata.map((option, index) => {
+            return (
+              <li style={{ marginTop: 10 }} key={index}>
+                <Checkbox
+                  style={{ width: 20, height: 30 }}
+                  className="checkbox"
+                />
+                <Input
+                  value={option.option_content}
+                  onChange={e =>
+                    this.handleCurrentQuestionOptionChange(
+                      e.target.value,
+                      index
+                    )
+                  }
+                  style={{ width: 800 }}
+                />
+                <Button
+                  onClick={() => {
+                    this.delcurrentOption(option.option_id, index);
+                  }}
+                >
+                  删除
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+        <div style={{ textAlign: 'center', marginTop: 10 }}>
+          <Radio.Group
+            value={this.state.currentactiveQuestionMust}
+            buttonStyle="solid"
+            onChange={e => {
+              this.handleCurrentQuestionMustChange(e.target.value);
+            }}
+          >
+            <Radio.Button value={'1'}>必做题</Radio.Button>
+            <Radio.Button value={'0'}>选做题</Radio.Button>
+          </Radio.Group>
+        </div>
+      </div>
+    );
+  }
+  //渲染当前问答题的内容
+  renderCurrentAnswerQuestion() {
+    const { currentQuestion } = this.state;
+    console.log(currentQuestion);
+    return (
+      <div className="query-set__answer" style={{ marginTop: 15 }}>
+        <div>
+          <Input
+            placeholder="请输入题干"
+            onChange={e => {
+              this.handleCurrentQuestionTopci(e.target.value);
+            }}
+            value={currentQuestion.question_topic}
+          />
+        </div>
+        <div>
+          <TextArea style={{ marginTop: 10 }} disabled />
+        </div>
+        <div style={{ textAlign: 'center', marginTop: 10 }}>
+          <Radio.Group
+            value={this.state.currentactiveQuestionMust}
+            buttonStyle="solid"
+            onChange={e => {
+              this.handleCurrentQuestionMustChange(e.target.value);
+            }}
+          >
+            <Radio.Button value={'1'}>必做题</Radio.Button>
+            <Radio.Button value={'0'}>选做题</Radio.Button>
+          </Radio.Group>
+        </div>
+      </div>
+    );
+  }
+  //点击编辑模态框中的保存
+  handleEditModalSave = () => {
+    const { currentQuestion } = this.state;
+    console.log('当前更新的问题', currentQuestion);
+    let terminal;
+    const terminaldataObj = {};
+    terminaldataObj.resid = 608828418560;
+    terminaldataObj.maindata = {
+      REC_ID: currentQuestion.question_id,
+      question_must: currentQuestion.question_must,
+      question_topic: currentQuestion.question_topic,
+      _state: 'modified', // 修改
+      _id: 1
+    };
+    //求后台需要的subdata
+    terminaldataObj.subdata = [];
+    currentQuestion.subdata.map((option, index) => {
+      console.log('循环出的选项', option.option_id);
+      if (option.option_id) {
+        const obj = {
+          resid: 608828722533,
+          maindata: {
+            REC_ID: option.option_id,
+            option_content: option.option_content,
+            _state: 'modified',
+            id: index + 1
+          }
+        };
+      } else {
+        const obj = {
+          resid: 608828722533,
+          maindata: {
+            option_content: option.option_content,
+            _state: 'added',
+            id: index + 1
+          }
+        };
+        terminaldataObj.subdata.push(obj);
+      }
+    });
+    terminal = [terminaldataObj];
+    // 向后端发送请求
+    http()
+      .saveRecordAndSubTables({
+        data: terminal
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    this.setState({
+      CurrentQuestionVisible: false
+    });
+  };
+  // 监听礼品设置的形式，份数或者中奖率
+  giftStyleChange = value => {
+    console.log('奖品形式', value);
+  };
   render() {
     const {
       activeQuestionType,
@@ -935,8 +1365,7 @@ class QuerySet extends Component {
       floder_name,
       isGift,
       queryId,
-      query_description,
-      AllQuestions
+      query_description
     } = this.state;
     // console.log("yijilai",queryId)
     return (
@@ -1001,8 +1430,12 @@ class QuerySet extends Component {
           <div className="query-set__modal">
             <label className="query-set__setTitle">时间设置</label>
             <div>
-              <RangePicker  
-                value={[moment(this.state.startDate, dateFormat), moment(this.state.startDate, dateFormat)]}
+              <RangePicker
+                value={[
+                  moment(this.state.startDate, dateFormat),
+                  moment(this.state.endDate, dateFormat)
+                ]}
+                // showTime
                 onChange={this.handleDateChange}
                 dateRender={current => {
                   const style = {};
@@ -1028,8 +1461,12 @@ class QuerySet extends Component {
           <div className="query-set__modal">
             {isGift == '1' ? (
               <div>
-                <RadioGroup>
-                  <Radio value={1}>
+                <RadioGroup
+                  onChange={e => {
+                    this.giftStyleChange(e.target.value);
+                  }}
+                >
+                  <Radio value={'份数'}>
                     礼品份数:
                     <Input
                       style={{ width: 60, height: 20 }}
@@ -1037,7 +1474,7 @@ class QuerySet extends Component {
                     />
                     <span className="prasetip">份</span>
                   </Radio>
-                  <Radio value={2}>
+                  <Radio value={'概率'}>
                     中奖率:
                     <Input
                       style={{ width: 60, height: 20 }}
@@ -1071,7 +1508,7 @@ class QuerySet extends Component {
           onOk={this.handleAddAloneOk}
           onCancel={this.handleCancel2}
           width={this.state.wid}
-          destroyOnClose={true}
+          // destroyOnClose={true}
         >
           <Radio.Group
             buttonStyle="solid"
@@ -1098,6 +1535,43 @@ class QuerySet extends Component {
                 icon="plus"
                 type="primary"
                 onClick={this.addChoiceCanWrite}
+              >
+                添加可填写选项
+              </Button>
+            </div>
+          )}
+        </Modal>
+        {/* 当前点击问题的Modal */}
+        <Modal
+          title={this.state.currentQuestion.question_type}
+          visible={this.state.CurrentQuestionVisible}
+          onOk={this.handleEditModalSave}
+          onCancel={this.handleEditModal}
+          width={this.state.wid}
+          destroyOnClose={true}
+        >
+          {this.renderCurrentQuestion(this.state.currentQuestion.question_type)}
+          {this.state.currentQuestion.question_type == '问答题' ? (
+            ''
+          ) : (
+            <div className="addchoice">
+              <Button
+                icon="plus"
+                type="primary"
+                onClick={() => {
+                  this.addCurrentQuestionOption(
+                    this.state.currentQuestion.question_type
+                  );
+                }}
+              >
+                添加选项
+              </Button>
+              <Button
+                icon="plus"
+                type="primary"
+                onClick={() => {
+                  this.addCurrentQuestionWiteOption();
+                }}
               >
                 添加可填写选项
               </Button>
