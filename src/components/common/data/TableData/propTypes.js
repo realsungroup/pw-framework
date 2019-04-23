@@ -648,5 +648,11 @@ export const propTypes = {
    * 基地址
    * 默认：-
    */
-  baseURL: PropTypes.string
+  baseURL: PropTypes.string,
+
+  /**
+   * 下载的基地址
+   * 默认：-
+   */
+  downloadBaseURL: PropTypes.string
 };
