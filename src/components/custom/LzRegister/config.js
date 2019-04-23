@@ -1,0 +1,113 @@
+import React from 'react';
+import moment from 'moment';
+import {
+  message
+} from 'antd';
+import {
+  modRecord
+} from 'Util/api';
+
+// 待访问
+export const inApplication = {
+  resid: 605802492264,
+  formProps: {
+    height: 550,
+  },
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
+  hasAdd: false,
+  hasModify: false,
+  hasDelete: false,
+  hasRowModify: false,
+  hasRowView: true,
+  hasRowDelete: false,
+  subtractH:166,
+  recordFormType: 'drawer',
+  recordFormContainerProps: {
+    placement: 'bottom',
+    height: 600
+  },
+  subTableArrProps: [{
+    subTableName: '保安登记记录',
+    subResid: 606058778224,
+    tableProps: {
+      hasAdd: false,
+      hasModify: false,
+      hasDelete: false,
+      hasRowModify: false,
+      hasRowView: false,
+      hasRowDelete: false,
+      height: 500,
+    }
+  }]
+};
+
+// 访问中
+export const applyForAbnormal = {
+  resid: 605802635754,
+  formProps: {
+    height: 550,
+  },
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
+  hasAdd: false,
+  hasModify: false,
+  hasDelete: false,
+  hasRowModify: false,
+  hasRowView: true,
+  hasRowDelete: false,
+  subtractH:166,
+  recordFormType: 'drawer',
+  recordFormContainerProps: {
+    placement: 'bottom',
+    height: 600
+  },
+  subTableArrProps: [{
+    subTableName: '保安登记记录',
+    subResid: 606058778224,
+    tableProps: {
+      hasAdd: false,
+      hasModify: false,
+      hasDelete: false,
+      hasRowModify: false,
+      hasRowView: false,
+      hasRowDelete: false,
+      height: 500,
+    }
+  }]
+};
+
+// 已访问
+export const refused = {
+  resid: 605802654230,
+  formProps: {
+    height: 550,
+  },
+  recordFormFormWidth: '40%',
+  recordFormTabsWidth: '60%',
+  hasAdd: false,
+  hasModify: false,
+  hasDelete: false,
+  hasRowModify: false,
+  hasRowView: true,
+  hasRowDelete: false,
+  subtractH:166,
+  recordFormType: 'drawer',
+  recordFormContainerProps: {
+    placement: 'bottom',
+    height: 600
+  },
+  subTableArrProps: [{
+    subTableName: '保安登记记录',
+    subResid: 606058778224,
+    tableProps: {
+      hasAdd: false,
+      hasModify: false,
+      hasDelete: false,
+      hasRowModify: false,
+      hasRowView: false,
+      hasRowDelete: false,
+      height: 500,
+    }
+  }]
+};

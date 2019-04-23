@@ -125,6 +125,13 @@ export const LzTable = Loadable({
   }
 });
 
+export const LzFormUnit = Loadable({
+  loader: () => import('./lib/unit-component/LzFormUnit'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const LzTableV2 = Loadable({
   loader: () => import('./lib/unit-component/LzTableV2'),
   loading() {

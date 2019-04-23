@@ -66,6 +66,7 @@ import LzImportData from './LzImportData';
 import IconWithTooltip from '../../../pages/components/IconWithTooltip';
 import { downloadFile } from 'Util/util';
 import { FormattedMessage as FmWrap } from 'react-intl';
+import http from 'Util20/api';
 
 const Search = Input.Search;
 let controlData;
@@ -2697,9 +2698,54 @@ class LzTable extends React.Component {
           )}
           {/* 渲染后端自定义按钮 */}
           {this.renderBackendBtns(backEndBtns, record)}
+          {/* 奖惩系统中违纪管理模块的提交按钮 */}
+          {record.C3_591373760332 !== 'Y' && (
+            <Popconfirm
+              placement="top"
+              title="你确定要提交吗？"
+              onConfirm={() => this.handleFESubmit(record)}
+              okText="确定"
+              cancelText="取消"
+            >
+              <Button size="small" className="operation-btn">
+                提交
+              </Button>
+            </Popconfirm>
+          )}
         </div>
       </div>
     );
+  };
+
+  handleFESubmit = async record => {
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 590863325025,
+        data: [{ C3_591373760332: 'Y', REC_ID: record.REC_ID }]
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    if (res.data.length) {
+      const value = res.data[0].C3_606500587548;
+      if (value) {
+        Modal.confirm({
+          title: '提醒',
+          content: value,
+          onOk: () => {
+            this.refreshTableData();
+            Modal.destroyAll();
+          }
+        });
+      } else {
+        message.success('操作成功');
+        this.refreshTableData();
+      }
+    } else {
+      message.error('操作失败');
+    }
   };
 
   renderForms = () => {
