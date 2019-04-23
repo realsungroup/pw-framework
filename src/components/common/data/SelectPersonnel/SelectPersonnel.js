@@ -103,7 +103,7 @@ class SelectPersonnel extends React.Component {
 
   render() {
     const { current } = this.state;
-    const { stepList } = this.props;
+    const { stepList, completeText } = this.props;
     const lastIndex = stepList.length;
     return (
       <div className="select-personnel">
@@ -123,7 +123,7 @@ class SelectPersonnel extends React.Component {
             onClick={this.complete}
             disabled={current !== lastIndex}
           >
-            完成
+            {completeText}
           </Button>
           <Button
             type="primary"

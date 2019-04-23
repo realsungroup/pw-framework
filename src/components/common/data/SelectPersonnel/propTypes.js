@@ -29,7 +29,6 @@ export const propTypes = {
   listConfig: PropTypes.array.isRequired,
   // [
   //   {
-  //     type: 'tree', // 类型：'tree' 表示树组件；'list' 表示列表类型
   //     title: '按班组添加', // 分组名称
   //     titleFieldName: 'DESCP', // 显示在 radio 按钮上文字对应的内部字段
   //     resid: 593017031990, // 主表 id
@@ -52,8 +51,9 @@ export const propTypes = {
 
   /**
    * 显示个人信息的字段
-   * 默认：[]
+   * 默认：
    */
+  // 如： ['', 'C3_227192472953', 'C3_227192484125', 'C3_227212499515']；第一个为头像内部字段；第二个为工号内部字段；第三个为姓名内部字段；第四个为部门内部字段
   personFields: PropTypes.array,
 
   /**
@@ -85,5 +85,11 @@ export const propTypes = {
    * LzSteps 是否处于加载状态
    * 默认：false
    */
-  stepsLoading: PropTypes.bool
+  stepsLoading: PropTypes.bool,
+
+  /**
+   * 完成的文案
+   * 默认：'完成'
+   */
+  completeText: PropTypes.string
 };

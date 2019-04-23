@@ -39,12 +39,13 @@ class App extends Component {
     loading: false
   };
 
+  _personList = [];
   handleSelectPerson = personList => {
-    console.log({ personList });
+    this._personList = personList;
   };
 
   handleComplete = () => {
-    // this.setState({ loading: true });
+    console.log({ personList: this._personList });
   };
 
   render() {
@@ -75,6 +76,8 @@ class App extends Component {
                 }
               ]}
               onComplete={this.handleComplete}
+              completeText="发送"
+              onSelectPerson={this.handleSelectPerson}
             />
           </div>
         </Spin>
