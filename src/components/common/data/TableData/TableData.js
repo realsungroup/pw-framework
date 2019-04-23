@@ -594,6 +594,7 @@ class TableData extends React.Component {
       baseURL,
       downloadBaseURL
     } = this.props;
+    
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
     // 请求文件下载地址的基地址
