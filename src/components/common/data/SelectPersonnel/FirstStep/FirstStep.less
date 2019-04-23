@@ -1,0 +1,27 @@
+// @import url('../../../styles/variables.less');
+.first-step {
+  height: 92%;
+  &__content {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    // border: 1px solid @border-color;
+    border: 1px solid #eee;
+
+    & > div {
+      width: 33%;
+      height: 100%;
+      overflow: auto;
+      padding: 10px;
+    }
+    & > div:first-child,
+    & > div:nth-child(2) {
+      // border-right: 1px solid @border-color;
+      border-right: 1px solid #eee;
+    }
+    & > div:nth-child(2) {
+      padding-top: 0;
+    }
+  }
+}
