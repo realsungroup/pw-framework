@@ -591,19 +591,21 @@ class TableData extends React.Component {
       resid,
       cmswhere,
       fileType,
-      baseURL,
-      downloadBaseURL
+      baseURL
     } = this.props;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
-    let url = window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
-    if (baseURL) {
-      url = baseURL;
-    }
-    if (downloadBaseURL) {
-      url = downloadBaseURL;
-    }
+
+    // 请求文件下载地址的基地址
+    const requestBaseURL =
+      baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    // 下载文件的基地址
+    const downloadBaseURL =
+      window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
+
     await downloadFile(
-      url,
+      requestBaseURL,
+      downloadBaseURL,
       downloadFileName || title,
       resid,
       mergedCmsWhere,
