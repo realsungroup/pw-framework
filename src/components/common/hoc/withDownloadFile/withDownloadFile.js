@@ -43,7 +43,6 @@ const withDownloadFile = WrappedComponent => {
       } catch (err) {
         return message.error(err.message);
       }
-      console.log({ requestBaseURL, downloadBaseURL });
       downloadFile(downloadBaseURL + res.data, fileName + '.xls');
     };
 
