@@ -33,6 +33,7 @@
     "deepmerge": "^3.1.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
+    "downloadjs": "^1.4.7",
     "echarts": "^4.2.0-rc.2",
     "echarts-of-react": "^1.0.3",
     "eslint": "5.6.0",
