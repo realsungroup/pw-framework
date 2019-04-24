@@ -62,7 +62,7 @@ window.pwConfig = {
   production: {
     // 地址
     baseURL: 'http://wux-hr03:9091/', // 请求的基地址
-    fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://wux-hr03/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
     personCenterResIds: [

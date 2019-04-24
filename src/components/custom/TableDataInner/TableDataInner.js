@@ -88,6 +88,7 @@ class TableDataInner extends React.Component {
               {...this.props}
               resid="603303655900"
               baseURL="https://finisar.realsun.me:9092/"
+              downloadBaseURL="http://finisar.realsun.me:8081/"
               getcolumninfo="1"
               pageSize="10"
               page="1"
@@ -127,6 +128,7 @@ class TableDataInner extends React.Component {
               {...this.props}
               resid="604083044918"
               baseURL="https://finisar.realsun.me:9092/"
+              downloadBaseURL="http://finisar.realsun.me:8081/"
               getcolumninfo="1"
               pageSize="10"
               page="1"
