@@ -2,7 +2,6 @@ import React from 'react';
 import { argumentContainer } from '../util';
 import { message } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
-import download from 'downloadjs';
 
 // 带有下载文件功能的高阶组件
 const withDownloadFile = WrappedComponent => {
@@ -43,11 +42,27 @@ const withDownloadFile = WrappedComponent => {
       } catch (err) {
         return message.error(err.message);
       }
-      download(
-        downloadBaseURL + res.data,
-        fileName + '.xls',
-        'application/vnd.ms-excel'
-      );
+
+      let name = fileName;
+      if (res.data) {
+        const index = res.data.lastIndexOf('/');
+        name = res.data.slice(index + 1);
+      }
+
+      // http.createApi('getFile', {
+      //   url: res.data
+      // });
+
+      // res = await http({
+      //   baseURL: downloadBaseURL
+      // }).getFile();
+
+      // console.log({ res });
+
+      // download('hello', name, 'application/vnd.ms-excel');
+
+      window.open(downloadBaseURL + res.data);
+      return;
     };
 
     render() {
