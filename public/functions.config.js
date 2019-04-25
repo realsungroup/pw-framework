@@ -758,12 +758,16 @@ window[607189885707] = {
 //   name: 'QuerySet',
 //   title: '问卷设置'
 // };
-
+// 路由跳转的配置
 window['问卷设置'] = {
   title: '问卷设置',
   name: 'QuerySet'
 };
 
+//  window['选择人员'] = {
+//    title:'选择人员发送',
+//    name:'SelectPersonFirst'
+//  };
 
 
 

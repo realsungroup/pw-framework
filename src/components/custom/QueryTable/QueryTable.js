@@ -3,7 +3,7 @@ import { Button, Icon, Modal, Input, Popconfirm, message } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
-import http from '../../../util20/api';
+import SelectPersonnel from 'Common/data/SelectPersonnel';
 
 /**
  * props:
@@ -78,9 +78,11 @@ class QueryTable extends Component {
                   <Link
                     to={{
                       pathname: '/fnmodule',
-                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`,
+                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
+                        item.query_id
+                      }`
                     }}
-                    target='_self'
+                    target="_self"
                   >
                     <Button className="stepBtn" type="primary">
                       <Icon type="setting" />
@@ -93,10 +95,18 @@ class QueryTable extends Component {
                       停止问卷
                     </Button>
                   ) : (
-                    <Button className="stepBtn" type="primary">
-                      <Icon type="youtube" />
-                      发送问卷
-                    </Button>
+                    <Link
+                      to={{
+                        pathname: '/fnmodule',
+                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页`
+                      }}
+                      target="_self"
+                    >
+                      <Button className="stepBtn" type="primary">
+                        <Icon type="youtube" />
+                        发送问卷
+                      </Button>
+                    </Link>
                   )}
 
                   <Modal

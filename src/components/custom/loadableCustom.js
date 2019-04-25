@@ -139,3 +139,9 @@ export const SoleQuery = Loadable({
     return minLoading;
   }
 });
+export const SelectPersonFirst = Loadable({
+  loader: () => import('./SelectPersonFirst'),
+  loading() {
+    return minLoading;
+  }
+});

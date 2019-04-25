@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './SoleQuery.less';
-import { Input, Button, Select, Radio, Checkbox, Carousel } from 'antd';
+import { Input, Button, Select, Radio, Checkbox, Carousel ,Popconfirm} from 'antd';
 import http from '../../../util20/api';
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -124,6 +124,7 @@ class SoleQuery extends Component {
         <div className="query-set__questionTopic">
           {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
+          <span className="question_type">[{item.question_type}]</span>
         </div>
         <RadioGroup
           key={item.question_id}
@@ -175,6 +176,7 @@ class SoleQuery extends Component {
         <div className="query-set__questionTopic">
           {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
+          <span className="question_type">[{item.question_type}]</span>
         </div>
         <div key={item.question_id}>
           {item.subdata.map(option => {
@@ -285,27 +287,35 @@ class SoleQuery extends Component {
           });
           break;
         }
-        case '问答题':{
-          const questionId = question.question_id;
-          const optionId= question.subdata[0].option_id;
-          const WriteContent = question.answer;
-          let eassyAnswer ={
-            query_id: '609329948699',
-            question_id: questionId,
-            option_id:optionId,
-            write_content:WriteContent,
+        case '问答题':
+          {
+            const questionId = question.question_id;
+            const optionId = question.subdata[0].option_id;
+            const WriteContent = question.answer;
+            let eassyAnswer = {
+              query_id: '609329948699',
+              question_id: questionId,
+              option_id: optionId,
+              write_content: WriteContent
+            };
+            answers.push(eassyAnswer);
           }
-          answers.push(eassyAnswer);
-        }
-        break;
+          break;
       }
       console.log(answers);
       // 向后台发送请求
-      http().addRecords({
-        resid:'608838682402',
-        data:answers,
-      })
     });
+    http()
+      .addRecords({
+        resid: '608838682402',
+        data: answers
+      })
+      .then(res => {
+        // 显示提交成功
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   //单选选中的值。
@@ -352,17 +362,22 @@ class SoleQuery extends Component {
       AllQuestions
     });
   };
- // 文答题中输入框值的变化
- handleAnswerInputChange = (questionId,value)=>{
-   const {AllQuestions} = this.state;
-   const question = AllQuestions.find(
-     question =>question.question_id===questionId
-   );
-   question.answer = value;
-   this.setState({
-     AllQuestions
-   })
- }
+  // 文答题中输入框值的变化
+  handleAnswerInputChange = (questionId, value) => {
+    const { AllQuestions } = this.state;
+    const question = AllQuestions.find(
+      question => question.question_id === questionId
+    );
+    question.answer = value;
+    this.setState({
+      AllQuestions
+    });
+  };
+
+  // 
+  handlePopcancle = ()=>{
+    console.log('点击取消');
+  }
   // 渲染的页面
   render() {
     const { queryDetail } = this.state;
@@ -384,15 +399,15 @@ class SoleQuery extends Component {
         <div>
           <p className="thanks">感谢您参与本次问卷调查</p>
           <div className="queryfooter__submit">
-            <Button
-              type="primary"
-              onClick={() => {
+            <Popconfirm
+              title="确定提交吗？一旦提交不能更改哟"
+              onConfirm={() => {
                 this.submitQuery('609329948699');
               }}
+              onCancel={this.handlePopcancle}
             >
-              提交
-            </Button>
-            <Button type="primary">预览</Button>
+              <Button type="primary">提交</Button>
+            </Popconfirm>
           </div>
         </div>
       </div>
@@ -452,35 +467,35 @@ export default SoleQuery;
  *
  *
  * ]
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  * result:['id1','id2','id3','id4',]
  * subdata:[
- * { 
+ * {
  *   option_id:'id1',
  *   option_write:'1',
  *   multiinputchange:'',
  * },
- * { 
+ * {
  *   option_id:'id2',
  *   option_write:'1',
  *   multiinputchange:'',
  * },
- * { 
+ * {
  *   option_id:'id3',
  *   option_write:'1',
  *   multiinputchange:'',
  * },
- * { 
+ * {
  *   option_id:'id4',
  *   option_write:'0',
  * },
- * { 
+ * {
  *   option_id:'id5',
  *   option_write:'0',
  * },
- * 
+ *
  * ]
  */

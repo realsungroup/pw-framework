@@ -55,7 +55,8 @@ export {
   Paging,
   QueryType,
   QuerySet,
-  SoleQuery
+  SoleQuery,
+  SelectPersonFirst
 } from '../components/custom/loadableCustom';
 
 
