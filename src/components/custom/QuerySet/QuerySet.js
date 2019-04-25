@@ -11,7 +11,8 @@ import {
   Icon,
   DatePicker,
   Switch,
-  message
+  message,
+  Popconfirm
 } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -104,14 +105,15 @@ class QuerySet extends Component {
       floder_name: '',
       startDate: '',
       endDate: '',
-      isGift: '',
+      isGift: null,
       giftCount: '',
       giftRate: '',
       queryId: '', //跳转时传过来的ID,
       AllQuestions: [],
       currentQuestion: {},
       CurrentQuestionVisible: false,
-      currentactiveQuestionMust: ''
+      currentactiveQuestionMust: '',
+      giftStyle: ''
     };
   }
   showModal = () => {
@@ -157,7 +159,8 @@ class QuerySet extends Component {
               floder_name: floder_name,
               start_time: startDate,
               end_time: endDate,
-              gift: isGift
+              gift: isGift,
+              gift_count: giftCount
             }
           ]
         })
@@ -709,7 +712,9 @@ class QuerySet extends Component {
           floder_name: query.data[0].floder_name,
           startDate: query.data[0].start_time,
           endDate: query.data[0].end_time,
-          query_description: query.data[0].query_description
+          query_description: query.data[0].query_description,
+          isGift: query.data[0].gift,
+          giftCount: query.data[0].gift_count
         });
       })
       .catch(err => {
@@ -720,8 +725,18 @@ class QuerySet extends Component {
     const quertString = window.location.search;
     const qsObj = qs.parse(quertString.substring(1));
     console.log('问卷ID', qsObj.id);
+    //获取当前的日期
+    var today = new Date();
+    let date =
+      today.getFullYear() +
+      '-' +
+      (today.getMonth() + 1) +
+      '-' +
+      today.getDate();
     this.setState({
-      queryId: qsObj.id
+      queryId: qsObj.id,
+      startDate: date,
+      endDate: date
     });
     this.getFloders();
     if (qsObj.id) {
@@ -734,9 +749,9 @@ class QuerySet extends Component {
     // console.log(checked);
     let isGift;
     if (checked) {
-      isGift = '1';
+      isGift = 1;
     } else {
-      isGift = '0';
+      isGift = 0;
     }
     this.setState({
       isGift: isGift
@@ -748,7 +763,7 @@ class QuerySet extends Component {
       giftCount: e.target.value
     });
   };
-  // 监听是否有礼品的变化
+  // 监听礼品中奖率的变化
   handleGiftRateChange = e => {
     this.setState({
       giftRate: e.target.value
@@ -764,7 +779,7 @@ class QuerySet extends Component {
   //循环遍历所有的题目
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    console.log('渲染时的问卷试题', AllQuestions);
+    // console.log('渲染时的问卷试题', AllQuestions);
     return AllQuestions.map(item => {
       switch (item.question_type) {
         case '单选题': {
@@ -781,13 +796,13 @@ class QuerySet extends Component {
   }
   //上移某道题
   upCurrentQuestion(questionID, questionOrder) {
-    const {AllQuestions,queryId} = this.state;
-    
+    const { AllQuestions, queryId } = this.state;
+
     let tempAllQuestions = this.state.AllQuestions;
     // console.log(questionID, questionOrder);
     if (questionOrder >= 2) {
       let neworder = questionOrder - 1;
-      let index = questionOrder-2;
+      let index = questionOrder - 2;
       // console.log("上边那到题",tempAllQuestions[index]);
       const recid = tempAllQuestions[index].REC_ID;
       // console.log(neworder);
@@ -800,14 +815,13 @@ class QuerySet extends Component {
               question_order: neworder
             },
             {
-              REC_ID:recid,
-              question_order:neworder+1
-             },
-
+              REC_ID: recid,
+              question_order: neworder + 1
+            }
           ]
         })
         .then(res => {
-         this.getThisQueryQuestions(queryId);
+          this.getThisQueryQuestions(queryId);
         })
         .catch(err => {
           console.log(err);
@@ -818,15 +832,15 @@ class QuerySet extends Component {
   }
   // 下移某道题
   downCurrentQuestion(questionID, questionOrder) {
-    const { AllQuestions , queryId} = this.state;
+    const { AllQuestions, queryId } = this.state;
     console.log(AllQuestions.length);
     if (questionOrder >= AllQuestions.length) {
       return message.info('已经是最后一题了，不能再下移了');
     } else {
-        // 下一道题的索引
-        let index = questionOrder
-        // console.log(AllQuestions[index]);
-        const recid = AllQuestions[index].REC_ID;
+      // 下一道题的索引
+      let index = questionOrder;
+      // console.log(AllQuestions[index]);
+      const recid = AllQuestions[index].REC_ID;
       http()
         .modifyRecords({
           resid: '608828418560',
@@ -836,9 +850,9 @@ class QuerySet extends Component {
               question_order: questionOrder + 1
             },
             {
-             REC_ID:recid,
-             question_order:questionOrder-1
-            },
+              REC_ID: recid,
+              question_order: questionOrder - 1
+            }
           ]
         })
         .then(res => {
@@ -994,7 +1008,9 @@ class QuerySet extends Component {
           {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
-        <TextArea />
+        <div>
+          <TextArea style={{ height: 52, marginBottom: 20 }} />
+        </div>
         <div className="choiceActionBox">
           <Button
             size="small"
@@ -1008,15 +1024,20 @@ class QuerySet extends Component {
           <Button size="small" icon="copy">
             复制
           </Button>
-          <Button
-            size="small"
-            icon="delete"
-            onClick={() => {
+          <Popconfirm
+            title="确定删除该题目?"
+            onConfirm={() => {
               this.delCurrentQuestion(item.question_id);
             }}
           >
-            删除
-          </Button>
+            <Button
+              size="small"
+              icon="delete"
+              // onClick={}
+            >
+              删除
+            </Button>
+          </Popconfirm>
           <Button size="small" icon="arrow-up">
             上移
           </Button>
@@ -1082,10 +1103,18 @@ class QuerySet extends Component {
       }
     }
   }
+  // 删除编辑中选项
   delcurrentOption(optionId, index) {
     const { currentQuestion } = this.state;
     console.log('当前选项的Id', optionId);
     currentQuestion.subdata.splice(index, 1);
+    // 还要删除后台表中的数据
+    http().removeRecords({
+      resid:608828722533,
+      data:[{
+        REC_ID:optionId,
+      }]
+    });
     this.setState({
       currentQuestion: currentQuestion
     });
@@ -1113,6 +1142,7 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
+    console.log('添加可填写选项后的',this.state.currentQuestion)
   }
   //编辑中选项内容的变化
   handleCurrentQuestionOptionChange(value, index) {
@@ -1122,7 +1152,7 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempcurrentQuestion
     });
-    console.log(this.state.currentQuestion);
+    // console.log(this.state.currentQuestion);
   }
   //编辑中题干内容的变化
   handleCurrentQuestionTopci(value) {
@@ -1312,31 +1342,35 @@ class QuerySet extends Component {
     };
     //求后台需要的subdata
     terminaldataObj.subdata = [];
-    currentQuestion.subdata.map((option, index) => {
+    currentQuestion.subdata.forEach((option, index) => {
       console.log('循环出的选项', option.option_id);
+      let obj;
       if (option.option_id) {
-        const obj = {
+        obj = {
           resid: 608828722533,
           maindata: {
             REC_ID: option.option_id,
             option_content: option.option_content,
             _state: 'modified',
-            id: index + 1
+            _id: index + 1
           }
         };
       } else {
-        const obj = {
+         obj = {
           resid: 608828722533,
           maindata: {
+            option_write:option.option_write,
             option_content: option.option_content,
             _state: 'added',
-            id: index + 1
+            _id: index + 1
           }
         };
-        terminaldataObj.subdata.push(obj);
       }
+       terminaldataObj.subdata.push(obj);
     });
     terminal = [terminaldataObj];
+    console.log('编辑后的数据', terminal);
+
     // 向后端发送请求
     http()
       .saveRecordAndSubTables({
@@ -1355,6 +1389,9 @@ class QuerySet extends Component {
   // 监听礼品设置的形式，份数或者中奖率
   giftStyleChange = value => {
     console.log('奖品形式', value);
+    this.setState({
+      giftStyle: value
+    });
   };
   render() {
     const {
@@ -1367,7 +1404,7 @@ class QuerySet extends Component {
       queryId,
       query_description
     } = this.state;
-    // console.log("yijilai",queryId)
+    // console.log('是否有礼品', isGift);
     return (
       <div className="queryset">
         <div className="queryHeader" onClick={this.showModal}>
@@ -1453,13 +1490,14 @@ class QuerySet extends Component {
             </div>
           </div>
           <Switch
+            checked={Boolean(this.state.isGift)}
             checkedChildren="有礼品"
             unCheckedChildren="无礼品"
             onClick={this.handleSwitchGiftChange}
           />
           <br />
           <div className="query-set__modal">
-            {isGift == '1' ? (
+            {isGift == 1 ? (
               <div>
                 <RadioGroup
                   onChange={e => {
@@ -1468,18 +1506,27 @@ class QuerySet extends Component {
                 >
                   <Radio value={'份数'}>
                     礼品份数:
-                    <Input
-                      style={{ width: 60, height: 20 }}
-                      onChange={this.handleGiftCountChange}
-                    />
+                    {this.state.giftStyle == '概率' ? (
+                      <Input style={{ width: 60, height: 20 }} disabled />
+                    ) : (
+                      <Input
+                        style={{ width: 60, height: 20 }}
+                        onChange={this.handleGiftCountChange}
+                        value={this.state.giftCount}
+                      />
+                    )}
                     <span className="prasetip">份</span>
                   </Radio>
                   <Radio value={'概率'}>
                     中奖率:
-                    <Input
-                      style={{ width: 60, height: 20 }}
-                      onChange={this.handleGiftRateChange}
-                    />
+                    {this.state.giftStyle == '份数' ? (
+                      <Input style={{ width: 60, height: 20 }} disabled />
+                    ) : (
+                      <Input
+                        style={{ width: 60, height: 20 }}
+                        onChange={this.handleGiftRateChange}
+                      />
+                    )}
                     <span className="prasetip">%</span>
                   </Radio>
                 </RadioGroup>
@@ -1495,7 +1542,7 @@ class QuerySet extends Component {
           ) : (
             <Button>导入添加题目</Button>
           )}
-          <Button type="primary">保存</Button>
+
           {queryId == '' ? (
             <Button disabled>单独添加题目</Button>
           ) : (
@@ -1508,7 +1555,7 @@ class QuerySet extends Component {
           onOk={this.handleAddAloneOk}
           onCancel={this.handleCancel2}
           width={this.state.wid}
-          // destroyOnClose={true}
+          destroyOnClose={true}
         >
           <Radio.Group
             buttonStyle="solid"
