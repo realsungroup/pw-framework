@@ -35,6 +35,8 @@ const btnSizeMap = {
  * TableData
  */
 class TableData extends React.Component {
+  static displayName = 'TableData';
+
   static propTypes = propTypes;
 
   static defaultProps = defaultProps;
@@ -374,6 +376,13 @@ class TableData extends React.Component {
       state.editingKey = null;
     }
 
+    // 没有返回 ResourceData，报错
+    if (!res.ResourceData) {
+      return message.error(
+        '后端未返回 ResourceData 参数（用于确定前端按钮是否有显示的权限）'
+      );
+    }
+
     // 前端按钮是否有显示的权限
     this.setUpBtnAuth(res.ResourceData);
 
@@ -582,16 +591,23 @@ class TableData extends React.Component {
       resid,
       cmswhere,
       fileType,
-      baseURL
+      baseURL,
+      downloadBaseURL
     } = this.props;
+    
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
-    let url = window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
-    if (baseURL) {
-      url = baseURL;
-    }
-    console.log({baseURL})
+
+    // 请求文件下载地址的基地址
+    const requestBaseURL =
+      baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    // 下载文件的基地址
+    const downloadBaseURL_ =
+      downloadBaseURL || window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
+
     await downloadFile(
-      url,
+      requestBaseURL,
+      downloadBaseURL_,
       downloadFileName || title,
       resid,
       mergedCmsWhere,
@@ -1547,8 +1563,7 @@ class TableData extends React.Component {
         actionBarExtra={actionBarExtra}
         actionBarExtraParams={{
           dataSource,
-          selectedRowKeys:
-            this.props.rowSelection && this.props.rowSelection.selectedRowKeys,
+          selectedRowKeys: rowSelection && rowSelection.selectedRowKeys,
           data: this._dealedRecordFormData,
           recordFormData: this._recordFormData
         }}

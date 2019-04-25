@@ -763,6 +763,31 @@ window['问卷设置'] = {
   title: '问卷设置',
   name: 'QuerySet'
 };
+
+
+
+
+// 609334612078 问卷提交
+window['609334612078'] = {
+  title: '提交问卷',
+  name: 'SoleQuery'
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //题型管理
 window[607170472378] = {
   name: "TableData",

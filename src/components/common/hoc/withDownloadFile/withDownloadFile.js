@@ -2,7 +2,6 @@ import React from 'react';
 import { argumentContainer } from '../util';
 import { message } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
-import { downloadFile } from 'Util20/util';
 
 // 带有下载文件功能的高阶组件
 const withDownloadFile = WrappedComponent => {
@@ -13,14 +12,16 @@ const withDownloadFile = WrappedComponent => {
 
     /**
      * 下载文件
-     * @param {string} baseUrl 下载文件的基地址，如：http://localhost:3000
+     * @param {string} requestBaseURL 请求文件下载的地址的基地址，如：http://localhost:3000
+     * @param {string} downloadBaseURL 下载文件的基地址，如：http://localhost:3000
      * @param {string} fileName 文件名称，如：'人员信息表'
      * @param {string} resid 资源 id
      * @param {cmsWhere} where where 语句，如："name = 'xl' and age = '22'"
      * @param {string} fileType 文件类型，默认：'xls'
      */
     handleDownloadFile = async (
-      baseUrl,
+      requestBaseURL,
+      downloadBaseURL,
       fileName,
       resid,
       cmsWhere,
@@ -29,7 +30,7 @@ const withDownloadFile = WrappedComponent => {
       this.setState({ loading: true });
 
       this.p1 = makeCancelable(
-        http({ baseURL: baseUrl }).exportTableData({
+        http({ baseURL: requestBaseURL }).exportTableData({
           resid,
           cmswhere: cmsWhere,
           filetype: fileType
@@ -41,7 +42,27 @@ const withDownloadFile = WrappedComponent => {
       } catch (err) {
         return message.error(err.message);
       }
-      downloadFile(baseUrl + res.data, fileName + '.xls');
+
+      let name = fileName;
+      if (res.data) {
+        const index = res.data.lastIndexOf('/');
+        name = res.data.slice(index + 1);
+      }
+
+      // http.createApi('getFile', {
+      //   url: res.data
+      // });
+
+      // res = await http({
+      //   baseURL: downloadBaseURL
+      // }).getFile();
+
+      // console.log({ res });
+
+      // download('hello', name, 'application/vnd.ms-excel');
+
+      window.open(downloadBaseURL + res.data);
+      return;
     };
 
     render() {

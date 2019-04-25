@@ -17,6 +17,7 @@ const SubMenu = Menu.SubMenu;
  * 业务管理组件
  */
 class BusinessManagement extends React.Component {
+  static displayName = 'BusinessManagement';
   static propTypes = propTypes;
   static defaultProps = defaultProps;
 

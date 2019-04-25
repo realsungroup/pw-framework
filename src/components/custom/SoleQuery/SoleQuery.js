@@ -245,18 +245,6 @@ class SoleQuery extends Component {
   // 提交问卷
   submitQuery = () => {
     let answers = [];
-    // 后台要提交的数据
-    /**
-     * answers:[
-     * {
-     * query_id:'',
-     * question_id:'',
-     * options_id:'',
-     * write_contnet:'',
-     * },
-     * {},
-     * ]
-     */
     const { AllQuestions } = this.state;
     console.log('点击提交后的问卷', AllQuestions);
     AllQuestions.map(question => {

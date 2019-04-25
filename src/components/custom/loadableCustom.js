@@ -131,3 +131,11 @@ export const QuerySet = Loadable({
     return minLoading;
   }
 });
+
+// 提交问卷
+export const SoleQuery = Loadable({
+  loader: () => import('./SoleQuery'),
+  loading() {
+    return minLoading;
+  }
+});
