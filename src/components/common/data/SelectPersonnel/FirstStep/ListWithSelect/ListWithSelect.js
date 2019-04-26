@@ -24,7 +24,7 @@ export default class ListWithSelect extends React.Component {
             })}
             onClick={() => onSelect(item, index)}
           >
-            <List.Item.Meta style={{ marginLeft: 10 }} title={item.title} />
+            <List.Item.Meta style={{ marginLeft: 10 }} title={item.name} />
             {/* <a
               style={{ marginRight: 10 }}
               href="javascript:;"

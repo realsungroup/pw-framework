@@ -34,6 +34,31 @@ const listConfig = [
   }
 ];
 
+const radioGroupConfig = [
+  {
+    type: 'tree',
+    title: '按部门添加',
+    resid: 592742244497,
+    nameField: 'DEP_NAME',
+    idField: 'DEP_ID',
+    pidField: 'DEP_PID'
+  },
+  {
+    type: 'list',
+    title: '按班组添加',
+    resid: 593017031990,
+    nameField: 'DESCP'
+  },
+  {
+    type: 'search', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+    title: '搜索' // 单选按钮文字
+  },
+  {
+    type: 'file', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+    title: '选择文件' // 单选按钮文字
+  }
+];
+
 class App extends Component {
   state = {
     loading: false
@@ -78,6 +103,7 @@ class App extends Component {
               onComplete={this.handleComplete}
               completeText="发送"
               onSelectPerson={this.handleSelectPerson}
+              radioGroupConfig={radioGroupConfig}
             />
           </div>
         </Spin>
