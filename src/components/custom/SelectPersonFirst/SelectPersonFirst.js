@@ -2,28 +2,22 @@ import React, { Component } from 'react';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
 const listConfig = [
   {
-    title: '按班组添加',
-    titleFieldName: 'DESCP',
-    resid: 593017031990,
-    subResid: 592742369617
+    title: '按所属部门添加',
+    titleFieldName: 'C3_227212499515',
+    resid: 449335746776,
+    subResid: 609599795438
   },
   {
-    title: '按产线添加',
-    titleFieldName: 'C3_593254711841',
-    resid: 593255133996,
-    subResid: 592742369617
+    title: '按所在地添加',
+    titleFieldName: 'C3_417994395847',
+    resid: 449335746776,
+    subResid: 609599795438
   },
   {
-    title: '成本中心1',
-    titleFieldName: 'C3_596047861734',
-    resid: 596047828849,
-    subResid: 592742369617
-  },
-  {
-    title: '成本中心2',
-    titleFieldName: 'C3_596047873684',
-    resid: 596047837491,
-    subResid: 592742369617
+    title: '按级别添加',
+    titleFieldName: 'C3_449336358186',
+    resid: 449335746776,
+    subResid: 609599795438
   }
 ];
 class SelectPersonFirst extends Component {
@@ -47,14 +41,14 @@ class SelectPersonFirst extends Component {
       <div className="fisrtStepSelected">
         <SelectPersonnel
           listConfig={listConfig}
-          subResid={592742369617}
+          subResid={609599795438}
           searchConfig={{ title: '搜索' }}
-          treeConfig={{ title: '按部门添加', resid: 592742244497 }}
+          treeConfig={{ title: '按级别添加', resid: 449335746776 }}
           personFields={[
             '',
-            'C3_227192472953',
-            'C3_227192484125',
-            'C3_227212499515'
+            'C3_227192472953',  //员工工号
+            'C3_227192484125',  //员工姓名
+            'C3_227212499515'   //所属部门
           ]}
           onSelectPerson={this.handleSelectPerson}
           stepList={[

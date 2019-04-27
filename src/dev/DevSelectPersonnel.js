@@ -9,13 +9,13 @@ import { Spin } from 'antd';
 
 const listConfig = [
   {
-    title: '按班组添加',
+    title: '所在地添加',
     titleFieldName: 'DESCP',
     resid: 593017031990,
     subResid: 592742369617
   },
   {
-    title: '按产线添加',
+    title: '按部门添加',
     titleFieldName: 'C3_593254711841',
     resid: 593255133996,
     subResid: 592742369617

@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import './SoleQuery.less';
 import { Input, Button, Select, Radio, Checkbox, Carousel ,Popconfirm} from 'antd';
 import http from '../../../util20/api';
+import qs from 'qs';
 const { TextArea } = Input;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+const userinfo = JSON.parse(localStorage.getItem('userInfo'));
 
 class SoleQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      queryID:'',
       queryDetail: {},
-      AllQuestions: []
+      AllQuestions: [],
+      userInfo:{},
     };
   }
 
@@ -22,28 +26,29 @@ class SoleQuery extends Component {
    */
 
   //  获取问卷信息
-  getQuery = async () => {
+  getQuery = async (queryId) => {
     let res;
     try {
       res = await http().getTable({
         resid: 608822905547,
-        cmswhere: 'query_id =' + 609329948699
+        cmswhere: 'query_id =' + queryId
       });
       return this.setState({
-        queryDetail: res.data[0]
+        queryDetail: res.data[0],
+        queryID:res.data[0].query_id,
       });
     } catch (err) {
       return console.error(err);
     }
   };
   //获取问卷试题
-  getThisQueryQuestions = async () => {
+  getThisQueryQuestions = async (queryId) => {
     let res;
     try {
       res = await http().getTable({
         resid: 608828418560,
         subresid: 608828722533,
-        cmswhere: 'query_id=' + 609329948699
+        cmswhere: 'query_id=' + queryId
       });
       console.log('res.data', res.data);
       res.data.forEach(item => {
@@ -78,8 +83,12 @@ class SoleQuery extends Component {
   };
   componentDidMount() {
     // 根据链接前端做出处理，然后拿到文件的ID。去后台获取，这里ID已经固定好
-    this.getQuery();
-    this.getThisQueryQuestions();
+    const quertString = window.location.search;
+    const qsObj = qs.parse(quertString.substring(1));
+    console.log('问卷ID', qsObj.id);
+    this.getQuery(qsObj.id);
+    this.getThisQueryQuestions(qsObj.id);
+    console.log(userinfo);
   }
 
   handleCheckboxChange = (questionId, optionId, e) => {
@@ -246,6 +255,8 @@ class SoleQuery extends Component {
 
   // 提交问卷
   submitQuery = () => {
+    console.log('提交',userinfo);
+    const {queryID} = this.state;
     let answers = [];
     const { AllQuestions } = this.state;
     console.log('点击提交后的问卷', AllQuestions);
@@ -259,7 +270,8 @@ class SoleQuery extends Component {
           );
           const writeContent = option.inputValue;
           let singleanswer = {
-            query_id: '609329948699',
+            person_id:userinfo.UserCode,
+            query_id: queryID,
             question_id: questionId,
             option_id: optionId,
             write_contnet: writeContent
@@ -271,7 +283,8 @@ class SoleQuery extends Component {
           const questionId = question.question_id;
 
           let multiAnswer = {
-            query_id: '609329948699',
+            person_id:userinfo.UserCode,
+            query_id: queryID,
             question_id: questionId
           };
 
@@ -293,7 +306,8 @@ class SoleQuery extends Component {
             const optionId = question.subdata[0].option_id;
             const WriteContent = question.answer;
             let eassyAnswer = {
-              query_id: '609329948699',
+              person_id:userinfo.UserCode,
+              query_id: queryID,
               question_id: questionId,
               option_id: optionId,
               write_content: WriteContent
@@ -378,6 +392,25 @@ class SoleQuery extends Component {
   handlePopcancle = ()=>{
     console.log('点击取消');
   }
+
+  // 发送
+  handleSend = ()=>{
+    const {queryID} = this.state;
+    const commonaddress = 'localhost:3000/fnmodule?resid=609334612078&recid=609335337024&type=前端功能入口&title=提交问卷&id=';
+     http().addRecords({
+       resid:609613163948,
+       data:[{
+         query_id:queryID,
+         query_address:commonaddress + queryID,
+       }]
+     }).then(res=>{
+      console.log('发送成功');
+      console.log(res);
+
+     }).catch(err=>{
+       console.error(err)
+     })
+  }
   // 渲染的页面
   render() {
     const { queryDetail } = this.state;
@@ -402,12 +435,13 @@ class SoleQuery extends Component {
             <Popconfirm
               title="确定提交吗？一旦提交不能更改哟"
               onConfirm={() => {
-                this.submitQuery('609329948699');
+                this.submitQuery(queryDetail.query_id);
               }}
               onCancel={this.handlePopcancle}
             >
               <Button type="primary">提交</Button>
             </Popconfirm>
+            <Button type='primary' onClick={()=>{this.handleSend()}}>发送</Button>
           </div>
         </div>
       </div>

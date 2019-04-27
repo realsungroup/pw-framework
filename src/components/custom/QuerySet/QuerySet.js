@@ -33,22 +33,18 @@ let questions = [
     isRequired: '1',
     options: [
       {
-        label: 1,
         value: '',
         isWrite: '0'
       },
       {
-        label: 2,
         value: '',
         isWrite: '0'
       },
       {
-        label: 3,
         value: '',
         isWrite: '0'
       },
       {
-        label: 4,
         value: '',
         isWrite: '0'
       }
@@ -61,22 +57,18 @@ let questions = [
     isRequired: '1',
     options: [
       {
-        label: 1,
         value: '',
         isWrite: '0'
       },
       {
-        label: 2,
         value: '',
         isWrite: '0'
       },
       {
-        label: 3,
         value: '',
         isWrite: '0'
       },
       {
-        label: 4,
         value: '',
         isWrite: '0'
       }
@@ -723,6 +715,7 @@ class QuerySet extends Component {
   };
   componentDidMount() {
     const quertString = window.location.search;
+    console.log('地址',quertString);
     const qsObj = qs.parse(quertString.substring(1));
     console.log('问卷ID', qsObj.id);
     //获取当前的日期
