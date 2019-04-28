@@ -1,5 +1,14 @@
 import React from 'react';
-import { message, Radio, Spin, Input, Upload, Icon, Button } from 'antd';
+import {
+  message,
+  Radio,
+  Spin,
+  Input,
+  Upload,
+  Icon,
+  Button,
+  Popover
+} from 'antd';
 import './FirstStep.less';
 import DepartmentTree from './DepartmentTree';
 import ListWithSelect from './ListWithSelect';
@@ -9,6 +18,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import http from 'Util20/api';
 import PropTypes from 'prop-types';
 import XLSX from 'xlsx';
+import examplePng from './assets/example.png';
 
 const Search = Input.Search;
 const Dragger = Upload.Dragger;
@@ -492,6 +502,18 @@ export default class FirstStep extends React.Component {
     this.setState({ searchValue: e.target.value });
   };
 
+  renderTipContent = () => {
+    return (
+      <div className="first-step__tip-content">
+        <img src={examplePng} alt="examplePng" style={{ width: 200 }} />
+        <p>
+          例如：当您需要 “以工号查询人员” 时，请在 “Excel 列” 中输入
+          “A”，然后点确定即可。
+        </p>
+      </div>
+    );
+  };
+
   renderFirstCol = () => {
     const { selectedRadio, excelColName, isSelectFile, fileInfo } = this.state;
     if (!selectedRadio) {
@@ -566,10 +588,16 @@ export default class FirstStep extends React.Component {
             <div className="first-step__file-col-name">
               <span>
                 Excel 列
-                <Icon
-                  type="exclamation-circle"
-                  className="first-step__file-tip"
-                />
+                <Popover
+                  content={this.renderTipContent()}
+                  title="说明"
+                  placement="right"
+                >
+                  <Icon
+                    type="exclamation-circle"
+                    style={{ marginLeft: 4, cursor: 'pointer' }}
+                  />
+                </Popover>
                 ：
               </span>
               <Input
