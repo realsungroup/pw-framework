@@ -1,8 +1,6 @@
-import React, { Fragment } from 'react';
-import { List, Checkbox, Avatar, Input, Button } from 'antd';
+import React from 'react';
 import './PersonListWithDel.less';
 import PersonList from '../PersonList';
-const Search = Input.Search;
 /**
  * 带有删除按钮的人员列表组件
  */
@@ -20,7 +18,7 @@ export default class PersonListWithDel extends React.Component {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, ...restProps } = this.props;
     return (
       <div className="person-list-withdel">
         <PersonList
@@ -34,6 +32,7 @@ export default class PersonListWithDel extends React.Component {
           }
           content={this.renderContent}
           data={data}
+          {...restProps}
         />
       </div>
     );

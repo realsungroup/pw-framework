@@ -36,8 +36,8 @@ class SelectPersonnel extends React.Component {
       subResid,
       searchConfig,
       personFields,
-      treeConfig,
-      radioGroupConfig
+      radioGroupConfig,
+      personPrimaryKeyField
     } = this.props;
     return (
       <Fragment>
@@ -52,9 +52,9 @@ class SelectPersonnel extends React.Component {
             listConfig={listConfig}
             subResid={subResid}
             searchConfig={searchConfig}
-            treeConfig={treeConfig}
             personFields={personFields}
             radioGroupConfig={radioGroupConfig}
+            personPrimaryKeyField={personPrimaryKeyField}
           />
         </div>
         {stepList.map((step, index) => (

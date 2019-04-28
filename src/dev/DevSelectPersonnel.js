@@ -7,33 +7,6 @@ import TemplateWrap from './TemplateWrap';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
 import { Spin } from 'antd';
 
-const listConfig = [
-  {
-    title: '按班组添加',
-    titleFieldName: 'DESCP',
-    resid: 593017031990,
-    subResid: 592742369617
-  },
-  {
-    title: '按产线添加',
-    titleFieldName: 'C3_593254711841',
-    resid: 593255133996,
-    subResid: 592742369617
-  },
-  {
-    title: '成本中心1',
-    titleFieldName: 'C3_596047861734',
-    resid: 596047828849,
-    subResid: 592742369617
-  },
-  {
-    title: '成本中心2',
-    titleFieldName: 'C3_596047873684',
-    resid: 596047837491,
-    subResid: 592742369617
-  }
-];
-
 const radioGroupConfig = [
   {
     type: 'tree',
@@ -80,7 +53,6 @@ class App extends Component {
         <Spin spinning={loading}>
           <div style={{ width: 1000, height: 520 }}>
             <SelectPersonnel
-              listConfig={listConfig}
               subResid={592742369617}
               searchConfig={{ title: '搜索' }}
               treeConfig={{ title: '按部门添加', resid: 592742244497 }}
@@ -90,6 +62,7 @@ class App extends Component {
                 'C3_227192484125',
                 'C3_227212499515'
               ]}
+              personPrimaryKeyField="C3_227192484125"
               onSelectPerson={this.handleSelectPerson}
               stepList={[
                 {

@@ -8,13 +8,10 @@ import PersonListWithDel from './PersonListWithDel';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from 'Util20/api';
 import PropTypes from 'prop-types';
-
-// import arrayToTree from 'array-to-tree';
 const Search = Input.Search;
 const Dragger = Upload.Dragger;
 
 function dealData(radioConfig, data) {
-  console.log({ data });
   const { type, nameField, pidField, idField } = radioConfig;
   data.forEach(item => {
     item.name = item[nameField];
@@ -82,8 +79,8 @@ export default class FirstStep extends React.Component {
       departmentData: [], // 部门列表
       listData: [], // 列表
 
-      personList: [], // 用户列表
-      selectedList: [], // 选中的人员列表
+      personList: [], // 用户列表（第二列）
+      selectedList: [], // 选中的人员列表（第三列）
 
       isCheckedPart: false, // 人员是否只选了部分
       isCheckedAll: false, // 是否全选了
@@ -100,8 +97,9 @@ export default class FirstStep extends React.Component {
       selectedItem: {}, // 选中的列表项
       selectedKeys: [], // 选中的节点的 key
 
-      loading: false,
-      firstColLoading: false,
+      firstColLoading: false, // 第一列 loading
+
+      secondColLoading: false, // 第二列 loading
 
       selectedItemConfig: {}, // 已选择的 radio 的配置
 
@@ -113,7 +111,6 @@ export default class FirstStep extends React.Component {
 
   componentDidMount() {
     this.setState({ firstColLoading: true });
-    // this.getDepartmentData();
     this.getData();
   }
 
@@ -149,36 +146,8 @@ export default class FirstStep extends React.Component {
   // 获取第二列的数据
   getSecondColData = item => {};
 
-  onChange = e => {
-    this.setState({ firstColLoading: true, hasMore: false });
-    // let subType = '',
-    //   itemConfig = {};
-
-    // const { searchConfig } = this.props;
-
-    // // 树组件数据
-    // if (value === '按部门添加') {
-    //   this.getDepartmentData();
-    //   subType = 'tree';
-
-    //   // 搜索
-    // } else if (value === searchConfig.title) {
-    //   this.setState({ firstColLoading: false });
-    // } else {
-    //   // 主表数据
-    //   const itemConfig = this.props.listConfig.find(
-    //     itemConfig => value === itemConfig.title
-    //   );
-    //   this.getMainTableData(itemConfig);
-    // }
-    // this.setState({
-    //   curNavName: value,
-    //   departmentData: [],
-    //   listData: [],
-    //   personList: [],
-    //   subType,
-    //   selectedItemConfig: itemConfig
-    // });
+  handleRadioGroupChange = e => {
+    this.setState({ firstColLoading: true, hasMore: false, personList: [] });
     const { radioGroupConfig } = this.props;
     const value = e.target.value;
     const selectedRadio = radioGroupConfig.find(
@@ -191,60 +160,6 @@ export default class FirstStep extends React.Component {
     } else if (type === 'search' || type === 'file') {
       this.setState({ selectedRadio, firstColLoading: false });
     }
-  };
-
-  getDepartmentData = async () => {
-    let res;
-    try {
-      res = await http().getTable({ resid: this.props.treeConfig.resid });
-    } catch (err) {
-      message.error(err.message);
-    }
-    let nodesData = res.data;
-    const length = nodesData.length;
-    const titleFieldName = 'DEP_NAME',
-      curNodeFieldName = 'DEP_ID',
-      parentNodeFieldName = 'DEP_PID';
-    for (let i = 0; i < length; i++) {
-      nodesData[i].title = nodesData[i][titleFieldName];
-      for (let j = 0; j < length; j++) {
-        if (
-          nodesData[j][parentNodeFieldName] === nodesData[i][curNodeFieldName]
-        ) {
-          if (!nodesData[i].childNodes) {
-            nodesData[i].childNodes = [];
-          }
-          nodesData[i].childNodes.push(nodesData[j]);
-        }
-      }
-    }
-    const departmentData = nodesData.filter(node => {
-      return nodesData.every(item => {
-        if (node[curNodeFieldName] !== item[curNodeFieldName]) {
-          return node[parentNodeFieldName] !== item[curNodeFieldName];
-        } else {
-          return true;
-        }
-      });
-    });
-    this.setState({ departmentData, firstColLoading: false });
-  };
-
-  getMainTableData = async itemConfig => {
-    let res;
-    try {
-      res = await http().getTable({ resid: itemConfig.resid });
-    } catch (err) {
-      this.setState({ firstColLoading: false });
-      return message.error(err.message);
-    }
-    const titleFieldName = itemConfig.titleFieldName;
-    res.data.forEach(item => (item.title = item[titleFieldName]));
-    this.setState({
-      listData: res.data,
-      firstColLoading: false,
-      selectedItemConfig: itemConfig
-    });
   };
 
   getPersonList = async (
@@ -272,27 +187,18 @@ export default class FirstStep extends React.Component {
   };
 
   dealPersonList = (resData, total, hasPaging) => {
-    // const avatarFieldName = '',
-    //   badgeNumFieldName = 'C3_227192472953',
-    //   nameFieldName = 'C3_227192484125',
-    //   departmentFieldName = 'C3_227212499515';
-
-    const [
-      avatarFieldName,
-      badgeNum,
-      name,
-      department
-    ] = this.props.personFields;
+    const { personFields, personPrimaryKeyField } = this.props;
+    const [avatarFieldName, field_1, field_2, field_3] = personFields;
 
     const { selectedList } = this.state;
 
     resData.forEach(item => {
       item.avatar = item[avatarFieldName];
-      item.badgeNum = badgeNum && item[badgeNum];
-      item.name = name && item[name];
-      item.department = department && item[department];
+      item[field_1] = field_1 && item[field_1];
+      item.field_2 = field_2 && item[field_2];
+      item.field_3 = field_3 && item[field_3];
       item.checked = selectedList.some(
-        person => item.badgeNum === person.badgeNum
+        person => item[personPrimaryKeyField] === person[personPrimaryKeyField]
       );
     });
 
@@ -316,7 +222,7 @@ export default class FirstStep extends React.Component {
         totalPage,
         total,
         hasMore,
-        loading: false
+        secondColLoading: false
       },
       () => {
         this.loading = false;
@@ -330,7 +236,8 @@ export default class FirstStep extends React.Component {
       personList: [],
       pageIndex: 0,
       selectedKeys,
-      searchValue: ''
+      searchValue: '',
+      secondColLoading: true
     });
     if (!selectedKeys.length) {
       return;
@@ -341,7 +248,7 @@ export default class FirstStep extends React.Component {
       pageSize: this.state.pageSize
     };
     this.getPersonList(
-      this.props.treeConfig.resid,
+      this.state.selectedRadio.resid,
       this.props.subResid,
       hostrecid,
       option
@@ -356,7 +263,8 @@ export default class FirstStep extends React.Component {
       personList: [],
       pageIndex: 0,
       selectedItem: item,
-      searchValue: ''
+      searchValue: '',
+      secondColLoading: true
     });
     const option = {
       current: 0,
@@ -428,13 +336,15 @@ export default class FirstStep extends React.Component {
     personList[index].checked = checked;
     const isCheckedPart = this.isCheckedPart(personList);
     const isCheckedAll = this.isCheckedAll(personList);
+    const { personPrimaryKeyField } = this.props;
 
     if (checked) {
-      !selectedList.some(person => item['badgeNum'] === person['badgeNum']) &&
-        selectedList.unshift(item);
+      !selectedList.some(
+        person => item[personPrimaryKeyField] === person[personPrimaryKeyField]
+      ) && selectedList.unshift(item);
     } else {
       const index = selectedList.findIndex(
-        person => person['badgeNum'] === item['badgeNum']
+        person => person[personPrimaryKeyField] === item[personPrimaryKeyField]
       );
       selectedList.splice(index, 1);
     }
@@ -445,15 +355,12 @@ export default class FirstStep extends React.Component {
 
   handleAllChange = async e => {
     // 当未获取到所有人员数据时
-    const { totalPage, pageIndex } = this.state;
+    const { totalPage, pageIndex, selectedRadio } = this.state;
     if (totalPage > pageIndex) {
-      this.setState({ loading: true });
+      this.setState({ secondColLoading: true });
       // 先获取全部人员
       // 人员在主表中（搜索）
-      if (
-        this.state.curNavName ===
-        (this.props.searchConfig && this.props.searchConfig.title)
-      ) {
+      if (selectedRadio.type === 'search') {
         await this.handlePersonSearch(this.personSearchValue, false, false);
 
         // 人员在子表中（按部门添加、按班组添加、按产线添加、成本中心1、成本中心2）
@@ -469,14 +376,16 @@ export default class FirstStep extends React.Component {
     // 再选中获取的全部人员
     const checked = e.target.checked;
     const { personList, selectedList } = this.state;
+    const { personPrimaryKeyField } = this.props;
     personList.forEach(person => {
       person.checked = checked;
       if (checked) {
-        !selectedList.some(item => item['badgeNum'] === person['badgeNum']) &&
-          selectedList.unshift(person);
+        !selectedList.some(
+          item => item[personPrimaryKeyField] === person[personPrimaryKeyField]
+        ) && selectedList.unshift(person);
       } else {
         const index = selectedList.findIndex(
-          item => item['badgeNum'] === person['badgeNum']
+          item => item[personPrimaryKeyField] === person[personPrimaryKeyField]
         );
         selectedList.splice(index, 1);
       }
@@ -487,15 +396,16 @@ export default class FirstStep extends React.Component {
       isCheckedPart: false,
       isCheckedAll: checked,
       selectedList,
-      loading: false
+      secondColLoading: false
     });
     this.props.onSelect(selectedList);
   };
 
   handleDelete = (item, sIndex) => {
     const { selectedList, personList } = this.state;
+    const { personPrimaryKeyField } = this.props;
     const pIndex = personList.findIndex(
-      person => item['badgeNum'] === person['badgeNum']
+      person => item[personPrimaryKeyField] === person[personPrimaryKeyField]
     );
     if (personList[pIndex]) {
       personList[pIndex].checked = false;
@@ -515,7 +425,7 @@ export default class FirstStep extends React.Component {
    * @param {boolean} hasPaging 是否分页获取数据；默认值为 true
    */
   getReqParams = (searchValue = '', hasPaging = true) => {
-    const { subType, pageIndex, pageSize } = this.state;
+    const { selectedRadio, pageIndex, pageSize } = this.state;
     let resid, subResid, hostRecid;
     let option = hasPaging
       ? {
@@ -524,14 +434,13 @@ export default class FirstStep extends React.Component {
           key: searchValue
         }
       : {};
-    if (subType === 'tree') {
-      resid = this.props.treeConfig.resid;
+    if (selectedRadio.type === 'tree') {
+      resid = selectedRadio.resid;
       subResid = this.props.subResid;
       hostRecid = this.state.selectedKeys[0];
     } else {
-      const { selectedItemConfig } = this.state;
-      resid = selectedItemConfig.resid;
-      subResid = selectedItemConfig.subResid;
+      resid = selectedRadio.resid;
+      subResid = this.props.subResid;
       hostRecid = this.state.selectedItem.REC_ID;
     }
     return { resid, subResid, hostRecid, option };
@@ -588,7 +497,6 @@ export default class FirstStep extends React.Component {
         return (
           <ListWithSelect
             data={selectedRadio.firstColData}
-            // headerTitle={selectedItemConfig.listTitle}
             onSelect={this.handleItemSelect}
           />
         );
@@ -610,10 +518,6 @@ export default class FirstStep extends React.Component {
           customRequest: info => {},
           onChange(info) {
             const file = info.file.originFileObj;
-
-            // readXlsxFile(file).then(rows => {
-            //   console.log({ rows });
-            // });
           }
         };
         return (
@@ -626,35 +530,6 @@ export default class FirstStep extends React.Component {
         );
       }
     }
-
-    // switch (curNavName) {
-    //   case '按部门添加': {
-    //     return (
-    //       <DepartmentTree
-    //         nodesData={departmentData}
-    //         onSelect={this.handleTreeNodeSelect}
-    //       />
-    //     );
-    //   }
-    //   case this.props.searchConfig && this.props.searchConfig.title: {
-    //     return (
-    //       <Search
-    //         placeholder="请输入内容"
-    //         style={{ marginTop: 25 }}
-    //         onSearch={value => this.handlePersonSearch(value, true)}
-    //       />
-    //     );
-    //   }
-    //   default: {
-    //     return (
-    //       <ListWithSelect
-    //         data={listData}
-    //         // headerTitle={selectedItemConfig.listTitle}
-    //         onSelect={this.handleItemSelect}
-    //       />
-    //     );
-    //   }
-    // }
   };
 
   renderRadioItem = radioItem => {
@@ -666,6 +541,23 @@ export default class FirstStep extends React.Component {
     }
   };
 
+  getSceondColHasSearch = () => {
+    const { selectedRadio } = this.state;
+    if (selectedRadio.type === 'search' || selectedRadio.type === 'file') {
+      return false;
+    }
+    return true;
+  };
+
+  getShowField = () => {
+    const { personFields } = this.props;
+    return {
+      field_1: personFields[1],
+      field_2: personFields[2],
+      field_3: personFields[3]
+    };
+  };
+
   render() {
     const {
       curNavName,
@@ -674,23 +566,18 @@ export default class FirstStep extends React.Component {
       isCheckedAll,
       selectedList,
       hasMore,
-      loading,
+      secondColLoading,
       firstColLoading,
-      searchValue,
-
-      firstRadioConfig,
       selectedRadio
     } = this.state;
-    const {
-      listConfig,
-      searchConfig,
-      treeConfig,
-      radioGroupConfig
-    } = this.props;
+    const { radioGroupConfig } = this.props;
     return (
       <div className="first-step">
         <div className="first-step__nav">
-          <Radio.Group onChange={this.onChange} value={selectedRadio.title}>
+          <Radio.Group
+            onChange={this.handleRadioGroupChange}
+            value={selectedRadio.title}
+          >
             {radioGroupConfig.map(radioConfig => {
               return (
                 <Radio.Button key={radioConfig.title} value={radioConfig.title}>
@@ -698,20 +585,6 @@ export default class FirstStep extends React.Component {
                 </Radio.Button>
               );
             })}
-            {/* 树 */}
-            {/* <Radio.Button value={treeConfig.title}>
-              {treeConfig.title}
-            </Radio.Button> */}
-            {/* 列表 */}
-            {/* {listConfig.map(itemConfig => (
-              <Radio.Button key={itemConfig.title} value={itemConfig.title}>
-                {itemConfig.title}
-              </Radio.Button>
-            ))} */}
-            {/* 搜索 */}
-            {/* <Radio.Button value={searchConfig.title}>
-              {searchConfig.title}
-            </Radio.Button> */}
           </Radio.Group>
         </div>
         <div className="first-step__content">
@@ -719,63 +592,37 @@ export default class FirstStep extends React.Component {
           <div>
             <Spin spinning={firstColLoading}>{this.renderFirstCol()}</Spin>
           </div>
-          {/* 第二栏：人员列表 */}
+          {/* 第二列：人员列表 */}
           <div>
-            {!!curNavName &&
-              curNavName === (searchConfig && searchConfig.title) && (
-                <InfiniteScroll
-                  initialLoad={false}
-                  pageStart={0}
-                  loadMore={this.loadMore}
-                  hasMore={hasMore}
-                  useWindow={false}
-                  key={curNavName}
-                >
-                  <PersonListWithSelect
-                    data={personList}
-                    singleChange={this.handleSingleChange}
-                    allChange={this.handleAllChange}
-                    indeterminate={isCheckedPart}
-                    isCheckedAll={isCheckedAll}
-                    loading={loading}
-                    onSearch={this.handleSearch}
-                    onSearchChange={this.handleSearchChange}
-                    hasSearch={false}
-                  />
-                </InfiniteScroll>
-              )}
-            {!!curNavName &&
-              curNavName !== (searchConfig && searchConfig.title) && (
-                <InfiniteScroll
-                  initialLoad={false}
-                  pageStart={0}
-                  loadMore={this.loadMore}
-                  hasMore={hasMore}
-                  useWindow={false}
-                  key={curNavName}
-                >
-                  <PersonListWithSelect
-                    data={personList}
-                    searchValue={searchValue}
-                    singleChange={this.handleSingleChange}
-                    allChange={this.handleAllChange}
-                    indeterminate={isCheckedPart}
-                    isCheckedAll={isCheckedAll}
-                    loading={loading}
-                    onSearch={this.handleSearch}
-                    onSearchChange={this.handleSearchChange}
-                  />
-                </InfiniteScroll>
-              )}
-          </div>
-          {/* 被选的人员列表 */}
-          <div>
-            {!!curNavName && (
-              <PersonListWithDel
-                data={selectedList}
-                onDelete={this.handleDelete}
+            <InfiniteScroll
+              initialLoad={false}
+              pageStart={0}
+              loadMore={this.loadMore}
+              hasMore={hasMore}
+              useWindow={false}
+              key={curNavName}
+            >
+              <PersonListWithSelect
+                data={personList}
+                singleChange={this.handleSingleChange}
+                onAllChange={this.handleAllChange}
+                indeterminate={isCheckedPart}
+                isCheckedAll={isCheckedAll}
+                loading={secondColLoading}
+                onSearch={this.handleSearch}
+                onSearchChange={this.handleSearchChange}
+                hasSearch={this.getSceondColHasSearch()}
+                {...this.getShowField()}
               />
-            )}
+            </InfiniteScroll>
+          </div>
+          {/* 第三列：被选的人员列表 */}
+          <div>
+            <PersonListWithDel
+              data={selectedList}
+              onDelete={this.handleDelete}
+              {...this.getShowField()}
+            />
           </div>
         </div>
       </div>
