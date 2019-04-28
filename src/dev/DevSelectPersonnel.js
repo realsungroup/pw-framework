@@ -61,7 +61,7 @@ class App extends Component {
                 'C3_227192484125',
                 'C3_227212499515'
               ]}
-              personPrimaryKeyField="C3_227192484125"
+              personPrimaryKeyField="C3_227192472953"
               onSelectPerson={this.handleSelectPerson}
               stepList={[
                 {

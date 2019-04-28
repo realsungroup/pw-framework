@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Radio, Spin, Input, Upload, Icon } from 'antd';
+import { message, Radio, Spin, Input, Upload, Icon, Button } from 'antd';
 import './FirstStep.less';
 import DepartmentTree from './DepartmentTree';
 import ListWithSelect from './ListWithSelect';
@@ -76,8 +76,6 @@ export default class FirstStep extends React.Component {
     }
 
     this.state = {
-      curNavName: '按部门添加', // 当前选中的单选
-
       departmentData: [], // 部门列表
       listData: [], // 列表
 
@@ -106,7 +104,10 @@ export default class FirstStep extends React.Component {
       selectedItemConfig: {}, // 已选择的 radio 的配置
 
       // 新加的
-      selectedRadio // 已选择的 radio
+      selectedRadio, // 已选择的 radio
+      excelColName: 'A', // excel 查询的列名称
+      isSelectFile: false,
+      fileInfo: null // 选中的文件信息
     };
   }
 
@@ -190,7 +191,7 @@ export default class FirstStep extends React.Component {
     this.dealPersonList(res.data, res.total, hasPaging);
   };
 
-  dealPersonList = (resData, total, hasPaging) => {
+  dealPersonList = (resData, total, hasPaging, needConcat = true) => {
     const { personFields, personPrimaryKeyField } = this.props;
     const [avatarFieldName, field_1, field_2, field_3] = personFields;
 
@@ -211,7 +212,14 @@ export default class FirstStep extends React.Component {
     const totalPage = Math.ceil(total / this.state.pageSize);
     const hasMore = hasPaging ? this.state.pageIndex + 1 <= totalPage : false;
 
-    const personList = [...this.state.personList, ...resData];
+    let personList = [];
+    if (needConcat) {
+      personList = [...this.state.personList, ...resData];
+    } else {
+      personList = [...resData];
+    }
+
+    // const personList = [...this.state.personList, ...resData];
 
     const pageIndex = hasPaging
       ? this.state.pageIndex + 1
@@ -295,7 +303,7 @@ export default class FirstStep extends React.Component {
       return message.error('请输入关键字');
     }
     this.loading = true;
-    this.setState({ loading: true });
+    this.setState({ secondColLoading: true });
     const { pageIndex, pageSize } = this.state;
     let option = hasPaging
       ? {
@@ -454,11 +462,9 @@ export default class FirstStep extends React.Component {
     if (this.loading || this.state.pageIndex >= this.state.totalPage) {
       return;
     }
+    const { selectedRadio } = this.state;
     // 人员在主表中（全员搜索）
-    if (
-      this.state.curNavName ===
-      (this.props.searchConfig && this.props.searchConfig.title)
-    ) {
+    if (selectedRadio.type === 'search') {
       this.handlePersonSearch(this.personSearchValue, false);
       // 人员在子表中（按部门添加、按班组添加、按产线添加、成本中心1、成本中心2）
     } else {
@@ -476,6 +482,7 @@ export default class FirstStep extends React.Component {
     if (!hostRecid) {
       return;
     }
+    this.setState({ secondColLoading: true });
 
     option = { ...option, key: value, current: 0 };
     this.getPersonList(resid, subResid, hostRecid, option);
@@ -486,7 +493,7 @@ export default class FirstStep extends React.Component {
   };
 
   renderFirstCol = () => {
-    const { selectedRadio } = this.state;
+    const { selectedRadio, excelColName, isSelectFile, fileInfo } = this.state;
     if (!selectedRadio) {
       return null;
     }
@@ -524,28 +531,133 @@ export default class FirstStep extends React.Component {
       case 'file': {
         const props = {
           name: 'file',
-          customRequest: info => {},
-          onChange(info) {
+          customRequest: () => {},
+          onChange: info => {
             const file = info.file.originFileObj;
             const reader = new FileReader();
+            const ctx = this;
+            this.setState({ fileInfo: info });
             reader.onload = function(e) {
-              var data = new Uint8Array(e.target.result);
-              var workbook = XLSX.read(data, { type: 'array' });
-              console.log({ workbook });
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: 'array' });
+              message.success('选择文件成功');
+              // 只读取 sheet1 中的 excel 数据
+              ctx._sheet1 = workbook.Sheets.Sheet1;
+              ctx.setState({ isSelectFile: true });
             };
             reader.readAsArrayBuffer(file);
           }
         };
         return (
-          <Dragger {...props}>
-            <p className="ant-upload-drag-icon">
-              <Icon type="inbox" />
-            </p>
-            <p className="ant-upload-text">点击或拖拽文件到此区域</p>
-          </Dragger>
+          <div>
+            <div style={{ height: 120, overflow: 'hidden' }}>
+              <Dragger {...props}>
+                <p>
+                  <Icon type="inbox" />
+                </p>
+                <p>点击或拖拽文件到此区域</p>
+                {isSelectFile && (
+                  <span style={{ color: '#018f56' }}>
+                    已选文件：{fileInfo.file.name}
+                  </span>
+                )}
+              </Dragger>
+            </div>
+            <div className="first-step__file-col-name">
+              <span>
+                Excel 列
+                <Icon
+                  type="exclamation-circle"
+                  className="first-step__file-tip"
+                />
+                ：
+              </span>
+              <Input
+                style={{ width: 200 }}
+                value={excelColName}
+                onChange={this.handleExcelColNameChange}
+              />
+            </div>
+            <div className="first-step__file-search">
+              <Button block type="primary" onClick={this.handleFileSearch}>
+                确定
+              </Button>
+            </div>
+          </div>
         );
       }
     }
+  };
+
+  handleExcelColNameChange = e => {
+    const value = e.target.value;
+    if (value.length > 1) {
+      return;
+    }
+    let code;
+    if (value.length !== 0) {
+      code = value.charCodeAt();
+    }
+    if (code) {
+      if (code < 65 || code > 90) {
+        return;
+      }
+    }
+
+    this.setState({ excelColName: e.target.value });
+  };
+
+  getWhereBySheet = (sheet1, colName) => {
+    const values = [];
+    for (let key in sheet1) {
+      if (key.indexOf(colName) !== -1 && key.indexOf('1') === -1) {
+        const v = sheet1[key].v;
+        values.push(v);
+      }
+    }
+    // const where = `${this.props.personPrimaryKeyField} in (${values.join(
+    //   ','
+    // )})`;
+    let where = '';
+    const cName = this.props.personPrimaryKeyField;
+    values.forEach((value, index) => {
+      if (index !== values.length - 1) {
+        where += `${cName} = '${value}' or `;
+      } else {
+        where += `${cName} = '${value}'`;
+      }
+    });
+    return where;
+  };
+
+  handleFileSearch = async () => {
+    const { excelColName } = this.state;
+    const { subResid } = this.props;
+    const sheet1 = this._sheet1;
+
+    if (!sheet1) {
+      return message.error('请选择文件');
+    }
+
+    if (!excelColName) {
+      return message.error('请输入查询列名');
+    }
+
+    this.setState({ secondColLoading: true });
+
+    const where = this.getWhereBySheet(sheet1, excelColName);
+    let res;
+    try {
+      res = await http().getTable({
+        resid: subResid,
+        cmswhere: where
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    this.dealPersonList(res.data, res.data.total, false, false);
   };
 
   renderRadioItem = radioItem => {
@@ -576,7 +688,6 @@ export default class FirstStep extends React.Component {
 
   render() {
     const {
-      curNavName,
       personList,
       isCheckedPart,
       isCheckedAll,
@@ -617,7 +728,6 @@ export default class FirstStep extends React.Component {
               loadMore={this.loadMore}
               hasMore={hasMore}
               useWindow={false}
-              key={curNavName}
             >
               <PersonListWithSelect
                 data={personList}
