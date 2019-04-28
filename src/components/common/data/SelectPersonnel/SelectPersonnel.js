@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Spin, Steps, Button } from 'antd';
+import { message, Steps, Button } from 'antd';
 import classNames from 'classnames';
 import FirstStep from './FirstStep';
 import './SelectPersonnel.less';
