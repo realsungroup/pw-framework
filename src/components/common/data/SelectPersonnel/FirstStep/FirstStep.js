@@ -68,9 +68,9 @@ export default class FirstStep extends React.Component {
     super(props);
     const { radioGroupConfig } = props;
 
-    let firstRadioConfig = null;
+    let selectedRadio = null;
     if (radioGroupConfig.length) {
-      firstRadioConfig = { ...radioGroupConfig[0] };
+      selectedRadio = { ...radioGroupConfig[0] };
     }
 
     this.state = {
@@ -104,18 +104,20 @@ export default class FirstStep extends React.Component {
       selectedItemConfig: {}, // 已选择的 radio 的配置
 
       // 新加的
-      firstRadioConfig, // 第一个单选按钮配置
-      selectedRadio: firstRadioConfig // 已选择的 radio
+      selectedRadio // 已选择的 radio
     };
   }
 
   componentDidMount() {
-    this.setState({ firstColLoading: true });
     this.getData();
   }
 
   getData = async () => {
-    this.getFirstColData(this.state.selectedRadio);
+    const { selectedRadio } = this.state;
+    if (selectedRadio.type === 'tree' || selectedRadio.type === 'list') {
+      this.setState({ firstColLoading: true });
+      this.getFirstColData(this.state.selectedRadio);
+    }
   };
 
   // 获取第一列的数据
@@ -518,6 +520,11 @@ export default class FirstStep extends React.Component {
           customRequest: info => {},
           onChange(info) {
             const file = info.file.originFileObj;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              console.log(e.target.result);
+            };
+            reader.readAsText(file);
           }
         };
         return (
