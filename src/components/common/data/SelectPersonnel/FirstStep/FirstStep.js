@@ -8,6 +8,8 @@ import PersonListWithDel from './PersonListWithDel';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from 'Util20/api';
 import PropTypes from 'prop-types';
+import XLSX from 'xlsx';
+
 const Search = Input.Search;
 const Dragger = Upload.Dragger;
 
@@ -470,6 +472,11 @@ export default class FirstStep extends React.Component {
   handleSearch = value => {
     this.setState({ personList: [], searchValue: value, pageIndex: 0 });
     let { resid, subResid, hostRecid, option } = this.getReqParams(value);
+
+    if (!hostRecid) {
+      return;
+    }
+
     option = { ...option, key: value, current: 0 };
     this.getPersonList(resid, subResid, hostRecid, option);
   };
@@ -522,9 +529,11 @@ export default class FirstStep extends React.Component {
             const file = info.file.originFileObj;
             const reader = new FileReader();
             reader.onload = function(e) {
-              console.log(e.target.result);
+              var data = new Uint8Array(e.target.result);
+              var workbook = XLSX.read(data, { type: 'array' });
+              console.log({ workbook });
             };
-            reader.readAsText(file);
+            reader.readAsArrayBuffer(file);
           }
         };
         return (
@@ -575,7 +584,8 @@ export default class FirstStep extends React.Component {
       hasMore,
       secondColLoading,
       firstColLoading,
-      selectedRadio
+      selectedRadio,
+      searchValue
     } = this.state;
     const { radioGroupConfig } = this.props;
     return (
@@ -619,6 +629,7 @@ export default class FirstStep extends React.Component {
                 onSearch={this.handleSearch}
                 onSearchChange={this.handleSearchChange}
                 hasSearch={this.getSceondColHasSearch()}
+                searchValue={searchValue}
                 {...this.getShowField()}
               />
             </InfiniteScroll>
