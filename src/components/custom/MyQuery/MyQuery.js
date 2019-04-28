@@ -282,7 +282,7 @@ class MyQuery extends React.Component {
           })}
         </div>
         <QueryTable questionnaire={questionnaire} onDelete={this.deleQuery} />
-        <Paging />
+        {/* <Paging /> */}
       </div>
     );
   }

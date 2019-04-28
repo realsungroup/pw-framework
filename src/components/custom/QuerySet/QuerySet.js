@@ -5,7 +5,6 @@ import {
   Input,
   Button,
   Select,
-  Tabs,
   Radio,
   Checkbox,
   Icon,
@@ -17,6 +16,7 @@ import {
 import moment from 'moment';
 import http from '../../../util20/api';
 import qs from 'qs';
+import { cloneDeep } from 'lodash';
 const { TextArea } = Input;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -30,7 +30,7 @@ let questions = [
     type: 1, // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
     typeName: '单选题',
     topic: '', // 题目标题
-    isRequired: '1',
+    isRequired: 1,
     options: [
       {
         value: '',
@@ -54,7 +54,7 @@ let questions = [
     type: 2,
     typeName: '多选题',
     topic: '',
-    isRequired: '1',
+    isRequired: 1,
     options: [
       {
         value: '',
@@ -79,7 +79,7 @@ let questions = [
     typeName: '问答题',
     topic: '',
     answer: '',
-    isRequired: '1'
+    isRequired: 1
   }
 ];
 
@@ -88,7 +88,7 @@ class QuerySet extends Component {
     super(props);
     this.state = {
       wid: 1000,
-      questions: questions,
+      questions: cloneDeep(questions),
       activeQuestionType: '1',
       query_name: '',
       query_description: '',
@@ -97,7 +97,7 @@ class QuerySet extends Component {
       floder_name: '',
       startDate: '',
       endDate: '',
-      isGift: null,
+      isGift: '0',
       giftCount: '',
       giftRate: '',
       queryId: '', //跳转时传过来的ID,
@@ -108,16 +108,20 @@ class QuerySet extends Component {
       giftStyle: ''
     };
   }
+
   showModal = () => {
     this.setState({
       visible: true
     });
   };
+
   addSingle = () => {
     this.setState({
-      visible2: true
+      visible2: true,
+      questions: cloneDeep(questions)
     });
   };
+
   // 关闭编辑模态框
   handleEditModal = () => {
     this.setState({
@@ -136,7 +140,6 @@ class QuerySet extends Component {
       floder_name,
       isGift,
       giftCount,
-      giftRate,
       queryId
     } = this.state;
     if (queryId == '') {
@@ -179,7 +182,8 @@ class QuerySet extends Component {
               floder_name: floder_name,
               start_time: startDate,
               end_time: endDate,
-              gift: isGift
+              gift: isGift,
+              gift_count:giftCount,
             }
           ]
         })
@@ -449,14 +453,14 @@ class QuerySet extends Component {
     this.setState({ questions: newQuestions });
   };
 
-  //监听单选选项变化
+  //监听单选选项输入的变化
   handleSingleOptionValueChange = (value, index) => {
     const newQuestions = [...this.state.questions];
     newQuestions[0].options[index].value = value;
     this.setState({ questions: newQuestions });
   };
 
-  //监听多选选项变化
+  //监听多选选项输入变化
   handleMultiOptionValueChange = (value, index) => {
     const newQuestions = [...this.state.questions];
     newQuestions[1].options[index].value = value;
@@ -487,13 +491,17 @@ class QuerySet extends Component {
       </div>
     );
   };
+
   renderSingle = () => {
-    let singlechoice = questions[0];
-    // console.log(singlechoice);
+    let singlechoice = this.state.questions[0];
     return (
       <div className="query-set__single" style={{ marginTop: 15 }}>
         <div>
-          <Input onChange={this.SingleTopicChange} placeholder="输入题目" />
+          <Input
+            value={singlechoice.topic}
+            onChange={this.SingleTopicChange}
+            placeholder="输入题目"
+          />
         </div>
         <ul>
           {singlechoice.options.map((option, index) => {
@@ -522,7 +530,6 @@ class QuerySet extends Component {
                           index
                         )
                       }
-                      // placeholder="输入选项内容"
                       style={{ width: 800 }}
                     />
                   )}
@@ -545,12 +552,16 @@ class QuerySet extends Component {
   };
 
   renderMulti = () => {
-    let multichoice = questions[1];
+    let multichoice = this.state.questions[1];
     // console.log(multichoice)
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
-          <Input placeholder="请输入题干" onChange={this.MultiTopicChange} />
+          <Input
+            value={multichoice.topic}
+            placeholder="请输入题干"
+            onChange={this.MultiTopicChange}
+          />
         </div>
         <ul>
           {multichoice.options.map((option, index) => {
@@ -596,12 +607,16 @@ class QuerySet extends Component {
   };
 
   renderAnswer = () => {
-    let answers = questions[2];
+    let answers = this.state.questions[2];
     // console.log(answers)
     return (
       <div className="query-set__answer" style={{ marginTop: 15 }}>
         <div>
-          <Input placeholder="请输入题干" onChange={this.AnswerTopicChange} />
+          <Input
+            value={answers.topic}
+            placeholder="请输入题干"
+            onChange={this.AnswerTopicChange}
+          />
         </div>
         <div>
           <TextArea style={{ marginTop: 10 }} disabled />
@@ -715,7 +730,7 @@ class QuerySet extends Component {
   };
   componentDidMount() {
     const quertString = window.location.search;
-    console.log('地址',quertString);
+    console.log('地址', quertString);
     const qsObj = qs.parse(quertString.substring(1));
     console.log('问卷ID', qsObj.id);
     //获取当前的日期
@@ -739,11 +754,13 @@ class QuerySet extends Component {
   }
   // 监听是否有礼品的变化
   handleSwitchGiftChange = checked => {
-    // console.log(checked);
+    console.log(checked);
     let isGift;
     if (checked) {
+      // 有礼品
       isGift = 1;
     } else {
+      // 无礼品
       isGift = 0;
     }
     this.setState({
@@ -879,7 +896,8 @@ class QuerySet extends Component {
                       style={{
                         borderRadius: 0,
                         border: 'none',
-                        borderBottom: '1px solid #000'
+                        borderBottom: '1px solid #000',
+                        width: 100
                       }}
                     />
                   </Radio>
@@ -949,9 +967,24 @@ class QuerySet extends Component {
           {item.subdata.map(option => {
             return (
               <div key={option.option_id}>
-                <Checkbox value={option.option_content}>
-                  {option.option_content}
-                </Checkbox>
+                {option.option_write == '0' ? (
+                  <Checkbox value={option.option_content}>
+                    {option.option_content}
+                  </Checkbox>
+                ) : (
+                  <Checkbox value={option.option_content}>
+                    {option.option_content}
+                    <Input
+                      className="WriteInut"
+                      style={{
+                        borderRadius: 0,
+                        border: 'none',
+                        borderBottom: '1px solid #000',
+                        width: 100
+                      }}
+                    />
+                  </Checkbox>
+                )}
               </div>
             );
           })}
@@ -1103,10 +1136,12 @@ class QuerySet extends Component {
     currentQuestion.subdata.splice(index, 1);
     // 还要删除后台表中的数据
     http().removeRecords({
-      resid:608828722533,
-      data:[{
-        REC_ID:optionId,
-      }]
+      resid: 608828722533,
+      data: [
+        {
+          REC_ID: optionId
+        }
+      ]
     });
     this.setState({
       currentQuestion: currentQuestion
@@ -1135,7 +1170,7 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
-    console.log('添加可填写选项后的',this.state.currentQuestion)
+    console.log('添加可填写选项后的', this.state.currentQuestion);
   }
   //编辑中选项内容的变化
   handleCurrentQuestionOptionChange(value, index) {
@@ -1349,17 +1384,17 @@ class QuerySet extends Component {
           }
         };
       } else {
-         obj = {
+        obj = {
           resid: 608828722533,
           maindata: {
-            option_write:option.option_write,
+            option_write: option.option_write,
             option_content: option.option_content,
             _state: 'added',
             _id: index + 1
           }
         };
       }
-       terminaldataObj.subdata.push(obj);
+      terminaldataObj.subdata.push(obj);
     });
     terminal = [terminaldataObj];
     console.log('编辑后的数据', terminal);
@@ -1483,7 +1518,7 @@ class QuerySet extends Component {
             </div>
           </div>
           <Switch
-            checked={Boolean(this.state.isGift)}
+            checked={this.state.isGift === '0' ? false : true}
             checkedChildren="有礼品"
             unCheckedChildren="无礼品"
             onClick={this.handleSwitchGiftChange}
@@ -1510,7 +1545,7 @@ class QuerySet extends Component {
                     )}
                     <span className="prasetip">份</span>
                   </Radio>
-                  <Radio value={'概率'}>
+                  {/* <Radio value={'概率'}>
                     中奖率:
                     {this.state.giftStyle == '份数' ? (
                       <Input style={{ width: 60, height: 20 }} disabled />
@@ -1521,7 +1556,7 @@ class QuerySet extends Component {
                       />
                     )}
                     <span className="prasetip">%</span>
-                  </Radio>
+                  </Radio> */}
                 </RadioGroup>
               </div>
             ) : (

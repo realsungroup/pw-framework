@@ -9,10 +9,41 @@ export const defaultProps = {
   treeConfig: {
     title: '按部门搜索',
     visible: true
-  }
+  },
+  list: []
 };
 
 export const propTypes = {
+  /**
+   * 顶部单选按钮组配置
+   * 默认：[]
+   */
+  radioGroupConfig: PropTypes.array,
+  // [
+  //   {
+  //     type: 'tree', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+  //     title: '按部门添加’, // 单选按钮文字
+  //     resid: 666, // 资源 id,
+  //     nameField: 'title', // 节点名称对应的字段
+  //     idField: 'id', // id 字段
+  //     pidField: 'pid', // 父 id 字段
+  //   },
+  //   {
+  //     type: 'list', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+  //     title: '按产线添加', // 单选按钮文字
+  //     resid: 777, // 资源 id,
+  //     nameField: 'title', // 列表项名称对应的字段
+  //   },
+  //   {
+  //     type: 'search',  // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+  //     title: '搜索', // 单选按钮文字
+  //   },
+  //   {
+  //     type: 'file',  // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+  //     title: '选择文件’, // 单选按钮文字
+  //   }
+  // ]
+
   /**
    * tree 配置
    * 默认：{ title: '按部门搜索', visible: true }

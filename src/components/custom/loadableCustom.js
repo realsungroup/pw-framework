@@ -145,3 +145,15 @@ export const SelectPersonFirst = Loadable({
     return minLoading;
   }
 });
+export const Statical = Loadable({
+  loader: () => import('./Statical'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OneStatistical = Loadable({
+  loader: () => import('./OneStatistical'),
+  loading() {
+    return minLoading;
+  }
+});

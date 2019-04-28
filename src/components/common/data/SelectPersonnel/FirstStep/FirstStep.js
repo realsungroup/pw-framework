@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Radio, Spin, Input } from 'antd';
+import { message, Radio, Spin, Input, Upload, Icon } from 'antd';
 import './FirstStep.less';
 import DepartmentTree from './DepartmentTree';
 import ListWithSelect from './ListWithSelect';
@@ -7,52 +7,75 @@ import PersonListWithSelect from './PersonListWithSelect';
 import PersonListWithDel from './PersonListWithDel';
 import InfiniteScroll from 'react-infinite-scroller';
 import http from 'Util20/api';
+import PropTypes from 'prop-types';
+
+// import arrayToTree from 'array-to-tree';
 const Search = Input.Search;
+const Dragger = Upload.Dragger;
 
-// const departmentResid = 592742244497; // 部门主表
-// const departmentSubResid = 592742369617; // 部门子表（人员表）
-
-// const mainSubConfig = [
-//   {
-//     title: '按班组添加',
-//     listTitle: '班组列表',
-//     titleFieldName: 'DESCP',
-//     resid: 593017031990,
-//     subResid: 592742369617
-//   },
-//   {
-//     title: '按产线添加',
-//     listTitle: '产线列表',
-//     titleFieldName: 'C3_593254711841',
-//     resid: 593255133996,
-//     subResid: 592742369617
-//   },
-//   {
-//     title: '成本中心1',
-//     listTitle: '成本中心1列表',
-//     titleFieldName: 'C3_596047861734',
-//     resid: 596047828849,
-//     subResid: 592742369617
-//   },
-//   {
-//     title: '成本中心2',
-//     listTitle: '成本中心2列表',
-//     titleFieldName: 'C3_596047873684',
-//     resid: 596047837491,
-//     subResid: 592742369617
-//   }
-// ];
+function dealData(radioConfig, data) {
+  console.log({ data });
+  const { type, nameField, pidField, idField } = radioConfig;
+  data.forEach(item => {
+    item.name = item[nameField];
+  });
+  if (type === 'tree') {
+    let nodesData = data;
+    const length = nodesData.length;
+    const titleFieldName = nameField,
+      curNodeFieldName = idField,
+      parentNodeFieldName = pidField;
+    for (let i = 0; i < length; i++) {
+      nodesData[i].title = nodesData[i][titleFieldName];
+      for (let j = 0; j < length; j++) {
+        if (
+          nodesData[j][parentNodeFieldName] === nodesData[i][curNodeFieldName]
+        ) {
+          if (!nodesData[i].childNodes) {
+            nodesData[i].childNodes = [];
+          }
+          nodesData[i].childNodes.push(nodesData[j]);
+        }
+      }
+    }
+    return nodesData.filter(node => {
+      return nodesData.every(item => {
+        if (node[curNodeFieldName] !== item[curNodeFieldName]) {
+          return node[parentNodeFieldName] !== item[curNodeFieldName];
+        } else {
+          return true;
+        }
+      });
+    });
+  }
+  return data;
+}
 
 /**
  * 选择人员
  */
 export default class FirstStep extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    /**
+     * 顶部单选按钮组配置
+     * 默认：[]
+     */
+    radioGroupConfig: PropTypes.array
+  };
 
-  static defaultProps = {};
+  static defaultProps = {
+    radioGroupConfig: []
+  };
 
   constructor(props) {
     super(props);
+    const { radioGroupConfig } = props;
+
+    let firstRadioConfig = null;
+    if (radioGroupConfig.length) {
+      firstRadioConfig = { ...radioGroupConfig[0] };
+    }
+
     this.state = {
       curNavName: '按部门添加', // 当前选中的单选
 
@@ -73,53 +96,101 @@ export default class FirstStep extends React.Component {
 
       hasMore: false, // 是否有更多人员
 
-      subType: 'tree', // 点击获取人员信息的节点类型：'tree' 点击树节点 | 'cesItem' 点击班组列表项 | 'plItem' 点击产线列表项
+      subType: 'tree', // 点击获取人员信息的节点类型：'tree' 点击树节点
       selectedItem: {}, // 选中的列表项
       selectedKeys: [], // 选中的节点的 key
 
       loading: false,
-      typeLoading: false,
+      firstColLoading: false,
 
-      selectedItemConfig: {} // 已选择的 radio 的配置
+      selectedItemConfig: {}, // 已选择的 radio 的配置
+
+      // 新加的
+      firstRadioConfig, // 第一个单选按钮配置
+      selectedRadio: firstRadioConfig // 已选择的 radio
     };
   }
 
   componentDidMount() {
-    this.setState({ typeLoading: true });
-    this.getDepartmentData();
+    this.setState({ firstColLoading: true });
+    // this.getDepartmentData();
+    this.getData();
   }
 
-  onChange = e => {
-    const value = e.target.value;
-    this.setState({ typeLoading: true, hasMore: false });
-    let subType = '',
-      itemConfig = {};
+  getData = async () => {
+    this.getFirstColData(this.state.selectedRadio);
+  };
 
-    const { searchConfig } = this.props;
+  // 获取第一列的数据
+  getFirstColData = async radioConfig => {
+    if (radioConfig) {
+      let res;
+      try {
+        res = await http().getTable({ resid: radioConfig.resid });
+      } catch (err) {
+        this.setState({ firstColLoading: false });
+        console.error(err);
+        return message.error(err.message);
+      }
+      const firstColData = dealData(radioConfig, res.data);
 
-    // 树组件数据
-    if (value === '按部门添加') {
-      this.getDepartmentData();
-      subType = 'tree';
+      console.log({ firstColData });
 
-      // 搜索
-    } else if (value === searchConfig.title) {
-      this.setState({ typeLoading: false });
+      radioConfig.firstColData = firstColData;
+      this.setState({
+        selectedRadio: { ...radioConfig },
+        firstColLoading: false
+      });
     } else {
-      // 主表数据
-      const itemConfig = this.props.listConfig.find(
-        itemConfig => value === itemConfig.title
-      );
-      this.getMainTableData(itemConfig);
+      this.setState({ firstColLoading: false, selectedRadio: radioConfig });
     }
-    this.setState({
-      curNavName: value,
-      departmentData: [],
-      listData: [],
-      personList: [],
-      subType,
-      selectedItemConfig: itemConfig
-    });
+  };
+
+  // 获取第二列的数据
+  getSecondColData = item => {};
+
+  onChange = e => {
+    this.setState({ firstColLoading: true, hasMore: false });
+    // let subType = '',
+    //   itemConfig = {};
+
+    // const { searchConfig } = this.props;
+
+    // // 树组件数据
+    // if (value === '按部门添加') {
+    //   this.getDepartmentData();
+    //   subType = 'tree';
+
+    //   // 搜索
+    // } else if (value === searchConfig.title) {
+    //   this.setState({ firstColLoading: false });
+    // } else {
+    //   // 主表数据
+    //   const itemConfig = this.props.listConfig.find(
+    //     itemConfig => value === itemConfig.title
+    //   );
+    //   this.getMainTableData(itemConfig);
+    // }
+    // this.setState({
+    //   curNavName: value,
+    //   departmentData: [],
+    //   listData: [],
+    //   personList: [],
+    //   subType,
+    //   selectedItemConfig: itemConfig
+    // });
+    const { radioGroupConfig } = this.props;
+    const value = e.target.value;
+    const selectedRadio = radioGroupConfig.find(
+      radioConfig => radioConfig.title === value
+    );
+    const { type } = selectedRadio;
+
+    if (type === 'tree' || type === 'list') {
+      this.getFirstColData(selectedRadio);
+    } else if (type === 'search' || type === 'file') {
+      this.setState({ selectedRadio, firstColLoading: false });
+    }
   };
 
   getDepartmentData = async () => {
@@ -156,7 +227,7 @@ export default class FirstStep extends React.Component {
         }
       });
     });
-    this.setState({ departmentData, typeLoading: false });
+    this.setState({ departmentData, firstColLoading: false });
   };
 
   getMainTableData = async itemConfig => {
@@ -164,14 +235,14 @@ export default class FirstStep extends React.Component {
     try {
       res = await http().getTable({ resid: itemConfig.resid });
     } catch (err) {
-      this.setState({ typeLoading: false });
+      this.setState({ firstColLoading: false });
       return message.error(err.message);
     }
     const titleFieldName = itemConfig.titleFieldName;
     res.data.forEach(item => (item.title = item[titleFieldName]));
     this.setState({
       listData: res.data,
-      typeLoading: false,
+      firstColLoading: false,
       selectedItemConfig: itemConfig
     });
   };
@@ -279,7 +350,7 @@ export default class FirstStep extends React.Component {
 
   // 选择列表项
   handleItemSelect = async (item, index) => {
-    const { selectedItemConfig } = this.state;
+    const { selectedRadio } = this.state;
     const { subResid } = this.props;
     this.setState({
       personList: [],
@@ -291,11 +362,11 @@ export default class FirstStep extends React.Component {
       current: 0,
       pageSize: this.state.pageSize
     };
-    this.getPersonList(selectedItemConfig.resid, subResid, item.REC_ID, option);
-    const { listData } = this.state;
+    this.getPersonList(selectedRadio.resid, subResid, item.REC_ID, option);
+    const listData = selectedRadio.firstColData;
     listData.forEach(item => (item.isSelect = false));
     listData[index].isSelect = true;
-    this.setState({ listData });
+    this.setState({ selectedRadio });
   };
 
   /**
@@ -496,24 +567,34 @@ export default class FirstStep extends React.Component {
     this.setState({ searchValue: e.target.value });
   };
 
-  renderList = () => {
-    const {
-      curNavName,
-      departmentData,
-      listData,
-      selectedItemConfig
-    } = this.state;
+  renderFirstCol = () => {
+    const { selectedRadio } = this.state;
+    if (!selectedRadio) {
+      return null;
+    }
 
-    switch (curNavName) {
-      case '按部门添加': {
+    switch (selectedRadio.type) {
+      // 渲染树
+      case 'tree': {
         return (
           <DepartmentTree
-            nodesData={departmentData}
+            nodesData={selectedRadio.firstColData}
             onSelect={this.handleTreeNodeSelect}
           />
         );
       }
-      case this.props.searchConfig && this.props.searchConfig.title: {
+      // 渲染列表
+      case 'list': {
+        return (
+          <ListWithSelect
+            data={selectedRadio.firstColData}
+            // headerTitle={selectedItemConfig.listTitle}
+            onSelect={this.handleItemSelect}
+          />
+        );
+      }
+      // 渲染搜索
+      case 'search': {
         return (
           <Search
             placeholder="请输入内容"
@@ -522,14 +603,65 @@ export default class FirstStep extends React.Component {
           />
         );
       }
-      default: {
+      // 渲染选择文件
+      case 'file': {
+        const props = {
+          name: 'file',
+          customRequest: info => {},
+          onChange(info) {
+            const file = info.file.originFileObj;
+
+            // readXlsxFile(file).then(rows => {
+            //   console.log({ rows });
+            // });
+          }
+        };
         return (
-          <ListWithSelect
-            data={listData}
-            // headerTitle={selectedItemConfig.listTitle}
-            onSelect={this.handleItemSelect}
-          />
+          <Dragger {...props}>
+            <p className="ant-upload-drag-icon">
+              <Icon type="inbox" />
+            </p>
+            <p className="ant-upload-text">点击或拖拽文件到此区域</p>
+          </Dragger>
         );
+      }
+    }
+
+    // switch (curNavName) {
+    //   case '按部门添加': {
+    //     return (
+    //       <DepartmentTree
+    //         nodesData={departmentData}
+    //         onSelect={this.handleTreeNodeSelect}
+    //       />
+    //     );
+    //   }
+    //   case this.props.searchConfig && this.props.searchConfig.title: {
+    //     return (
+    //       <Search
+    //         placeholder="请输入内容"
+    //         style={{ marginTop: 25 }}
+    //         onSearch={value => this.handlePersonSearch(value, true)}
+    //       />
+    //     );
+    //   }
+    //   default: {
+    //     return (
+    //       <ListWithSelect
+    //         data={listData}
+    //         // headerTitle={selectedItemConfig.listTitle}
+    //         onSelect={this.handleItemSelect}
+    //       />
+    //     );
+    //   }
+    // }
+  };
+
+  renderRadioItem = radioItem => {
+    switch (radioItem.type) {
+      // 树
+      case 'tree': {
+        return;
       }
     }
   };
@@ -543,34 +675,49 @@ export default class FirstStep extends React.Component {
       selectedList,
       hasMore,
       loading,
-      typeLoading,
-      searchValue
+      firstColLoading,
+      searchValue,
+
+      firstRadioConfig,
+      selectedRadio
     } = this.state;
-    const { listConfig, searchConfig, treeConfig } = this.props;
+    const {
+      listConfig,
+      searchConfig,
+      treeConfig,
+      radioGroupConfig
+    } = this.props;
     return (
       <div className="first-step">
         <div className="first-step__nav">
-          <Radio.Group onChange={this.onChange} value={curNavName}>
+          <Radio.Group onChange={this.onChange} value={selectedRadio.title}>
+            {radioGroupConfig.map(radioConfig => {
+              return (
+                <Radio.Button key={radioConfig.title} value={radioConfig.title}>
+                  {radioConfig.title}
+                </Radio.Button>
+              );
+            })}
             {/* 树 */}
-            <Radio.Button value={treeConfig.title}>
+            {/* <Radio.Button value={treeConfig.title}>
               {treeConfig.title}
-            </Radio.Button>
+            </Radio.Button> */}
             {/* 列表 */}
-            {listConfig.map(itemConfig => (
+            {/* {listConfig.map(itemConfig => (
               <Radio.Button key={itemConfig.title} value={itemConfig.title}>
                 {itemConfig.title}
               </Radio.Button>
-            ))}
+            ))} */}
             {/* 搜索 */}
-            <Radio.Button value={searchConfig.title}>
+            {/* <Radio.Button value={searchConfig.title}>
               {searchConfig.title}
-            </Radio.Button>
+            </Radio.Button> */}
           </Radio.Group>
         </div>
         <div className="first-step__content">
-          {/* 第一栏：部门、班组、产线、搜索 */}
+          {/* 第一列：树、列表、搜索、文件 */}
           <div>
-            <Spin spinning={typeLoading}>{this.renderList()}</Spin>
+            <Spin spinning={firstColLoading}>{this.renderFirstCol()}</Spin>
           </div>
           {/* 第二栏：人员列表 */}
           <div>

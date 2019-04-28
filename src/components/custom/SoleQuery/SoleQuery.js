@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
 import './SoleQuery.less';
-import { Input, Button, Select, Radio, Checkbox, Carousel ,Popconfirm} from 'antd';
+import {
+  Input,
+  Button,
+  Select,
+  Radio,
+  Checkbox,
+  Carousel,
+  Popconfirm,
+  message,
+  Modal,
+  Icon
+} from 'antd';
 import http from '../../../util20/api';
 import qs from 'qs';
 const { TextArea } = Input;
@@ -13,10 +24,16 @@ class SoleQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      queryID:'',
+      queryID: '',
       queryDetail: {},
       AllQuestions: [],
-      userInfo:{},
+      userInfo: {},
+      subStatus: true,
+      wid: 300,
+      isGetgift: '',
+      tel: '',
+      recid: '',
+      hasGiftList: []
     };
   }
 
@@ -25,8 +42,8 @@ class SoleQuery extends Component {
    * 以下是单个问卷的新方法
    */
 
-  //  获取问卷信息
-  getQuery = async (queryId) => {
+  //  问卷信息
+  getQuery = async queryId => {
     let res;
     try {
       res = await http().getTable({
@@ -35,14 +52,14 @@ class SoleQuery extends Component {
       });
       return this.setState({
         queryDetail: res.data[0],
-        queryID:res.data[0].query_id,
+        queryID: res.data[0].query_id
       });
     } catch (err) {
       return console.error(err);
     }
   };
   //获取问卷试题
-  getThisQueryQuestions = async (queryId) => {
+  getThisQueryQuestions = async queryId => {
     let res;
     try {
       res = await http().getTable({
@@ -81,13 +98,55 @@ class SoleQuery extends Component {
       return console.error(err);
     }
   };
+  // 获取该问卷中奖人员的名单
+  getHasPrase = queryId => {
+    http()
+      .getTable({
+        resid: 608911532639,
+        cmswhere: `query_id=${queryId} and is_get_gift='Y' and staff_tel!=''
+     `
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          hasGiftList: res.data
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
   componentDidMount() {
     // 根据链接前端做出处理，然后拿到文件的ID。去后台获取，这里ID已经固定好
     const quertString = window.location.search;
+    console.log(quertString);
     const qsObj = qs.parse(quertString.substring(1));
+    console.log('传过来的',qsObj);
     console.log('问卷ID', qsObj.id);
     this.getQuery(qsObj.id);
     this.getThisQueryQuestions(qsObj.id);
+    this.getHasPrase(qsObj.id);
+    http()
+      .addRecords({
+        resid: 608911532639,
+        data: [
+          {
+            staff_id: userinfo.UserCode,
+            query_id: qsObj.id
+          }
+        ]
+      })
+      .then(res => {
+        console.log('提交返回的数据', res);
+        this.setState({
+          isGetgift: res.data[0].is_get_gift,
+          recid: res.data[0].REC_ID
+        });
+        console.log(this.state.isGetgift);
+      })
+      .catch(err => {
+        console.error(err);
+      });
     console.log(userinfo);
   }
 
@@ -255,8 +314,8 @@ class SoleQuery extends Component {
 
   // 提交问卷
   submitQuery = () => {
-    console.log('提交',userinfo);
-    const {queryID} = this.state;
+    console.log('提交', userinfo);
+    const { queryID } = this.state;
     let answers = [];
     const { AllQuestions } = this.state;
     console.log('点击提交后的问卷', AllQuestions);
@@ -270,7 +329,7 @@ class SoleQuery extends Component {
           );
           const writeContent = option.inputValue;
           let singleanswer = {
-            person_id:userinfo.UserCode,
+            person_id: userinfo.UserCode,
             query_id: queryID,
             question_id: questionId,
             option_id: optionId,
@@ -283,7 +342,7 @@ class SoleQuery extends Component {
           const questionId = question.question_id;
 
           let multiAnswer = {
-            person_id:userinfo.UserCode,
+            person_id: userinfo.UserCode,
             query_id: queryID,
             question_id: questionId
           };
@@ -306,7 +365,7 @@ class SoleQuery extends Component {
             const optionId = question.subdata[0].option_id;
             const WriteContent = question.answer;
             let eassyAnswer = {
-              person_id:userinfo.UserCode,
+              person_id: userinfo.UserCode,
               query_id: queryID,
               question_id: questionId,
               option_id: optionId,
@@ -317,8 +376,8 @@ class SoleQuery extends Component {
           break;
       }
       console.log(answers);
-      // 向后台发送请求
     });
+    // 向后台发送请求
     http()
       .addRecords({
         resid: '608838682402',
@@ -326,6 +385,10 @@ class SoleQuery extends Component {
       })
       .then(res => {
         // 显示提交成功
+        message.info('提交成功');
+        this.setState({
+          visible: true
+        });
       })
       .catch(err => {
         console.error(err);
@@ -351,16 +414,12 @@ class SoleQuery extends Component {
     const question = AllQuestions.find(
       question => question.question_id === questionId
     );
-
     const option = question.subdata.find(
       option => (option.option_id = optionId)
     );
-
     option.inputValue = value;
-
     this.setState({ AllQuestions });
   };
-
   // 多选框中输入值的变化
   handleMultiInputChange = (questionId, optionId, value) => {
     // console.log(111111);
@@ -388,32 +447,84 @@ class SoleQuery extends Component {
     });
   };
 
-  // 
-  handlePopcancle = ()=>{
+  //
+  handlePopcancle = () => {
     console.log('点击取消');
-  }
+  };
+  //handleCancel
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+  // 输入手机号点击确定
+  handleOk = () => {
+    const { recid, tel } = this.state;
+    console.log(recid, tel);
+    if (!/^1[0-9]\d{9}$/.test(tel)) {
+      return message.error('xxxx');
+    }
+    http()
+      .modifyRecords({
+        resid: 608911532639,
+        data: [
+          {
+            REC_ID: recid,
+            staff_tel: tel
+          }
+        ]
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    this.setState({
+      visible: false,
+      subStatus: false
+    });
+  };
+  // 监听电话输入的变化
+  handleTelChange = e => {
+    console.log(e.target.value);
+    this.setState({
+      tel: e.target.value
+    });
+  };
 
-  // 发送
-  handleSend = ()=>{
-    const {queryID} = this.state;
-    const commonaddress = 'localhost:3000/fnmodule?resid=609334612078&recid=609335337024&type=前端功能入口&title=提交问卷&id=';
-     http().addRecords({
-       resid:609613163948,
-       data:[{
-         query_id:queryID,
-         query_address:commonaddress + queryID,
-       }]
-     }).then(res=>{
-      console.log('发送成功');
-      console.log(res);
+  //rendercarousel
+  rendercarousel = () => {
+    const { hasGiftList } = this.state;
+    if (hasGiftList.length <= 0) {
+      return <p className="lucker">暂无人获奖，赶紧填完试试运气吧!</p>;
+    } else {
+      return this.rendergiftList();
+    }
+  };
 
-     }).catch(err=>{
-       console.error(err)
-     })
-  }
+  // rendergiftList
+  rendergiftList = () => {
+    const { hasGiftList } = this.state;
+    console.log('获奖人员列表', hasGiftList);
+    return (
+      <Carousel autoplay vertical>
+        {hasGiftList.map(list => {
+          const telstart = list.staff_tel.substring(0, 3);
+          const telend = list.staff_tel.substring(7);
+          return (
+            <p className="lucker">
+              {telstart}****{telend}已经领到礼品一份
+            </p>
+          );
+        })}
+      </Carousel>
+    );
+  };
   // 渲染的页面
   render() {
-    const { queryDetail } = this.state;
+    const { queryDetail, isGetgift, tel, hasGiftList } = this.state;
+    console.log(isGetgift);
     return (
       <div className="solequery">
         <div className="queryHeader">
@@ -421,34 +532,61 @@ class SoleQuery extends Component {
           <p className="query-set__description">
             {queryDetail.query_description}
           </p>
-          <Carousel autoplay vertical>
-            <p className="lucker">135****5667刚刚领到礼品一份</p>
-            <p className="lucker">135****5668刚刚领到礼品一份</p>
-            <p className="lucker">135****5669刚刚领到礼品一份</p>
-            <p className="lucker">135****5665刚刚领到礼品一份</p>
-          </Carousel>
+          {/* <Carousel autoplay vertical> */}
+          {this.rendercarousel()}
+          {/* </Carousel> */}
         </div>
         <div className="querycontent">{this.renderGetAllQuestions()}</div>
         <div>
-          <p className="thanks">感谢您参与本次问卷调查</p>
           <div className="queryfooter__submit">
-            <Popconfirm
-              title="确定提交吗？一旦提交不能更改哟"
-              onConfirm={() => {
-                this.submitQuery(queryDetail.query_id);
-              }}
-              onCancel={this.handlePopcancle}
-            >
-              <Button type="primary">提交</Button>
-            </Popconfirm>
-            <Button type='primary' onClick={()=>{this.handleSend()}}>发送</Button>
+            {this.state.subStatus ? (
+              <Popconfirm
+                title="确定提交吗？一旦提交不能更改哟"
+                onConfirm={() => {
+                  this.submitQuery(queryDetail.query_id);
+                }}
+                onCancel={this.handlePopcancle}
+              >
+                <Button type="primary">提交</Button>
+              </Popconfirm>
+            ) : (
+              <Button type="primary" disabled>
+                提交
+              </Button>
+            )}
+            {/* <Button type='primary' onClick={()=>{this.handleSend()}}>发送</Button> */}
           </div>
         </div>
+        <Modal
+          title="提交问卷"
+          visible={this.state.visible}
+          width={this.state.wid}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p style={{ paddingLeft: 40 }}>
+            提交成功
+            <Icon
+              className="tips"
+              type="check"
+              style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
+            />
+          </p>
+          <p className="thanks">感谢您参与本次问卷调查</p>
+          {this.state.isGetgift == 'Y' ? (
+            <p>
+              恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
+              <br />
+              <Input value={tel} onChange={this.handleTelChange} />
+            </p>
+          ) : (
+            ''
+          )}
+        </Modal>
       </div>
     );
   }
 }
-
 export default SoleQuery;
 
 /**

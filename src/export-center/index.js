@@ -56,7 +56,9 @@ export {
   QueryType,
   QuerySet,
   SoleQuery,
-  SelectPersonFirst
+  SelectPersonFirst,
+  Statical,
+  OneStatistical
 } from '../components/custom/loadableCustom';
 
 

@@ -776,8 +776,23 @@ window['609334612078'] = {
   title: '提交问卷',
   name: 'SoleQuery'
 };
+// 609514648856
 
+// SelectPersonFirst
+window['选择人员'] = {
+  title: '选择人员',
+  name: 'SelectPersonFirst'
+};
 
+window['统计分析'] = {
+  title: '统计分析',
+  name: 'Statical'
+};
+// 发送问卷
+window['发送问卷'] = {
+  title: '我的问卷',
+  name: 'SoleQuery'
+}
 
 
 

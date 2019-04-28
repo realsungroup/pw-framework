@@ -1,68 +1,126 @@
 import React, { Component } from 'react';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
-const listConfig = [
-  {
-    title: '按所属部门添加',
-    titleFieldName: 'C3_227212499515',
-    resid: 449335746776,
-    subResid: 609599795438
-  },
-  {
-    title: '按所在地添加',
-    titleFieldName: 'C3_417994395847',
-    resid: 449335746776,
-    subResid: 609599795438
-  },
-  {
-    title: '按级别添加',
-    titleFieldName: 'C3_449336358186',
-    resid: 449335746776,
-    subResid: 609599795438
-  }
-];
+import './SelectPersonFirst.less';
+import SelectPersonSecond from '../SelectPersonSecond';
+import http from '../../../util20/api';
+import qs from 'qs';
+import { message } from 'antd';
 class SelectPersonFirst extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      persons: [],
+      queryID: ''
     };
   }
+
   // 人员表
   _personList = [];
   handleSelectPerson = personList => {
-    this._personList = personList;
+    console.log({ personList });
+    this.setState({ persons: personList });
   };
-// 点击完成
+
+  // 点击完成 发送
   handleComplete = () => {
-    console.log({ personList: this._personList });
+    console.log({ personList: this.state.persons });
+    const { queryID } = this.state;
+    let dataSub = [];
+    console.log('点击提交', queryID);
+    let objcommon = {
+      query_id: queryID
+    };
+    this.state.persons.map(person => {
+      const obj = { ...objcommon, staff_number: person.C3_227192472953 };
+      dataSub.push(obj);
+    });
+    console.log('发送的人员列表', dataSub);
+    http()
+      .addRecords({
+        resid: 609613163948,
+        data: dataSub
+      })
+      .then(res => {
+        message.info('发送成功啦，可以到查看人员去看发送了哪些人');
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    http()
+      .modifyRecords({
+        resid: 608822905547,
+        data: [
+          {
+            REC_ID: queryID,
+            query_status: '已发送'
+          }
+        ]
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
+  //第二步中复选框的变化
+  handleCheckboxChange = (value, number) => {
+    console.log({ value, number });
+  };
+  componentDidMount() {
+    const quertString = window.location.search;
+    const qsObj = qs.parse(quertString.substring(1));
+    console.log('传过来的', qsObj);
+    console.log('问卷ID', qsObj.id);
+    this.setState({
+      queryID: qsObj.id
+    });
+  }
   render() {
     return (
       <div className="fisrtStepSelected">
         <SelectPersonnel
-          listConfig={listConfig}
-          subResid={609599795438}
-          searchConfig={{ title: '搜索' }}
-          treeConfig={{ title: '按级别添加', resid: 449335746776 }}
-          personFields={[
-            '',
-            'C3_227192472953',  //员工工号
-            'C3_227192484125',  //员工姓名
-            'C3_227212499515'   //所属部门
-          ]}
-          onSelectPerson={this.handleSelectPerson}
-          stepList={[
+          radioGroupConfig={[
             {
-              stepTitle: '选择日期',
-              renderContent: current => {
-                return <div>这是第 {current + 1} 步</div>;
-              },
-              canToNext: () => true
+              type: 'list',
+              title: '按级别添加',
+              resid: 449335746776,
+              nameField: 'C3_449335790387'
+            },
+            {
+              type: 'search',
+              title: '输入工号、级别或者姓名搜索'
+            },
+            {
+              type: 'file',
+              title: '请选择要上传的文件'
             }
           ]}
-          onComplete={this.handleComplete}
+          subResid={609599795438}
+          personFields={[
+            '',
+            'C3_227192472953',
+            'C3_227192484125',
+            'C3_227212499515'
+          ]}
+          stepList={[
+            {
+              stepTitle: '验证',
+              renderContent: current => {
+                return (
+                  <SelectPersonSecond
+                    persons={this.state.persons}
+                    onCheckboxChange={this.handleCheckboxChange}
+                  />
+                );
+              }
+            }
+          ]}
           completeText="发送"
           onSelectPerson={this.handleSelectPerson}
+          onComplete={this.handleComplete}
         />
       </div>
     );

@@ -59,7 +59,7 @@ class QueryTable extends Component {
                       size="small"
                       icon="copy"
                       className="copy"
-                      data-clipboard-text={item.query_name}
+                      data-clipboard-text={item.query_address}
                     >
                       复制链接
                     </Button>
@@ -75,7 +75,10 @@ class QueryTable extends Component {
               </div>
               <div className="queryItem-bottom">
                 <div className="queryItem-left">
-                  <Link
+                 {item.query_status==='已发送'?(<Button className="stepBtn" type="primary" disabled>
+                      <Icon type="setting" />
+                      设计问卷
+                    </Button>):(<Link
                     to={{
                       pathname: '/fnmodule',
                       search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
@@ -88,7 +91,7 @@ class QueryTable extends Component {
                       <Icon type="setting" />
                       设计问卷
                     </Button>
-                  </Link>
+                  </Link>)} 
                   {item.query_status == '已发送' ? (
                     <Button className="stepBtn" type="primary">
                       <Icon type="pause" />
@@ -98,7 +101,7 @@ class QueryTable extends Component {
                     <Link
                       to={{
                         pathname: '/fnmodule',
-                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页`
+                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}&url=${item.query_address}`
                       }}
                       target="_self"
                     >
@@ -144,7 +147,7 @@ class QueryTable extends Component {
                   </Link> 
                 </div>
                 <div className="queryItem-right">
-                <Link to={{
+                {/* <Link to={{
                    pathname:'/fnmodule',
                    search:`?resid=发送问卷&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
                     item.query_id
@@ -156,7 +159,7 @@ class QueryTable extends Component {
                     <Icon type="plus" />
                     选择人员
                   </Button>
-                  </Link> 
+                  </Link>  */}
                   {item.query_status == '已发送' ? (
                     <Button>
                       <Icon type="eye" />
