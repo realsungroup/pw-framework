@@ -1,10 +1,10 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
-import { TableData} from "../../common/loadableCommon";
+import { TableData } from "../../common/loadableCommon";
 import { Button, Modal, DatePicker, message, Tabs } from "antd";
 import { saveMultipleRecord } from "../../../util/api";
 import http from "../../../util20/api";
-import TableDataWrap from '../TableDataWrap'
+import TableDataWrap from "../TableDataWrap";
 const TabPane = Tabs.TabPane;
 
 class TableDataInner extends React.Component {
@@ -73,17 +73,26 @@ class TableDataInner extends React.Component {
         className="table-data-wrap"
         style={{ height: "calc(100vh - 160px)" }}
       >
-        <Tabs defaultActiveKey="1" style={{width:"100%",height:"100%",backgroundColor:"#fff"}}>
-          <TabPane tab="未通知" key="1" style={{width:"100%",height:"100%"}}>
+        <Tabs
+          defaultActiveKey="1"
+          style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+        >
+          <TabPane
+            tab="未通知"
+            key="1"
+            style={{ width: "100%", height: "100%" }}
+          >
             <TableDataWrap
               refTargetComponentName="TableData"
               wrappedComponentRef={element => (this.tableDataRef = element)}
               {...this.props}
               resid="603303655900"
               baseURL="https://finisar.realsun.me:9092/"
+              downloadBaseURL="http://finisar.realsun.me:8081/"
               getcolumninfo="1"
               pageSize="10"
               page="1"
+              size="small"
               hasRowSelection={true}
               hasAdd={false}
               hasBeBtns={false}
@@ -93,7 +102,7 @@ class TableDataInner extends React.Component {
               hasRowDelete={true}
               hasModify={false}
               subtractH={240}
-              height={790}
+              height={500}
               actionBarFixed={true}
               hasZoomInOut={true}
               actionBarExtra={({
@@ -119,9 +128,11 @@ class TableDataInner extends React.Component {
               {...this.props}
               resid="604083044918"
               baseURL="https://finisar.realsun.me:9092/"
+              downloadBaseURL="http://finisar.realsun.me:8081/"
               getcolumninfo="1"
               pageSize="10"
               page="1"
+              size="small"
               hasRowSelection={false}
               hasAdd={false}
               hasBeBtns={false}
@@ -131,7 +142,7 @@ class TableDataInner extends React.Component {
               hasRowDelete={false}
               hasModify={false}
               subtractH={216}
-              height={600}
+              height={500}
               actionBarFixed={false}
             />
           </TabPane>
