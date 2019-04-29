@@ -5,7 +5,6 @@
 "@ant-design/create-react-context@^0.2.4":
   version "0.2.4"
   resolved "https://registry.npmjs.org/@ant-design/create-react-context/-/create-react-context-0.2.4.tgz#0fe9adad030350c0c9bb296dd6dcf5a8a36bd425"
-  integrity sha512-8sw+/w6r+aEbd+OJ62ojoSE4zDt/3yfQydmbWFznoftjr8v/opOswGjM+/MU0rSaREbluqzOmZ6xdecHpSaS2w==
   dependencies:
     gud "^1.0.0"
     warning "^4.0.3"
@@ -719,7 +718,6 @@
 "@babel/polyfill@^7.4.3":
   version "7.4.3"
   resolved "https://registry.npmjs.org/@babel/polyfill/-/polyfill-7.4.3.tgz#332dc6f57b718017c3a8b37b4eea8aa6eeac1187"
-  integrity sha512-rkv8WIvJshA5Ev8iNMGgz5WZkRtgtiPexiT7w5qevGTuT7ZBfM3de9ox1y9JR5/OXb/sWGBbWlHNa7vQKqku3Q==
   dependencies:
     core-js "^2.6.5"
     regenerator-runtime "^0.13.2"
@@ -975,7 +973,6 @@
 "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
-  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
   dependencies:
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
@@ -1399,7 +1396,6 @@ antd@3.16.2:
 antd@^3.16.5:
   version "3.16.5"
   resolved "https://registry.npmjs.org/antd/-/antd-3.16.5.tgz#9a187521020c297ef209c40f4f0e856b967a875d"
-  integrity sha512-7oZeEo/wkyH2NexaViI5EJp8HbCpqdonJYsEYOcS16o8QuI86PnK4HgH5dAH8/55WPG3dRO+h9YvZFLEk+uHfQ==
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
     "@ant-design/icons" "~1.2.0"
@@ -3569,7 +3565,6 @@ dotenv@6.0.0:
 downloadjs@^1.4.7:
   version "1.4.7"
   resolved "https://registry.npm.taobao.org/downloadjs/download/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
-  integrity sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=
 
 draft-js@^0.10.0, draft-js@~0.10.0:
   version "0.10.5"
@@ -6663,7 +6658,6 @@ lru-cache@^5.1.1:
 lz-components-and-utils@1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/lz-components-and-utils/-/lz-components-and-utils-1.6.0.tgz#1b2fb88ff2aed8752192eb03cbd96e4bb65394b9"
-  integrity sha512-cENnwMkdwg/Nb7zjMcmntb+md5QyARoJQqq2791qFf+wQ54bEKrBzHK/yX/nvwFV9Pl+BqZZ/YqajnPGSx2EYw==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.4.0"
     "@babel/polyfill" "^7.4.3"
@@ -6683,16 +6677,15 @@ lz-components-and-utils@1.6.0:
     react-dom "^16.8.6"
     style-loader "^0.23.1"
 
-lz-request@^0.5.6:
-  version "0.5.6"
-  resolved "http://registry.npm.taobao.org/lz-request/download/lz-request-0.5.6.tgz#9a32abff7f34c1de29ed6a226168b4c410d35745"
+lz-request@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/lz-request/-/lz-request-0.6.0.tgz#85e43d7dc059fc37732c69a2e6b7fdefaf7d1cf2"
   dependencies:
     axios "^0.18.0"
 
 lz-request@^0.5.7:
   version "0.5.7"
   resolved "https://registry.npmjs.org/lz-request/-/lz-request-0.5.7.tgz#f2b0d3a70b0b52bb5236ccc19d623d86d01027c8"
-  integrity sha512-Psp2uPzO+Yi0XxVRaDd1qUeq6r7wPMKxjx0q86QDRQQXB99tfHEtHf39GQ+YtT/DzWs0Z/1v0Pf6oXR6Um1emQ==
   dependencies:
     axios "^0.18.0"
 
@@ -8928,7 +8921,6 @@ rc-table@~6.4.0:
 rc-table@~6.5.0:
   version "6.5.0"
   resolved "https://registry.npmjs.org/rc-table/-/rc-table-6.5.0.tgz#0887240342f8f3a764c954638cc46dea45921a14"
-  integrity sha512-UXsoTcJIr5Ehyf1GXAKLcc5x0/+cOSgBaKL7wt6vmVEIW5CF6bVJj4iOr7P8LGdoez/omoHmr5GXcW6/AZxR7A==
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.5"
@@ -9124,7 +9116,6 @@ react-dom@^16.4.1, react-dom@^16.7.0:
 react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
-  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -9277,7 +9268,6 @@ react@^16.4.1, react@^16.7.0:
 react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.npmjs.org/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
-  integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
