@@ -8,7 +8,7 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData } from '../components/common/loadableCommon';
-export { TableDataWrap,TableDataInner,TableDataVisitor} from '../components/custom/loadableCustom';
+// export { TableDataWrap,TableDataInner,TableDataVisitor} from '../components/custom/loadableCustom';
 
 // custom
 export { LzRegister } from '../components/custom/loadableCustom';
@@ -56,5 +56,11 @@ export {
   QueryTable,
   Paging,
   QueryType,
-  QuerySet
+  QuerySet,
+  SoleQuery,
+  SelectPersonFirst,
+  Statical,
+  OneStatistical
 } from '../components/custom/loadableCustom';
+
+

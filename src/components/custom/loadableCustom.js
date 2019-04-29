@@ -132,63 +132,27 @@ export const QuerySet = Loadable({
   }
 });
 
-export const EditButton = Loadable({
-  loader: () => import('./EditButton'),
+// 提交问卷
+export const SoleQuery = Loadable({
+  loader: () => import('./SoleQuery'),
   loading() {
     return minLoading;
   }
 });
-
-export const EditTitle = Loadable({
-  loader: () => import('./EditTitle'),
+export const SelectPersonFirst = Loadable({
+  loader: () => import('./SelectPersonFirst'),
   loading() {
     return minLoading;
   }
 });
-export const ExamArrange = Loadable({
-  loader: () => import('./ExamArrange'),
+export const Statical = Loadable({
+  loader: () => import('./Statical'),
   loading() {
     return minLoading;
   }
 });
-export const ExamManage = Loadable({
-  loader: () => import('./ExamManage'),
-  loading() {
-    return minLoading;
-  }
-});
-export const ExamSet = Loadable({
-  loader: () => import('./ExamSet'),
-  loading() {
-    return minLoading;
-  }
-});
-export const MyExam = Loadable({
-  loader: () => import('./MyExam'),
-  loading() {
-    return minLoading;
-  }
-});
-export const Result = Loadable({
-  loader: () => import('./Result'),
-  loading() {
-    return minLoading;
-  }
-});
-export const Selected = Loadable({
-  loader: () => import('./Selected'),
-  loading() {
-    return minLoading;
-  }
-});
-export const SetScore = Loadable({
-  loader: () => import('./SetScore'),
-  loading() {
-    return minLoading;
-  }
-});
-export const Training = Loadable({
-  loader: () => import('./Training'),
+export const OneStatistical = Loadable({
+  loader: () => import('./OneStatistical'),
   loading() {
     return minLoading;
   }

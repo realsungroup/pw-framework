@@ -3,7 +3,7 @@ import { Button, Icon, Modal, Input, Popconfirm, message } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
-import http from '../../../util20/api';
+import SelectPersonnel from 'Common/data/SelectPersonnel';
 
 /**
  * props:
@@ -59,7 +59,7 @@ class QueryTable extends Component {
                       size="small"
                       icon="copy"
                       className="copy"
-                      data-clipboard-text={item.query_name}
+                      data-clipboard-text={item.query_address}
                     >
                       复制链接
                     </Button>
@@ -70,35 +70,46 @@ class QueryTable extends Component {
                     <Icon type="sync" /> {item.query_status}
                   </span>
                   <span className="answercount">答卷:{item.answercount}</span>
-                  <span>{item.start_time}</span>
+                  <span>{item.start_time.substring(0,10)}</span>
                 </div>
               </div>
               <div className="queryItem-bottom">
                 <div className="queryItem-left">
-                  <Link
+                 {item.query_status==='已发送'?(<Button className="stepBtn" type="primary" disabled>
+                      <Icon type="setting" />
+                      设计问卷
+                    </Button>):(<Link
                     to={{
-                      pathnme: '/fnmodule',
-                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页`,
-                      state: {
-                        aaa: 111
-                      }
+                      pathname: '/fnmodule',
+                      search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
+                        item.query_id
+                      }`
                     }}
+                    target="_self"
                   >
                     <Button className="stepBtn" type="primary">
                       <Icon type="setting" />
                       设计问卷
                     </Button>
-                  </Link>
+                  </Link>)} 
                   {item.query_status == '已发送' ? (
                     <Button className="stepBtn" type="primary">
                       <Icon type="pause" />
                       停止问卷
                     </Button>
                   ) : (
-                    <Button className="stepBtn" type="primary">
-                      <Icon type="youtube" />
-                      发送问卷
-                    </Button>
+                    <Link
+                      to={{
+                        pathname: '/fnmodule',
+                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
+                      }}
+                      target="_self"
+                    >
+                      <Button className="stepBtn" type="primary">
+                        <Icon type="youtube" />
+                        发送问卷
+                      </Button>
+                    </Link>
                   )}
 
                   <Modal
@@ -121,14 +132,36 @@ class QueryTable extends Component {
                     选择人员
                   </Button> */}
                   </Modal>
-                  <Button className="stepBtn" type="primary">
+                 <Link to={{
+                   pathname:'/fnmodule',
+                   search:`?resid=统计分析&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
+                    item.query_id
+                  }`
+                 }}
+                 target="_self"
+                 >
+                 <Button className="stepBtn" type="primary">
                     <Icon type="download" />
                     分析&下载
                   </Button>
+                  </Link> 
                 </div>
                 <div className="queryItem-right">
+                {/* <Link to={{
+                   pathname:'/fnmodule',
+                   search:`?resid=发送问卷&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
+                    item.query_id
+                  }`
+                 }}
+                 target="_self"
+                 >
+                 <Button className="stepBtn" type="primary">
+                    <Icon type="plus" />
+                    选择人员
+                  </Button>
+                  </Link>  */}
                   {item.query_status == '已发送' ? (
-                    <Button>
+                    <Button >
                       <Icon type="eye" />
                       查看人员
                     </Button>
@@ -138,10 +171,13 @@ class QueryTable extends Component {
                       查看人员
                     </Button>
                   )}
-                  <Button>
+                 {item.gift=='1'?(<Button>
                     <Icon type="star" style={{ color: '#f00' }} />
                     获奖名单
-                  </Button>
+                  </Button>):(<Button disabled>
+                    <Icon type="star" style={{ color: '#f00' }} />
+                    获奖名单
+                  </Button>)} 
                   <Button>
                     <Icon type="copy" />
                     复制
@@ -159,10 +195,10 @@ class QueryTable extends Component {
                       删除
                     </Button>
                   </Popconfirm>
-                  <Button>
+                  {/* <Button>
                     <Icon type="bell" />
                     提醒
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
