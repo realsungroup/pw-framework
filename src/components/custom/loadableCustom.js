@@ -193,3 +193,14 @@ export const Training = Loadable({
     return minLoading;
   }
 });
+
+
+
+//导出培训项目的组件
+
+export const FJList = Loadable({
+  loader: () => import('./FJList'),
+  loading() {
+    return minLoading;
+  }
+});
