@@ -8,15 +8,11 @@ import './ListWithSelect.less';
  */
 export default class ListWithSelect extends React.Component {
   render() {
-    const { data, onSelect, headerTitle } = this.props;
-    // const Header = (
-    //   <div style={{ height: 32, lineHeight: '32px' }}>{headerTitle}</div>
-    // );
+    const { data, onSelect } = this.props;
     return (
       <List
         className="list-with-select"
         dataSource={data}
-        // header={Header}
         renderItem={(item, index) => (
           <List.Item
             className={classNames({
@@ -25,16 +21,6 @@ export default class ListWithSelect extends React.Component {
             onClick={() => onSelect(item, index)}
           >
             <List.Item.Meta style={{ marginLeft: 10 }} title={item.name} />
-            {/* <a
-              style={{ marginRight: 10 }}
-              href="javascript:;"
-              
-              className={classNames({
-                selected: item.isSelect
-              })}
-            >
-              选择
-            </a> */}
           </List.Item>
         )}
       />

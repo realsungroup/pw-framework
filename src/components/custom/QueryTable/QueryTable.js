@@ -101,7 +101,7 @@ class QueryTable extends Component {
                     <Link
                       to={{
                         pathname: '/fnmodule',
-                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}&url=${item.query_address}`
+                        search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
                       }}
                       target="_self"
                     >
@@ -161,7 +161,7 @@ class QueryTable extends Component {
                   </Button>
                   </Link>  */}
                   {item.query_status == '已发送' ? (
-                    <Button>
+                    <Button >
                       <Icon type="eye" />
                       查看人员
                     </Button>
@@ -195,10 +195,10 @@ class QueryTable extends Component {
                       删除
                     </Button>
                   </Popconfirm>
-                  <Button>
+                  {/* <Button>
                     <Icon type="bell" />
                     提醒
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>

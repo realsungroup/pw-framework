@@ -5,6 +5,7 @@ import SelectPersonSecond from '../SelectPersonSecond';
 import http from '../../../util20/api';
 import qs from 'qs';
 import { message } from 'antd';
+import { withRouter } from 'react-router-dom';
 class SelectPersonFirst extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class SelectPersonFirst extends Component {
       .then(res => {
         message.info('发送成功啦，可以到查看人员去看发送了哪些人');
         console.log(res);
+        window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
       })
       .catch(err => {
         console.error(err);
@@ -105,6 +107,7 @@ class SelectPersonFirst extends Component {
             'C3_227192484125',
             'C3_227212499515'
           ]}
+          personPrimaryKeyField="C3_227192472953"
           stepList={[
             {
               stepTitle: '验证',

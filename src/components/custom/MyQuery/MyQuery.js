@@ -10,7 +10,7 @@ const Option = Select.Option;
 const CheckableTag = Tag.CheckableTag;
 class MyQuery extends React.Component {
   constructor(props) {
-    super(props);   
+    super(props);
     this.state = {
       wid: 1250,
       floders: [],

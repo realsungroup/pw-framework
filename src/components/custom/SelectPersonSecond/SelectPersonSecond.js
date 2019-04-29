@@ -57,7 +57,7 @@ export default class SelectPersonSecond extends Component {
                   <div className="header-picture">{''}</div>
                   <div className="info">
                     <div className="info-number">{person.C3_227192472953}</div>
-                    <div className="info-name">{person.name}</div>
+                    <div className="info-name">{person.C3_227192484125}</div>
                   </div>
                   <div className="department">{person.C3_227212499515}</div>
                 </li>

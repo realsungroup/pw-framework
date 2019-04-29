@@ -12,7 +12,15 @@ export default class PersonList extends React.Component {
   };
 
   render() {
-    const { data, header, content, loading } = this.props;
+    const {
+      data,
+      header,
+      content,
+      loading,
+      field_1,
+      field_2,
+      field_3
+    } = this.props;
     return (
       <List
         className="person-list"
@@ -22,10 +30,10 @@ export default class PersonList extends React.Component {
           <List.Item>
             <List.Item.Meta
               avatar={<Avatar icon="user" style={{ marginTop: 10 }} />}
-              title={item.badgeNum}
-              description={item.name}
+              title={item[field_1]}
+              description={item[field_2]}
             />
-            {content(item, index)}
+            {content(item, index, field_3)}
           </List.Item>
         )}
       >
