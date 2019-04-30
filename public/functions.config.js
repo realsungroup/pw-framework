@@ -904,4 +904,11 @@ window[607170104270] = {
     hasRowView: false,
     height: 300
   }
-};
+}
+
+
+//个人成绩管理
+window[609158468182]={
+  name:'FJList',
+  title:'财年培训课表管理',
+}

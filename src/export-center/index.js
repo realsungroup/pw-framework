@@ -27,6 +27,8 @@ export { LzProApp } from '../components/custom/loadableCustom';
 // export { ExamArrange } from '../components/custom/loadableCustom';
 // export { MyExam } from '../components/custom/loadableCustom';
 // export { Selected } from '../components/custom/loadableCustom';
+export { FJList } from '../components/custom/loadableCustom';
+
 // 组件
 
 export {

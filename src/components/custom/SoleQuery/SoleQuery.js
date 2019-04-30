@@ -432,12 +432,10 @@ class SoleQuery extends Component {
     this.setState({
       visible: true
     });
-
     // 无礼品时
     if (hasGift === '0') {
       return;
     }
-
     // 有礼品时
     try {
       res = await http().addRecords({
@@ -646,7 +644,7 @@ class SoleQuery extends Component {
       return (
         <Spin spinning={loading}>
           <div className="solequery solequery__has-stop">
-            该问卷已停止，不能作答
+            <p className="stopTips"> 该问卷已停止，不能作答</p>
           </div>
         </Spin>
       );
@@ -656,7 +654,9 @@ class SoleQuery extends Component {
     if (hasSubmit) {
       return (
         <Spin spinning={loading}>
-          <div className="solequery solequery__has-stop">该问卷已提交</div>
+          <div className="solequery solequery__has-stop">
+            <p className="stopTips">您已经提交过此问卷，不能填写两次问卷哦</p>
+          </div>
         </Spin>
       );
     }
@@ -690,14 +690,12 @@ class SoleQuery extends Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
           >
-            <p style={{ paddingLeft: 40 }}>
-              提交成功
-              <Icon
-                className="tips"
-                type="check"
-                style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
-              />
-            </p>
+            <p style={{ paddingLeft: 40 }}>提交成功</p>
+            <Icon
+              className="tips"
+              type="check"
+              style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
+            />
             <p className="thanks">感谢您参与本次问卷调查</p>
             {this.state.isGetgift == 'Y' ? (
               <p>

@@ -717,7 +717,7 @@ class QuerySet extends Component {
   //获取指定问卷试题
   getThisQueryQuestions = queryId => {
     this.setState({ loading: true });
-    console.log('问卷试题表中问卷Id', queryId);
+    // console.log('问卷试题表中问卷Id', queryId);
     http()
       .getTable({
         resid: 608828418560,
@@ -865,74 +865,81 @@ class QuerySet extends Component {
     });
   }
   //上移某道题
-  upCurrentQuestion(questionID, questionOrder) {
-    const { AllQuestions, queryId } = this.state;
-
-    let tempAllQuestions = this.state.AllQuestions;
-    // console.log(questionID, questionOrder);
-    if (questionOrder >= 2) {
-      let neworder = questionOrder - 1;
-      let index = questionOrder - 2;
-      // console.log("上边那到题",tempAllQuestions[index]);
-      const recid = tempAllQuestions[index].REC_ID;
-      // console.log(neworder);
-      http()
-        .modifyRecords({
-          resid: '608828418560',
-          data: [
-            {
-              REC_ID: questionID,
-              question_order: neworder
-            },
-            {
-              REC_ID: recid,
-              question_order: neworder + 1
-            }
-          ]
-        })
-        .then(res => {
-          this.getThisQueryQuestions(queryId);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+  upCurrentQuestion = async item => {
+    console.log(1111, item);
+    const queryId = item.query_id;
+    const recid = item.REC_ID;
+    console.log(queryId);
+    if (item.question_order > 20) {
+      await http().moveUpSteps({
+        resid: 608828418560,
+        recid: recid,
+        strOrderCol: `question_order`,
+        intStep: 1,
+        strGroupWhere: `query_id='${queryId}'`
+      });
+      this.getThisQueryQuestions(queryId);
     } else {
-      return message.info('已经是第一项了，不能再上移了');
+      return message.error('已经是第一道题,不能再上移了');
     }
-  }
+  };
   // 下移某道题
-  downCurrentQuestion(questionID, questionOrder) {
-    const { AllQuestions, queryId } = this.state;
+  downCurrentQuestion = async item => {
+    const { AllQuestions } = this.state;
     console.log(AllQuestions.length);
-    if (questionOrder >= AllQuestions.length) {
+    const queryId = item.query_id;
+    const recid = item.REC_ID;
+    if (
+      item.question_order >=
+      AllQuestions[AllQuestions.length - 1].question_order
+    ) {
       return message.info('已经是最后一题了，不能再下移了');
     } else {
-      // 下一道题的索引
-      let index = questionOrder;
-      // console.log(AllQuestions[index]);
-      const recid = AllQuestions[index].REC_ID;
-      http()
-        .modifyRecords({
-          resid: '608828418560',
-          data: [
-            {
-              REC_ID: questionID,
-              question_order: questionOrder + 1
-            },
-            {
-              REC_ID: recid,
-              question_order: questionOrder - 1
-            }
-          ]
-        })
-        .then(res => {
-          this.getThisQueryQuestions(queryId);
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      await http().moveDownSteps({
+        resid: 608828418560,
+        recid: recid,
+        strOrderCol: `question_order`,
+        intStep: 1,
+        strGroupWhere: `query_id='${queryId}'`
+      });
+      this.getThisQueryQuestions(queryId);
     }
-  }
+  };
+  // 移到最前
+  upToTop = async item => {
+    const { AllQuestions } = this.state;
+    const queryId = item.query_id;
+    const recid = item.REC_ID;
+    // console.log(queryId);
+    if (item.question_order > AllQuestions[0].question_order) {
+      await http().moveUpFirst({
+        resid: 608828418560,
+        recid: recid,
+        strOrderCol: `question_order`,
+        strGroupWhere: `query_id='${queryId}'`
+      });
+      this.getThisQueryQuestions(queryId);
+    } else {
+      return message.error('已经是最前的了');
+    }
+  };
+  // 移到最后
+  downToEnd = async item => {
+    const { AllQuestions } = this.state;
+    const queryId = item.query_id;
+    const recid = item.REC_ID;
+    if(item.question_order>=AllQuestions[AllQuestions.length - 1].question_order){
+      return message.info('已经是最后一题了，不能再移了');
+    }else{
+      await http().moveDownLast({
+        resid: 608828418560,
+        recid: recid,
+        strOrderCol: `question_order`,
+        strGroupWhere: `query_id='${queryId}'`
+      });
+      this.getThisQueryQuestions(queryId);
+    }
+  };
   renderGetSingleChoice(item) {
     return (
       <div className="choice" key={item.question_id}>
@@ -976,9 +983,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy">
+          {/* <Button size="small" icon="copy">
             复制
-          </Button>
+          </Button> */}
           <Button
             size="small"
             icon="delete"
@@ -992,7 +999,7 @@ class QuerySet extends Component {
             size="small"
             icon="arrow-up"
             onClick={() => {
-              this.upCurrentQuestion(item.question_id, item.question_order);
+              this.upCurrentQuestion(item);
             }}
           >
             上移
@@ -1001,15 +1008,25 @@ class QuerySet extends Component {
             size="small"
             icon="arrow-down"
             onClick={() => {
-              this.downCurrentQuestion(item.question_id, item.question_order);
+              this.downCurrentQuestion(item);
             }}
           >
             下移
           </Button>
-          <Button size="small" icon="up-circle">
+          <Button
+            size="small"
+            icon="up-circle"
+            onClick={() => this.upToTop(item)}
+          >
             最前
           </Button>
-          <Button size="small" icon="down-circle">
+          <Button
+            size="small"
+            icon="down-circle"
+            onClick={() => {
+              this.downToEnd(item);
+            }}
+          >
             最后
           </Button>
         </div>
@@ -1071,17 +1088,38 @@ class QuerySet extends Component {
           >
             删除
           </Button>
-          <Button size="small" icon="arrow-up">
+          <Button
+            size="small"
+            icon="arrow-up"
+            onClick={() => {
+              this.upCurrentQuestion(item);
+            }}
+          >
             上移
           </Button>
-          <Button size="small" icon="arrow-down">
+          <Button
+            size="small"
+            icon="arrow-down"
+            onClick={() => {
+              this.downCurrentQuestion(item);
+            }}
+          >
             下移
           </Button>
-          <Button size="small" icon="up-circle">
+          <Button
+            size="small"
+            icon="up-circle"
+            onClick={() => this.upToTop(item)}
+          >
             最前
           </Button>
-          <Button size="small" icon="down-circle">
-            最后
+          <Button
+            size="small"
+            icon="down-circle"
+            onClick={() => {
+              this.downToEnd(item);
+            }}
+            > 最后
           </Button>
         </div>
       </div>
@@ -1107,9 +1145,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy">
+          {/* <Button size="small" icon="copy">
             复制
-          </Button>
+          </Button> */}
           <Popconfirm
             title="确定删除该题目?"
             onConfirm={() => {
@@ -1124,16 +1162,38 @@ class QuerySet extends Component {
               删除
             </Button>
           </Popconfirm>
-          <Button size="small" icon="arrow-up">
+          <Button
+            size="small"
+            icon="arrow-up"
+            onClick={() => {
+              this.upCurrentQuestion(item);
+            }}
+          >
             上移
           </Button>
-          <Button size="small" icon="arrow-down">
+          <Button
+            size="small"
+            icon="arrow-down"
+            onClick={() => {
+              this.downCurrentQuestion(item);
+            }}
+          >
             下移
           </Button>
-          <Button size="small" icon="up-circle">
+          <Button
+            size="small"
+            icon="up-circle"
+            onClick={() => this.upToTop(item)}
+          >
             最前
           </Button>
-          <Button size="small" icon="down-circle">
+          <Button
+            size="small"
+            icon="down-circle"
+            onClick={() => {
+              this.downToEnd(item);
+            }}
+          >
             最后
           </Button>
         </div>
@@ -1191,27 +1251,36 @@ class QuerySet extends Component {
     }
   }
   // 删除编辑中选项
-  delcurrentOption(optionId, index) {
+  delcurrentOption = async (optionId, index) => {
     const { currentQuestion } = this.state;
-    console.log('当前选项的Id', optionId);
     currentQuestion.subdata.splice(index, 1);
-    // 还要删除后台表中的数据
-    this.setState({ loading: true });
-    http().removeRecords({
-      resid: 608828722533,
-      data: [
-        {
-          REC_ID: optionId
-        }
-      ]
-    });
     this.setState({
-      currentQuestion: currentQuestion,
-      loading: false
+      currentQuestion: currentQuestion
     });
-  }
+    // 还要删除后台表中的数据
+    console.log('当前选项的Id', currentQuestion);
+    this.setState({ loading: true });
+    if (optionId) {
+      let res;
+      try {
+        res = await http().removeRecords({
+          resid: 608828722533,
+          data: [
+            {
+              REC_ID: optionId
+            }
+          ]
+        });
+        console.log('添加选项', res);
+      } catch (err) {
+        return console.error(err);
+      }
+    } else {
+      return;
+    }
+  };
   //编辑中添加选项
-  addCurrentQuestionOption(questiontype) {
+  addCurrentQuestionOption = async (questiontype, questionId) => {
     const tempCurrentQuestion = this.state.currentQuestion;
     const option = {
       option_content: '',
@@ -1221,9 +1290,10 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
-  }
+    console.log('添加后的当前试题', this.state.currentQuestion);
+  };
   //编辑中添加可填写选项
-  addCurrentQuestionWiteOption() {
+  addCurrentQuestionWiteOption = async questionId => {
     const tempCurrentQuestion = this.state.currentQuestion;
     const option = {
       option_content: '',
@@ -1233,8 +1303,24 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: 608828722533,
+        data: [
+          {
+            question_id: questionId,
+            option_content: '',
+            option_write: '0'
+          }
+        ]
+      });
+      console.log('添加选项', res);
+    } catch (err) {
+      return console.error(err);
+    }
     console.log('添加可填写选项后的', this.state.currentQuestion);
-  }
+  };
   //编辑中选项内容的变化
   handleCurrentQuestionOptionChange(value, index) {
     const tempcurrentQuestion = this.state.currentQuestion;
@@ -1709,7 +1795,8 @@ class QuerySet extends Component {
                   type="primary"
                   onClick={() => {
                     this.addCurrentQuestionOption(
-                      this.state.currentQuestion.question_type
+                      this.state.currentQuestion.question_type,
+                      this.state.currentQuestion.question_id
                     );
                   }}
                 >
@@ -1719,7 +1806,9 @@ class QuerySet extends Component {
                   icon="plus"
                   type="primary"
                   onClick={() => {
-                    this.addCurrentQuestionWiteOption();
+                    this.addCurrentQuestionWiteOption(
+                      this.state.currentQuestion.question_id
+                    );
                   }}
                 >
                   添加可填写选项
