@@ -127,7 +127,8 @@ class QuerySet extends Component {
   // 关闭编辑模态框
   handleEditModal = () => {
     this.setState({
-      CurrentQuestionVisible: false
+      CurrentQuestionVisible: false,
+      loading: false
     });
   };
   //点击设置保存时
@@ -850,16 +851,16 @@ class QuerySet extends Component {
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
     // console.log('渲染时的问卷试题', AllQuestions);
-    return AllQuestions.map(item => {
+    return AllQuestions.map((item,index) => {
       switch (item.question_type) {
         case '单选题': {
-          return this.renderGetSingleChoice(item);
+          return this.renderGetSingleChoice(item,index);
         }
         case '多选题': {
-          return this.renderGetMultiChoice(item);
+          return this.renderGetMultiChoice(item,index);
         }
         case '问答题': {
-          return this.renderGetAnswerChoice(item);
+          return this.renderGetAnswerChoice(item,index);
         }
       }
     });
@@ -928,9 +929,12 @@ class QuerySet extends Component {
     const { AllQuestions } = this.state;
     const queryId = item.query_id;
     const recid = item.REC_ID;
-    if(item.question_order>=AllQuestions[AllQuestions.length - 1].question_order){
+    if (
+      item.question_order >=
+      AllQuestions[AllQuestions.length - 1].question_order
+    ) {
       return message.info('已经是最后一题了，不能再移了');
-    }else{
+    } else {
       await http().moveDownLast({
         resid: 608828418560,
         recid: recid,
@@ -940,17 +944,17 @@ class QuerySet extends Component {
       this.getThisQueryQuestions(queryId);
     }
   };
-  renderGetSingleChoice(item) {
+  renderGetSingleChoice(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+         <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <RadioGroup key={item.question_id}>
           {item.subdata.map(option => {
             return (
-              <div key={option.option_id}>
+              <div key={option.option_id} style={{marginTop:15}}>
                 {option.option_write == '0' ? (
                   <Radio value={option.option_content}>
                     {option.option_content}
@@ -964,7 +968,6 @@ class QuerySet extends Component {
                         borderRadius: 0,
                         border: 'none',
                         borderBottom: '1px solid #000',
-                        width: 100
                       }}
                     />
                   </Radio>
@@ -1033,11 +1036,11 @@ class QuerySet extends Component {
       </div>
     );
   }
-  renderGetMultiChoice(item) {
+  renderGetMultiChoice(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <CheckboxGroup key={item.question_id}>
@@ -1045,11 +1048,11 @@ class QuerySet extends Component {
             return (
               <div key={option.option_id}>
                 {option.option_write == '0' ? (
-                  <Checkbox value={option.option_content}>
+                  <Checkbox value={option.option_content} style={{marginTop:15}}>
                     {option.option_content}
                   </Checkbox>
                 ) : (
-                  <Checkbox value={option.option_content}>
+                  <Checkbox value={option.option_content} style={{marginTop:15}}>
                     {option.option_content}
                     <Input
                       className="WriteInut"
@@ -1057,7 +1060,7 @@ class QuerySet extends Component {
                         borderRadius: 0,
                         border: 'none',
                         borderBottom: '1px solid #000',
-                        width: 100
+                        width: 150
                       }}
                     />
                   </Checkbox>
@@ -1119,17 +1122,19 @@ class QuerySet extends Component {
             onClick={() => {
               this.downToEnd(item);
             }}
-            > 最后
+          >
+            {' '}
+            最后
           </Button>
         </div>
       </div>
     );
   }
-  renderGetAnswerChoice(item) {
+  renderGetAnswerChoice(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span>{item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div>
@@ -1257,10 +1262,10 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: currentQuestion
     });
-    // 还要删除后台表中的数据
-    console.log('当前选项的Id', currentQuestion);
-    this.setState({ loading: true });
-    if (optionId) {
+    // 先找到该选项的ID,有可能这个选项没有ID，也有可能有ID,
+    if (optionId == '') {
+      return;
+    } else {
       let res;
       try {
         res = await http().removeRecords({
@@ -1273,11 +1278,12 @@ class QuerySet extends Component {
         });
         console.log('添加选项', res);
       } catch (err) {
-        return console.error(err);
+        console.error(err);
       }
-    } else {
-      return;
     }
+    // 还要删除后台表中的数据
+    console.log('当前选项的Id', currentQuestion);
+    this.setState({ loading: true });
   };
   //编辑中添加选项
   addCurrentQuestionOption = async (questiontype, questionId) => {
@@ -1303,22 +1309,6 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
-    let res;
-    try {
-      res = await http().addRecords({
-        resid: 608828722533,
-        data: [
-          {
-            question_id: questionId,
-            option_content: '',
-            option_write: '0'
-          }
-        ]
-      });
-      console.log('添加选项', res);
-    } catch (err) {
-      return console.error(err);
-    }
     console.log('添加可填写选项后的', this.state.currentQuestion);
   };
   //编辑中选项内容的变化
@@ -1573,6 +1563,10 @@ class QuerySet extends Component {
       giftStyle: value
     });
   };
+  // 点击完成跳回首页
+  toMyQuery=()=>{
+    window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
+  }
   render() {
     const {
       activeQuestionType,
@@ -1727,6 +1721,12 @@ class QuerySet extends Component {
               <Button disabled>导入添加题目</Button>
             ) : (
               <Button>导入添加题目</Button>
+            )}
+
+            {queryId == '' ? (
+              ''
+            ) : (
+              <Button onClick={this.toMyQuery}>完成</Button>
             )}
 
             {queryId == '' ? (

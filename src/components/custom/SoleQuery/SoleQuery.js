@@ -208,26 +208,26 @@ class SoleQuery extends Component {
   // 循环遍历所有的题目;
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    return AllQuestions.map(item => {
+    return AllQuestions.map((item,index)=> {
       switch (item.question_type) {
         case '单选题': {
-          return this.renderGetSingleChoice(item);
+          return this.renderGetSingleChoice(item,index);
         }
         case '多选题': {
-          return this.renderGetMultiChoice(item);
+          return this.renderGetMultiChoice(item,index);
         }
         case '问答题': {
-          return this.renderGetAnswer(item);
+          return this.renderGetAnswer(item,index);
         }
       }
     });
   }
 
-  renderGetSingleChoice(item) {
+  renderGetSingleChoice(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -274,12 +274,12 @@ class SoleQuery extends Component {
       </div>
     );
   }
-  renderGetMultiChoice(item) {
+  renderGetMultiChoice(item,index) {
     // // console.log({ item });
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -329,11 +329,11 @@ class SoleQuery extends Component {
     );
   }
 
-  renderGetAnswer(item) {
+  renderGetAnswer(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div key={item.question_id}>
@@ -351,7 +351,7 @@ class SoleQuery extends Component {
 
   // 提交问卷
   submitQuery = async () => {
-    const { queryID, hasGift } = this.state;
+    const { queryID, hasGift ,tel} = this.state;
     let answers = [];
     const { AllQuestions } = this.state;
     AllQuestions.map(question => {
@@ -429,11 +429,8 @@ class SoleQuery extends Component {
       return message.error(err.message);
     }
     message.success('提交成功');
-    this.setState({
-      visible: true
-    });
-    // 无礼品时
-    if (hasGift === '0') {
+     // 无礼品时
+     if (hasGift === '0') {
       return;
     }
     // 有礼品时
@@ -456,6 +453,23 @@ class SoleQuery extends Component {
       isGetgift: res.data[0].is_get_gift,
       recid: res.data[0].REC_ID
     });
+    Modal.success({
+      title:'提交成功',
+      content:(<div>
+         <p className="thanks">感谢您参与本次问卷调查</p>
+            {this.state.isGetgift == 'Y' ? (
+              <p>
+                恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
+                <br />
+                <Input value={tel} onChange={this.handleTelChange} />
+              </p>
+            ) : (
+              ''
+            )}
+      </div>),
+      // okText:'确定'
+    })
+   
   };
 
   //单选选中的值。
@@ -688,14 +702,15 @@ class SoleQuery extends Component {
             visible={this.state.visible}
             width={this.state.wid}
             onOk={this.handleOk}
-            onCancel={this.handleCancel}
+            // onCancel={this.handleCancel}
           >
-            <p style={{ paddingLeft: 40 }}>提交成功</p>
-            <Icon
+            <p style={{ paddingLeft: 40,fontSize:18 }}>提交成功!!</p>
+           {/* <p style={{ paddingLeft: 40 }}> <Icon
               className="tips"
               type="check"
               style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
             />
+            </p> */}
             <p className="thanks">感谢您参与本次问卷调查</p>
             {this.state.isGetgift == 'Y' ? (
               <p>
