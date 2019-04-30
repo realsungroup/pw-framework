@@ -155,9 +155,9 @@ export const propTypes = {
   cmscolumns: PropTypes.string,
 
   /**
-   * 表 cmswhere 查询的字符串
+   * where 子句
    * 默认：-
-   * 例子：'C3_511302422114=1,C3_511302066880,C3_511302131411'
+   * 例子：'C3_511302422114 = 1'
    */
   cmswhere: PropTypes.string,
 

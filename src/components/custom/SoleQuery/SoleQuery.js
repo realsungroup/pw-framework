@@ -10,7 +10,8 @@ import {
   Popconfirm,
   message,
   Modal,
-  Icon
+  Icon,
+  Spin
 } from 'antd';
 import http from '../../../util20/api';
 import qs from 'qs';
@@ -18,7 +19,7 @@ const { TextArea } = Input;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
-const userinfo = JSON.parse(localStorage.getItem('userInfo'));
+const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
 class SoleQuery extends Component {
   constructor(props) {
@@ -27,13 +28,16 @@ class SoleQuery extends Component {
       queryID: '',
       queryDetail: {},
       AllQuestions: [],
-      userInfo: {},
       subStatus: true,
       wid: 300,
       isGetgift: '',
       tel: '',
       recid: '',
-      hasGiftList: []
+      hasGiftList: [],
+      queryStatus: '', // 已停止 | 已发送
+      hasGift: '',
+      loading: false,
+      hasSubmit: false
     };
   }
 
@@ -42,7 +46,7 @@ class SoleQuery extends Component {
    * 以下是单个问卷的新方法
    */
 
-  //  问卷信息
+  // 问卷信息
   getQuery = async queryId => {
     let res;
     try {
@@ -50,15 +54,42 @@ class SoleQuery extends Component {
         resid: 608822905547,
         cmswhere: 'query_id =' + queryId
       });
-      return this.setState({
-        queryDetail: res.data[0],
-        queryID: res.data[0].query_id
+    } catch (err) {
+      return console.error(err);
+    }
+    // console.log({ res });
+
+    this.setState({
+      queryDetail: res.data[0],
+      queryID: res.data[0].query_id,
+      queryStatus: res.data[0].query_status,
+      hasGift: res.data[0].gift
+    });
+  };
+
+  // 获取用户是否已提交
+  getUserIsSubmmit = async queryId => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 608838682402,
+        cmswhere: `query_id='${queryId}' and person_id='${
+          userInfo.UserInfo.EMP_ID
+        }'`
       });
     } catch (err) {
       return console.error(err);
     }
+
+    let hasSubmit = false;
+    if (res.data && res.data.length) {
+      hasSubmit = true;
+    }
+    this.setState({ hasSubmit });
+    return hasSubmit;
   };
-  //获取问卷试题
+
+  // 获取问卷试题
   getThisQueryQuestions = async queryId => {
     let res;
     try {
@@ -67,37 +98,46 @@ class SoleQuery extends Component {
         subresid: 608828722533,
         cmswhere: 'query_id=' + queryId
       });
-      console.log('res.data', res.data);
-      res.data.forEach(item => {
-        switch (item.question_type) {
-          case '单选题': {
-            item.subdata.forEach(option => {
-              if (option.option_write === '1') {
-                option.inputValue = '';
-              }
-            });
-          }
-          case '多选题': {
-            item.subdata.forEach(option => {
-              if (option.option_write === '1') {
-                option.multinputValue = '';
-              }
-            });
-            return (item.result = []);
-          }
-          case '问答题': {
-            return (item.answer = '');
-          }
-        }
-      });
-      return this.setState({
-        AllQuestions: res.data
-      });
-      // console.log('问卷试题', res.data);
     } catch (err) {
       return console.error(err);
     }
+
+    res.data.forEach(item => {
+      // 该题目是否为必答题
+      item.required = false;
+      if (item.question_must === '1') {
+        item.required = true;
+      }
+      // 该题目是否已作答
+      item.hasDo = false;
+
+      switch (item.question_type) {
+        case '单选题': {
+          item.subdata.forEach(option => {
+            if (option.option_write === '1') {
+              option.inputValue = '';
+            }
+          });
+          break;
+        }
+        case '多选题': {
+          item.subdata.forEach(option => {
+            if (option.option_write === '1') {
+              option.multinputValue = '';
+            }
+          });
+          return (item.result = []);
+        }
+        case '问答题': {
+          return (item.answer = '');
+        }
+      }
+    });
+    return this.setState({
+      AllQuestions: res.data
+    });
   };
+
   // 获取该问卷中奖人员的名单
   getHasPrase = queryId => {
     http()
@@ -107,7 +147,6 @@ class SoleQuery extends Component {
      `
       })
       .then(res => {
-        console.log(res);
         this.setState({
           hasGiftList: res.data
         });
@@ -116,38 +155,29 @@ class SoleQuery extends Component {
         console.error(err);
       });
   };
-  componentDidMount() {
+  async componentDidMount() {
+    this.setState({ loading: true });
     // 根据链接前端做出处理，然后拿到文件的ID。去后台获取，这里ID已经固定好
     const quertString = window.location.search;
-    console.log(quertString);
     const qsObj = qs.parse(quertString.substring(1));
-    console.log('传过来的',qsObj);
-    console.log('问卷ID', qsObj.id);
-    this.getQuery(qsObj.id);
-    this.getThisQueryQuestions(qsObj.id);
+
+    // 获取问卷信息
+    await this.getQuery(qsObj.id);
+    // 查询用户是否已提交
+    const hasSubmit = await this.getUserIsSubmmit(qsObj.id);
+
+    if (hasSubmit) {
+      // 获取中奖名单
+      this.getHasPrase(qsObj.id);
+      this.setState({ loading: false });
+      return;
+    }
+
+    // 获取问卷试题
+    await this.getThisQueryQuestions(qsObj.id);
+    // 获取中奖名单
     this.getHasPrase(qsObj.id);
-    http()
-      .addRecords({
-        resid: 608911532639,
-        data: [
-          {
-            staff_id: userinfo.UserCode,
-            query_id: qsObj.id
-          }
-        ]
-      })
-      .then(res => {
-        console.log('提交返回的数据', res);
-        this.setState({
-          isGetgift: res.data[0].is_get_gift,
-          recid: res.data[0].REC_ID
-        });
-        console.log(this.state.isGetgift);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-    console.log(userinfo);
+    this.setState({ loading: false });
   }
 
   handleCheckboxChange = (questionId, optionId, e) => {
@@ -164,33 +194,40 @@ class SoleQuery extends Component {
       const index = question.result.findIndex(item => item === optionId);
       question.result.splice(index, 1);
     }
+
+    // 判断是否已答
+    if (question.result.length) {
+      question.hasDo = true;
+    } else {
+      question.hasDo = false;
+    }
+
     this.setState({ AllQuestions });
   };
 
   // 循环遍历所有的题目;
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    // console.log('渲染时的问卷试题', AllQuestions);
-    return AllQuestions.map(item => {
+    return AllQuestions.map((item,index)=> {
       switch (item.question_type) {
         case '单选题': {
-          return this.renderGetSingleChoice(item);
+          return this.renderGetSingleChoice(item,index);
         }
         case '多选题': {
-          return this.renderGetMultiChoice(item);
+          return this.renderGetMultiChoice(item,index);
         }
         case '问答题': {
-          return this.renderGetAnswer(item);
+          return this.renderGetAnswer(item,index);
         }
       }
     });
   }
 
-  renderGetSingleChoice(item) {
+  renderGetSingleChoice(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -202,7 +239,7 @@ class SoleQuery extends Component {
           }}
         >
           {item.subdata.map(option => {
-            // console.log("选项",option)
+            // // console.log("选项",option)
             return (
               <div key={option.option_id}>
                 <Radio value={option.option_id}>
@@ -237,18 +274,18 @@ class SoleQuery extends Component {
       </div>
     );
   }
-  renderGetMultiChoice(item) {
-    // console.log({ item });
+  renderGetMultiChoice(item,index) {
+    // // console.log({ item });
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
         <div key={item.question_id}>
           {item.subdata.map(option => {
-            // console.log('多选题选项',option)
+            // // console.log('多选题选项',option)
             const id = item.result.find(id => id === option.option_id);
             return (
               <div key={option.option_id}>
@@ -292,11 +329,11 @@ class SoleQuery extends Component {
     );
   }
 
-  renderGetAnswer(item) {
+  renderGetAnswer(item,index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-          {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div key={item.question_id}>
@@ -313,27 +350,28 @@ class SoleQuery extends Component {
   }
 
   // 提交问卷
-  submitQuery = () => {
-    console.log('提交', userinfo);
-    const { queryID } = this.state;
+  submitQuery = async () => {
+    const { queryID, hasGift ,tel} = this.state;
     let answers = [];
     const { AllQuestions } = this.state;
-    console.log('点击提交后的问卷', AllQuestions);
     AllQuestions.map(question => {
       switch (question.question_type) {
         case '单选题': {
           const questionId = question.question_id;
           const optionId = question.result;
           const option = question.subdata.find(
-            option => (option.option_id = optionId)
+            option => option.option_id === optionId
           );
+          if (!option) {
+            return;
+          }
           const writeContent = option.inputValue;
           let singleanswer = {
-            person_id: userinfo.UserCode,
+            person_id: userInfo.UserInfo.EMP_ID,
             query_id: queryID,
             question_id: questionId,
             option_id: optionId,
-            write_contnet: writeContent
+            write_content: writeContent
           };
           answers.push(singleanswer);
           break;
@@ -342,7 +380,7 @@ class SoleQuery extends Component {
           const questionId = question.question_id;
 
           let multiAnswer = {
-            person_id: userinfo.UserCode,
+            person_id: userInfo.UserInfo.EMP_ID,
             query_id: queryID,
             question_id: questionId
           };
@@ -353,7 +391,7 @@ class SoleQuery extends Component {
               option => option.option_id === optionid
             );
             if (option.option_write === '1') {
-              obj.write_contnet = option.multinputValue;
+              obj.write_content = option.multinputValue;
             }
             answers.push(obj);
           });
@@ -365,7 +403,7 @@ class SoleQuery extends Component {
             const optionId = question.subdata[0].option_id;
             const WriteContent = question.answer;
             let eassyAnswer = {
-              person_id: userinfo.UserCode,
+              person_id: userInfo.UserInfo.EMP_ID,
               query_id: queryID,
               question_id: questionId,
               option_id: optionId,
@@ -375,34 +413,74 @@ class SoleQuery extends Component {
           }
           break;
       }
-      console.log(answers);
+      // // console.log(answers);
     });
-    // 向后台发送请求
-    http()
-      .addRecords({
+
+    console.log({ answers });
+
+    let res;
+    try {
+      res = await http().addRecords({
         resid: '608838682402',
         data: answers
-      })
-      .then(res => {
-        // 显示提交成功
-        message.info('提交成功');
-        this.setState({
-          visible: true
-        });
-      })
-      .catch(err => {
-        console.error(err);
       });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    message.success('提交成功');
+     // 无礼品时
+     if (hasGift === '0') {
+      return;
+    }
+    // 有礼品时
+    try {
+      res = await http().addRecords({
+        resid: 608911532639,
+        data: [
+          {
+            staff_id: userInfo.UserInfo.EMP_ID,
+            query_id: queryID
+          }
+        ]
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    this.setState({
+      isGetgift: res.data[0].is_get_gift,
+      recid: res.data[0].REC_ID
+    });
+    Modal.success({
+      title:'提交成功',
+      content:(<div>
+         <p className="thanks">感谢您参与本次问卷调查</p>
+            {this.state.isGetgift == 'Y' ? (
+              <p>
+                恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
+                <br />
+                <Input value={tel} onChange={this.handleTelChange} />
+              </p>
+            ) : (
+              ''
+            )}
+      </div>),
+      // okText:'确定'
+    })
+   
   };
 
   //单选选中的值。
   handleSelectedOptionChange = (questionId, value) => {
-    console.log(questionId, value);
+    // console.log(questionId, value);
     const { AllQuestions } = this.state;
     const question = AllQuestions.find(
       question => question.question_id === questionId
     );
     question.result = value;
+    question.hasDo = true;
     this.setState({
       AllQuestions
     });
@@ -415,26 +493,30 @@ class SoleQuery extends Component {
       question => question.question_id === questionId
     );
     const option = question.subdata.find(
-      option => (option.option_id = optionId)
+      option => option.option_id === optionId
     );
     option.inputValue = value;
     this.setState({ AllQuestions });
   };
+
   // 多选框中输入值的变化
   handleMultiInputChange = (questionId, optionId, value) => {
-    // console.log(111111);
     const { AllQuestions } = this.state;
     const question = AllQuestions.find(
       question => question.question_id === questionId
     );
     const option = question.subdata.find(
-      option => (option.option_id = optionId)
+      option => option.option_id === optionId
     );
     option.multinputValue = value;
+
+    question.hasDo = true;
+
     this.setState({
       AllQuestions
     });
   };
+
   // 文答题中输入框值的变化
   handleAnswerInputChange = (questionId, value) => {
     const { AllQuestions } = this.state;
@@ -442,6 +524,11 @@ class SoleQuery extends Component {
       question => question.question_id === questionId
     );
     question.answer = value;
+    if (value) {
+      question.hasDo = true;
+    } else {
+      question.hasDo = false;
+    }
     this.setState({
       AllQuestions
     });
@@ -449,45 +536,52 @@ class SoleQuery extends Component {
 
   //
   handlePopcancle = () => {
-    console.log('点击取消');
+    // console.log('点击取消');
   };
+
   //handleCancel
   handleCancel = () => {
     this.setState({
       visible: false
     });
   };
+
   // 输入手机号点击确定
   handleOk = () => {
-    const { recid, tel } = this.state;
-    console.log(recid, tel);
-    if (!/^1[0-9]\d{9}$/.test(tel)) {
-      return message.error('xxxx');
-    }
-    http()
-      .modifyRecords({
-        resid: 608911532639,
-        data: [
-          {
-            REC_ID: recid,
-            staff_tel: tel
-          }
-        ]
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
+    const { recid, tel, isGetgift } = this.state;
+    if (!(isGetgift == 'Y')) {
+      //没有获奖
+      return this.setState({
+        visible: false,
+        subStatus: false,
+        hasSubmit: true
       });
-    this.setState({
-      visible: false,
-      subStatus: false
-    });
+    } else {
+      if (!/^1[0-9]\d{9}$/.test(tel)) {
+        return message.error('请输入正确的手机号');
+      }
+      http()
+        .modifyRecords({
+          resid: 608911532639,
+          data: [
+            {
+              REC_ID: recid,
+              staff_tel: tel
+            }
+          ]
+        })
+        .then(res => {
+          this.setState({ hasSubmit: true });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   };
+
   // 监听电话输入的变化
   handleTelChange = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState({
       tel: e.target.value
     });
@@ -506,14 +600,14 @@ class SoleQuery extends Component {
   // rendergiftList
   rendergiftList = () => {
     const { hasGiftList } = this.state;
-    console.log('获奖人员列表', hasGiftList);
+    // console.log('获奖人员列表', hasGiftList);
     return (
       <Carousel autoplay vertical>
-        {hasGiftList.map(list => {
-          const telstart = list.staff_tel.substring(0, 3);
-          const telend = list.staff_tel.substring(7);
+        {hasGiftList.map(item => {
+          const telstart = item.staff_tel.substring(0, 3);
+          const telend = item.staff_tel.substring(7);
           return (
-            <p className="lucker">
+            <p className="lucker" key={item.REC_ID}>
               {telstart}****{telend}已经领到礼品一份
             </p>
           );
@@ -521,153 +615,117 @@ class SoleQuery extends Component {
       </Carousel>
     );
   };
+
+  getSubmitDisabled = () => {
+    const { AllQuestions } = this.state;
+    const result = AllQuestions.every(item => {
+      if (item.required) {
+        if (item.hasDo) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    });
+    return !result;
+  };
+
+  handleSubmitClick = queryId => {
+    Modal.confirm({
+      title: '提示',
+      content: '您确定要提交问卷吗？',
+      onOk: () => {
+        this.submitQuery(queryId);
+      }
+    });
+  };
+
   // 渲染的页面
   render() {
-    const { queryDetail, isGetgift, tel, hasGiftList } = this.state;
-    console.log(isGetgift);
+    const {
+      queryDetail,
+      isGetgift,
+      tel,
+      hasGiftList,
+      queryStatus,
+      loading,
+      hasSubmit
+    } = this.state;
+
+    // 已停止
+    if (queryStatus === '已停止') {
+      return (
+        <Spin spinning={loading}>
+          <div className="solequery solequery__has-stop">
+            <p className="stopTips"> 该问卷已停止，不能作答</p>
+          </div>
+        </Spin>
+      );
+    }
+
+    // 已提交
+    if (hasSubmit) {
+      return (
+        <Spin spinning={loading}>
+          <div className="solequery solequery__has-stop">
+            <p className="stopTips">您已经提交过此问卷，不能填写两次问卷哦</p>
+          </div>
+        </Spin>
+      );
+    }
+
     return (
-      <div className="solequery">
-        <div className="queryHeader">
-          <h1>{queryDetail.query_name}</h1>
-          <p className="query-set__description">
-            {queryDetail.query_description}
-          </p>
-          {/* <Carousel autoplay vertical> */}
-          {this.rendercarousel()}
-          {/* </Carousel> */}
-        </div>
-        <div className="querycontent">{this.renderGetAllQuestions()}</div>
-        <div>
-          <div className="queryfooter__submit">
-            {this.state.subStatus ? (
-              <Popconfirm
-                title="确定提交吗？一旦提交不能更改哟"
-                onConfirm={() => {
-                  this.submitQuery(queryDetail.query_id);
-                }}
-                onCancel={this.handlePopcancle}
+      <Spin spinning={loading}>
+        <div className="solequery">
+          <div className="queryHeader">
+            <h1>{queryDetail.query_name}</h1>
+            <p className="query-set__description">
+              {queryDetail.query_description}
+            </p>
+            {this.rendercarousel()}
+          </div>
+          <div className="querycontent">{this.renderGetAllQuestions()}</div>
+          <div>
+            <div className="queryfooter__submit">
+              <Button
+                type="primary"
+                disabled={this.getSubmitDisabled()}
+                onClick={() => this.handleSubmitClick(queryDetail.query_id)}
               >
-                <Button type="primary">提交</Button>
-              </Popconfirm>
-            ) : (
-              <Button type="primary" disabled>
                 提交
               </Button>
-            )}
-            {/* <Button type='primary' onClick={()=>{this.handleSend()}}>发送</Button> */}
+            </div>
           </div>
-        </div>
-        <Modal
-          title="提交问卷"
-          visible={this.state.visible}
-          width={this.state.wid}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <p style={{ paddingLeft: 40 }}>
-            提交成功
-            <Icon
+          <Modal
+            title="提交问卷"
+            visible={this.state.visible}
+            width={this.state.wid}
+            onOk={this.handleOk}
+            // onCancel={this.handleCancel}
+          >
+            <p style={{ paddingLeft: 40,fontSize:18 }}>提交成功!!</p>
+           {/* <p style={{ paddingLeft: 40 }}> <Icon
               className="tips"
               type="check"
               style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
             />
-          </p>
-          <p className="thanks">感谢您参与本次问卷调查</p>
-          {this.state.isGetgift == 'Y' ? (
-            <p>
-              恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
-              <br />
-              <Input value={tel} onChange={this.handleTelChange} />
-            </p>
-          ) : (
-            ''
-          )}
-        </Modal>
-      </div>
+            </p> */}
+            <p className="thanks">感谢您参与本次问卷调查</p>
+            {this.state.isGetgift == 'Y' ? (
+              <p>
+                恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
+                <br />
+                <Input value={tel} onChange={this.handleTelChange} />
+              </p>
+            ) : (
+              ''
+            )}
+          </Modal>
+        </div>
+      </Spin>
     );
   }
 }
-export default SoleQuery;
 
-/**
- * 现在AllQuestions 的数据结构如下:
- * AllQuestions:[
- * {
- *   question_type:'单选题',
- *   question_id:'123455908',
- *   question_topic:'你认为的额哈哈哈哈',
- *   result:'',
- *   options:[
- *         {
- *          option_id:'111',
- *          option_write:'',
- *          option_content:'',
- *          write_contnet:'',
- *         },
- *         {
- *          option_id:'111',
- *          option_write:'',
- *          option_content:'',
- *          write_contnet:'',
- *         },
- *
- * ]
- * },
- * {
- *  question_type:'多选题'，
- *  question_id:'9098809090',
- *  result:{
- *    inputValue:'',
- *   checkboxValues:[],
- *  },
- *  question_topic:'一下哪个颜色好看',
- *  options:[
- *          {
- *            option_id:'',
- *            option_content:'',
- *            write_content:'',
- *          },
- *          {
- *            option_id:'',
- *            option_content:'',
- *            write_content:'',
- *
- *          },
- * ]
- *
- * }
- *
- *
- * ]
- *
- *
- *
- *
- * result:['id1','id2','id3','id4',]
- * subdata:[
- * {
- *   option_id:'id1',
- *   option_write:'1',
- *   multiinputchange:'',
- * },
- * {
- *   option_id:'id2',
- *   option_write:'1',
- *   multiinputchange:'',
- * },
- * {
- *   option_id:'id3',
- *   option_write:'1',
- *   multiinputchange:'',
- * },
- * {
- *   option_id:'id4',
- *   option_write:'0',
- * },
- * {
- *   option_id:'id5',
- *   option_write:'0',
- * },
- *
- * ]
- */
+export default SoleQuery;

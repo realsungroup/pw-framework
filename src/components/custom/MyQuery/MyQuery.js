@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Input, Select, Tag, Modal, Tabs } from 'antd';
+import { Button, Icon, Input, Select, Tag, Modal, Tabs, Spin ,message} from 'antd';
 import './MyQuery.less';
 import { QueryTable, QueryType, Paging } from '../loadableCustom';
 import TableData from '../../common/data/TableData';
@@ -15,7 +15,8 @@ class MyQuery extends React.Component {
       wid: 1250,
       floders: [],
       typewid: 1200,
-      questionnaire: []
+      questionnaire: [],
+      loading: false
     };
   }
   //获取问卷文件夹
@@ -28,11 +29,13 @@ class MyQuery extends React.Component {
         console.log('文件夹', res.data);
         let floders = res.data;
         this.setState({
-          floders: floders
+          floders: floders,
+          loading: false
         });
       })
       .catch(err => {
         console.error(err);
+        message.error('MyQuery获取文件夹失败',err.message);
       });
   };
 
@@ -51,6 +54,7 @@ class MyQuery extends React.Component {
 
   //获取问卷
   getData = async () => {
+    this.setState({ loading: true });
     http()
       .getTable({
         resid: 608822905547
@@ -58,15 +62,18 @@ class MyQuery extends React.Component {
       .then(res => {
         console.log('问卷', res.data);
         this.setState({
-          questionnaire: res.data
+          questionnaire: res.data,
+          loading: false
         });
       })
       .catch(err => {
+        this.setState({ loading: false });
         console.error(err);
+        message.error('MyQuery获取问卷失败',err.message);
       });
   };
 
-  删除问卷;
+  // 删除问卷;
   deleQuery = item => {
     console.log('问卷对象', item);
     const recid = item.REC_ID;
@@ -83,6 +90,8 @@ class MyQuery extends React.Component {
         this.getData();
       })
       .catch(err => {
+        this.setState({ loading: false });
+        message.error('MyQuery删除问卷失败',err.message);
         console.error(err);
       });
   };
@@ -116,10 +125,10 @@ class MyQuery extends React.Component {
     console.log(key);
   };
   queryStatusChange = value => {
+    this.setState({ loading: true });
     console.log('问卷状态', `${value}`);
     const status = `${value}`;
     if (`${value}` == '问卷状态') {
-      // console.log(11111);
       this.getData();
     } else {
       http()
@@ -130,46 +139,82 @@ class MyQuery extends React.Component {
         .then(res => {
           console.log('筛选出来的状态问卷', res.data);
           this.setState({
-            questionnaire: res.data
+            questionnaire: res.data,
+            loading: false
           });
         })
         .catch(err => {
           console.error(err);
+          message.error('MyQuery筛选失败',err.message);
+          this.setState({ loading: false });
         });
     }
   };
 
+  //停止问卷
+  stopQuery = item => {
+    const queryID = item.query_id;
+    this.setState({ loading: true });
+
+    http()
+      .modifyRecords({
+        resid: 608822905547,
+        data: [
+          {
+            REC_ID: queryID,
+            query_status: '已停止'
+          }
+        ]
+      })
+      .then(res => {
+        // console.log('问卷停止');
+        this.getData();
+      })
+      .catch(err => {
+        console.error('修改失败原因', err);
+        message.error('MyQuery停止问卷失败',err.message);
+        this.setState({ loading: false });
+      });
+  };
   //筛选查询渲染
   sortShow = item => {
     //  console.log('筛选',item)
     const floderId = item.floder_id;
     console.log(floderId);
+    this.setState({ loading: true });
+
     http()
       .getTable({
         resid: 608822905547,
         cmswhere: 'floder_id =' + floderId
       })
       .then(res => {
-        this.setState({ questionnaire: res.data });
+        this.setState({ questionnaire: res.data, loading: false });
       })
       .catch(err => {
         console.error(err);
+        message.error('MyQuery筛选失败',err.message);
+        this.setState({ loading: false });
       });
   };
 
   //问卷名搜索渲染
   handleSearchChange = value => {
     console.log({ value });
+    this.setState({ loading: true });
+
     http()
       .getTable({
         resid: 608822905547,
         cmswhere: `query_name LIKE '%${value}%'`
       })
       .then(res => {
-        this.setState({ questionnaire: res.data });
+        this.setState({ questionnaire: res.data, loading: false });
       })
       .catch(err => {
         console.error(err);
+        message.error('MyQuery问卷搜索',err.message);
+        this.setState({ loading: false });
       });
   };
 
@@ -178,112 +223,108 @@ class MyQuery extends React.Component {
   };
 
   render() {
-    const { questionnaire } = this.state;
+    const { questionnaire, loading } = this.state;
     return (
-      // <Router>
-      <div className="query">
-        <div className="query-top">
-          <Link
-            to={{
-              pathname: '/fnmodule',
-              search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=`
-            }}
-            target="_self"
-          >
-            <Button type="primary">
-              <Icon type="plus" />
-              创建问卷
-            </Button>
-          </Link>
-          {/* <Modal
-            title="选择问卷类型"
-            width={this.state.typewid}
-            visible={this.state.visibleType}
-            onCancel={this.handleCancel}
-          >
-            <QueryType />
-          </Modal> */}
-          <Input.Search
-            style={{ width: 480, padding: 10 }}
-            onSearch={this.handleSearchChange}
-          />
-          <Select
-            defaultValue="问卷状态"
-            style={{ width: 120 }}
-            onChange={this.queryStatusChange}
-          >
-            <Option value="问卷状态">问卷状态</Option>
-            <Option value="已停止">已停止</Option>
-            <Option value="已发送">已发送</Option>
-            <Option value="草稿">草稿</Option>
-          </Select>
-          <Button type="danger" style={{ float: 'right' }}>
-            <Icon type="delete" />
-            回收站
-          </Button>
-        </div>
-        <div className="folder">
-          <Button type="primary" icon="plus" onClick={this.showModal}>
-            管理文件夹
-          </Button>
-          <Button style={{ marginLeft: 8 }} onClick={this.getData}>
-            全部
-          </Button>
-          <Modal
-            title="管理文件夹"
-            width={this.state.wid}
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            onOk={this.flodersOk}
-          >
-            <Tabs defaultActiveKey="1" onChange={this.callback}>
-              <TabPane tab="文件夹操作" key="1">
-                <TableData
-                  resid={608822887704}
-                  hasModify={false}
-                  hasDelete={false}
-                  width={1200}
-                  hasAdvSearch={false}
-                  height={400}
-                  subtractH={190}
-                  actionBarFixed={false}
-                  hasRowView={false}
-                  recordFormName={'前端窗体'}
-                />
-              </TabPane>
-              <TabPane tab="移动问卷" key="2">
-                <TableData
-                  resid={608822905547}
-                  hasModify={false}
-                  hasDelete={false}
-                  width={1200}
-                  height={400}
-                  subtractH={190}
-                  hasRowView={false}
-                  hasAdd={false}
-                  actionBarFixed={false}
-                  recordFormName={'default1'}
-                />
-              </TabPane>
-            </Tabs>
-          </Modal>
-          {this.state.floders.map((item, index) => {
-            return (
-              <Button
-                className="personalTags"
-                key={index}
-                onClick={() => {
-                  this.sortShow(item);
-                }}
-              >
-                {item.floder_name}
+      <Spin spinning={loading}>
+        <div className="query">
+          <div className="query-top">
+            <Link
+              to={{
+                pathname: '/fnmodule',
+                search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=`
+              }}
+              target="_self"
+            >
+              <Button type="primary">
+                <Icon type="plus" />
+                创建问卷
               </Button>
-            );
-          })}
+            </Link>
+            <Input.Search
+              style={{ width: 480, padding: 10 }}
+              onSearch={this.handleSearchChange}
+            />
+            <Select
+              defaultValue="问卷状态"
+              style={{ width: 120 }}
+              onChange={this.queryStatusChange}
+            >
+              <Option value="问卷状态">问卷状态</Option>
+              <Option value="已停止">已停止</Option>
+              <Option value="已发送">已发送</Option>
+              <Option value="草稿">草稿</Option>
+            </Select>
+          </div>
+          <div className="folder">
+            <Button type="primary" icon="plus" onClick={this.showModal}>
+              管理文件夹
+            </Button>
+            <Button
+              style={{ marginLeft: 8 }}
+              onClick={this.getData}
+              type="primary"
+            >
+              全部
+            </Button>
+            <Modal
+              title="管理文件夹"
+              width={this.state.wid}
+              visible={this.state.visible}
+              onCancel={this.handleCancel}
+              onOk={this.flodersOk}
+            >
+              <Tabs defaultActiveKey="1" onChange={this.callback}>
+                <TabPane tab="文件夹操作" key="1">
+                  <TableData
+                    resid={608822887704}
+                    hasModify={false}
+                    hasDelete={false}
+                    width={1200}
+                    hasAdvSearch={false}
+                    height={400}
+                    subtractH={190}
+                    actionBarFixed={false}
+                    hasRowView={false}
+                    recordFormName={'前端窗体'}
+                  />
+                </TabPane>
+                <TabPane tab="移动问卷" key="2">
+                  <TableData
+                    resid={608822905547}
+                    hasModify={false}
+                    hasDelete={false}
+                    width={1200}
+                    height={400}
+                    subtractH={190}
+                    hasRowView={false}
+                    hasAdd={false}
+                    actionBarFixed={false}
+                    recordFormName={'default1'}
+                  />
+                </TabPane>
+              </Tabs>
+            </Modal>
+            {this.state.floders.map((item, index) => {
+              return (
+                <Button
+                  className="personalTags"
+                  key={index}
+                  onClick={() => {
+                    this.sortShow(item);
+                  }}
+                >
+                  {item.floder_name}
+                </Button>
+              );
+            })}
+          </div>
+          <QueryTable
+            questionnaire={questionnaire}
+            onDelete={this.deleQuery}
+            onStopQuery={this.stopQuery}
+          />
         </div>
-        <QueryTable questionnaire={questionnaire} onDelete={this.deleQuery} />
-        {/* <Paging /> */}
-      </div>
+      </Spin>
     );
   }
 }
