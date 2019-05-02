@@ -25,6 +25,9 @@ class MyExam extends Component {
     // 人员编号
     const personNum = record.C3_607197253817;
 
+    // 记录 id
+    const myExamRecid = record.REC_ID;
+
     // 通过试卷编号获取试卷题目
     let res;
     try {
@@ -102,7 +105,7 @@ class MyExam extends Component {
     // 考试批次编号
     const examBatchNum = res.data[0].maindata.C3_607196596723;
 
-    window.location.href = `/fnmodule?resid=考试页面&recid=608295659960&type=考试系统&title=考试页面&examnum=${examNum}&exambatchnum=${examBatchNum}`;
+    window.location.href = `/fnmodule?resid=考试页面&recid=608295659960&type=考试系统&title=考试页面&examnum=${examNum}&exambatchnum=${examBatchNum}&arrangenum=${arrangeNum}&personnum=${personNum}&myexamrecid=${myExamRecid}`;
   };
 
   render() {
@@ -120,12 +123,14 @@ class MyExam extends Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
-                <Button
-                  key={record.REC_ID}
-                  onClick={() => this.handleJoinConfirm(record)}
-                >
-                  参加考试
-                </Button>
+                record.C3_610137428463 > 0 && (
+                  <Button
+                    key={record.REC_ID}
+                    onClick={() => this.handleJoinConfirm(record)}
+                  >
+                    参加考试
+                  </Button>
+                )
               );
             }
           ]}

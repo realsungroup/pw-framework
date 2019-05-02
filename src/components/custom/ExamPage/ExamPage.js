@@ -64,10 +64,28 @@ export default class ExamPage extends Component {
 
     const qsObj = qs.parse(window.location.search.substring(1));
     // 考试批次编号、试卷编号
-    const { exambatchnum, examnum } = qsObj;
+    const { exambatchnum, examnum, arrangenum, personnum, myexamrecid } = qsObj;
+
+    this.arrangeNum = arrangenum;
+    this.examNum = examnum;
+    this.personNum = personnum;
+    this.myExamRecid = myexamrecid;
+
+    // 根据 myexamrecid 获取 “我的考试” 页面表的记录
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 609931927812,
+        cmswhere: `REC_ID = '${myexamrecid}'`
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    const myExamRecord = res.data[0];
 
     // 通过考试批次编号获取考试批次
-    let res;
     try {
       res = await http().getTable({
         resid: 608809112309,
@@ -88,7 +106,8 @@ export default class ExamPage extends Component {
         hasSubmit: true,
         loading: false,
         record,
-        hasGetTime: true
+        hasGetTime: true,
+        myExamRecord
       });
     }
 
@@ -107,7 +126,8 @@ export default class ExamPage extends Component {
         loading: false,
         timeRemaining,
         record,
-        hasGetTime: true
+        hasGetTime: true,
+        myExamRecord
       });
     }
 
@@ -154,6 +174,12 @@ export default class ExamPage extends Component {
             item.answer = '';
           }
 
+          if (item.answer) {
+            item.hasDo = true;
+          } else {
+            item.hasDo = false;
+          }
+
           break;
         }
         case '多选题': {
@@ -177,6 +203,12 @@ export default class ExamPage extends Component {
             item.id = temp.id; // 将 考试批次答题表中的题目编号存在题目记录里
           }
 
+          if (item.answer.length) {
+            item.hasDo = true;
+          } else {
+            item.hasDo = false;
+          }
+
           break;
         }
         case '判断题': {
@@ -187,12 +219,20 @@ export default class ExamPage extends Component {
           const temp = answerData.find(
             answerItem => answerItem.id === item.C3_607026334772
           );
+
           if (temp) {
             item.answer = temp.C3_607174361025;
             item.id = temp.id; // 将 考试批次答题表中的题目编号存在题目记录里
           } else {
             item.answer = '';
           }
+
+          if (item.answer) {
+            item.hasDo = true;
+          } else {
+            item.hasDo = false;
+          }
+
           break;
         }
       }
@@ -206,7 +246,8 @@ export default class ExamPage extends Component {
       answerData,
       timeRemaining,
       record,
-      hasGetTime: true
+      hasGetTime: true,
+      myExamRecord
     });
   };
 
@@ -255,6 +296,7 @@ export default class ExamPage extends Component {
 
   handleSingleChoiceChange = (question, value) => {
     question.answer = value;
+    question.hasDo = true;
     this.forceUpdate();
 
     // 保存答案
@@ -265,6 +307,7 @@ export default class ExamPage extends Component {
 
   handleJudgeChange = (question, value) => {
     question.answer = value;
+    question.hasDo = true;
     this.forceUpdate();
 
     // 保存答案
@@ -281,6 +324,11 @@ export default class ExamPage extends Component {
     } else {
       const index = question.answer.findIndex(item => item === value);
       question.answer.splice(index, 1);
+    }
+    if (question.answer.length) {
+      question.hasDo = true;
+    } else {
+      question.hasDo = false;
     }
     this.forceUpdate();
 
@@ -375,7 +423,18 @@ export default class ExamPage extends Component {
   };
 
   handleSubmit = async () => {
-    const { record } = this.state;
+    const { record, questions } = this.state;
+
+    const result = questions.every(item => {
+      return item.questions.every(question => {
+        return question.hasDo;
+      });
+    });
+
+    if (!result) {
+      return message.error('有未作答的题目');
+    }
+
     let res;
     try {
       res = await http().modifyRecords({
@@ -389,7 +448,10 @@ export default class ExamPage extends Component {
     const newRecord = res.data[0];
     this.dealRecord(newRecord);
     message.success('提交成功');
-    this.setState({ hasSubmit: true, record: newRecord });
+    const { myExamRecord } = this.state;
+    myExamRecord.C3_610137428463 =
+      parseInt(myExamRecord.C3_610137428463, 10) - 1;
+    this.setState({ hasSubmit: true, record: newRecord, myExamRecord });
   };
 
   handleSubmitBtnClick = () => {
@@ -411,6 +473,99 @@ export default class ExamPage extends Component {
     this.setState({ timeRemaining: 0 });
   };
 
+  handleJoinExam = async () => {
+    this.setState({ loading: true });
+    // 向考试批次表（主表）和 考试批次答题表中添加
+
+    // 考试安排编号
+    const arrangeNum = this.arrangeNum;
+    // 试卷编号
+    const examNum = this.examNum;
+    // 人员编号
+    const personNum = this.personNum;
+
+    const myExamRecid = this.myExamRecid;
+
+    // 通过试卷编号获取试卷题目
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 607188996053,
+        cmswhere: `C3_607172879503 = '${examNum}'`
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    const questions = res.data; // 题目
+
+    // 项考试批次表（主表）和考试批次答题表（子表）中插入数据
+    const dataObj = {
+      resid: 608809112309, // 主表 id
+      maindata: {
+        // 添加的主表记录
+        _state: 'added',
+        C3_607195889817: arrangeNum,
+        C3_607195947239: examNum,
+        C3_607195966239: personNum,
+        C3_609958684582: moment().format('YYYY-MM-DD HH:mm:ss'), // 进入时间
+        _id: 1
+      },
+      subdata: [] // 子表数据
+    };
+
+    questions.forEach((question, index) => {
+      const subdataObj = {
+        resid: 607270079025,
+        maindata: {
+          C3_607174660929: personNum,
+          C3_607174324165: question.C3_607026334772, // 题目编号
+          _id: index + 1,
+          _state: 'added'
+        }
+      };
+      dataObj.subdata.push(subdataObj);
+    });
+
+    try {
+      res = await http().saveRecordAndSubTables({
+        data: [dataObj]
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    // 验证后端返回的数据是否有错误
+    try {
+      if (!res.data.length) {
+        throw new Error('操作失败');
+      }
+      const record = res.data[0];
+      if (record.maindata.message) {
+        throw new Error(record.maindata.message);
+      }
+      let message;
+      for (let i = 0; i < record.subdata.length; i++) {
+        if (record.subdata[i].maindata.message) {
+          message = record.subdata[i].maindata.message;
+          break;
+        }
+      }
+      if (message) {
+        throw new Error(message);
+      }
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    // 考试批次编号
+    const examBatchNum = res.data[0].maindata.C3_607196596723;
+
+    window.location.href = `/fnmodule?resid=考试页面&recid=608295659960&type=考试系统&title=考试页面&examnum=${examNum}&exambatchnum=${examBatchNum}&arrangenum=${arrangeNum}&personnum=${personNum}&myexamrecid=${myExamRecid}`;
+  };
+
   render() {
     const {
       loading,
@@ -419,7 +574,8 @@ export default class ExamPage extends Component {
       timeRemaining,
       hasSubmit,
       hasGetTime,
-      record
+      record,
+      myExamRecord
     } = this.state;
 
     // 用户已提交
@@ -447,6 +603,17 @@ export default class ExamPage extends Component {
               <span className="exam-page__form-title">是否通过：</span>
               <span className="exam-page__form-value">{record.isPass}</span>
             </div>
+            {myExamRecord.C3_610137428463 > 0 ||
+              (true && (
+                <Button
+                  block
+                  onClick={this.handleJoinExam}
+                  style={{ marginTop: 16 }}
+                  type="primary"
+                >
+                  再次考试
+                </Button>
+              ))}
           </div>
         </Spin>
       );
