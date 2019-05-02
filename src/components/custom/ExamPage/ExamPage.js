@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TableData from '../../common/data/TableData';
 import { Modal, Button, message, Spin, Radio, Checkbox } from 'antd';
 import './ExamPage.less';
 import qs from 'qs';
@@ -8,13 +7,23 @@ import moment from 'moment';
 import ReactCountDown from './ReactCountDown';
 const RadioGroup = Radio.Group;
 
+export const getWindowSize = () => {
+  const w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    width = w.innerWidth || e.clientWidth || g.clientWidth,
+    height = w.innerHeight || e.clientHeight || g.clientHeight;
+  return { width, height };
+};
+
 const multipleQuestionOptions = [
   {
-    label: '✅',
+    label: '✓',
     value: 'Y'
   },
   {
-    label: '❎',
+    label: '✗',
     value: 'N'
   }
 ];
@@ -41,11 +50,18 @@ export default class ExamPage extends Component {
     questions: [], // 问题
     answerData: [], // 考试批次答题表
     timeRemaining: 1, // 剩余时间（秒）
-    hasGetTime: false // 是否已获取到了剩余时间
+    hasGetTime: false, // 是否已获取到了剩余时间
+    shortcutsLeft: 1000,
+    record: null
   };
 
   componentDidMount = async () => {
     this.setState({ loading: true });
+
+    // 监听 resize 事件
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+
     const qsObj = qs.parse(window.location.search.substring(1));
     // 考试批次编号、试卷编号
     const { exambatchnum, examnum } = qsObj;
@@ -65,6 +81,8 @@ export default class ExamPage extends Component {
     }
     // 改试卷是否已提交
     let record = res.data[0];
+    this.dealRecord(record);
+
     if (record.C3_607198887973 === 'Y') {
       return this.setState({
         hasSubmit: true,
@@ -98,7 +116,9 @@ export default class ExamPage extends Component {
       res = await http().getTable({
         resid: 607188996053,
         cmswhere: `C3_607172879503 = '${examnum}'`,
-        subresid: 607189013257
+        subresid: 607189013257,
+        sortField: 'C3_609952752239',
+        sortOrder: 'asc'
       });
     } catch (err) {
       this.setState({ loading: false });
@@ -190,6 +210,20 @@ export default class ExamPage extends Component {
     });
   };
 
+  dealRecord = record => {
+    record.name = record.C3_610126074004;
+    record.time = record.C3_610126164784;
+    record.totalScore = record.C3_607198872223;
+    record.score = record.C3_608755560466;
+    record.isPass = record.C3_610125942554;
+  };
+
+  handleResize = e => {
+    const w = getWindowSize().width;
+    const shortcutsLeft = (w - 800) / 2 + 800;
+    this.setState({ shortcutsLeft });
+  };
+
   saveAnswer = async (recid, answer) => {
     const resid = 607270079025; // 考试批次答题表资源 id
     const C3_607174361025 = answer; // 答案
@@ -253,7 +287,9 @@ export default class ExamPage extends Component {
     // 保存答案
     const { answerData } = this.state;
     const record = answerData.find(answerItem => answerItem.id === question.id);
-    const multiValue = question.answer.join('');
+    const answer = [...question.answer];
+    answer.sort();
+    const multiValue = answer.join('');
     this.saveAnswer(record.REC_ID, multiValue);
   };
 
@@ -340,8 +376,9 @@ export default class ExamPage extends Component {
 
   handleSubmit = async () => {
     const { record } = this.state;
+    let res;
     try {
-      await http().modifyRecords({
+      res = await http().modifyRecords({
         resid: 608809112309,
         data: [{ REC_ID: record.REC_ID, C3_607198887973: 'Y' }] // 修改 “是否提交” 字段值为 “Y”
       });
@@ -349,8 +386,10 @@ export default class ExamPage extends Component {
       console.error(err);
       return message.error(err.message);
     }
+    const newRecord = res.data[0];
+    this.dealRecord(newRecord);
     message.success('提交成功');
-    this.setState({ hasSubmit: true });
+    this.setState({ hasSubmit: true, record: newRecord });
   };
 
   handleSubmitBtnClick = () => {
@@ -379,7 +418,8 @@ export default class ExamPage extends Component {
       questions,
       timeRemaining,
       hasSubmit,
-      hasGetTime
+      hasGetTime,
+      record
     } = this.state;
 
     // 用户已提交
@@ -387,7 +427,26 @@ export default class ExamPage extends Component {
       return (
         <Spin spinning={loading}>
           <div className="exam-page">
-            <h1 style={{ textAlign: 'center' }}>您已提交</h1>
+            <div className="exam-page__form">
+              <span className="exam-page__form-title">姓名：</span>
+              <span className="exam-page__form-value">{record.name}</span>
+            </div>
+            <div className="exam-page__form">
+              <span className="exam-page__form-title">考试用时：</span>
+              <span className="exam-page__form-value">{record.time}</span>
+            </div>
+            <div className="exam-page__form">
+              <span className="exam-page__form-title">试卷总分：</span>
+              <span className="exam-page__form-value">{record.totalScore}</span>
+            </div>
+            <div className="exam-page__form">
+              <span className="exam-page__form-title">得分：</span>
+              <span className="exam-page__form-value">{record.score}</span>
+            </div>
+            <div className="exam-page__form">
+              <span className="exam-page__form-title">是否通过：</span>
+              <span className="exam-page__form-value">{record.isPass}</span>
+            </div>
           </div>
         </Spin>
       );
@@ -452,14 +511,17 @@ export default class ExamPage extends Component {
               提交
             </Button>
           </div>
-          <div className="exam-page__shortcuts">
-            <Button type="primary" size="small" href="#单选题">
+          <div
+            className="exam-page__shortcuts"
+            style={{ left: this.state.shortcutsLeft }}
+          >
+            <Button size="small" href="#单选题">
               单选题
             </Button>
-            <Button type="primary" size="small" href="#多选题">
+            <Button size="small" href="#多选题">
               多选题
             </Button>
-            <Button type="primary" size="small" href="#判断题">
+            <Button size="small" href="#判断题" data-mt-duration="300">
               判断题
             </Button>
           </div>
