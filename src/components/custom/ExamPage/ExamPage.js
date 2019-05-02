@@ -603,17 +603,16 @@ export default class ExamPage extends Component {
               <span className="exam-page__form-title">是否通过：</span>
               <span className="exam-page__form-value">{record.isPass}</span>
             </div>
-            {myExamRecord.C3_610137428463 > 0 ||
-              (true && (
-                <Button
-                  block
-                  onClick={this.handleJoinExam}
-                  style={{ marginTop: 16 }}
-                  type="primary"
-                >
-                  再次考试
-                </Button>
-              ))}
+            {myExamRecord.C3_610137428463 > 0 && (
+              <Button
+                block
+                onClick={this.handleJoinExam}
+                style={{ marginTop: 16 }}
+                type="primary"
+              >
+                再次考试
+              </Button>
+            )}
           </div>
         </Spin>
       );
