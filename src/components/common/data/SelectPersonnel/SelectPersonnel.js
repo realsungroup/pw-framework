@@ -1,9 +1,7 @@
 import React from 'react';
-import { message, Spin, Steps, Button } from 'antd';
+import { message, Steps, Button } from 'antd';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import FirstStep from './FirstStep';
-import http, { makeCancelable } from 'Util20/api';
 import './SelectPersonnel.less';
 import { propTypes, defaultProps } from './propTypes';
 
@@ -38,7 +36,8 @@ class SelectPersonnel extends React.Component {
       subResid,
       searchConfig,
       personFields,
-      treeConfig
+      radioGroupConfig,
+      personPrimaryKeyField
     } = this.props;
     return (
       <Fragment>
@@ -53,8 +52,9 @@ class SelectPersonnel extends React.Component {
             listConfig={listConfig}
             subResid={subResid}
             searchConfig={searchConfig}
-            treeConfig={treeConfig}
             personFields={personFields}
+            radioGroupConfig={radioGroupConfig}
+            personPrimaryKeyField={personPrimaryKeyField}
           />
         </div>
         {stepList.map((step, index) => (

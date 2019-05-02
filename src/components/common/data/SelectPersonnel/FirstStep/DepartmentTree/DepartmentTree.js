@@ -10,12 +10,12 @@ export default class DepartmentTree extends React.Component {
     return nodesData.map(nodeData => {
       if (nodeData.childNodes) {
         return (
-          <TreeNode title={nodeData.title} key={nodeData.REC_ID}>
+          <TreeNode title={nodeData.name} key={nodeData.REC_ID}>
             {this.renderTreeNodes(nodeData.childNodes)}
           </TreeNode>
         );
       }
-      return <TreeNode title={nodeData.title} key={nodeData.REC_ID} />;
+      return <TreeNode title={nodeData.name} key={nodeData.REC_ID} />;
     });
   };
 
@@ -23,7 +23,7 @@ export default class DepartmentTree extends React.Component {
     const { onSelect, nodesData } = this.props;
     return (
       <Fragment>
-        {!!nodesData.length && (
+        {nodesData && !!nodesData.length && (
           <Tree defaultExpandAll={true} onSelect={onSelect}>
             {this.renderTreeNodes(nodesData)}
           </Tree>

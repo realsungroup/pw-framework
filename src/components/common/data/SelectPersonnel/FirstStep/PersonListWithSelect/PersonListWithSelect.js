@@ -23,10 +23,10 @@ export default class PersonListWithSelect extends React.Component {
     hasSearch: true
   };
 
-  renderContent = (item, index) => {
+  renderContent = (item, index, field_3) => {
     return (
       <Fragment>
-        <span style={{ marginRight: 10 }}>{item.department}</span>
+        <span style={{ marginRight: 10 }}>{item[field_3]}</span>
         <Checkbox
           checked={item.checked}
           onChange={e => this.props.singleChange(e, item, index)}
@@ -38,7 +38,7 @@ export default class PersonListWithSelect extends React.Component {
   render() {
     const {
       singleChange,
-      allChange,
+      onAllChange,
       onSearch,
       indeterminate,
       isCheckedAll,
@@ -66,7 +66,7 @@ export default class PersonListWithSelect extends React.Component {
               {!!data.length && (
                 <WrapedCheckbox
                   checked={isCheckedAll}
-                  onChange={allChange}
+                  onChange={onAllChange}
                   className={classNames('person-list-withselect__checked-all', {
                     'person-list-withselect__checked-all--without-search': !hasSearch
                   })}
