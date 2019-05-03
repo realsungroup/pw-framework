@@ -74,7 +74,7 @@ export default class ReactCountDown extends Component {
 
     return (
       <div>
-        <span>{m}</span>
+        <span>{m}</span>
         <span>:</span>
         <span>{s}</span>
       </div>
