@@ -7,6 +7,11 @@ import moment from 'moment';
 // import { withRouter } from 'react-router-dom';
 
 class MyExam extends Component {
+  state = {
+    selectedRecord: null,
+    modalVisible: false
+  };
+
   handleJoinConfirm = record => {
     Modal.confirm({
       title: '提示',
@@ -109,6 +114,7 @@ class MyExam extends Component {
   };
 
   render() {
+    const { selectedRecord, modalVisible } = this.state;
     return (
       <div>
         <TableData
@@ -123,9 +129,24 @@ class MyExam extends Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
+                <Button
+                  key={'考试记录'}
+                  onClick={() =>
+                    this.setState({
+                      selectedRecord: record,
+                      modalVisible: true
+                    })
+                  }
+                >
+                  考试记录
+                </Button>
+              );
+            },
+            (record, btnSize) => {
+              return (
                 record.C3_610137428463 > 0 && (
                   <Button
-                    key={record.REC_ID}
+                    key={'参加考试'}
                     onClick={() => this.handleJoinConfirm(record)}
                   >
                     参加考试
@@ -135,6 +156,28 @@ class MyExam extends Component {
             }
           ]}
         />
+        {selectedRecord && (
+          <Modal
+            visible={modalVisible}
+            footer={null}
+            title="考试记录"
+            onCancel={() => this.setState({ modalVisible: false })}
+            width={600}
+            destroyOnClose
+          >
+            <TableData
+              resid={608809112309}
+              hasRowModify={false}
+              hasRowDelete={false}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              height={500}
+              width={550}
+              cmswhere={`C3_607195966239 = '${selectedRecord.C3_607197253817}'`}
+            />
+          </Modal>
+        )}
       </div>
     );
   }
