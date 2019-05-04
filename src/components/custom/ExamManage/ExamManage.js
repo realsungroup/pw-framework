@@ -125,7 +125,7 @@ export default class ExamManage extends Component {
           }) => {
             return (
               <div className="import-button">
-                <Button>下载导入模板</Button>
+                {/* <Button>下载导入模板</Button> */}
                 <Button>导入试卷</Button>
               </div>
             );
@@ -146,7 +146,7 @@ export default class ExamManage extends Component {
               return (
                 <Button
                   onClick={() => {
-                    window.location.href = "";
+                    window.location.href = `/fnmodule?resid=607459194551&recid=610198378903&type=考试系统&title=试卷设置&id=${record.C3_607171749463}`;
                   }}
                 >
                   设计试卷

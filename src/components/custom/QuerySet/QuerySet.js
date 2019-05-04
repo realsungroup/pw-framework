@@ -7,7 +7,6 @@ import {
   Select,
   Radio,
   Checkbox,
-  Icon,
   DatePicker,
   Switch,
   message,
@@ -144,7 +143,6 @@ class QuerySet extends Component {
       isGift,
       giftCount,
       queryId,
-      loading
     } = this.state;
     if (queryId == '') {
       // 添加这个记录
@@ -851,16 +849,16 @@ class QuerySet extends Component {
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
     // console.log('渲染时的问卷试题', AllQuestions);
-    return AllQuestions.map((item,index) => {
+    return AllQuestions.map((item, index) => {
       switch (item.question_type) {
         case '单选题': {
-          return this.renderGetSingleChoice(item,index);
+          return this.renderGetSingleChoice(item, index);
         }
         case '多选题': {
-          return this.renderGetMultiChoice(item,index);
+          return this.renderGetMultiChoice(item, index);
         }
         case '问答题': {
-          return this.renderGetAnswerChoice(item,index);
+          return this.renderGetAnswerChoice(item, index);
         }
       }
     });
@@ -944,17 +942,18 @@ class QuerySet extends Component {
       this.getThisQueryQuestions(queryId);
     }
   };
-  renderGetSingleChoice(item,index) {
+  renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-         <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>{' '}
+          {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <RadioGroup key={item.question_id}>
           {item.subdata.map(option => {
             return (
-              <div key={option.option_id} style={{marginTop:15}}>
+              <div key={option.option_id} style={{ marginTop: 15 }}>
                 {option.option_write == '0' ? (
                   <Radio value={option.option_content}>
                     {option.option_content}
@@ -967,7 +966,7 @@ class QuerySet extends Component {
                       style={{
                         borderRadius: 0,
                         border: 'none',
-                        borderBottom: '1px solid #000',
+                        borderBottom: '1px solid #000'
                       }}
                     />
                   </Radio>
@@ -1036,11 +1035,12 @@ class QuerySet extends Component {
       </div>
     );
   }
-  renderGetMultiChoice(item,index) {
+  renderGetMultiChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>{' '}
+          {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <CheckboxGroup key={item.question_id}>
@@ -1048,11 +1048,17 @@ class QuerySet extends Component {
             return (
               <div key={option.option_id}>
                 {option.option_write == '0' ? (
-                  <Checkbox value={option.option_content} style={{marginTop:15}}>
+                  <Checkbox
+                    value={option.option_content}
+                    style={{ marginTop: 15 }}
+                  >
                     {option.option_content}
                   </Checkbox>
                 ) : (
-                  <Checkbox value={option.option_content} style={{marginTop:15}}>
+                  <Checkbox
+                    value={option.option_content}
+                    style={{ marginTop: 15 }}
+                  >
                     {option.option_content}
                     <Input
                       className="WriteInut"
@@ -1130,11 +1136,12 @@ class QuerySet extends Component {
       </div>
     );
   }
-  renderGetAnswerChoice(item,index) {
+  renderGetAnswerChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span>{item.question_must == '1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>
+          {item.question_must == '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div>
@@ -1564,9 +1571,9 @@ class QuerySet extends Component {
     });
   };
   // 点击完成跳回首页
-  toMyQuery=()=>{
+  toMyQuery = () => {
     window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
-  }
+  };
   render() {
     const {
       activeQuestionType,

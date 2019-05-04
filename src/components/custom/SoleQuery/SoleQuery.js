@@ -3,22 +3,17 @@ import './SoleQuery.less';
 import {
   Input,
   Button,
-  Select,
   Radio,
   Checkbox,
   Carousel,
-  Popconfirm,
   message,
   Modal,
-  Icon,
   Spin
 } from 'antd';
 import http from '../../../util20/api';
 import qs from 'qs';
 const { TextArea } = Input;
-const Option = Select.Option;
 const RadioGroup = Radio.Group;
-const CheckboxGroup = Checkbox.Group;
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
 class SoleQuery extends Component {
@@ -227,7 +222,7 @@ class SoleQuery extends Component {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must ==='1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -279,7 +274,7 @@ class SoleQuery extends Component {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must === '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -300,7 +295,7 @@ class SoleQuery extends Component {
                 >
                   {option.option_content}
                 </Checkbox>
-                {id == option.option_id && option.option_write == '1' ? (
+                {id === option.option_id && option.option_write === '1' ? (
                   <Input
                     style={{
                       width: 200,
@@ -333,7 +328,7 @@ class SoleQuery extends Component {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must == '1' ? <span className="mark">*</span> : ''}
+        <span className='questionOrder'>{index+1}.</span> {item.question_must ==='1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div key={item.question_id}>
@@ -457,7 +452,7 @@ class SoleQuery extends Component {
       title:'提交成功',
       content:(<div>
          <p className="thanks">感谢您参与本次问卷调查</p>
-            {this.state.isGetgift == 'Y' ? (
+            {this.state.isGetgift === 'Y' ? (
               <p>
                 恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
                 <br />
@@ -549,7 +544,7 @@ class SoleQuery extends Component {
   // 输入手机号点击确定
   handleOk = () => {
     const { recid, tel, isGetgift } = this.state;
-    if (!(isGetgift == 'Y')) {
+    if (!(isGetgift ==='Y')) {
       //没有获奖
       return this.setState({
         visible: false,
@@ -645,9 +640,7 @@ class SoleQuery extends Component {
   render() {
     const {
       queryDetail,
-      isGetgift,
       tel,
-      hasGiftList,
       queryStatus,
       loading,
       hasSubmit
@@ -712,7 +705,7 @@ class SoleQuery extends Component {
             />
             </p> */}
             <p className="thanks">感谢您参与本次问卷调查</p>
-            {this.state.isGetgift == 'Y' ? (
+            {this.state.isGetgift ==='Y' ? (
               <p>
                 恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
                 <br />
