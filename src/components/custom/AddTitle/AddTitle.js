@@ -136,7 +136,6 @@ export default class AddTitle extends Component {
       }
       case '3': {
         let res;
-        const terAnswer = questions[2].correctAnswer.join('');
         try {
           res = await http().addRecords({
             resid: 607599734723,
@@ -145,7 +144,7 @@ export default class AddTitle extends Component {
                 C3_607195719536: questions[2].typeName,
                 C3_607195719223: questions[2].topic,
                 C3_607195720020: this.state.difficultLev,
-                C3_607195719379: terAnswer
+                C3_607195719379: questions[2].correctAnswer,
               }
             ]
           });
@@ -288,10 +287,10 @@ export default class AddTitle extends Component {
     });
   };
   // 监听判断答案的变化
-  handleJudgeCorrectAnswer = e => {
+  handleJudgeCorrectAnswer = value => {
     const { questions } = this.state;
     const newQuestions = [...questions];
-    newQuestions[2].correctAnswer = e.target.value;
+    newQuestions[2].correctAnswer = value;
     this.setState({
       questions: newQuestions
     });
@@ -332,7 +331,7 @@ export default class AddTitle extends Component {
         <ul>
           {singlechoice.options.map((option, index) => {
             return (
-              <li key={index} className>
+              <li key={index} >
                 <Radio className="raio">
                   <span style={{ marginRight: 20 }}>
                     {String.fromCharCode(index + 65)}
@@ -358,7 +357,6 @@ export default class AddTitle extends Component {
             );
           })}
         </ul>
-        <div>
           <span>正确答案:</span>
           <Select
             value={singlechoice.correctAnswer}
@@ -373,7 +371,6 @@ export default class AddTitle extends Component {
               );
             })}
           </Select>
-        </div>
       </div>
     );
   };
@@ -423,13 +420,12 @@ export default class AddTitle extends Component {
             );
           })}
         </ul>
-        <div>
           <span>正确答案:</span>
           <Select
             value={multichoice.correctAnswer}
             mode="multiple"
-            className="multiAnswerInp"
             onChange={this.handleMultiCorrectAnswer}
+            style={{width:'50%',height:8}}
           >
             {multichoice.options.map((option, index) => {
               return (
@@ -439,7 +435,6 @@ export default class AddTitle extends Component {
               );
             })}
           </Select>
-        </div>
       </div>
     );
   };
@@ -469,10 +464,10 @@ export default class AddTitle extends Component {
         </div>
         <div>
           <span>正确答案:</span>
-          <Input
-            value={judgement.correctAnswer}
-            onChange={this.handleJudgeCorrectAnswer}
-          />
+          <Select value={judgement.correctAnswer} onChange={this.handleJudgeCorrectAnswer} style={{width:400}}>
+            <Option value='A'>A正确</Option>
+            <Option value='B'>B错误</Option>
+          </Select>
         </div>
       </div>
     );
