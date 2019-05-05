@@ -137,6 +137,7 @@ class MyExam extends Component {
                       modalVisible: true
                     })
                   }
+                  style={{ margin: '0 4px' }}
                 >
                   考试记录
                 </Button>
@@ -148,6 +149,7 @@ class MyExam extends Component {
                   <Button
                     key={'参加考试'}
                     onClick={() => this.handleJoinConfirm(record)}
+                    style={{ margin: '0 4px' }}
                   >
                     参加考试
                   </Button>

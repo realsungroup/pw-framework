@@ -151,7 +151,8 @@ export default class ExamPage extends Component {
       { type: '判断题', questions: [] }
     ];
 
-    res.data.forEach(item => {
+    res.data.forEach((item, index) => {
+      item.C3_607025683659 = `${index + 1}. ${item.C3_607025683659}`;
       switch (item.C3_607025683815) {
         case '单选题': {
           questions[0].questions.push(item);
