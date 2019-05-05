@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import TableData from '../../common/data/TableData';
 import { Modal, Button, Tabs, Select, Input, Radio } from 'antd';
 import './EditTitle.less';
-import EditButton from '../EditButton';
-import AddTitle from '../AddTitle';
+import EditButton from './EditButton';
+import AddTitle from './AddTitle';
 
 export default class EditTitle extends Component {
   constructor(props) {
@@ -41,11 +41,10 @@ export default class EditTitle extends Component {
           customRowBtns={[
             (record, btnSize) => {
               // console.log('xiugai', record);
-              return <EditButton  currentRecord={record}/>;
+              return <EditButton currentRecord={record} />;
             }
           ]}
         />
-       
       </div>
     );
   }

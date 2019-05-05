@@ -156,6 +156,49 @@ export const OneStatistical = Loadable({
   loading() {
     return minLoading;
   }
+  
+});
+
+export const ExamPage = Loadable({
+  loader: () => import('./ExamPage'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const MyExam = Loadable({
+  loader: () => import('./MyExam'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamArrange  = Loadable({
+  loader: () => import('./ExamArrange'),
+  loading() {
+    return minLoading;
+  }
+});
+
+//导出培训项目的组件
+export const FJList = Loadable({
+  loader: () => import('./FJList'),
+  loading() {
+    return minLoading;
+  }
+});
+
+//考试系统组件
+export const EditTitle = Loadable({
+  loader: () => import('./EditTitle'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamSet  = Loadable({
+  loader: () => import('./ExamSet'),
+  loading() {
+    return minLoading;
+  }
 });
 
 //导出培训项目的组件

@@ -164,7 +164,7 @@ class MyExam extends Component {
             footer={null}
             title="考试记录"
             onCancel={() => this.setState({ modalVisible: false })}
-            width={600}
+            width="100%"
             destroyOnClose
           >
             <TableData
@@ -175,7 +175,7 @@ class MyExam extends Component {
               hasModify={false}
               hasDelete={false}
               height={500}
-              width={550}
+              width="100%"
               cmswhere={`C3_607195966239 = '${selectedRecord.C3_607197253817}'`}
             />
           </Modal>

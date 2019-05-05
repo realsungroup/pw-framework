@@ -111,26 +111,50 @@ export default class ExamManage extends Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           {...this.props}
           resid="607188968490"
-          hasRowSelection={true}
+          hasRowSelection={false}
           hasRowModify={true}
           hasRowView={false}
+          hasBeBtns={false}
           hasRowDelete={true}
           hasModify={false}
+          hasDelete={false}
           subtractH={196}
           height={600}
           actionBarFixed={true}
-          actionBarExtra={({
-            dataSource: dataSource,
-            selectedRowKeys: selectedRowKeys
-          }) => {
-            return (
-              <div className="import-button">
-                {/* <Button>下载导入模板</Button> */}
-                <Button>导入试卷</Button>
-              </div>
-            );
+          recordFormType= 'drawer'
+          recordFormContainerProps= {{
+            placement:'bottom',
+            height: 600
           }}
+        //   subTableArrProps={{
+        //       subTableName: '员工成绩',
+        //       subResid: 607188996053,
+        //       tableProps: {
+        //         hasAdd: false,
+        //         hasModify: false,
+        //         hasRowDelete: false,
+        //         hasRowModify: false,
+        //         hasDelete: false
+        //       }
+      
+        //       // hasRowModify: false,
+        //       // hasRowView: false,
+        //       // hasRowDelete: false
+        //   //   }
+        //   // ]
+        // }}
           customRowBtns={[
+            // (record, btnSize) => {
+            //   return (
+            //     <Button
+            //       onClick={() => {
+            //         this.showModal(record);
+            //       }}
+            //     >
+            //       添加题目
+            //     </Button>
+            //   );
+            // },
             (record, btnSize) => {
               return (
                 <Button
@@ -138,7 +162,7 @@ export default class ExamManage extends Component {
                     this.showModal(record);
                   }}
                 >
-                  添加题目
+                  导入题目
                 </Button>
               );
             },
@@ -153,9 +177,9 @@ export default class ExamManage extends Component {
                 </Button>
               );
             },
-            (record, btnSize) => {
-              return <SetScore>分数设置</SetScore>;
-            }
+            // (record, btnSize) => {
+            //   return <SetScore>分数设置</SetScore>;
+            // }
           ]}
         />
         <Modal
@@ -164,8 +188,25 @@ export default class ExamManage extends Component {
           visible={this.state.visible}
           onOk={this.handleClose}
           onCancel={this.handleCancel}
+          destroyOnClose
         >
-          <Tabs defaultActiveKey="1" onChange={callback} width="100px">
+          <TableData
+                resid="607188996053"
+                hasRowDelete={true}
+                hasAdd={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowView={false}
+                hasRowModify={false}
+                hasBeBtns={false}
+                hasRowSelection={false}
+                width="95%"
+                cmswhere={`C3_607172879503 = ${
+                  this.state.record.C3_607171749463
+                }`}
+                
+              />
+          {/* <Tabs defaultActiveKey="1" onChange={callback} width="100px">
             <TabPane tab="单选题" key="1">
               <TableData
                 resid="607599734723"
@@ -245,7 +286,7 @@ export default class ExamManage extends Component {
                 }}
               />
             </TabPane>
-          </Tabs>
+          </Tabs> */}
         </Modal>
       </div>
     );
