@@ -111,7 +111,7 @@ export default class ExamManage extends Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           {...this.props}
           resid="607188968490"
-          hasRowSelection={true}
+          hasRowSelection={false}
           hasRowModify={true}
           hasRowView={false}
           hasBeBtns={false}
