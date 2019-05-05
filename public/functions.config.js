@@ -907,8 +907,17 @@ window[607170104270] = {
 }
 
 
-//个人成绩管理
+//财年培训课表管理
 window[609158468182]={
   name:'FJList',
   title:'财年培训课表管理',
+  props: {
+    resid: 610307713776,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+  }
 }
