@@ -20,7 +20,12 @@ const withImport = WrappedComponent => {
      * 打开导入窗口界面
      * @param {number} resid 资源 id
      */
-    handleOpenImportView = async (resid, type = 'drawer', containerProps) => {
+    handleOpenImportView = async (
+      baseURL,
+      resid,
+      type = 'drawer',
+      containerProps
+    ) => {
       const importContainerProps = {
         title: '导入数据',
         width: 500,
@@ -36,7 +41,8 @@ const withImport = WrappedComponent => {
 
       // 还未请求导入配置
       this.props.openModalOrDrawer(type, importContainerProps, Import, {
-        resid
+        resid,
+        baseURL
       });
     };
 
