@@ -916,6 +916,8 @@ window[609158468182]={
   title:'财年培训课表管理',
   props: {
     resid: 610307713776,
+    subResid: 610308135206,
+    totalResid: 609883172764, 
     hasModify: false,
     hasDelete: false,
     hasAdd: false,
