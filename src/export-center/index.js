@@ -20,7 +20,7 @@ export { LzProApp } from '../components/custom/loadableCustom';
 export { ExamManage } from '../components/custom/loadableCustom';
 export { EditTitle } from '../components/custom/loadableCustom';
 // export { EditButton } from '../components/custom/loadableCustom';
-// export { ExamSet } from '../components/custom/loadableCustom';
+export { ExamSet } from '../components/custom/loadableCustom';
 // export { Training } from '../components/custom/loadableCustom';
 // export { SetScore } from '../components/custom/loadableCustom';
 // export { Result } from '../components/custom/loadableCustom';

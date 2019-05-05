@@ -191,6 +191,12 @@ export const EditTitle  = Loadable({
     return minLoading;
   }
 });
+export const ExamSet  = Loadable({
+  loader: () => import('./ExamSet'),
+  loading() {
+    return minLoading;
+  }
+});
 
 //导出培训项目的组件
 export const FJList = Loadable({

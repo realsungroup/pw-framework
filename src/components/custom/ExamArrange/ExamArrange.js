@@ -144,6 +144,7 @@ class ExamArrange extends Component {
               resid="610210292340"
               hasAdd={false}
               hasRowView={false}
+              hasRowModify={false}
               hasModify={false}
               hasDelete={false}
               customRowBtns={[
