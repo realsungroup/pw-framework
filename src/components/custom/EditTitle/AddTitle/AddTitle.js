@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Radio, Input, Checkbox, Select, message } from 'antd';
-import http from '../../../util20/api';
+import http from 'Util20/api';
 import { cloneDeep } from 'lodash';
 import './AddTitle.less';
 const Option = Select.Option;
@@ -144,7 +144,7 @@ export default class AddTitle extends Component {
                 C3_607195719536: questions[2].typeName,
                 C3_607195719223: questions[2].topic,
                 C3_607195720020: this.state.difficultLev,
-                C3_607195719379: questions[2].correctAnswer,
+                C3_607195719379: questions[2].correctAnswer
               }
             ]
           });
@@ -331,7 +331,7 @@ export default class AddTitle extends Component {
         <ul>
           {singlechoice.options.map((option, index) => {
             return (
-              <li key={index} >
+              <li key={index}>
                 <Radio className="raio">
                   <span style={{ marginRight: 20 }}>
                     {String.fromCharCode(index + 65)}
@@ -357,20 +357,20 @@ export default class AddTitle extends Component {
             );
           })}
         </ul>
-          <span>正确答案:</span>
-          <Select
-            value={singlechoice.correctAnswer}
-            style={{ width: 600 }}
-            onChange={this.handleSingleCorrectAnswer}
-          >
-            {singlechoice.options.map((option, index) => {
-              return (
-                <Option value={String.fromCharCode(index + 65)} key={index}>
-                  {String.fromCharCode(index + 65)}
-                </Option>
-              );
-            })}
-          </Select>
+        <span>正确答案:</span>
+        <Select
+          value={singlechoice.correctAnswer}
+          style={{ width: 600 }}
+          onChange={this.handleSingleCorrectAnswer}
+        >
+          {singlechoice.options.map((option, index) => {
+            return (
+              <Option value={String.fromCharCode(index + 65)} key={index}>
+                {String.fromCharCode(index + 65)}
+              </Option>
+            );
+          })}
+        </Select>
       </div>
     );
   };
@@ -393,7 +393,7 @@ export default class AddTitle extends Component {
         <ul>
           {multichoice.options.map((option, index) => {
             return (
-              <li style={{ marginTop: 10 }} key={index}>
+              <li style={{ marginBottom: 10 }} key={index}>
                 <Checkbox
                   style={{ width: 20, height: 30 }}
                   className="checkbox"
@@ -420,21 +420,21 @@ export default class AddTitle extends Component {
             );
           })}
         </ul>
-          <span>正确答案:</span>
-          <Select
-            value={multichoice.correctAnswer}
-            mode="multiple"
-            onChange={this.handleMultiCorrectAnswer}
-            style={{width:'50%',height:8}}
-          >
-            {multichoice.options.map((option, index) => {
-              return (
-                <Option value={String.fromCharCode(index + 65)} key={index}>
-                  {String.fromCharCode(index + 65)}
-                </Option>
-              );
-            })}
-          </Select>
+        <span>正确答案:</span>
+        <Select
+          value={multichoice.correctAnswer}
+          mode="multiple"
+          onChange={this.handleMultiCorrectAnswer}
+          style={{ width: '50%' }}
+        >
+          {multichoice.options.map((option, index) => {
+            return (
+              <Option value={String.fromCharCode(index + 65)} key={index}>
+                {String.fromCharCode(index + 65)}
+              </Option>
+            );
+          })}
+        </Select>
       </div>
     );
   };
@@ -464,9 +464,13 @@ export default class AddTitle extends Component {
         </div>
         <div>
           <span>正确答案:</span>
-          <Select value={judgement.correctAnswer} onChange={this.handleJudgeCorrectAnswer} style={{width:400}}>
-            <Option value='A'>A正确</Option>
-            <Option value='B'>B错误</Option>
+          <Select
+            value={judgement.correctAnswer}
+            onChange={this.handleJudgeCorrectAnswer}
+            style={{ width: 400 }}
+          >
+            <Option value="A">正确</Option>
+            <Option value="B">错误</Option>
           </Select>
         </div>
       </div>
