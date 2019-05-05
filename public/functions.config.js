@@ -912,3 +912,49 @@ window[609158468182]={
   name:'FJList',
   title:'财年培训课表管理',
 }
+window['考试页面']={
+  name:'ExamPage',
+  title:'考试页面',
+  props: {}
+}
+
+window[607168405062] = {
+  name: 'TableData',
+  title: '个人成绩管理',
+  props: {
+    resid: 610311177773,
+    recordFormFormWidth: '90%',
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    formProps: {
+      height: 500
+    },
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    subTableArrProps: [
+      {
+        subTableName: '员工成绩',
+        subResid: 608809112309,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false
+        }
+
+        // hasRowModify: false,
+        // hasRowView: false,
+        // hasRowDelete: false
+      }
+    ]
+  }
+}
