@@ -831,7 +831,10 @@ window[607170415939] = {
 };
 
 //设计试卷
-
+window[607459194551] = {
+  name: 'ExamSet',
+  title: '设计试卷'
+};
 //考试培训
 window[607168385734] = {
   name: 'Training',

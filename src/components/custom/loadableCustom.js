@@ -165,3 +165,29 @@ export const FJList = Loadable({
     return minLoading;
   }
 });
+
+//考试系统组件
+export const EditTitle = Loadable({
+  loader: () => import('./EditTitle'),
+  loading() {
+    return minLoading;
+  }
+});
+export const EditButton = Loadable({
+  loader: () => import('./EditButton'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamManage = Loadable({
+  loader: () => import('./ExamManage'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamSet = Loadable({
+  loader: () => import('./ExamSet'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -8,13 +8,15 @@ import {
   Checkbox,
   Popconfirm,
   message,
-  Spin
+  Spin,
+  Select
 } from 'antd';
 import http from '../../../util20/api';
 import qs from 'qs';
 import { cloneDeep } from 'lodash';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
+const Option = Select.Option;
 let questions = [
   {
     type: '1', // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
@@ -40,7 +42,7 @@ let questions = [
     type: '2',
     typeName: '多选题',
     topic: '',
-    answer: '', //答案
+    answer: [], //答案
     options: [
       {
         value: ''
@@ -146,7 +148,7 @@ class ExamSet extends Component {
       laoding: true
     });
     try {
-     let  res = await http().modifyRecords({
+      let res = await http().modifyRecords({
         resid: 607188968490,
         data: [
           {
@@ -235,7 +237,7 @@ class ExamSet extends Component {
         console.log('單選題', questions[0]);
         let tempArr = [];
         questions[0].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 97) + '.' + option.value;
+          const str = String.fromCodePoint(index + 65) + '.' + option.value;
           tempArr.push(str);
         });
         // console.log('想想', tempArr);
@@ -256,19 +258,20 @@ class ExamSet extends Component {
       case '2': {
         console.log('多選題', questions[1]);
         let tempArr = [];
-        questions[0].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 97) + '.' + option.value;
+        questions[1].options.forEach((option, index) => {
+          const str = String.fromCodePoint(index + 65) + '.' + option.value;
           tempArr.push(str);
         });
         // console.log('想想', tempArr);
         const terStr = tempArr.join('');
+        const AnswerStr = questions[1].answer.join('');
         terminaldata = [
           {
             C3_607172879503: queryId,
             C3_607025683815: questions[1].typeName,
             C3_607025683659: questions[1].topic,
             C3_607025683987: terStr,
-            C3_607025682987: questions[1].answer,
+            C3_607025682987: AnswerStr,
             C3_607025683503: difficultLev
           }
         ];
@@ -348,9 +351,12 @@ class ExamSet extends Component {
             return (
               <li key={index}>
                 <Radio className="raio">
+                  <span style={{ marginRight: 20 }}>
+                    {String.fromCharCode(index + 65)}
+                  </span>
                   <Input
                     placeholder="请输入选项内容"
-                    style={{ width: 800 }}
+                    style={{ width: 780 }}
                     value={option.value}
                     onChange={e =>
                       this.handleOptionValueChange(e.target.value, index)
@@ -370,10 +376,19 @@ class ExamSet extends Component {
           })}
         </ul>
         <span>正确答案:</span>
-        <Input
+        <Select
           value={singlechoice.answer}
-          onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        />
+          style={{ width: 600 }}
+          onChange={this.handleCorrectAnswerChange}
+        >
+          {singlechoice.options.map((option, index) => {
+            return (
+              <Option value={String.fromCharCode(index + 65)} key={index}>
+                {String.fromCharCode(index + 65)}
+              </Option>
+            );
+          })}
+        </Select>
       </div>
     );
   };
@@ -397,9 +412,12 @@ class ExamSet extends Component {
                   style={{ width: 20, height: 30 }}
                   className="checkbox"
                 />
+                <span style={{ marginRight: 20 }}>
+                  {String.fromCharCode(index + 65)}
+                </span>
                 <Input
                   placeholder="输入选项内容"
-                  style={{ width: 800 }}
+                  style={{ width: 780 }}
                   value={option.value}
                   onChange={e =>
                     this.handleOptionValueChange(e.target.value, index)
@@ -417,10 +435,24 @@ class ExamSet extends Component {
           })}
         </ul>
         <span>正确答案:</span>
-        <Input
+        {/* <Input
           value={multichoice.answer}
           onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        />
+        /> */}
+        <Select
+          value={multichoice.answer}
+          mode="multiple"
+          onChange={this.handleCorrectAnswerChange}
+          style={{ width: '50%' }}
+        >
+          {multichoice.options.map((option, index) => {
+            return (
+              <Option value={String.fromCharCode(index + 65)} key={index}>
+                {String.fromCharCode(index + 65)}
+              </Option>
+            );
+          })}
+        </Select>
       </div>
     );
   };
@@ -437,17 +469,25 @@ class ExamSet extends Component {
           />
         </div>
         <div>
-          <RadioGroup defaultValue="正确">
-            <Radio value="正确">A:正确</Radio>
+          <RadioGroup defaultValue="A">
+            <Radio value="A">正确</Radio>
             <br />
-            <Radio value="错误">B:错误</Radio>
+            <Radio value="B">错误</Radio>
           </RadioGroup>
         </div>
         <span>正确答案:</span>
-        <Input
+        {/* <Input
           value={answers.answer}
           onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        />
+        /> */}
+        <Select
+          value={answers.answer}
+          onChange={this.handleCorrectAnswerChange}
+          style={{ width: 400 }}
+        >
+          <Option value="A">正确</Option>
+          <Option value="B">错误</Option>
+        </Select>
       </div>
     );
   };
@@ -789,8 +829,8 @@ class ExamSet extends Component {
     const { currentQuestion } = this.state;
     this.setState({
       CurrentQuestionVisible: true,
-      currentQuestion: item,
       difficultLev: item.C3_607025683503,
+      currentQuestion: item,
       loading: false
     });
     console.log('当前问题', currentQuestion);
@@ -809,10 +849,20 @@ class ExamSet extends Component {
       }
     }
   }
-  //渲染当前单选题的内容
+
+  // 渲染当前单选题的内容
   renderCurrentSingleQuestion() {
     const { currentQuestion } = this.state;
     console.log('当前', currentQuestion);
+
+    let middleArr = [];
+
+    currentQuestion.subdata.forEach((item, index) => {
+      // s = A.10
+      const s = item.C3_607026461367;
+      const value = s.substring(2);
+      middleArr.push(value);
+    });
     return (
       <div className="query-set__single" style={{ marginTop: 15 }}>
         <div>
@@ -824,13 +874,15 @@ class ExamSet extends Component {
           />
         </div>
         <ul>
-          {currentQuestion.subdata.map((option, index) => {
-            // console.log(option)
+          {middleArr.map((option, index) => {
             return (
               <li key={option.REC_ID}>
                 <Radio className="raio">
+                  <span style={{ marginRight: 20 }}>
+                    {String.fromCharCode(index + 65)}
+                  </span>
                   <Input
-                    value={option.C3_607026461367}
+                    value={option}
                     onChange={e =>
                       this.handleCurrentQuestionOptionChange(
                         e.target.value,
@@ -854,12 +906,19 @@ class ExamSet extends Component {
         </ul>
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
-          <Input
+          <Select
             value={currentQuestion.C3_607025682987}
-            onChange={e => {
-              this.handleEditCorrectAnswerChange(e.target.value);
-            }}
-          />
+            style={{ width: 600 }}
+            onChange={this.handleEditCorrectAnswerChange}
+          >
+            {currentQuestion.subdata.map((option, index) => {
+              return (
+                <Option value={String.fromCharCode(index + 65)} key={index}>
+                  {String.fromCharCode(index + 65)}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
       </div>
     );
@@ -867,7 +926,12 @@ class ExamSet extends Component {
   //渲染当前多选题的内容
   renderCurrentMultiQuestion() {
     const { currentQuestion } = this.state;
-    console.log(currentQuestion);
+    let middleArr = [];
+    currentQuestion.subdata.forEach((item, index) => {
+      middleArr.push(item.C3_607026461367.substring(2));
+    });
+    console.log('当前多选题', currentQuestion);
+    console.log('当前选项内容', middleArr);
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
@@ -880,15 +944,18 @@ class ExamSet extends Component {
           />
         </div>
         <ul>
-          {currentQuestion.subdata.map((option, index) => {
+          {middleArr.map((option, index) => {
             return (
               <li style={{ marginTop: 10 }} key={index}>
                 <Checkbox
                   style={{ width: 20, height: 30 }}
                   className="checkbox"
                 />
+                <span style={{ marginRight: 20 }}>
+                  {String.fromCharCode(index + 65)}
+                </span>
                 <Input
-                  value={option.C3_607026461367}
+                  value={option}
                   onChange={e =>
                     this.handleCurrentQuestionOptionChange(
                       e.target.value,
@@ -910,12 +977,26 @@ class ExamSet extends Component {
         </ul>
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
-          <Input
+          {/* <Input
             value={currentQuestion.C3_607025682987}
             onChange={e => {
               this.handleEditCorrectAnswerChange(e.target.value);
             }}
-          />
+          /> */}
+          <Select
+            value={currentQuestion.C3_607025682987}
+            mode="multiple"
+            onChange={this.handleEditCorrectAnswerChange}
+            style={{ width: '50%' }}
+          >
+            {currentQuestion.subdata.map((option, index) => {
+              return (
+                <Option value={String.fromCharCode(index + 65)} key={index}>
+                  {String.fromCharCode(index + 65)}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
       </div>
     );
@@ -980,10 +1061,11 @@ class ExamSet extends Component {
     this.getThisQuery(qsObj.id);
     this.getThisQueryQuestions(qsObj.id);
   }
+
   //编辑中选项内容的变化
   handleCurrentQuestionOptionChange(value, index) {
     const tempcurrentQuestion = this.state.currentQuestion;
-    tempcurrentQuestion.subdata[index].C3_607026461367 = value;
+    tempcurrentQuestion.subdata[index].C3_607026461367 = 'c.' + value;
     this.setState({
       currentQuestion: tempcurrentQuestion
     });
@@ -1011,16 +1093,36 @@ class ExamSet extends Component {
   handleEditCorrectAnswerChange = value => {
     const { currentQuestion } = this.state;
     const newcurrentQuestion = { ...currentQuestion };
-    newcurrentQuestion.C3_607025682987 = value;
+    if (currentQuestion.C3_607025683815 === '多选题') {
+      const tempvalue = value.join('');
+      newcurrentQuestion.C3_607195719379 = tempvalue;
+    } else {
+      newcurrentQuestion.C3_607025682987 = value;
+    }
     this.setState({
       currentQuestion: newcurrentQuestion
     });
     console.log('答案变化后的', currentQuestion);
   };
+
   // 编辑中保存时
   handleEditModalSave = async () => {
     const { currentQuestion, queryId, difficultLev, loading } = this.state;
     const newcurrentQuestion = { ...currentQuestion };
+
+    newcurrentQuestion.subdata.forEach((item, index) => {
+      if (item.C3_607026461367) {
+        const value = item.C3_607026461367.substring(2);
+        item.backendValue = String.fromCodePoint(index + 65) + '.' + value;
+      }
+    });
+
+    let midArr = [];
+    newcurrentQuestion.subdata.forEach((item, index) => {
+      midArr.push(item.backendValue);
+    });
+
+    const terStr = midArr.join(' ');
     let terminaldata = [];
     // 试卷题目表 607188996053
     if (newcurrentQuestion.C3_607025683815 == '判断题') {
@@ -1034,17 +1136,13 @@ class ExamSet extends Component {
         }
       ];
     } else {
-      const tempArr = newcurrentQuestion.subdata.map(item => {
-        return item.C3_607026461367;
-      });
-      const result = tempArr.join('');
       terminaldata = [
         {
           C3_607172879503: queryId,
           C3_607025683659: newcurrentQuestion.C3_607025683659,
           C3_607025682987: newcurrentQuestion.C3_607025682987, //正确答案
           C3_607025683503: difficultLev, //难易程度
-          C3_607025683987: result, //选项
+          C3_607025683987: terStr, //选项
           REC_ID: newcurrentQuestion.REC_ID
         }
       ];
