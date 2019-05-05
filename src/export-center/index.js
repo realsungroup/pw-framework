@@ -24,9 +24,10 @@ export { ExamSet } from '../components/custom/loadableCustom';
 // export { Training } from '../components/custom/loadableCustom';
 // export { SetScore } from '../components/custom/loadableCustom';
 // export { Result } from '../components/custom/loadableCustom';
-// export { ExamArrange } from '../components/custom/loadableCustom';
-// export { MyExam } from '../components/custom/loadableCustom';
+export { ExamArrange } from '../components/custom/loadableCustom';
+export { MyExam } from '../components/custom/loadableCustom';
 // export { Selected } from '../components/custom/loadableCustom';
+export {ExamPage} from '../components/custom/loadableCustom';
 export { FJList } from '../components/custom/loadableCustom';
 
 // 组件

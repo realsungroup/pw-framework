@@ -156,6 +156,27 @@ export const OneStatistical = Loadable({
   loading() {
     return minLoading;
   }
+  
+});
+
+export const ExamPage = Loadable({
+  loader: () => import('./ExamPage'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const MyExam = Loadable({
+  loader: () => import('./MyExam'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExamArrange  = Loadable({
+  loader: () => import('./ExamArrange'),
+  loading() {
+    return minLoading;
+  }
 });
 
 //导出培训项目的组件
@@ -174,7 +195,7 @@ export const EditTitle = Loadable({
   }
 });
 export const EditButton = Loadable({
-  loader: () => import('./EditButton'),
+  loader: () => import('./EditTitle/EditButton'),
   loading() {
     return minLoading;
   }

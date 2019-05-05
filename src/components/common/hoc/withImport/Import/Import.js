@@ -14,9 +14,9 @@ import http, { makeCancelable } from 'Util20/api';
 import './Import.less';
 
 // 导入文件
-export const importFile = (resid, cfgid, srctype, file) => {
+export const importFile = (baseURL, resid, cfgid, srctype, file) => {
   const upUrlStr =
-    'http://kingofdinner.realsun.me:8102/' +
+    baseURL +
     `api/Resource/ImportFileByConfig?resid=${resid}&cfgid=${cfgid}&srctype=xls`;
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   return new Promise((resolve, reject) => {
@@ -46,7 +46,12 @@ export default class Import extends React.Component {
     /**
      * 导入的资源 id
      */
-    resid: PropTypes.number
+    resid: PropTypes.number,
+
+    /**
+     * 导入请求的基地址
+     */
+    baseURL: PropTypes.string
   };
   static defaultProps = {};
   constructor(props) {
@@ -90,10 +95,10 @@ export default class Import extends React.Component {
   };
 
   selectedItem;
-  importFile = (resid, cfgid, fileInfo, item) => {
+  importFile = (baseURL, resid, cfgid, fileInfo, item) => {
     const file = fileInfo.file;
     // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
-    importFile(resid, cfgid, undefined, file)
+    importFile(baseURL, resid, cfgid, undefined, file)
       .then(res => {
         if (res.error !== 0) {
           return message.error(res.message);
@@ -263,7 +268,13 @@ export default class Import extends React.Component {
           )}
           <Upload
             customRequest={file =>
-              this.importFile(item.IMOUT_RESID, item.IMOUT_ID, file, item)
+              this.importFile(
+                this.props.baseURL,
+                item.IMOUT_RESID,
+                item.IMOUT_ID,
+                file,
+                item
+              )
             }
             showUploadList={false}
           >
