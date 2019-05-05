@@ -172,9 +172,21 @@ export const MyExam = Loadable({
     return minLoading;
   }
 });
+export const ExamManage = Loadable({
+  loader: () => import('./ExamManage'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const ExamArrange  = Loadable({
   loader: () => import('./ExamArrange'),
+  loading() {
+    return minLoading;
+  }
+});
+export const EditTitle  = Loadable({
+  loader: () => import('./EditTitle'),
   loading() {
     return minLoading;
   }
