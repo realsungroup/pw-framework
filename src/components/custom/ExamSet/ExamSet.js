@@ -263,8 +263,8 @@ class ExamSet extends Component {
           tempArr.push(str);
         });
         // console.log('想想', tempArr);
-        const terStr = tempArr.join('');
-        const AnswerStr = questions[1].answer.join('');
+        const terStr = tempArr.join(' ');
+        const AnswerStr = questions[1].answer.join(' ');
         terminaldata = [
           {
             C3_607172879503: queryId,
@@ -283,6 +283,7 @@ class ExamSet extends Component {
           {
             C3_607172879503: queryId,
             C3_607025683659:questions[2].topic,
+            C3_607025683815: questions[2].typeName,
             C3_607025682987: questions[2].answer,
             C3_607025683503: difficultLev
           }
@@ -933,6 +934,7 @@ class ExamSet extends Component {
     });
     console.log('当前多选题', currentQuestion);
     console.log('当前选项内容', middleArr);
+    const correctAnswerArr = currentQuestion.C3_607025682987.split(' ');
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
@@ -979,9 +981,9 @@ class ExamSet extends Component {
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
           <Select
-            value={currentQuestion.C3_607025682987.split('')}
+            value={correctAnswerArr}
             mode="multiple"
-            onChange={this.handleEditCorrectAnswerChange}
+            onChange={this.handlemultiCorrectAnswerChange}
             style={{ width: '50%' }}
           >
             {currentQuestion.subdata.map((option, index) => {
@@ -1022,7 +1024,7 @@ class ExamSet extends Component {
           <Input
             value={currentQuestion.C3_607025682987}
             onChange={e => {
-              this.handleEditCorrectAnswerChange(e.target.value);
+              this.handlemultiCorrectAnswerChange(e.target.value);
             }}
           />
         </div>
@@ -1088,18 +1090,22 @@ class ExamSet extends Component {
   handleEditCorrectAnswerChange = value => {
     const { currentQuestion } = this.state;
     const newcurrentQuestion = { ...currentQuestion };
-    if (currentQuestion.C3_607025683815 === '多选题') {
-      const tempvalue = value.join('');
-      newcurrentQuestion.C3_607195719379 = tempvalue;
-    } else {
       newcurrentQuestion.C3_607025682987 = value;
-    }
     this.setState({
       currentQuestion: newcurrentQuestion
     });
     console.log('答案变化后的', currentQuestion);
   };
-
+// 修改中多选正确答案的变化
+handlemultiCorrectAnswerChange = value => {
+  const newcurrentQuestion = this.state.currentQuestion;
+  console.log('多选答案的变化', value);
+  const tempvalue = value.join(' ');
+  newcurrentQuestion.C3_607025682987 = tempvalue;
+  this.setState({
+    currentQuestion: newcurrentQuestion
+  });
+};
   // 编辑中保存时
   handleEditModalSave = async () => {
     const { currentQuestion, queryId, difficultLev, loading } = this.state;
