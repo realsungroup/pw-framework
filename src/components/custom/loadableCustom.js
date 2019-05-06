@@ -178,6 +178,12 @@ export const ExamArrange  = Loadable({
     return minLoading;
   }
 });
+export const ExamManage  = Loadable({
+  loader: () => import('./ExamManage'),
+  loading() {
+    return minLoading;
+  }
+});
 
 //导出培训项目的组件
 export const FJList = Loadable({
@@ -196,14 +202,6 @@ export const EditTitle = Loadable({
 });
 export const ExamSet  = Loadable({
   loader: () => import('./ExamSet'),
-  loading() {
-    return minLoading;
-  }
-});
-
-//导出培训项目的组件
-export const FJList = Loadable({
-  loader: () => import('./FJList'),
   loading() {
     return minLoading;
   }
