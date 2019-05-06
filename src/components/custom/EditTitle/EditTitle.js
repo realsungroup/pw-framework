@@ -36,7 +36,8 @@ export default class EditTitle extends Component {
                 {/* <Button>下载导入模板</Button> */}
                 {/* <Button>上传题目</Button> */}
                 {/* <Button>下载题目</Button> */}
-                <AddTitle />
+                <AddTitle refresh={() => {
+      this.tableDataRef.handleRefresh()}}/>
               </div>
             );
           }}
