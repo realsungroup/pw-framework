@@ -107,6 +107,7 @@ export default class EditButton extends Component {
       });
       // console.log(res);
       message.success('修改成功');
+      this.props.refresh()
     } catch (err) {
       console.error(err);
     }

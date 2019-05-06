@@ -282,7 +282,8 @@ class ExamSet extends Component {
         terminaldata = [
           {
             C3_607172879503: queryId,
-            C3_607025682987: questions[1].answer,
+            C3_607025683659:questions[2].topic,
+            C3_607025682987: questions[2].answer,
             C3_607025683503: difficultLev
           }
         ];
@@ -889,7 +890,7 @@ class ExamSet extends Component {
                         index
                       )
                     }
-                    style={{ width: 800 }}
+                    style={{ width: 780 }}
                   />
                   <Button
                     icon="delet"
@@ -962,7 +963,7 @@ class ExamSet extends Component {
                       index
                     )
                   }
-                  style={{ width: 800 }}
+                  style={{ width: 780 }}
                 />
                 <Button
                   onClick={() => {
@@ -977,14 +978,8 @@ class ExamSet extends Component {
         </ul>
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
-          {/* <Input
-            value={currentQuestion.C3_607025682987}
-            onChange={e => {
-              this.handleEditCorrectAnswerChange(e.target.value);
-            }}
-          /> */}
           <Select
-            value={currentQuestion.C3_607025682987}
+            value={currentQuestion.C3_607025682987.split('')}
             mode="multiple"
             onChange={this.handleEditCorrectAnswerChange}
             style={{ width: '50%' }}
