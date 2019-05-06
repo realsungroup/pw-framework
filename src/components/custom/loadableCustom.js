@@ -185,13 +185,6 @@ export const ExamManage  = Loadable({
   }
 });
 
-//导出培训项目的组件
-export const FJList = Loadable({
-  loader: () => import('./FJList'),
-  loading() {
-    return minLoading;
-  }
-});
 
 //考试系统组件
 export const EditTitle = Loadable({

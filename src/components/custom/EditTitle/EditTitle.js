@@ -18,6 +18,8 @@ export default class EditTitle extends Component {
     return (
       <div>
         <TableData
+        refTargetComponentName="TableData"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
           resid={607599734723}
           hasAdd={false}
           hasDelete={false}
@@ -34,14 +36,19 @@ export default class EditTitle extends Component {
                 {/* <Button>下载导入模板</Button> */}
                 {/* <Button>上传题目</Button> */}
                 {/* <Button>下载题目</Button> */}
-                <AddTitle />
+                <AddTitle refresh={() => {
+      this.tableDataRef.handleRefresh()}}/>
               </div>
             );
           }}
           customRowBtns={[
             (record, btnSize) => {
               // console.log('xiugai', record);
-              return <EditButton currentRecord={record} />;
+              return <EditButton currentRecord={record} refresh={() => {
+      this.tableDataRef.handleRefresh();
+                
+              }
+              } />;
             }
           ]}
         />

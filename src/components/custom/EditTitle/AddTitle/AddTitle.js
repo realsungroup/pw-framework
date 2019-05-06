@@ -100,6 +100,7 @@ export default class AddTitle extends Component {
           });
           console.log(res);
           message.success('添加成功');
+          this.props.refresh();
         } catch (err) {
           return console.error(err);
         }
@@ -127,8 +128,8 @@ export default class AddTitle extends Component {
               }
             ]
           });
-          console.log(res);
           message.success('添加成功');
+          this.tableDataRef.handleRefresh();
         } catch (err) {
           return console.error(err);
         }
