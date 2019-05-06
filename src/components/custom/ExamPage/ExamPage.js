@@ -424,17 +424,7 @@ export default class ExamPage extends Component {
   };
 
   handleSubmit = async () => {
-    const { record, questions } = this.state;
-
-    const result = questions.every(item => {
-      return item.questions.every(question => {
-        return question.hasDo;
-      });
-    });
-
-    if (!result) {
-      return message.error('有未作答的题目');
-    }
+    const { record } = this.state;
 
     let res;
     try {
@@ -456,9 +446,24 @@ export default class ExamPage extends Component {
   };
 
   handleSubmitBtnClick = () => {
+    const { questions } = this.state;
+    // 检查是否每一道题目都做了
+    const result = questions.every(item => {
+      return item.questions.every(question => {
+        return question.hasDo;
+      });
+    });
+
+    let content;
+    if (result) {
+      content = '您已答完所有的题目，确定要提交吗？';
+    } else {
+      content = '您有未作答的题目，确定要提交吗？';
+    }
+
     Modal.confirm({
       title: '提示',
-      content: '您确定要提交吗？',
+      content: content,
       onOk: () => this.handleSubmit()
     });
   };
