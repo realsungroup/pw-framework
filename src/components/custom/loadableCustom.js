@@ -179,13 +179,6 @@ export const ExamArrange  = Loadable({
   }
 });
 
-//导出培训项目的组件
-export const FJList = Loadable({
-  loader: () => import('./FJList'),
-  loading() {
-    return minLoading;
-  }
-});
 
 //考试系统组件
 export const EditTitle = Loadable({
@@ -194,8 +187,8 @@ export const EditTitle = Loadable({
     return minLoading;
   }
 });
-export const EditButton = Loadable({
-  loader: () => import('./EditTitle/EditButton'),
+export const ExamSet  = Loadable({
+  loader: () => import('./ExamSet'),
   loading() {
     return minLoading;
   }
@@ -203,11 +196,13 @@ export const EditButton = Loadable({
 export const ExamManage = Loadable({
   loader: () => import('./ExamManage'),
   loading() {
-    return minLoading;
+  return minLoading;
   }
-});
-export const ExamSet = Loadable({
-  loader: () => import('./ExamSet'),
+  });
+
+//导出培训项目的组件
+export const FJList = Loadable({
+  loader: () => import('./FJList'),
   loading() {
     return minLoading;
   }

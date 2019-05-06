@@ -1,65 +1,132 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
 import { TableData } from "../../common/loadableCommon";
-import { Button, Icon, Checkbox, message, Popover,List,Card  } from "antd";
+import { Button, Icon, Radio , message, Popover, List, Card, Modal, Input } from "antd";
 import { saveMultipleRecord } from "../../../util/api";
 import http from "../../../util20/api";
 
+const { TextArea } = Input;
+
 class FJList extends React.Component {
-  state = { visible: false, date: "", dataSource: [], selectedRowKeys: "" };
   constructor(props) {
     super(props);
-    const { subTableArr } = props;
-    const hasSubTables = Array.isArray(subTableArr) && !!subTableArr.length;
     this.state = {
       loading: false,
-      data:[]
+      data: [],
+      subData: [],
+      totalData: [],
+      listIndex: "",
+      visibleAdd: false,
+      visibleEdit: false,
+      addData:{},
+      editData:{}
     };
   }
 
   componentDidMount(){
     this.getData();
+    this.totalData();
   };
 
+  //获取员工列表
   async getData(){
     let res = await http().getTable({ resid: this.props.resid });
     try {
       let data = res.data
+      // console.log(res.data)
       data.forEach(e => {
         e.check = false
       });
+      data[0].check = true
       this.setState({data});
+      this.getSubData(data[0].C3_609622254861);
     } catch (err) {
       console.error(err);
       return message.error(err.message);
     }
   }
   
-  // async getSubData(){
-  //   let res = await http().getTable({ resid: this.props.resid });
-  //   try {
-  //     console.log(res.data)
-  //     let data = res.data
-  //     data.forEach(e => {
-  //       e.check = false
-  //     });
-  //     this.setState({data});
-  //   } catch (err) {
-  //     console.error(err);
-  //     return message.error(err.message);
-  //   }
-  // }
+  //获取统计数据
+  async totalData(){
+    let res = await http().getTable({ resid: this.props.totalResid });
+    try {
+      let totalData = res.data[0]
+      this.setState({totalData});
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
   
-  onClick(no){
+  //获取员工推荐课程
+  async getSubData(e){
+    let res = await http().getTable({ resid: this.props.subResid, cmswhere:'C3_610308304458='+e});
+    try {
+      let subData = res.data
+      this.setState({subData});
+    } catch (err) {
+      console.log().error(err);
+      return message.error(err.message);
+    }
+  }
+  
+  //单选员工
+  onClick(listIndex){
     let data = this.state.data
     data.forEach(e => {
-      if(e.C3_609622254861==no)e.check=!e.check
+      e.check = false
+      if(e.C3_609622254861==listIndex)e.check=true
     });
-    this.setState({data});
+    this.setState({data,listIndex});
+    this.getSubData(listIndex);
+  }
+
+  //添加课程
+  async addCourse(){
+    this.setState({visibleAdd:false,visibleEdit:false})
+    let res = await http().addRecords({ resid: this.props.subResid, data:[{...this.state.addData}]});
+    try {
+      if(res.message=="操作成功")return message.success(res.message);
+      return message.error(res.message);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+
+  //删除课程
+  async delCourse(i){
+    let res = await http().removeRecords({ resid: this.props.subResid, data:[this.state.subData[i]]});
+    this.getSubData(this.state.listIndex)
+    try {
+      if(res.message=="操作成功"){
+        return message.success(res.message)
+      }else
+      return message.error(res.message);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+
+  //修改课程
+  async editCourse(i){
+    let res = await http().modifyRecords({ resid: this.props.subResid, data:[this.state.editData]});
+    this.getSubData(this.state.listIndex)
+    try {
+      if(res.message=="操作成功"){
+        return message.success(res.message)
+      }else
+      return message.error(res.message);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
   }
 
   render() {
-    let subData = this.state.data
+    let subData = this.state.subData
+    let totalData = this.state.totalData
     return (
       <div style={{ display:"flex",flexDirection: 'row',background:"#fff"}}>
         <div style={{ width: "50%",padding: '16px 28px'}}> 
@@ -67,21 +134,21 @@ class FJList extends React.Component {
               <Button type="primary">创建计划</Button>
               <div style={{ flex:9, display:"flex",justifyContent: 'space-around',padding: '0 80px'}}>
                 <span style={{fontSize:"24px",fontWeight:"bold"}}>
-                  上海
+                  {totalData.C3_609616006519=="SH"?"上海":"无锡"}
                 </span>
                 <span style={{fontSize:"24px",fontWeight:"bold"}}>
-                  财年:FY2019
+                  财年: {totalData.C3_609615869581}
                 </span>
               </div>
-              <div style={{ display:"flex",flex:2,flexDirection: 'column',justifyContent: 'space-around' }}>
+              <div style={{ display:"flex",flex:3,flexDirection: 'column',justifyContent: 'space-around',alignItems:'center' }}>
                 <span style={{fontSize:"10px"}}>
-                  人数:10
+                  人数: {totalData.C3_609615996253}
                 </span>
                 <span style={{fontSize:"10px"}}>
-                  总预算:10
+                  总预算: {totalData.C3_609616030566}
                 </span>
                 <span style={{fontSize:"10px"}}>
-                  总费用:10
+                  总费用: {totalData.C3_609616051191}
                 </span>
               </div>
             </div>
@@ -94,7 +161,7 @@ class FJList extends React.Component {
               renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
                                     <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
                                       <div style={{display:"flex",flex:1}}>
-                                        <Checkbox checked={item.check}></Checkbox>
+                                        <Radio  checked={item.check}></Radio >
                                       </div>
                                       <div style={{display:"flex",flex:2}}>
                                         <Icon type = "user" style={{fontSize:"24px"}}/>
@@ -134,7 +201,7 @@ class FJList extends React.Component {
             <div style={{ flex:9 }}></div>
             <div style={{ display:"flex",flex:2,flexDirection: 'column',justifyContent: 'space-around' }}>
               <span style={{fontSize:"10px"}}>
-                课程数数:10
+                课程数:10
               </span>
               <span style={{fontSize:"10px"}}>
                 个人预算:10
@@ -146,58 +213,171 @@ class FJList extends React.Component {
           </div>
           <div>
             {subData.map((item,i)=>(
-              <Card title="课程名"
+              <Card
+                title={item.C3_609845305680}
                 key={i}
-                extra={<Icon type="delete" style={{cursor:'pointer'}}/>} style={{marginBottom:"16px"}}
-                actions={[<a href="#">修改</a>,<span></span>,]}
+                extra={<Icon type="delete" style={{cursor:'pointer'}} onClick={this.delCourse.bind(this,i)}/>} style={{marginBottom:"16px"}}
+                actions={[<a href="#" onClick={()=>this.setState({editData:{...this.state.subData[i]},visibleEdit:true,})}>修改</a>,<span></span>,]}
               >
                 <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
                   <span style={{fontSize:"10px"}}>
-                    课程数数
+                    费用
                   </span>
                   <span style={{fontSize:"10px"}}>
-                    1000
-                  </span>
-                </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
-                    制定人
-                  </span>
-                  <span style={{fontSize:"10px"}}>
-                    张三
+                    {item.C3_609845305931}
                   </span>
                 </div>
                 <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
                   <span style={{fontSize:"10px"}}>
-                    修改人
+                    课时
                   </span>
                   <span style={{fontSize:"10px"}}>
-                    李四
-                  </span>
-                </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
-                    培训机构
-                  </span>
-                  <span style={{fontSize:"10px"}}>
-                    王五培训
+                    {item.C3_609845305993}
                   </span>
                 </div>
                 <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
                   <span style={{fontSize:"10px"}}>
-                    简介
+                    讲师
                   </span>
                   <span style={{fontSize:"10px"}}>
-                    阿斯蒂芬啦时代街坊邻居哦玩家坡底健身房
+                    {item.C3_610390419677}
+                  </span>
+                </div>
+                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"10px"}}>
+                    培训地
+                  </span>
+                  <span style={{fontSize:"10px"}}>
+                    {item.C3_610390410802}
+                  </span>
+                </div>
+                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"10px"}}>
+                    课程介绍
+                  </span>
+                  <span style={{fontSize:"10px"}}>
+                    {item.C3_609845305618}
                   </span>
                 </div>
               </Card>
             ))}
           </div>
           <div style={{display:"flex",flex:1,flexDirection: 'row',justifyContent: 'space-around',padding: '5px 0',marginTop:"20px"}}>
-            <Button type="default" style={{ width: "calc(50% - 80px)" }}>添加课程</Button>
+            <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleAdd:true})}>添加课程</Button>
             <Button type="default" style={{ width: "calc(50% - 80px)" }}>自定义课程</Button>
           </div>
+          <Modal
+            title="添加课程"
+            visible={this.state.visibleAdd}
+            onOk={this.addCourse.bind(this)}
+            onCancel={()=>this.setState({visibleAdd:false})}
+          >
+            <div style={{margin:"10px"}}>
+              <Input placeholder="课程名称"
+                onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_609845305680=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="费用" onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_609845305931=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="课时" onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_609845305993=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="讲师" onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_610390419677=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="培训地" onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_610390410802=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <TextArea  placeholder="课程介绍" autosize={{ minRows: 2, maxRows: 2 }} onChange={(e)=>{
+                let addData = this.state.addData
+                addData.C3_609845305618=e.target.value
+                this.setState({addData})
+              }}/>
+            </div>
+          </Modal>
+          <Modal
+            title="修改课程"
+            visible={this.state.visibleEdit}
+            onOk={this.editCourse.bind(this)}
+            onCancel={()=>this.setState({visibleEdit:false})}
+          >
+            <div style={{margin:"10px"}}>
+              <Input placeholder="课程名称"
+                defaultValue = {this.state.editData.C3_609845305680}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_609845305680=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="费用"
+                defaultValue = {this.state.editData.C3_609845305931}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_609845305931=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="课时" 
+                defaultValue = {this.state.editData.C3_609845305993}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_609845305993=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="讲师" 
+                defaultValue = {this.state.editData.C3_610390419677}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_610390419677=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <Input placeholder="培训地"
+                defaultValue = {this.state.editData.C3_610390410802}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_610390410802=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+            <div style={{margin:"10px"}}>
+              <TextArea placeholder="课程介绍"
+                defaultValue = {this.state.editData.C3_609845305618}
+                autosize={{ minRows: 2, maxRows: 2 }}
+                onChange={(e)=>{
+                let editData = this.state.editData
+                editData.C3_609845305618=e.target.value
+                this.setState({editData})
+              }}/>
+            </div>
+          </Modal>
         </div>
       </div>
     );
