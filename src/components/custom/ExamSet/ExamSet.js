@@ -264,7 +264,7 @@ class ExamSet extends Component {
         });
         // console.log('想想', tempArr);
         const terStr = tempArr.join(' ');
-        const AnswerStr = questions[1].answer.join(' ');
+        const AnswerStr = questions[1].answer.join('');
         terminaldata = [
           {
             C3_607172879503: queryId,
@@ -934,7 +934,7 @@ class ExamSet extends Component {
     });
     console.log('当前多选题', currentQuestion);
     console.log('当前选项内容', middleArr);
-    const correctAnswerArr = currentQuestion.C3_607025682987.split(' ');
+    const correctAnswerArr = currentQuestion.C3_607025682987.split('');
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
@@ -1100,7 +1100,7 @@ class ExamSet extends Component {
 handlemultiCorrectAnswerChange = value => {
   const newcurrentQuestion = this.state.currentQuestion;
   console.log('多选答案的变化', value);
-  const tempvalue = value.join(' ');
+  const tempvalue = value.join('');
   newcurrentQuestion.C3_607025682987 = tempvalue;
   this.setState({
     currentQuestion: newcurrentQuestion
@@ -1123,7 +1123,7 @@ handlemultiCorrectAnswerChange = value => {
       midArr.push(item.backendValue);
     });
 
-    const terStr = midArr.join(' ');
+    const terStr = midArr.join('');
     let terminaldata = [];
     // 试卷题目表 607188996053
     if (newcurrentQuestion.C3_607025683815 == '判断题') {
