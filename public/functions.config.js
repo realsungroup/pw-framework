@@ -918,13 +918,7 @@ window[610555787304]={
   props: {
     resid: 610307713776,
     subResid: 610308135206,
-    totalResid: 609883172764, 
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: false,
+    totalResid: 609883172764,
   }
 }
 window['考试页面']={
@@ -977,3 +971,14 @@ window[607459194551] = {
   name: 'ExamSet',
   title: '设计试卷'
 };
+
+//创建计划
+window[610555442186]={
+  name:'CreatePlan',
+  title:'创建计划',
+  props: {
+    resid: 610307713776,
+    subResid: 610308370365,
+    levelId: 449335746776
+  }
+}
