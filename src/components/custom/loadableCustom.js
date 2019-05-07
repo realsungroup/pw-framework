@@ -207,3 +207,11 @@ export const FJList = Loadable({
     return minLoading;
   }
 });
+
+//创建计划
+export const CreatePlan = Loadable({
+  loader: () => import('./CreatePlan'),
+  loading() {
+    return minLoading;
+  }
+});
