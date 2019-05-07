@@ -256,6 +256,10 @@ export default class LzMenuContainer extends React.Component {
           ? ` (${searchField.innerFieldName} = '${searchValue}') `
           : ` (${searchField.innerFieldName} = '${searchValue}') or`;
     });
+    // 加上当前登录人的工号
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const jobNum = userInfo.UserInfo.EMP_DEPID;
+    where += ` and (C3_605790201450 = '${jobNum}')`;
     return where;
   };
 
