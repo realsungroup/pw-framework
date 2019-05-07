@@ -12,7 +12,8 @@ window[606476781618] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166
+    subtractH: 166,
+    hasRowSelection: true
   }
 };
 // // 606496690009 到期违章清单
