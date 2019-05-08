@@ -1,0 +1,2 @@
+import QuestionnaireStatisticAnalysis from './QuestionnaireStatisticAnalysis';
+export default QuestionnaireStatisticAnalysis;

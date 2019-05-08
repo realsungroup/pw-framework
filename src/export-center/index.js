@@ -66,4 +66,4 @@ export {
 } from '../components/custom/loadableCustom';
 
 // 导出demo
-export { RichTextDemo } from '../components/custom/loadableCustom';
+// export { RichTextDemo } from '../components/custom/loadableCustom';
