@@ -217,9 +217,9 @@ export const AdminConfirm = Loadable({
     return minLoading;
   }
 });
-// export const CreatePlan = Loadable({
-//   loader: () => import('./CreatePlan'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
+export const CreatePlan = Loadable({
+  loader: () => import('./CreatePlan'),
+  loading() {
+    return minLoading;
+  }
+});
