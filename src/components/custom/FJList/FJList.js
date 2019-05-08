@@ -15,11 +15,15 @@ class FJList extends React.Component {
       data: [],
       subData: [],
       totalData: [],
-      listIndex: "",
+      addCustom: [],
+      listIndex: 0,
+      listNo:"",
       visibleAdd: false,
       visibleEdit: false,
+      visibleCustom: false,
       addData:{},
-      editData:{}
+      editData:{},
+      plist:[]
     };
   }
 
@@ -71,20 +75,23 @@ class FJList extends React.Component {
   }
   
   //单选员工
-  onClick(listIndex){
+  onClick(listNo){
     let data = this.state.data
     data.forEach(e => {
       e.check = false
-      if(e.C3_609622254861==listIndex)e.check=true
+      if(e.C3_609622254861==listNo)e.check=true
     });
-    this.setState({data,listIndex});
-    this.getSubData(listIndex);
+    this.setState({data,listNo});
+    this.getSubData(listNo);
   }
 
   //添加课程
   async addCourse(){
-    this.setState({visibleAdd:false,visibleEdit:false})
-    let res = await http().addRecords({ resid: this.props.subResid, data:[{...this.state.addData}]});
+    // this.setState({visibleAdd:false,visibleEdit:false})
+    let addData = this.state.addData
+    addData.C3_610308304458 = this.state.subData[this.state.listIndex].C3_610308304458
+    let res = await http().addRecords({ resid: this.props.subResid, data:[{...addData}]});
+    this.getSubData(this.state.listNo)
     try {
       if(res.message=="操作成功")return message.success(res.message);
       return message.error(res.message);
@@ -94,10 +101,26 @@ class FJList extends React.Component {
     }
   }
 
+  //添加自定义课程
+  async addCustom(){
+    this.setState({visibleCustom:false})
+    let addCustom = this.state.addCustom
+    addCustom.C3_610308304458 = this.state.subData[this.state.listIndex].C3_610308304458
+    let res = await http().addRecords({ resid: this.props.subResid, data:[{...addCustom}]});
+    this.getSubData(this.state.listNo)
+    try {
+      if(res.message=="操作成功")return message.success(res.message);
+      return message.error(res.message);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+  
   //删除课程
   async delCourse(i){
     let res = await http().removeRecords({ resid: this.props.subResid, data:[this.state.subData[i]]});
-    this.getSubData(this.state.listIndex)
+    this.getSubData(this.state.listNo)
     try {
       if(res.message=="操作成功"){
         return message.success(res.message)
@@ -112,7 +135,7 @@ class FJList extends React.Component {
   //修改课程
   async editCourse(i){
     let res = await http().modifyRecords({ resid: this.props.subResid, data:[this.state.editData]});
-    this.getSubData(this.state.listIndex)
+    this.getSubData(this.state.listNo)
     try {
       if(res.message=="操作成功"){
         return message.success(res.message)
@@ -264,118 +287,219 @@ class FJList extends React.Component {
           </div>
           <div style={{display:"flex",flex:1,flexDirection: 'row',justifyContent: 'space-around',padding: '5px 0',marginTop:"20px"}}>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleAdd:true})}>添加课程</Button>
-            <Button type="default" style={{ width: "calc(50% - 80px)" }}>自定义课程</Button>
+            <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleCustom:true})}>自定义课程</Button>
           </div>
           <Modal
             title="添加课程"
+            destroyOnClose={true}
             visible={this.state.visibleAdd}
             onOk={this.addCourse.bind(this)}
             onCancel={()=>this.setState({visibleAdd:false})}
           >
-            <div style={{margin:"10px"}}>
-              <Input placeholder="课程名称"
-                onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_609845305680=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程名称:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_609845305680=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="费用" onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_609845305931=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>费用:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_609845305931=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="课时" onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_609845305993=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课时:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_609845305993=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="讲师" onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_610390419677=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>讲师:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_610390419677=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="培训地" onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_610390410802=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>培训地:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_610390410802=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <TextArea  placeholder="课程介绍" autosize={{ minRows: 2, maxRows: 2 }} onChange={(e)=>{
-                let addData = this.state.addData
-                addData.C3_609845305618=e.target.value
-                this.setState({addData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程介绍:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  autosize={{ minRows: 2, maxRows: 2 }}
+                  onChange={(e)=>{
+                    let addData = this.state.addData
+                    addData.C3_609845305618=e.target.value
+                    this.setState({addData})
+                }}/>
+              </div>
+            </div>
+          </Modal>
+          <Modal
+            title="添加自定义课程"
+            destroyOnClose={true}
+            visible={this.state.visibleCustom}
+            onOk={this.addCustom.bind(this)}
+            onCancel={()=>this.setState({visibleCustom:false})}
+          >
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程名称:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input
+                  onChange={(e)=>{
+                    let addCustom = this.state.addCustom
+                    addCustom.C3_609845305680=e.target.value
+                    this.setState({addCustom})
+                }}/>
+              </div>
+            </div>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>费用:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input onChange={(e)=>{
+                  let addCustom = this.state.addCustom
+                  addCustom.C3_609845305931=e.target.value
+                  this.setState({addCustom})
+                }}/>
+              </div>
             </div>
           </Modal>
           <Modal
             title="修改课程"
+            destroyOnClose={true}
             visible={this.state.visibleEdit}
             onOk={this.editCourse.bind(this)}
             onCancel={()=>this.setState({visibleEdit:false})}
           >
-            <div style={{margin:"10px"}}>
-              <Input placeholder="课程名称"
-                defaultValue = {this.state.editData.C3_609845305680}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_609845305680=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程名称:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_609845305680}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_609845305680=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="费用"
-                defaultValue = {this.state.editData.C3_609845305931}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_609845305931=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>费用:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_609845305931}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_609845305931=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="课时" 
-                defaultValue = {this.state.editData.C3_609845305993}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_609845305993=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课时:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_609845305993}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_609845305993=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="讲师" 
-                defaultValue = {this.state.editData.C3_610390419677}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_610390419677=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>讲师:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_610390419677}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_610390419677=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <Input placeholder="培训地"
-                defaultValue = {this.state.editData.C3_610390410802}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_610390410802=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>培训地:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_610390410802}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_610390410802=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
-            <div style={{margin:"10px"}}>
-              <TextArea placeholder="课程介绍"
-                defaultValue = {this.state.editData.C3_609845305618}
-                autosize={{ minRows: 2, maxRows: 2 }}
-                onChange={(e)=>{
-                let editData = this.state.editData
-                editData.C3_609845305618=e.target.value
-                this.setState({editData})
-              }}/>
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <div style={{display:"flex",flex:1,alignItems:"center"}}>
+                <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程介绍:</span>
+              </div>
+              <div style={{flex:3}}>
+                <Input 
+                  defaultValue = {this.state.editData.C3_609845305618}
+                  autosize={{ minRows: 2, maxRows: 2 }}
+                  onChange={(e)=>{
+                    let editData = this.state.editData
+                    editData.C3_609845305618=e.target.value
+                    this.setState({editData})
+                }}/>
+              </div>
             </div>
           </Modal>
         </div>

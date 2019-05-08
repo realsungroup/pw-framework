@@ -29,6 +29,7 @@ export { MyExam } from '../components/custom/loadableCustom';
 // export { Selected } from '../components/custom/loadableCustom';
 export {ExamPage} from '../components/custom/loadableCustom';
 export { FJList } from '../components/custom/loadableCustom';
+export { CreatePlan } from '../components/custom/loadableCustom';
 
 // 组件
 

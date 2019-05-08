@@ -12,7 +12,8 @@ window[606476781618] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166
+    subtractH: 166,
+    hasRowSelection: true
   }
 };
 // // 606496690009 到期违章清单
@@ -911,19 +912,13 @@ window[607170104270] = {
 
 
 //财年培训课表管理
-window[609158468182]={
+window[610555787304]={
   name:'FJList',
   title:'财年培训课表管理',
   props: {
     resid: 610307713776,
     subResid: 610308135206,
-    totalResid: 609883172764, 
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: false,
+    totalResid: 609883172764,
   }
 }
 window['考试页面']={
@@ -976,3 +971,14 @@ window[607459194551] = {
   name: 'ExamSet',
   title: '设计试卷'
 };
+
+//创建计划
+window[610555442186]={
+  name:'CreatePlan',
+  title:'创建计划',
+  props: {
+    resid: 610307713776,
+    subResid: 610308370365,
+    levelId: 449335746776
+  }
+}

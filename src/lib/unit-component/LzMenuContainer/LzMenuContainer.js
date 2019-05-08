@@ -183,11 +183,18 @@ export default class LzMenuContainer extends React.Component {
       if (mode === 'single') {
         const { defaultComponetProps } = this.props;
         const { record } = this.state;
+
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const jobNum = userInfo.UserInfo.EMP_ID;
+        const cmswhere = `C3_605790201450 = '${jobNum}'`;
+
         const props = {
           ...defaultComponetProps,
           hostrecid: record.REC_ID,
-          searchValue: this.state.searchValue
+          searchValue: this.state.searchValue,
+          cmswhere
         };
+
         return <LzTable {...props} key={props.hostrecid} />;
       } else {
         const { subresid, resid, hostrecid } = this.state;
@@ -256,6 +263,10 @@ export default class LzMenuContainer extends React.Component {
           ? ` (${searchField.innerFieldName} = '${searchValue}') `
           : ` (${searchField.innerFieldName} = '${searchValue}') or`;
     });
+    // 加上当前登录人的工号
+    // const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    // const jobNum = userInfo.UserInfo.EMP_USERCODE;
+    // where += ` and (C3_605790201450 = '${jobNum}')`;
     return where;
   };
 

@@ -1520,7 +1520,7 @@ class ExamSet extends Component {
                 </div>
               </Upload>
             </div>
-            <img src={this.state.currentQuestion.C3_610564959242} />
+           <div className='Exam-set__picbox'> <img src={this.state.currentQuestion.C3_610564959242} /> </div>
             <div />
           </Modal>
         </div>
