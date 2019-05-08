@@ -489,6 +489,10 @@ class TableData extends React.Component {
     }
     const { beBtnsMultiple, beBtnsSingle, beBtnsOther } = btns;
 
+    if (!beBtnsMultiple.length && !beBtnsSingle.length) {
+      message.warn('未配置后端按钮，请将 hasBeBtns 设置为 false');
+    }
+
     // 有行选择
     let rowSelection = null;
     if (this.hasRowSelection(beBtnsMultiple)) {
@@ -556,8 +560,8 @@ class TableData extends React.Component {
   };
 
   hasRowSelection = beBtnsMultiple => {
-    const { hasModify, hasDelete } = this.props;
-    return !!beBtnsMultiple.length || hasModify || hasDelete;
+    const { hasModify, hasDelete, hasRowSelection } = this.props;
+    return hasRowSelection || !!beBtnsMultiple.length || hasModify || hasDelete;
   };
 
   // 搜索
