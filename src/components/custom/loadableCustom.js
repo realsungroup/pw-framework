@@ -113,12 +113,7 @@ export const Paging = Loadable({
     return minLoading;
   }
 });
-// export const xxxxx组件名 = Loadable({
-//   loader: () => import('./xxx组件名'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
+
 export const QueryType = Loadable({
   loader: () => import('./QueryType'),
   loading() {
@@ -208,7 +203,15 @@ export const FJList = Loadable({
   }
 });
 
-//创建计划
+
+//dev
+export const RichTextDemo = Loadable({
+  loader: () => import('./RichTextDemo'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const CreatePlan = Loadable({
   loader: () => import('./CreatePlan'),
   loading() {
