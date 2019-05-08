@@ -1,5 +1,15 @@
 import React from 'react';
-import { Button, Icon, Input, Select, Tag, Modal, Tabs, Spin ,message} from 'antd';
+import {
+  Button,
+  Icon,
+  Input,
+  Select,
+  Tag,
+  Modal,
+  Tabs,
+  Spin,
+  message
+} from 'antd';
 import './MyQuery.less';
 import { QueryTable, QueryType, Paging } from '../loadableCustom';
 import TableData from '../../common/data/TableData';
@@ -16,7 +26,8 @@ class MyQuery extends React.Component {
       floders: [],
       typewid: 1200,
       questionnaire: [],
-      loading: false
+      loading: false,
+      foloderbuttonChecked: '全部'
     };
   }
   //获取问卷文件夹
@@ -35,7 +46,7 @@ class MyQuery extends React.Component {
       })
       .catch(err => {
         console.error(err);
-        message.error('MyQuery获取文件夹失败',err.message);
+        message.error('MyQuery获取文件夹失败', err.message);
       });
   };
 
@@ -54,7 +65,7 @@ class MyQuery extends React.Component {
 
   //获取问卷
   getData = async () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true ,foloderbuttonChecked:'全部'});
     http()
       .getTable({
         resid: 608822905547
@@ -69,10 +80,16 @@ class MyQuery extends React.Component {
       .catch(err => {
         this.setState({ loading: false });
         console.error(err);
-        message.error('MyQuery获取问卷失败',err.message);
+        message.error('MyQuery获取问卷失败', err.message);
       });
   };
-
+// 判断选中按钮的类型
+getType=(flodername)=>{
+    const {foloderbuttonChecked} = this.state;
+    if(foloderbuttonChecked==flodername){
+      return 'primary';
+    }
+}
   // 删除问卷;
   deleQuery = item => {
     console.log('问卷对象', item);
@@ -91,7 +108,7 @@ class MyQuery extends React.Component {
       })
       .catch(err => {
         this.setState({ loading: false });
-        message.error('MyQuery删除问卷失败',err.message);
+        message.error('MyQuery删除问卷失败', err.message);
         console.error(err);
       });
   };
@@ -145,7 +162,7 @@ class MyQuery extends React.Component {
         })
         .catch(err => {
           console.error(err);
-          message.error('MyQuery筛选失败',err.message);
+          message.error('MyQuery筛选失败', err.message);
           this.setState({ loading: false });
         });
     }
@@ -172,7 +189,7 @@ class MyQuery extends React.Component {
       })
       .catch(err => {
         console.error('修改失败原因', err);
-        message.error('MyQuery停止问卷失败',err.message);
+        message.error('MyQuery停止问卷失败', err.message);
         this.setState({ loading: false });
       });
   };
@@ -181,7 +198,7 @@ class MyQuery extends React.Component {
     //  console.log('筛选',item)
     const floderId = item.floder_id;
     console.log(floderId);
-    this.setState({ loading: true });
+    this.setState({ loading: true, foloderbuttonChecked: item.floder_name });
 
     http()
       .getTable({
@@ -193,7 +210,7 @@ class MyQuery extends React.Component {
       })
       .catch(err => {
         console.error(err);
-        message.error('MyQuery筛选失败',err.message);
+        message.error('MyQuery筛选失败', err.message);
         this.setState({ loading: false });
       });
   };
@@ -213,7 +230,7 @@ class MyQuery extends React.Component {
       })
       .catch(err => {
         console.error(err);
-        message.error('MyQuery问卷搜索',err.message);
+        message.error('MyQuery问卷搜索', err.message);
         this.setState({ loading: false });
       });
   };
@@ -223,7 +240,7 @@ class MyQuery extends React.Component {
   };
 
   render() {
-    const { questionnaire, loading } = this.state;
+    const { questionnaire, loading, foloderbuttonChecked } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="query">
@@ -259,13 +276,19 @@ class MyQuery extends React.Component {
             <Button type="primary" icon="plus" onClick={this.showModal}>
               管理文件夹
             </Button>
-            <Button
-              style={{ marginLeft: 8 }}
-              onClick={this.getData}
-              type="primary"
-            >
-              全部
-            </Button>
+            {foloderbuttonChecked == '全部' ? (
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={this.getData}
+                type="primary"
+              >
+                全部
+              </Button>
+            ) : (
+              <Button style={{ marginLeft: 8 }} onClick={this.getData}>
+                全部
+              </Button>
+            )}
             <Modal
               title="管理文件夹"
               width={this.state.wid}
@@ -309,6 +332,7 @@ class MyQuery extends React.Component {
                 <Button
                   className="personalTags"
                   key={index}
+                  type={this.getType(item.floder_name)}
                   onClick={() => {
                     this.sortShow(item);
                   }}
