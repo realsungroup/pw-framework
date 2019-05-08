@@ -205,12 +205,12 @@ export const FJList = Loadable({
 
 
 //dev
-export const RichTextDemo = Loadable({
-  loader: () => import('./RichTextDemo'),
-  loading() {
-    return minLoading;
-  }
-});
+// export const RichTextDemo = Loadable({
+//   loader: () => import('./RichTextDemo'),
+//   loading() {
+//     return minLoading;
+//   }
+// });
 
 export const CreatePlan = Loadable({
   loader: () => import('./CreatePlan'),
