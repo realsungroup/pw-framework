@@ -199,3 +199,11 @@ export const ExamSet  = Loadable({
     return minLoading;
   }
 });
+
+export const FJList  = Loadable({
+  loader: () => import('./FJList'),
+  loading() {
+    return minLoading;
+  }
+});
+

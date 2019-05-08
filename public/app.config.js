@@ -30,7 +30,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655,608290060436], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
@@ -61,7 +61,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://wux-hr03:9091/', // 请求的基地址
+    baseURL: 'http://wux-hr03:1001/', // 请求的基地址
     fileDownloadUrl: 'http://wux-hr03/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
