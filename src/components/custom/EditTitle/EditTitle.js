@@ -27,6 +27,8 @@ export default class EditTitle extends Component {
           hasRowModify={false}
           hasRowView={false}
           hasRowDelete={true}
+          subtractH={240}
+          height={600}
           actionBarExtra={({
             dataSource: dataSource,
             selectedRowKeys: selectedRowKeys
