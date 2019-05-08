@@ -64,4 +64,5 @@ export {
   OneStatistical
 } from '../components/custom/loadableCustom';
 
-
+// 导出demo
+export { RichTextDemo } from '../components/custom/loadableCustom';

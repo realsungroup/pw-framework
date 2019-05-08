@@ -207,3 +207,12 @@ export const FJList = Loadable({
     return minLoading;
   }
 });
+
+
+//dev
+export const RichTextDemo = Loadable({
+  loader: () => import('./RichTextDemo'),
+  loading() {
+    return minLoading;
+  }
+});

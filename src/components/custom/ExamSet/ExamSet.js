@@ -9,7 +9,9 @@ import {
   Popconfirm,
   message,
   Spin,
-  Select
+  Select,
+  Icon,
+  Upload
 } from 'antd';
 import http from '../../../util20/api';
 import qs from 'qs';
@@ -17,12 +19,36 @@ import { cloneDeep } from 'lodash';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
+const uploadFile = (file, url) => {
+  return new Promise((resolve, reject) => {
+    let fd = new FormData();
+    fd.append('file', file, file.name);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.onload = () => {
+      const data = JSON.parse(xhr.response);
+      if (xhr.status === 200 && (data.error === 0 || data.error === '0')) {
+        const imgUrl = data.data;
+        resolve(imgUrl);
+      } else {
+        reject(data);
+      }
+    };
+    xhr.send(fd);
+  });
+};
+
+function getFileType(file) {
+  return file.type.split('/')[1];
+}
+
 let questions = [
   {
     type: '1', // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
     typeName: '单选题',
     topic: '', // 题目标题
     answer: '',
+    imgUrl: '',
     options: [
       {
         value: ''
@@ -43,6 +69,7 @@ let questions = [
     typeName: '多选题',
     topic: '',
     answer: [], //答案
+    imgUrl: '', //图片链接
     options: [
       {
         value: ''
@@ -62,7 +89,8 @@ let questions = [
     type: '3',
     typeName: '判断题',
     topic: '',
-    answer: ''
+    answer: '',
+    imgUrl: '' //图片链接
   }
 ];
 class ExamSet extends Component {
@@ -250,7 +278,7 @@ class ExamSet extends Component {
             C3_607025683659: questions[0].topic,
             C3_607025683987: terStr,
             C3_607025682987: questions[0].answer,
-            C3_607025683503: difficultLev
+            C3_610564959242: questions[0].imgUrl
           }
         ];
         break;
@@ -272,7 +300,8 @@ class ExamSet extends Component {
             C3_607025683659: questions[1].topic,
             C3_607025683987: terStr,
             C3_607025682987: AnswerStr,
-            C3_607025683503: difficultLev
+            C3_607025683503: difficultLev,
+            C3_610564959242: questions[0].imgUrl
           }
         ];
         break;
@@ -282,10 +311,11 @@ class ExamSet extends Component {
         terminaldata = [
           {
             C3_607172879503: queryId,
-            C3_607025683659:questions[2].topic,
+            C3_607025683659: questions[2].topic,
             C3_607025683815: questions[2].typeName,
             C3_607025682987: questions[2].answer,
-            C3_607025683503: difficultLev
+            C3_607025683503: difficultLev,
+            C3_610564959242: questions[0].imgUrl
           }
         ];
       }
@@ -437,10 +467,6 @@ class ExamSet extends Component {
           })}
         </ul>
         <span>正确答案:</span>
-        {/* <Input
-          value={multichoice.answer}
-          onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        /> */}
         <Select
           value={multichoice.answer}
           mode="multiple"
@@ -478,10 +504,6 @@ class ExamSet extends Component {
           </RadioGroup>
         </div>
         <span>正确答案:</span>
-        {/* <Input
-          value={answers.answer}
-          onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        /> */}
         <Select
           value={answers.answer}
           onChange={this.handleCorrectAnswerChange}
@@ -534,6 +556,43 @@ class ExamSet extends Component {
       questions: newQuestions
     });
   };
+  // hanldeuploadAddPicture = ()=>{
+
+  // }
+  hanldeuploadAddPicture = fileInfo => {
+    const { activeQuestionType } = this.state;
+    const newQuestions = [...this.state.questions];
+    const file = fileInfo.file;
+    const type = getFileType(file);
+    const bucketname = 'realsun';
+    const url = `http://kingofdinner.realsun.me:8102/api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+      bucketname
+    )}&srctype=${encodeURIComponent(type)}`;
+    try {
+      uploadFile(file, url).then(backUrl => {
+        console.log('返回的图片路径', backUrl);
+        switch (activeQuestionType) {
+          case '1': {
+            newQuestions[0].imgUrl = backUrl;
+            break;
+          }
+          case '2': {
+            newQuestions[1].imgUrl = backUrl;
+            break;
+          }
+          case '3': {
+            newQuestions[2].imgUrl = backUrl;
+            break;
+          }
+        }
+        this.setState({
+          questions: newQuestions
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   // 正确答案输入的变化
   handleCorrectAnswerChange = value => {
     const { activeQuestionType } = this.state;
@@ -582,10 +641,17 @@ class ExamSet extends Component {
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
         </div>
+        {item.C3_610564959242 == null ? (
+          ' '
+        ) : (
+          <div className="Exam-set__pic">
+            <img className="Exam-set__pic__img" src={item.C3_610564959242} />
+          </div>
+        )}
         <RadioGroup key={item.question_id}>
           {item.subdata.map((option, index) => {
             return (
-              <div key={index} style={{ marginTop: 15 }}>
+              <div key={index} className='Exam-set__single__radio'>
                 <Radio value={option.C3_607026461367}>
                   {option.C3_607026461367}
                 </Radio>
@@ -666,10 +732,17 @@ class ExamSet extends Component {
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
         </div>
+        {item.C3_610564959242 == ' ' ? (
+          ' '
+        ) : (
+          <div className="Exam-set__pic">
+            <img className="Exam-set__pic__img" src={item.C3_610564959242} />
+          </div>
+        )}
         <CheckboxGroup key={item.REC_ID}>
           {item.subdata.map((option, index) => {
             return (
-              <div key={index}>
+              <div key={index}  className='Exam-set__single__radio'>
                 <Checkbox
                   key={option.REC_ID}
                   value={option.C3_607026461367}
@@ -754,7 +827,14 @@ class ExamSet extends Component {
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
         </div>
-        <div>
+        {item.C3_610564959242 == ' ' ? (
+          ' '
+        ) : (
+          <div className="Exam-set__pic">
+            <img className="Exam-set__pic__img" src={item.C3_610564959242} />
+          </div>
+        )}
+        <div className='Exam-set__single__radio'>
           <RadioGroup defaultValue="正确">
             <Radio value="正确">A:正确</Radio>
             <br />
@@ -831,7 +911,6 @@ class ExamSet extends Component {
     const { currentQuestion } = this.state;
     this.setState({
       CurrentQuestionVisible: true,
-      difficultLev: item.C3_607025683503,
       currentQuestion: item,
       loading: false
     });
@@ -856,9 +935,7 @@ class ExamSet extends Component {
   renderCurrentSingleQuestion() {
     const { currentQuestion } = this.state;
     console.log('当前', currentQuestion);
-
     let middleArr = [];
-
     currentQuestion.subdata.forEach((item, index) => {
       // s = A.10
       const s = item.C3_607026461367;
@@ -878,7 +955,7 @@ class ExamSet extends Component {
         <ul>
           {middleArr.map((option, index) => {
             return (
-              <li key={option.REC_ID}>
+              <li key={index}>
                 <Radio className="raio">
                   <span style={{ marginRight: 20 }}>
                     {String.fromCharCode(index + 65)}
@@ -1090,39 +1167,36 @@ class ExamSet extends Component {
   handleEditCorrectAnswerChange = value => {
     const { currentQuestion } = this.state;
     const newcurrentQuestion = { ...currentQuestion };
-      newcurrentQuestion.C3_607025682987 = value;
+    newcurrentQuestion.C3_607025682987 = value;
     this.setState({
       currentQuestion: newcurrentQuestion
     });
     console.log('答案变化后的', currentQuestion);
   };
-// 修改中多选正确答案的变化
-handlemultiCorrectAnswerChange = value => {
-  const newcurrentQuestion = this.state.currentQuestion;
-  console.log('多选答案的变化', value);
-  const tempvalue = value.join('');
-  newcurrentQuestion.C3_607025682987 = tempvalue;
-  this.setState({
-    currentQuestion: newcurrentQuestion
-  });
-};
+  // 修改中多选正确答案的变化
+  handlemultiCorrectAnswerChange = value => {
+    const newcurrentQuestion = this.state.currentQuestion;
+    console.log('多选答案的变化', value);
+    const tempvalue = value.join('');
+    newcurrentQuestion.C3_607025682987 = tempvalue;
+    this.setState({
+      currentQuestion: newcurrentQuestion
+    });
+  };
   // 编辑中保存时
   handleEditModalSave = async () => {
-    const { currentQuestion, queryId, difficultLev, loading } = this.state;
+    const { currentQuestion, queryId, loading } = this.state;
     const newcurrentQuestion = { ...currentQuestion };
-
     newcurrentQuestion.subdata.forEach((item, index) => {
       if (item.C3_607026461367) {
         const value = item.C3_607026461367.substring(2);
         item.backendValue = String.fromCodePoint(index + 65) + '.' + value;
       }
     });
-
     let midArr = [];
     newcurrentQuestion.subdata.forEach((item, index) => {
       midArr.push(item.backendValue);
     });
-
     const terStr = midArr.join('');
     let terminaldata = [];
     // 试卷题目表 607188996053
@@ -1132,8 +1206,8 @@ handlemultiCorrectAnswerChange = value => {
           C3_607172879503: queryId, //试卷编号
           C3_607025683659: newcurrentQuestion.C3_607025683659, //题干
           C3_607025682987: newcurrentQuestion.C3_607025682987, //正确答案
-          C3_607025683503: difficultLev, //难易程度
-          REC_ID: newcurrentQuestion.REC_ID
+          REC_ID: newcurrentQuestion.REC_ID,
+          C3_610564959242: newcurrentQuestion.C3_610564959242
         }
       ];
     } else {
@@ -1142,9 +1216,9 @@ handlemultiCorrectAnswerChange = value => {
           C3_607172879503: queryId,
           C3_607025683659: newcurrentQuestion.C3_607025683659,
           C3_607025682987: newcurrentQuestion.C3_607025682987, //正确答案
-          C3_607025683503: difficultLev, //难易程度
           C3_607025683987: terStr, //选项
-          REC_ID: newcurrentQuestion.REC_ID
+          REC_ID: newcurrentQuestion.REC_ID,
+          C3_610564959242: newcurrentQuestion.C3_610564959242
         }
       ];
     }
@@ -1291,6 +1365,29 @@ handlemultiCorrectAnswerChange = value => {
       this.setState({ laoding: false });
     }
   };
+
+  // 编辑上传图片
+  hanldeuploadPicture = fileInfo => {
+    const { currentQuestion } = this.state;
+    const newcurrentQuestion = { ...currentQuestion };
+    const file = fileInfo.file;
+    const type = getFileType(file);
+    const bucketname = 'realsun';
+    const url = `http://kingofdinner.realsun.me:8102/api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+      bucketname
+    )}&srctype=${encodeURIComponent(type)}`;
+    try {
+      // 点击编辑时的
+      uploadFile(file, url).then(res => {
+        newcurrentQuestion.C3_610564959242 = res;
+        this.setState({
+          currentQuestion: newcurrentQuestion
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   // Render
   render() {
     const {
@@ -1358,24 +1455,6 @@ handlemultiCorrectAnswerChange = value => {
               <Radio.Button value="2">多选题</Radio.Button>
               <Radio.Button value="3">判断题</Radio.Button>
             </Radio.Group>
-            <div style={{ marginTop: 16 }}>
-              <span className="DL">题目的难易程度:</span>
-              <Radio.Group
-                value={difficultLev}
-                buttonStyle="solid"
-                onChange={e => this.handleQuestionDiffLevChange(e.target.value)}
-              >
-                <Radio.Button value="低难度" className="dlButton">
-                  低难度
-                </Radio.Button>
-                <Radio.Button value="中难度" className="dlButton">
-                  中难度
-                </Radio.Button>
-                <Radio.Button value="高难度" className="dlButton">
-                  高难度
-                </Radio.Button>
-              </Radio.Group>
-            </div>
             {this.renderQuestion()}
             {this.state.activeQuestionType == '3' ? (
               ''
@@ -1390,6 +1469,17 @@ handlemultiCorrectAnswerChange = value => {
                 </Button>
               </div>
             )}
+            <div className="query-set__upload">
+              <Upload
+                listType="picture"
+                customRequest={this.hanldeuploadAddPicture}
+              >
+                <div className="Exam-set__upload__box">
+                  <Icon type="plus" />
+                  <div>upload</div>
+                </div>
+              </Upload>
+            </div>
           </Modal>
           {/* 当前点击问题的模态框 */}
           <Modal
@@ -1400,24 +1490,6 @@ handlemultiCorrectAnswerChange = value => {
             width={this.state.wid2}
             destroyOnClose={true}
           >
-            <div style={{ marginTop: 16 }}>
-              <span className="DL">题目的难易程度:</span>
-              <Radio.Group
-                value={difficultLev}
-                buttonStyle="solid"
-                onChange={e => this.handleQuestionDiffLevChange(e.target.value)}
-              >
-                <Radio.Button value="低难度" className="dlButton">
-                  低难度
-                </Radio.Button>
-                <Radio.Button value="中难度" className="dlButton">
-                  中难度
-                </Radio.Button>
-                <Radio.Button value="高难度" className="dlButton">
-                  高难度
-                </Radio.Button>
-              </Radio.Group>
-            </div>
             {this.renderCurrentQuestion(
               this.state.currentQuestion.C3_607025683815
             )}
@@ -1437,6 +1509,19 @@ handlemultiCorrectAnswerChange = value => {
                 </Button>
               </div>
             )}
+            <div className="query-set__upload">
+              <Upload
+                listType="picture"
+                customRequest={this.hanldeuploadPicture}
+              >
+                <div className="Exam-set__upload__box">
+                  <Icon type="plus" />
+                  <div>upload</div>
+                </div>
+              </Upload>
+            </div>
+            <img src={this.state.currentQuestion.C3_610564959242} />
+            <div />
           </Modal>
         </div>
       </Spin>
