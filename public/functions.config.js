@@ -827,7 +827,8 @@ window[607170415939] = {
     resid: 607599734723,
     hasAdd: false,
     hasModify: false,
-    hasDelete: false
+    hasDelete: false,
+    hasRowDelete:true,
   }
 };
 
@@ -849,7 +850,7 @@ window[607168416937] = {
     resid: 607188943833,
     hasAdd: false,
     hasModify: false,
-    hasDelete: false
+    hasDelete: false,
   }
 };
 //人员信息
@@ -872,7 +873,11 @@ window[607562749445] = {
     hasDelete: false,
     hasModify: false,
     hasRowDelete: false,
-    hasRowModify: false
+    hasRowModify: false,
+    subtractH:220,
+    formProps:{
+      height:500,
+    }
   }
 };
 //题型分数设置
@@ -978,6 +983,7 @@ window[610555442186] = {
   props: {
     resid: 610307713776,
     subResid: 610308370365,
-    levelId: 449335746776
+    levelId: 449335746776,
+    kcbResid: 610657610335
   }
 };

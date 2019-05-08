@@ -125,8 +125,21 @@ class MyExam extends Component {
           hasAdd={false}
           hasModify={false}
           hasDelete={false}
-          height={500}
+          subtractH={220}
           customRowBtns={[
+            (record, btnSize) => {
+              return (
+                record.C3_610137428463 > 0 && (
+                  <Button
+                    key={'参加考试'}
+                    onClick={() => this.handleJoinConfirm(record)}
+                    style={{ margin: '0 4px' }}
+                  >
+                    参加考试
+                  </Button>
+                )
+              );
+            },
             (record, btnSize) => {
               return (
                 <Button
@@ -142,20 +155,7 @@ class MyExam extends Component {
                   考试记录
                 </Button>
               );
-            },
-            (record, btnSize) => {
-              return (
-                record.C3_610137428463 > 0 && (
-                  <Button
-                    key={'参加考试'}
-                    onClick={() => this.handleJoinConfirm(record)}
-                    style={{ margin: '0 4px' }}
-                  >
-                    参加考试
-                  </Button>
-                )
-              );
-            }
+            }, 
           ]}
         />
         {selectedRecord && (

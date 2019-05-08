@@ -37,8 +37,8 @@ class CreatePlan extends React.Component {
   };
 
   //获取员工列表
-  async getData(){
-    let res = await http().getTable({ resid: this.props.resid });
+  async getData(key){
+    let res = await http().getTable({ resid: this.props.resid,key });
     try {
       let data = res.data
       // console.log(res.data)
@@ -65,11 +65,14 @@ class CreatePlan extends React.Component {
   }
 
   //获取课程表
-  async getSubData(){
-    let res = await http().getTable({ resid: this.props.subResid});
+  async getSubData(key){
+    let res = await http().getTable({ resid: this.props.subResid,key});
     try {
       let subData = res.data
-      console.log(res.data)
+      // console.log(res.data)
+      subData.forEach(e => {
+        e.check = false
+      });
       this.setState({subData});
     } catch (err) {
       console.log().error(err);
@@ -77,14 +80,47 @@ class CreatePlan extends React.Component {
     }
   }
   
-  //单选员工
-  onClick(listNo){
+  //选择员工
+  onClick(i){
     let data = this.state.data
-    data.forEach(e => {
-      if(e.C3_609622254861==listNo)e.check=!e.check
-    });
-    this.setState({data,listNo});
-    this.getSubData(listNo);
+    data[i].check=!data[i].check
+    this.setState({data});
+  }
+
+  //选择课程
+  onClickCustom(i){
+    let subData = this.state.subData
+    subData[i].check=!subData[i].check
+    this.setState({subData});
+  }
+
+  //保存计划
+  async onClickSave(){
+    let x=0,y=0,data=this.state.data,subData=this.state.subData,planData=[]
+    subData.forEach((ele)=>{
+      if(ele.check==true){
+        y++
+        data.forEach((e)=>{
+          if(e.check==true){
+            x++
+            let obj = JSON.parse(JSON.stringify(ele))
+            obj.C3_610308304458 = e.C3_609622254861
+            planData.push(obj)
+          }
+        })
+      }
+    })
+    console.log(planData)
+    if(y==0)return message.error("至少选择一个课程");
+    if(x==0)return message.error("至少选择一个员工");
+    let res = await http().addRecords({ resid: this.props.kcbResid,data: planData});
+    try {
+      if(res.message=="操作成功")return message.success(res.message);
+      return message.error(res.message);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
   }
 
   render() {
@@ -123,7 +159,7 @@ class CreatePlan extends React.Component {
                 </Select>
                 <Search
                   placeholder="搜索"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => this.getData(value)}
                   style={{ width: 200 }}
                 />
               </div>}
@@ -131,7 +167,7 @@ class CreatePlan extends React.Component {
               bordered
               style={{height:"calc(100vh - 400px)"}}
               dataSource={this.state.data}
-              renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
+              renderItem={(item,i) => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,i)}>
                                     <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
                                       <div style={{display:"flex",flex:1}}>
                                         <Checkbox checked={item.check}/>
@@ -203,30 +239,30 @@ class CreatePlan extends React.Component {
                 </Select>
                 <Search
                   placeholder="搜索"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => this.getSubData(value)}
                   style={{ width: 200 }}
                 />
               </div>}
               bordered
               style={{height:"calc(100vh - 400px)"}}
               dataSource={this.state.subData}
-              renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={()=>{}}>
+              renderItem={(item,i) => (<List.Item style={{cursor:'pointer'}} onClick={this.onClickCustom.bind(this,i)}>
                                     <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
                                       <div style={{display:"flex",flex:1}}>
                                         <Checkbox checked={item.check}/>
                                       </div>
                                       <div style={{display:"flex",flex:10,flexDirection:"column"}}>
                                         <div style={{display:"flex",flex:1,flexDirection:"row",justifyContent:"space-between",marginBottom:"16px"}}>
-                                          <div>
+                                          <div style={{display:"flex",flex:1}}>
                                             <span>{item.C3_609845305680==null?"无":item.C3_609845305680}</span>
                                           </div>
-                                          <div>
+                                          <div style={{display:"flex",flex:1}}>
                                             <span>{item.C3_610390419677==null?"无":item.C3_610390419677}</span>
                                           </div>
-                                          <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                                          <div style={{display:"flex",flex:1,flexDirection:'row',alignItems:'center'}}>
                                             <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_610390410802==null?"无":item.C3_610390410802}</span>
                                           </div>
-                                          <div>
+                                          <div style={{display:"flex",flex:1}}>
                                             <span>{item.C3_609845305931==null?"无":item.C3_609845305931}</span>
                                           </div>
                                         </div>
@@ -234,7 +270,7 @@ class CreatePlan extends React.Component {
                                           <span>简介: {item.C3_609845305618==null?"无":item.C3_609845305618}</span>
                                         </div>
                                       </div>
-                                      <div style={{display:"flex",flex:1,justifyContent:"center"}}>
+                                      <div style={{display:"flex",flex:1}}>
                                         <Icon type = "ellipsis" style={{fontSize:"18px",border:"2px solid #555",borderRadius:"50%",padding:"3px"}}/>
                                       </div>
                                     </div>
@@ -242,7 +278,7 @@ class CreatePlan extends React.Component {
           </div>
         </div>
         <div style={{display:"flex",justifyContent:"center"}}>
-          <Button type="primary" style={{width:"100px"}}>保存</Button>
+          <Button type="primary" style={{width:"100px"}} onClick={this.onClickSave.bind(this)}>保存</Button>
         </div>
       </div>
     );

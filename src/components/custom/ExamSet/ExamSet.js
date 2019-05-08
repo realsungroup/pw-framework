@@ -488,7 +488,7 @@ class ExamSet extends Component {
     let answers = this.state.questions[2];
     // console.log(answers)
     return (
-      <div className="query-set__answer" style={{ marginTop: 15 }}>
+      <div className="query-set__answer" style={{ marginTop: 15,marginBottom:15 }}>
         <div>
           <Input
             value={answers.topic}
@@ -496,21 +496,14 @@ class ExamSet extends Component {
             onChange={this.AnswerTopicChange}
           />
         </div>
-        <div>
-          <RadioGroup defaultValue="A">
-            <Radio value="A">正确</Radio>
-            <br />
-            <Radio value="B">错误</Radio>
-          </RadioGroup>
-        </div>
         <span>正确答案:</span>
         <Select
           value={answers.answer}
           onChange={this.handleCorrectAnswerChange}
           style={{ width: 400 }}
         >
-          <Option value="A">正确</Option>
-          <Option value="B">错误</Option>
+          <Option value="Y">正确</Option>
+          <Option value="N">错误</Option>
         </Select>
       </div>
     );
@@ -836,9 +829,9 @@ class ExamSet extends Component {
         )}
         <div className='Exam-set__single__radio'>
           <RadioGroup defaultValue="正确">
-            <Radio value="正确">A:正确</Radio>
+            <Radio value="Y">正确</Radio>
             <br />
-            <Radio value="错误">B:错误</Radio>
+            <Radio value="N">错误</Radio>
           </RadioGroup>
         </div>
         <div className="choiceActionBox">
