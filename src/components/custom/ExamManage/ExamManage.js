@@ -118,8 +118,7 @@ export default class ExamManage extends Component {
           hasRowDelete={true}
           hasModify={false}
           hasDelete={false}
-          subtractH={196}
-          height={600}
+          subtractH={260}
           actionBarFixed={true}
           recordFormType= 'drawer'
           recordFormContainerProps= {{
@@ -200,93 +199,13 @@ export default class ExamManage extends Component {
                 hasRowModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
-                width="95%"
+                subtractH={220}
+                heigth={500}
                 cmswhere={`C3_607172879503 = ${
                   this.state.record.C3_607171749463
                 }`}
                 
               />
-          {/* <Tabs defaultActiveKey="1" onChange={callback} width="100px">
-            <TabPane tab="单选题" key="1">
-              <TableData
-                resid="607599734723"
-                hasRowDelete={false}
-                hasAdd={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowView={false}
-                hasRowModify={false}
-                hasBeBtns={false}
-                hasRowSelection={true}
-                actionBarExtra={({
-                  dataSource: dataSource,
-                  selectedRowKeys: selectedRowKeys
-                }) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.onHandleMessage(dataSource, selectedRowKeys);
-                      }}
-                    >
-                      添加题目
-                    </Button>
-                  );
-                }}
-              />
-            </TabPane>
-            <TabPane tab="多选题" key="2">
-              <TableData
-                resid="608397494705"
-                hasRowDelete={false}
-                hasAdd={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowView={false}
-                hasRowModify={false}
-                hasBeBtns={false}
-                actionBarExtra={({
-                  dataSource: dataSource,
-                  selectedRowKeys: selectedRowKeys
-                }) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.onHandleMessage(dataSource, selectedRowKeys);
-                      }}
-                    >
-                      添加题目
-                    </Button>
-                  );
-                }}
-              />
-            </TabPane>
-            <TabPane tab="判断题" key="3">
-              <TableData
-                resid="608397540251"
-                hasRowDelete={false}
-                hasAdd={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowView={false}
-                hasRowModify={false}
-                hasBeBtns={false}
-                actionBarExtra={({
-                  dataSource: dataSource,
-                  selectedRowKeys: selectedRowKeys
-                }) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.onHandleMessage(dataSource, selectedRowKeys);
-                      }}
-                    >
-                      添加题目
-                    </Button>
-                  );
-                }}
-              />
-            </TabPane>
-          </Tabs> */}
         </Modal>
       </div>
     );
