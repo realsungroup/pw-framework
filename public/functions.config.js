@@ -1,6 +1,6 @@
 // 管理员确认
 window[606476781618] = {
-  name: 'TableDataWrap',
+  name: 'AdminConfirm',
   title: '录入',
   props: {
     resid: 605617716920,
@@ -12,7 +12,7 @@ window[606476781618] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166,
+    subtractH: 220,
     hasRowSelection: true
   }
 };
@@ -908,24 +908,23 @@ window[607170104270] = {
     hasRowView: false,
     height: 300
   }
-}
-
+};
 
 //财年培训课表管理
-window[610555787304]={
-  name:'FJList',
-  title:'财年培训课表管理',
+window[610555787304] = {
+  name: 'FJList',
+  title: '财年培训课表管理',
   props: {
     resid: 610307713776,
     subResid: 610308135206,
-    totalResid: 609883172764,
+    totalResid: 609883172764
   }
-}
-window['考试页面']={
-  name:'ExamPage',
-  title:'考试页面',
+};
+window['考试页面'] = {
+  name: 'ExamPage',
+  title: '考试页面',
   props: {}
-}
+};
 
 window[607168405062] = {
   name: 'TableData',
@@ -966,19 +965,19 @@ window[607168405062] = {
       }
     ]
   }
-}
+};
 window[607459194551] = {
   name: 'ExamSet',
   title: '设计试卷'
 };
 
 //创建计划
-window[610555442186]={
-  name:'CreatePlan',
-  title:'创建计划',
+window[610555442186] = {
+  name: 'CreatePlan',
+  title: '创建计划',
   props: {
     resid: 610307713776,
     subResid: 610308370365,
     levelId: 449335746776
   }
-}
+};
