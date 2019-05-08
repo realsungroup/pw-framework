@@ -251,7 +251,7 @@ export default class ExamPage extends Component {
       myExamRecord
     });
   };
-
+  
   dealRecord = record => {
     record.name = record.C3_610126074004;
     record.time = record.C3_610126164784;

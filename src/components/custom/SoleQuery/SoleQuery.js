@@ -203,26 +203,27 @@ class SoleQuery extends Component {
   // 循环遍历所有的题目;
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    return AllQuestions.map((item,index)=> {
+    return AllQuestions.map((item, index) => {
       switch (item.question_type) {
         case '单选题': {
-          return this.renderGetSingleChoice(item,index);
+          return this.renderGetSingleChoice(item, index);
         }
         case '多选题': {
-          return this.renderGetMultiChoice(item,index);
+          return this.renderGetMultiChoice(item, index);
         }
         case '问答题': {
-          return this.renderGetAnswer(item,index);
+          return this.renderGetAnswer(item, index);
         }
       }
     });
   }
 
-  renderGetSingleChoice(item,index) {
+  renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must ==='1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>{' '}
+          {item.question_must === '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -269,12 +270,13 @@ class SoleQuery extends Component {
       </div>
     );
   }
-  renderGetMultiChoice(item,index) {
+  renderGetMultiChoice(item, index) {
     // // console.log({ item });
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must === '1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>{' '}
+          {item.question_must === '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
           <span className="question_type">[{item.question_type}]</span>
         </div>
@@ -324,11 +326,12 @@ class SoleQuery extends Component {
     );
   }
 
-  renderGetAnswer(item,index) {
+  renderGetAnswer(item, index) {
     return (
       <div className="choice" key={item.question_id}>
         <div className="query-set__questionTopic">
-        <span className='questionOrder'>{index+1}.</span> {item.question_must ==='1' ? <span className="mark">*</span> : ''}
+          <span className="questionOrder">{index + 1}.</span>{' '}
+          {item.question_must === '1' ? <span className="mark">*</span> : ''}
           {item.question_topic}
         </div>
         <div key={item.question_id}>
@@ -346,7 +349,7 @@ class SoleQuery extends Component {
 
   // 提交问卷
   submitQuery = async () => {
-    const { queryID, hasGift ,tel} = this.state;
+    const { queryID, hasGift, tel } = this.state;
     let answers = [];
     const { AllQuestions } = this.state;
     AllQuestions.map(question => {
@@ -424,8 +427,8 @@ class SoleQuery extends Component {
       return message.error(err.message);
     }
     message.success('提交成功');
-     // 无礼品时
-     if (hasGift === '0') {
+    // 无礼品时
+    if (hasGift === '0') {
       return;
     }
     // 有礼品时
@@ -439,32 +442,38 @@ class SoleQuery extends Component {
           }
         ]
       });
+      this.setState({
+        isGetgift: res.data[0].is_get_gift,
+        recid: res.data[0].REC_ID,
+        visible:true,
+      });
+      // Modal.success({
+      //   title: '提交成功',
+      //   content: (
+      //     <div>
+      //       <p className="thanks">感谢您参与本次问卷调查</p>
+      //       {this.state.isGetgift === 'Y' ? (
+      //         <p>
+      //           恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份
+      //           <br />
+      //           <Input
+      //             value={this.state.tel}
+      //             onChange={e => {
+      //               this.handleTelChange(e.target.value);
+      //             }}
+      //           />
+      //         </p>
+      //       ) : (
+      //         ''
+      //       )}
+      //     </div>
+      //   )
+      // });
     } catch (err) {
       console.error(err);
       return message.error(err.message);
     }
-
-    this.setState({
-      isGetgift: res.data[0].is_get_gift,
-      recid: res.data[0].REC_ID
-    });
-    Modal.success({
-      title:'提交成功',
-      content:(<div>
-         <p className="thanks">感谢您参与本次问卷调查</p>
-            {this.state.isGetgift === 'Y' ? (
-              <p>
-                恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
-                <br />
-                <Input value={tel} onChange={this.handleTelChange} />
-              </p>
-            ) : (
-              ''
-            )}
-      </div>),
-      // okText:'确定'
-    })
-   
+    
   };
 
   //单选选中的值。
@@ -544,7 +553,7 @@ class SoleQuery extends Component {
   // 输入手机号点击确定
   handleOk = () => {
     const { recid, tel, isGetgift } = this.state;
-    if (!(isGetgift ==='Y')) {
+    if (!(isGetgift === 'Y')) {
       //没有获奖
       return this.setState({
         visible: false,
@@ -575,11 +584,16 @@ class SoleQuery extends Component {
   };
 
   // 监听电话输入的变化
-  handleTelChange = e => {
-    // console.log(e.target.value);
+  handleTelChange = value => {
+    const {tel} = this.state;
+    console.log(11111111);
+    console.log(value);
     this.setState({
-      tel: e.target.value
-    });
+      tel:value,
+    },()=>{
+      console.log(this.state.tel)
+    })
+    
   };
 
   //rendercarousel
@@ -638,13 +652,7 @@ class SoleQuery extends Component {
 
   // 渲染的页面
   render() {
-    const {
-      queryDetail,
-      tel,
-      queryStatus,
-      loading,
-      hasSubmit
-    } = this.state;
+    const { queryDetail, tel, queryStatus, loading, hasSubmit } = this.state;
 
     // 已停止
     if (queryStatus === '已停止') {
@@ -695,25 +703,25 @@ class SoleQuery extends Component {
             visible={this.state.visible}
             width={this.state.wid}
             onOk={this.handleOk}
-            // onCancel={this.handleCancel}
-          >
-            <p style={{ paddingLeft: 40,fontSize:18 }}>提交成功!!</p>
-           {/* <p style={{ paddingLeft: 40 }}> <Icon
-              className="tips"
-              type="check"
-              style={{ fontSize: 25, color: '#0f0', textAlign: 'center' }}
-            />
-            </p> */}
+          > 
+           <div>
             <p className="thanks">感谢您参与本次问卷调查</p>
-            {this.state.isGetgift ==='Y' ? (
+            <p className="thanks">问卷已经提交成功啦~~~</p>
+            {this.state.isGetgift === 'Y' ? (
               <p>
-                恭喜你获得精美礼品一份，请输入手机号,凭手机号前去人事部领取奖品一份
+                恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份
                 <br />
-                <Input value={tel} onChange={this.handleTelChange} />
+                <Input
+                  value={this.state.tel}
+                  onChange={e => {
+                    this.handleTelChange(e.target.value);
+                  }}
+                />
               </p>
             ) : (
               ''
             )}
+          </div>
           </Modal>
         </div>
       </Spin>

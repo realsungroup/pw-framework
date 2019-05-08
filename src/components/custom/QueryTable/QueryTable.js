@@ -154,7 +154,7 @@ class QueryTable extends Component {
                       className="copy"
                       data-clipboard-text={item.query_address}
                     >
-                      复制链接
+                      生成问卷链接
                     </Button>
                   </span>
                 </div>
