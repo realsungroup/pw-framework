@@ -22,7 +22,7 @@ class QueryTable extends Component {
       modalGiftId: '',
       sendVisible: false,
       sendListId: '',
-      sendwid: 700,
+      sendwid: 1000,
       loading: false
     };
   }
@@ -239,17 +239,17 @@ class QueryTable extends Component {
                     选择人员
                   </Button>
                   </Link>  */}
-                  {item.query_status == '已发送' ? (
+                  {item.query_status == '草稿' ? (
+                    <Button disabled>
+                      <Icon type="eye" />
+                      查看人员
+                    </Button>
+                  ) : (
                     <Button
                       onClick={() => {
                         this.showSendModalList(item.query_id);
                       }}
                     >
-                      <Icon type="eye" />
-                      查看人员
-                    </Button>
-                  ) : (
-                    <Button disabled>
                       <Icon type="eye" />
                       查看人员
                     </Button>
@@ -333,7 +333,8 @@ class QueryTable extends Component {
             hasRowView={false}
             hasRowDelete={false}
             hasRowModify={false}
-            width={650}
+            width={950}
+            subtractH={260}
             cmswhere={`query_id='${this.state.sendListId}'`}
           />
         </Modal>

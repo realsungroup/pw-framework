@@ -12,6 +12,9 @@ class AdminConfirm extends React.Component {
   };
 
   handleConfirm = async (dataSource, selectedRowKeys) => {
+    if (!selectedRowKeys.length) {
+      return message.error('请选择记录');
+    }
     const { resid } = this.props;
     this.setState({ loading: true });
     const data = selectedRowKeys.map(recid => ({
@@ -50,10 +53,7 @@ class AdminConfirm extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div
-          className="table-data-wrap"
-          style={{ height: 'calc(100vh - 160px)' }}
-        >
+        <div style={{ height: 'calc(100vh - 160px)' }}>
           <TableData
             {...this.props}
             actionBarExtra={this.renderActionBarExtra}
