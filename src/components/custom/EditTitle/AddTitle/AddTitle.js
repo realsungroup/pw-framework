@@ -10,7 +10,6 @@ let questions = [
     typeName: '单选题',
     topic: '', // 题目标题
     correctAnswer: '',
-    difficultLev: '',
     options: [
       {
         value: ''
@@ -31,7 +30,6 @@ let questions = [
     typeName: '多选题',
     topic: '',
     correctAnswer: [],
-    difficultLev: '',
     options: [
       {
         value: ''
@@ -52,7 +50,6 @@ let questions = [
     typeName: '判断题',
     topic: '',
     correctAnswer: '',
-    difficultLev: ''
   }
 ];
 export default class AddTitle extends Component {
@@ -61,7 +58,6 @@ export default class AddTitle extends Component {
     this.state = {
       visible: false,
       activeQuestionType: '1',
-      difficultLev: '低难度',
       questions: cloneDeep(questions)
     };
   }
@@ -74,10 +70,16 @@ export default class AddTitle extends Component {
   };
   // 添加题目确定
   handleAddOk = async e => {
-    const { questions, activeQuestionType, difficultLev } = this.state;
+    const { questions, activeQuestionType,} = this.state;
     console.log('添加确定', questions);
     switch (activeQuestionType) {
       case '1': {
+       /**options:[
+        * {value:'很不好'}
+        * {value:'很好'}
+        * {value:'非常不好'}
+        * {value:'非常好'}
+        * ] */
         let tempArr = [];
         questions[0].options.forEach((option, index) => {
           const str = String.fromCodePoint(index + 65) + '.' + option.value;

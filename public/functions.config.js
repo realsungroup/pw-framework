@@ -875,9 +875,7 @@ window[607562749445] = {
     hasRowDelete: false,
     hasRowModify: false,
     subtractH:220,
-    formProps:{
-      height:500,
-    }
+    height:600
   }
 };
 //题型分数设置

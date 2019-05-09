@@ -7,8 +7,6 @@ export default class EditButton extends Component {
   constructor(props) {
     super(props);
     console.log('props', props);
-    let originArr = props.currentRecord.C3_607195720426;
-    console.log('后端给的', originArr); 
     if (props.currentRecord.C3_607195720426) {
       let originArr = props.currentRecord.C3_607195720426.split(' ');
       let middleArr = [];
@@ -29,6 +27,7 @@ export default class EditButton extends Component {
         currentRecord: props.currentRecord
       };
     }
+    // console.log(props)
   }
   // 显示当前点击的模态框
   showCurrentModal = () => {
@@ -46,7 +45,6 @@ export default class EditButton extends Component {
     switch (currentRecord.C3_607195719536) {
       case '单选题':
         {
-          // const termianloption = options.join(' ');
           let middleArr = [];
           options.forEach((option, index) => {
             let obj = `${String.fromCharCode(index + 65)}.${option}`;
@@ -243,10 +241,6 @@ export default class EditButton extends Component {
           })}
         </ul>
         <span>正确答案:</span>
-        {/* <Input
-          value={currentRecord.C3_607195719379}
-          onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        /> */}
         <Select
           value={currentRecord.C3_607195719379}
           style={{ width: 600 }}
@@ -310,10 +304,6 @@ export default class EditButton extends Component {
           })}
         </ul>
         <span>正确答案:</span>
-        {/* <Input
-          value={currentRecord.C3_607195719379}
-          onChange={e => this.handleCorrectAnswerChange(e.target.value)}
-        /> */}
         <Select
           value={correctAnswerArr}
           mode="multiple"
