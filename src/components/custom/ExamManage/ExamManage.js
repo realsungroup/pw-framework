@@ -201,6 +201,7 @@ export default class ExamManage extends Component {
                 hasRowSelection={false}
                 subtractH={220}
                 heigth={500}
+                width={1150}
                 cmswhere={`C3_607172879503 = ${
                   this.state.record.C3_607171749463
                 }`}
