@@ -86,7 +86,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655,608290060436], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {

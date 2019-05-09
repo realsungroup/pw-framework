@@ -223,3 +223,11 @@ export const CreatePlan = Loadable({
     return minLoading;
   }
 });
+
+export const ExpireViolationsList = Loadable({
+  loader: () => import('./ExpireViolationsList'),
+  loading() {
+    return minLoading;
+  }
+});
+

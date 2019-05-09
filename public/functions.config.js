@@ -18,7 +18,7 @@ window[606476781618] = {
 };
 // // 606496690009 到期违章清单
 window[606493652444] = {
-  name: 'TableDataWrap',
+  name: 'ExpireViolationsList',
   title: '到期违纪清单',
   props: {
     resid: 605799219043,
@@ -1035,4 +1035,28 @@ window[610657933222] = {
       height: 600
     },
   }
+};
+// 问卷统计
+window[610653848123] = {
+  name: 'QuestionnaireRecords',
+  title: '问卷统计',
+  props: {
+    resid: 608822905547,
+    hasBeBtns: false,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowView: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    subtractH: 190
+  }
+};
+
+// 问卷统计分析
+window['问卷统计分析'] = {
+  name: 'QuestionnaireStatisticAnalysis',
+  title: '问卷统计分析',
+  props: {}
 };
