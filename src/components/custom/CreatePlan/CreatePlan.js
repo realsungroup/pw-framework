@@ -17,23 +17,22 @@ class CreatePlan extends React.Component {
       oldData: [],
       subData: [],
       levelData: [],
-      totalData: [],
-      addCustom: [],
-      listIndex: 0,
-      listNo:"",
-      visibleAdd: false,
-      visibleEdit: false,
-      visibleCustom: false,
-      addData:{},
-      editData:{},
-      plist:[]
+      kcxlData: [],
+      kclbData: [],
+      imgModalShow: false,
+      levelSelect:"",
+      xlSelect:"",
+      lbSelect:"",
+      kclbState:""
     };
   }
 
   componentDidMount(){
     this.getData();
     this.getLevel();
-    this.getSubData();
+    this.getKcxl();
+    this.getKclb();
+    // this.getSubData();
   };
 
   //获取员工列表
@@ -66,10 +65,11 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key){
-    let res = await http().getTable({ resid: this.props.subResid,key});
+    let cmswhere = "C3_610763348502="+this.state.levelSelect+" AND C3_609845305368="+this.state.xlSelect+" AND C3_609845305305="+this.state.lbSelect;
+    let res = await http().getTable({ resid: this.props.subResid,key,cmswhere});
     try {
       let subData = res.data
-      // console.log(res.data)
+      console.log(res.data)
       subData.forEach(e => {
         e.check = false
       });
@@ -80,11 +80,40 @@ class CreatePlan extends React.Component {
     }
   }
   
+  //获取课程系列
+  async getKcxl(){
+    let res = await http().getTable({ resid: this.props.kcxlResid });
+    try {
+      let kcxlData = res.data
+      this.setState({kcxlData});
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+  
+  //获取课程类别
+  async getKclb(){
+    let res = await http().getTable({ resid: this.props.kclbResid });
+    try {
+      let kclbData = res.data
+      this.setState({kclbData});
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+
   //选择员工
   onClick(i){
     let data = this.state.data
     data[i].check=!data[i].check
     this.setState({data});
+    if(data[i].check==true){
+      this.setState({levelSelect:data[i].C3_609622292033,kcState:data[i].C3_609622292033},()=>this.getSubData())
+    }else{
+      this.setState({levelSelect:""},()=>this.getSubData())
+    }
   }
 
   //选择课程
@@ -104,13 +133,12 @@ class CreatePlan extends React.Component {
           if(e.check==true){
             x++
             let obj = JSON.parse(JSON.stringify(ele))
-            obj.C3_610308304458 = e.C3_609622254861
+            obj.C3_610657579164 = e.C3_609622254861
             planData.push(obj)
           }
         })
       }
     })
-    console.log(planData)
     if(y==0)return message.error("至少选择一个课程");
     if(x==0)return message.error("至少选择一个员工");
     let res = await http().addRecords({ resid: this.props.kcbResid,data: planData});
@@ -125,6 +153,8 @@ class CreatePlan extends React.Component {
 
   render() {
     let levelData = this.state.levelData
+    let kcxlData = this.state.kcxlData
+    let kclbData = this.state.kclbData
     return (
       <div style={{padding:"16px",background:"#fff"}}>
         <div style={{ display:"flex",flexDirection: 'row'}}>
@@ -191,7 +221,7 @@ class CreatePlan extends React.Component {
                                         <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
                                         </div>
                                       </div>
-                                      <div style={{display:"flex",flex:1}}>
+                                      {/* <div style={{display:"flex",flex:1}}>
                                         <Popover placement="topLeft"
                                           onClick={(e)=>e.stopPropagation()}
                                           content={<div style={{display:"flex",flexDirection: 'column'}}>
@@ -201,7 +231,7 @@ class CreatePlan extends React.Component {
                                                           </div>} trigger="click" >
                                           <Icon type = "right-circle" style={{fontSize:"18px"}}/>
                                         </Popover>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </List.Item>)}/>
         </div>
@@ -216,26 +246,38 @@ class CreatePlan extends React.Component {
               header={<div style={{display:"flex",justifyContent:"space-between"}}>
                 <Select
                   style={{width:"100px"}}
-                  defaultValue="All"
-                  onChange={(e)=>{}}>
+                  defaultValue="Rec"
+                  onChange={(e)=>{
+                    if(e=="All"){
+                      this.setState({levelSelect:"",xlSelect:"",lbSelect:""},()=>this.getSubData())
+                    }else{
+                      this.setState({levelSelect:this.state.kclbState})
+                    }
+                  }}>
                   <Option value="All">全部课程</Option>
                   <Option value="Rec">推荐课程</Option>
                 </Select>
                 <Select
                   style={{width:"100px"}}
-                  defaultValue="series1"
-                  onChange={(e)=>{}}>
-                  <Option value="series1">系列1</Option>
-                  <Option value="series2">系列2</Option>
-                  <Option value="series3">系列3</Option>
+                  defaultValue=""
+                  onChange={(e)=>{
+                    this.setState({xlSelect:e},()=>this.getSubData())
+                }}>
+                  <Option value="">全部系列</Option>
+                  {kcxlData.map((item,i)=>
+                    <Option value={item.C3_460380578456} key={i}>{item.C3_460380572730}</Option>
+                  )}
                 </Select>
                 <Select
                   style={{width:"100px"}}
-                  defaultValue="class1"
-                  onChange={(e)=>{}}>
-                  <Option value="class1">分类1</Option>
-                  <Option value="class2">分类2</Option>
-                  <Option value="class3">分类3</Option>
+                  defaultValue=""
+                  onChange={(e)=>{
+                    this.setState({lbSelect:e},()=>this.getSubData())
+                }}>
+                  <Option value="">全部类别</Option>
+                  {kclbData.map((item,i)=>
+                    <Option value={item.C3_460380249034} key={i}>{item.C3_460380239253}</Option>
+                  )}
                 </Select>
                 <Search
                   placeholder="搜索"
@@ -271,7 +313,7 @@ class CreatePlan extends React.Component {
                                         </div>
                                       </div>
                                       <div style={{display:"flex",flex:1}}>
-                                        <Icon type = "ellipsis" style={{fontSize:"18px",border:"2px solid #555",borderRadius:"50%",padding:"3px"}}/>
+                                        <Icon type = "ellipsis" style={{fontSize:"18px",border:"2px solid #555",borderRadius:"50%",padding:"3px"}} onClick={(e)=>{e.stopPropagation();this.setState({imgModalShow:true})}}/>
                                       </div>
                                     </div>
                                   </List.Item>)}/>
@@ -280,6 +322,17 @@ class CreatePlan extends React.Component {
         <div style={{display:"flex",justifyContent:"center"}}>
           <Button type="primary" style={{width:"100px"}} onClick={this.onClickSave.bind(this)}>保存</Button>
         </div>
+        <Modal
+            title="图片"
+            destroyOnClose={true}
+            visible={this.state.imgModalShow}
+            onOk={()=>this.setState({imgModalShow:false})}
+            onCancel={()=>this.setState({imgModalShow:false})}
+          >
+            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+              <Icon type = "ellipsis" style={{fontSize:"18px",border:"2px solid #555",borderRadius:"50%",padding:"3px"}}/>
+            </div>
+          </Modal>
       </div>
     );
   }
