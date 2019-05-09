@@ -7,27 +7,30 @@ export default class EditButton extends Component {
   constructor(props) {
     super(props);
     console.log('props', props);
-    if (props.currentRecord.C3_607195720426) {
-      let originArr = props.currentRecord.C3_607195720426.split(' ');
-      let middleArr = [];
-      originArr.forEach((item, index) => {
-        middleArr.push(item.substring(2));
-      });
-      console.log('middel', middleArr);
-      this.state = {
-        currentVisible: false,
-        wid: 1000,
-        options: middleArr,
-        currentRecord: props.currentRecord
-      };
-    } else {
-      this.state = {
-        currentVisible: false,
-        wid: 1000,
-        currentRecord: props.currentRecord
-      };
-    }
-    // console.log(props)
+    // console.log('currentrecord', props.currentRecord);
+    let Midoptions = [
+      props.currentRecord.C3_610630858606,
+      props.currentRecord.C3_610630869588,
+      props.currentRecord.C3_610630879311,
+      props.currentRecord.C3_610630889014,
+      props.currentRecord.C3_610630895780,
+      props.currentRecord.C3_610630908132,
+      props.currentRecord.C3_610630928623,
+      props.currentRecord.C3_610630943539,
+      props.currentRecord.C3_610630961465,
+      props.currentRecord.C3_610630972853
+    ];
+    console.log({ Midoptions: Midoptions });
+   let newMidoptions =  Midoptions.filter((option, index) => {
+      return option;
+    });
+    console.log('去空后的数组', newMidoptions);
+    this.state = {
+      currentVisible: false,
+      wid: 1000,
+      currentRecord: props.currentRecord,
+      options: newMidoptions
+    };
   }
   // 显示当前点击的模态框
   showCurrentModal = () => {
@@ -39,44 +42,44 @@ export default class EditButton extends Component {
   //修改确定的时候
   handleOk = async e => {
     const { currentRecord, options } = this.state;
-    console.log('最新的options', options);
+    // console.log('最新的options', options);
     // options
     let terminaldata = [];
     switch (currentRecord.C3_607195719536) {
       case '单选题':
         {
-          let middleArr = [];
-          options.forEach((option, index) => {
-            let obj = `${String.fromCharCode(index + 65)}.${option}`;
-            middleArr.push(obj);
-          });
-          const termianloption = middleArr.join(' ');
           terminaldata = [
             {
               REC_ID: currentRecord.REC_ID,
               C3_607195719223: currentRecord.C3_607195719223,
               C3_607195719379: currentRecord.C3_607195719379,
-              C3_607195720426: termianloption,
-              C3_607195720020: currentRecord.C3_607195720020
+              C3_607195720020: currentRecord.C3_607195720020,
+              C3_607195738504: options[0] ? options[0] : null,
+              C3_607195738723: options[1] ? options[1] : null,
+              C3_607195744333: options[2] ? options[2] : null,
+              C3_607195768583: options[3] ? options[3] : null,
+              C3_610129026079: options[4] ? options[4] : null,
+              C3_610129040516: options[5] ? options[5] : null,
+              C3_610129053516: options[6] ? options[6] : null
             }
           ];
         }
         break;
       case '多选题':
         {
-          let middleArr = [];
-          options.forEach((option, index) => {
-            let obj = `${String.fromCharCode(index + 65)}.${option}`;
-            middleArr.push(obj);
-          });
-          const termianloption = middleArr.join(' ');
           terminaldata = [
             {
               REC_ID: currentRecord.REC_ID,
               C3_607195719223: currentRecord.C3_607195719223,
               C3_607195719379: currentRecord.C3_607195719379,
-              C3_607195720426: termianloption,
-              C3_607195720020: currentRecord.C3_607195720020
+              C3_607195720020: currentRecord.C3_607195720020,
+              C3_607195738504: options[0] ? options[0] : null,
+              C3_607195738723: options[1] ? options[1] : null,
+              C3_607195744333: options[2] ? options[2] : null,
+              C3_607195768583: options[3] ? options[3] : null,
+              C3_610129026079: options[4] ? options[4] : null,
+              C3_610129040516: options[5] ? options[5] : null,
+              C3_610129053516: options[6] ? options[6] : null
             }
           ];
         }
@@ -105,7 +108,7 @@ export default class EditButton extends Component {
       });
       // console.log(res);
       message.success('修改成功');
-      this.props.refresh()
+      this.props.refresh();
     } catch (err) {
       console.error(err);
     }
@@ -200,6 +203,7 @@ export default class EditButton extends Component {
   // 渲染当前的单选题
   renderCurrentSingle() {
     const { options, currentRecord } = this.state;
+    // console.log('当前单选题的选项内容',options);
     return (
       <div>
         <div>
