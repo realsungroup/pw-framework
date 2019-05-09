@@ -1,37 +1,51 @@
-.queryset {
-  width: 60%;
-  background: #fff;
-  margin: 10px auto;
+.exam-set {
+  &__choice {
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 16px;
+    padding-bottom: 64px;
+    position: relative;
+    min-height: 220px;
+    position: relative;
+    &:hover {
+      .exam-set__choice-action-box {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+  &__queryset {
+    width: 60%;
+    background: #fff;
+    margin: 10px auto;
+  }
+  &__choice-action-box {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    visibility: hidden;
+    opacity: 0;
+    margin-top: 10px;
+    margin-left: 40%;
+    transition: 0.3s;
+    margin-top: 20px;
+    button {
+      margin: 0 4px;
+    }
+  }
+  &__query-header {
+    text-align: center;
+    border-bottom: 2px solid #f8f8f8;
+    padding: 5px;
+    background: #f8f8f8;
+    cursor: pointer;
+  }
 }
-.queryHeader {
-  text-align: center;
-  border-bottom: 2px solid #f8f8f8;
-  padding: 5px;
-}
+
 .query-set__questionTopic {
   font-size: 16px;
 }
-.choiceActionBox {
-  margin-top: 20px;
-}
-.choice {
-  border-bottom: 1px solid #000;
-  background: #fff;
-  padding: 20px;
-  position: relative;
-}
-.choiceActionBox {
-  display: none;
-  margin-top:10px;
-  margin-left: 40%;
-}
-.choice:hover .choiceActionBox {
-  display: block;
-}
-.queryHeader:hover {
-  background: #f8f8f8;
-  cursor: pointer;
-}
+
 .addStyle {
   padding: 10px;
   width: 100%;
@@ -53,34 +67,31 @@ ul li {
   margin-right: 20px;
   border-radius: 0;
 }
-.choiceActionBox button {
-  margin-left: 5px;
-}
+
 .questionOrder {
   color: #0086ff;
 }
-.query-set__upload{
-  margin-top:10px;
+.query-set__upload {
+  margin-top: 10px;
   width: 800px;
   text-align: center;
 }
-.Exam-set__pic{
-  width:200px;
+.Exam-set__pic {
+  width: 200px;
 }
-.Exam-set__pic__img{
+.Exam-set__pic__img {
   width: 100%;
-  margin-left:20px;
+  margin-left: 20px;
 }
-.Exam-set__single__radio{
-  margin-top:15px;
-  margin-left:20px;
+.Exam-set__single__radio {
+  margin-top: 15px;
+  margin-left: 20px;
 }
-.Exam-set__picbox{
-width:200px;
-margin-left:300px;
-text-align: center;
+.Exam-set__picbox {
+  width: 200px;
+  margin-left: 300px;
+  text-align: center;
 }
-.Exam-set__picbox img{
-  width:100%;
+.Exam-set__picbox img {
+  width: 100%;
 }
-
