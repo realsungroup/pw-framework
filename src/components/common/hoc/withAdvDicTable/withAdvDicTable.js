@@ -140,6 +140,7 @@ const withAdvDicTable = WrappedComponent => {
               {...advDicTableProps}
               customRowBtns={this.customRowBtns}
               size="small"
+              width={800}
             />
           </Modal>
         </Fragment>

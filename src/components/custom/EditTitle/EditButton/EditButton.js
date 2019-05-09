@@ -349,8 +349,8 @@ export default class EditButton extends Component {
           value={currentRecord.C3_607195719379}
           onChange={this.handleCorrectAnswerChange}
         >
-          <Option value="A">正确</Option>
-          <Option value="B">错误</Option>
+          <Option value="Y">正确</Option>
+          <Option value="N">错误</Option>
         </Select>
       </div>
     );
@@ -383,24 +383,6 @@ export default class EditButton extends Component {
               添加选项
             </Button>
           )}
-          <div style={{ marginTop: 16 }}>
-            <span className="DL">题目的难易程度:</span>
-            <Radio.Group
-              value={currentRecord.C3_607195720020}
-              buttonStyle="solid"
-              onChange={e => this.handleQuestionDiffLevChange(e.target.value)}
-            >
-              <Radio.Button value="低难度" className="dlButton">
-                低难度
-              </Radio.Button>
-              <Radio.Button value="中难度" className="dlButton">
-                中难度
-              </Radio.Button>
-              <Radio.Button value="高难度" className="dlButton">
-                高难度
-              </Radio.Button>
-            </Radio.Group>
-          </div>
         </Modal>
       </div>
     );

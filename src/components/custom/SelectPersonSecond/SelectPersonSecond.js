@@ -45,7 +45,7 @@ export default class SelectPersonSecond extends Component {
             {this.props.persons.map((person, index) => {
               return (
                 <li key={person.C3_227192472953} className="personItem">
-                  <Checkbox
+                  {/* <Checkbox
                     onChange={e => {
                       this.props.onCheckboxChange &&
                         this.props.onCheckboxChange(
@@ -53,7 +53,7 @@ export default class SelectPersonSecond extends Component {
                           person.number
                         );
                     }}
-                  />
+                  /> */}
                   <div className="header-picture">{''}</div>
                   <div className="info">
                     <div className="info-number">{person.C3_227192472953}</div>

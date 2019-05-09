@@ -83,6 +83,8 @@ class ExamArrange extends Component {
               hasModify={false}
               hasDelete={false}
               hasRowSelection={true}
+              height={600}
+              subtractH={230}
               customRowBtns={[
                 (record, btnSize) => {
                   return (
@@ -147,6 +149,8 @@ class ExamArrange extends Component {
               hasRowModify={false}
               hasModify={false}
               hasDelete={false}
+              height={600}
+              subtractH={230}
               customRowBtns={[
                 (record, btnSize) => {
                   return <Selected record={record} />;
