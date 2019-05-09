@@ -23,16 +23,16 @@ class MyExam extends Component {
   handleJoinExam = async record => {
     // 判断是否在有效日期时间之前
     const timeStr = record.C3_610709944031;
-    // if (!timeStr) {
-    //   return message.error('有效日期为空！');
-    // }
+    if (!timeStr) {
+      return message.error('有效日期为空！');
+    }
     const validTimeUnix = moment(timeStr).unix();
     const now = moment().unix();
-    // if (now >= validTimeUnix) {
-    //   return message.error(
-    //     `考试有效时间为 ${timeStr} ，时间已过，您不能参加该考试。`
-    //   );
-    // }
+    if (now >= validTimeUnix) {
+      return message.error(
+        `考试有效时间为 ${timeStr} ，时间已过，您不能参加该考试。`
+      );
+    }
 
     // 向考试批次表（主表）和 考试批次答题表中添加
 
