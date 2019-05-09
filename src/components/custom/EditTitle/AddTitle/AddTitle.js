@@ -92,7 +92,6 @@ export default class AddTitle extends Component {
               {
                 C3_607195719536: questions[0].typeName, //题型
                 C3_607195719223: questions[0].topic, //题干
-                C3_607195720020: this.state.difficultLev, //难度等级
                 C3_607195720426: answerArr, //选项
                 C3_607195719379: questions[0].correctAnswer //正确答案
               }
@@ -122,7 +121,6 @@ export default class AddTitle extends Component {
               {
                 C3_607195719536: questions[1].typeName,
                 C3_607195719223: questions[1].topic,
-                C3_607195720020: this.state.difficultLev,
                 C3_607195720426: answerArr,
                 C3_607195719379: correctAnswerarr
               }
@@ -144,7 +142,6 @@ export default class AddTitle extends Component {
               {
                 C3_607195719536: questions[2].typeName,
                 C3_607195719223: questions[2].topic,
-                C3_607195720020: this.state.difficultLev,
                 C3_607195719379: questions[2].correctAnswer
               }
             ]
@@ -170,12 +167,6 @@ export default class AddTitle extends Component {
   //监听试题题型的变化
   handleQuestionTypeChange = e => {
     this.setState({ activeQuestionType: e.target.value });
-  };
-  // 监听难易程度的变化
-  handleQuestionDiffLevChange = e => {
-    this.setState({
-      difficultLev: e.target.value
-    });
   };
   // 监听单选题干变化;
   SingleTopicChange = e => {
@@ -452,26 +443,15 @@ export default class AddTitle extends Component {
             onChange={this.AnswerTopicChange}
           />
         </div>
-        <div>
-          <Radio.Group
-            value="正确"
-            style={{ paddingLeft: 20 }}
-            onChange={this.handleJudgeChange}
-          >
-            <Radio value="正确">A 正确</Radio>
-            <br />
-            <Radio value="错误">B 错误</Radio>
-          </Radio.Group>
-        </div>
-        <div>
+        <div style={{ marginTop: 15 }}>
           <span>正确答案:</span>
           <Select
             value={judgement.correctAnswer}
             onChange={this.handleJudgeCorrectAnswer}
             style={{ width: 400 }}
           >
-            <Option value="A">正确</Option>
-            <Option value="B">错误</Option>
+            <Option value="Y">正确</Option>
+            <Option value="N">错误</Option>
           </Select>
         </div>
       </div>
@@ -479,7 +459,7 @@ export default class AddTitle extends Component {
   };
 
   render() {
-    const { activeQuestionType, difficultLev } = this.state;
+    const { activeQuestionType,} = this.state;
     return (
       <div className="btns">
         <Button onClick={this.showModal}>添加题库题目</Button>
@@ -499,24 +479,6 @@ export default class AddTitle extends Component {
             <Radio.Button value="2">多选题</Radio.Button>
             <Radio.Button value="3">判断题</Radio.Button>
           </Radio.Group>
-          <div style={{ marginTop: 16 }}>
-            <span className="DL">题目的难易程度:</span>
-            <Radio.Group
-              value={difficultLev}
-              buttonStyle="solid"
-              onChange={this.handleQuestionDiffLevChange}
-            >
-              <Radio.Button value="低难度" className="dlButton">
-                低难度
-              </Radio.Button>
-              <Radio.Button value="中难度" className="dlButton">
-                中难度
-              </Radio.Button>
-              <Radio.Button value="高难度" className="dlButton">
-                高难度
-              </Radio.Button>
-            </Radio.Group>
-          </div>
           {this.renderQuestion()}
           {activeQuestionType == '3' ? (
             ''

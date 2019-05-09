@@ -1083,20 +1083,15 @@ class ExamSet extends Component {
             value={currentQuestion.C3_607025683659}
           />
         </div>
-        <div>
-          <RadioGroup>
-            <Radio>A:正确</Radio>
-            <Radio>B:错误</Radio>
-          </RadioGroup>
-        </div>
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
-          <Input
-            value={currentQuestion.C3_607025682987}
-            onChange={e => {
-              this.handlemultiCorrectAnswerChange(e.target.value);
-            }}
-          />
+           <Select
+          value={currentQuestion.C3_607025682987}
+          onChange={this.handleEditCorrectAnswerChange}
+        >
+          <Option value="Y">正确</Option>
+          <Option value="N">错误</Option>
+        </Select>
         </div>
       </div>
     );
