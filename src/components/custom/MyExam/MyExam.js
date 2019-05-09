@@ -138,7 +138,8 @@ class MyExam extends Component {
           hasAdd={false}
           hasModify={false}
           hasDelete={false}
-          subtractH={188}
+          subtractH={220}
+          height={600}
           customRowBtns={[
             (record, btnSize) => {
               return (
@@ -177,7 +178,7 @@ class MyExam extends Component {
             footer={null}
             title="考试记录"
             onCancel={() => this.setState({ modalVisible: false })}
-            width="100%"
+            width='100%'
             destroyOnClose
           >
             <TableData
@@ -188,8 +189,7 @@ class MyExam extends Component {
               hasModify={false}
               hasDelete={false}
               height={500}
-              subtractH={188}
-              width="100%"
+              width='98%'
               cmswhere={`C3_607195966239 = '${selectedRecord.C3_607197253817}'`}
             />
           </Modal>

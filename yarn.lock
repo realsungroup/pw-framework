@@ -8861,9 +8861,9 @@ rc-collapse@~1.11.1:
     react-is "^16.7.0"
     shallowequal "^1.1.0"
 
-rc-count-down@1.1.1:
+rc-count-down@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.npmjs.org/rc-count-down/-/rc-count-down-1.1.1.tgz#7e20a812430df6ad58bf9ab9553e1cfa72eb9539"
+  resolved "https://registry.npm.taobao.org/rc-count-down/download/rc-count-down-1.1.1.tgz#7e20a812430df6ad58bf9ab9553e1cfa72eb9539"
 
 rc-dialog@~7.3.0:
   version "7.3.1"

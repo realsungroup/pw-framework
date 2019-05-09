@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import TableData from "../../common/data/TableData";
-import { Modal, Button, message, Tabs } from "antd";
-import SelectPersonFirstK from "../SelectPersonFirstK/SelectPersonFirstK";
-import "./ExamArrange.less";
-import http from "../../../util20/api";
-import Selected from "../Selected/Selected";
+import React, { Component } from 'react';
+import TableData from '../../common/data/TableData';
+import { Modal, Button, message, Tabs, Popconfirm } from 'antd';
+import SelectPersonFirstK from '../SelectPersonFirstK/SelectPersonFirstK';
+import './ExamArrange.less';
+import http from '../../../util20/api';
+import Selected from '../Selected/Selected';
 
 const TabPane = Tabs.TabPane;
 class ExamArrange extends Component {
@@ -35,7 +35,7 @@ class ExamArrange extends Component {
       data.map(item => {
         selectedRowKeys.map(items => {
           if (item.REC_ID === items) {
-            item.C3_610208198392 = "Y";
+            item.C3_610208198392 = 'Y';
             Reldata.push(item);
           }
         });
@@ -52,7 +52,7 @@ class ExamArrange extends Component {
         });
         if (res.Error === 0) {
           this.tableDataRef.handleRefresh();
-          message.success("操作成功！");
+          message.success('操作成功！');
         } else {
           message.error(res.message);
         }
@@ -60,7 +60,7 @@ class ExamArrange extends Component {
         message.error(error);
       }
     } else {
-      message.error("请勾选记录！");
+      message.error('请勾选记录！');
     }
   };
   render() {
@@ -68,12 +68,12 @@ class ExamArrange extends Component {
       <div>
         <Tabs
           defaultActiveKey="1"
-          style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+          style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
         >
           <TabPane
             tab="未通知"
             key="1"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: '100%', height: '100%' }}
           >
             <TableData
               wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -90,7 +90,7 @@ class ExamArrange extends Component {
                   return (
                     <Button
                       onClick={() => {
-                        console.log("record", record);
+                        console.log('record', record);
                         this.onChoosePeople(record);
                       }}
                     >
@@ -112,13 +112,14 @@ class ExamArrange extends Component {
                 selectedRowKeys: selectedRowKeys
               }) => {
                 return (
-                  <Button
-                    onClick={() => {
+                  <Popconfirm
+                  title='确认发送邮件'
+                    onConfirm={() => {
                       this.onHandleMessage(dataSource, selectedRowKeys);
                     }}
                   >
-                    发送通知邮件
-                  </Button>
+                    <Button>发送通知邮件</Button>
+                  </Popconfirm>
                 );
               }}
             />
@@ -140,7 +141,7 @@ class ExamArrange extends Component {
           <TabPane
             tab="已通知"
             key="2"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: '100%', height: '100%' }}
           >
             <TableData
               resid="610210292340"

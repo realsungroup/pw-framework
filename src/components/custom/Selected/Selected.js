@@ -59,7 +59,8 @@ export default class Selected extends Component {
                 hasRowDelete={true}
                 hasRowModify={false}
                 hasRowView={false}
-                width="90%"
+                width="99%"
+                height={600}
                 cmswhere={`C3_607197284004 = ${
                   this.props.record.C3_607171221170
                 }`}
@@ -78,7 +79,8 @@ export default class Selected extends Component {
                 hasRowDelete={true}
                 hasRowModify={false}
                 hasRowView={false}
-                width="90%"
+                height={600}
+                width="99%"
                 cmswhere={`C3_607197284004 = ${
                   this.props.record.C3_607171221170
                 }`}
