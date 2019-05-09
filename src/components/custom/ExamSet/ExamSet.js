@@ -772,7 +772,7 @@ class ExamSet extends Component {
               Modal.confirm({
                 title: '提示',
                 content: '您确定删除该题目吗？',
-                onOk: this.delCurrentQuestion(item.REC_ID)
+                onOk: () => this.delCurrentQuestion(item.REC_ID)
               })
             }
           >

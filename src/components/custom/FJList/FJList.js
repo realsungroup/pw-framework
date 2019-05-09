@@ -154,7 +154,13 @@ class FJList extends React.Component {
       <div style={{ display:"flex",flexDirection: 'row',background:"#fff"}}>
         <div style={{ width: "50%",padding: '16px 28px'}}> 
             <div style={{display:"flex",flex:3,padding: '5px 0',flexDirection: 'row',justifyContent: 'space-around' }}>
-              <Button type="primary">创建计划</Button>
+              <Button type="primary"
+              
+              onClick={() => {
+                window.location.href = "/fnmodule?resid=610555442186&recid=610555514606&type=前端功能入口&title=创建计划";
+              }}>
+                创建计划
+              </Button>
               <div style={{ flex:9, display:"flex",justifyContent: 'space-around',padding: '0 80px'}}>
                 <span style={{fontSize:"24px",fontWeight:"bold"}}>
                   {totalData.C3_609616006519=="SH"?"上海":"无锡"}
