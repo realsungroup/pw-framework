@@ -483,12 +483,38 @@ export default class ExamPage extends Component {
         return question.hasDo;
       });
     });
+    // 未做的题目
+    const noDoQuestionsIndex = [];
+    let i = 1;
+    questions.forEach(item => {
+      item.questions.forEach(question => {
+        if (!question.hasDo) {
+          noDoQuestionsIndex.push(i);
+        }
+        i++;
+      });
+    });
 
     let content;
     if (result) {
       content = '您已答完所有的题目，确定要提交吗？';
     } else {
-      content = '您有未作答的题目，确定要提交吗？';
+      content = (
+        <div>
+          <div>
+            <span>您有以下未作答的题目，确定要提交吗？</span>
+          </div>
+          <div>
+            {noDoQuestionsIndex.map((item, index) => {
+              if (index !== noDoQuestionsIndex.length - 1) {
+                return item + '、';
+              } else {
+                return item;
+              }
+            })}
+          </div>
+        </div>
+      );
     }
 
     Modal.confirm({
@@ -653,6 +679,14 @@ export default class ExamPage extends Component {
                 再次考试
               </Button>
             )}
+            <Button
+              block
+              style={{ marginTop: 16 }}
+              type="primary"
+              href="/fnmodule?resid=607168416937&recid=610555030491&type=%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F&title=%E6%88%91%E7%9A%84%E8%80%83%E8%AF%95"
+            >
+              完成
+            </Button>
           </div>
         </Spin>
       );
