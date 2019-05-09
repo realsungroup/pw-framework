@@ -35,7 +35,7 @@ const style = {
 class TemplateWrap extends Component {
   handleLoginClick = async () => {
     const code = 'demo1';
-    const password = '66287175';
+    const password = '123456';
 
     let res;
     try {
