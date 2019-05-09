@@ -49,7 +49,7 @@ let questions = [
     type: 3,
     typeName: '判断题',
     topic: '',
-    correctAnswer: '',
+    correctAnswer: ''
   }
 ];
 export default class AddTitle extends Component {
@@ -70,22 +70,10 @@ export default class AddTitle extends Component {
   };
   // 添加题目确定
   handleAddOk = async e => {
-    const { questions, activeQuestionType,} = this.state;
+    const { questions, activeQuestionType } = this.state;
     console.log('添加确定', questions);
     switch (activeQuestionType) {
       case '1': {
-       /**options:[
-        * {value:'很不好'}
-        * {value:'很好'}
-        * {value:'非常不好'}
-        * {value:'非常好'}
-        * ] */
-        let tempArr = [];
-        questions[0].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        const answerArr = tempArr.join(' ');
         let res;
         try {
           res = await http().addRecords({
@@ -94,8 +82,17 @@ export default class AddTitle extends Component {
               {
                 C3_607195719536: questions[0].typeName, //题型
                 C3_607195719223: questions[0].topic, //题干
-                C3_607195720426: answerArr, //选项
-                C3_607195719379: questions[0].correctAnswer //正确答案
+                C3_607195719379: questions[0].correctAnswer, //正确答案
+                C3_610630858606: questions[0].options[0] ? questions[0].options[0].value : null, //A
+                C3_610630869588: questions[0].options[1] ? questions[0].options[1].value : null, //B
+                C3_610630879311: questions[0].options[2] ? questions[0].options[2].value : null, //C
+                C3_610630889014: questions[0].options[3] ? questions[0].options[3].value : null, //D
+                C3_610630895780: questions[0].options[4] ? questions[0].options[4].value : null, //E
+                C3_610630908132: questions[0].options[5] ? questions[0].options[5].value : null, //F
+                C3_610630928623: questions[0].options[6] ? questions[0].options[6].value : null,  //G
+                C3_610630943539: questions[0].options[7] ? questions[0].options[7].value : null,  //H
+                C3_610630961465: questions[0].options[8] ? questions[0].options[8].value : null,  //I
+                C3_610630972853: questions[0].options[9] ? questions[0].options[9].value : null  //J
               }
             ]
           });
@@ -108,12 +105,6 @@ export default class AddTitle extends Component {
         break;
       }
       case '2': {
-        let tempArr = [];
-        questions[1].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        const answerArr = tempArr.join(' ');
         const correctAnswerarr = questions[1].correctAnswer.join('');
         let res;
         try {
@@ -123,8 +114,17 @@ export default class AddTitle extends Component {
               {
                 C3_607195719536: questions[1].typeName,
                 C3_607195719223: questions[1].topic,
-                C3_607195720426: answerArr,
-                C3_607195719379: correctAnswerarr
+                C3_607195719379: correctAnswerarr,
+                C3_610630858606: questions[1].options[0] ? questions[0].options[0].value : null, //A
+                C3_610630869588: questions[1].options[1] ? questions[0].options[1].value : null, //B
+                C3_610630879311: questions[1].options[2] ? questions[0].options[2].value : null, //C
+                C3_610630889014: questions[1].options[3] ? questions[0].options[3].value : null, //D
+                C3_610630895780: questions[1].options[4] ? questions[0].options[4].value : null, //E
+                C3_610630908132: questions[1].options[5] ? questions[0].options[5].value : null, //F
+                C3_610630928623: questions[1].options[6] ? questions[0].options[6].value : null,  //G
+                C3_610630943539: questions[1].options[7] ? questions[0].options[7].value : null,  //H
+                C3_610630961465: questions[1].options[8] ? questions[0].options[8].value : null,  //I
+                C3_610630972853: questions[1].options[9] ? questions[0].options[9].value : null  //J
               }
             ]
           });
@@ -461,7 +461,7 @@ export default class AddTitle extends Component {
   };
 
   render() {
-    const { activeQuestionType,} = this.state;
+    const { activeQuestionType } = this.state;
     return (
       <div className="btns">
         <Button onClick={this.showModal}>添加题库题目</Button>
