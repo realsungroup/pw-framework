@@ -2143,7 +2143,7 @@ braft-convert@^2.1.10:
 
 braft-editor@^2.2.10:
   version "2.2.10"
-  resolved "https://registry.npm.taobao.org/braft-editor/download/braft-editor-2.2.10.tgz#fede1c6cf63915a9b62a309a45d764aea56f3cc4"
+  resolved "https://registry.npmjs.org/braft-editor/-/braft-editor-2.2.10.tgz#fede1c6cf63915a9b62a309a45d764aea56f3cc4"
   dependencies:
     "@babel/runtime" "^7.0.0"
     braft-convert "^2.1.10"
@@ -8860,6 +8860,10 @@ rc-collapse@~1.11.1:
     rc-animate "2.x"
     react-is "^16.7.0"
     shallowequal "^1.1.0"
+
+rc-count-down@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/rc-count-down/download/rc-count-down-1.1.1.tgz#7e20a812430df6ad58bf9ab9553e1cfa72eb9539"
 
 rc-dialog@~7.3.0:
   version "7.3.1"

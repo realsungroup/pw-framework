@@ -4,7 +4,7 @@ import './ExamPage.less';
 import qs from 'qs';
 import http from 'Util20/api';
 import moment from 'moment';
-import ReactCountDown from './ReactCountDown';
+import ReactCountDown from 'rc-count-down';
 const RadioGroup = Radio.Group;
 
 export const getWindowSize = () => {
@@ -116,9 +116,9 @@ export default class ExamPage extends Component {
     answerData.forEach(item => (item.id = item.C3_607174324165)); // 题目编号
 
     const examName = record.C3_609949675460; // 试卷名称
-    const startTime = record.C3_609958684582; // 开始时间
+    this.startTime = record.C3_609958684582; // 开始时间
     const duration = record.C3_609956872989; //  考试时长
-    const timeRemaining = getTimeRemaining(moment(startTime), duration);
+    const timeRemaining = getTimeRemaining(moment(this.startTime), duration);
 
     // 超时，则不再获取题目，直接显示提交框
     if (timeRemaining <= 0) {
@@ -251,7 +251,7 @@ export default class ExamPage extends Component {
       myExamRecord
     });
   };
-  
+
   dealRecord = record => {
     record.name = record.C3_610126074004;
     record.time = record.C3_610126164784;
@@ -423,14 +423,45 @@ export default class ExamPage extends Component {
     );
   };
 
+  getUseTimeS = () => {
+    const startTime = moment(this.startTime);
+    const now = moment();
+    return now.diff(startTime, 'seconds');
+  };
+
   handleSubmit = async () => {
-    const { record } = this.state;
+    const { record, myExamRecord } = this.state;
+
+    // 判断是否在有效日期时间之前
+    const timeStr = myExamRecord.C3_610709944031;
+    if (!timeStr) {
+      return message.error('有效日期为空！');
+    }
+    const validTimeUnix = moment(timeStr).unix();
+    const now = moment().unix();
+    if (now >= validTimeUnix) {
+      return message.error(
+        `考试有效时间为 ${timeStr} ，时间已过，您不能提交。`
+      );
+    }
+
+    const useTimeS = this.getUseTimeS();
+    const useTime = `${Math.floor(useTimeS / 60)}分${useTimeS % 60}秒`;
+
+    const handTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     let res;
     try {
       res = await http().modifyRecords({
         resid: 608809112309,
-        data: [{ REC_ID: record.REC_ID, C3_607198887973: 'Y' }] // 修改 “是否提交” 字段值为 “Y”
+        data: [
+          {
+            REC_ID: record.REC_ID,
+            C3_607198887973: 'Y', // 修改 “是否提交” 字段值为 “Y”
+            C3_610126164784: useTime, // 考试用时
+            C3_607200067154: handTime // 交卷时间
+          }
+        ]
       });
     } catch (err) {
       console.error(err);
@@ -439,7 +470,6 @@ export default class ExamPage extends Component {
     const newRecord = res.data[0];
     this.dealRecord(newRecord);
     message.success('提交成功');
-    const { myExamRecord } = this.state;
     myExamRecord.C3_610137428463 =
       parseInt(myExamRecord.C3_610137428463, 10) - 1;
     this.setState({ hasSubmit: true, record: newRecord, myExamRecord });
@@ -572,6 +602,10 @@ export default class ExamPage extends Component {
     window.location.href = `/fnmodule?resid=考试页面&recid=608295659960&type=考试系统&title=考试页面&examnum=${examNum}&exambatchnum=${examBatchNum}&arrangenum=${arrangeNum}&personnum=${personNum}&myexamrecid=${myExamRecid}`;
   };
 
+  getCountDown = node => {
+    this.countDownRef = node;
+  };
+
   render() {
     const {
       loading,
@@ -655,6 +689,7 @@ export default class ExamPage extends Component {
                     }
                   ]}
                   onEnd={this.handleTimeEnd}
+                  ref={this.getCountDown}
                 />
               </div>
             </div>
