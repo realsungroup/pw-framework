@@ -186,6 +186,7 @@ class MyExam extends Component {
               hasRowDelete={false}
               hasAdd={false}
               hasModify={false}
+              hasRowView={false}
               hasDelete={false}
               height={500}
               subtractH={188}

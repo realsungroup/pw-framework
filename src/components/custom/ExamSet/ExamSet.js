@@ -136,10 +136,9 @@ class ExamSet extends Component {
     try {
       res = await http().getTable({
         resid: 607188996053,
-        subresid: 607189013257,
         cmswhere: `C3_607172879503 =${id}`
       });
-      console.log(res);
+      console.log(res.data);
       this.setState({
         AllQuestions: res.data,
         loading: false
@@ -262,46 +261,48 @@ class ExamSet extends Component {
     let terminaldata = [];
     switch (activeQuestionType) {
       case '1': {
-        console.log('單選題', questions[0]);
-        let tempArr = [];
-        questions[0].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        // console.log('想想', tempArr);
-        const terStr = tempArr.join('');
-        console.log(terStr);
+        console.log('单选题', questions[0]);
         terminaldata = [
           {
             C3_607172879503: queryId,
             C3_607025683815: questions[0].typeName,
             C3_607025683659: questions[0].topic,
-            C3_607025683987: terStr,
+            // C3_607025683987: terStr,
             C3_607025682987: questions[0].answer,
-            C3_610564959242: questions[0].imgUrl
+            C3_610564959242: questions[0].imgUrl,
+            C3_610631165366: questions[0].options[0] ? questions[0].options[0].value : null, //A
+            C3_610631174071: questions[0].options[1] ? questions[0].options[1].value : null, //B
+            C3_610631188179: questions[0].options[2] ? questions[0].options[2].value : null, //C
+            C3_610631200724: questions[0].options[3] ? questions[0].options[3].value : null, //D
+            C3_610631210942: questions[0].options[4] ? questions[0].options[4].value : null, //E
+            C3_610631222642: questions[0].options[5] ? questions[0].options[5].value : null, //F
+            C3_610631234014: questions[0].options[6] ? questions[0].options[6].value : null,  //G
+            C3_610631245449: questions[0].options[7] ? questions[0].options[7].value : null,  //H
+            C3_610631256930: questions[0].options[8] ? questions[0].options[8].value : null,  //I
+            C3_610631266770: questions[0].options[9] ? questions[0].options[9].value : null  //J
           }
         ];
         break;
       }
       case '2': {
-        console.log('多選題', questions[1]);
-        let tempArr = [];
-        questions[1].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        // console.log('想想', tempArr);
-        const terStr = tempArr.join(' ');
         const AnswerStr = questions[1].answer.join('');
         terminaldata = [
           {
             C3_607172879503: queryId,
             C3_607025683815: questions[1].typeName,
             C3_607025683659: questions[1].topic,
-            C3_607025683987: terStr,
             C3_607025682987: AnswerStr,
-            C3_607025683503: difficultLev,
-            C3_610564959242: questions[0].imgUrl
+            C3_610564959242: questions[0].imgUrl,
+            C3_610631165366: questions[0].options[0] ? questions[0].options[0].value : null, //A
+            C3_610631174071: questions[0].options[1] ? questions[0].options[1].value : null, //B
+            C3_610631188179: questions[0].options[2] ? questions[0].options[2].value : null, //C
+            C3_610631200724: questions[0].options[3] ? questions[0].options[3].value : null, //D
+            C3_610631210942: questions[0].options[4] ? questions[0].options[4].value : null, //E
+            C3_610631222642: questions[0].options[5] ? questions[0].options[5].value : null, //F
+            C3_610631234014: questions[0].options[6] ? questions[0].options[6].value : null,  //G
+            C3_610631245449: questions[0].options[7] ? questions[0].options[7].value : null,  //H
+            C3_610631256930: questions[0].options[8] ? questions[0].options[8].value : null,  //I
+            C3_610631266770: questions[0].options[9] ? questions[0].options[9].value : null  //J
           }
         ];
         break;
@@ -314,7 +315,6 @@ class ExamSet extends Component {
             C3_607025683659: questions[2].topic,
             C3_607025683815: questions[2].typeName,
             C3_607025682987: questions[2].answer,
-            C3_607025683503: difficultLev,
             C3_610564959242: questions[0].imgUrl
           }
         ];
