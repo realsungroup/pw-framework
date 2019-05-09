@@ -20,20 +20,33 @@ class MyExam extends Component {
     });
   };
 
-  handleJoinExam = async record => {
+  isShowJoinBtn = record => {
+    // 参加考试次数是否大于 0
+    if (record.C3_610137428463 <= 0) {
+      return false;
+    }
+
     // 判断是否在有效日期时间之前
     const timeStr = record.C3_610709944031;
+    // 有效日期为空！
     if (!timeStr) {
-      return message.error('有效日期为空！');
+      return false;
     }
     const validTimeUnix = moment(timeStr).unix();
     const now = moment().unix();
     if (now >= validTimeUnix) {
-      return message.error(
-        `考试有效时间为 ${timeStr} ，时间已过，您不能参加该考试。`
-      );
+      return false;
     }
 
+    // 判断是否通过，如果已通过，则不显示 参加考试 按钮
+    if (record.C3_610754790085 === '通过') {
+      return false;
+    }
+
+    return true;
+  };
+
+  handleJoinExam = async record => {
     // 向考试批次表（主表）和 考试批次答题表中添加
 
     // 考试安排编号
@@ -142,7 +155,7 @@ class MyExam extends Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
-                record.C3_610137428463 > 0 && (
+                this.isShowJoinBtn(record) && (
                   <Button
                     key={'参加考试'}
                     onClick={() => this.handleJoinConfirm(record)}
@@ -168,7 +181,7 @@ class MyExam extends Component {
                   考试记录
                 </Button>
               );
-            }, 
+            }
           ]}
         />
         {selectedRecord && (
@@ -177,7 +190,7 @@ class MyExam extends Component {
             footer={null}
             title="考试记录"
             onCancel={() => this.setState({ modalVisible: false })}
-            width='100%'
+            width="100%"
             destroyOnClose
           >
             <TableData
@@ -190,7 +203,7 @@ class MyExam extends Component {
               hasDelete={false}
               height={500}
               subtractH={188}
-              width='98%'
+              width="98%"
               cmswhere={`C3_607195966239 = '${selectedRecord.C3_607197253817}'`}
             />
           </Modal>
