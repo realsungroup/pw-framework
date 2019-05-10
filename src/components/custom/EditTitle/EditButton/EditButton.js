@@ -264,7 +264,7 @@ export default class EditButton extends Component {
   // 渲染当前多选
   renderCurrentMulti() {
     const { options, currentRecord } = this.state;
-    const correctAnswerArr = currentRecord.C3_607195719379.split('');
+    const correctAnswerArr = currentRecord.C3_607195719379.split(' ');
     return (
       <div>
         <div>

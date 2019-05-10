@@ -223,10 +223,24 @@ export const CreatePlan = Loadable({
   }
 });
 
+<<<<<<< HEAD
 export const ExpireViolationsList = Loadable({
   loader: () => import('./ExpireViolationsList'),
+=======
+export const QuestionnaireRecords = Loadable({
+  loader: () => import('./QuestionnaireRecords'),
+>>>>>>> b1055cf9bfcfef2a6e4dea71692077cb2e53dbd3
   loading() {
     return minLoading;
   }
 });
 
+<<<<<<< HEAD
+=======
+export const QuestionnaireStatisticAnalysis = Loadable({
+  loader: () => import('./QuestionnaireStatisticAnalysis'),
+  loading() {
+    return minLoading;
+  }
+});
+>>>>>>> b1055cf9bfcfef2a6e4dea71692077cb2e53dbd3
