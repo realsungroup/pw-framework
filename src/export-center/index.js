@@ -8,7 +8,7 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData } from '../components/common/loadableCommon';
-// export { TableDataWrap,TableDataInner,TableDataVisitor} from '../components/custom/loadableCustom';
+export { TableDataWrap,TableDataInner,TableDataVisitor} from '../components/custom/loadableCustom';
 
 // custom
 export { LzRegister } from '../components/custom/loadableCustom';
@@ -29,7 +29,10 @@ export { MyExam } from '../components/custom/loadableCustom';
 // export { Selected } from '../components/custom/loadableCustom';
 export {ExamPage} from '../components/custom/loadableCustom';
 export { FJList } from '../components/custom/loadableCustom';
+export { AdminConfirm } from '../components/custom/loadableCustom';
 export { CreatePlan } from '../components/custom/loadableCustom';
+export { ExpireViolationsList } from '../components/custom/loadableCustom';
+
 
 // 组件
 
@@ -67,3 +70,5 @@ export {
 
 // 导出demo
 // export { RichTextDemo } from '../components/custom/loadableCustom';
+export { QuestionnaireRecords } from '../components/custom/loadableCustom';
+export { QuestionnaireStatisticAnalysis } from '../components/custom/loadableCustom';

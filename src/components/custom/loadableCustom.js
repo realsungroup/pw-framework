@@ -173,6 +173,12 @@ export const ExamArrange  = Loadable({
     return minLoading;
   }
 });
+export const ExamManage  = Loadable({
+  loader: () => import('./ExamManage'),
+  loading() {
+    return minLoading;
+  }
+});
 
 
 //考试系统组件
@@ -188,15 +194,8 @@ export const ExamSet  = Loadable({
     return minLoading;
   }
 });
-export const ExamManage = Loadable({
-  loader: () => import('./ExamManage'),
-  loading() {
-  return minLoading;
-  }
-  });
 
-//导出培训项目的组件
-export const FJList = Loadable({
+export const FJList  = Loadable({
   loader: () => import('./FJList'),
   loading() {
     return minLoading;
@@ -210,9 +209,37 @@ export const FJList = Loadable({
 //     return minLoading;
 //   }
 // });
-
+// 管理员确认
+export const AdminConfirm = Loadable({
+  loader: () => import('./AdminConfirm'),
+  loading() {
+    return minLoading;
+  }
+});
 export const CreatePlan = Loadable({
   loader: () => import('./CreatePlan'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const ExpireViolationsList = Loadable({
+  loader: () => import('./ExpireViolationsList'),
+  loading() {
+    return minLoading;
+  }
+});
+
+  
+export const QuestionnaireRecords = Loadable({
+  loader: () => import('./QuestionnaireRecords'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const QuestionnaireStatisticAnalysis = Loadable({
+  loader: () => import('./QuestionnaireStatisticAnalysis'),
   loading() {
     return minLoading;
   }
