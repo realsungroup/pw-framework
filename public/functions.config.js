@@ -1060,3 +1060,10 @@ window['问卷统计分析'] = {
   title: '问卷统计分析',
   props: {}
 };
+
+// 问卷统计分析
+window[610812799351] = {
+  name: 'FiscalYearPlan',
+  title: '财年计划',
+  props: {}
+};
