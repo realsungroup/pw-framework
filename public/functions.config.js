@@ -746,7 +746,31 @@ window[606242031630] = {
 
 window[608050884937] = {
   name: 'TableDataInner',
-  title: '内部推荐'
+  title: '内部推荐',
+  props: {
+    columnsWidth:{
+      '性别':100,
+      '被推荐人姓名': 130,
+      '身份证号码':180,
+      '联系电话':130,
+      '民族':100,
+      '婚姻状况':130,
+      '籍贯':100,
+      '健康状况':130,
+      '学历':130,
+      '专业':100,
+      '在锡居住地址':140,
+      '家庭地址':180,
+      '推荐人工号':130,
+      '推荐人姓名':130,
+      '推荐部门':130,
+      '推荐人联系电话':150,
+      '与被推荐人之间的关系':190,
+      '通知面试日期':130,
+      '提交日期':100,
+      '管理操作日期':130
+    }
+  }
 };
 // 607189885707
 window[607189885707] = {
@@ -988,6 +1012,30 @@ window[610555442186] = {
   }
 };
 
+
+window[610657933222] = {
+  name: 'TableData',
+  title: '我的成绩',
+  props: {
+    resid: 610662573011,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    formProps: {
+      height: 500
+    },
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+  }
+};
 // 问卷统计
 window[610653848123] = {
   name: 'QuestionnaireRecords',
