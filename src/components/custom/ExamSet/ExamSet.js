@@ -165,7 +165,7 @@ class ExamSet extends Component {
     const resData = this.dealQueryQuestions(res.data);
     this.setState({ AllQuestions: resData, loading: false });
   };
-
+//处理拿到的问题
   dealQueryQuestions = resData => {
     resData.forEach(record => {
       record.subdata = [];
@@ -251,12 +251,6 @@ class ExamSet extends Component {
       questions: cloneDeep(questions)
     });
   };
-  // 监听难易程度的变化
-  handleQuestionDiffLevChange = value => {
-    this.setState({
-      difficultLev: value
-    });
-  };
   //删除选项
   delOption = index => {
     const { questions, activeQuestionType } = this.state;
@@ -308,7 +302,7 @@ class ExamSet extends Component {
 
   // 单独添加确定
   handleAddAloneOk = async () => {
-    const { questions, activeQuestionType, queryId, difficultLev } = this.state;
+    const { questions, activeQuestionType, queryId} = this.state;
     let terminaldata = [];
     switch (activeQuestionType) {
       case '1': {
@@ -827,7 +821,7 @@ class ExamSet extends Component {
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
         </div>
-        {item.C3_610564959242 == ' ' ? (
+        {item.C3_610564959242 == null ? (
           ' '
         ) : (
           <div className="Exam-set__pic">
@@ -841,7 +835,6 @@ class ExamSet extends Component {
                 <Checkbox
                   key={option.REC_ID}
                   value={option.value}
-                  style={{ marginTop: 15 }}
                 >
                   {option.value}
                 </Checkbox>

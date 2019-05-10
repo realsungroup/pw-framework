@@ -108,7 +108,8 @@ export default class AddTitle extends Component {
         break;
       }
       case '2': {
-        const correctAnswerarr = questions[1].correctAnswer.join('');
+        const newCorrectAnswer = questions[1].correctAnswer.sort();
+        const correctAnswerarr = newCorrectAnswer.join(' ');
         let res;
         try {
           res = await http().addRecords({
@@ -118,16 +119,16 @@ export default class AddTitle extends Component {
                 C3_607195719536: questions[1].typeName,
                 C3_607195719223: questions[1].topic,
                 C3_607195719379: correctAnswerarr,
-                C3_610630858606: questions[1].options[0] ? questions[0].options[0].value : null, //A
-                C3_610630869588: questions[1].options[1] ? questions[0].options[1].value : null, //B
-                C3_610630879311: questions[1].options[2] ? questions[0].options[2].value : null, //C
-                C3_610630889014: questions[1].options[3] ? questions[0].options[3].value : null, //D
-                C3_610630895780: questions[1].options[4] ? questions[0].options[4].value : null, //E
-                C3_610630908132: questions[1].options[5] ? questions[0].options[5].value : null, //F
-                C3_610630928623: questions[1].options[6] ? questions[0].options[6].value : null,  //G
-                C3_610630943539: questions[1].options[7] ? questions[0].options[7].value : null,  //H
-                C3_610630961465: questions[1].options[8] ? questions[0].options[8].value : null,  //I
-                C3_610630972853: questions[1].options[9] ? questions[0].options[9].value : null  //J
+                C3_610630858606: questions[1].options[0] ? questions[1].options[0].value : null, //A
+                C3_610630869588: questions[1].options[1] ? questions[1].options[1].value : null, //B
+                C3_610630879311: questions[1].options[2] ? questions[1].options[2].value : null, //C
+                C3_610630889014: questions[1].options[3] ? questions[1].options[3].value : null, //D
+                C3_610630895780: questions[1].options[4] ? questions[1].options[4].value : null, //E
+                C3_610630908132: questions[1].options[5] ? questions[1].options[5].value : null, //F
+                C3_610630928623: questions[1].options[6] ? questions[1].options[6].value : null,  //G
+                C3_610630943539: questions[1].options[7] ? questions[1].options[7].value : null,  //H
+                C3_610630961465: questions[1].options[8] ? questions[1].options[8].value : null,  //I
+                C3_610630972853: questions[1].options[9] ? questions[1].options[9].value : null  //J
               }
             ]
           });
