@@ -1006,7 +1006,9 @@ window[610555442186] = {
     resid: 610307713776,
     subResid: 610308370365,
     levelId: 449335746776,
-    kcbResid: 610657610335
+    kcbResid: 610657610335,
+    kcxlResid: 610708527386,
+    kclbResid: 610708543449
   }
 };
 

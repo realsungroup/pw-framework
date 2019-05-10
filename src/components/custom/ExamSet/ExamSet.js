@@ -42,6 +42,20 @@ function getFileType(file) {
   return file.type.split('/')[1];
 }
 
+// 10 个选项的内部字段
+const fields = [
+  'C3_610631165366',
+  'C3_610631174071',
+  'C3_610631188179',
+  'C3_610631200724',
+  'C3_610631210942',
+  'C3_610631222642',
+  'C3_610631234014',
+  'C3_610631245449',
+  'C3_610631256930',
+  'C3_610631266770'
+];
+
 let questions = [
   {
     type: '1', // 题目类型：1 表示单选题；2 表示多选题；3 表示 问答题
@@ -118,7 +132,6 @@ class ExamSet extends Component {
         resid: 607188968490,
         cmswhere: `C3_607171749463 = ${id}`
       });
-      console.log(res);
       this.setState({
         queryId: res.data[0].C3_607171749463,
         queryName: res.data[0].C3_607171754854,
@@ -129,6 +142,7 @@ class ExamSet extends Component {
       console.error(err);
     }
   };
+
   // 获取该问卷试题
   getThisQueryQuestions = async id => {
     this.setState({ loading: true });
@@ -136,18 +150,53 @@ class ExamSet extends Component {
     try {
       res = await http().getTable({
         resid: 607188996053,
-        subresid: 607189013257,
         cmswhere: `C3_607172879503 =${id}`
       });
-      console.log(res);
+      console.log(res.data);
       this.setState({
         AllQuestions: res.data,
         loading: false
       });
     } catch (err) {
+      this.setState({ loading: false });
       console.error(err);
+      return message.error(err.message);
     }
+    const resData = this.dealQueryQuestions(res.data);
+    this.setState({ AllQuestions: resData, loading: false });
   };
+
+  dealQueryQuestions = resData => {
+    resData.forEach(record => {
+      record.subdata = [];
+      record.originContent = record.C3_607025683659;
+      // 多选题
+      if (record.C3_607025683815 === '多选题') {
+        record.answer = record.C3_607025682987
+          ? record.C3_607025682987.split(' ')
+          : [];
+        record.originAnswer = record.C3_607025682987
+          ? record.C3_607025682987.split(' ')
+          : [];
+        // 单选题和判断题
+      } else {
+        record.answer = record.C3_607025682987;
+        record.originAnswer = record.C3_607025682987;
+      }
+      fields.forEach(field => {
+        if (record[field] !== null) {
+          record.subdata.push({
+            value: record[field],
+            editValue: record[field] // 编辑的值
+          });
+        }
+      });
+      record.originSubData = cloneDeep(record.subdata);
+    });
+
+    return resData;
+  };
+
   // 试卷名称模态框
   showModal = () => {
     this.setState({
@@ -256,52 +305,97 @@ class ExamSet extends Component {
       questions: newQuestions
     });
   };
+
   // 单独添加确定
   handleAddAloneOk = async () => {
     const { questions, activeQuestionType, queryId, difficultLev } = this.state;
     let terminaldata = [];
     switch (activeQuestionType) {
       case '1': {
-        console.log('單選題', questions[0]);
-        let tempArr = [];
-        questions[0].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        // console.log('想想', tempArr);
-        const terStr = tempArr.join('');
-        console.log(terStr);
+        console.log('单选题', questions[0]);
         terminaldata = [
           {
             C3_607172879503: queryId,
             C3_607025683815: questions[0].typeName,
             C3_607025683659: questions[0].topic,
-            C3_607025683987: terStr,
+            // C3_607025683987: terStr,
             C3_607025682987: questions[0].answer,
-            C3_610564959242: questions[0].imgUrl
+            C3_610564959242: questions[0].imgUrl,
+            C3_610631165366: questions[0].options[0]
+              ? questions[0].options[0].value
+              : null, //A
+            C3_610631174071: questions[0].options[1]
+              ? questions[0].options[1].value
+              : null, //B
+            C3_610631188179: questions[0].options[2]
+              ? questions[0].options[2].value
+              : null, //C
+            C3_610631200724: questions[0].options[3]
+              ? questions[0].options[3].value
+              : null, //D
+            C3_610631210942: questions[0].options[4]
+              ? questions[0].options[4].value
+              : null, //E
+            C3_610631222642: questions[0].options[5]
+              ? questions[0].options[5].value
+              : null, //F
+            C3_610631234014: questions[0].options[6]
+              ? questions[0].options[6].value
+              : null, //G
+            C3_610631245449: questions[0].options[7]
+              ? questions[0].options[7].value
+              : null, //H
+            C3_610631256930: questions[0].options[8]
+              ? questions[0].options[8].value
+              : null, //I
+            C3_610631266770: questions[0].options[9]
+              ? questions[0].options[9].value
+              : null //J
           }
         ];
         break;
       }
       case '2': {
-        console.log('多選題', questions[1]);
-        let tempArr = [];
-        questions[1].options.forEach((option, index) => {
-          const str = String.fromCodePoint(index + 65) + '.' + option.value;
-          tempArr.push(str);
-        });
-        // console.log('想想', tempArr);
-        const terStr = tempArr.join(' ');
-        const AnswerStr = questions[1].answer.join('');
+        const answer = [...questions[1].answer];
+        answer.sort();
+        const AnswerStr = answer.join(' ');
         terminaldata = [
           {
             C3_607172879503: queryId,
             C3_607025683815: questions[1].typeName,
             C3_607025683659: questions[1].topic,
-            C3_607025683987: terStr,
             C3_607025682987: AnswerStr,
-            C3_607025683503: difficultLev,
-            C3_610564959242: questions[0].imgUrl
+            C3_610564959242: questions[1].imgUrl,
+            C3_610631165366: questions[1].options[0]
+              ? questions[1].options[0].value
+              : null, //A
+            C3_610631174071: questions[1].options[1]
+              ? questions[1].options[1].value
+              : null, //B
+            C3_610631188179: questions[1].options[2]
+              ? questions[1].options[2].value
+              : null, //C
+            C3_610631200724: questions[1].options[3]
+              ? questions[1].options[3].value
+              : null, //D
+            C3_610631210942: questions[1].options[4]
+              ? questions[1].options[4].value
+              : null, //E
+            C3_610631222642: questions[1].options[5]
+              ? questions[1].options[5].value
+              : null, //F
+            C3_610631234014: questions[1].options[6]
+              ? questions[1].options[6].value
+              : null, //G
+            C3_610631245449: questions[1].options[7]
+              ? questions[1].options[7].value
+              : null, //H
+            C3_610631256930: questions[1].options[8]
+              ? questions[1].options[8].value
+              : null, //I
+            C3_610631266770: questions[1].options[9]
+              ? questions[1].options[9].value
+              : null //J
           }
         ];
         break;
@@ -314,7 +408,6 @@ class ExamSet extends Component {
             C3_607025683659: questions[2].topic,
             C3_607025683815: questions[2].typeName,
             C3_607025682987: questions[2].answer,
-            C3_607025683503: difficultLev,
             C3_610564959242: questions[0].imgUrl
           }
         ];
@@ -488,7 +581,10 @@ class ExamSet extends Component {
     let answers = this.state.questions[2];
     // console.log(answers)
     return (
-      <div className="query-set__answer" style={{ marginTop: 15,marginBottom:15 }}>
+      <div
+        className="query-set__answer"
+        style={{ marginTop: 15, marginBottom: 15 }}
+      >
         <div>
           <Input
             value={answers.topic}
@@ -508,9 +604,9 @@ class ExamSet extends Component {
       </div>
     );
   };
+
   // 添加选项
   addChoiceContent = () => {
-    console.log(11111);
     const { questions, activeQuestionType } = this.state;
     const newQuestions = [...questions];
     let obj = {
@@ -627,9 +723,14 @@ class ExamSet extends Component {
       }
     });
   }
+
   renderGetSingleChoice(item, index) {
+    console.log({ item });
+    if (!item.subdata) {
+      return;
+    }
     return (
-      <div className="choice" key={item.REC_ID}>
+      <div className="exam-set__choice" key={item.REC_ID}>
         <div className="query-set__questionTopic">
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
@@ -644,15 +745,13 @@ class ExamSet extends Component {
         <RadioGroup key={item.question_id}>
           {item.subdata.map((option, index) => {
             return (
-              <div key={index} className='Exam-set__single__radio'>
-                <Radio value={option.C3_607026461367}>
-                  {option.C3_607026461367}
-                </Radio>
+              <div key={index} className="Exam-set__single__radio">
+                <Radio value={option.value}>{option.value}</Radio>
               </div>
             );
           })}
         </RadioGroup>
-        <div className="choiceActionBox">
+        <div className="exam-set__choice-action-box">
           <Button
             size="small"
             icon="form"
@@ -665,20 +764,20 @@ class ExamSet extends Component {
           {/* <Button size="small" icon="copy">
           复制
         </Button> */}
-          <Popconfirm
-            title="确定删除该题目?"
-            onConfirm={() => {
-              this.delCurrentQuestion(item.REC_ID);
-            }}
+
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() =>
+              Modal.confirm({
+                title: '提示',
+                content: '您确定删除该题目吗？',
+                onOk: () => this.delCurrentQuestion(item.REC_ID)
+              })
+            }
           >
-            <Button
-              size="small"
-              icon="delete"
-              // onClick={}
-            >
-              删除
-            </Button>
-          </Popconfirm>
+            删除
+          </Button>
           <Button
             size="small"
             icon="arrow-up"
@@ -719,8 +818,11 @@ class ExamSet extends Component {
   }
 
   renderGetMultiChoice(item, index) {
+    if (!item.subdata) {
+      return;
+    }
     return (
-      <div className="choice" key={item.REC_ID}>
+      <div className="exam-set__choice" key={item.REC_ID}>
         <div className="query-set__questionTopic">
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
@@ -735,19 +837,19 @@ class ExamSet extends Component {
         <CheckboxGroup key={item.REC_ID}>
           {item.subdata.map((option, index) => {
             return (
-              <div key={index}  className='Exam-set__single__radio'>
+              <div key={index} className="Exam-set__single__radio">
                 <Checkbox
                   key={option.REC_ID}
-                  value={option.C3_607026461367}
+                  value={option.value}
                   style={{ marginTop: 15 }}
                 >
-                  {option.C3_607026461367}
+                  {option.value}
                 </Checkbox>
               </div>
             );
           })}
         </CheckboxGroup>
-        <div className="choiceActionBox">
+        <div className="exam-set__choice-action-box">
           <Button
             size="small"
             icon="form"
@@ -760,20 +862,19 @@ class ExamSet extends Component {
           {/* <Button size="small" icon="copy">
             复制
           </Button> */}
-          <Popconfirm
-            title="确定删除该题目?"
-            onConfirm={() => {
-              this.delCurrentQuestion(item.REC_ID);
-            }}
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() =>
+              Modal.confirm({
+                title: '提示',
+                content: '您确定要删除该题目吗？',
+                onOk: () => this.delCurrentQuestion(item.REC_ID)
+              })
+            }
           >
-            <Button
-              size="small"
-              icon="delete"
-              // onClick={}
-            >
-              删除
-            </Button>
-          </Popconfirm>
+            删除
+          </Button>
           <Button
             size="small"
             icon="arrow-up"
@@ -815,7 +916,7 @@ class ExamSet extends Component {
 
   renderGetAnswerChoice(item, index) {
     return (
-      <div className="choice" key={index}>
+      <div className="exam-set__choice" key={index}>
         <div className="query-set__questionTopic">
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
@@ -827,14 +928,14 @@ class ExamSet extends Component {
             <img className="Exam-set__pic__img" src={item.C3_610564959242} />
           </div>
         )}
-        <div className='Exam-set__single__radio'>
+        <div className="Exam-set__single__radio">
           <RadioGroup defaultValue="正确">
             <Radio value="Y">正确</Radio>
             <br />
             <Radio value="N">错误</Radio>
           </RadioGroup>
         </div>
-        <div className="choiceActionBox">
+        <div className="exam-set__choice-action-box">
           <Button
             size="small"
             icon="form"
@@ -847,20 +948,19 @@ class ExamSet extends Component {
           {/* <Button size="small" icon="copy">
           复制
         </Button> */}
-          <Popconfirm
-            title="确定删除该题目?"
-            onConfirm={() => {
-              this.delCurrentQuestion(item.REC_ID);
-            }}
+          <Button
+            size="small"
+            icon="delete"
+            onClick={() =>
+              Modal.confirm({
+                title: '提示',
+                content: '您确定要删除该题目吗？',
+                onOk: () => this.delCurrentQuestion(item.REC_ID)
+              })
+            }
           >
-            <Button
-              size="small"
-              icon="delete"
-              // onClick={}
-            >
-              删除
-            </Button>
-          </Popconfirm>
+            删除
+          </Button>
           <Button
             size="small"
             icon="arrow-up"
@@ -899,6 +999,7 @@ class ExamSet extends Component {
       </div>
     );
   }
+
   //显示当前题目的模态框
   showThisQuestionModal(item) {
     const { currentQuestion } = this.state;
@@ -909,6 +1010,7 @@ class ExamSet extends Component {
     });
     console.log('当前问题', currentQuestion);
   }
+
   // 渲染当前问题
   renderCurrentQuestion(currentQuestionType) {
     switch (currentQuestionType) {
@@ -927,14 +1029,6 @@ class ExamSet extends Component {
   // 渲染当前单选题的内容
   renderCurrentSingleQuestion() {
     const { currentQuestion } = this.state;
-    console.log('当前', currentQuestion);
-    let middleArr = [];
-    currentQuestion.subdata.forEach((item, index) => {
-      // s = A.10
-      const s = item.C3_607026461367;
-      const value = s.substring(2);
-      middleArr.push(value);
-    });
     return (
       <div className="query-set__single" style={{ marginTop: 15 }}>
         <div>
@@ -946,7 +1040,7 @@ class ExamSet extends Component {
           />
         </div>
         <ul>
-          {middleArr.map((option, index) => {
+          {currentQuestion.subdata.map((option, index) => {
             return (
               <li key={index}>
                 <Radio className="raio">
@@ -954,11 +1048,11 @@ class ExamSet extends Component {
                     {String.fromCharCode(index + 65)}
                   </span>
                   <Input
-                    value={option}
+                    value={option.editValue}
                     onChange={e =>
                       this.handleCurrentQuestionOptionChange(
                         e.target.value,
-                        index
+                        option
                       )
                     }
                     style={{ width: 780 }}
@@ -995,16 +1089,11 @@ class ExamSet extends Component {
       </div>
     );
   }
-  //渲染当前多选题的内容
+
+  // 渲染当前多选题的内容
   renderCurrentMultiQuestion() {
     const { currentQuestion } = this.state;
-    let middleArr = [];
-    currentQuestion.subdata.forEach((item, index) => {
-      middleArr.push(item.C3_607026461367.substring(2));
-    });
-    console.log('当前多选题', currentQuestion);
-    console.log('当前选项内容', middleArr);
-    const correctAnswerArr = currentQuestion.C3_607025682987.split('');
+    const { answer } = currentQuestion;
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
@@ -1017,7 +1106,7 @@ class ExamSet extends Component {
           />
         </div>
         <ul>
-          {middleArr.map((option, index) => {
+          {currentQuestion.subdata.map((option, index) => {
             return (
               <li style={{ marginTop: 10 }} key={index}>
                 <Checkbox
@@ -1028,11 +1117,11 @@ class ExamSet extends Component {
                   {String.fromCharCode(index + 65)}
                 </span>
                 <Input
-                  value={option}
+                  value={option.editValue}
                   onChange={e =>
                     this.handleCurrentQuestionOptionChange(
                       e.target.value,
-                      index
+                      option
                     )
                   }
                   style={{ width: 780 }}
@@ -1049,9 +1138,9 @@ class ExamSet extends Component {
           })}
         </ul>
         <div styel={{ marginBottom: 10 }}>
-          <span>正确答案:</span>
+          <span>正确答案：</span>
           <Select
-            value={correctAnswerArr}
+            value={answer}
             mode="multiple"
             onChange={this.handlemultiCorrectAnswerChange}
             style={{ width: '50%' }}
@@ -1085,32 +1174,45 @@ class ExamSet extends Component {
         </div>
         <div styel={{ marginBottom: 10 }}>
           <span>正确答案:</span>
-           <Select
-          value={currentQuestion.C3_607025682987}
-          onChange={this.handleEditCorrectAnswerChange}
-        >
-          <Option value="Y">正确</Option>
-          <Option value="N">错误</Option>
-        </Select>
+          <Select
+            value={currentQuestion.C3_607025682987}
+            onChange={this.handleEditCorrectAnswerChange}
+          >
+            <Option value="Y">正确</Option>
+            <Option value="N">错误</Option>
+          </Select>
         </div>
       </div>
     );
   }
+
   // 编辑中添加选项
   addCurrentQuestionOption = () => {
     const { currentQuestion } = this.state;
-    console.log('当前问题', currentQuestion);
-    const newcurrentQuestion = { ...currentQuestion };
-    const obj = {
-      C3_607026461367: ''
-    };
-    newcurrentQuestion.subdata.push(obj);
+    if (currentQuestion.subdata.length >= 10) {
+      return message.error('最多 10 个选项');
+    }
+    currentQuestion.subdata.push({
+      value: '',
+      originValue: '',
+      editValue: '',
+      originEditValue: ''
+    });
     this.setState({
-      currentQuestion: newcurrentQuestion
+      currentQuestion
     });
   };
+
   // 关闭编辑模态框
   handleEditModal = () => {
+    const { currentQuestion } = this.state;
+    // 还原题干
+    currentQuestion.C3_607025683659 = currentQuestion.originContent;
+    //  还原选项
+    currentQuestion.subdata = cloneDeep(currentQuestion.originSubData);
+    // 还原正确答案
+    currentQuestion.answer = cloneDeep(currentQuestion.originAnswer);
+
     this.setState({
       CurrentQuestionVisible: false
     });
@@ -1125,14 +1227,11 @@ class ExamSet extends Component {
   }
 
   //编辑中选项内容的变化
-  handleCurrentQuestionOptionChange(value, index) {
-    const tempcurrentQuestion = this.state.currentQuestion;
-    tempcurrentQuestion.subdata[index].C3_607026461367 = 'c.' + value;
-    this.setState({
-      currentQuestion: tempcurrentQuestion
-    });
-    console.log('变化后当前的问题', this.state.currentQuestion);
+  handleCurrentQuestionOptionChange(value, option) {
+    option.editValue = value;
+    this.forceUpdate();
   }
+
   //编辑中题干内容的变化
   handleCurrentQuestionTopci(value) {
     const tempcurrentQuestion = this.state.currentQuestion;
@@ -1142,15 +1241,32 @@ class ExamSet extends Component {
     });
     console.log('题干变化后的', this.state.currentQuestion);
   }
+
   // 删除编辑中的选项
   delcurrentOption = index => {
     const { currentQuestion } = this.state;
-    const newcurrentQuestion = { ...currentQuestion };
-    newcurrentQuestion.subdata.splice(index, 1);
+
+    const code = String.fromCharCode(index + 65);
+
+    currentQuestion.subdata.splice(index, 1);
+
+    if (
+      currentQuestion.C3_607025683815 === '单选题' &&
+      code === currentQuestion.answer
+    ) {
+      currentQuestion.answer = '';
+    } else if (currentQuestion.C3_607025683815 === '多选题') {
+      const index = currentQuestion.answer.findIndex(item => item === code);
+      if (index !== -1) {
+        currentQuestion.answer.splice(index, 1);
+      }
+    }
+
     this.setState({
-      currentQuestion: newcurrentQuestion
+      currentQuestion
     });
   };
+
   // 编辑中正确答案内容变化
   handleEditCorrectAnswerChange = value => {
     const { currentQuestion } = this.state;
@@ -1161,56 +1277,66 @@ class ExamSet extends Component {
     });
     console.log('答案变化后的', currentQuestion);
   };
+
   // 修改中多选正确答案的变化
   handlemultiCorrectAnswerChange = value => {
-    const newcurrentQuestion = this.state.currentQuestion;
-    console.log('多选答案的变化', value);
-    const tempvalue = value.join('');
-    newcurrentQuestion.C3_607025682987 = tempvalue;
-    this.setState({
-      currentQuestion: newcurrentQuestion
-    });
+    const { currentQuestion } = this.state;
+    currentQuestion.answer = value;
+    this.forceUpdate();
   };
+
   // 编辑中保存时
   handleEditModalSave = async () => {
     const { currentQuestion, queryId, loading } = this.state;
-    const newcurrentQuestion = { ...currentQuestion };
-    newcurrentQuestion.subdata.forEach((item, index) => {
-      if (item.C3_607026461367) {
-        const value = item.C3_607026461367.substring(2);
-        item.backendValue = String.fromCodePoint(index + 65) + '.' + value;
-      }
-    });
-    let midArr = [];
-    newcurrentQuestion.subdata.forEach((item, index) => {
-      midArr.push(item.backendValue);
-    });
-    const terStr = midArr.join('');
+
     let terminaldata = [];
     // 试卷题目表 607188996053
-    if (newcurrentQuestion.C3_607025683815 == '判断题') {
+
+    // 判断题
+    if (currentQuestion.C3_607025683815 === '判断题') {
       terminaldata = [
         {
           C3_607172879503: queryId, //试卷编号
-          C3_607025683659: newcurrentQuestion.C3_607025683659, //题干
-          C3_607025682987: newcurrentQuestion.C3_607025682987, //正确答案
-          REC_ID: newcurrentQuestion.REC_ID,
-          C3_610564959242: newcurrentQuestion.C3_610564959242
+          C3_607025683659: currentQuestion.C3_607025683659, //题干
+          C3_607025682987: currentQuestion.C3_607025682987, //正确答案
+          REC_ID: currentQuestion.REC_ID,
+          C3_610564959242: currentQuestion.C3_610564959242
         }
       ];
+      // 单选题和多选题
     } else {
       terminaldata = [
         {
-          C3_607172879503: queryId,
-          C3_607025683659: newcurrentQuestion.C3_607025683659,
-          C3_607025682987: newcurrentQuestion.C3_607025682987, //正确答案
-          C3_607025683987: terStr, //选项
-          REC_ID: newcurrentQuestion.REC_ID,
-          C3_610564959242: newcurrentQuestion.C3_610564959242
+          C3_607172879503: queryId, // 试卷编号
+          REC_ID: currentQuestion.REC_ID, // recid
+          C3_607025683659: currentQuestion.C3_607025683659, // 题干
+          C3_607025682987: currentQuestion.C3_607025682987 //正确答案
         }
       ];
+
+      if (currentQuestion.C3_607025683815 === '单选题') {
+        if (!currentQuestion.answer) {
+          return message.error('请选择正确答案');
+        }
+        terminaldata[0].C3_607025682987 = currentQuestion.answer; //正确答案
+      } else {
+        if (!currentQuestion.answer.length) {
+          return message.error('请选择正确答案');
+        }
+        const answer = [...currentQuestion.answer];
+        answer.sort();
+        terminaldata[0].C3_607025682987 = answer.join(' ');
+      }
+
+      // 10 个选型
+      fields.forEach((field, index) => {
+        if (currentQuestion.subdata[index]) {
+          terminaldata[0][field] = currentQuestion.subdata[index].editValue;
+        } else {
+          terminaldata[0][field] = null;
+        }
+      });
     }
-    console.log('最后编辑后的内容', terminaldata);
     this.setState({
       CurrentQuestionVisible: false,
       loading: false
@@ -1227,8 +1353,10 @@ class ExamSet extends Component {
       this.setState({ loading: false });
     } catch (err) {
       console.error(err);
+      return message.error(err.message);
     }
   };
+
   // 删除试题
   delCurrentQuestion = async recid => {
     const { queryId } = this.state;
@@ -1275,6 +1403,7 @@ class ExamSet extends Component {
       return message.error('已经是第一道题,不能再上移了');
     }
   };
+
   // 下移某道题
   downCurrentQuestion = async item => {
     const { AllQuestions } = this.state;
@@ -1305,6 +1434,7 @@ class ExamSet extends Component {
       this.renderGetAllQuestions();
     }
   };
+
   // 移到最前
   upToTop = async item => {
     const { AllQuestions } = this.state;
@@ -1326,6 +1456,7 @@ class ExamSet extends Component {
       return message.info('已经是最前的了');
     }
   };
+
   // 移到最后
   downToEnd = async item => {
     const { AllQuestions } = this.state;
@@ -1376,6 +1507,7 @@ class ExamSet extends Component {
       console.error(err);
     }
   };
+
   // Render
   render() {
     const {
@@ -1388,8 +1520,8 @@ class ExamSet extends Component {
     return (
       <Spin spinning={loading}>
         {' '}
-        <div className="queryset">
-          <div className="queryHeader" onClick={this.showModal}>
+        <div className="exam-set__queryset">
+          <div className="exam-set__query-header" onClick={this.showModal}>
             <h1>{queryName}</h1>
           </div>
           {/* 试题的渲染 */}
@@ -1426,6 +1558,7 @@ class ExamSet extends Component {
               <Button onClick={this.addSingle}>单独添加题目</Button>
             )}
           </div>
+          {/* 单独添加 */}
           <Modal
             title="单独添加"
             visible={this.state.visible2}
@@ -1469,7 +1602,7 @@ class ExamSet extends Component {
               </Upload>
             </div>
           </Modal>
-          {/* 当前点击问题的模态框 */}
+          {/* 编辑的模态框 */}
           <Modal
             title={this.state.currentQuestion.C3_607025683815}
             visible={this.state.CurrentQuestionVisible}
@@ -1508,7 +1641,10 @@ class ExamSet extends Component {
                 </div>
               </Upload>
             </div>
-           <div className='Exam-set__picbox'> <img src={this.state.currentQuestion.C3_610564959242} /> </div>
+            <div className="Exam-set__picbox">
+              {' '}
+              <img src={this.state.currentQuestion.C3_610564959242} />{' '}
+            </div>
             <div />
           </Modal>
         </div>
@@ -1516,4 +1652,5 @@ class ExamSet extends Component {
     );
   }
 }
+
 export default ExamSet;
