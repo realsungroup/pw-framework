@@ -217,3 +217,17 @@ export const CreatePlan = Loadable({
     return minLoading;
   }
 });
+
+export const QuestionnaireRecords = Loadable({
+  loader: () => import('./QuestionnaireRecords'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const QuestionnaireStatisticAnalysis = Loadable({
+  loader: () => import('./QuestionnaireStatisticAnalysis'),
+  loading() {
+    return minLoading;
+  }
+});

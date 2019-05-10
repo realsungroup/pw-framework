@@ -28,6 +28,19 @@ const multipleQuestionOptions = [
   }
 ];
 
+const optionFields = [
+  'C3_610631165366',
+  'C3_610631174071',
+  'C3_610631188179',
+  'C3_610631200724',
+  'C3_610631210942',
+  'C3_610631222642',
+  'C3_610631234014',
+  'C3_610631245449',
+  'C3_610631256930',
+  'C3_610631266770'
+];
+
 /**
  * 获取考卷剩余时间
  * @param {object} startTime 开始时间；moment object
@@ -136,7 +149,7 @@ export default class ExamPage extends Component {
       res = await http().getTable({
         resid: 607188996053,
         cmswhere: `C3_607172879503 = '${examnum}'`,
-        subresid: 607189013257,
+        // subresid: 607189013257,
         sortField: 'C3_609952752239',
         sortOrder: 'asc'
       });
@@ -153,14 +166,27 @@ export default class ExamPage extends Component {
 
     res.data.forEach((item, index) => {
       item.C3_607025683659 = `${index + 1}. ${item.C3_607025683659}`;
+
+      item.subdata = optionFields
+        .map(field => {
+          const value = item[field];
+          if (value) {
+            return {
+              label: value,
+              value: value
+            };
+          }
+        })
+        .filter(Boolean);
+
       switch (item.C3_607025683815) {
         case '单选题': {
           questions[0].questions.push(item);
           item.options = [];
           item.subdata.forEach(record => {
             item.options.push({
-              label: record.C3_607026461367,
-              value: record.C3_607026591508
+              label: record.label,
+              value: record.value
             });
           });
 
@@ -188,8 +214,8 @@ export default class ExamPage extends Component {
           item.options = [];
           item.subdata.forEach(record => {
             item.options.push({
-              label: record.C3_607026461367,
-              value: record.C3_607026591508
+              label: record.label,
+              value: record.value
             });
           });
 
@@ -669,10 +695,16 @@ export default class ExamPage extends Component {
               <span className="exam-page__form-title">是否通过：</span>
               <span className="exam-page__form-value">{record.isPass}</span>
             </div>
-            {myExamRecord.C3_610137428463 > 0 && (
+            {myExamRecord.C3_610137428463 > 0 && record.isPass === '未通过' && (
               <Button
                 block
-                onClick={this.handleJoinExam}
+                onClick={() =>
+                  Modal.confirm({
+                    title: '提示',
+                    content: '是否再次参加考试',
+                    onOk: this.handleJoinExam
+                  })
+                }
                 style={{ marginTop: 16 }}
                 type="primary"
               >
