@@ -195,7 +195,13 @@ export default class ExamPage extends Component {
             answerItem => answerItem.id === item.C3_607026334772
           );
           if (temp) {
-            item.answer = temp.C3_607174361025;
+            if (temp.C3_607174361025) {
+              const optionIndex = temp.C3_607174361025.charCodeAt() - 65;
+              item.answer = item.options[optionIndex].value;
+            } else {
+              item.answer = null;
+            }
+
             item.id = temp.id; // 将 考试批次答题表中的题目编号存在题目记录里
           } else {
             item.answer = '';
@@ -224,9 +230,16 @@ export default class ExamPage extends Component {
             answerItem => answerItem.id === item.C3_607026334772
           );
           if (temp) {
-            item.answer = temp.C3_607174361025
-              ? temp.C3_607174361025.split('')
-              : [];
+            // 'A B C'
+            if (temp.C3_607174361025) {
+              const answerArr = temp.C3_607174361025.split(' ');
+              item.answer = answerArr.map(answerItem => {
+                const optionIndex = answerItem.charCodeAt() - 65;
+                return item.options[optionIndex].value;
+              });
+            } else {
+              item.answer = [];
+            }
             item.id = temp.id; // 将 考试批次答题表中的题目编号存在题目记录里
           }
 
@@ -321,7 +334,7 @@ export default class ExamPage extends Component {
     }
   };
 
-  handleSingleChoiceChange = (question, value) => {
+  handleJudgeChange = (question, value) => {
     question.answer = value;
     question.hasDo = true;
     this.forceUpdate();
@@ -332,7 +345,7 @@ export default class ExamPage extends Component {
     this.saveAnswer(record.REC_ID, value);
   };
 
-  handleJudgeChange = (question, value) => {
+  handleSingleChoiceChange = (question, value) => {
     question.answer = value;
     question.hasDo = true;
     this.forceUpdate();
@@ -340,7 +353,11 @@ export default class ExamPage extends Component {
     // 保存答案
     const { answerData } = this.state;
     const record = answerData.find(answerItem => answerItem.id === question.id);
-    this.saveAnswer(record.REC_ID, value);
+
+    const index = question.options.findIndex(option => option.value === value);
+    const newValue = String.fromCharCode(index + 65);
+
+    this.saveAnswer(record.REC_ID, newValue);
   };
 
   handleMultipleChange = (question, checked, value) => {
@@ -362,9 +379,16 @@ export default class ExamPage extends Component {
     // 保存答案
     const { answerData } = this.state;
     const record = answerData.find(answerItem => answerItem.id === question.id);
-    const answer = [...question.answer];
+    let answer = [...question.answer];
+
+    answer = answer.map(answerItem => {
+      const index = question.options.findIndex(
+        option => option.value === answerItem
+      );
+      return String.fromCharCode(index + 65);
+    });
     answer.sort();
-    const multiValue = answer.join('');
+    const multiValue = answer.join(' ');
     this.saveAnswer(record.REC_ID, multiValue);
   };
 
