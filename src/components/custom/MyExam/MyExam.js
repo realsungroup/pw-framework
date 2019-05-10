@@ -71,6 +71,7 @@ class MyExam extends Component {
       return message.error(err.message);
     }
     const questions = res.data; // 题目
+    console.log(questions);
 
     // 项考试批次表（主表）和考试批次答题表（子表）中插入数据
     const dataObj = {
