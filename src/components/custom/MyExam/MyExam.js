@@ -204,7 +204,9 @@ class MyExam extends Component {
               height={500}
               subtractH={188}
               width="98%"
-              cmswhere={`C3_607195966239 = '${selectedRecord.C3_607197253817}'`}
+              cmswhere={`C3_607195966239 = '${
+                selectedRecord.C3_607197253817
+              }' and C3_607195889817 = '${selectedRecord.C3_607197284004}'`}
             />
           </Modal>
         )}
