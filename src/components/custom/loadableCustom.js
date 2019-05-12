@@ -244,3 +244,10 @@ export const QuestionnaireStatisticAnalysis = Loadable({
     return minLoading;
   }
 });
+
+export const FiscalYearPlan = Loadable({
+  loader: () => import('./FiscalYearPlan'),
+  loading() {
+    return minLoading;
+  }
+});

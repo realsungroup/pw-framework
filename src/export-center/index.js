@@ -72,3 +72,4 @@ export {
 // export { RichTextDemo } from '../components/custom/loadableCustom';
 export { QuestionnaireRecords } from '../components/custom/loadableCustom';
 export { QuestionnaireStatisticAnalysis } from '../components/custom/loadableCustom';
+export { FiscalYearPlan } from '../components/custom/loadableCustom';
