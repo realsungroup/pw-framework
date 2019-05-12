@@ -1,11 +1,12 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
 import { TableData } from "../../common/loadableCommon";
-import { Button, Icon, Radio , message, Popover, List, Card, Modal, Input } from "antd";
+import { Button, Icon, Radio , message, Popover, List, Card, Modal, Input, Popconfirm, Tabs } from "antd";
 import { saveMultipleRecord } from "../../../util/api";
 import http from "../../../util20/api";
 
 const { TextArea } = Input;
+const TabPane = Tabs.TabPane;
 
 class FJList extends React.Component {
   constructor(props) {
@@ -21,6 +22,9 @@ class FJList extends React.Component {
       visibleAdd: false,
       visibleEdit: false,
       visibleCustom: false,
+      showHistory:false,
+      showOutline:false,
+      showTab:false,
       addData:{},
       editData:{},
       plist:[]
@@ -36,14 +40,17 @@ class FJList extends React.Component {
   async getData(){
     let res = await http().getTable({ resid: this.props.resid });
     try {
-      let data = res.data
-      // console.log(res.data)
-      data.forEach(e => {
-        e.check = false
-      });
-      data[0].check = true
-      this.setState({data});
-      this.getSubData(data[0].C3_609622254861);
+      if (res.error === 0) {
+        let data = res.data
+        data.forEach(e => {
+          e.check = false
+        });
+        data[0].check = true
+        this.setState({data});
+        this.getSubData(data[0].C3_609622254861);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -54,8 +61,12 @@ class FJList extends React.Component {
   async totalData(){
     let res = await http().getTable({ resid: this.props.totalResid });
     try {
-      let totalData = res.data[0]
-      this.setState({totalData});
+      if (res.error === 0) {
+        let totalData = res.data[0]
+        this.setState({totalData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -66,8 +77,12 @@ class FJList extends React.Component {
   async getSubData(e){
     let res = await http().getTable({ resid: this.props.subResid, cmswhere:'C3_610308304458='+e});
     try {
-      let subData = res.data
-      this.setState({subData});
+      if (res.error === 0) {
+        let subData = res.data
+        this.setState({subData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.log().error(err);
       return message.error(err.message);
@@ -93,8 +108,11 @@ class FJList extends React.Component {
     let res = await http().addRecords({ resid: this.props.subResid, data:[{...addData}]});
     this.getSubData(this.state.listNo)
     try {
-      if(res.message=="操作成功")return message.success(res.message);
-      return message.error(res.message);
+      if (res.error === 0) {
+        return message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -106,11 +124,15 @@ class FJList extends React.Component {
     this.setState({visibleCustom:false})
     let addCustom = this.state.addCustom
     addCustom.C3_610308304458 = this.state.subData[this.state.listIndex].C3_610308304458
+    debugger
     let res = await http().addRecords({ resid: this.props.subResid, data:[{...addCustom}]});
     this.getSubData(this.state.listNo)
     try {
-      if(res.message=="操作成功")return message.success(res.message);
-      return message.error(res.message);
+      if (res.Error === 0) {
+        return message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -122,10 +144,11 @@ class FJList extends React.Component {
     let res = await http().removeRecords({ resid: this.props.subResid, data:[this.state.subData[i]]});
     this.getSubData(this.state.listNo)
     try {
-      if(res.message=="操作成功"){
-        return message.success(res.message)
-      }else
-      return message.error(res.message);
+      if (res.error === 0) {
+        return message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -137,10 +160,11 @@ class FJList extends React.Component {
     let res = await http().modifyRecords({ resid: this.props.subResid, data:[this.state.editData]});
     this.getSubData(this.state.listNo)
     try {
-      if(res.message=="操作成功"){
-        return message.success(res.message)
-      }else
-      return message.error(res.message);
+      if (res.error === 0) {
+        return message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -155,13 +179,16 @@ class FJList extends React.Component {
         <div style={{ width: "50%",padding: '16px 28px'}}> 
             <div style={{display:"flex",flex:3,padding: '5px 0',flexDirection: 'row',justifyContent: 'space-around' }}>
               <Button type="primary"
-              
-              onClick={() => {
-                window.location.href = "/fnmodule?resid=610555442186&recid=610555514606&type=前端功能入口&title=创建计划";
-              }}>
+                style={{marginRight:"10px"}}
+                onClick={() => {
+                  window.location.href = "/fnmodule?resid=610555442186&recid=610555514606&type=前端功能入口&title=创建计划";
+                }}>
                 创建计划
               </Button>
-              <div style={{ flex:9, display:"flex",justifyContent: 'space-around',padding: '0 80px'}}>
+              <Button type="primary" onClick={()=>this.setState({showHistory:true})}>
+                历史记录
+              </Button>
+              <div style={{ flex:9, display:"flex",justifyContent: 'space-around',padding: '0 10px'}}>
                 <span style={{fontSize:"24px",fontWeight:"bold"}}>
                   {totalData.C3_609616006519=="SH"?"上海":"无锡"}
                 </span>
@@ -170,13 +197,13 @@ class FJList extends React.Component {
                 </span>
               </div>
               <div style={{ display:"flex",flex:3,flexDirection: 'column',justifyContent: 'space-around',alignItems:'center' }}>
-                <span style={{fontSize:"10px"}}>
+                <span style={{fontSize:"14px"}}>
                   人数: {totalData.C3_609615996253}
                 </span>
-                <span style={{fontSize:"10px"}}>
+                <span style={{fontSize:"14px"}}>
                   总预算: {totalData.C3_609616030566}
                 </span>
-                <span style={{fontSize:"10px"}}>
+                <span style={{fontSize:"14px"}}>
                   总费用: {totalData.C3_609616051191}
                 </span>
               </div>
@@ -185,6 +212,7 @@ class FJList extends React.Component {
               size="large"
               // header={<div>Header</div>}
               // footer={<div>Footer</div>}
+              style={{height:"calc(100vh - 300px)",overflowY: 'scroll'}}
               bordered
               dataSource={this.state.data}
               renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
@@ -212,7 +240,7 @@ class FJList extends React.Component {
                                         </div>
                                       </div>
                                       <div style={{display:"flex",flex:1}}>
-                                        <Popover placement="topLeft"
+                                        {/* <Popover placement="topLeft"
                                           onClick={(e)=>e.stopPropagation()}
                                           content={<div style={{display:"flex",flexDirection: 'column'}}>
                                                             <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
@@ -220,7 +248,8 @@ class FJList extends React.Component {
                                                             <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
                                                           </div>} trigger="click" >
                                           <Icon type = "right-circle" style={{fontSize:"18px"}}/>
-                                        </Popover>
+                                        </Popover> */}
+                                        <Icon type = "right-circle" style={{fontSize:"18px"}} onClick={(e)=>{this.setState({showTab:true});e.stopPropagation()}}/>
                                       </div>
                                     </div>
                                   </List.Item>)}/>
@@ -240,54 +269,58 @@ class FJList extends React.Component {
               </span>
             </div>
           </div>
-          <div>
+          <div style={{height:"calc(100vh - 300px)",overflowY: 'scroll'}}>
             {subData.map((item,i)=>(
               <Card
                 title={item.C3_609845305680}
                 key={i}
-                extra={<Icon type="delete" style={{cursor:'pointer'}} onClick={this.delCourse.bind(this,i)}/>} style={{marginBottom:"16px"}}
-                actions={[<a href="#" onClick={()=>this.setState({editData:{...this.state.subData[i]},visibleEdit:true,})}>修改</a>,<span></span>,]}
+                extra={ <Popconfirm placement="topRight" title={"确认要删除么?"} onConfirm={this.delCourse.bind(this,i)} okText="确认" cancelText="取消">
+                          <Icon type="delete" style={{cursor:'pointer'}}/>
+                        </Popconfirm>} 
+                style={{marginBottom:"16px"}}
+                actions={[<a href="#" onClick={()=>this.setState({editData:{...this.state.subData[i]},visibleEdit:true,})}>修改</a>,
+                          <a href="#" onClick={()=>this.setState({showOutline:true,})}>课程大纲</a>]}
               >
                 <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     费用
                   </span>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     {item.C3_609845305931}
                   </span>
                 </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
+                {item.C3_610800639214!="Y"&&item.C3_610800639214!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
                     课时
                   </span>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     {item.C3_609845305993}
                   </span>
-                </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
+                </div>}
+                {item.C3_610800639214!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
                     讲师
                   </span>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     {item.C3_610390419677}
                   </span>
-                </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
+                </div>}
+                {item.C3_610800639214!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
                     培训地
                   </span>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     {item.C3_610390410802}
                   </span>
-                </div>
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"10px"}}>
+                </div>}
+                {item.C3_610800639214!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
                     课程介绍
                   </span>
-                  <span style={{fontSize:"10px"}}>
+                  <span style={{fontSize:"12px"}}>
                     {item.C3_609845305618}
                   </span>
-                </div>
+                </div>}
               </Card>
             ))}
           </div>
@@ -295,6 +328,60 @@ class FJList extends React.Component {
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleAdd:true})}>添加课程</Button>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleCustom:true})}>自定义课程</Button>
           </div>
+          <Modal
+            title="历史记录"
+            destroyOnClose={true}
+            visible={this.state.showHistory}
+            onOk={()=>this.setState({showHistory:false})}
+            onCancel={()=>this.setState({showHistory:false})}
+          >
+
+          </Modal>
+          <Modal
+            title="课程大纲"
+            destroyOnClose={true}
+            visible={this.state.showOutline}
+            onOk={()=>this.setState({showOutline:false})}
+            onCancel={()=>this.setState({showOutline:false})}
+          >
+
+          </Modal>
+          <Modal
+            destroyOnClose={true}
+            visible={this.state.showTab}
+            onOk={()=>this.setState({showTab:false})}
+            onCancel={()=>this.setState({showTab:false})}
+          >
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="Tab 1" key="1">
+                <TableData
+                  // resid={resid}
+                  // dataMode="main"
+                  // subtractH={190}
+                  // height={520}
+                  // hasBeBtns
+                />
+              </TabPane>
+              <TabPane tab="Tab 2" key="2">
+                <TableData
+                  // resid={resid}
+                  // dataMode="main"
+                  // subtractH={190}
+                  // height={520}
+                  // hasBeBtns
+                />
+              </TabPane>
+              <TabPane tab="Tab 3" key="3">
+                <TableData
+                  // resid={resid}
+                  // dataMode="main"
+                  // subtractH={190}
+                  // height={520}
+                  // hasBeBtns
+                />
+              </TabPane>
+            </Tabs>
+          </Modal>
           <Modal
             title="添加课程"
             destroyOnClose={true}
@@ -397,6 +484,7 @@ class FJList extends React.Component {
                 <Input
                   onChange={(e)=>{
                     let addCustom = this.state.addCustom
+                    addCustom.C3_610800639214="Y"
                     addCustom.C3_609845305680=e.target.value
                     this.setState({addCustom})
                 }}/>
@@ -450,7 +538,7 @@ class FJList extends React.Component {
                 }}/>
               </div>
             </div>
-            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            {this.state.editData.C3_610800639214!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课时:</span>
               </div>
@@ -463,8 +551,8 @@ class FJList extends React.Component {
                     this.setState({editData})
                 }}/>
               </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            </div>}
+            {this.state.editData.C3_610800639214!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>讲师:</span>
               </div>
@@ -477,8 +565,8 @@ class FJList extends React.Component {
                     this.setState({editData})
                 }}/>
               </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            </div>}
+            {this.state.editData.C3_610800639214!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>培训地:</span>
               </div>
@@ -491,8 +579,8 @@ class FJList extends React.Component {
                     this.setState({editData})
                 }}/>
               </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            </div>}
+            {this.state.editData.C3_610800639214!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程介绍:</span>
               </div>
@@ -506,7 +594,7 @@ class FJList extends React.Component {
                     this.setState({editData})
                 }}/>
               </div>
-            </div>
+            </div>}
           </Modal>
         </div>
       </div>
