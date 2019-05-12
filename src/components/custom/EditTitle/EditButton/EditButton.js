@@ -6,8 +6,6 @@ const Option = Select.Option;
 export default class EditButton extends Component {
   constructor(props) {
     super(props);
-    console.log('props', props);
-    // console.log('currentrecord', props.currentRecord);
     let Midoptions = [
       props.currentRecord.C3_610630858606,
       props.currentRecord.C3_610630869588,
@@ -20,21 +18,20 @@ export default class EditButton extends Component {
       props.currentRecord.C3_610630961465,
       props.currentRecord.C3_610630972853
     ];
-    console.log({ Midoptions: Midoptions });
-   let newMidoptions =  Midoptions.filter((option, index) => {
+    let newMidoptions = Midoptions.filter((option, index) => {
       return option;
     });
-    console.log('去空后的数组', newMidoptions);
+    const { currentRecord } = props;
     this.state = {
       currentVisible: false,
       wid: 1000,
-      currentRecord: props.currentRecord,
+      currentRecord: { ...currentRecord },
+      originRecord: { ...currentRecord },
       options: newMidoptions
     };
   }
   // 显示当前点击的模态框
   showCurrentModal = () => {
-    console.log('options', this.state.options);
     this.setState({
       currentVisible: true
     });
@@ -106,7 +103,6 @@ export default class EditButton extends Component {
     this.setState({
       currentVisible: false
     });
-    console.log('最后的data', terminaldata);
     try {
       let res = await http().modifyRecords({
         resid: 607599734723,
@@ -121,9 +117,26 @@ export default class EditButton extends Component {
   };
 
   handleCancel = e => {
-    console.log(e);
+    const { originRecord } = this.state;
+    let Midoptions = [
+      originRecord.C3_610630858606,
+      originRecord.C3_610630869588,
+      originRecord.C3_610630879311,
+      originRecord.C3_610630889014,
+      originRecord.C3_610630895780,
+      originRecord.C3_610630908132,
+      originRecord.C3_610630928623,
+      originRecord.C3_610630943539,
+      originRecord.C3_610630961465,
+      originRecord.C3_610630972853
+    ];
+    let newMidoptions = Midoptions.filter((option, index) => {
+      return option;
+    });
     this.setState({
-      currentVisible: false
+      currentVisible: false,
+      currentRecord: { ...originRecord },
+      options: newMidoptions
     });
   };
   // 渲染当前问题
@@ -146,7 +159,6 @@ export default class EditButton extends Component {
     // let optionsC = options.split(" ")
     const newoptions = [...options];
     newoptions.splice(index, 1);
-    console.log('newoptions', newoptions);
     this.setState({
       options: newoptions
     });
@@ -155,7 +167,7 @@ export default class EditButton extends Component {
   handleCurrentQuestionOptionChange(value, index) {
     const { options } = this.state;
     const newoptions = [...options];
-    console.log({ newoptions: newoptions });
+
     newoptions[index] = value;
     this.setState({
       options: newoptions
@@ -181,8 +193,7 @@ export default class EditButton extends Component {
   };
   // 修改中多选正确答案的变化
   handlemultiCorrectAnswerChange = value => {
-    const newcurrentRecord = this.state.currentRecord;
-    console.log('多选答案的变化', value);
+    const newcurrentRecord = { ...this.state.currentRecord };
     const tempvalue = value.join(' ');
     newcurrentRecord.C3_607195719379 = tempvalue;
     this.setState({
@@ -270,7 +281,9 @@ export default class EditButton extends Component {
   // 渲染当前多选
   renderCurrentMulti() {
     const { options, currentRecord } = this.state;
-    const correctAnswerArr = currentRecord.C3_607195719379.split(' ');
+    const correctAnswerArr = currentRecord.C3_607195719379
+      ? currentRecord.C3_607195719379.split(' ')
+      : [];
     return (
       <div>
         <div>
@@ -356,9 +369,7 @@ export default class EditButton extends Component {
     );
   }
   render() {
-    // const { size } = this.state;
     const { currentRecord } = this.state;
-    console.log({ currentRecord, currentRecord });
     return (
       <div>
         <Button onClick={() => this.showCurrentModal()}>修改题目</Button>
@@ -368,6 +379,7 @@ export default class EditButton extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={this.state.wid}
+          destroyOnClose
         >
           {this.renderCurrentQuestion(currentRecord.C3_607195719536)}
           {currentRecord.C3_607195719536 == '判断题' ? (
