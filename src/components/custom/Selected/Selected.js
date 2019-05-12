@@ -39,7 +39,6 @@ export default class Selected extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width="100%"
-          style={{top:"100px",height:"600px"}}
           destroyOnClose
         >
           <Tabs
@@ -60,7 +59,7 @@ export default class Selected extends Component {
                 hasRowModify={false}
                 hasRowView={false}
                 width="99%"
-                height={600}
+                subtractH={190}
                 cmswhere={`C3_607197284004 = ${
                   this.props.record.C3_607171221170
                 }`}
@@ -79,7 +78,7 @@ export default class Selected extends Component {
                 hasRowDelete={true}
                 hasRowModify={false}
                 hasRowView={false}
-                height={600}
+                subtractH={190}
                 width="99%"
                 cmswhere={`C3_607197284004 = ${
                   this.props.record.C3_607171221170

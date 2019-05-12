@@ -410,7 +410,7 @@ export default class ExamPage extends Component {
                 className="exam-page__radio-wrap"
               >
                 <Radio value={option.value}>
-                  {String.fromCharCode(index + 65) + '、' + option.label}
+                  {String.fromCharCode(index + 65) + '.' + option.label}
                 </Radio>
               </div>
             ))}
@@ -466,7 +466,7 @@ export default class ExamPage extends Component {
                   )
                 }
               >
-                {String.fromCharCode(index + 65) + '、' + option.label}
+                {String.fromCharCode(index + 65) + '.' + option.label}
               </Checkbox>
             </div>
           ))}

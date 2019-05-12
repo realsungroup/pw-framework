@@ -969,6 +969,8 @@ window[607168405062] = {
     hasRowDelete: false,
     hasRowModify: false,
     hasRowView: false,
+    subtractH:190,
+    height:600,
     formProps: {
       height: 500
     },
@@ -986,7 +988,10 @@ window[607168405062] = {
           hasModify: false,
           hasRowDelete: false,
           hasRowModify: false,
-          hasDelete: false
+          hasDelete: false,
+          subtractH:190,
+          height:500,
+          hasRowView:false,
         }
 
         // hasRowModify: false,
@@ -1060,7 +1065,9 @@ window[610653848123] = {
 window['问卷统计分析'] = {
   name: 'QuestionnaireStatisticAnalysis',
   title: '问卷统计分析',
-  props: {}
+  props: {
+  
+  }
 };
 
 // 问卷统计分析

@@ -740,7 +740,7 @@ class ExamSet extends Component {
           {item.subdata.map((option, index) => {
             return (
               <div key={index} className="Exam-set__single__radio">
-                <Radio value={option.value}>{option.value}</Radio>
+                <Radio value={option.value}><span className='Exam-set__single__label'>{String.fromCharCode(index + 65)}.</span>{option.value}</Radio>
               </div>
             );
           })}
@@ -836,6 +836,7 @@ class ExamSet extends Component {
                   key={option.REC_ID}
                   value={option.value}
                 >
+                <span className='Exam-set__single__label'>{String.fromCharCode(index + 65)}.</span>
                   {option.value}
                 </Checkbox>
               </div>
@@ -914,7 +915,7 @@ class ExamSet extends Component {
           <span className="questionOrder"> {index + 1}.</span>
           {item.C3_607025683659}
         </div>
-        {item.C3_610564959242 == ' ' ? (
+        {item.C3_610564959242 == null ? (
           ' '
         ) : (
           <div className="Exam-set__pic">
