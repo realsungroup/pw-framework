@@ -825,7 +825,10 @@ window[607170472378] = {
     resid: 607188982819,
     hasDelete: false,
     hasModify: false,
-    hasRowView: false
+    hasRowView: false,
+    height:600,
+    subtractH:220,
+    
   }
 };
 //试卷管理
@@ -1026,9 +1029,8 @@ window[610657933222] = {
     hasRowDelete: false,
     hasRowModify: false,
     hasRowView: true,
-    formProps: {
-      height: 500
-    },
+    subtractH: 220,
+    height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',

@@ -54,13 +54,16 @@ export default class EditButton extends Component {
               C3_607195719223: currentRecord.C3_607195719223,
               C3_607195719379: currentRecord.C3_607195719379,
               C3_607195720020: currentRecord.C3_607195720020,
-              C3_607195738504: options[0] ? options[0] : null,
-              C3_607195738723: options[1] ? options[1] : null,
-              C3_607195744333: options[2] ? options[2] : null,
-              C3_607195768583: options[3] ? options[3] : null,
-              C3_610129026079: options[4] ? options[4] : null,
-              C3_610129040516: options[5] ? options[5] : null,
-              C3_610129053516: options[6] ? options[6] : null
+              C3_610630858606: options[0] ? options[0] : null,
+              C3_610630869588: options[1] ? options[1] : null,
+              C3_610630879311: options[2] ? options[2] : null,
+              C3_610630889014: options[3] ? options[3] : null,
+              C3_610630895780: options[4] ? options[4] : null,
+              C3_610630908132: options[5] ? options[5] : null,
+              C3_610630928623: options[6] ? options[6] : null,
+              C3_610630943539: options[7] ? options[7] : null,
+              C3_610630961465: options[8] ? options[8] : null,
+              C3_610630972853: options[9] ? options[9] : null
             }
           ];
         }
@@ -73,13 +76,16 @@ export default class EditButton extends Component {
               C3_607195719223: currentRecord.C3_607195719223,
               C3_607195719379: currentRecord.C3_607195719379,
               C3_607195720020: currentRecord.C3_607195720020,
-              C3_607195738504: options[0] ? options[0] : null,
-              C3_607195738723: options[1] ? options[1] : null,
-              C3_607195744333: options[2] ? options[2] : null,
-              C3_607195768583: options[3] ? options[3] : null,
-              C3_610129026079: options[4] ? options[4] : null,
-              C3_610129040516: options[5] ? options[5] : null,
-              C3_610129053516: options[6] ? options[6] : null
+              C3_610630858606: options[0] ? options[0] : null,
+              C3_610630869588: options[1] ? options[1] : null,
+              C3_610630879311: options[2] ? options[2] : null,
+              C3_610630889014: options[3] ? options[3] : null,
+              C3_610630895780: options[4] ? options[4] : null,
+              C3_610630908132: options[5] ? options[5] : null,
+              C3_610630928623: options[6] ? options[6] : null,
+              C3_610630943539: options[7] ? options[7] : null,
+              C3_610630961465: options[8] ? options[8] : null,
+              C3_610630972853: options[9] ? options[9] : null
             }
           ];
         }
@@ -177,7 +183,7 @@ export default class EditButton extends Component {
   handlemultiCorrectAnswerChange = value => {
     const newcurrentRecord = this.state.currentRecord;
     console.log('多选答案的变化', value);
-    const tempvalue = value.join('');
+    const tempvalue = value.join(' ');
     newcurrentRecord.C3_607195719379 = tempvalue;
     this.setState({
       currentRecord: newcurrentRecord
