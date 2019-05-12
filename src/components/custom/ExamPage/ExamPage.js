@@ -19,11 +19,11 @@ export const getWindowSize = () => {
 
 const multipleQuestionOptions = [
   {
-    label: '✓',
+    label: '正确',
     value: 'Y'
   },
   {
-    label: '✗',
+    label: '错误',
     value: 'N'
   }
 ];
@@ -409,7 +409,9 @@ export default class ExamPage extends Component {
                 key={'' + index + option.value}
                 className="exam-page__radio-wrap"
               >
-                <Radio value={option.value}>{option.label}</Radio>
+                <Radio value={option.value}>
+                  {String.fromCharCode(index + 65) + '、' + option.label}
+                </Radio>
               </div>
             ))}
           </RadioGroup>
@@ -464,7 +466,7 @@ export default class ExamPage extends Component {
                   )
                 }
               >
-                {option.label}
+                {String.fromCharCode(index + 65) + '、' + option.label}
               </Checkbox>
             </div>
           ))}
