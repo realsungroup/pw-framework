@@ -165,8 +165,6 @@ export default class ExamPage extends Component {
     ];
 
     res.data.forEach((item, index) => {
-      item.C3_607025683659 = `${index + 1}. ${item.C3_607025683659}`;
-
       item.subdata = optionFields
         .map(field => {
           const value = item[field];
@@ -277,7 +275,13 @@ export default class ExamPage extends Component {
         }
       }
     });
-    console.log({ questions });
+
+    let i = 0;
+    questions.forEach(item => {
+      item.questions.forEach(question => {
+        question.C3_607025683659 = `${i++ + 1}. ${question.C3_607025683659}`;
+      });
+    });
 
     this.setState({
       questions,
@@ -611,8 +615,8 @@ export default class ExamPage extends Component {
       console.error(err);
       return message.error(err.message);
     }
-    const questions = res.data; // 
-    console.log('exampage',questions)
+    const questions = res.data; //
+    console.log('exampage', questions);
 
     // 项考试批次表（主表）和考试批次答题表（子表）中插入数据
     const dataObj = {
