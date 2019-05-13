@@ -290,4 +290,14 @@ http.createApi('saveRecordAndSubTables', {
   url: '/api/200/table/Save'
 });
 
+/**
+ * 开始自动导入
+ * 参数：{ id }
+ * 1. id: id
+ */
+http.createApi('runAutoImport', {
+  method: 'get',
+  url: '/api/Resource/RunAutoImport'
+});
+
 export default http;

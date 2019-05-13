@@ -1076,3 +1076,18 @@ window[610812799351] = {
   title: '财年计划',
   props: {}
 };
+
+// 创建总计划
+window[611077057050] = {
+  name: 'CreateTotalPlan',
+  title: '创建总计划',
+  props: {
+    resid: 611077132065,
+    hasRowDelete: false,
+    hasRowView: false,
+    hasRowModify: false,
+    hasAdd: false,
+    hasModify: false,
+    hasDelete: false,
+  }
+};
