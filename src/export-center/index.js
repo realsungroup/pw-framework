@@ -73,3 +73,8 @@ export {
 export { QuestionnaireRecords } from '../components/custom/loadableCustom';
 export { QuestionnaireStatisticAnalysis } from '../components/custom/loadableCustom';
 export { FiscalYearPlan } from '../components/custom/loadableCustom';
+export { CreateTotalPlan } from '../components/custom/loadableCustom';
+
+
+
+

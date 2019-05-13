@@ -32,19 +32,22 @@ class CreatePlan extends React.Component {
     this.getLevel();
     this.getKcxl();
     this.getKclb();
-    // this.getSubData();
   };
 
   //获取员工列表
   async getData(key){
     let res = await http().getTable({ resid: this.props.resid,key });
     try {
-      let data = res.data
-      // console.log(res.data)
-      data.forEach(e => {
-        e.check = false
-      });
-      this.setState({data, oldData:data});
+      if (res.error === 0) {
+        let data = res.data
+        // console.log(res.data)
+        data.forEach(e => {
+          e.check = false
+        });
+        this.setState({data, oldData:data});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -55,8 +58,12 @@ class CreatePlan extends React.Component {
   async getLevel(){
     let res = await http().getTable({ resid: this.props.levelId });
     try {
-      let levelData = res.data
-      this.setState({levelData});
+      if (res.error === 0) {
+        let levelData = res.data
+        this.setState({levelData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -65,15 +72,27 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key){
-    let cmswhere = "C3_610763348502="+this.state.levelSelect+" AND C3_609845305368="+this.state.xlSelect+" AND C3_609845305305="+this.state.lbSelect;
+    let cmswhere = ""
+    if(this.state.levelSelect){
+      cmswhere+="C3_610763348502='" + this.state.levelSelect + "'"
+    }
+    if(this.state.xlSelect){
+      cmswhere+="C3_609845305368='" + this.state.xlSelect + "'"
+    }
+    if(this.state.lbSelect){
+      cmswhere+="C3_609845305305='" + this.state.lbSelect + "'"
+    }
     let res = await http().getTable({ resid: this.props.subResid,key,cmswhere});
     try {
-      let subData = res.data
-      console.log(res.data)
-      subData.forEach(e => {
-        e.check = false
-      });
-      this.setState({subData});
+      if (res.error === 0) {
+        let subData = res.data
+        subData.forEach(e => {
+          e.check = false
+        });
+        this.setState({subData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.log().error(err);
       return message.error(err.message);
@@ -84,8 +103,12 @@ class CreatePlan extends React.Component {
   async getKcxl(){
     let res = await http().getTable({ resid: this.props.kcxlResid });
     try {
-      let kcxlData = res.data
-      this.setState({kcxlData});
+      if (res.error === 0) {
+        let kcxlData = res.data
+        this.setState({kcxlData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -96,8 +119,12 @@ class CreatePlan extends React.Component {
   async getKclb(){
     let res = await http().getTable({ resid: this.props.kclbResid });
     try {
-      let kclbData = res.data
-      this.setState({kclbData});
+      if (res.error === 0) {
+        let kclbData = res.data
+        this.setState({kclbData});
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -143,8 +170,11 @@ class CreatePlan extends React.Component {
     if(x==0)return message.error("至少选择一个员工");
     let res = await http().addRecords({ resid: this.props.kcbResid,data: planData});
     try {
-      if(res.message=="操作成功")return message.success(res.message);
-      return message.error(res.message);
+      if (res.error === 0) {
+        return message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -158,8 +188,8 @@ class CreatePlan extends React.Component {
     return (
       <div style={{padding:"16px",background:"#fff"}}>
         <div style={{ display:"flex",flexDirection: 'row'}}>
-          <div style={{ width: "50%",padding: '16px 28px'}}>
-            <div style={{padding: "24px"}}>
+          <div style={{ width: "50%",padding: '10px 28px'}}>
+            <div style={{paddingBottom: "24px"}}>
               <span style={{fontSize:"24px",fontWeight:"bold"}}>
                 选择员工
               </span>
@@ -195,7 +225,7 @@ class CreatePlan extends React.Component {
               </div>}
               // footer={<div>Footer</div>}
               bordered
-              style={{height:"calc(100vh - 400px)"}}
+              style={{height:"calc(100vh - 350px)",overflowY: 'scroll'}}
               dataSource={this.state.data}
               renderItem={(item,i) => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,i)}>
                                     <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
@@ -221,22 +251,11 @@ class CreatePlan extends React.Component {
                                         <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
                                         </div>
                                       </div>
-                                      {/* <div style={{display:"flex",flex:1}}>
-                                        <Popover placement="topLeft"
-                                          onClick={(e)=>e.stopPropagation()}
-                                          content={<div style={{display:"flex",flexDirection: 'column'}}>
-                                                            <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
-                                                            <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
-                                                            <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
-                                                          </div>} trigger="click" >
-                                          <Icon type = "right-circle" style={{fontSize:"18px"}}/>
-                                        </Popover>
-                                      </div> */}
                                     </div>
                                   </List.Item>)}/>
         </div>
-        <div style={{ width: "50%",padding: '16px 28px'}}>
-            <div style={{padding: "24px"}}>
+        <div style={{ width: "50%",padding: '10px 28px'}}>
+            <div style={{paddingBottom: "24px"}}>
               <span style={{fontSize:"24px",fontWeight:"bold"}}>
                 选择课程
               </span>
@@ -248,10 +267,10 @@ class CreatePlan extends React.Component {
                   style={{width:"100px"}}
                   defaultValue="Rec"
                   onChange={(e)=>{
-                    if(e=="All"){
-                      this.setState({levelSelect:"",xlSelect:"",lbSelect:""},()=>this.getSubData())
+                    if(e=="Rec"){
+                      this.setState({levelSelect:"Rec"},()=>this.getSubData())
                     }else{
-                      this.setState({levelSelect:this.state.kclbState})
+                      this.setState({levelSelect:"",xlSelect:"",lbSelect:""},()=>this.getSubData())
                     }
                   }}>
                   <Option value="All">全部课程</Option>
@@ -286,7 +305,7 @@ class CreatePlan extends React.Component {
                 />
               </div>}
               bordered
-              style={{height:"calc(100vh - 400px)"}}
+              style={{height:"calc(100vh - 350px)",overflowY: 'scroll'}}
               dataSource={this.state.subData}
               renderItem={(item,i) => (<List.Item style={{cursor:'pointer'}} onClick={this.onClickCustom.bind(this,i)}>
                                     <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>

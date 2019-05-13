@@ -251,3 +251,10 @@ export const FiscalYearPlan = Loadable({
     return minLoading;
   }
 });
+
+export const CreateTotalPlan = Loadable({
+  loader: () => import('./CreateTotalPlan'),
+  loading() {
+    return minLoading;
+  }
+});
