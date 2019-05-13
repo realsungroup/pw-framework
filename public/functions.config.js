@@ -1076,3 +1076,17 @@ window[610812799351] = {
   title: '财年计划',
   props: {}
 };
+
+//类别管理611054119826
+window[611054119826] = {
+  name: 'TableDataWrap',
+  title: '试卷类别管理',
+  props: {
+    resid:611054247854,
+    subtractH:190,
+    height:500,
+    hasModify: false,
+    hasDelete: false,
+    hasRowView: false,
+  }
+};

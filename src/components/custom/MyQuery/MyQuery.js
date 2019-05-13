@@ -37,7 +37,7 @@ class MyQuery extends React.Component {
         resid: 608822887704
       })
       .then(res => {
-        console.log('文件夹', res.data);
+        // console.log('文件夹', res.data);
         let floders = res.data;
         this.setState({
           floders: floders,
@@ -71,7 +71,7 @@ class MyQuery extends React.Component {
         resid: 608822905547
       })
       .then(res => {
-        console.log('问卷', res.data);
+        // console.log('问卷', res.data);
         this.setState({
           questionnaire: res.data,
           loading: false

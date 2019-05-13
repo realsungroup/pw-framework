@@ -445,7 +445,7 @@ class SoleQuery extends Component {
       this.setState({
         isGetgift: res.data[0].is_get_gift,
         recid: res.data[0].REC_ID,
-        visible:true,
+        visible: true
       });
       // Modal.success({
       //   title: '提交成功',
@@ -473,7 +473,6 @@ class SoleQuery extends Component {
       console.error(err);
       return message.error(err.message);
     }
-    
   };
 
   //单选选中的值。
@@ -581,28 +580,35 @@ class SoleQuery extends Component {
           console.error(err);
         });
     }
+    window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
   };
 
   // 监听电话输入的变化
   handleTelChange = value => {
-    const {tel} = this.state;
+    const { tel } = this.state;
     console.log(11111111);
     console.log(value);
-    this.setState({
-      tel:value,
-    },()=>{
-      console.log(this.state.tel)
-    })
-    
+    this.setState(
+      {
+        tel: value
+      },
+      () => {
+        console.log(this.state.tel);
+      }
+    );
   };
 
   //rendercarousel
   rendercarousel = () => {
-    const { hasGiftList } = this.state;
-    if (hasGiftList.length <= 0) {
-      return <p className="lucker">暂无人获奖，赶紧填完试试运气吧!</p>;
+    const { hasGiftList, hasGift } = this.state;
+    if (hasGift == '1') {
+      if (hasGiftList.length <= 0) {
+        return <p className="lucker">暂无人获奖，赶紧填完试试运气吧!</p>;
+      } else {
+        return this.rendergiftList();
+      }
     } else {
-      return this.rendergiftList();
+      return;
     }
   };
 
@@ -703,25 +709,25 @@ class SoleQuery extends Component {
             visible={this.state.visible}
             width={this.state.wid}
             onOk={this.handleOk}
-          > 
-           <div>
-            <p className="thanks">感谢您参与本次问卷调查</p>
-            <p className="thanks">问卷已经提交成功啦~~~</p>
-            {this.state.isGetgift === 'Y' ? (
-              <p>
-                恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份
-                <br />
-                <Input
-                  value={this.state.tel}
-                  onChange={e => {
-                    this.handleTelChange(e.target.value);
-                  }}
-                />
-              </p>
-            ) : (
-              ''
-            )}
-          </div>
+          >
+            <div>
+              <p className="thanks">感谢您参与本次问卷调查</p>
+              <p className="thanks">问卷已经提交成功啦~~~</p>
+              {this.state.isGetgift === 'Y' ? (
+                <p>
+                  恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份
+                  <br />
+                  <Input
+                    value={this.state.tel}
+                    onChange={e => {
+                      this.handleTelChange(e.target.value);
+                    }}
+                  />
+                </p>
+              ) : (
+                ''
+              )}
+            </div>
           </Modal>
         </div>
       </Spin>

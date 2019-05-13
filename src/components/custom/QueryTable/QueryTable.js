@@ -3,7 +3,6 @@ import { Button, Icon, Modal, Input, Popconfirm, message, Spin } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
-import http from '../../../util20/api';
 import TableData from '../../common/data/TableData';
 
 /**
@@ -334,7 +333,8 @@ class QueryTable extends Component {
             hasRowDelete={false}
             hasRowModify={false}
             width={950}
-            subtractH={260}
+            height={400}
+            subtractH={190}
             cmswhere={`query_id='${this.state.sendListId}'`}
           />
         </Modal>
