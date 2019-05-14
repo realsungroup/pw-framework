@@ -1089,5 +1089,6 @@ window[611077057050] = {
     hasAdd: false,
     hasModify: false,
     hasDelete: false,
+    hasRowSelection: true
   }
 };
