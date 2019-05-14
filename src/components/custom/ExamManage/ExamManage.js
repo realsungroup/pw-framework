@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import TableData from "../../common/data/TableData";
-import { Tabs, Modal, Button, message } from "antd";
-import http from "../../../util20/api";
-import SetScore from "../SetScore";
-import "./ExamManage.less";
+import React, { Component } from 'react';
+import TableData from '../../common/data/TableData';
+import { Tabs, Modal, Button, message } from 'antd';
+import http from '../../../util20/api';
+import SetScore from '../SetScore';
+import './ExamManage.less';
 
 const TabPane = Tabs.TabPane;
 function callback(key) {
@@ -11,10 +11,10 @@ function callback(key) {
 }
 
 export default class ExamManage extends Component {
-  state = { visible: false, record: "" };
+  state = { visible: false, record: '' };
 
   showModal = record => {
-    console.log("record", record);
+    console.log('record', record);
     if (record) {
       this.setState({
         visible: true,
@@ -39,22 +39,22 @@ export default class ExamManage extends Component {
 
   handleOk = async e => {
     let res;
-    console.log("this.state.dataSource", this.state.dataSource);
+    console.log('this.state.dataSource', this.state.dataSource);
     let data = this.state.dataSource;
     let Reldata = [];
     data.map(item => {
       this.state.selectedRowKeys.map(items => {
         if (item.REC_ID === items) {
           item.C3_601650474946 = this.state.date;
-          item.C3_604408361317 = "Y";
+          item.C3_604408361317 = 'Y';
           Reldata.push(item);
         }
       });
     });
   };
   onHandleMessage = async (dataSource, selectedRowKeys) => {
-    console.log("dataSource", dataSource, selectedRowKeys);
-    console.log("recoed", this.state.record);
+    console.log('dataSource', dataSource, selectedRowKeys);
+    console.log('recoed', this.state.record);
     if (selectedRowKeys.length > 0) {
       let res;
       let data = this.state.dataSource;
@@ -83,7 +83,7 @@ export default class ExamManage extends Component {
         });
         if (res.Error === 0) {
           this.tableDataRef.handleRefresh();
-          message.success("操作成功！");
+          message.success('操作成功！');
         } else {
           message.error(res.message);
         }
@@ -97,14 +97,14 @@ export default class ExamManage extends Component {
         selectedRowKeys: selectedRowKeys
       });
     } else {
-      message.error("请先勾选记录！");
+      message.error('请先勾选记录！');
     }
   };
   render() {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: "calc(100vh - 220px)" }}
+        style={{ height: 'calc(100vh - 160px)' }}
       >
         <TableData
           refTargetComponentName="TableData"
@@ -118,30 +118,30 @@ export default class ExamManage extends Component {
           hasRowDelete={true}
           hasModify={false}
           hasDelete={false}
-          subtractH={260}
+          subtractH={188}
           actionBarFixed={true}
-          recordFormType= 'drawer'
-          recordFormContainerProps= {{
-            placement:'bottom',
+          recordFormType="drawer"
+          recordFormContainerProps={{
+            placement: 'bottom',
             height: 600
           }}
-        //   subTableArrProps={{
-        //       subTableName: '员工成绩',
-        //       subResid: 607188996053,
-        //       tableProps: {
-        //         hasAdd: false,
-        //         hasModify: false,
-        //         hasRowDelete: false,
-        //         hasRowModify: false,
-        //         hasDelete: false
-        //       }
-      
-        //       // hasRowModify: false,
-        //       // hasRowView: false,
-        //       // hasRowDelete: false
-        //   //   }
-        //   // ]
-        // }}
+          //   subTableArrProps={{
+          //       subTableName: '员工成绩',
+          //       subResid: 607188996053,
+          //       tableProps: {
+          //         hasAdd: false,
+          //         hasModify: false,
+          //         hasRowDelete: false,
+          //         hasRowModify: false,
+          //         hasDelete: false
+          //       }
+
+          //       // hasRowModify: false,
+          //       // hasRowView: false,
+          //       // hasRowDelete: false
+          //   //   }
+          //   // ]
+          // }}
           customRowBtns={[
             // (record, btnSize) => {
             //   return (
@@ -160,6 +160,7 @@ export default class ExamManage extends Component {
                   onClick={() => {
                     this.showModal(record);
                   }}
+                  style={{ margin: '0 4px' }}
                 >
                   导入题目
                 </Button>
@@ -169,13 +170,16 @@ export default class ExamManage extends Component {
               return (
                 <Button
                   onClick={() => {
-                    window.location.href = `/fnmodule?resid=607459194551&recid=610198378903&type=考试系统&title=试卷设置&id=${record.C3_607171749463}`;
+                    window.location.href = `/fnmodule?resid=607459194551&recid=610198378903&type=考试系统&title=试卷设置&id=${
+                      record.C3_607171749463
+                    }`;
                   }}
+                  style={{ margin: '0 4px' }}
                 >
                   设计试卷
                 </Button>
               );
-            },
+            }
             // (record, btnSize) => {
             //   return <SetScore>分数设置</SetScore>;
             // }
@@ -190,23 +194,20 @@ export default class ExamManage extends Component {
           destroyOnClose
         >
           <TableData
-                resid="607188996053"
-                hasRowDelete={true}
-                hasAdd={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowView={false}
-                hasRowModify={false}
-                hasBeBtns={false}
-                hasRowSelection={false}
-                subtractH={220}
-                heigth={500}
-                width={1150}
-                cmswhere={`C3_607172879503 = ${
-                  this.state.record.C3_607171749463
-                }`}
-                
-              />
+            resid={607188996053}
+            hasRowDelete={true}
+            hasAdd={false}
+            hasDelete={false}
+            hasModify={false}
+            hasRowView={false}
+            hasRowModify={false}
+            hasBeBtns={false}
+            hasRowSelection={false}
+            subtractH={220}
+            heigth={500}
+            width={1150}
+            cmswhere={`C3_607172879503 = ${this.state.record.C3_607171749463}`}
+          />
         </Modal>
       </div>
     );
