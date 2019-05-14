@@ -237,7 +237,7 @@ class FJList extends React.Component {
                   <div style={{ display: "flex", justifyContent:"flex-end" }}>
                     <Search
                       placeholder="搜索"
-                      onSearch={value => this.setState({key:value,data:[]},()=>this.getData())}
+                      onSearch={value => this.setState({key:value,data:[],pageIndex:0},()=>this.getData())}
                       style={{ width: 200 }}
                     />
                   </div>}
