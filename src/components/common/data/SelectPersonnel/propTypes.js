@@ -75,7 +75,7 @@ export const propTypes = {
   // ]
 
   /**
-   * 二次筛选输入框的 placement
+   * 二次筛选输入框的 placeholder
    * 默认：''
    */
   secondFilterInputPlaceholder: PropTypes.string,
