@@ -8,12 +8,13 @@ import {
   Modal,
   Tabs,
   Spin,
-  message
+  message,
+  Pagination 
 } from 'antd';
 import './MyQuery.less';
-import { QueryTable, QueryType, Paging } from '../loadableCustom';
+import { QueryTable } from '../loadableCustom';
 import TableData from '../../common/data/TableData';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Link } from 'react-router-dom';
 import http from '../../../util20/api';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -27,7 +28,8 @@ class MyQuery extends React.Component {
       typewid: 1200,
       questionnaire: [],
       loading: false,
-      foloderbuttonChecked: '全部'
+      foloderbuttonChecked: '全部',
+      current:1,
     };
   }
   //获取问卷文件夹
@@ -65,7 +67,7 @@ class MyQuery extends React.Component {
 
   //获取问卷
   getData = async () => {
-    this.setState({ loading: true ,foloderbuttonChecked:'全部'});
+    this.setState({ loading: true, foloderbuttonChecked: '全部' });
     http()
       .getTable({
         resid: 608822905547
@@ -83,13 +85,13 @@ class MyQuery extends React.Component {
         message.error('MyQuery获取问卷失败', err.message);
       });
   };
-// 判断选中按钮的类型
-getType=(flodername)=>{
-    const {foloderbuttonChecked} = this.state;
-    if(foloderbuttonChecked==flodername){
+  // 判断选中按钮的类型
+  getType = flodername => {
+    const { foloderbuttonChecked } = this.state;
+    if (foloderbuttonChecked == flodername) {
       return 'primary';
     }
-}
+  };
   // 删除问卷;
   deleQuery = item => {
     console.log('问卷对象', item);
@@ -238,9 +240,12 @@ getType=(flodername)=>{
   handleSelectFolder = id => {
     console.log({ id });
   };
-
+  // 页码
+  handlePageChange = (page,pageSize)=>{
+   console.log(page,pageSize);
+  }
   render() {
-    const { questionnaire, loading, foloderbuttonChecked } = this.state;
+    const { questionnaire, loading, foloderbuttonChecked,current } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="query">
@@ -347,6 +352,9 @@ getType=(flodername)=>{
             onDelete={this.deleQuery}
             onStopQuery={this.stopQuery}
           />
+          <div className="My-qiery__paging">
+            <Pagination current={current} showQuickJumper showSizeChanger onChange={this.handlePageChange}/>,
+          </div>
         </div>
       </Spin>
     );

@@ -89,17 +89,18 @@ class SelectPersonFirst extends Component {
               type: 'list',
               title: '按级别添加',
               resid: 449335746776,
-              nameField: 'C3_449335790387'
+              nameField: 'C3_449335790387',
+              secondFilterInputPlaceholder:'输入关键词搜索'
             },
             {
               type: 'search',
-              title: '输入工号、级别或者姓名搜索'
+              title: '输入关键词搜索'
             },
             {
               type: 'file',
               title: '请选择要上传的文件'
             },
-            
+
           ]}
           subResid={609599795438}
           personFields={[

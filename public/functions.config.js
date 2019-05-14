@@ -993,10 +993,6 @@ window[607168405062] = {
           height:500,
           hasRowView:false,
         }
-
-        // hasRowModify: false,
-        // hasRowView: false,
-        // hasRowDelete: false
       }
     ]
   }
