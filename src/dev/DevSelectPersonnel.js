@@ -75,6 +75,7 @@ class App extends Component {
               onComplete={this.handleComplete}
               completeText="发送"
               onSelectPerson={this.handleSelectPerson}
+              secondFilterInputPlaceholder="可搜索居住地"
             />
           </div>
         </Spin>
