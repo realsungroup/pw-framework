@@ -31,7 +31,7 @@ export default class Selected extends Component {
 
   render() {
     return (
-      <div>
+      <span>
         <Button onClick={this.showModal}>查看人员</Button>
         <Modal
           title="参加考试人员列表"
@@ -58,6 +58,7 @@ export default class Selected extends Component {
                 hasRowDelete={true}
                 hasRowModify={false}
                 hasRowView={false}
+                height={300}
                 width="99%"
                 subtractH={190}
                 cmswhere={`C3_607197284004 = ${
@@ -87,7 +88,7 @@ export default class Selected extends Component {
             </TabPane>
           </Tabs>
         </Modal>
-      </div>
+      </span>
     );
   }
 }

@@ -98,7 +98,8 @@ class SelectPersonFirst extends Component {
             {
               type: 'file',
               title: '请选择要上传的文件'
-            }
+            },
+            
           ]}
           subResid={609599795438}
           personFields={[

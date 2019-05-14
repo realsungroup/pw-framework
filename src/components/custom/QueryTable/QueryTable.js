@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Input, Popconfirm, message, Spin } from 'antd';
+import { Button, Icon, Modal, Popconfirm, message,} from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
@@ -28,16 +28,6 @@ class QueryTable extends Component {
   sendModal = () => {
     this.setState({
       visible: true
-    });
-  };
-  handleOk = () => {
-    this.setState({
-      visible: false
-    });
-  };
-  handleCancel = () => {
-    this.setState({
-      visible: false
     });
   };
   // 显示中奖人员名单
@@ -189,26 +179,6 @@ class QueryTable extends Component {
                     </Link>
                   )}
                   {this.renderButton(item)}
-                  <Modal
-                    title="提交问卷"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    width={this.state.wid}
-                  >
-                    {/* <Button style={{marginTop:10}} type="primary">复制链接</Button> */}
-                    <p style={{ marginTop: 10, color: '#f00' }}>
-                      恭喜您获得礼品一份，请输入手机号领取并到人力资源部去领取
-                    </p>
-                    <Input
-                      style={{ marginTop: 10 }}
-                      placeholder="请输入您的手机号码"
-                    />
-                    {/* <Button style={{marginTop:10}} type="primary">
-                    <Icon type="plus" />
-                    选择人员
-                  </Button> */}
-                  </Modal>
                   <Link
                     to={{
                       pathname: '/fnmodule',
@@ -225,19 +195,6 @@ class QueryTable extends Component {
                   </Link>
                 </div>
                 <div className="queryItem-right">
-                  {/* <Link to={{
-                   pathname:'/fnmodule',
-                   search:`?resid=发送问卷&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
-                    item.query_id
-                  }`
-                 }}
-                 target="_self"
-                 >
-                 <Button className="stepBtn" type="primary">
-                    <Icon type="plus" />
-                    选择人员
-                  </Button>
-                  </Link>  */}
                   {item.query_status == '草稿' ? (
                     <Button disabled>
                       <Icon type="eye" />

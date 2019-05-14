@@ -426,10 +426,15 @@ class SoleQuery extends Component {
       console.error(err);
       return message.error(err.message);
     }
-    message.success('提交成功');
     // 无礼品时
     if (hasGift === '0') {
-      return;
+      return   Modal.success({
+        title:'问卷已经成功提交',
+        okText:'知道了',
+        onOk(){
+          window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
+        }
+      })
     }
     // 有礼品时
     try {
@@ -447,28 +452,6 @@ class SoleQuery extends Component {
         recid: res.data[0].REC_ID,
         visible: true
       });
-      // Modal.success({
-      //   title: '提交成功',
-      //   content: (
-      //     <div>
-      //       <p className="thanks">感谢您参与本次问卷调查</p>
-      //       {this.state.isGetgift === 'Y' ? (
-      //         <p>
-      //           恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份
-      //           <br />
-      //           <Input
-      //             value={this.state.tel}
-      //             onChange={e => {
-      //               this.handleTelChange(e.target.value);
-      //             }}
-      //           />
-      //         </p>
-      //       ) : (
-      //         ''
-      //       )}
-      //     </div>
-      //   )
-      // });
     } catch (err) {
       console.error(err);
       return message.error(err.message);
