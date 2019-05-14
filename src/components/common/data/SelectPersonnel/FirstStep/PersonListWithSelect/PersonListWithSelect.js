@@ -47,6 +47,7 @@ export default class PersonListWithSelect extends React.Component {
       searchValue,
       onSearchChange,
       hasSearch,
+      secondFilterInputPlaceholder,
       ...restProps
     } = this.props;
     return (
@@ -58,7 +59,7 @@ export default class PersonListWithSelect extends React.Component {
                 <Search
                   value={searchValue}
                   onChange={onSearchChange}
-                  placeholder="搜索 工号/姓名"
+                  placeholder={secondFilterInputPlaceholder}
                   onSearch={onSearch}
                   className="person-list-withselect__search"
                 />
