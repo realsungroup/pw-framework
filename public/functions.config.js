@@ -947,7 +947,12 @@ window[610555787304] = {
   props: {
     resid: 610307713776,
     subResid: 610657610335,
-    totalResid: 609883172764
+    subbResid: 610308370365,
+    totalResid: 609883172764,
+    levelId: 449335746776,
+    kcbResid: 610657610335,
+    kcxlResid: 610708527386,
+    kclbResid: 610708543449
   }
 };
 window['考试页面'] = {
