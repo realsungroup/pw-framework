@@ -4,6 +4,7 @@ import { TableData } from "../../common/loadableCommon";
 import { Button, Icon, Radio , message, Popover, List, Card, Modal, Input, Popconfirm, Tabs } from "antd";
 import { saveMultipleRecord } from "../../../util/api";
 import http from "../../../util20/api";
+import InfiniteScroll from 'react-infinite-scroller';
 
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
@@ -26,7 +27,12 @@ class FJList extends React.Component {
       showTab:false,
       addData:{},
       editData:{},
-      plist:[]
+      plist:[],
+      pageIndex: 0, // 当前页数
+      totalPage: 0, // 总页数
+      pageSize: 15, // 每页数量
+      loading: false,
+      hasMore: true,
     };
   }
 
@@ -37,15 +43,18 @@ class FJList extends React.Component {
 
   //获取员工列表
   async getData(){
-    let res = await http().getTable({ resid: this.props.resid });
+    let pageIndex = this.state.pageIndex
+    let pageSize = this.state.pageSize
+    let res = await http().getTable({ resid: this.props.resid,pageIndex,pageSize });
     try {
       if (res.error === 0) {
-        let data = res.data
+        let data = this.state.data
+        data = data.concat(res.data)
         data.forEach(e => {
           e.check = false
         });
         data[0].check = true
-        this.setState({data,listNo:data[0].C3_609622254861});
+        this.setState({data,listNo:data[0].C3_609622254861,pageIndex:++this.state.pageIndex});
         this.getSubData(data[0].C3_609622254861);
       } else {
         message.error(res.message);
@@ -206,51 +215,60 @@ class FJList extends React.Component {
                 </span>
               </div>
             </div>
-            <List
-              size="large"
-              // header={<div>Header</div>}
-              // footer={<div>Footer</div>}
-              style={{height:"calc(100vh - 330px)",overflowY: 'scroll'}}
-              bordered
-              dataSource={this.state.data}
-              renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
-                                    <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
-                                      <div style={{display:"flex",flex:1}}>
-                                        <Radio  checked={item.check}></Radio >
-                                      </div>
-                                      <div style={{display:"flex",flex:2}}>
-                                        <Icon type = "user" style={{fontSize:"24px"}}/>
-                                      </div>
-                                      <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
-                                        <div>
-                                          <span>{item.C3_609622254861==null?"无":item.C3_609622254861}</span>
+            <div style={{height:"calc(100vh - 330px)",overflow: "auto"}}>
+              <InfiniteScroll
+                initialLoad={false}
+                pageStart={0}
+                loadMore={this.getData.bind(this)}
+                hasMore={true}
+                useWindow={false}
+              >
+                <List
+                  size="large"
+                  // header={<div>Header</div>}
+                  // footer={<div>Footer</div>}
+                  bordered
+                  dataSource={this.state.data}
+                  renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
+                                        <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
+                                          <div style={{display:"flex",flex:1}}>
+                                            <Radio  checked={item.check}></Radio >
+                                          </div>
+                                          <div style={{display:"flex",flex:2}}>
+                                            <Icon type = "user" style={{fontSize:"24px"}}/>
+                                          </div>
+                                          <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
+                                            <div>
+                                              <span>{item.C3_609622254861==null?"无":item.C3_609622254861}</span>
+                                            </div>
+                                            <div>
+                                              <span>{item.C3_609622263470==null?"无":item.C3_609622263470}</span>
+                                            </div>
+                                          </div>
+                                          <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
+                                            <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                                              <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622277252==null?"无":item.C3_609622277252}</span>
+                                            </div>
+                                            <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                                            <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
+                                            </div>
+                                          </div>
+                                          <div style={{display:"flex",flex:1}}>
+                                            {/* <Popover placement="topLeft"
+                                               onClick={(e)=>e.stopPropagation()}
+                                              content={<div style={{display:"flex",flexDirection: 'column'}}>
+                                                                <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
+                                                                <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
+                                                                <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
+                                                              </div>} trigger="click" >
+                                              <Icon type = "right-circle" style={{fontSize:"18px"}}/>
+                                            </Popover> */}
+                                            <Icon type = "right-circle" style={{fontSize:"18px"}} onClick={(e)=>{this.setState({showTab:true});e.stopPropagation()}}/>
+                                          </div>
                                         </div>
-                                        <div>
-                                          <span>{item.C3_609622263470==null?"无":item.C3_609622263470}</span>
-                                        </div>
-                                      </div>
-                                      <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
-                                        <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-                                          <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622277252==null?"无":item.C3_609622277252}</span>
-                                        </div>
-                                        <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-                                        <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
-                                        </div>
-                                      </div>
-                                      <div style={{display:"flex",flex:1}}>
-                                        {/* <Popover placement="topLeft"
-                                          onClick={(e)=>e.stopPropagation()}
-                                          content={<div style={{display:"flex",flexDirection: 'column'}}>
-                                                            <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
-                                                            <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
-                                                            <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
-                                                          </div>} trigger="click" >
-                                          <Icon type = "right-circle" style={{fontSize:"18px"}}/>
-                                        </Popover> */}
-                                        <Icon type = "right-circle" style={{fontSize:"18px"}} onClick={(e)=>{this.setState({showTab:true});e.stopPropagation()}}/>
-                                      </div>
-                                    </div>
-                                  </List.Item>)}/>
+                                      </List.Item>)}/>
+              </InfiniteScroll>
+            </div>
         </div>
         <div style={{ width: "50%",padding: '16px 28px'}}>
           <div style={{display:"flex",flex:1,flexDirection: 'row',justifyContent: 'space-between',padding: '5px 0'}}>
@@ -259,8 +277,8 @@ class FJList extends React.Component {
                 历史记录
               </Button>
             </div>
-            <div style={{ display:"flex",flex:2,flexDirection: 'column',justifyContent: 'space-around' }}>
-              <span style={{fontSize:"14px"}}>
+            <div style={{ display:"flex",flex:2,flexDirection: 'column',justifyContent: 'space-around',height:"63px" }}>
+              {/* <span style={{fontSize:"14px"}}>
                 课程数:10
               </span>
               <span style={{fontSize:"14px"}}>
@@ -268,7 +286,7 @@ class FJList extends React.Component {
               </span>
               <span style={{fontSize:"14px"}}>
                 个人费用:10
-              </span>
+              </span> */}
             </div>
           </div>
           <div style={{height:"calc(100vh - 330px)",overflowY: 'scroll'}}>
