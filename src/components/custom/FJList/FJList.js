@@ -8,6 +8,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
+const Search = Input.Search;
 
 class FJList extends React.Component {
   constructor(props) {
@@ -45,17 +46,20 @@ class FJList extends React.Component {
   async getData(){
     let pageIndex = this.state.pageIndex
     let pageSize = this.state.pageSize
-    let res = await http().getTable({ resid: this.props.resid,pageIndex,pageSize });
+    let key = this.state.key
+    let res = await http().getTable({ resid: this.props.resid,key,pageIndex,pageSize });
     try {
       if (res.error === 0) {
-        let data = this.state.data
-        data = data.concat(res.data)
-        data.forEach(e => {
-          e.check = false
-        });
-        data[0].check = true
-        this.setState({data,listNo:data[0].C3_609622254861,pageIndex:++this.state.pageIndex});
-        this.getSubData(data[0].C3_609622254861);
+        if(res.data.length>0){
+          let data = this.state.data
+          data = data.concat(res.data)
+          data.forEach(e => {
+            e.check = false
+          });
+          data[0].check = true
+          this.setState({data,listNo:data[0].C3_609622254861,pageIndex:++this.state.pageIndex});
+          this.getSubData(data[0].C3_609622254861);
+        }
       } else {
         message.error(res.message);
       }
@@ -225,7 +229,14 @@ class FJList extends React.Component {
               >
                 <List
                   size="large"
-                  // header={<div>Header</div>}
+                  header={
+                  <div style={{ display: "flex", justifyContent:"flex-end" }}>
+                    <Search
+                      placeholder="搜索"
+                      onSearch={value => this.setState({key:value,data:[]},()=>this.getData())}
+                      style={{ width: 200 }}
+                    />
+                  </div>}
                   // footer={<div>Footer</div>}
                   bordered
                   dataSource={this.state.data}
