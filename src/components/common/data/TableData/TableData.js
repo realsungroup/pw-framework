@@ -489,6 +489,10 @@ class TableData extends React.Component {
     }
     const { beBtnsMultiple, beBtnsSingle, beBtnsOther } = btns;
 
+    if (!beBtnsMultiple.length && !beBtnsSingle.length) {
+      message.warn('未配置后端按钮，请将 hasBeBtns 设置为 false');
+    }
+
     // 有行选择
     let rowSelection = null;
     if (this.hasRowSelection(beBtnsMultiple)) {
@@ -556,8 +560,8 @@ class TableData extends React.Component {
   };
 
   hasRowSelection = beBtnsMultiple => {
-    const { hasModify, hasDelete } = this.props;
-    return !!beBtnsMultiple.length || hasModify || hasDelete;
+    const { hasModify, hasDelete, hasRowSelection } = this.props;
+    return hasRowSelection || !!beBtnsMultiple.length || hasModify || hasDelete;
   };
 
   // 搜索
@@ -575,10 +579,14 @@ class TableData extends React.Component {
     const {
       openImportView,
       importContainerType,
-      importContainerProps
+      importContainerProps,
+      baseURL
     } = this.props;
+
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
     openImportView &&
-      openImportView(this._id, importContainerType, importContainerProps);
+      openImportView(url, this._id, importContainerType, importContainerProps);
   };
 
   // 下载
@@ -594,7 +602,7 @@ class TableData extends React.Component {
       baseURL,
       downloadBaseURL
     } = this.props;
-    
+
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
     // 请求文件下载地址的基地址
@@ -1563,7 +1571,7 @@ class TableData extends React.Component {
         actionBarExtra={actionBarExtra}
         actionBarExtraParams={{
           dataSource,
-          selectedRowKeys: rowSelection && rowSelection.selectedRowKeys,
+          selectedRowKeys: (rowSelection && rowSelection.selectedRowKeys) || [],
           data: this._dealedRecordFormData,
           recordFormData: this._recordFormData
         }}
