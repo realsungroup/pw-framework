@@ -47,8 +47,10 @@ class FJList extends React.Component {
     let pageIndex = this.state.pageIndex
     let pageSize = this.state.pageSize
     let key = this.state.key
+    this.setState({loading: true})
     let res = await http().getTable({ resid: this.props.resid,key,pageIndex,pageSize });
     try {
+      this.setState({loading: false})
       if (res.error === 0) {
         if(res.data.length>0){
           let data = this.state.data
@@ -64,6 +66,7 @@ class FJList extends React.Component {
         message.error(res.message);
       }
     } catch (err) {
+      this.setState({loading: false})
       console.error(err);
       return message.error(err.message);
     }
@@ -229,6 +232,7 @@ class FJList extends React.Component {
               >
                 <List
                   size="large"
+                  loading={this.state.loading}
                   header={
                   <div style={{ display: "flex", justifyContent:"flex-end" }}>
                     <Search
@@ -351,14 +355,14 @@ class FJList extends React.Component {
                     {item.C3_610657578664}
                   </span>
                 </div>}
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
                   <span style={{fontSize:"12px"}}>
                     课程大纲
                   </span>
                   <a target="_blank" href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9">
                     <Button type="primary" size="small"></Button>
                   </a>
-                </div>
+                </div>}
               </Card>
             ))}
           </div>
