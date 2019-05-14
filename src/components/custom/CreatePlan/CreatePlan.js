@@ -55,8 +55,10 @@ class CreatePlan extends React.Component {
     let pageIndex = this.state.pageIndex
     let pageSize = this.state.pageSize
     let key = this.state.key
+    this.setState({loading: true})
     let res = await http().getTable({ resid: this.props.resid, key ,pageIndex,pageSize});
     try {
+      this.setState({loading: false})
       if (res.error === 0) {
         if(res.data.length>0){
           let data = this.state.data
@@ -71,6 +73,7 @@ class CreatePlan extends React.Component {
         message.error(res.message);
       }
     } catch (err) {
+      this.setState({loading: false})
       console.error(err);
       return message.error(err.message);
     }
@@ -262,6 +265,7 @@ class CreatePlan extends React.Component {
               >
                 <List
                   size="large"
+                  loading={this.state.loading}
                   header={
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <Select
@@ -290,7 +294,7 @@ class CreatePlan extends React.Component {
                       </Select>
                       <Search
                         placeholder="搜索"
-                        onSearch={value => this.setState({key:value,data:[]},()=>this.getData())}
+                        onSearch={value => this.setState({key:value,data:[],pageIndex:0},()=>this.getData())}
                         style={{ width: 200 }}
                       />
                     </div>

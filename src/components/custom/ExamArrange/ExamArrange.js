@@ -84,6 +84,7 @@ class ExamArrange extends Component {
               hasDelete={false}
               hasRowSelection={true}
               height={600}
+              actionBarWidth={380}
               subtractH={230}
               customRowBtns={[
                 (record, btnSize) => {
@@ -113,7 +114,7 @@ class ExamArrange extends Component {
               }) => {
                 return (
                   <Popconfirm
-                  title='确认发送邮件'
+                    title="确认发送邮件"
                     onConfirm={() => {
                       this.onHandleMessage(dataSource, selectedRowKeys);
                     }}
