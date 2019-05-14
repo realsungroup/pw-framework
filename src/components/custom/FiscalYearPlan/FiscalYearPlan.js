@@ -1,7 +1,7 @@
-import React from 'react';
-import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin } from 'antd';
-import http from 'Util20/api';
+import React from "react";
+import { TableData } from "../../common/loadableCommon";
+import { Button, Popconfirm, message, Spin } from "antd";
+import http from "Util20/api";
 
 /**
  * 财年计划
@@ -13,13 +13,13 @@ class FiscalYearPlan extends React.Component {
 
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
-      return message.error('请选择记录');
+      return message.error("请选择记录");
     }
     const { resid } = this.props;
     this.setState({ loading: true });
     const data = selectedRowKeys.map(recid => ({
       REC_ID: recid,
-      C3_605619907534: 'Y'
+      C3_605619907534: "Y"
     }));
 
     let res;
@@ -34,7 +34,7 @@ class FiscalYearPlan extends React.Component {
       return message.error(err.message);
     }
     this.setState({ loading: false });
-    message.success('操作成功');
+    message.success("操作成功");
     this.tableDataRef.handleRefresh();
   };
 
@@ -53,7 +53,7 @@ class FiscalYearPlan extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div style={{ height: 'calc(100vh - 160px)' }}>
+        <div style={{ height: "calc(100vh - 160px)" }}>
           <TableData
             resid={609883172764}
             addText="创建财年计划"
@@ -69,6 +69,23 @@ class FiscalYearPlan extends React.Component {
                 );
               }
             ]}
+            subTableArrProps={[
+              {
+                subTableName: "审批记录",
+                subResid: 611144001666,
+                tableProps: {
+                  hasAdd: false,
+                  hasModify: false,
+                  hasRowDelete: false,
+                  hasRowModify: false,
+                  hasDelete: false,
+                  subtractH: 190,
+                  height: 500,
+                  hasRowView: false
+                }
+              }
+            ]}
+            hasBeBtns={true}
             hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}

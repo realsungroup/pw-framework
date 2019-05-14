@@ -1066,15 +1066,16 @@ window['问卷统计分析'] = {
   name: 'QuestionnaireStatisticAnalysis',
   title: '问卷统计分析',
   props: {
-  
   }
 };
 
-// 问卷统计分析
+// 财年计划
 window[610812799351] = {
   name: 'FiscalYearPlan',
   title: '财年计划',
-  props: {}
+  props: {
+ 
+  }
 };
 
 // 创建总计划
@@ -1090,5 +1091,29 @@ window[611077057050] = {
     hasModify: false,
     hasDelete: false,
     hasRowSelection: true
+  }
+};
+
+//课程维护
+window[611085896611] = {
+  name: 'TableData',
+  title: '课程维护',
+  props: {
+    resid: 610308370365,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: true,
+    hasRowDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    subtractH: 220,
+    height:600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      // placement: 'bottom',
+      // height: 600
+    },
   }
 };
