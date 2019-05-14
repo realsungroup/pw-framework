@@ -726,7 +726,7 @@ export default class FirstStep extends React.Component {
       selectedRadio,
       searchValue
     } = this.state;
-    const { radioGroupConfig } = this.props;
+    const { radioGroupConfig, secondFilterInputPlaceholder } = this.props;
     return (
       <div className="first-step">
         <div className="first-step__nav">
@@ -768,6 +768,7 @@ export default class FirstStep extends React.Component {
                 onSearchChange={this.handleSearchChange}
                 hasSearch={this.getSceondColHasSearch()}
                 searchValue={searchValue}
+                secondFilterInputPlaceholder={secondFilterInputPlaceholder}
                 {...this.getShowField()}
               />
             </InfiniteScroll>

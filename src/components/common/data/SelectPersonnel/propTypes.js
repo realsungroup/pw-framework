@@ -6,7 +6,8 @@ export const defaultProps = {
     title: '全员搜索',
     visible: true
   },
-  list: []
+  list: [],
+  secondFilterInputPlaceholder: ''
 };
 
 export const propTypes = {
@@ -72,6 +73,12 @@ export const propTypes = {
   //     canToNext: () => true // 能够进入下一步的验证函数：当函数返回 true 时，点击下一步就可以进入下一步；否则就不能进入下一步
   //   }
   // ]
+
+  /**
+   * 二次筛选输入框的 placement
+   * 默认：''
+   */
+  secondFilterInputPlaceholder: PropTypes.string,
 
   /**
    * 点击完成
