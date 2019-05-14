@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Modal, Button, Tabs } from "antd";
-import TableData from "../../common/data/TableData";
+import React, { Component } from 'react';
+import { Modal, Button, Tabs } from 'antd';
+import TableData from '../../common/data/TableData';
 const TabPane = Tabs.TabPane;
 
 export default class Selected extends Component {
@@ -31,8 +31,10 @@ export default class Selected extends Component {
 
   render() {
     return (
-      <div>
-        <Button onClick={this.showModal}>查看人员</Button>
+      <React.Fragment>
+        <Button onClick={this.showModal} style={{ marginLeft: 4 }}>
+          查看人员
+        </Button>
         <Modal
           title="参加考试人员列表"
           visible={this.state.visible}
@@ -43,12 +45,12 @@ export default class Selected extends Component {
         >
           <Tabs
             defaultActiveKey="1"
-            style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+            style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
           >
             <TabPane
               tab="全部人员"
               key="1"
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: '100%', height: '100%' }}
             >
               <TableData
                 resid="610196239974"
@@ -68,7 +70,7 @@ export default class Selected extends Component {
             <TabPane
               tab="未参加人员"
               key="2"
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: '100%', height: '100%' }}
             >
               <TableData
                 resid="610299723125"
@@ -87,7 +89,7 @@ export default class Selected extends Component {
             </TabPane>
           </Tabs>
         </Modal>
-      </div>
+      </React.Fragment>
     );
   }
 }
