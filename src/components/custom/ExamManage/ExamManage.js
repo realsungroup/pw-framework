@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import TableData from '../../common/data/TableData';
 import { Tabs, Modal, Button, message } from 'antd';
-import http from '../../../util20/api';
-import SetScore from '../SetScore';
+import http from 'Util20/api';
 import './ExamManage.less';
 
 const TabPane = Tabs.TabPane;
-function callback(key) {
-  console.log(key);
-}
 
+/**
+ * 考试安排
+ */
 export default class ExamManage extends Component {
   state = { visible: false, record: '' };
 
@@ -100,6 +99,22 @@ export default class ExamManage extends Component {
       message.error('请先勾选记录！');
     }
   };
+
+  handleDownloadTemplate = async () => {
+    let res;
+    try {
+      res = await http().exportTableData({
+        resid: 611164003696,
+        filetype: 'xls'
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    const { fileDownloadUrl } = window.pwConfig[process.env.NODE_ENV];
+    window.open(fileDownloadUrl + res.data);
+  };
+
   render() {
     return (
       <div
@@ -110,7 +125,7 @@ export default class ExamManage extends Component {
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}
           {...this.props}
-          resid="607188968490"
+          resid={607188968490}
           hasRowSelection={false}
           hasRowModify={true}
           hasRowView={false}
@@ -207,6 +222,16 @@ export default class ExamManage extends Component {
             heigth={500}
             width={1150}
             cmswhere={`C3_607172879503 = ${this.state.record.C3_607171749463}`}
+            headerExtra={() => (
+              <Button
+                size="small"
+                style={{ marginBottom: 6 }}
+                onClick={this.handleDownloadTemplate}
+                type="primary"
+              >
+                下载题目模板
+              </Button>
+            )}
           />
         </Modal>
       </div>
