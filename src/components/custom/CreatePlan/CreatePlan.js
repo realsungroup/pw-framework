@@ -1,6 +1,5 @@
 import React from "react";
-import { TableDataC } from "../loadableCustom";
-import { TableData } from "../../common/loadableCommon";
+import InfiniteScroll from 'react-infinite-scroller';
 import {
   Button,
   Icon,
@@ -34,7 +33,13 @@ class CreatePlan extends React.Component {
       lbSelect: "",
       kclbState: "",
       lkState: "",
-      kcState: ""
+      kcState: "",
+      pageIndex: 0, // 当前页数
+      totalPage: 0, // 总页数
+      pageSize: 15, // 每页数量
+      loading: false,
+      hasMore: true,
+      key:""
     };
   }
 
@@ -46,16 +51,22 @@ class CreatePlan extends React.Component {
   }
 
   //获取员工列表
-  async getData(key) {
-    let res = await http().getTable({ resid: this.props.resid, key });
+  async getData() {
+    let pageIndex = this.state.pageIndex
+    let pageSize = this.state.pageSize
+    let key = this.state.key
+    let res = await http().getTable({ resid: this.props.resid, key ,pageIndex,pageSize});
     try {
       if (res.error === 0) {
-        let data = res.data;
-        // console.log(res.data)
-        data.forEach(e => {
-          e.check = false;
-        });
-        this.setState({ data, oldData: data });
+        if(res.data.length>0){
+          let data = this.state.data
+          data = data.concat(res.data)
+          // console.log(res.data)
+          data.forEach(e => {
+            e.check = false;
+          });
+          this.setState({ data, oldData: data,pageIndex:++this.state.pageIndex });
+        }
       } else {
         message.error(res.message);
       }
@@ -241,144 +252,151 @@ class CreatePlan extends React.Component {
                 选择员工
               </span>
             </div>
-            <List
-              size="large"
-              header={
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Select
-                    style={{ width: "100px" }}
-                    defaultValue="All"
-                    onChange={e => {
-                      let data = [],
-                        oldData = this.state.oldData;
-                      if (e == "All") {
-                        data = oldData;
-                      } else {
-                        oldData.forEach(ele => {
-                          ele.check = false;
-                          if (ele.C3_609622292033 == e) data.push(ele);
-                        });
-                      }
-                      this.setState({ data });
-                    }}
-                  >
-                    <Option value="All">全部级别</Option>
-                    {levelData.map((item, i) => (
-                      <Option value={item.C3_587136281870} key={i}>
-                        {item.C3_587136281870}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Search
-                    placeholder="搜索"
-                    onSearch={value => this.getData(value)}
-                    style={{ width: 200 }}
-                  />
-                </div>
-              }
-              // footer={<div>Footer</div>}
-              bordered
-              style={{ height: "calc(100vh - 350px)", overflowY: "scroll" }}
-              dataSource={this.state.data}
-              renderItem={(item, i) => (
-                <List.Item
-                  style={{ cursor: "pointer" }}
-                  onClick={this.onClick.bind(this, i)}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center"
-                    }}
-                  >
-                    <div style={{ display: "flex", flex: 1 }}>
-                      <Checkbox checked={item.check} />
+            <div style={{height:"calc(100vh - 330px)",overflow: "auto"}}>
+              <InfiniteScroll
+                initialLoad={false}
+                pageStart={0}
+                loadMore={this.getData.bind(this)}
+                hasMore={true}
+                useWindow={false}
+              >
+                <List
+                  size="large"
+                  header={
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <Select
+                        style={{ width: "100px" }}
+                        defaultValue="All"
+                        onChange={e => {
+                          let data = [],
+                            oldData = this.state.oldData;
+                          if (e == "All") {
+                            data = oldData;
+                          } else {
+                            oldData.forEach(ele => {
+                              ele.check = false;
+                              if (ele.C3_609622292033 == e) data.push(ele);
+                            });
+                          }
+                          this.setState({ data });
+                        }}
+                      >
+                        <Option value="All">全部级别</Option>
+                        {levelData.map((item, i) => (
+                          <Option value={item.C3_587136281870} key={i}>
+                            {item.C3_587136281870}
+                          </Option>
+                        ))}
+                      </Select>
+                      <Search
+                        placeholder="搜索"
+                        onSearch={value => this.setState({key:value,data:[]},()=>this.getData())}
+                        style={{ width: 200 }}
+                      />
                     </div>
-                    <div style={{ display: "flex", flex: 2 }}>
-                      <Icon type="user" style={{ fontSize: "24px" }} />
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flex: 4,
-                        flexDirection: "column"
-                      }}
-                    >
-                      <div>
-                        <span>
-                          {item.C3_609622254861 == null
-                            ? "无"
-                            : item.C3_609622254861}
-                        </span>
-                      </div>
-                      <div>
-                        <span>
-                          {item.C3_609622263470 == null
-                            ? "无"
-                            : item.C3_609622263470}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flex: 4,
-                        flexDirection: "column"
-                      }}
+                  }
+                  // footer={<div>Footer</div>}
+                  bordered
+                  dataSource={this.state.data}
+                  renderItem={(item, i) => (
+                    <List.Item
+                      style={{ cursor: "pointer" }}
+                      onClick={this.onClick.bind(this, i)}
                     >
                       <div
                         style={{
                           display: "flex",
+                          flex: 1,
                           flexDirection: "row",
                           alignItems: "center"
                         }}
                       >
+                        <div style={{ display: "flex", flex: 1 }}>
+                          <Checkbox checked={item.check} />
+                        </div>
+                        <div style={{ display: "flex", flex: 2 }}>
+                          <Icon type="user" style={{ fontSize: "24px" }} />
+                        </div>
                         <div
                           style={{
-                            width: "10px",
-                            height: "10px",
-                            borderRadius: "50%",
-                            background: "#4a90e2",
-                            marginRight: "16px"
+                            display: "flex",
+                            flex: 4,
+                            flexDirection: "column"
                           }}
-                        />
-                        <span>
-                          {item.C3_609622277252 == null
-                            ? "无"
-                            : item.C3_609622277252}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center"
-                        }}
-                      >
+                        >
+                          <div>
+                            <span>
+                              {item.C3_609622254861 == null
+                                ? "无"
+                                : item.C3_609622254861}
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              {item.C3_609622263470 == null
+                                ? "无"
+                                : item.C3_609622263470}
+                            </span>
+                          </div>
+                        </div>
                         <div
                           style={{
-                            width: "10px",
-                            height: "10px",
-                            borderRadius: "50%",
-                            background: "#4a90e2",
-                            marginRight: "16px"
+                            display: "flex",
+                            flex: 4,
+                            flexDirection: "column"
                           }}
-                        />
-                        <span>
-                          {item.C3_609622292033 == null
-                            ? "无"
-                            : item.C3_609622292033}
-                        </span>
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center"
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                borderRadius: "50%",
+                                background: "#4a90e2",
+                                marginRight: "16px"
+                              }}
+                            />
+                            <span>
+                              {item.C3_609622277252 == null
+                                ? "无"
+                                : item.C3_609622277252}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center"
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                borderRadius: "50%",
+                                background: "#4a90e2",
+                                marginRight: "16px"
+                              }}
+                            />
+                            <span>
+                              {item.C3_609622292033 == null
+                                ? "无"
+                                : item.C3_609622292033}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </List.Item>
-              )}
-            />
+                    </List.Item>
+                  )}
+                />
+              </InfiniteScroll>
+            </div>
           </div>
           <div style={{ width: "50%", padding: "10px 28px" }}>
             <div style={{ paddingBottom: "24px" }}>
