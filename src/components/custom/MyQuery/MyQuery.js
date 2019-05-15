@@ -54,7 +54,7 @@ class MyQuery extends React.Component {
   };
 
   componentDidMount() {
-    this.getData();
+    this.getData(this.state.current, this.state.pageSize);
   }
 
   componentWillMount() {
@@ -67,13 +67,12 @@ class MyQuery extends React.Component {
   componentDidUpdate() {}
 
   //获取问卷
-  getData = async () => {
+  getData = async (current, pageSize) => {
     this.setState({ loading: true, foloderbuttonChecked: '全部' });
-    const { current, pageSize } = this.state;
     http()
       .getTable({
         resid: 608822905547,
-        pageindex: current + 1,
+        pageindex: current - 1,
         pagesize: pageSize
       })
       .then(res => {
@@ -251,6 +250,7 @@ class MyQuery extends React.Component {
     this.setState({
       current: page
     });
+    this.getData(page, pageSize);
   };
   render() {
     const {
