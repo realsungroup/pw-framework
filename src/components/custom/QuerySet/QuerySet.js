@@ -454,25 +454,6 @@ class QuerySet extends Component {
     const newQuestions = [...this.state.questions];
     newQuestions[0].options.splice(index, 1);
     this.setState({ questions: newQuestions });
-    // if (optionId) {
-    //   http()
-    //     .removeRecords({
-    //       resid: 608828722533,
-    //       data: [
-    //         {
-    //           REC_ID: optionId
-    //         }
-    //       ]
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //     })
-    //     .catch(err => {
-    //       console.error(err);
-    //       message.error('queryset删除单选选项失败', err.message);
-    //     });
-    //   console.log('删除后的数组', questions);
-    // }
   };
 
   //多选删除选项
@@ -480,23 +461,6 @@ class QuerySet extends Component {
     const newQuestions = [...this.state.questions];
     newQuestions[1].options.splice(index, 1);
     this.setState({ questions: newQuestions });
-    // if (optionId) {
-    //   http()
-    //     .removeRecords({
-    //       resid: 608828722533,
-    //       data: [
-    //         {
-    //           REC_ID: optionId
-    //         }
-    //       ]
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //     })
-    //     .catch(err => {
-    //       console.error(err);
-    //     });
-    // }
   };
 
   //监听单选选项输入的变化

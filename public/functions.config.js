@@ -947,7 +947,12 @@ window[610555787304] = {
   props: {
     resid: 610307713776,
     subResid: 610657610335,
-    totalResid: 609883172764
+    subbResid: 610308370365,
+    totalResid: 609883172764,
+    levelId: 449335746776,
+    kcbResid: 610657610335,
+    kcxlResid: 610708527386,
+    kclbResid: 610708543449
   }
 };
 window['考试页面'] = {
@@ -993,10 +998,6 @@ window[607168405062] = {
           height:500,
           hasRowView:false,
         }
-
-        // hasRowModify: false,
-        // hasRowView: false,
-        // hasRowDelete: false
       }
     ]
   }
@@ -1078,18 +1079,17 @@ window[610812799351] = {
   }
 };
 
-// 创建总计划
-window[611077057050] = {
-  name: 'CreateTotalPlan',
-  title: '创建总计划',
+//类别管理611054119826
+window[611054119826] = {
+  name: 'TableDataWrap',
+  title: '试卷类别管理',
   props: {
-    resid: 611077132065,
-    hasRowDelete: false,
-    hasRowView: false,
-    hasRowModify: false,
-    hasAdd: false,
+    resid:611054247854,
+    subtractH:190,
+    height:500,
     hasModify: false,
     hasDelete: false,
+    hasRowView: false,
     hasRowSelection: true
   }
 };

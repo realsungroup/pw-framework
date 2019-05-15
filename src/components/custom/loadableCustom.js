@@ -154,12 +154,12 @@ export const OneStatistical = Loadable({
   
 });
 
-// export const ExamPage = Loadable({
-//   loader: () => import('./ExamPage'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
+export const ExamPage = Loadable({
+  loader: () => import('./ExamPage'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const MyExam = Loadable({
   loader: () => import('./MyExam'),

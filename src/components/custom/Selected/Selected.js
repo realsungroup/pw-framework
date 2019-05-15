@@ -60,6 +60,7 @@ export default class Selected extends Component {
                 hasRowDelete={true}
                 hasRowModify={false}
                 hasRowView={false}
+                height={300}
                 width="99%"
                 subtractH={190}
                 cmswhere={`C3_607197284004 = ${
