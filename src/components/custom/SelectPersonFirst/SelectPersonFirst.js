@@ -92,12 +92,12 @@ class SelectPersonFirst extends Component {
               nameField: 'C3_587136281870'
             },
             {
-              type:'tree',
-              title:'按部门添加',
-              resid:4662828405067,
-              nameField:DEP_NAME,
-              idField:DEP_ID,
-              pidField:DEP_PID,
+              type: 'tree',
+              title: '按部门添加',
+              resid: 4662828405067,
+              nameField: 'DEP_NAME',
+              idField: 'DEP_ID',
+              pidField: 'DEP_PID'
             },
             {
               type: 'search',
