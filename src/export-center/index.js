@@ -27,7 +27,7 @@ export { ExamSet } from '../components/custom/loadableCustom';
 export { ExamArrange } from '../components/custom/loadableCustom';
 export { MyExam } from '../components/custom/loadableCustom';
 // export { Selected } from '../components/custom/loadableCustom';
-export {ExamPage} from '../components/custom/loadableCustom';
+// export {ExamPage} from '../components/custom/loadableCustom';
 export { FJList } from '../components/custom/loadableCustom';
 export { AdminConfirm } from '../components/custom/loadableCustom';
 export { CreatePlan } from '../components/custom/loadableCustom';
