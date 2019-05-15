@@ -89,8 +89,16 @@ class SelectPersonFirst extends Component {
               type: 'list',
               title: '按级别添加',
               resid: 449335746776,
-              nameField: 'C3_449335790387',
-              secondFilterInputPlaceholder:'输入关键词搜索'
+              nameField: 'C3_587136281870',
+            },
+            {
+              type:'tree',
+              title:'按部门添加',
+              resid:4662828405067,
+              nameField:DEP_NAME,
+              idField:DEP_ID,
+              pidField:DEP_PID,
+
             },
             {
               type: 'search',
@@ -110,6 +118,7 @@ class SelectPersonFirst extends Component {
             'C3_227212499515'
           ]}
           personPrimaryKeyField="C3_227192472953"
+          secondFilterInputPlaceholder ='输入关键词搜索'
           stepList={[
             {
               stepTitle: '验证',
