@@ -315,6 +315,7 @@ class Control extends React.Component {
               onChange={this.handleChange}
               onSearch={this.handleSearch}
               onBlur={this.handleBeforeSave}
+              value={value}
             />
           );
         }

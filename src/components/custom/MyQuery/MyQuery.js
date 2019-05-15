@@ -9,7 +9,7 @@ import {
   Tabs,
   Spin,
   message,
-  Pagination 
+  Pagination
 } from 'antd';
 import './MyQuery.less';
 import { QueryTable } from '../loadableCustom';
@@ -18,7 +18,6 @@ import { BrowserRouter as Link } from 'react-router-dom';
 import http from '../../../util20/api';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
-const CheckableTag = Tag.CheckableTag;
 class MyQuery extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,9 @@ class MyQuery extends React.Component {
       questionnaire: [],
       loading: false,
       foloderbuttonChecked: '全部',
-      current:1,
+      current: 1,
+      pageSize: 5,
+      total: 0
     };
   }
   //获取问卷文件夹
@@ -68,15 +69,19 @@ class MyQuery extends React.Component {
   //获取问卷
   getData = async () => {
     this.setState({ loading: true, foloderbuttonChecked: '全部' });
+    const { current, pageSize } = this.state;
     http()
       .getTable({
-        resid: 608822905547
+        resid: 608822905547,
+        pageindex: current + 1,
+        pagesize: pageSize
       })
       .then(res => {
-        // console.log('问卷', res.data);
+        console.log('问卷', res.data);
         this.setState({
           questionnaire: res.data,
-          loading: false
+          loading: false,
+          total: res.total
         });
       })
       .catch(err => {
@@ -241,11 +246,21 @@ class MyQuery extends React.Component {
     console.log({ id });
   };
   // 页码
-  handlePageChange = (page,pageSize)=>{
-   console.log(page,pageSize);
-  }
+  handlePageChange = (page, pageSize) => {
+    // console.log(page, pageSize);
+    this.setState({
+      current: page
+    });
+  };
   render() {
-    const { questionnaire, loading, foloderbuttonChecked,current } = this.state;
+    const {
+      questionnaire,
+      loading,
+      foloderbuttonChecked,
+      current,
+      total,
+      pageSize
+    } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="query">
@@ -353,7 +368,13 @@ class MyQuery extends React.Component {
             onStopQuery={this.stopQuery}
           />
           <div className="My-qiery__paging">
-            <Pagination current={current} showQuickJumper showSizeChanger onChange={this.handlePageChange}/>,
+            <Pagination
+              current={current}
+              pageSize={pageSize}
+              total={total}
+              showQuickJumper
+              onChange={this.handlePageChange}
+            />
           </div>
         </div>
       </Spin>
