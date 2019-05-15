@@ -1,8 +1,9 @@
-import React from 'react';
-import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin } from 'antd';
-import http from 'Util20/api';
+import React from "react";
+import { TableData } from "../../common/loadableCommon";
+import { Button, Popconfirm, message, Spin, Tabs } from "antd";
+import http from "Util20/api";
 
+const TabPane = Tabs.TabPane;
 /**
  * 财年计划
  */
@@ -13,13 +14,13 @@ class FiscalYearPlan extends React.Component {
 
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
-      return message.error('请选择记录');
+      return message.error("请选择记录");
     }
     const { resid } = this.props;
     this.setState({ loading: true });
     const data = selectedRowKeys.map(recid => ({
       REC_ID: recid,
-      C3_605619907534: 'Y'
+      C3_605619907534: "Y"
     }));
 
     let res;
@@ -34,7 +35,7 @@ class FiscalYearPlan extends React.Component {
       return message.error(err.message);
     }
     this.setState({ loading: false });
-    message.success('操作成功');
+    message.success("操作成功");
     this.tableDataRef.handleRefresh();
   };
 
@@ -53,29 +54,65 @@ class FiscalYearPlan extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div style={{ height: 'calc(100vh - 160px)' }}>
-          <TableData
-            resid={609883172764}
-            addText="创建财年计划"
-            customRowBtns={[
-              (record, btnSize) => {
-                return (
-                  <Button
-                    size={btnSize}
-                    href={`/fnmodule?resid=610555787304&recid=610555815210&type=前端功能入口&title=财年计划管理`}
-                  >
-                    计划详情
-                  </Button>
-                );
-              }
-            ]}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowEdit={false}
-            hasDelete={false}
-            hasModify={false}
-            hasRowModify={false}
-          />
+        <div style={{ height: "calc(100vh - 160px)" }}>
+          <Tabs
+            defaultActiveKey="1"
+            style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+          >
+            <TabPane
+              tab="未通知"
+              key="1"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <TableData
+                resid={609883172764}
+                addText="创建财年计划"
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        size={btnSize}
+                        href={`/fnmodule?resid=610555787304&recid=610555815210&type=前端功能入口&title=财年计划管理`}
+                      >
+                        计划详情
+                      </Button>
+                    );
+                  }
+                ]}
+                subTableArrProps={[
+                  {
+                    subTableName: "审批记录",
+                    subResid: 611144001666,
+                    tableProps: {
+                      hasAdd: false,
+                      hasModify: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasDelete: false,
+                      subtractH: 190,
+                      height: 500,
+                      hasRowView: false
+                    }
+                  }
+                ]}
+                hasBeBtns={true}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+              />
+            </TabPane>
+            <TabPane
+              tab="历史记录"
+              key="2"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <TableData
+                resid={609883172764}/>
+            </TabPane>
+          </Tabs>
         </div>
       </Spin>
     );
