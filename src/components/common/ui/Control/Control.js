@@ -351,6 +351,7 @@ class Control extends React.Component {
             </Select>
           );
         }
+        // 需要在窗体设计里面给字段加上 “添加目录文件图片” 属性
         case 'Upload': {
           const fileList = getFileList(value);
           return (
