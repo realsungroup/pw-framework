@@ -1608,13 +1608,6 @@ class QuerySet extends Component {
                 value={query_description}
               />
             </div>
-            {/* <div className="query-set__modal"> */}
-            {/* <label className="query-set__setTitle">外观</label> */}
-            {/* <Upload name="avatar" action="//jsonplaceholder.typicode.com/posts/" className="avatar-uploader"></Upload> */}
-            {/* <div className="upload"> */}
-            {/* <Icon type="plus" /> */}
-            {/* </div> */}
-            {/* </div> */}
             <div className="query-set__modal">
               <label className="query-set__setTitle">时间设置</label>
               <div>
@@ -1688,16 +1681,16 @@ class QuerySet extends Component {
             </div>
           </Modal>
           <div className="addStyle">
-            {queryId == '' ? (
+            {/* {queryId == '' ? (
               <Button disabled>导入添加题目</Button>
             ) : (
               <Button>导入添加题目</Button>
-            )}
+            )} */}
 
             {queryId == '' ? (
               ''
             ) : (
-              <Button onClick={this.toMyQuery}>完成</Button>
+              <Button onClick={this.toMyQuery} type='primary'>完成</Button>
             )}
 
             {queryId == '' ? (

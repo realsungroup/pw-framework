@@ -6,6 +6,12 @@ import qs from 'qs';
 import http from 'Util20/api';
 import EchartsOfReact from 'echarts-of-react';
 
+const modalTitleMap = {
+  question: '选择题目',
+  department: '选择部门',
+  level: '选择级别'
+};
+
 /**
  * 问卷统计分析
  */
@@ -18,11 +24,14 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       modalVisible: false,
       hostrecid: parseInt(questionnaireRecid, 10), // 主表记录 id
       selectedQuestion: null, // 选择的题目记录
+      selectedDepartment: null, // 选择的部门
+      selectedLevel: null, // 选择的级别
       loading: false,
       singleSelectColumns: [], // 单选题 columns
       dataSource: [], // 表格数据
       barOption: {}, // 柱状图 options
-      pieOption: {} // 饼图 options
+      pieOption: {}, // 饼图 options
+      modalMode: '' // 模态窗模式：'question' 显示选择的题目；'department' 显示选择的部门；'level' 显示选择的级别
     };
   }
 
@@ -38,26 +47,81 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     );
   };
 
+  renderDepartment = () => {
+    const { selectedDepartment } = this.state;
+    if (selectedDepartment) {
+      return selectedDepartment.DEP_NAME;
+    }
+    return (
+      <span className="questionnaire-statistic-analysis__no-select-question-status">
+        未选择部门
+      </span>
+    );
+  };
+
+  renderLevel = () => {
+    const { selectedLevel } = this.state;
+    if (selectedLevel) {
+      return selectedLevel.C3_449335790387;
+    }
+    return (
+      <span className="questionnaire-statistic-analysis__no-select-question-status">
+        未选择级别
+      </span>
+    );
+  };
+
   handleSelectQuestionBtnClick = () => {
-    this.setState({ modalVisible: true });
+    this.setState({ modalVisible: true, modalMode: 'question' });
+  };
+
+  handleSelectDepartmentBtnClick = () => {
+    this.setState({ modalVisible: true, modalMode: 'department' });
+  };
+
+  handleSelectLevelBtnClick = () => {
+    this.setState({ modalVisible: true, modalMode: 'level' });
   };
 
   handleModalCancel = () => {
     this.setState({ modalVisible: false });
   };
 
-  handleSelectQuestion = async record => {
-    this.setState({
-      selectedQuestion: { ...record },
-      modalVisible: false,
-      loading: true
+  getStatisticsData = async (
+    qeustionId,
+    department,
+    level,
+    selectedQuestion
+  ) => {
+    const whereFields = {
+      question_id: qeustionId,
+      dept: department,
+      level: level
+    };
+    if (qeustionId) {
+      whereFields.question_id = qeustionId;
+    }
+    if (department) {
+      whereFields.dept = department;
+    }
+    if (level) {
+      whereFields.level = level;
+    }
+    let cmswhere = '';
+    const keyArr = Object.keys(whereFields);
+    keyArr.forEach((key, index) => {
+      if (index === keyArr.length - 1) {
+        cmswhere += `${key} = '${whereFields[key]}'`;
+      } else {
+        cmswhere += `${key} = '${whereFields[key]}' and `;
+      }
     });
     // 根据题目 id 获取统计表中的数据
     let res;
     try {
       res = await http().getTable({
         resid: 610537303261,
-        cmswhere: `question_id = ${record.question_id}`
+        cmswhere
       });
     } catch (err) {
       this.setState({ modalVisible: false });
@@ -70,7 +134,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       dataSource,
       barOption,
       pieOption
-    } = this.dealData(res.data, record);
+    } = this.dealData(res.data, selectedQuestion);
 
     this.setState({
       loading: false,
@@ -79,6 +143,87 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       barOption,
       pieOption
     });
+  };
+
+  handleSelectQuestion = async record => {
+    this.setState(
+      {
+        selectedQuestion: { ...record },
+        modalVisible: false,
+        loading: true
+      },
+      () => {
+        const {
+          selectedQuestion,
+          selectedDepartment,
+          selectedLevel
+        } = this.state;
+        if (!selectedQuestion) {
+          this.setState({ loading: false });
+          return message.info('请选择题目');
+        }
+        this.getStatisticsData(
+          selectedQuestion.question_id,
+          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedLevel && selectedLevel.C3_449335790387,
+          selectedQuestion
+        );
+      }
+    );
+  };
+
+  handleSelectDepartment = async record => {
+    this.setState(
+      {
+        selectedDepartment: { ...record },
+        modalVisible: false,
+        loading: true
+      },
+      () => {
+        const {
+          selectedQuestion,
+          selectedDepartment,
+          selectedLevel
+        } = this.state;
+        if (!selectedQuestion) {
+          this.setState({ loading: false });
+          return message.info('请选择题目');
+        }
+        this.getStatisticsData(
+          selectedQuestion.question_id,
+          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedLevel && selectedLevel.C3_449335790387,
+          selectedQuestion
+        );
+      }
+    );
+  };
+
+  handleSelectLevel = async record => {
+    this.setState(
+      {
+        selectedLevel: { ...record },
+        modalVisible: false,
+        loading: true
+      },
+      () => {
+        const {
+          selectedQuestion,
+          selectedDepartment,
+          selectedLevel
+        } = this.state;
+        if (!selectedQuestion) {
+          this.setState({ loading: false });
+          return message.info('请选择题目');
+        }
+        this.getStatisticsData(
+          selectedQuestion.question_id,
+          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedLevel && selectedLevel.C3_449335790387,
+          selectedQuestion
+        );
+      }
+    );
   };
 
   dealData = (resData, record) => {
@@ -289,8 +434,116 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     );
   };
 
+  renderModalContent = () => {
+    const { modalMode, hostrecid } = this.state;
+    if (modalMode === 'question' && hostrecid) {
+      return (
+        <TableData
+          resid={608822905547}
+          dataMode="sub"
+          subresid={608828418560}
+          hostrecid={hostrecid}
+          width={740}
+          height={420}
+          subtractH={160}
+          hasRowModify={false}
+          hasRowView={false}
+          hasRowDelete={false}
+          hasAdd={false}
+          hasModify={false}
+          hasDelete={false}
+          hasAdvSearch={false}
+          hasRefresh={false}
+          hasDownload={false}
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Button
+                  size={btnSize}
+                  onClick={() => this.handleSelectQuestion(record)}
+                  key="选择题目"
+                >
+                  选择
+                </Button>
+              );
+            }
+          ]}
+        />
+      );
+    } else if (modalMode === 'department') {
+      return (
+        <TableData
+          resid={417643880834}
+          width={740}
+          height={420}
+          subtractH={160}
+          hasRowModify={false}
+          hasRowView={false}
+          hasRowDelete={false}
+          hasAdd={false}
+          hasModify={false}
+          hasDelete={false}
+          hasAdvSearch={false}
+          hasRefresh={false}
+          hasDownload={false}
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Button
+                  size={btnSize}
+                  onClick={() => this.handleSelectDepartment(record)}
+                  key="选择部门"
+                >
+                  选择
+                </Button>
+              );
+            }
+          ]}
+        />
+      );
+    } else if (modalMode === 'level') {
+      return (
+        <TableData
+          resid={449335746776}
+          width={740}
+          height={420}
+          subtractH={160}
+          hasRowModify={false}
+          hasRowView={false}
+          hasRowDelete={false}
+          hasAdd={false}
+          hasModify={false}
+          hasDelete={false}
+          hasAdvSearch={false}
+          hasRefresh={false}
+          hasDownload={false}
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Button
+                  size={btnSize}
+                  onClick={() => this.handleSelectLevel(record)}
+                  key="选择级别"
+                >
+                  选择
+                </Button>
+              );
+            }
+          ]}
+        />
+      );
+    }
+  };
+
   render() {
-    const { modalVisible, hostrecid, loading } = this.state;
+    const {
+      modalVisible,
+      loading,
+      modalMode,
+      selectedQuestion,
+      selectedDepartment,
+      selectedLevel
+    } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="questionnaire-statistic-analysis">
@@ -306,6 +559,85 @@ class QuestionnaireStatisticAnalysis extends React.Component {
               >
                 选择题目
               </Button>
+              {selectedQuestion && (
+                <Button
+                  onClick={() => {
+                    this.setState({ selectedQuestion: null });
+                    if (!selectedQuestion) {
+                      return message.info('请选择题目');
+                    }
+                    this.getStatisticsData(
+                      selectedQuestion.question_id,
+                      selectedDepartment && selectedDepartment.DEP_NAME,
+                      selectedLevel && selectedLevel.C3_449335790387,
+                      selectedQuestion
+                    );
+                  }}
+                  style={{ marginLeft: 4 }}
+                >
+                  清除
+                </Button>
+              )}
+            </div>
+            <div className="questionnaire-statistic-analysis__department">
+              <h3 style={{ display: 'inline-block' }}>所选部门：</h3>
+              <span>{this.renderDepartment()}</span>
+              <Button
+                type="primary"
+                onClick={this.handleSelectDepartmentBtnClick}
+                style={{ marginLeft: 16 }}
+              >
+                选择部门
+              </Button>
+              {selectedDepartment && (
+                <Button
+                  onClick={() => {
+                    this.setState({ selectedDepartment: null });
+                    if (!selectedQuestion) {
+                      return message.info('请选择题目');
+                    }
+                    this.getStatisticsData(
+                      selectedQuestion.question_id,
+                      selectedDepartment && selectedDepartment.DEP_NAME,
+                      selectedLevel && selectedLevel.C3_449335790387,
+                      selectedQuestion
+                    );
+                  }}
+                  style={{ marginLeft: 4 }}
+                >
+                  清除
+                </Button>
+              )}
+            </div>
+            <div className="questionnaire-statistic-analysis__level">
+              <h3 style={{ display: 'inline-block' }}>所选级别：</h3>
+              <span>{this.renderLevel()}</span>
+              <Button
+                type="primary"
+                onClick={this.handleSelectLevelBtnClick}
+                style={{ marginLeft: 16 }}
+              >
+                选择级别
+              </Button>
+              {selectedLevel && (
+                <Button
+                  onClick={() => {
+                    this.setState({ selectedLevel: null });
+                    if (!selectedQuestion) {
+                      return message.info('请选择题目');
+                    }
+                    this.getStatisticsData(
+                      selectedQuestion.question_id,
+                      selectedDepartment && selectedDepartment.DEP_NAME,
+                      selectedLevel && selectedLevel.C3_449335790387,
+                      selectedQuestion
+                    );
+                  }}
+                  style={{ marginLeft: 4 }}
+                >
+                  清除
+                </Button>
+              )}
             </div>
           </div>
 
@@ -319,44 +651,13 @@ class QuestionnaireStatisticAnalysis extends React.Component {
 
           <Modal
             visible={modalVisible}
-            title="选择问卷题目"
+            title={modalTitleMap[modalMode]}
             footer={null}
             onCancel={this.handleModalCancel}
             width={800}
             destroyOnClose
           >
-            {hostrecid && (
-              <TableData
-                resid={608822905547}
-                dataMode="sub"
-                subresid={608828418560}
-                hostrecid={hostrecid}
-                width={740}
-                height={420}
-                subtractH={160}
-                hasRowModify={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasAdd={false}
-                hasModify={false}
-                hasDelete={false}
-                hasAdvSearch={false}
-                hasRefresh={false}
-                hasDownload={false}
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        size={btnSize}
-                        onClick={() => this.handleSelectQuestion(record)}
-                      >
-                        选择
-                      </Button>
-                    );
-                  }
-                ]}
-              />
-            )}
+            {this.renderModalContent()}
           </Modal>
         </div>
       </Spin>

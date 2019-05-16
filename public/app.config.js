@@ -61,8 +61,8 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://wux-hr03:9091/', // 请求的基地址
-    fileDownloadUrl: 'http://wux-hr03/', // 导出 Excel 文件下载基地址
+    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
     personCenterResIds: [
@@ -75,13 +75,13 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
-      baseUrl: 'http://wux-hr03:9091/', // 域登录基地址
-      usernameSuffix: '', // 域登录用户名的后缀
-      domain: 'rbc.int', // 域名
-      domainUserField: 'emp_id' // 域用户字段
+      baseUrl: 'http://10.108.2.66:1001/', // 域登录基地址
+      usernameSuffix: '@finisar.com', // 域登录用户名的后缀
+      domain: 'china', // 域名
+      domainUserField: 'emp_email' // 域用户字段
     },
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
