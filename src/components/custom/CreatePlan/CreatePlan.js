@@ -566,7 +566,7 @@ class CreatePlan extends React.Component {
                     <div style={{ display: "flex", flex: 1 }}>
                       <a
                         target="_blank"
-                        href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9"
+                        href={item.C3_609845463949}
                       >
                         <Icon
                           type="ellipsis"

@@ -309,7 +309,7 @@ class FJList extends React.Component {
     let kclbData = this.state.kclbData;
     return (
       <div style={{ display:"flex",flexDirection: 'row',background:"#fff"}}>
-        <div style={{ width: "50%",padding: '16px 28px'}}> 
+        <div style={{ width: "50%", padding: '16px 28px'}}> 
             <div style={{display:"flex",flex:3,padding: '5px 0',flexDirection: 'row',justifyContent: 'space-around' }}>
               <Button type="primary"
                 style={{marginRight:"10px"}}
@@ -421,68 +421,74 @@ class FJList extends React.Component {
               </span> */}
             </div>
           </div>
-          <div style={{height:"calc(100vh - 330px)",overflowY: 'scroll'}}>
-            {subData.map((item,i)=>(
-              <Card
-                title={item.C3_610657578726}
-                key={i}
-                extra={ <Popconfirm placement="topRight" title={"确认要删除么?"} onConfirm={this.delCourse.bind(this,i)} okText="确认" cancelText="取消">
-                          <Icon type="delete" style={{cursor:'pointer'}}/>
-                        </Popconfirm>} 
-                style={{marginBottom:"16px"}}
-                actions={[<a href="#" onClick={()=>this.setState({editData:{...this.state.subData[i]},visibleEdit:true,})}>修改</a>,<a></a>]}
-              >
-                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    费用
-                  </span>
-                  <span style={{fontSize:"12px"}}>
-                    {item.C3_610657578976}
-                  </span>
-                </div>
-                {item.C3_611078361190!="Y"&&item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    课时
-                  </span>
-                  <span style={{fontSize:"12px"}}>
-                    {item.C3_610657579039}
-                  </span>
-                </div>}
-                {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    讲师
-                  </span>
-                  <span style={{fontSize:"12px"}}>
-                    {item.C3_610657579289}
-                  </span>
-                </div>}
-                {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    培训地
-                  </span>
-                  <span style={{fontSize:"12px"}}>
-                    {item.C3_610657579226}
-                  </span>
-                </div>}
-                {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    课程介绍
-                  </span>
-                  <span style={{fontSize:"12px"}}>
-                    {item.C3_610657578664}
-                  </span>
-                </div>}
-                {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                  <span style={{fontSize:"12px"}}>
-                    课程大纲
-                  </span>
-                  <a target="_blank" href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9">
-                    <Button type="primary" size="small"></Button>
-                  </a>
-                </div>}
-              </Card>
-            ))}
-          </div>
+          <List
+              size="large"
+              bordered
+              style={{ height: "calc(100vh - 330px)", overflowY: "scroll" }}
+              dataSource={subData}
+              renderItem={(item, i) => (
+                <List.Item>
+                  <Card
+                    title={item.C3_610657578726}
+                    key={i}
+                    extra={ <Popconfirm placement="topRight" title={"确认要删除么?"} onConfirm={this.delCourse.bind(this,i)} okText="确认" cancelText="取消">
+                              <Icon type="delete" style={{cursor:'pointer'}}/>
+                            </Popconfirm>} 
+                    style={{marginBottom:"16px"}}
+                    actions={[<a href="#" onClick={()=>this.setState({editData:{...subData[i]},visibleEdit:true,})}>修改</a>,<a></a>]}
+                  >
+                    <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        费用
+                      </span>
+                      <span style={{fontSize:"12px"}}>
+                        {item.C3_610657578976}
+                      </span>
+                    </div>
+                    {item.C3_611078361190!="Y"&&item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        课时
+                      </span>
+                      <span style={{fontSize:"12px"}}>
+                        {item.C3_610657579039}
+                      </span>
+                    </div>}
+                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        讲师
+                      </span>
+                      <span style={{fontSize:"12px"}}>
+                        {item.C3_610657579289}
+                      </span>
+                    </div>}
+                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        培训地
+                      </span>
+                      <span style={{fontSize:"12px"}}>
+                        {item.C3_610657579226}
+                      </span>
+                    </div>}
+                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        课程介绍
+                      </span>
+                      <span style={{fontSize:"12px"}}>
+                        {item.C3_610657578664}
+                      </span>
+                    </div>}
+                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                      <span style={{fontSize:"12px"}}>
+                        课程大纲
+                      </span>
+                      <a target="_blank" href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9">
+                        <Button type="primary" size="small"></Button>
+                      </a>
+                    </div>}
+                  </Card>
+                </List.Item>
+              )}
+            />
           <div style={{display:"flex",flex:1,flexDirection: 'row',justifyContent: 'space-around',padding: '5px 0',marginTop:"20px"}}>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleAdd:true})}>添加课程</Button>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleCustom:true})}>自定义课程</Button>
@@ -714,7 +720,7 @@ class FJList extends React.Component {
                     <div style={{ display: "flex", flex: 1 }}>
                       <a
                         target="_blank"
-                        href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9"
+                        href={item.C3_609845463949}
                       >
                         <Icon
                           type="ellipsis"

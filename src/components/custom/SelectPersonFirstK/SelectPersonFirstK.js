@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import SelectPersonnel from "Common/data/SelectPersonnel";
-import "./SelectPersonFirstK.less";
-import SelectPersonSecond from "../SelectPersonSecond";
-import http from "../../../util20/api";
-import qs from "qs";
-import { message, Modal,Spin } from "antd";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import SelectPersonnel from 'Common/data/SelectPersonnel';
+import './SelectPersonFirstK.less';
+import SelectPersonSecond from '../SelectPersonSecond';
+import http from '../../../util20/api';
+import qs from 'qs';
+import { message, Modal, Spin } from 'antd';
+import { withRouter } from 'react-router-dom';
 class SelectPersonFirstK extends Component {
   constructor(props) {
     super(props);
-    console.log("pro", props);
+    console.log('pro', props);
     this.state = {
       loading: false,
       persons: [],
-      queryID: ""
+      queryID: ''
     };
   }
 
@@ -46,7 +46,7 @@ class SelectPersonFirstK extends Component {
       };
       dataSub.push(obj);
     });
-    console.log("发送的人员列表", dataSub);
+    console.log('发送的人员列表', dataSub);
     http()
       .addRecords({
         resid: 610196239974,
@@ -71,10 +71,9 @@ class SelectPersonFirstK extends Component {
   handleCheckboxChange = (value, number) => {
     console.log({ value, number });
   };
-  componentDidMount() {
-  }
+  componentDidMount() {}
   render() {
-    const {loading} = this.state
+    const { loading } = this.state;
     return (
       <Modal
         title="选择人员"
@@ -85,7 +84,7 @@ class SelectPersonFirstK extends Component {
         destroyOnClose
         footer={false}
       >
-       {loading && (
+        {loading && (
           <div className="person-list__spin">
             <Spin />
           </div>
@@ -94,32 +93,40 @@ class SelectPersonFirstK extends Component {
           <SelectPersonnel
             radioGroupConfig={[
               {
-                type: "list",
-                title: "按级别添加",
+                type: 'list',
+                title: '按级别添加',
                 resid: 449335746776,
-                nameField: "C3_449335790387",
-                secondFilterInputPlaceholder:'输入关键词搜索'
+                nameField: 'C3_587136281870'
               },
               {
-                type: "search",
-                title: "输入关键词搜索"
+                type: 'tree',
+                title: '按部门添加',
+                resid: 4662828405067,
+                nameField: 'DEP_NAME',
+                idField: 'DEP_ID',
+                pidField: 'DEP_PID'
               },
               {
-                type: "file",
-                title: "请选择要上传的文件"
+                type: 'search',
+                title: '输入关键词搜索'
+              },
+              {
+                type: 'file',
+                title: '请选择要上传的文件'
               }
             ]}
             subResid={609599795438}
+            secondFilterInputPlaceholder="输入关键词搜索"
             personFields={[
-              "",
-              "C3_227192472953",
-              "C3_227192484125",
-              "C3_227212499515"
+              '',
+              'C3_227192472953',
+              'C3_227192484125',
+              'C3_227212499515'
             ]}
             personPrimaryKeyField="C3_227192472953"
             stepList={[
               {
-                stepTitle: "验证",
+                stepTitle: '验证',
                 renderContent: current => {
                   return (
                     <SelectPersonSecond
