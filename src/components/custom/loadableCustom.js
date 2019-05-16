@@ -154,13 +154,37 @@ export const OneStatistical = Loadable({
   
 });
 
-// export const ExamPage = Loadable({
-//   loader: () => import('./ExamPage'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
+export const ExamPage = Loadable({
+  loader: () => import('./ExamPage'),
+  loading() {
+    return minLoading;
+  }
+});
 
+export const EditButton = Loadable({
+  loader: () => import('./EditTitle/EditButton'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Result = Loadable({
+  loader: () => import('./Result'),
+  loading() {
+    return minLoading;
+  }
+});
+export const Selected = Loadable({
+  loader: () => import('./Selected'),
+  loading() {
+    return minLoading;
+  }
+});
+export const SetScore = Loadable({
+  loader: () => import('./SetScore'),
+  loading() {
+    return minLoading;
+  }
+});
 export const MyExam = Loadable({
   loader: () => import('./MyExam'),
   loading() {
@@ -202,13 +226,6 @@ export const FJList  = Loadable({
   }
 });
 
-//dev
-// export const RichTextDemo = Loadable({
-//   loader: () => import('./RichTextDemo'),
-//   loading() {
-//     return minLoading;
-//   }
-// });
 // 管理员确认
 export const AdminConfirm = Loadable({
   loader: () => import('./AdminConfirm'),

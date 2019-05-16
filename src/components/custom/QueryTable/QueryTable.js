@@ -126,7 +126,7 @@ class QueryTable extends Component {
     });
   }
   render() {
-    const { questionnaire, onDelete, loading } = this.props;
+    const { questionnaire, onDelete, onCopyQuery} = this.props;
     return (
       <div className="queryTable">
         {questionnaire.map((item, key) => {
@@ -152,7 +152,7 @@ class QueryTable extends Component {
                     <Icon type="sync" /> {item.query_status}
                   </span>
                   {/* <span className="answercount">答卷:{item.answercount}</span> */}
-                  <span>{item.start_time.substring(0, 10)}</span>
+                  <span>{item.REC_EDTTIME.substring(11,16)}</span>
                 </div>
               </div>
               <div className="queryItem-bottom">
@@ -225,7 +225,7 @@ class QueryTable extends Component {
                       获奖名单
                     </Button>
                   )}
-                  {/* <Button>
+                  {/* <Button onClick={()=>{onCopyQuery(item)}}>
                     <Icon type="copy" />
                     复制
                   </Button> */}
