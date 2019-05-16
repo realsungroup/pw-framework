@@ -94,7 +94,7 @@ class SelectPersonFirst extends Component {
             {
               type: 'tree',
               title: '按部门添加',
-              resid: 4662828405067,
+              resid: 466282405067,
               nameField: 'DEP_NAME',
               idField: 'DEP_ID',
               pidField: 'DEP_PID'

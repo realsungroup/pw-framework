@@ -1688,16 +1688,16 @@ class QuerySet extends Component {
             </div>
           </Modal>
           <div className="addStyle">
-            {queryId == '' ? (
+            {/* {queryId == '' ? (
               <Button disabled>导入添加题目</Button>
             ) : (
               <Button>导入添加题目</Button>
-            )}
+            )} */}
 
             {queryId == '' ? (
               ''
             ) : (
-              <Button onClick={this.toMyQuery}>完成</Button>
+              <Button onClick={this.toMyQuery} type='primary'>完成</Button>
             )}
 
             {queryId == '' ? (

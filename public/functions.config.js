@@ -924,6 +924,11 @@ window[607384570024] = {
     hasDelete: false
   }
 };
+// 考试系统----培训资料611243928651
+window[611243928651] = {
+  name: 'TrainingMaterial',
+  title: '培训资料',
+};
 //个人成绩管理
 window[607170104270] = {
   name: 'TableData',

@@ -258,3 +258,10 @@ export const CreateTotalPlan = Loadable({
     return minLoading;
   }
 });
+
+export const TrainingMaterial = Loadable({
+  loader: () => import('./TrainingMaterial'),
+  loading() {
+    return minLoading;
+  }
+});
