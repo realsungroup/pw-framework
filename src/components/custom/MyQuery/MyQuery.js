@@ -14,7 +14,7 @@ import {
 import './MyQuery.less';
 import { QueryTable } from '../loadableCustom';
 import TableData from '../../common/data/TableData';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import http from '../../../util20/api';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -52,7 +52,71 @@ class MyQuery extends React.Component {
         message.error('MyQuery获取文件夹失败', err.message);
       });
   };
-
+  // 复制问卷开始
+  // copyQuery = item => {
+  //   console.log('复制', item);
+  //   const newItem = [
+  //     {
+  //       query_name: item.query_name,
+  //       query_description: item.query_description
+  //     }
+  //   ];
+  //   this.setState({ loading: true });
+  //   http()
+  //     .addRecords({
+  //       resid: 608822905547,
+  //       data: newItem
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       message.success('复制成功');
+  //       this.setState({ loading: false });
+  //       this.getData(this.state.current, this.state.pageSize);
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //       return message.info('复制失败', err.message.error);
+  //     });
+    // 获取原问卷的试题和试题选项
+    /**分析内容
+     * 拿到的数据类型
+     * data[
+     * {question_type:'1111',
+     *  question_topic:'1111',
+     *  question_must:'XXXXX',
+     * subdata:[
+     * {option_write:'',
+     * option_content:'',},
+     * {},
+     * {},]
+     * },
+     * {},
+     * {}]
+     */
+  //   let questionArr=[];
+  //   http()
+  //     .getTable({
+  //       resid: 608828418560,
+  //       subresid: 608828722533,
+  //       cmswhere: 'query_id =' + item.query_id
+  //     })
+  //     .then(res => {
+  //       // console.log(res);
+  //       /**
+  //        * 对拿到的试题处理
+  //        */
+  //       res.data.map(question=>{
+  //         questionArr.push({
+  //           quesion_topic:question.quesion_topic,
+  //           question_must:question.question_must,
+  //         })
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //     });
+  // };
+  // 复制问卷结束
   componentDidMount() {
     this.getData(this.state.current, this.state.pageSize);
   }
@@ -366,6 +430,7 @@ class MyQuery extends React.Component {
             questionnaire={questionnaire}
             onDelete={this.deleQuery}
             onStopQuery={this.stopQuery}
+            onCopyQuery={this.copyQuery}
           />
           <div className="My-qiery__paging">
             <Pagination

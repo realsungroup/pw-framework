@@ -3,6 +3,7 @@ import './EditButton.less';
 import { Modal, Button, Input, Radio, Checkbox, message, Select } from 'antd';
 import http from 'Util20/api';
 const Option = Select.Option;
+const Fragment = React.Fragment;
 export default class EditButton extends Component {
   constructor(props) {
     super(props);
@@ -371,7 +372,7 @@ export default class EditButton extends Component {
   render() {
     const { currentRecord } = this.state;
     return (
-      <div>
+      <Fragment>
         <Button onClick={() => this.showCurrentModal()}>修改题目</Button>
         <Modal
           title={currentRecord.C3_607195719536}
@@ -396,7 +397,7 @@ export default class EditButton extends Component {
             </Button>
           )}
         </Modal>
-      </div>
+      </Fragment>
     );
   }
 }
