@@ -941,7 +941,7 @@ window[607170104270] = {
 };
 
 //财年培训课表管理
-window[610555787304] = {
+window['财年培训课表管理'] = {
   name: 'FJList',
   title: '财年培训课表管理',
   props: {
@@ -1008,7 +1008,7 @@ window[607459194551] = {
 };
 
 //创建计划
-window[610555442186] = {
+window['创建计划'] = {
   name: 'CreatePlan',
   title: '创建计划',
   props: {
@@ -1115,5 +1115,21 @@ window[611085896611] = {
       // placement: 'bottom',
       // height: 600
     },
+  }
+};
+
+//创建总计划
+window[611077057050] = {
+  name: 'CreateTotalPlan',
+  title: '创建总计划',
+  props: {
+    resid:611077132065,
+    hasAdd:true,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
   }
 };
