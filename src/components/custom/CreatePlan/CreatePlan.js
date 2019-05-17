@@ -102,10 +102,12 @@ class CreatePlan extends React.Component {
       cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
-      cmswhere += " AND C3_609845305368='" + this.state.xlSelect + "'";
+      if(cmswhere!="")cmswhere+=" AND "
+      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
-      cmswhere += " AND C3_609845305305='" + this.state.lbSelect + "'";
+      if(cmswhere!="")cmswhere+=" AND "
+      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -200,23 +202,18 @@ class CreatePlan extends React.Component {
         y++;
         data.forEach(e => {
           if (e.check == true) {
-            x++;
-            let obj = JSON.parse(JSON.stringify(ele));
-            obj.C3_610657579164 = e.C3_609622254861;
-            obj.C3_610657578726 = obj.C3_609845305680;
-            obj.C3_610657578351 = obj.C3_609845305305;
-            obj.C3_610657578414 = obj.C3_609845305368;
-            obj.C3_610657578476 = obj.C3_609845305430;
-            obj.C3_610657578539 = obj.C3_609845305493;
-            obj.C3_610657578601 = obj.C3_609845305555;
-            obj.C3_610657578664 = obj.C3_609845305618;
-            obj.C3_610657578976 = obj.C3_609845305931;
-            obj.C3_610657579039 = obj.C3_609845305993;
-            obj.C3_610657579101 = obj.C3_609845463949;
-            obj.C3_610657579226 = obj.C3_610390410802;
-            obj.C3_610657579289 = obj.C3_610390419677;
-            obj.C3_611073881174 = obj.C3_610763348502;
-            planData.push(obj);
+            x++
+            let obj = JSON.parse(JSON.stringify(ele))
+            obj.C3_609616893275 = e.C3_609622254861
+            obj.C3_609616868478 = obj.C3_609845305680
+            obj.C3_609616906353 = obj.C3_609845305931
+            obj.C3_611314815828 = obj.C3_609845305993
+            obj.C3_611314816141 = obj.C3_609845305868
+            obj.C3_611314816469 = obj.C3_609845305618
+            obj.C3_611314815656 = obj.C3_609845463949
+            obj.C3_611314815266 = obj.C3_610390419677
+            obj.C3_611314815485 = obj.C3_610390410802
+            planData.push(obj)
           }
         });
       }

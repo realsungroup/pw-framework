@@ -38,6 +38,7 @@ class FJList extends React.Component {
       pageSize: 15, // 每页数量
       loading: false,
       hasMore: true,
+      tabsKey:"1"
     };
   }
 
@@ -98,11 +99,11 @@ class FJList extends React.Component {
   
   //获取员工推荐课程
   async getSubData(e){
-    let res = await http().getTable({ resid: this.props.subResid, cmswhere:"C3_610657579164 = '"+ e +"'"});
+    let res = await http().getTable({ resid: this.props.subResid, cmswhere:"C3_609616893275 = '"+ e +"'"});
     try {
       if (res.error === 0) {
         let subData = res.data
-        // console.log(subData)
+        console.log(subData)
         this.setState({subData});
       } else {
         message.error(res.message);
@@ -116,14 +117,13 @@ class FJList extends React.Component {
   //获取课程表
   async getSubbData(key) {
     let cmswhere = "";
-    if (this.state.levelSelect) {
-      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
-    }
     if (this.state.xlSelect) {
-      cmswhere += " AND C3_609845305368='" + this.state.xlSelect + "'";
+      if(cmswhere!="")cmswhere+=" AND "
+      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
-      cmswhere += " AND C3_609845305305='" + this.state.lbSelect + "'";
+      if(cmswhere!="")cmswhere+=" AND "
+      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -136,10 +136,12 @@ class FJList extends React.Component {
     try {
       if (res.error === 0) {
         let subbData = res.data;
-        subbData.forEach(e => {
-          e.check = false;
-        });
-        subbData[0].check = true
+        if(subbData.length>0){
+          subbData.forEach(e => {
+            e.check = false;
+          });
+          subbData[0].check = true
+        }
         this.setState({ subbData,addData:subbData[0] });
       } else {
         message.error(res.message);
@@ -165,7 +167,15 @@ class FJList extends React.Component {
   async addCourse(){
     this.setState({visibleAdd:false,visibleEdit:false})
     let addData = this.state.addData
-    addData.C3_610657579164 = this.state.listNo
+    addData.C3_609616893275 = this.state.listNo
+    addData.C3_609616868478 = addData.C3_609845305680
+    addData.C3_609616906353 = addData.C3_609845305931
+    addData.C3_611314815828 = addData.C3_609845305993
+    addData.C3_611314816141 = addData.C3_609845305868
+    addData.C3_611314816469 = addData.C3_609845305618
+    addData.C3_611314815656 = addData.C3_609845463949
+    addData.C3_611314815266 = addData.C3_610390419677
+    addData.C3_611314815485 = addData.C3_610390410802
     let res 
     try {
       res = await http().addRecords({ resid: this.props.subResid, data:[{...addData}]});
@@ -185,7 +195,8 @@ class FJList extends React.Component {
   async addCustom(){
     this.setState({visibleCustom:false})
     let addCustom = this.state.addCustom
-    addCustom.C3_610657579164 = this.state.listNo
+    addCustom.C3_609616893275 = this.state.listNo
+    addCustom.C3_611406136484 = "Y"
     let res = await http().addRecords({ resid: this.props.subResid, data:[{...addCustom}]});
     try {
       if (res.Error === 0) {
@@ -314,7 +325,7 @@ class FJList extends React.Component {
               <Button type="primary"
                 style={{marginRight:"10px"}}
                 onClick={() => {
-                  window.location.href = "/fnmodule?resid=610555442186&recid=610555514606&type=前端功能入口&title=创建计划";
+                  window.location.href = "/fnmodule?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划";
                   // this.setState({showPlanModal:true})
                 }}>
                 创建计划
@@ -362,41 +373,50 @@ class FJList extends React.Component {
                   bordered
                   dataSource={this.state.data}
                   renderItem={item => (<List.Item style={{cursor:'pointer'}} onClick={this.onClick.bind(this,item.C3_609622254861)}>
-                                        <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
-                                          <div style={{display:"flex",flex:1}}>
-                                            <Radio  checked={item.check}></Radio >
-                                          </div>
-                                          <div style={{display:"flex",flex:2}}>
-                                            <Icon type = "user" style={{fontSize:"24px"}}/>
-                                          </div>
-                                          <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
-                                            <div>
-                                              <span>{item.C3_609622254861==null?"无":item.C3_609622254861}</span>
+                                        <div style={{ display:"flex",flex:1,flexDirection:"column"}}>
+                                          <div style={{ display:"flex",flex:1,flexDirection: 'row',alignItems:'center'}}>
+                                            <div style={{display:"flex",flex:1}}>
+                                              <Radio  checked={item.check}></Radio >
                                             </div>
-                                            <div>
-                                              <span>{item.C3_609622263470==null?"无":item.C3_609622263470}</span>
+                                            <div style={{display:"flex",flex:2}}>
+                                              <Icon type = "user" style={{fontSize:"24px"}}/>
+                                            </div>
+                                            <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
+                                              <div>
+                                                <span>{item.C3_609622254861==null?"无":item.C3_609622254861}</span>
+                                              </div>
+                                              <div>
+                                                <span>{item.C3_609622263470==null?"无":item.C3_609622263470}</span>
+                                              </div>
+                                            </div>
+                                            <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
+                                              <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                                                <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622277252==null?"无":item.C3_609622277252}</span>
+                                              </div>
+                                              <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                                              <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
+                                              </div>
+                                            </div>
+                                            <div style={{display:"flex",flex:1}}>
+                                              {/* <Popover placement="topLeft"
+                                                onClick={(e)=>e.stopPropagation()}
+                                                content={<div style={{display:"flex",flexDirection: 'column'}}>
+                                                                  <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
+                                                                  <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
+                                                                  <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
+                                                                </div>} trigger="click" >
+                                                <Icon type = "right-circle" style={{fontSize:"18px"}}/>
+                                              </Popover> */}
+                                              <Icon type = "right-circle" rotate={item.check?270:0} style={{fontSize:"18px"}}/>
                                             </div>
                                           </div>
-                                          <div style={{display:"flex",flex:4,flexDirection: 'column'}}>
-                                            <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-                                              <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622277252==null?"无":item.C3_609622277252}</span>
-                                            </div>
-                                            <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-                                            <div style={{width:"10px",height:"10px",borderRadius:"50%",background:"#4a90e2",marginRight:"16px"}}></div><span>{item.C3_609622292033==null?"无":item.C3_609622292033}</span>
-                                            </div>
-                                          </div>
-                                          <div style={{display:"flex",flex:1}}>
-                                            {/* <Popover placement="topLeft"
-                                               onClick={(e)=>e.stopPropagation()}
-                                              content={<div style={{display:"flex",flexDirection: 'column'}}>
-                                                                <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
-                                                                <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
-                                                                <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
-                                                              </div>} trigger="click" >
-                                              <Icon type = "right-circle" style={{fontSize:"18px"}}/>
-                                            </Popover> */}
-                                            <Icon type = "right-circle" style={{fontSize:"18px"}} onClick={(e)=>{this.setState({showTab:true});e.stopPropagation()}}/>
-                                          </div>
+                                          {item.check&&<div style={{display:"flex",flexDirection:"row",justifyContent:"space-around",alignItems:"center",marginTop:"10px"}}>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"1"});e.stopPropagation()}}>历年绩效</span>
+                                            <div style={{width:"2px",height:"20px",background:"#ddd"}}></div>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"2"});e.stopPropagation()}}>历史计划</span>
+                                            <div style={{width:"2px",height:"20px",background:"#ddd"}}></div>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"3"});e.stopPropagation()}}>员工个人发展</span>
+                                          </div>}
                                         </div>
                                       </List.Item>)}/>
               </InfiniteScroll>
@@ -421,86 +441,99 @@ class FJList extends React.Component {
               </span> */}
             </div>
           </div>
+          {subData.length>0?
+          <div style={{ height: "calc(100vh - 330px)", overflowY: "scroll"}}>
+            {subData.map((item,i)=><Card
+                title={item.C3_609616868478}
+                style={{display:"flex",flex:1}}
+                key={i}
+                extra={ <Popconfirm placement="topRight" title={"确认要删除么?"} onConfirm={this.delCourse.bind(this,i)} okText="确认" cancelText="取消">
+                          <Icon type="delete" style={{cursor:'pointer'}}/>
+                        </Popconfirm>} 
+                style={{marginBottom:"16px"}}
+                actions={[<a href="#" onClick={()=>this.setState({editData:{...subData[i]},visibleEdit:true,})}>修改</a>,<a></a>]}
+              >
+                <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    费用
+                  </span>
+                  <span style={{fontSize:"12px"}}>
+                    {item.C3_609616906353}
+                  </span>
+                </div>
+                {item.C3_611406136484!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    课时
+                  </span>
+                  <span style={{fontSize:"12px"}}>
+                    {item.C3_611314815828}
+                  </span>
+                </div>}
+                {item.C3_611406136484!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    讲师
+                  </span>
+                  <span style={{fontSize:"12px"}}>
+                    {item.C3_611314815266}
+                  </span>
+                </div>}
+                {item.C3_611406136484!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    培训地
+                  </span>
+                  <span style={{fontSize:"12px"}}>
+                    {item.C3_611314815485}
+                  </span>
+                </div>}
+                {item.C3_611406136484!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    课程介绍
+                  </span>
+                  <span style={{fontSize:"12px"}}>
+                    {item.C3_611314816469}
+                  </span>
+                </div>}
+                {item.C3_611406136484!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
+                  <span style={{fontSize:"12px"}}>
+                    课程大纲
+                  </span>
+                  <a target="_blank" href={item.C3_611314815656}>
+                    <Icon type="fund" style={{fontSize:"22px"}}/>
+                  </a>
+                </div>}
+              </Card>)}
+            </div>:
           <List
-              size="large"
-              bordered
-              style={{ height: "calc(100vh - 330px)", overflowY: "scroll" }}
-              dataSource={subData}
-              renderItem={(item, i) => (
-                <List.Item>
-                  <Card
-                    title={item.C3_610657578726}
-                    key={i}
-                    extra={ <Popconfirm placement="topRight" title={"确认要删除么?"} onConfirm={this.delCourse.bind(this,i)} okText="确认" cancelText="取消">
-                              <Icon type="delete" style={{cursor:'pointer'}}/>
-                            </Popconfirm>} 
-                    style={{marginBottom:"16px"}}
-                    actions={[<a href="#" onClick={()=>this.setState({editData:{...subData[i]},visibleEdit:true,})}>修改</a>,<a></a>]}
-                  >
-                    <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        费用
-                      </span>
-                      <span style={{fontSize:"12px"}}>
-                        {item.C3_610657578976}
-                      </span>
-                    </div>
-                    {item.C3_611078361190!="Y"&&item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        课时
-                      </span>
-                      <span style={{fontSize:"12px"}}>
-                        {item.C3_610657579039}
-                      </span>
-                    </div>}
-                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        讲师
-                      </span>
-                      <span style={{fontSize:"12px"}}>
-                        {item.C3_610657579289}
-                      </span>
-                    </div>}
-                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        培训地
-                      </span>
-                      <span style={{fontSize:"12px"}}>
-                        {item.C3_610657579226}
-                      </span>
-                    </div>}
-                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        课程介绍
-                      </span>
-                      <span style={{fontSize:"12px"}}>
-                        {item.C3_610657578664}
-                      </span>
-                    </div>}
-                    {item.C3_611078361190!="Y"&&<div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
-                      <span style={{fontSize:"12px"}}>
-                        课程大纲
-                      </span>
-                      <a target="_blank" href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9">
-                        <Button type="primary" size="small"></Button>
-                      </a>
-                    </div>}
-                  </Card>
-                </List.Item>
-              )}
-            />
+            size="large"
+            bordered
+            style={{ height: "calc(100vh - 330px)", overflowY: "scroll",display:"flex",flex:1 ,flexDirection: 'row',alignItems:'center',justifyContent:'center'}}
+            dataSource={subData}
+          />}
           <div style={{display:"flex",flex:1,flexDirection: 'row',justifyContent: 'space-around',padding: '5px 0',marginTop:"20px"}}>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleAdd:true})}>添加课程</Button>
             <Button type="default" style={{ width: "calc(50% - 80px)" }} onClick={()=>this.setState({visibleCustom:true})}>自定义课程</Button>
           </div>
           <Modal
             title="历史记录"
+            width={"80%"}
             destroyOnClose={true}
             visible={this.state.showHistory}
             onOk={()=>this.setState({showHistory:false})}
             onCancel={()=>this.setState({showHistory:false})}
           >
-
+            <TableData
+              height={"calc(100vh - 300px)"}
+              resid={611316474296}
+              recordFormFormWidth= {'90%'}
+              hasBeBtns= {false}
+              hasModify= {false}
+              hasDelete= {false}
+              hasAdd= {false}
+              hasRowDelete= {false}
+              hasRowModify= {false}
+              hasRowView= {false}
+              subtractH={190}
+            />
           </Modal>
           <Modal
             title="课程大纲"
@@ -518,7 +551,7 @@ class FJList extends React.Component {
             onOk={()=>this.setState({showTab:false})}
             onCancel={()=>this.setState({showTab:false})}
           >
-            <Tabs defaultActiveKey="1">
+            <Tabs defaultActiveKey={this.state.tabsKey}>
               <TabPane tab="历年绩效" key="1">
                 <TableData
                   height={"calc(100vh - 300px)"}
@@ -534,7 +567,7 @@ class FJList extends React.Component {
                   subtractH={190}
                 />
               </TabPane>
-              <TabPane tab="员工发展" key="2">
+              <TabPane tab="历史计划" key="2">
                 <TableData
                   // resid={resid}
                   // dataMode="main"
@@ -543,7 +576,7 @@ class FJList extends React.Component {
                   // hasBeBtns
                 />
               </TabPane>
-              <TabPane tab="历史计划" key="3">
+              <TabPane tab="员工个人发展" key="3">
                 <TableData
                   // resid={resid}
                   // dataMode="main"
@@ -832,8 +865,7 @@ class FJList extends React.Component {
                 <Input
                   onChange={(e)=>{
                     let addCustom = this.state.addCustom
-                    addCustom.C3_611078361190="Y"
-                    addCustom.C3_610657578726=e.target.value
+                    addCustom.C3_609616868478=e.target.value
                     this.setState({addCustom})
                 }}/>
               </div>
@@ -845,7 +877,7 @@ class FJList extends React.Component {
               <div style={{flex:3}}>
                 <Input onChange={(e)=>{
                   let addCustom = this.state.addCustom
-                  addCustom.C3_610657578976=e.target.value
+                  addCustom.C3_609616906353=e.target.value
                   this.setState({addCustom})
                 }}/>
               </div>
@@ -1061,7 +1093,7 @@ class FJList extends React.Component {
                 }}/>
               </div>
             </div>
-            {this.state.editData.C3_611078361190!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            {this.state.editData.C3_611406136484!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课时:</span>
               </div>
@@ -1075,7 +1107,7 @@ class FJList extends React.Component {
                 }}/>
               </div>
             </div>}
-            {this.state.editData.C3_611078361190!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            {this.state.editData.C3_611406136484!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>讲师:</span>
               </div>
@@ -1089,7 +1121,7 @@ class FJList extends React.Component {
                 }}/>
               </div>
             </div>}
-            {this.state.editData.C3_611078361190!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            {this.state.editData.C3_611406136484!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>培训地:</span>
               </div>
@@ -1103,7 +1135,7 @@ class FJList extends React.Component {
                 }}/>
               </div>
             </div>}
-            {this.state.editData.C3_611078361190!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
+            {this.state.editData.C3_611406136484!="Y"&&<div style={{display:"flex",flexDirection:"row",margin:"10px"}}>
               <div style={{display:"flex",flex:1,alignItems:"center"}}>
                 <span style={{flex:1,textAlign:"right",paddingRight:"16px"}}>课程介绍:</span>
               </div>

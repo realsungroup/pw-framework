@@ -93,11 +93,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     level,
     selectedQuestion
   ) => {
-    const whereFields = {
-      question_id: qeustionId,
-      dept: department,
-      level: level
-    };
+    const whereFields = {};
     if (qeustionId) {
       whereFields.question_id = qeustionId;
     }
@@ -563,15 +559,6 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                 <Button
                   onClick={() => {
                     this.setState({ selectedQuestion: null });
-                    if (!selectedQuestion) {
-                      return message.info('请选择题目');
-                    }
-                    this.getStatisticsData(
-                      selectedQuestion.question_id,
-                      selectedDepartment && selectedDepartment.DEP_NAME,
-                      selectedLevel && selectedLevel.C3_449335790387,
-                      selectedQuestion
-                    );
                   }}
                   style={{ marginLeft: 4 }}
                 >
@@ -598,7 +585,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                     }
                     this.getStatisticsData(
                       selectedQuestion.question_id,
-                      selectedDepartment && selectedDepartment.DEP_NAME,
+                      null,
                       selectedLevel && selectedLevel.C3_449335790387,
                       selectedQuestion
                     );
@@ -629,7 +616,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                     this.getStatisticsData(
                       selectedQuestion.question_id,
                       selectedDepartment && selectedDepartment.DEP_NAME,
-                      selectedLevel && selectedLevel.C3_449335790387,
+                      null,
                       selectedQuestion
                     );
                   }}
