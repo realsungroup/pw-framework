@@ -60,7 +60,7 @@ class FiscalYearPlan extends React.Component {
             style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
           >
             <TabPane
-              tab="未通知"
+              tab="待提交"
               key="1"
               style={{ width: "100%", height: "100%" }}
             >
@@ -105,12 +105,20 @@ class FiscalYearPlan extends React.Component {
               />
             </TabPane>
             <TabPane
-              tab="历史记录"
+              tab="已提交"
               key="2"
               style={{ width: "100%", height: "100%" }}
             >
               <TableData
-                resid={609883172764}/>
+                resid={611165813996}
+                hasBeBtns={false}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}/>
             </TabPane>
           </Tabs>
         </div>
