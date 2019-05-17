@@ -314,7 +314,7 @@ class FJList extends React.Component {
               <Button type="primary"
                 style={{marginRight:"10px"}}
                 onClick={() => {
-                  window.location.href = "/fnmodule?resid=610555442186&recid=610555514606&type=前端功能入口&title=创建计划";
+                  window.location.href = "/fnmodule?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划";
                   // this.setState({showPlanModal:true})
                 }}>
                 创建计划
