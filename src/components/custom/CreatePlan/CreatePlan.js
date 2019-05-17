@@ -99,15 +99,15 @@ class CreatePlan extends React.Component {
   async getSubData(key) {
     let cmswhere = "";
     if (this.state.levelSelect) {
-      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
+      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
+      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
+      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -119,6 +119,7 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let subData = res.data;
+        console.log(subData)
         subData.forEach(e => {
           e.check = false;
         });

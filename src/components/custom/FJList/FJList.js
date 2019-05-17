@@ -23,6 +23,9 @@ class FJList extends React.Component {
       addCustom: [],
       kcxlData: [],
       kclbData: [],
+      levelSelect: "",
+      xlSelect: "",
+      lbSelect: "",
       listIndex: 0,
       listNo:"",
       visibleAdd: false,
@@ -117,13 +120,16 @@ class FJList extends React.Component {
   //获取课程表
   async getSubbData(key) {
     let cmswhere = "";
+    if (this.state.levelSelect) {
+      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
+    }
     if (this.state.xlSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
+      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
+      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
