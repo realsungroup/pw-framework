@@ -1,0 +1,234 @@
+.desktop {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: url(./assets/desktop-bg.jpg) center center / cover no-repeat;
+  position: relative;
+  &__main {
+    width: 100%;
+    height: ~'calc(100vh - 40px)';
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__folder {
+    width: 60px;
+    text-align: center;
+    margin: 3px 12px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 0.3);
+    }
+  }
+  &__folder-img {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+  }
+  &__folder-title {
+    color: #fff;
+    font-family: Microsoft YaHei;
+    margin-bottom: 2px;
+    padding: 0 3px;
+    width: 100%;
+    line-height: 17px;
+    height: 34px;
+    font-weight: 400;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__folder-apps {
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__folder-app {
+    width: 60px;
+    text-align: center;
+    margin: 3px 12px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+    border-radius: 4px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    position: relative;
+    &:hover &-remove {
+      display: inline-block !important;
+    }
+  }
+  &__folder-app-remove {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  &__folder-app-icon {
+    text-align: center;
+  }
+  &__folder-app-title {
+    font-family: Microsoft YaHei;
+    margin-bottom: 2px;
+    padding: 0 3px;
+    width: 100%;
+    line-height: 17px;
+    height: 34px;
+    font-weight: 400;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // button-bar
+  &__bottom-bar {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+  }
+  &__bottom-left {
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__logo {
+    cursor: pointer;
+    i {
+      color: #fff;
+      font-size: 22px;
+    }
+    width: 60px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 0.1);
+    }
+  }
+  &__active-apps {
+    display: flex;
+    width: ~'calc(100vw - 200px)';
+    height: 40px;
+  }
+  &__active-app {
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    border-bottom: 2px solid #999fa5;
+    margin-left: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0 10px;
+    i {
+      font-size: 24px;
+    }
+    position: relative;
+    &--active {
+      background-color: hsla(0, 0%, 100%, 0.2);
+    }
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 0.3) !important;
+    }
+    &:hover &-close {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  &__active-app-close {
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    svg {
+      font-size: 12px;
+    }
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    transition: 0.3s;
+  }
+  &__menu {
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+    width: 320px;
+    height: 370px;
+    background-color: rgba(3, 12, 27, 0.9);
+    z-index: 2;
+    transition: 0.1s;
+    color: #fff;
+    display: flex;
+    &--hide {
+      // transform: translateY(450px);
+      display: none;
+    }
+    &-user {
+      width: 110px;
+      margin-top: 40px;
+      border-right: 1px solid #3c434e;
+      text-align: center;
+      position: relative;
+    }
+    &-poweroff {
+      position: absolute;
+      left: 18px;
+      bottom: 0;
+      svg {
+        font-size: 22px;
+        margin-bottom: 4px;
+        cursor: pointer;
+      }
+    }
+    &-list {
+      width: 200px;
+      overflow: auto;
+      margin-top: 40px;
+      i,
+      span {
+        color: #fff !important;
+      }
+    }
+    &-list > ul {
+      border-color: #3c434e !important;
+    }
+    &-list ul {
+      background-color: rgba(3, 12, 27, 0.9) !important;
+    }
+    &-list li {
+      color: #fff !important;
+    }
+    &-list .ant-menu-item-selected {
+      color: #fff !important;
+      background: #1b2736 !important;
+    }
+  }
+  &__loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    svg {
+      color: #fff;
+      font-size: 24px;
+    }
+    &--hide {
+      display: none !important;
+    }
+  }
+}

@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-import { PageContainer, Login, NotFound } from './pages/loadablePage';
+// import { PageContainer, Login, NotFound } from './pages/loadablePage';
 
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -31,6 +31,9 @@ import './App.css';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
+
+import Desktop from './pages/Desktop';
+import GetConfig from './pages/GetConfig';
 
 addLocaleData([...en, ...zh]);
 
@@ -161,9 +164,10 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router>
                   <Switch>
-                    <PrivateRoute exact path="/" component={PageContainer} />
-                    <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute path="/fnmodule" component={PageContainer} />
+                    <PrivateRoute exact path="/" component={Desktop} />
+                    <PrivateRoute path="/fnmodule" component={GetConfig} />
+
+                    {/* <PrivateRoute path="/home" component={PageContainer} />
                     <PrivateRoute
                       path="/workbench-setting"
                       component={PageContainer}
@@ -178,7 +182,7 @@ class App extends Component {
                       component={PageContainer}
                     />
                     <Route path="/login" component={Login} />
-                    <Route path="*" component={NotFound} />
+                    <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>
               </IntlProvider>
