@@ -498,7 +498,7 @@ class FJList extends React.Component {
                     课程大纲
                   </span>
                   <a target="_blank" href={item.C3_611314815656}>
-                    <Button type="primary" size="small"></Button>
+                    <Icon type="fund" style={{fontSize:"22px"}}/>
                   </a>
                 </div>}
               </Card>)}
@@ -515,12 +515,25 @@ class FJList extends React.Component {
           </div>
           <Modal
             title="历史记录"
+            width={"80%"}
             destroyOnClose={true}
             visible={this.state.showHistory}
             onOk={()=>this.setState({showHistory:false})}
             onCancel={()=>this.setState({showHistory:false})}
           >
-
+            <TableData
+              height={"calc(100vh - 300px)"}
+              resid={611316474296}
+              recordFormFormWidth= {'90%'}
+              hasBeBtns= {false}
+              hasModify= {false}
+              hasDelete= {false}
+              hasAdd= {false}
+              hasRowDelete= {false}
+              hasRowModify= {false}
+              hasRowView= {false}
+              subtractH={190}
+            />
           </Modal>
           <Modal
             title="课程大纲"
