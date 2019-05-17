@@ -1,8 +1,13 @@
 import React from 'react';
 import { argumentContainer } from '../util';
 
-// 上传文件的高阶组件
-export const uploadFile = (file, url) => {
+/**
+ * 上传文件
+ * @param {file} file 文件
+ * @param {string} url 上传的地址
+ * @param {string} mode 上传的模式：'local' 本地；'cloud' 云对象存储
+ */
+export const uploadFile = (file, url, mode) => {
   return new Promise((resolve, reject) => {
     let fd = new FormData();
     fd.append('file', file, file.name);
@@ -11,7 +16,12 @@ export const uploadFile = (file, url) => {
     xhr.onload = () => {
       const data = JSON.parse(xhr.response);
       if (xhr.status === 200 && (data.error === 0 || data.error === '0')) {
-        const imgUrl = data.data;
+        let imgUrl;
+        if (mode === 'local') {
+          imgUrl = data.httpfilename;
+        } else if (mode === 'cloud') {
+          imgUrl = data.data;
+        }
         resolve(imgUrl);
       } else {
         reject(data);
@@ -64,7 +74,7 @@ const withUploadFile = (options = {}) => {
         const type = getFileType(file);
 
         const { upload } = window.pwConfig[process.env.NODE_ENV];
-        uploadFile(file, getUploadUrl(upload, type))
+        uploadFile(file, getUploadUrl(upload, type), upload.mode)
           .then(fileUrl => {
             success && success(fileUrl);
           })
