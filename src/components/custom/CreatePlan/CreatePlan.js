@@ -111,7 +111,6 @@ class CreatePlan extends React.Component {
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
-    if (this.state.kcState == "All") cmswhere = "";
     let res = await http().getTable({
       resid: this.props.subResid,
       key,
