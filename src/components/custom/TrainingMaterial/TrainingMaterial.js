@@ -1,17 +1,17 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, message,Modal} from 'antd';
+import { Button, message, Modal } from 'antd';
 class TrainingMaterial extends React.Component {
   constructor(props) {
     super(props);
   }
   handleDownMaterial = url => {
-    if(url){
+    if (url) {
       window.open(url);
-    }else{
+    } else {
       return Modal.warning({
-        title:'您还未上传过资料'
-      })
+        title: '您还未上传过资料'
+      });
     }
   };
   render() {
@@ -31,7 +31,7 @@ class TrainingMaterial extends React.Component {
               return (
                 <Button
                   onClick={() => {
-                    this.handleDownMaterial(record.C3_611263607692);
+                    this.handleDownMaterial(record.C3_607185283034);
                   }}
                 >
                   下载
