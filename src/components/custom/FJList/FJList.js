@@ -611,16 +611,11 @@ class FJList extends React.Component {
                     defaultValue="Rec"
                     onChange={e => {
                       if (e == "Rec") {
-                        this.setState(
-                          { levelSelect: this.state.lkState, kcState: e },
-                          () => this.getSubbData()
-                        );
+                        this.setState({ levelSelect: this.state.lkState, kcState: e },() => this.getSubbData());
                       } else {
                         this.setState(
                           {
                             levelSelect: "",
-                            xlSelect: "",
-                            lbSelect: "",
                             kcState: "All"
                           },
                           () => this.getSubbData()

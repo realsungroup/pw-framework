@@ -408,24 +408,17 @@ class CreatePlan extends React.Component {
             <List
               size="large"
               header={
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Select
                     style={{ width: "100px" }}
                     defaultValue="Rec"
                     onChange={e => {
                       if (e == "Rec") {
-                        this.setState(
-                          { levelSelect: this.state.lkState, kcState: e },
-                          () => this.getSubData()
-                        );
+                        this.setState({ levelSelect: this.state.lkState, kcState: e },() => this.getSubData());
                       } else {
                         this.setState(
                           {
                             levelSelect: "",
-                            xlSelect: "",
-                            lbSelect: "",
                             kcState: "All"
                           },
                           () => this.getSubData()
