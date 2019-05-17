@@ -428,13 +428,15 @@ class SoleQuery extends Component {
     }
     // 无礼品时
     if (hasGift === '0') {
-      return   Modal.success({
-        title:'问卷已经成功提交',
-        okText:'知道了',
-        onOk(){
-          window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
+      return Modal.success({
+        title: '问卷已经成功提交',
+        okText: '知道了',
+        onOk: () => {
+          this.setState({
+            hasSubmit: true
+          });
         }
-      })
+      });
     }
     // 有礼品时
     try {
@@ -519,16 +521,16 @@ class SoleQuery extends Component {
       AllQuestions
     });
   };
-
-  //
-  handlePopcancle = () => {
-    // console.log('点击取消');
-  };
-
   //handleCancel
-  handleCancel = () => {
-    this.setState({
-      visible: false
+  handleGiveUpgiftCancel = () => {
+    Modal.warning({
+      title: '手机号将是您作为领取礼品的凭证，不填写将视为放弃',
+      onOk: () => {
+        this.setState({
+          visible: false,
+          hasSubmit: true
+        });
+      }
     });
   };
 
@@ -563,7 +565,6 @@ class SoleQuery extends Component {
           console.error(err);
         });
     }
-    window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
   };
 
   // 监听电话输入的变化
@@ -692,6 +693,7 @@ class SoleQuery extends Component {
             visible={this.state.visible}
             width={this.state.wid}
             onOk={this.handleOk}
+            onCancel={this.handleGiveUpgiftCancel}
           >
             <div>
               <p className="thanks">感谢您参与本次问卷调查</p>

@@ -23,7 +23,14 @@ const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-
+//获取当前的日期
+var today = new Date();
+let date =
+  today.getFullYear() +
+  '-' +
+  (today.getMonth() + 1) +
+  '-' +
+  today.getDate();
 // 默认的题目数据结构
 let questions = [
   {
@@ -95,8 +102,8 @@ class QuerySet extends Component {
       query: {}, //跳转时拿到的问卷，
       floders: [],
       floder_name: '',
-      startDate: '',
-      endDate: '',
+      startDate: date,
+      endDate: date,
       isGift: '0',
       giftCount: '',
       giftRate: '',
@@ -142,7 +149,7 @@ class QuerySet extends Component {
       floder_name,
       isGift,
       giftCount,
-      queryId,
+      queryId
     } = this.state;
     if (queryId == '') {
       // 添加这个记录
@@ -208,7 +215,6 @@ class QuerySet extends Component {
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
@@ -658,7 +664,7 @@ class QuerySet extends Component {
     this.setState({ activeQuestionType: e.target.value });
   };
   handleDateChange = (date, dateStrings) => {
-    console.log(dateStrings);
+    // console.log(dateStrings);
     // console.log('选择的日期', dates[0]._d);
     this.setState({
       startDate: dateStrings[0],
@@ -666,7 +672,7 @@ class QuerySet extends Component {
     });
   };
   handlequerSetNameChange = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState({
       query_name: e.target.value
     });
@@ -707,7 +713,7 @@ class QuerySet extends Component {
         resid: 608822887704
       })
       .then(res => {
-        console.log('文件夹', res.data);
+        // console.log('文件夹', res.data);
         let floders = res.data;
         this.setState({
           floders: floders,
@@ -722,6 +728,8 @@ class QuerySet extends Component {
   };
   getThisquery = queryId => {
     console.log('文卷ID', queryId);
+    const { startDate, endDate } = this.state;
+    console.log(this.state.startDate, this.state.endDate);
     this.setState({ loading: true });
     http()
       .getTable({
@@ -729,14 +737,18 @@ class QuerySet extends Component {
         cmswhere: `query_id = ${queryId}`
       })
       .then(query => {
-        console.log('拿到的问卷信息', query.data[0], this.state.query);
+        console.log('拿到的问卷信息', query.data[0]);
         this.setState({
           query: query.data[0],
           queryId: query.data[0].query_id,
           query_name: query.data[0].query_name,
           floder_name: query.data[0].floder_name,
-          startDate: query.data[0].start_time,
-          endDate: query.data[0].end_time,
+          startDate:
+            query.data[0].start_time == null
+              ? startDate
+              : query.data[0].start_time,
+          endDate:
+            query.data[0].end_time == null ? endDate : query.data[0].end_time,
           query_description: query.data[0].query_description,
           isGift: query.data[0].gift,
           giftCount: query.data[0].gift_count,
@@ -751,21 +763,12 @@ class QuerySet extends Component {
   };
   componentDidMount() {
     const quertString = window.location.search;
-    console.log('地址', quertString);
+    // console.log('地址', quertString);
     const qsObj = qs.parse(quertString.substring(1));
-    console.log('问卷ID', qsObj.id);
-    //获取当前的日期
-    var today = new Date();
-    let date =
-      today.getFullYear() +
-      '-' +
-      (today.getMonth() + 1) +
-      '-' +
-      today.getDate();
+    // console.log('问卷ID', qsObj.id);
+    
     this.setState({
       queryId: qsObj.id,
-      startDate: date,
-      endDate: date
     });
     this.getFloders();
     this.setState({ loading: false });
@@ -804,7 +807,7 @@ class QuerySet extends Component {
   };
   // 监听文件夹的变化
   handlefloderNameChange = value => {
-    console.log('所在文件夹名称', `${value}`);
+    // console.log('所在文件夹名称', `${value}`);
     this.setState({
       floder_name: `${value}`
     });
@@ -1661,18 +1664,6 @@ class QuerySet extends Component {
                       )}
                       <span className="prasetip">份</span>
                     </Radio>
-                    {/* <Radio value={'概率'}>
-                    中奖率:
-                    {this.state.giftStyle == '份数' ? (
-                      <Input style={{ width: 60, height: 20 }} disabled />
-                    ) : (
-                      <Input
-                        style={{ width: 60, height: 20 }}
-                        onChange={this.handleGiftRateChange}
-                      />
-                    )}
-                    <span className="prasetip">%</span>
-                  </Radio> */}
                   </RadioGroup>
                 </div>
               ) : (
@@ -1690,7 +1681,9 @@ class QuerySet extends Component {
             {queryId == '' ? (
               ''
             ) : (
-              <Button onClick={this.toMyQuery} type='primary'>完成</Button>
+              <Button onClick={this.toMyQuery} type="primary">
+                完成
+              </Button>
             )}
 
             {queryId == '' ? (

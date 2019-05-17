@@ -195,7 +195,7 @@ export default class EditButton extends Component {
   // 修改中多选正确答案的变化
   handlemultiCorrectAnswerChange = value => {
     const newcurrentRecord = { ...this.state.currentRecord };
-    const tempvalue = value.join(' ');
+    const tempvalue = value.sort().join(' ');
     newcurrentRecord.C3_607195719379 = tempvalue;
     this.setState({
       currentRecord: newcurrentRecord

@@ -182,8 +182,8 @@ class QueryTable extends Component {
                   <Link
                     to={{
                       pathname: '/fnmodule',
-                      search: `?resid=统计分析&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
-                        item.query_id
+                      search: `?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${
+                        item.REC_ID
                       }`
                     }}
                     target="_self"

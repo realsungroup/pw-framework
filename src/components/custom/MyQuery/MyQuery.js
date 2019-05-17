@@ -4,7 +4,6 @@ import {
   Icon,
   Input,
   Select,
-  Tag,
   Modal,
   Tabs,
   Spin,
@@ -77,22 +76,22 @@ class MyQuery extends React.Component {
   //       console.error(err);
   //       return message.info('复制失败', err.message.error);
   //     });
-    // 获取原问卷的试题和试题选项
-    /**分析内容
-     * 拿到的数据类型
-     * data[
-     * {question_type:'1111',
-     *  question_topic:'1111',
-     *  question_must:'XXXXX',
-     * subdata:[
-     * {option_write:'',
-     * option_content:'',},
-     * {},
-     * {},]
-     * },
-     * {},
-     * {}]
-     */
+  // 获取原问卷的试题和试题选项
+  /**分析内容
+   * 拿到的数据类型
+   * data[
+   * {question_type:'1111',
+   *  question_topic:'1111',
+   *  question_must:'XXXXX',
+   * subdata:[
+   * {option_write:'',
+   * option_content:'',},
+   * {},
+   * {},]
+   * },
+   * {},
+   * {}]
+   */
   //   let questionArr=[];
   //   http()
   //     .getTable({
@@ -107,8 +106,9 @@ class MyQuery extends React.Component {
   //        */
   //       res.data.map(question=>{
   //         questionArr.push({
-  //           quesion_topic:question.quesion_topic,
+  //           question_topic:question.question_topic,
   //           question_must:question.question_must,
+  //           question_type:question.question_type,
   //         })
   //       })
   //     })
@@ -174,7 +174,7 @@ class MyQuery extends React.Component {
         ]
       })
       .then(res => {
-        this.getData();
+        this.getData(this.state.current, this.state.pageSize);
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -363,13 +363,15 @@ class MyQuery extends React.Component {
             {foloderbuttonChecked == '全部' ? (
               <Button
                 style={{ marginLeft: 8 }}
-                onClick={this.getData}
+                onClick={() => {
+                  this.getData(current, pageSize);
+                }}
                 type="primary"
               >
                 全部
               </Button>
             ) : (
-              <Button style={{ marginLeft: 8 }} onClick={this.getData}>
+              <Button style={{ marginLeft: 8 }} onClick={()=>{this.getData(current, pageSize)}}>
                 全部
               </Button>
             )}
