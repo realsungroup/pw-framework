@@ -26,11 +26,7 @@ const dateFormat = 'YYYY-MM-DD';
 //获取当前的日期
 var today = new Date();
 let date =
-  today.getFullYear() +
-  '-' +
-  (today.getMonth() + 1) +
-  '-' +
-  today.getDate();
+  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 // 默认的题目数据结构
 let questions = [
   {
@@ -766,9 +762,9 @@ class QuerySet extends Component {
     // console.log('地址', quertString);
     const qsObj = qs.parse(quertString.substring(1));
     // console.log('问卷ID', qsObj.id);
-    
+
     this.setState({
-      queryId: qsObj.id,
+      queryId: qsObj.id
     });
     this.getFloders();
     this.setState({ loading: false });
@@ -1052,9 +1048,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy">
+          {/* <Button size="small" icon="copy">
             复制
-          </Button>
+          </Button> */}
           <Button
             size="small"
             icon="delete"
@@ -1183,27 +1179,35 @@ class QuerySet extends Component {
   delCurrentQuestion(questionID) {
     const { queryId } = this.state;
     console.log('试题ID', questionID);
-    http()
-      .removeRecords({
-        resid: 608828418560,
-        data: [
-          {
-            REC_ID: questionID
-          }
-        ]
-      })
-      .then(res => {
-        console.log(res);
-        if (res.Error) {
-          console.log('删除失败');
-        } else {
-          this.getThisQueryQuestions(queryId);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        message.error('获取指定问卷内容失败原因', err.message);
-      });
+    Modal.confirm({
+      title: '确认删除这道题吗？',
+      onOk: () => {
+        http()
+          .removeRecords({
+            resid: 608828418560,
+            data: [
+              {
+                REC_ID: questionID
+              }
+            ]
+          })
+          .then(res => {
+            console.log(res);
+            if (res.Error) {
+              console.log('删除失败');
+            } else {
+              this.getThisQueryQuestions(queryId);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            message.error('操作失败', err.message);
+          });
+      },
+      onCancel:()=>{
+        console.log('取消');
+      }
+    });
   }
   //显示当前题目的模态框
   showThisQuestionModal(item) {

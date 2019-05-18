@@ -524,7 +524,8 @@ class SoleQuery extends Component {
   //handleCancel
   handleGiveUpgiftCancel = () => {
     Modal.warning({
-      title: '手机号将是您作为领取礼品的凭证，不填写将视为放弃',
+      title: '提示',
+      content: '手机号将是您作为领取礼品的凭证，不填写将视为放弃',
       onOk: () => {
         this.setState({
           visible: false,
@@ -544,10 +545,9 @@ class SoleQuery extends Component {
         subStatus: false,
         hasSubmit: true
       });
+    } else if (!tel) {
+      this.handleGiveUpgiftCancel();
     } else {
-      if (!/^1[0-9]\d{9}$/.test(tel)) {
-        return message.error('请输入正确的手机号');
-      }
       http()
         .modifyRecords({
           resid: 608911532639,

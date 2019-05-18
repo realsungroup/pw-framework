@@ -21,7 +21,7 @@ class QueryTable extends Component {
       modalGiftId: '',
       sendVisible: false,
       sendListId: '',
-      sendwid: 1000,
+      sendwid: 1200,
       loading: false
     };
   }
@@ -93,7 +93,7 @@ class QueryTable extends Component {
       case '已发送': {
         return (
           <Popconfirm
-            title="请小心停止，停止后此问卷将作废"
+            title="请小心停止，停止用户将不能再填写"
             onConfirm={() => {
               onStopQuery(item);
             }}
@@ -289,7 +289,7 @@ class QueryTable extends Component {
             hasRowView={false}
             hasRowDelete={false}
             hasRowModify={false}
-            width={950}
+            width={1150}
             height={400}
             subtractH={190}
             cmswhere={`query_id='${this.state.sendListId}'`}

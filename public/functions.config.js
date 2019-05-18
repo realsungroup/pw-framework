@@ -777,26 +777,15 @@ window[607189885707] = {
   name: 'MyQuery',
   title: '问卷系统'
 };
-
-// 608635796671
-// window[608635796671] = {
-//   name: 'QuerySet',
-//   title: '问卷设置'
-// };
 // 路由跳转的配置
 window['问卷设置'] = {
   title: '问卷设置',
   name: 'QuerySet'
 };
 
-//  window['选择人员'] = {
-//    title:'选择人员发送',
-//    name:'SelectPersonFirst'
-//  };
-
 // 609334612078 问卷提交
-window['609334612078'] = {
-  title: '提交问卷',
+window['我的问卷'] = {
+  title: '我的问卷',
   name: 'SoleQuery'
 };
 // 609514648856

@@ -4,7 +4,7 @@ import './SelectPersonFirst.less';
 import SelectPersonSecond from '../SelectPersonSecond';
 import http from '../../../util20/api';
 import qs from 'qs';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import { withRouter } from 'react-router-dom';
 class SelectPersonFirst extends Component {
   constructor(props) {
@@ -27,45 +27,61 @@ class SelectPersonFirst extends Component {
   handleComplete = () => {
     console.log({ personList: this.state.persons });
     const { queryID } = this.state;
-    let dataSub = [];
-    console.log('点击提交', queryID);
-    let objcommon = {
-      query_id: queryID
-    };
-    this.state.persons.map(person => {
-      const obj = { ...objcommon, staff_number: person.C3_227192472953 };
-      dataSub.push(obj);
+    Modal.confirm({
+      title: '提示！',
+      content: '点击确定就发邮件了，确认发送吗？',
+      onOk: () => {
+        let dataSub = [];
+        console.log('点击提交', queryID);
+        let objcommon = {
+          query_id: queryID
+        };
+        this.state.persons.map(person => {
+          const obj = {
+            ...objcommon,
+            staff_number: person.C3_227192472953,
+            staff_location: 'Y'
+          };
+          dataSub.push(obj);
+        });
+        console.log('发送的人员列表', dataSub);
+        http()
+          .addRecords({
+            resid: 609613163948,
+            data: dataSub
+          })
+          .then(res => {
+            message.info('发送成功啦，可以到查看人员去看发送了哪些人');
+            console.log(res);
+            Modal.success({
+              title: '发送成功',
+              content: '可以到首页去查看发送了哪些人',
+              onOk: () => {
+                window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
+              }
+            });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+        http()
+          .modifyRecords({
+            resid: 608822905547,
+            data: [
+              {
+                REC_ID: queryID,
+                query_status: '已发送'
+              }
+            ]
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
     });
-    console.log('发送的人员列表', dataSub);
-    http()
-      .addRecords({
-        resid: 609613163948,
-        data: dataSub
-      })
-      .then(res => {
-        message.info('发送成功啦，可以到查看人员去看发送了哪些人');
-        console.log(res);
-        window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
-      })
-      .catch(err => {
-        console.error(err);
-      });
-    http()
-      .modifyRecords({
-        resid: 608822905547,
-        data: [
-          {
-            REC_ID: queryID,
-            query_status: '已发送'
-          }
-        ]
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
   };
   //第二步中复选框的变化
   handleCheckboxChange = (value, number) => {
