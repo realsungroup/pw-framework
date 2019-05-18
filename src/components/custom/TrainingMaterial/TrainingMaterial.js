@@ -6,12 +6,14 @@ class TrainingMaterial extends React.Component {
     super(props);
   }
   handleDownMaterial = url => {
-    if (url) {
-      window.open(url);
-    } else {
+    if (!url) {
       return Modal.warning({
         title: '您还未上传过资料'
       });
+    }
+    const urls = url.split(';file;');
+    for (let i = 0, len = urls.length; i < len; i++) {
+      window.open(urls[i]);
     }
   };
   render() {
