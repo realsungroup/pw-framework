@@ -11,12 +11,14 @@ import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
 import DesktopReminderList from './DesktopReminderList';
 import DesktopColorPicker from './DesktopColorPicker';
+import HomeDashboard from './HomeDashboard';
 import {
   ContextMenu,
   MenuItem,
   ContextMenuTrigger,
   SubMenu as SubMenuItem
 } from 'react-contextmenu';
+import { setLanguage } from 'Util/api';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
@@ -68,7 +70,8 @@ class Desktop extends React.Component {
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
       reminderListLoading: false, // 提醒列表是否显示
-      color: '' // 主题色
+      color: '', // 主题色
+      language: localStorage.getItem('language') // 语言
     };
   }
 
@@ -373,6 +376,21 @@ class Desktop extends React.Component {
     this.getReminderData();
   };
 
+  handleOpenDashboard = () => {
+    const children = <HomeDashboard />;
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    console.log({ width, height });
+    this.addAppToBottomBar(children, '仪表盘', {
+      width,
+      height,
+      x: 0,
+      y: 0,
+      minWidth: 330,
+      minHeight: 500
+    });
+  };
+
   handleReminderListItemClick = (url, title) => {
     const children = (
       <iframe src={url} frameBorder="0" className="desktop__iframe" />
@@ -458,13 +476,42 @@ class Desktop extends React.Component {
     this.forceUpdate();
   };
 
-  vars = { '@primary-color': '' };
-  handleThemeChange = (val, color) => {
-    const rbga = color.rgb;
-    this.vars = {
-      '@primary-color': `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`
-    };
-    this.setState({ color: rbga });
+  handleChangeLanguage = async (e, data) => {
+    if (this.state.language === data.language) {
+      return;
+    }
+    const { intl } = this.props;
+    const value = data.language;
+    let res;
+    try {
+      res = await setLanguage(value);
+    } catch (err) {
+      return message.error(err.message);
+    }
+    if (res.OpResult === 'Y') {
+      this.modLanguage(value);
+      this.setState({ language: value });
+      // message.success(intl.messages['RightBtns.success']);
+      message.success('更换语言成功');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  };
+
+  modLanguage = language => {
+    let userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      try {
+        userInfo = JSON.parse(userInfo);
+      } catch (err) {
+        return;
+      }
+      userInfo.UserInfo.EMP_LANGUAGE = language;
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem('language', language);
+    }
   };
 
   getReminderData = async () => {
@@ -734,7 +781,13 @@ class Desktop extends React.Component {
           <div className="desktop__bottom-right">
             <DesktopDate className="desktop__bottom-date" />
             <div
-              className="desktop__bottom-reminder"
+              className="desktop__bottom-right-item"
+              onClick={this.handleOpenDashboard}
+            >
+              <Icon type="dashboard" />
+            </div>
+            <div
+              className="desktop__bottom-right-item"
               onClick={this.handleOpenReminderList}
             >
               <Icon type="bell" />
@@ -787,8 +840,28 @@ class Desktop extends React.Component {
               </div>
             }
           >
-            <MenuItem>中文</MenuItem>
-            <MenuItem>English</MenuItem>
+            <MenuItem
+              data={{ language: '中文' }}
+              onClick={this.handleChangeLanguage}
+            >
+              <span
+                className={classNames('desktop__language', {
+                  'desktop__language--selected': language === '中文'
+                })}
+              />
+              <span>中文</span>
+            </MenuItem>
+            <MenuItem
+              data={{ language: 'English' }}
+              onClick={this.handleChangeLanguage}
+            >
+              <span
+                className={classNames('desktop__language', {
+                  'desktop__language--selected': language === 'English'
+                })}
+              />
+              <span>English</span>
+            </MenuItem>
           </SubMenuItem>
         </ContextMenu>
       </div>

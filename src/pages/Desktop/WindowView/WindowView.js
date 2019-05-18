@@ -109,7 +109,8 @@ export default class WindowView extends React.Component {
       nextProps.width !== this.props.width ||
       nextProps.height !== this.props.height ||
       nextProps.x !== this.props.x ||
-      nextProps.y !== this.props.y
+      nextProps.y !== this.props.y ||
+      nextProps.visible !== this.props.visible
     ) {
       return true;
     }
@@ -192,33 +193,32 @@ export default class WindowView extends React.Component {
           style={{ position: 'absolute', zIndex }}
           onResizeStop={this.handleResizeStop}
           onClick={this.handelActiveWindowView}
+          {...otherProps}
         >
-          <div {...otherProps}>
-            <div className="window-view__header">
-              <div className="window-view__header-title">{title}</div>
-              <div className="window-view__header-btns">
-                <div
-                  className="window-view__header-min-btn"
-                  onClick={this.handleMin}
-                >
-                  <i />
-                </div>
-                <div
-                  className="window-view__header-max-btn"
-                  onClick={this.handleMax}
-                >
-                  <i />
-                </div>
-                <div
-                  className="window-view__header-close-btn"
-                  onClick={this.handleClose}
-                >
-                  <Icon type="close" />
-                </div>
+          <div className="window-view__header">
+            <div className="window-view__header-title">{title}</div>
+            <div className="window-view__header-btns">
+              <div
+                className="window-view__header-min-btn"
+                onClick={this.handleMin}
+              >
+                <i />
+              </div>
+              <div
+                className="window-view__header-max-btn"
+                onClick={this.handleMax}
+              >
+                <i />
+              </div>
+              <div
+                className="window-view__header-close-btn"
+                onClick={this.handleClose}
+              >
+                <Icon type="close" />
               </div>
             </div>
-            <div className="window-view__content">{children}</div>
           </div>
+          <div className="window-view__content">{children}</div>
         </Resizable>
       </Draggable>
     );
