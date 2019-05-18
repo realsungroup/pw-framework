@@ -65,7 +65,8 @@ export default class WindowView extends React.Component {
 
   componentDidMount() {}
 
-  handleClose = () => {
+  handleClose = (e) => {
+    e.stopPropagation();
     const { onClose } = this.props;
     onClose && onClose();
   };

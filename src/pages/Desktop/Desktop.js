@@ -167,7 +167,6 @@ class Desktop extends React.Component {
       activeApp.isActive = false;
     });
     const newZIndexActiveApps = [...zIndexActiveApps, activeApp];
-    console.log({ newZIndexActiveApps });
 
     this.setState({
       activeApps: [...activeApps, activeApp],
@@ -243,7 +242,6 @@ class Desktop extends React.Component {
       const removedApp = newZIndexActiveApps.splice(index, 1);
       newZIndexActiveApps.push(removedApp[0]);
     }
-    console.log({ newZIndexActiveApps });
 
     this.setState({
       activeApps: newActiveApps,
