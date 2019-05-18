@@ -2,7 +2,7 @@ import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
 import './Desktop.less';
-import { message, Popover, Icon, Tooltip, Avatar, Menu, Modal } from 'antd';
+import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
 import classNames from 'classnames';
@@ -10,6 +10,13 @@ import WindowView from './WindowView';
 import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
 import DesktopReminderList from './DesktopReminderList';
+import DesktopColorPicker from './DesktopColorPicker';
+import {
+  ContextMenu,
+  MenuItem,
+  ContextMenuTrigger,
+  SubMenu as SubMenuItem
+} from 'react-contextmenu';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
@@ -60,12 +67,21 @@ class Desktop extends React.Component {
       zIndexActiveApps: [], // 被激活的 app 的层级
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
-      reminderListLoading: false // 提醒列表是否显示
+      reminderListLoading: false, // 提醒列表是否显示
+      color: '' // 主题色
     };
   }
 
   componentDidMount = async () => {
     this.getData();
+  };
+
+  getDesktopMainRef = node => {
+    this.desktopMainRef = node;
+  };
+
+  getWindowViewRef = (node, title) => {
+    this[`windowViewRef${title}`] = node;
   };
 
   handleDesktopClick = () => {
@@ -161,26 +177,20 @@ class Desktop extends React.Component {
     const url = `/fnmodule?resid=${resid}&recid=${
       app.REC_ID
     }&type=${typeName}&title=${app.title}`;
-    const appName = app.title;
-
-    const activeApp = {
+    const children = (
+      <iframe src={url} frameBorder="0" className="desktop__iframe" />
+    );
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    console.log({ width, height });
+    this.addAppToBottomBar(children, app.title, {
       ...app,
-      url,
-      appName,
-      isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-      isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-    };
-
-    const { activeApps, zIndexActiveApps } = this.state;
-
-    activeApps.forEach(activeApp => {
-      activeApp.isActive = false;
-    });
-    const newZIndexActiveApps = [...zIndexActiveApps, activeApp];
-
-    this.setState({
-      activeApps: [...activeApps, activeApp],
-      zIndexActiveApps: newZIndexActiveApps
+      width,
+      height,
+      x: 0,
+      y: 0,
+      minWidth: 330,
+      minHeight: 500
     });
   };
 
@@ -364,8 +374,16 @@ class Desktop extends React.Component {
   };
 
   handleReminderListItemClick = (url, title) => {
+    const children = (
+      <iframe src={url} frameBorder="0" className="desktop__iframe" />
+    );
+    this.addAppToBottomBar(children, title);
+  };
+
+  addAppToBottomBar = (children, title, activeAppOthersProps = {}) => {
     const activeApp = {
-      url,
+      ...activeAppOthersProps,
+      children,
       appName: title,
       isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
       isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
@@ -383,6 +401,70 @@ class Desktop extends React.Component {
       zIndexActiveApps: newZIndexActiveApps,
       reminderListVisible: false
     });
+  };
+
+  handleClearCache = async () => {
+    try {
+      await http().clearCache();
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    message.success('清除缓存成功');
+  };
+
+  handleSelectColor = color => {
+    this.setState({ color });
+  };
+
+  handleOpenColorPicker = () => {
+    const { color } = this.state;
+    const children = (
+      <DesktopColorPicker
+        color={color}
+        onColorSelect={this.handleSelectColor}
+      />
+    );
+
+    const node = this[`windowViewRef更换主题色`];
+    const x = this.desktopMainRef.clientWidth / 2 - 115;
+    const y = this.desktopMainRef.clientHeight / 2 - 190;
+
+    this.addAppToBottomBar(children, '更换主题色', {
+      width: 230,
+      height: 380,
+      x,
+      y
+    });
+  };
+
+  handleResizeStop = (activeApp, dW, dH) => {
+    activeApp.width = activeApp.width + dW;
+    activeApp.height = activeApp.height + dH;
+    this.forceUpdate();
+  };
+
+  handleDragStop = (activeApp, dX, dY) => {
+    activeApp.x = dX;
+    activeApp.y = dY;
+    this.forceUpdate();
+  };
+
+  handleMax = activeApp => {
+    activeApp.x = 0;
+    activeApp.y = 0;
+    activeApp.width = this.desktopMainRef.clientWidth;
+    activeApp.height = this.desktopMainRef.clientHeight;
+    this.forceUpdate();
+  };
+
+  vars = { '@primary-color': '' };
+  handleThemeChange = (val, color) => {
+    const rbga = color.rgb;
+    this.vars = {
+      '@primary-color': `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`
+    };
+    this.setState({ color: rbga });
   };
 
   getReminderData = async () => {
@@ -534,9 +616,13 @@ class Desktop extends React.Component {
           key={activeApp + index}
           onClick={() => this.handleBottomBarAppTrigger(activeApp)}
         >
-          <i
-            className={`iconfont icon-${activeApp.DeskiconCls || 'wdkq_icon'}`}
-          />
+          {activeApp.DeskiconCls && (
+            <i
+              className={`iconfont icon-${activeApp.DeskiconCls ||
+                'wdkq_icon'}`}
+            />
+          )}
+
           <span>{activeApp.appName}</span>
           <Icon
             type="close-circle"
@@ -558,17 +644,29 @@ class Desktop extends React.Component {
       // 窗口的 zIndex
       const zIndex =
         zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 1;
+
       return (
         <WindowView
+          ref={node => this.getWindowViewRef(node, activeApp.title)}
           key={activeApp.appName}
-          src={activeApp.url}
           title={activeApp.appName}
           visible={visible}
           onClose={() => this.handleCloseActiveApp(activeApp)}
           onMin={() => this.handleMinActiveApp(activeApp)}
           onActive={() => this.handleActiveWindowView(activeApp)}
-          style={{ zIndex }}
-        />
+          zIndex={zIndex}
+          width={activeApp.width}
+          height={activeApp.height}
+          x={activeApp.x}
+          y={activeApp.y}
+          minWidth={activeApp.minWidth}
+          minHeight={activeApp.minHeight}
+          onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
+          onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
+          onMax={() => this.handleMax(activeApp)}
+        >
+          {activeApp.children}
+        </WindowView>
       );
     });
   };
@@ -608,7 +706,8 @@ class Desktop extends React.Component {
       loading,
       reminderList,
       reminderListVisible,
-      reminderListLoading
+      reminderListLoading,
+      color
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -618,7 +717,11 @@ class Desktop extends React.Component {
     });
     return (
       <div className="desktop" onClick={this.handleDesktopClick}>
-        <div className="desktop__main">{this.renderFolders()}</div>
+        <ContextMenuTrigger id="desktop__trigger-area">
+          <div className="desktop__main" ref={this.getDesktopMainRef}>
+            {this.renderFolders()}
+          </div>
+        </ContextMenuTrigger>
         <div className="desktop__bottom-bar">
           <div className="desktop__bottom-left">
             <div className="desktop__logo" onClick={this.handleTriggerMenu}>
@@ -671,6 +774,23 @@ class Desktop extends React.Component {
           loading={reminderListLoading}
           onItemClick={this.handleReminderListItemClick}
         />
+
+        {/* 右键菜单 */}
+        <ContextMenu id="desktop__trigger-area">
+          <MenuItem onClick={this.handleClearCache}>清除缓存</MenuItem>
+          <MenuItem onClick={this.handleOpenColorPicker}>更换主题色</MenuItem>
+          <SubMenuItem
+            title={
+              <div>
+                <span>更换语言</span>
+                <Icon type="right" className="desktop__context-menu-arraw" />
+              </div>
+            }
+          >
+            <MenuItem>中文</MenuItem>
+            <MenuItem>English</MenuItem>
+          </SubMenuItem>
+        </ContextMenu>
       </div>
     );
   }

@@ -256,4 +256,34 @@
       display: none !important;
     }
   }
+  .react-contextmenu {
+    width: 180px;
+    background-color: #fff;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.3);
+    border: 1px solid #e9e9e9;
+    display: none;
+    border-radius: 0 !important;
+    &--visible {
+      display: block;
+      z-index: 9999;
+    }
+    &-item {
+      line-height: 24px;
+      text-indent: 22px;
+      font-size: 12px;
+      cursor: pointer;
+      &--selected {
+        background: #e3f2fc !important;
+        color: #373a3c !important;
+      }
+    }
+    .desktop__context-menu-arraw {
+      font-size: 12px;
+      margin-left: 42px;
+    }
+  }
+  &__iframe {
+    width: 100%;
+    height: 100%;
+  }
 }
