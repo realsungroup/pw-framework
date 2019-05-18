@@ -34,6 +34,7 @@ import store from './store';
 
 import Desktop from './pages/Desktop';
 import GetConfig from './pages/GetConfig';
+import Login from './pages/Login';
 
 addLocaleData([...en, ...zh]);
 
@@ -180,9 +181,9 @@ class App extends Component {
                     <PrivateRoute
                       path="/person-center"
                       component={PageContainer}
-                    />
+                    /> */}
                     <Route path="/login" component={Login} />
-                    <Route path="*" component={NotFound} /> */}
+                    {/* <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>
               </IntlProvider>

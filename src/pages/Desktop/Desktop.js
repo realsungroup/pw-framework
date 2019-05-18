@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
 import DesktopReminderList from './DesktopReminderList';
 import DesktopColorPicker from './DesktopColorPicker';
-import HomeDashboard from './HomeDashboard';
+import DesktopDashboard from './DesktopDashboard';
 import {
   ContextMenu,
   MenuItem,
@@ -19,6 +19,7 @@ import {
   SubMenu as SubMenuItem
 } from 'react-contextmenu';
 import { setLanguage } from 'Util/api';
+import { logout } from 'Util/auth';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
@@ -365,6 +366,17 @@ class Desktop extends React.Component {
     this.getData();
   };
 
+  handlePoweroffClick = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '您确定要退出登录吗？',
+      onOk: () => {
+        logout();
+        this.props.history.push('/');
+      }
+    });
+  };
+
   handleOpenReminderList = () => {
     const reminderListVisible = !this.state.reminderListVisible;
     this.setState({ reminderListVisible });
@@ -377,7 +389,7 @@ class Desktop extends React.Component {
   };
 
   handleOpenDashboard = () => {
-    const children = <HomeDashboard />;
+    const children = <DesktopDashboard />;
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
     console.log({ width, height });
@@ -803,7 +815,11 @@ class Desktop extends React.Component {
             <div className="desktop__menu-user-username">
               {userInfo.UserCode}
             </div>
-            <Icon type="poweroff" className="desktop__menu-poweroff" />
+            <Icon
+              type="poweroff"
+              className="desktop__menu-poweroff"
+              onClick={this.handlePoweroffClick}
+            />
           </div>
           <div className="desktop__menu-list">
             <Menu
