@@ -1,0 +1,38 @@
+.desktop-reminder-list {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.3s;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px;
+  h1 {
+    span {
+      font-size: 24px;
+    }
+  }
+  h1,
+  h4,
+  div {
+    color: #fff;
+  }
+  &--hide {
+    transform: translateX(300px);
+  }
+  &__loading {
+    margin-left: 18px;
+    font-size: 16px;
+    &--hide {
+      display: none !important;
+    }
+  }
+  &__item {
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}

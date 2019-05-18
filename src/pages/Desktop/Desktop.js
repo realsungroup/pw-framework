@@ -8,6 +8,8 @@ import folderPng from './assets/folder.png';
 import classNames from 'classnames';
 import WindowView from './WindowView';
 import { cloneDeep } from 'lodash';
+import DesktopDate from './DesktopDate';
+import DesktopReminderList from './DesktopReminderList';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
@@ -42,6 +44,8 @@ const dealApps = apps => {
 };
 
 class Desktop extends React.Component {
+  hasRequestReminderList = false; // 是否已请求提醒列表数据
+
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
@@ -53,7 +57,10 @@ class Desktop extends React.Component {
       menuVisible: false, // 菜单是否显示
       userInfo, // 用户信息
       allFoldersExpandedKeys: [],
-      zIndexActiveApps: [] // 被激活的 app 的层级
+      zIndexActiveApps: [], // 被激活的 app 的层级
+      reminderList: [], // 提醒列表
+      reminderListVisible: false, // 提醒列表是否显示
+      reminderListLoading: false // 提醒列表是否显示
     };
   }
 
@@ -64,6 +71,9 @@ class Desktop extends React.Component {
   handleDesktopClick = () => {
     if (this.state.menuVisible) {
       this.setState({ menuVisible: false });
+    }
+    if (this.state.reminderListVisible) {
+      this.setState({ reminderListVisible: false });
     }
   };
 
@@ -342,6 +352,54 @@ class Desktop extends React.Component {
     this.getData();
   };
 
+  handleOpenReminderList = () => {
+    const reminderListVisible = !this.state.reminderListVisible;
+    this.setState({ reminderListVisible });
+    // 已请求过了提醒列表数据
+    if (this.hasRequestReminderList) {
+      return;
+    }
+
+    this.getReminderData();
+  };
+
+  handleReminderListItemClick = (url, title) => {
+    const activeApp = {
+      url,
+      appName: title,
+      isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
+      isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
+    };
+
+    const { activeApps, zIndexActiveApps } = this.state;
+
+    activeApps.forEach(activeApp => {
+      activeApp.isActive = false;
+    });
+    const newZIndexActiveApps = [...zIndexActiveApps, activeApp];
+
+    this.setState({
+      activeApps: [...activeApps, activeApp],
+      zIndexActiveApps: newZIndexActiveApps,
+      reminderListVisible: false
+    });
+  };
+
+  getReminderData = async () => {
+    this.setState({ reminderListLoading: true, reminderListVisible: true });
+    let res;
+    try {
+      res = await http().getReminderData();
+    } catch (err) {
+      this.setState({ reminderListLoading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    const list = [...res.data];
+    this.setState({ reminderList: list, reminderListLoading: false });
+    this.hasRequestReminderList = true;
+  };
+
   addAppToDesktop = async appData => {
     try {
       await http().addRecords({
@@ -547,7 +605,10 @@ class Desktop extends React.Component {
       userInfo,
       allFolders,
       allFoldersExpandedKeys,
-      loading
+      loading,
+      reminderList,
+      reminderListVisible,
+      reminderListLoading
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -567,7 +628,15 @@ class Desktop extends React.Component {
               {this.renderActiveApps()}
             </div>
           </div>
-          <div className="desktop__bottom-right" />
+          <div className="desktop__bottom-right">
+            <DesktopDate className="desktop__bottom-date" />
+            <div
+              className="desktop__bottom-reminder"
+              onClick={this.handleOpenReminderList}
+            >
+              <Icon type="bell" />
+            </div>
+          </div>
         </div>
         {this.renderWindowView()}
         <div className={menuClasses} onClick={e => e.stopPropagation()}>
@@ -594,6 +663,14 @@ class Desktop extends React.Component {
         </div>
 
         <Icon type="loading" className={loadingClasses} />
+
+        {/* 提醒列表 */}
+        <DesktopReminderList
+          visible={reminderListVisible}
+          list={reminderList}
+          loading={reminderListLoading}
+          onItemClick={this.handleReminderListItemClick}
+        />
       </div>
     );
   }

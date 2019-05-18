@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import './WindowView.less';
-import className from 'classnames';
+import classNames from 'classnames';
 import { Icon } from 'antd';
 import omit from 'omit.js';
 
@@ -65,7 +65,7 @@ export default class WindowView extends React.Component {
 
   componentDidMount() {}
 
-  handleClose = (e) => {
+  handleClose = e => {
     e.stopPropagation();
     const { onClose } = this.props;
     onClose && onClose();
@@ -88,7 +88,7 @@ export default class WindowView extends React.Component {
 
   render() {
     const { visible, src, title, zoomStatus, ...restProps } = this.props;
-    const classes = className('window-view', {
+    const classes = classNames('window-view', {
       'window-view--hide': !visible
     });
 
