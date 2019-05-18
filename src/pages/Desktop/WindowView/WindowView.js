@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './WindowView.less';
 import className from 'classnames';
 import { Icon } from 'antd';
+import omit from 'omit.js';
 
 /**
  * 窗口组件
@@ -85,13 +86,19 @@ export default class WindowView extends React.Component {
   };
 
   render() {
-    const { visible, src, title, zoomStatus } = this.props;
+    const { visible, src, title, zoomStatus, ...restProps } = this.props;
     const classes = className('window-view', {
       'window-view--hide': !visible
     });
 
+    const otherProps = omit(restProps, ['onMin', 'onActive']);
+
     const child = (
-      <div className={classes} onClick={this.handelActiveWindowView}>
+      <div
+        className={classes}
+        onClick={this.handelActiveWindowView}
+        {...otherProps}
+      >
         <div className="window-view__header">
           <div className="window-view__header-title">{title}</div>
           <div className="window-view__header-btns">

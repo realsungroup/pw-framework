@@ -52,7 +52,8 @@ class Desktop extends React.Component {
       loading: false,
       menuVisible: false, // 菜单是否显示
       userInfo, // 用户信息
-      allFoldersExpandedKeys: []
+      allFoldersExpandedKeys: [],
+      zIndexActiveApps: [] // 被激活的 app 的层级
     };
   }
 
@@ -152,35 +153,49 @@ class Desktop extends React.Component {
     }&type=${typeName}&title=${app.title}`;
     const appName = app.title;
 
-    const { activeApps } = this.state;
+    const activeApp = {
+      ...app,
+      url,
+      appName,
+      isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
+      isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
+    };
+
+    const { activeApps, zIndexActiveApps } = this.state;
 
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
     });
+    const newZIndexActiveApps = [...zIndexActiveApps, activeApp];
+    console.log({ newZIndexActiveApps });
 
     this.setState({
-      activeApps: [
-        ...this.state.activeApps,
-        {
-          ...app,
-          url,
-          appName,
-          isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-          isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-        }
-      ]
+      activeApps: [...activeApps, activeApp],
+      zIndexActiveApps: newZIndexActiveApps
     });
   };
 
   handleCloseActiveApp = activeApp => {
-    const { activeApps } = this.state;
+    const { activeApps, zIndexActiveApps } = this.state;
     const newActiveApps = [...activeApps];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
+
     newActiveApps.splice(appIndex, 1);
-    this.setState({ activeApps: newActiveApps });
+
+    // 删除 zIndexActiveApps
+    const newZIndexActiveApps = [...zIndexActiveApps];
+    const index = newZIndexActiveApps.findIndex(
+      app => app.title === activeApp.title
+    );
+    newZIndexActiveApps.splice(index, 1);
+
+    this.setState({
+      activeApps: newActiveApps,
+      zIndexActiveApps: newZIndexActiveApps
+    });
   };
 
   handleMinActiveApp = activeApp => {
@@ -195,29 +210,52 @@ class Desktop extends React.Component {
     this.setState({ activeApps: newActiveApps });
   };
 
-  handleOpenActiveApp = activeApp => {
-    const { activeApps } = this.state;
+  handleBottomBarAppTrigger = activeApp => {
+    const { activeApps, zIndexActiveApps } = this.state;
     const newActiveApps = [...activeApps];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
 
+    // app 是否被打开
+    let isOpen;
+    // 当窗口为非激活状态时，窗口一定为打开
+    if (!newActiveApps[appIndex].isActive) {
+      isOpen = true;
+
+      // 当窗口为激活状态时
+    } else {
+      isOpen = !newActiveApps[appIndex].isOpen;
+    }
+    newActiveApps[appIndex].isOpen = isOpen;
+
     // 只能有一个 app 被激活
     newActiveApps.forEach(activeApp => (activeApp.isActive = false));
     newActiveApps[appIndex].isActive = true;
 
-    const isOpen = !newActiveApps[appIndex].isOpen;
+    // 如果是打开的，则调整 zIndex
+    const newZIndexActiveApps = [...zIndexActiveApps];
+    if (isOpen) {
+      const index = newZIndexActiveApps.findIndex(
+        app => app.title === activeApp.title
+      );
+      const removedApp = newZIndexActiveApps.splice(index, 1);
+      newZIndexActiveApps.push(removedApp[0]);
+    }
+    console.log({ newZIndexActiveApps });
 
-    newActiveApps[appIndex].isOpen = isOpen;
-
-    this.setState({ activeApps: newActiveApps });
+    this.setState({
+      activeApps: newActiveApps,
+      zIndexActiveApps: newZIndexActiveApps
+    });
   };
 
   handleActiveWindowView = activeApp => {
-    const { activeApps } = this.state;
+    const { activeApps, zIndexActiveApps } = this.state;
     const newActiveApps = [...activeApps];
 
+    // app 索引
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
@@ -226,7 +264,22 @@ class Desktop extends React.Component {
     newActiveApps.forEach(activeApp => (activeApp.isActive = false));
     newActiveApps[appIndex].isActive = true;
 
-    this.setState({ activeApps: newActiveApps });
+    if (!newActiveApps[appIndex].isActive) {
+      newActiveApps[appIndex].isOpen = true;
+    }
+
+    // 调整 zIndex
+    const newZIndexActiveApps = [...zIndexActiveApps];
+    const index = newZIndexActiveApps.findIndex(
+      app => app.title === activeApp.title
+    );
+    const removedApp = newZIndexActiveApps.splice(index, 1);
+    newZIndexActiveApps.push(removedApp[0]);
+
+    this.setState({
+      activeApps: newActiveApps,
+      zIndexActiveApps: newZIndexActiveApps
+    });
   };
 
   handleTriggerMenu = e => {
@@ -423,7 +476,7 @@ class Desktop extends React.Component {
         <div
           className={classes}
           key={activeApp + index}
-          onClick={() => this.handleOpenActiveApp(activeApp)}
+          onClick={() => this.handleBottomBarAppTrigger(activeApp)}
         >
           <i
             className={`iconfont icon-${activeApp.DeskiconCls || 'wdkq_icon'}`}
@@ -443,9 +496,12 @@ class Desktop extends React.Component {
   };
 
   renderWindowView = () => {
-    const { activeApps } = this.state;
+    const { activeApps, zIndexActiveApps } = this.state;
     return activeApps.map(activeApp => {
       const visible = activeApp.isOpen;
+      // 窗口的 zIndex
+      const zIndex =
+        zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 1;
       return (
         <WindowView
           key={activeApp.appName}
@@ -455,6 +511,7 @@ class Desktop extends React.Component {
           onClose={() => this.handleCloseActiveApp(activeApp)}
           onMin={() => this.handleMinActiveApp(activeApp)}
           onActive={() => this.handleActiveWindowView(activeApp)}
+          style={{ zIndex }}
         />
       );
     });
