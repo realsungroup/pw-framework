@@ -99,19 +99,18 @@ class CreatePlan extends React.Component {
   async getSubData(key) {
     let cmswhere = "";
     if (this.state.levelSelect) {
-      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
+      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
+      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
+      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
-    if (this.state.kcState == "All") cmswhere = "";
     let res = await http().getTable({
       resid: this.props.subResid,
       key,
@@ -120,6 +119,7 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let subData = res.data;
+        console.log(subData)
         subData.forEach(e => {
           e.check = false;
         });
@@ -205,14 +205,6 @@ class CreatePlan extends React.Component {
             x++
             let obj = JSON.parse(JSON.stringify(ele))
             obj.C3_609616893275 = e.C3_609622254861
-            obj.C3_609616868478 = obj.C3_609845305680
-            obj.C3_609616906353 = obj.C3_609845305931
-            obj.C3_611314815828 = obj.C3_609845305993
-            obj.C3_611314816141 = obj.C3_609845305868
-            obj.C3_611314816469 = obj.C3_609845305618
-            obj.C3_611314815656 = obj.C3_609845463949
-            obj.C3_611314815266 = obj.C3_610390419677
-            obj.C3_611314815485 = obj.C3_610390410802
             planData.push(obj)
           }
         });
@@ -408,24 +400,17 @@ class CreatePlan extends React.Component {
             <List
               size="large"
               header={
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Select
                     style={{ width: "100px" }}
                     defaultValue="Rec"
                     onChange={e => {
                       if (e == "Rec") {
-                        this.setState(
-                          { levelSelect: this.state.lkState, kcState: e },
-                          () => this.getSubData()
-                        );
+                        this.setState({ levelSelect: this.state.lkState, kcState: e },() => this.getSubData());
                       } else {
                         this.setState(
                           {
                             levelSelect: "",
-                            xlSelect: "",
-                            lbSelect: "",
                             kcState: "All"
                           },
                           () => this.getSubData()
@@ -508,16 +493,16 @@ class CreatePlan extends React.Component {
                       >
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305680 == null
+                            {item.C3_609616868478 == null
                               ? "无"
-                              : item.C3_609845305680}
+                              : item.C3_609616868478}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_610390419677 == null
+                            {item.C3_611314815266 == null
                               ? "无"
-                              : item.C3_610390419677}
+                              : item.C3_611314815266}
                           </span>
                         </div>
                         <div
@@ -538,32 +523,32 @@ class CreatePlan extends React.Component {
                             }}
                           />
                           <span>
-                            {item.C3_610390410802 == null
+                            {item.C3_611314815485 == null
                               ? "无"
-                              : item.C3_610390410802}
+                              : item.C3_611314815485}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305931 == null
+                            {item.C3_609616906353 == null
                               ? "无"
-                              : item.C3_609845305931}
+                              : item.C3_609616906353}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <span>
                           简介:{" "}
-                          {item.C3_609845305618 == null
+                          {item.C3_611314816469 == null
                             ? "无"
-                            : item.C3_609845305618}
+                            : item.C3_611314816469}
                         </span>
                       </div>
                     </div>
                     <div style={{ display: "flex", flex: 1 }}>
                       <a
                         target="_blank"
-                        href={item.C3_609845463949}
+                        href={item.C3_611314815656}
                       >
                         <Icon
                           type="ellipsis"

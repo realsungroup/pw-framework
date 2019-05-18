@@ -23,6 +23,9 @@ class FJList extends React.Component {
       addCustom: [],
       kcxlData: [],
       kclbData: [],
+      levelSelect: "",
+      xlSelect: "",
+      lbSelect: "",
       listIndex: 0,
       listNo:"",
       visibleAdd: false,
@@ -117,17 +120,19 @@ class FJList extends React.Component {
   //获取课程表
   async getSubbData(key) {
     let cmswhere = "";
+    if (this.state.levelSelect) {
+      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
+    }
     if (this.state.xlSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
+      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
+      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
-    if (this.state.kcState == "All") cmswhere = "";
     let res = await http().getTable({
       resid: this.props.subbResid,
       key,
@@ -606,16 +611,11 @@ class FJList extends React.Component {
                     defaultValue="Rec"
                     onChange={e => {
                       if (e == "Rec") {
-                        this.setState(
-                          { levelSelect: this.state.lkState, kcState: e },
-                          () => this.getSubbData()
-                        );
+                        this.setState({ levelSelect: this.state.lkState, kcState: e },() => this.getSubbData());
                       } else {
                         this.setState(
                           {
                             levelSelect: "",
-                            xlSelect: "",
-                            lbSelect: "",
                             kcState: "All"
                           },
                           () => this.getSubbData()

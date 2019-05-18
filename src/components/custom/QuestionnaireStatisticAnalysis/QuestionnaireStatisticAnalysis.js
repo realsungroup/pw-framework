@@ -161,7 +161,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         this.getStatisticsData(
           selectedQuestion.question_id,
           selectedDepartment && selectedDepartment.DEP_NAME,
-          selectedLevel && selectedLevel.C3_449335790387,
+          selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
       }
@@ -188,7 +188,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         this.getStatisticsData(
           selectedQuestion.question_id,
           selectedDepartment && selectedDepartment.DEP_NAME,
-          selectedLevel && selectedLevel.C3_449335790387,
+          selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
       }
@@ -215,7 +215,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         this.getStatisticsData(
           selectedQuestion.question_id,
           selectedDepartment && selectedDepartment.DEP_NAME,
-          selectedLevel && selectedLevel.C3_449335790387,
+          selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
       }
@@ -252,9 +252,11 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           }
           const percent = (record.amount / sum).toFixed(2) * 100;
           return (
-            <div>
-              <Progress percent={percent} format={percent => percent + '%'} />
-            </div>
+            <Progress
+              style={{ width: '90%' }}
+              percent={percent}
+              format={percent => percent.toFixed(2) + '%'}
+            />
           );
         }
       }
@@ -586,7 +588,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                     this.getStatisticsData(
                       selectedQuestion.question_id,
                       null,
-                      selectedLevel && selectedLevel.C3_449335790387,
+                      selectedLevel && selectedLevel.C3_587136281870,
                       selectedQuestion
                     );
                   }}
