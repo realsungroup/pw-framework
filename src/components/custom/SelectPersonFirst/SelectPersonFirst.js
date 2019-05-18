@@ -40,7 +40,7 @@ class SelectPersonFirst extends Component {
           const obj = {
             ...objcommon,
             staff_number: person.C3_227192472953,
-            staff_location: 'Y'
+            C3_610663237125: 'Y'
           };
           dataSub.push(obj);
         });
