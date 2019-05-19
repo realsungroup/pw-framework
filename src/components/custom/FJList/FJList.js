@@ -28,6 +28,8 @@ class FJList extends React.Component {
       lbSelect: "",
       listIndex: 0,
       listNo:"",
+      pNo:"",
+      cnspmxb:"",
       visibleAdd: false,
       visibleEdit: false,
       visibleCustom: false,
@@ -173,14 +175,14 @@ class FJList extends React.Component {
     this.setState({visibleAdd:false,visibleEdit:false})
     let addData = this.state.addData
     addData.C3_609616893275 = this.state.listNo
-    addData.C3_609616868478 = addData.C3_609845305680
-    addData.C3_609616906353 = addData.C3_609845305931
+    addData.C3_609616868478 = addData.C3_609616868478
+    addData.C3_609616906353 = addData.C3_609616906353
     addData.C3_611314815828 = addData.C3_609845305993
     addData.C3_611314816141 = addData.C3_609845305868
-    addData.C3_611314816469 = addData.C3_609845305618
+    addData.C3_611314816469 = addData.C3_611314816469
     addData.C3_611314815656 = addData.C3_609845463949
-    addData.C3_611314815266 = addData.C3_610390419677
-    addData.C3_611314815485 = addData.C3_610390410802
+    addData.C3_611314815266 = addData.C3_611314815266
+    addData.C3_611314815485 = addData.C3_611314815485
     let res 
     try {
       res = await http().addRecords({ resid: this.props.subResid, data:[{...addData}]});
@@ -235,7 +237,9 @@ class FJList extends React.Component {
   //修改课程
   async editCourse(i){
     this.setState({visibleAdd:false,visibleEdit:false})
-    let res = await http().modifyRecords({ resid: this.props.subResid, data:[this.state.editData]});
+    let data = this.state.editData
+    data.C3_609616829774 = this.state.cnspmxb
+    let res = await http().modifyRecords({ resid: this.props.subResid, data:[data]});
     try {
       if (res.Error === 0) {
         this.getSubData(this.state.listNo)
@@ -416,11 +420,11 @@ class FJList extends React.Component {
                                             </div>
                                           </div>
                                           {item.check&&<div style={{display:"flex",flexDirection:"row",justifyContent:"space-around",alignItems:"center",marginTop:"10px"}}>
-                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"1"});e.stopPropagation()}}>历年绩效</span>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"1",pNo:item.C3_609622254861});e.stopPropagation()}}>历年绩效</span>
                                             <div style={{width:"2px",height:"20px",background:"#ddd"}}></div>
-                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"2"});e.stopPropagation()}}>历史计划</span>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"2",pNo:item.C3_609622254861});e.stopPropagation()}}>历史计划</span>
                                             <div style={{width:"2px",height:"20px",background:"#ddd"}}></div>
-                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"3"});e.stopPropagation()}}>员工个人发展</span>
+                                            <span style={{fontSize:"16px",fontWeight:"bold"}} onClick={(e)=>{this.setState({showTab:true,tabsKey:"3",pNo:item.C3_609622254861});e.stopPropagation()}}>员工个人发展</span>
                                           </div>}
                                         </div>
                                       </List.Item>)}/>
@@ -456,7 +460,7 @@ class FJList extends React.Component {
                           <Icon type="delete" style={{cursor:'pointer'}}/>
                         </Popconfirm>} 
                 style={{marginBottom:"16px"}}
-                actions={[<a href="#" onClick={()=>this.setState({editData:{...subData[i]},visibleEdit:true,})}>修改</a>,<a></a>]}
+                actions={[<a href="#" onClick={()=>this.setState({editData:{...subData[i]},visibleEdit:true,cnspmxb:item.C3_609616829774})}>修改</a>,<a></a>]}
               >
                 <div style={{ display:"flex",flexDirection: 'row',justifyContent: 'space-between' }}>
                   <span style={{fontSize:"12px"}}>
@@ -574,11 +578,18 @@ class FJList extends React.Component {
               </TabPane>
               <TabPane tab="历史计划" key="2">
                 <TableData
-                  // resid={resid}
-                  // dataMode="main"
-                  // subtractH={190}
-                  // height={520}
-                  // hasBeBtns
+                  height={"calc(100vh - 300px)"}
+                  resid={611315248461}
+                  cmswhere={`C3_609616893275 = '${this.state.pNo}'`}
+                  recordFormFormWidth= {'90%'}
+                  hasBeBtns= {false}
+                  hasModify= {false}
+                  hasDelete= {false}
+                  hasAdd= {false}
+                  hasRowDelete= {false}
+                  hasRowModify= {false}
+                  hasRowView= {false}
+                  subtractH={190}
                 />
               </TabPane>
               <TabPane tab="员工个人发展" key="3">
@@ -698,16 +709,16 @@ class FJList extends React.Component {
                       >
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305680 == null
+                            {item.C3_609616868478 == null
                               ? "无"
-                              : item.C3_609845305680}
+                              : item.C3_609616868478}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_610390419677 == null
+                            {item.C3_611314815266 == null
                               ? "无"
-                              : item.C3_610390419677}
+                              : item.C3_611314815266}
                           </span>
                         </div>
                         <div
@@ -728,25 +739,25 @@ class FJList extends React.Component {
                             }}
                           />
                           <span>
-                            {item.C3_610390410802 == null
+                            {item.C3_611314815485 == null
                               ? "无"
-                              : item.C3_610390410802}
+                              : item.C3_611314815485}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305931 == null
+                            {item.C3_609616906353 == null
                               ? "无"
-                              : item.C3_609845305931}
+                              : item.C3_609616906353}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <span>
                           简介:{" "}
-                          {item.C3_609845305618 == null
+                          {item.C3_611314816469 == null
                             ? "无"
-                            : item.C3_609845305618}
+                            : item.C3_611314816469}
                         </span>
                       </div>
                     </div>
@@ -885,6 +896,7 @@ class FJList extends React.Component {
           </Modal>
           <Modal
             title="修改课程"
+            width="60%"
             destroyOnClose={true}
             visible={this.state.visibleEdit}
             onOk={this.editCourse.bind(this)}
@@ -909,8 +921,6 @@ class FJList extends React.Component {
                         this.setState(
                           {
                             levelSelect: "",
-                            xlSelect: "",
-                            lbSelect: "",
                             kcState: "All"
                           },
                           () => this.getSubbData()
@@ -993,16 +1003,16 @@ class FJList extends React.Component {
                       >
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305680 == null
+                            {item.C3_609616868478 == null
                               ? "无"
-                              : item.C3_609845305680}
+                              : item.C3_609616868478}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_610390419677 == null
+                            {item.C3_611314815266 == null
                               ? "无"
-                              : item.C3_610390419677}
+                              : item.C3_611314815266}
                           </span>
                         </div>
                         <div
@@ -1023,32 +1033,32 @@ class FJList extends React.Component {
                             }}
                           />
                           <span>
-                            {item.C3_610390410802 == null
+                            {item.C3_611314815485 == null
                               ? "无"
-                              : item.C3_610390410802}
+                              : item.C3_611314815485}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609845305931 == null
+                            {item.C3_609616906353 == null
                               ? "无"
-                              : item.C3_609845305931}
+                              : item.C3_609616906353}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <span>
                           简介:{" "}
-                          {item.C3_609845305618 == null
+                          {item.C3_611314816469 == null
                             ? "无"
-                            : item.C3_609845305618}
+                            : item.C3_611314816469}
                         </span>
                       </div>
                     </div>
                     <div style={{ display: "flex", flex: 1 }}>
                       <a
                         target="_blank"
-                        href="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2924217925,3098709361&fm=173&app=49&f=JPEG?w=218&h=146&s=A6B05B844E83A015F200B120030060D9"
+                        href={item.C3_611314815656}
                       >
                         <Icon
                           type="ellipsis"
