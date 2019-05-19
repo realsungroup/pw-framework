@@ -47,7 +47,7 @@ window.pwConfig = {
     }, // 默认主题色
 
     // 锁屏
-    lockScreenWaitTime: 600, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
+    lockScreenWaitTime: 2, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 
     // logo 配置
     homeLogoSize: 42, // 首页 logo 尺寸

@@ -2,7 +2,16 @@ import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
 import './Desktop.less';
-import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
+import {
+  message,
+  Popover,
+  Icon,
+  Avatar,
+  Menu,
+  Modal,
+  Input,
+  Button
+} from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
 import classNames from 'classnames';
@@ -23,9 +32,15 @@ import {
 } from 'react-contextmenu';
 import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
-
+const { Fragment } = React;
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
+
+const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig[
+  process.env.NODE_ENV
+];
+
+const time = lockScreenWaitTime;
 
 const objArrUnique = (arr, key) => {
   for (let i = 0; i < arr.length; i++) {
@@ -75,7 +90,8 @@ class Desktop extends React.Component {
       reminderListVisible: false, // 提醒列表是否显示
       reminderListLoading: false, // 提醒列表是否显示
       color: '', // 主题色
-      language: localStorage.getItem('language') // 语言
+      language: localStorage.getItem('language'), // 语言
+      password: ''
     };
   }
 
@@ -89,6 +105,10 @@ class Desktop extends React.Component {
 
   getWindowViewRef = (node, title) => {
     this[`windowViewRef${title}`] = node;
+  };
+
+  getLockScreenRef = node => {
+    this.lockScreenRef = node;
   };
 
   handleDesktopClick = () => {
@@ -380,6 +400,16 @@ class Desktop extends React.Component {
     });
   };
 
+  handleLockScreen = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '您确定要锁定屏幕吗？',
+      onOk: () => {
+        console.log('ok');
+      }
+    });
+  };
+
   handleOpenReminderList = () => {
     const reminderListVisible = !this.state.reminderListVisible;
     this.setState({ reminderListVisible });
@@ -435,6 +465,10 @@ class Desktop extends React.Component {
       minWidth: 330,
       minHeight: 500
     });
+  };
+
+  handleMaskShow = () => {
+    window.addEventListener('unload', this.unloadCallback);
   };
 
   addAppToBottomBar = (children, title, activeAppOthersProps = {}) => {
@@ -793,7 +827,7 @@ class Desktop extends React.Component {
       reminderList,
       reminderListVisible,
       reminderListLoading,
-      color
+      password
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -801,13 +835,21 @@ class Desktop extends React.Component {
     const loadingClasses = classNames('desktop__loading', {
       'desktop__loading--hide': !loading
     });
+
+    let username;
+    if (userInfo) {
+      this.userCode = userInfo.UserCode;
+      username = userInfo.Data;
+    }
     return (
       <div className="desktop" onClick={this.handleDesktopClick}>
+        {/* 右键菜单触发区域，即桌面 */}
         <ContextMenuTrigger id="desktop__trigger-area">
           <div className="desktop__main" ref={this.getDesktopMainRef}>
             {this.renderFolders()}
           </div>
         </ContextMenuTrigger>
+        {/* 桌面底部 bar */}
         <div className="desktop__bottom-bar">
           <div className="desktop__bottom-left">
             <div className="desktop__logo" onClick={this.handleTriggerMenu}>
@@ -833,6 +875,7 @@ class Desktop extends React.Component {
             </div>
           </div>
         </div>
+        {/* 窗口 */}
         {this.renderWindowView()}
         <div className={menuClasses} onClick={e => e.stopPropagation()}>
           <div className="desktop__menu-user">
@@ -847,6 +890,12 @@ class Desktop extends React.Component {
                 {userInfo.UserCode}
               </div>
             </div>
+
+            <Icon
+              type="lock"
+              className="desktop__menu-lock"
+              onClick={this.handleLockScreen}
+            />
 
             <Icon
               type="poweroff"
