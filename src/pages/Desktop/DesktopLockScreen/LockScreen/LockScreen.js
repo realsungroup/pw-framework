@@ -32,7 +32,7 @@ export default class LockScreen extends React.Component {
   };
 
   static defaultProps = {
-    zIndex: 1000,
+    zIndex: 9999,
     maskShow: noop,
     maskHide: noop
   };

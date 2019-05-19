@@ -2,21 +2,13 @@ import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
 import './Desktop.less';
-import {
-  message,
-  Popover,
-  Icon,
-  Avatar,
-  Menu,
-  Modal,
-  Input,
-  Button
-} from 'antd';
+import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
 import classNames from 'classnames';
 import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
+import DesktopLockScreen from './DesktopLockScreen';
 import {
   DesktopReminderList,
   DesktopColorPicker,
@@ -32,15 +24,9 @@ import {
 } from 'react-contextmenu';
 import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
-const { Fragment } = React;
+
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
-
-const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig[
-  process.env.NODE_ENV
-];
-
-const time = lockScreenWaitTime;
 
 const objArrUnique = (arr, key) => {
   for (let i = 0; i < arr.length; i++) {
@@ -109,6 +95,10 @@ class Desktop extends React.Component {
 
   getLockScreenRef = node => {
     this.lockScreenRef = node;
+  };
+
+  getDesktopLockScreenRef = node => {
+    this.desktopLockScreenRef = node;
   };
 
   handleDesktopClick = () => {
@@ -404,10 +394,12 @@ class Desktop extends React.Component {
     Modal.confirm({
       title: '提示',
       content: '您确定要锁定屏幕吗？',
-      onOk: () => {
-        console.log('ok');
-      }
+      onOk: this.lockScreen
     });
+  };
+
+  lockScreen = () => {
+    this.desktopLockScreenRef.lockScreenRef.lockScreen();
   };
 
   handleOpenReminderList = () => {
@@ -826,8 +818,7 @@ class Desktop extends React.Component {
       loading,
       reminderList,
       reminderListVisible,
-      reminderListLoading,
-      password
+      reminderListLoading
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -836,11 +827,6 @@ class Desktop extends React.Component {
       'desktop__loading--hide': !loading
     });
 
-    let username;
-    if (userInfo) {
-      this.userCode = userInfo.UserCode;
-      username = userInfo.Data;
-    }
     return (
       <div className="desktop" onClick={this.handleDesktopClick}>
         {/* 右键菜单触发区域，即桌面 */}
@@ -962,6 +948,12 @@ class Desktop extends React.Component {
             </MenuItem>
           </SubMenuItem>
         </ContextMenu>
+
+        {/* 锁屏 */}
+        <DesktopLockScreen
+          userInfo={userInfo}
+          ref={this.getDesktopLockScreenRef}
+        />
       </div>
     );
   }
