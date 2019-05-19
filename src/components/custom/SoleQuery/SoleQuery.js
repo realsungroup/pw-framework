@@ -433,7 +433,7 @@ class SoleQuery extends Component {
         okText: '知道了',
         onOk: () => {
           this.setState({
-            hasSubmit: true
+            hasSubmit: true,
           });
         }
       });
@@ -660,7 +660,7 @@ class SoleQuery extends Component {
       return (
         <Spin spinning={loading}>
           <div className="solequery solequery__has-stop">
-            <p className="stopTips">您已经提交过此问卷，不能填写两次问卷哦</p>
+            <p className="stopTips">该问卷已经提交成功了</p>
           </div>
         </Spin>
       );

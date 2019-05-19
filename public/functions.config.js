@@ -802,7 +802,7 @@ window['统计分析'] = {
 };
 // 发送问卷
 window['发送问卷'] = {
-  title: '我的问卷',
+  title: '发送问卷',
   name: 'SoleQuery'
 };
 
