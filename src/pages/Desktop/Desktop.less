@@ -198,12 +198,11 @@
     height: 370px;
     background-color: rgba(3, 12, 27, 0.9);
     z-index: 2;
-    transition: 0.1s;
+    transition: 0.3s ease-in-out;
     color: #fff;
     display: flex;
     &--hide {
-      // transform: translateY(450px);
-      display: none;
+      transform: translateY(450px);
     }
     &-user {
       width: 110px;
@@ -211,6 +210,9 @@
       border-right: 1px solid #3c434e;
       text-align: center;
       position: relative;
+    }
+    &-user-info {
+      cursor: pointer;
     }
     &-poweroff {
       position: absolute;

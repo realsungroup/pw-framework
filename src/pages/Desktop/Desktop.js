@@ -6,12 +6,15 @@ import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
 import classNames from 'classnames';
-import WindowView from './WindowView';
 import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
-import DesktopReminderList from './DesktopReminderList';
-import DesktopColorPicker from './DesktopColorPicker';
-import DesktopDashboard from './DesktopDashboard';
+import {
+  DesktopReminderList,
+  DesktopColorPicker,
+  DesktopDashboard,
+  WindowView,
+  DesktopPersonCenter
+} from './loadableDesktop';
 import {
   ContextMenu,
   MenuItem,
@@ -392,7 +395,6 @@ class Desktop extends React.Component {
     const children = <DesktopDashboard />;
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
-    console.log({ width, height });
     this.addAppToBottomBar(children, '仪表盘', {
       width,
       height,
@@ -403,11 +405,36 @@ class Desktop extends React.Component {
     });
   };
 
+  handleOpenPersonCenter = () => {
+    const children = <DesktopPersonCenter />;
+    const width = 620;
+    const height = this.desktopMainRef.clientHeight;
+    const x = this.desktopMainRef.clientWidth / 2 - 310;
+    this.setState({ menuVisible: false });
+    this.addAppToBottomBar(children, '个人中心', {
+      width,
+      height,
+      x,
+      y: 0,
+      minWidth: 330,
+      minHeight: 500
+    });
+  };
+
   handleReminderListItemClick = (url, title) => {
     const children = (
       <iframe src={url} frameBorder="0" className="desktop__iframe" />
     );
-    this.addAppToBottomBar(children, title);
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    this.addAppToBottomBar(children, title, {
+      width,
+      height,
+      x: 0,
+      y: 0,
+      minWidth: 330,
+      minHeight: 500
+    });
   };
 
   addAppToBottomBar = (children, title, activeAppOthersProps = {}) => {
@@ -809,12 +836,18 @@ class Desktop extends React.Component {
         {this.renderWindowView()}
         <div className={menuClasses} onClick={e => e.stopPropagation()}>
           <div className="desktop__menu-user">
-            <div className="desktop__menu-user-avatar">
-              <Avatar icon="user" />
+            <div
+              className="desktop__menu-user-info"
+              onClick={this.handleOpenPersonCenter}
+            >
+              <div className="desktop__menu-user-avatar">
+                <Avatar icon="user" />
+              </div>
+              <div className="desktop__menu-user-username">
+                {userInfo.UserCode}
+              </div>
             </div>
-            <div className="desktop__menu-user-username">
-              {userInfo.UserCode}
-            </div>
+
             <Icon
               type="poweroff"
               className="desktop__menu-poweroff"
@@ -887,7 +920,7 @@ class Desktop extends React.Component {
 
 const language = getItem('language') || '中文';
 let title = 'Desktop';
-if (language === 'Desktop') {
+if (language === '中文') {
   title = '桌面';
 }
 

@@ -32,9 +32,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import Desktop from './pages/Desktop';
-import GetConfig from './pages/GetConfig';
-import Login from './pages/Login';
+import { Desktop, GetConfig, Login } from './pages/loadablePage';
 
 addLocaleData([...en, ...zh]);
 
