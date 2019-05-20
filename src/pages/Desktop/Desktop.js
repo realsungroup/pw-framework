@@ -2,6 +2,7 @@ import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
 import './Desktop.less';
+import './Desktop.css';
 import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';

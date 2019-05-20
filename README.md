@@ -6,7 +6,7 @@ power-works 基础框架
 
 #### 1. 下载以及安装依赖
 
-- git clone https://github.com/realsungroup/pw-framework.git（或 `git clone git@github.com:realsungroup/pw-framework.git`）
+- git clone https://github.com/realsungroup/pw-framework.git （或 `git clone git@github.com:realsungroup/pw-framework.git`）
 - cd pw-framework
 - npm install（或 `yarn`）
 

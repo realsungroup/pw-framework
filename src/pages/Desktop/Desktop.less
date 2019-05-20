@@ -1,10 +1,12 @@
+@import '../../styles/variables.less';
+
 .desktop {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: url(./assets/desktop-bg.jpg) center center / cover no-repeat;
+  // background: url(./assets/desktop-bg.jpg) center center / cover no-repeat;
   position: relative;
   &__main {
     width: 100%;
@@ -95,7 +97,7 @@
   &__bottom-bar {
     width: 100%;
     height: 40px;
-    background-color: #021a33;
+    background-color: @primary-color;
     overflow: hidden;
     color: #fff;
     display: flex;
@@ -196,7 +198,7 @@
     bottom: 40px;
     width: 320px;
     height: 370px;
-    background-color: rgba(3, 12, 27, 0.9);
+    background-color: @primary-color;
     z-index: 2;
     transition: 0.3s ease-in-out;
     color: #fff;
@@ -242,7 +244,7 @@
       border-color: #3c434e !important;
     }
     &-list ul {
-      background-color: rgba(3, 12, 27, 0.9) !important;
+      background-color: @primary-color !important;
     }
     &-list li {
       color: #fff !important;
