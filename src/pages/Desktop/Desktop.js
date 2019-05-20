@@ -228,7 +228,7 @@ class Desktop extends React.Component {
     );
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
-    console.log({ width, height });
+
     this.addAppToBottomBar(children, app.title, {
       ...app,
       width,
@@ -375,20 +375,24 @@ class Desktop extends React.Component {
       activeApps.forEach(activeApp => {
         activeApp.isActive = false;
       });
-      this.setState({
-        activeApps: [
-          ...this.state.activeApps,
-          {
-            ...app,
-            url,
-            appName,
-            isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-            isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-          }
-        ],
-        menuVisible: false
-      });
 
+      const children = (
+        <iframe src={url} frameBorder="0" className="desktop__iframe" />
+      );
+      const width = this.desktopMainRef.clientWidth;
+      const height = this.desktopMainRef.clientHeight;
+
+      this.setState({ menuVisible: false });
+
+      this.addAppToBottomBar(children, app.title, {
+        ...app,
+        width,
+        height,
+        x: 0,
+        y: 0,
+        minWidth: 330,
+        minHeight: 500
+      });
       // 不存在于桌面，则先将 app 添加到桌面，然后再打开窗口
     } else {
       this.addAppToDesktop(appData);
@@ -879,12 +883,6 @@ class Desktop extends React.Component {
       modifyPassModalVisible,
       selectedBg
     } = this.state;
-    const menuClasses = classNames('desktop__menu', {
-      'desktop__menu--hide': !menuVisible
-    });
-    const loadingClasses = classNames('desktop__loading', {
-      'desktop__loading--hide': !loading
-    });
 
     // 背景样式
     const desktopStyle = {};
@@ -895,8 +893,6 @@ class Desktop extends React.Component {
     } else {
       desktopStyle.background = selectedBg.value;
     }
-
-    console.log({ desktopStyle });
 
     return (
       <div
@@ -938,7 +934,12 @@ class Desktop extends React.Component {
         </div>
         {/* 窗口 */}
         {this.renderWindowView()}
-        <div className={menuClasses} onClick={e => e.stopPropagation()}>
+        <div
+          className={classNames('desktop__menu', {
+            'desktop__menu--hide': !menuVisible
+          })}
+          onClick={e => e.stopPropagation()}
+        >
           <div className="desktop__menu-user">
             <div
               className="desktop__menu-user-info"
@@ -986,7 +987,12 @@ class Desktop extends React.Component {
           </div>
         </div>
 
-        <Icon type="loading" className={loadingClasses} />
+        <Icon
+          type="loading"
+          className={classNames('desktop__loading', {
+            'desktop__loading--hide': !loading
+          })}
+        />
 
         {/* 提醒列表 */}
         <DesktopReminderList
