@@ -65,6 +65,7 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
+    const color = userInfo.UserInfo.EMP_Color;
     this.state = {
       folders: [], // 在桌面的文件夹
       activeApps: [], // 打开的 app
@@ -77,14 +78,24 @@ class Desktop extends React.Component {
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
       reminderListLoading: false, // 提醒列表是否显示
-      color: '', // 主题色
+      color, // 主题色
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false // 修改密码的模态窗
     };
   }
 
   componentDidMount = async () => {
+    this.setThemeColor(this.state.color);
     this.getData();
+  };
+
+  setThemeColor = themeColor => {
+    window.less
+      .modifyVars({ '@primary-color': themeColor })
+      .then(() => {})
+      .catch(err => {
+        message.error(err.message);
+      });
   };
 
   getDesktopMainRef = node => {
