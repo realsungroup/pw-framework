@@ -221,7 +221,7 @@ class CreatePlan extends React.Component {
       if (res.Error === 0) {
         message.success(res.message);
         window.location.href =
-          "/fnmodule?resid=610555787304&recid=610555815210&type=前端功能入口&title=财年计划管理";
+          "/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理";
       } else {
         message.error(res.message);
       }

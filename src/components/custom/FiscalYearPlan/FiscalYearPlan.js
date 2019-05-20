@@ -72,7 +72,7 @@ class FiscalYearPlan extends React.Component {
                     return (
                       <Button
                         size={btnSize}
-                        href={`/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理`}
+                        href={`/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=${record.C3_609616660273}`}
                       >
                         计划详情
                       </Button>

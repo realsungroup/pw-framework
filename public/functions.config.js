@@ -941,7 +941,7 @@ window['财年培训课表管理'] = {
   props: {
     resid: 610307713776,
     subResid: 611315248461,
-    subbResid: 611315248461,
+    subbResid: 610308370365,
     totalResid: 609883172764,
     levelId: 449335746776,
     kcxlResid: 610708527386,
