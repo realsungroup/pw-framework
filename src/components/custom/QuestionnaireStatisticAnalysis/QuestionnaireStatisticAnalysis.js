@@ -116,7 +116,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 611518608474,
+        resid: 610537303261,
         cmswhere
       });
     } catch (err) {

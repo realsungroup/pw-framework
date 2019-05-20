@@ -17,11 +17,11 @@ class QueryTable extends Component {
       // questionnaire: [],
       wid: 450,
       giftVisible: false,
-      giftwid: 850,
+      giftwid: '100%',
       modalGiftId: '',
       sendVisible: false,
       sendListId: '',
-      sendwid: 1200,
+      sendwid: '100%',
       loading: false
     };
   }
@@ -225,10 +225,10 @@ class QueryTable extends Component {
                       获奖名单
                     </Button>
                   )}
-                  {/* <Button onClick={()=>{onCopyQuery(item)}}>
+                  <Button onClick={()=>{onCopyQuery(item)}}>
                     <Icon type="copy" />
                     复制
-                  </Button> */}
+                  </Button>
                   <Popconfirm
                     title="确认删除此问卷吗"
                     okText="确认"
@@ -267,7 +267,7 @@ class QueryTable extends Component {
             actionBarFixed={false}
             hasRowView={false}
             hasRowDelete={false}
-            width={800}
+            width={'98%'}
             cmswhere={`query_id='${this.state.modalGiftId}'`}
           />
         </Modal>
@@ -289,7 +289,7 @@ class QueryTable extends Component {
             hasRowView={false}
             hasRowDelete={false}
             hasRowModify={false}
-            width={1150}
+            width={'98%'}
             height={400}
             subtractH={190}
             cmswhere={`query_id='${this.state.sendListId}'`}
