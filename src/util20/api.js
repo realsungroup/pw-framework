@@ -303,4 +303,15 @@ http.createApi('getAllAppLinks', {
   url: '/api/Resource/RetrieveUserAllAppLinks'
 });
 
+/**
+ * 修改密码
+ * 参数：{ oldPass, newPass1 }
+ * 1. oldPass:旧密码
+ * 2. newPass1:新密码
+ */
+http.createApi('changePassword', {
+  method: 'post',
+  url: '/api/user/ChangePassword'
+});
+
 export default http;

@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
 import DesktopLockScreen from './DesktopLockScreen';
+import DesktopModifyPass from './DesktopModifyPass';
 import {
   DesktopReminderList,
   DesktopColorPicker,
@@ -77,7 +78,7 @@ class Desktop extends React.Component {
       reminderListLoading: false, // 提醒列表是否显示
       color: '', // 主题色
       language: localStorage.getItem('language'), // 语言
-      password: ''
+      modifyPassModalVisible: false // 修改密码的模态窗
     };
   }
 
@@ -108,6 +109,15 @@ class Desktop extends React.Component {
     if (this.state.reminderListVisible) {
       this.setState({ reminderListVisible: false });
     }
+  };
+
+  handleCloseModifyPassModal = () => {
+    this.setState({ modifyPassModalVisible: false });
+  };
+
+  handleModifyPassSuccess = () => {
+    this.setState({ modifyPassModalVisible: false });
+    this.props.history.push('/login');
   };
 
   getData = async () => {
@@ -396,6 +406,10 @@ class Desktop extends React.Component {
       content: '您确定要锁定屏幕吗？',
       onOk: this.lockScreen
     });
+  };
+
+  handleOpenModifyPassModal = () => {
+    this.setState({ modifyPassModalVisible: true });
   };
 
   lockScreen = () => {
@@ -818,7 +832,8 @@ class Desktop extends React.Component {
       loading,
       reminderList,
       reminderListVisible,
-      reminderListLoading
+      reminderListLoading,
+      modifyPassModalVisible
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -877,11 +892,20 @@ class Desktop extends React.Component {
               </div>
             </div>
 
-            <Icon
-              type="lock"
-              className="desktop__menu-lock"
-              onClick={this.handleLockScreen}
-            />
+            <div className="desktop__menu-icon-wrapper">
+              <Icon
+                type="lock"
+                className="desktop__menu-icon"
+                onClick={this.handleLockScreen}
+              />
+            </div>
+
+            <div className="desktop__menu-icon-wrapper">
+              <i
+                className="iconfont icon-mod-password desktop__menu-icon"
+                onClick={this.handleOpenModifyPassModal}
+              />
+            </div>
 
             <Icon
               type="poweroff"
@@ -953,6 +977,13 @@ class Desktop extends React.Component {
         <DesktopLockScreen
           userInfo={userInfo}
           ref={this.getDesktopLockScreenRef}
+        />
+
+        {/* 修改密码 */}
+        <DesktopModifyPass
+          visible={modifyPassModalVisible}
+          onSuccess={this.handleModifyPassSuccess}
+          onClose={this.handleCloseModifyPassModal}
         />
       </div>
     );

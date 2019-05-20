@@ -18,7 +18,7 @@ export default class DesktopLockScreen extends React.PureComponent {
     /**
      * 用户信息
      */
-    userInfo: PropTypes.string.isRequired
+    userInfo: PropTypes.object.isRequired
   };
 
   static defaultProps = {};
