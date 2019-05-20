@@ -690,7 +690,7 @@ class QuerySet extends Component {
         cmswhere: 'query_id =' + queryId
       })
       .then(questions => {
-        console.log('问卷试题', questions.data);
+        // console.log('问卷试题', questions.data);
         this.setState({
           AllQuestions: questions.data,
           loading: false
@@ -723,9 +723,9 @@ class QuerySet extends Component {
       });
   };
   getThisquery = queryId => {
-    console.log('文卷ID', queryId);
+    // console.log('文卷ID', queryId);
     const { startDate, endDate } = this.state;
-    console.log(this.state.startDate, this.state.endDate);
+    // console.log(this.state.startDate, this.state.endDate);
     this.setState({ loading: true });
     http()
       .getTable({
@@ -733,7 +733,7 @@ class QuerySet extends Component {
         cmswhere: `query_id = ${queryId}`
       })
       .then(query => {
-        console.log('拿到的问卷信息', query.data[0]);
+        // console.log('拿到的问卷信息', query.data[0]);
         this.setState({
           query: query.data[0],
           queryId: query.data[0].query_id,
@@ -776,7 +776,7 @@ class QuerySet extends Component {
   }
   // 监听是否有礼品的变化
   handleSwitchGiftChange = checked => {
-    console.log(checked);
+    // console.log(checked);
     let isGift;
     if (checked) {
       // 有礼品
@@ -828,10 +828,10 @@ class QuerySet extends Component {
   }
   //上移某道题
   upCurrentQuestion = async item => {
-    console.log(1111, item);
+    // console.log(1111, item);
     const queryId = item.query_id;
     const recid = item.REC_ID;
-    console.log(queryId);
+    // console.log(queryId);
     if (item.question_order > 20) {
       await http().moveUpSteps({
         resid: 608828418560,
@@ -848,7 +848,7 @@ class QuerySet extends Component {
   // 下移某道题
   downCurrentQuestion = async item => {
     const { AllQuestions } = this.state;
-    console.log(AllQuestions.length);
+    // console.log(AllQuestions.length);
     const queryId = item.query_id;
     const recid = item.REC_ID;
     if (
@@ -905,6 +905,53 @@ class QuerySet extends Component {
       this.getThisQueryQuestions(queryId);
     }
   };
+  // 复制这道题
+  handleCopyQuestion=(item)=>{
+    const {queryId,loading} = this.state;
+    // console.log('当前这道题',item);
+    this.setState({loading:true})
+    let copyQuestion;
+    const   AloneQuestion ={};
+     AloneQuestion.resid =608828418560;
+     AloneQuestion.maindata={
+       query_id:item.query_id,
+       question_must:item.question_must,
+       question_topic:item.question_topic,
+       question_type:item.question_type,
+       _state:'added',
+       _id:1
+     };
+     AloneQuestion.subdata = [];
+     if(item.subdata){
+      item.subdata.forEach((option,index)=>{
+       let    obj={
+             resid:608828722533,
+             maindata:{
+               option_content:option.option_content,
+               option_write:option.option_write,
+               _state:'added',
+               _id:index+1
+             }
+         };
+         AloneQuestion.subdata.push(obj);
+      });
+     }
+     copyQuestion=[AloneQuestion];
+    //  console.log("复制后的当前题目",copyQuestion);
+
+    //  向后端发送数据，添加试题及试题选项
+    http().saveRecordAndSubTables({
+      data:copyQuestion,
+    }).then(data=>{
+      // console.log(data);
+      this.setState({loading:false})
+      this.getThisQueryQuestions(queryId);
+    }).catch(err=>{
+      console.error(err);
+      return message.error("复制失败",err.message);
+    })
+     
+  }
   renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
@@ -948,9 +995,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          {/* <Button size="small" icon="copy">
+          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
             复制
-          </Button> */}
+          </Button>
           <Button
             size="small"
             icon="delete"
@@ -1048,9 +1095,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          {/* <Button size="small" icon="copy">
+          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
             复制
-          </Button> */}
+          </Button>
           <Button
             size="small"
             icon="delete"
@@ -1120,9 +1167,9 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          {/* <Button size="small" icon="copy">
+          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
             复制
-          </Button> */}
+          </Button>
           <Popconfirm
             title="确定删除该题目?"
             onConfirm={() => {
@@ -1132,7 +1179,6 @@ class QuerySet extends Component {
             <Button
               size="small"
               icon="delete"
-              // onClick={}
             >
               删除
             </Button>
@@ -1178,7 +1224,7 @@ class QuerySet extends Component {
   //删除当前的这道试题
   delCurrentQuestion(questionID) {
     const { queryId } = this.state;
-    console.log('试题ID', questionID);
+    // console.log('试题ID', questionID);
     Modal.confirm({
       title: '确认删除这道题吗？',
       onOk: () => {
@@ -1217,7 +1263,7 @@ class QuerySet extends Component {
       currentQuestion: item,
       currentactiveQuestionMust: item.question_must
     });
-    console.log('当前问题', currentQuestion);
+    // console.log('当前问题', currentQuestion);
   }
   //renderCurrentQuestion 判断当前的题目类型，
   renderCurrentQuestion(currentQuestionType) {
@@ -1259,8 +1305,6 @@ class QuerySet extends Component {
         console.error(err);
       }
     }
-    // 还要删除后台表中的数据
-    console.log('当前选项的Id', currentQuestion);
     this.setState({ loading: true });
   };
   //编辑中添加选项
@@ -1274,7 +1318,7 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
-    console.log('添加后的当前试题', this.state.currentQuestion);
+    // console.log('添加后的当前试题', this.state.currentQuestion);
   };
   //编辑中添加可填写选项
   addCurrentQuestionWiteOption = async questionId => {
@@ -1287,7 +1331,7 @@ class QuerySet extends Component {
     this.setState({
       currentQuestion: tempCurrentQuestion
     });
-    console.log('添加可填写选项后的', this.state.currentQuestion);
+    // console.log('添加可填写选项后的', this.state.currentQuestion);
   };
   //编辑中选项内容的变化
   handleCurrentQuestionOptionChange(value, index) {
@@ -1318,7 +1362,7 @@ class QuerySet extends Component {
       currentQuestion: tempcurrentQuestion,
       currentactiveQuestionMust: value
     });
-    console.log('变化后的当前问卷', this.state.currentQuestion);
+    // console.log('变化后的当前问卷', this.state.currentQuestion);
   }
   //渲染当前单选题的内容
   renderCurrentSingleQuestion() {
@@ -1382,7 +1426,7 @@ class QuerySet extends Component {
   //渲染当前多选题的内容
   renderCurrentMultiQuestion() {
     const { currentQuestion } = this.state;
-    console.log(currentQuestion);
+    // console.log(currentQuestion);
     return (
       <div className="query-set__multi" style={{ marginTop: 15 }}>
         <div>
@@ -1441,7 +1485,7 @@ class QuerySet extends Component {
   //渲染当前问答题的内容
   renderCurrentAnswerQuestion() {
     const { currentQuestion } = this.state;
-    console.log(currentQuestion);
+    // console.log(currentQuestion);
     return (
       <div className="query-set__answer" style={{ marginTop: 15 }}>
         <div>
@@ -1475,7 +1519,7 @@ class QuerySet extends Component {
   handleEditModalSave = () => {
     const { currentQuestion } = this.state;
     this.setState({ loading: true });
-    console.log('当前更新的问题', currentQuestion);
+    // console.log('当前更新的问题', currentQuestion);
     let terminal;
     const terminaldataObj = {};
     terminaldataObj.resid = 608828418560;
@@ -1489,7 +1533,7 @@ class QuerySet extends Component {
     //求后台需要的subdata
     terminaldataObj.subdata = [];
     currentQuestion.subdata.forEach((option, index) => {
-      console.log('循环出的选项', option.option_id);
+      // console.log('循环出的选项', option.option_id);
       let obj;
       if (option.option_id) {
         obj = {
@@ -1515,7 +1559,7 @@ class QuerySet extends Component {
       terminaldataObj.subdata.push(obj);
     });
     terminal = [terminaldataObj];
-    console.log('编辑后的数据', terminal);
+    // console.log('编辑后的数据', terminal);
 
     // 向后端发送请求
     http()
@@ -1534,13 +1578,24 @@ class QuerySet extends Component {
       loading: false
     });
   };
-  // 监听礼品设置的形式，份数或者中奖率
-  giftStyleChange = value => {
-    console.log('奖品形式', value);
+   // 打开导入模板的模态框
+   showTempleteModal =()=>{
     this.setState({
-      giftStyle: value
-    });
+      templeteVisible:true,
+    })
   };
+  // 关闭导入模板的模态窗
+  closeImportModal=()=>{
+     this.setState({
+       templeteVisible:false,
+     })
+  };
+  // 文本框中输入内容的变化,并对文本框中内容进行处理
+  handleTextChange=(e)=>{
+  //  console.log(e.target.value);
+   const valueArr = e.target.value.split('\n\r');
+   console.log(valueArr);
+  }
   // 点击完成跳回首页
   toMyQuery = () => {
     window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
@@ -1557,7 +1612,6 @@ class QuerySet extends Component {
       query_description,
       loading
     } = this.state;
-    // console.log('是否有礼品', isGift);
     return (
       <Spin spinning={loading}>
         {' '}
@@ -1676,11 +1730,11 @@ class QuerySet extends Component {
             </div>
           </Modal>
           <div className="addStyle">
-            {/* {queryId == '' ? (
+            {queryId == '' ? (
               <Button disabled>导入添加题目</Button>
             ) : (
-              <Button>导入添加题目</Button>
-            )} */}
+              <Button onClick={this.showTempleteModal}>导入添加题目</Button>
+            )}
 
             {queryId == '' ? (
               ''
@@ -1776,6 +1830,16 @@ class QuerySet extends Component {
                 </Button>
               </div>
             )}
+          </Modal>
+          {/* 导入模板模态窗 */}
+          <Modal title='批量导入模板' visible={this.state.templeteVisible} width='100%' onOk={this.handleImportquestions} onCancel={this.closeImportModal}>
+              <h3>导入模板说明</h3>
+              <ul>
+                <li>题目面前不能有序号,题干与题干之间不能换行</li>
+                <li>题干与选项之间用换行，选项与选项之间用换行</li>
+                <li>题目与题目之间用空行</li>
+                <TextArea className='query-set__templete' onChange={this.handleTextChange}></TextArea>
+              </ul>
           </Modal>
         </div>
       </Spin>
