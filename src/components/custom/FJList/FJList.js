@@ -111,6 +111,29 @@ class FJList extends React.Component {
     }
   }
 
+  //获取单个员工
+  async getDataForOne() {
+    let cmswhere = "C3_609622254861='" + this.state.data[this.state.listIndex].C3_609622254861 + "'"
+    let res = await http().getTable({resid: this.props.resid,cmswhere});
+    try {
+      if (res.error === 0) {
+        if (res.data.length > 0) {
+          let data = this.state.data;
+          res.data[0].check = true
+          data[this.state.listIndex] = res.data[0]
+          this.setState({data})
+          this.getSubData(data[this.state.listIndex].C3_609622254861);
+        }
+      } else {
+        message.error(res.message);
+      }
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+
   //获取统计数据
   async totalData() {
     let res = await http().getTable({ resid: this.props.totalResid });
@@ -151,15 +174,15 @@ class FJList extends React.Component {
   async getSubbData(key) {
     let cmswhere = "";
     if (this.state.levelSelect) {
-      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
+      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
       if (cmswhere != "") cmswhere += " AND ";
-      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
+      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if (cmswhere != "") cmswhere += " AND ";
-      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
+      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -189,6 +212,7 @@ class FJList extends React.Component {
 
   //单选员工
   onClick(listNo, i) {
+    console.log(i)
     let data = this.state.data;
     data.forEach(e => {
       e.check = false;
@@ -202,7 +226,7 @@ class FJList extends React.Component {
   async addCourse() {
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
-    addData.C3_609616893275 = this.state.listNo;
+    addData.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addData.C3_609616868478 = addData.C3_609845305680;
     addData.C3_609616906353 = addData.C3_609845305931;
     addData.C3_611314815828 = addData.C3_609845305993;
@@ -219,7 +243,7 @@ class FJList extends React.Component {
         data: [{ ...addData }]
       });
       if (res.Error === 0) {
-        this.getData();
+        this.getDataForOne();
         this.totalData();
         return message.success(res.message);
       } else {
@@ -235,15 +259,17 @@ class FJList extends React.Component {
   async addCustom() {
     this.setState({ visibleCustom: false });
     let addCustom = this.state.addCustom;
-    addCustom.C3_609616893275 = this.state.listNo;
+    addCustom.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addCustom.C3_611406136484 = "Y";
+    addCustom.C3_609616805633 = this.planid
     let res = await http().addRecords({
       resid: this.props.subResid,
       data: [{ ...addCustom }]
     });
     try {
       if (res.Error === 0) {
-        this.getSubData(this.state.listNo);
+        this.getDataForOne();
+        this.totalData();
         return message.success(res.message);
       } else {
         message.error(res.message);
@@ -262,8 +288,9 @@ class FJList extends React.Component {
     });
     try {
       if (res.Error === 0) {
+        this.getDataForOne();
+        this.totalData();
         message.success(res.message);
-        this.getSubData(this.state.listNo);
       } else {
         message.error(res.message);
       }
@@ -293,7 +320,7 @@ class FJList extends React.Component {
         data: [data]
       });
       if (res.Error === 0) {
-        this.getData();
+        this.getDataForOne();
         this.totalData();
         return message.success(res.message);
       } else {
@@ -907,6 +934,7 @@ class FJList extends React.Component {
             <TableData
               height={"calc(100vh - 300px)"}
               resid={611316474296}
+              cmswhere={`C3_609617197183 = '${this.state.pNo}'`}
               recordFormFormWidth={"90%"}
               hasBeBtns={false}
               hasModify={false}
@@ -1138,15 +1166,7 @@ class FJList extends React.Component {
                     </div>
                     <div style={{ display: "flex", flex: 1 }}>
                       <a target="_blank" href={item.C3_609845463949}>
-                        <Icon
-                          type="ellipsis"
-                          style={{
-                            fontSize: "18px",
-                            border: "2px solid #555",
-                            borderRadius: "50%",
-                            padding: "3px"
-                          }}
-                        />
+                        <Icon type="fund" style={{ fontSize: "22px" }} />
                       </a>
                     </div>
                   </div>
