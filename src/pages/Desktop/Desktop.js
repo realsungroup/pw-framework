@@ -1,8 +1,7 @@
 import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
-import { getItem } from 'Util20/util';
+import { getItem, setItem } from 'Util20/util';
 import './Desktop.less';
-import './Desktop.css';
 import { message, Popover, Icon, Avatar, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
@@ -11,6 +10,7 @@ import { cloneDeep } from 'lodash';
 import DesktopDate from './DesktopDate';
 import DesktopLockScreen from './DesktopLockScreen';
 import DesktopModifyPass from './DesktopModifyPass';
+import DesktopBg from './DesktopBg';
 import {
   DesktopReminderList,
   DesktopColorPicker,
@@ -26,6 +26,8 @@ import {
 } from 'react-contextmenu';
 import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
+import desktopIconPng from './assets/desktop-icon.png';
+import defaultBg from './DesktopBg/assets/default-bg.jpg';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
@@ -66,6 +68,10 @@ class Desktop extends React.Component {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
     const color = userInfo.UserInfo.EMP_Color;
+    const selectedBg = JSON.parse(getItem('selectedBg')) || {
+      bgMode: 'image', // 背景模式
+      value: defaultBg // 背景值
+    };
     this.state = {
       folders: [], // 在桌面的文件夹
       activeApps: [], // 打开的 app
@@ -80,7 +86,8 @@ class Desktop extends React.Component {
       reminderListLoading: false, // 提醒列表是否显示
       color, // 主题色
       language: localStorage.getItem('language'), // 语言
-      modifyPassModalVisible: false // 修改密码的模态窗
+      modifyPassModalVisible: false, // 修改密码的模态窗
+      selectedBg // 背景图片地址
     };
   }
 
@@ -591,6 +598,30 @@ class Desktop extends React.Component {
     }
   };
 
+  handleSelectDeskBg = selectedBg => {
+    this.setState({ selectedBg: { ...selectedBg } });
+    setItem('selectedBg', JSON.stringify(selectedBg));
+  };
+
+  handleOpenDesktopBg = () => {
+    const { selectedBg } = this.state;
+    const children = (
+      <DesktopBg selectedBg={selectedBg} onSave={this.handleSelectDeskBg} />
+    );
+
+    const width = 800;
+    const height = this.desktopMainRef.clientHeight;
+    const x = this.desktopMainRef.clientWidth / 2 - 400;
+    const y = 0;
+
+    this.addAppToBottomBar(children, '更换背景图片', {
+      width,
+      height,
+      x,
+      y
+    });
+  };
+
   modLanguage = language => {
     let userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
@@ -845,7 +876,8 @@ class Desktop extends React.Component {
       reminderList,
       reminderListVisible,
       reminderListLoading,
-      modifyPassModalVisible
+      modifyPassModalVisible,
+      selectedBg
     } = this.state;
     const menuClasses = classNames('desktop__menu', {
       'desktop__menu--hide': !menuVisible
@@ -854,8 +886,24 @@ class Desktop extends React.Component {
       'desktop__loading--hide': !loading
     });
 
+    // 背景样式
+    const desktopStyle = {};
+    if (selectedBg.bgMode === 'image') {
+      desktopStyle.background = `url(${
+        selectedBg.value
+      }) center center / cover no-repeat`;
+    } else {
+      desktopStyle.background = selectedBg.value;
+    }
+
+    console.log({ desktopStyle });
+
     return (
-      <div className="desktop" onClick={this.handleDesktopClick}>
+      <div
+        className="desktop"
+        onClick={this.handleDesktopClick}
+        style={desktopStyle}
+      >
         {/* 右键菜单触发区域，即桌面 */}
         <ContextMenuTrigger id="desktop__trigger-area">
           <div className="desktop__main" ref={this.getDesktopMainRef}>
@@ -950,8 +998,12 @@ class Desktop extends React.Component {
 
         {/* 右键菜单 */}
         <ContextMenu id="desktop__trigger-area">
-          <MenuItem onClick={this.handleClearCache}>清除缓存</MenuItem>
-          <MenuItem onClick={this.handleOpenColorPicker}>更换主题色</MenuItem>
+          <MenuItem onClick={this.handleClearCache}>
+            <span>清除缓存</span>
+          </MenuItem>
+          <MenuItem onClick={this.handleOpenColorPicker}>
+            <span>更换主题色</span>
+          </MenuItem>
           <SubMenuItem
             title={
               <div>
@@ -983,6 +1035,17 @@ class Desktop extends React.Component {
               <span>English</span>
             </MenuItem>
           </SubMenuItem>
+          <MenuItem
+            onClick={this.handleOpenDesktopBg}
+            className="desktop__context-menu-desktop-icon-wrapper"
+          >
+            <img
+              src={desktopIconPng}
+              alt="desktop-icon"
+              className="desktop__context-menu-icon"
+            />
+            <span style={{ marginLeft: 4 }}>桌面背景</span>
+          </MenuItem>
         </ContextMenu>
 
         {/* 锁屏 */}

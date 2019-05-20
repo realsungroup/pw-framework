@@ -283,17 +283,27 @@
     }
     &-item {
       line-height: 24px;
-      text-indent: 22px;
       font-size: 12px;
       cursor: pointer;
       &--selected {
         background: #e3f2fc !important;
         color: #373a3c !important;
       }
+      span {
+        margin-left: 22px;
+      }
+    }
+    .desktop__context-menu-icon {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
     }
     .desktop__context-menu-arraw {
       font-size: 12px;
       margin-left: 42px;
+    }
+    .desktop__context-menu-desktop-icon-wrapper {
+      text-indent: 0;
     }
   }
   &__iframe {
