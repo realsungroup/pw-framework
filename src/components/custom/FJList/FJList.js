@@ -1,20 +1,7 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
 import { TableData } from "../../common/loadableCommon";
-import {
-  Button,
-  Icon,
-  Radio,
-  message,
-  Select,
-  List,
-  Card,
-  Modal,
-  Input,
-  Popconfirm,
-  Tabs,
-  Checkbox
-} from "antd";
+import {Button,Icon,Radio,message,Select,List,Card,Modal,Input,Popconfirm,Tabs,Form} from "antd";
 import CreatePlan from "../CreatePlan/CreatePlan";
 import http from "../../../util20/api";
 import InfiniteScroll from "react-infinite-scroller";
@@ -257,15 +244,14 @@ class FJList extends React.Component {
 
   //添加自定义课程
   async addCustom() {
-    this.setState({ visibleCustom: false });
     let addCustom = this.state.addCustom;
+    if(addCustom.C3_609616868478==""||addCustom.C3_609616868478==undefined)return message.error("课程名不能为空");
+    if(addCustom.C3_609616906353==""||addCustom.C3_609616906353==undefined)return message.error("费用不能为空");
+    this.setState({ visibleCustom: false });
     addCustom.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addCustom.C3_611406136484 = "Y";
     addCustom.C3_609616805633 = this.planid
-    let res = await http().addRecords({
-      resid: this.props.subResid,
-      data: [{ ...addCustom }]
-    });
+    let res = await http().addRecords({resid: this.props.subResid,data: [{ ...addCustom }]});
     try {
       if (res.Error === 0) {
         this.getDataForOne();
@@ -302,9 +288,11 @@ class FJList extends React.Component {
 
   //修改课程
   async editCourse(i) {
-    this.setState({ visibleAdd: false, visibleEdit: false });
-    let editData = this.state.editData;
     let data = this.state.cnspmxb;
+    let editData = this.state.editData
+    if(data.C3_609616868478==""||data.C3_609616868478==undefined)return message.error("课程名不能为空");
+    if(data.C3_609616906353==""||data.C3_609616906353==undefined)return message.error("费用不能为空");
+    this.setState({ visibleAdd: false, visibleEdit: false });
     if (data.C3_611406136484 != "Y") {
       data.C3_609616868478 = editData.C3_609845305680;
       data.C3_611314815828 = editData.C3_609845305993;
@@ -1260,13 +1248,9 @@ class FJList extends React.Component {
             onOk={this.addCustom.bind(this)}
             onCancel={() => this.setState({ visibleCustom: false })}
           >
-            <div
-              style={{ display: "flex", flexDirection: "row", margin: "10px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
               <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span
-                  style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}
-                >
+                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
                   课程名称:
                 </span>
               </div>
@@ -1280,13 +1264,9 @@ class FJList extends React.Component {
                 />
               </div>
             </div>
-            <div
-              style={{ display: "flex", flexDirection: "row", margin: "10px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
               <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span
-                  style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}
-                >
+                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
                   费用:
                 </span>
               </div>
@@ -1303,7 +1283,7 @@ class FJList extends React.Component {
           </Modal>
           <Modal
             title="修改课程"
-            width="60%"
+            width={this.state.cnspmxb.C3_611406136484 == "Y"?"520px":"60%"}
             destroyOnClose={true}
             visible={this.state.visibleEdit}
             onOk={this.editCourse.bind(this)}
@@ -1469,15 +1449,7 @@ class FJList extends React.Component {
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <a target="_blank" href={item.C3_609845463949}>
-                          <Icon
-                            type="ellipsis"
-                            style={{
-                              fontSize: "18px",
-                              border: "2px solid #555",
-                              borderRadius: "50%",
-                              padding: "3px"
-                            }}
-                          />
+                          <Icon type="fund" style={{ fontSize: "22px" }} />
                         </a>
                       </div>
                     </div>
