@@ -85,7 +85,20 @@ let questions = [
     isRequired: 1
   }
 ];
+const template = `天气怎么样
+好
+很好
+非常好
+特别好
 
+你喜欢什么颜色[多选题]
+红色
+黄
+绿
+蓝
+
+你认为[问答题]
+`;
 class QuerySet extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +122,8 @@ class QuerySet extends Component {
       CurrentQuestionVisible: false,
       currentactiveQuestionMust: '',
       giftStyle: '',
-      loading: false
+      loading: false,
+      importQuestions: template
     };
   }
 
@@ -906,52 +920,54 @@ class QuerySet extends Component {
     }
   };
   // 复制这道题
-  handleCopyQuestion=(item)=>{
-    const {queryId,loading} = this.state;
+  handleCopyQuestion = item => {
+    const { queryId, loading } = this.state;
     // console.log('当前这道题',item);
-    this.setState({loading:true})
+    this.setState({ loading: true });
     let copyQuestion;
-    const   AloneQuestion ={};
-     AloneQuestion.resid =608828418560;
-     AloneQuestion.maindata={
-       query_id:item.query_id,
-       question_must:item.question_must,
-       question_topic:item.question_topic,
-       question_type:item.question_type,
-       _state:'added',
-       _id:1
-     };
-     AloneQuestion.subdata = [];
-     if(item.subdata){
-      item.subdata.forEach((option,index)=>{
-       let    obj={
-             resid:608828722533,
-             maindata:{
-               option_content:option.option_content,
-               option_write:option.option_write,
-               _state:'added',
-               _id:index+1
-             }
-         };
-         AloneQuestion.subdata.push(obj);
+    const AloneQuestion = {};
+    AloneQuestion.resid = 608828418560;
+    AloneQuestion.maindata = {
+      query_id: item.query_id,
+      question_must: item.question_must,
+      question_topic: item.question_topic,
+      question_type: item.question_type,
+      _state: 'added',
+      _id: 1
+    };
+    AloneQuestion.subdata = [];
+    if (item.subdata) {
+      item.subdata.forEach((option, index) => {
+        let obj = {
+          resid: 608828722533,
+          maindata: {
+            option_content: option.option_content,
+            option_write: option.option_write,
+            _state: 'added',
+            _id: index + 1
+          }
+        };
+        AloneQuestion.subdata.push(obj);
       });
-     }
-     copyQuestion=[AloneQuestion];
+    }
+    copyQuestion = [AloneQuestion];
     //  console.log("复制后的当前题目",copyQuestion);
 
     //  向后端发送数据，添加试题及试题选项
-    http().saveRecordAndSubTables({
-      data:copyQuestion,
-    }).then(data=>{
-      // console.log(data);
-      this.setState({loading:false})
-      this.getThisQueryQuestions(queryId);
-    }).catch(err=>{
-      console.error(err);
-      return message.error("复制失败",err.message);
-    })
-     
-  }
+    http()
+      .saveRecordAndSubTables({
+        data: copyQuestion
+      })
+      .then(data => {
+        // console.log(data);
+        this.setState({ loading: false });
+        this.getThisQueryQuestions(queryId);
+      })
+      .catch(err => {
+        console.error(err);
+        return message.error('复制失败', err.message);
+      });
+  };
   renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
@@ -995,7 +1011,13 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
+          <Button
+            size="small"
+            icon="copy"
+            onClick={() => {
+              this.handleCopyQuestion(item);
+            }}
+          >
             复制
           </Button>
           <Button
@@ -1095,7 +1117,13 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
+          <Button
+            size="small"
+            icon="copy"
+            onClick={() => {
+              this.handleCopyQuestion(item);
+            }}
+          >
             复制
           </Button>
           <Button
@@ -1167,7 +1195,13 @@ class QuerySet extends Component {
           >
             编辑
           </Button>
-          <Button size="small" icon="copy" onClick={()=>{this.handleCopyQuestion(item)}}>
+          <Button
+            size="small"
+            icon="copy"
+            onClick={() => {
+              this.handleCopyQuestion(item);
+            }}
+          >
             复制
           </Button>
           <Popconfirm
@@ -1176,10 +1210,7 @@ class QuerySet extends Component {
               this.delCurrentQuestion(item.question_id);
             }}
           >
-            <Button
-              size="small"
-              icon="delete"
-            >
+            <Button size="small" icon="delete">
               删除
             </Button>
           </Popconfirm>
@@ -1250,7 +1281,7 @@ class QuerySet extends Component {
             message.error('操作失败', err.message);
           });
       },
-      onCancel:()=>{
+      onCancel: () => {
         console.log('取消');
       }
     });
@@ -1578,24 +1609,133 @@ class QuerySet extends Component {
       loading: false
     });
   };
-   // 打开导入模板的模态框
-   showTempleteModal =()=>{
+  // 打开导入模板的模态框
+  showTempleteModal = () => {
     this.setState({
-      templeteVisible:true,
-    })
+      templeteVisible: true
+    });
   };
   // 关闭导入模板的模态窗
-  closeImportModal=()=>{
-     this.setState({
-       templeteVisible:false,
-     })
+  closeImportModal = () => {
+    this.setState({
+      templeteVisible: false
+    });
   };
   // 文本框中输入内容的变化,并对文本框中内容进行处理
-  handleTextChange=(e)=>{
-  //  console.log(e.target.value);
-   const valueArr = e.target.value.split('\n\r');
-   console.log(valueArr);
-  }
+  handleTextChange = e => {
+    this.setState({
+      importQuestions: e.target.value
+    });
+  };
+  // 点击导入题目确定
+  handleImportquestions = () => {
+    const { importQuestions, queryId } = this.state;
+    const importTempQuestions = importQuestions.split(/\n\n|\r\r|\r\n\r\n/);
+    console.log('处理出来的字符串', importTempQuestions);
+    const result = this.getImportResult(importTempQuestions);
+    console.log(result);
+    // 对result进行处理转化成后端需要的数据
+    if (result) {
+      let AllQuestionDataImportToBck = [];
+      result.map((questionImrt, index) => {
+        const objimrt = {
+          resid: 608828418560,
+          maindata: {
+            query_id: queryId,
+            question_topic: questionImrt.topic,
+            question_must: 1,
+            question_type: questionImrt.type,
+            subdata: questionImrt.options,
+            _state: 'added',
+            _id: index + 1
+          }
+        };
+        if (questionImrt.options) {
+          objimrt.subdata = questionImrt.options.map((option, index) => {
+            return {
+              resid: 608828722533,
+              maindata: {
+                option_content: option,
+                option_write: '0',
+                _state: 'added',
+                _id: index + 1
+              }
+            };
+          });
+        }
+
+        AllQuestionDataImportToBck.push(objimrt);
+      });
+      console.log('后端要的导入数据', AllQuestionDataImportToBck);
+      this.setState({ loading: true });
+      http()
+        .saveRecordAndSubTables({
+          data: AllQuestionDataImportToBck
+        })
+        .then(res => {
+          console.log(res);
+          this.setState({
+            loading: false,
+            templeteVisible: false
+          });
+          this.getThisQueryQuestions(queryId);
+        })
+        .catch(err => {
+          console.error('添加错误原因', err);
+          message.error('queryset导入失败', err.message);
+        });
+    }
+  };
+  // 将文本框中的值转化为想要的数组,getImportResult接收的是一个字符串
+  getImportResult = question => {
+    const result = [];
+    question.forEach(questionString => {
+      const arr = questionString.split(/\n/);
+      console.log('结果', arr);
+      //获取数组中的问题类型和题干
+      const { type, topic } = this.getQuestionTypeAndTopic(arr[0]);
+      // 做出选项
+      let options = [];
+      if (type !== '问答题') {
+        options = this.getImportQuestionOptions(arr);
+      }
+      const obj = {
+        type,
+        topic
+      };
+      if (options.length) {
+        obj.options = options;
+      }
+      result.push(obj);
+    });
+    return result;
+  };
+  // 找到问题中的问题类型和题干
+  getQuestionTypeAndTopic = topicTypeString => {
+    // 多选题
+    let index = topicTypeString.indexOf('[多选题]');
+    if (index !== -1) {
+      const type = '多选题';
+      const topic = topicTypeString.substring(0, index);
+      return { type, topic };
+    }
+    //问答题
+    index = topicTypeString.indexOf('[问答题]');
+    if (index !== -1) {
+      const type = '问答题';
+      const topic = topicTypeString.substring(0, index);
+      return { type, topic };
+    }
+    return { type: '单选题', topic: topicTypeString };
+  };
+  // 获取文档中的选项
+  getImportQuestionOptions = arr => {
+    const options = [];
+    for (let i = 1; i < arr.length; i++) {
+      options.push(arr[i]);
+    }
+    return options;
+  };
   // 点击完成跳回首页
   toMyQuery = () => {
     window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
@@ -1832,14 +1972,25 @@ class QuerySet extends Component {
             )}
           </Modal>
           {/* 导入模板模态窗 */}
-          <Modal title='批量导入模板' visible={this.state.templeteVisible} width='100%' onOk={this.handleImportquestions} onCancel={this.closeImportModal}>
-              <h3>导入模板说明</h3>
-              <ul>
-                <li>题目面前不能有序号,题干与题干之间不能换行</li>
-                <li>题干与选项之间用换行，选项与选项之间用换行</li>
-                <li>题目与题目之间用空行</li>
-                <TextArea className='query-set__templete' onChange={this.handleTextChange}></TextArea>
-              </ul>
+          <Modal
+            title="批量导入模板"
+            visible={this.state.templeteVisible}
+            width="100%"
+            onOk={this.handleImportquestions}
+            onCancel={this.closeImportModal}
+          >
+            <h3>导入模板说明</h3>
+            <ul>
+              <li className='query-set__import-description'>题目面前不能有序号,题干与题干之间不能换行</li>
+              <li className='query-set__import-description'>题干与选项之间用换行，选项与选项之间用换行</li>
+              <li className='query-set__import-description'>题目与题目之间用空行</li>
+              <li className='query-set__import-description'>题目类型默认为单选题,若导入多选题和问答题时,在题干后面用英文半角的中括号,例如[多选题]</li>
+              <TextArea
+                className="query-set__templete"
+                onChange={this.handleTextChange}
+                value={this.state.importQuestions}
+              />
+            </ul>
           </Modal>
         </div>
       </Spin>
