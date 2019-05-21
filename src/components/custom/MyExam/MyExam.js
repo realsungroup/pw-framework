@@ -153,6 +153,7 @@ class MyExam extends Component {
           hasModify={false}
           hasDelete={false}
           subtractH={188}
+          defaultColumnWidth={110}
           customRowBtns={[
             (record, btnSize) => {
               return (
