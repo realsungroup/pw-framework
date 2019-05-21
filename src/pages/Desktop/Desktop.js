@@ -61,7 +61,8 @@ const dealApps = apps => {
     if (appIndex === -1) {
       arr[arr.length] = {
         apps: [],
-        typeName: app.BusinessNode
+        typeName: app.BusinessNode,
+        url: app.BusinessIconUrl || folderPng
       };
       index = arr.length - 1;
     }
@@ -855,7 +856,11 @@ class Desktop extends React.Component {
           getPopupContainer={getPopoverContainer}
         >
           <div className="desktop__folder">
-            <img src={folderPng} alt="folder" className="desktop__folder-img" />
+            <img
+              src={folder.url}
+              alt="folder"
+              className="desktop__folder-img"
+            />
             <h3 className="desktop__folder-title">{folder.typeName}</h3>
           </div>
         </Popover>
