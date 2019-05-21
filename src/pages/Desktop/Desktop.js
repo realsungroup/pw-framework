@@ -31,9 +31,11 @@ import defaultBg from './DesktopBg/assets/default-bg.jpg';
 import logoPng from './assets/logo.png';
 
 const { SubMenu } = Menu;
-const { businessOptionalResIds, defaultOpenWindow } = window.pwConfig[
-  process.env.NODE_ENV
-];
+const {
+  businessOptionalResIds,
+  defaultOpenWindow,
+  themeColor
+} = window.pwConfig[process.env.NODE_ENV];
 
 const getPopoverContainer = () => {
   return document.querySelector('.desktop__main');
@@ -59,7 +61,8 @@ const dealApps = apps => {
     if (appIndex === -1) {
       arr[arr.length] = {
         apps: [],
-        typeName: app.BusinessNode
+        typeName: app.BusinessNode,
+        url: app.BusinessIconUrl || folderPng
       };
       index = arr.length - 1;
     }
@@ -74,7 +77,7 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color;
+    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'bgColor', // 背景模式
       value: '#d88546' // 背景值
@@ -116,6 +119,7 @@ class Desktop extends React.Component {
       .modifyVars({ '@primary-color': themeColor })
       .then(() => {})
       .catch(err => {
+        console.log({ err });
         message.error(err.message);
       });
   };
@@ -852,7 +856,11 @@ class Desktop extends React.Component {
           getPopupContainer={getPopoverContainer}
         >
           <div className="desktop__folder">
-            <img src={folderPng} alt="folder" className="desktop__folder-img" />
+            <img
+              src={folder.url}
+              alt="folder"
+              className="desktop__folder-img"
+            />
             <h3 className="desktop__folder-title">{folder.typeName}</h3>
           </div>
         </Popover>
