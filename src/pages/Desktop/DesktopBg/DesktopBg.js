@@ -3,13 +3,18 @@ import './DesktopBg.less';
 import PropTypes from 'prop-types';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { Button, message, Select } from 'antd';
-import bg1 from './assets/default-bg.jpg';
-import bg2 from './assets/bg-2.jpeg';
+import bg1 from './assets/01.jpg';
+import bg2 from './assets/02.jpg';
+import bg3 from './assets/03.jpg';
+import bg4 from './assets/04.jpg';
+import bg5 from './assets/05.jpg';
+import bg6 from './assets/06.jpg';
+import bg7 from './assets/07.jpg';
 import classNames from 'classnames';
 const Option = Select.Option;
 
 // 所有的背景图
-const bgImages = [bg1, bg2];
+const bgImages = [bg1, bg2, bg3, bg4, bg5, bg6, bg7];
 
 // 所有背景颜色
 const bgColors = [

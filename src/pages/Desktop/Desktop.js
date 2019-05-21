@@ -28,6 +28,7 @@ import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
 import defaultBg from './DesktopBg/assets/default-bg.jpg';
+import logoPng from './assets/logo.png';
 
 const { SubMenu } = Menu;
 const { businessOptionalResIds, defaultOpenWindow } = window.pwConfig[
@@ -75,8 +76,8 @@ class Desktop extends React.Component {
     const userInfo = JSON.parse(getItem('userInfo'));
     const color = userInfo.UserInfo.EMP_Color;
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
-      bgMode: 'image', // 背景模式
-      value: defaultBg // 背景值
+      bgMode: 'bgColor', // 背景模式
+      value: '#d88546' // 背景值
     };
     this.state = {
       folders: [], // 在桌面的文件夹
@@ -991,6 +992,7 @@ class Desktop extends React.Component {
         <ContextMenuTrigger id="desktop__trigger-area">
           <div className="desktop__main" ref={this.getDesktopMainRef}>
             {this.renderFolders()}
+            <img src={logoPng} alt="logo" className="desktop__main-logo" />
           </div>
         </ContextMenuTrigger>
         {/* 桌面底部 bar */}
