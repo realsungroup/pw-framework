@@ -65,7 +65,10 @@ window.pwConfig = {
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
 
     // bi 系统配置
-    biBaseURL: 'http://localhost:3001/' // bi 系统基地址
+    biBaseURL: 'http://localhost:3001/', // bi 系统基地址
+
+    // 默认打开的窗口（即在第一次进入桌面时，会自动打开的窗口）；为空字符串时，不会打开任何窗口
+    defaultOpenWindow: ''
   },
   // 生产环境
   production: {
@@ -129,6 +132,9 @@ window.pwConfig = {
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
 
     // bi 系统配置
-    biBaseURL: 'http://localhost:3001/' // bi 系统基地址
+    biBaseURL: 'http://localhost:3001/', // bi 系统基地址
+
+    // 默认打开的窗口
+    defaultOpenWindow: ''
   }
 };

@@ -30,7 +30,9 @@ import desktopIconPng from './assets/desktop-icon.png';
 import defaultBg from './DesktopBg/assets/default-bg.jpg';
 
 const { SubMenu } = Menu;
-const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
+const { businessOptionalResIds, defaultOpenWindow } = window.pwConfig[
+  process.env.NODE_ENV
+];
 
 const getPopoverContainer = () => {
   return document.querySelector('.desktop__main');
@@ -98,10 +100,14 @@ class Desktop extends React.Component {
   componentDidMount = async () => {
     // 设置主题色
     this.setThemeColor(this.state.color);
+
+    // 默认打开仪表盘
+    if (defaultOpenWindow === '仪表盘') {
+      this.handleOpenDashboard();
+    }
+
     // 获取数据
-    this.getData();
-    // 默认打开仪表盘窗口
-    this.handleOpenDashboard();
+    this.getData(true);
   };
 
   setThemeColor = themeColor => {
@@ -147,14 +153,14 @@ class Desktop extends React.Component {
     this.props.history.push('/login');
   };
 
-  getData = async () => {
+  getData = async (isFirst = false) => {
     this.setState({ loading: true });
-    const res = await this.getAndSetUserDesktop();
+    const res = await this.getAndSetUserDesktop(isFirst);
     await this.getAndSetAllAppLinks(res.userdefined);
     this.setState({ loading: false });
   };
 
-  getAndSetUserDesktop = async () => {
+  getAndSetUserDesktop = async (isFirst = false) => {
     let res;
     try {
       res = await http().getUserDesktop();
@@ -166,7 +172,19 @@ class Desktop extends React.Component {
 
     // 桌面的文件夹
     const folders = dealApps([...res.data, ...(res.userdefined || [])]);
-    this.setState({ folders });
+    this.setState({ folders }, () => {
+      // 第一次打开桌面时，默认打开的 app
+      if (isFirst) {
+        folders.some(folder =>
+          folder.apps.some(app => {
+            if (app.title === defaultOpenWindow) {
+              this.handleOpenWindow(app, folder.typeName);
+              return true;
+            }
+          })
+        );
+      }
+    });
     return res;
   };
 
