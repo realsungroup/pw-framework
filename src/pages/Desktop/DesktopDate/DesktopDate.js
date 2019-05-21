@@ -46,9 +46,9 @@ export default class DesktopDate extends React.Component {
   };
 
   getDateString = ({ Y, M, D, w, h, m }) => {
-    const time = `${h > 10 ? h : '0' + h}:${m > 10 ? m : '0' + m}`;
+    const time = `${h >= 10 ? h : '0' + h}:${m >= 10 ? m : '0' + m}`;
     const week = weekMap[w];
-    const date = `${Y}/${M > 10 ? M : '0' + M}/${D > 10 ? D : '0' + D}`;
+    const date = `${Y}/${M >= 10 ? M : '0' + M}/${D >= 10 ? D : '0' + D}`;
     return { time, week, date };
   };
 
