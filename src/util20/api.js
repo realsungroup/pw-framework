@@ -300,4 +300,28 @@ http.createApi('runAutoImport', {
   url: '/api/Resource/RunAutoImport'
 });
 
+/*
+ * 获取所有 app
+ * 参数：{ parentresids, getresourcedata, getrecordcount, cmswhere }
+ * 1. parentresids:父节点 id 字符串，多个 id 以逗号分隔
+ * 2. getresourcedata:1
+ * 3. getrecordcount:是否获取记录数量，1 表示获取；0 表示不获取
+ * 4. cmswhere
+ */
+http.createApi('getAllAppLinks', {
+  method: 'get',
+  url: '/api/Resource/RetrieveUserAllAppLinks'
+});
+
+/**
+ * 修改密码
+ * 参数：{ oldPass, newPass1 }
+ * 1. oldPass:旧密码
+ * 2. newPass1:新密码
+ */
+http.createApi('changePassword', {
+  method: 'post',
+  url: '/api/user/ChangePassword'
+});
+
 export default http;
