@@ -236,6 +236,7 @@ class Desktop extends React.Component {
         if (
           selectedApps.some(item => {
             if (item.name === app.RES_NAME) {
+              // REC_ID 为空时，为必要功能
               return (app.recid = item.REC_ID);
             }
           })
@@ -402,7 +403,7 @@ class Desktop extends React.Component {
     const app = desktopApp;
     // 已经存在于桌面，则直接打开窗口
     if (isExistDesktop) {
-      const resid = parseInt(app.ResId || app.resid, 10);
+      const resid = parseInt(app.ResID || app.resid, 10);
       const url = `/fnmodule?resid=${resid}&recid=${
         app.REC_ID
       }&type=${typeName}&title=${app.title}`;
@@ -773,7 +774,7 @@ class Desktop extends React.Component {
     });
     const app = desktopApp;
     // 打开窗口
-    const resid = parseInt(app.ResId || app.resid, 10);
+    const resid = parseInt(app.ResID || app.resid, 10);
     const url = `/fnmodule?resid=${resid}&recid=${
       app.REC_ID
     }&type=${typeName}&title=${app.title}`;
@@ -782,18 +783,39 @@ class Desktop extends React.Component {
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
     });
-    this.setState({
-      activeApps: [
-        ...this.state.activeApps,
-        {
-          ...app,
-          url,
-          appName,
-          isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-          isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-        }
-      ],
-      menuVisible: false
+
+    // this.setState({
+    //   activeApps: [
+    //     ...this.state.activeApps,
+    //     {
+    //       ...app,
+    //       url,
+    //       appName,
+    //       isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
+    //       isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
+    //     }
+    //   ],
+    //   menuVisible: false
+    // });
+    const children = (
+      <iframe src={url} frameBorder="0" className="desktop__iframe" />
+    );
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    this.setState({ menuVisible: false });
+    this.addAppToBottomBar(children, app.title, {
+      ...app,
+      width,
+      height,
+      x: 0,
+      y: 0,
+      customWidth: 800,
+      customHeight: height,
+      customX: 0,
+      customY: 0,
+      minWidth: 330,
+      minHeight: 500,
+      zoomStatus: 'max'
     });
   };
 
@@ -916,8 +938,7 @@ class Desktop extends React.Component {
       const visible = activeApp.isOpen;
       // 窗口的 zIndex，从 4 开始
       const zIndex =
-        zIndexActiveApps.findIndex(app => app.appName === activeApp.appName) +
-        4;
+        zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 4;
 
       return (
         <WindowView
