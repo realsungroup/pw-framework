@@ -158,9 +158,6 @@ export default class FirstStep extends React.Component {
     }
   };
 
-  // 获取第二列的数据
-  getSecondColData = item => {};
-
   handleRadioGroupChange = e => {
     this.setState({ firstColLoading: true, hasMore: false, personList: [] });
     const { radioGroupConfig } = this.props;
@@ -266,7 +263,7 @@ export default class FirstStep extends React.Component {
     }
     const hostrecid = selectedKeys[0];
     const option = {
-      current: 0,
+      pageindex: 0,
       pageSize: this.state.pageSize
     };
     this.getPersonList(
@@ -289,7 +286,7 @@ export default class FirstStep extends React.Component {
       secondColLoading: true
     });
     const option = {
-      current: 0,
+      pageindex: 0,
       pageSize: this.state.pageSize
     };
     this.getPersonList(selectedRadio.resid, subResid, item.REC_ID, option);
@@ -318,13 +315,13 @@ export default class FirstStep extends React.Component {
     let option = hasPaging
       ? {
           key: value,
-          current: pageIndex,
+          pageindex: pageIndex,
           pageSize: pageSize
         }
       : {};
     // 第一次搜索该值（非 loadMore 中搜索）
     if (isFirstSearch) {
-      option.current = 0;
+      option.pageindex = 0;
       this.personSearchValue = value;
       this.setState({
         personList: [],
@@ -451,7 +448,7 @@ export default class FirstStep extends React.Component {
     let resid, subResid, hostRecid;
     let option = hasPaging
       ? {
-          current: pageIndex,
+          pageindex: pageIndex,
           pageSize,
           key: searchValue
         }
@@ -494,7 +491,7 @@ export default class FirstStep extends React.Component {
     }
     this.setState({ secondColLoading: true });
 
-    option = { ...option, key: value, current: 0 };
+    option = { ...option, key: value, pageindex: 0 };
     this.getPersonList(resid, subResid, hostRecid, option);
   };
 

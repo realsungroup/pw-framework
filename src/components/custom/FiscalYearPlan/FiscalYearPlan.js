@@ -54,7 +54,7 @@ class FiscalYearPlan extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div style={{ height: "calc(100vh - 160px)" }}>
+        <div style={{ height: "100vh" }}>
           <Tabs
             defaultActiveKey="1"
             style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}

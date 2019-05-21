@@ -16,7 +16,7 @@ export default class EditTitle extends Component {
 
   render() {
     return (
-      <div style={{ height: 'calc(100vh - 160px)' }}>
+      <div style={{ height: '100vh' }}>
         <TableData
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}

@@ -8,7 +8,7 @@ import { Button } from 'antd';
 class QuestionnaireRecords extends React.Component {
   render() {
     return (
-      <div style={{ height: 'calc(100vh - 160px)' }}>
+      <div style={{ height: '100vh' }}>
         <TableData
           {...this.props}
           wrappedComponentRef={element => (this.tableDataRef = element)}
