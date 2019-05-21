@@ -110,7 +110,8 @@ export default class WindowView extends React.Component {
       nextProps.height !== this.props.height ||
       nextProps.x !== this.props.x ||
       nextProps.y !== this.props.y ||
-      nextProps.visible !== this.props.visible
+      nextProps.visible !== this.props.visible ||
+      nextProps.zIndex !== this.props.zIndex
     ) {
       return true;
     }
@@ -175,6 +176,8 @@ export default class WindowView extends React.Component {
       'onDragStop',
       'onResizeStop'
     ]);
+
+    console.log('rerender');
 
     const child = (
       <Draggable
