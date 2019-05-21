@@ -236,6 +236,7 @@ class Desktop extends React.Component {
         if (
           selectedApps.some(item => {
             if (item.name === app.RES_NAME) {
+              // REC_ID 为空时，为必要功能
               return (app.recid = item.REC_ID);
             }
           })
