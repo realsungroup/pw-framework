@@ -1,17 +1,8 @@
 import React from "react";
 import InfiniteScroll from 'react-infinite-scroller';
-import {
-  Button,
-  Icon,
-  Checkbox,
-  message,
-  Popover,
-  List,
-  Select,
-  Modal,
-  Input
-} from "antd";
+import {Button,Icon,Checkbox,message,Popover,List,Select,Modal,Input} from "antd";
 import { saveMultipleRecord } from "../../../util/api";
+import qs from "qs";
 import http from "../../../util20/api";
 
 const Option = Select.Option;
@@ -44,6 +35,8 @@ class CreatePlan extends React.Component {
   }
 
   componentDidMount() {
+    const qsObj = qs.parse(window.location.search.substring(1));
+    this.planid = qsObj.planid;
     this.getData();
     this.getLevel();
     this.getKcxl();
@@ -205,6 +198,7 @@ class CreatePlan extends React.Component {
             x++
             let obj = JSON.parse(JSON.stringify(ele))
             obj.C3_609616893275 = e.C3_609622254861
+            obj.C3_609616805633 = this.planid
             planData.push(obj)
           }
         });
