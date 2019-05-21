@@ -227,7 +227,7 @@ class Desktop extends React.Component {
   };
 
   handleOpenWindow = (app, typeName) => {
-    const resid = parseInt(app.ResId || app.resid, 10);
+    const resid = parseInt(app.ResID || app.resid, 10);
     const url = `/fnmodule?resid=${resid}&recid=${
       app.REC_ID
     }&type=${typeName}&title=${app.title}`;
