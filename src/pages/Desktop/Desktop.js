@@ -92,8 +92,12 @@ class Desktop extends React.Component {
   }
 
   componentDidMount = async () => {
+    // 设置主题色
     this.setThemeColor(this.state.color);
+    // 获取数据
     this.getData();
+    // 默认打开仪表盘窗口
+    this.handleOpenDashboard();
   };
 
   setThemeColor = themeColor => {
@@ -235,8 +239,13 @@ class Desktop extends React.Component {
       height,
       x: 0,
       y: 0,
+      customWidth: 800,
+      customHeight: height,
+      customX: 0,
+      customY: 0,
       minWidth: 330,
-      minHeight: 500
+      minHeight: 500,
+      zoomStatus: 'max'
     });
   };
 
@@ -390,8 +399,13 @@ class Desktop extends React.Component {
         height,
         x: 0,
         y: 0,
+        customWidth: 800,
+        customHeight: height,
+        customX: 0,
+        customY: 0,
         minWidth: 330,
-        minHeight: 500
+        minHeight: 500,
+        zoomStatus: 'max'
       });
       // 不存在于桌面，则先将 app 添加到桌面，然后再打开窗口
     } else {
@@ -459,8 +473,13 @@ class Desktop extends React.Component {
       height,
       x: 0,
       y: 0,
+      customWidth: 800,
+      customHeight: height,
+      customX: 0,
+      customY: 0,
       minWidth: 330,
-      minHeight: 500
+      minHeight: 500,
+      zoomStatus: 'max'
     });
   };
 
@@ -475,8 +494,13 @@ class Desktop extends React.Component {
       height,
       x,
       y: 0,
+      customWidth: width,
+      customHeight: height,
+      customX: x,
+      customY: 0,
       minWidth: 330,
-      minHeight: 500
+      minHeight: 500,
+      zoomStatus: 'custom'
     });
   };
 
@@ -491,8 +515,13 @@ class Desktop extends React.Component {
       height,
       x: 0,
       y: 0,
+      customWidth: 800,
+      customHeight: height,
+      customX: 0,
+      customY: 0,
       minWidth: 330,
-      minHeight: 500
+      minHeight: 500,
+      zoomStatus: 'max'
     });
   };
 
@@ -501,6 +530,13 @@ class Desktop extends React.Component {
   };
 
   addAppToBottomBar = (children, title, activeAppOthersProps = {}) => {
+    const { activeApps, zIndexActiveApps } = this.state;
+
+    // 不能打开同一个窗口
+    if (activeApps.findIndex(activeApp => activeApp.appName === title) !== -1) {
+      return message.info('窗口已打开');
+    }
+
     const activeApp = {
       ...activeAppOthersProps,
       children,
@@ -508,8 +544,6 @@ class Desktop extends React.Component {
       isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
       isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
     };
-
-    const { activeApps, zIndexActiveApps } = this.state;
 
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
@@ -554,19 +588,31 @@ class Desktop extends React.Component {
       width: 230,
       height: 380,
       x,
-      y
+      y,
+      customWidth: 230,
+      customHeight: 380,
+      customX: x,
+      customY: y,
+      zoomStatus: 'custom'
     });
   };
 
   handleResizeStop = (activeApp, dW, dH) => {
     activeApp.width = activeApp.width + dW;
     activeApp.height = activeApp.height + dH;
+
+    activeApp.customWidth = activeApp.width;
+    activeApp.customHeight = activeApp.height;
+
+    activeApp.zoomStatus = 'custom';
     this.forceUpdate();
   };
 
   handleDragStop = (activeApp, dX, dY) => {
     activeApp.x = dX;
     activeApp.y = dY;
+    activeApp.customX = dX;
+    activeApp.customY = dY;
     this.forceUpdate();
   };
 
@@ -575,6 +621,16 @@ class Desktop extends React.Component {
     activeApp.y = 0;
     activeApp.width = this.desktopMainRef.clientWidth;
     activeApp.height = this.desktopMainRef.clientHeight;
+    activeApp.zoomStatus = 'max';
+    this.forceUpdate();
+  };
+
+  handleCustom = activeApp => {
+    activeApp.x = activeApp.customX;
+    activeApp.y = activeApp.customY;
+    activeApp.width = activeApp.customWidth;
+    activeApp.height = activeApp.customHeight;
+    activeApp.zoomStatus = 'custom';
     this.forceUpdate();
   };
 
@@ -622,7 +678,12 @@ class Desktop extends React.Component {
       width,
       height,
       x,
-      y
+      y,
+      customWidth: width,
+      customHeight: height,
+      customX: x,
+      customY: y,
+      zoomStatus: 'custom'
     });
   };
 
@@ -812,16 +873,17 @@ class Desktop extends React.Component {
 
   renderWindowView = () => {
     const { activeApps, zIndexActiveApps } = this.state;
-    return activeApps.map(activeApp => {
+    return activeApps.map((activeApp, index) => {
       const visible = activeApp.isOpen;
       // 窗口的 zIndex
       const zIndex =
-        zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 1;
+        zIndexActiveApps.findIndex(app => app.appName === activeApp.appName) +
+        1;
 
       return (
         <WindowView
           ref={node => this.getWindowViewRef(node, activeApp.title)}
-          key={activeApp.appName}
+          key={activeApp.appName + index}
           title={activeApp.appName}
           visible={visible}
           onClose={() => this.handleCloseActiveApp(activeApp)}
@@ -837,6 +899,9 @@ class Desktop extends React.Component {
           onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
           onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
           onMax={() => this.handleMax(activeApp)}
+          onCustom={() => this.handleCustom(activeApp)}
+          isActive={activeApp.isActive}
+          zoomStatus={activeApp.zoomStatus}
         >
           {activeApp.children}
         </WindowView>

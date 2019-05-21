@@ -44,6 +44,12 @@ export default class WindowView extends React.Component {
     onMax: PropTypes.func,
 
     /**
+     * 尺寸设为自定义时的回调
+     * 默认：-
+     */
+    onCustom: PropTypes.func,
+
+    /**
      * 点击激活窗口的回调
      * 默认：-
      */
@@ -89,7 +95,18 @@ export default class WindowView extends React.Component {
      * css 层级
      * 默认：-
      */
-    zIndex: PropTypes.number.isRequired
+    zIndex: PropTypes.number.isRequired,
+
+    /**
+     * 窗口是否被激活
+     */
+    isActive: PropTypes.bool,
+
+    /**
+     * 缩放状态：'min' 最小化状态；'max' 最大化状态；'custom' 自定义窗口大小状态
+     * 默认：-
+     */
+    zoomStatus: PropTypes.oneOf(['min', 'max', 'custom'])
   };
 
   static defaultProps = {
@@ -100,7 +117,7 @@ export default class WindowView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoomStatus: 'max' // 缩放状态：'max' 最大化；'min' 最小化；'custom' 自定义窗口大小
+      zoomStatus: 'max' // 缩放状态：'max' 最大化；'custom' 自定义窗口大小
     };
   }
 
@@ -111,7 +128,9 @@ export default class WindowView extends React.Component {
       nextProps.x !== this.props.x ||
       nextProps.y !== this.props.y ||
       nextProps.visible !== this.props.visible ||
-      nextProps.zIndex !== this.props.zIndex
+      nextProps.zIndex !== this.props.zIndex ||
+      nextProps.isActive !== this.props.isActive ||
+      nextProps.zoomStatus !== this.props.zoomStatus
     ) {
       return true;
     }
@@ -134,6 +153,11 @@ export default class WindowView extends React.Component {
     onMax && onMax();
   };
 
+  handleCustom = () => {
+    const { onCustom } = this.props;
+    onCustom && onCustom();
+  };
+
   handelActiveWindowView = () => {
     const { onActive } = this.props;
     onActive && onActive();
@@ -147,6 +171,25 @@ export default class WindowView extends React.Component {
   handleDragStop = (e, data) => {
     const { onDragStop } = this.props;
     onDragStop && onDragStop(data.lastX, data.lastY);
+  };
+
+  renderMiddleBtn = () => {
+    const { zoomStatus } = this.props;
+    if (zoomStatus === 'max') {
+      return (
+        <div
+          className="window-view__header-custom-btn"
+          onClick={this.handleCustom}
+        >
+          <Icon type="switcher" />
+        </div>
+      );
+    }
+    return (
+      <div className="window-view__header-max-btn" onClick={this.handleMax}>
+        <i />
+      </div>
+    );
   };
 
   render() {
@@ -163,18 +206,17 @@ export default class WindowView extends React.Component {
       x,
       y,
       zIndex,
+      isActive,
       ...restProps
     } = this.props;
-    const classes = classNames('window-view', {
-      'window-view--hide': !visible
-    });
 
     const otherProps = omit(restProps, [
       'onMin',
       'onActive',
       'onMax',
       'onDragStop',
-      'onResizeStop'
+      'onResizeStop',
+      'onCustom'
     ]);
 
     const child = (
@@ -191,7 +233,10 @@ export default class WindowView extends React.Component {
             width: width || 230,
             height: height || 380
           }}
-          className={classes}
+          className={classNames('window-view', {
+            'window-view--hide': !visible,
+            'window-view--inactive': !isActive
+          })}
           style={{ position: 'absolute', zIndex }}
           onResizeStart={this.handelActiveWindowView}
           onResizeStop={this.handleResizeStop}
@@ -207,12 +252,7 @@ export default class WindowView extends React.Component {
               >
                 <i />
               </div>
-              <div
-                className="window-view__header-max-btn"
-                onClick={this.handleMax}
-              >
-                <i />
-              </div>
+              {this.renderMiddleBtn()}
               <div
                 className="window-view__header-close-btn"
                 onClick={this.handleClose}
@@ -222,6 +262,7 @@ export default class WindowView extends React.Component {
             </div>
           </div>
           <div className="window-view__content">{children}</div>
+          {/* mask */}
         </Resizable>
       </Draggable>
     );

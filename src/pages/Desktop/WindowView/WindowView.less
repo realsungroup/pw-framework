@@ -18,11 +18,18 @@
   &--hide {
     display: none;
   }
+  &--inactive {
+    .window-view__header {
+      background: #e7eaed;
+      border-color: #e7eaed;
+    }
+  }
   &__header {
     height: 32px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #dee1e6;
     display: flex;
     justify-content: space-between;
+    background: #dee1e6;
     cursor: pointer;
   }
   &__content {
@@ -73,7 +80,8 @@
       background: #e5e5e5;
     }
   }
-  &__header-close-btn {
+  &__header-close-btn,
+  &__header-custom-btn {
     display: flex;
     justify-content: center;
     align-items: center;
