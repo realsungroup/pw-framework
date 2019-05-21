@@ -31,9 +31,11 @@ import defaultBg from './DesktopBg/assets/default-bg.jpg';
 import logoPng from './assets/logo.png';
 
 const { SubMenu } = Menu;
-const { businessOptionalResIds, defaultOpenWindow } = window.pwConfig[
-  process.env.NODE_ENV
-];
+const {
+  businessOptionalResIds,
+  defaultOpenWindow,
+  themeColor
+} = window.pwConfig[process.env.NODE_ENV];
 
 const getPopoverContainer = () => {
   return document.querySelector('.desktop__main');
@@ -74,7 +76,7 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color;
+    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'bgColor', // 背景模式
       value: '#d88546' // 背景值
@@ -116,6 +118,7 @@ class Desktop extends React.Component {
       .modifyVars({ '@primary-color': themeColor })
       .then(() => {})
       .catch(err => {
+        console.log({ err });
         message.error(err.message);
       });
   };
