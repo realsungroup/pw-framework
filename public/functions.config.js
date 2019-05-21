@@ -1176,3 +1176,27 @@ window[611339890532] = {
     },
   }
 };
+
+//计划授权
+window[611667749682] = {
+  name: 'TableData',
+  title: '计划授权',
+  props: {
+    resid: 611318802160,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: true,
+    hasRowDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    subtractH: 220,
+    height:600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+  }
+};
