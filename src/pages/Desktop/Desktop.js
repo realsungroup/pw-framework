@@ -32,6 +32,10 @@ import defaultBg from './DesktopBg/assets/default-bg.jpg';
 const { SubMenu } = Menu;
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
 
+const getPopoverContainer = () => {
+  return document.querySelector('.desktop__main');
+};
+
 const objArrUnique = (arr, key) => {
   for (let i = 0; i < arr.length; i++) {
     for (let j = i + 1; j < arr.length; j++) {
@@ -823,10 +827,10 @@ class Desktop extends React.Component {
           }
           title={folder.typeName || '未命名'}
           trigger="hover"
-          // trigger="click"
           key={folder.typeName + index}
           placement="rightTop"
           overlayClassName="desktop__folder-wrap"
+          getPopupContainer={getPopoverContainer}
         >
           <div className="desktop__folder">
             <img src={folderPng} alt="folder" className="desktop__folder-img" />
@@ -875,10 +879,10 @@ class Desktop extends React.Component {
     const { activeApps, zIndexActiveApps } = this.state;
     return activeApps.map((activeApp, index) => {
       const visible = activeApp.isOpen;
-      // 窗口的 zIndex
+      // 窗口的 zIndex，从 4 开始
       const zIndex =
         zIndexActiveApps.findIndex(app => app.appName === activeApp.appName) +
-        1;
+        4;
 
       return (
         <WindowView
