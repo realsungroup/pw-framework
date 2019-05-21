@@ -119,7 +119,7 @@ export default class ExamManage extends Component {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: 'calc(100vh - 160px)' }}
+        style={{ height: '100vh' }}
       >
         <TableData
           refTargetComponentName="TableData"
