@@ -63,20 +63,30 @@ export default class ViProvider extends React.Component {
           onChange={this.handleTabsChange}
         >
           <TabPane tab="申请中" key="申请中">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...inApplication}/></div>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <TableData {...inApplication} />
+            </div>
           </TabPane>
 
           <TabPane tab="审批中" key="审批中">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...inExaminationAndApproval}/></div>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <TableData {...inExaminationAndApproval} />
+            </div>
           </TabPane>
           <TabPane tab="已审批" key="已审批">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...approved}/></div>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <TableData {...approved} />
+            </div>
           </TabPane>
           <TabPane tab="已拒绝" key="已拒绝">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...refused}/></div>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <TableData {...refused} />
+            </div>
           </TabPane>
           <TabPane tab="历史记录" key="历史记录">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...history}/></div>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <TableData {...history} />
+            </div>
           </TabPane>
         </Tabs>
         {!!abnormalNum && (

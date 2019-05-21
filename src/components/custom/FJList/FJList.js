@@ -1,20 +1,7 @@
 import React from "react";
 import { TableDataC } from "../loadableCustom";
 import { TableData } from "../../common/loadableCommon";
-import {
-  Button,
-  Icon,
-  Radio,
-  message,
-  Select,
-  List,
-  Card,
-  Modal,
-  Input,
-  Popconfirm,
-  Tabs,
-  Checkbox
-} from "antd";
+import {Button,Icon,Radio,message,Select,List,Card,Modal,Input,Popconfirm,Tabs,Form} from "antd";
 import CreatePlan from "../CreatePlan/CreatePlan";
 import http from "../../../util20/api";
 import InfiniteScroll from "react-infinite-scroller";
@@ -111,6 +98,29 @@ class FJList extends React.Component {
     }
   }
 
+  //获取单个员工
+  async getDataForOne() {
+    let cmswhere = "C3_609622254861='" + this.state.data[this.state.listIndex].C3_609622254861 + "'"
+    let res = await http().getTable({resid: this.props.resid,cmswhere});
+    try {
+      if (res.error === 0) {
+        if (res.data.length > 0) {
+          let data = this.state.data;
+          res.data[0].check = true
+          data[this.state.listIndex] = res.data[0]
+          this.setState({data})
+          this.getSubData(data[this.state.listIndex].C3_609622254861);
+        }
+      } else {
+        message.error(res.message);
+      }
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
+
   //获取统计数据
   async totalData() {
     let res = await http().getTable({ resid: this.props.totalResid });
@@ -151,15 +161,15 @@ class FJList extends React.Component {
   async getSubbData(key) {
     let cmswhere = "";
     if (this.state.levelSelect) {
-      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
+      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
       if (cmswhere != "") cmswhere += " AND ";
-      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
+      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if (cmswhere != "") cmswhere += " AND ";
-      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
+      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -189,6 +199,7 @@ class FJList extends React.Component {
 
   //单选员工
   onClick(listNo, i) {
+    console.log(i)
     let data = this.state.data;
     data.forEach(e => {
       e.check = false;
@@ -202,7 +213,7 @@ class FJList extends React.Component {
   async addCourse() {
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
-    addData.C3_609616893275 = this.state.listNo;
+    addData.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addData.C3_609616868478 = addData.C3_609845305680;
     addData.C3_609616906353 = addData.C3_609845305931;
     addData.C3_611314815828 = addData.C3_609845305993;
@@ -219,7 +230,7 @@ class FJList extends React.Component {
         data: [{ ...addData }]
       });
       if (res.Error === 0) {
-        this.getData();
+        this.getDataForOne();
         this.totalData();
         return message.success(res.message);
       } else {
@@ -233,17 +244,18 @@ class FJList extends React.Component {
 
   //添加自定义课程
   async addCustom() {
-    this.setState({ visibleCustom: false });
     let addCustom = this.state.addCustom;
-    addCustom.C3_609616893275 = this.state.listNo;
+    if(addCustom.C3_609616868478==""||addCustom.C3_609616868478==undefined)return message.error("课程名不能为空");
+    if(addCustom.C3_609616906353==""||addCustom.C3_609616906353==undefined)return message.error("费用不能为空");
+    this.setState({ visibleCustom: false });
+    addCustom.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addCustom.C3_611406136484 = "Y";
-    let res = await http().addRecords({
-      resid: this.props.subResid,
-      data: [{ ...addCustom }]
-    });
+    addCustom.C3_609616805633 = this.planid
+    let res = await http().addRecords({resid: this.props.subResid,data: [{ ...addCustom }]});
     try {
       if (res.Error === 0) {
-        this.getSubData(this.state.listNo);
+        this.getDataForOne();
+        this.totalData();
         return message.success(res.message);
       } else {
         message.error(res.message);
@@ -262,8 +274,9 @@ class FJList extends React.Component {
     });
     try {
       if (res.Error === 0) {
+        this.getDataForOne();
+        this.totalData();
         message.success(res.message);
-        this.getSubData(this.state.listNo);
       } else {
         message.error(res.message);
       }
@@ -275,9 +288,11 @@ class FJList extends React.Component {
 
   //修改课程
   async editCourse(i) {
-    this.setState({ visibleAdd: false, visibleEdit: false });
-    let editData = this.state.editData;
     let data = this.state.cnspmxb;
+    let editData = this.state.editData
+    if(data.C3_609616868478==""||data.C3_609616868478==undefined)return message.error("课程名不能为空");
+    if(data.C3_609616906353==""||data.C3_609616906353==undefined)return message.error("费用不能为空");
+    this.setState({ visibleAdd: false, visibleEdit: false });
     if (data.C3_611406136484 != "Y") {
       data.C3_609616868478 = editData.C3_609845305680;
       data.C3_611314815828 = editData.C3_609845305993;
@@ -293,7 +308,7 @@ class FJList extends React.Component {
         data: [data]
       });
       if (res.Error === 0) {
-        this.getData();
+        this.getDataForOne();
         this.totalData();
         return message.success(res.message);
       } else {
@@ -398,7 +413,7 @@ class FJList extends React.Component {
               style={{ marginRight: "10px" }}
               onClick={() => {
                 window.location.href =
-                  "/fnmodule?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划";
+                  "/fnmodule?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划&planid="+this.planid;
                 // this.setState({showPlanModal:true})
               }}
             >
@@ -907,6 +922,7 @@ class FJList extends React.Component {
             <TableData
               height={"calc(100vh - 300px)"}
               resid={611316474296}
+              cmswhere={`C3_609617197183 = '${this.state.pNo}'`}
               recordFormFormWidth={"90%"}
               hasBeBtns={false}
               hasModify={false}
@@ -1138,15 +1154,7 @@ class FJList extends React.Component {
                     </div>
                     <div style={{ display: "flex", flex: 1 }}>
                       <a target="_blank" href={item.C3_609845463949}>
-                        <Icon
-                          type="ellipsis"
-                          style={{
-                            fontSize: "18px",
-                            border: "2px solid #555",
-                            borderRadius: "50%",
-                            padding: "3px"
-                          }}
-                        />
+                        <Icon type="fund" style={{ fontSize: "22px" }} />
                       </a>
                     </div>
                   </div>
@@ -1240,13 +1248,9 @@ class FJList extends React.Component {
             onOk={this.addCustom.bind(this)}
             onCancel={() => this.setState({ visibleCustom: false })}
           >
-            <div
-              style={{ display: "flex", flexDirection: "row", margin: "10px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
               <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span
-                  style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}
-                >
+                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
                   课程名称:
                 </span>
               </div>
@@ -1260,13 +1264,9 @@ class FJList extends React.Component {
                 />
               </div>
             </div>
-            <div
-              style={{ display: "flex", flexDirection: "row", margin: "10px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
               <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span
-                  style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}
-                >
+                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
                   费用:
                 </span>
               </div>
@@ -1283,7 +1283,7 @@ class FJList extends React.Component {
           </Modal>
           <Modal
             title="修改课程"
-            width="60%"
+            width={this.state.cnspmxb.C3_611406136484 == "Y"?"520px":"60%"}
             destroyOnClose={true}
             visible={this.state.visibleEdit}
             onOk={this.editCourse.bind(this)}
@@ -1449,15 +1449,7 @@ class FJList extends React.Component {
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <a target="_blank" href={item.C3_609845463949}>
-                          <Icon
-                            type="ellipsis"
-                            style={{
-                              fontSize: "18px",
-                              border: "2px solid #555",
-                              borderRadius: "50%",
-                              padding: "3px"
-                            }}
-                          />
+                          <Icon type="fund" style={{ fontSize: "22px" }} />
                         </a>
                       </div>
                     </div>

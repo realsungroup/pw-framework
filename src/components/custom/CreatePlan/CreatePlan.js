@@ -1,17 +1,8 @@
 import React from "react";
 import InfiniteScroll from 'react-infinite-scroller';
-import {
-  Button,
-  Icon,
-  Checkbox,
-  message,
-  Popover,
-  List,
-  Select,
-  Modal,
-  Input
-} from "antd";
+import {Button,Icon,Checkbox,message,Popover,List,Select,Modal,Input} from "antd";
 import { saveMultipleRecord } from "../../../util/api";
+import qs from "qs";
 import http from "../../../util20/api";
 
 const Option = Select.Option;
@@ -44,6 +35,8 @@ class CreatePlan extends React.Component {
   }
 
   componentDidMount() {
+    const qsObj = qs.parse(window.location.search.substring(1));
+    this.planid = qsObj.planid;
     this.getData();
     this.getLevel();
     this.getKcxl();
@@ -99,15 +92,15 @@ class CreatePlan extends React.Component {
   async getSubData(key) {
     let cmswhere = "";
     if (this.state.levelSelect) {
-      cmswhere += "C3_611438617188='" + this.state.levelSelect + "'";
+      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_611314817188='" + this.state.xlSelect + "'";
+      cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
       if(cmswhere!="")cmswhere+=" AND "
-      cmswhere += "C3_611314817359='" + this.state.lbSelect + "'";
+      cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
     if (this.state.kcState == "Rec" && cmswhere == "")
       return this.setState({ subData: [] });
@@ -169,7 +162,7 @@ class CreatePlan extends React.Component {
   onClick(i) {
     let data = this.state.data;
     if (data[i].check == true) {
-      this.setState({ levelSelect: "", lkState: "", subData: [] });
+      // this.setState({ levelSelect: "", lkState: "", subData: [] });
     } else {
       this.setState(
         {
@@ -205,6 +198,7 @@ class CreatePlan extends React.Component {
             x++
             let obj = JSON.parse(JSON.stringify(ele))
             obj.C3_609616893275 = e.C3_609622254861
+            obj.C3_609616805633 = this.planid
             planData.push(obj)
           }
         });
@@ -493,16 +487,16 @@ class CreatePlan extends React.Component {
                       >
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609616868478 == null
+                            {item.C3_609845305680 == null
                               ? "无"
-                              : item.C3_609616868478}
+                              : item.C3_609845305680}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_611314815266 == null
+                            {item.C3_610390419677 == null
                               ? "无"
-                              : item.C3_611314815266}
+                              : item.C3_610390419677}
                           </span>
                         </div>
                         <div
@@ -523,42 +517,34 @@ class CreatePlan extends React.Component {
                             }}
                           />
                           <span>
-                            {item.C3_611314815485 == null
+                            {item.C3_610390410802 == null
                               ? "无"
-                              : item.C3_611314815485}
+                              : item.C3_610390410802}
                           </span>
                         </div>
                         <div style={{ display: "flex", flex: 1 }}>
                           <span>
-                            {item.C3_609616906353 == null
+                            {item.C3_609845305931 == null
                               ? "无"
-                              : item.C3_609616906353}
+                              : item.C3_609845305931}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: "flex", flex: 1 }}>
                         <span>
                           简介:{" "}
-                          {item.C3_611314816469 == null
+                          {item.C3_609845305618 == null
                             ? "无"
-                            : item.C3_611314816469}
+                            : item.C3_609845305618}
                         </span>
                       </div>
                     </div>
                     <div style={{ display: "flex", flex: 1 }}>
                       <a
                         target="_blank"
-                        href={item.C3_611314815656}
+                        href={item.C3_609845463949}
                       >
-                        <Icon
-                          type="ellipsis"
-                          style={{
-                            fontSize: "18px",
-                            border: "2px solid #555",
-                            borderRadius: "50%",
-                            padding: "3px"
-                          }}
-                        />
+                        <Icon type="fund" style={{ fontSize: "22px" }} />
                       </a>
                     </div>
                   </div>

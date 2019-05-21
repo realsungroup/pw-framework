@@ -143,7 +143,7 @@ class MyExam extends Component {
   render() {
     const { selectedRecord, modalVisible } = this.state;
     return (
-      <div style={{ height: 'calc(100vh - 160px)' }}>
+      <div style={{ height: '100vh' }}>
         <TableData
           resid={609931927812}
           hasRowModify={false}

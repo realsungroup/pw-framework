@@ -968,7 +968,7 @@ window[607168405062] = {
     hasRowModify: false,
     hasRowView: false,
     subtractH:190,
-    height:600,
+    // height:600,
     formProps: {
       height: 500
     },
@@ -1006,7 +1006,7 @@ window['创建计划'] = {
   title: '创建计划',
   props: {
     resid: 610307713776,
-    subResid: 611315248461,
+    subResid: 610308370365,
     levelId: 449335746776,
     kcbResid: 611315248461,
     kcxlResid: 610708527386,
@@ -1029,7 +1029,7 @@ window[610657933222] = {
     hasRowModify: false,
     hasRowView: true,
     subtractH: 220,
-    height:600,
+    // height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -1079,7 +1079,7 @@ window[611054119826] = {
   props: {
     resid:611054247854,
     subtractH:190,
-    height:500,
+    // height:500,
     hasModify: false,
     hasDelete: false,
     hasRowView: false,

@@ -53,7 +53,7 @@ class AdminConfirm extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div style={{ height: 'calc(100vh - 160px)' }}>
+        <div style={{ height: '100vh' }}>
           <TableData
             {...this.props}
             actionBarExtra={this.renderActionBarExtra}

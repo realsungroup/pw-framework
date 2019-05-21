@@ -4,7 +4,7 @@ import { TableData } from '../../common/loadableCommon';
 class TableDataWrap extends React.Component{
   render(){
     return (
-      <div className="table-data-wrap" style={{height: 'calc(100vh - 220px)'}}>
+      <div className="table-data-wrap" style={{height: '100vh'}}>
         <TableData {...this.props} />
       </div>
     )

@@ -138,3 +138,26 @@ export { MyCustomComponent } from '../components/custom/loadableCustom';
 ```
 
 ##### 7. 完成！
+
+### 开发的功能模块（定制组件）样式使用主题色
+
+1. 先在组件的 `less` 文件中导入 `src/styles/variables.less` 文件，然后在组件中使用 `主题色变量（@primary-color）`，如 `MyComponent.less`
+
+```less
+// MyComponent.less
+@import '../../../styles/variables.less';
+.my-component {
+  background: @primary-color;
+}
+```
+
+2. 将组件中的 `less` 导入到 `src/components/custom/index.less` 文件中，如将 `MyComponent.less` 导入到 `src/components/custom/index.less` 文件中：
+
+```less
+// src/components/custom/index.less
+@import './MyComponent/MyComponent.less';
+```
+
+3. 完成！
+
+注：若做完上面的步骤后更换主题色不见效果，则 `npm start` 重新启动项目即可。

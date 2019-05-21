@@ -54,7 +54,7 @@ class FiscalYearPlan extends React.Component {
     const { loading } = this.state;
     return (
       <Spin spinning={loading}>
-        <div style={{ height: "calc(100vh - 160px)" }}>
+        <div style={{ height: "100vh" }}>
           <Tabs
             defaultActiveKey="1"
             style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
@@ -74,7 +74,7 @@ class FiscalYearPlan extends React.Component {
                         size={btnSize}
                         href={`/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=${record.C3_609616660273}`}
                       >
-                        计划详情
+                        制定计划
                       </Button>
                     );
                   }

@@ -1,0 +1,39 @@
+@import url('../../../styles/variables.less');
+
+.person-center {
+  max-width: 600px;
+  margin: 20px auto 0;
+}
+
+.person-center-halfpanel {
+  display: block;
+  margin: 0 auto !important;
+  .footer-btn {
+    margin: 0 4px;
+  }
+}
+
+.person-center-tabs {
+  background: #fff;
+  padding: 10px;
+  border-radius: @border-radius-1;
+}
+
+.person-center-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 54px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-top: 1px solid @border-color;
+}
+
+@media screen and (max-width: 700px) {
+  .person-center {
+    max-width: 100%;
+    margin: 110px 16px 0;
+  }
+}
