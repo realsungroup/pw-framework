@@ -29,7 +29,7 @@ class MyQuery extends React.Component {
       foloderbuttonChecked: '全部',
       current: 1,
       pageSize: 5,
-      total: 0
+      total: 0,
     };
   }
   //获取问卷文件夹
@@ -52,70 +52,111 @@ class MyQuery extends React.Component {
       });
   };
   // 复制问卷开始
-  // copyQuery = item => {
-  //   console.log('复制', item);
-  //   const newItem = [
-  //     {
-  //       query_name: item.query_name,
-  //       query_description: item.query_description
-  //     }
-  //   ];
-  //   this.setState({ loading: true });
-  //   http()
-  //     .addRecords({
-  //       resid: 608822905547,
-  //       data: newItem
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       message.success('复制成功');
-  //       this.setState({ loading: false });
-  //       this.getData(this.state.current, this.state.pageSize);
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       return message.info('复制失败', err.message.error);
-  //     });
-  // 获取原问卷的试题和试题选项
-  /**分析内容
-   * 拿到的数据类型
-   * data[
-   * {question_type:'1111',
-   *  question_topic:'1111',
-   *  question_must:'XXXXX',
-   * subdata:[
-   * {option_write:'',
-   * option_content:'',},
-   * {},
-   * {},]
-   * },
-   * {},
-   * {}]
-   */
-  //   let questionArr=[];
-  //   http()
-  //     .getTable({
-  //       resid: 608828418560,
-  //       subresid: 608828722533,
-  //       cmswhere: 'query_id =' + item.query_id
-  //     })
-  //     .then(res => {
-  //       // console.log(res);
-  //       /**
-  //        * 对拿到的试题处理
-  //        */
-  //       res.data.map(question=>{
-  //         questionArr.push({
-  //           question_topic:question.question_topic,
-  //           question_must:question.question_must,
-  //           question_type:question.question_type,
-  //         })
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //     });
-  // };
+  copyQuery = async item => {
+    console.log('复制', item);
+    const newItem = [
+      {
+        query_name: item.query_name,
+        query_description: item.query_description
+      }
+    ];
+    this.setState({ loading: true });
+
+    // 1
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: 608822905547,
+        data: newItem
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    message.success('复制成功');
+    // console.log(res.data[0].query_id);
+    this.setState({ loading: false,  });
+    this.getData(this.state.current, this.state.pageSize);
+    // 2
+    let res2;
+    try {
+      res2 = await http().getTable({
+        resid: 608828418560,
+        subresid: 608828722533,
+        cmswhere: 'query_id =' + item.query_id
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+     let  AllQuestionsArrdata=[];
+    res2.data.map((question, index) => {
+      const obj = {
+        query_id: res.data[0].query_id,
+        question_topic: question.question_topic,
+        question_must: question.question_must,
+        question_type: question.question_type,
+        subdata: []
+      };
+
+      obj.subdata = question.subdata.map(subdataItem => {
+        return {
+          option_content: subdataItem.option_content,
+          option_write: subdataItem.option_write
+        };
+      });
+      res.data[index] = obj;
+      console.log('复制的试题', res.data[index]);
+      AllQuestionsArrdata.push(obj);
+    });
+   
+    console.log('所有的试题和试题选项',AllQuestionsArrdata);
+    
+    /**
+     * 对所有的试题和试题选项改成后端要的数据。
+     */
+    let AllQuestionDataBack=[];
+    AllQuestionsArrdata.map((questionB,index)=>{
+      const objB={
+        resid:608828418560,
+        maindata:{
+          query_id:questionB.query_id,
+          question_topic:questionB.question_topic,
+          question_must:questionB.question_must,
+          question_type:questionB.question_type,
+          subdata: questionB.subdata,
+          _state:'added',
+          _id:index+1,
+        }
+      };
+      objB.subdata=questionB.subdata.map((subdataBckItem,index)=>{
+        return {
+          resid:608828722533,
+          maindata:{
+            option_content:subdataBckItem.option_content,
+            option_write:subdataBckItem.option_write,
+            _state:'added',
+            _id:index+1,
+          }
+        }
+      });
+      AllQuestionDataBack.push(objB);
+    })
+    console.log('后端要的数据',AllQuestionDataBack);
+
+    //利用saveRecords向后端发送数据,向试题表和试题选项表中加数据
+    http()
+    .saveRecordAndSubTables({
+      data:AllQuestionDataBack,
+    })
+    .then(copyres => {
+      console.log(copyres);
+    })
+    .catch(err => {
+      console.error('添加错误原因', err);
+      message.error('复制问卷试题和试题选项', err.message);
+    });
+  };
   // 复制问卷结束
   componentDidMount() {
     this.getData(this.state.current, this.state.pageSize);
@@ -174,7 +215,7 @@ class MyQuery extends React.Component {
         ]
       })
       .then(res => {
-        this.getData(this.state.current, this.state.pageSize);
+        this.getData();
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -363,15 +404,13 @@ class MyQuery extends React.Component {
             {foloderbuttonChecked == '全部' ? (
               <Button
                 style={{ marginLeft: 8 }}
-                onClick={() => {
-                  this.getData(current, pageSize);
-                }}
+                onClick={this.getData}
                 type="primary"
               >
                 全部
               </Button>
             ) : (
-              <Button style={{ marginLeft: 8 }} onClick={()=>{this.getData(current, pageSize)}}>
+              <Button style={{ marginLeft: 8 }} onClick={this.getData}>
                 全部
               </Button>
             )}

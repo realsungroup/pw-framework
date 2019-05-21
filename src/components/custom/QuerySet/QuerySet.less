@@ -86,9 +86,9 @@ ul li{
 .query-set__questionTopic{
   font-size: 16px;
 }
-.choiceActionBox{
-  margin-top:20px;
-}
+
+  
+
 .WriteInut{
   width:150px;
   height:20px;
@@ -98,14 +98,16 @@ ul li{
 .choice{
   border-bottom: 1px solid #000;
   background: #fff;
-  padding:20px;
+  padding:46px;
+  min-height: 220px;
   position:relative; 
 }
 .choice:hover{
   background: #f8f8f8;
 }
 .choice:hover  .choiceActionBox{
- display:block;
+ visibility: visible;
+ opacity: 1;
 }
 .mark{
   color:#ff0000;
@@ -116,11 +118,17 @@ ul li{
   position:absolute;
   right:40PX;
   bottom: 10PX;
-  display:none;
+  visibility: hidden;
+  opacity: 0;
+  margin-top:20px;
+  transition: 0.3s;
 }
 .choiceActionBox button{
   margin-left:5px;
 }
 .questionOrder{
   color:#0086ff;
+}
+textarea.query-set__templete{
+  min-height: 300px;
 }
