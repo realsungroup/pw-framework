@@ -177,13 +177,12 @@ export default class WindowView extends React.Component {
       'onResizeStop'
     ]);
 
-    console.log('rerender');
-
     const child = (
       <Draggable
         handle=".window-view__header"
         position={{ x, y }}
         onStop={this.handleDragStop}
+        onStart={this.handelActiveWindowView}
       >
         <Resizable
           minWidth={minWidth}
@@ -194,6 +193,7 @@ export default class WindowView extends React.Component {
           }}
           className={classes}
           style={{ position: 'absolute', zIndex }}
+          onResizeStart={this.handelActiveWindowView}
           onResizeStop={this.handleResizeStop}
           onClick={this.handelActiveWindowView}
           {...otherProps}
