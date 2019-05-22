@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Popconfirm, message,} from 'antd';
+import { Button, Icon, Modal, Popconfirm, message,Tabs } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
 import TableData from '../../common/data/TableData';
-
+const TabPane = Tabs.TabPane;
 /**
  * props:
  * 1. questionnaire：数组，表示所有问卷
@@ -68,6 +68,10 @@ class QueryTable extends Component {
       sendVisible: false
     });
   };
+  // 
+  handleSecondEmail =(personList)=>{
+    console.log(personList);
+  }
   // 根据问卷的三种状态来渲染不同的界面
   renderButton = item => {
     const { onStopQuery } = this.props;
@@ -126,7 +130,7 @@ class QueryTable extends Component {
     });
   }
   render() {
-    const { questionnaire, onDelete, onCopyQuery} = this.props;
+    const { questionnaire, onDelete, onCopyQuery } = this.props;
     return (
       <div className="queryTable">
         {questionnaire.map((item, key) => {
@@ -152,7 +156,7 @@ class QueryTable extends Component {
                     <Icon type="sync" /> {item.query_status}
                   </span>
                   {/* <span className="answercount">答卷:{item.answercount}</span> */}
-                  <span>{item.REC_EDTTIME.substring(11,16)}</span>
+                  <span>{item.REC_EDTTIME.substring(11, 16)}</span>
                 </div>
               </div>
               <div className="queryItem-bottom">
@@ -225,7 +229,11 @@ class QueryTable extends Component {
                       获奖名单
                     </Button>
                   )}
-                  <Button onClick={()=>{onCopyQuery(item)}}>
+                  <Button
+                    onClick={() => {
+                      onCopyQuery(item);
+                    }}
+                  >
                     <Icon type="copy" />
                     复制
                   </Button>
@@ -242,10 +250,6 @@ class QueryTable extends Component {
                       删除
                     </Button>
                   </Popconfirm>
-                  {/* <Button>
-                    <Icon type="bell" />
-                    提醒
-                  </Button> */}
                 </div>
               </div>
             </div>
@@ -273,14 +277,16 @@ class QueryTable extends Component {
         </Modal>
         {/* 已发送人员列表 */}
         <Modal
-          title="已发送人员名单"
+          title="查看人员"
           visible={this.state.sendVisible}
           onOk={this.handsendListOk}
           onCancel={this.handlesendListCancel}
           width={this.state.sendwid}
           destroyOnClose
         >
-          <TableData
+          <Tabs defaultActiveKey="1">
+            <TabPane tab="已发送人员列表" key="1">
+            <TableData
             resid={609613163948}
             hasAdd={false}
             hasModify={false}
@@ -294,6 +300,39 @@ class QueryTable extends Component {
             subtractH={190}
             cmswhere={`query_id='${this.state.sendListId}'`}
           />
+            </TabPane>
+            <TabPane tab="未填写人员表" key="2">
+            <TableData
+            resid={609613163948}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            actionBarFixed={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasRowModify={false}
+            width={'98%'}
+            height={400}
+            subtractH={190}
+            cmswhere={`query_id='${this.state.sendListId}'`}
+            actionBarExtra={({
+              dataSource: dataSource,
+            }) => {
+              return (
+                <Popconfirm
+                  title="确认发送邮件提醒填写？"
+                  onConfirm={() => {
+                    this.handleSecondEmail(dataSource);
+                  }}
+                >
+                  <Button>提醒填写</Button>
+                </Popconfirm>
+              );
+            }}
+          />
+            </TabPane>
+          </Tabs>
+         
         </Modal>
       </div>
     );

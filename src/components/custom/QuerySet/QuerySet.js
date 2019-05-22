@@ -1835,7 +1835,7 @@ class QuerySet extends Component {
               </div>
             </div>
             <Switch
-              checked={this.state.isGift === '0' ? false : true}
+              checked={this.state.isGift == '0' ? false : true}
               checkedChildren="有礼品"
               unCheckedChildren="无礼品"
               onClick={this.handleSwitchGiftChange}
