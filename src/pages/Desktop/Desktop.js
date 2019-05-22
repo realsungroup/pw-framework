@@ -784,19 +784,6 @@ class Desktop extends React.Component {
       activeApp.isActive = false;
     });
 
-    // this.setState({
-    //   activeApps: [
-    //     ...this.state.activeApps,
-    //     {
-    //       ...app,
-    //       url,
-    //       appName,
-    //       isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-    //       isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-    //     }
-    //   ],
-    //   menuVisible: false
-    // });
     const children = (
       <iframe src={url} frameBorder="0" className="desktop__iframe" />
     );
