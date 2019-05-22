@@ -27,8 +27,8 @@ import {
 import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
-import defaultBg from './DesktopBg/assets/default-bg.jpg';
 import logoPng from './assets/logo.png';
+import qs from 'qs';
 
 const { SubMenu } = Menu;
 const {
@@ -178,17 +178,32 @@ class Desktop extends React.Component {
     // 桌面的文件夹
     const folders = dealApps([...res.data, ...(res.userdefined || [])]);
     this.setState({ folders }, () => {
+      const appArr = [];
       // 第一次打开桌面时，默认打开的 app
       if (isFirst) {
         folders.some(folder =>
           folder.apps.some(app => {
             if (app.title === defaultOpenWindow) {
-              this.handleOpenWindow(app, folder.typeName);
+              appArr.push({ app, typeName: folder.typeName });
               return true;
             }
           })
         );
       }
+      // 地址栏有某个功能模块的 querystring 的话，也直接打开窗口
+      const search = this.props.history.location.search.substring(1);
+      const qsObj = qs.parse(search);
+      if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
+        folders.some(folder =>
+          folder.apps.some(app => {
+            if (app.title === qsObj.title) {
+              appArr.push({ app, typeName: folder.typeName });
+              return true;
+            }
+          })
+        );
+      }
+      this.handleOpenWindow(appArr);
     });
     return res;
   };
@@ -250,31 +265,45 @@ class Desktop extends React.Component {
     return { expandedKeys, fnTreeData, checkedKeys, selectedFnList };
   };
 
-  handleOpenWindow = (app, typeName) => {
-    const resid = parseInt(app.ResID || app.resid, 10);
-    const url = `/fnmodule?resid=${resid}&recid=${
-      app.REC_ID
-    }&type=${typeName}&title=${app.title}`;
-    const children = (
-      <iframe src={url} frameBorder="0" className="desktop__iframe" />
-    );
-    const width = this.desktopMainRef.clientWidth;
-    const height = this.desktopMainRef.clientHeight;
-
-    this.addAppToBottomBar(children, app.title, {
-      ...app,
-      width,
-      height,
-      x: 0,
-      y: 0,
-      customWidth: 800,
-      customHeight: height,
-      customX: 0,
-      customY: 0,
-      minWidth: 330,
-      minHeight: 500,
-      zoomStatus: 'max'
+  /**
+   * 打开窗口
+   * @params {array} appArr，如：[{ app, typeName }]
+   */
+  handleOpenWindow = appArr => {
+    // app, typeName
+    const arr = [];
+    appArr.forEach(item => {
+      const { app, typeName } = item;
+      const resid = parseInt(app.ResID || app.resid, 10);
+      const url = `/fnmodule?resid=${resid}&recid=${
+        app.REC_ID
+      }&type=${typeName}&title=${app.title}`;
+      const children = (
+        <iframe src={url} frameBorder="0" className="desktop__iframe" />
+      );
+      const width = this.desktopMainRef.clientWidth;
+      const height = this.desktopMainRef.clientHeight;
+      arr.push({
+        children,
+        title: app.title,
+        activeAppOthersProps: {
+          ...app,
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 500,
+          zoomStatus: 'max'
+        }
+      });
     });
+
+    this.addAppToBottomBar(arr);
   };
 
   handleCloseActiveApp = activeApp => {
@@ -421,20 +450,26 @@ class Desktop extends React.Component {
 
       this.setState({ menuVisible: false });
 
-      this.addAppToBottomBar(children, app.title, {
-        ...app,
-        width,
-        height,
-        x: 0,
-        y: 0,
-        customWidth: 800,
-        customHeight: height,
-        customX: 0,
-        customY: 0,
-        minWidth: 330,
-        minHeight: 500,
-        zoomStatus: 'max'
-      });
+      this.addAppToBottomBar([
+        {
+          children,
+          title: app.title,
+          activeAppOthersProps: {
+            ...app,
+            width,
+            height,
+            x: 0,
+            y: 0,
+            customWidth: 800,
+            customHeight: height,
+            customX: 0,
+            customY: 0,
+            minWidth: 330,
+            minHeight: 500,
+            zoomStatus: 'max'
+          }
+        }
+      ]);
       // 不存在于桌面，则先将 app 添加到桌面，然后再打开窗口
     } else {
       this.addAppToDesktop(appData);
@@ -496,19 +531,25 @@ class Desktop extends React.Component {
     const children = <DesktopDashboard />;
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
-    this.addAppToBottomBar(children, '仪表盘', {
-      width,
-      height,
-      x: 0,
-      y: 0,
-      customWidth: 800,
-      customHeight: height,
-      customX: 0,
-      customY: 0,
-      minWidth: 330,
-      minHeight: 500,
-      zoomStatus: 'max'
-    });
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '仪表盘',
+        activeAppOthersProps: {
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 500,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
   };
 
   handleOpenPersonCenter = () => {
@@ -517,19 +558,26 @@ class Desktop extends React.Component {
     const height = this.desktopMainRef.clientHeight;
     const x = this.desktopMainRef.clientWidth / 2 - 310;
     this.setState({ menuVisible: false });
-    this.addAppToBottomBar(children, '个人中心', {
-      width,
-      height,
-      x,
-      y: 0,
-      customWidth: width,
-      customHeight: height,
-      customX: x,
-      customY: 0,
-      minWidth: 330,
-      minHeight: 500,
-      zoomStatus: 'custom'
-    });
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '个人中心',
+        activeAppOthersProps: {
+          width,
+          height,
+          x,
+          y: 0,
+          customWidth: width,
+          customHeight: height,
+          customX: x,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 500,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
   };
 
   handleReminderListItemClick = (url, title) => {
@@ -538,48 +586,76 @@ class Desktop extends React.Component {
     );
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
-    this.addAppToBottomBar(children, title, {
-      width,
-      height,
-      x: 0,
-      y: 0,
-      customWidth: 800,
-      customHeight: height,
-      customX: 0,
-      customY: 0,
-      minWidth: 330,
-      minHeight: 500,
-      zoomStatus: 'max'
-    });
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: title,
+        activeAppOthersProps: {
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 500,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
   };
 
   handleMaskShow = () => {
     window.addEventListener('unload', this.unloadCallback);
   };
 
-  addAppToBottomBar = (children, title, activeAppOthersProps = {}) => {
+  /**
+   * 添加应用到底部 bar（即打开窗口）
+   * @param {array} willOpenApps 将要打开的 app；如：[{ children, title, activeAppOthersProps }]
+   * children:表示子组件
+   * title:窗口标题
+   * activeAppOthersProps:activeApp 其他的 props
+   */
+  addAppToBottomBar = willOpenApps => {
+    // children, title, activeAppOthersProps = {}
     const { activeApps, zIndexActiveApps } = this.state;
 
-    // 不能打开同一个窗口
-    if (activeApps.findIndex(activeApp => activeApp.appName === title) !== -1) {
-      return message.info('窗口已打开');
-    }
+    const appArr = [];
+    willOpenApps.forEach(willOpenApp => {
+      // 不能打开同一个窗口
+      if (
+        activeApps.findIndex(
+          activeApp => activeApp.appName === willOpenApp.title
+        ) === -1
+      ) {
+        appArr.push({
+          ...willOpenApp.activeAppOthersProps,
+          children: willOpenApp.children,
+          appName: willOpenApp.title,
+          isOpen: true,
+          isActive: true
+        });
+      }
+    });
 
-    const activeApp = {
-      ...activeAppOthersProps,
-      children,
-      appName: title,
-      isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-      isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-    };
+    // const activeApp = {
+    //   ...activeAppOthersProps,
+    //   children,
+    //   appName: title,
+    //   isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
+    //   isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
+    // };
 
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
     });
-    const newZIndexActiveApps = [...zIndexActiveApps, activeApp];
+    const newZIndexActiveApps = [...zIndexActiveApps, ...appArr];
 
     this.setState({
-      activeApps: [...activeApps, activeApp],
+      activeApps: [...activeApps, ...appArr],
       zIndexActiveApps: newZIndexActiveApps,
       reminderListVisible: false
     });
@@ -612,17 +688,23 @@ class Desktop extends React.Component {
     const x = this.desktopMainRef.clientWidth / 2 - 115;
     const y = this.desktopMainRef.clientHeight / 2 - 190;
 
-    this.addAppToBottomBar(children, '更换主题色', {
-      width: 230,
-      height: 380,
-      x,
-      y,
-      customWidth: 230,
-      customHeight: 380,
-      customX: x,
-      customY: y,
-      zoomStatus: 'custom'
-    });
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '更换主题色',
+        activeAppOthersProps: {
+          width: 230,
+          height: 380,
+          x,
+          y,
+          customWidth: 230,
+          customHeight: 380,
+          customX: x,
+          customY: y,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
   };
 
   handleResizeStop = (activeApp, dW, dH) => {
@@ -702,17 +784,23 @@ class Desktop extends React.Component {
     const x = this.desktopMainRef.clientWidth / 2 - 400;
     const y = 0;
 
-    this.addAppToBottomBar(children, '更换背景图片', {
-      width,
-      height,
-      x,
-      y,
-      customWidth: width,
-      customHeight: height,
-      customX: x,
-      customY: y,
-      zoomStatus: 'custom'
-    });
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '更换背景图片',
+        activeAppOthersProps: {
+          width,
+          height,
+          x,
+          y,
+          customWidth: width,
+          customHeight: height,
+          customX: x,
+          customY: y,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
   };
 
   modLanguage = language => {
@@ -790,20 +878,27 @@ class Desktop extends React.Component {
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
     this.setState({ menuVisible: false });
-    this.addAppToBottomBar(children, app.title, {
-      ...app,
-      width,
-      height,
-      x: 0,
-      y: 0,
-      customWidth: 800,
-      customHeight: height,
-      customX: 0,
-      customY: 0,
-      minWidth: 330,
-      minHeight: 500,
-      zoomStatus: 'max'
-    });
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: app.title,
+        activeAppOthersProps: {
+          ...app,
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 500,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
   };
 
   renderApps = (apps, typeName) => {
@@ -811,7 +906,7 @@ class Desktop extends React.Component {
       <div
         className="desktop__folder-app"
         key={app.ResID || app.resid}
-        onClick={() => this.handleOpenWindow(app, typeName)}
+        onClick={() => this.handleOpenWindow([{ app, typeName }])}
       >
         <div className="desktop__folder-app-icon">
           {app.appIconUrl ? (
