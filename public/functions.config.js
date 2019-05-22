@@ -916,7 +916,11 @@ window[607384570024] = {
 // 考试系统----培训资料611243928651
 window[611243928651] = {
   name: 'TrainingMaterial',
-  title: '培训资料',
+  title: '管理考试资料',
+};
+window[611839500701] = {
+  name: 'TrainingMaterialU',
+  title: '我的考试资料',
 };
 //个人成绩管理
 window[607170104270] = {

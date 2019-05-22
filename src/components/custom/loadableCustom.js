@@ -282,3 +282,10 @@ export const TrainingMaterial = Loadable({
     return minLoading;
   }
 });
+
+export const TrainingMaterialU = Loadable({
+  loader: () => import('./TrainingMaterialU'),
+  loading() {
+    return minLoading;
+  }
+});
