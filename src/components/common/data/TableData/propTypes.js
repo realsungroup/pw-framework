@@ -618,21 +618,6 @@ export const propTypes = {
     containerProps: PropTypes.object // 容器（'modal' | 'drawer'）接收的 props（参考 ant-design Modal/Drawer 组件的 props）
   }),
 
-  // hasImport: PropTypes.bool,
-
-  /**
-   * 导入功能的容器类型
-   * 可选：'modal' 模态窗 | 'drawer' 抽屉
-   * 默认：'drawer'
-   */
-  // importContainerType: PropTypes.oneOf(['modal', 'drawer']),
-
-  /**
-   * 导入功能的容器接收的 props
-   * 默认：{}
-   */
-  // importContainerProps: PropTypes.object,
-
   /**
    * action bar 区域额外的内容
    * 默认：-
