@@ -123,7 +123,8 @@ class FJList extends React.Component {
 
   //获取统计数据
   async totalData() {
-    let res = await http().getTable({ resid: this.props.totalResid });
+    let cmswhere = "C3_609616660273='" + this.planid + "'"
+    let res = await http().getTable({ resid: this.props.totalResid,cmswhere });
     try {
       if (res.error === 0) {
         let totalData = res.data[0];
