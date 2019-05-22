@@ -32,11 +32,11 @@ import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import { Desktop, GetConfig, Login } from './pages/loadablePage';
+import { Desktop, GetConfig, Login, Reminder } from './pages/loadablePage';
 
 addLocaleData([...en, ...zh]);
 
-const Reminder = (
+const ReminderMsg = (
   <div className="app__nonuse-ie">
     本应用不支持
     <div className="app__nonuse-tag">
@@ -150,7 +150,7 @@ class App extends Component {
           <NonsupportIE
             // curIEVersion="ie11"
             supportVersionList={['ie11']}
-            reminder={Reminder}
+            reminder={ReminderMsg}
             warningBar={ReactDOM.createPortal(
               <WarningBar
                 visible={this.state.warningBarVisible}
@@ -165,13 +165,13 @@ class App extends Component {
                   <Switch>
                     <PrivateRoute exact path="/" component={Desktop} />
                     <PrivateRoute path="/fnmodule" component={GetConfig} />
+                    <PrivateRoute path="/reminder" component={Reminder} />
 
                     {/* <PrivateRoute path="/home" component={PageContainer} />
                     <PrivateRoute
                       path="/workbench-setting"
                       component={PageContainer}
                     />
-                    <PrivateRoute path="/reminder" component={PageContainer} />
                     <PrivateRoute
                       path="/report-table"
                       component={PageContainer}
