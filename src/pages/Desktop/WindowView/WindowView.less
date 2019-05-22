@@ -15,6 +15,7 @@
   border-style: solid;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 11px 3px;
   border-color: rgb(170, 170, 170);
+  overflow: hidden;
   &--hide {
     display: none;
   }
@@ -33,7 +34,8 @@
     cursor: pointer;
   }
   &__content {
-    flex: 1;
+    flex: 1 1;
+    overflow: auto;
   }
   &__header-title {
     line-height: 32px;

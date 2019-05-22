@@ -297,7 +297,7 @@ class Desktop extends React.Component {
           customX: 0,
           customY: 0,
           minWidth: 330,
-          minHeight: 500,
+          minHeight: 100,
           zoomStatus: 'max'
         }
       });
@@ -465,7 +465,7 @@ class Desktop extends React.Component {
             customX: 0,
             customY: 0,
             minWidth: 330,
-            minHeight: 500,
+            minHeight: 100,
             zoomStatus: 'max'
           }
         }
@@ -545,7 +545,7 @@ class Desktop extends React.Component {
           customX: 0,
           customY: 0,
           minWidth: 330,
-          minHeight: 500,
+          minHeight: 100,
           zoomStatus: 'max'
         }
       }
@@ -573,7 +573,7 @@ class Desktop extends React.Component {
           customX: x,
           customY: 0,
           minWidth: 330,
-          minHeight: 500,
+          minHeight: 100,
           zoomStatus: 'custom'
         }
       }
@@ -601,7 +601,7 @@ class Desktop extends React.Component {
           customX: 0,
           customY: 0,
           minWidth: 330,
-          minHeight: 500,
+          minHeight: 100,
           zoomStatus: 'max'
         }
       }
@@ -894,7 +894,7 @@ class Desktop extends React.Component {
           customX: 0,
           customY: 0,
           minWidth: 330,
-          minHeight: 500,
+          minHeight: 100,
           zoomStatus: 'max'
         }
       }
