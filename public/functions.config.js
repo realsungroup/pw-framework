@@ -815,7 +815,7 @@ window[607170472378] = {
     hasDelete: false,
     hasModify: false,
     hasRowView: false,
-    height:600,
+    // height:600,
     subtractH:220,
     
   }
@@ -891,7 +891,7 @@ window[607562749445] = {
     hasRowDelete: false,
     hasRowModify: false,
     subtractH:220,
-    height:600
+    // height:600
   }
 };
 //题型分数设置
@@ -934,7 +934,7 @@ window[607170104270] = {
     hasRowDelete: false,
     hasRowModify: false,
     hasRowView: false,
-    height: 300
+    // height: 300
   }
 };
 
@@ -1106,7 +1106,7 @@ window[611085896611] = {
     hasRowModify: true,
     hasRowView: true,
     subtractH: 220,
-    height:600,
+    // height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       // placement: 'bottom',
@@ -1147,7 +1147,7 @@ window[611339874157] = {
     hasRowModify: false,
     hasRowView: true,
     subtractH: 220,
-    height:600,
+    // height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -1172,7 +1172,7 @@ window[611339890532] = {
     hasRowModify: false,
     hasRowView: true,
     subtractH: 220,
-    height:600,
+    // height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',

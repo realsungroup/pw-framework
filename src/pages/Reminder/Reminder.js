@@ -1,5 +1,4 @@
 import React from 'react';
-import FunctionsHeader from '../components/FunctionsHeader';
 import qs from 'qs';
 import './Reminder.less';
 import { TableData } from 'Common/loadableCommon';
@@ -23,15 +22,13 @@ export default class Reminder extends React.Component {
   };
 
   render() {
-    const { resid, title, count } = this.state;
+    const { resid } = this.state;
 
     return (
       <div className="reminder">
-        <FunctionsHeader title={title} />
         <TableData
           resid={resid}
           size="small"
-          height={600}
           subtractH={180}
           hasResizeableBox
           hasAdd={false}
