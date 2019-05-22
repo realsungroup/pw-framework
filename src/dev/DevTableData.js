@@ -51,7 +51,7 @@ class DevTableData extends Component {
         }}
         actionBarWidth={300}
         title="调休登记"
-        resid={596720928643}
+        resid={611835781753}
         // width={1360}
         size="small"
         hasBeBtns={false}
@@ -111,6 +111,11 @@ class DevTableData extends Component {
         headerExtra={
           <button onClick={() => console.log('批量添加')}>批量添加</button>
         }
+        hasImport
+        importConfig={{
+          mode: 'fe',
+          containerType: 'drawer'
+        }}
       />
     );
   }

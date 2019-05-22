@@ -2,16 +2,35 @@ import React, { Fragment } from 'react';
 import {
   message,
   List,
-  Modal,
   Button,
   Upload,
   Progress,
   Icon,
-  Tooltip
+  Tooltip,
+  Spin
 } from 'antd';
 import PropTypes from 'prop-types';
 import http, { makeCancelable } from 'Util20/api';
-import './Import.less';
+import './ImportExcel.less';
+import XLSX from 'xlsx';
+
+const Dragger = Upload.Dragger;
+const noop = () => {};
+
+async function runPromiseByQueue(myPromises, callback) {
+  for (let value of myPromises) {
+    await value();
+    callback && callback();
+  }
+}
+
+const getImportSuccessCount = arr => {
+  return arr.filter(item => item === 'success');
+};
+
+const getImportFailCount = arr => {
+  return arr.filter(item => item !== 'success');
+};
 
 // 导入文件
 export const importFile = (baseURL, resid, cfgid, srctype, file) => {
@@ -44,6 +63,12 @@ export const importFile = (baseURL, resid, cfgid, srctype, file) => {
 export default class Import extends React.Component {
   static propTypes = {
     /**
+     * 导入数据的模式：'be' 表示后端处理 Excel；'fe' 表示前端处理 Excel
+     * 默认：-
+     */
+    mode: PropTypes.oneOf(['be', 'fe']).isRequired,
+
+    /**
      * 导入的资源 id
      */
     resid: PropTypes.number,
@@ -60,7 +85,14 @@ export default class Import extends React.Component {
     this.state = {
       list: [],
       errMsgItem: {},
-      errMsgModalVisible: false
+      errMsgModalVisible: false,
+      isSelectFile: false, // 是否选择了文件
+      fileInfo: null, // 文件信息
+      loading: false,
+      columninfo: [], // 字段数据
+      feMessages: [], // 前端模式处理 Excel 时，的错误字符串数据
+      feRecords: [], // excel 中的记录
+      progressIndex: 0
     };
   }
 
@@ -78,20 +110,39 @@ export default class Import extends React.Component {
   };
 
   getData = async () => {
-    let res;
-    this.p1 = makeCancelable(
-      http().getImportConfigs({ resid: this.props.resid })
-    );
-    try {
-      res = await this.p1.promise;
-    } catch (err) {
-      return message.error(err);
+    this.setState({ loading: true });
+    const { mode, resid } = this.props;
+
+    // 后端处理 Excel
+    if (mode === 'be') {
+      let res;
+      this.p1 = makeCancelable(
+        http().getImportConfigs({ resid: this.props.resid })
+      );
+      try {
+        res = await this.p1.promise;
+      } catch (err) {
+        return message.error(err);
+      }
+      res.data.forEach(item => {
+        item.opViewStatus = 'chooseFile'; // 操作视图状态：'chooseFile' 选择文件状态；'opBtns' 有操作按钮状态
+        item.dealStatus = ''; // 后端正在处理时的状态：'deal' 正在处理；'pause' 暂停；'terminate' 中断
+      });
+      this.setState({ list: res.data });
+
+      // 前端处理 Excel
+    } else {
+      // 获取列定义数据
+      let res;
+      try {
+        res = await http().getTableColumnDefine({ resid });
+      } catch (err) {
+        this.setState({ loading: false });
+        console.error(err);
+        return message.error(err.message);
+      }
+      this.setState({ columninfo: res.cmscolumninfo, loading: false });
     }
-    res.data.forEach(item => {
-      item.opViewStatus = 'chooseFile'; // 操作视图状态：'chooseFile' 选择文件状态；'opBtns' 有操作按钮状态
-      item.dealStatus = ''; // 后端正在处理时的状态：'deal' 正在处理；'pause' 暂停；'terminate' 中断
-    });
-    this.setState({ list: res.data });
   };
 
   selectedItem;
@@ -238,6 +289,92 @@ export default class Import extends React.Component {
     message.success('已终止');
   };
 
+  handleFEUploadChange = info => {
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    const ctx = this;
+    this.setState({ fileInfo: info, progressIndex: 0, feMessages: [] });
+    reader.onload = function(e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {
+        type: 'array',
+        cellDates: true, // https://github.com/SheetJS/js-xlsx/issues/703#issuecomment-357383504
+        dateNF: 'yyyy/mm/dd;@' // 日期格式化
+      });
+      ctx.setState({ isSelectFile: true });
+      const sheet1Name = workbook.SheetNames[0];
+      ctx._sheetData = workbook.Sheets[sheet1Name];
+      ctx.handleImportExcel(ctx._sheetData);
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  handleImportExcel = sheetData => {
+    const { resid } = this.props;
+    const { columninfo } = this.state;
+    const resultArr = XLSX.utils.sheet_to_json(sheetData, {
+      header: 1,
+      dateNF: 'm/d/yy h:mm'
+    });
+    const recordArr = resultArr.slice(1);
+    let headerInnerFields = [], // 表头的内部字段数组
+      fieldIsCorrect = true; // 所有字段是否都对应正确
+    try {
+      headerInnerFields = resultArr[0].map(text => {
+        const temp = columninfo.find(column => column.text === text);
+        // 后端表中没有该字段
+        if (!temp) {
+          message.error(`导入失败：后端表中没有 ${text} 字段`);
+          throw new Error('导入失败');
+        }
+        return temp.id;
+      });
+    } catch (err) {
+      fieldIsCorrect = false;
+      console.error(err);
+    }
+
+    if (!fieldIsCorrect) {
+      return;
+    }
+
+    const records = recordArr.map(recordsValue => {
+      let obj = {};
+      recordsValue.forEach((value, index) => {
+        obj[`${headerInnerFields[index]}`] = value;
+      });
+      return obj;
+    });
+    this.setState({ feRecords: records }, () => {
+      const pArr = records.map((record, index) => {
+        return async () => {
+          return this.saveOneRecord(resid, record, index);
+        };
+      });
+      runPromiseByQueue(pArr);
+    });
+  };
+
+  saveOneRecord = async (resid, record) => {
+    const { feMessages } = this.state;
+    let res;
+    try {
+      res = await http().addRecords({
+        resid,
+        data: [record],
+        isEditOrAdd: true
+      });
+    } catch (err) {
+      feMessages.push(err.message);
+      this.setState({ progressIndex: feMessages.length, feMessages });
+      console.error(err);
+      return console.error(err);
+    }
+    feMessages.push(res.rowstate[0].message);
+
+    this.setState({ progressIndex: feMessages.length, feMessages });
+  };
+
   renderProgress = item => {
     // 正在处理
     if (item.dealStatus) {
@@ -325,29 +462,96 @@ export default class Import extends React.Component {
   };
 
   render() {
-    const { list, errMsgModalVisible, errMsgItem } = this.state;
-    return (
-      <Fragment>
-        <List
-          dataSource={list}
-          renderItem={item => (
-            <List.Item>
-              <div className="with-import__item-wrap">
-                <span className="with-import__title">{item.IMOUT_NAME}</span>
-                <div className="with-import__progress">
-                  {this.renderProgress(item)}
+    const {
+      list,
+      errMsgModalVisible,
+      errMsgItem,
+      isSelectFile,
+      fileInfo
+    } = this.state;
+    const { mode } = this.props;
+
+    // 后端处理 Excel
+    if (mode === 'be') {
+      return (
+        <Fragment>
+          <List
+            dataSource={list}
+            renderItem={item => (
+              <List.Item>
+                <div className="import-excel__item-wrap">
+                  <span className="import-excel__title">{item.IMOUT_NAME}</span>
+                  <div className="import-excel__progress">
+                    {this.renderProgress(item)}
+                  </div>
+                  <div className="import-excel__op-area">
+                    {this.renderOpArea(item)}
+                  </div>
                 </div>
-                <div className="with-import__op-area">
-                  {this.renderOpArea(item)}
-                </div>
-              </div>
-            </List.Item>
+              </List.Item>
+            )}
+          />
+          {errMsgModalVisible && (
+            <pre style={{ color: '#f00' }}>{errMsgItem.errMsg}</pre>
           )}
-        />
-        {errMsgModalVisible && (
-          <pre style={{ color: '#f00' }}>{errMsgItem.errMsg}</pre>
+        </Fragment>
+      );
+    }
+
+    // 前端处理 Excel
+    const { loading, progressIndex, feRecords, feMessages } = this.state;
+    const len = feRecords.length || 1;
+    const percent = Math.floor((progressIndex / len) * 100);
+    return (
+      <Spin spinning={loading}>
+        <div className="import-excel">
+          <div style={{ height: 120, overflow: 'hidden' }}>
+            <Dragger
+              name="file"
+              customRequest={noop}
+              onChange={this.handleFEUploadChange}
+            >
+              <p>
+                <Icon type="inbox" />
+              </p>
+              <p>点击或拖拽文件到此区域</p>
+              {isSelectFile && (
+                <span style={{ color: '#018f56' }}>
+                  已选文件：{fileInfo.file.name}
+                </span>
+              )}
+            </Dragger>
+          </div>
+        </div>
+        {!!percent && <Progress percent={percent} />}
+        {!!percent && (
+          <div className="import-excel__result">
+            <h4>导入结果：</h4>
+            <div className="import-excel__result-item">
+              <span>总记录数：</span>
+              <span>{feRecords.length}</span>
+            </div>
+            <div className="import-excel__result-item">
+              <span>导入成功的记录数：</span>
+              <span>{getImportSuccessCount(feMessages).length}</span>
+            </div>
+            <div className="import-excel__result-item">
+              <span>导入失败的记录数：</span>
+              <span>{getImportFailCount(feMessages).length}</span>
+            </div>
+            <ul>
+              {feMessages.map(
+                (feMessage, index) =>
+                  feMessage !== 'success' && (
+                    <li style={{ color: '#f00', fontSize: 12 }}>
+                      Excel 中的第 {index + 1} 条记录：{feMessage}
+                    </li>
+                  )
+              )}
+            </ul>
+          </div>
         )}
-      </Fragment>
+      </Spin>
     );
   }
 }
