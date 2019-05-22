@@ -298,7 +298,7 @@ export default class Import extends React.Component {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, {
         type: 'array',
-        cellDates: true, // ?
+        cellDates: true, // https://github.com/SheetJS/js-xlsx/issues/703#issuecomment-357383504
         dateNF: 'yyyy/mm/dd;@' // 日期格式化
       });
       ctx.setState({ isSelectFile: true });
