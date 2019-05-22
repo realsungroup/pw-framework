@@ -576,17 +576,17 @@ class TableData extends React.Component {
 
   // 导入
   handleImport = () => {
-    const {
-      openImportView,
-      importContainerType,
-      importContainerProps,
-      baseURL
-    } = this.props;
-
+    const { openImportView, baseURL, importConfig } = this.props;
     const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
 
     openImportView &&
-      openImportView(url, this._id, importContainerType, importContainerProps);
+      openImportView(
+        url,
+        this._id,
+        importConfig.mode,
+        importConfig.containerType,
+        importConfig.containerProps
+      );
   };
 
   // 下载
@@ -1509,7 +1509,7 @@ class TableData extends React.Component {
       hasAdvSearch,
       hasSearch,
       hasZoomInOut,
-      hasImport,
+      importConfig,
       bordered,
       actionBarExtra,
       headerExtra
@@ -1554,7 +1554,7 @@ class TableData extends React.Component {
         onRow={this.handleOnRow}
         onRefresh={this.handleRefresh}
         size={size}
-        hasImport={hasImport && this._hasImport}
+        hasImport={importConfig && this._hasImport}
         hasDownload={hasDownload && this._hasDownload}
         hasRefresh={hasRefresh && this._hasRefresh}
         onAdvSearch={this.handleAdvSearch}
