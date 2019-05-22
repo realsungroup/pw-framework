@@ -36,3 +36,10 @@ export const Desktop = Loadable({
     return <FullLoading loading={true} />;
   }
 });
+
+export const Reminder = Loadable({
+  loader: () => import('./Reminder'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
