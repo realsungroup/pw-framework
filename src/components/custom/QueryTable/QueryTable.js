@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Popconfirm, message,Tabs } from 'antd';
+import { Button, Icon, Modal, Popconfirm, message, Tabs } from 'antd';
 import './QueryTable.less';
 import ClipboardJS from 'clipboard';
 import { Link } from 'react-router-dom';
 import TableData from '../../common/data/TableData';
+import http from '../../../util20/api';
 const TabPane = Tabs.TabPane;
 /**
  * props:
@@ -68,10 +69,37 @@ class QueryTable extends Component {
       sendVisible: false
     });
   };
-  // 
-  handleSecondEmail =(personList)=>{
+  //
+  handleSecondEmail = async personList => {
     console.log(personList);
-  }
+    const newPersonList = [...personList];
+    if (newPersonList) {
+      newPersonList.map(person => {
+        person.C3_610663309139 = '';
+      });
+    }
+    console.log('新的personList', newPersonList);
+    let data = [];
+    newPersonList.forEach(person => {
+      //  return  {recID:person.REC_ID,sendMail:''}
+      const obj = {
+        REC_ID: person.REC_ID,
+        C3_610663309139: ''
+      };
+      data.push(obj);
+      return data;
+    });
+    console.log('返回的数组',data)
+    let res;
+    res = await http().modifyRecords({
+      resid:609613163948,
+      data:data
+    }).then(res=>{
+      console.log('修改返回结果',res);
+    }).catch(err=>{
+      console.error(err.message);
+    })
+  };
   // 根据问卷的三种状态来渲染不同的界面
   renderButton = item => {
     const { onStopQuery } = this.props;
@@ -286,53 +314,50 @@ class QueryTable extends Component {
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="已发送人员列表" key="1">
-            <TableData
-            resid={609613163948}
-            hasAdd={false}
-            hasModify={false}
-            hasDelete={false}
-            actionBarFixed={false}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowModify={false}
-            width={'98%'}
-            height={400}
-            subtractH={190}
-            cmswhere={`query_id='${this.state.sendListId}'`}
-          />
+              <TableData
+                resid={609613163948}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                actionBarFixed={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                width={'98%'}
+                height={400}
+                subtractH={190}
+                cmswhere={`query_id='${this.state.sendListId}'`}
+              />
             </TabPane>
             <TabPane tab="未填写人员表" key="2">
-            <TableData
-            resid={609613163948}
-            hasAdd={false}
-            hasModify={false}
-            hasDelete={false}
-            actionBarFixed={false}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowModify={false}
-            width={'98%'}
-            height={400}
-            subtractH={190}
-            cmswhere={`query_id='${this.state.sendListId}'`}
-            actionBarExtra={({
-              dataSource: dataSource,
-            }) => {
-              return (
-                <Popconfirm
-                  title="确认发送邮件提醒填写？"
-                  onConfirm={() => {
-                    this.handleSecondEmail(dataSource);
-                  }}
-                >
-                  <Button>提醒填写</Button>
-                </Popconfirm>
-              );
-            }}
-          />
+              <TableData
+                resid={611867230563}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                actionBarFixed={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                width={'98%'}
+                height={400}
+                subtractH={190}
+                cmswhere={`query_id='${this.state.sendListId}'`}
+                actionBarExtra={({ dataSource: dataSource }) => {
+                  return (
+                    <Popconfirm
+                      title="确认发送邮件提醒填写？"
+                      onConfirm={() => {
+                        this.handleSecondEmail(dataSource);
+                      }}
+                    >
+                      <Button>提醒填写</Button>
+                    </Popconfirm>
+                  );
+                }}
+              />
             </TabPane>
           </Tabs>
-         
         </Modal>
       </div>
     );
