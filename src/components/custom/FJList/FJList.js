@@ -455,7 +455,7 @@ class FJList extends React.Component {
               </span>
             </div>
           </div>
-          <div style={{ height: "calc(100vh - 330px)", overflow: "auto" }}>
+          <div style={{ height: "calc(100vh - 170px)", overflow: "auto" }}>
             <InfiniteScroll
               initialLoad={false}
               pageStart={0}
@@ -742,7 +742,7 @@ class FJList extends React.Component {
             </div>
           </div>
           {subData.length > 0 ? (
-            <div style={{ height: "calc(100vh - 330px)", overflowY: "scroll" }}>
+            <div style={{ height: "calc(100vh - 170px)", overflowY: "scroll" }}>
               {subData.map((item, i) => (
                 <Card
                   title={item.C3_609616868478}
@@ -876,7 +876,7 @@ class FJList extends React.Component {
               size="large"
               bordered
               style={{
-                height: "calc(100vh - 330px)",
+                height: "calc(100vh - 170px)",
                 overflowY: "scroll",
                 display: "flex",
                 flex: 1,
