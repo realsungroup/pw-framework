@@ -1,8 +1,7 @@
 import React from 'react';
 import './DesktopBottomBar.less';
 import PropTypes from 'prop-types';
-import { FormattedMessage as FM, injectIntl } from 'react-intl';
-import { Button, message, Select, Icon } from 'antd';
+import { Select, Icon } from 'antd';
 import DesktopDate from './DesktopDate';
 import DesktopMenu from './DesktopMenu';
 
@@ -44,7 +43,13 @@ export default class DesktopBottomBar extends React.Component {
      * 点击条上的 app 时的回调
      * 默认：(activeApp) => void; activeApp 表示点击的 app 数据
      */
-    onAppClick: PropTypes.func
+    onAppClick: PropTypes.func,
+
+    /**
+     * 关机按钮点击时的回调
+     * 默认：() => void
+     */
+    onPoweroffClick: PropTypes.func
   };
 
   static defaultProps = {
@@ -52,7 +57,8 @@ export default class DesktopBottomBar extends React.Component {
     menuVisible: false,
     onOpenDashboard: noop,
     onOpenReminderList: noop,
-    onAppClick: noop
+    onAppClick: noop,
+    onPoweroffClick: noop
   };
 
   constructor(props) {
@@ -65,7 +71,7 @@ export default class DesktopBottomBar extends React.Component {
   };
 
   renderActiveApps = () => {
-    const { activeApps, onAppClick } = this.props;
+    const { activeApps, onAppClick, onCloseApp } = this.props;
 
     return activeApps.map((activeApp, index) => {
       const classes = classNames('desktop-bottom-bar__active-app', {
@@ -90,7 +96,7 @@ export default class DesktopBottomBar extends React.Component {
             className="desktop-bottom-bar__active-app-close"
             onClick={e => {
               e.stopPropagation();
-              this.handleCloseActiveApp(activeApp);
+              onCloseApp(activeApp);
             }}
           />
         </div>
@@ -105,7 +111,11 @@ export default class DesktopBottomBar extends React.Component {
       menuVisible,
       onOpenDashboard,
       onOpenReminderList,
-      onMenuClick
+      onMenuClick,
+      onPoweroffClick,
+      onOpenModifyPassModal,
+      onLockScreen,
+      onOpenPersonCenter
     } = this.props;
     return (
       <div className="desktop-bottom-bar">
@@ -140,6 +150,10 @@ export default class DesktopBottomBar extends React.Component {
           userInfo={userInfo}
           allFolders={allFolders}
           onMenuClick={onMenuClick}
+          onPoweroffClick={onPoweroffClick}
+          onOpenModifyPassModal={onOpenModifyPassModal}
+          onLockScreen={onLockScreen}
+          onOpenPersonCenter={onOpenPersonCenter}
         />
       </div>
     );
