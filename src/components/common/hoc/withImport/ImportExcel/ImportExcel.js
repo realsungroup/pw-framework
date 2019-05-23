@@ -69,6 +69,11 @@ export default class Import extends React.Component {
     mode: PropTypes.oneOf(['be', 'fe']).isRequired,
 
     /**
+     * 调用 save api 时的 _state 参数（'editoradd' 表示表中如果已存在该记录，则更新记录，不会报错；'added' 表示如果已存在该记录，则不能够插入该记录，而是抛出错误给前端）
+     */
+    saveState: PropTypes.oneOf(['editoradd', 'added']).isRequired,
+
+    /**
      * 导入的资源 id
      */
     resid: PropTypes.number,
@@ -357,12 +362,13 @@ export default class Import extends React.Component {
 
   saveOneRecord = async (resid, record) => {
     const { feMessages } = this.state;
+    const { saveState } = this.props;
     let res;
     try {
       res = await http().addRecords({
         resid,
         data: [record],
-        isEditOrAdd: true
+        isEditOrAdd: saveState === 'editoradd'
       });
     } catch (err) {
       feMessages.push(err.message);

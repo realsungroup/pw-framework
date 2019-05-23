@@ -24,6 +24,7 @@ const withImport = WrappedComponent => {
       baseURL,
       resid,
       mode,
+      saveState,
       type = 'drawer',
       containerProps
     ) => {
@@ -44,7 +45,8 @@ const withImport = WrappedComponent => {
       this.props.openModalOrDrawer(type, importContainerProps, ImportExcel, {
         resid,
         baseURL,
-        mode
+        mode,
+        saveState
       });
     };
 

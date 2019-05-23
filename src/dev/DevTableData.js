@@ -114,6 +114,7 @@ class DevTableData extends Component {
         hasImport
         importConfig={{
           mode: 'fe',
+          saveState: 'added',
           containerType: 'drawer'
         }}
       />
