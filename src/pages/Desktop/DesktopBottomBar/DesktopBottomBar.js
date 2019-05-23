@@ -38,14 +38,21 @@ export default class DesktopBottomBar extends React.Component {
      * 点击打开 提醒列表 的回调函数
      * 默认：() => void;
      */
-    onOpenReminderList: PropTypes.func
+    onOpenReminderList: PropTypes.func,
+
+    /**
+     * 点击条上的 app 时的回调
+     * 默认：(activeApp) => void; activeApp 表示点击的 app 数据
+     */
+    onAppClick: PropTypes.func
   };
 
   static defaultProps = {
     onLogoClick: noop,
     menuVisible: false,
     onOpenDashboard: noop,
-    onOpenReminderList: noop
+    onOpenReminderList: noop,
+    onAppClick: noop
   };
 
   constructor(props) {
@@ -58,7 +65,7 @@ export default class DesktopBottomBar extends React.Component {
   };
 
   renderActiveApps = () => {
-    const { activeApps } = this.props;
+    const { activeApps, onAppClick } = this.props;
 
     return activeApps.map((activeApp, index) => {
       const classes = classNames('desktop-bottom-bar__active-app', {
@@ -68,7 +75,7 @@ export default class DesktopBottomBar extends React.Component {
         <div
           className={classes}
           key={activeApp + index}
-          onClick={() => this.handleBottomBarAppTrigger(activeApp)}
+          onClick={() => onAppClick(activeApp)}
         >
           {activeApp.DeskiconCls && (
             <i
