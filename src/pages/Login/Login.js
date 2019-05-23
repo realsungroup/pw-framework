@@ -215,7 +215,7 @@ class Login extends React.Component {
                 )}
               </a>
             </div>
-            <div>
+            {/* <div>
               <Radio.Group
                 value={language}
                 onChange={this.handleLanguageSelectChange}
@@ -223,7 +223,7 @@ class Login extends React.Component {
                 <Radio.Button value="中文">中文</Radio.Button>
                 <Radio.Button value="English">English</Radio.Button>
               </Radio.Group>
-            </div>
+            </div> */}
           </div>
 
           <Form className="login__form">
