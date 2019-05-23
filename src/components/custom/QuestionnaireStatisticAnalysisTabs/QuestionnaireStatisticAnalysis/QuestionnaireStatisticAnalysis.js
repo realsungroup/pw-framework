@@ -1,10 +1,11 @@
 import React from 'react';
-import { TableData } from '../../common/loadableCommon';
+import { TableData } from '../../../common/loadableCommon';
 import { Button, Modal, message, Spin, Table, Progress } from 'antd';
 import './QuestionnaireStatisticAnalysis.less';
 import qs from 'qs';
 import http from 'Util20/api';
 import EchartsOfReact from 'echarts-of-react';
+import PropTypes from 'prop-types';
 
 const modalTitleMap = {
   question: '选择题目',
@@ -16,6 +17,31 @@ const modalTitleMap = {
  * 问卷统计分析
  */
 class QuestionnaireStatisticAnalysis extends React.Component {
+  static propTypes = {
+    /**
+     * 获取统计数据的 resid
+     * 默认：-
+     */
+    resid: PropTypes.number.isRequired,
+
+    /**
+     * 是否有部门筛选
+     * 默认：true
+     */
+    hasDepartmentFilter: PropTypes.bool,
+
+    /**
+     * 是否有级别筛选
+     * 默认：true
+     */
+    hasLevelFilter: PropTypes.bool
+  };
+
+  static defaultProps = {
+    hasDepartmentFilter: true,
+    hasLevelFilter: true
+  };
+
   constructor(props) {
     super(props);
     const qsObj = qs.parse(window.location.search.substring(1));
@@ -116,7 +142,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 610537303261,
+        resid: this.props.resid,
         cmswhere
       });
     } catch (err) {
@@ -542,6 +568,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       selectedDepartment,
       selectedLevel
     } = this.state;
+    const { hasDepartmentFilter, hasLevelFilter } = this.props;
     return (
       <Spin spinning={loading}>
         <div className="questionnaire-statistic-analysis">
@@ -568,66 +595,70 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                 </Button>
               )}
             </div>
-            <div className="questionnaire-statistic-analysis__department">
-              <h3 style={{ display: 'inline-block' }}>所选部门：</h3>
-              <span>{this.renderDepartment()}</span>
-              <Button
-                type="primary"
-                onClick={this.handleSelectDepartmentBtnClick}
-                style={{ marginLeft: 16 }}
-              >
-                选择部门
-              </Button>
-              {selectedDepartment && (
+            {hasDepartmentFilter && (
+              <div className="questionnaire-statistic-analysis__department">
+                <h3 style={{ display: 'inline-block' }}>所选部门：</h3>
+                <span>{this.renderDepartment()}</span>
                 <Button
-                  onClick={() => {
-                    this.setState({ selectedDepartment: null });
-                    if (!selectedQuestion) {
-                      return message.info('请选择题目');
-                    }
-                    this.getStatisticsData(
-                      selectedQuestion.question_id,
-                      null,
-                      selectedLevel && selectedLevel.C3_587136281870,
-                      selectedQuestion
-                    );
-                  }}
-                  style={{ marginLeft: 4 }}
+                  type="primary"
+                  onClick={this.handleSelectDepartmentBtnClick}
+                  style={{ marginLeft: 16 }}
                 >
-                  清除
+                  选择部门
                 </Button>
-              )}
-            </div>
-            <div className="questionnaire-statistic-analysis__level">
-              <h3 style={{ display: 'inline-block' }}>所选级别：</h3>
-              <span>{this.renderLevel()}</span>
-              <Button
-                type="primary"
-                onClick={this.handleSelectLevelBtnClick}
-                style={{ marginLeft: 16 }}
-              >
-                选择级别
-              </Button>
-              {selectedLevel && (
+                {selectedDepartment && (
+                  <Button
+                    onClick={() => {
+                      this.setState({ selectedDepartment: null });
+                      if (!selectedQuestion) {
+                        return message.info('请选择题目');
+                      }
+                      this.getStatisticsData(
+                        selectedQuestion.question_id,
+                        null,
+                        selectedLevel && selectedLevel.C3_587136281870,
+                        selectedQuestion
+                      );
+                    }}
+                    style={{ marginLeft: 4 }}
+                  >
+                    清除
+                  </Button>
+                )}
+              </div>
+            )}
+            {hasLevelFilter && (
+              <div className="questionnaire-statistic-analysis__level">
+                <h3 style={{ display: 'inline-block' }}>所选级别：</h3>
+                <span>{this.renderLevel()}</span>
                 <Button
-                  onClick={() => {
-                    this.setState({ selectedLevel: null });
-                    if (!selectedQuestion) {
-                      return message.info('请选择题目');
-                    }
-                    this.getStatisticsData(
-                      selectedQuestion.question_id,
-                      selectedDepartment && selectedDepartment.DEP_NAME,
-                      null,
-                      selectedQuestion
-                    );
-                  }}
-                  style={{ marginLeft: 4 }}
+                  type="primary"
+                  onClick={this.handleSelectLevelBtnClick}
+                  style={{ marginLeft: 16 }}
                 >
-                  清除
+                  选择级别
                 </Button>
-              )}
-            </div>
+                {selectedLevel && (
+                  <Button
+                    onClick={() => {
+                      this.setState({ selectedLevel: null });
+                      if (!selectedQuestion) {
+                        return message.info('请选择题目');
+                      }
+                      this.getStatisticsData(
+                        selectedQuestion.question_id,
+                        selectedDepartment && selectedDepartment.DEP_NAME,
+                        null,
+                        selectedQuestion
+                      );
+                    }}
+                    style={{ marginLeft: 4 }}
+                  >
+                    清除
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
 
           <h2 className="questionnaire-statistic-analysis__chart-title">

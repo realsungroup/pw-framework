@@ -26,30 +26,32 @@ class MyQuery extends React.Component {
       typewid: 1200,
       questionnaire: [],
       loading: false,
-      foloderbuttonChecked: '全部',
       current: 1,
       pageSize: 5,
       total: 0,
+      folderId: '', // 文件夹 id
+      queryStatus: '', // 问卷状态
+      selectedFolderText: '全部', // 选中的文件夹的文本
+      searchValue: '' // 搜索值
     };
   }
+
   //获取问卷文件夹
-  getFloders = () => {
-    http()
-      .getTable({
+  getFloders = async () => {
+    let res;
+    try {
+      res = await http().getTable({
         resid: 608822887704
-      })
-      .then(res => {
-        // console.log('文件夹', res.data);
-        let floders = res.data;
-        this.setState({
-          floders: floders,
-          loading: false
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        message.error('MyQuery获取文件夹失败', err.message);
       });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    res.data.unshift({ floder_name: '全部', floder_id: '' });
+    this.setState({
+      floders: res.data,
+      loading: false
+    });
   };
   // 复制问卷开始
   copyQuery = async item => {
@@ -75,8 +77,15 @@ class MyQuery extends React.Component {
     }
     message.success('复制成功');
     // console.log(res.data[0].query_id);
-    this.setState({ loading: false,  });
-    this.getData(this.state.current, this.state.pageSize);
+    this.setState({ loading: false });
+    const {
+      current,
+      pageSize,
+      folderId,
+      queryStatus,
+      searchValue
+    } = this.state;
+    this.getData(current, pageSize, folderId, queryStatus, searchValue);
     // 2
     let res2;
     try {
@@ -89,7 +98,7 @@ class MyQuery extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-     let  AllQuestionsArrdata=[];
+    let AllQuestionsArrdata = [];
     res2.data.map((question, index) => {
       const obj = {
         query_id: res.data[0].query_id,
@@ -109,76 +118,102 @@ class MyQuery extends React.Component {
       console.log('复制的试题', res.data[index]);
       AllQuestionsArrdata.push(obj);
     });
-   
-    console.log('所有的试题和试题选项',AllQuestionsArrdata);
-    
+
+    console.log('所有的试题和试题选项', AllQuestionsArrdata);
+
     /**
      * 对所有的试题和试题选项改成后端要的数据。
      */
-    let AllQuestionDataBack=[];
-    AllQuestionsArrdata.map((questionB,index)=>{
-      const objB={
-        resid:608828418560,
-        maindata:{
-          query_id:questionB.query_id,
-          question_topic:questionB.question_topic,
-          question_must:questionB.question_must,
-          question_type:questionB.question_type,
+    let AllQuestionDataBack = [];
+    AllQuestionsArrdata.map((questionB, index) => {
+      const objB = {
+        resid: 608828418560,
+        maindata: {
+          query_id: questionB.query_id,
+          question_topic: questionB.question_topic,
+          question_must: questionB.question_must,
+          question_type: questionB.question_type,
           subdata: questionB.subdata,
-          _state:'added',
-          _id:index+1,
+          _state: 'added',
+          _id: index + 1
         }
       };
-      objB.subdata=questionB.subdata.map((subdataBckItem,index)=>{
+      objB.subdata = questionB.subdata.map((subdataBckItem, index) => {
         return {
-          resid:608828722533,
-          maindata:{
-            option_content:subdataBckItem.option_content,
-            option_write:subdataBckItem.option_write,
-            _state:'added',
-            _id:index+1,
+          resid: 608828722533,
+          maindata: {
+            option_content: subdataBckItem.option_content,
+            option_write: subdataBckItem.option_write,
+            _state: 'added',
+            _id: index + 1
           }
-        }
+        };
       });
       AllQuestionDataBack.push(objB);
-    })
-    console.log('后端要的数据',AllQuestionDataBack);
+    });
+    console.log('后端要的数据', AllQuestionDataBack);
 
     //利用saveRecords向后端发送数据,向试题表和试题选项表中加数据
     http()
-    .saveRecordAndSubTables({
-      data:AllQuestionDataBack,
-    })
-    .then(copyres => {
-      console.log(copyres);
-    })
-    .catch(err => {
-      console.error('添加错误原因', err);
-      message.error('复制问卷试题和试题选项', err.message);
-    });
+      .saveRecordAndSubTables({
+        data: AllQuestionDataBack
+      })
+      .then(copyres => {
+        console.log(copyres);
+      })
+      .catch(err => {
+        console.error('添加错误原因', err);
+        message.error('复制问卷试题和试题选项', err.message);
+      });
   };
   // 复制问卷结束
   componentDidMount() {
-    this.getData(this.state.current, this.state.pageSize);
-  }
-
-  componentWillMount() {
     //组件将要被创建的时候，也即一旦加载该组件的时候。
     this.getFloders();
+    this.getData(1, this.state.pageSize, '', '', '');
   }
+
   componentWillUpdate() {
     //页面将要更新时执行的函数
   }
   componentDidUpdate() {}
 
-  //获取问卷
-  getData = async (current, pageSize) => {
+  /**
+   * 获取数据
+   * current:当前页码
+   * pageSize:每页数量
+   * folderId:文件夹 id
+   * status:问卷状态
+   * searchValue:搜索值
+   */
+  getData = async (current, pageSize, folderId, status, searchValue = '') => {
     this.setState({ loading: true, foloderbuttonChecked: '全部' });
+    let cmswhere = '',
+      temp = false;
+    if (folderId) {
+      cmswhere += `floder_id = '${folderId}'`;
+      temp = true;
+    }
+    if (status) {
+      if (temp) {
+        cmswhere += ' and ';
+      }
+      cmswhere += `query_status = '${status}'`;
+      temp = true;
+    }
+    if (searchValue) {
+      if (temp) {
+        cmswhere += ' and ';
+      }
+      cmswhere += `query_name LIKE '%${searchValue}%'`;
+    }
+
     http()
       .getTable({
         resid: 608822905547,
         pageindex: current - 1,
-        pagesize: pageSize
+        pagesize: pageSize,
+        cmswhere
       })
       .then(res => {
         console.log('问卷', res.data);
@@ -196,10 +231,11 @@ class MyQuery extends React.Component {
   };
   // 判断选中按钮的类型
   getType = flodername => {
-    const { foloderbuttonChecked } = this.state;
-    if (foloderbuttonChecked == flodername) {
+    const { selectedFolderText } = this.state;
+    if (selectedFolderText == flodername) {
       return 'primary';
     }
+    return 'default';
   };
   // 删除问卷;
   deleQuery = item => {
@@ -215,7 +251,14 @@ class MyQuery extends React.Component {
         ]
       })
       .then(res => {
-        this.getData();
+        const {
+          current,
+          pageSize,
+          folderId,
+          queryStatus,
+          searchValue
+        } = this.state;
+        this.getData(current, pageSize, folderId, queryStatus, searchValue);
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -252,31 +295,13 @@ class MyQuery extends React.Component {
   callback = key => {
     console.log(key);
   };
+
+  // 问卷状态切换
   queryStatusChange = value => {
     this.setState({ loading: true });
-    console.log('问卷状态', `${value}`);
-    const status = `${value}`;
-    if (`${value}` == '问卷状态') {
-      this.getData();
-    } else {
-      http()
-        .getTable({
-          resid: 608822905547,
-          cmswhere: `query_status = '${status}'`
-        })
-        .then(res => {
-          console.log('筛选出来的状态问卷', res.data);
-          this.setState({
-            questionnaire: res.data,
-            loading: false
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          message.error('MyQuery筛选失败', err.message);
-          this.setState({ loading: false });
-        });
-    }
+    const { pageSize, folderId, searchValue } = this.state;
+    this.setState({ queryStatus: value });
+    this.getData(1, pageSize, folderId, value, searchValue);
   };
 
   //停止问卷
@@ -295,8 +320,14 @@ class MyQuery extends React.Component {
         ]
       })
       .then(res => {
-        // console.log('问卷停止');
-        this.getData();
+        const {
+          current,
+          pageSize,
+          folderId,
+          queryStatus,
+          searchValue
+        } = this.state;
+        this.getData(current, pageSize.folderId, queryStatus, searchValue);
       })
       .catch(err => {
         console.error('修改失败原因', err);
@@ -304,59 +335,38 @@ class MyQuery extends React.Component {
         this.setState({ loading: false });
       });
   };
+
   //筛选查询渲染
   sortShow = item => {
-    //  console.log('筛选',item)
     const floderId = item.floder_id;
-    console.log(floderId);
-    this.setState({ loading: true, foloderbuttonChecked: item.floder_name });
+    console.log({ floderId });
+    const { pageSize, queryStatus, searchValue } = this.state;
 
-    http()
-      .getTable({
-        resid: 608822905547,
-        cmswhere: 'floder_id =' + floderId
-      })
-      .then(res => {
-        this.setState({ questionnaire: res.data, loading: false });
-      })
-      .catch(err => {
-        console.error(err);
-        message.error('MyQuery筛选失败', err.message);
-        this.setState({ loading: false });
-      });
+    this.getData(1, pageSize, floderId, queryStatus, searchValue);
+
+    this.setState({ folderId: floderId, selectedFolderText: item.floder_name });
   };
 
   //问卷名搜索渲染
   handleSearchChange = value => {
-    console.log({ value });
     this.setState({ loading: true });
-
-    http()
-      .getTable({
-        resid: 608822905547,
-        cmswhere: `query_name LIKE '%${value}%'`
-      })
-      .then(res => {
-        this.setState({ questionnaire: res.data, loading: false });
-      })
-      .catch(err => {
-        console.error(err);
-        message.error('MyQuery问卷搜索', err.message);
-        this.setState({ loading: false });
-      });
+    const { pageSize, folderId, queryStatus } = this.state;
+    this.getData(1, pageSize, folderId, queryStatus, value);
   };
 
   handleSelectFolder = id => {
     console.log({ id });
   };
+
   // 页码
   handlePageChange = (page, pageSize) => {
-    // console.log(page, pageSize);
+    const { folderId, queryStatus, searchValue } = this.state;
+    this.getData(page, pageSize, folderId, queryStatus, searchValue);
     this.setState({
       current: page
     });
-    this.getData(page, pageSize);
   };
+
   render() {
     const {
       questionnaire,
@@ -384,6 +394,8 @@ class MyQuery extends React.Component {
             </Link>
             <Input.Search
               style={{ width: 480, padding: 10 }}
+              value={this.state.searchValue}
+              onChange={e => this.setState({ searchValue: e.target.value })}
               onSearch={this.handleSearchChange}
             />
             <Select
@@ -391,7 +403,7 @@ class MyQuery extends React.Component {
               style={{ width: 120 }}
               onChange={this.queryStatusChange}
             >
-              <Option value="问卷状态">问卷状态</Option>
+              <Option value="">问卷状态</Option>
               <Option value="已停止">已停止</Option>
               <Option value="已发送">已发送</Option>
               <Option value="草稿">草稿</Option>
@@ -401,19 +413,7 @@ class MyQuery extends React.Component {
             <Button type="primary" icon="plus" onClick={this.showModal}>
               管理文件夹
             </Button>
-            {foloderbuttonChecked == '全部' ? (
-              <Button
-                style={{ marginLeft: 8 }}
-                onClick={this.getData}
-                type="primary"
-              >
-                全部
-              </Button>
-            ) : (
-              <Button style={{ marginLeft: 8 }} onClick={this.getData}>
-                全部
-              </Button>
-            )}
+
             <Modal
               title="管理文件夹"
               width={this.state.wid}
@@ -456,7 +456,7 @@ class MyQuery extends React.Component {
               return (
                 <Button
                   className="personalTags"
-                  key={index}
+                  key={item.floder_name}
                   type={this.getType(item.floder_name)}
                   onClick={() => {
                     this.sortShow(item);

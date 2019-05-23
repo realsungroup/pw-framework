@@ -1061,7 +1061,7 @@ window[610653848123] = {
 
 // 问卷统计分析
 window['问卷统计分析'] = {
-  name: 'QuestionnaireStatisticAnalysis',
+  name: 'QuestionnaireStatisticAnalysisTabs',
   title: '问卷统计分析',
   props: {
   }

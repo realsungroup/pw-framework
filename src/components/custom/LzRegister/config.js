@@ -21,7 +21,7 @@ export const inApplication = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -56,7 +56,7 @@ export const applyForAbnormal = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -91,7 +91,7 @@ export const refused = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
