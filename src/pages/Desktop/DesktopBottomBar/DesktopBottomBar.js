@@ -1,8 +1,7 @@
 import React from 'react';
 import './DesktopBottomBar.less';
 import PropTypes from 'prop-types';
-import { FormattedMessage as FM, injectIntl } from 'react-intl';
-import { Button, message, Select, Icon } from 'antd';
+import { Select, Icon } from 'antd';
 import DesktopDate from './DesktopDate';
 import DesktopMenu from './DesktopMenu';
 

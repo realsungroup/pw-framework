@@ -321,7 +321,7 @@ class TableData extends React.Component {
     } else {
       // 存储方式为前端存储，则只获取表格列定义数据
       this.p3 = makeCancelable(
-        http(httpParams).getTableColumnDefine({ resid })
+        http(httpParams).getTableColumnDefine({ resid: this._id })
       );
       try {
         res = await this.p3.promise;
