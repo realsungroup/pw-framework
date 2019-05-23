@@ -255,8 +255,8 @@ export const QuestionnaireRecords = Loadable({
   }
 });
 
-export const QuestionnaireStatisticAnalysis = Loadable({
-  loader: () => import('./QuestionnaireStatisticAnalysis'),
+export const QuestionnaireStatisticAnalysisTabs = Loadable({
+  loader: () => import('./QuestionnaireStatisticAnalysisTabs'),
   loading() {
     return minLoading;
   }
