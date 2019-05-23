@@ -35,21 +35,18 @@ export default class FnModule extends React.Component {
     const { resid: resId, recid: recId } = this.resolveQueryString();
     this.state = {
       resId,
-      recId
+      recId,
+      beConfig: {}, // 后端模板组件配置信息
+      isRequest: false // 是否请求了后端配置
     };
   }
-
-  state = {
-    beConfig: {}, // 后端模板组件配置信息
-    isRequest: false // 是否请求了后端配置
-  };
 
   resolveQueryString = () => {
     const querystring = this.props.location.search.substring(1);
     return qs.parse(querystring);
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     this.getConfig();
   }
 
@@ -67,6 +64,9 @@ export default class FnModule extends React.Component {
     return false;
   };
 
+  /**
+   * 请求后端表的配置
+   */
   getConfig = async () => {
     const { recId } = this.state;
     let res, record;
@@ -75,6 +75,7 @@ export default class FnModule extends React.Component {
     try {
       res = await getModuleComponentConfig(resid, cmswhere);
     } catch (err) {
+      this.setState({ isRequest: true });
       return message.error(err.message);
     }
     let beConfig;
