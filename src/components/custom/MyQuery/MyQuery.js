@@ -26,7 +26,6 @@ class MyQuery extends React.Component {
       typewid: 1200,
       questionnaire: [],
       loading: false,
-      foloderbuttonChecked: '全部',
       current: 1,
       pageSize: 5,
       total: 0,
