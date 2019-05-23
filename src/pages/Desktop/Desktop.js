@@ -29,6 +29,7 @@ import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
 import logoPng from './assets/logo.png';
 import qs from 'qs';
+import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 
 const { SubMenu } = Menu;
 const {
@@ -79,8 +80,8 @@ class Desktop extends React.Component {
     const userInfo = JSON.parse(getItem('userInfo'));
     const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
-      bgMode: 'bgColor', // 背景模式
-      value: '#d88546' // 背景值
+      bgMode: 'image', // 背景模式
+      value: defaultDesktopBg // 背景值
     };
     this.state = {
       folders: [], // 在桌面的文件夹
