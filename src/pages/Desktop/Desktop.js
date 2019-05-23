@@ -29,6 +29,7 @@ import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
 import logoPng from './assets/logo.png';
 import qs from 'qs';
+import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 
 const { SubMenu } = Menu;
 const {
@@ -79,8 +80,8 @@ class Desktop extends React.Component {
     const userInfo = JSON.parse(getItem('userInfo'));
     const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
-      bgMode: 'bgColor', // 背景模式
-      value: '#d88546' // 背景值
+      bgMode: 'image', // 背景模式
+      value: defaultDesktopBg // 背景值
     };
     this.state = {
       folders: [], // 在桌面的文件夹
@@ -194,7 +195,7 @@ class Desktop extends React.Component {
       const search = this.props.history.location.search.substring(1);
       const qsObj = qs.parse(search);
       if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
-        folders.some(folder =>
+        let temp = folders.some(folder =>
           folder.apps.some(app => {
             if (app.title === qsObj.title) {
               appArr.push({ app, typeName: folder.typeName });
@@ -202,6 +203,21 @@ class Desktop extends React.Component {
             }
           })
         );
+
+        // 若后端未定义这个入口（即改入口由前端定义的）
+        if (!temp) {
+          appArr.push({
+            app: {
+              appName: qsObj.title,
+              title: qsObj.title,
+              name: qsObj.title,
+              ResID: qsObj.resid,
+              REC_ID: qsObj.recid,
+              url: `fnmodule${this.props.history.location.search}`
+            },
+            typeName: qsObj.type
+          });
+        }
       }
       this.handleOpenWindow(appArr);
     });
@@ -274,10 +290,12 @@ class Desktop extends React.Component {
     const arr = [];
     appArr.forEach(item => {
       const { app, typeName } = item;
-      const resid = parseInt(app.ResID || app.resid, 10);
-      const url = `/fnmodule?resid=${resid}&recid=${
-        app.REC_ID
-      }&type=${typeName}&title=${app.title}`;
+      const resid = app.ResID || app.resid;
+      const url =
+        item.app.url ||
+        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${
+          app.title
+        }`;
       const children = (
         <iframe src={url} frameBorder="0" className="desktop__iframe" />
       );

@@ -99,11 +99,6 @@ class ExamArrange extends Component {
                     </Button>
                   );
                 },
-                // (record, btnSize) => {
-                //     return (
-                //       <Button>导入考试人员</Button>
-                //     );
-                //   },
                 (record, btnSize) => {
                   return <Selected record={record} />;
                 }
@@ -125,18 +120,19 @@ class ExamArrange extends Component {
               }}
             />
             {/* <Modal
-          title="选择人员"
-          width="100%"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          destroyOnClose
-        > */}
-            <SelectPersonFirstK
+              title="选择人员"
+              width="100%"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              destroyOnClose
+            > */}
+              <SelectPersonFirstK
               callback={this.callback}
               visible={this.state.visible}
               record={this.state.record}
             />
+              
             {/* </Modal> */}
           </TabPane>
           <TabPane

@@ -39,7 +39,7 @@ class TrainingMaterialU extends React.Component {
                     this.handleDownMaterial(record.C3_607185283034);
                   }}
                 >
-                  下载
+                  下载查阅
                 </Button>
               );
             }
