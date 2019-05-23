@@ -1143,6 +1143,7 @@ class Desktop extends React.Component {
           onOpenDashboard={this.handleOpenDashboard}
           onOpenReminderList={this.handleOpenReminderList}
           onMenuClick={this.handleAddToDesktop}
+          onAppClick={this.handleBottomBarAppTrigger}
         />
 
         {/* 窗口 */}
