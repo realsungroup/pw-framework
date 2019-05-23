@@ -211,7 +211,8 @@ class Desktop extends React.Component {
               title: qsObj.title,
               name: qsObj.title,
               ResID: qsObj.resid,
-              REC_ID: qsObj.recid
+              REC_ID: qsObj.recid,
+              url: `fnmodule${this.props.history.location.search}`
             },
             typeName: qsObj.type
           });
@@ -289,9 +290,11 @@ class Desktop extends React.Component {
     appArr.forEach(item => {
       const { app, typeName } = item;
       const resid = app.ResID || app.resid;
-      const url = `/fnmodule?resid=${resid}&recid=${
-        app.REC_ID
-      }&type=${typeName}&title=${app.title}`;
+      const url =
+        item.app.url ||
+        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${
+          app.title
+        }`;
       const children = (
         <iframe src={url} frameBorder="0" className="desktop__iframe" />
       );
