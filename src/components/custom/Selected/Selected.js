@@ -38,22 +38,23 @@ export default class Selected extends Component {
         C3_610662024171:'',
       }
     })
+    let res;
     try {
-      await http().modifyRecords({
+      res= await http().modifyRecords({
         resid: 610196239974,
         data: terpersonList
       })  
     } catch (err) {
       console.error(err);
-      Modal.success({
-        title:'提醒成功',
-        content:'邮件已成功发送',
-        onOk:()=>{
-          return message.success(err.message);
-        }
-      })
       return message.error(err.message);
     }
+    Modal.success({
+      title:'提醒成功',
+      content:'邮件已成功发送',
+      onOk:()=>{
+        return message.success(res.message);
+      }
+    })
     
   }
   render() {

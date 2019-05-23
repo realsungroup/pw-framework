@@ -194,7 +194,7 @@ class Desktop extends React.Component {
       const search = this.props.history.location.search.substring(1);
       const qsObj = qs.parse(search);
       if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
-        folders.some(folder =>
+        let temp = folders.some(folder =>
           folder.apps.some(app => {
             if (app.title === qsObj.title) {
               appArr.push({ app, typeName: folder.typeName });
@@ -202,6 +202,20 @@ class Desktop extends React.Component {
             }
           })
         );
+
+        // 若后端未定义这个入口（即改入口由前端定义的）
+        if (!temp) {
+          appArr.push({
+            app: {
+              appName: qsObj.title,
+              title: qsObj.title,
+              name: qsObj.title,
+              ResID: qsObj.resid,
+              REC_ID: qsObj.recid
+            },
+            typeName: qsObj.type
+          });
+        }
       }
       this.handleOpenWindow(appArr);
     });
@@ -274,7 +288,7 @@ class Desktop extends React.Component {
     const arr = [];
     appArr.forEach(item => {
       const { app, typeName } = item;
-      const resid = parseInt(app.ResID || app.resid, 10);
+      const resid = app.ResID || app.resid;
       const url = `/fnmodule?resid=${resid}&recid=${
         app.REC_ID
       }&type=${typeName}&title=${app.title}`;
