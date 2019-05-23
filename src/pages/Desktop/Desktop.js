@@ -30,6 +30,7 @@ import desktopIconPng from './assets/desktop-icon.png';
 import logoPng from './assets/logo.png';
 import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
+import DesktopBottomBar from './DesktopBottomBar';
 
 const { SubMenu } = Menu;
 const {
@@ -213,7 +214,7 @@ class Desktop extends React.Component {
               name: qsObj.title,
               ResID: qsObj.resid,
               REC_ID: qsObj.recid,
-              url: `fnmodule${this.props.history.location.search}`
+              fnmoduleUrl: `fnmodule${this.props.history.location.search}`
             },
             typeName: qsObj.type
           });
@@ -292,7 +293,7 @@ class Desktop extends React.Component {
       const { app, typeName } = item;
       const resid = app.ResID || app.resid;
       const url =
-        item.app.url ||
+        item.app.fnmoduleUrl ||
         `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${
           app.title
         }`;
@@ -430,7 +431,7 @@ class Desktop extends React.Component {
     });
   };
 
-  handleTriggerMenu = e => {
+  handleLogoClick = e => {
     e.stopPropagation();
     this.setState({ menuVisible: !this.state.menuVisible });
   };
@@ -1100,13 +1101,13 @@ class Desktop extends React.Component {
       menuVisible,
       userInfo,
       allFolders,
-      allFoldersExpandedKeys,
       loading,
       reminderList,
       reminderListVisible,
       reminderListLoading,
       modifyPassModalVisible,
-      selectedBg
+      selectedBg,
+      activeApps
     } = this.state;
 
     // 背景样式
@@ -1133,85 +1134,19 @@ class Desktop extends React.Component {
           </div>
         </ContextMenuTrigger>
         {/* 桌面底部 bar */}
-        <div className="desktop__bottom-bar">
-          <div className="desktop__bottom-left">
-            <div className="desktop__logo" onClick={this.handleTriggerMenu}>
-              <i className="iconfont icon-logo" />
-            </div>
-            <div className="desktop__active-apps">
-              {this.renderActiveApps()}
-            </div>
-          </div>
-          <div className="desktop__bottom-right">
-            <DesktopDate className="desktop__bottom-date" />
-            <div
-              className="desktop__bottom-right-item"
-              onClick={this.handleOpenDashboard}
-            >
-              <Icon type="dashboard" />
-            </div>
-            <div
-              className="desktop__bottom-right-item"
-              onClick={this.handleOpenReminderList}
-            >
-              <Icon type="bell" />
-            </div>
-          </div>
-        </div>
+        <DesktopBottomBar
+          activeApps={activeApps}
+          onLogoClick={this.handleLogoClick}
+          menuVisible={menuVisible}
+          userInfo={userInfo}
+          allFolders={allFolders}
+          onOpenDashboard={this.handleOpenDashboard}
+          onOpenReminderList={this.handleOpenReminderList}
+          onMenuClick={this.handleAddToDesktop}
+        />
+
         {/* 窗口 */}
         {this.renderWindowView()}
-        <div
-          className={classNames('desktop__menu', {
-            'desktop__menu--hide': !menuVisible
-          })}
-          onClick={e => e.stopPropagation()}
-        >
-          <div className="desktop__menu-user">
-            <div
-              className="desktop__menu-user-info"
-              onClick={this.handleOpenPersonCenter}
-            >
-              <div className="desktop__menu-user-avatar">
-                <Avatar icon="user" />
-              </div>
-              <div className="desktop__menu-user-username">
-                {userInfo.UserCode}
-              </div>
-            </div>
-
-            <div className="desktop__menu-icon-wrapper">
-              <Icon
-                type="lock"
-                className="desktop__menu-icon"
-                onClick={this.handleLockScreen}
-              />
-            </div>
-
-            <div className="desktop__menu-icon-wrapper">
-              <i
-                className="iconfont icon-mod-password desktop__menu-icon"
-                onClick={this.handleOpenModifyPassModal}
-              />
-            </div>
-
-            <Icon
-              type="poweroff"
-              className="desktop__menu-poweroff"
-              onClick={this.handlePoweroffClick}
-            />
-          </div>
-          <div className="desktop__menu-list">
-            <Menu
-              theme="theme"
-              style={{ width: '100%' }}
-              defaultOpenKeys={allFoldersExpandedKeys}
-              // selectedKeys={[this.state.current]}
-              mode="inline"
-            >
-              {allFolders.map(folder => this.renderMenuItem(folder))}
-            </Menu>
-          </div>
-        </div>
 
         <Icon
           type="loading"
