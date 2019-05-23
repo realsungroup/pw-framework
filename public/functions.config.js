@@ -1151,8 +1151,11 @@ window[611339874157] = {
     },
   }
 };
-
-
+//用户端入口
+window[611839500701] = {
+  name: 'TrainingMaterialU',
+  title: '我的考试资料',
+  };
 //总监审批
 window[611339890532] = {
   name: 'TableData',

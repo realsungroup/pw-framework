@@ -238,7 +238,7 @@ class CreatePlan extends React.Component {
                 选择员工
               </span>
             </div>
-            <div style={{height:"calc(100vh - 330px)",overflow: "auto"}}>
+            <div style={{height:"calc(100vh - 150px)",overflow: "auto"}}>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
