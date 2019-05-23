@@ -18,7 +18,7 @@ export const inApplication = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -42,9 +42,9 @@ export const inApplication = {
 // 已处理
 export const applyForAbnormal = {
   resid: 605892990971,
-  formProps: {
-    height: 550,
-  },
+  // formProps: {
+  //   height: 550,
+  // },
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
   hasAdd: false,
@@ -54,7 +54,7 @@ export const applyForAbnormal = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:166,
+  subtractH:200,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
