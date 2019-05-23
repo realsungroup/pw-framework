@@ -48,7 +48,7 @@ const customColumnWidth = {
 // 申请中
 export const inApplication = {
   resid: 605891650522,
-  subtractH: 166,
+  subtractH: 196,
   // height:800,
   formProps: {
     height: 500

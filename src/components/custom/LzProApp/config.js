@@ -10,6 +10,7 @@ import {
 // 待审批
 export const inApplication = {
   resid: 606243045601,
+  height:'100%',
   formProps: {
     height: 550,
   },
@@ -22,7 +23,7 @@ export const inApplication = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -57,7 +58,7 @@ export const applyForAbnormal = {
   hasRowModify: false,
   hasRowView: true,
   hasRowDelete: false,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -95,7 +96,7 @@ export const refused = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
@@ -131,7 +132,7 @@ export const history = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:166,
+  subtractH:196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
