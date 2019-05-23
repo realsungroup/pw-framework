@@ -28,11 +28,19 @@ export default class DesktopMenu extends React.Component {
      * menu 点击时的回调
      * 默认：() => void
      */
-    onMenuClick: PropTypes.func
+    onMenuClick: PropTypes.func,
+
+    /**
+     * 关机按钮点击时的回调
+     * 默认：() => void
+     */
+    onPoweroffClick: PropTypes.func
   };
 
   static defaultProps = {
-    onMenuClick: noop
+    onMenuClick: noop,
+    onPoweroffClick: noop,
+    onOpenModifyPassModal: noop
   };
 
   constructor(props) {
@@ -66,7 +74,15 @@ export default class DesktopMenu extends React.Component {
   };
 
   render() {
-    const { visible, userInfo, allFolders } = this.props;
+    const {
+      visible,
+      userInfo,
+      allFolders,
+      onPoweroffClick,
+      onOpenModifyPassModal,
+      onLockScreen,
+      onOpenPersonCenter
+    } = this.props;
     const child = (
       <div
         className={classNames('desktop-menu', {
@@ -75,10 +91,7 @@ export default class DesktopMenu extends React.Component {
         onClick={e => e.stopPropagation()}
       >
         <div className="desktop-menu-user">
-          <div
-            className="desktop-menu-user-info"
-            onClick={this.handleOpenPersonCenter}
-          >
+          <div className="desktop-menu-user-info" onClick={onOpenPersonCenter}>
             <div className="desktop-menu-user-avatar">
               <Avatar icon="user" />
             </div>
@@ -91,21 +104,21 @@ export default class DesktopMenu extends React.Component {
             <Icon
               type="lock"
               className="desktop-menu-icon"
-              onClick={this.handleLockScreen}
+              onClick={onLockScreen}
             />
           </div>
 
           <div className="desktop-menu-icon-wrapper">
             <i
               className="iconfont icon-mod-password desktop-menu-icon"
-              onClick={this.handleOpenModifyPassModal}
+              onClick={onOpenModifyPassModal}
             />
           </div>
 
           <Icon
             type="poweroff"
             className="desktop-menu-poweroff"
-            onClick={this.handlePoweroffClick}
+            onClick={onPoweroffClick}
           />
         </div>
         <div className="desktop-menu-list">

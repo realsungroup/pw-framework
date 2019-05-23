@@ -1144,6 +1144,11 @@ class Desktop extends React.Component {
           onOpenReminderList={this.handleOpenReminderList}
           onMenuClick={this.handleAddToDesktop}
           onAppClick={this.handleBottomBarAppTrigger}
+          onPoweroffClick={this.handlePoweroffClick}
+          onOpenModifyPassModal={this.handleOpenModifyPassModal}
+          onLockScreen={this.handleLockScreen}
+          onOpenPersonCenter={this.handleOpenPersonCenter}
+          onCloseApp={this.handleCloseActiveApp}
         />
 
         {/* 窗口 */}
