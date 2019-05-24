@@ -199,6 +199,16 @@ class CreatePlan extends React.Component {
             let obj = JSON.parse(JSON.stringify(ele))
             obj.C3_609616893275 = e.C3_609622254861
             obj.C3_609616805633 = this.planid
+            obj.C3_609616868478 = obj.C3_609845305680
+            obj.C3_609616906353 = obj.C3_609845305931
+            obj.C3_611314815266 = obj.C3_610390419677
+            obj.C3_611314815485 = obj.C3_610390410802
+            obj.C3_611314815656 = obj.C3_609845463949
+            obj.C3_611314815828 = obj.C3_609845305993
+            obj.C3_611314816141 = obj.C3_609845305868
+            obj.C3_611314816469 = obj.C3_609845305618
+            obj.C3_611314817188 = obj.C3_609845305368
+            obj.C3_611314817359 = obj.C3_609845305305
             planData.push(obj)
           }
         });
@@ -215,7 +225,7 @@ class CreatePlan extends React.Component {
       if (res.Error === 0) {
         message.success(res.message);
         window.location.href =
-          "/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理";
+          "/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid="+this.planid
       } else {
         message.error(res.message);
       }
