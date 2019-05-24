@@ -64,18 +64,13 @@ class Functions extends React.Component {
     if (!C) {
       return `没有名为 ${name} 的单元组件`;
     }
-    props = props || {};
+    const { history, location, match } = this.props;
+    props = { ...(props || {}), history, location, match };
     return <C {...props} />;
   };
 
   render() {
-    const {
-      name,
-      props,
-      title,
-      hasBackBtn = true,
-      hasHeader = true
-    } = this.props.config;
+    const { name, props } = this.props.config;
     return (
       <div className="functions">
         <div className="functions__body">
