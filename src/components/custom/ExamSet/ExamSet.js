@@ -165,7 +165,7 @@ class ExamSet extends Component {
     const resData = this.dealQueryQuestions(res.data);
     this.setState({ AllQuestions: resData, loading: false });
   };
-//处理拿到的问题
+  //处理拿到的问题
   dealQueryQuestions = resData => {
     resData.forEach(record => {
       record.subdata = [];
@@ -302,7 +302,7 @@ class ExamSet extends Component {
 
   // 单独添加确定
   handleAddAloneOk = async () => {
-    const { questions, activeQuestionType, queryId} = this.state;
+    const { questions, activeQuestionType, queryId } = this.state;
     let terminaldata = [];
     switch (activeQuestionType) {
       case '1': {
@@ -740,7 +740,12 @@ class ExamSet extends Component {
           {item.subdata.map((option, index) => {
             return (
               <div key={index} className="Exam-set__single__radio">
-                <Radio value={option.value}><span className='Exam-set__single__label'>{String.fromCharCode(index + 65)}.</span>{option.value}</Radio>
+                <Radio value={option.value}>
+                  <span className="Exam-set__single__label">
+                    {String.fromCharCode(index + 65)}.
+                  </span>
+                  {option.value}
+                </Radio>
               </div>
             );
           })}
@@ -832,11 +837,10 @@ class ExamSet extends Component {
           {item.subdata.map((option, index) => {
             return (
               <div key={index} className="Exam-set__single__radio">
-                <Checkbox
-                  key={option.REC_ID}
-                  value={option.value}
-                >
-                <span className='Exam-set__single__label'>{String.fromCharCode(index + 65)}.</span>
+                <Checkbox key={option.REC_ID} value={option.value}>
+                  <span className="Exam-set__single__label">
+                    {String.fromCharCode(index + 65)}.
+                  </span>
                   {option.value}
                 </Checkbox>
               </div>
@@ -1218,6 +1222,25 @@ class ExamSet extends Component {
     // console.log(qsObj);
     this.getThisQuery(qsObj.id);
     this.getThisQueryQuestions(qsObj.id);
+    window.parent.pwCallback.modifyTitle('设置试卷');
+    // 监听父窗口发送的 message 事件
+    window.addEventListener(
+      'message',
+      e => {
+        if (!e || !e.source || !e.source.pwCallback) {
+          return;
+        }
+        // 当事件类型为 "goBack"（即返回上一页时）
+        // 1. 调用 history.goBack() 方法放回上一页
+        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+        if (e.data.type === 'goBack') {
+          this.props.history.goBack();
+          e.source.pwCallback.modifyTitle &&
+            e.source.pwCallback.modifyTitle('试卷管理');
+        }
+      },
+      false
+    );
   }
 
   //编辑中选项内容的变化
@@ -1543,7 +1566,9 @@ class ExamSet extends Component {
             {queryId == '' ? (
               ''
             ) : (
-              <Button onClick={this.toMyQuery} type='primary'>完成</Button>
+              <Button onClick={this.toMyQuery} type="primary">
+                完成
+              </Button>
             )}
 
             {queryId == '' ? (

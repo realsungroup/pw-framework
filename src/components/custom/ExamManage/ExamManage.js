@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import TableData from '../../common/data/TableData';
-import { Tabs, Modal, Button, message } from 'antd';
+import { Modal, Button, message } from 'antd';
 import http from 'Util20/api';
 import './ExamManage.less';
-
-const TabPane = Tabs.TabPane;
+import { Link } from 'react-router-dom';
 
 /**
  * 考试安排
@@ -117,10 +116,7 @@ export default class ExamManage extends Component {
 
   render() {
     return (
-      <div
-        className="table-data-wrap"
-        style={{ height: '100vh' }}
-      >
+      <div className="table-data-wrap" style={{ height: '100vh' }}>
         <TableData
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -183,16 +179,17 @@ export default class ExamManage extends Component {
             },
             (record, btnSize) => {
               return (
-                <Button
-                  onClick={() => {
-                    window.location.href = `/fnmodule?resid=607459194551&recid=610198378903&type=考试系统&title=试卷设置&id=${
+                <Link
+                  to={{
+                    pathname: '/fnmodule',
+                    search: `?resid=607459194551&recid=610198378903&type=考试系统&title=试卷设置&id=${
                       record.C3_607171749463
-                    }`;
+                    }`
                   }}
-                  style={{ margin: '0 4px' }}
+                  target="_self"
                 >
-                  设计试卷
-                </Button>
+                  <Button style={{ margin: '0 4px' }}>设计试卷</Button>
+                </Link>
               );
             }
             // (record, btnSize) => {

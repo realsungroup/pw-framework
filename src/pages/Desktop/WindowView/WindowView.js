@@ -116,12 +116,22 @@ export default class WindowView extends React.Component {
 
   constructor(props) {
     super(props);
+    const { title } = props;
     this.state = {
-      zoomStatus: 'max' // 缩放状态：'max' 最大化；'custom' 自定义窗口大小
+      zoomStatus: 'max', // 缩放状态：'max' 最大化；'custom' 自定义窗口大小
+      title
     };
   }
 
-  shouldComponentUpdate(nextProps) {
+  componentDidMount = () => {
+    window.pwCallback = window.pwCallback || {};
+    const ctx = this;
+    window.pwCallback.modifyTitle = title => {
+      ctx.setState({ title });
+    };
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
     if (
       nextProps.width !== this.props.width ||
       nextProps.height !== this.props.height ||
@@ -130,12 +140,17 @@ export default class WindowView extends React.Component {
       nextProps.visible !== this.props.visible ||
       nextProps.zIndex !== this.props.zIndex ||
       nextProps.isActive !== this.props.isActive ||
-      nextProps.zoomStatus !== this.props.zoomStatus
+      nextProps.zoomStatus !== this.props.zoomStatus ||
+      nextState.title !== this.state.title
     ) {
       return true;
     }
     return false;
   }
+
+  getChildrenRef = node => {
+    this.iframeRef = node;
+  };
 
   handleClose = e => {
     e.stopPropagation();
@@ -173,6 +188,15 @@ export default class WindowView extends React.Component {
     onDragStop && onDragStop(data.lastX, data.lastY);
   };
 
+  handleGoBack = () => {
+    this.iframeRef.contentWindow.postMessage(
+      {
+        type: 'goBack'
+      },
+      '*'
+    );
+  };
+
   renderMiddleBtn = () => {
     const { zoomStatus } = this.props;
     if (zoomStatus === 'max') {
@@ -196,7 +220,6 @@ export default class WindowView extends React.Component {
     const {
       visible,
       src,
-      title,
       zoomStatus,
       children,
       minWidth,
@@ -210,6 +233,8 @@ export default class WindowView extends React.Component {
       ...restProps
     } = this.props;
 
+    const { title } = this.state;
+
     const otherProps = omit(restProps, [
       'onMin',
       'onActive',
@@ -218,6 +243,11 @@ export default class WindowView extends React.Component {
       'onResizeStop',
       'onCustom'
     ]);
+
+    const newChildren = React.cloneElement(children, {
+      id: 'title',
+      ref: this.getChildrenRef
+    });
 
     const child = (
       <Draggable
@@ -244,7 +274,13 @@ export default class WindowView extends React.Component {
           {...otherProps}
         >
           <div className="window-view__header">
-            <div className="window-view__header-title">{title}</div>
+            <div
+              className="window-view__header-title"
+              onClick={this.handleGoBack}
+            >
+              <Icon type="left" />
+              <span style={{ marginLeft: 8 }}>{title}</span>
+            </div>
             <div className="window-view__header-btns">
               <div
                 className="window-view__header-min-btn"
@@ -261,7 +297,7 @@ export default class WindowView extends React.Component {
               </div>
             </div>
           </div>
-          <div className="window-view__content">{children}</div>
+          <div className="window-view__content">{newChildren}</div>
           {/* mask */}
         </Resizable>
       </Draggable>

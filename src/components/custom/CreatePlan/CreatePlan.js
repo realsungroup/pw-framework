@@ -1,9 +1,19 @@
-import React from "react";
+import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import {Button,Icon,Checkbox,message,Popover,List,Select,Modal,Input} from "antd";
-import { saveMultipleRecord } from "../../../util/api";
-import qs from "qs";
-import http from "../../../util20/api";
+import {
+  Button,
+  Icon,
+  Checkbox,
+  message,
+  Popover,
+  List,
+  Select,
+  Modal,
+  Input
+} from 'antd';
+import { saveMultipleRecord } from '../../../util/api';
+import qs from 'qs';
+import http from '../../../util20/api';
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -19,18 +29,18 @@ class CreatePlan extends React.Component {
       levelData: [],
       kcxlData: [],
       kclbData: [],
-      levelSelect: "",
-      xlSelect: "",
-      lbSelect: "",
-      kclbState: "",
-      lkState: "",
-      kcState: "",
+      levelSelect: '',
+      xlSelect: '',
+      lbSelect: '',
+      kclbState: '',
+      lkState: '',
+      kcState: '',
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
       loading: false,
       hasMore: true,
-      key:""
+      key: ''
     };
   }
 
@@ -41,32 +51,60 @@ class CreatePlan extends React.Component {
     this.getLevel();
     this.getKcxl();
     this.getKclb();
+    window.parent.pwCallback.modifyTitle('创建计划');
+    // 监听父窗口发送的 message 事件
+    window.addEventListener(
+      'message',
+      e => {
+        if (!e || !e.source || !e.source.pwCallback) {
+          return;
+        }
+        // 当事件类型为 "goBack"（即返回上一页时）
+        // 1. 调用 history.goBack() 方法放回上一页
+        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+        if (e.data.type === 'goBack') {
+          this.props.history.goBack();
+          e.source.pwCallback.modifyTitle &&
+            e.source.pwCallback.modifyTitle('制定计划');
+        }
+      },
+      false
+    );
   }
 
   //获取员工列表
   async getData() {
-    let pageIndex = this.state.pageIndex
-    let pageSize = this.state.pageSize
-    let key = this.state.key
-    this.setState({loading: true})
-    let res = await http().getTable({ resid: this.props.resid, key ,pageIndex,pageSize});
+    let pageIndex = this.state.pageIndex;
+    let pageSize = this.state.pageSize;
+    let key = this.state.key;
+    this.setState({ loading: true });
+    let res = await http().getTable({
+      resid: this.props.resid,
+      key,
+      pageIndex,
+      pageSize
+    });
     try {
-      this.setState({loading: false})
+      this.setState({ loading: false });
       if (res.error === 0) {
-        if(res.data.length>0){
-          let data = this.state.data
-          data = data.concat(res.data)
+        if (res.data.length > 0) {
+          let data = this.state.data;
+          data = data.concat(res.data);
           // console.log(res.data)
           data.forEach(e => {
             e.check = false;
           });
-          this.setState({ data, oldData: data,pageIndex:++this.state.pageIndex });
+          this.setState({
+            data,
+            oldData: data,
+            pageIndex: ++this.state.pageIndex
+          });
         }
       } else {
         message.error(res.message);
       }
     } catch (err) {
-      this.setState({loading: false})
+      this.setState({ loading: false });
       console.error(err);
       return message.error(err.message);
     }
@@ -90,19 +128,19 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key) {
-    let cmswhere = "";
+    let cmswhere = '';
     if (this.state.levelSelect) {
       cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
-      if(cmswhere!="")cmswhere+=" AND "
+      if (cmswhere != '') cmswhere += ' AND ';
       cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
-      if(cmswhere!="")cmswhere+=" AND "
+      if (cmswhere != '') cmswhere += ' AND ';
       cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
-    if (this.state.kcState == "Rec" && cmswhere == "")
+    if (this.state.kcState == 'Rec' && cmswhere == '')
       return this.setState({ subData: [] });
     let res = await http().getTable({
       resid: this.props.subResid,
@@ -112,7 +150,7 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let subData = res.data;
-        console.log(subData)
+        console.log(subData);
         subData.forEach(e => {
           e.check = false;
         });
@@ -195,17 +233,27 @@ class CreatePlan extends React.Component {
         y++;
         data.forEach(e => {
           if (e.check == true) {
-            x++
-            let obj = JSON.parse(JSON.stringify(ele))
-            obj.C3_609616893275 = e.C3_609622254861
-            obj.C3_609616805633 = this.planid
-            planData.push(obj)
+            x++;
+            let obj = JSON.parse(JSON.stringify(ele));
+            obj.C3_609616893275 = e.C3_609622254861;
+            obj.C3_609616805633 = this.planid;
+            obj.C3_609616868478 = obj.C3_609845305680;
+            obj.C3_609616906353 = obj.C3_609845305931;
+            obj.C3_611314815266 = obj.C3_610390419677;
+            obj.C3_611314815485 = obj.C3_610390410802;
+            obj.C3_611314815656 = obj.C3_609845463949;
+            obj.C3_611314815828 = obj.C3_609845305993;
+            obj.C3_611314816141 = obj.C3_609845305868;
+            obj.C3_611314816469 = obj.C3_609845305618;
+            obj.C3_611314817188 = obj.C3_609845305368;
+            obj.C3_611314817359 = obj.C3_609845305305;
+            planData.push(obj);
           }
         });
       }
     });
-    if (y == 0) return message.error("至少选择一个课程");
-    if (x == 0) return message.error("至少选择一个员工");
+    if (y == 0) return message.error('至少选择一个课程');
+    if (x == 0) return message.error('至少选择一个员工');
     let res;
     try {
       res = await http().addRecords({
@@ -215,7 +263,8 @@ class CreatePlan extends React.Component {
       if (res.Error === 0) {
         message.success(res.message);
         window.location.href =
-          "/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理";
+          '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
+          this.planid;
       } else {
         message.error(res.message);
       }
@@ -230,15 +279,15 @@ class CreatePlan extends React.Component {
     let kcxlData = this.state.kcxlData;
     let kclbData = this.state.kclbData;
     return (
-      <div style={{ padding: "16px", background: "#fff" }}>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ width: "50%", padding: "10px 28px" }}>
-            <div style={{ paddingBottom: "24px" }}>
-              <span style={{ fontSize: "24px", fontWeight: "bold" }}>
+      <div style={{ padding: '16px', background: '#fff' }}>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ width: '50%', padding: '10px 28px' }}>
+            <div style={{ paddingBottom: '24px' }}>
+              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 选择员工
               </span>
             </div>
-            <div style={{height:"calc(100vh - 150px)",overflow: "auto"}}>
+            <div style={{ height: 'calc(100vh - 150px)', overflow: 'auto' }}>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
@@ -250,14 +299,19 @@ class CreatePlan extends React.Component {
                   size="large"
                   loading={this.state.loading}
                   header={
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                      }}
+                    >
                       <Select
-                        style={{ width: "100px" }}
+                        style={{ width: '100px' }}
                         defaultValue="All"
                         onChange={e => {
                           let data = [],
                             oldData = this.state.oldData;
-                          if (e == "All") {
+                          if (e == 'All') {
                             data = oldData;
                           } else {
                             oldData.forEach(ele => {
@@ -277,7 +331,12 @@ class CreatePlan extends React.Component {
                       </Select>
                       <Search
                         placeholder="搜索"
-                        onSearch={value => this.setState({key:value,data:[],pageIndex:0},()=>this.getData())}
+                        onSearch={value =>
+                          this.setState(
+                            { key: value, data: [], pageIndex: 0 },
+                            () => this.getData()
+                          )
+                        }
                         style={{ width: 200 }}
                       />
                     </div>
@@ -287,93 +346,93 @@ class CreatePlan extends React.Component {
                   dataSource={this.state.data}
                   renderItem={(item, i) => (
                     <List.Item
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={this.onClick.bind(this, i)}
                     >
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center"
+                          flexDirection: 'row',
+                          alignItems: 'center'
                         }}
                       >
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <Checkbox checked={item.check} />
                         </div>
-                        <div style={{ display: "flex", flex: 2 }}>
-                          <Icon type="user" style={{ fontSize: "24px" }} />
+                        <div style={{ display: 'flex', flex: 2 }}>
+                          <Icon type="user" style={{ fontSize: '24px' }} />
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 4,
-                            flexDirection: "column"
+                            flexDirection: 'column'
                           }}
                         >
                           <div>
                             <span>
                               {item.C3_609622254861 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622254861}
                             </span>
                           </div>
                           <div>
                             <span>
                               {item.C3_609622263470 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622263470}
                             </span>
                           </div>
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 4,
-                            flexDirection: "column"
+                            flexDirection: 'column'
                           }}
                         >
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center"
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               {item.C3_609622277252 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622277252}
                             </span>
                           </div>
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center"
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               {item.C3_609622292033 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622292033}
                             </span>
                           </div>
@@ -385,27 +444,32 @@ class CreatePlan extends React.Component {
               </InfiniteScroll>
             </div>
           </div>
-          <div style={{ width: "50%", padding: "10px 28px" }}>
-            <div style={{ paddingBottom: "24px" }}>
-              <span style={{ fontSize: "24px", fontWeight: "bold" }}>
+          <div style={{ width: '50%', padding: '10px 28px' }}>
+            <div style={{ paddingBottom: '24px' }}>
+              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 选择课程
               </span>
             </div>
             <List
               size="large"
               header={
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue="Rec"
                     onChange={e => {
-                      if (e == "Rec") {
-                        this.setState({ levelSelect: this.state.lkState, kcState: e },() => this.getSubData());
+                      if (e == 'Rec') {
+                        this.setState(
+                          { levelSelect: this.state.lkState, kcState: e },
+                          () => this.getSubData()
+                        );
                       } else {
                         this.setState(
                           {
-                            levelSelect: "",
-                            kcState: "All"
+                            levelSelect: '',
+                            kcState: 'All'
                           },
                           () => this.getSubData()
                         );
@@ -416,7 +480,7 @@ class CreatePlan extends React.Component {
                     <Option value="Rec">推荐课程</Option>
                   </Select>
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
                       this.setState({ xlSelect: e }, () => this.getSubData());
@@ -430,7 +494,7 @@ class CreatePlan extends React.Component {
                     ))}
                   </Select>
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
                       this.setState({ lbSelect: e }, () => this.getSubData());
@@ -451,100 +515,97 @@ class CreatePlan extends React.Component {
                 </div>
               }
               bordered
-              style={{ height: "calc(100vh - 350px)", overflowY: "scroll" }}
+              style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
               dataSource={this.state.subData}
               renderItem={(item, i) => (
                 <List.Item
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={this.onClickCustom.bind(this, i)}
                 >
                   <div
                     style={{
-                      display: "flex",
+                      display: 'flex',
                       flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center"
+                      flexDirection: 'row',
+                      alignItems: 'center'
                     }}
                   >
-                    <div style={{ display: "flex", flex: 1 }}>
+                    <div style={{ display: 'flex', flex: 1 }}>
                       <Checkbox checked={item.check} />
                     </div>
                     <div
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         flex: 10,
-                        flexDirection: "column"
+                        flexDirection: 'column'
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: "16px"
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginBottom: '16px'
                         }}
                       >
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_609845305680 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_609845305680}
                           </span>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_610390419677 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_610390419677}
                           </span>
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center"
+                            flexDirection: 'row',
+                            alignItems: 'center'
                           }}
                         >
                           <div
                             style={{
-                              width: "10px",
-                              height: "10px",
-                              borderRadius: "50%",
-                              background: "#4a90e2",
-                              marginRight: "16px"
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
                             }}
                           />
                           <span>
                             {item.C3_610390410802 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_610390410802}
                           </span>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_609845305931 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_609845305931}
                           </span>
                         </div>
                       </div>
-                      <div style={{ display: "flex", flex: 1 }}>
+                      <div style={{ display: 'flex', flex: 1 }}>
                         <span>
-                          简介:{" "}
+                          简介:{' '}
                           {item.C3_609845305618 == null
-                            ? "无"
+                            ? '无'
                             : item.C3_609845305618}
                         </span>
                       </div>
                     </div>
-                    <div style={{ display: "flex", flex: 1 }}>
-                      <a
-                        target="_blank"
-                        href={item.C3_609845463949}
-                      >
-                        <Icon type="fund" style={{ fontSize: "22px" }} />
+                    <div style={{ display: 'flex', flex: 1 }}>
+                      <a target="_blank" href={item.C3_609845463949}>
+                        <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
                     </div>
                   </div>
@@ -553,10 +614,10 @@ class CreatePlan extends React.Component {
             />
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             type="primary"
-            style={{ width: "100px" }}
+            style={{ width: '100px' }}
             onClick={this.onClickSave.bind(this)}
           >
             保存

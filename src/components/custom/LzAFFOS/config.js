@@ -76,7 +76,8 @@ export const inApplication = {
         // recordFormFormWidth: '35%',
         // recordFormTabsWidth: '65%',
         defaultColumnWidth: 100,
-        actionBarWidth: 100
+        actionBarWidth: 100,
+        subtractH: 196,
       }
     }
   ]
@@ -119,7 +120,8 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 200
+        actionBarWidth: 200,
+        subtractH: 196,
       }
     
     },
@@ -131,6 +133,7 @@ export const inExaminationAndApproval = {
         hasModify: false,
         hasDelete: false,
         hasRowView: true,
+        subtractH: 196,
       }
     }
   ]
@@ -169,6 +172,7 @@ export const approved = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
+        subtractH: 196,
         height: 500,
         defaultColumnWidth: 100,
         
@@ -182,6 +186,7 @@ export const approved = {
         hasModify: false,
         hasDelete: false,
         hasRowView: true,
+        subtractH: 196,
       }
     }
   ],

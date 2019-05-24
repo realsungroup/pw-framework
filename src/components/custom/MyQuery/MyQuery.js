@@ -472,6 +472,7 @@ class MyQuery extends React.Component {
             onDelete={this.deleQuery}
             onStopQuery={this.stopQuery}
             onCopyQuery={this.copyQuery}
+            history={this.props.history}
           />
           <div className="My-qiery__paging">
             <Pagination

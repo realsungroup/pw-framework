@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import './QuestionnaireStatisticAnalysisTabs.less';
 import QuestionnaireStatisticAnalysis from './QuestionnaireStatisticAnalysis';
+import qs from 'qs';
 const TabPane = Tabs.TabPane;
 
 const residArr = [
@@ -35,6 +36,30 @@ const residArr = [
  * 问卷统计分析 tabs
  */
 class QuestionnaireStatisticAnalysisTabs extends React.Component {
+  componentDidMount = () => {
+    const qsObj = qs.parse(window.location.search.substring(1));
+
+    window.parent.pwCallback.modifyTitle('问卷统计分析');
+    // 监听父窗口发送的 message 事件
+    window.addEventListener(
+      'message',
+      e => {
+        if (!e || !e.source || !e.source.pwCallback) {
+          return;
+        }
+        // 当事件类型为 "goBack"（即返回上一页时）
+        // 1. 调用 history.goBack() 方法放回上一页
+        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+        if (e.data.type === 'goBack') {
+          this.props.history.goBack();
+          e.source.pwCallback.modifyTitle &&
+            e.source.pwCallback.modifyTitle(qsObj.fromTitle || '问卷首页');
+        }
+      },
+      false
+    );
+  };
+
   render() {
     return (
       <Tabs style={{ background: '#fff', height: '100%' }}>

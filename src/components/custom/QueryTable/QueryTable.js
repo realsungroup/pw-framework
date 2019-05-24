@@ -89,16 +89,19 @@ class QueryTable extends Component {
       data.push(obj);
       return data;
     });
-    console.log('返回的数组',data)
+    console.log('返回的数组', data);
     let res;
-    res = await http().modifyRecords({
-      resid:609613163948,
-      data:data
-    }).then(res=>{
-      console.log('修改返回结果',res);
-    }).catch(err=>{
-      console.error(err.message);
-    })
+    res = await http()
+      .modifyRecords({
+        resid: 609613163948,
+        data: data
+      })
+      .then(res => {
+        console.log('修改返回结果', res);
+      })
+      .catch(err => {
+        console.error(err.message);
+      });
   };
   // 根据问卷的三种状态来渲染不同的界面
   renderButton = item => {
