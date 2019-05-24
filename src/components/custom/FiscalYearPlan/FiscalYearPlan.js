@@ -85,7 +85,6 @@ class FiscalYearPlan extends React.Component {
                     );
                   }
                 ]}
-               
                 subTableArrProps={[
                   {
                     subTableName: '审批记录',
@@ -102,7 +101,7 @@ class FiscalYearPlan extends React.Component {
                     }
                   },
                   {
-                    subTableName: "计划详情",
+                    subTableName: '计划详情',
                     subResid: 611315248461,
                     tableProps: {
                       hasAdd: false,
@@ -140,10 +139,9 @@ class FiscalYearPlan extends React.Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-<<<<<<< HEAD
                 subTableArrProps={[
                   {
-                    subTableName: "审批记录",
+                    subTableName: '审批记录',
                     subResid: 611144001666,
                     tableProps: {
                       hasAdd: false,
@@ -157,7 +155,7 @@ class FiscalYearPlan extends React.Component {
                     }
                   },
                   {
-                    subTableName: "计划详情",
+                    subTableName: '计划详情',
                     subResid: 611315248461,
                     tableProps: {
                       hasAdd: false,
@@ -170,10 +168,8 @@ class FiscalYearPlan extends React.Component {
                       hasRowView: false
                     }
                   }
-                ]}/>
-=======
+                ]}
               />
->>>>>>> 41417848884ac18efba33e1ac3aa5a701675d7b2
             </TabPane>
           </Tabs>
         </div>
