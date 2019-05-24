@@ -115,7 +115,8 @@ export default class DesktopBottomBar extends React.Component {
       onPoweroffClick,
       onOpenModifyPassModal,
       onLockScreen,
-      onOpenPersonCenter
+      onOpenPersonCenter,
+      onDesktopSwitch
     } = this.props;
     return (
       <div className="desktop-bottom-bar">
@@ -144,6 +145,10 @@ export default class DesktopBottomBar extends React.Component {
           >
             <Icon type="bell" />
           </div>
+          <div
+            className="desktop-bottom-bar__rigth-item-show-desktop"
+            onClick={onDesktopSwitch}
+          />
         </div>
         <DesktopMenu
           visible={menuVisible}
