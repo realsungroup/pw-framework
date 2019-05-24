@@ -8,6 +8,7 @@
     pathname: '/fnmodule',
     search: '?resid=666&recid=777&title=下一个页面的标题&type=下一个页面的类型'
   }}
+  target="_self"
 />
 ```
 
@@ -43,4 +44,5 @@ componentDidMount = () => {
     },
     false
   );
+}
 ```
