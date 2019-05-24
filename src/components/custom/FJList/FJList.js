@@ -1006,15 +1006,9 @@ class FJList extends React.Component {
             <Tabs defaultActiveKey={this.state.tabsKey}>
               <TabPane tab="历年绩效" key="1">
                 <TableData
-<<<<<<< HEAD
                   // height={"calc(100vh - 300px)"}
                   resid={420130498195}
                   recordFormFormWidth={"90%"}
-=======
-                  height={'calc(100vh - 300px)'}
-                  resid={610657610335}
-                  recordFormFormWidth={'90%'}
->>>>>>> 41417848884ac18efba33e1ac3aa5a701675d7b2
                   hasBeBtns={false}
                   cmswhere={`C3_420148203323 = '${this.state.pNo}'`}
                   hasModify={false}
