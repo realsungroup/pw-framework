@@ -39,6 +39,7 @@ export const inApplication = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
+      subtractH: 196,
       height: 500,
     }
   }]
@@ -73,6 +74,7 @@ export const applyForAbnormal = {
       hasDelete: false,
       hasRowModify: false,
       hasRowView: false,
+      subtractH: 196,
       hasRowDelete: false,
       height: 500,
     }
@@ -111,6 +113,7 @@ export const refused = {
       hasDelete: false,
       hasRowModify: false,
       hasRowView: false,
+      subtractH: 196,
       hasRowDelete: false,
       height: 500,
     }
@@ -148,6 +151,7 @@ export const history = {
       hasRowModify: false,
       hasRowView: false,
       hasRowDelete: false,
+      subtractH: 196,
       height: 500,
     }
   }]

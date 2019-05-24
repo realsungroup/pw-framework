@@ -24,7 +24,7 @@ export { ExamSet } from '../components/custom/loadableCustom';
 // export { Training } from '../components/custom/loadableCustom';
 export { SetScore } from '../components/custom/loadableCustom';
 export { Result } from '../components/custom/loadableCustom';
-export { ExamArrange ,TrainingMaterial} from '../components/custom/loadableCustom';
+export { ExamArrange ,TrainingMaterial,TrainingMaterialU} from '../components/custom/loadableCustom';
 export { MyExam } from '../components/custom/loadableCustom';
 export { Selected } from '../components/custom/loadableCustom';
 // export {} from '../components/custom/loadableCustom';

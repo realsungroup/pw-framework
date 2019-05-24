@@ -183,6 +183,7 @@ class TableDataVisitor extends React.Component {
             return (
               <Button
                 ref="adds"
+                id="adds"
                 onClick={() =>
                   this.handleOpenRecordForm(
                     dataSource,

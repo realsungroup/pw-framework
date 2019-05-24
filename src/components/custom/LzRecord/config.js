@@ -35,6 +35,7 @@ export const inApplication = {
       hasRowView: false,
       hasRowDelete: false,
       height: 500,
+      subtractH: 196,
     }
   }]
 };
@@ -71,6 +72,7 @@ export const applyForAbnormal = {
       hasRowView: false,
       hasRowDelete: false,
       height: 500,
+      subtractH: 196,
     }
   }]
 };
