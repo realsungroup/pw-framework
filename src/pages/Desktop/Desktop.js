@@ -30,6 +30,7 @@ import logoPng from './assets/logo.png';
 import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
+import { fastest } from 'sw-toolbox';
 
 const { SubMenu } = Menu;
 const {
@@ -98,7 +99,8 @@ class Desktop extends React.Component {
       color, // 主题色
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
-      selectedBg // 背景图片地址
+      selectedBg, // 背景图片地址
+      appsSwitchStatus: [] // 激活的 app 开关状态数组（其值一一对应 activeApps 数组对象中的 isOpen 属性）
     };
   }
 
@@ -347,21 +349,46 @@ class Desktop extends React.Component {
     });
   };
 
-  handleMinActiveApp = activeApp => {
-    const { activeApps } = this.state;
+  isDesktopShow = false;
+  handleDesktopSwitch = () => {
+    const { activeApps, appsSwitchStatus } = this.state;
     const newActiveApps = [...activeApps];
+    this.isDesktopShow = !this.isDesktopShow;
+    // 关闭所有 app
+    if (this.isDesktopShow) {
+      newActiveApps.forEach(app => (app.isOpen = false));
+    } else {
+      // 还原所有 app 的打开关闭状态
+      newActiveApps.forEach(
+        (app, index) => (app.isOpen = appsSwitchStatus[index])
+      );
+    }
+    console.log('111');
+    this.setState({ activeApps: newActiveApps });
+  };
+
+  handleMinActiveApp = activeApp => {
+    const { activeApps, appsSwitchStatus } = this.state;
+    const newActiveApps = [...activeApps];
+    const newAppsSwitchStatus = [...appsSwitchStatus];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
     newActiveApps[appIndex].isOpen = false;
+    newAppsSwitchStatus[appIndex] = false;
+
     newActiveApps[appIndex].isActive = false;
-    this.setState({ activeApps: newActiveApps });
+    this.setState({
+      activeApps: newActiveApps,
+      appsSwitchStatus: newAppsSwitchStatus
+    });
   };
 
   handleBottomBarAppTrigger = activeApp => {
-    const { activeApps, zIndexActiveApps } = this.state;
+    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
     const newActiveApps = [...activeApps];
+    const newAppsSwitchStatus = [...appsSwitchStatus];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
@@ -378,6 +405,7 @@ class Desktop extends React.Component {
       isOpen = !newActiveApps[appIndex].isOpen;
     }
     newActiveApps[appIndex].isOpen = isOpen;
+    newAppsSwitchStatus[appIndex] = isOpen;
 
     // 只能有一个 app 被激活
     newActiveApps.forEach(activeApp => (activeApp.isActive = false));
@@ -395,13 +423,15 @@ class Desktop extends React.Component {
 
     this.setState({
       activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps
+      zIndexActiveApps: newZIndexActiveApps,
+      appsSwitchStatus: newAppsSwitchStatus
     });
   };
 
   handleActiveWindowView = activeApp => {
-    const { activeApps, zIndexActiveApps } = this.state;
+    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
     const newActiveApps = [...activeApps];
+    const newAppsSwitchStatus = [...appsSwitchStatus];
 
     // app 索引
     const appIndex = newActiveApps.findIndex(
@@ -414,6 +444,7 @@ class Desktop extends React.Component {
 
     if (!newActiveApps[appIndex].isActive) {
       newActiveApps[appIndex].isOpen = true;
+      newAppsSwitchStatus[appIndex] = true;
     }
 
     // 调整 zIndex
@@ -426,7 +457,8 @@ class Desktop extends React.Component {
 
     this.setState({
       activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps
+      zIndexActiveApps: newZIndexActiveApps,
+      appsSwitchStatus: newAppsSwitchStatus
     });
   };
 
@@ -639,7 +671,7 @@ class Desktop extends React.Component {
    */
   addAppToBottomBar = willOpenApps => {
     // children, title, activeAppOthersProps = {}
-    const { activeApps, zIndexActiveApps } = this.state;
+    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
 
     const appArr = [];
     willOpenApps.forEach(willOpenApp => {
@@ -659,14 +691,6 @@ class Desktop extends React.Component {
       }
     });
 
-    // const activeApp = {
-    //   ...activeAppOthersProps,
-    //   children,
-    //   appName: title,
-    //   isOpen: true, // 当前窗口是否打开（可以同时有多个窗口打开）
-    //   isActive: true // 当前窗口是否被激活（最多只有一个窗口被激活）
-    // };
-
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
     });
@@ -675,6 +699,7 @@ class Desktop extends React.Component {
     this.setState({
       activeApps: [...activeApps, ...appArr],
       zIndexActiveApps: newZIndexActiveApps,
+      appsSwitchStatus: [...appsSwitchStatus, true],
       reminderListVisible: false
     });
   };
@@ -1148,6 +1173,7 @@ class Desktop extends React.Component {
           onLockScreen={this.handleLockScreen}
           onOpenPersonCenter={this.handleOpenPersonCenter}
           onCloseApp={this.handleCloseActiveApp}
+          onDesktopSwitch={this.handleDesktopSwitch}
         />
 
         {/* 窗口 */}
