@@ -1,8 +1,21 @@
-## 在功能组件（在 iframe 中）进入下一页时，如何修改窗口的 title？
+## 使用 `Link` 组件进入下一个页面没有反应？
 
-在功能组件中：
+当通过 `react-router-dom` 的 `Link` 组件进入下一个页面时，需要加上 `target="_self"` 属性，如下：
 
-```javascript
+```jsx
+<Link
+  to={{
+    pathname: '/fnmodule',
+    search: '?resid=666&recid=777&title=下一个页面的标题&type=下一个页面的类型'
+  }}
+/>
+```
+
+## 在功能组件（在 iframe 中）已经进入到了下一个页面时，如何修改窗口的 title？
+
+在下一个页面的组件中，设置 title，如下：
+
+```jsx
 componentDidMount = () => {
   window.parent.pwCallback.modifyTitle('设置问卷');
 };
