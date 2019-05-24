@@ -787,6 +787,22 @@ class QuerySet extends Component {
       this.getThisquery(qsObj.id);
       this.getThisQueryQuestions(qsObj.id);
     }
+    window.parent.pwCallback.modifyTitle('设置问卷');
+    window.addEventListener(
+      'message',
+      e => {
+        console.log({ e });
+        if (!e || !e.source || !e.source.pwCallback) {
+          return;
+        }
+        if (e.data.type === 'goBack') {
+          this.props.history.goBack();
+          e.source.pwCallback.modifyTitle &&
+            e.source.pwCallback.modifyTitle('问卷首页');
+        }
+      },
+      false
+    );
   }
   // 监听是否有礼品的变化
   handleSwitchGiftChange = checked => {
@@ -1981,10 +1997,18 @@ class QuerySet extends Component {
           >
             <h3>导入模板说明</h3>
             <ul>
-              <li className='query-set__import-description'>题目前面不能有序号,题干之间不要换行</li>
-              <li className='query-set__import-description'>题干与选项之间用换行，选项与选项之间用换行</li>
-              <li className='query-set__import-description'>题目与题目之间空一行</li>
-              <li className='query-set__import-description'>题目类型默认为单选题,若导入多选题和问答题时,在题干后面用英文半角的中括号,例如[多选题]</li>
+              <li className="query-set__import-description">
+                题目前面不能有序号,题干之间不要换行
+              </li>
+              <li className="query-set__import-description">
+                题干与选项之间用换行，选项与选项之间用换行
+              </li>
+              <li className="query-set__import-description">
+                题目与题目之间空一行
+              </li>
+              <li className="query-set__import-description">
+                题目类型默认为单选题,若导入多选题和问答题时,在题干后面用英文半角的中括号,例如[多选题]
+              </li>
               <TextArea
                 className="query-set__templete"
                 onChange={this.handleTextChange}
