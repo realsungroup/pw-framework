@@ -1,9 +1,10 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 /**
- * 问卷记录
+ * 问卷统计
  */
 class QuestionnaireRecords extends React.Component {
   render() {
@@ -16,15 +17,17 @@ class QuestionnaireRecords extends React.Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
-                <Button
-                  size={btnSize}
-                  href={`/fnmodule?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${
-                    record.REC_ID
-                  }`}
-                  target="blank"
+                <Link
+                  to={{
+                    pathname: '/fnmodule',
+                    search: `?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${
+                      record.REC_ID
+                    }&fromTitle=问卷统计`
+                  }}
+                  target="_self"
                 >
-                  统计分析
-                </Button>
+                  <Button size={btnSize}>统计分析</Button>
+                </Link>
               );
             }
           ]}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import './QuestionnaireStatisticAnalysisTabs.less';
 import QuestionnaireStatisticAnalysis from './QuestionnaireStatisticAnalysis';
+import qs from 'qs';
 const TabPane = Tabs.TabPane;
 
 const residArr = [
@@ -36,6 +37,8 @@ const residArr = [
  */
 class QuestionnaireStatisticAnalysisTabs extends React.Component {
   componentDidMount = () => {
+    const qsObj = qs.parse(window.location.search.substring(1));
+
     window.parent.pwCallback.modifyTitle('问卷统计分析');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
@@ -50,7 +53,7 @@ class QuestionnaireStatisticAnalysisTabs extends React.Component {
         if (e.data.type === 'goBack') {
           this.props.history.goBack();
           e.source.pwCallback.modifyTitle &&
-            e.source.pwCallback.modifyTitle('问卷首页');
+            e.source.pwCallback.modifyTitle(qsObj.fromTitle || '问卷首页');
         }
       },
       false
