@@ -1,11 +1,23 @@
-import React from "react";
-import { TableDataC } from "../loadableCustom";
-import { TableData } from "../../common/loadableCommon";
-import {Button,Icon,Radio,message,Select,List,Card,Modal,Input,Popconfirm,Tabs,Form} from "antd";
-import CreatePlan from "../CreatePlan/CreatePlan";
-import http from "../../../util20/api";
-import InfiniteScroll from "react-infinite-scroller";
-import qs from "qs";
+import React from 'react';
+import { TableData } from '../../common/loadableCommon';
+import {
+  Button,
+  Icon,
+  Radio,
+  message,
+  Select,
+  List,
+  Card,
+  Modal,
+  Input,
+  Popconfirm,
+  Tabs,
+  Form
+} from 'antd';
+import http from '../../../util20/api';
+import InfiniteScroll from 'react-infinite-scroller';
+import qs from 'qs';
+import { Link } from 'react-router-dom';
 
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
@@ -24,13 +36,13 @@ class FJList extends React.Component {
       addCustom: [],
       kcxlData: [],
       kclbData: [],
-      levelSelect: "",
-      xlSelect: "",
-      lbSelect: "",
+      levelSelect: '',
+      xlSelect: '',
+      lbSelect: '',
       listIndex: 0,
-      listNo: "",
-      pNo: "",
-      cnspmxb: "",
+      listNo: '',
+      pNo: '',
+      cnspmxb: '',
       visibleAdd: false,
       visibleEdit: false,
       visibleCustom: false,
@@ -44,7 +56,7 @@ class FJList extends React.Component {
       pageSize: 15, // 每页数量
       loading: false,
       hasMore: true,
-      tabsKey: "1"
+      tabsKey: '1'
     };
   }
 
@@ -57,6 +69,25 @@ class FJList extends React.Component {
     this.getKcxl();
     this.getKclb();
     this.getSubbData();
+    window.parent.pwCallback.modifyTitle('制定计划');
+    // 监听父窗口发送的 message 事件
+    window.addEventListener(
+      'message',
+      e => {
+        if (!e || !e.source || !e.source.pwCallback) {
+          return;
+        }
+        // 当事件类型为 "goBack"（即返回上一页时）
+        // 1. 调用 history.goBack() 方法放回上一页
+        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+        if (e.data.type === 'goBack') {
+          this.props.history.goBack();
+          e.source.pwCallback.modifyTitle &&
+            e.source.pwCallback.modifyTitle('财年计划');
+        }
+      },
+      false
+    );
   }
 
   //获取员工列表
@@ -100,15 +131,18 @@ class FJList extends React.Component {
 
   //获取单个员工
   async getDataForOne() {
-    let cmswhere = "C3_609622254861='" + this.state.data[this.state.listIndex].C3_609622254861 + "'"
-    let res = await http().getTable({resid: this.props.resid,cmswhere});
+    let cmswhere =
+      "C3_609622254861='" +
+      this.state.data[this.state.listIndex].C3_609622254861 +
+      "'";
+    let res = await http().getTable({ resid: this.props.resid, cmswhere });
     try {
       if (res.error === 0) {
         if (res.data.length > 0) {
           let data = this.state.data;
-          res.data[0].check = true
-          data[this.state.listIndex] = res.data[0]
-          this.setState({data})
+          res.data[0].check = true;
+          data[this.state.listIndex] = res.data[0];
+          this.setState({ data });
           this.getSubData(data[this.state.listIndex].C3_609622254861);
         }
       } else {
@@ -123,8 +157,8 @@ class FJList extends React.Component {
 
   //获取统计数据
   async totalData() {
-    let cmswhere = "C3_609616660273='" + this.planid + "'"
-    let res = await http().getTable({ resid: this.props.totalResid,cmswhere });
+    let cmswhere = "C3_609616660273='" + this.planid + "'";
+    let res = await http().getTable({ resid: this.props.totalResid, cmswhere });
     try {
       if (res.error === 0) {
         let totalData = res.data[0];
@@ -160,19 +194,19 @@ class FJList extends React.Component {
 
   //获取课程表
   async getSubbData(key) {
-    let cmswhere = "";
+    let cmswhere = '';
     if (this.state.levelSelect) {
       cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
     if (this.state.xlSelect) {
-      if (cmswhere != "") cmswhere += " AND ";
+      if (cmswhere != '') cmswhere += ' AND ';
       cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
     if (this.state.lbSelect) {
-      if (cmswhere != "") cmswhere += " AND ";
+      if (cmswhere != '') cmswhere += ' AND ';
       cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
-    if (this.state.kcState == "Rec" && cmswhere == "")
+    if (this.state.kcState == 'Rec' && cmswhere == '')
       return this.setState({ subData: [] });
     let res = await http().getTable({
       resid: this.props.subbResid,
@@ -200,7 +234,7 @@ class FJList extends React.Component {
 
   //单选员工
   onClick(listNo, i) {
-    console.log(i)
+    console.log(i);
     let data = this.state.data;
     data.forEach(e => {
       e.check = false;
@@ -214,7 +248,9 @@ class FJList extends React.Component {
   async addCourse() {
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
-    addData.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
+    addData.C3_609616893275 = this.state.data[
+      this.state.listIndex
+    ].C3_609622254861;
     addData.C3_609616868478 = addData.C3_609845305680;
     addData.C3_609616906353 = addData.C3_609845305931;
     addData.C3_611314815828 = addData.C3_609845305993;
@@ -223,7 +259,7 @@ class FJList extends React.Component {
     addData.C3_611314815656 = addData.C3_609845463949;
     addData.C3_611314815266 = addData.C3_610390419677;
     addData.C3_611314815485 = addData.C3_610390410802;
-    addData.C3_609616805633 = this.planid
+    addData.C3_609616805633 = this.planid;
     let res;
     try {
       res = await http().addRecords({
@@ -246,13 +282,26 @@ class FJList extends React.Component {
   //添加自定义课程
   async addCustom() {
     let addCustom = this.state.addCustom;
-    if(addCustom.C3_609616868478==""||addCustom.C3_609616868478==undefined)return message.error("课程名不能为空");
-    if(addCustom.C3_609616906353==""||addCustom.C3_609616906353==undefined)return message.error("费用不能为空");
+    if (
+      addCustom.C3_609616868478 == '' ||
+      addCustom.C3_609616868478 == undefined
+    )
+      return message.error('课程名不能为空');
+    if (
+      addCustom.C3_609616906353 == '' ||
+      addCustom.C3_609616906353 == undefined
+    )
+      return message.error('费用不能为空');
     this.setState({ visibleCustom: false });
-    addCustom.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
-    addCustom.C3_611406136484 = "Y";
-    addCustom.C3_609616805633 = this.planid
-    let res = await http().addRecords({resid: this.props.subResid,data: [{ ...addCustom }]});
+    addCustom.C3_609616893275 = this.state.data[
+      this.state.listIndex
+    ].C3_609622254861;
+    addCustom.C3_611406136484 = 'Y';
+    addCustom.C3_609616805633 = this.planid;
+    let res = await http().addRecords({
+      resid: this.props.subResid,
+      data: [{ ...addCustom }]
+    });
     try {
       if (res.Error === 0) {
         this.getDataForOne();
@@ -290,11 +339,13 @@ class FJList extends React.Component {
   //修改课程
   async editCourse(i) {
     let data = this.state.cnspmxb;
-    let editData = this.state.editData
-    if(data.C3_609616868478==""||data.C3_609616868478==undefined)return message.error("课程名不能为空");
-    if(data.C3_609616906353==""||data.C3_609616906353==undefined)return message.error("费用不能为空");
+    let editData = this.state.editData;
+    if (data.C3_609616868478 == '' || data.C3_609616868478 == undefined)
+      return message.error('课程名不能为空');
+    if (data.C3_609616906353 == '' || data.C3_609616906353 == undefined)
+      return message.error('费用不能为空');
     this.setState({ visibleAdd: false, visibleEdit: false });
-    if (data.C3_611406136484 != "Y") {
+    if (data.C3_611406136484 != 'Y') {
       data.C3_609616868478 = editData.C3_609845305680;
       data.C3_611314815828 = editData.C3_609845305993;
       data.C3_611314815266 = editData.C3_610390419677;
@@ -397,65 +448,68 @@ class FJList extends React.Component {
     let kclbData = this.state.kclbData;
     return (
       <div
-        style={{ display: "flex", flexDirection: "row", background: "#fff" }}
+        style={{ display: 'flex', flexDirection: 'row', background: '#fff' }}
       >
-        <div style={{ width: "50%", padding: "16px 28px" }}>
+        <div style={{ width: '50%', padding: '16px 28px' }}>
           <div
             style={{
-              display: "flex",
+              display: 'flex',
               flex: 3,
-              padding: "5px 0",
-              flexDirection: "row",
-              justifyContent: "space-around"
+              padding: '5px 0',
+              flexDirection: 'row',
+              justifyContent: 'space-around'
             }}
           >
-            <Button
-              type="primary"
-              style={{ marginRight: "10px" }}
-              onClick={() => {
-                window.location.href =
-                  "/fnmodule?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划&planid="+this.planid;
-                // this.setState({showPlanModal:true})
+            <Link
+              to={{
+                pathname: '/fnmodule',
+                search:
+                  '?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划&planid=' +
+                  this.planid
               }}
+              target="_self"
             >
-              创建计划
-            </Button>
+              <Button type="primary" style={{ marginRight: '10px' }}>
+                创建计划
+              </Button>
+            </Link>
+
             <div
               style={{
                 flex: 9,
-                display: "flex",
-                justifyContent: "space-around",
-                padding: "0 10px"
+                display: 'flex',
+                justifyContent: 'space-around',
+                padding: '0 10px'
               }}
             >
-              <span style={{ fontSize: "24px", fontWeight: "bold" }}>
-                {totalData.C3_609616006519 == "SH" ? "上海" : "无锡"}
+              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                {totalData.C3_609616006519 == 'SH' ? '上海' : '无锡'}
               </span>
-              <span style={{ fontSize: "24px", fontWeight: "bold" }}>
+              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 财年: {totalData.C3_609615869581}
               </span>
             </div>
             <div
               style={{
-                display: "flex",
+                display: 'flex',
                 flex: 3,
-                flexDirection: "column",
-                justifyContent: "space-around",
-                alignItems: "center"
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center'
               }}
             >
-              <span style={{ fontSize: "14px" }}>
+              <span style={{ fontSize: '14px' }}>
                 人数: {totalData.C3_609615996253}
               </span>
-              <span style={{ fontSize: "14px" }}>
+              <span style={{ fontSize: '14px' }}>
                 总预算: {totalData.C3_609616030566}
               </span>
-              <span style={{ fontSize: "14px" }}>
+              <span style={{ fontSize: '14px' }}>
                 总费用: {totalData.C3_609616051191}
               </span>
             </div>
           </div>
-          <div style={{ height: "calc(100vh - 170px)", overflow: "auto" }}>
+          <div style={{ height: 'calc(100vh - 170px)', overflow: 'auto' }}>
             <InfiniteScroll
               initialLoad={false}
               pageStart={0}
@@ -467,7 +521,7 @@ class FJList extends React.Component {
                 size="large"
                 loading={this.state.loading}
                 header={
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Search
                       placeholder="搜索"
                       onSearch={value =>
@@ -485,48 +539,48 @@ class FJList extends React.Component {
                 dataSource={this.state.data}
                 renderItem={(item, i) => (
                   <List.Item
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={this.onClick.bind(this, item.C3_609622254861, i)}
                   >
                     <div
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         flex: 1,
-                        flexDirection: "column"
+                        flexDirection: 'column'
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center"
+                          flexDirection: 'row',
+                          alignItems: 'center'
                         }}
                       >
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <Radio checked={item.check} />
                         </div>
-                        <div style={{ display: "flex", flex: 2 }}>
-                          <Icon type="user" style={{ fontSize: "24px" }} />
+                        <div style={{ display: 'flex', flex: 2 }}>
+                          <Icon type="user" style={{ fontSize: '24px' }} />
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 4,
-                            flexDirection: "column"
+                            flexDirection: 'column'
                           }}
                         >
                           <div>
                             <span>
                               {item.C3_609622254861 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622254861}
                             </span>
                           </div>
                           <div>
                             <span>
                               {item.C3_609622263470 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622263470}
                             </span>
                           </div>
@@ -534,87 +588,87 @@ class FJList extends React.Component {
                             <span>
                               课程数：
                               {item.C3_611409498941 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_611409498941}
                             </span>
                           </div>
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 4,
-                            flexDirection: "column"
+                            flexDirection: 'column'
                           }}
                         >
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center"
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               {item.C3_609622277252 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622277252}
                             </span>
                           </div>
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center"
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               {item.C3_609622292033 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609622292033}
                             </span>
                           </div>
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center"
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               总费用：
                               {item.C3_611409509831 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_611409509831}
                             </span>
                           </div>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           {/* <Popover placement="topLeft"
                                                 onClick={(e)=>e.stopPropagation()}
                                                 content={<div style={{display:"flex",flexDirection: 'column'}}>
@@ -627,26 +681,26 @@ class FJList extends React.Component {
                           <Icon
                             type="right-circle"
                             rotate={item.check ? 270 : 0}
-                            style={{ fontSize: "18px" }}
+                            style={{ fontSize: '18px' }}
                           />
                         </div>
                       </div>
                       {item.check && (
                         <div
                           style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                            alignItems: "center",
-                            marginTop: "10px"
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center',
+                            marginTop: '10px'
                           }}
                         >
                           <span
-                            style={{ fontSize: "16px", fontWeight: "bold" }}
+                            style={{ fontSize: '16px', fontWeight: 'bold' }}
                             onClick={e => {
                               this.setState({
                                 showTab: true,
-                                tabsKey: "1",
+                                tabsKey: '1',
                                 pNo: item.C3_609622254861
                               });
                               e.stopPropagation();
@@ -656,17 +710,17 @@ class FJList extends React.Component {
                           </span>
                           <div
                             style={{
-                              width: "2px",
-                              height: "20px",
-                              background: "#ddd"
+                              width: '2px',
+                              height: '20px',
+                              background: '#ddd'
                             }}
                           />
                           <span
-                            style={{ fontSize: "16px", fontWeight: "bold" }}
+                            style={{ fontSize: '16px', fontWeight: 'bold' }}
                             onClick={e => {
                               this.setState({
                                 showTab: true,
-                                tabsKey: "2",
+                                tabsKey: '2',
                                 pNo: item.C3_609622254861
                               });
                               e.stopPropagation();
@@ -676,17 +730,17 @@ class FJList extends React.Component {
                           </span>
                           <div
                             style={{
-                              width: "2px",
-                              height: "20px",
-                              background: "#ddd"
+                              width: '2px',
+                              height: '20px',
+                              background: '#ddd'
                             }}
                           />
                           <span
-                            style={{ fontSize: "16px", fontWeight: "bold" }}
+                            style={{ fontSize: '16px', fontWeight: 'bold' }}
                             onClick={e => {
                               this.setState({
                                 showTab: true,
-                                tabsKey: "3",
+                                tabsKey: '3',
                                 pNo: item.C3_609622254861
                               });
                               e.stopPropagation();
@@ -703,14 +757,14 @@ class FJList extends React.Component {
             </InfiniteScroll>
           </div>
         </div>
-        <div style={{ width: "50%", padding: "16px 28px" }}>
+        <div style={{ width: '50%', padding: '16px 28px' }}>
           <div
             style={{
-              display: "flex",
+              display: 'flex',
               flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              padding: "5px 0"
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: '5px 0'
             }}
           >
             <div style={{ flex: 9 }}>
@@ -723,11 +777,11 @@ class FJList extends React.Component {
             </div>
             <div
               style={{
-                display: "flex",
+                display: 'flex',
                 flex: 2,
-                flexDirection: "column",
-                justifyContent: "space-around",
-                height: "63px"
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                height: '63px'
               }}
             >
               {/* <span style={{fontSize:"14px"}}>
@@ -742,24 +796,24 @@ class FJList extends React.Component {
             </div>
           </div>
           {subData.length > 0 ? (
-            <div style={{ height: "calc(100vh - 170px)", overflowY: "scroll" }}>
+            <div style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}>
               {subData.map((item, i) => (
                 <Card
                   title={item.C3_609616868478}
-                  style={{ display: "flex", flex: 1 }}
+                  style={{ display: 'flex', flex: 1 }}
                   key={i}
                   extra={
                     <Popconfirm
                       placement="topRight"
-                      title={"确认要删除么?"}
+                      title={'确认要删除么?'}
                       onConfirm={this.delCourse.bind(this, i)}
                       okText="确认"
                       cancelText="取消"
                     >
-                      <Icon type="delete" style={{ cursor: "pointer" }} />
+                      <Icon type="delete" style={{ cursor: 'pointer' }} />
                     </Popconfirm>
                   }
-                  style={{ marginBottom: "16px" }}
+                  style={{ marginBottom: '16px' }}
                   actions={[
                     <a
                       href="#"
@@ -788,83 +842,83 @@ class FJList extends React.Component {
                 >
                   <div
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between"
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
                     }}
                   >
-                    <span style={{ fontSize: "12px" }}>费用</span>
-                    <span style={{ fontSize: "12px" }}>
+                    <span style={{ fontSize: '12px' }}>费用</span>
+                    <span style={{ fontSize: '12px' }}>
                       {item.C3_609616906353}
                     </span>
                   </div>
-                  {item.C3_611406136484 != "Y" && (
+                  {item.C3_611406136484 != 'Y' && (
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
                       }}
                     >
-                      <span style={{ fontSize: "12px" }}>课时</span>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: '12px' }}>课时</span>
+                      <span style={{ fontSize: '12px' }}>
                         {item.C3_611314815828}
                       </span>
                     </div>
                   )}
-                  {item.C3_611406136484 != "Y" && (
+                  {item.C3_611406136484 != 'Y' && (
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
                       }}
                     >
-                      <span style={{ fontSize: "12px" }}>讲师</span>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: '12px' }}>讲师</span>
+                      <span style={{ fontSize: '12px' }}>
                         {item.C3_611314815266}
                       </span>
                     </div>
                   )}
-                  {item.C3_611406136484 != "Y" && (
+                  {item.C3_611406136484 != 'Y' && (
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
                       }}
                     >
-                      <span style={{ fontSize: "12px" }}>培训地</span>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: '12px' }}>培训地</span>
+                      <span style={{ fontSize: '12px' }}>
                         {item.C3_611314815485}
                       </span>
                     </div>
                   )}
-                  {item.C3_611406136484 != "Y" && (
+                  {item.C3_611406136484 != 'Y' && (
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
                       }}
                     >
-                      <span style={{ fontSize: "12px" }}>课程介绍</span>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: '12px' }}>课程介绍</span>
+                      <span style={{ fontSize: '12px' }}>
                         {item.C3_611314816469}
                       </span>
                     </div>
                   )}
-                  {item.C3_611406136484 != "Y" && (
+                  {item.C3_611406136484 != 'Y' && (
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
                       }}
                     >
-                      <span style={{ fontSize: "12px" }}>课程大纲</span>
+                      <span style={{ fontSize: '12px' }}>课程大纲</span>
                       <a target="_blank" href={item.C3_611314815656}>
-                        <Icon type="fund" style={{ fontSize: "22px" }} />
+                        <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
                     </div>
                   )}
@@ -876,37 +930,37 @@ class FJList extends React.Component {
               size="large"
               bordered
               style={{
-                height: "calc(100vh - 170px)",
-                overflowY: "scroll",
-                display: "flex",
+                height: 'calc(100vh - 170px)',
+                overflowY: 'scroll',
+                display: 'flex',
                 flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center"
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
               dataSource={subData}
             />
           )}
           <div
             style={{
-              display: "flex",
+              display: 'flex',
               flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-around",
-              padding: "5px 0",
-              marginTop: "20px"
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              padding: '5px 0',
+              marginTop: '20px'
             }}
           >
             <Button
               type="default"
-              style={{ width: "calc(50% - 80px)" }}
+              style={{ width: 'calc(50% - 80px)' }}
               onClick={() => this.setState({ visibleAdd: true })}
             >
               添加课程
             </Button>
             <Button
               type="default"
-              style={{ width: "calc(50% - 80px)" }}
+              style={{ width: 'calc(50% - 80px)' }}
               onClick={() => this.setState({ visibleCustom: true })}
             >
               自定义课程
@@ -914,17 +968,17 @@ class FJList extends React.Component {
           </div>
           <Modal
             title="历史记录"
-            width={"80%"}
+            width={'80%'}
             destroyOnClose={true}
             visible={this.state.showHistory}
             onOk={() => this.setState({ showHistory: false })}
             onCancel={() => this.setState({ showHistory: false })}
           >
             <TableData
-              height={"calc(100vh - 300px)"}
+              height={'calc(100vh - 300px)'}
               resid={611316474296}
               cmswhere={`C3_609617197183 = '${this.state.pNo}'`}
-              recordFormFormWidth={"90%"}
+              recordFormFormWidth={'90%'}
               hasBeBtns={false}
               hasModify={false}
               hasDelete={false}
@@ -944,7 +998,7 @@ class FJList extends React.Component {
           />
           <Modal
             destroyOnClose={true}
-            width={"80%"}
+            width={'80%'}
             visible={this.state.showTab}
             onOk={() => this.setState({ showTab: false })}
             onCancel={() => this.setState({ showTab: false })}
@@ -952,9 +1006,9 @@ class FJList extends React.Component {
             <Tabs defaultActiveKey={this.state.tabsKey}>
               <TabPane tab="历年绩效" key="1">
                 <TableData
-                  height={"calc(100vh - 300px)"}
+                  height={'calc(100vh - 300px)'}
                   resid={610657610335}
-                  recordFormFormWidth={"90%"}
+                  recordFormFormWidth={'90%'}
                   hasBeBtns={false}
                   hasModify={false}
                   hasDelete={false}
@@ -967,10 +1021,10 @@ class FJList extends React.Component {
               </TabPane>
               <TabPane tab="历史计划" key="2">
                 <TableData
-                  height={"calc(100vh - 300px)"}
+                  height={'calc(100vh - 300px)'}
                   resid={611315248461}
                   cmswhere={`C3_609616893275 = '${this.state.pNo}'`}
-                  recordFormFormWidth={"90%"}
+                  recordFormFormWidth={'90%'}
                   hasBeBtns={false}
                   hasModify={false}
                   hasDelete={false}
@@ -1004,13 +1058,13 @@ class FJList extends React.Component {
               size="large"
               header={
                 <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue="Rec"
                     onChange={e => {
-                      if (e == "Rec") {
+                      if (e == 'Rec') {
                         this.setState(
                           { levelSelect: this.state.lkState, kcState: e },
                           () => this.getSubbData()
@@ -1018,8 +1072,8 @@ class FJList extends React.Component {
                       } else {
                         this.setState(
                           {
-                            levelSelect: "",
-                            kcState: "All"
+                            levelSelect: '',
+                            kcState: 'All'
                           },
                           () => this.getSubbData()
                         );
@@ -1030,7 +1084,7 @@ class FJList extends React.Component {
                     <Option value="Rec">推荐课程</Option>
                   </Select>
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
                       this.setState({ xlSelect: e }, () => this.getSubbData());
@@ -1044,7 +1098,7 @@ class FJList extends React.Component {
                     ))}
                   </Select>
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
                       this.setState({ lbSelect: e }, () => this.getSubbData());
@@ -1065,97 +1119,97 @@ class FJList extends React.Component {
                 </div>
               }
               bordered
-              style={{ height: "calc(100vh - 350px)", overflowY: "scroll" }}
+              style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
               dataSource={this.state.subbData}
               renderItem={(item, i) => (
                 <List.Item
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={this.onClickCustom.bind(this, i)}
                 >
                   <div
                     style={{
-                      display: "flex",
+                      display: 'flex',
                       flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center"
+                      flexDirection: 'row',
+                      alignItems: 'center'
                     }}
                   >
-                    <div style={{ display: "flex", flex: 1 }}>
+                    <div style={{ display: 'flex', flex: 1 }}>
                       <Radio checked={item.check} />
                     </div>
                     <div
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         flex: 10,
-                        flexDirection: "column"
+                        flexDirection: 'column'
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: "16px"
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginBottom: '16px'
                         }}
                       >
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_609845305680 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_609845305680}
                           </span>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_610390419677 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_610390419677}
                           </span>
                         </div>
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center"
+                            flexDirection: 'row',
+                            alignItems: 'center'
                           }}
                         >
                           <div
                             style={{
-                              width: "10px",
-                              height: "10px",
-                              borderRadius: "50%",
-                              background: "#4a90e2",
-                              marginRight: "16px"
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
                             }}
                           />
                           <span>
                             {item.C3_610390410802 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_610390410802}
                           </span>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
                             {item.C3_609845305931 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_609845305931}
                           </span>
                         </div>
                       </div>
-                      <div style={{ display: "flex", flex: 1 }}>
+                      <div style={{ display: 'flex', flex: 1 }}>
                         <span>
-                          简介:{" "}
+                          简介:{' '}
                           {item.C3_609845305618 == null
-                            ? "无"
+                            ? '无'
                             : item.C3_609845305618}
                         </span>
                       </div>
                     </div>
-                    <div style={{ display: "flex", flex: 1 }}>
+                    <div style={{ display: 'flex', flex: 1 }}>
                       <a target="_blank" href={item.C3_609845463949}>
-                        <Icon type="fund" style={{ fontSize: "22px" }} />
+                        <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
                     </div>
                   </div>
@@ -1249,9 +1303,13 @@ class FJList extends React.Component {
             onOk={this.addCustom.bind(this)}
             onCancel={() => this.setState({ visibleCustom: false })}
           >
-            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
-              <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+                <span
+                  style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
+                >
                   课程名称:
                 </span>
               </div>
@@ -1265,9 +1323,13 @@ class FJList extends React.Component {
                 />
               </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", margin: "10px" }}>
-              <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-                <span style={{ flex: 1, textAlign: "right", paddingRight: "16px" }}>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+                <span
+                  style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
+                >
                   费用:
                 </span>
               </div>
@@ -1284,24 +1346,24 @@ class FJList extends React.Component {
           </Modal>
           <Modal
             title="修改课程"
-            width={this.state.cnspmxb.C3_611406136484 == "Y"?"520px":"60%"}
+            width={this.state.cnspmxb.C3_611406136484 == 'Y' ? '520px' : '60%'}
             destroyOnClose={true}
             visible={this.state.visibleEdit}
             onOk={this.editCourse.bind(this)}
             onCancel={() => this.setState({ visibleEdit: false })}
           >
-            {this.state.cnspmxb.C3_611406136484 != "Y" ? (
+            {this.state.cnspmxb.C3_611406136484 != 'Y' ? (
               <List
                 size="large"
                 header={
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
                   >
                     <Select
-                      style={{ width: "100px" }}
+                      style={{ width: '100px' }}
                       defaultValue="Rec"
                       onChange={e => {
-                        if (e == "Rec") {
+                        if (e == 'Rec') {
                           this.setState(
                             { levelSelect: this.state.lkState, kcState: e },
                             () => this.getSubbData()
@@ -1309,8 +1371,8 @@ class FJList extends React.Component {
                         } else {
                           this.setState(
                             {
-                              levelSelect: "",
-                              kcState: "All"
+                              levelSelect: '',
+                              kcState: 'All'
                             },
                             () => this.getSubbData()
                           );
@@ -1321,7 +1383,7 @@ class FJList extends React.Component {
                       <Option value="Rec">推荐课程</Option>
                     </Select>
                     <Select
-                      style={{ width: "100px" }}
+                      style={{ width: '100px' }}
                       defaultValue=""
                       onChange={e => {
                         this.setState({ xlSelect: e }, () =>
@@ -1337,7 +1399,7 @@ class FJList extends React.Component {
                       ))}
                     </Select>
                     <Select
-                      style={{ width: "100px" }}
+                      style={{ width: '100px' }}
                       defaultValue=""
                       onChange={e => {
                         this.setState({ lbSelect: e }, () =>
@@ -1360,97 +1422,97 @@ class FJList extends React.Component {
                   </div>
                 }
                 bordered
-                style={{ height: "calc(100vh - 350px)", overflowY: "scroll" }}
+                style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
                 dataSource={this.state.subbData}
                 renderItem={(item, i) => (
                   <List.Item
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={this.onEditCustom.bind(this, i)}
                   >
                     <div
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         flex: 1,
-                        flexDirection: "row",
-                        alignItems: "center"
+                        flexDirection: 'row',
+                        alignItems: 'center'
                       }}
                     >
-                      <div style={{ display: "flex", flex: 1 }}>
+                      <div style={{ display: 'flex', flex: 1 }}>
                         <Radio checked={item.check} />
                       </div>
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flex: 10,
-                          flexDirection: "column"
+                          flexDirection: 'column'
                         }}
                       >
                         <div
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flex: 1,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            marginBottom: "16px"
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: '16px'
                           }}
                         >
-                          <div style={{ display: "flex", flex: 1 }}>
+                          <div style={{ display: 'flex', flex: 1 }}>
                             <span>
                               {item.C3_609845305680 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609845305680}
                             </span>
                           </div>
-                          <div style={{ display: "flex", flex: 1 }}>
+                          <div style={{ display: 'flex', flex: 1 }}>
                             <span>
                               {item.C3_610390419677 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_610390419677}
                             </span>
                           </div>
                           <div
                             style={{
-                              display: "flex",
+                              display: 'flex',
                               flex: 1,
-                              flexDirection: "row",
-                              alignItems: "center"
+                              flexDirection: 'row',
+                              alignItems: 'center'
                             }}
                           >
                             <div
                               style={{
-                                width: "10px",
-                                height: "10px",
-                                borderRadius: "50%",
-                                background: "#4a90e2",
-                                marginRight: "16px"
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
                               }}
                             />
                             <span>
                               {item.C3_610390410802 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_610390410802}
                             </span>
                           </div>
-                          <div style={{ display: "flex", flex: 1 }}>
+                          <div style={{ display: 'flex', flex: 1 }}>
                             <span>
                               {item.C3_609845305931 == null
-                                ? "无"
+                                ? '无'
                                 : item.C3_609845305931}
                             </span>
                           </div>
                         </div>
-                        <div style={{ display: "flex", flex: 1 }}>
+                        <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            简介:{" "}
+                            简介:{' '}
                             {item.C3_609845305618 == null
-                              ? "无"
+                              ? '无'
                               : item.C3_609845305618}
                           </span>
                         </div>
                       </div>
-                      <div style={{ display: "flex", flex: 1 }}>
+                      <div style={{ display: 'flex', flex: 1 }}>
                         <a target="_blank" href={item.C3_609845463949}>
-                          <Icon type="fund" style={{ fontSize: "22px" }} />
+                          <Icon type="fund" style={{ fontSize: '22px' }} />
                         </a>
                       </div>
                     </div>
@@ -1461,19 +1523,19 @@ class FJList extends React.Component {
               <div>
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    margin: "10px"
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '10px'
                   }}
                 >
                   <div
-                    style={{ display: "flex", flex: 1, alignItems: "center" }}
+                    style={{ display: 'flex', flex: 1, alignItems: 'center' }}
                   >
                     <span
                       style={{
                         flex: 1,
-                        textAlign: "right",
-                        paddingRight: "16px"
+                        textAlign: 'right',
+                        paddingRight: '16px'
                       }}
                     >
                       课程名称:
@@ -1494,19 +1556,19 @@ class FJList extends React.Component {
                 </div>
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    margin: "10px"
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '10px'
                   }}
                 >
                   <div
-                    style={{ display: "flex", flex: 1, alignItems: "center" }}
+                    style={{ display: 'flex', flex: 1, alignItems: 'center' }}
                   >
                     <span
                       style={{
                         flex: 1,
-                        textAlign: "right",
-                        paddingRight: "16px"
+                        textAlign: 'right',
+                        paddingRight: '16px'
                       }}
                     >
                       费用:
