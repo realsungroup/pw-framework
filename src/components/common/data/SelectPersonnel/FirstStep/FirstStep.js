@@ -7,7 +7,8 @@ import {
   Upload,
   Icon,
   Button,
-  Popover
+  Popover,
+  Modal
 } from 'antd';
 import './FirstStep.less';
 import DepartmentTree from './DepartmentTree';
@@ -19,6 +20,8 @@ import http from 'Util20/api';
 import PropTypes from 'prop-types';
 import XLSX from 'xlsx';
 import examplePng from './assets/example.png';
+import AdvSearch from 'lz-components-and-utils/lib/AdvSearch';
+import 'lz-components-and-utils/lib/AdvSearch/style/index.css';
 
 const Search = Input.Search;
 const Dragger = Upload.Dragger;
@@ -117,7 +120,9 @@ export default class FirstStep extends React.Component {
       selectedRadio, // 已选择的 radio
       excelColName: 'A', // excel 查询的列名称
       isSelectFile: false,
-      fileInfo: null // 选中的文件信息
+      fileInfo: null, // 选中的文件信息
+
+      advSearchModalVisible: false
     };
   }
 
@@ -131,6 +136,28 @@ export default class FirstStep extends React.Component {
       this.setState({ firstColLoading: true });
       this.getFirstColData(this.state.selectedRadio);
     }
+
+    // 获取高级搜索所需要的字段（子表）
+    this.getSubTableField();
+  };
+
+  getSubTableField = async () => {
+    let res;
+    try {
+      res = await http().getTableColumnDefine({ resid: this.props.subResid });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.fields = this.getFields(res.cmscolumninfo);
+  };
+
+  getFields = columnInfo => {
+    return columnInfo.map(column => ({
+      value: column.id,
+      label: column.text,
+      control: 'Input'
+    }));
   };
 
   // 获取第一列的数据
@@ -145,8 +172,6 @@ export default class FirstStep extends React.Component {
         return message.error(err.message);
       }
       const firstColData = dealData(radioConfig, res.data);
-
-      console.log({ firstColData });
 
       radioConfig.firstColData = firstColData;
       this.setState({
@@ -499,6 +524,14 @@ export default class FirstStep extends React.Component {
     this.setState({ searchValue: e.target.value });
   };
 
+  handleOpenAdvSearch = () => {
+    this.setState({ advSearchModalVisible: true });
+  };
+
+  handleHideAdvSearch = () => {
+    this.setState({ advSearchModalVisible: false });
+  };
+
   renderTipContent = () => {
     return (
       <div className="first-step__tip-content">
@@ -685,6 +718,26 @@ export default class FirstStep extends React.Component {
     this.dealPersonList(res.data, res.data.total, false, false);
   };
 
+  handleAdvSearchConfirm = where => {
+    this.setState({
+      personList: [],
+      pageIndex: 0,
+      advSearchModalVisible: false
+    });
+
+    let { resid, subResid, hostRecid, option, searchValue } = this.getReqParams(
+      this.state.searchValue
+    );
+
+    if (!hostRecid) {
+      return message.error('未在第一列进行筛选');
+    }
+    this.setState({ secondColLoading: true });
+
+    option = { ...option, key: searchValue, pageindex: 0, cmswhere: where };
+    this.getPersonList(resid, subResid, hostRecid, option);
+  };
+
   renderRadioItem = radioItem => {
     switch (radioItem.type) {
       // 树
@@ -721,7 +774,8 @@ export default class FirstStep extends React.Component {
       secondColLoading,
       firstColLoading,
       selectedRadio,
-      searchValue
+      searchValue,
+      advSearchModalVisible
     } = this.state;
     const { radioGroupConfig, secondFilterInputPlaceholder } = this.props;
     return (
@@ -766,6 +820,10 @@ export default class FirstStep extends React.Component {
                 hasSearch={this.getSceondColHasSearch()}
                 searchValue={searchValue}
                 secondFilterInputPlaceholder={secondFilterInputPlaceholder}
+                hasAdvSearch={
+                  ['tree', 'list'].indexOf(selectedRadio.type) !== -1
+                }
+                onOpenAdvSearch={this.handleOpenAdvSearch}
                 {...this.getShowField()}
               />
             </InfiniteScroll>
@@ -779,6 +837,20 @@ export default class FirstStep extends React.Component {
             />
           </div>
         </div>
+
+        <Modal
+          title="高级搜索"
+          visible={advSearchModalVisible}
+          onCancel={this.handleHideAdvSearch}
+          footer={null}
+        >
+          {this.fields && (
+            <AdvSearch
+              fields={this.fields}
+              onConfirm={this.handleAdvSearchConfirm}
+            />
+          )}
+        </Modal>
       </div>
     );
   }

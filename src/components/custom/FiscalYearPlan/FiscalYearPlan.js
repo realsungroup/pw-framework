@@ -99,11 +99,25 @@ class FiscalYearPlan extends React.Component {
                       height: 500,
                       hasRowView: false
                     }
+                  },
+                  {
+                    subTableName: '计划详情',
+                    subResid: 611315248461,
+                    tableProps: {
+                      hasAdd: false,
+                      hasModify: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasDelete: false,
+                      subtractH: 190,
+                      height: 500,
+                      hasRowView: false
+                    }
                   }
                 ]}
                 hasBeBtns={true}
                 hasRowView={false}
-                hasRowDelete={false}
+                hasRowDelete={true}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
@@ -117,14 +131,44 @@ class FiscalYearPlan extends React.Component {
             >
               <TableData
                 resid={611165813996}
-                hasBeBtns={false}
+                hasBeBtns={true}
                 hasAdd={false}
                 hasRowView={false}
-                hasRowDelete={false}
+                hasRowDelete={true}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
+                subTableArrProps={[
+                  {
+                    subTableName: '审批记录',
+                    subResid: 611144001666,
+                    tableProps: {
+                      hasAdd: false,
+                      hasModify: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasDelete: false,
+                      subtractH: 190,
+                      height: 500,
+                      hasRowView: false
+                    }
+                  },
+                  {
+                    subTableName: '计划详情',
+                    subResid: 611315248461,
+                    tableProps: {
+                      hasAdd: false,
+                      hasModify: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasDelete: false,
+                      subtractH: 190,
+                      height: 500,
+                      hasRowView: false
+                    }
+                  }
+                ]}
               />
             </TabPane>
           </Tabs>

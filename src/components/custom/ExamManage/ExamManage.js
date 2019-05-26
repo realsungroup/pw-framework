@@ -219,6 +219,11 @@ export default class ExamManage extends Component {
             heigth={500}
             width={1150}
             cmswhere={`C3_607172879503 = ${this.state.record.C3_607171749463}`}
+            importConfig={{
+              mode: 'fe',
+              saveState: 'added',
+              containerType: 'drawer'
+            }}
             headerExtra={() => (
               <Button
                 size="small"

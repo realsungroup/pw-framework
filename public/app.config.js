@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
+    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     fileDownloadUrl: 'http://pwhr1.realsun.me/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -30,7 +30,7 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315,609157644640], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
@@ -97,7 +97,7 @@ window.pwConfig = {
     }, // 默认主题色
 
     // 锁屏
-    lockScreenWaitTime: 86400, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
+    lockScreenWaitTime: 600, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 
     // logo 配置
     homeLogoSize: 42, // 首页 logo 尺寸

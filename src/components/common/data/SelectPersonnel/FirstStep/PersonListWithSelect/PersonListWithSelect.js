@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Input, Checkbox } from 'antd';
+import { Input, Checkbox, Button } from 'antd';
 import './PersonListWithSelect.less';
 import PropTypes from 'prop-types';
 import PersonList from '../PersonList';
@@ -47,7 +47,9 @@ export default class PersonListWithSelect extends React.Component {
       searchValue,
       onSearchChange,
       hasSearch,
+      hasAdvSearch,
       secondFilterInputPlaceholder,
+      onOpenAdvSearch,
       ...restProps
     } = this.props;
     return (
@@ -62,7 +64,18 @@ export default class PersonListWithSelect extends React.Component {
                   placeholder={secondFilterInputPlaceholder}
                   onSearch={onSearch}
                   className="person-list-withselect__search"
+                  size="small"
                 />
+              )}
+              {hasAdvSearch && (
+                <Button
+                  type="primary"
+                  style={{ marginLeft: 4 }}
+                  size="small"
+                  onClick={onOpenAdvSearch}
+                >
+                  高级搜索
+                </Button>
               )}
               {!!data.length && (
                 <WrapedCheckbox

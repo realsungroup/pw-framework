@@ -29,9 +29,8 @@ class TrainingMaterialU extends React.Component {
           subtractH={190}
           hasRowView={false}
           hasAdd={false}
-          hasRowDelete={false}
-          hasModify={false}
           hasRowModify={false}
+          hasRowDelete={false}
           customRowBtns={[
             (record, btnSize) => {
               return (

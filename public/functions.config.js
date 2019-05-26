@@ -916,7 +916,11 @@ window[607384570024] = {
 // 考试系统----培训资料611243928651
 window[611243928651] = {
   name: 'TrainingMaterial',
-  title: '培训资料',
+  title: '管理考试资料',
+};
+window[611839500701] = {
+  name: 'TrainingMaterialU',
+  title: '我的考试资料',
 };
 //个人成绩管理
 window[607170104270] = {
@@ -1172,6 +1176,30 @@ window[611339890532] = {
     hasRowView: true,
     subtractH: 220,
     // height:600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+  }
+};
+
+//计划授权
+window[611667749682] = {
+  name: 'TableData',
+  title: '计划授权',
+  props: {
+    resid: 611318802160,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: true,
+    hasRowDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    subtractH: 220,
+    height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
