@@ -71,7 +71,7 @@ class DevTableData extends Component {
           placement: 'right'
         }}
         formProps={{ displayMode: 'default', height: 400 }}
-        recordFormType="drawer"
+        // recordFormType="drawer"
         // cmscolumns="C3_600449702200,C3_600449723545,C3_600449744490,C3_600449756846,C3_600449776309,C3_600449791836,C3_600449800714,C3_600449820713"
         recordFormName="default"
         rowEditFormName="default"
