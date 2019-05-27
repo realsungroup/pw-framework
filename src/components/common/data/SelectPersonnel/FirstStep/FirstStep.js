@@ -150,6 +150,7 @@ export default class FirstStep extends React.Component {
       return message.error(err.message);
     }
     this.fields = this.getFields(res.cmscolumninfo);
+    this.forceUpdate();
   };
 
   getFields = columnInfo => {
@@ -194,7 +195,7 @@ export default class FirstStep extends React.Component {
 
     if (type === 'tree' || type === 'list') {
       this.getFirstColData(selectedRadio);
-    } else if (type === 'search' || type === 'file') {
+    } else if (type === 'search' || type === 'file' || type === 'advSearch') {
       this.setState({ selectedRadio, firstColLoading: false });
     }
   };
@@ -206,20 +207,34 @@ export default class FirstStep extends React.Component {
     option,
     hasPaging = true
   ) => {
+    const { selectedRadio } = this.state;
     this.loading = true;
     this.setState({ loading: true });
     let res;
-    try {
-      res = await http().getSubTable({
-        resid,
-        subresid: subResid,
-        hostrecid: hostRecid,
-        ...option
-      });
-    } catch (err) {
-      this.setState({ loading: false });
-      return message.error(err.message);
+    if (selectedRadio.type === 'advSearch') {
+      try {
+        res = await http().getTable({
+          resid,
+          ...option
+        });
+      } catch (err) {
+        this.setState({ loading: false });
+        return message.error(err.message);
+      }
+    } else {
+      try {
+        res = await http().getSubTable({
+          resid,
+          subresid: subResid,
+          hostrecid: hostRecid,
+          ...option
+        });
+      } catch (err) {
+        this.setState({ loading: false });
+        return message.error(err.message);
+      }
     }
+
     this.dealPersonList(res.data, res.total, hasPaging);
   };
 
@@ -478,14 +493,18 @@ export default class FirstStep extends React.Component {
           key: searchValue
         }
       : {};
-    if (selectedRadio.type === 'tree') {
+
+    const type = selectedRadio.type;
+    if (type === 'tree') {
       resid = selectedRadio.resid;
       subResid = this.props.subResid;
       hostRecid = this.state.selectedKeys[0];
-    } else {
+    } else if (type === 'list' || type === 'file' || type === 'search') {
       resid = selectedRadio.resid;
       subResid = this.props.subResid;
       hostRecid = this.state.selectedItem.REC_ID;
+    } else if (type === 'advSearch') {
+      resid = this.props.subResid;
     }
     return { resid, subResid, hostRecid, option };
   };
@@ -578,6 +597,18 @@ export default class FirstStep extends React.Component {
             onSearch={value => this.handlePersonSearch(value, true)}
           />
         );
+      }
+      // 渲染高级搜索
+      case 'advSearch': {
+        if (this.fields.length) {
+          return (
+            <AdvSearch
+              fields={this.fields}
+              onConfirm={this.handleFirstColAdvSearchConfirm}
+            />
+          );
+        }
+        return null;
       }
       // 渲染选择文件
       case 'file': {
@@ -736,6 +767,14 @@ export default class FirstStep extends React.Component {
 
     option = { ...option, key: searchValue, pageindex: 0, cmswhere: where };
     this.getPersonList(resid, subResid, hostRecid, option);
+  };
+
+  handleFirstColAdvSearchConfirm = where => {
+    this.setState({ personList: [], pageIndex: 0 });
+    const { resid } = this.getReqParams();
+    this.setState({ secondColLoading: true });
+    const option = { cmswhere: where };
+    this.getPersonList(resid, '', '', option);
   };
 
   renderRadioItem = radioItem => {
