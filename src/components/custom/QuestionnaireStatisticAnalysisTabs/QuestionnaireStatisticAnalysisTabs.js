@@ -6,7 +6,7 @@ import qs from 'qs';
 import TotalStatical from './TotalStatical';
 const TabPane = Tabs.TabPane;
 const qsObj = qs.parse(window.location.search.substring(1));
-console.log('问卷ID',qsObj)
+console.log('问卷ID', qsObj);
 
 const residArr = [
   {
@@ -40,8 +40,6 @@ const residArr = [
  */
 class QuestionnaireStatisticAnalysisTabs extends React.Component {
   componentDidMount = () => {
-   
-
     window.parent.pwCallback.modifyTitle('问卷统计分析');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
@@ -75,8 +73,12 @@ class QuestionnaireStatisticAnalysisTabs extends React.Component {
             />
           </TabPane>
         ))}
-        <TabPane tab='下载' key={qsObj.questionnaireRecid}>
-        <TotalStatical queryId={qsObj.questionnaireRecid}></TotalStatical>
+        <TabPane
+          tab="下载"
+          key={qsObj.questionnaireRecid}
+          style={{ height: 600, overflow: 'auto' }}
+        >
+          <TotalStatical queryId={qsObj.questionnaireRecid} />
         </TabPane>
       </Tabs>
     );

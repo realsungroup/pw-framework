@@ -1,23 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Icon, Input, Tabs, Table } from 'antd';
+import { Button, Icon, Input, Tabs, Table, Progress } from 'antd';
 import './TotalStatical.less';
 import http from 'Util20/api';
+import html2canvas from 'html2canvas';
+
 const TabPane = Tabs.TabPane;
-// 单选多选的表头
-const columns = [
-  {
-    title: '选项',
-    dataIndex: 'option-content'
-  },
-  {
-    title: '小计',
-    dataIndex: 'amount'
-  },
-  {
-    title: '比例',
-    dataIndex: 'percentage'
-  }
-];
 
 class TotalStatical extends Component {
   constructor(props) {
@@ -25,16 +12,46 @@ class TotalStatical extends Component {
     this.state = {
       queryName: '',
       queryQuestions: [],
-      staticalData: []
+      staticalData: [],
+      data: []
     };
   }
   componentDidMount = () => {
     this.getQueryName(this.props.queryId);
     this.getqueryQuestions(this.props.queryId);
   };
+
+  columns = [
+    {
+      title: '选项',
+      dataIndex: 'optionContent'
+    },
+    {
+      title: '小计',
+      dataIndex: 'amount'
+    },
+    {
+      title: '比例',
+      dataIndex: 'percentage',
+      render: (value, record, index) => {
+        if (record.optionContent === '本题有效填写人次') {
+          return null;
+        }
+        const percent = parseInt(
+          ((record.amount / record.total) * 100).toFixed(0),
+          10
+        );
+        return (
+          <div>
+            <Progress percent={percent} />
+          </div>
+        );
+      }
+    }
+  ];
+
   //根据问卷ID拿到问卷的名称
   getQueryName = async id => {
-    console.log(id);
     let res;
     try {
       res = await http().getTable({
@@ -42,13 +59,13 @@ class TotalStatical extends Component {
         cmswhere: `query_id = ${id}`
       });
     } catch (err) {
-      console.log(err.message);
+      return console.error(err.message);
     }
-    console.log(res);
     this.setState({
       queryName: res.data[0].query_name
     });
   };
+
   //根据问卷ID 拿到该问卷的题目
   getqueryQuestions = async id => {
     let QuestionsData;
@@ -60,69 +77,87 @@ class TotalStatical extends Component {
     } catch (err) {
       console.error(err.message);
     }
-    console.log('拿到问卷试题', QuestionsData.data);
     this.setState({
       queryQuestions: QuestionsData.data
     });
     let cmsString;
-    // console.log(this.state.queryQuestions);
     cmsString = this.state.queryQuestions
       .map(item => {
         return item.question_id;
       })
       .join(',');
-    // console.log(cmsString);
 
     this.getOptionsTableData(cmsString);
   };
+
   // 获取问题的选项
   getOptionsTableData = async cstring => {
-    let resOptions;
+    let res;
     try {
-      resOptions = await http().getTable({
+      res = await http().getTable({
         resid: 610537303261,
         cmswhere: `question_id in (${cstring})`
       });
     } catch (err) {
       console.error(err.message);
     }
-    console.log('试题选项', resOptions);
-    let terdata = [];
-    let repeated = []; //记住子添加过的id
-    resOptions.data.forEach((item, index) => {
-      // if(item[index].question_id==item[index+1].question_id){
-      // const obj = {
-      //   title: item.question_topic,
-      //   table: {
-      //     dataSource: []
-      //   }
-      // };
-      for (var i = 0; i < resOptions.data.length; i++) {
-        if (
-          !repeated.includes(item.question_id) &&
-          item.question_id === resOptions.data[i].question_id
-        ) {
-          // 记住这个ID，下次进来就不再循环了
-          repeated.push(item.question_id);
-        }
-        const obj = {
+    // 要得到的 data
+    const data = [];
+    res.data.forEach((item, index) => {
+      const tempDataItem = data.find(
+        dataItem => item.question_topic === dataItem.title
+      );
+      if (!tempDataItem) {
+        data.push({
           title: item.question_topic,
           table: {
-            dataSource: []
+            dataSource: [
+              {
+                optionContent: item.option_content,
+                amount: item.amount
+              }
+            ]
           }
-        };
-        obj.table.dataSource = [];
-        const dataSourceObj = {
-          option_content: item.option_content,
+        });
+      } else {
+        tempDataItem.table.dataSource.push({
+          optionContent: item.option_content,
           amount: item.amount
-        };
-        obj.table.dataSource.push(dataSourceObj);
-        console.log(obj);
+        });
       }
-
-      // terdata.push(obj);
     });
-    console.log(terdata);
+    data.forEach(dataItem => {
+      let total = 0;
+      dataItem.table.dataSource.forEach(record => {
+        total += record.amount;
+      });
+      dataItem.table.dataSource.forEach(record => {
+        record.total = total;
+      });
+      dataItem.table.dataSource.push({
+        optionContent: '本题有效填写人次',
+        amount: total
+      });
+    });
+    this.setState({ data });
+  };
+
+  handleExportImgBtnClick = () => {
+    const { queryName } = this.state;
+    // 下载图片
+    function download(src, name) {
+      if (!src) return;
+      const a = document.createElement('a');
+      a.setAttribute('download', name);
+      a.href = src;
+      a.click();
+    }
+    html2canvas(document.querySelector('.total-statical__main')).then(
+      canvas => {
+        const imgDataURL = canvas.toDataURL('image/png');
+        download(imgDataURL, queryName);
+      }
+    );
   };
 
   // renderWhichchart
@@ -133,6 +168,7 @@ class TotalStatical extends Component {
       return this.renderCommonChart();
     }
   };
+
   //渲染问答题的东西
   renderAnswerChart = () => {
     return (
@@ -141,128 +177,48 @@ class TotalStatical extends Component {
       </div>
     );
   };
+
   // 渲染单选和多选的表格
   renderCommonChart = () => {
-    const data = [
-      {
-        title: '天气怎么样？',
-        table: {
-          dataSource: [
-            {
-              'option-content': '好',
-              'amount': 1
-            },
-            {
-              'option-content': '很好',
-              'amount': 2
-            },
-            {
-              'option-content': '非常好',
-              'amount': 1
-            },
-            {
-              'option-content': '特别好',
-              'amount': 1
-            }
-          ]
-        }
-      },
-      {
-        title: '喜欢的城市',
-        table: {
-          dataSource: [
-            {
-              'option-content': '上海',
-              'amount': 3
-            },
-            {
-              'option-content': '北京',
-              'amount': 5
-            },
-            {
-              'option-content': '广州',
-              'amount': 4
-            },
-            {
-              'option-content': '深圳',
-              'amount': 3
-            }
-          ]
-        }
-      },
-      {
-        title: '喜欢的美食',
-        table: {
-          dataSource: [
-            {
-              'option-content': '面包',
-              'amount': 2
-            },
-            {
-              'option-content': '牛奶',
-              'amount': 2
-            },
-            {
-              'option-content': '咖啡',
-              'amount': 2
-            },
-            {
-              'option-content': '饮料',
-              'amount': 2
-            }
-          ]
-        }
-      },
-      {
-        title: '中奖的概率',
-        table: {
-          dataSource: [
-            {
-              'option-content': '10%',
-              'amount': 2
-            },
-            {
-              'option-content': '20%',
-              'amount': 1
-            },
-            {
-              'option-content': '30%',
-              'amount': 1
-            },
-            {
-              'option-content': '40%',
-              'amount': 0
-            }
-          ]
-        }
-      }
-    ];
+    const { data } = this.state;
     return data.map((item, index) => {
       return (
-        <div className="total-statical__chart-wrap" key={index}>
+        <div className="total-statical__chart-wrap" key={item.title}>
           <h4 className="total-statical__chart-wrap__question-topic">
             <span>{index + 1}.</span>
             {item.title}
           </h4>
           <Table
-            columns={columns}
+            columns={this.columns}
             dataSource={item.table.dataSource}
             bordered
             size="small"
             pagination={false}
-            rowKey="option_content"
+            rowKey="optionContent"
           />
         </div>
       );
     });
   };
+
   render() {
     const { queryName } = this.state;
     return (
-      <div className="total-statical">
-        <h3 className="total-statical__title">{queryName}</h3>
-        {this.renderCommonChart()}
-      </div>
+      <React.Fragment>
+        <div className="total-statical">
+          <Button
+            size="small"
+            type="primary"
+            onClick={this.handleExportImgBtnClick}
+          >
+            导出 PNG
+          </Button>
+          <div className="total-statical__main">
+            <h3 className="total-statical__title">{queryName}</h3>
+            {this.renderCommonChart()}
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
