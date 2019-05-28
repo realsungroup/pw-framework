@@ -60,7 +60,8 @@ export default class DesktopBottomBar extends React.Component {
     onOpenReminderList: noop,
     onAppClick: noop,
     onPoweroffClick: noop,
-    onSearchFocus: noop
+    onSearchFocus: noop,
+    onOpenOrgChart: noop
   };
 
   constructor(props) {
@@ -113,6 +114,7 @@ export default class DesktopBottomBar extends React.Component {
       menuVisible,
       onOpenDashboard,
       onOpenReminderList,
+      onOpenOrgChart,
       onMenuClick,
       onPoweroffClick,
       onOpenModifyPassModal,
@@ -145,18 +147,31 @@ export default class DesktopBottomBar extends React.Component {
         </div>
         <div className="desktop-bottom-bar__right">
           <DesktopDate className="desktop-bottom-bar__date" />
+
+          {/* 仪表盘 */}
           <div
             className="desktop-bottom-bar__right-item"
             onClick={onOpenDashboard}
           >
             <Icon type="dashboard" />
           </div>
+
+          {/* 组织架构 */}
+          <div
+            className="desktop-bottom-bar__right-item"
+            onClick={onOpenOrgChart}
+          >
+            <Icon type="apartment" />
+          </div>
+
+          {/* 提醒 */}
           <div
             className="desktop-bottom-bar__right-item"
             onClick={onOpenReminderList}
           >
             <Icon type="bell" />
           </div>
+
           <div
             className="desktop-bottom-bar__rigth-item-show-desktop"
             onClick={onDesktopSwitch}

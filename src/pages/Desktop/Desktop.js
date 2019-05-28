@@ -15,7 +15,8 @@ import {
   DesktopColorPicker,
   DesktopDashboard,
   WindowView,
-  DesktopPersonCenter
+  DesktopPersonCenter,
+  DesktopOrgChart
 } from './loadableDesktop';
 import {
   ContextMenu,
@@ -36,7 +37,8 @@ const { SubMenu } = Menu;
 const {
   businessOptionalResIds,
   defaultOpenWindow,
-  themeColor
+  themeColor,
+  orgChartConfig
 } = window.pwConfig[process.env.NODE_ENV];
 
 const getPopoverContainer = () => {
@@ -498,14 +500,11 @@ class Desktop extends React.Component {
       })
       .filter(Boolean);
 
-    console.log({ menus });
-
     this.setState({ menus });
   };
 
   handleSearchChange = e => {
     this.setState({ searchValue: e.target.value });
-
     delay(this.filterMenus, 200);
   };
 
@@ -617,6 +616,31 @@ class Desktop extends React.Component {
     }
 
     this.getReminderData();
+  };
+
+  handleOpenOrgChart = () => {
+    const children = <DesktopOrgChart {...orgChartConfig} />;
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '组织结构图',
+        activeAppOthersProps: {
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 100,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
   };
 
   handleOpenDashboard = () => {
@@ -1210,6 +1234,7 @@ class Desktop extends React.Component {
           menus={menus}
           onOpenDashboard={this.handleOpenDashboard}
           onOpenReminderList={this.handleOpenReminderList}
+          onOpenOrgChart={this.handleOpenOrgChart}
           onMenuClick={this.handleAddToDesktop}
           onAppClick={this.handleBottomBarAppTrigger}
           onPoweroffClick={this.handlePoweroffClick}
