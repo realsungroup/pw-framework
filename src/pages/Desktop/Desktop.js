@@ -30,7 +30,6 @@ import logoPng from './assets/logo.png';
 import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
-import { fastest } from 'sw-toolbox';
 
 const { SubMenu } = Menu;
 const {
