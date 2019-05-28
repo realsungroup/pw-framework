@@ -32,10 +32,11 @@ class BMContent extends React.Component {
   };
 
   getData = async () => {
-    const { resid } = this.props;
+    const { resid, dblinkname } = this.props;
     this.p1 = makeCancelable(
       http().getResourceRelation({
-        resid
+        resid,
+        dblinkname
       })
     );
     let res;
@@ -66,7 +67,7 @@ class BMContent extends React.Component {
 
   render() {
     const { loading, subTables, selectedRecord } = this.state;
-    const { resid } = this.props;
+    const { resid, dblinkname } = this.props;
     return (
       <Spin spinning={loading}>
         <div className="bm-content">
@@ -78,6 +79,7 @@ class BMContent extends React.Component {
               height={520}
               onRowClick={this.handleRowClick}
               hasBeBtns
+              dblinkname={dblinkname}
             />
           </div>
           {!!subTables.length && (
@@ -94,6 +96,7 @@ class BMContent extends React.Component {
                         subtractH={190}
                         height={520}
                         hasBeBtns
+                        dblinkname={dblinkname}
                       />
                     ) : (
                       <div
