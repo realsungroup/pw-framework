@@ -4,7 +4,7 @@ import { Modal, Button, message } from 'antd';
 import './MyExam.less';
 import http from 'Util20/api';
 import moment from 'moment';
-// import { withRouter } from 'react-router-dom';
+import MyExamBtn from './MyExamBtn';
 
 class MyExam extends Component {
   state = {
@@ -17,6 +17,34 @@ class MyExam extends Component {
       title: '提示',
       content: '您确定要参加考试吗？',
       onOk: () => this.handleJoinExam(record)
+    });
+  };
+
+  componentDidMount() {
+    window.parent.pwCallback.modifyTitle('我的考试');
+  }
+
+  handleContinuJoinExam = (record, batchRecord) => {
+    // 考试安排编号
+    const arrangeNum = record.C3_607197284004;
+    // 试卷编号
+    const examNum = record.C3_609936321951;
+    // 人员编号
+    const personNum = record.C3_607197253817;
+
+    // 记录 id
+    const myExamRecid = record.REC_ID;
+
+    const examBatchNum = batchRecord.C3_607196596723;
+
+    window.location.href = `/fnmodule?resid=考试页面&recid=608295659960&type=考试系统&title=考试页面&examnum=${examNum}&exambatchnum=${examBatchNum}&arrangenum=${arrangeNum}&personnum=${personNum}&myexamrecid=${myExamRecid}`;
+  };
+
+  handleContinueExam = (record, batchRecord) => {
+    Modal.confirm({
+      title: '提示',
+      content: '您确定要继续参加考试吗？',
+      onOk: () => this.handleContinuJoinExam(record, batchRecord)
     });
   };
 
@@ -71,9 +99,8 @@ class MyExam extends Component {
       return message.error(err.message);
     }
     const questions = res.data; // 题目
-    console.log(questions);
 
-    // 项考试批次表（主表）和考试批次答题表（子表）中插入数据
+    // 向考试批次表（主表）和考试批次答题表（子表）中插入数据
     const dataObj = {
       resid: 608809112309, // 主表 id
       maindata: {
@@ -157,15 +184,12 @@ class MyExam extends Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
-                this.isShowJoinBtn(record) && (
-                  <Button
-                    key={'参加考试'}
-                    onClick={() => this.handleJoinConfirm(record)}
-                    style={{ margin: '0 4px' }}
-                  >
-                    参加考试
-                  </Button>
-                )
+                <MyExamBtn
+                  key={record.REC_ID}
+                  record={record}
+                  onJoinConfirm={() => this.handleJoinConfirm(record)}
+                  onContinueExam={this.handleContinueExam}
+                />
               );
             },
             (record, btnSize) => {
