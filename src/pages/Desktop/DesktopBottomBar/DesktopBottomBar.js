@@ -123,7 +123,8 @@ export default class DesktopBottomBar extends React.Component {
       onDesktopSwitch,
       onSearchFocus,
       onSearchChange,
-      searchValue
+      searchValue,
+      orgChartConfig
     } = this.props;
     return (
       <div className="desktop-bottom-bar">
@@ -157,12 +158,14 @@ export default class DesktopBottomBar extends React.Component {
           </div>
 
           {/* 组织架构 */}
-          <div
-            className="desktop-bottom-bar__right-item"
-            onClick={onOpenOrgChart}
-          >
-            <Icon type="apartment" />
-          </div>
+          {orgChartConfig && (
+            <div
+              className="desktop-bottom-bar__right-item"
+              onClick={onOpenOrgChart}
+            >
+              <Icon type="apartment" />
+            </div>
+          )}
 
           {/* 提醒 */}
           <div

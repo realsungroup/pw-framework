@@ -70,7 +70,7 @@ window.pwConfig = {
     // 默认打开的窗口（即在第一次进入桌面时，会自动打开的窗口）；为空字符串时，不会打开任何窗口
     defaultOpenWindow: '',
 
-    // 组织架构组件配置
+    // 组织架构组件配置；如果不需要组件架构，则设为 null 即可
     orgChartConfig: {
       resid: 602348115218,
       template: 'rony',
@@ -172,7 +172,7 @@ window.pwConfig = {
     // 默认打开的窗口
     defaultOpenWindow: '',
 
-    // 组织架构组件配置
+    // 组织架构组件配置；如果不需要组件架构，则设为 null 即可
     orgChartConfig: {
       resid: 602348115218,
       template: 'rony',

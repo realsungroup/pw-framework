@@ -1246,6 +1246,7 @@ class Desktop extends React.Component {
           onSearchFocus={this.handleSearchFocus}
           onSearchChange={this.handleSearchChange}
           searchValue={searchValue}
+          orgChartConfig={orgChartConfig}
         />
 
         {/* 窗口 */}
