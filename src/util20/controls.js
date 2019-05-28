@@ -179,7 +179,13 @@ export const getRules = controlData => {
 /**
  * 修改控件类型
  */
-const modControlType = (canOpControlArr, ImgArr, FileArr, takePictureArr) => {
+const modControlType = (
+  controlArr,
+  canOpControlArr,
+  ImgArr,
+  FileArr,
+  takePictureArr
+) => {
   canOpControlArr.forEach(canOpControl => {
     const { ColType: dateType, ColValType: controlCode } = canOpControl;
     // 日期时间选择器
@@ -216,7 +222,29 @@ const modControlType = (canOpControlArr, ImgArr, FileArr, takePictureArr) => {
       });
     }
   });
-  return canOpControlArr;
+
+  let takePictureControls = [];
+  if (takePictureArr.length) {
+    takePictureControls = takePictureArr
+      .map(takePictureItem => {
+        const tempField = takePictureItem.FrmColName;
+        let tempItem = controlArr.find(controlItem => {
+          return (
+            tempField.indexOf(controlItem.FrmColNameForCtrl) !== -1 &&
+            tempField.indexOf(controlItem.FrmColNameForCtrl) !== 0
+          );
+        });
+        if (tempItem) {
+          return {
+            ColDispName: tempItem.FrmText,
+            ColName: tempItem.FrmColNameForCtrl,
+            ColValType: ControlCode.ImgCamera
+          };
+        }
+      })
+      .filter(Boolean);
+  }
+  return [...canOpControlArr, ...takePictureControls];
 };
 
 /**
@@ -356,10 +384,12 @@ export default function dealControlArr(controlArr) {
 
   // 修改 上传图片/上传文件/拍照 的 ColValType 的值
   canOpControlArr = modControlType(
+    controlArr,
     canOpControlArr,
     ImgArr,
     FileArr,
-    takePictureArr
+    takePictureArr,
+    controlArr
   );
 
   const allControlArr = [...canOpControlArr, ...labelControllArr];

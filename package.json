@@ -26,6 +26,7 @@
     "base-64": "^0.1.0",
     "bfj": "6.1.1",
     "braft-editor": "^2.2.10",
+    "blob-util": "^2.0.2",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "2.4.1",
     "classnames": "^2.2.6",

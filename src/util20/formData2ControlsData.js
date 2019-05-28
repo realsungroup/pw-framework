@@ -1,5 +1,4 @@
 import { getRules, ControlCode } from './controls';
-import moment from 'moment';
 import cloneDeep from 'lodash.clonedeep';
 import { FILESEPARATOR } from './constants';
 
@@ -77,6 +76,10 @@ const getControlName = controlData => {
     case ControlCode.FileSelect: {
       return 'Upload';
     }
+    // take picture:拍照
+    case ControlCode.ImgCamera: {
+      return 'TakePicture';
+    }
   }
 };
 
@@ -137,11 +140,6 @@ const getProps = (controlData, name) => {
     switch (type) {
       // 下拉框：Select
       case ControlCode.OptionValue: {
-        // const options = controlData.DisplayOptions;
-        // props.options = options.map(option => ({
-        //   label: option.displayColValue,
-        //   value: option.valueColValue
-        // }));
         const labelOptions = controlData.DisplayOptions;
         const valueOptions = controlData.ValueOptions;
         props.options = labelOptions.map((label, index) => ({
@@ -300,7 +298,7 @@ const getFileList = value => {
  * 设置所有控件的 initialValue 属性值
  * @param {array} data 所有控件数据
  * @param {object} record 记录
- * @param {boolean} isTransformValue 是否转换值（如：'2019-01-10' 转换为 moment 对象），默认值：false
+ * @param {boolean} isTransformValue 是否转换值，默认值：false
  * @param {boolean} isClassifyLayout 是否是分类布局，默认值：false
  */
 export const setDataInitialValue = (
