@@ -18,6 +18,7 @@ const withDownloadFile = WrappedComponent => {
      * @param {string} resid 资源 id
      * @param {cmsWhere} where where 语句，如："name = 'xl' and age = '22'"
      * @param {string} fileType 文件类型，默认：'xls'
+     * @param {string} dblinkname 数据库链接名称
      */
     handleDownloadFile = async (
       requestBaseURL,
@@ -25,7 +26,8 @@ const withDownloadFile = WrappedComponent => {
       fileName,
       resid,
       cmsWhere,
-      fileType = 'xls'
+      fileType = 'xls',
+      dblinkname
     ) => {
       this.setState({ loading: true });
 
@@ -33,7 +35,8 @@ const withDownloadFile = WrappedComponent => {
         http({ baseURL: requestBaseURL }).exportTableData({
           resid,
           cmswhere: cmsWhere,
-          filetype: fileType
+          filetype: fileType,
+          dblinkname
         })
       );
       let res;
@@ -48,18 +51,6 @@ const withDownloadFile = WrappedComponent => {
         const index = res.data.lastIndexOf('/');
         name = res.data.slice(index + 1);
       }
-
-      // http.createApi('getFile', {
-      //   url: res.data
-      // });
-
-      // res = await http({
-      //   baseURL: downloadBaseURL
-      // }).getFile();
-
-      // console.log({ res });
-
-      // download('hello', name, 'application/vnd.ms-excel');
 
       window.open(downloadBaseURL + res.data);
       return;

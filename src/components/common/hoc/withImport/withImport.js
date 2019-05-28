@@ -18,9 +18,16 @@ const withImport = WrappedComponent => {
 
     /**
      * 打开导入窗口界面
+     * @param {string} dblinkname 数据库链接名称
+     * @param {string} baseURL 基地址
      * @param {number} resid 资源 id
+     * @param {string} mode 导入模式
+     * @param {string} saveState 保存数据的模式
+     * @param {string} type 类型
+     * @param {object} containerProps 容器接收的 props
      */
     handleOpenImportView = async (
+      dblinkname,
       baseURL,
       resid,
       mode,
@@ -46,7 +53,8 @@ const withImport = WrappedComponent => {
         resid,
         baseURL,
         mode,
-        saveState
+        saveState,
+        dblinkname
       });
     };
 

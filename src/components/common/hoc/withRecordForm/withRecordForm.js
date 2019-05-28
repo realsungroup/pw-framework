@@ -38,6 +38,7 @@ export function withRecordForm(options = {}) {
        * @param {string} params.storeWay 添加、修改的数据所使用的存储方式
        * @param {function} params.onSuccess 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示什么操作；formData 表示保存的表单数据；record 表示记录；form 自动收集数据的 form 对象
        * @param {function} params.onCancel 取消后的回调函数
+       * @param {string} params.dblinkname 数据库链接名称
        */
       handleOpenRecordForm = ({
         type = 'modal',
@@ -61,7 +62,8 @@ export function withRecordForm(options = {}) {
         recordFormTabsWidth,
         storeWay = 'be',
         onSuccess = () => {},
-        onCancel = () => {}
+        onCancel = () => {},
+        dblinkname
       }) => {
         const FormDataProps = {
           data,
@@ -79,7 +81,8 @@ export function withRecordForm(options = {}) {
           },
           subTableArr,
           subTableArrProps,
-          storeWay
+          storeWay,
+          dblinkname
         };
         const containerProps = {
           title,

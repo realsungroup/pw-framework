@@ -650,5 +650,11 @@ export const propTypes = {
    * 下载文件的基地址
    * 默认：-
    */
-  downloadBaseURL: PropTypes.string
+  downloadBaseURL: PropTypes.string,
+
+  /**
+   * 数据库链接名称（当你想要用其他数据库时使用）
+   * 默认：-
+   */
+  dblinkname: PropTypes.string
 };

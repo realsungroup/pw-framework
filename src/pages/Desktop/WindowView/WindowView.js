@@ -189,12 +189,13 @@ export default class WindowView extends React.Component {
   };
 
   handleGoBack = () => {
-    this.iframeRef.contentWindow.postMessage(
-      {
-        type: 'goBack'
-      },
-      '*'
-    );
+    this.iframeRef &&
+      this.iframeRef.contentWindow.postMessage(
+        {
+          type: 'goBack'
+        },
+        '*'
+      );
   };
 
   renderMiddleBtn = () => {
