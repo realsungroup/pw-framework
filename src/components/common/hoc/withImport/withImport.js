@@ -1,7 +1,7 @@
 import React from 'react';
 import { argumentContainer } from '../util';
 import withModalDrawer from '../withModalDrawer';
-import Import from './Import';
+import ImportExcel from './ImportExcel';
 
 // 导入数据的高阶组件
 const withImport = WrappedComponent => {
@@ -23,6 +23,8 @@ const withImport = WrappedComponent => {
     handleOpenImportView = async (
       baseURL,
       resid,
+      mode,
+      saveState,
       type = 'drawer',
       containerProps
     ) => {
@@ -40,9 +42,11 @@ const withImport = WrappedComponent => {
       }
 
       // 还未请求导入配置
-      this.props.openModalOrDrawer(type, importContainerProps, Import, {
+      this.props.openModalOrDrawer(type, importContainerProps, ImportExcel, {
         resid,
-        baseURL
+        baseURL,
+        mode,
+        saveState
       });
     };
 

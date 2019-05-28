@@ -57,7 +57,6 @@ export const defaultProps = {
   enModifyText: 'Modify',
   recordFormFormWidth: '50%',
   recordFormTabsWidth: '50%',
-  hasImport: true,
   advSearch: {
     searchComponent: 'both',
     containerType: 'drawer',
@@ -66,7 +65,12 @@ export const defaultProps = {
     isUseTableFields: true,
     fields: []
   },
-  hasRowSelection: false
+  hasRowSelection: false,
+  importConfig: {
+    mode: 'be',
+    saveState: 'editoradd',
+    containerType: 'drawer'
+  }
 };
 
 export const propTypes = {
@@ -606,23 +610,15 @@ export const propTypes = {
   // ===========================================================
 
   /**
-   * 是否有导入功能
-   * 默认：true
+   * 导入功能配置
+   * 默认：{ mode: 'be', saveState: 'editoradd', containerType: 'drawer' }
    */
-  hasImport: PropTypes.bool,
-
-  /**
-   * 导入功能的容器类型
-   * 可选：'modal' 模态窗 | 'drawer' 抽屉
-   * 默认：'drawer'
-   */
-  importContainerType: PropTypes.oneOf(['modal', 'drawer']),
-
-  /**
-   * 导入功能的容器接收的 props
-   * 默认：{}
-   */
-  importContainerProps: PropTypes.object,
+  importConfig: PropTypes.shape({
+    mode: PropTypes.oneOf(['fe', 'be']).isRequired, // 处理 Excel 数据的模式：'fe' 表示前端处理 Excel；'be' 表示后端处理Excel
+    saveState: PropTypes.oneOf(['editoradd', 'added']).isRequired, // 保存数据时的状态：'editoradd' 表示表中如果已存在该记录，则更新记录，不会报错；'added' 表示如果已存在该记录，则不能够插入该记录，而是抛出错误给前端
+    containerType: PropTypes.oneOf(['modal', 'drawer']), // 导入控件所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
+    containerProps: PropTypes.object // 容器（'modal' | 'drawer'）接收的 props（参考 ant-design Modal/Drawer 组件的 props）
+  }),
 
   /**
    * action bar 区域额外的内容

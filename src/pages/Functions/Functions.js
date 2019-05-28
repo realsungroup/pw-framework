@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FunctionsHeader from '../components/FunctionsHeader';
+// import FunctionsHeader from '../components/FunctionsHeader';
 import './Functions.less';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
@@ -19,7 +19,7 @@ class Functions extends React.Component {
     config: PropTypes.shape({
       title: PropTypes.string.isRequired, // 标题
       name: PropTypes.string.isRequired, // 所用组件名称
-      props: PropTypes.object.isRequired, // 组件接收的 props
+      props: PropTypes.object, // 组件接收的 props
       hasBackBtn: PropTypes.bool // 是否有返回上一页的按钮
     }).isRequired
     // 如：
@@ -64,21 +64,15 @@ class Functions extends React.Component {
     if (!C) {
       return `没有名为 ${name} 的单元组件`;
     }
-    props = props || {};
+    const { history, location, match } = this.props;
+    props = { ...(props || {}), history, location, match };
     return <C {...props} />;
   };
 
   render() {
-    const {
-      name,
-      props,
-      title,
-      hasBackBtn = true,
-      hasHeader = true
-    } = this.props.config;
+    const { name, props } = this.props.config;
     return (
       <div className="functions">
-        {hasHeader && <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />}
         <div className="functions__body">
           {this.renderComponent(name, props)}
         </div>

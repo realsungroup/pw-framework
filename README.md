@@ -6,7 +6,7 @@ power-works 基础框架
 
 #### 1. 下载以及安装依赖
 
-- git clone https://github.com/realsungroup/pw-framework.git（或 `git clone git@github.com:realsungroup/pw-framework.git`）
+- git clone https://github.com/realsungroup/pw-framework.git （或 `git clone git@github.com:realsungroup/pw-framework.git`）
 - cd pw-framework
 - npm install（或 `yarn`）
 
@@ -44,3 +44,7 @@ power-works 基础框架
 3. 若有冲突，则解决冲突，且按照 [更新日志](./docs/changelog.md) 的提示进行升级
 4. 测试
 5. 完成
+
+
+新功能：
+- [在窗口中如何返回上一页？](./docs/iframe.md)

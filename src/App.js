@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-import { PageContainer, Login, NotFound } from './pages/loadablePage';
+// import { PageContainer, Login, NotFound } from './pages/loadablePage';
 
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -32,9 +32,11 @@ import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import { Desktop, GetConfig, Login, Reminder } from './pages/loadablePage';
+
 addLocaleData([...en, ...zh]);
 
-const Reminder = (
+const ReminderMsg = (
   <div className="app__nonuse-ie">
     本应用不支持
     <div className="app__nonuse-tag">
@@ -148,7 +150,7 @@ class App extends Component {
           <NonsupportIE
             // curIEVersion="ie11"
             supportVersionList={['ie11']}
-            reminder={Reminder}
+            reminder={ReminderMsg}
             warningBar={ReactDOM.createPortal(
               <WarningBar
                 visible={this.state.warningBarVisible}
@@ -161,14 +163,15 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router>
                   <Switch>
-                    <PrivateRoute exact path="/" component={PageContainer} />
-                    <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute path="/fnmodule" component={PageContainer} />
+                    <PrivateRoute exact path="/" component={Desktop} />
+                    <PrivateRoute path="/fnmodule" component={GetConfig} />
+                    <PrivateRoute path="/reminder" component={Reminder} />
+
+                    {/* <PrivateRoute path="/home" component={PageContainer} />
                     <PrivateRoute
                       path="/workbench-setting"
                       component={PageContainer}
                     />
-                    <PrivateRoute path="/reminder" component={PageContainer} />
                     <PrivateRoute
                       path="/report-table"
                       component={PageContainer}
@@ -176,9 +179,9 @@ class App extends Component {
                     <PrivateRoute
                       path="/person-center"
                       component={PageContainer}
-                    />
+                    /> */}
                     <Route path="/login" component={Login} />
-                    <Route path="*" component={NotFound} />
+                    {/* <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>
               </IntlProvider>

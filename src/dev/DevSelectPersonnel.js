@@ -9,16 +9,16 @@ import { Spin } from 'antd';
 
 const radioGroupConfig = [
   {
-    type: 'file', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
+    type: 'file', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件；'advSearch' 表示高级搜索
     title: '选择文件' // 单选按钮文字
   },
   {
     type: 'tree',
     title: '按部门添加',
-    resid: 592742244497,
-    nameField: 'DEP_NAME',
-    idField: 'DEP_ID',
-    pidField: 'DEP_PID'
+    resid: 592742244497, // 主表 id
+    nameField: 'DEP_NAME', // 显示节点名称的字段
+    idField: 'DEP_ID', // 节点 id
+    pidField: 'DEP_PID' // 父节点 id
   },
   {
     type: 'list',
@@ -27,8 +27,12 @@ const radioGroupConfig = [
     nameField: 'DESCP'
   },
   {
-    type: 'search', // 类型：'tree' 表示树；'list' 表示列表；'search' 表示模糊搜索；'file' 表示文件
-    title: '搜索' // 单选按钮文字
+    type: 'search',
+    title: '搜索'
+  },
+  {
+    type: 'advSearch',
+    title: '高级搜索'
   }
 ];
 
@@ -51,7 +55,7 @@ class App extends Component {
     return (
       <TemplateWrap>
         <Spin spinning={loading}>
-          <div style={{ width: 1000, height: 520 }}>
+          <div style={{ width: 1300, height: 520 }}>
             <SelectPersonnel
               radioGroupConfig={radioGroupConfig}
               subResid={592742369617}

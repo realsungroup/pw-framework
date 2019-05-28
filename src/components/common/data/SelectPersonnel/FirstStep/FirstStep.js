@@ -7,7 +7,8 @@ import {
   Upload,
   Icon,
   Button,
-  Popover
+  Popover,
+  Modal
 } from 'antd';
 import './FirstStep.less';
 import DepartmentTree from './DepartmentTree';
@@ -19,6 +20,8 @@ import http from 'Util20/api';
 import PropTypes from 'prop-types';
 import XLSX from 'xlsx';
 import examplePng from './assets/example.png';
+import AdvSearch from 'lz-components-and-utils/lib/AdvSearch';
+import 'lz-components-and-utils/lib/AdvSearch/style/index.css';
 
 const Search = Input.Search;
 const Dragger = Upload.Dragger;
@@ -117,7 +120,9 @@ export default class FirstStep extends React.Component {
       selectedRadio, // 已选择的 radio
       excelColName: 'A', // excel 查询的列名称
       isSelectFile: false,
-      fileInfo: null // 选中的文件信息
+      fileInfo: null, // 选中的文件信息
+
+      advSearchModalVisible: false
     };
   }
 
@@ -131,6 +136,29 @@ export default class FirstStep extends React.Component {
       this.setState({ firstColLoading: true });
       this.getFirstColData(this.state.selectedRadio);
     }
+
+    // 获取高级搜索所需要的字段（子表）
+    this.getSubTableField();
+  };
+
+  getSubTableField = async () => {
+    let res;
+    try {
+      res = await http().getTableColumnDefine({ resid: this.props.subResid });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.fields = this.getFields(res.cmscolumninfo);
+    this.forceUpdate();
+  };
+
+  getFields = columnInfo => {
+    return columnInfo.map(column => ({
+      value: column.id,
+      label: column.text,
+      control: 'Input'
+    }));
   };
 
   // 获取第一列的数据
@@ -146,8 +174,6 @@ export default class FirstStep extends React.Component {
       }
       const firstColData = dealData(radioConfig, res.data);
 
-      console.log({ firstColData });
-
       radioConfig.firstColData = firstColData;
       this.setState({
         selectedRadio: { ...radioConfig },
@@ -157,9 +183,6 @@ export default class FirstStep extends React.Component {
       this.setState({ firstColLoading: false, selectedRadio: radioConfig });
     }
   };
-
-  // 获取第二列的数据
-  getSecondColData = item => {};
 
   handleRadioGroupChange = e => {
     this.setState({ firstColLoading: true, hasMore: false, personList: [] });
@@ -172,7 +195,7 @@ export default class FirstStep extends React.Component {
 
     if (type === 'tree' || type === 'list') {
       this.getFirstColData(selectedRadio);
-    } else if (type === 'search' || type === 'file') {
+    } else if (type === 'search' || type === 'file' || type === 'advSearch') {
       this.setState({ selectedRadio, firstColLoading: false });
     }
   };
@@ -184,20 +207,34 @@ export default class FirstStep extends React.Component {
     option,
     hasPaging = true
   ) => {
+    const { selectedRadio } = this.state;
     this.loading = true;
     this.setState({ loading: true });
     let res;
-    try {
-      res = await http().getSubTable({
-        resid,
-        subresid: subResid,
-        hostrecid: hostRecid,
-        ...option
-      });
-    } catch (err) {
-      this.setState({ loading: false });
-      return message.error(err.message);
+    if (selectedRadio.type === 'advSearch') {
+      try {
+        res = await http().getTable({
+          resid,
+          ...option
+        });
+      } catch (err) {
+        this.setState({ loading: false });
+        return message.error(err.message);
+      }
+    } else {
+      try {
+        res = await http().getSubTable({
+          resid,
+          subresid: subResid,
+          hostrecid: hostRecid,
+          ...option
+        });
+      } catch (err) {
+        this.setState({ loading: false });
+        return message.error(err.message);
+      }
     }
+
     this.dealPersonList(res.data, res.total, hasPaging);
   };
 
@@ -266,7 +303,7 @@ export default class FirstStep extends React.Component {
     }
     const hostrecid = selectedKeys[0];
     const option = {
-      current: 0,
+      pageindex: 0,
       pageSize: this.state.pageSize
     };
     this.getPersonList(
@@ -289,7 +326,7 @@ export default class FirstStep extends React.Component {
       secondColLoading: true
     });
     const option = {
-      current: 0,
+      pageindex: 0,
       pageSize: this.state.pageSize
     };
     this.getPersonList(selectedRadio.resid, subResid, item.REC_ID, option);
@@ -318,13 +355,13 @@ export default class FirstStep extends React.Component {
     let option = hasPaging
       ? {
           key: value,
-          current: pageIndex,
+          pageindex: pageIndex,
           pageSize: pageSize
         }
       : {};
     // 第一次搜索该值（非 loadMore 中搜索）
     if (isFirstSearch) {
-      option.current = 0;
+      option.pageindex = 0;
       this.personSearchValue = value;
       this.setState({
         personList: [],
@@ -451,19 +488,23 @@ export default class FirstStep extends React.Component {
     let resid, subResid, hostRecid;
     let option = hasPaging
       ? {
-          current: pageIndex,
+          pageindex: pageIndex,
           pageSize,
           key: searchValue
         }
       : {};
-    if (selectedRadio.type === 'tree') {
+
+    const type = selectedRadio.type;
+    if (type === 'tree') {
       resid = selectedRadio.resid;
       subResid = this.props.subResid;
       hostRecid = this.state.selectedKeys[0];
-    } else {
+    } else if (type === 'list' || type === 'file' || type === 'search') {
       resid = selectedRadio.resid;
       subResid = this.props.subResid;
       hostRecid = this.state.selectedItem.REC_ID;
+    } else if (type === 'advSearch') {
+      resid = this.props.subResid;
     }
     return { resid, subResid, hostRecid, option };
   };
@@ -494,12 +535,20 @@ export default class FirstStep extends React.Component {
     }
     this.setState({ secondColLoading: true });
 
-    option = { ...option, key: value, current: 0 };
+    option = { ...option, key: value, pageindex: 0 };
     this.getPersonList(resid, subResid, hostRecid, option);
   };
 
   handleSearchChange = e => {
     this.setState({ searchValue: e.target.value });
+  };
+
+  handleOpenAdvSearch = () => {
+    this.setState({ advSearchModalVisible: true });
+  };
+
+  handleHideAdvSearch = () => {
+    this.setState({ advSearchModalVisible: false });
   };
 
   renderTipContent = () => {
@@ -548,6 +597,18 @@ export default class FirstStep extends React.Component {
             onSearch={value => this.handlePersonSearch(value, true)}
           />
         );
+      }
+      // 渲染高级搜索
+      case 'advSearch': {
+        if (this.fields.length) {
+          return (
+            <AdvSearch
+              fields={this.fields}
+              onConfirm={this.handleFirstColAdvSearchConfirm}
+            />
+          );
+        }
+        return null;
       }
       // 渲染选择文件
       case 'file': {
@@ -688,6 +749,34 @@ export default class FirstStep extends React.Component {
     this.dealPersonList(res.data, res.data.total, false, false);
   };
 
+  handleAdvSearchConfirm = where => {
+    this.setState({
+      personList: [],
+      pageIndex: 0,
+      advSearchModalVisible: false
+    });
+
+    let { resid, subResid, hostRecid, option, searchValue } = this.getReqParams(
+      this.state.searchValue
+    );
+
+    if (!hostRecid) {
+      return message.error('未在第一列进行筛选');
+    }
+    this.setState({ secondColLoading: true });
+
+    option = { ...option, key: searchValue, pageindex: 0, cmswhere: where };
+    this.getPersonList(resid, subResid, hostRecid, option);
+  };
+
+  handleFirstColAdvSearchConfirm = where => {
+    this.setState({ personList: [], pageIndex: 0 });
+    const { resid } = this.getReqParams();
+    this.setState({ secondColLoading: true });
+    const option = { cmswhere: where };
+    this.getPersonList(resid, '', '', option);
+  };
+
   renderRadioItem = radioItem => {
     switch (radioItem.type) {
       // 树
@@ -724,7 +813,8 @@ export default class FirstStep extends React.Component {
       secondColLoading,
       firstColLoading,
       selectedRadio,
-      searchValue
+      searchValue,
+      advSearchModalVisible
     } = this.state;
     const { radioGroupConfig, secondFilterInputPlaceholder } = this.props;
     return (
@@ -769,6 +859,10 @@ export default class FirstStep extends React.Component {
                 hasSearch={this.getSceondColHasSearch()}
                 searchValue={searchValue}
                 secondFilterInputPlaceholder={secondFilterInputPlaceholder}
+                hasAdvSearch={
+                  ['tree', 'list'].indexOf(selectedRadio.type) !== -1
+                }
+                onOpenAdvSearch={this.handleOpenAdvSearch}
                 {...this.getShowField()}
               />
             </InfiniteScroll>
@@ -782,6 +876,20 @@ export default class FirstStep extends React.Component {
             />
           </div>
         </div>
+
+        <Modal
+          title="高级搜索"
+          visible={advSearchModalVisible}
+          onCancel={this.handleHideAdvSearch}
+          footer={null}
+        >
+          {this.fields && (
+            <AdvSearch
+              fields={this.fields}
+              onConfirm={this.handleAdvSearchConfirm}
+            />
+          )}
+        </Modal>
       </div>
     );
   }
