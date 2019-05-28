@@ -26,7 +26,7 @@ class TableDataVisitor extends React.Component {
         try {
           res = await http().getTable({
             resid: 606066688508,
-            cmswhere: "C3_608392189420 = " + card.cardno
+            cmswhere: `C3_608392189420 = ${card.cardno}`
           });
           if (res.data) {
             message.success("查询成功！");
@@ -88,6 +88,9 @@ class TableDataVisitor extends React.Component {
                     case '访客类型':
                     item.initialValue = record[0].C3_605717078399;
                       break;
+                      case '访客单位':
+                      item.initialValue = record[0].C3_605716301557;
+                        break;
         }
         // if (item.label === "登记证件号码" && record) {
         //   item.initialValue = record[0].C3_608392189420;
@@ -208,9 +211,9 @@ class TableDataVisitor extends React.Component {
           destroyOnClose
         >
           {/* <div style={{width:"40%"}}> */}
-          <Form.Item label="姓名">
+          <Form.Item label="访客姓名">
             {getFieldDecorator("name", {
-              initialValue: [record && record[0].C3_605716828937],
+              initialValue: [record && record[0] && record[0].C3_605703839196],
               rules: [
                 {
                   required: true,
@@ -221,7 +224,7 @@ class TableDataVisitor extends React.Component {
           </Form.Item>
           <Form.Item label="身份证号">
             {getFieldDecorator("cardno", {
-              initialValue: [record && record[0].C3_608392189420],
+              initialValue: [record && record[0] &&  record[0].C3_608392189420],
               rules: [
                 {
                   required: true,
@@ -230,6 +233,67 @@ class TableDataVisitor extends React.Component {
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
+          
+          <Form.Item label="访客类型">
+            {getFieldDecorator("visiterType", {
+              initialValue: [record && record[0] &&  record[0].C3_605703913037],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+          <Form.Item label="单位">
+            {getFieldDecorator("componey", {
+              initialValue: [record && record[0] &&  record[0].C3_605716301557],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+
+          <Form.Item label="事由">
+            {getFieldDecorator("reason", {
+              initialValue: [record && record[0] &&  record[0].C3_605703896083],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+          
+          <Form.Item label="事由">
+            {getFieldDecorator("area", {
+              initialValue: [record && record[0] &&  record[0].C3_605703930741],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+
+          
+          <Form.Item label="申请人">
+            {getFieldDecorator("applyName", {
+              initialValue: [record && record[0] &&  record[0].C3_605703779087],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+          
           {/* </div> */}
 
           {/* <div style={{width:"40%"}}>

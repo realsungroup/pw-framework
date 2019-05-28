@@ -1,0 +1,25 @@
+.control {
+  &__file-list-item {
+    transition: 0.3s;
+    &:hover {
+      background: #e6f7ff;
+    }
+    position: relative;
+    line-height: 22px;
+    &:hover &-close {
+      opacity: 1;
+    }
+    a {
+      margin-left: 4px;
+    }
+  }
+  &__file-list-item-close {
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    top: 6px;
+    transition: 0.3s;
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
