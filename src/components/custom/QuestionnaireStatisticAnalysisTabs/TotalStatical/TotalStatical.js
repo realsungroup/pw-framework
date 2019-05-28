@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Icon, Input, Tabs, Table, Progress } from 'antd';
+import { Button, message, Tabs, Table, Progress } from 'antd';
 import './TotalStatical.less';
 import http from 'Util20/api';
 import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const TabPane = Tabs.TabPane;
 
@@ -12,13 +13,15 @@ class TotalStatical extends Component {
     this.state = {
       queryName: '',
       queryQuestions: [],
-      staticalData: [],
+      answerData: [],
       data: []
     };
   }
   componentDidMount = () => {
     this.getQueryName(this.props.queryId);
     this.getqueryQuestions(this.props.queryId);
+    // 获取该问卷的问答题
+    this.getAnswerData(this.props.queryId);
   };
 
   columns = [
@@ -66,7 +69,7 @@ class TotalStatical extends Component {
     });
   };
 
-  //根据问卷ID 拿到该问卷的题目
+  //根据问卷ID 拿到该问卷的题目,再根据试题的题目去取出试题的选项。2.根据问卷的ID在问卷答题表中取出属于该问卷的试题。
   getqueryQuestions = async id => {
     let QuestionsData;
     try {
@@ -86,7 +89,7 @@ class TotalStatical extends Component {
         return item.question_id;
       })
       .join(',');
-
+    // 根据好多条试题的ID 去查找好所有试题ID下面对应的试题选项使用到了cmswhere语句。question_id in ('','',)
     this.getOptionsTableData(cmsString);
   };
 
@@ -141,7 +144,63 @@ class TotalStatical extends Component {
     });
     this.setState({ data });
   };
-
+  //根据问卷ID 拿到属于该问卷问答题的数据
+  getAnswerData = async id => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 608838682402,
+        cmswhere: `query_id = ${id} and question_type='问答题'`
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    console.log('问答题的数据', res.data);
+    // 拿到的数据是
+    /**
+     * 拿到的数据
+     * data:[
+     * query_id:1,
+     * 试题题目问答题1，
+     *
+     * ]
+     * 想要的最终的数据
+     * data=[
+     * {
+     * question_id:xxxx,
+     * question_topic:xxxx,
+     * answers:[
+     * xxxx,xxxx,xxxx,
+     * ]
+     * }
+     * ]
+     */
+    //  this.setState({
+    //   AnswerData:AnswerData.data,
+    //  })
+    if (0 <= res.data.length) {
+      const answerData = [];
+      res.data.forEach(item => {
+        const tempAnserdataItem = answerData.find(
+          answerDataItem => item.question_id === answerDataItem.question_id
+        );
+        // find 找到的话返回该元素，没找到返回-1
+        // 第一次进来是个空的
+        if (!tempAnserdataItem) {
+          answerData.push({
+            question_id: item.question_id,
+            question_topic: item.question_topic,
+            answers: [item.write_content]
+          });
+        } else {
+          tempAnserdataItem.answers.push(item.write_content);
+        }
+      });
+      this.setState({ answerData });
+      // console.log('处理后问答题的数据',this.state.answerData)
+    }
+  };
+  // 导出图片的功能
   handleExportImgBtnClick = () => {
     const { queryName } = this.state;
     // 下载图片
@@ -160,22 +219,44 @@ class TotalStatical extends Component {
     );
   };
 
-  // renderWhichchart
-  renderWhichchart = questionType => {
-    if (questionType === '问答题') {
-      return this.renderAnswerChart();
-    } else {
-      return this.renderCommonChart();
-    }
+  // 导出pdf文件
+  hanldeExportPdf = () => {
+    const content = document.querySelector('.total-statical__main');
+    console.log(content);
+    const doc = new jsPDF();
+    // html2canvas(content), () => {};
+    // doc.html(content,()=>{
+    //   doc.save('a4.pdf');
+    // });
   };
 
-  //渲染问答题的东西
+  //渲染问答题的数据
   renderAnswerChart = () => {
-    return (
-      <div>
-        <h4 className=" " />
-      </div>
-    );
+    const { answerData } = this.state;
+    console.log(answerData);
+    if (0 <= answerData) {
+      return;
+    } else {
+      return answerData.map((item, index) => {
+        return (
+          <div className="total-statical__chart-wrap" key={item.question_id}>
+            <h4 className="total-statical__chart-wrap__question-topic">
+              <br />
+              {item.question_topic}
+            </h4>
+            <ul className="total-statical__ubox">
+              {item.answers.map((answers, index) => {
+                return (
+                  <li key={index} className="total-statical__ubox__lee">
+                    {answers}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      });
+    }
   };
 
   // 渲染单选和多选的表格
@@ -206,16 +287,20 @@ class TotalStatical extends Component {
     return (
       <React.Fragment>
         <div className="total-statical">
-          <Button
-            size="small"
-            type="primary"
-            onClick={this.handleExportImgBtnClick}
-          >
-            导出 PNG
-          </Button>
           <div className="total-statical__main">
             <h3 className="total-statical__title">{queryName}</h3>
             {this.renderCommonChart()}
+            {this.renderAnswerChart()}
+            <Button
+              size="small"
+              type="primary"
+              onClick={this.handleExportImgBtnClick}
+            >
+              导出 PNG
+            </Button>
+            <Button type="primary" size="small" onClick={this.hanldeExportPdf}>
+              导出为PDF
+            </Button>
           </div>
         </div>
       </React.Fragment>
