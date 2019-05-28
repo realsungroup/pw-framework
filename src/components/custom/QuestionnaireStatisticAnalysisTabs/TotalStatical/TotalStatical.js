@@ -4,6 +4,7 @@ import './TotalStatical.less';
 import http from 'Util20/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import domtoimage from 'dom-to-image';
 
 const TabPane = Tabs.TabPane;
 
@@ -221,13 +222,19 @@ class TotalStatical extends Component {
 
   // 导出pdf文件
   hanldeExportPdf = () => {
-    const content = document.querySelector('.total-statical__main');
-    console.log(content);
-    const doc = new jsPDF();
-    // html2canvas(content), () => {};
-    // doc.html(content,()=>{
-    //   doc.save('a4.pdf');
-    // });
+    const dom = document.querySelector('.total-statical__main');
+    const { queryName } = this.state;
+
+    domtoimage
+      .toPng(dom)
+      .then(function(imgDataURL) {
+        const pdf = new jsPDF();
+        pdf.addImage(imgDataURL, 'PNG', 0, 0);
+        pdf.save(queryName + '.pdf');
+      })
+      .catch(function(error) {
+        console.error('oops, something went wrong!', error);
+      });
   };
 
   //渲染问答题的数据
