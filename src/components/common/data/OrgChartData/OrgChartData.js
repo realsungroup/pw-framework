@@ -180,9 +180,12 @@ class OrgChartData extends React.Component {
       idField,
       pidField,
       httpGetFormData,
-      rootIdsResid
+      rootIdsResid,
+      dblinkname
     } = this.props;
-    this.p6 = makeCancelable(http().getTable({ resid: rootIdsResid }));
+    this.p6 = makeCancelable(
+      http().getTable({ resid: rootIdsResid, dblinkname })
+    );
     let res;
     try {
       res = await this.p6.promise;
@@ -213,14 +216,15 @@ class OrgChartData extends React.Component {
   // 获取节点数据
   getNodes = async () => {
     const { level } = this.state;
-    const { idField, pidField, resid, groupingConfig } = this.props;
+    const { idField, pidField, resid, groupingConfig, dblinkname } = this.props;
     const options = {
       resid,
       ColumnOfID: idField,
       ColumnOfPID: pidField,
       ProductIDs: this._rootIds.join(','),
       Levels: level,
-      cmswhere: this._cmswhere
+      cmswhere: this._cmswhere,
+      dblinkname
     };
 
     // 分组模式，添加 tags 参数
@@ -257,10 +261,12 @@ class OrgChartData extends React.Component {
   handleAddNode = async (sender, node) => {
     const pid = Number(node.pid);
     const records = { [this.props.pidField]: pid };
+    const { dblinkname } = this.props;
     this.p4 = makeCancelable(
       http().addRecords({
         resid: this.props.resid,
-        data: [records]
+        data: [records],
+        dblinkname
       })
     );
     let res;
@@ -371,10 +377,12 @@ class OrgChartData extends React.Component {
     nodeId = Number(nodeId);
     const nodeData = this._nodes.find(item => item.id === nodeId);
     const values = { ...nodeData };
+    const { dblinkname } = this.props;
     this.p3 = makeCancelable(
       http().removeRecords({
         resid: this.props.resid,
-        data: [values]
+        data: [values],
+        dblinkname
       })
     );
     try {
@@ -494,13 +502,14 @@ class OrgChartData extends React.Component {
 
   updateNode = async (sender, oldNode, newNode) => {
     this.setState({ loading: true });
-    const { resid, idField, pidField } = this.props;
+    const { resid, idField, pidField, dblinkname } = this.props;
     const values = filterFields([{ ...newNode }], idField, pidField);
     let res;
     this.p9 = makeCancelable(
       http().modifyRecords({
         resid,
-        data: values
+        data: values,
+        dblinkname
       })
     );
     try {
@@ -554,7 +563,7 @@ class OrgChartData extends React.Component {
   handleLevelMove = async direction => {
     this.setState({ loading: true });
     const { level } = this.state;
-    const { resid, idField, pidField, groupingConfig } = this.props;
+    const { resid, idField, pidField, groupingConfig, dblinkname } = this.props;
     const options = {
       resid,
       Levels: level,
@@ -563,7 +572,8 @@ class OrgChartData extends React.Component {
       ColumnOfID: idField,
       ColumnOfPID: pidField,
       ProductIDs: this._rootIds.join(','),
-      cmswhere: this._cmswhere
+      cmswhere: this._cmswhere,
+      dblinkname
     };
     if (this._mode === 'grouping' && Array.isArray(groupingConfig)) {
       options.tags = groupingConfig;
@@ -668,13 +678,14 @@ class OrgChartData extends React.Component {
 
   handleSaveOrgChartData = async () => {
     this.setState({ loading: true });
-    const { nodeId, parentNodeId, resid } = this.props;
+    const { nodeId, parentNodeId, resid, dblinkname } = this.props;
     let nodes = clone(this.chart.config.nodes);
     nodes = filterFields(nodes, nodeId, parentNodeId);
     this.p6 = makeCancelable(
       http().modifyRecords({
         resid,
-        data: nodes
+        data: nodes,
+        dblinkname
       })
     );
     try {

@@ -200,5 +200,11 @@ export const propTypes = {
    * 设置栏状态：'max' 最大化 | 'min' 最小化
    * 默认：'min'
    */
-  settingStatus: PropTypes.oneOf(['max', 'min'])
+  settingStatus: PropTypes.oneOf(['max', 'min']),
+
+  /**
+   * 数据库链接名称（当你想要用其他数据库时使用）
+   * 默认：-
+   */
+  dblinkname: PropTypes.string
 };
