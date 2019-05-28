@@ -212,7 +212,8 @@ class FormData extends React.Component {
       record,
       beforeSaveFields,
       info,
-      width
+      width,
+      dblinkname
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -224,7 +225,6 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     const { resid } = info;
-
     return (
       <div className="form-data">
         {!!data.length && (
@@ -243,6 +243,7 @@ class FormData extends React.Component {
               record={record}
               beforeSaveFields={beforeSaveFields}
               resid={resid}
+              dblinkname={dblinkname}
             />
           </div>
         )}

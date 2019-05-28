@@ -94,7 +94,8 @@ class PwForm extends React.Component {
       resid,
       operation,
       record,
-      beforeSaveFields
+      beforeSaveFields,
+      dblinkname
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -122,6 +123,7 @@ class PwForm extends React.Component {
             operation={operation}
             hasBeforeSave={hasBeforeSave}
             beforeSaveFields={hasBeforeSave}
+            dblinkname={dblinkname}
           />
         )}
       </FormItem>

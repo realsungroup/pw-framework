@@ -116,13 +116,13 @@ export default class Import extends React.Component {
 
   getData = async () => {
     this.setState({ loading: true });
-    const { mode, resid } = this.props;
+    const { mode, resid, dblinkname } = this.props;
 
     // 后端处理 Excel
     if (mode === 'be') {
       let res;
       this.p1 = makeCancelable(
-        http().getImportConfigs({ resid: this.props.resid })
+        http().getImportConfigs({ resid: this.props.resid, dblinkname })
       );
       try {
         res = await this.p1.promise;
@@ -140,7 +140,7 @@ export default class Import extends React.Component {
       // 获取列定义数据
       let res;
       try {
-        res = await http().getTableColumnDefine({ resid });
+        res = await http().getTableColumnDefine({ resid, dblinkname });
       } catch (err) {
         this.setState({ loading: false });
         console.error(err);
@@ -174,12 +174,14 @@ export default class Import extends React.Component {
   };
 
   getTaskStatus = item => {
+    const { dblinkname } = this.props;
     item.timer = setTimeout(async () => {
       let res;
       this.p4 = makeCancelable(
         http().importingService({
           ImportTaskId: item.taskId,
-          cmd: 'GetImportStatus'
+          cmd: 'GetImportStatus',
+          dblinkname
         })
       );
       try {
@@ -224,11 +226,13 @@ export default class Import extends React.Component {
   };
 
   handlePause = async item => {
+    const { dblinkname } = this.props;
     let res;
     this.p5 = makeCancelable(
       http().importingService({
         ImportTaskId: item.taskId,
-        cmd: 'PauseImport'
+        cmd: 'PauseImport',
+        dblinkname
       })
     );
     try {
@@ -250,11 +254,13 @@ export default class Import extends React.Component {
   };
 
   handleStart = async item => {
+    const { dblinkname } = this.props;
     let res;
     this.p2 = makeCancelable(
       http().importingService({
         ImportTaskId: item.taskId,
-        cmd: 'ResumeImport'
+        cmd: 'ResumeImport',
+        dblinkname
       })
     );
     try {
@@ -272,11 +278,13 @@ export default class Import extends React.Component {
   };
 
   handleTerminate = async item => {
+    const { dblinkname } = this.props;
     let res;
     this.p3 = makeCancelable(
       http().importingService({
         ImportTaskId: item.taskId,
-        cmd: 'TerminateImport'
+        cmd: 'TerminateImport',
+        dblinkname
       })
     );
     try {
@@ -362,13 +370,14 @@ export default class Import extends React.Component {
 
   saveOneRecord = async (resid, record) => {
     const { feMessages } = this.state;
-    const { saveState } = this.props;
+    const { saveState, dblinkname } = this.props;
     let res;
     try {
       res = await http().addRecords({
         resid,
         data: [record],
-        isEditOrAdd: saveState === 'editoradd'
+        isEditOrAdd: saveState === 'editoradd',
+        dblinkname
       });
     } catch (err) {
       feMessages.push(err.message);
