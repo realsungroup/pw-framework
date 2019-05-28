@@ -157,28 +157,6 @@ class TotalStatical extends Component {
       return message.error(err.message);
     }
     console.log('问答题的数据', res.data);
-    // 拿到的数据是
-    /**
-     * 拿到的数据
-     * data:[
-     * query_id:1,
-     * 试题题目问答题1，
-     *
-     * ]
-     * 想要的最终的数据
-     * data=[
-     * {
-     * question_id:xxxx,
-     * question_topic:xxxx,
-     * answers:[
-     * xxxx,xxxx,xxxx,
-     * ]
-     * }
-     * ]
-     */
-    //  this.setState({
-    //   AnswerData:AnswerData.data,
-    //  })
     if (0 <= res.data.length) {
       const answerData = [];
       res.data.forEach(item => {
