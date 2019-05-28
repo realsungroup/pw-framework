@@ -804,7 +804,7 @@ export default class FirstStep extends React.Component {
 
   getSceondColHasSearch = () => {
     const { selectedRadio } = this.state;
-    if (selectedRadio.type === 'search' || selectedRadio.type === 'file') {
+    if (['search', 'file', 'advSearch'].indexOf(selectedRadio.type) !== -1) {
       return false;
     }
     return true;
