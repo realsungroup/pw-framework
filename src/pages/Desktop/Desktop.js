@@ -30,6 +30,7 @@ import logoPng from './assets/logo.png';
 import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
+import { delay } from 'lodash';
 
 const { SubMenu } = Menu;
 const {
@@ -99,7 +100,9 @@ class Desktop extends React.Component {
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
       selectedBg, // 背景图片地址
-      appsSwitchStatus: [] // 激活的 app 开关状态数组（其值一一对应 activeApps 数组对象中的 isOpen 属性）
+      appsSwitchStatus: [], // 激活的 app 开关状态数组（其值一一对应 activeApps 数组对象中的 isOpen 属性）
+      searchValue: '', // 左下角搜索值
+      menus: []
     };
   }
 
@@ -248,6 +251,7 @@ class Desktop extends React.Component {
 
     this.setState({
       allFolders: fnTreeData,
+      menus: fnTreeData,
       allFoldersExpandedKeys: expandedKeys
     });
   };
@@ -464,6 +468,45 @@ class Desktop extends React.Component {
   handleLogoClick = e => {
     e.stopPropagation();
     this.setState({ menuVisible: !this.state.menuVisible });
+  };
+
+  handleSearchFocus = e => {
+    e.stopPropagation();
+    this.setState({ menuVisible: true });
+  };
+
+  filterMenus = () => {
+    const { allFolders, searchValue: value } = this.state;
+    const menus = allFolders
+      .map(folder => {
+        // 搜索的值不是分类的值
+        if (folder.title.indexOf(value) === -1) {
+          // 1.1
+          const appLinks = folder.AppLinks.map(appLink => {
+            if (appLink.title.indexOf(value) === -1) {
+              return false;
+            }
+            return appLink;
+          }).filter(Boolean);
+          if (!appLinks.length) {
+            return false;
+          }
+          return { ...folder, AppLinks: appLinks };
+        }
+        // 2 搜索的值是分类的值
+        return folder;
+      })
+      .filter(Boolean);
+
+    console.log({ menus });
+
+    this.setState({ menus });
+  };
+
+  handleSearchChange = e => {
+    this.setState({ searchValue: e.target.value });
+
+    delay(this.filterMenus, 200);
   };
 
   handleAddToDesktop = appData => {
@@ -1130,7 +1173,9 @@ class Desktop extends React.Component {
       reminderListLoading,
       modifyPassModalVisible,
       selectedBg,
-      activeApps
+      activeApps,
+      searchValue,
+      menus
     } = this.state;
 
     // 背景样式
@@ -1162,7 +1207,7 @@ class Desktop extends React.Component {
           onLogoClick={this.handleLogoClick}
           menuVisible={menuVisible}
           userInfo={userInfo}
-          allFolders={allFolders}
+          menus={menus}
           onOpenDashboard={this.handleOpenDashboard}
           onOpenReminderList={this.handleOpenReminderList}
           onMenuClick={this.handleAddToDesktop}
@@ -1173,6 +1218,9 @@ class Desktop extends React.Component {
           onOpenPersonCenter={this.handleOpenPersonCenter}
           onCloseApp={this.handleCloseActiveApp}
           onDesktopSwitch={this.handleDesktopSwitch}
+          onSearchFocus={this.handleSearchFocus}
+          onSearchChange={this.handleSearchChange}
+          searchValue={searchValue}
         />
 
         {/* 窗口 */}

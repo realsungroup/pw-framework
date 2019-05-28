@@ -10,7 +10,7 @@ const noop = () => {};
 /**
  * 桌面左下角菜单组件
  */
-export default class DesktopMenu extends React.Component {
+export default class DesktopMenu extends React.PureComponent {
   static propTypes = {
     /**
      * 菜单是否显示
@@ -77,7 +77,7 @@ export default class DesktopMenu extends React.Component {
     const {
       visible,
       userInfo,
-      allFolders,
+      menus,
       onPoweroffClick,
       onOpenModifyPassModal,
       onLockScreen,
@@ -129,7 +129,7 @@ export default class DesktopMenu extends React.Component {
             // selectedKeys={[this.state.current]}
             mode="inline"
           >
-            {allFolders.map(folder => this.renderMenuItem(folder))}
+            {menus.map(folder => this.renderMenuItem(folder))}
           </Menu>
         </div>
       </div>

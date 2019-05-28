@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Select, Icon } from 'antd';
 import DesktopDate from './DesktopDate';
 import DesktopMenu from './DesktopMenu';
+import DesktopSearch from './DesktopSearch';
 
 import classNames from 'classnames';
 const Option = Select.Option;
@@ -58,7 +59,8 @@ export default class DesktopBottomBar extends React.Component {
     onOpenDashboard: noop,
     onOpenReminderList: noop,
     onAppClick: noop,
-    onPoweroffClick: noop
+    onPoweroffClick: noop,
+    onSearchFocus: noop
   };
 
   constructor(props) {
@@ -107,7 +109,7 @@ export default class DesktopBottomBar extends React.Component {
   render() {
     const {
       userInfo,
-      allFolders,
+      menus,
       menuVisible,
       onOpenDashboard,
       onOpenReminderList,
@@ -116,17 +118,27 @@ export default class DesktopBottomBar extends React.Component {
       onOpenModifyPassModal,
       onLockScreen,
       onOpenPersonCenter,
-      onDesktopSwitch
+      onDesktopSwitch,
+      onSearchFocus,
+      onSearchChange,
+      searchValue
     } = this.props;
     return (
       <div className="desktop-bottom-bar">
         <div className="desktop-bottom-bar__left">
+          {/* logo */}
           <div
             className="desktop-bottom-bar__logo"
             onClick={this.handleLogoClick}
           >
             <i className="iconfont icon-logo" />
           </div>
+          {/* search */}
+          <DesktopSearch
+            onFocus={onSearchFocus}
+            onChange={onSearchChange}
+            searchValue={searchValue}
+          />
           <div className="desktop-bottom-bar__active-apps">
             {this.renderActiveApps()}
           </div>
@@ -153,7 +165,7 @@ export default class DesktopBottomBar extends React.Component {
         <DesktopMenu
           visible={menuVisible}
           userInfo={userInfo}
-          allFolders={allFolders}
+          menus={menus}
           onMenuClick={onMenuClick}
           onPoweroffClick={onPoweroffClick}
           onOpenModifyPassModal={onOpenModifyPassModal}
