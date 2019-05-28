@@ -1647,7 +1647,7 @@ class QuerySet extends Component {
   handleImportquestions = () => {
     const { importQuestions, queryId } = this.state;
     const importTempQuestions = importQuestions.split(/\n\n|\r\r|\r\n\r\n/);
-    console.log('处理出来的字符串', importTempQuestions);
+    // console.log('处理出来的字符串', importTempQuestions);
     const result = this.getImportResult(importTempQuestions);
     console.log(result);
     // 对result进行处理转化成后端需要的数据
@@ -1707,7 +1707,7 @@ class QuerySet extends Component {
     const result = [];
     question.forEach(questionString => {
       const arr = questionString.split(/\n/);
-      console.log('结果', arr);
+      // console.log('结果', arr);
       //获取数组中的问题类型和题干
       const { type, topic } = this.getQuestionTypeAndTopic(arr[0]);
       // 做出选项

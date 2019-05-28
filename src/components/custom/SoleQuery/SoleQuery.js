@@ -398,13 +398,13 @@ class SoleQuery extends Component {
         case '问答题':
           {
             const questionId = question.question_id;
-            const optionId = question.subdata[0].option_id;
+            // const optionId = question.subdata[0].option_id;
             const WriteContent = question.answer;
             let eassyAnswer = {
               person_id: userInfo.UserInfo.EMP_ID,
               query_id: queryID,
               question_id: questionId,
-              option_id: optionId,
+              // option_id: optionId,
               write_content: WriteContent
             };
             answers.push(eassyAnswer);
