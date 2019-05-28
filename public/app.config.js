@@ -68,7 +68,42 @@ window.pwConfig = {
     biBaseURL: 'http://localhost:3001/', // bi 系统基地址
 
     // 默认打开的窗口（即在第一次进入桌面时，会自动打开的窗口）；为空字符串时，不会打开任何窗口
-    defaultOpenWindow: ''
+    defaultOpenWindow: '',
+
+    // 组织架构组件配置；如果不需要组件架构，则设为 null 即可
+    orgChartConfig: {
+      resid: 602348115218,
+      template: 'rony',
+      chartId: 'org-chart',
+      chartWrapId: 'org-chart-wrap',
+      level: 3,
+      isExpandAllChildren: true,
+      pidField: 'C3_602347244770',
+      idField: 'C3_602347243263',
+      enableDragDrop: true,
+      showFields: {
+        field_0: 'C3_602347243459',
+        field_1: 'C3_602347246317',
+        field_2: 'C3_602347244217',
+        field_3: 'C3_602416916077',
+        field_4: 'C3_602417234378',
+        img_0: 'C3_602350177952'
+      },
+      recordFormContainerProps: { width: 500 },
+      rootIds: [14860455, 1360564],
+      rootIdsResid: 602348168470,
+      groupingConfig: [
+        {
+          resourceOfTag: '602364331868',
+          sourceColumnOfGroupName: 'groupname',
+          sourceColumnOfTagName: 'tagname',
+          columnOfTagName: 'tagsname',
+          isGroupTag: true,
+          cmswhere: ''
+        }
+      ],
+      keyField: 'C3_602347243459'
+    }
   },
   // 生产环境
   production: {
@@ -135,6 +170,41 @@ window.pwConfig = {
     biBaseURL: 'http://localhost:3001/', // bi 系统基地址
 
     // 默认打开的窗口
-    defaultOpenWindow: ''
+    defaultOpenWindow: '',
+
+    // 组织架构组件配置；如果不需要组件架构，则设为 null 即可
+    orgChartConfig: {
+      resid: 602348115218,
+      template: 'rony',
+      chartId: 'org-chart',
+      chartWrapId: 'org-chart-wrap',
+      level: 3,
+      isExpandAllChildren: true,
+      pidField: 'C3_602347244770',
+      idField: 'C3_602347243263',
+      enableDragDrop: true,
+      showFields: {
+        field_0: 'C3_602347243459',
+        field_1: 'C3_602347246317',
+        field_2: 'C3_602347244217',
+        field_3: 'C3_602416916077',
+        field_4: 'C3_602417234378',
+        img_0: 'C3_602350177952'
+      },
+      recordFormContainerProps: { width: 500 },
+      rootIds: [14860455, 1360564],
+      rootIdsResid: 602348168470,
+      groupingConfig: [
+        {
+          resourceOfTag: '602364331868',
+          sourceColumnOfGroupName: 'groupname',
+          sourceColumnOfTagName: 'tagname',
+          columnOfTagName: 'tagsname',
+          isGroupTag: true,
+          cmswhere: ''
+        }
+      ],
+      keyField: 'C3_602347243459'
+    }
   }
 };

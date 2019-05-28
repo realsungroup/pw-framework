@@ -234,13 +234,15 @@ export const withHttpGetBeBtns = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleHttpGetBeBtns = async (resid, baseURL) => {
+    handleHttpGetBeBtns = async (resid, baseURL, dblinkname) => {
       const httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
 
-      this.p1 = makeCancelable(http(httpParams).getBeBtns({ resid }));
+      this.p1 = makeCancelable(
+        http(httpParams).getBeBtns({ resid, dblinkname })
+      );
       let res;
       try {
         res = await this.p1.promise;
@@ -287,9 +289,10 @@ export const withHttpGetFormData = WrappedComponent => {
      * 获取窗体数据，且处理窗体数据
      * @param {number} resid 资源 id
      * @param {string} formName 窗体名称
+     * @param {string} dblinkname 数据库链接名称
      * @return {promise} 返回 promise，await promise 后的值为 formData
      */
-    handleHttpGetFormData = async (resid, formName, baseURL) => {
+    handleHttpGetFormData = async (resid, formName, baseURL, dblinkname) => {
       const httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;
@@ -298,7 +301,8 @@ export const withHttpGetFormData = WrappedComponent => {
       this.p1 = makeCancelable(
         http(httpParams).getFormData({
           resid,
-          formname: formName
+          formname: formName,
+          dblinkname
         })
       );
       let res;

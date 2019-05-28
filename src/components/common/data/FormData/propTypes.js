@@ -79,5 +79,11 @@ export const propTypes = {
    * 可选：'be' 后端存储；'fe' 前端存储
    * 默认：'be'
    */
-  storeWay: PropTypes.oneOf(['be', 'fe'])
+  storeWay: PropTypes.oneOf(['be', 'fe']),
+
+  /**
+   * 数据库链接名称（当你想要用其他数据库时使用）
+   * 默认：-
+   */
+  dblinkname: PropTypes.string
 };

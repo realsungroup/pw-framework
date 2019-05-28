@@ -1,10 +1,10 @@
 import React from 'react';
-import './OrgChartData.less';
+import './DesktopOrgChart.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
 import { clone, getIntlVal } from 'Util20/util';
-import { message, Modal, Spin, Button, Slider } from 'antd';
-import { withHttpGetFormData } from '../../hoc/withHttp';
+import { message, Modal, Spin } from 'antd';
+import { withHttpGetFormData } from 'Common/hoc/withHttp';
 import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
 import { compose } from 'recompose';
 import FormData from 'Common/data/FormData';
@@ -13,7 +13,7 @@ import { modifyIcon } from './icon';
 import OrgChartTools from './OrgChartTools';
 import LevelsJumpBtns from './LevelsJumpBtns';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
-import withAdvSearch from '../../hoc/withAdvSearch';
+import withAdvSearch from 'Common/hoc/withAdvSearch';
 
 const OrgChart = window.OrgChart;
 const BALKANGraph = window.BALKANGraph;
@@ -111,9 +111,9 @@ const filterFields = (nodes, idField, pidField) => {
 };
 
 /**
- * 组织图组件
+ * 组织架构图组件
  */
-class OrgChartData extends React.Component {
+class DesktopOrgChart extends React.Component {
   static displayName = 'OrgChartData';
   static propTypes = propTypes;
   static defaultProps = defaultProps;
@@ -193,7 +193,7 @@ class OrgChartData extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    this._rootIds = res.data.map(item => item.C3_602347243263);
+    this._rootIds = res.data.map(item => item[idField]);
     const pArr = [this.getNodes(), httpGetFormData(resid, 'default')];
     this.p1 = makeCancelable(Promise.all(pArr));
     try {
@@ -757,4 +757,4 @@ const composedHoc = compose(
   injectIntl,
   withAdvSearch()
 );
-export default composedHoc(OrgChartData);
+export default composedHoc(DesktopOrgChart);

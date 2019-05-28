@@ -142,9 +142,13 @@ export default class FirstStep extends React.Component {
   };
 
   getSubTableField = async () => {
+    const { dblinkname } = this.props;
     let res;
     try {
-      res = await http().getTableColumnDefine({ resid: this.props.subResid });
+      res = await http().getTableColumnDefine({
+        resid: this.props.subResid,
+        dblinkname
+      });
     } catch (err) {
       console.error(err);
       return message.error(err.message);
@@ -163,10 +167,12 @@ export default class FirstStep extends React.Component {
 
   // 获取第一列的数据
   getFirstColData = async radioConfig => {
+    const { dblinkname } = this.props;
+
     if (radioConfig) {
       let res;
       try {
-        res = await http().getTable({ resid: radioConfig.resid });
+        res = await http().getTable({ resid: radioConfig.resid, dblinkname });
       } catch (err) {
         this.setState({ firstColLoading: false });
         console.error(err);
@@ -210,11 +216,14 @@ export default class FirstStep extends React.Component {
     const { selectedRadio } = this.state;
     this.loading = true;
     this.setState({ loading: true });
+    const { dblinkname } = this.props;
+
     let res;
     if (selectedRadio.type === 'advSearch') {
       try {
         res = await http().getTable({
           resid,
+          dblinkname,
           ...option
         });
       } catch (err) {
@@ -227,6 +236,7 @@ export default class FirstStep extends React.Component {
           resid,
           subresid: subResid,
           hostrecid: hostRecid,
+          dblinkname,
           ...option
         });
       } catch (err) {
@@ -368,9 +378,14 @@ export default class FirstStep extends React.Component {
         pageIndex: 0
       });
     }
+    const { dblinkname } = this.props;
     let res;
     try {
-      res = await http().getTable({ resid: this.props.subResid, ...option });
+      res = await http().getTable({
+        resid: this.props.subResid,
+        dblinkname,
+        ...option
+      });
     } catch (err) {
       return message.error(err.message);
     }
@@ -721,7 +736,7 @@ export default class FirstStep extends React.Component {
 
   handleFileSearch = async () => {
     const { excelColName } = this.state;
-    const { subResid } = this.props;
+    const { subResid, dblinkname } = this.props;
     const sheet1 = this._sheet1;
 
     if (!sheet1) {
@@ -739,7 +754,8 @@ export default class FirstStep extends React.Component {
     try {
       res = await http().getTable({
         resid: subResid,
-        cmswhere: where
+        cmswhere: where,
+        dblinkname
       });
     } catch (err) {
       console.error(err);
@@ -788,7 +804,7 @@ export default class FirstStep extends React.Component {
 
   getSceondColHasSearch = () => {
     const { selectedRadio } = this.state;
-    if (selectedRadio.type === 'search' || selectedRadio.type === 'file') {
+    if (['search', 'file', 'advSearch'].indexOf(selectedRadio.type) !== -1) {
       return false;
     }
     return true;
@@ -816,7 +832,11 @@ export default class FirstStep extends React.Component {
       searchValue,
       advSearchModalVisible
     } = this.state;
-    const { radioGroupConfig, secondFilterInputPlaceholder } = this.props;
+    const {
+      radioGroupConfig,
+      secondFilterInputPlaceholder,
+      dblinkname
+    } = this.props;
     return (
       <div className="first-step">
         <div className="first-step__nav">
