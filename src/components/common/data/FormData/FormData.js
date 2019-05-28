@@ -45,7 +45,14 @@ class FormData extends React.Component {
   };
 
   handleSave = form => {
-    const { operation, info, record, storeWay, subTableArr } = this.props;
+    const {
+      operation,
+      info,
+      record,
+      storeWay,
+      subTableArr,
+      dblinkname
+    } = this.props;
     const { hasSubTables } = this.state;
     const { dataMode, resid, subresid, hostrecid } = info;
     const id = getResid(dataMode, resid, subresid);
@@ -63,7 +70,8 @@ class FormData extends React.Component {
         if (operation === 'add') {
           const params = {
             resid: id,
-            data: [formData]
+            data: [formData],
+            dblinkname
           };
           if (dataMode === 'sub') {
             params.hostresid = resid;
@@ -81,7 +89,8 @@ class FormData extends React.Component {
         } else {
           const params = {
             resid: id,
-            data: [formData]
+            data: [formData],
+            dblinkname
           };
           if (dataMode === 'sub') {
             params.hostresid = resid;
@@ -132,7 +141,9 @@ class FormData extends React.Component {
 
         data = [dataObj];
 
-        this.p1 = makeCancelable(http().saveRecordAndSubTables({ data }));
+        this.p1 = makeCancelable(
+          http().saveRecordAndSubTables({ data, dblinkname })
+        );
         try {
           const res = await this.p1.promise;
           console.log({ res });
