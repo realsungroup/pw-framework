@@ -206,7 +206,7 @@ class TotalStatical extends Component {
     domtoimage
       .toPng(dom)
       .then(function(imgDataURL) {
-        const pdf = new jsPDF();
+        const pdf = new jsPDF('p','px');
         pdf.addImage(imgDataURL, 'PNG', 0, 0);
         pdf.save(queryName + '.pdf');
       })
@@ -276,17 +276,23 @@ class TotalStatical extends Component {
             <h3 className="total-statical__title">{queryName}</h3>
             {this.renderCommonChart()}
             {this.renderAnswerChart()}
-            <Button
+          </div>
+          <Button
+              className="total-statical__btn"
               size="small"
               type="primary"
               onClick={this.handleExportImgBtnClick}
             >
               导出 PNG
             </Button>
-            <Button type="primary" size="small" onClick={this.hanldeExportPdf}>
+            {/* <Button
+              className="total-statical__main__btn"
+              type="primary"
+              size="small"
+              onClick={this.hanldeExportPdf}
+            >
               导出为PDF
-            </Button>
-          </div>
+            </Button> */}
         </div>
       </React.Fragment>
     );

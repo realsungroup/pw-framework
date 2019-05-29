@@ -98,8 +98,16 @@ class SelectPersonFirstK extends Component {
         data:newdataSource
       }).then(res=>{
         console.log(res);
+        Modal.success({
+          title:'提示',
+          content:'补考邮件发送成功',
+        })
       }).catch(err=>{
         console.error(err);
+        Modal.warn({
+          title:'提示',
+          content:'补考邮件发送成功'
+        })
       })
     }
   };
@@ -192,6 +200,7 @@ class SelectPersonFirstK extends Component {
               hasRowModify={false}
               hasRowView={false}
               hasRowDelete={false}
+              subtractH={235}
               // cmswhere={`C3_607197284004 =${record.C3_607171221170}`}
               actionBarExtra={({
                 dataSource: dataSource,

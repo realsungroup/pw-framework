@@ -89,7 +89,7 @@ class ExamArrange extends Component {
               customRowBtns={[
                 (record, btnSize) => {
                   return (
-                    <Button
+                    <Button key={record.REC_ID}
                       onClick={() => {
                         console.log('record', record);
                         this.onChoosePeople(record);
