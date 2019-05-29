@@ -120,10 +120,8 @@ const getSelectViewValue = (value, controlData, props) => {
     }
     return value;
   } else {
-    const options = controlData.DisplayOptions;
     const valueOptions = controlData.ValueOptions;
-
-    options = controlData.DisplayOptions;
+    const options = controlData.DisplayOptions;
     const obj = options.find(option => option.valueColValue === value);
     if (obj) {
       return obj.valueColValue;
