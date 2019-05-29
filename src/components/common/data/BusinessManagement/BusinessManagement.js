@@ -48,8 +48,8 @@ class BusinessManagement extends React.Component {
 
   getData = async () => {
     this.setState({ loading: true });
-    const { rootId } = this.props;
-    const params = {};
+    const { rootId, dblinkname } = this.props;
+    const params = { dblinkname };
     if (rootId) {
       params.rootid = rootId;
     }
@@ -230,7 +230,7 @@ class BusinessManagement extends React.Component {
       collapsed,
       openKeys
     } = this.state;
-    const { intl, enTitle, title } = this.props;
+    const { intl, enTitle, title, dblinkname } = this.props;
 
     return (
       <Spin spinning={loading}>
@@ -280,6 +280,7 @@ class BusinessManagement extends React.Component {
                         <BMContent
                           key={menuItem.RES_ID}
                           resid={menuItem.RES_ID}
+                          dblinkname={dblinkname}
                         />
                       </TabPane>
                     ))}

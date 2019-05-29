@@ -80,6 +80,7 @@ class App extends Component {
               completeText="发送"
               onSelectPerson={this.handleSelectPerson}
               secondFilterInputPlaceholder="可搜索居住地"
+              dblinkname="me"
             />
           </div>
         </Spin>

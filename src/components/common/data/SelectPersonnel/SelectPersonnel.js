@@ -38,7 +38,8 @@ class SelectPersonnel extends React.Component {
       personFields,
       radioGroupConfig,
       personPrimaryKeyField,
-      secondFilterInputPlaceholder
+      secondFilterInputPlaceholder,
+      dblinkname
     } = this.props;
     return (
       <Fragment>
@@ -57,6 +58,7 @@ class SelectPersonnel extends React.Component {
             radioGroupConfig={radioGroupConfig}
             personPrimaryKeyField={personPrimaryKeyField}
             secondFilterInputPlaceholder={secondFilterInputPlaceholder}
+            dblinkname={dblinkname}
           />
         </div>
         {stepList.map((step, index) => (

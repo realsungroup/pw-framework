@@ -31,18 +31,21 @@ export const uploadFile = (file, url, mode) => {
   });
 };
 
-function getUploadUrl(uploadConfig, srctype) {
+function getUploadUrl(uploadConfig, srctype, dblinkname) {
   const { mode, bucketname, url } = uploadConfig;
   // 云对象存储
   if (mode === 'cloud') {
-    return `${url}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+    let newUrl = `${url}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
       bucketname
-    )}&srctype=${encodeURIComponent(srctype)}
-    `;
+    )}&srctype=${encodeURIComponent(srctype)}`;
+    if (dblinkname) {
+      newUrl += `&dblinkname=${encodeURIComponent(dblinkname)}`;
+    }
+    return newUrl;
 
     // 服务器本地存储文件
   } else if (mode === 'local') {
-    return url;
+    return url + `&dblinkname=${encodeURIComponent(dblinkname)}`;
   } else {
     alert(`window.pwConfig.${process.env.NODE_ENV}.upload.mode 设置有误`);
   }
@@ -67,14 +70,14 @@ const withUploadFile = (options = {}) => {
         this.p1 && this.p1.cancel();
       };
 
-      handleUploadFile = (file, success, fail, url = this._url) => {
+      handleUploadFile = (file, success, fail, dblinkname) => {
         // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
         let formData = new FormData();
         formData.append('file', file, file.name);
         const type = getFileType(file);
 
         const { upload } = window.pwConfig[process.env.NODE_ENV];
-        uploadFile(file, getUploadUrl(upload, type), upload.mode)
+        uploadFile(file, getUploadUrl(upload, type, dblinkname), upload.mode)
           .then(fileUrl => {
             success && success(fileUrl);
           })

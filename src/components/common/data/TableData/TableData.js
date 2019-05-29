@@ -267,13 +267,15 @@ class TableData extends React.Component {
       cmswhere,
       cmscolumns,
       storeWay,
-      baseURL
+      baseURL,
+      dblinkname
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
     const httpParams = {};
 
+    // 使用传入的 baseURL
     if (baseURL) {
       httpParams.baseURL = baseURL;
     }
@@ -292,7 +294,8 @@ class TableData extends React.Component {
             pagesize: pageSize,
             sortOrder,
             sortField,
-            getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
+            getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
+            dblinkname
           };
           this.p3 = makeCancelable(http(httpParams).getTable(params));
           res = await this.p3.promise;
@@ -310,7 +313,8 @@ class TableData extends React.Component {
             pagesize: pageSize,
             sortOrder,
             sortField,
-            getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
+            getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
+            dblinkname
           };
           this.p3 = makeCancelable(http(httpParams).getSubTable(params));
           res = await this.p3.promise;
@@ -321,7 +325,7 @@ class TableData extends React.Component {
     } else {
       // 存储方式为前端存储，则只获取表格列定义数据
       this.p3 = makeCancelable(
-        http(httpParams).getTableColumnDefine({ resid: this._id })
+        http(httpParams).getTableColumnDefine({ resid: this._id, dblinkname })
       );
       try {
         res = await this.p3.promise;
@@ -431,16 +435,17 @@ class TableData extends React.Component {
       rowEditFormName,
       httpGetFormData,
       formProps,
-      baseURL
+      baseURL,
+      dblinkname
     } = this.props;
     const id = this._id;
     let arr,
       pArr = [];
     if (isNeedRecordForm) {
-      pArr.push(httpGetFormData(id, recordFormName, baseURL));
+      pArr.push(httpGetFormData(id, recordFormName, baseURL, dblinkname));
     }
     if (isNeedEditForm) {
-      pArr.push(httpGetFormData(id, rowEditFormName, baseURL));
+      pArr.push(httpGetFormData(id, rowEditFormName, baseURL, dblinkname));
     }
     try {
       this.p1 = makeCancelable(Promise.all(pArr));
@@ -479,11 +484,11 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const { httpGetBeBtns, baseURL } = this.props;
+    const { httpGetBeBtns, baseURL, dblinkname } = this.props;
     const id = this._id;
     let btns;
     try {
-      btns = await httpGetBeBtns(id, baseURL);
+      btns = await httpGetBeBtns(id, baseURL, dblinkname);
     } catch (err) {
       return console.error(err);
     }
@@ -576,11 +581,12 @@ class TableData extends React.Component {
 
   // 导入
   handleImport = () => {
-    const { openImportView, baseURL, importConfig } = this.props;
+    const { openImportView, baseURL, importConfig, dblinkname } = this.props;
     const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
 
     openImportView &&
       openImportView(
+        dblinkname,
         url,
         this._id,
         importConfig.mode,
@@ -600,7 +606,8 @@ class TableData extends React.Component {
       cmswhere,
       fileType,
       baseURL,
-      downloadBaseURL
+      downloadBaseURL,
+      dblinkname
     } = this.props;
 
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -619,7 +626,8 @@ class TableData extends React.Component {
       downloadFileName || title,
       resid,
       mergedCmsWhere,
-      fileType
+      fileType,
+      dblinkname
     );
     this.setState({ loading: false });
   };
@@ -820,7 +828,12 @@ class TableData extends React.Component {
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
-    const { intl, recordFormFormWidth, recordFormTabsWidth } = this.props;
+    const {
+      intl,
+      recordFormFormWidth,
+      recordFormTabsWidth,
+      dblinkname
+    } = this.props;
 
     // 点击前端按钮时
     if (!backendBtnType) {
@@ -876,7 +889,8 @@ class TableData extends React.Component {
       recordFormTabsWidth,
       storeWay,
       onSuccess: this.handleSuccess,
-      onCancel: this.handleCancel
+      onCancel: this.handleCancel,
+      dblinkname
     });
   };
 
@@ -905,7 +919,7 @@ class TableData extends React.Component {
       if (err) {
         return;
       }
-      const { dataMode, resid, subresid, baseURL } = this.props;
+      const { dataMode, resid, subresid, baseURL, dblinkname } = this.props;
       const id = getResid(dataMode, resid, subresid);
       const formData = dealFormData(values);
       formData.REC_ID = oldRecord.REC_ID;
@@ -918,7 +932,8 @@ class TableData extends React.Component {
       this.p2 = makeCancelable(
         http(httpParams).modifyRecords({
           resid: id,
-          data: [formData]
+          data: [formData],
+          dblinkname
         })
       );
       try {
@@ -964,7 +979,7 @@ class TableData extends React.Component {
 
   // 点击删除按钮
   handleDelete = async () => {
-    const { intl, storeWay, baseURL } = this.props;
+    const { intl, storeWay, baseURL, dblinkname } = this.props;
     const { selectedRowKeys } = this.state.rowSelection;
     if (!selectedRowKeys.length) {
       return message.error(intl.messages['TableData.pleaseSelectARecord']);
@@ -988,7 +1003,8 @@ class TableData extends React.Component {
       this.p4 = makeCancelable(
         http(httpParams).removeRecords({
           resid: id,
-          data: records
+          data: records,
+          dblinkname
         })
       );
       try {
@@ -1350,7 +1366,7 @@ class TableData extends React.Component {
   };
 
   handleRowDelete = async record => {
-    const { intl, storeWay, baseURL } = this.props;
+    const { intl, storeWay, baseURL, dblinkname } = this.props;
 
     const httpParams = {};
 
@@ -1362,7 +1378,11 @@ class TableData extends React.Component {
     if (storeWay === 'be') {
       const id = this._id;
       this.p4 = makeCancelable(
-        http(httpParams).removeRecords({ resid: id, data: [record] })
+        http(httpParams).removeRecords({
+          resid: id,
+          data: [record],
+          dblinkname
+        })
       );
       try {
         await this.p4.promise;
@@ -1614,7 +1634,6 @@ const composedHoc = compose(
   withAdvSearch(),
   withDownloadFile,
   withRecordForm(),
-  // withZoomInOut(),
   injectIntl,
   withImport
 );

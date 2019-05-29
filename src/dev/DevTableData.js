@@ -54,14 +54,14 @@ class DevTableData extends Component {
         resid={611835781753}
         // width={1360}
         size="small"
-        hasBeBtns={false}
+        hasBeBtns={true}
         subtractH={200}
         actionBarFixed={true}
         advSearchContainerType="drawer"
         hasRowEdit
-        hasAdd={false}
-        hasDelete={false}
-        hasModify={false}
+        hasAdd={true}
+        hasDelete={true}
+        hasModify={true}
         hasRowModify={true}
         hasAdvSearch={true}
         // height={600}
@@ -113,10 +113,11 @@ class DevTableData extends Component {
         }
         hasImport
         importConfig={{
-          mode: 'fe',
+          mode: 'be',
           saveState: 'added',
           containerType: 'drawer'
         }}
+        dblinkname="me"
       />
     );
   }
