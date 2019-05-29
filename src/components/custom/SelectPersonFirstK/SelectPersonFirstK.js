@@ -201,7 +201,7 @@ class SelectPersonFirstK extends Component {
               hasRowView={false}
               hasRowDelete={false}
               subtractH={235}
-              // cmswhere={`C3_607197284004 =${record.C3_607171221170}`}
+              cmswhere={`C3_607197284004 =${record.C3_612452687228}`}
               actionBarExtra={({
                 dataSource: dataSource,
                 selectedRowKeys: selectedRowKeys
