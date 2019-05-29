@@ -16,7 +16,8 @@ export const defaultProps = {
   padding: 0,
   mode: 'normal',
   advSearchFormName: 'search',
-  settingStatus: 'min'
+  settingStatus: 'min',
+  isCanOperation: true
 };
 
 export const propTypes = {
@@ -206,5 +207,11 @@ export const propTypes = {
    * 数据库链接名称（当你想要用其他数据库时使用）
    * 默认：-
    */
-  dblinkname: PropTypes.string
+  dblinkname: PropTypes.string,
+
+  /**
+   * 是否可以操作（添加、删除、修改和移动）
+   * 默认：true
+   */
+  isCanOperation: PropTypes.bool
 };
