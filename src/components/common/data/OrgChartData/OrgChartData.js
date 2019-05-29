@@ -487,7 +487,9 @@ class OrgChartData extends React.Component {
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
-    console.log({ newNode });
+    if (!this.props.isCanOperation) {
+      return false;
+    }
     const { keyField, intl } = this.props;
     const newParentNode = this._nodes.find(
       node => node.id === parseInt(newNode.pid, 10)
