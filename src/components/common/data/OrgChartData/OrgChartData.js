@@ -147,6 +147,9 @@ class OrgChartData extends React.Component {
     };
   }
 
+  width = 0;
+  height = 0;
+
   componentDidMount = () => {
     this.getData();
   };
@@ -171,6 +174,26 @@ class OrgChartData extends React.Component {
     this.EditForm.prototype.init = () => {};
     this.EditForm.prototype.show = () => {};
     this.EditForm.prototype.hide = () => {};
+  };
+
+  getOrgChartDataRef = node => {
+    this.orgChartDataReef = node;
+  };
+
+  getWidthHeight = () => {
+    const { chartId } = this.props;
+    const parentNode = this.orgChartDataReef.parentNode.parentNode.parentNode;
+    const width = parentNode.clientWidth;
+    const height = parentNode.clientHeight;
+
+    console.log({ width, height });
+
+    if (height <= 700) {
+      return;
+    }
+
+    const targetNode = document.querySelector('#' + chartId);
+    targetNode.style = `width: ${width}px; height: ${height}px`;
   };
 
   // 获取根节点 id -> 获取节点数据 + 获取窗体数据
@@ -303,6 +326,7 @@ class OrgChartData extends React.Component {
     } = this.props;
     const containerProps = {
       destroyOnClose: true,
+
       ...recordFormContainerProps
     };
 
@@ -323,7 +347,8 @@ class OrgChartData extends React.Component {
       record,
       operation,
       info: { dataMode: 'main', resid },
-      onConfirm: this.handleRecordFormConfirm,
+      onSuccess: this.handleRecordFormConfirm,
+      onCancel: this.handleRecordFormClose,
       subTableArr: this._formData.subTableArr,
       subTableArrProps: [
         {
@@ -349,7 +374,7 @@ class OrgChartData extends React.Component {
     this.props.closeModalOrDrawer();
   };
 
-  handleRecordFormConfirm = (formData, form) => {
+  handleRecordFormConfirm = (operation, formData) => {
     message.success('修改成功');
     this.props.closeModalOrDrawer();
     this.chart.updateNode({
@@ -540,6 +565,7 @@ class OrgChartData extends React.Component {
       document.getElementById(this.props.chartId),
       options
     );
+    this.getWidthHeight();
     this.setState({ loading: false });
   };
 
@@ -727,7 +753,11 @@ class OrgChartData extends React.Component {
     const { chartId, chartWrapId } = this.props;
     return (
       <Spin spinning={loading}>
-        <div className="org-chart-data" id={chartWrapId}>
+        <div
+          className="org-chart-data"
+          id={chartWrapId}
+          ref={this.getOrgChartDataRef}
+        >
           <i
             className="org-chart-data__adv-search-btn iconfont icon-adv-search"
             onClick={this.handleAdvSearch}

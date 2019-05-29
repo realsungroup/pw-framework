@@ -6,7 +6,6 @@ import TemplateWrap from './TemplateWrap';
 import OrgChartData from 'Common/data/OrgChartData';
 
 const orgChartConfig = {
-  isCanOperation: false,
   resid: 602348115218,
   template: 'rony',
   chartId: 'org-chart',
@@ -44,7 +43,9 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <OrgChartData {...orgChartConfig} />
+        <div style={{ height: 1000 }}>
+          <OrgChartData {...orgChartConfig} />
+        </div>
       </TemplateWrap>
     );
   }
