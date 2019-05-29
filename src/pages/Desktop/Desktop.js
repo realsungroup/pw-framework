@@ -15,7 +15,8 @@ import {
   DesktopColorPicker,
   DesktopDashboard,
   WindowView,
-  DesktopPersonCenter
+  DesktopPersonCenter,
+  DesktopOrgChart
 } from './loadableDesktop';
 import {
   ContextMenu,
@@ -30,12 +31,14 @@ import logoPng from './assets/logo.png';
 import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
+import { delay } from 'lodash';
 
 const { SubMenu } = Menu;
 const {
   businessOptionalResIds,
   defaultOpenWindow,
-  themeColor
+  themeColor,
+  orgChartConfig
 } = window.pwConfig[process.env.NODE_ENV];
 
 const getPopoverContainer = () => {
@@ -99,7 +102,9 @@ class Desktop extends React.Component {
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
       selectedBg, // 背景图片地址
-      appsSwitchStatus: [] // 激活的 app 开关状态数组（其值一一对应 activeApps 数组对象中的 isOpen 属性）
+      appsSwitchStatus: [], // 激活的 app 开关状态数组（其值一一对应 activeApps 数组对象中的 isOpen 属性）
+      searchValue: '', // 左下角搜索值
+      menus: []
     };
   }
 
@@ -248,6 +253,7 @@ class Desktop extends React.Component {
 
     this.setState({
       allFolders: fnTreeData,
+      menus: fnTreeData,
       allFoldersExpandedKeys: expandedKeys
     });
   };
@@ -466,6 +472,42 @@ class Desktop extends React.Component {
     this.setState({ menuVisible: !this.state.menuVisible });
   };
 
+  handleSearchFocus = e => {
+    e.stopPropagation();
+    this.setState({ menuVisible: true });
+  };
+
+  filterMenus = () => {
+    const { allFolders, searchValue: value } = this.state;
+    const menus = allFolders
+      .map(folder => {
+        // 搜索的值不是分类的值
+        if (folder.title.indexOf(value) === -1) {
+          // 1.1
+          const appLinks = folder.AppLinks.map(appLink => {
+            if (appLink.title.indexOf(value) === -1) {
+              return false;
+            }
+            return appLink;
+          }).filter(Boolean);
+          if (!appLinks.length) {
+            return false;
+          }
+          return { ...folder, AppLinks: appLinks };
+        }
+        // 2 搜索的值是分类的值
+        return folder;
+      })
+      .filter(Boolean);
+
+    this.setState({ menus });
+  };
+
+  handleSearchChange = e => {
+    this.setState({ searchValue: e.target.value });
+    delay(this.filterMenus, 200);
+  };
+
   handleAddToDesktop = appData => {
     const { folders } = this.state;
     let desktopApp, typeName;
@@ -574,6 +616,31 @@ class Desktop extends React.Component {
     }
 
     this.getReminderData();
+  };
+
+  handleOpenOrgChart = () => {
+    const children = <DesktopOrgChart {...orgChartConfig} />;
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '组织结构图',
+        activeAppOthersProps: {
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 100,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
   };
 
   handleOpenDashboard = () => {
@@ -1130,7 +1197,9 @@ class Desktop extends React.Component {
       reminderListLoading,
       modifyPassModalVisible,
       selectedBg,
-      activeApps
+      activeApps,
+      searchValue,
+      menus
     } = this.state;
 
     // 背景样式
@@ -1162,9 +1231,10 @@ class Desktop extends React.Component {
           onLogoClick={this.handleLogoClick}
           menuVisible={menuVisible}
           userInfo={userInfo}
-          allFolders={allFolders}
+          menus={menus}
           onOpenDashboard={this.handleOpenDashboard}
           onOpenReminderList={this.handleOpenReminderList}
+          onOpenOrgChart={this.handleOpenOrgChart}
           onMenuClick={this.handleAddToDesktop}
           onAppClick={this.handleBottomBarAppTrigger}
           onPoweroffClick={this.handlePoweroffClick}
@@ -1173,6 +1243,10 @@ class Desktop extends React.Component {
           onOpenPersonCenter={this.handleOpenPersonCenter}
           onCloseApp={this.handleCloseActiveApp}
           onDesktopSwitch={this.handleDesktopSwitch}
+          onSearchFocus={this.handleSearchFocus}
+          onSearchChange={this.handleSearchChange}
+          searchValue={searchValue}
+          orgChartConfig={orgChartConfig}
         />
 
         {/* 窗口 */}

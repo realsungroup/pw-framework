@@ -92,7 +92,8 @@ const withAdvSearch = (options = {}) => {
         formName,
         getCmsWhere,
         validationFields = [],
-        baseURL
+        baseURL,
+        dblinkname
       ) => {
         // 第一次打开高级搜索，还没有获取窗体数据
         if (!this._data) {
@@ -102,7 +103,8 @@ const withAdvSearch = (options = {}) => {
             formData = await this.props.httpGetFormData(
               resid,
               formName,
-              baseURL
+              baseURL,
+              dblinkname
             );
           } catch (err) {
             return message.error(err.message);
@@ -123,6 +125,9 @@ const withAdvSearch = (options = {}) => {
        * @param {function} getCmsWhere 获取 cmswhere 的回调函数
        * @param {object} containerProps 容器接收的 props（Modal 或 Drawer）
        * @param {object} formProps PwForm 接收的 props
+       * @param {array} fields 高级搜索所需的字段列表
+       * @param {string} baseURL 基地址
+       * @param {string} dblinkname 数据库链接名称
        */
       handleOpenAdvSearch = async (
         searchComponent = 'both',
@@ -134,7 +139,8 @@ const withAdvSearch = (options = {}) => {
         containerProps = {},
         formProps = {},
         fields = [],
-        baseURL
+        baseURL,
+        dblinkname
       ) => {
         let component;
         if (Array.isArray(searchComponent)) {
@@ -149,7 +155,8 @@ const withAdvSearch = (options = {}) => {
               formName,
               getCmsWhere,
               validationFields,
-              baseURL
+              baseURL,
+              dblinkname
             );
             break;
           }
@@ -162,7 +169,8 @@ const withAdvSearch = (options = {}) => {
               formName,
               getCmsWhere,
               validationFields,
-              baseURL
+              baseURL,
+              dblinkname
             );
             break;
           }

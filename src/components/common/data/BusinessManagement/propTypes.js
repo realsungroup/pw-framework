@@ -19,5 +19,11 @@ export const propTypes = {
    * 标题（英文）
    * 默认：-
    */
-  enTitle: PropTypes.string
+  enTitle: PropTypes.string,
+
+  /**
+   * 数据库链接名称（当你想要用其他数据库时使用）
+   * 默认：-
+   */
+  dblinkname: PropTypes.string
 };

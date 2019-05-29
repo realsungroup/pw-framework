@@ -13,6 +13,7 @@ class App extends Component {
           rootId={308175022132}
           title="标题党"
           enTitle="biaotidang"
+          dblinkname="me"
         />
       </TemplateWrap>
     );

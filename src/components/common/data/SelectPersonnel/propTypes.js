@@ -96,5 +96,11 @@ export const propTypes = {
    * 完成的文案
    * 默认：'完成'
    */
-  completeText: PropTypes.string
+  completeText: PropTypes.string,
+
+  /**
+   * 数据库链接名称（当你想要用其他数据库时使用）
+   * 默认：-
+   */
+  dblinkname: PropTypes.string
 };
