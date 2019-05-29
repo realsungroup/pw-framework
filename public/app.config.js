@@ -48,7 +48,7 @@ pwConfig.enterprisecode = '???';
  */
 // 获取多个业务可选功能的 resid 数组
 pwConfig.businessOptionalResIds = [
-  588416941524,
+  588416941524
   // 591275219130,
   // 591275423757,
   // 591276041921,
@@ -93,3 +93,6 @@ pwConfig.openFuncInSelfResids = [];
 
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;
+
+window.uploadFileUrl =
+  'http://ivf.dybhealth.com:9001/rispweb/rispservice/SvcUploadFile2.aspx?savepath=D:\\HRWEBofRegalCZ\\HRWEBofRegalCZ\\rispweb\\upfiles&httppath=http://ivf.dybhealth.com:9001/upfiles';
