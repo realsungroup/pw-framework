@@ -63,7 +63,7 @@ class FJList extends React.Component {
   componentDidMount() {
     const qsObj = qs.parse(window.location.search.substring(1));
     this.planid = qsObj.planid;
-    this.getData();
+    this.getData(0, true);
     this.totalData();
     this.getLevel();
     this.getKcxl();
@@ -90,8 +90,16 @@ class FJList extends React.Component {
     );
   }
 
-  //获取员工列表
-  async getData() {
+  loading = false;
+  // 获取员工列表
+  async getData(arg1, isFirstPage = false) {
+    if (
+      this.loading ||
+      (!isFirstPage && this.state.pageIndex + 1 > this.state.totalPage)
+    ) {
+      return;
+    }
+    this.loading = true;
     let pageIndex = this.state.pageIndex;
     let pageSize = this.state.pageSize;
     let key = this.state.key;
@@ -112,10 +120,12 @@ class FJList extends React.Component {
             e.check = false;
           });
           data[this.state.listIndex].check = true;
+          this.loading = false;
           this.setState({
             data,
             listNo: data[0].C3_609622254861,
-            pageIndex: ++this.state.pageIndex
+            pageIndex: ++this.state.pageIndex,
+            totalPage: Math.ceil(res.total / this.state.pageSize)
           });
           this.getSubData(data[this.state.listIndex].C3_609622254861);
         }
@@ -449,6 +459,7 @@ class FJList extends React.Component {
     return (
       <div
         style={{ display: 'flex', flexDirection: 'row', background: '#fff' }}
+        className="fj-list"
       >
         <div style={{ width: '50%', padding: '16px 28px' }}>
           <div
@@ -1008,7 +1019,7 @@ class FJList extends React.Component {
                 <TableData
                   // height={"calc(100vh - 300px)"}
                   resid={420130498195}
-                  recordFormFormWidth={"90%"}
+                  recordFormFormWidth={'90%'}
                   hasBeBtns={false}
                   cmswhere={`C3_420148203323 = '${this.state.pNo}'`}
                   hasModify={false}
