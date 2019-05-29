@@ -95,4 +95,4 @@ pwConfig.openFuncInSelfResids = [];
 window.pwConfig = pwConfig;
 
 window.uploadFileUrl =
-  'http://ivf.dybhealth.com:9001/rispweb/rispservice/SvcUploadFile2.aspx?savepath=D:\\HRWEBofRegalCZ\\HRWEBofRegalCZ\\rispweb\\upfiles&httppath=http://ivf.dybhealth.com:9001/upfiles';
+  'http://ivf.dybhealth.com:9000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=F:\\IVFWEB\\rispweb\\upfiles&httppath=http://ivf.dybhealth.com:9000/rispweb/upfiles';
