@@ -404,9 +404,23 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = (nodes, tags) => {
-    const { lazyLoading, showFields, intl } = this.props;
+    const { lazyLoading, showFields, intl, isCanOperation } = this.props;
     const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
+
+    let nodeMenuItems = {};
+    if (isCanOperation) {
+      nodeMenuItems = {
+        // 增删改
+        modify: {
+          icon: modifyIcon,
+          text: getIntlVal(locale, 'Modify', '修改'),
+          onClick: this.handleModifyClick
+        },
+        add: { text: getIntlVal(locale, 'Add', '添加') },
+        remove: { text: getIntlVal(locale, 'Delete', '移除') }
+      };
+    }
     const options = {
       padding,
       template,
@@ -436,15 +450,7 @@ class OrgChartData extends React.Component {
       tags,
 
       nodeMenu: {
-        // 增删改
-        modify: {
-          icon: modifyIcon,
-          text: getIntlVal(locale, 'Modify', '修改'),
-          onClick: this.handleModifyClick
-        },
-        add: { text: getIntlVal(locale, 'Add', '添加') },
-        remove: { text: getIntlVal(locale, 'Delete', '移除') },
-
+        ...nodeMenuItems,
         // 导出以某个节点为根节点的文件
         pdf: { text: getIntlVal(locale, 'Export PDF', '导出 PDF') },
         png: { text: getIntlVal(locale, 'Export PNG', '导出 PNG') },
