@@ -1,9 +1,0 @@
-{question_topic: "天气怎么样0527", amount: 1, option_id: "612264780997", question_id: "612264779654", option_content: "好"}
-{question_topic: "天气怎么样0527", amount: 1, option_id: "612264781247", question_id: "612264779654", option_content: "非常好"}
-{question_topic: "天气怎么样0527", amount: 1, option_id: "612264781357", question_id: "612264779654", option_content: "特别好"}
-{question_topic: "你喜欢什么颜色0527", amount: 1, option_id: "612264781576", question_id: "612264781466", option_content: "红色"}
-{question_topic: "你喜欢什么颜色0527", amount: 2, option_id: "612264781701", question_id: "612264781466", option_content: "黄"}
-{question_topic: "你喜欢什么颜色0527", amount: 2, option_id: "612264781810", question_id: "612264781466", option_content: "绿"}
-{question_topic: "你喜欢什么颜色0527", amount: 2, option_id: "612264781919", question_id: "612264781466", option_content: "蓝"}
-{question_topic: "0527说出你喜欢的美食", amount: 1, option_id: "612280457746", question_id: "612280457402", option_content: "牛奶"}
-{question_topic: "0527说出你喜欢的美食", amount: 2, option_id: "612280457965", question_id: "612280457402", option_content: "其他"}

@@ -1167,16 +1167,12 @@ class FJList extends React.Component {
                       >
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            {item.C3_609845305680 == null
-                              ? '无'
-                              : item.C3_609845305680}
+                            课程名称: {item.C3_609845305680 == null? '无': item.C3_609845305680}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            {item.C3_610390419677 == null
-                              ? '无'
-                              : item.C3_610390419677}
+                            讲师: {item.C3_610390419677 == null? '无': item.C3_610390419677}
                           </span>
                         </div>
                         <div
@@ -1197,14 +1193,14 @@ class FJList extends React.Component {
                             }}
                           />
                           <span>
-                            {item.C3_610390410802 == null
+                            培训地: {item.C3_610390410802 == null
                               ? '无'
                               : item.C3_610390410802}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            {item.C3_609845305931 == null
+                            课程费用: {item.C3_609845305931 == null
                               ? '无'
                               : item.C3_609845305931}
                           </span>
@@ -1470,14 +1466,14 @@ class FJList extends React.Component {
                         >
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              {item.C3_609845305680 == null
-                                ? '无'
-                                : item.C3_609845305680}
+                              课程名称: {item.C3_609845305680 == null
+                              ? '无'
+                              : item.C3_609845305680}
                             </span>
                           </div>
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              {item.C3_610390419677 == null
+                              讲师: {item.C3_610390419677 == null
                                 ? '无'
                                 : item.C3_610390419677}
                             </span>
@@ -1500,14 +1496,14 @@ class FJList extends React.Component {
                               }}
                             />
                             <span>
-                              {item.C3_610390410802 == null
+                              培训地: {item.C3_610390410802 == null
                                 ? '无'
                                 : item.C3_610390410802}
                             </span>
                           </div>
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              {item.C3_609845305931 == null
+                              课程费用: {item.C3_609845305931 == null
                                 ? '无'
                                 : item.C3_609845305931}
                             </span>
