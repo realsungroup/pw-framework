@@ -41,7 +41,6 @@ class FJList extends React.Component {
       lbSelect: '',
       listIndex: 0,
       listNo: '',
-      pNo: '',
       cnspmxb: '',
       visibleAdd: false,
       visibleEdit: false,
@@ -229,8 +228,8 @@ class FJList extends React.Component {
         if (subbData.length > 0) {
           subbData.forEach(e => {
             e.check = false;
+            e.showDetail = false;
           });
-          // subbData[0].check = true
         }
         this.setState({ subbData, addData: subbData[0] });
       } else {
@@ -244,23 +243,23 @@ class FJList extends React.Component {
 
   //单选员工
   onClick(listNo, i) {
-    console.log(i);
-    let data = this.state.data;
+    let data = this.state.data
     data.forEach(e => {
       e.check = false;
-      if (e.C3_609622254861 == listNo) e.check = true;
+      if (e.C3_609622254861 == listNo) {
+        e.check = true
+      }
     });
-    this.setState({ data, listNo, listIndex: i });
+    this.setState({ data, listNo, listIndex: i});
     this.getSubData(listNo);
   }
 
   //添加课程
   async addCourse() {
+    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
-    addData.C3_609616893275 = this.state.data[
-      this.state.listIndex
-    ].C3_609622254861;
+    addData.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
     addData.C3_609616868478 = addData.C3_609845305680;
     addData.C3_609616906353 = addData.C3_609845305931;
     addData.C3_611314815828 = addData.C3_609845305993;
@@ -291,6 +290,7 @@ class FJList extends React.Component {
 
   //添加自定义课程
   async addCustom() {
+    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
     let addCustom = this.state.addCustom;
     if (
       addCustom.C3_609616868478 == '' ||
@@ -348,6 +348,7 @@ class FJList extends React.Component {
 
   //修改课程
   async editCourse(i) {
+    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
     let data = this.state.cnspmxb;
     let editData = this.state.editData;
     if (data.C3_609616868478 == '' || data.C3_609616868478 == undefined)
@@ -712,7 +713,7 @@ class FJList extends React.Component {
                               this.setState({
                                 showTab: true,
                                 tabsKey: '1',
-                                pNo: item.C3_609622254861
+                                listNo: item.C3_609622254861
                               });
                               e.stopPropagation();
                             }}
@@ -732,7 +733,7 @@ class FJList extends React.Component {
                               this.setState({
                                 showTab: true,
                                 tabsKey: '2',
-                                pNo: item.C3_609622254861
+                                listNo: item.C3_609622254861
                               });
                               e.stopPropagation();
                             }}
@@ -752,7 +753,7 @@ class FJList extends React.Component {
                               this.setState({
                                 showTab: true,
                                 tabsKey: '3',
-                                pNo: item.C3_609622254861
+                                listNo: item.C3_609622254861
                               });
                               e.stopPropagation();
                             }}
@@ -783,7 +784,7 @@ class FJList extends React.Component {
                 type="primary"
                 onClick={() => this.setState({ showHistory: true })}
               >
-                历史记录
+                计划详情
               </Button>
             </div>
             <div
@@ -978,7 +979,7 @@ class FJList extends React.Component {
             </Button>
           </div>
           <Modal
-            title="历史记录"
+            title="计划详情"
             width={'80%'}
             destroyOnClose={true}
             visible={this.state.showHistory}
@@ -987,8 +988,8 @@ class FJList extends React.Component {
           >
             <TableData
               height={'calc(100vh - 300px)'}
-              resid={611316474296}
-              cmswhere={`C3_609617197183 = '${this.state.pNo}'`}
+              resid={611315248461}
+              cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
               recordFormFormWidth={'90%'}
               hasBeBtns={false}
               hasModify={false}
@@ -1021,7 +1022,7 @@ class FJList extends React.Component {
                   resid={420130498195}
                   recordFormFormWidth={'90%'}
                   hasBeBtns={false}
-                  cmswhere={`C3_420148203323 = '${this.state.pNo}'`}
+                  cmswhere={`C3_420148203323 = '${this.state.listNo}'`}
                   hasModify={false}
                   hasDelete={false}
                   hasAdd={false}
@@ -1035,7 +1036,7 @@ class FJList extends React.Component {
                 <TableData
                   height={'calc(100vh - 300px)'}
                   resid={611315248461}
-                  cmswhere={`C3_609616893275 = '${this.state.pNo}'`}
+                  cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
                   recordFormFormWidth={'90%'}
                   hasBeBtns={false}
                   hasModify={false}
@@ -1207,18 +1208,25 @@ class FJList extends React.Component {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flex: 1 }}>
-                        <span>
+                        {item.showDetail&&<span>
                           简介:{' '}
                           {item.C3_609845305618 == null
                             ? '无'
                             : item.C3_609845305618}
-                        </span>
+                        </span>}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flex: 1 }}>
+                    <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
                       <a target="_blank" href={item.C3_609845463949}>
                         <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
+                      <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
+                        e.stopPropagation()
+                        subbData[i].showDetail=!subbData[i].showDetail
+                        this.setState({subbData})
+                      }}>
+                        <Icon type="ellipsis"/>
+                      </div>
                     </div>
                   </div>
                 </List.Item>
@@ -1510,18 +1518,33 @@ class FJList extends React.Component {
                           </div>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
-                          <span>
+                          {item.showDetail&&<span>
                             简介:{' '}
                             {item.C3_609845305618 == null
                               ? '无'
                               : item.C3_609845305618}
-                          </span>
+                          </span>}
                         </div>
+                        {/* <div style={{ display: 'flex', flex: 1 }}>
+                          {item.showDetail?<span>
+                            简介:{' '}
+                            {item.C3_609845305618 == null
+                              ? '无'
+                              : item.C3_609845305618}
+                          </span>:<span style={{ height:"21px" }}>{' '}</span>}
+                        </div> */}
                       </div>
-                      <div style={{ display: 'flex', flex: 1 }}>
+                      <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
                         <a target="_blank" href={item.C3_609845463949}>
                           <Icon type="fund" style={{ fontSize: '22px' }} />
                         </a>
+                        <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
+                          e.stopPropagation()
+                          subbData[i].showDetail=!subbData[i].showDetail
+                          this.setState({subbData})
+                        }}>
+                          <Icon type="ellipsis"/>
+                        </div>
                       </div>
                     </div>
                   </List.Item>

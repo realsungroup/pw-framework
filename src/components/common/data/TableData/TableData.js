@@ -486,13 +486,14 @@ class TableData extends React.Component {
   getBeBtns = async () => {
     const { httpGetBeBtns, baseURL, dblinkname } = this.props;
     const id = this._id;
-    let btns;
+    let btns = {};
     try {
       btns = await httpGetBeBtns(id, baseURL, dblinkname);
     } catch (err) {
       return console.error(err);
     }
-    const { beBtnsMultiple, beBtnsSingle, beBtnsOther } = btns;
+    const { beBtnsMultiple = [], beBtnsSingle = [], beBtnsOther = [] } =
+      btns || {};
 
     if (!beBtnsMultiple.length && !beBtnsSingle.length) {
       message.warn('未配置后端按钮，请将 hasBeBtns 设置为 false');
@@ -591,6 +592,7 @@ class TableData extends React.Component {
         this._id,
         importConfig.mode,
         importConfig.containerType,
+        importConfig.saveState,
         importConfig.containerProps
       );
   };
