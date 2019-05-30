@@ -150,7 +150,7 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let subData = res.data;
-        console.log(subData);
+        // console.log(subData);
         subData.forEach(e => {
           e.check = false;
         });
@@ -587,18 +587,26 @@ class CreatePlan extends React.Component {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flex: 1 }}>
-                        <span>
+                        {item.showDetail&&<span>
                           简介:{' '}
                           {item.C3_609845305618 == null
                             ? '无'
                             : item.C3_609845305618}
-                        </span>
+                        </span>}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flex: 1 }}>
+                    <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
                       <a target="_blank" href={item.C3_609845463949}>
                         <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
+                      <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
+                        e.stopPropagation()
+                        let subData = this.state.subData
+                        subData[i].showDetail=!subData[i].showDetail
+                        this.setState({subData})
+                      }}>
+                        <Icon type="ellipsis"/>
+                      </div>
                     </div>
                   </div>
                 </List.Item>
