@@ -9,7 +9,7 @@ export default class IdLindex extends Component {
     this.modleList();
   };
   state = {
-    personList: [],
+    personList: []
     // listSelecteClass:'idlindex__person-list__antd-y-item',
   };
   // 向后端请求数据
@@ -21,7 +21,7 @@ export default class IdLindex extends Component {
         name: `王名字${i}`,
         job: 'HR',
         department: 'S4',
-        isSelected:false,
+        isSelected: false
       };
       personList.push(obj);
     }
@@ -30,22 +30,24 @@ export default class IdLindex extends Component {
     });
   };
   handlePersonOnClick = item => {
-    this.state.personList.map((item)=>{
-      return item.isSelected = false;
+    const { personList } = this.state;
+    personList.map(item => {
+      return (item.isSelected = false);
     });
     item.isSelected = true;
-    console.log(this.state.personList);
-     this.getSelectClass(item.isSelected);
+    this.setState({ personList });
   };
-  getSelectClass=(isSelected)=>{
-      if(isSelected){
-        return 'idlindex__person-list__antd-y-item__active';
-      }else{
-       return 'idlindex__person-list__antd-y-item' ;
-      }
-  }
+
+  getSelectClass = isSelected => {
+    if (isSelected) {
+      return 'idlindex__person-list__antd-y-item__active';
+    } else {
+      return 'idlindex__person-list__antd-y-item';
+    }
+  };
+
   render() {
-    const { personList ,} = this.state;
+    const { personList } = this.state;
     console.log({ personList: personList });
     return (
       <div className="idlindex">
