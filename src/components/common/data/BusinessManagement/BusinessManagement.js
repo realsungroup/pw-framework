@@ -26,13 +26,13 @@ class BusinessManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      originMenuList: [],
-      menuList: [],
+      originMenuTree: [],
+      menuTree: [],
       loading: false,
       openedTabs: [], // 打开的标签页
       activeKey: '',
       collapsed: false,
-      arr: [], // menuList 的数组形式
+      menuArr: [], // menuTree 的数组形式
       searchValue: '', // 搜索值
       openKeys: [] // 打开的 subMenu key
     };
@@ -62,15 +62,15 @@ class BusinessManagement extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    let arr = [...res.data];
-    const menuList = arrayToTree([...res.data], {
+    const menuArr = [...res.data];
+    const menuTree = arrayToTree([...res.data], {
       parentProperty: 'RES_PID',
       customID: 'RES_ID'
     });
     this.setState({
-      arr,
-      menuList,
-      originMenuList: [...menuList],
+      menuArr,
+      menuTree,
+      originMenuTree: [...menuTree],
       loading: false
     });
   };
@@ -85,7 +85,6 @@ class BusinessManagement extends React.Component {
     if (index === -1) {
       state.openedTabs = [...this.state.openedTabs, menuItem];
     }
-
     this.setState(state);
   };
 
@@ -154,32 +153,62 @@ class BusinessManagement extends React.Component {
   };
 
   handleSearch = value => {
-    const { originMenuList, arr } = this.state;
+    const { menuArr, originMenuTree } = this.state;
+    if (!value) {
+      return this.setState({ menuTree: [...originMenuTree] });
+    }
+
     const { intl } = this.props;
-
     const prop = intl.locale === 'zh' ? 'RES_NAME' : 'RES_NAME_EN';
+    const newMenuArr = [...menuArr];
 
-    const list = [...originMenuList];
-    const menuList = [];
-    let openKeys = [];
-    list.forEach(item => {
-      const parentKeys = [];
-      let keys = [];
-      if (typeof item === 'object') {
-        this.getItemFromTree(
-          item,
-          prop,
-          value,
-          null,
-          menuList,
-          keys,
-          'RES_ID',
-          parentKeys
-        );
-      }
-      openKeys.push(...keys);
+    // 通过搜索数组，得到所有对应的数组项
+    console.log({ newMenuArr });
+    const items = newMenuArr.filter(
+      menuItem => menuItem.RES_NAME.indexOf(value) !== -1
+    );
+
+    // 得到数组项的所有子节点
+    let otherItems = [];
+    this.getOtherItems(otherItems, newMenuArr, items, 'RES_ID', 'RES_PID');
+
+    // 去重
+    const array = this.removeRepeatItem([...items, ...otherItems], 'RES_ID');
+
+    const menuTree = arrayToTree(array, {
+      parentProperty: 'RES_PID',
+      customID: 'RES_ID'
     });
-    this.setState({ menuList, openKeys: Array.from(new Set(openKeys)) });
+
+    this.setState({ menuTree });
+  };
+
+  removeRepeatItem = (arr, idField) => {
+    const ret = [];
+    arr.forEach(item => {
+      const retItem = ret.find(retItem => retItem[idField] === item[idField]);
+      if (!retItem) {
+        ret.push(item);
+      }
+    });
+    return ret;
+  };
+
+  getOtherItems = (result, itemArr, items, idField, pidField) => {
+    if (!items.length) {
+      return;
+    }
+    const arr = [];
+    items.forEach(item => {
+      const tempItems = itemArr.filter(
+        itemArrItem => itemArrItem[pidField] === item[idField]
+      );
+      if (tempItems.length) {
+        arr.push(...tempItems);
+      }
+    });
+    result.push(...arr);
+    return this.getOtherItems(result, itemArr, arr, idField, pidField);
   };
 
   getItemFromTree = (
@@ -224,7 +253,7 @@ class BusinessManagement extends React.Component {
   render() {
     const {
       loading,
-      menuList,
+      menuTree,
       openedTabs,
       activeKey,
       collapsed,
@@ -260,7 +289,7 @@ class BusinessManagement extends React.Component {
                 openKeys={openKeys}
                 onOpenChange={this.handleOpenChange}
               >
-                {menuList.map(menuItem => this.renderMenuItem(menuItem))}
+                {menuTree.map(menuItem => this.renderMenuItem(menuItem))}
               </Menu>
             </Sider>
             <Layout>

@@ -56,7 +56,7 @@ export const propTypes = {
    * 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示操作；formData 表示修改后的表单数据；record 表示 当前记录；form 表示对象
    * 默认：-
    */
-  onConfirm: PropTypes.func,
+  onSuccess: PropTypes.func,
 
   /**
    * 点击取消按钮后的回调函数

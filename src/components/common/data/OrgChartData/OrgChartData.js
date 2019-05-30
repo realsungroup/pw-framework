@@ -147,6 +147,9 @@ class OrgChartData extends React.Component {
     };
   }
 
+  width = 0;
+  height = 0;
+
   componentDidMount = () => {
     this.getData();
   };
@@ -171,6 +174,26 @@ class OrgChartData extends React.Component {
     this.EditForm.prototype.init = () => {};
     this.EditForm.prototype.show = () => {};
     this.EditForm.prototype.hide = () => {};
+  };
+
+  getOrgChartDataRef = node => {
+    this.orgChartDataReef = node;
+  };
+
+  getWidthHeight = () => {
+    const { chartId } = this.props;
+    const parentNode = this.orgChartDataReef.parentNode.parentNode.parentNode;
+    const width = parentNode.clientWidth;
+    const height = parentNode.clientHeight;
+
+    console.log({ width, height });
+
+    if (height <= 700) {
+      return;
+    }
+
+    const targetNode = document.querySelector('#' + chartId);
+    targetNode.style = `width: ${width}px; height: ${height}px`;
   };
 
   // 获取根节点 id -> 获取节点数据 + 获取窗体数据
@@ -303,6 +326,7 @@ class OrgChartData extends React.Component {
     } = this.props;
     const containerProps = {
       destroyOnClose: true,
+
       ...recordFormContainerProps
     };
 
@@ -323,7 +347,8 @@ class OrgChartData extends React.Component {
       record,
       operation,
       info: { dataMode: 'main', resid },
-      onConfirm: this.handleRecordFormConfirm,
+      onSuccess: this.handleRecordFormConfirm,
+      onCancel: this.handleRecordFormClose,
       subTableArr: this._formData.subTableArr,
       subTableArrProps: [
         {
@@ -349,7 +374,7 @@ class OrgChartData extends React.Component {
     this.props.closeModalOrDrawer();
   };
 
-  handleRecordFormConfirm = (formData, form) => {
+  handleRecordFormConfirm = (operation, formData) => {
     message.success('修改成功');
     this.props.closeModalOrDrawer();
     this.chart.updateNode({
@@ -404,9 +429,23 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = (nodes, tags) => {
-    const { lazyLoading, showFields, intl } = this.props;
+    const { lazyLoading, showFields, intl, isCanOperation } = this.props;
     const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
+
+    let nodeMenuItems = {};
+    if (isCanOperation) {
+      nodeMenuItems = {
+        // 增删改
+        modify: {
+          icon: modifyIcon,
+          text: getIntlVal(locale, 'Modify', '修改'),
+          onClick: this.handleModifyClick
+        },
+        add: { text: getIntlVal(locale, 'Add', '添加') },
+        remove: { text: getIntlVal(locale, 'Delete', '移除') }
+      };
+    }
     const options = {
       padding,
       template,
@@ -436,15 +475,7 @@ class OrgChartData extends React.Component {
       tags,
 
       nodeMenu: {
-        // 增删改
-        modify: {
-          icon: modifyIcon,
-          text: getIntlVal(locale, 'Modify', '修改'),
-          onClick: this.handleModifyClick
-        },
-        add: { text: getIntlVal(locale, 'Add', '添加') },
-        remove: { text: getIntlVal(locale, 'Delete', '移除') },
-
+        ...nodeMenuItems,
         // 导出以某个节点为根节点的文件
         pdf: { text: getIntlVal(locale, 'Export PDF', '导出 PDF') },
         png: { text: getIntlVal(locale, 'Export PNG', '导出 PNG') },
@@ -481,7 +512,9 @@ class OrgChartData extends React.Component {
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
-    console.log({ newNode });
+    if (!this.props.isCanOperation) {
+      return false;
+    }
     const { keyField, intl } = this.props;
     const newParentNode = this._nodes.find(
       node => node.id === parseInt(newNode.pid, 10)
@@ -532,6 +565,7 @@ class OrgChartData extends React.Component {
       document.getElementById(this.props.chartId),
       options
     );
+    this.getWidthHeight();
     this.setState({ loading: false });
   };
 
@@ -719,7 +753,11 @@ class OrgChartData extends React.Component {
     const { chartId, chartWrapId } = this.props;
     return (
       <Spin spinning={loading}>
-        <div className="org-chart-data" id={chartWrapId}>
+        <div
+          className="org-chart-data"
+          id={chartWrapId}
+          ref={this.getOrgChartDataRef}
+        >
           <i
             className="org-chart-data__adv-search-btn iconfont icon-adv-search"
             onClick={this.handleAdvSearch}

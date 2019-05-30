@@ -68,21 +68,48 @@ class FormData extends React.Component {
       if (storeWay === 'be') {
         // 添加
         if (operation === 'add') {
-          const params = {
-            resid: id,
-            data: [formData],
-            dblinkname
+          const arr = subTableArr
+            .map((subTable, index) => ({
+              resid: subTable.subResid,
+              dataSource: this[`tableDataRef${index}`].getDataSource()
+            }))
+            .filter(item => !!item.dataSource.length);
+
+          let data;
+          const state = operation === 'add' ? 'added' : 'modified';
+          const dataObj = {
+            resid,
+            maindata: { ...formData, _id: 1, _state: state },
+            _id: 1
           };
-          if (dataMode === 'sub') {
-            params.hostresid = resid;
-            params.hostrecid = hostrecid;
+
+          let i = 0;
+          arr.forEach(item => {
+            item.dataSource.forEach(record => {
+              if (!dataObj.subdata) {
+                dataObj.subdata = [];
+              }
+              dataObj.subdata.push({
+                resid: item.resid,
+                maindata: { ...record, _state: state, _id: ++i }
+              });
+            });
+          });
+
+          if (dataObj.subdata) {
+            dataObj.subdata.reverse();
           }
-          this.p1 = makeCancelable(http().addRecords(params));
+
+          data = [dataObj];
+
+          this.p1 = makeCancelable(
+            http().saveRecordAndSubTables({ data, dblinkname })
+          );
           try {
-            await this.p1.promise;
+            const res = await this.p1.promise;
+            console.log({ res });
           } catch (err) {
-            console.error(err);
-            return message.error(err.message);
+            return console.error(err);
           }
 
           // 修改
