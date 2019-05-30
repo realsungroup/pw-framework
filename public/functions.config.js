@@ -705,7 +705,7 @@ window[606249673489] = {
 };
 //606242031630供应商保安登记
 window[606242031630] = {
-  name: 'TableDataWrap', // 组件名称，这里为定制组件名称
+  name: 'TableDataVisitorG', // 组件名称，这里为定制组件名称
   title: '供应商保安登记', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
@@ -882,15 +882,36 @@ window[607183152969] = {
 //我的错题
 window[607562749445] = {
   name: 'TableData',
-  title: '我的错题',
+  title: '考试安排',
   props: {
-    resid: 607185752828,
+    resid: 608809112309,
     hasAdd: false,
     hasDelete: false,
     hasModify: false,
     hasRowDelete: false,
     hasRowModify: false,
-    subtractH:220,
+    hasBeBtns:true,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    // recordFormFormWidth: '45%',
+    subTableArrProps: [
+      {
+        subTableName: '我的错题',
+        subResid: 607185752828,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        hasRowDelete: false
+        }
+
+      }
+    ]
     // height:600
   }
 };
@@ -1205,5 +1226,15 @@ window[611667749682] = {
       placement: 'bottom',
       height: 600
     },
+  }
+};
+
+
+
+//RBA排班
+window[612526844134] = {
+  name: 'TableDataScheduling',
+  title: 'RBA排班',
+  props: {
   }
 };
