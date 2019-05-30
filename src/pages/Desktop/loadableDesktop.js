@@ -9,13 +9,6 @@ export const DesktopDashboard = Loadable({
   }
 });
 
-export const DesktopOrgChart = Loadable({
-  loader: () => import('./DesktopOrgChart'),
-  loading() {
-    return <FullLoading loading={true} />;
-  }
-});
-
 export const DesktopColorPicker = Loadable({
   loader: () => import('./DesktopColorPicker'),
   loading() {

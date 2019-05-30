@@ -15,9 +15,10 @@ import {
   DesktopColorPicker,
   DesktopDashboard,
   WindowView,
-  DesktopPersonCenter,
-  DesktopOrgChart
+  DesktopPersonCenter
 } from './loadableDesktop';
+import { OrgChartData } from '../../components/common/loadableCommon';
+
 import {
   ContextMenu,
   MenuItem,
@@ -619,7 +620,7 @@ class Desktop extends React.Component {
   };
 
   handleOpenOrgChart = () => {
-    const children = <DesktopOrgChart {...orgChartConfig} />;
+    const children = <OrgChartData {...orgChartConfig} />;
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
     this.addAppToBottomBar([
