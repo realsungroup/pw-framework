@@ -49,7 +49,6 @@ const customColumnWidth = {
 export const inApplication = {
   resid: 605891650522,
   subtractH: 196,
-  // height:800,
   formProps: {
     height: 500
   },
@@ -70,9 +69,9 @@ export const inApplication = {
   subTableArrProps: [
     {
       subTableName: '供应商信息',
-      subResid: 606068632909,
+      subResid: 606302353251,
       tableProps: {
-        hasAdd: true,
+        hasAdd: false,
         hasModify: false,
         hasDelete: false,
         hasRowModify: true,
@@ -91,8 +90,7 @@ export const inApplication = {
 // 审批中
 export const inExaminationAndApproval = {
   resid: 605891699222,
-  // height: 500,
-  subtractH: 166,
+  subtractH: 196,
   formProps: {
     height: 500
   },
@@ -144,7 +142,7 @@ export const inExaminationAndApproval = {
 // 已审批
 export const approved = {
   resid: 605891735751,
-  subtractH: 166,
+  subtractH: 196,
   formProps: {
     height: 500
   },
@@ -199,7 +197,7 @@ export const approved = {
 export const refused = {
   resid: 605891789909,
   // height: 500,
-  subtractH: 166,
+  subtractH: 196,
   formProps: {
     height: 500
   },
@@ -254,7 +252,7 @@ export const refused = {
 export const history = {
   resid: 605891824806,
   // height: 500,
-  subtractH: 166,
+  subtractH: 196,
   actionBarWidth: 200,
   formProps: {
     height: 500
