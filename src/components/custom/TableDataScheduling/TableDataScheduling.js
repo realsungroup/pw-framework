@@ -103,10 +103,10 @@ class TableDataScheduling extends React.Component {
               subtractH={240}
               height={500}
               actionBarFixed={true}
-              hasZoomInOut={true}
+              // hasZoomInOut={true}
               importConfig={{
                 mode: 'fe',
-                saveState: 'added',
+                saveState: 'editoradd',
                 containerType: 'drawer'
               }}
               // actionBarExtra={({
@@ -137,16 +137,16 @@ class TableDataScheduling extends React.Component {
               page="1"
               size="small"
               hasRowSelection={false}
-              hasAdd={false}
+              hasAdd={true}
               hasBeBtns={false}
               hasDelete={false}
               hasRowModify={true}
               hasRowView={false}
               hasRowDelete={true}
               hasModify={false}
-              subtractH={216}
+              subtractH={240}
               height={500}
-              actionBarFixed={false}
+              actionBarFixed={true}
             />
           </TabPane>
           <TabPane tab="排班超标记录" key="3">
@@ -163,16 +163,16 @@ class TableDataScheduling extends React.Component {
               page="1"
               size="small"
               hasRowSelection={false}
-              hasAdd={false}
+              hasAdd={true}
               hasBeBtns={false}
               hasDelete={false}
               hasRowModify={true}
               hasRowView={false}
               hasRowDelete={true}
               hasModify={false}
-              subtractH={216}
+              subtractH={240}
               height={500}
-              actionBarFixed={false}
+              actionBarFixed={true}
             />
           </TabPane>
           {/* <Modal
