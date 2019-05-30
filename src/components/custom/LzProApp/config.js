@@ -7,7 +7,7 @@ import {
   modRecord
 } from 'Util/api';
 
-// 待审批
+// 申请中
 export const inApplication = {
   resid: 606243045601,
   height:'100%',
@@ -32,6 +32,7 @@ export const inApplication = {
   subTableArrProps: [{
     subTableName: '供应商信息',
     subResid: 606302353251,
+    dataMode:'main',
     tableProps: {
       hasAdd: false,
       hasModify: false,
