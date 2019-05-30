@@ -1,0 +1,40 @@
+.idlindex {
+  width: 80%;
+  margin: 0 auto;
+  background-color: #fff;
+  overflow: hidden;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    &__title {
+      padding: 0 20px;
+      text-align: center;
+    }
+  }
+  &__person-list {
+    width: 30%;
+    float: left;
+    height: 500px;
+    overflow: auto;
+    border: 1px solid #cccc;
+    &__antd-y-item {
+      min-height: 60px;
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+      &__active{
+        background-color: #fff;
+        border:1px solid #f40;
+      }
+    }
+   
+  }
+  &__form-list {
+    width: 70%;
+    float: right;
+  }
+}
+.ant-list-items {
+  padding-inline-start: 0;
+}
