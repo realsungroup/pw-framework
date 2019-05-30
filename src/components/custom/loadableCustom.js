@@ -289,3 +289,17 @@ export const TrainingMaterialU = Loadable({
     return minLoading;
   }
 });
+
+export const TableDataVisitorG = Loadable({
+  loader: () => import('./TableDataVisitorG'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const TableDataScheduling = Loadable({
+  loader: () => import('./TableDataScheduling'),
+  loading() {
+    return minLoading;
+  }
+});

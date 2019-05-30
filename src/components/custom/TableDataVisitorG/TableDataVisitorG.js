@@ -7,7 +7,7 @@ import { withRecordForm } from "../../common/hoc/withRecordForm";
 import { setDataInitialValue } from "Util20/formData2ControlsData";
 const socket = require("socket.io-client")("http://localhost:5000");
 
-class TableDataVisitor extends React.Component {
+class TableDataVisitorG extends React.Component {
   state = {
     visible: false,
     record: null,
@@ -25,8 +25,8 @@ class TableDataVisitor extends React.Component {
         let res;
         try {
           res = await http().getTable({
-            resid: 606066688508,
-            cmswhere: `C3_608392189420 = ${card.cardno}`
+            resid: 606302353251,
+            cmswhere: `C3_605719242955 = ${card.cardno}`
           });
           if (res.data.length>0) {
             message.success("查询成功！");
@@ -67,32 +67,30 @@ class TableDataVisitor extends React.Component {
       data.map(item => {
         switch (item.label) {
           case '登记证件号码':
-          item.initialValue = record[0].C3_608392189420;
+          item.initialValue = record[0].C3_605719242955;
             break;
-            case '访问类型':
-            item.initialValue = record[0].C3_605717078399;
-              break;
               case '访问地区类型':
-              item.initialValue = record[0].C3_605979566762;
+              item.initialValue = record[0].C3_605719242641;
                 break;
                 case '登记证件类型':
-                item.initialValue = record[0].C3_605716867680;
+                item.initialValue = record[0].C3_605719242802;
                   break;
                   case '访客姓名':
-                  item.initialValue = record[0].C3_605716828937;
+                  item.initialValue = record[0].C3_605719242294;
                     break;
                     case '访客类型':
-                    item.initialValue = record[0].C3_605717078399;
+                    item.initialValue = record[0].C3_605719242479;
                       break;
                       case '访客单位':
-                      item.initialValue = record[0].C3_605716301557;
+                      item.initialValue = record[0].C3_605719242129;
                         break;
                         case '访问事由':
-                            item.initialValue = record[0].C3_605979568870;
+                            item.initialValue = record[0].C3_606843168661;
                             break;
                             case '申请人姓名':
-                                item.initialValue = record[0].C3_612530533883;
+                                item.initialValue = record[0].C3_612530147136;
                                 break;
+                            
         }
         // if (item.label === "登记证件号码" && record) {
         //   item.initialValue = record[0].C3_608392189420;
@@ -215,7 +213,7 @@ class TableDataVisitor extends React.Component {
           {/* <div style={{width:"40%"}}> */}
           <Form.Item label="访客姓名">
             {getFieldDecorator("name", {
-              initialValue: [record && record[0] && record[0].C3_605703839196],
+              initialValue: [record && record[0] && record[0].C3_605719242294],
               rules: [
                 {
                   required: true,
@@ -226,7 +224,7 @@ class TableDataVisitor extends React.Component {
           </Form.Item>
           <Form.Item label="身份证号">
             {getFieldDecorator("cardno", {
-              initialValue: [record && record[0] &&  record[0].C3_608392189420],
+              initialValue: [record && record[0] &&  record[0].C3_605719242955],
               rules: [
                 {
                   required: true,
@@ -238,7 +236,7 @@ class TableDataVisitor extends React.Component {
           
           <Form.Item label="访客类型">
             {getFieldDecorator("visiterType", {
-              initialValue: [record && record[0] &&  record[0].C3_605703913037],
+              initialValue: [record && record[0] &&  record[0].C3_605719242479],
               rules: [
                 {
                   required: true,
@@ -249,7 +247,7 @@ class TableDataVisitor extends React.Component {
           </Form.Item>
           <Form.Item label="单位">
             {getFieldDecorator("componey", {
-              initialValue: [record && record[0] &&  record[0].C3_605716301557],
+              initialValue: [record && record[0] &&  record[0].C3_605719242129],
               rules: [
                 {
                   required: true,
@@ -261,7 +259,7 @@ class TableDataVisitor extends React.Component {
 
           <Form.Item label="事由">
             {getFieldDecorator("reason", {
-              initialValue: [record && record[0] &&  record[0].C3_605703896083],
+              initialValue: [record && record[0] &&  record[0].C3_606843168661],
               rules: [
                 {
                   required: true,
@@ -271,9 +269,9 @@ class TableDataVisitor extends React.Component {
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
           
-          <Form.Item label="事由">
+          <Form.Item label="地区">
             {getFieldDecorator("area", {
-              initialValue: [record && record[0] &&  record[0].C3_605703930741],
+              initialValue: [record && record[0] &&  record[0].C3_605719242641],
               rules: [
                 {
                   required: true,
@@ -286,7 +284,7 @@ class TableDataVisitor extends React.Component {
           
           <Form.Item label="申请人">
             {getFieldDecorator("applyName", {
-              initialValue: [record && record[0] &&  record[0].C3_612530533883],
+              initialValue: [record && record[0] &&  record[0].C3_612530147136],
               rules: [
                 {
                   required: true,
@@ -308,7 +306,4 @@ class TableDataVisitor extends React.Component {
   }
 }
 
-// export default withRecordForm()(TableDataWrap);
-
-// export default Form.create()(TableDataWrap);
-export default withRecordForm()(Form.create()(TableDataVisitor));
+export default withRecordForm()(Form.create()(TableDataVisitorG));
