@@ -22,8 +22,8 @@ const withImport = WrappedComponent => {
      * @param {string} baseURL 基地址
      * @param {number} resid 资源 id
      * @param {string} mode 导入模式
-     * @param {string} saveState 保存数据的模式
      * @param {string} type 类型
+     * @param {string} saveState 保存数据的模式
      * @param {object} containerProps 容器接收的 props
      */
     handleOpenImportView = async (
@@ -31,8 +31,8 @@ const withImport = WrappedComponent => {
       baseURL,
       resid,
       mode,
-      saveState,
       type = 'drawer',
+      saveState,
       containerProps
     ) => {
       const importContainerProps = {
