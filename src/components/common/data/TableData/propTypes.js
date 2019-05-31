@@ -588,18 +588,6 @@ export const propTypes = {
   beforeSaveFields: PropTypes.array,
 
   /**
-   * 是否有缩放表格功能（放大缩小功能与 hasResizeableBox 不能同时开启）
-   * 默认：true
-   */
-  hasResizeableBox: PropTypes.bool,
-
-  /**
-   * 是否有放大缩小按钮（放大缩小功能与 hasResizeableBox 不能同时开启）
-   * 默认：false
-   */
-  hasZoomInOut: PropTypes.bool,
-
-  /**
    * 是否有边框
    * 默认：true
    */
