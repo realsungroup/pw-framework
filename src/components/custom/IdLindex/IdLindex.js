@@ -59,12 +59,12 @@ const pl = [
 const { Header, Footer, Sider, Content } = Layout;
 export default class IdLindex extends Component {
   componentDidMount = () => {
-    // this.modleList();
-    this.getPerson();
+    this.modleList();
+    // this.getPerson();
   };
   state = {
     personList: pl,
-    currentPersonInfo:'',
+    currentPersonInfo: ''
     // listSelecteClass:'idlindex__person-list__antd-y-item',
   };
   // 模拟人员表
@@ -95,7 +95,7 @@ export default class IdLindex extends Component {
       return (item.isSelected = false);
     });
     item.isSelected = true;
-    this.setState({ personList ,currentPersonInfo:item});
+    this.setState({ personList, currentPersonInfo: item });
   };
 
   getSelectClass = isSelected => {
@@ -120,7 +120,7 @@ export default class IdLindex extends Component {
     console.log(res);
   };
   render() {
-    const { personList,currentPersonInfo } = this.state;
+    const { personList, currentPersonInfo } = this.state;
     console.log({ personList: personList });
     return (
       <div className="idlindex">
@@ -147,7 +147,9 @@ export default class IdLindex extends Component {
         </div>
         <div className="idlindex__form-list">
           <h4 className="idlindex__title">候选人事项表</h4>
-          
+          <div className='idlindex__form-list__workform'>
+            
+          </div>
         </div>
       </div>
     );
