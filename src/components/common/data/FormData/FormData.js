@@ -66,8 +66,8 @@ class FormData extends React.Component {
 
       // 后端存储，则发送请求
       if (storeWay === 'be') {
-        // 添加
-        if (operation === 'add') {
+        // 添加且有子表
+        if (operation === 'add' && hasSubTables) {
           const arr = subTableArr
             .map((subTable, index) => ({
               resid: subTable.subResid,
@@ -110,6 +110,25 @@ class FormData extends React.Component {
             console.log({ res });
           } catch (err) {
             return console.error(err);
+          }
+
+          // 添加但无子表
+        } else if (operation === 'add' && !hasSubTables) {
+          const params = {
+            resid: id,
+            data: [formData],
+            dblinkname
+          };
+          if (dataMode === 'sub') {
+            params.hostresid = resid;
+            params.hostrecid = hostrecid;
+          }
+          this.p1 = makeCancelable(http().addRecords(params));
+          try {
+            await this.p1.promise;
+          } catch (err) {
+            console.error(err);
+            return message.error(err.message);
           }
 
           // 修改
