@@ -303,3 +303,11 @@ export const TableDataScheduling = Loadable({
     return minLoading;
   }
 });
+
+// IDL招聘
+export const IdLindex = Loadable({
+  loader: () => import('./IdLindex'),
+  loading() {
+    return minLoading;
+  }
+});

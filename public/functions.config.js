@@ -1238,3 +1238,10 @@ window[612526844134] = {
   props: {
   }
 };
+
+// IDL招聘
+window[612612229738] = {
+  name: 'IdLindex',
+  title: 'IDL招聘'
+  
+};
