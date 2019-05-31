@@ -38,9 +38,24 @@ class LabExaminationChart extends React.Component {
   }
 
   getOption = () => {
-    const { dateField, data, fields } = this.props;
-
+    const {
+      dateField,
+      data,
+      fields
+    } = this.props;
+    // columns
+    const columns = [];
+    const itemnamecolumndata = {
+      title: "名称",
+      dataIndex: "name",
+      key: "name",
+      width: 200,
+      align: 'left',
+    };
+    columns.push(itemnamecolumndata);
+    
     const newData = [...data];
+    const dsOfTableGrid=[];
     newData.sort((a, b) => moment(a[dateField]).unix() - moment(b[dateField]));
 
     // x 轴配置信息
@@ -51,8 +66,16 @@ class LabExaminationChart extends React.Component {
     newData.forEach(item => {
       const value = moment(item[dateField]).format('YYYY-MM-DD');
       xAxis.data.push(value);
+      const columndata = {
+        title: value,
+        dataIndex: moment(item[dateField]).format('YYYYMMDD'),
+        key: moment(item[dateField]).format('YYYYMMDD'),
+        width: 200,
+        align: 'left',
+      };
+      columns.push(columndata);
     });
-
+    
     // 曲线配置
     const series = [];
     // 图例配置
@@ -62,6 +85,17 @@ class LabExaminationChart extends React.Component {
       newData.forEach(item => {
         const value = item[field.field];
         obj.data.push(value);
+        const dateColumnName = moment(item[dateField]).format('YYYYMMDD');
+        const row={ name: obj.name};
+        row[dateColumnName]= value ;
+        const index=dsOfTableGrid.findIndex(row => row.name===obj.name);
+        if (index >= 0) {
+          dsOfTableGrid[index][dateColumnName]=value;
+
+        } else {
+          dsOfTableGrid.push(row);
+        }
+       
       });
       legend.data.push(field.title);
       series.push(obj);
@@ -95,24 +129,23 @@ class LabExaminationChart extends React.Component {
 
     option.xAxis = xAxis;
 
-    // columns
-    const columns = [];
+    
 
-    return { option, tableData: newData, columns };
+    return { option, tableData: newData, columns,dsOfTableGrid };
   };
 
   componentDidMount = async () => {
     this.setState({ loading: true });
     setTimeout(() => {
-      const { option, tableData, columns } = this.getOption();
-      this.setState({ option, loading: false, tableData });
+      const { option, tableData, columns ,dsOfTableGrid} = this.getOption();
+      this.setState({ option, loading: false, tableData ,columns,dsOfTableGrid});
     }, 1000);
   };
 
   componentWillUnmount = () => {};
 
   render() {
-    const { loading, option, tableData, columns } = this.state;
+    const { loading, option, tableData, columns,dsOfTableGrid } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="lab-examination-chart">
@@ -122,6 +155,14 @@ class LabExaminationChart extends React.Component {
               defaultWidth={'100%'}
               defaultHeight={600}
               option={option}
+            />
+          )}
+        </div>
+        <div>
+        {option && (
+            <Table
+            columns={columns}
+            dataSource={dsOfTableGrid}
             />
           )}
         </div>
