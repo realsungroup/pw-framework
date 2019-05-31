@@ -22,6 +22,7 @@ import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
+import { debounce } from 'lodash';
 
 const { Fragment } = React;
 
@@ -91,6 +92,8 @@ class TableData extends React.Component {
     await this.getData();
     await this.getScrollXY();
 
+    this.addEventListener();
+
     this.setState({ loading: false });
   };
 
@@ -113,6 +116,16 @@ class TableData extends React.Component {
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
     this.p4 && this.p4.cancel();
+    window.removeEventListener('resize', this.cb);
+  };
+
+  addEventListener = () => {
+    this.cb = debounce(this.handleResize, 200);
+    window.addEventListener('resize', this.cb);
+  };
+
+  handleResize = () => {
+    this.getScrollXY();
   };
 
   getDataSource = () => {
@@ -219,7 +232,7 @@ class TableData extends React.Component {
     // 计算：this.boxW 和 this.boxH
     // ResizableBox 接收的 with 和 height 属性类型为 number
     // 所以，当 width 和 height 用的字符串类型时（百分比），需要转换一下
-    if (this.tableDataRef && !this.boxW && !this.boxH) {
+    if (this.tableDataRef) {
       const parent = this.tableDataRef.parentNode;
       this.boxW =
         typeof width === 'number'
@@ -1064,44 +1077,6 @@ class TableData extends React.Component {
     }
     await this.getTableData(obj);
     this.setState({ loading: false });
-  };
-
-  handleResizeStop = (e, data) => {
-    const { height, width } = data.size;
-
-    const pagination = { ...this.state.pagination };
-    // 表格宽度小于 700px 时
-    if (width <= 700) {
-      pagination.showQuickJumper = false;
-      pagination.showSizeChanger = false;
-    } else {
-      pagination.showQuickJumper = true;
-      pagination.showSizeChanger = true;
-    }
-
-    this._x = this.state.scrollXY.x;
-
-    const { hasModify, hasDelete, hasRowSelection } = this.props;
-    const { rowSelection } = this.state;
-    let newRowSelection = null;
-    if (rowSelection) {
-      newRowSelection = getRowSelection(
-        hasRowSelection,
-        hasModify,
-        hasDelete,
-        this.state.rowSelection.selectedRowKeys,
-        this.rowSelectionChange,
-        this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
-      );
-    }
-
-    this.setState({
-      scrollXY: { x: this.state.scrollXY.x, y: height - this.props.subtractH },
-      pagination,
-      width,
-      height,
-      rowSelection: newRowSelection
-    });
   };
 
   handleAdvSearch = () => {
