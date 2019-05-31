@@ -495,10 +495,6 @@ class TableData extends React.Component {
     const { beBtnsMultiple = [], beBtnsSingle = [], beBtnsOther = [] } =
       btns || {};
 
-    if (!beBtnsMultiple.length && !beBtnsSingle.length) {
-      message.warn('未配置后端按钮，请将 hasBeBtns 设置为 false');
-    }
-
     // 有行选择
     let rowSelection = null;
     if (this.hasRowSelection(beBtnsMultiple)) {
@@ -1603,7 +1599,6 @@ class TableData extends React.Component {
   };
 
   render() {
-    const { hasResizeableBox } = this.props;
     const { loading, width, height } = this.state;
 
     return (
@@ -1612,19 +1607,7 @@ class TableData extends React.Component {
         style={{ width, height }}
         ref={element => (this.tableDataRef = element)}
       >
-        <Spin spinning={loading}>
-          {hasResizeableBox && this.boxW && this.boxH ? (
-            <ResizableBox
-              width={this.boxW}
-              height={this.boxH}
-              onResizeStop={this.handleResizeStop}
-            >
-              {this.renderPwTable()}
-            </ResizableBox>
-          ) : (
-            this.renderPwTable()
-          )}
-        </Spin>
+        <Spin spinning={loading}>{this.renderPwTable()}</Spin>
       </div>
     );
   }
