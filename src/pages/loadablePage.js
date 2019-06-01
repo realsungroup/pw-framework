@@ -43,3 +43,24 @@ export const Reminder = Loadable({
     return <FullLoading loading={true} />;
   }
 });
+
+export const PageContainer = Loadable({
+  loader: () => import('./PageContainer'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
+export const Home = Loadable({
+  loader: () => import('./Home'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
+export const WorkbenchSetting = Loadable({
+  loader: () => import('./WorkbenchSetting'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
