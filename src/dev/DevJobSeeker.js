@@ -4,13 +4,17 @@ import * as serviceWorker from '../serviceWorker';
 import TemplateWrap from './TemplateWrap';
 // 导入需要开发的组件，如：
 // import TableData from 'Common/data/TableData';
-import JobSeeker from '../components/custom/JobSeeker'
+import JobSeeker from '../components/custom/JobSeeker';
 
 class App extends Component {
   render() {
-    return <TemplateWrap>
-    <JobSeeker></JobSeeker>
-    </TemplateWrap>;
+    return (
+      <TemplateWrap>
+        <div style={{ width: 1000, height: 620, margin: '0 auto' }}>
+          <JobSeeker />
+        </div>
+      </TemplateWrap>
+    );
   }
 }
 

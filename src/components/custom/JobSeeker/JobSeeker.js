@@ -14,6 +14,11 @@ const MenuList = [
     icon: 'trophy'
   },
   {
+    label: '工作经历',
+    value: '工作经历',
+    icon: 'apartment'
+  },
+  {
     label: '家庭成员关系',
     value: '家庭成员关系',
     icon: 'apartment'
@@ -60,7 +65,8 @@ class JobSeeker extends Component {
   // 移动
   hanleMoveTo = id => {
     const moveTo = new MoveTo({
-      tolerance: 44,
+      duration: 300,
+      tolerance: 54,
       container: document.querySelector('.job-seeker__informnation')
     });
     console.log(id);
@@ -198,7 +204,7 @@ class JobSeeker extends Component {
             <Form.Item label="公司名称">
               {getFieldDecorator('threeShcoolName', {})(<Input />)}
             </Form.Item>
-            <h4 id="工作经历">家庭成员关系</h4>
+            <h4 id="家庭成员关系">家庭成员关系</h4>
             <Form.Item label="姓名">
               {getFieldDecorator('familyOneName', {})(<Input />)}
             </Form.Item>
