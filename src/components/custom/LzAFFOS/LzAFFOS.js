@@ -63,7 +63,7 @@ export default class LzAFFOS extends React.Component {
           onChange={this.handleTabsChange}
         >
           <TabPane tab="申请中" key="申请中">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...inApplication}/></div>
+          <div style={{height:'calc(100vh - 220px)'}}><TableData {...inApplication} formProps={{saveText: '提交'}} /></div>
           </TabPane>
 
           <TabPane tab="审批中" key="审批中">
