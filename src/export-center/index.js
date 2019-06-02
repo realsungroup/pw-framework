@@ -65,7 +65,8 @@ export {
   SoleQuery,
   SelectPersonFirst,
   Statical,
-  OneStatistical
+  OneStatistical,
+  IdLindex
 } from '../components/custom/loadableCustom';
 
 // 导出demo
