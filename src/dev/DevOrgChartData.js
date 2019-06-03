@@ -43,7 +43,7 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <div style={{ height: 1000 }}>
+        <div style={{ height: 500 }}>
           <OrgChartData {...orgChartConfig} />
         </div>
       </TemplateWrap>
