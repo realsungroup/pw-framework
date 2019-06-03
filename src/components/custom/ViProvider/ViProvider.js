@@ -64,7 +64,7 @@ export default class ViProvider extends React.Component {
         >
           <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData {...inApplication} />
+              <TableData {...inApplication}  formProps={{saveText: '提交', height: 480}} />
             </div>
           </TabPane>
 
