@@ -136,7 +136,14 @@ class JobSeeker extends Component {
               })(<Input />)}
             </Form.Item>
             <Form.Item label="性别/Sex" {...formItemLayout}>
-              {getFieldDecorator('Sex', {})(
+              {getFieldDecorator('Sex', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择性别'
+                  }
+                ]
+              })(
                 <Radio.Group>
                   <Radio value="男">男</Radio>
                   <Radio value="女">女</Radio>
@@ -144,34 +151,117 @@ class JobSeeker extends Component {
               )}
             </Form.Item>
             <Form.Item label="手机/Phone" {...formItemLayout}>
-              {getFieldDecorator('Phone', {})(<Input />)}
+              {getFieldDecorator('Phone', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请务必输入手机号，方便我们联系您'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="个人邮箱/E-mail" {...formItemLayout}>
-              {getFieldDecorator('E-mail', {})(<Input />)}
+              {getFieldDecorator('E-mail', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请务必输入邮箱，方便我们联系您'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="国籍/Nationality" {...formItemLayout}>
-              {getFieldDecorator('Nationality', {})(<Input />)}
+              {getFieldDecorator('Nationality', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入国籍'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="民族/Nationality" {...formItemLayout}>
-              {getFieldDecorator('Nationa', {})(<Input />)}
+              {getFieldDecorator('Nationa', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入民族'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="政治面貌/Party" {...formItemLayout}>
-              {getFieldDecorator('Party', {})(<Input />)}
+              {getFieldDecorator('Party', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入政党'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="出生日期/BirhtOfDate" {...formItemLayout}>
-              {getFieldDecorator('birthOfDate', {})(<DatePicker />)}
+              {getFieldDecorator('birthOfDate', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入出生日期'
+                  }
+                ]
+              })(<DatePicker />)}
             </Form.Item>
             <Form.Item label="出生地点/PlaceOfBirth" {...formItemLayout}>
-              {getFieldDecorator('BirthPlace', {})(<Input />)}
+              {getFieldDecorator('BirthPlace', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输出生地点'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="户口所在地/PlaceOfHuKou" {...formItemLayout}>
+              {getFieldDecorator('placeOfHukou', {
+                rules: [
+                  {
+                    required: true,
+                    message: '户口所在地必填'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item label="血型/BloodType" {...formItemLayout}>
-              {getFieldDecorator('BloodType', {})(<Input />)}
+              {getFieldDecorator('BloodType', {
+                rules: [
+                  {
+                    required: true,
+                    message: '血型必须要填'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="现通讯地址/CurrentCorrespondAddress" {...formItemLayout}>
+              {getFieldDecorator('currentAddress', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入现居住的地址'
+                  }
+                ]
+              })(<Input />)}
             </Form.Item>
             <Form.Item
               label="有无推荐人/if have recommender"
               {...formItemLayout}
             >
-              {getFieldDecorator('IsRecommended', {})(
+              {getFieldDecorator('IsRecommended', {
+                rules: [
+                  {
+                    required: true,
+                    message: '输入国籍'
+                  }
+                ]
+              })(
                 <Radio.Group>
                   <Radio value="有">有</Radio>
                   <Radio value="无">无</Radio>
@@ -183,6 +273,23 @@ class JobSeeker extends Component {
             </Form.Item>
             <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
               {getFieldDecorator('recommenderRelationship', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="婚姻状况/Marital status" {...formItemLayout}>
+              {getFieldDecorator('MaritalStatus', {})(
+                <Radio.Group>
+                  <Radio value="未婚">未婚</Radio>
+                  <Radio value="已婚">已婚</Radio>
+                  <Radio value="离异">离异</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="有无子女/children if any" {...formItemLayout}>
+              {getFieldDecorator('havechildren', {})(
+                <Radio.Group>
+                  <Radio value="有">有</Radio>
+                  <Radio value="无">无</Radio>
+                </Radio.Group>
+              )}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="教育背景">
               教育背景
@@ -206,13 +313,13 @@ class JobSeeker extends Component {
               {getFieldDecorator('latestWorkdate', {})(<RangePicker />)}
             </Form.Item>
             <Form.Item label="公司名称">
-              {getFieldDecorator('latestShcoolName', {})(<Input />)}
+              {getFieldDecorator('latestComName', {})(<Input />)}
             </Form.Item>
             <Form.Item label="任职年限">
               {getFieldDecorator('threeWorkdate', {})(<RangePicker />)}
             </Form.Item>
             <Form.Item label="公司名称">
-              {getFieldDecorator('threeShcoolName', {})(<Input />)}
+              {getFieldDecorator('threeComName', {})(<Input />)}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="家庭成员关系">
               家庭成员关系
@@ -227,7 +334,7 @@ class JobSeeker extends Component {
               {getFieldDecorator('birthDate', {})(<Input />)}
             </Form.Item>
             <Button type="primary" onClick={this.handleClick}>
-              提交
+              确认申请
             </Button>
           </Form>
         </div>
