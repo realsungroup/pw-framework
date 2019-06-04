@@ -7268,6 +7268,7 @@ move-concurrently@^1.0.1:
 moveto@^1.8.1:
   version "1.8.1"
   resolved "https://registry.npm.taobao.org/moveto/download/moveto-1.8.1.tgz#b4e219d512816a5f25970678e837424922b20ec2"
+  integrity sha1-tOIZ1RKBal8llwZ46DdCSSKyDsI=
 
 ms@2.0.0:
   version "2.0.0"

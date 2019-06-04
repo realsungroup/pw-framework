@@ -1199,11 +1199,10 @@ window[612526844134] = {
   }
 };
 
-// IDL招聘
+// IDL招聘管理员端入口
 window[612612229738] = {
   name: 'IdLindex',
-  title: 'IDL招聘'
-  
+  title: 'IDL招聘' 
 };
 
 
@@ -1254,6 +1253,13 @@ window[607168405062] = {
 // 考试图表分析
 window['考试图表分析'] = {
   name: 'ExamAnalyze',
-  title: '考试图表分析'
+  title: '考试图表分析',
+  props: {}
+}
   
+// 求职者入口
+window[612874189546] = {
+  name: 'JobSeeker',
+  title: 'IDL求职者',
+  props: {}
 };

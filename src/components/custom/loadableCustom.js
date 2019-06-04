@@ -327,3 +327,10 @@ export const ExamAnalyze = Loadable({
     return minLoading;
   }
 });
+
+export const JobSeeker = Loadable({
+  loader: () => import('./JobSeeker'),
+  loading() {
+    return minLoading;
+  }
+});
