@@ -89,7 +89,7 @@ class LabExaminationChart extends React.Component {
         const row={ name: obj.name};
         row[dateColumnName]= value ;
         const index=dsOfTableGrid.findIndex(row => row.name===obj.name);
-        if (index >= 0) {
+        if (~index) {
           dsOfTableGrid[index][dateColumnName]=value;
 
         } else {

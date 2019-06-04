@@ -20,7 +20,8 @@ const hasHeightWeightChartBtn = formTitle => {
 
 // 实验室检查表才有选择字段按钮
 const hasChooseFieldBtn = formTitle => {
-  return formTitle.indexOf('实验室检查') !== -1;
+  //,CD-评分
+  return formTitle.indexOf('实验室检查') !== -1 ||formTitle.indexOf('CD-评分') !== -1 ;
 };
 
 const assortFields = controlArr => {
