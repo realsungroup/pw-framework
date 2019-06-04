@@ -3,18 +3,13 @@
   margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
-  &__header {
-    display: flex;
-    justify-content: space-between;
     &__title {
       padding: 0 20px;
-      text-align: center;
-    }
   }
   &__person-list {
     width: 30%;
     float: left;
-    height: 500px;
+    height: 800px;
     overflow: auto;
     border: 1px solid #cccc;
     &__antd-y-item {
@@ -23,16 +18,31 @@
       justify-content: space-around;
       border-bottom: 1px solid #ccc;
       cursor: pointer;
-      &__active{
-        background-color: #fff;
-        border:1px solid #f40;
+      &__active {
+        min-height: 60px;
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+        background-color: #0086ff;
+        color: #fff;
       }
     }
-   
   }
   &__form-list {
     width: 70%;
     float: right;
+  }
+  &__workform{
+    height:100px;
+    border:1px solid #000;
+  }
+  &__actionBar{
+    float:left;
+    margin-top: 10px;
+    select{
+      marign-left:10px;
+    }
   }
 }
 .ant-list-items {

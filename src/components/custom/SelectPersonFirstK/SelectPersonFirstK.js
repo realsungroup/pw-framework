@@ -81,18 +81,18 @@ class SelectPersonFirstK extends Component {
       newdataSource.map(person => {
         const key = Object.keys(person);
         // console.log(key);
-        //  console.log('考试安排编号',record.C3_607171221170);
+         console.log('考试安排编号',record.C3_607171221170);
         key.forEach(key => {
           if (key == 'C3_607197284004') {
             person[key] = record.C3_607171221170;
-            // console.log(person[key]);
+            console.log(person[key]);
           }
           if(key=='C3_610362592227'){
             person[key]='Y';
           }
         });
       });
-      // console.log('修改后的dataSource', newdataSource);
+      console.log('修改后的dataSource', newdataSource);
       http().addRecords({
         resid:610196239974,
         data:newdataSource
@@ -193,14 +193,15 @@ class SelectPersonFirstK extends Component {
           <TabPane tab="补考人员" key="2">
             <TableData
               resid={611837670774}
-              hasRowSelection={true}
+              hasRowSelection={false}
               hasAdd={false}
               hasDelete={false}
               hasModify={false}
               hasRowModify={false}
               hasRowView={false}
               hasRowDelete={false}
-              subtractH={235}
+              subtractH={230}
+              height={330}
               cmswhere={`C3_607197284004 =${record.C3_612452687228}`}
               actionBarExtra={({
                 dataSource: dataSource,

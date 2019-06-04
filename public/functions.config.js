@@ -1238,3 +1238,14 @@ window[612526844134] = {
   props: {
   }
 };
+
+// IDL招聘管理员端入口
+window[612612229738] = {
+  name: 'IdLindex',
+  title: 'IDL招聘' 
+};
+// 求职者入口
+window[612874189546] = {
+  name: 'JobSeeker',
+  title: 'IDL求职者' 
+};

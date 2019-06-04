@@ -23,7 +23,7 @@ class DevTableData extends Component {
 
   render() {
     return (
-      <div >
+      <div style={{ width: 600 }}>
         <TableData
           hasRowSelection={false}
           refTargetComponentName="TableData"
@@ -65,7 +65,7 @@ class DevTableData extends Component {
           hasModify={true}
           hasRowModify={true}
           hasAdvSearch={true}
-          height={600}
+          // height={400}
           recordFormContainerProps={{
             // width: 800,
             height: 500,
