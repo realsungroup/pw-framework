@@ -66,7 +66,8 @@ export {
   SelectPersonFirst,
   Statical,
   OneStatistical,
-  IdLindex
+  IdLindex,
+  JobSeeker
 } from '../components/custom/loadableCustom';
 
 // 导出demo

@@ -37,10 +37,10 @@ const MenuList = [
 
 const formItemLayout = {
   labelCol: {
-    span: 16
+    span: 10
   },
   wrapperCol: {
-    span: 8
+    span: 14
   }
 };
 
@@ -71,7 +71,6 @@ class JobSeeker extends Component {
     });
     console.log(id);
     const tempid = document.getElementById(id);
-    // console.log(tempid);
     moveTo.move(tempid);
   };
   render() {
@@ -80,7 +79,7 @@ class JobSeeker extends Component {
       <div className="job-seeker">
         <div className="job-seeker__nav">
           <Menu
-            style={{ width: 256, minHeight: 60 }}
+            style={{ width: 265, minHeight: 60 }}
             defaultSelectedKeys={['个人资料']}
           >
             {MenuList.map((menuItem, index) => {
@@ -99,13 +98,11 @@ class JobSeeker extends Component {
           </Menu>
         </div>
         <div className="job-seeker__informnation">
-          <Form>
-            <h4 id="个人资料">个人资料</h4>
-            <Form.Item
-              label="中文姓名/ChineseName"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+          <Form style={{ width: '90%', margin: '0 auto' }}>
+            <h2 className="job-seeker__informnation-title" id="个人资料">
+              个人资料
+            </h2>
+            <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
               {getFieldDecorator('ChName', {
                 rules: [
                   {
@@ -115,18 +112,10 @@ class JobSeeker extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
-            <Form.Item
-              label="英文姓名/EnglishName"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="英文姓名/EnglishName" {...formItemLayout}>
               {getFieldDecorator('EnName', {})(<Input />)}
             </Form.Item>
-            <Form.Item
-              label="申请职位名称/jobTitle"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="申请职位名称/jobTitle" {...formItemLayout}>
               {getFieldDecorator('appPosition', {
                 rules: [
                   {
@@ -136,11 +125,7 @@ class JobSeeker extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
-            <Form.Item
-              label="身份证号码/IDCardNumber"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="身份证号码/IDCardNumber" {...formItemLayout}>
               {getFieldDecorator('idNumber', {
                 rules: [
                   {
@@ -150,11 +135,7 @@ class JobSeeker extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
-            <Form.Item
-              label="性别"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="性别/Sex" {...formItemLayout}>
               {getFieldDecorator('Sex', {})(
                 <Radio.Group>
                   <Radio value="男">男</Radio>
@@ -162,36 +143,65 @@ class JobSeeker extends Component {
                 </Radio.Group>
               )}
             </Form.Item>
-            <h4 id="教育背景">教育背景</h4>
+            <Form.Item label="手机/Phone" {...formItemLayout}>
+              {getFieldDecorator('Phone', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="个人邮箱/E-mail" {...formItemLayout}>
+              {getFieldDecorator('E-mail', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="国籍/Nationality" {...formItemLayout}>
+              {getFieldDecorator('Nationality', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="民族/Nationality" {...formItemLayout}>
+              {getFieldDecorator('Nationa', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="政治面貌/Party" {...formItemLayout}>
+              {getFieldDecorator('Party', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="出生日期/BirhtOfDate" {...formItemLayout}>
+              {getFieldDecorator('birthOfDate', {})(<DatePicker />)}
+            </Form.Item>
+            <Form.Item label="出生地点/PlaceOfBirth" {...formItemLayout}>
+              {getFieldDecorator('BirthPlace', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="血型/BloodType" {...formItemLayout}>
+              {getFieldDecorator('BloodType', {})(<Input />)}
+            </Form.Item>
             <Form.Item
-              label="日期"
+              label="有无推荐人/if have recommender"
               {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
             >
+              {getFieldDecorator('IsRecommended', {})(
+                <Radio.Group>
+                  <Radio value="有">有</Radio>
+                  <Radio value="无">无</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="推荐人姓名/recommender" {...formItemLayout}>
+              {getFieldDecorator('recommenderName', {})(<Input />)}
+            </Form.Item>
+            <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
+              {getFieldDecorator('recommenderRelationship', {})(<Input />)}
+            </Form.Item>
+            <h2 className="job-seeker__informnation-title" id="教育背景">
+              教育背景
+            </h2>
+            <Form.Item label="日期" {...formItemLayout}>
               {getFieldDecorator('latestEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item
-              label="学校名称"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="学校名称" {...formItemLayout}>
               {getFieldDecorator('latestShcoolName', {})(<Input />)}
             </Form.Item>
-            <Form.Item
-              label="日期"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="日期" {...formItemLayout}>
               {getFieldDecorator('ThreeEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item
-              label="学校名称"
-              {...formItemLayout}
-              style={{ display: 'inline-block', width: '50%' }}
-            >
+            <Form.Item label="学校名称" {...formItemLayout}>
               {getFieldDecorator('ThreeShcoolName', {})(<Input />)}
             </Form.Item>
-            <h4 id="工作经历">工作经历</h4>
+            <h2 className="job-seeker__informnation-title" id="工作经历">
+              工作经历
+            </h2>
             <Form.Item label="任职年限">
               {getFieldDecorator('latestWorkdate', {})(<RangePicker />)}
             </Form.Item>
@@ -204,7 +214,9 @@ class JobSeeker extends Component {
             <Form.Item label="公司名称">
               {getFieldDecorator('threeShcoolName', {})(<Input />)}
             </Form.Item>
-            <h4 id="家庭成员关系">家庭成员关系</h4>
+            <h2 className="job-seeker__informnation-title" id="家庭成员关系">
+              家庭成员关系
+            </h2>
             <Form.Item label="姓名">
               {getFieldDecorator('familyOneName', {})(<Input />)}
             </Form.Item>
