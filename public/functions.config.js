@@ -979,47 +979,7 @@ window['考试页面'] = {
   props: {}
 };
 
-window[607168405062] = {
-  name: 'TableData',
-  title: '个人成绩管理',
-  props: {
-    resid: 610311177773,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: false,
-    subtractH:190,
-    // height:600,
-    formProps: {
-      height: 500
-    },
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    },
-    subTableArrProps: [
-      {
-        subTableName: '员工成绩',
-        subResid: 608809112309,
-        tableProps: {
-          hasAdd: false,
-          hasModify: false,
-          hasRowDelete: false,
-          hasRowModify: false,
-          hasDelete: false,
-          subtractH:190,
-          height:500,
-          hasRowView:false,
-        }
-      }
-    ]
-  }
-};
+
 window[607459194551] = {
   name: 'ExamSet',
   title: '设计试卷'
@@ -1243,5 +1203,57 @@ window[612526844134] = {
 window[612612229738] = {
   name: 'IdLindex',
   title: 'IDL招聘'
+  
+};
+
+
+// 个人成绩管理
+window[607168405062] = {
+  name: 'PersonGradeManagement',
+  title: '个人成绩管理',
+  props: {
+    resid: 610311177773,
+    recordFormFormWidth: '90%',
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    subtractH:190,
+    // height:600,
+    formProps: {
+      height: 500
+    },
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    subTableArrProps: [
+      {
+        subTableName: '员工成绩',
+        subResid: 608809112309,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH:190,
+          height:500,
+          hasRowView:false,
+        }
+      }
+    ]
+  }
+};
+
+
+// 考试图表分析
+window['考试图表分析'] = {
+  name: 'ExamAnalyze',
+  title: '考试图表分析'
   
 };
