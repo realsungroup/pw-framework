@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import FunctionsHeader from '../components/FunctionsHeader';
+import FunctionsHeader from '../components/FunctionsHeader';
 import './Functions.less';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem } from 'Util20/util';
 
 // 从 “导出中心” 导入所有的组件
 import * as components from '../../export-center';
+
+const {Fragment} = React;
 
 /**
  * 模块功能组件：根据配置信息来调用具体的组件
@@ -38,7 +40,25 @@ class Functions extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+
+    let userInfo;
+    try {
+      userInfo = JSON.parse(getItem('userInfo'));
+    } catch (err) {}
+
+    // 'DESKTOP' or 'WORKBENCH'
+    let desktopStyle
+    try {
+      desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
+      if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
+        // 默认 'WORKBENCH'
+        desktopStyle = 'WORKBENCH';
+      }
+    } catch (err) {
+    }
+    this.state = {
+      desktopStyle
+    };
   }
 
   componentDidMount() {
@@ -69,13 +89,33 @@ class Functions extends React.Component {
     return <C {...props} />;
   };
 
-  render() {
-    const { name, props } = this.props.config;
-    return (
-      <div className="functions">
+  renderFunctionBody = () => {
+    const { desktopStyle } = this.state;
+
+    const { name, props ,hasBackBtn = true,
+      hasHeader = true, title} = this.props.config;
+
+    // desktop
+    if (desktopStyle === 'DESKTOP') {
+      return  <div className="functions__body">
+        {this.renderComponent(name, props)}
+      </div>
+    }
+
+    // workbench
+    return <div className="functions__body">
+        <FunctionsHeader hasBackBtn={hasBackBtn} title={title} />
         <div className="functions__body">
           {this.renderComponent(name, props)}
         </div>
+    </div>
+  }
+
+  render() {
+   
+    return (
+      <div className="functions">
+        {this.renderFunctionBody()}
       </div>
     );
   }
