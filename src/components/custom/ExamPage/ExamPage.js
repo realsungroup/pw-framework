@@ -789,67 +789,71 @@ export default class ExamPage extends Component {
     }
 
     return (
-      <Spin spinning={loading}>
-        <div className="exam-page">
-          <h1 style={{ textAlign: 'center' }}>{examName}</h1>
-          {hasGetTime && (
-            <div className="exam-page__time-remaining">
-              <h1 className="exam-page__time-remaining-title">考试倒计时</h1>
-              <div style={{ fontSize: 40, fontWeight: 'bold' }}>
-                <ReactCountDown
-                  time={timeRemaining}
-                  remainingTimePoints={[
-                    {
-                      point: 10 * 60,
-                      callback: this.handleReminderUser
-                    }
-                  ]}
-                  onEnd={this.handleTimeEnd}
-                  ref={this.getCountDown}
-                />
-              </div>
-            </div>
-          )}
-          {questions.map(item => {
-            return (
-              <div className="exam-page__question" key={item.type}>
-                {!!item.questions.length && <h2 id={item.type}>{item.type}</h2>}
-                <div className="exam-page__question-list">
-                  {item.questions.map((question, index) => {
-                    return (
-                      <div
-                        className="exam-page__question-content"
-                        key={question.REC_ID}
-                      >
-                        {this.renderQuestion(item.type, question)}
-                      </div>
-                    );
-                  })}
+      <div className="exam-page__assistor">
+        <Spin spinning={loading}>
+          <div className="exam-page">
+            <h1 style={{ textAlign: 'center' }}>{examName}</h1>
+            {hasGetTime && (
+              <div className="exam-page__time-remaining">
+                <h1 className="exam-page__time-remaining-title">考试倒计时</h1>
+                <div style={{ fontSize: 40, fontWeight: 'bold' }}>
+                  <ReactCountDown
+                    time={timeRemaining}
+                    remainingTimePoints={[
+                      {
+                        point: 10 * 60,
+                        callback: this.handleReminderUser
+                      }
+                    ]}
+                    onEnd={this.handleTimeEnd}
+                    ref={this.getCountDown}
+                  />
                 </div>
               </div>
-            );
-          })}
-          <div className="exam-page__submit-btn">
-            <Button type="primary" onClick={this.handleSubmitBtnClick} block>
-              提交
-            </Button>
+            )}
+            {questions.map(item => {
+              return (
+                <div className="exam-page__question" key={item.type}>
+                  {!!item.questions.length && (
+                    <h2 id={item.type}>{item.type}</h2>
+                  )}
+                  <div className="exam-page__question-list">
+                    {item.questions.map((question, index) => {
+                      return (
+                        <div
+                          className="exam-page__question-content"
+                          key={question.REC_ID}
+                        >
+                          {this.renderQuestion(item.type, question)}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+            <div className="exam-page__submit-btn">
+              <Button type="primary" onClick={this.handleSubmitBtnClick} block>
+                提交
+              </Button>
+            </div>
+            <div
+              className="exam-page__shortcuts"
+              style={{ left: this.state.shortcutsLeft }}
+            >
+              <Button size="small" href="#单选题">
+                单选题
+              </Button>
+              <Button size="small" href="#多选题">
+                多选题
+              </Button>
+              <Button size="small" href="#判断题" data-mt-duration="300">
+                判断题
+              </Button>
+            </div>
           </div>
-          <div
-            className="exam-page__shortcuts"
-            style={{ left: this.state.shortcutsLeft }}
-          >
-            <Button size="small" href="#单选题">
-              单选题
-            </Button>
-            <Button size="small" href="#多选题">
-              多选题
-            </Button>
-            <Button size="small" href="#判断题" data-mt-duration="300">
-              判断题
-            </Button>
-          </div>
-        </div>
-      </Spin>
+        </Spin>
+      </div>
     );
   }
 }
