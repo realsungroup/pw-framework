@@ -13,6 +13,14 @@ const modalTitleMap = {
   level: '选择级别'
 };
 
+
+let resid;
+if (process.env.NODE_ENV === 'development') {
+  resid = 612906609318;
+} else {
+  resid = 613058652374;
+}
+
 /**
  * 考试图表分析
  */
@@ -74,7 +82,7 @@ class ExamAnalyze extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 612906609318,
+        resid,
         cmswhere
       });
     } catch (err) {
