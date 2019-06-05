@@ -302,31 +302,31 @@ class JobSeeker extends Component {
             <h2 className="job-seeker__informnation-title" id="教育背景">
               教育背景
             </h2>
-            <Form.Item label="日期" {...formItemLayout2}>
+            <Form.Item label="日期/latest period from to" {...formItemLayout2}>
               {getFieldDecorator('latestEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="学校名称" {...formItemLayout2}>
+            <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
               {getFieldDecorator('latestShcoolName', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="日期" {...formItemLayout2}>
+            <Form.Item label="日期/third period from to" {...formItemLayout2}>
               {getFieldDecorator('ThreeEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="学校名称" {...formItemLayout2}>
+            <Form.Item label="学校名称/third school name" {...formItemLayout2}>
               {getFieldDecorator('ThreeShcoolName', {})(<Input />)}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="工作经历">
               工作经历
             </h2>
-            <Form.Item label="任职年限" {...formItemLayout2}>
+            <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
               {getFieldDecorator('latestWorkdate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="公司名称" {...formItemLayout2}>
+            <Form.Item label="公司名称及类型/name of Com&type" {...formItemLayout2}>
               {getFieldDecorator('latestComName', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="任职年限" {...formItemLayout2}>
+            <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
               {getFieldDecorator('threeWorkdate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="公司名称" {...formItemLayout2}>
+            <Form.Item label="公司名称/name of Com&type" {...formItemLayout2}>
               {getFieldDecorator('threeComName', {})(<Input />)}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="家庭成员关系">
