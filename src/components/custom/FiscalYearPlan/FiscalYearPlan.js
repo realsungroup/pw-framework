@@ -127,7 +127,7 @@ class FiscalYearPlan extends React.Component {
             <TabPane
               tab="已提交"
               key="2"
-              style={{ width: '100%', height: '100%' }}
+              style={{ width: '100%', height:  'calc(100vh - 64px)' }}
             >
               <TableData
                 resid={611165813996}
