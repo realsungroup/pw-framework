@@ -748,27 +748,27 @@ window[608050884937] = {
   name: 'TableDataInner',
   title: '内部推荐',
   props: {
-    columnsWidth:{
-      '性别':100,
-      '被推荐人姓名': 130,
-      '身份证号码':180,
-      '联系电话':130,
-      '民族':100,
-      '婚姻状况':130,
-      '籍贯':100,
-      '健康状况':130,
-      '学历':130,
-      '专业':100,
-      '在锡居住地址':140,
-      '家庭地址':180,
-      '推荐人工号':130,
-      '推荐人姓名':130,
-      '推荐部门':130,
-      '推荐人联系电话':150,
-      '与被推荐人之间的关系':190,
-      '通知面试日期':130,
-      '提交日期':100,
-      '管理操作日期':130
+    columnsWidth: {
+      性别: 100,
+      被推荐人姓名: 130,
+      身份证号码: 180,
+      联系电话: 130,
+      民族: 100,
+      婚姻状况: 130,
+      籍贯: 100,
+      健康状况: 130,
+      学历: 130,
+      专业: 100,
+      在锡居住地址: 140,
+      家庭地址: 180,
+      推荐人工号: 130,
+      推荐人姓名: 130,
+      推荐部门: 130,
+      推荐人联系电话: 150,
+      与被推荐人之间的关系: 190,
+      通知面试日期: 130,
+      提交日期: 100,
+      管理操作日期: 130
     }
   }
 };
@@ -816,8 +816,7 @@ window[607170472378] = {
     hasModify: false,
     hasRowView: false,
     // height:600,
-    subtractH:220,
-    
+    subtractH: 220
   }
 };
 //试卷管理
@@ -844,7 +843,7 @@ window[607170415939] = {
     hasAdd: false,
     hasModify: false,
     hasDelete: false,
-    hasRowDelete:true,
+    hasRowDelete: true
   }
 };
 
@@ -866,7 +865,7 @@ window[607168416937] = {
     resid: 607188943833,
     hasAdd: false,
     hasModify: false,
-    hasDelete: false,
+    hasDelete: false
   }
 };
 //人员信息
@@ -884,17 +883,17 @@ window[607562749445] = {
   name: 'TableData',
   title: '考试安排',
   props: {
-    resid: 608809112309,
+    resid: 612902074056,
     hasAdd: false,
     hasDelete: false,
     hasModify: false,
     hasRowDelete: false,
     hasRowModify: false,
-    hasBeBtns:true,
+    hasBeBtns: true,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
-      height: 600
+      height: 500
     },
     // recordFormFormWidth: '45%',
     subTableArrProps: [
@@ -905,11 +904,12 @@ window[607562749445] = {
           hasAdd: false,
           hasModify: false,
           hasDelete: false,
-        hasRowModify: false,
-        hasRowView: true,
-        hasRowDelete: false
+          hasRowModify: false,
+          hasRowView: true,
+          hasRowDelete: false,
+          height: 400,
+          subtractH: 196
         }
-
       }
     ]
     // height:600
@@ -937,11 +937,11 @@ window[607384570024] = {
 // 考试系统----培训资料611243928651
 window[611243928651] = {
   name: 'TrainingMaterial',
-  title: '管理考试资料',
+  title: '管理考试资料'
 };
 window[611839500701] = {
   name: 'TrainingMaterialU',
-  title: '我的考试资料',
+  title: '我的考试资料'
 };
 //个人成绩管理
 window[607170104270] = {
@@ -954,7 +954,7 @@ window[607170104270] = {
     hasAdd: false,
     hasRowDelete: false,
     hasRowModify: false,
-    hasRowView: false,
+    hasRowView: false
     // height: 300
   }
 };
@@ -979,47 +979,6 @@ window['考试页面'] = {
   props: {}
 };
 
-window[607168405062] = {
-  name: 'TableData',
-  title: '个人成绩管理',
-  props: {
-    resid: 610311177773,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: false,
-    subtractH:190,
-    // height:600,
-    formProps: {
-      height: 500
-    },
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    },
-    subTableArrProps: [
-      {
-        subTableName: '员工成绩',
-        subResid: 608809112309,
-        tableProps: {
-          hasAdd: false,
-          hasModify: false,
-          hasRowDelete: false,
-          hasRowModify: false,
-          hasDelete: false,
-          subtractH:190,
-          height:500,
-          hasRowView:false,
-        }
-      }
-    ]
-  }
-};
 window[607459194551] = {
   name: 'ExamSet',
   title: '设计试卷'
@@ -1038,7 +997,6 @@ window['创建计划'] = {
     kclbResid: 610708543449
   }
 };
-
 
 window[610657933222] = {
   name: 'TableData',
@@ -1059,7 +1017,7 @@ window[610657933222] = {
     recordFormContainerProps: {
       placement: 'bottom',
       height: 600
-    },
+    }
   }
 };
 // 问卷统计
@@ -1084,17 +1042,14 @@ window[610653848123] = {
 window['问卷统计分析'] = {
   name: 'QuestionnaireStatisticAnalysisTabs',
   title: '问卷统计分析',
-  props: {
-  }
+  props: {}
 };
 
 // 财年计划
 window[610812799351] = {
   name: 'FiscalYearPlan',
   title: '财年计划',
-  props: {
- 
-  }
+  props: {}
 };
 
 //类别管理611054119826
@@ -1102,8 +1057,8 @@ window[611054119826] = {
   name: 'TableDataWrap',
   title: '试卷类别管理',
   props: {
-    resid:611054247854,
-    subtractH:190,
+    resid: 611054247854,
+    subtractH: 190,
     // height:500,
     hasModify: false,
     hasDelete: false,
@@ -1132,7 +1087,7 @@ window[611085896611] = {
     recordFormContainerProps: {
       // placement: 'bottom',
       // height: 600
-    },
+    }
   }
 };
 
@@ -1141,15 +1096,15 @@ window[611077057050] = {
   name: 'CreateTotalPlan',
   title: '创建总计划',
   props: {
-    resid:611077132065,
-    hasAdd:true,
+    resid: 611077132065,
+    hasAdd: true,
     hasBeBtns: false,
     hasModify: false,
     hasDelete: false,
     hasRowDelete: true,
     hasRowModify: true,
     hasRowView: false,
-    hasRowSelection:true
+    hasRowSelection: true
   }
 };
 
@@ -1173,14 +1128,14 @@ window[611339874157] = {
     recordFormContainerProps: {
       placement: 'bottom',
       height: 600
-    },
+    }
   }
 };
 //用户端入口
 window[611839500701] = {
   name: 'TrainingMaterialU',
-  title: '我的考试资料',
-  };
+  title: '我的考试资料'
+};
 //总监审批
 window[611339890532] = {
   name: 'TableData',
@@ -1201,7 +1156,7 @@ window[611339890532] = {
     recordFormContainerProps: {
       placement: 'bottom',
       height: 600
-    },
+    }
   }
 };
 
@@ -1220,32 +1175,81 @@ window[611667749682] = {
     hasRowModify: true,
     hasRowView: false,
     subtractH: 220,
-    height:600,
+    height: 600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
       height: 600
-    },
+    }
   }
 };
-
-
 
 //RBA排班
 window[612526844134] = {
   name: 'TableDataScheduling',
   title: 'RBA排班',
-  props: {
-  }
+  props: {}
 };
 
 // IDL招聘管理员端入口
 window[612612229738] = {
   name: 'IdLindex',
-  title: 'IDL招聘' 
+  title: 'IDL招聘'
 };
+
+// 个人成绩管理
+window[607168405062] = {
+  name: 'PersonGradeManagement',
+  title: '个人成绩管理',
+  props: {
+    resid: 610311177773,
+    recordFormFormWidth: '90%',
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    subtractH: 190,
+    // height:600,
+    formProps: {
+      height: 500
+    },
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    subTableArrProps: [
+      {
+        subTableName: '员工成绩',
+        subResid: 608809112309,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
+      }
+    ]
+  }
+};
+
+// 考试图表分析
+window['考试图表分析'] = {
+  name: 'ExamAnalyze',
+  title: '考试图表分析',
+  props: {}
+};
+
 // 求职者入口
 window[612874189546] = {
   name: 'JobSeeker',
-  title: 'IDL求职者' 
+  title: 'IDL求职者',
+  props: {}
 };

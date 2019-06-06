@@ -76,6 +76,8 @@ export { QuestionnaireRecords } from '../components/custom/loadableCustom';
 export { QuestionnaireStatisticAnalysisTabs } from '../components/custom/loadableCustom';
 export { FiscalYearPlan } from '../components/custom/loadableCustom';
 export { CreateTotalPlan } from '../components/custom/loadableCustom';
+export { PersonGradeManagement } from '../components/custom/loadableCustom';
+export { ExamAnalyze } from '../components/custom/loadableCustom';
 
 
 

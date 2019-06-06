@@ -56,7 +56,8 @@ const options = {
   mainLessFile: path.join(__dirname, '../src/styles/index.less'),
   themeVariables: ['@primary-color'],
   indexFileName: 'index.html',
-  generateOnce: false
+  generateOnce: false,
+  lessUrl: '/less.min.js'
 };
 const themePlugin = new AntDesignThemePlugin(options);
 

@@ -43,7 +43,14 @@ const formItemLayout = {
     span: 14
   }
 };
-
+const formItemLayout2 = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 16
+  }
+};
 const { RangePicker } = DatePicker;
 
 class JobSeeker extends Component {
@@ -55,8 +62,9 @@ class JobSeeker extends Component {
   handleClick = e => {
     // e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
       if (!err) {
-        console.log('接收的值', values);
+        // console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
         // console.log('Merged values:', keys.map(key => names[key]));
       }
       console.error(err);
@@ -294,43 +302,43 @@ class JobSeeker extends Component {
             <h2 className="job-seeker__informnation-title" id="教育背景">
               教育背景
             </h2>
-            <Form.Item label="日期" {...formItemLayout}>
+            <Form.Item label="日期/latest period from to" {...formItemLayout2}>
               {getFieldDecorator('latestEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="学校名称" {...formItemLayout}>
+            <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
               {getFieldDecorator('latestShcoolName', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="日期" {...formItemLayout}>
+            <Form.Item label="日期/third period from to" {...formItemLayout2}>
               {getFieldDecorator('ThreeEddate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="学校名称" {...formItemLayout}>
+            <Form.Item label="学校名称/third school name" {...formItemLayout2}>
               {getFieldDecorator('ThreeShcoolName', {})(<Input />)}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="工作经历">
               工作经历
             </h2>
-            <Form.Item label="任职年限">
+            <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
               {getFieldDecorator('latestWorkdate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="公司名称">
+            <Form.Item label="公司名称及类型/name of Com&type" {...formItemLayout2}>
               {getFieldDecorator('latestComName', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="任职年限">
+            <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
               {getFieldDecorator('threeWorkdate', {})(<RangePicker />)}
             </Form.Item>
-            <Form.Item label="公司名称">
+            <Form.Item label="公司名称/name of Com&type" {...formItemLayout2}>
               {getFieldDecorator('threeComName', {})(<Input />)}
             </Form.Item>
             <h2 className="job-seeker__informnation-title" id="家庭成员关系">
               家庭成员关系
             </h2>
-            <Form.Item label="姓名">
+            <Form.Item label="姓名" {...formItemLayout2}>
               {getFieldDecorator('familyOneName', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="关系">
+            <Form.Item label="关系" {...formItemLayout2}>
               {getFieldDecorator('relationShip', {})(<Input />)}
             </Form.Item>
-            <Form.Item label="出生年月">
+            <Form.Item label="出生年月" {...formItemLayout2}>
               {getFieldDecorator('birthDate', {})(<Input />)}
             </Form.Item>
             <Button type="primary" onClick={this.handleClick}>
