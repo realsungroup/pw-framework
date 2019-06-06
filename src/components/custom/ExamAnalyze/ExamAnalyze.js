@@ -16,7 +16,7 @@ const modalTitleMap = {
 
 let resid;
 if (process.env.NODE_ENV === 'development') {
-  resid = 612906609318;
+  resid = 613058652374;
 } else {
   resid = 613058652374;
 }
@@ -69,6 +69,7 @@ class ExamAnalyze extends React.Component {
   getData = async (dept, level) => {
     let cmswhere = '';
     let flag = false;
+    let examId=this.state.examId;
     if (dept) {
       cmswhere += `dept = '${dept}'`;
       flag = true;
@@ -79,6 +80,7 @@ class ExamAnalyze extends React.Component {
       }
       cmswhere += `level = '${level}'`;
     }
+    cmswhere+=`examid = '${examId}' `;
     let res;
     try {
       res = await http().getTable({
@@ -222,7 +224,7 @@ class ExamAnalyze extends React.Component {
   };
 
   getOption = resData => {
-    const passData = resData.filter(item => item.status === '通过');
+    const passData = resData.filter(item => item.isPass === '通过');
     const passLen = passData.length;
     const unPassLen = resData.length - passLen;
 
