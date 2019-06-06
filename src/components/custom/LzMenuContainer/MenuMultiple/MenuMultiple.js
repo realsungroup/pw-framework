@@ -422,7 +422,7 @@ export default class MenuMultiple extends React.Component {
             defaultScaleStatus="max"
             onClose={() => this.setState({ chartVisible: false })}
           >
-            {formTitle === '实验室检查' ? (
+            {((formTitle === '实验室检查')||(formTitle === 'CD-评分')) ? (
               <LabExaminationChart
                 data={recordList}
                 fields={fields}
