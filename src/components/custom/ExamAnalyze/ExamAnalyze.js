@@ -79,8 +79,16 @@ class ExamAnalyze extends React.Component {
         cmswhere += ` and `;
       }
       cmswhere += `level = '${level}'`;
+      flag = true;
     }
-    cmswhere+=`examid = '${examId}' `;
+    if (examId){
+      if (flag){
+        cmswhere += ` and `;
+      }
+      cmswhere+=`examid = '${examId}' `;
+    }
+    
+    
     let res;
     try {
       res = await http().getTable({
