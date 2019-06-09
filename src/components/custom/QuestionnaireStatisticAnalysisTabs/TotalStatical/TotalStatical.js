@@ -5,6 +5,7 @@ import http from 'Util20/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
+import { async } from 'q';
 
 const TabPane = Tabs.TabPane;
 
@@ -15,12 +16,14 @@ class TotalStatical extends Component {
       queryName: '',
       queryQuestions: [],
       answerData: [],
+      queryQuestionsGroup:[],
       data: []
     };
   }
   componentDidMount = () => {
     this.getQueryName(this.props.queryId);
     this.getqueryQuestions(this.props.queryId);
+    this.getAmountOfqesOptionAnwserGroupbyperson(this.props.queryId);
     // 获取该问卷的问答题
     this.getAnswerData(this.props.queryId);
   };
@@ -93,6 +96,19 @@ class TotalStatical extends Component {
     // 根据好多条试题的ID 去查找好所有试题ID下面对应的试题选项使用到了cmswhere语句。question_id in ('','',)
     this.getOptionsTableData(cmsString);
   };
+ // 613413052304 qesOptionAnwserGroupbyperson
+  getAmountOfqesOptionAnwserGroupbyperson = async queryId =>{
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 613413052304,
+        cmswhere: `query_id = ${queryId}`
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+    this.setState({queryQuestionsGroup : res.data});
+  }
 
   // 获取问题的选项
   getOptionsTableData = async cstring => {
@@ -114,6 +130,7 @@ class TotalStatical extends Component {
       if (!tempDataItem) {
         data.push({
           title: item.question_topic,
+          question_id:item.question_id,
           table: {
             dataSource: [
               {
@@ -130,17 +147,27 @@ class TotalStatical extends Component {
         });
       }
     });
+   
+      
+     
     data.forEach(dataItem => {
       let total = 0;
       dataItem.table.dataSource.forEach(record => {
+
         total += record.amount;
       });
       dataItem.table.dataSource.forEach(record => {
         record.total = total;
       });
+     const queryQuestionsGroup=this.state.queryQuestionsGroup;
+
+     const rt= queryQuestionsGroup.find(
+        queryQuestionsGroupItem => dataItem.question_id === queryQuestionsGroupItem.question_id
+      );
+
       dataItem.table.dataSource.push({
         optionContent: '本题有效填写人次',
-        amount: total
+        amount: rt.amount
       });
     });
     this.setState({ data });
