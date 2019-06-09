@@ -3,6 +3,7 @@ import './IdLindex.less';
 import { List, Avatar, Collapse, Select } from 'antd';
 import { Layout } from 'antd';
 import http from '../../../util20/api';
+import ApplayInformnation from '../ApplayInformnation';
 const { Panel } = Collapse;
 const { Option } = Select;
 const personList = [
@@ -28,7 +29,7 @@ const personList = [
     formbelongs: [
       {
         formID: `work1`,
-        formName: '工作申请表'
+        formName: '工作申请表',
       },
       {
         formID: `assments`,
@@ -58,7 +59,7 @@ const personList = [
     ]
   }
 ];
-const { Header, Footer, Sider, Content } = Layout;
+
 export default class IdLindex extends Component {
   componentDidMount = () => {};
   state = {
@@ -101,6 +102,24 @@ export default class IdLindex extends Component {
     tempcurrentPersonInfo.formbelongs.push(obj);
     this.setState({ currentPersonInfo: tempcurrentPersonInfo });
   };
+  // 根据不同表格显示不同表格的内容
+
+  renderPanelContent =(name)=>{
+     switch(name){
+       case '工作申请表':{
+         return <ApplayInformnation hasSubmit={false} initialValues={{ChName:'袁巧云',EnName:'Cindy'}}/>
+       }
+       case '面试评估表':{
+         return <div>面试评估表的内容
+           <h1>1111</h1>
+           <span>2222</span>
+         </div>
+       }
+       case '背景调查表':{
+        return <div>背景调查表的内容</div>
+      }
+     }
+  }
   render() {
     const { personList, currentPersonInfo } = this.state;
     console.log({ personList: personList });
@@ -134,7 +153,7 @@ export default class IdLindex extends Component {
             {currentPersonInfo.formbelongs.map((form, index) => {
               return (
                 <Panel header={form.formName} key={index}>
-                  <h3>面板{index + 1}的内容</h3>
+                 {this.renderPanelContent(form.formName)}
                 </Panel>
               );
             })}

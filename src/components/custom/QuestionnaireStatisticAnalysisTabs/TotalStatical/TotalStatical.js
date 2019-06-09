@@ -164,7 +164,7 @@ class TotalStatical extends Component {
           answerDataItem => item.question_id === answerDataItem.question_id
         );
         // find 找到的话返回该元素，没找到返回-1
-        // 第一次进来是个空的
+        // 第一次进来是个空的,空的会返回undefined false ,取反  执行if里边的东西。
         if (!tempAnserdataItem) {
           answerData.push({
             question_id: item.question_id,

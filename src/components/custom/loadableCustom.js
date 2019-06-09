@@ -334,3 +334,11 @@ export const JobSeeker = Loadable({
     return minLoading;
   }
 });
+
+// ApplayInformnation
+export const ApplayInformnation = Loadable({
+  loader: () => import('./ApplayInformnation'),
+  loading() {
+    return minLoading;
+  }
+});
