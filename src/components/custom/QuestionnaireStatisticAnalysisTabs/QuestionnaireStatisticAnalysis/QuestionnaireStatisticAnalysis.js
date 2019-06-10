@@ -288,7 +288,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
 
     resData.push({
       amount: validateSum,
-      option_content: '本题有效填写人次',
+      option_content: '填写本题总人数',
       isLastRecord: true
     });
 
@@ -320,7 +320,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       }
     ];
 
-    const { barOption, pieOption } = this.getOption(resData, record, sum);
+    const { barOption, pieOption } = this.getOption(resData, record, validateSum);
 
     return {
       singleSelectColumns: columns,
@@ -359,7 +359,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         });
       }
     });
-    barOptionYAxis.data.push('总人数');
+    barOptionYAxis.data.push('填写本题总人数');
     barOptionSeries[0].data.push(sum);
 
     // barOption
