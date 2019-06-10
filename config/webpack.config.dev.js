@@ -18,14 +18,15 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+    .BundleAnalyzerPlugin;
+
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const program = require('commander');
 
 program
-  .option('-b, --is-open-bundle-analyzer-plugin', '是否开启包分析插件')
-  .option('-e, --entryname <name>', 'dev 文件夹中的入口文件');
+    .option('-b, --is-open-bundle-analyzer-plugin', '是否开启包分析插件')
+    .option('-e, --entryname <name>', 'dev 文件夹中的入口文件');
 program.parse(process.argv);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -146,7 +147,7 @@ module.exports = {
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+        path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
   },
   optimization: {
     // Automatically split vendor and commons
@@ -166,8 +167,8 @@ module.exports = {
     // if there are any conflicts. This matches Node resolution mechanism.
     // https://github.com/facebook/create-react-app/issues/253
     modules: ['node_modules'].concat(
-      // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+        // It is guaranteed to exist because we tweak it in `env.js`
+        process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
     ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
@@ -176,8 +177,8 @@ module.exports = {
     // `web` extension prefixes have been added for better support
     // for React Native Web.
     extensions: paths.moduleFileExtensions
-      .map(ext => `.${ext}`)
-      .filter(ext => useTypeScript || !ext.includes('ts')),
+        .map(ext => `.${ext}`)
+        .filter(ext => useTypeScript || !ext.includes('ts')),
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -252,7 +253,7 @@ module.exports = {
             loader: require.resolve('babel-loader'),
             options: {
               customize: require.resolve(
-                'babel-preset-react-app/webpack-overrides'
+                  'babel-preset-react-app/webpack-overrides'
               ),
               plugins: [
                 [
@@ -329,11 +330,11 @@ module.exports = {
           {
             test: lessRegex,
             use: getStyleLoaders(
-              {
-                importLoaders: 2,
-                javascriptEnabled: true
-              },
-              'less-loader'
+                {
+                  importLoaders: 2,
+                  javascriptEnabled: true
+                },
+                'less-loader'
             )
           },
           // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
@@ -361,12 +362,12 @@ module.exports = {
           {
             test: sassModuleRegex,
             use: getStyleLoaders(
-              {
-                importLoaders: 2,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent
-              },
-              'sass-loader'
+                {
+                  importLoaders: 2,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent
+                },
+                'sass-loader'
             )
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
@@ -444,35 +445,38 @@ module.exports = {
     }),
     // TypeScript type checking
     useTypeScript &&
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: paths.appNodeModules
-        }),
-        async: false,
-        checkSyntacticErrors: true,
-        tsconfig: paths.appTsConfig,
-        compilerOptions: {
-          module: 'esnext',
-          moduleResolution: 'node',
-          resolveJsonModule: true,
-          isolatedModules: true,
-          noEmit: true,
-          jsx: 'preserve'
-        },
-        reportFiles: [
-          '**',
-          '!**/*.json',
-          '!**/__tests__/**',
-          '!**/?(*.)(spec|test).*',
-          '!src/setupProxy.js',
-          '!src/setupTests.*'
-        ],
-        watch: paths.appSrc,
-        silent: true,
-        formatter: typescriptFormatter
+    new ForkTsCheckerWebpackPlugin({
+      typescript: resolve.sync('typescript', {
+        basedir: paths.appNodeModules
       }),
+      async: false,
+      checkSyntacticErrors: true,
+      tsconfig: paths.appTsConfig,
+      compilerOptions: {
+        module: 'esnext',
+        moduleResolution: 'node',
+        resolveJsonModule: true,
+        isolatedModules: true,
+        noEmit: true,
+        jsx: 'preserve'
+      },
+      reportFiles: [
+        '**',
+        '!**/*.json',
+        '!**/__tests__/**',
+        '!**/?(*.)(spec|test).*',
+        '!src/setupProxy.js',
+        '!src/setupTests.*'
+      ],
+      watch: paths.appSrc,
+      silent: true,
+      formatter: typescriptFormatter
+    }),
     themePlugin,
-    program.isOpenBundleAnalyzerPlugin ? new BundleAnalyzerPlugin() : null
+    program.isOpenBundleAnalyzerPlugin ? new BundleAnalyzerPlugin() : null,
+    new webpack.DllReferencePlugin({
+      manifest: require('./dll/vendor-manifest.json')
+    }),
     // new HardSourceWebpackPlugin()
   ].filter(Boolean),
 

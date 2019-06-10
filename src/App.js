@@ -32,7 +32,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import { Desktop, GetConfig, Login, Reminder } from './pages/loadablePage';
+import { Desktop, GetConfig, Login, Reminder, PageContainer, NotFound } from './pages/loadablePage';
 
 addLocaleData([...en, ...zh]);
 
@@ -144,6 +144,20 @@ class App extends Component {
       messages = en_US;
     }
 
+    // 'DESKTOP' or 'WORKBENCH'
+    let desktopStyle
+    try {
+      desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
+      if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
+        // 默认 'WORKBENCH'
+        desktopStyle = 'WORKBENCH';
+      }
+    } catch (err) {
+    }
+
+
+    console.log({desktopStyle})
+
     return (
       <ErrorBoundary>
         <Provider store={store}>
@@ -163,25 +177,53 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router>
                   <Switch>
-                    <PrivateRoute exact path="/" component={Desktop} />
-                    <PrivateRoute path="/fnmodule" component={GetConfig} />
-                    <PrivateRoute path="/reminder" component={Reminder} />
+                    {/* {desktopStyle === 'DESKTOP' && <React.Fragment>
+                      <PrivateRoute exact path="/" component={Desktop} />
+                      <PrivateRoute path="/fnmodule" component={GetConfig} />
+                      <PrivateRoute path="/reminder" component={Reminder} />
+                    </React.Fragment>} */}
+                    {desktopStyle === 'DESKTOP' && <PrivateRoute exact path="/" component={Desktop} />}
+                    {desktopStyle === 'DESKTOP' && <PrivateRoute path="/fnmodule" component={GetConfig} />}
+                    {desktopStyle === 'DESKTOP' && <PrivateRoute path="/reminder" component={Reminder} />}
 
-                    {/* <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute
-                      path="/workbench-setting"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute
-                      path="/report-table"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute
-                      path="/person-center"
-                      component={PageContainer}
-                    /> */}
+                    {/* {desktopStyle === 'WORKBENCH' && <React.Fragment>
+                      <PrivateRoute exact path="/" component={PageContainer} />
+                      <PrivateRoute path="/fnmodule" component={PageContainer} />
+                      <PrivateRoute path="/reminder" component={PageContainer} />
+                      <PrivateRoute
+                        path="/workbench-setting"
+                        component={PageContainer}
+                      />
+                      <PrivateRoute
+                        path="/report-table"
+                        component={PageContainer}
+                      />
+                      <PrivateRoute
+                        path="/person-center"
+                        component={PageContainer}
+                      />
+                    </React.Fragment>} */}
+
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute exact path="/" component={PageContainer} />}
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute path="/fnmodule" component={PageContainer} />}
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute path="/reminder" component={PageContainer} />}
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
+                        path="/workbench-setting"
+                        component={PageContainer}
+                      />}
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
+                        path="/report-table"
+                        component={PageContainer}
+                      />}
+                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
+                        path="/person-center"
+                        component={PageContainer}
+                      />}
+
+                    {['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1 && <PrivateRoute exact path="/" component={PageContainer} />}
+                    
                     <Route path="/login" component={Login} />
-                    {/* <Route path="*" component={NotFound} /> */}
+                    <Route path="*" component={NotFound} />
                   </Switch>
                 </Router>
               </IntlProvider>

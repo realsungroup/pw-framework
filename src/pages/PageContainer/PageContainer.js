@@ -1,22 +1,21 @@
 import React from 'react';
 import SearchBox from '../components/SearchBox';
-// import PageHeader from '../components/PageHeader';
+import PageHeader from '../components/PageHeader';
 import UserInfo from '../components/UserInfo';
 import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
-// import {
-//   Home,
-//   PersonCenter,
-//   WorkbenchSetting,
-//   GetConfig,
-//   Reminder
-// } from '../loadablePage';
+import {
+  Home,
+  PersonCenter,
+  WorkbenchSetting,
+  GetConfig,
+  Reminder
+} from '../loadablePage';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
-import Desktop from '../Desktop';
 
 const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig[
   process.env.NODE_ENV
@@ -28,9 +27,13 @@ export default class Container extends React.Component {
   constructor(props) {
     super(props);
 
+
+    const desktopStyle = 'DESKTOP';
+
     this.state = {
       reminderNum: 0,
-      password: ''
+      password: '',
+      desktopStyle
     };
     this.lockScreenRef = React.createRef();
   }
@@ -99,7 +102,7 @@ export default class Container extends React.Component {
       const domainUserField = domainLoginConfig.domainUserField;
       try {
         res = await domainLogin(
-          this.userCode + usernameSuffix,
+          this.userCode,
           password,
           domain,
           domainUserField
@@ -181,19 +184,18 @@ export default class Container extends React.Component {
           </LockScreen>
         )}
         {/* 页面 */}
-        {/* <PageHeader
+        <PageHeader
           searchBox={searchBox}
           title={userInfo}
           reminderNum={reminderNum}
           lockScreenRef={this.lockScreenRef}
-        /> */}
+        />
         <PageBody>
-          <Route path="/" exact component={Desktop} />
-          {/* <Route path="/home" component={Home} />
+          <Route path="/" exact component={Home} />
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
           <Route path="/fnmodule" component={GetConfig} />
-          <Route path="/reminder" component={Reminder} /> */}
+          <Route path="/reminder" component={Reminder} />
         </PageBody>
       </div>
     );
