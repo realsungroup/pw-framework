@@ -19,6 +19,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
+
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const program = require('commander');
@@ -472,7 +473,10 @@ module.exports = {
       formatter: typescriptFormatter
     }),
     themePlugin,
-    program.isOpenBundleAnalyzerPlugin ? new BundleAnalyzerPlugin() : null
+    program.isOpenBundleAnalyzerPlugin ? new BundleAnalyzerPlugin() : null,
+    new webpack.DllReferencePlugin({
+      manifest: require('./dll/vendor-manifest.json')
+    }),
     // new HardSourceWebpackPlugin()
   ].filter(Boolean),
 
