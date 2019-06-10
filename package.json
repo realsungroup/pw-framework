@@ -123,7 +123,7 @@
     "type-name": "^2.0.2",
     "typescript": "^3.3.4000",
     "url-loader": "1.1.1",
-    "webpack": "4.19.1",
+    "webpack": "^4.33.0",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
     "whatwg-fetch": "2.0.3",
@@ -136,7 +136,8 @@
     "build": "run-s run-build add-suffix",
     "test": "node scripts/test.js",
     "run-build": "node --max_old_space_size=4000 scripts/build.js",
-    "add-suffix": "node scripts/addSuffixToPublicJsFile.js"
+    "add-suffix": "node scripts/addSuffixToPublicJsFile.js",
+    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -205,7 +206,8 @@
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.16.1",
-    "webpack-bundle-analyzer": "^3.0.3"
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.3.3"
   },
   "dll": {
     "entry": {
