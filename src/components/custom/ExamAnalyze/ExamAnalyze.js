@@ -13,7 +13,6 @@ const modalTitleMap = {
   level: '选择级别'
 };
 
-
 let resid;
 if (process.env.NODE_ENV === 'development') {
   resid = 613058652374;
@@ -44,7 +43,8 @@ class ExamAnalyze extends React.Component {
 
   componentDidMount = async () => {
     this.getData();
-    window.parent.pwCallback.modifyTitle('考试图表分析');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('考试图表分析');
 
     // 监听父窗口发送的 message 事件
     window.addEventListener(
@@ -69,7 +69,7 @@ class ExamAnalyze extends React.Component {
   getData = async (dept, level) => {
     let cmswhere = '';
     let flag = false;
-    let examId=this.state.examId;
+    let examId = this.state.examId;
     if (dept) {
       cmswhere += `dept = '${dept}'`;
       flag = true;
@@ -81,14 +81,13 @@ class ExamAnalyze extends React.Component {
       cmswhere += `level = '${level}'`;
       flag = true;
     }
-    if (examId){
-      if (flag){
+    if (examId) {
+      if (flag) {
         cmswhere += ` and `;
       }
-      cmswhere+=`examid = '${examId}' `;
+      cmswhere += `examid = '${examId}' `;
     }
-    
-    
+
     let res;
     try {
       res = await http().getTable({

@@ -21,7 +21,8 @@ class MyExam extends Component {
   };
 
   componentDidMount() {
-    window.parent.pwCallback.modifyTitle('我的考试');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('我的考试');
   }
 
   handleContinuJoinExam = (record, batchRecord) => {
