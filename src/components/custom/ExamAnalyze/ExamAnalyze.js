@@ -208,7 +208,7 @@ class ExamAnalyze extends React.Component {
     const { selectedLevelRecord } = this.state;
     this.setState({ selectedDepartmentRecord: record });
     this.getData(
-      record.DEP_NAME,
+      record.DEP_ID,
       selectedLevelRecord && selectedLevelRecord.C3_587136281870
     );
   };
@@ -372,8 +372,8 @@ class ExamAnalyze extends React.Component {
     if (modalMode === 'department') {
       return (
         <TableData
-          resid={417643880834}
-          width={740}
+          resid={613478801590}
+          width={'96%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -404,7 +404,7 @@ class ExamAnalyze extends React.Component {
       return (
         <TableData
           resid={449335746776}
-          width={740}
+          width={'96%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -513,7 +513,7 @@ class ExamAnalyze extends React.Component {
             title={modalTitleMap[modalMode]}
             footer={null}
             onCancel={this.handleModalCancel}
-            width={800}
+            width={'100%'}
             destroyOnClose
           >
             {this.renderModalContent()}

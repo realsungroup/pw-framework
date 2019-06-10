@@ -107,6 +107,7 @@ class TotalStatical extends Component {
     } catch (err) {
       console.error(err.message);
     }
+    console.log('qesOptionAnwserGroupbyperson',res.data);
     this.setState({queryQuestionsGroup : res.data});
   }
 
@@ -183,7 +184,7 @@ class TotalStatical extends Component {
     } catch (err) {
       return message.error(err.message);
     }
-    console.log('问答题的数据', res.data);
+    // console.log('问答题的数据', res.data);
     if (0 <= res.data.length) {
       const answerData = [];
       res.data.forEach(item => {
@@ -245,7 +246,7 @@ class TotalStatical extends Component {
   //渲染问答题的数据
   renderAnswerChart = () => {
     const { answerData } = this.state;
-    console.log(answerData);
+    // console.log(answerData);
     if (0 <= answerData) {
       return;
     } else {
