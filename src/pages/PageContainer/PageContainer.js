@@ -102,7 +102,7 @@ export default class Container extends React.Component {
       const domainUserField = domainLoginConfig.domainUserField;
       try {
         res = await domainLogin(
-          this.userCode + usernameSuffix,
+          this.userCode,
           password,
           domain,
           domainUserField
