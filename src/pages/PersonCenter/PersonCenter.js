@@ -87,10 +87,11 @@ class PersonCenter extends React.Component {
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
       const tabConfig = tabsConfig[activeKey];
+      const dbLinkName=tabConfig.dbLinkName||'';
       const resid = tabConfig.resid;
 
       this.p2 = makeCancelable(
-        http().modifyRecords({ resid, data: [formData] })
+        http().modifyRecords({ resid, data: [formData],dbLinkName})
       );
       let res;
       try {
