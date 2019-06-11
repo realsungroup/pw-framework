@@ -119,7 +119,7 @@ class App extends Component {
   }
 
   resolveQueryString = () => {
-    const querystring = this.props.location.search.substring(1);
+    const querystring = window.location.search.substring(1);
     return qs.parse(querystring);
   };
 
