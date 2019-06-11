@@ -188,12 +188,13 @@ class OrgChartData extends React.Component {
 
     console.log({ width, height });
 
-    if (height <= 700) {
-      return;
-    }
-
     const targetNode = document.querySelector('#' + chartId);
+
+    const svgNode = targetNode.querySelector('svg');
+
     targetNode.style = `width: ${width}px; height: ${height}px`;
+    svgNode.setAttribute('with', width);
+    svgNode.setAttribute('height', height);
   };
 
   // 获取根节点 id -> 获取节点数据 + 获取窗体数据

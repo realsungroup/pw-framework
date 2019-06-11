@@ -158,6 +158,10 @@ class Login extends React.Component {
         this.setState({ loading: false });
         return message.error(res.ErrorMsg);
       }
+      const { from } = this.props.location.state || { from: { pathname: '/' } };
+      
+      window.location.href = from.pathname;
+
     });
   };
 
@@ -189,9 +193,9 @@ class Login extends React.Component {
     // 进入登录页的源路由
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     // 登录成功后，通过 Redirect 组件跳转到源路由
-    if (redirectToReferrer) {
-      return <Redirect to={from} />;
-    }
+    // if (redirectToReferrer) {
+    //   return <Redirect to={from} />;
+    // }
     const { getFieldDecorator } = this.props.form;
     const { intl } = this.props;
     return (

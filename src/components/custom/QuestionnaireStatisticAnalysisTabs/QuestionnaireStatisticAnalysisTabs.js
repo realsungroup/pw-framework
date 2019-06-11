@@ -40,7 +40,8 @@ const residArr = [
  */
 class QuestionnaireStatisticAnalysisTabs extends React.Component {
   componentDidMount = () => {
-    window.parent.pwCallback.modifyTitle('问卷统计分析');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('问卷统计分析');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',

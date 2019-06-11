@@ -1222,7 +1222,8 @@ class ExamSet extends Component {
     // console.log(qsObj);
     this.getThisQuery(qsObj.id);
     this.getThisQueryQuestions(qsObj.id);
-    window.parent.pwCallback.modifyTitle('设置试卷');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('设置试卷');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',

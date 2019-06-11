@@ -13,6 +13,19 @@ const modalTitleMap = {
   level: '选择级别'
 };
 
+const removeRepetition = (resData, key) => {
+  const ret = [];
+  resData.forEach(resDataItem => {
+    const tempRetItem = ret.find(retItem => retItem[key] === resDataItem[key]);
+    if (tempRetItem) {
+      tempRetItem.amount += resDataItem.amount;
+    } else {
+      ret.push(resDataItem);
+    }
+  });
+  return ret;
+};
+
 /**
  * 问卷统计分析
  */
@@ -76,7 +89,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   renderDepartment = () => {
     const { selectedDepartment } = this.state;
     if (selectedDepartment) {
-      return selectedDepartment.DEP_NAME;
+      return selectedDepartment.C3_461011989333;
     }
     return (
       <span className="questionnaire-statistic-analysis__no-select-question-status">
@@ -151,12 +164,29 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       return message.error(err.message);
     }
 
+    // 获取有效填写人次
+    let res2;
+    try {
+      res2 = await http().getTable({
+        resid: 613413052304,
+        cmswhere: `query_id = '${
+          this.state.hostrecid
+        }' and question_id = '${qeustionId}'`
+      });
+    } catch (err) {
+      return console.error(err.message);
+    }
+    console.log('res2:', res2.data[0].amount);
+    // this.setState({ queryQuestionsGroup: res.data });
+
     const {
       singleSelectColumns,
       dataSource,
       barOption,
       pieOption
-    } = this.dealData(res.data, selectedQuestion);
+    } = this.dealData(res.data, selectedQuestion, res2.data[0].amount);
+
+    console.log({ dataSource });
 
     this.setState({
       loading: false,
@@ -186,7 +216,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         }
         this.getStatisticsData(
           selectedQuestion.question_id,
-          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedDepartment && selectedDepartment.DEP_ID,
           selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
@@ -213,7 +243,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         }
         this.getStatisticsData(
           selectedQuestion.question_id,
-          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedDepartment && selectedDepartment.DEP_ID,
           selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
@@ -240,7 +270,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         }
         this.getStatisticsData(
           selectedQuestion.question_id,
-          selectedDepartment && selectedDepartment.DEP_NAME,
+          selectedDepartment && selectedDepartment.DEP_ID,
           selectedLevel && selectedLevel.C3_587136281870,
           selectedQuestion
         );
@@ -248,15 +278,17 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     );
   };
 
-  dealData = (resData, record) => {
+  dealData = (resData, record, validateSum) => {
+    resData = removeRepetition(resData, 'option_id');
+
     const sum = resData.reduce(
       (result, record) => (result += record.amount),
       0
     );
 
     resData.push({
-      amount: sum,
-      option_content: '本题有效填写人次',
+      amount: validateSum,
+      option_content: '填写本题总人数',
       isLastRecord: true
     });
 
@@ -288,7 +320,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       }
     ];
 
-    const { barOption, pieOption } = this.getOption(resData, record, sum);
+    const { barOption, pieOption } = this.getOption(resData, record, validateSum);
 
     return {
       singleSelectColumns: columns,
@@ -327,7 +359,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         });
       }
     });
-    barOptionYAxis.data.push('总人数');
+    barOptionYAxis.data.push('填写本题总人数');
     barOptionSeries[0].data.push(sum);
 
     // barOption
@@ -467,7 +499,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           dataMode="sub"
           subresid={608828418560}
           hostrecid={hostrecid}
-          width={740}
+          // width={'98%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -497,8 +529,8 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     } else if (modalMode === 'department') {
       return (
         <TableData
-          resid={417643880834}
-          width={740}
+          resid={613478801590}
+          // width={'98%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -529,7 +561,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       return (
         <TableData
           resid={449335746776}
-          width={740}
+          // width={'98%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -647,7 +679,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                       }
                       this.getStatisticsData(
                         selectedQuestion.question_id,
-                        selectedDepartment && selectedDepartment.DEP_NAME,
+                        selectedDepartment && selectedDepartment.DEP_ID,
                         null,
                         selectedQuestion
                       );
@@ -674,7 +706,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
             title={modalTitleMap[modalMode]}
             footer={null}
             onCancel={this.handleModalCancel}
-            width={800}
+            width={'100%'}
             destroyOnClose
           >
             {this.renderModalContent()}

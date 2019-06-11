@@ -881,7 +881,6 @@ window[607183152969] = {
 //我的错题
 window[607562749445] = {
   name: 'TableData',
-  title: '考试安排',
   props: {
     resid: 612902074056,
     hasAdd: false,

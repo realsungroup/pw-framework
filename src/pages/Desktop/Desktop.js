@@ -1309,7 +1309,7 @@ class Desktop extends React.Component {
           </SubMenuItem>
           <MenuItem
             onClick={this.handleOpenDesktopBg}
-            className="desktop__context-menu-desktop-icon-wrapper"
+            className="deszktop__context-menu-desktop-icon-wrapper"
           >
             <img
               src={desktopIconPng}

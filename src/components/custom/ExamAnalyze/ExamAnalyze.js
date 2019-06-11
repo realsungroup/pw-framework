@@ -13,10 +13,9 @@ const modalTitleMap = {
   level: '选择级别'
 };
 
-
 let resid;
 if (process.env.NODE_ENV === 'development') {
-  resid = 612906609318;
+  resid = 613058652374;
 } else {
   resid = 613058652374;
 }
@@ -44,7 +43,8 @@ class ExamAnalyze extends React.Component {
 
   componentDidMount = async () => {
     this.getData();
-    window.parent.pwCallback.modifyTitle('考试图表分析');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('考试图表分析');
 
     // 监听父窗口发送的 message 事件
     window.addEventListener(
@@ -69,6 +69,7 @@ class ExamAnalyze extends React.Component {
   getData = async (dept, level) => {
     let cmswhere = '';
     let flag = false;
+    let examId = this.state.examId;
     if (dept) {
       cmswhere += `dept = '${dept}'`;
       flag = true;
@@ -78,7 +79,15 @@ class ExamAnalyze extends React.Component {
         cmswhere += ` and `;
       }
       cmswhere += `level = '${level}'`;
+      flag = true;
     }
+    if (examId) {
+      if (flag) {
+        cmswhere += ` and `;
+      }
+      cmswhere += `examid = '${examId}' `;
+    }
+
     let res;
     try {
       res = await http().getTable({
@@ -198,7 +207,7 @@ class ExamAnalyze extends React.Component {
     const { selectedLevelRecord } = this.state;
     this.setState({ selectedDepartmentRecord: record });
     this.getData(
-      record.DEP_NAME,
+      record.DEP_ID,
       selectedLevelRecord && selectedLevelRecord.C3_587136281870
     );
   };
@@ -222,7 +231,7 @@ class ExamAnalyze extends React.Component {
   };
 
   getOption = resData => {
-    const passData = resData.filter(item => item.status === '通过');
+    const passData = resData.filter(item => item.isPass === '通过');
     const passLen = passData.length;
     const unPassLen = resData.length - passLen;
 
@@ -362,8 +371,8 @@ class ExamAnalyze extends React.Component {
     if (modalMode === 'department') {
       return (
         <TableData
-          resid={417643880834}
-          width={740}
+          resid={613478801590}
+          width={'96%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -394,7 +403,7 @@ class ExamAnalyze extends React.Component {
       return (
         <TableData
           resid={449335746776}
-          width={740}
+          width={'96%'}
           height={420}
           subtractH={160}
           hasRowModify={false}
@@ -503,7 +512,7 @@ class ExamAnalyze extends React.Component {
             title={modalTitleMap[modalMode]}
             footer={null}
             onCancel={this.handleModalCancel}
-            width={800}
+            width={'100%'}
             destroyOnClose
           >
             {this.renderModalContent()}

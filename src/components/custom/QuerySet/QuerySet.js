@@ -787,7 +787,8 @@ class QuerySet extends Component {
       this.getThisquery(qsObj.id);
       this.getThisQueryQuestions(qsObj.id);
     }
-    window.parent.pwCallback.modifyTitle('设置问卷');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('设置问卷');
     window.addEventListener(
       'message',
       e => {

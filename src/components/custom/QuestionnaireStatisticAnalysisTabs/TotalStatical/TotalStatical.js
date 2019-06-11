@@ -5,6 +5,7 @@ import http from 'Util20/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
+import { async } from 'q';
 
 const TabPane = Tabs.TabPane;
 
@@ -15,12 +16,14 @@ class TotalStatical extends Component {
       queryName: '',
       queryQuestions: [],
       answerData: [],
+      queryQuestionsGroup:[],
       data: []
     };
   }
   componentDidMount = () => {
     this.getQueryName(this.props.queryId);
     this.getqueryQuestions(this.props.queryId);
+    this.getAmountOfqesOptionAnwserGroupbyperson(this.props.queryId);
     // 获取该问卷的问答题
     this.getAnswerData(this.props.queryId);
   };
@@ -93,13 +96,27 @@ class TotalStatical extends Component {
     // 根据好多条试题的ID 去查找好所有试题ID下面对应的试题选项使用到了cmswhere语句。question_id in ('','',)
     this.getOptionsTableData(cmsString);
   };
+ // 613413052304 qesOptionAnwserGroupbyperson
+  getAmountOfqesOptionAnwserGroupbyperson = async queryId =>{
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 613413052304,
+        cmswhere: `query_id = ${queryId}`
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+    console.log('qesOptionAnwserGroupbyperson',res.data);
+    this.setState({queryQuestionsGroup : res.data});
+  }
 
   // 获取问题的选项
   getOptionsTableData = async cstring => {
     let res;
     try {
       res = await http().getTable({
-        resid: 610537303261,
+        resid: 611518608474,
         cmswhere: `question_id in (${cstring})`
       });
     } catch (err) {
@@ -114,6 +131,7 @@ class TotalStatical extends Component {
       if (!tempDataItem) {
         data.push({
           title: item.question_topic,
+          question_id:item.question_id,
           table: {
             dataSource: [
               {
@@ -130,17 +148,27 @@ class TotalStatical extends Component {
         });
       }
     });
+   
+      
+     
     data.forEach(dataItem => {
       let total = 0;
       dataItem.table.dataSource.forEach(record => {
+
         total += record.amount;
       });
       dataItem.table.dataSource.forEach(record => {
         record.total = total;
       });
+     const queryQuestionsGroup=this.state.queryQuestionsGroup;
+
+     const rt= queryQuestionsGroup.find(
+        queryQuestionsGroupItem => dataItem.question_id === queryQuestionsGroupItem.question_id
+      );
+
       dataItem.table.dataSource.push({
         optionContent: '本题有效填写人次',
-        amount: total
+        amount: rt.amount
       });
     });
     this.setState({ data });
@@ -156,7 +184,7 @@ class TotalStatical extends Component {
     } catch (err) {
       return message.error(err.message);
     }
-    console.log('问答题的数据', res.data);
+    // console.log('问答题的数据', res.data);
     if (0 <= res.data.length) {
       const answerData = [];
       res.data.forEach(item => {
@@ -164,7 +192,7 @@ class TotalStatical extends Component {
           answerDataItem => item.question_id === answerDataItem.question_id
         );
         // find 找到的话返回该元素，没找到返回-1
-        // 第一次进来是个空的
+        // 第一次进来是个空的,空的会返回undefined false ,取反  执行if里边的东西。
         if (!tempAnserdataItem) {
           answerData.push({
             question_id: item.question_id,
@@ -218,7 +246,7 @@ class TotalStatical extends Component {
   //渲染问答题的数据
   renderAnswerChart = () => {
     const { answerData } = this.state;
-    console.log(answerData);
+    // console.log(answerData);
     if (0 <= answerData) {
       return;
     } else {

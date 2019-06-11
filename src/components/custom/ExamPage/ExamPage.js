@@ -69,7 +69,8 @@ export default class ExamPage extends Component {
   };
 
   componentDidMount = async () => {
-    window.parent.pwCallback.modifyTitle('考试页面');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('考试页面');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',

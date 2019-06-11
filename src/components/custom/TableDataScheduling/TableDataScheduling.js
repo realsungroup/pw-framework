@@ -87,7 +87,7 @@ class TableDataScheduling extends React.Component {
               wrappedComponentRef={element => (this.tableDataRef = element)}
               // {...this.props}
               resid="527089107422"
-              dblinkname="RBA"
+              dblinkname="EHR"
               getcolumninfo="1"
               pageSize="10"
               page="1"
@@ -131,7 +131,7 @@ class TableDataScheduling extends React.Component {
               wrappedComponentRef={element => (this.tableDataRef = element)}
               {...this.props}
               resid="527162576853"
-              dblinkname="RBA"
+              dblinkname="EHR"
               getcolumninfo="1"
               pageSize="10"
               page="1"
@@ -152,7 +152,7 @@ class TableDataScheduling extends React.Component {
           <TabPane tab="排班超标记录" key="3">
             <TableDataWrap
               refTargetComponentName="TableData"
-              dblinkname="RBA"
+              dblinkname="EHR"
               wrappedComponentRef={element => (this.tableDataRef = element)}
               {...this.props}
               resid="612464619921"

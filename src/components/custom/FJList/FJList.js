@@ -68,7 +68,8 @@ class FJList extends React.Component {
     this.getKcxl();
     this.getKclb();
     this.getSubbData();
-    window.parent.pwCallback.modifyTitle('制定计划');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('制定计划');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',
@@ -261,9 +262,8 @@ class FJList extends React.Component {
       this.state.totalData.C3_611074040082 <
       this.state.data[this.state.listIndex].C3_611409509831 +
         this.state.addData.C3_609845305931
-    ) {
+    )
       return message.error('已超出预算');
-    }
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
     addData.C3_609616893275 = this.state.data[
