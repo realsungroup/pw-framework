@@ -27,12 +27,20 @@ import 'moment/locale/zh-cn';
 
 import { setItem, getItem } from 'Util/util';
 import './App.css';
+import qs from 'qs';
 
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
 
-import { Desktop, GetConfig, Login, Reminder, PageContainer, NotFound } from './pages/loadablePage';
+import {
+  Desktop,
+  GetConfig,
+  Login,
+  Reminder,
+  PageContainer,
+  NotFound
+} from './pages/loadablePage';
 
 addLocaleData([...en, ...zh]);
 
@@ -102,10 +110,19 @@ class WarningBar extends React.PureComponent {
 class App extends Component {
   constructor(props) {
     super(props);
+    const { resid: resId } = this.resolveQueryString();
+
     this.state = {
-      warningBarVisible: true
+      warningBarVisible: true,
+      resId
     };
   }
+
+  resolveQueryString = () => {
+    const querystring = this.props.location.search.substring(1);
+    return qs.parse(querystring);
+  };
+
   componentDidMount = () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
     clipboard.on('success', function(e) {
@@ -145,18 +162,19 @@ class App extends Component {
     }
 
     // 'DESKTOP' or 'WORKBENCH'
-    let desktopStyle
+    let desktopStyle;
     try {
       desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
       if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
         // 默认 'WORKBENCH'
         desktopStyle = 'WORKBENCH';
       }
-    } catch (err) {
+    } catch (err) {}
+
+    if (desktopStyle === 'WORKBENCH' && this.state.resId) {
+      window.location.href = `${location.origin}/fnmodule${location.search}`;
+      return;
     }
-
-
-    console.log({desktopStyle})
 
     return (
       <ErrorBoundary>
@@ -177,51 +195,54 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router>
                   <Switch>
-                    {/* {desktopStyle === 'DESKTOP' && <React.Fragment>
+                    {desktopStyle === 'DESKTOP' && (
                       <PrivateRoute exact path="/" component={Desktop} />
+                    )}
+                    {desktopStyle === 'DESKTOP' && (
                       <PrivateRoute path="/fnmodule" component={GetConfig} />
+                    )}
+                    {desktopStyle === 'DESKTOP' && (
                       <PrivateRoute path="/reminder" component={Reminder} />
-                    </React.Fragment>} */}
-                    {desktopStyle === 'DESKTOP' && <PrivateRoute exact path="/" component={Desktop} />}
-                    {desktopStyle === 'DESKTOP' && <PrivateRoute path="/fnmodule" component={GetConfig} />}
-                    {desktopStyle === 'DESKTOP' && <PrivateRoute path="/reminder" component={Reminder} />}
+                    )}
 
-                    {/* {desktopStyle === 'WORKBENCH' && <React.Fragment>
+                    {desktopStyle === 'WORKBENCH' && (
                       <PrivateRoute exact path="/" component={PageContainer} />
-                      <PrivateRoute path="/fnmodule" component={PageContainer} />
-                      <PrivateRoute path="/reminder" component={PageContainer} />
+                    )}
+                    {desktopStyle === 'WORKBENCH' && (
+                      <PrivateRoute
+                        path="/fnmodule"
+                        component={PageContainer}
+                      />
+                    )}
+                    {desktopStyle === 'WORKBENCH' && (
+                      <PrivateRoute
+                        path="/reminder"
+                        component={PageContainer}
+                      />
+                    )}
+                    {desktopStyle === 'WORKBENCH' && (
                       <PrivateRoute
                         path="/workbench-setting"
                         component={PageContainer}
                       />
+                    )}
+                    {desktopStyle === 'WORKBENCH' && (
                       <PrivateRoute
                         path="/report-table"
                         component={PageContainer}
                       />
+                    )}
+                    {desktopStyle === 'WORKBENCH' && (
                       <PrivateRoute
                         path="/person-center"
                         component={PageContainer}
                       />
-                    </React.Fragment>} */}
+                    )}
 
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute exact path="/" component={PageContainer} />}
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute path="/fnmodule" component={PageContainer} />}
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute path="/reminder" component={PageContainer} />}
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
-                        path="/workbench-setting"
-                        component={PageContainer}
-                      />}
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
-                        path="/report-table"
-                        component={PageContainer}
-                      />}
-                    {desktopStyle === 'WORKBENCH' && <PrivateRoute
-                        path="/person-center"
-                        component={PageContainer}
-                      />}
+                    {['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1 && (
+                      <PrivateRoute exact path="/" component={PageContainer} />
+                    )}
 
-                    {['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1 && <PrivateRoute exact path="/" component={PageContainer} />}
-                    
                     <Route path="/login" component={Login} />
                     <Route path="*" component={NotFound} />
                   </Switch>
