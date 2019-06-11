@@ -68,7 +68,8 @@ class FJList extends React.Component {
     this.getKcxl();
     this.getKclb();
     this.getSubbData();
-    window.parent.pwCallback.modifyTitle('制定计划');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('制定计划');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',
@@ -243,23 +244,30 @@ class FJList extends React.Component {
 
   //单选员工
   onClick(listNo, i) {
-    let data = this.state.data
+    let data = this.state.data;
     data.forEach(e => {
       e.check = false;
       if (e.C3_609622254861 == listNo) {
-        e.check = true
+        e.check = true;
       }
     });
-    this.setState({ data, listNo, listIndex: i});
+    this.setState({ data, listNo, listIndex: i });
     this.getSubData(listNo);
   }
 
   //添加课程
   async addCourse() {
-    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
+    if (
+      this.state.totalData.C3_611074040082 <
+      this.state.data[this.state.listIndex].C3_611409509831 +
+        this.state.addData.C3_609845305931
+    )
+      return message.error('已超出预算');
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
-    addData.C3_609616893275 = this.state.data[this.state.listIndex].C3_609622254861;
+    addData.C3_609616893275 = this.state.data[
+      this.state.listIndex
+    ].C3_609622254861;
     addData.C3_609616868478 = addData.C3_609845305680;
     addData.C3_609616906353 = addData.C3_609845305931;
     addData.C3_611314815828 = addData.C3_609845305993;
@@ -290,7 +298,12 @@ class FJList extends React.Component {
 
   //添加自定义课程
   async addCustom() {
-    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
+    if (
+      this.state.totalData.C3_611074040082 <
+      this.state.data[this.state.listIndex].C3_611409509831 +
+        this.state.addData.C3_609845305931
+    )
+      return message.error('已超出预算');
     let addCustom = this.state.addCustom;
     if (
       addCustom.C3_609616868478 == '' ||
@@ -348,7 +361,12 @@ class FJList extends React.Component {
 
   //修改课程
   async editCourse(i) {
-    if(this.state.totalData.C3_611074040082<(this.state.data[this.state.listIndex].C3_611409509831+this.state.addData.C3_609845305931)) return message.error('已超出预算');
+    if (
+      this.state.totalData.C3_611074040082 <
+      this.state.data[this.state.listIndex].C3_611409509831 +
+        this.state.addData.C3_609845305931
+    )
+      return message.error('已超出预算');
     let data = this.state.cnspmxb;
     let editData = this.state.editData;
     if (data.C3_609616868478 == '' || data.C3_609616868478 == undefined)
@@ -1168,12 +1186,18 @@ class FJList extends React.Component {
                       >
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            课程名称: {item.C3_609845305680 == null? '无': item.C3_609845305680}
+                            课程名称:{' '}
+                            {item.C3_609845305680 == null
+                              ? '无'
+                              : item.C3_609845305680}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            讲师: {item.C3_610390419677 == null? '无': item.C3_610390419677}
+                            讲师:{' '}
+                            {item.C3_610390419677 == null
+                              ? '无'
+                              : item.C3_610390419677}
                           </span>
                         </div>
                         <div
@@ -1194,38 +1218,59 @@ class FJList extends React.Component {
                             }}
                           />
                           <span>
-                            培训地: {item.C3_610390410802 == null
+                            培训地:{' '}
+                            {item.C3_610390410802 == null
                               ? '无'
                               : item.C3_610390410802}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            课程费用: {item.C3_609845305931 == null
+                            课程费用:{' '}
+                            {item.C3_609845305931 == null
                               ? '无'
                               : item.C3_609845305931}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: 'flex', flex: 1 }}>
-                        {item.showDetail&&<span>
-                          简介:{' '}
-                          {item.C3_609845305618 == null
-                            ? '无'
-                            : item.C3_609845305618}
-                        </span>}
+                        {item.showDetail && (
+                          <span>
+                            简介:{' '}
+                            {item.C3_609845305618 == null
+                              ? '无'
+                              : item.C3_609845305618}
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'column'
+                      }}
+                    >
                       <a target="_blank" href={item.C3_609845463949}>
                         <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
-                      <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
-                        e.stopPropagation()
-                        subbData[i].showDetail=!subbData[i].showDetail
-                        this.setState({subbData})
-                      }}>
-                        <Icon type="ellipsis"/>
+                      <div
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          border: '2px solid #777',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                        onClick={e => {
+                          e.stopPropagation();
+                          subbData[i].showDetail = !subbData[i].showDetail;
+                          this.setState({ subbData });
+                        }}
+                      >
+                        <Icon type="ellipsis" />
                       </div>
                     </div>
                   </div>
@@ -1474,14 +1519,16 @@ class FJList extends React.Component {
                         >
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              课程名称: {item.C3_609845305680 == null
-                              ? '无'
-                              : item.C3_609845305680}
+                              课程名称:{' '}
+                              {item.C3_609845305680 == null
+                                ? '无'
+                                : item.C3_609845305680}
                             </span>
                           </div>
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              讲师: {item.C3_610390419677 == null
+                              讲师:{' '}
+                              {item.C3_610390419677 == null
                                 ? '无'
                                 : item.C3_610390419677}
                             </span>
@@ -1504,26 +1551,30 @@ class FJList extends React.Component {
                               }}
                             />
                             <span>
-                              培训地: {item.C3_610390410802 == null
+                              培训地:{' '}
+                              {item.C3_610390410802 == null
                                 ? '无'
                                 : item.C3_610390410802}
                             </span>
                           </div>
                           <div style={{ display: 'flex', flex: 1 }}>
                             <span>
-                              课程费用: {item.C3_609845305931 == null
+                              课程费用:{' '}
+                              {item.C3_609845305931 == null
                                 ? '无'
                                 : item.C3_609845305931}
                             </span>
                           </div>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
-                          {item.showDetail&&<span>
-                            简介:{' '}
-                            {item.C3_609845305618 == null
-                              ? '无'
-                              : item.C3_609845305618}
-                          </span>}
+                          {item.showDetail && (
+                            <span>
+                              简介:{' '}
+                              {item.C3_609845305618 == null
+                                ? '无'
+                                : item.C3_609845305618}
+                            </span>
+                          )}
                         </div>
                         {/* <div style={{ display: 'flex', flex: 1 }}>
                           {item.showDetail?<span>
@@ -1534,16 +1585,33 @@ class FJList extends React.Component {
                           </span>:<span style={{ height:"21px" }}>{' '}</span>}
                         </div> */}
                       </div>
-                      <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flex: 1,
+                          flexDirection: 'column'
+                        }}
+                      >
                         <a target="_blank" href={item.C3_609845463949}>
                           <Icon type="fund" style={{ fontSize: '22px' }} />
                         </a>
-                        <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
-                          e.stopPropagation()
-                          subbData[i].showDetail=!subbData[i].showDetail
-                          this.setState({subbData})
-                        }}>
-                          <Icon type="ellipsis"/>
+                        <div
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            border: '2px solid #777',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                          onClick={e => {
+                            e.stopPropagation();
+                            subbData[i].showDetail = !subbData[i].showDetail;
+                            this.setState({ subbData });
+                          }}
+                        >
+                          <Icon type="ellipsis" />
                         </div>
                       </div>
                     </div>

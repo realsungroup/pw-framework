@@ -426,6 +426,30 @@ class SoleQuery extends Component {
       console.error(err);
       return message.error(err.message);
     }
+
+    // 到发送人员表中改变其填写的状态
+    let resSubmit;
+    try {
+      resSubmit = await http().getTable({
+        resid: 609613163948,
+        cmswhere: `staff_number=${
+          userInfo.UserInfo.EMP_ID
+        } and query_id=${queryID}`
+      });
+    } catch (err) {
+      console.error(err.message);
+      return message.error(err.message);
+    }
+    try {
+      await http().modifyRecords({
+        resid: 609613163948,
+        data: [{ REC_ID: resSubmit.data[0].REC_ID, hasSubmit: '已提交' }]
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
     // 无礼品时
     if (hasGift === '0') {
       return Modal.success({
@@ -458,26 +482,6 @@ class SoleQuery extends Component {
       console.error(err);
       return message.error(err.message);
     }
-    // 到发送人员表中改变其填写的状态
-    let resSubmit;
-    try {
-      resSubmit = await http().getTable({
-        resid: 609613163948,
-        cmswhere: `staff_number=${
-          userInfo.UserInfo.EMP_ID
-        } and query_id=${queryID}`
-      });
-    } catch (err) {
-      console.error(err.message);
-    }
-    http().modifyRecords({
-      resid: 609613163948,
-      data: [{ REC_ID: resSubmit.data[0].REC_ID, hasSubmit: '已提交' }]
-    }).then(data=>{
-      console.log('修改数据',data);
-    }).catch(err=>{
-      console.error(err);
-    })
   };
 
   //单选选中的值。

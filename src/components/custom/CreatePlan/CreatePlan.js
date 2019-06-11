@@ -51,7 +51,8 @@ class CreatePlan extends React.Component {
     this.getLevel();
     this.getKcxl();
     this.getKclb();
-    window.parent.pwCallback.modifyTitle('创建计划');
+    window.parent.pwCallback &&
+      window.parent.pwCallback.modifyTitle('创建计划');
     // 监听父窗口发送的 message 事件
     window.addEventListener(
       'message',
@@ -551,12 +552,18 @@ class CreatePlan extends React.Component {
                       >
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            课程名称: {item.C3_609845305680 == null? '无': item.C3_609845305680}
+                            课程名称:{' '}
+                            {item.C3_609845305680 == null
+                              ? '无'
+                              : item.C3_609845305680}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            讲师: {item.C3_610390419677 == null? '无': item.C3_610390419677}
+                            讲师:{' '}
+                            {item.C3_610390419677 == null
+                              ? '无'
+                              : item.C3_610390419677}
                           </span>
                         </div>
                         <div
@@ -577,35 +584,60 @@ class CreatePlan extends React.Component {
                             }}
                           />
                           <span>
-                            培训地: {item.C3_610390410802 == null? '无': item.C3_610390410802}
+                            培训地:{' '}
+                            {item.C3_610390410802 == null
+                              ? '无'
+                              : item.C3_610390410802}
                           </span>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
                           <span>
-                            课程费用: {item.C3_609845305931 == null? '无': item.C3_609845305931}
+                            课程费用:{' '}
+                            {item.C3_609845305931 == null
+                              ? '无'
+                              : item.C3_609845305931}
                           </span>
                         </div>
                       </div>
                       <div style={{ display: 'flex', flex: 1 }}>
-                        {item.showDetail&&<span>
-                          简介:{' '}
-                          {item.C3_609845305618 == null
-                            ? '无'
-                            : item.C3_609845305618}
-                        </span>}
+                        {item.showDetail && (
+                          <span>
+                            简介:{' '}
+                            {item.C3_609845305618 == null
+                              ? '无'
+                              : item.C3_609845305618}
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flex: 1,flexDirection:"column" }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'column'
+                      }}
+                    >
                       <a target="_blank" href={item.C3_609845463949}>
                         <Icon type="fund" style={{ fontSize: '22px' }} />
                       </a>
-                      <div style={{ width:"20px",height:"20px",border:"2px solid #777",borderRadius:"50%",display:"flex",justifyContent:"center",alignItems:"center" }} onClick={(e)=>{
-                        e.stopPropagation()
-                        let subData = this.state.subData
-                        subData[i].showDetail=!subData[i].showDetail
-                        this.setState({subData})
-                      }}>
-                        <Icon type="ellipsis"/>
+                      <div
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          border: '2px solid #777',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                        onClick={e => {
+                          e.stopPropagation();
+                          let subData = this.state.subData;
+                          subData[i].showDetail = !subData[i].showDetail;
+                          this.setState({ subData });
+                        }}
+                      >
+                        <Icon type="ellipsis" />
                       </div>
                     </div>
                   </div>

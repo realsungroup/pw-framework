@@ -189,7 +189,7 @@ http.createApi('domainLogin', {
  * 1. language：语言
  */
 http.createApi('setLanguage', {
-  method: 'post',
+  method: 'get',
   url: '/api/Account/SaveUserLanguage'
 });
 

@@ -23,7 +23,7 @@ class DevTableData extends Component {
 
   render() {
     return (
-      <div style={{ width: 600 }}>
+      <div style={{ width: 700 }}>
         <TableData
           hasRowSelection={false}
           refTargetComponentName="TableData"

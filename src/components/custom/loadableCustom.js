@@ -311,3 +311,34 @@ export const IdLindex = Loadable({
     return minLoading;
   }
 });
+
+// 个人成绩管理
+export const PersonGradeManagement = Loadable({
+  loader: () => import('./PersonGradeManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+// 考试图表分析
+export const ExamAnalyze = Loadable({
+  loader: () => import('./ExamAnalyze'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const JobSeeker = Loadable({
+  loader: () => import('./JobSeeker'),
+  loading() {
+    return minLoading;
+  }
+});
+
+// ApplayInformnation
+export const ApplayInformnation = Loadable({
+  loader: () => import('./ApplayInformnation'),
+  loading() {
+    return minLoading;
+  }
+});

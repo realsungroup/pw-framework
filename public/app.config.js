@@ -5,7 +5,8 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
+     baseURL: 'http://114.55.58.57:9096/', // 请求的基地址
+    // baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://pwhr1.realsun.me/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -14,7 +15,8 @@ window.pwConfig = {
         title: '基本信息', // 标题：必选
         enTitle: 'Basic Info',
         resid: 1300, // resid：必选
-        formName: 'default' // 窗体名称：可选；不设置时默认为 'default'
+        formName: 'default',// 窗体名称：可选；不设置时默认为 'default'
+        dbLinkName:'EHR'
       }
     ],
 
@@ -22,10 +24,10 @@ window.pwConfig = {
     defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
-      baseUrl: 'http://172.21.2.27:801/', // 域登录基地址
-      usernameSuffix: '', // 域登录用户名的后缀
-      domain: 'rbc.int', // 域名
-      domainUserField: 'emp_id' // 域用户字段
+      baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
+      usernameSuffix: '@finisar.com', // 域登录用户名的后缀
+      domain: 'china', // 域名
+      domainUserField: 'emp_email' // 域用户字段
     },
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 

@@ -2,7 +2,19 @@
   width: 800px;
   margin: 0 auto;
   background: #fff;
+  height: 100%;
+  overflow: auto;
   padding: 16px;
+  &__assistor {
+    width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    height: 100%;
+    position: relative;
+    .ant-spin-nested-loading, .ant-spin-container {
+      height: 100%;
+    }
+  }
   &__single-question {
     margin: 16px 0;
   }
@@ -38,9 +50,10 @@
     padding-left: 330px;
   }
   &__time-remaining {
-    position: fixed;
-    top: 90px;
-    left: 0;
+    width: 212px;
+    position: absolute;
+    top: 0;
+    right: -212px;
     background: #fff;
     box-shadow: 0px 0px 15px 0px #000000;
     padding: 8px 16px;
