@@ -171,7 +171,11 @@ class App extends Component {
       }
     } catch (err) {}
 
-    if (desktopStyle === 'WORKBENCH' && this.state.resId) {
+    if (
+      desktopStyle === 'WORKBENCH' &&
+      this.state.resId &&
+      window.location.href.indexOf('/fnmodule') === -1
+    ) {
       const { origin, search } = window.location;
       window.location.href = `${origin}/fnmodule${search}`;
       return;
