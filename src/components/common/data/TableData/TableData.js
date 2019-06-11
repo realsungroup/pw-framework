@@ -613,7 +613,6 @@ class TableData extends React.Component {
       title,
       downloadFileName,
       downloadFile,
-      resid,
       cmswhere,
       fileType,
       baseURL,
@@ -635,7 +634,7 @@ class TableData extends React.Component {
       requestBaseURL,
       downloadBaseURL_,
       downloadFileName || title,
-      resid,
+      this._id,
       mergedCmsWhere,
       fileType,
       dblinkname
