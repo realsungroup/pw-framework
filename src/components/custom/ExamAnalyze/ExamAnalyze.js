@@ -20,6 +20,8 @@ if (process.env.NODE_ENV === 'development') {
   resid = 613058652374;
 }
 
+const departmentNameKey = 'dept';
+
 /**
  * 考试图表分析
  */
@@ -37,7 +39,9 @@ class ExamAnalyze extends React.Component {
       title: examTitle, // 考试名称
       dataSource: [],
       selectedDepartmentRecord: null, // 选择的部门记录
-      selectedLevelRecord: null // 选择的级别记录
+      selectedLevelRecord: null, // 选择的级别记录
+      levelArr: [],
+      departmentArr: []
     };
   }
 
@@ -67,26 +71,31 @@ class ExamAnalyze extends React.Component {
   };
 
   getData = async (dept, level) => {
-    let cmswhere = '';
-    let flag = false;
-    let examId = this.state.examId;
+    let cmswhere = `examid = '${this.state.examId}'`;
+    const cmswhereObj = {};
     if (dept) {
-      cmswhere += `dept = '${dept}'`;
-      flag = true;
+      cmswhereObj.dept = dept;
     }
     if (level) {
-      if (flag) {
-        cmswhere += ` and `;
-      }
-      cmswhere += `level = '${level}'`;
-      flag = true;
+      cmswhereObj.level = level;
     }
-    if (examId) {
-      if (flag) {
-        cmswhere += ` and `;
+
+    const cmswhereArr = Object.keys(cmswhereObj);
+    const cmswhereArrLen_1 = cmswhereArr.length - 1;
+
+    cmswhereArr.forEach((item, index) => {
+      if (index === 0) {
+        if (index === cmswhereArrLen_1) {
+          cmswhere += ` and ${item} = '${cmswhereObj[item]}'`;
+        } else {
+          cmswhere += ` and ${item} = '${cmswhereObj[item]}' and `;
+        }
+      } else if (index === cmswhereArrLen_1) {
+        cmswhere += `${item} = '${cmswhereObj[item]}'`;
+      } else {
+        cmswhere += `${item} = '${cmswhereObj[item]}' and`;
       }
-      cmswhere += `examid = '${examId}' `;
-    }
+    });
 
     let res;
     try {
@@ -98,21 +107,25 @@ class ExamAnalyze extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    const { barOption, pieOption } = this.dealData(res.data);
+    const { barOption, pieOption, departmentArr, levelArr } = this.dealData(
+      res.data
+    );
 
     this.setState({
       barOption,
       pieOption,
       data: res.data,
       loading: false,
-      modalVisible: false
+      modalVisible: false,
+      departmentArr,
+      levelArr
     });
   };
 
   renderDepartment = () => {
     const { selectedDepartmentRecord } = this.state;
     if (selectedDepartmentRecord) {
-      return selectedDepartmentRecord.DEP_NAME;
+      return selectedDepartmentRecord.name;
     }
     return (
       <span className="exam-analyze__no-select-question-status">
@@ -124,7 +137,7 @@ class ExamAnalyze extends React.Component {
   renderLevel = () => {
     const { selectedLevelRecord } = this.state;
     if (selectedLevelRecord) {
-      return selectedLevelRecord.C3_449335790387;
+      return selectedLevelRecord.level;
     }
     return (
       <span className="exam-analyze__no-select-question-status">
@@ -206,27 +219,47 @@ class ExamAnalyze extends React.Component {
   handleSelectDepartment = async record => {
     const { selectedLevelRecord } = this.state;
     this.setState({ selectedDepartmentRecord: record });
-    this.getData(
-      record.DEP_ID,
-      selectedLevelRecord && selectedLevelRecord.C3_587136281870
-    );
+    this.getData(record.id, selectedLevelRecord && selectedLevelRecord.level);
   };
 
   handleSelectLevel = async record => {
     const { selectedDepartmentRecord } = this.state;
     this.setState({ selectedLevelRecord: record });
     this.getData(
-      selectedDepartmentRecord && selectedDepartmentRecord.DEP_NAME,
-      record.C3_587136281870
+      selectedDepartmentRecord && selectedDepartmentRecord.id,
+      record.level
     );
   };
 
   dealData = resData => {
+    const departmentArr = [],
+      levelArr = [];
+    resData.forEach(item => {
+      const tempDepartment = departmentArr.find(
+        depItem => depItem.id === item.dept
+      );
+      if (!tempDepartment) {
+        departmentArr.push({
+          name: item[departmentNameKey],
+          id: item.dept
+        });
+      }
+
+      const tempLevel = levelArr.find(
+        levelItem => levelItem.level === item.level
+      );
+      if (!tempLevel) {
+        levelArr.push({ level: item.level });
+      }
+    });
+
     const { barOption, pieOption } = this.getOption(resData);
 
     return {
       barOption,
-      pieOption
+      pieOption,
+      departmentArr,
+      levelArr
     };
   };
 
@@ -366,70 +399,56 @@ class ExamAnalyze extends React.Component {
     );
   };
 
+  departmentTableColumns = [
+    {
+      title: '部门',
+      dataIndex: 'name'
+    },
+    {
+      title: '操作',
+      dataIndex: '操作',
+      render: (value, record, index) => {
+        return (
+          <Button
+            type="primary"
+            onClick={() => this.handleSelectDepartment(record)}
+          >
+            选择
+          </Button>
+        );
+      }
+    }
+  ];
+
+  levelTableColumns = [
+    {
+      title: '级别',
+      dataIndex: 'level'
+    },
+    {
+      title: '操作',
+      dataIndex: '操作',
+      render: (value, record, index) => {
+        return (
+          <Button type="primary" onClick={() => this.handleSelectLevel(record)}>
+            选择
+          </Button>
+        );
+      }
+    }
+  ];
+
   renderModalContent = () => {
-    const { modalMode } = this.state;
+    const { modalMode, departmentArr, levelArr } = this.state;
     if (modalMode === 'department') {
       return (
-        <TableData
-          resid={613478801590}
-          width={'96%'}
-          height={420}
-          subtractH={160}
-          hasRowModify={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasAdd={false}
-          hasModify={false}
-          hasDelete={false}
-          hasAdvSearch={false}
-          hasRefresh={false}
-          hasDownload={false}
-          customRowBtns={[
-            (record, btnSize) => {
-              return (
-                <Button
-                  size={btnSize}
-                  onClick={() => this.handleSelectDepartment(record)}
-                  key="选择部门"
-                >
-                  选择
-                </Button>
-              );
-            }
-          ]}
+        <Table
+          dataSource={departmentArr}
+          columns={this.departmentTableColumns}
         />
       );
     } else if (modalMode === 'level') {
-      return (
-        <TableData
-          resid={449335746776}
-          width={'96%'}
-          height={420}
-          subtractH={160}
-          hasRowModify={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasAdd={false}
-          hasModify={false}
-          hasDelete={false}
-          hasAdvSearch={false}
-          hasRefresh={false}
-          hasDownload={false}
-          customRowBtns={[
-            (record, btnSize) => {
-              return (
-                <Button
-                  size={btnSize}
-                  onClick={() => this.handleSelectLevel(record)}
-                  key="选择级别"
-                >
-                  选择
-                </Button>
-              );
-            }
-          ]}
-        />
-      );
+      return <Table dataSource={levelArr} columns={this.levelTableColumns} />;
     }
   };
 
@@ -512,7 +531,7 @@ class ExamAnalyze extends React.Component {
             title={modalTitleMap[modalMode]}
             footer={null}
             onCancel={this.handleModalCancel}
-            width={'100%'}
+            // width={'100%'}
             destroyOnClose
           >
             {this.renderModalContent()}
