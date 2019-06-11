@@ -83,6 +83,11 @@ class CreateTotalPlan extends React.Component {
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
+            customRowBtns={[
+              (record, btnSize) => {
+                return <Button size={btnSize}>人员名单</Button>;
+              }
+            ]}
           />
         </div>
       </Spin>

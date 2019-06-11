@@ -53,17 +53,17 @@ class FJList extends React.Component {
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
-      loading: false,
       hasMore: true,
       tabsKey: '1'
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const qsObj = qs.parse(window.location.search.substring(1));
     this.planid = qsObj.planid;
+    this.year = qsObj.year;
+    await this.totalData();
     this.getData(0, true);
-    this.totalData();
     this.getLevel();
     this.getKcxl();
     this.getKclb();
@@ -91,7 +91,7 @@ class FJList extends React.Component {
   }
 
   loading = false;
-  // 获取员工列表
+  // 获取员工列表（根据财年、二级部门）
   async getData(arg1, isFirstPage = false) {
     if (
       this.loading ||
@@ -107,6 +107,7 @@ class FJList extends React.Component {
     let res = await http().getTable({
       resid: this.props.resid,
       key,
+      cmswhere: `C3_611264173184 = '${this.state.totalData.C3_609615869581}'`,
       pageIndex,
       pageSize
     });
@@ -182,11 +183,11 @@ class FJList extends React.Component {
     }
   }
 
-  //获取员工推荐课程
+  //获取员工推荐课程（根据员工编号和财年计划id）
   async getSubData(e) {
     let res = await http().getTable({
       resid: this.props.subResid,
-      cmswhere: "C3_609616893275 = '" + e + "'"
+      cmswhere: `C3_609616893275 = '${e}' and C3_609616805633 = '${this.planid}'`
     });
     try {
       if (res.error === 0) {
