@@ -68,6 +68,7 @@ class FiscalYearPlan extends React.Component {
               <TableData
                 resid={609883172764}
                 addText="创建财年计划"
+                actionBarWidth={450}
                 customRowBtns={[
                   (record, btnSize) => {
                     return (
@@ -127,7 +128,7 @@ class FiscalYearPlan extends React.Component {
             <TabPane
               tab="已提交"
               key="2"
-              style={{ width: '100%', height:  'calc(100vh - 64px)' }}
+              style={{ width: '100%', height: 'calc(100vh - 64px)' }}
             >
               <TableData
                 resid={611165813996}
