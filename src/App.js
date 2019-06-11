@@ -172,7 +172,8 @@ class App extends Component {
     } catch (err) {}
 
     if (desktopStyle === 'WORKBENCH' && this.state.resId) {
-      window.location.href = `${location.origin}/fnmodule${location.search}`;
+      const { origin, search } = window.location;
+      window.location.href = `${origin}/fnmodule${search}`;
       return;
     }
 
