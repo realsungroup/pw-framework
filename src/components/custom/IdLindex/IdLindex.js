@@ -148,7 +148,7 @@ export default class IdLindex extends Component {
           />
         </div>
         <div className="idlindex__form-list">
-          <h4 className="idlindex__title">候选人事项表</h4>
+          {/* <h4 className="idlindex__title">候选人事项表</h4>
           <Collapse className="idlindex__form-list__workform">
             {currentPersonInfo.formbelongs.map((form, index) => {
               return (
@@ -157,9 +157,11 @@ export default class IdLindex extends Component {
                 </Panel>
               );
             })}
-          </Collapse>
+          </Collapse> */}
+          
         </div>
-        <div className="idlindex__actionBar">
+       
+        {/* <div className="idlindex__actionBar">
           <Select
             defaultValue="背景调查表"
             style={{ width: 300 ,marginRight:10}}
@@ -179,7 +181,7 @@ export default class IdLindex extends Component {
             <Option value="T5">T5</Option>
             <Option value="T6">T6</Option>
           </Select>
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -197,14 +197,14 @@ class JobSeeker extends Component {
                 FamOneRelation: values.FamOneRelation, //关系
                 FamOnePosition: values.FamOnePosition, //职务
                 FamOneComAndAdd: values.FamOneComAndAdd, //公司名称及地址
-                LatestEndTime: values.LatestEndTime, //电话 有问题
+                FamOneTel: values.FamOneTel, //电话 
                 FamOneBirthDate: values.FamOneBirthDate, //出生年月
 
                 FamToName: values.FamToName, //姓名
                 FamToRelation: values.FamToRelation, //关系
                 FamToPosition: values.FamToPosition, //职务
                 FamToComAndAdd: values.FamToComAndAdd, //公司名称及地址
-                LatestEndTime: values.LatestEndTime, //电话有问题
+                FamToTel: values.FamToTel, //电话
                 FamToBirthDate: values.FamToBirthDate, //出生年月
                 // 专业培训
                 LatestTrainingDate: values.LatestTrainingDate, //最近专业培训开始日期
@@ -244,10 +244,10 @@ class JobSeeker extends Component {
   hanleMoveTo = id => {
     const moveTo = new MoveTo({
       duration: 300,
-      tolerance: 0,
+      tolerance: 195,
       container: document.querySelector('.job-seeker__informnation')
     });
-    // console.log(id);
+    console.log(id);
     const tempid = document.getElementById(id);
     moveTo.move(tempid);
   };
@@ -623,7 +623,7 @@ class JobSeeker extends Component {
               {getFieldDecorator('FamOneComAndAdd', {})(<Input />)}
             </Form.Item>
             <Form.Item label="电话/TelPhone" {...formItemLayout2}>
-              {getFieldDecorator('familyOneTel', {})(<Input />)}
+              {getFieldDecorator('FamOneTel', {})(<Input />)}
             </Form.Item>
             <Form.Item label="出生年月/birthOfDate" {...formItemLayout2}>
               {getFieldDecorator('FamOneBirthDate', {})(<Input />)}
@@ -644,7 +644,7 @@ class JobSeeker extends Component {
               {getFieldDecorator('FamToComAndAdd', {})(<Input />)}
             </Form.Item>
             <Form.Item label="电话/TelPhone" {...formItemLayout2}>
-              {getFieldDecorator('familyTwoTel', {})(<Input />)}
+              {getFieldDecorator('FamToTel', {})(<Input />)}
             </Form.Item>
             <Form.Item label="出生年月/birthOfDate" {...formItemLayout2}>
               {getFieldDecorator('FamToBirthDate', {})(<Input />)}
