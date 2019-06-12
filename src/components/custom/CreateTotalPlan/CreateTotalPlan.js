@@ -1,5 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
+import SelectPersonFirstP from '../SelectPersonFirstP';
 import { Button, Popconfirm, message, Spin, Progress, Modal, notification, Icon } from 'antd';
 import http from 'Util20/api';
 import './CreateTotalPlan.less';
@@ -12,6 +13,9 @@ const id = 611075833524;
 class CreateTotalPlan extends React.Component {
   state = {
     loading: false,
+    visible: false, //模态框开启和关闭
+    record: {},
+    modalDestroyState: false, //模态框关闭时是否保存之前的状态 flase保存
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
@@ -144,6 +148,12 @@ class CreateTotalPlan extends React.Component {
     message.success('操作成功');
     this.tableDataRef.handleRefresh();
   };
+  selectPeopleSendEmail = (record) => {
+    this.setState({
+      visible: true,
+      record: record
+    })
+  }
 
   renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
     return (
@@ -154,14 +164,23 @@ class CreateTotalPlan extends React.Component {
         >
           <Button>生成计划人员名单</Button>
         </Popconfirm>
-        <Popconfirm
+        {/* <Popconfirm
           title="您确定要操作吗？"
-          onConfirm={() => this.handleSeed(dataSource, selectedRowKeys)}
+          onConfirm={() => this.selectPeopleSendEmail()}
         >
           <Button>发送通知</Button>
-        </Popconfirm>
+        </Popconfirm> */}
+        {/* <Button onClick={this.selectPeopleSendEmail}>发送通知</Button> */}
       </React.Fragment>
     );
+  };
+
+  handleCancel = (e = false) => {
+    console.log(e)
+    this.setState({
+      visible: false,
+      modalDestroyState: e
+    });
   };
 
   render() {
@@ -171,13 +190,22 @@ class CreateTotalPlan extends React.Component {
         <div style={{ height: '100vh' }}>
           <TableData
             {...this.props}
+            hasBeBtns
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             customRowBtns={[
+              // (record, btnSize) => {
+              //   return <Button size={btnSize}>人员名单</Button>;
+              // },
               (record, btnSize) => {
-                return <Button size={btnSize}>人员名单</Button>;
-              }
+                return <Button size={btnSize}
+                  onClick={() => {
+                    console.log('selectPeopleSendEmail-record', record)
+                    this.selectPeopleSendEmail(record)
+                  }}
+                >发送通知</Button>;
+              },
             ]}
           />
           <Modal
@@ -196,6 +224,16 @@ class CreateTotalPlan extends React.Component {
             {this.renderTaskProgress()}
           </Modal>
         </div>
+        <Modal
+          title="选择人员"
+          width="100%"
+          visible={this.state.visible}
+          onCancel={()=>this.handleCancel(false)}
+          destroyOnClose={this.state.modalDestroyState}
+          okButtonProps={{ disabled: true }}
+        >
+          <SelectPersonFirstP record={this.state.record} handleCancel={(e)=>this.handleCancel(e)} />
+        </Modal>
       </Spin>
     );
   }
