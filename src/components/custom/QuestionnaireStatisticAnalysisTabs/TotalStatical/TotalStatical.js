@@ -16,7 +16,7 @@ class TotalStatical extends Component {
       queryName: '',
       queryQuestions: [],
       answerData: [],
-      queryQuestionsGroup:[],
+      queryQuestionsGroup: [],
       data: []
     };
   }
@@ -35,10 +35,12 @@ class TotalStatical extends Component {
     },
     {
       title: '小计',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
+      width:100,
     },
     {
       title: '比例',
+      width:100,
       dataIndex: 'percentage',
       render: (value, record, index) => {
         if (record.optionContent === '本题有效填写人次') {
@@ -96,8 +98,8 @@ class TotalStatical extends Component {
     // 根据好多条试题的ID 去查找好所有试题ID下面对应的试题选项使用到了cmswhere语句。question_id in ('','',)
     this.getOptionsTableData(cmsString);
   };
- // 613413052304 qesOptionAnwserGroupbyperson
-  getAmountOfqesOptionAnwserGroupbyperson = async queryId =>{
+  // 613413052304 qesOptionAnwserGroupbyperson
+  getAmountOfqesOptionAnwserGroupbyperson = async queryId => {
     let res;
     try {
       res = await http().getTable({
@@ -107,9 +109,9 @@ class TotalStatical extends Component {
     } catch (err) {
       console.error(err.message);
     }
-    console.log('qesOptionAnwserGroupbyperson',res.data);
-    this.setState({queryQuestionsGroup : res.data});
-  }
+    console.log('qesOptionAnwserGroupbyperson', res.data);
+    this.setState({ queryQuestionsGroup: res.data });
+  };
 
   // 获取问题的选项
   getOptionsTableData = async cstring => {
@@ -131,7 +133,7 @@ class TotalStatical extends Component {
       if (!tempDataItem) {
         data.push({
           title: item.question_topic,
-          question_id:item.question_id,
+          question_id: item.question_id,
           table: {
             dataSource: [
               {
@@ -148,22 +150,20 @@ class TotalStatical extends Component {
         });
       }
     });
-   
-      
-     
+
     data.forEach(dataItem => {
       let total = 0;
       dataItem.table.dataSource.forEach(record => {
-
         total += record.amount;
       });
       dataItem.table.dataSource.forEach(record => {
         record.total = total;
       });
-     const queryQuestionsGroup=this.state.queryQuestionsGroup;
+      const queryQuestionsGroup = this.state.queryQuestionsGroup;
 
-     const rt= queryQuestionsGroup.find(
-        queryQuestionsGroupItem => dataItem.question_id === queryQuestionsGroupItem.question_id
+      const rt = queryQuestionsGroup.find(
+        queryQuestionsGroupItem =>
+          dataItem.question_id === queryQuestionsGroupItem.question_id
       );
 
       dataItem.table.dataSource.push({
@@ -235,7 +235,7 @@ class TotalStatical extends Component {
     domtoimage
       .toPng(dom)
       .then(function(imgDataURL) {
-        const pdf = new jsPDF('p','px');
+        const pdf = new jsPDF('p', 'px');
         pdf.addImage(imgDataURL, 'PNG', 0, 0);
         pdf.save(queryName + '.pdf');
       })
@@ -306,22 +306,15 @@ class TotalStatical extends Component {
             {this.renderCommonChart()}
             {this.renderAnswerChart()}
           </div>
-          <Button
-              className="total-statical__btn"
+          <div className="total-statical__btn">
+            <Button
               size="small"
               type="primary"
               onClick={this.handleExportImgBtnClick}
             >
               导出 PNG
             </Button>
-            {/* <Button
-              className="total-statical__main__btn"
-              type="primary"
-              size="small"
-              onClick={this.hanldeExportPdf}
-            >
-              导出为PDF
-            </Button> */}
+          </div>
         </div>
       </React.Fragment>
     );
