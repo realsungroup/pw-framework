@@ -3,6 +3,7 @@ import { TableData } from '../../common/loadableCommon';
 import { Button, Popconfirm, message, Spin, Tabs } from 'antd';
 import http from 'Util20/api';
 import { Link } from 'react-router-dom';
+import { getItem } from 'Util20/util';
 
 const TabPane = Tabs.TabPane;
 /**
@@ -12,6 +13,32 @@ class FiscalYearPlan extends React.Component {
   state = {
     loading: false
   };
+  async componentDidMount() {
+    let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
+    let userinfo = JSON.parse(getItem('userInfo')).UserInfo;
+    let grouplist = userinfo.GroupList.replace('(', '')
+      .replace(')', '')
+      .replace(/'/g, '');
+    let listArr = grouplist.split(', ');
+    let tag = false;
+    //判断当前用户是否可以创建财年计划
+    createableGroups.forEach(element => {
+      if (listArr.includes(element)) {
+        tag = true;
+      }
+    });
+    if (tag) {
+      let res;
+      try {
+        res = await http().addRecords({
+          resid: '609615842690', // 表资源 id
+          data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
+          isEditOrAdd: true, // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
+          uniquecolumns: 'C3_609616006519,C3_609615869581,C3_609615909659' //分公司，财年，制定者
+        });
+      } catch (error) {}
+    }
+  }
 
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
@@ -67,7 +94,6 @@ class FiscalYearPlan extends React.Component {
             >
               <TableData
                 resid={609883172764}
-                addText="创建财年计划"
                 actionBarWidth={450}
                 customRowBtns={[
                   (record, btnSize) => {
@@ -118,7 +144,8 @@ class FiscalYearPlan extends React.Component {
                 ]}
                 hasBeBtns={true}
                 hasRowView={false}
-                hasRowDelete={true}
+                hasAdd={false}
+                hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
@@ -135,7 +162,7 @@ class FiscalYearPlan extends React.Component {
                 hasBeBtns={true}
                 hasAdd={false}
                 hasRowView={false}
-                hasRowDelete={true}
+                hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}

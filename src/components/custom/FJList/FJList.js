@@ -205,7 +205,7 @@ class FJList extends React.Component {
 
   //获取课程表
   async getSubbData(key) {
-    let cmswhere = '';
+    let cmswhere = `C3_609845305743 = '${this.state.totalData.C3_609615869581}' `;
     if (this.state.levelSelect) {
       cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }

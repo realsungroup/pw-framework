@@ -1,7 +1,9 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin } from 'antd';
+import SelectPersonFirstP from '../SelectPersonFirstP';
+import { Button, Popconfirm, message, Spin, Progress, Modal, notification, Icon } from 'antd';
 import http from 'Util20/api';
+import './CreateTotalPlan.less';
 
 const id = 611075833524;
 
@@ -10,7 +12,101 @@ const id = 611075833524;
  */
 class CreateTotalPlan extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    visible: false, //模态框开启和关闭
+    record: {},
+    modalDestroyState: false, //模态框关闭时是否保存之前的状态 flase保存
+    totalIndex: 0, // 任务总进度
+    curIndex: 0, // 当前任务进度
+    isTaskComplete: false, // 当前任务是否已完成
+    isShowModal: false
+  };
+   async componentDidMount(){
+    let res;
+    try {
+      res = await http().getAutoImportStatus();
+    } catch (err) {
+      if (err.message === '没有正在运行的任务')
+      {
+        return;
+      }
+      return message.error(err.message);
+    }
+    if (res.error !== 0) {
+      return message.error(res.message);
+    }
+    // 当前任务已完成
+    if (res.IsComplete) {
+      notification.open({
+        message: '通知',
+        description:
+          '当前财年计划人员名单已生成完毕，请注意查看！',
+        icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+        duration: null
+      });
+      this.setState({
+        curIndex: this.state.totalIndex,
+        isTaskComplete:true
+      });
+    } 
+  }
+  componentWillUnmount = () => {
+    this.timer = null;
+    this.getTaskInfo = null;
+  };
+  getTaskInfo = async () => {
+    let res;
+    try {
+      res = await http().getAutoImportStatus();
+    } catch (err) {
+      return message.error(err.message);
+    }
+    if (res.error !== 0) {
+      return message.error(res.message);
+    }
+    // 当前任务已完成
+    if (res.IsComplete) {
+      notification.open({
+        message: '通知',
+        description:
+          '当前财年计划人员名单已生成完毕，请注意查看！',
+        icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+        duration: null
+      });
+      this.setState({
+        curIndex: this.state.totalIndex,
+        isTaskComplete:true
+      });
+      // 当前任务未完成
+    } else {
+      this.setState({
+        totalIndex: res.data.Total,
+        curIndex: res.data.Index,
+        isTaskComplete: false
+      });
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+    }
+  };
+  renderTaskProgress = () => {
+    const { totalIndex, curIndex } = this.state;
+    let percent = 0;   
+    if (this.state.isTaskComplete){
+      percent =100
+    } else if (totalIndex) {
+      percent = Math.floor((curIndex / totalIndex) * 100);
+    }
+    return (
+      <div className="total-plan__seed_personnel">
+        <Progress width={240} type="circle" percent={percent} />
+        <div style={{ marginTop: 20 }}>
+          {curIndex} / {totalIndex}
+        </div>
+      </div>
+    );
   };
 
   handleClick = async () => {
@@ -22,11 +118,11 @@ class CreateTotalPlan extends React.Component {
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
-      return message.error(err.message);
+      message.error('正在生成人员名单，请耐心等候');
     }
-    this.setState({ loading: false });
-    message.success('操作成功');
-    this.tableDataRef.handleRefresh();
+    this.setState({isShowModal:true});
+    this.getTaskInfo();
+    //this.tableDataRef.handleRefresh();
   };
 
   handleSeed = async (dataSource, selectedRowKeys) => {
@@ -53,6 +149,12 @@ class CreateTotalPlan extends React.Component {
     message.success('操作成功');
     this.tableDataRef.handleRefresh();
   };
+  selectPeopleSendEmail = (record) => {
+    this.setState({
+      visible: true,
+      record: record
+    })
+  }
 
   renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
     return (
@@ -63,14 +165,23 @@ class CreateTotalPlan extends React.Component {
         >
           <Button>生成计划人员名单</Button>
         </Popconfirm>
-        <Popconfirm
+        {/* <Popconfirm
           title="您确定要操作吗？"
-          onConfirm={() => this.handleSeed(dataSource, selectedRowKeys)}
+          onConfirm={() => this.selectPeopleSendEmail()}
         >
           <Button>发送通知</Button>
-        </Popconfirm>
+        </Popconfirm> */}
+        {/* <Button onClick={this.selectPeopleSendEmail}>发送通知</Button> */}
       </React.Fragment>
     );
+  };
+
+  handleCancel = (e = false) => {
+    console.log(e)
+    this.setState({
+      visible: false,
+      modalDestroyState: e
+    });
   };
 
   render() {
@@ -80,16 +191,50 @@ class CreateTotalPlan extends React.Component {
         <div style={{ height: '100vh' }}>
           <TableData
             {...this.props}
+            hasBeBtns
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             customRowBtns={[
+              // (record, btnSize) => {
+              //   return <Button size={btnSize}>人员名单</Button>;
+              // },
               (record, btnSize) => {
-                return <Button size={btnSize}>人员名单</Button>;
-              }
+                return <Button size={btnSize}
+                  onClick={() => {
+                    console.log('selectPeopleSendEmail-record', record)
+                    this.selectPeopleSendEmail(record)
+                  }}
+                >发送通知</Button>;
+              },
             ]}
           />
+          <Modal
+            title="生成人员名单"
+            visible={this.state.isShowModal}
+            okText="完成"
+            cancelText="关闭"
+            closable={false}
+            onOk={() => {
+              this.setState({ isShowModal: false });
+            }}
+            onCancel={() => {
+              this.setState({ isShowModal: false });
+            }}
+          >
+            {this.renderTaskProgress()}
+          </Modal>
         </div>
+        <Modal
+          title="选择人员"
+          width="100%"
+          visible={this.state.visible}
+          onCancel={()=>this.handleCancel(false)}
+          destroyOnClose={this.state.modalDestroyState}
+          okButtonProps={{ disabled: true }}
+        >
+          <SelectPersonFirstP record={this.state.record} handleCancel={(e)=>this.handleCancel(e)} />
+        </Modal>
       </Spin>
     );
   }
