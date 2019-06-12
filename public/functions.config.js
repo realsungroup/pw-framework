@@ -1097,13 +1097,34 @@ window[611077057050] = {
   props: {
     resid: 611077132065,
     hasAdd: true,
-    hasBeBtns: false,
+    hasBeBtns: true,
     hasModify: false,
     hasDelete: false,
     hasRowDelete: true,
     hasRowModify: true,
     hasRowView: false,
-    hasRowSelection: true
+    hasRowSelection: true,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    },
+    subTableArrProps: [
+      {
+        subTableName: '人员名单',
+        subResid: 610307713776,
+        tableProps: {
+          hasAdd: true,
+          hasModify: false,
+          hasRowDelete: true,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
+      }
+    ]
   }
 };
 
