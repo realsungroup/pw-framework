@@ -1083,6 +1083,11 @@ window[611085896611] = {
     subtractH: 220,
     // height:600,
     recordFormType: 'drawer',
+    importConfig: {
+      mode: 'fe',
+      saveState: 'added',
+      containerType: 'drawer'
+    },
     recordFormContainerProps: {
       // placement: 'bottom',
       // height: 600
