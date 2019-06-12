@@ -22,6 +22,10 @@ class CreateTotalPlan extends React.Component {
     try {
       res = await http().getAutoImportStatus();
     } catch (err) {
+      if (err.message === '没有正在运行的任务')
+      {
+        return;
+      }
       return message.error(err.message);
     }
     if (res.error !== 0) {

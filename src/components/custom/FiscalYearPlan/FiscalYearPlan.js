@@ -94,7 +94,6 @@ class FiscalYearPlan extends React.Component {
             >
               <TableData
                 resid={609883172764}
-                addText="创建财年计划"
                 actionBarWidth={450}
                 customRowBtns={[
                   (record, btnSize) => {
@@ -145,6 +144,7 @@ class FiscalYearPlan extends React.Component {
                 ]}
                 hasBeBtns={true}
                 hasRowView={false}
+                hasAdd={false}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
