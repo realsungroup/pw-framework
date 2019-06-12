@@ -18,7 +18,7 @@
 
 ```jsx
 componentDidMount = () => {
-  window.parent.pwCallback.modifyTitle('设置问卷');
+  window.parent.pwCallback && window.parent.pwCallback.modifyTitle('设置问卷');
 };
 ```
 
@@ -29,7 +29,7 @@ componentDidMount = () => {
   // 监听父窗口发送的 message 事件
   window.addEventListener(
     'message',
-    (e) => {
+    e => {
       if (!e || !e.source || !e.source.pwCallback) {
         return;
       }
@@ -44,5 +44,5 @@ componentDidMount = () => {
     },
     false
   );
-}
+};
 ```

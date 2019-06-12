@@ -8,11 +8,12 @@ import {
   DatePicker,
   Radio,
   Button,
-  Select
+  Select,
+  Modal
 } from 'antd';
 import MoveTo from 'moveto';
 import http from 'Util20/api';
-import ApplyInformantion from '../ApplayInformnation'
+import ApplyInformantion from '../ApplayInformnation';
 import TextArea from 'antd/lib/input/TextArea';
 const { Option } = Select;
 const MenuList = [
@@ -113,14 +114,12 @@ class JobSeeker extends Component {
     super(props);
     this.state = {};
   }
-  // 提交的值
-  handleClick = e => {
-    // e.preventDefault();
+  // 确认提交申请
+  confirmAppaly=()=>{
     this.props.form.validateFields((err, values) => {
       // console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
       console.log('所有值', values);
       if (!err) {
-        
         let res;
         try {
           res = http().addRecords({
@@ -158,7 +157,7 @@ class JobSeeker extends Component {
                 ThreeEdStartTime: values.ThreeEddate[0].format('YYYY-MM-DD'), //第三教育开始时间
                 ThreeEdEndTime: values.ThreeEddate[1].format('YYYY-MM-DD'), //第三教育结束时间
                 ThreeEdSchool: values.ThreeEdSchool, //第三学校名称
-                ThreeEdMajor: values.ThreeEdMajor,//第三专业名称
+                ThreeEdMajor: values.ThreeEdMajor, //第三专业名称
                 ThreeEdDegree: values.ThreeEdDegree, //第三学位
                 ThreeReference: values.ThreeReference, //第三教育证明人
                 ThreeReferenceTel: values.ThreeReferenceTel, //第三教育证明人电话
@@ -177,7 +176,9 @@ class JobSeeker extends Component {
                 FirstReference: values.FirstReference, //第一教育证明人
                 FirstReferenceTel: values.FirstReferenceTel, //第一教育证明人电话
                 //工作经历
-                LatestWorkStartTime: values.LatestWorkdate[0].format('YYY-MM-DD'), //最近工作开始时间
+                LatestWorkStartTime: values.LatestWorkdate[0].format(
+                  'YYY-MM-DD'
+                ), //最近工作开始时间
                 LatestWorkEndTime: values.LatestWorkdate[1].format('YYY-MM-DD'), //最近工作结束时间
                 LatestComName: values.LatestComName, //最近工作公司名称
                 LatestRank: values.LatestRank, //最近工作公司职位
@@ -197,7 +198,7 @@ class JobSeeker extends Component {
                 FamOneRelation: values.FamOneRelation, //关系
                 FamOnePosition: values.FamOnePosition, //职务
                 FamOneComAndAdd: values.FamOneComAndAdd, //公司名称及地址
-                FamOneTel: values.FamOneTel, //电话 
+                FamOneTel: values.FamOneTel, //电话
                 FamOneBirthDate: values.FamOneBirthDate, //出生年月
 
                 FamToName: values.FamToName, //姓名
@@ -213,7 +214,7 @@ class JobSeeker extends Component {
                 LatestTrainingCourese: values.LatestTrainingCourese, //最近培训课程
                 LatestTrainingQualification: values.LatestTrainingQualification, //最近培训获得证书
                 LatestTrainingReference: values.LatestTrainingReference, //最近培训证明人
-                LatestTrainingRefTel: values.LatestTrainingRefTel,//最近培训证明人电话
+                LatestTrainingRefTel: values.LatestTrainingRefTel, //最近培训证明人电话
                 //相关技能
                 EnCET: values.EnCET, //英语等级
                 Writing: values.Writing, //写作
@@ -237,8 +238,25 @@ class JobSeeker extends Component {
           console.error(err.message);
         }
         console.log(res);
+      }else{
+        Modal.warning({
+          title:'提示',
+          content:'请确认所有必填项都填写完毕，带红色*标志的都是必填项',
+        })
       }
     });
+  }
+  // 提交的值
+  handleClick = e => {
+    // e.preventDefault();
+    Modal.confirm({
+      title:'确认要提交吗?',
+      content:'请您最后再次确认一遍再提交',
+      onOk:()=>{
+        this.confirmAppaly();
+      }
+    })
+    
   };
   // 移动
   hanleMoveTo = id => {
@@ -822,13 +840,15 @@ class JobSeeker extends Component {
             >
               {getFieldDecorator('OtherAgreement', {})(<TextArea />)}
             </Form.Item>
-            <Button type="primary" onClick={this.handleClick}>
-              确认申请
-            </Button>
+            <Form.Item style={{textAlign:'center'}}>
+              <Button type="primary" onClick={this.handleClick}>
+                确认申请
+              </Button>
+            </Form.Item>
           </Form>
         </div>
-      
-      {/* <ApplyInformantion hasSubmit={true}></ApplyInformantion> */}
+
+        {/* <ApplyInformantion hasSubmit={true}></ApplyInformantion> */}
       </div>
     );
   }

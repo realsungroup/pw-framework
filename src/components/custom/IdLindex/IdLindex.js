@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
 import { List, Avatar, Collapse, Select } from 'antd';
-import { Layout } from 'antd';
+import { Tabs } from 'antd';
 import http from '../../../util20/api';
 import ApplayInformnation from '../ApplayInformnation';
-const { Panel } = Collapse;
-const { Option } = Select;
+// const { Panel } = Collapse;
+// const { Option } = Select;
+const { TabPane } = Tabs;
 const personList = [
   {
     id: `4113229874637y1`,
@@ -29,7 +30,7 @@ const personList = [
     formbelongs: [
       {
         formID: `work1`,
-        formName: '工作申请表',
+        formName: '工作申请表'
       },
       {
         formID: `assments`,
@@ -104,29 +105,36 @@ export default class IdLindex extends Component {
   };
   // 根据不同表格显示不同表格的内容
 
-  renderPanelContent =(name)=>{
-     switch(name){
-       case '工作申请表':{
-         return <ApplayInformnation hasSubmit={false} initialValues={{ChName:'袁巧云',EnName:'Cindy'}}/>
-       }
-       case '面试评估表':{
-         return <div>面试评估表的内容
-           <h1>1111</h1>
-           <span>2222</span>
-         </div>
-       }
-       case '背景调查表':{
-        return <div>背景调查表的内容</div>
-      }
-     }
-  }
+  // renderPanelContent = name => {
+  //   switch (name) {
+  //     case '工作申请表': {
+  //       return (
+  //         <ApplayInformnation
+  //           hasSubmit={false}
+  //           initialValues={{ ChName: '袁巧云', EnName: 'Cindy' }}
+  //         />
+  //       );
+  //     }
+  //     case '面试评估表': {
+  //       return (
+  //         <div>
+  //           面试评估表的内容
+  //           <h1>1111</h1>
+  //           <span>2222</span>
+  //         </div>
+  //       );
+  //     }
+  //     case '背景调查表': {
+  //       return <div>背景调查表的内容</div>;
+  //     }
+  //   }
+  // };
   render() {
     const { personList, currentPersonInfo } = this.state;
     console.log({ personList: personList });
     console.log({ currentPersonInfo: currentPersonInfo });
     return (
       <div className="idlindex">
-        <h4 className="idlindex__title">候选人名单</h4>
         <div className="idlindex__person-list">
           <List
             className="idlindex-left"
@@ -158,9 +166,19 @@ export default class IdLindex extends Component {
               );
             })}
           </Collapse> */}
-          
+          <Tabs defaultActiveKey="工作申请表" >
+            <TabPane tab="工作申请表" key="工作申请表">
+           <ApplayInformnation hasSubmit={false}></ApplayInformnation>
+            </TabPane>
+            <TabPane tab="面试评估表" key="面试评估表">
+              Content of Tab Pane 2
+            </TabPane>
+            <TabPane tab="背景调查表" key="背景调查表">
+              Content of Tab Pane 3
+            </TabPane>
+          </Tabs>
         </div>
-       
+
         {/* <div className="idlindex__actionBar">
           <Select
             defaultValue="背景调查表"

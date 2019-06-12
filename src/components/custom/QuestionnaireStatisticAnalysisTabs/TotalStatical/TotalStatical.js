@@ -221,7 +221,8 @@ class TotalStatical extends Component {
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png');
-        download(imgDataURL, queryName);
+        // download(imgDataURL, queryName);
+        window.open(imgDataURL);
       }
     );
   };
