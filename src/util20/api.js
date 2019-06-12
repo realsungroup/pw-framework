@@ -300,6 +300,15 @@ http.createApi('runAutoImport', {
   url: '/api/Resource/RunAutoImport'
 });
 
+/**
+ * 获取任务进度
+ * 
+ */
+http.createApi('getAutoImportStatus', {
+  method: 'get',
+  url: '/api/Resource/GetAutoImportStatus'
+});
+
 /*
  * 获取所有 app
  * 参数：{ parentresids, getresourcedata, getrecordcount, cmswhere }
