@@ -1048,7 +1048,9 @@ window['问卷统计分析'] = {
 window[610812799351] = {
   name: 'FiscalYearPlan',
   title: '财年计划',
-  props: {}
+  props: {
+    CreateableGroups:['611769739518']
+  }
 };
 
 //类别管理611054119826
