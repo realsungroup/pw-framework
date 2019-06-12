@@ -83,7 +83,7 @@ class ApplayInformnation extends Component {
     const moveTo = new MoveTo({
       duration: 300,
       tolerance: 0,
-      container: document.querySelector('.job-seeker__informnation')
+      container: document.querySelector('.applay__informnation')
     });
     // console.log(id);
     const tempid = document.getElementById(id);
@@ -220,7 +220,7 @@ class ApplayInformnation extends Component {
   // 确认修改并打印
   handleModifyAndPrint = () => {
     // 打印
-    const newEle = document.querySelector('.job-seeker__informnation')
+    const newEle = document.querySelector('.applay__informnation')
       .innerHTML;
     var oldstr = document.body.innerHTML; //保存当前页面
     document.body.innerHTML = newEle; //吧当前页面内容替换为要打印的内容
@@ -232,9 +232,9 @@ class ApplayInformnation extends Component {
     const { getFieldDecorator } = this.props.form;
     const { initialValues } = this.props;
     return (
-      <div className="job-seeker__informnation">
+      <div className="applay__informnation">
         <Form style={{ width: '90%', margin: '0 auto' }}>
-          <h3 className="job-seeker__informnation-title" id="个人资料">
+          <h3 className="applay__informnation-title" id="个人资料">
             个人资料/Personal Information
           </h3>
           <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
@@ -430,7 +430,7 @@ class ApplayInformnation extends Component {
               </Radio.Group>
             )}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="教育背景">
+          <h3 className="applay__informnation-title" id="教育背景">
             教育背景/(请从最近的开始写起)Education Background (Please start from
             latest education to middle school)
           </h3>
@@ -506,7 +506,7 @@ class ApplayInformnation extends Component {
           <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
             {getFieldDecorator('firstEdRefTel', {})(<Input />)}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="工作经历">
+          <h3 className="applay__informnation-title" id="工作经历">
             工作经历(请从最近的写起)/Working History (Please start with latest
             one)
           </h3>
@@ -549,7 +549,7 @@ class ApplayInformnation extends Component {
           <Form.Item label="证明人电话/Reference phone" {...formItemLayout2}>
             {getFieldDecorator('threeWorkRefTel', {})(<Input />)}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="家庭成员关系">
+          <h3 className="applay__informnation-title" id="家庭成员关系">
             家庭成员及主要社会关系/Family Members and Mainly Social Relationship
           </h3>
           <Form.Item label="姓名/Name" {...formItemLayout2}>
@@ -588,7 +588,7 @@ class ApplayInformnation extends Component {
           <Form.Item label="出生年月/birthOfDate" {...formItemLayout2}>
             {getFieldDecorator('familyTwoBirthDate', {})(<Input />)}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="专业培训">
+          <h3 className="applay__informnation-title" id="专业培训">
             专业培训
           </h3>
           <Form.Item label="日期/post period from to " {...formItemLayout2}>
@@ -609,7 +609,7 @@ class ApplayInformnation extends Component {
           <Form.Item label="证明人电话/Reference phone" {...formItemLayout2}>
             {getFieldDecorator('latesttrainingRefTel', {})(<Input />)}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="相关技能">
+          <h3 className="applay__informnation-title" id="相关技能">
             相关技能/Related Qualification / Skill (If any)
           </h3>
           <Form.Item label="语言能力/languageAbility" {...formItemLayout2}>
@@ -700,7 +700,7 @@ class ApplayInformnation extends Component {
           <Form.Item label="其他技能/other skills">
             {getFieldDecorator('otherSkills', {})(<Input />)}
           </Form.Item>
-          <h3 className="job-seeker__informnation-title" id="其他">
+          <h3 className="applay__informnation-title" id="其他">
             其他/other informnation
           </h3>
           <Form.Item label="身高cm/height" {...formItemLayout2}>

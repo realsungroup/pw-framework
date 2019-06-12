@@ -497,7 +497,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         <TableData
           resid={608822905547}
           dataMode="sub"
-          subresid={608828418560}
+          subresid={613576714181}
           hostrecid={hostrecid}
           // width={'98%'}
           height={420}

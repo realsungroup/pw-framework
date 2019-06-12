@@ -159,9 +159,8 @@ class Login extends React.Component {
         return message.error(res.ErrorMsg);
       }
       const { from } = this.props.location.state || { from: { pathname: '/' } };
-      
-      window.location.href = from.pathname;
 
+      window.location.href = from.pathname + from.search;
     });
   };
 
