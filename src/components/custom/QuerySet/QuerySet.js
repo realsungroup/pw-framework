@@ -996,7 +996,7 @@ class QuerySet extends Component {
         <RadioGroup key={item.question_id}>
           {item.subdata.map(option => {
             return (
-              <div key={option.option_id} style={{ marginTop: 15 }}>
+              <div key={option.option_id} style={{ marginTop: 15 }} className='choice__wrap'>
                 {option.option_write == '0' ? (
                   <Radio value={option.option_content}>
                     {option.option_content}

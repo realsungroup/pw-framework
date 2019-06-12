@@ -78,7 +78,7 @@ class TotalStatical extends Component {
     let QuestionsData;
     try {
       QuestionsData = await http().getTable({
-        resid: 608828418560,
+        resid: 613576714181,
         cmswhere: `query_id = ${id}`
       });
     } catch (err) {
@@ -221,7 +221,8 @@ class TotalStatical extends Component {
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png');
-        download(imgDataURL, queryName);
+        // download(imgDataURL, queryName);
+        window.open(imgDataURL);
       }
     );
   };
