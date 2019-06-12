@@ -82,6 +82,7 @@ class CreateTotalPlan extends React.Component {
       this.setState({
         totalIndex: res.data.Total,
         curIndex: res.data.Index,
+        isTaskComplete: false
       });
       this.timer = setTimeout(async () => {
         if (this.getTaskInfo) {
