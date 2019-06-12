@@ -8,6 +8,17 @@ import domtoimage from 'dom-to-image';
 import { async } from 'q';
 
 const TabPane = Tabs.TabPane;
+const isChrome =()=>{
+  const userAgent = navigator.userAgent.toLowerCase();
+  // if(userAgent.indexOf('chrome')!==-1){
+  //   //说明找到了 就是谷歌浏览器
+  //   return true;
+  // }else{
+  //   return false;
+  // }
+  // 
+  return userAgent.indexOf('chrome')!==-1;
+}
 
 class TotalStatical extends Component {
   constructor(props) {
@@ -221,8 +232,12 @@ class TotalStatical extends Component {
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png');
-        // download(imgDataURL, queryName);
-        window.open(imgDataURL);
+        if(isChrome){
+          download(imgDataURL, queryName);
+        }else{
+          window.open(imgDataURL);
+        } 
+        
       }
     );
   };
