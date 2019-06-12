@@ -617,9 +617,12 @@ class TableData extends React.Component {
       fileType,
       baseURL,
       downloadBaseURL,
-      dblinkname
+      dblinkname,
+      dataMode
+     
     } = this.props;
-
+    //console.log("handleDownload");
+    //console.log(this.props);
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
     // 请求文件下载地址的基地址
@@ -630,11 +633,24 @@ class TableData extends React.Component {
     const downloadBaseURL_ =
       downloadBaseURL || window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
 
+     let hostresid=this.props.resid;
+     let hostrecid=this.props.hostrecid;
+      
+    if (dataMode === 'main') {
+      hostresid = "";
+
+      hostrecid = "";
+
+    }
+
+
     await downloadFile(
       requestBaseURL,
       downloadBaseURL_,
       downloadFileName || title,
       this._id,
+      hostresid,
+      hostrecid,
       mergedCmsWhere,
       fileType,
       dblinkname
@@ -1504,8 +1520,10 @@ class TableData extends React.Component {
       importConfig,
       bordered,
       actionBarExtra,
-      headerExtra
+      headerExtra,
+     
     } = this.props;
+    
     const {
       pagination,
       dataSource,
@@ -1522,6 +1540,7 @@ class TableData extends React.Component {
     return (
       <PwTable
         title={title}
+       
         editingKey={editingKey}
         components={components}
         pagination={pagination}
