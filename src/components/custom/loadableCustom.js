@@ -342,3 +342,11 @@ export const ApplayInformnation = Loadable({
     return minLoading;
   }
 });
+
+//
+export const SelectPersonFirstP = Loadable({
+  loader: () => import('./SelectPersonFirstP'),
+  loading() {
+    return minLoading;
+  }
+});
