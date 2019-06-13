@@ -1262,6 +1262,34 @@ window[607168405062] = {
           height: 500,
           hasRowView: false
         }
+      },
+      {
+        subTableName: '通过人员',
+        subResid: 610297347149,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
+      },
+      {
+        subTableName: '未参加人员',
+        subResid: 610299723125,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
       }
     ]
   }
