@@ -19,7 +19,6 @@ import FJList from '../FJList';
 import CreatePlan from '../CreatePlan';
 import './FiscalYearPlan.less';
 
-const TabPane = Tabs.TabPane;
 const { Step } = Steps;
 /**
  * 财年计划
@@ -143,7 +142,7 @@ class FiscalYearPlan extends React.Component {
               </div>
             }
             renderItem={(item, i) => {
-              let branchCompany = item === 'WX' ? '无锡' : '上海';
+              let branchCompany = item.C3_609616006519 === 'WX' ? '无锡' : '上海';
               return (
                 <List.Item
                   style={{ cursor: 'pointer' }}
@@ -171,21 +170,6 @@ class FiscalYearPlan extends React.Component {
                       <div className="plan_infos_item">HR：{item.C3_609874947298}</div>
                     </div>
                   </Card>
-                  {/* <div
-                    style={{
-                      display: 'flex',
-                      flex: 1,
-                      flexDirection: 'row',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ display: 'flex', flex: 1 }}>
-                      <Radio checked={item.check} />
-                    </div>
-                    <div>
-                      {item.C3_609616006519}
-                    </div>
-                  </div> */}
                 </List.Item >
               );
             }}
@@ -290,6 +274,7 @@ class FiscalYearPlan extends React.Component {
               hasModify={false}
               actionBarFixed={true}
               hasRowModify={false}
+              cmswhere={ `C3_609616805633 =  '${this.state.selectedPlan.C3_609616660273}'`}
               actionBarExtra={(dataSource, selectedRowKeys) => {
                 return (
                   <Button
@@ -391,126 +376,6 @@ class FiscalYearPlan extends React.Component {
           />
         </Steps>
         {page}
-        {/* <div style={{ height: '100vh' }}>
-          <Tabs
-            defaultActiveKey="1"
-            style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
-          >
-            <TabPane
-              tab="待提交"
-              key="1"
-              style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-            >
-              <TableData
-                resid={609883172764}
-                actionBarWidth={450}
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Link
-                        to={{
-                          pathname: '/fnmodule',
-                          search: `?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=${
-                            record.C3_609616660273
-                          }`
-                        }}
-                        target="_self"
-                      >
-                        <Button size={btnSize}>制定计划</Button>
-                      </Link>
-                    );
-                  }
-                ]}
-                subTableArrProps={[
-                  {
-                    subTableName: '审批记录',
-                    subResid: 611144001666,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  },
-                  {
-                    subTableName: '计划详情',
-                    subResid: 611315248461,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  }
-                ]}
-                hasBeBtns={true}
-                hasRowView={false}
-                hasAdd={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-              />
-            </TabPane>
-            <TabPane
-              tab="已提交"
-              key="2"
-              style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-            >
-              <TableData
-                resid={611165813996}
-                hasBeBtns={true}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                subTableArrProps={[
-                  {
-                    subTableName: '审批记录',
-                    subResid: 611144001666,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  },
-                  {
-                    subTableName: '计划详情',
-                    subResid: 611315248461,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  }
-                ]}
-              />
-            </TabPane>
-          </Tabs>
-        </div>
-       */}
       </Spin>
     );
   }

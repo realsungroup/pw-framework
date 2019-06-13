@@ -106,7 +106,7 @@ class TableData extends React.Component {
     ) {
       this.setState({ loading: true });
       this.initVariables(nextProps);
-      await this.getData(nextProps);
+      await this.getData(nextProps, nextProps.resid);
       this.setState({ loading: false });
     }
   };
@@ -161,7 +161,7 @@ class TableData extends React.Component {
     this._columns = [];
   };
 
-  getData = async props => {
+  getData = async (props, resid) => {
     const {
       hasBeBtns,
       hasAdd,
@@ -178,7 +178,7 @@ class TableData extends React.Component {
       page = pagination.current;
       pageSize = pagination.pageSize;
     }
-    await this.getTableData({ page, pageSize });
+    await this.getTableData({ page, pageSize }, resid);
 
     // 存储方式为后端储存时，才请求后端按钮
     if (storeWay !== 'fe') {
@@ -271,10 +271,10 @@ class TableData extends React.Component {
     key = this._searchValue,
     sortOrder = this._sortOrder,
     sortField = this._sortField
-  }) => {
+  }, res_id) => {
     const {
       dataMode,
-      resid,
+      //resid,
       hostrecid,
       subresid,
       cmswhere,
@@ -283,6 +283,7 @@ class TableData extends React.Component {
       baseURL,
       dblinkname
     } = this.props;
+    const resid = res_id ? res_id : this.props.resid;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 

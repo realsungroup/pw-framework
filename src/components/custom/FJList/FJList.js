@@ -62,7 +62,6 @@ class FJList extends React.Component {
     //const qsObj = qs.parse(window.location.search.substring(1));
     this.planid = this.props.planid;
     this.year = this.props.year;
-    console.log(this.planid,this.year);
     await this.totalData();
     this.getData(0, true);
     this.getLevel();
