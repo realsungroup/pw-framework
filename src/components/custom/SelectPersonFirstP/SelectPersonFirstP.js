@@ -21,10 +21,10 @@ class SelectPersonFirstP extends Component {
   // 人员表
   _personList = [];
   handleSelectPerson = personList => {
+    console.log(this.props)
     this.setState({ persons: personList });
   };
   modalClose = () => {
-    console.log(66)
     this.props.handleCancel(true)
   }
 
@@ -33,7 +33,8 @@ class SelectPersonFirstP extends Component {
     const terminalPerpleList = this.state.persons.map(e => {
       return {
         C3_613656069698: e.C3_227192472953,
-        C3_613656048223: 'Y'
+        C3_613656048223: 'Y',
+        C3_613735587559: this.props.record.C3_611070959393
       }
     })
     console.log(terminalPerpleList)

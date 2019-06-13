@@ -23,13 +23,20 @@ class PersonGradeManagement extends React.Component {
                     pathname: '/fnmodule',
                     search: `?resid=考试图表分析&recid=610653889243&type=问卷系统&title=问卷统计分析&num=${
                       record.C3_607171221170
-                    }&examTitle=${record.C3_607171220498}`
+                      }&examTitle=${record.C3_607171220498}`
                   }}
                   target="_self"
                 >
                   <Button size={btnSize}>图表分析</Button>
                 </Link>
+
               );
+            }
+            ,
+            (record, btnSize) => {
+              return (
+                <Button size={btnSize}>查看通过人数</Button>
+              )
             }
           ]}
         />
