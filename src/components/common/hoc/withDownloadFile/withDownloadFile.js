@@ -25,15 +25,21 @@ const withDownloadFile = WrappedComponent => {
       downloadBaseURL,
       fileName,
       resid,
+      hostresid,
+      hostrecid,
       cmsWhere,
       fileType = 'xls',
       dblinkname
     ) => {
       this.setState({ loading: true });
-
+      console.log("withDownloadFile");
+      console.log(hostresid);
+      console.log(hostrecid);
       this.p1 = makeCancelable(
         http({ baseURL: requestBaseURL }).exportTableData({
           resid,
+          hostresid,
+          hostrecid,
           cmswhere: cmsWhere,
           filetype: fileType,
           dblinkname
