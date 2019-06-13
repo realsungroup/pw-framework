@@ -34,52 +34,6 @@ export default class IdLindex extends Component {
       return 'idlindex__person-list__antd-y-item';
     }
   };
-  // handleSelectFormChange = value => {
-  //   const { currentPersonInfo } = this.state;
-  //   const tempcurrentPersonInfo = { ...currentPersonInfo };
-  //   const obj = {
-  //     formID: `assments`,
-  //     formName: '背景调查表'
-  //   };
-  //   tempcurrentPersonInfo.formbelongs.push(obj);
-  //   this.setState({ currentPersonInfo: tempcurrentPersonInfo });
-  // };
-  // handleAccessFormChange = value => {
-  //   const { currentPersonInfo } = this.state;
-  //   const tempcurrentPersonInfo = { ...currentPersonInfo };
-  //   const obj = {
-  //     formID: `assments`,
-  //     formName: '面试评估表'
-  //   };
-  //   tempcurrentPersonInfo.formbelongs.push(obj);
-  //   this.setState({ currentPersonInfo: tempcurrentPersonInfo });
-  // };
-  // 根据不同表格显示不同表格的内容
-
-  // renderPanelContent = name => {
-  //   switch (name) {
-  //     case '工作申请表': {
-  //       return (
-  //         <ApplayInformnation
-  //           hasSubmit={false}
-  //           initialValues={{ ChName: '袁巧云', EnName: 'Cindy' }}
-  //         />
-  //       );
-  //     }
-  //     case '面试评估表': {
-  //       return (
-  //         <div>
-  //           面试评估表的内容
-  //           <h1>1111</h1>
-  //           <span>2222</span>
-  //         </div>
-  //       );
-  //     }
-  //     case '背景调查表': {
-  //       return <div>背景调查表的内容</div>;
-  //     }
-  //   }
-  // };
 
   // 获取人员列表
   getPersonList = async () => {
@@ -97,7 +51,7 @@ export default class IdLindex extends Component {
   render() {
     const { personList, currentPersonInfo } = this.state;
     // console.log({ personList: personList });
-    // console.log({ currentPersonInfo: currentPersonInfo });
+    console.log({ currentPersonInfo: currentPersonInfo });
     return (
       <div className="idlindex">
         <div className="idlindex__person-list">
@@ -124,7 +78,7 @@ export default class IdLindex extends Component {
           <Tabs defaultActiveKey="工作申请表">
             <TabPane tab="工作申请表" key="工作申请表">
               <div className='idlindex__applayBox'>
-                <ApplayInformnation hasSubmit={false} />
+                <ApplayInformnation hasSubmit={false}  initialValue={currentPersonInfo}/>
               </div>
             </TabPane>
             <TabPane tab="面试评估表" key="面试评估表">
