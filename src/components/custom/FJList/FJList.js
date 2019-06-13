@@ -491,7 +491,7 @@ class FJList extends React.Component {
               justifyContent: 'space-around'
             }}
           >
-            <Link
+            {/* <Link
               to={{
                 pathname: '/fnmodule',
                 search:
@@ -503,7 +503,7 @@ class FJList extends React.Component {
               <Button type="primary" style={{ marginRight: '10px' }}>
                 创建计划
               </Button>
-            </Link>
+            </Link> */}
 
             <div
               style={{
