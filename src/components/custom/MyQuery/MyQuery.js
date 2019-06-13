@@ -327,7 +327,7 @@ class MyQuery extends React.Component {
           queryStatus,
           searchValue
         } = this.state;
-        this.getData(current, pageSize.folderId, queryStatus, searchValue);
+        this.getData(current, pageSize,folderId, queryStatus, searchValue);
       })
       .catch(err => {
         console.error('修改失败原因', err);
@@ -371,7 +371,6 @@ class MyQuery extends React.Component {
     const {
       questionnaire,
       loading,
-      foloderbuttonChecked,
       current,
       total,
       pageSize
