@@ -59,9 +59,9 @@ class FJList extends React.Component {
   }
 
   async componentDidMount() {
-    const qsObj = qs.parse(window.location.search.substring(1));
-    this.planid = qsObj.planid;
-    this.year = qsObj.year;
+    //const qsObj = qs.parse(window.location.search.substring(1));
+    this.planid = this.props.planid;
+    this.year = this.props.year;
     await this.totalData();
     this.getData(0, true);
     this.getLevel();
@@ -798,14 +798,14 @@ class FJList extends React.Component {
               padding: '5px 0'
             }}
           >
-            <div style={{ flex: 9 }}>
+            {/* <div style={{ flex: 9 }}>
               <Button
                 type="primary"
                 onClick={() => this.setState({ showHistory: true })}
               >
                 计划详情
               </Button>
-            </div>
+            </div> */}
             <div
               style={{
                 display: 'flex',

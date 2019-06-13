@@ -16,9 +16,9 @@ import http from 'Util20/api';
 import { Link } from 'react-router-dom';
 import { getItem } from 'Util20/util';
 import FJList from '../FJList';
+import CreatePlan from '../CreatePlan';
 import './FiscalYearPlan.less';
 
-const TabPane = Tabs.TabPane;
 const { Step } = Steps;
 /**
  * 财年计划
@@ -29,7 +29,8 @@ class FiscalYearPlan extends React.Component {
     current: 0,
     plans: [],
     selectedPlan: {},
-    currentResid: 0
+    currentResid: 0,
+    selectModel: 'single'
   };
   async componentDidMount() {
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
@@ -148,7 +149,7 @@ class FiscalYearPlan extends React.Component {
     })
   }
   render() {
-    const { loading, current } = this.state;
+    const { loading, current, selectedPlan } = this.state;
     let page;
     switch (current) {
       case 0:
@@ -171,7 +172,7 @@ class FiscalYearPlan extends React.Component {
               </div>
             }
             renderItem={(item, i) => {
-              let branchCompany = item === 'WX' ? '无锡' : '上海';
+              let branchCompany = item.C3_609616006519 === 'WX' ? '无锡' : '上海';
               return (
                 <List.Item
                   style={{ cursor: 'pointer' }}
@@ -199,21 +200,6 @@ class FiscalYearPlan extends React.Component {
                       <div className="plan_infos_item">HR：{item.C3_609874947298}</div>
                     </div>
                   </Card>
-                  {/* <div
-                    style={{
-                      display: 'flex',
-                      flex: 1,
-                      flexDirection: 'row',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ display: 'flex', flex: 1 }}>
-                      <Radio checked={item.check} />
-                    </div>
-                    <div>
-                      {item.C3_609616006519}
-                    </div>
-                  </div> */}
                 </List.Item >
               );
             }}
@@ -221,7 +207,89 @@ class FiscalYearPlan extends React.Component {
         );
         break;
       case 1:
-        page = <FJList />;
+        page = (
+          <div>
+            <div style={{ display: 'flex' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  justifyContent: 'flex-start',
+                  marginRight: 15,
+                  marginBottom: 5
+                }}
+              >
+                <Radio.Group defaultValue="single">
+                  <Radio.Button
+                    value={'single'}
+                    onClick={() => {
+                      this.setState({ selectModel: 'single' });
+                    }}
+                  >
+                    单人选择
+                  </Radio.Button>
+                  <Radio.Button
+                    value={'multiple'}
+                    onClick={() => {
+                      this.setState({ selectModel: 'multiple' });
+                    }}
+                  >
+                    批量选择
+                  </Radio.Button>
+                </Radio.Group>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  marginRight: 15,
+                  marginBottom: 5
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    this.setState({ current: 0 });
+                  }}
+                  style={{ marginRight: 5 }}
+                >
+                  上一步
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ current: 2 });
+                  }}
+                >
+                  下一步
+                </Button>
+              </div>
+            </div>
+            {this.state.selectModel === 'single' ? (
+              <FJList
+                planid={selectedPlan.C3_609616660273}
+                year={selectedPlan.C3_609615869581}
+                totalResid="609883172764"
+                subResid="611315248461"
+                subbResid="610308370365"
+                levelId="449335746776"
+                kcxlResid="610708527386"
+                kclbResid="610708543449"
+                resid="610307713776"
+              />
+            ) : (
+              <CreatePlan
+                planid={selectedPlan.C3_609616660273}
+                year={selectedPlan.C3_609615869581}
+                resid="610307713776"
+                subResid="610308370365"
+                levelId="449335746776"
+                kcbResid="611315248461"
+                kcxlResid="610708527386"
+                kclbResid="610708543449"
+              />
+            )}
+          </div>
+        );
         break;
       case 2:
         page =
@@ -308,7 +376,7 @@ class FiscalYearPlan extends React.Component {
           style={{ width: '80%', margin: '0 auto', padding: 10 }}
         >
           <Step
-            title="未提交计划"
+            title="选择计划"
             description=""
             style={{ cursor: 'pointer' }}
             onClick={() => {
@@ -345,126 +413,6 @@ class FiscalYearPlan extends React.Component {
           />
         </Steps>
         {page}
-        {/* <div style={{ height: '100vh' }}>
-          <Tabs
-            defaultActiveKey="1"
-            style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
-          >
-            <TabPane
-              tab="待提交"
-              key="1"
-              style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-            >
-              <TableData
-                resid={609883172764}
-                actionBarWidth={450}
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Link
-                        to={{
-                          pathname: '/fnmodule',
-                          search: `?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=${
-                            record.C3_609616660273
-                          }`
-                        }}
-                        target="_self"
-                      >
-                        <Button size={btnSize}>制定计划</Button>
-                      </Link>
-                    );
-                  }
-                ]}
-                subTableArrProps={[
-                  {
-                    subTableName: '审批记录',
-                    subResid: 611144001666,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  },
-                  {
-                    subTableName: '计划详情',
-                    subResid: 611315248461,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  }
-                ]}
-                hasBeBtns={true}
-                hasRowView={false}
-                hasAdd={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-              />
-            </TabPane>
-            <TabPane
-              tab="已提交"
-              key="2"
-              style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-            >
-              <TableData
-                resid={611165813996}
-                hasBeBtns={true}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                subTableArrProps={[
-                  {
-                    subTableName: '审批记录',
-                    subResid: 611144001666,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  },
-                  {
-                    subTableName: '计划详情',
-                    subResid: 611315248461,
-                    tableProps: {
-                      hasAdd: false,
-                      hasModify: false,
-                      hasRowDelete: false,
-                      hasRowModify: false,
-                      hasDelete: false,
-                      subtractH: 190,
-                      height: 500,
-                      hasRowView: false
-                    }
-                  }
-                ]}
-              />
-            </TabPane>
-          </Tabs>
-        </div>
-       */}
       </Spin>
     );
   }

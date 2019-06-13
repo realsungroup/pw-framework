@@ -46,7 +46,7 @@ class CreatePlan extends React.Component {
 
   componentDidMount() {
     const qsObj = qs.parse(window.location.search.substring(1));
-    this.planid = qsObj.planid;
+    this.planid = this.props.planid;
     this.getData();
     this.getLevel();
     this.getKcxl();
@@ -263,9 +263,9 @@ class CreatePlan extends React.Component {
       });
       if (res.Error === 0) {
         message.success(res.message);
-        window.location.href =
-          '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
-          this.planid;
+        // window.location.href =
+        //   '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
+        //   this.planid;
       } else {
         message.error(res.message);
       }
