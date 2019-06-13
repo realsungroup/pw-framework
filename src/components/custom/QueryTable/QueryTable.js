@@ -303,7 +303,7 @@ class QueryTable extends Component {
             actionBarFixed={true}
             hasRowView={false}
             hasRowDelete={false}
-            subtractH={196}
+            subtractH={230}
             width={'98%'}
             cmswhere={`query_id='${this.state.modalGiftId}'`}
           />

@@ -853,6 +853,7 @@ class JobSeeker extends Component {
           </Form>
         </div>
 
+
         {/* <ApplyInformantion hasSubmit={true}></ApplyInformantion> */}
       </div>
     );
