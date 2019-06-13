@@ -16,6 +16,7 @@ import http from 'Util20/api';
 import { Link } from 'react-router-dom';
 import { getItem } from 'Util20/util';
 import FJList from '../FJList';
+import CreatePlan from '../CreatePlan';
 import './FiscalYearPlan.less';
 
 const TabPane = Tabs.TabPane;
@@ -28,7 +29,8 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: {}
+    selectedPlan: {},
+    selectModel: 'single'
   };
   async componentDidMount() {
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
@@ -118,7 +120,7 @@ class FiscalYearPlan extends React.Component {
     this.setState({ plans, selectedPlan });
   };
   render() {
-    const { loading, current } = this.state;
+    const { loading, current, selectedPlan } = this.state;
     let page;
     switch (current) {
       case 0:
@@ -201,7 +203,89 @@ class FiscalYearPlan extends React.Component {
         );
         break;
       case 1:
-        page = <FJList />;
+        page = (
+          <div>
+            <div style={{ display: 'flex' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  justifyContent: 'flex-start',
+                  marginRight: 15,
+                  marginBottom: 5
+                }}
+              >
+                <Radio.Group defaultValue="single">
+                  <Radio.Button
+                    value={'single'}
+                    onClick={() => {
+                      this.setState({ selectModel: 'single' });
+                    }}
+                  >
+                    单人选择
+                  </Radio.Button>
+                  <Radio.Button
+                    value={'multiple'}
+                    onClick={() => {
+                      this.setState({ selectModel: 'multiple' });
+                    }}
+                  >
+                    批量选择
+                  </Radio.Button>
+                </Radio.Group>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  marginRight: 15,
+                  marginBottom: 5
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    this.setState({ current: 0 });
+                  }}
+                  style={{ marginRight: 5 }}
+                >
+                  上一步
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ current: 2 });
+                  }}
+                >
+                  下一步
+                </Button>
+              </div>
+            </div>
+            {this.state.selectModel === 'single' ? (
+              <FJList
+                planid={selectedPlan.C3_609616660273}
+                year={selectedPlan.C3_609615869581}
+                totalResid="609883172764"
+                subResid="611315248461"
+                subbResid="610308370365"
+                levelId="449335746776"
+                kcxlResid="610708527386"
+                kclbResid="610708543449"
+                resid="610307713776"
+              />
+            ) : (
+              <CreatePlan
+                planid={selectedPlan.C3_609616660273}
+                year={selectedPlan.C3_609615869581}
+                resid="610307713776"
+                subResid="610308370365"
+                levelId="449335746776"
+                kcbResid="611315248461"
+                kcxlResid="610708527386"
+                kclbResid="610708543449"
+              />
+            )}
+          </div>
+        );
         break;
       case 2:
         page = <FJList />;
@@ -220,7 +304,7 @@ class FiscalYearPlan extends React.Component {
           style={{ width: '80%', margin: '0 auto', padding: 10 }}
         >
           <Step
-            title="未提交计划"
+            title="选择计划"
             description=""
             style={{ cursor: 'pointer' }}
             onClick={() => {
