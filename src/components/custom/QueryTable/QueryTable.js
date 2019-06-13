@@ -292,6 +292,7 @@ class QueryTable extends Component {
           onOk={this.handlegiftOk}
           onCancel={this.handlegiftCancel}
           width={this.state.giftwid}
+          height={500}
           destroyOnClose
         >
           <TableData
@@ -299,9 +300,10 @@ class QueryTable extends Component {
             hasAdd={false}
             hasModify={false}
             hasDelete={false}
-            actionBarFixed={false}
+            actionBarFixed={true}
             hasRowView={false}
             hasRowDelete={false}
+            subtractH={230}
             width={'98%'}
             cmswhere={`query_id='${this.state.modalGiftId}'`}
           />

@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    span: 10
+    span: 6
   },
   wrapperCol: {
-    span: 14
+    span: 18
   }
 };
 const { RangePicker } = DatePicker;
@@ -67,11 +67,11 @@ class ApplayInformnation extends Component {
     /**
      * 表达初始化值
      */
-    initialValues: PropTypes.object
+    initialValue: PropTypes.object
   };
 
   static defaultProps = {
-    initialValues: {}
+    initialValue: {}
   };
 
   constructor(props) {
@@ -220,8 +220,7 @@ class ApplayInformnation extends Component {
   // 确认修改并打印
   handleModifyAndPrint = () => {
     // 打印
-    const newEle = document.querySelector('.applay__informnation')
-      .innerHTML;
+    const newEle = document.querySelector('.applay__informnation').innerHTML;
     var oldstr = document.body.innerHTML; //保存当前页面
     document.body.innerHTML = newEle; //吧当前页面内容替换为要打印的内容
     window.print();
@@ -230,7 +229,7 @@ class ApplayInformnation extends Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { initialValues } = this.props;
+    const { initialValue } = this.props;
     return (
       <div className="applay__informnation">
         <Form style={{ width: '90%', margin: '0 auto' }}>
@@ -239,7 +238,7 @@ class ApplayInformnation extends Component {
           </h3>
           <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
             {getFieldDecorator('ChName', {
-              initialValue: initialValues.ChName,
+              initialValue: initialValue.ChName,
               rules: [
                 {
                   required: true,
@@ -250,12 +249,12 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="英文姓名/EnglishName" {...formItemLayout}>
             {getFieldDecorator('EnName', {
-              initialValue: initialValues.EnName
+              initialValue: initialValue.EnName
             })(<Input />)}
           </Form.Item>
           <Form.Item label="申请职位名称/jobTitle" {...formItemLayout}>
             {getFieldDecorator('appPosition', {
-              initialValue: initialValues.appPosition,
+              initialValue: initialValue.appPosition,
               rules: [
                 {
                   required: true,
@@ -266,6 +265,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="身份证号码/IDCardNumber" {...formItemLayout}>
             {getFieldDecorator('idNumber', {
+              initialValue: initialValue.idNumber,
               rules: [
                 {
                   required: true,
@@ -276,6 +276,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="性别/Sex" {...formItemLayout}>
             {getFieldDecorator('Sex', {
+              initialValue: initialValue.Sex,
               rules: [
                 {
                   required: true,
@@ -291,6 +292,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="手机/Phone" {...formItemLayout}>
             {getFieldDecorator('Phone', {
+              initialValue: initialValue.Phone,
               rules: [
                 {
                   required: true,
@@ -301,6 +303,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="个人邮箱/E-mail" {...formItemLayout}>
             {getFieldDecorator('Email', {
+              initialValue: initialValue.Email,
               rules: [
                 {
                   required: true,
@@ -311,6 +314,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="国籍/Nationality" {...formItemLayout}>
             {getFieldDecorator('Nationality', {
+              initialValue: initialValue.Nationality,
               rules: [
                 {
                   required: true,
@@ -321,6 +325,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="民族/Nationality" {...formItemLayout}>
             {getFieldDecorator('Nation', {
+              initialValue: initialValue.Nation,
               rules: [
                 {
                   required: true,
@@ -331,6 +336,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="政治面貌/Party" {...formItemLayout}>
             {getFieldDecorator('Party', {
+              initialValue: initialValue.Party,
               rules: [
                 {
                   required: true,
@@ -340,7 +346,8 @@ class ApplayInformnation extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="出生日期/BirhtOfDate" {...formItemLayout}>
-            {getFieldDecorator('birthOfDate', {
+            {getFieldDecorator('BirthOfDate', {
+              initialValue: initialValue.BirthOfDate,
               rules: [
                 {
                   required: true,
@@ -351,6 +358,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="出生地点/PlaceOfBirth" {...formItemLayout}>
             {getFieldDecorator('BirthPlace', {
+              initialValue: initialValue.BirthPlace,
               rules: [
                 {
                   required: true,
@@ -360,7 +368,8 @@ class ApplayInformnation extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="户口所在地/PlaceOfHuKou" {...formItemLayout}>
-            {getFieldDecorator('placeOfHukou', {
+            {getFieldDecorator('PlaceOfHukou', {
+              initialValue: initialValue.PlaceOfHukou,
               rules: [
                 {
                   required: true,
@@ -371,6 +380,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="血型/BloodType" {...formItemLayout}>
             {getFieldDecorator('BloodType', {
+              initialValue: initialValue.BloodType,
               rules: [
                 {
                   required: true,
@@ -383,7 +393,8 @@ class ApplayInformnation extends Component {
             label="现通讯地址/CurrentCorrespondAddress"
             {...formItemLayout}
           >
-            {getFieldDecorator('currentAddress', {
+            {getFieldDecorator('CurrentAddress', {
+              initialValue: initialValue.CurrentAddress,
               rules: [
                 {
                   required: true,
@@ -393,7 +404,8 @@ class ApplayInformnation extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="有无推荐人/if have recommender" {...formItemLayout}>
-            {getFieldDecorator('IsRecommended', {
+            {getFieldDecorator('IfRecommendByF', {
+              initialValue: initialValue.IfRecommendByF,
               rules: [
                 {
                   required: true,
@@ -408,13 +420,19 @@ class ApplayInformnation extends Component {
             )}
           </Form.Item>
           <Form.Item label="推荐人姓名/recommender" {...formItemLayout}>
-            {getFieldDecorator('recommenderName', {})(<Input />)}
+            {getFieldDecorator('RecommenderName', {
+              initialValue: initialValue.RecommenderName
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
-            {getFieldDecorator('recommenderRelationship', {})(<Input />)}
+            {getFieldDecorator('RecommenderRelation', {
+              initialValue: initialValue.RecommenderRelation
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="婚姻状况/Marital status" {...formItemLayout}>
-            {getFieldDecorator('MaritalStatus', {})(
+            {getFieldDecorator('MaritalStatus', {
+              initialValue: initialValue.MaritalStatus
+            })(
               <Radio.Group>
                 <Radio value="未婚">未婚</Radio>
                 <Radio value="已婚">已婚</Radio>
@@ -423,7 +441,9 @@ class ApplayInformnation extends Component {
             )}
           </Form.Item>
           <Form.Item label="有无子女/children if any" {...formItemLayout}>
-            {getFieldDecorator('havechildren', {})(
+            {getFieldDecorator('ChildIf', {
+              initialValue: initialValue.ChildIf
+            })(
               <Radio.Group>
                 <Radio value="有">有</Radio>
                 <Radio value="无">无</Radio>
@@ -435,185 +455,293 @@ class ApplayInformnation extends Component {
             latest education to middle school)
           </h3>
           <Form.Item label="日期/latest period from to" {...formItemLayout2}>
-            {getFieldDecorator('latestEddate', {})(<RangePicker />)}
+            {getFieldDecorator('LatestEddate', {
+              initialValue: initialValue.LatestEddate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
-            {getFieldDecorator('latestShcoolName', {})(<Input />)}
+            {getFieldDecorator('LatestEdSchool', {
+              initialValue: initialValue.LatestEdSchool
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="专业名称/major" {...formItemLayout2}>
-            {getFieldDecorator('latestMajor', {})(<Input />)}
+            {getFieldDecorator('LatestEdMajor', {
+              initialValue: initialValue.LatestEdMajor
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="学位/degree" {...formItemLayout2}>
-            {getFieldDecorator('latestDegree', {})(<Input />)}
+            {getFieldDecorator('LatestEdDegree', {
+              initialValue: initialValue.LatestEdDegree
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/ReferenceName" {...formItemLayout2}>
-            {getFieldDecorator('latestEdReference', {})(<Input />)}
+            {getFieldDecorator('LatestReference', {
+              initialValue: initialValue.LatestReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
-            {getFieldDecorator('latestEdRefTel', {})(<Input />)}
+            {getFieldDecorator('LatestReferenceTel', {
+              initialValue: initialValue.LatestReferenceTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="日期/third period from to" {...formItemLayout2}>
-            {getFieldDecorator('threeEddate', {})(<RangePicker />)}
+            {getFieldDecorator('ThreeEddate', {
+              initialValue: initialValue.ThreeEddate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/third school name" {...formItemLayout2}>
-            {getFieldDecorator('threeShcoolName', {})(<Input />)}
+            {getFieldDecorator('ThreeEdSchool', {
+              initialValue: initialValue.ThreeEdSchool
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="专业名称/major" {...formItemLayout2}>
-            {getFieldDecorator('threeEdMajor', {})(<Input />)}
+            {getFieldDecorator('ThreeEdMajor', {
+              initialValue: initialValue.ThreeEdMajor
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="学位/degree" {...formItemLayout2}>
-            {getFieldDecorator('threeDegree', {})(<Input />)}
+            {getFieldDecorator('ThreeEdDegree', {
+              initialValue: initialValue.ThreeEdDegree
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/ReferenceName" {...formItemLayout2}>
-            {getFieldDecorator('threeEdReference', {})(<Input />)}
+            {getFieldDecorator('ThreeReference', {
+              initialValue: initialValue.ThreeReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
-            {getFieldDecorator('threeEdRefTel', {})(<Input />)}
+            {getFieldDecorator('ThreeReferenceTel', {
+              initialValue: initialValue.ThreeReferenceTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="日期/second period from to" {...formItemLayout2}>
-            {getFieldDecorator('secEddate', {})(<RangePicker />)}
+            {getFieldDecorator('SecEddate', {
+              initialValue: initialValue.SecEddate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/third school name" {...formItemLayout2}>
-            {getFieldDecorator('secShcoolName', {})(<Input />)}
+            {getFieldDecorator('SecEdSchool', {
+              initialValue: initialValue.SecEdSchool
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="专业名称/major" {...formItemLayout2}>
-            {getFieldDecorator('secEdMajor', {})(<Input />)}
+            {getFieldDecorator('SecEdMajor', {
+              initialValue: initialValue.SecEdMajor
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="学位/degree" {...formItemLayout2}>
-            {getFieldDecorator('secDegree', {})(<Input />)}
+            {getFieldDecorator('SecEdDegree', {
+              initialValue: initialValue.SecEdDegree
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/ReferenceName" {...formItemLayout2}>
-            {getFieldDecorator('secEdReference', {})(<Input />)}
+            {getFieldDecorator('SecReference', {
+              initialValue: initialValue.SecReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
-            {getFieldDecorator('secEdRefTel', {})(<Input />)}
+            {getFieldDecorator('SecReferenceTel', {
+              initialValue: initialValue.SecReferenceTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="日期/first period from to" {...formItemLayout2}>
-            {getFieldDecorator('firstEddate', {})(<RangePicker />)}
+            {getFieldDecorator('FirstEddate', {
+              initialValue: initialValue.FirstEddate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/school name" {...formItemLayout2}>
-            {getFieldDecorator('firstShcoolName', {})(<Input />)}
+            {getFieldDecorator('FirstEdSchool', {
+              initialValue: initialValue.FirstEdSchool
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="专业名称/major" {...formItemLayout2}>
-            {getFieldDecorator('firstEdMajor', {})(<Input />)}
+            {getFieldDecorator('FirstEdMajor', {
+              initialValue: initialValue.FirstEdMajor
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="学位/degree" {...formItemLayout2}>
-            {getFieldDecorator('firstDegree', {})(<Input />)}
+            {getFieldDecorator('FirstEdDegree', {
+              initialValue: initialValue.FirstEdDegree
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/ReferenceName" {...formItemLayout2}>
-            {getFieldDecorator('firstEdReference', {})(<Input />)}
+            {getFieldDecorator('FirstReference', {
+              initialValue: initialValue.FirstReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
-            {getFieldDecorator('firstEdRefTel', {})(<Input />)}
+            {getFieldDecorator('FirstReferenceTel', {
+              initialValue: initialValue.FirstReferenceTel
+            })(<Input />)}
           </Form.Item>
           <h3 className="applay__informnation-title" id="工作经历">
             工作经历(请从最近的写起)/Working History (Please start with latest
             one)
           </h3>
           <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
-            {getFieldDecorator('latestWorkdate', {})(<RangePicker />)}
+            {getFieldDecorator('LatestWorkdate', {
+              initialValue: initialValue.LatestWorkdate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item
             label="公司名称&类型/name of Com&type"
             {...formItemLayout2}
           >
-            {getFieldDecorator('latestComName', {})(<Input />)}
+            {getFieldDecorator('LatestComName', {
+              initialValue: initialValue.LatestComName
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="职位/position" {...formItemLayout2}>
-            {getFieldDecorator('latestPosition', {})(<Input />)}
+            {getFieldDecorator('LatestRank', {
+              initialValue: initialValue.LatestRank
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="离职原因/Reasons for leaving" {...formItemLayout2}>
-            {getFieldDecorator('latestReasons', {})(<Input />)}
+            {getFieldDecorator('LatestReasonForLeave', {
+              initialValue: initialValue.LatestReasonForLeave
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/Reference" {...formItemLayout2}>
-            {getFieldDecorator('latestWorkReference', {})(<Input />)}
+            {getFieldDecorator('LatestWorkReference', {
+              initialValue: initialValue.LatestWorkReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/Reference phone" {...formItemLayout2}>
-            {getFieldDecorator('latestWorkRefTel', {})(<Input />)}
+            {getFieldDecorator('LatestWorkReferenceTel', {
+              initialValue: initialValue.LatestWorkReferenceTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
-            {getFieldDecorator('threeWorkdate', {})(<RangePicker />)}
+            {getFieldDecorator('ThreeWorkdate', {
+              initialValue: initialValue.ThreeWorkdate
+            })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="公司名称/name of Com&type" {...formItemLayout2}>
-            {getFieldDecorator('threeComName', {})(<Input />)}
+            {getFieldDecorator('ThreeComName', {
+              initialValue: initialValue.ThreeComName
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="职位/position" {...formItemLayout2}>
-            {getFieldDecorator('threePosition', {})(<Input />)}
+            {getFieldDecorator('ThreeRank', {
+              initialValue: initialValue.ThreeRank
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="离职原因/Reasons for leaving" {...formItemLayout2}>
-            {getFieldDecorator('threeReasons', {})(<Input />)}
+            {getFieldDecorator('ThreeReasonForLeave', {
+              initialValue: initialValue.ThreeReasonForLeave
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/Reference" {...formItemLayout2}>
-            {getFieldDecorator('threeWorkReference', {})(<Input />)}
+            {getFieldDecorator('ThreeWorkReference', {
+              initialValue: initialValue.ThreeWorkReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/Reference phone" {...formItemLayout2}>
-            {getFieldDecorator('threeWorkRefTel', {})(<Input />)}
+            {getFieldDecorator('ThreeWorkReferenceTel', {
+              initialValue: initialValue.ThreeWorkReferenceTel
+            })(<Input />)}
           </Form.Item>
           <h3 className="applay__informnation-title" id="家庭成员关系">
             家庭成员及主要社会关系/Family Members and Mainly Social Relationship
           </h3>
           <Form.Item label="姓名/Name" {...formItemLayout2}>
-            {getFieldDecorator('familyOneName', {})(<Input />)}
+            {getFieldDecorator('FamOneName', {
+              initialValue: initialValue.FamOneName
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="关系/Relationship" {...formItemLayout2}>
-            {getFieldDecorator('familyOneRelationship', {})(<Input />)}
+            {getFieldDecorator('FamOneRelation', {
+              initialValue: initialValue.FamOneRelation
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="职务/position" {...formItemLayout2}>
-            {getFieldDecorator('familyOnePosition', {})(<Input />)}
+            {getFieldDecorator('FamOnePosition', {
+              initialValue: initialValue.FamOnePosition
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="公司名称&地址/name of Com&Add" {...formItemLayout2}>
-            {getFieldDecorator('familyOneComNameAdd', {})(<Input />)}
+            {getFieldDecorator('FamOneComAndAdd', {
+              initialValue: initialValue.FamOneComAndAdd
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="电话/TelPhone" {...formItemLayout2}>
-            {getFieldDecorator('familyOneTel', {})(<Input />)}
+            {getFieldDecorator('FamOneTel', {
+              initialValue: initialValue.FamOneTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="出生年月/birthOfDate" {...formItemLayout2}>
-            {getFieldDecorator('familyOneBirthDate', {})(<Input />)}
+            {getFieldDecorator('FamOneBirthDate', {
+              initialValue: initialValue.FamOneBirthDate
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="姓名/name" {...formItemLayout2}>
-            {getFieldDecorator('familyTwoName', {})(<Input />)}
+            {getFieldDecorator('FamToName', {
+              initialValue: initialValue.FamToName
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="关系/relationship" {...formItemLayout2}>
-            {getFieldDecorator('familyTwoRelationship', {})(<Input />)}
+            {getFieldDecorator('FamToRelation', {
+              initialValue: initialValue.FamToRelation
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="职务/position" {...formItemLayout2}>
-            {getFieldDecorator('familyOnePosition', {})(<Input />)}
+            {getFieldDecorator('FamToPosition', {
+              initialValue: initialValue.FamToPosition
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="公司名称&地址/name of Com&Add" {...formItemLayout2}>
-            {getFieldDecorator('familyTwoComNameAdd', {})(<Input />)}
+            {getFieldDecorator('FamToComAndAdd', {
+              initialValue: initialValue.FamToComAndAdd
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="电话/TelPhone" {...formItemLayout2}>
-            {getFieldDecorator('familyTwoTel', {})(<Input />)}
+            {getFieldDecorator('FamToTel', {
+              initialValue: initialValue.FamToTel
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="出生年月/birthOfDate" {...formItemLayout2}>
-            {getFieldDecorator('familyTwoBirthDate', {})(<Input />)}
+            {getFieldDecorator('FamToBirthDate', {
+              initialValue: initialValue.FamToBirthDate
+            })(<Input />)}
           </Form.Item>
           <h3 className="applay__informnation-title" id="专业培训">
             专业培训
           </h3>
           <Form.Item label="日期/post period from to " {...formItemLayout2}>
-            {getFieldDecorator('latestTrainingdate', {})(<RangePicker />)}
+            {getFieldDecorator('LatestTrainingDate', {
+              initialValue: initialValue.LatestTrainingDate
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="培训机构/name of Com&type" {...formItemLayout2}>
-            {getFieldDecorator('latestTrainingInstitute', {})(<Input />)}
+            {getFieldDecorator('LatestTrainingInstitute', {
+              initialValue: initialValue.LatestTrainingInstitute
+            })(<Input />)}
           </Form.Item>
           <Form.Item
             label="专业资格/professionalQualification"
             {...formItemLayout2}
           >
-            {getFieldDecorator('latestQualification', {})(<Input />)}
+            {getFieldDecorator('LatestTrainingQualification', {
+              initialValue: initialValue.LatestTrainingQualification
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人/Reference" {...formItemLayout2}>
-            {getFieldDecorator('latestTrainingReference', {})(<Input />)}
+            {getFieldDecorator('LatestTrainingReference', {
+              initialValue: initialValue.LatestTrainingReference
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="证明人电话/Reference phone" {...formItemLayout2}>
-            {getFieldDecorator('latesttrainingRefTel', {})(<Input />)}
+            {getFieldDecorator('LatestTrainingRefTel', {
+              initialValue: initialValue.LatestTrainingRefTel
+            })(<Input />)}
           </Form.Item>
           <h3 className="applay__informnation-title" id="相关技能">
             相关技能/Related Qualification / Skill (If any)
           </h3>
           <Form.Item label="语言能力/languageAbility" {...formItemLayout2}>
-            {getFieldDecorator('languageAbility', {})(
+            {getFieldDecorator('languageAbility', {
+              initialValue: initialValue.languageAbility
+            })(
               <Input disabled placeholder="请列明程度,优秀，良好，一般，欠佳" />
             )}
           </Form.Item>
@@ -622,7 +750,9 @@ class ApplayInformnation extends Component {
             {...formItemLayout2}
             style={{ display: 'inline-block', width: '50%' }}
           >
-            {getFieldDecorator('CET', {})(
+            {getFieldDecorator('EnCET', {
+              initialValue: initialValue.EnCET
+            })(
               <Select>
                 <Option value="四级">四级</Option>
                 <Option value="六级">六级</Option>
@@ -635,7 +765,9 @@ class ApplayInformnation extends Component {
             {...formItemLayout2}
             style={{ display: 'inline-block', width: '50%' }}
           >
-            {getFieldDecorator('writing', {})(
+            {getFieldDecorator('Writing', {
+              initialValue: initialValue.Writing
+            })(
               <Select>
                 {languageAbility.map((item, index) => {
                   return (
@@ -652,7 +784,9 @@ class ApplayInformnation extends Component {
             {...formItemLayout2}
             style={{ display: 'inline-block', width: '50%' }}
           >
-            {getFieldDecorator('reading', {})(
+            {getFieldDecorator('Reading', {
+              initialValue: initialValue.Reading
+            })(
               <Select>
                 {languageAbility.map((item, index) => {
                   return (
@@ -669,7 +803,9 @@ class ApplayInformnation extends Component {
             {...formItemLayout2}
             style={{ display: 'inline-block', width: '50%' }}
           >
-            {getFieldDecorator('speaking', {})(
+            {getFieldDecorator('Speaking', {
+              initialValue: initialValue.Speaking
+            })(
               <Select>
                 {languageAbility.map((item, index) => {
                   return (
@@ -682,7 +818,9 @@ class ApplayInformnation extends Component {
             )}
           </Form.Item>
           <Form.Item label="计算机技能/ComputerSkills" {...formItemLayout2}>
-            {getFieldDecorator('computerskill', {})(
+            {getFieldDecorator('ComputerSkills', {
+              initialValue: initialValue.ComputerSkills
+            })(
               <Select>
                 {languageAbility.map((item, index) => {
                   return (
@@ -695,25 +833,37 @@ class ApplayInformnation extends Component {
             )}
           </Form.Item>
           <Form.Item label="列出常用软件/list name of software used">
-            {getFieldDecorator('softwareList', {})(<Input />)}
+            {getFieldDecorator('SoftList', {
+              initialValue: initialValue.SoftList
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="其他技能/other skills">
-            {getFieldDecorator('otherSkills', {})(<Input />)}
+            {getFieldDecorator('OtherSkills', {
+              initialValue: initialValue.OtherSkills
+            })(<Input />)}
           </Form.Item>
           <h3 className="applay__informnation-title" id="其他">
             其他/other informnation
           </h3>
           <Form.Item label="身高cm/height" {...formItemLayout2}>
-            {getFieldDecorator('height', {})(<Input />)}
+            {getFieldDecorator('Height', {
+              initialValue: initialValue.Height
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="体重kg/weight" {...formItemLayout2}>
-            {getFieldDecorator('weight', {})(<Input />)}
+            {getFieldDecorator('Weight', {
+              initialValue: initialValue.Weight
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="视力左 右/eye sight" {...formItemLayout2}>
-            {getFieldDecorator('eyeSight', {})(<Input />)}
+            {getFieldDecorator('EyeSight', {
+              initialValue: initialValue.EyeSight
+            })(<Input />)}
           </Form.Item>
           <Form.Item colon={false} label={<Question />}>
-            {getFieldDecorator('diseaseStatus', {})(<TextArea />)}
+            {getFieldDecorator('DiseaseStatus', {
+              initialValue: initialValue.DiseaseStatus
+            })(<TextArea />)}
           </Form.Item>
           <Form.Item
             colon={false}
@@ -726,7 +876,9 @@ class ApplayInformnation extends Component {
               </p>
             }
           >
-            {getFieldDecorator('unemployStatus', {})(<TextArea />)}
+            {getFieldDecorator('UnemployedStatus', {
+              initialValue: initialValue.UnemployedStatus
+            })(<TextArea />)}
           </Form.Item>
           <Form.Item
             colon={false}
@@ -739,7 +891,9 @@ class ApplayInformnation extends Component {
               </p>
             }
           >
-            {getFieldDecorator('knowfinisar', {})(<TextArea />)}
+            {getFieldDecorator('KnowColleageStatus', {
+              initialValue: initialValue.KnowColleageStatus
+            })(<TextArea />)}
           </Form.Item>
           <Form.Item
             colon={false}
@@ -756,17 +910,15 @@ class ApplayInformnation extends Component {
               </p>
             }
           >
-            {getFieldDecorator('agreements', {})(<TextArea />)}
+            {getFieldDecorator('OtherAgreement', {
+              initialValue: initialValue.OtherAgreement
+            })(<TextArea />)}
           </Form.Item>
-          {this.props.hasSubmit ? (
+          <Form.Item style={{ textAlign: 'center' }}>
             <Button type="primary" onClick={this.handleClick}>
               确认申请
             </Button>
-          ) : (
-            <Button type="primary" onClick={()=>{this.handleModifyAndPrint()}}>
-              确认打印
-            </Button>
-          )}
+          </Form.Item>
         </Form>
       </div>
     );

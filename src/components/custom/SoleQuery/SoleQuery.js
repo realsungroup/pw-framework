@@ -237,7 +237,7 @@ class SoleQuery extends Component {
           {item.subdata.map(option => {
             // // console.log("选项",option)
             return (
-              <div key={option.option_id}>
+              <div key={option.option_id} className='choice__wrap'>
                 <Radio value={option.option_id}>
                   {option.option_content}
                   {item.result === option.option_id &&

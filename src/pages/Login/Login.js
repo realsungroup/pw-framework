@@ -160,7 +160,7 @@ class Login extends React.Component {
       }
       const { from } = this.props.location.state || { from: { pathname: '/' } };
 
-      window.location.href = from.pathname + from.search;
+      window.location.href = from.pathname + from.search || '';
     });
   };
 

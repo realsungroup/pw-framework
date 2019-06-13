@@ -1221,16 +1221,10 @@ class QuerySet extends Component {
           >
             复制
           </Button>
-          <Popconfirm
-            title="确定删除该题目?"
-            onConfirm={() => {
-              this.delCurrentQuestion(item.question_id);
-            }}
-          >
-            <Button size="small" icon="delete">
+            <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id);}}>
               删除
             </Button>
-          </Popconfirm>
+         
           <Button
             size="small"
             icon="arrow-up"
