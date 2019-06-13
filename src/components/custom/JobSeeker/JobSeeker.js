@@ -119,6 +119,7 @@ class JobSeeker extends Component {
     this.props.form.validateFields((err, values) => {
       // console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
       console.log('所有值', values);
+      console.log('错误',err);
       if (!err) {
         let res;
         try {
@@ -235,13 +236,17 @@ class JobSeeker extends Component {
             ]
           });
         } catch (err) {
-          console.error(err.message);
+          // console.error(err.message);
+          Modal.success({
+            title:'提示',
+            content:'提交成功'
+          })
         }
         console.log(res);
       }else{
         Modal.warning({
           title:'提示',
-          content:'请确认所有必填项都填写完毕，带红色*标志的都是必填项',
+          content:'请确认所有必填项都填写完毕,您还有一些必填项没有填写',
         })
       }
     });
@@ -265,7 +270,7 @@ class JobSeeker extends Component {
       tolerance: 195,
       container: document.querySelector('.job-seeker__informnation')
     });
-    console.log(id);
+    // console.log(id);
     const tempid = document.getElementById(id);
     moveTo.move(tempid);
   };

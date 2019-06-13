@@ -1,71 +1,21 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Collapse, Select } from 'antd';
-import { Tabs } from 'antd';
+import { List, Avatar,Tabs} from 'antd';
 import http from '../../../util20/api';
 import ApplayInformnation from '../ApplayInformnation';
+import TableData from '../../common/data/TableData';
 // const { Panel } = Collapse;
 // const { Option } = Select;
 const { TabPane } = Tabs;
-const personList = [
-  {
-    id: `4113229874637y1`,
-    name: `王名字1`,
-    job: 'HR',
-    department: 'S4',
-    isSelected: false,
-    formbelongs: [
-      {
-        formID: `woek1`,
-        formName: '工作申请表'
-      }
-    ]
-  },
-  {
-    id: `4113229874637y2`,
-    name: `王名字2`,
-    job: 'HR',
-    department: 'S4',
-    isSelected: false,
-    formbelongs: [
-      {
-        formID: `work1`,
-        formName: '工作申请表'
-      },
-      {
-        formID: `assments`,
-        formName: '面试评估表'
-      }
-    ]
-  },
-  {
-    id: `4113229874637y3`,
-    name: `王名字3`,
-    job: 'HR',
-    department: 'S4',
-    isSelected: false,
-    formbelongs: [
-      {
-        formID: `woek1`,
-        formName: '工作申请表'
-      },
-      {
-        formID: `assments`,
-        formName: '面试评估表'
-      },
-      {
-        formID: `background`,
-        formName: '背景调查表'
-      }
-    ]
-  }
-];
 
 export default class IdLindex extends Component {
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    // 获取数据
+    this.getPersonList();
+  };
   state = {
-    personList: personList,
-    currentPersonInfo: personList[0]
+    personList: [],
+    // currentPersonInfo: personList[0]
   };
   handlePersonOnClick = item => {
     const { personList } = this.state;
@@ -83,26 +33,26 @@ export default class IdLindex extends Component {
       return 'idlindex__person-list__antd-y-item';
     }
   };
-  handleSelectFormChange = value => {
-    const { currentPersonInfo } = this.state;
-    const tempcurrentPersonInfo = { ...currentPersonInfo };
-    const obj = {
-      formID: `assments`,
-      formName: '背景调查表'
-    };
-    tempcurrentPersonInfo.formbelongs.push(obj);
-    this.setState({ currentPersonInfo: tempcurrentPersonInfo });
-  };
-  handleAccessFormChange = value => {
-    const { currentPersonInfo } = this.state;
-    const tempcurrentPersonInfo = { ...currentPersonInfo };
-    const obj = {
-      formID: `assments`,
-      formName: '面试评估表'
-    };
-    tempcurrentPersonInfo.formbelongs.push(obj);
-    this.setState({ currentPersonInfo: tempcurrentPersonInfo });
-  };
+  // handleSelectFormChange = value => {
+  //   const { currentPersonInfo } = this.state;
+  //   const tempcurrentPersonInfo = { ...currentPersonInfo };
+  //   const obj = {
+  //     formID: `assments`,
+  //     formName: '背景调查表'
+  //   };
+  //   tempcurrentPersonInfo.formbelongs.push(obj);
+  //   this.setState({ currentPersonInfo: tempcurrentPersonInfo });
+  // };
+  // handleAccessFormChange = value => {
+  //   const { currentPersonInfo } = this.state;
+  //   const tempcurrentPersonInfo = { ...currentPersonInfo };
+  //   const obj = {
+  //     formID: `assments`,
+  //     formName: '面试评估表'
+  //   };
+  //   tempcurrentPersonInfo.formbelongs.push(obj);
+  //   this.setState({ currentPersonInfo: tempcurrentPersonInfo });
+  // };
   // 根据不同表格显示不同表格的内容
 
   // renderPanelContent = name => {
@@ -129,10 +79,24 @@ export default class IdLindex extends Component {
   //     }
   //   }
   // };
+
+  // 获取人员列表
+  getPersonList = async ()=>{
+    let res;
+    try{
+      res = await http().getTable({
+        resid:613149356409
+      })
+    }catch(err){
+      console.log(err);
+    }
+    console.log(res.data);
+    this.setState({personList:res.data})
+  }
   render() {
     const { personList, currentPersonInfo } = this.state;
-    console.log({ personList: personList });
-    console.log({ currentPersonInfo: currentPersonInfo });
+    // console.log({ personList: personList });
+    // console.log({ currentPersonInfo: currentPersonInfo });
     return (
       <div className="idlindex">
         <div className="idlindex__person-list">
@@ -148,9 +112,9 @@ export default class IdLindex extends Component {
                 }}
               >
                 <Avatar icon="user" />
-                <div>姓名:{item.name}</div>
-                <span>职位级别:{item.department}</span>
-                <span>申请部门:{item.job}</span>
+                <div>姓名:{item.ChName}</div>
+                <span>职位级别:{item.JobTitle}</span>
+                <span>申请部门:{item.Sex}</span>
               </List.Item>
             )}
           />
@@ -171,10 +135,10 @@ export default class IdLindex extends Component {
            <ApplayInformnation hasSubmit={false}></ApplayInformnation>
             </TabPane>
             <TabPane tab="面试评估表" key="面试评估表">
-              Content of Tab Pane 2
+              <TableData></TableData>
             </TabPane>
             <TabPane tab="背景调查表" key="背景调查表">
-              Content of Tab Pane 3
+            <TableData></TableData>
             </TabPane>
           </Tabs>
         </div>
