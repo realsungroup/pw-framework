@@ -14,8 +14,8 @@ export default class IdLindex extends Component {
     this.getPersonList();
   };
   state = {
-    personList: []
-    // currentPersonInfo: personList[0]
+    personList: [],
+    currentPersonInfo: {}
   };
   handlePersonOnClick = item => {
     const { personList } = this.state;
@@ -23,6 +23,7 @@ export default class IdLindex extends Component {
       return (item.isSelected = false);
     });
     item.isSelected = true;
+    console.log({item:item});
     this.setState({ personList, currentPersonInfo: item });
   };
 
