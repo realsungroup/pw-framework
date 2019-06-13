@@ -28,7 +28,8 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: {}
+    selectedPlan: {},
+    currentResid: 0
   };
   async componentDidMount() {
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
@@ -117,6 +118,35 @@ class FiscalYearPlan extends React.Component {
     let selectedPlan = plans[index];
     this.setState({ plans, selectedPlan });
   };
+  applyPlan = () => {
+    console.log(this.state.selectedPlan)
+    let resid = 609883172764
+    let data = [{
+      REC_ID: this.state.selectedPlan.REC_ID,
+      C3_609874867626: "Y",
+    }]
+    const newPlans = this.state.plans.filter((e) => {
+      if (e.REC_ID != this.state.selectedPlan.REC_ID) {
+        return e
+      }
+    })
+    http().modifyRecords({
+      resid,
+      data
+    }).then(res => {
+      console.log(res)
+      if (res.Error === 0) {
+        message.success('提交成功');
+        this.setState({
+          current: 3,
+          plans: newPlans,
+          selectedPlan: {}
+        })
+      } else {
+        message.error(res.message);
+      }
+    })
+  }
   render() {
     const { loading, current } = this.state;
     let page;
@@ -195,74 +225,78 @@ class FiscalYearPlan extends React.Component {
         break;
       case 2:
         page =
-            <TableData
-              resid={611315248461}
-              hasBeBtns={true}
-              hasAdd={false}
-              hasRowView={true}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              actionBarFixed={true}
-              hasRowModify={false}
-              actionBarExtra={(dataSource, selectedRowKeys) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.applyPlan(dataSource, selectedRowKeys);
-                    }}
-                  >
+          <TableData
+            resid={611315248461}
+            hasBeBtns={true}
+            hasAdd={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            actionBarFixed={true}
+            hasRowModify={false}
+            actionBarExtra={this.renderActionBarExtra}
+            actionBarExtra={(dataSource, selectedRowKeys) => {
+              return (
+                <Popconfirm
+                  title="是否确认提交？"
+                  onConfirm={this.applyPlan}
+                  okText="是"
+                  cancelText="否"
+                >
+                  <Button>
                     提交计划
-              </Button>
-                );
-              }}
-            />;
+                  </Button>
+                </Popconfirm>
+              );
+            }}
+          />;
         break;
       case 3:
         page =
-            <TableData
-              resid={611165813996}
-              hasBeBtns={true}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              actionBarFixed={true}
-              hasRowModify={false}
-              subTableArrProps={[
-                {
-                  subTableName: '审批记录',
-                  subResid: 611144001666,
-                  tableProps: {
-                    hasAdd: false,
-                    hasModify: false,
-                    hasRowDelete: false,
-                    hasRowModify: false,
-                    hasDelete: false,
-                    subtractH: 190,
-                    height: 500,
-                    hasRowView: false
-                  }
-                },
-                {
-                  subTableName: '计划详情',
-                  subResid: 611315248461,
-                  tableProps: {
-                    hasAdd: false,
-                    hasModify: false,
-                    hasRowDelete: false,
-                    hasRowModify: false,
-                    hasDelete: false,
-                    subtractH: 190,
-                    height: 500,
-                    hasRowView: false
-                  }
+          <TableData
+            resid={611165813996}
+            hasBeBtns={true}
+            hasAdd={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            actionBarFixed={true}
+            hasRowModify={false}
+            subTableArrProps={[
+              {
+                subTableName: '审批记录',
+                subResid: 611144001666,
+                tableProps: {
+                  hasAdd: false,
+                  hasModify: false,
+                  hasRowDelete: false,
+                  hasRowModify: false,
+                  hasDelete: false,
+                  subtractH: 190,
+                  height: 500,
+                  hasRowView: false
                 }
-              ]}
-            />;
+              },
+              {
+                subTableName: '计划详情',
+                subResid: 611315248461,
+                tableProps: {
+                  hasAdd: false,
+                  hasModify: false,
+                  hasRowDelete: false,
+                  hasRowModify: false,
+                  hasDelete: false,
+                  subtractH: 190,
+                  height: 500,
+                  hasRowView: false
+                }
+              }
+            ]}
+          />;
         break;
       default:
         break;
@@ -293,7 +327,9 @@ class FiscalYearPlan extends React.Component {
             title="确认计划"
             description=""
             onClick={() => {
-              this.setState({ current: 2 }); 
+              this.setState({
+                current: 2,
+              });
             }}
             style={{ cursor: 'pointer' }}
           />
@@ -301,7 +337,9 @@ class FiscalYearPlan extends React.Component {
             title="已提交计划"
             description=""
             onClick={() => {
-              this.setState({ current: 3 });
+              this.setState({
+                current: 3,
+              });
             }}
             style={{ cursor: 'pointer' }}
           />
