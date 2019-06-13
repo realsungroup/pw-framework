@@ -1,17 +1,19 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin, Tabs } from 'antd';
+import { Button, Popconfirm, message, Spin, Tabs, Steps } from 'antd';
 import http from 'Util20/api';
 import { Link } from 'react-router-dom';
 import { getItem } from 'Util20/util';
 
 const TabPane = Tabs.TabPane;
+const { Step } = Steps;
 /**
  * 财年计划
  */
 class FiscalYearPlan extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    current: 0
   };
   async componentDidMount() {
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
@@ -77,11 +79,19 @@ class FiscalYearPlan extends React.Component {
       </Popconfirm>
     );
   };
-
+  onChange = current => {
+    console.log('onChange:', current);
+    this.setState({ current });
+  };
   render() {
-    const { loading } = this.state;
+    const { loading, current } = this.state;
     return (
       <Spin spinning={loading}>
+        <Steps current={current} onChange={this.onChange}>
+          <Step title="Step 1" description="This is a description." />
+          <Step title="Step 2" description="This is a description." />
+          <Step title="Step 3" description="This is a description." />
+        </Steps>
         <div style={{ height: '100vh' }}>
           <Tabs
             defaultActiveKey="1"
