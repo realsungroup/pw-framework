@@ -63,7 +63,7 @@ export default class DesktopLockScreen extends React.PureComponent {
       const domainUserField = domainLoginConfig.domainUserField;
       try {
         res = await domainLogin(
-          this.userCode + usernameSuffix,
+          this.domainCode||this.userCode + usernameSuffix,
           password,
           domain,
           domainUserField
@@ -89,6 +89,7 @@ export default class DesktopLockScreen extends React.PureComponent {
     let username;
     if (userInfo) {
       this.userCode = userInfo.UserCode;
+      this.domainCode=userInfo.DomainCode;
       username = userInfo.Data;
     }
 
