@@ -19,15 +19,14 @@ class CreateTotalPlan extends React.Component {
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
-    isShowModal: false
+    isShowModal: false,
   };
-   async componentDidMount(){
+  async componentDidMount() {
     let res;
     try {
       res = await http().getAutoImportStatus();
     } catch (err) {
-      if (err.message === '没有正在运行的任务')
-      {
+      if (err.message === '没有正在运行的任务') {
         return;
       }
       return message.error(err.message);
@@ -46,15 +45,16 @@ class CreateTotalPlan extends React.Component {
       });
       this.setState({
         curIndex: this.state.totalIndex,
-        isTaskComplete:true
+        isTaskComplete: true
       });
-    } 
+    }
   }
   componentWillUnmount = () => {
     this.timer = null;
     this.getTaskInfo = null;
   };
   getTaskInfo = async () => {
+
     let res;
     try {
       res = await http().getAutoImportStatus();
@@ -66,6 +66,19 @@ class CreateTotalPlan extends React.Component {
     }
     // 当前任务已完成
     if (res.IsComplete) {
+      //修改当前财年的是否生成人员名单字段
+      const resid = 611077132065
+      const data = [{
+        REC_ID: this.state.record.REC_ID,
+        C3_613679305930: "Y"
+      }]
+      http().modifyRecords({
+        resid,
+        data
+      }).then(res => {
+        console.log(res)
+        this.tableDataRef.handleRefresh();
+      })
       notification.open({
         message: '通知',
         description:
@@ -75,7 +88,7 @@ class CreateTotalPlan extends React.Component {
       });
       this.setState({
         curIndex: this.state.totalIndex,
-        isTaskComplete:true
+        isTaskComplete: true
       });
       // 当前任务未完成
     } else {
@@ -92,9 +105,9 @@ class CreateTotalPlan extends React.Component {
   };
   renderTaskProgress = () => {
     const { totalIndex, curIndex } = this.state;
-    let percent = 0;   
-    if (this.state.isTaskComplete){
-      percent =100
+    let percent = 0;
+    if (this.state.isTaskComplete) {
+      percent = 100
     } else if (totalIndex) {
       percent = Math.floor((curIndex / totalIndex) * 100);
     }
@@ -108,7 +121,8 @@ class CreateTotalPlan extends React.Component {
     );
   };
 
-  handleClick = async () => {
+  handleClick = async (record) => {
+    this.state.record = record
     let res;
     try {
       res = await http().runAutoImport({
@@ -119,7 +133,7 @@ class CreateTotalPlan extends React.Component {
       console.error(err);
       message.error('正在生成人员名单，请耐心等候');
     }
-    this.setState({isShowModal:true});
+    this.setState({ isShowModal: true });
     this.getTaskInfo();
     //this.tableDataRef.handleRefresh();
   };
@@ -156,14 +170,15 @@ class CreateTotalPlan extends React.Component {
   }
 
   renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
+    // console.log(dataSource)
     return (
       <React.Fragment>
-        <Popconfirm
+        {/* <Popconfirm
           title="您确定要操作吗？"
           onConfirm={() => this.handleClick(dataSource, selectedRowKeys)}
         >
           <Button>生成计划人员名单</Button>
-        </Popconfirm>
+        </Popconfirm> */}
         {/* <Popconfirm
           title="您确定要操作吗？"
           onConfirm={() => this.selectPeopleSendEmail()}
@@ -195,16 +210,29 @@ class CreateTotalPlan extends React.Component {
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             customRowBtns={[
-              // (record, btnSize) => {
-              //   return <Button size={btnSize}>人员名单</Button>;
-              // },
               (record, btnSize) => {
-                return <Button size={btnSize}
-                  onClick={() => {
-                    console.log('selectPeopleSendEmail-record', record)
-                    this.selectPeopleSendEmail(record)
-                  }}
-                >发送通知</Button>;
+                if (record.C3_613679305930) {
+                  return null
+                } else {
+                  return <Button size={btnSize}
+                    onClick={() => {
+                      console.log('生成人员名单', record)
+                      this.handleClick(record)
+                    }}
+                  >生成人员名单</Button>;
+                }
+              },
+              (record, btnSize) => {
+                if (!record.C3_613679305930) {
+                  return null
+                } else {
+                  return <Button size={btnSize}
+                    onClick={() => {
+                      console.log('selectPeopleSendEmail-record', record)
+                      this.selectPeopleSendEmail(record)
+                    }}
+                  >发送通知</Button>;
+                }
               },
             ]}
           />
@@ -228,11 +256,11 @@ class CreateTotalPlan extends React.Component {
           title="选择人员"
           width="100%"
           visible={this.state.visible}
-          onCancel={()=>this.handleCancel(false)}
+          onCancel={() => this.handleCancel(false)}
           destroyOnClose={this.state.modalDestroyState}
           okButtonProps={{ disabled: true }}
         >
-          <SelectPersonFirstP record={this.state.record} handleCancel={(e)=>this.handleCancel(e)} />
+          <SelectPersonFirstP record={this.state.record} handleCancel={(e) => this.handleCancel(e)} />
         </Modal>
       </Spin>
     );
