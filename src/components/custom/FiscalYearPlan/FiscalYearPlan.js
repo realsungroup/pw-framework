@@ -141,7 +141,7 @@ class FiscalYearPlan extends React.Component {
         this.setState({
           current: 3,
           plans: newPlans,
-          selectedPlan: {}
+          selectedPlan: null
         })
       } else {
         message.error(res.message);
@@ -277,17 +277,17 @@ class FiscalYearPlan extends React.Component {
                 resid="610307713776"
               />
             ) : (
-              <CreatePlan
-                planid={selectedPlan.C3_609616660273}
-                year={selectedPlan.C3_609615869581}
-                resid="610307713776"
-                subResid="610308370365"
-                levelId="449335746776"
-                kcbResid="611315248461"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-              />
-            )}
+                <CreatePlan
+                  planid={selectedPlan.C3_609616660273}
+                  year={selectedPlan.C3_609615869581}
+                  resid="610307713776"
+                  subResid="610308370365"
+                  levelId="449335746776"
+                  kcbResid="611315248461"
+                  kcxlResid="610708527386"
+                  kclbResid="610708543449"
+                />
+              )}
           </div>
         );
         break;
@@ -305,21 +305,25 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            cmswhere={`C3_609616805633 = '${this.state.selectedPlan.C3_609616660273}'` }
+            cmswhere={`C3_609616805633 = '${this.state.selectedPlan.C3_609616660273}'`}
             //actionBarExtra={this.renderActionBarExtra}
             actionBarExtra={(dataSource, selectedRowKeys) => {
-              return (
-                <Popconfirm
-                  title="是否确认提交？"
-                  onConfirm={this.applyPlan}
-                  okText="是"
-                  cancelText="否"
-                >
-                  <Button>
-                    提交计划
-                  </Button>
-                </Popconfirm>
-              );
+              if (this.state.selectedPlan) {
+                return null
+              } else {
+                return (
+                  <Popconfirm
+                    title="是否确认提交？"
+                    onConfirm={this.applyPlan}
+                    okText="是"
+                    cancelText="否"
+                  >
+                    <Button>
+                      提交计划
+                    </Button>
+                  </Popconfirm>
+                );
+              }
             }}
           />;
         break;
@@ -398,6 +402,9 @@ class FiscalYearPlan extends React.Component {
             title="确认计划"
             description=""
             onClick={() => {
+              if (this.state.selectedPlan) {
+                message.error('请先选择一条计划！');
+              }
               this.setState({
                 current: 2,
               });
