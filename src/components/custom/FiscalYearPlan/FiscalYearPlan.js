@@ -370,36 +370,42 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            subTableArrProps={[
-              {
-                subTableName: '审批记录',
-                subResid: 611144001666,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
+            recordFormType='drawer'
+            recordFormContainerProps={{
+              placement: 'bottom',
+              height: '100vh'
+            }}
+            subTableArrProps={
+              [
+                {
+                  subTableName: '审批记录',
+                  subResid: 611144001666,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  },
+                },
+                {
+                  subTableName: '计划详情',
+                  subResid: 611315248461,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  }
                 }
-              },
-              {
-                subTableName: '计划详情',
-                subResid: 611315248461,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
-                }
-              }
-            ]}
+              ]}
           />
         );
         break;
