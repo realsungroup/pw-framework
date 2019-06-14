@@ -295,6 +295,7 @@ class FiscalYearPlan extends React.Component {
         page =
           <TableData
             resid={611315248461}
+            key='611315248461'
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={true}
@@ -304,7 +305,8 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            actionBarExtra={this.renderActionBarExtra}
+            cmswhere={`C3_609616805633 = '${this.state.selectedPlan.C3_609616660273}'` }
+            //actionBarExtra={this.renderActionBarExtra}
             actionBarExtra={(dataSource, selectedRowKeys) => {
               return (
                 <Popconfirm
@@ -325,6 +327,7 @@ class FiscalYearPlan extends React.Component {
         page =
           <TableData
             resid={611165813996}
+            key='611165813996'
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={false}
