@@ -12,7 +12,7 @@ export default class NotFound extends React.Component {
         <Button
           className="go-home-btn"
           onClick={() => {
-            this.props.history.push('/home');
+            this.props.history.push('/');
           }}
         >
           返回首页
