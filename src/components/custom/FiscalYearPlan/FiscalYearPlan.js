@@ -51,7 +51,7 @@ class FiscalYearPlan extends React.Component {
           data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
           isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
         });
-      } catch (error) {}
+      } catch (error) { }
     }
     let res;
     try {
@@ -63,7 +63,7 @@ class FiscalYearPlan extends React.Component {
       plans[0].check = true;
       let selectedPlan = plans[0];
       this.setState({ plans, selectedPlan });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   handleConfirm = async (dataSource, selectedRowKeys) => {
@@ -315,17 +315,17 @@ class FiscalYearPlan extends React.Component {
                 resid="610307713776"
               />
             ) : (
-              <CreatePlan
-                planid={selectedPlan.C3_609616660273}
-                year={selectedPlan.C3_609615869581}
-                resid="610307713776"
-                subResid="610308370365"
-                levelId="449335746776"
-                kcbResid="611315248461"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-              />
-            )}
+                <CreatePlan
+                  planid={selectedPlan.C3_609616660273}
+                  year={selectedPlan.C3_609615869581}
+                  resid="610307713776"
+                  subResid="610308370365"
+                  levelId="449335746776"
+                  kcbResid="611315248461"
+                  kcxlResid="610708527386"
+                  kclbResid="610708543449"
+                />
+              )}
           </div>
         );
         break;
@@ -375,36 +375,42 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            subTableArrProps={[
-              {
-                subTableName: '审批记录',
-                subResid: 611144001666,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
+            recordFormType='drawer'
+            recordFormContainerProps={{
+              placement: 'bottom',
+              height: '100vh'
+            }}
+            subTableArrProps={
+              [
+                {
+                  subTableName: '审批记录',
+                  subResid: 611144001666,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  },
+                },
+                {
+                  subTableName: '计划详情',
+                  subResid: 611315248461,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  }
                 }
-              },
-              {
-                subTableName: '计划详情',
-                subResid: 611315248461,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
-                }
-              }
-            ]}
+              ]}
           />
         );
         break;
@@ -446,9 +452,13 @@ class FiscalYearPlan extends React.Component {
             title="确认计划"
             description=""
             onClick={() => {
-              this.setState({
-                current: 2
-              });
+              if (this.state.selectedPlan) {
+                this.setState({
+                  current: 2
+                });
+              } else {
+                message.error('未选择财年计划，请先选择财年计划!');
+              }
             }}
             style={{ cursor: 'pointer' }}
           />

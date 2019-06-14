@@ -514,7 +514,7 @@ class CreatePlan extends React.Component {
                 </div>
               }
               bordered
-              style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
+              style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}
               dataSource={this.state.subData}
               renderItem={(item, i) => (
                 <List.Item
@@ -543,12 +543,13 @@ class CreatePlan extends React.Component {
                         style={{
                           display: 'flex',
                           flex: 1,
+                          flexWrap: 'wrap',
                           flexDirection: 'row',
                           justifyContent: 'space-between',
-                          marginBottom: '16px'
+                          marginBottom: '16px',
                         }}
                       >
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             课程名称:{' '}
                             {item.C3_609845305680 == null
@@ -556,7 +557,7 @@ class CreatePlan extends React.Component {
                               : item.C3_609845305680}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             讲师:{' '}
                             {item.C3_610390419677 == null
@@ -569,18 +570,20 @@ class CreatePlan extends React.Component {
                             display: 'flex',
                             flex: 1,
                             flexDirection: 'row',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            width: '50%'
                           }}
                         >
-                          <div
+                          {/* <div
                             style={{
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
                               background: '#4a90e2',
-                              marginRight: '16px'
+                              marginRight: '16px',
+                              width: '50%'
                             }}
-                          />
+                          /> */}
                           <span>
                             培训地:{' '}
                             {item.C3_610390410802 == null
@@ -588,7 +591,7 @@ class CreatePlan extends React.Component {
                               : item.C3_610390410802}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             课程费用:{' '}
                             {item.C3_609845305931 == null
@@ -622,7 +625,7 @@ class CreatePlan extends React.Component {
                         style={{
                           width: '20px',
                           height: '20px',
-                          border: '2px solid #777',
+                          border: '2px solid #0B92E2',
                           borderRadius: '50%',
                           display: 'flex',
                           justifyContent: 'center',
@@ -635,7 +638,7 @@ class CreatePlan extends React.Component {
                           this.setState({ subData });
                         }}
                       >
-                        <Icon type="ellipsis" />
+                        <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
                       </div>
                     </div>
                   </div>
