@@ -105,7 +105,7 @@ class FJList extends React.Component {
     let res = await http().getTable({
       resid: this.props.resid,
       key,
-      cmswhere: `C3_611264173184 = '${this.state.totalData.C3_609615869581}'`,
+      cmswhere: `C3_611264173184 = '${this.state.totalData.C3_609615869581}' and C3_613828994025 = '${this.state.totalData.C3_609616006519}'`,
       pageIndex,
       pageSize
     });
@@ -185,9 +185,7 @@ class FJList extends React.Component {
   async getSubData(e) {
     let res = await http().getTable({
       resid: this.props.subResid,
-      cmswhere: `C3_609616893275 = '${e}' and C3_609616805633 = '${
-        this.planid
-      }'`
+      cmswhere: `C3_609616893275 = '${e}'`
     });
     try {
       if (res.error === 0) {
