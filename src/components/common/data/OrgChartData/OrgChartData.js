@@ -430,7 +430,7 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = (nodes, tags) => {
-    const { lazyLoading, showFields, intl, isCanOperation } = this.props;
+    const { lazyLoading, showFields, intl, isCanOperation,collapse,expand } = this.props;
     const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
 
@@ -462,7 +462,8 @@ class OrgChartData extends React.Component {
       enableDragDrop,
 
       nodeBinding: showFields,
-
+      collapse,
+      expand,
       // 高性能
       lazyLoading,
       // showXScroll: BALKANGraph.scroll.visible,
