@@ -123,7 +123,9 @@ class CreateTotalPlan extends React.Component {
   };
 
   handleClick = async (record) => {
-    this.state.record = record
+    this.setState({
+      record: record
+    })
     let res;
     try {
       res = await http().runAutoImport({

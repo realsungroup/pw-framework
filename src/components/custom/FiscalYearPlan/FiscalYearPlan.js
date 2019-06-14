@@ -5,15 +5,12 @@ import {
   Popconfirm,
   message,
   Spin,
-  Tabs,
   Steps,
   List,
   Radio,
-  Card,
-  Icon
+  Card
 } from 'antd';
 import http from 'Util20/api';
-import { Link } from 'react-router-dom';
 import { getItem } from 'Util20/util';
 import FJList from '../FJList';
 import CreatePlan from '../CreatePlan';
@@ -163,7 +160,11 @@ class FiscalYearPlan extends React.Component {
             bordered
             loading={this.state.loading}
             dataSource={this.state.plans}
-            style={{ width: '80%', margin: '0 auto' }}
+            style={{
+              width: '100%',
+              margin: '0 auto',
+              backgroundColor: 'white'
+            }}
             header={
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
@@ -241,14 +242,19 @@ class FiscalYearPlan extends React.Component {
       case 1:
         page = (
           <div>
-            <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                display: 'flex',
+                backgroundColor: 'white',
+                padding: 5,
+                borderBottom: '1px solid #dddddd'
+              }}
+            >
               <div
                 style={{
                   display: 'flex',
                   flex: 1,
-                  justifyContent: 'flex-start',
-                  marginRight: 15,
-                  marginBottom: 5
+                  justifyContent: 'flex-start'
                 }}
               >
                 <Radio.Group defaultValue="single">
@@ -339,8 +345,7 @@ class FiscalYearPlan extends React.Component {
             hasRowModify={false}
             cmswhere={`C3_609616805633 = '${
               this.state.selectedPlan.C3_609616660273
-              }'`}
-            //actionBarExtra={this.renderActionBarExtra}
+            }'`}
             actionBarExtra={(dataSource, selectedRowKeys) => {
               return (
                 <Popconfirm
@@ -416,7 +421,12 @@ class FiscalYearPlan extends React.Component {
       <Spin spinning={loading}>
         <Steps
           current={current}
-          style={{ width: '80%', margin: '0 auto', padding: 10 }}
+          style={{
+            width: '100%',
+            marginBottom: 10,
+            padding: 10,
+            backgroundColor: 'white'
+          }}
         >
           <Step
             title="选择计划"
