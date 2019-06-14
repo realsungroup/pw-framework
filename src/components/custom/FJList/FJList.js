@@ -29,39 +29,37 @@ class FJList extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      data: [],
-      subData: [],
-      subbData: [],
-      totalData: [],
-      addCustom: [],
-      kcxlData: [],
-      kclbData: [],
-      levelSelect: '',
-      xlSelect: '',
-      lbSelect: '',
-      listIndex: 0,
-      listNo: '',
-      cnspmxb: '',
-      visibleAdd: false,
-      visibleEdit: false,
-      visibleCustom: false,
-      showHistory: false,
-      showTab: false,
-      addData: {},
-      editData: {},
-      plist: [],
+      data: [],//员工列表
+      subData: [],//推荐课程
+      subbData: [],//课程表
+      totalData: [],//统计数据
+      addCustom: [],//添加自定义课程数据
+      kcxlData: [],//课程系列列表
+      kclbData: [],//课程类别列表
+      levelSelect: '',//课程级别
+      xlSelect: '',//所选折课程系列
+      lbSelect: '',//所选折课程类别
+      listIndex: 0,//选中的员工索引
+      listNo: '',//选中的员工编号
+      cnspmxb: '',//选中课程数据
+      visibleAdd: false,//添加模态框状态
+      visibleEdit: false,//编辑模态框状态
+      visibleCustom: false,//自定义课程模态框状态
+      showHistory: false,//计划详情模态框状态
+      showTab: false,//类别模态框状态
+      addData: {},//添加课程数据
+      editData: {},//编辑课程数据
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
-      hasMore: true,
-      tabsKey: '1'
+      tabsKey: '1'//选项卡页面索引
     };
   }
 
   async componentDidMount() {
-    const qsObj = qs.parse(window.location.search.substring(1));
-    this.planid = qsObj.planid;
-    this.year = qsObj.year;
+    //const qsObj = qs.parse(window.location.search.substring(1));
+    this.planid = this.props.planid;
+    this.year = this.props.year;
     await this.totalData();
     this.getData(0, true);
     this.getLevel();
@@ -491,7 +489,7 @@ class FJList extends React.Component {
               justifyContent: 'space-around'
             }}
           >
-            <Link
+            {/* <Link
               to={{
                 pathname: '/fnmodule',
                 search:
@@ -503,7 +501,7 @@ class FJList extends React.Component {
               <Button type="primary" style={{ marginRight: '10px' }}>
                 创建计划
               </Button>
-            </Link>
+            </Link> */}
 
             <div
               style={{
@@ -798,14 +796,14 @@ class FJList extends React.Component {
               padding: '5px 0'
             }}
           >
-            <div style={{ flex: 9 }}>
+            {/* <div style={{ flex: 9 }}>
               <Button
                 type="primary"
                 onClick={() => this.setState({ showHistory: true })}
               >
                 计划详情
               </Button>
-            </div>
+            </div> */}
             <div
               style={{
                 display: 'flex',

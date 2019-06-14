@@ -23,30 +23,28 @@ class CreatePlan extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      data: [],
-      oldData: [],
-      subData: [],
-      levelData: [],
-      kcxlData: [],
-      kclbData: [],
-      levelSelect: '',
-      xlSelect: '',
-      lbSelect: '',
-      kclbState: '',
-      lkState: '',
-      kcState: '',
+      data: [],//员工列表数据
+      oldData: [],//暂存员工列表
+      subData: [],//课程表数据
+      levelData: [],//员工级别列表
+      kcxlData: [],//课程系列列表
+      kclbData: [],//课程类别列表
+      levelSelect: '',//选中级别
+      xlSelect: '',//选中系列
+      lbSelect: '',//选中类别
+      lkState: '',//选中级别状态
+      kcState: '',//选中课程状态
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
       loading: false,
-      hasMore: true,
-      key: ''
+      key: ''//模糊查询关键字
     };
   }
 
   componentDidMount() {
     const qsObj = qs.parse(window.location.search.substring(1));
-    this.planid = qsObj.planid;
+    this.planid = this.props.planid;
     this.getData();
     this.getLevel();
     this.getKcxl();
@@ -263,9 +261,9 @@ class CreatePlan extends React.Component {
       });
       if (res.Error === 0) {
         message.success(res.message);
-        window.location.href =
-          '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
-          this.planid;
+        // window.location.href =
+        //   '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
+        //   this.planid;
       } else {
         message.error(res.message);
       }
