@@ -6,20 +6,16 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { async } from 'q';
-
-const TabPane = Tabs.TabPane;
-const isChrome =()=>{
+const isChrome = () => {
   const userAgent = navigator.userAgent.toLowerCase();
-  // if(userAgent.indexOf('chrome')!==-1){
-  //   //说明找到了 就是谷歌浏览器
-  //   return true;
-  // }else{
-  //   return false;
-  // }
-  // 
-  return userAgent.indexOf('chrome')!==-1;
-}
-
+  if (userAgent.indexOf('chrome') !== -1) {
+    //说明找到了 就是谷歌浏览器
+    return true;
+  } 
+    return false;
+  //
+  // return userAgent.indexOf('chrome')!==-1;
+};
 class TotalStatical extends Component {
   constructor(props) {
     super(props);
@@ -47,11 +43,11 @@ class TotalStatical extends Component {
     {
       title: '小计',
       dataIndex: 'amount',
-      width:100,
+      width: 100
     },
     {
       title: '比例',
-      width:100,
+      width: 100,
       dataIndex: 'percentage',
       render: (value, record, index) => {
         if (record.optionContent === '本题有效填写人次') {
@@ -221,6 +217,7 @@ class TotalStatical extends Component {
   // 导出图片的功能
   handleExportImgBtnClick = () => {
     const { queryName } = this.state;
+    console.log(isChrome);
     // 下载图片
     function download(src, name) {
       if (!src) return;
@@ -232,12 +229,16 @@ class TotalStatical extends Component {
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png');
-        if(isChrome){
-          download(imgDataURL, queryName);
-        }else{
-          window.open(imgDataURL);
-        } 
+        window.open(imgDataURL);
+        download(imgDataURL, queryName);
         
+        // if (isChrome) {
+        //   console.log('谷歌');
+        //   download(imgDataURL, queryName);
+        // } else {
+        //   console.log('其他');
+        //   window.open(imgDataURL);
+        // }
       }
     );
   };
