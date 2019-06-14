@@ -57,7 +57,7 @@ class FiscalYearPlan extends React.Component {
     try {
       res = await http().getTable({
         resid: '609883172764',
-        cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
+        //cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
       });
       let plans = res.data;
       plans[0].check = true;
@@ -65,44 +65,7 @@ class FiscalYearPlan extends React.Component {
       this.setState({ plans, selectedPlan });
     } catch (error) { }
   }
-
-  handleConfirm = async (dataSource, selectedRowKeys) => {
-    if (!selectedRowKeys.length) {
-      return message.error('请选择记录');
-    }
-    const { resid } = this.props;
-    this.setState({ loading: true });
-    const data = selectedRowKeys.map(recid => ({
-      REC_ID: recid,
-      C3_605619907534: 'Y'
-    }));
-
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid,
-        data
-      });
-    } catch (err) {
-      this.setState({ loading: false });
-      console.error(err);
-      return message.error(err.message);
-    }
-    this.setState({ loading: false });
-    message.success('操作成功');
-    this.tableDataRef.handleRefresh();
-  };
-
-  renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
-    return (
-      <Popconfirm
-        title="您确定要操作吗？"
-        onConfirm={() => this.handleConfirm(dataSource, selectedRowKeys)}
-      >
-        <Button>确认</Button>
-      </Popconfirm>
-    );
-  };
+  
   onChange = current => {
     console.log('onChange:', current);
     this.setState({ current });
