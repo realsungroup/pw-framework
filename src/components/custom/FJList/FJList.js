@@ -29,30 +29,30 @@ class FJList extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      data: [],//员工列表
-      subData: [],//推荐课程
-      subbData: [],//课程表
-      totalData: [],//统计数据
-      addCustom: [],//添加自定义课程数据
-      kcxlData: [],//课程系列列表
-      kclbData: [],//课程类别列表
-      levelSelect: '',//课程级别
-      xlSelect: '',//所选折课程系列
-      lbSelect: '',//所选折课程类别
-      listIndex: 0,//选中的员工索引
-      listNo: '',//选中的员工编号
-      cnspmxb: '',//选中课程数据
-      visibleAdd: false,//添加模态框状态
-      visibleEdit: false,//编辑模态框状态
-      visibleCustom: false,//自定义课程模态框状态
-      showHistory: false,//计划详情模态框状态
-      showTab: false,//类别模态框状态
-      addData: {},//添加课程数据
-      editData: {},//编辑课程数据
+      data: [], //员工列表
+      subData: [], //推荐课程
+      subbData: [], //课程表
+      totalData: [], //统计数据
+      addCustom: [], //添加自定义课程数据
+      kcxlData: [], //课程系列列表
+      kclbData: [], //课程类别列表
+      levelSelect: '', //课程级别
+      xlSelect: '', //所选折课程系列
+      lbSelect: '', //所选折课程类别
+      listIndex: 0, //选中的员工索引
+      listNo: '', //选中的员工编号
+      cnspmxb: '', //选中课程数据
+      visibleAdd: false, //添加模态框状态
+      visibleEdit: false, //编辑模态框状态
+      visibleCustom: false, //自定义课程模态框状态
+      showHistory: false, //计划详情模态框状态
+      showTab: false, //类别模态框状态
+      addData: {}, //添加课程数据
+      editData: {}, //编辑课程数据
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
-      tabsKey: '1'//选项卡页面索引
+      tabsKey: '1' //选项卡页面索引
     };
   }
 
@@ -66,26 +66,26 @@ class FJList extends React.Component {
     this.getKcxl();
     this.getKclb();
     this.getSubbData();
-    window.parent.pwCallback &&
-      window.parent.pwCallback.modifyTitle('制定计划');
-    // 监听父窗口发送的 message 事件
-    window.addEventListener(
-      'message',
-      e => {
-        if (!e || !e.source || !e.source.pwCallback) {
-          return;
-        }
-        // 当事件类型为 "goBack"（即返回上一页时）
-        // 1. 调用 history.goBack() 方法放回上一页
-        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
-        if (e.data.type === 'goBack') {
-          this.props.history.goBack();
-          e.source.pwCallback.modifyTitle &&
-            e.source.pwCallback.modifyTitle('财年计划');
-        }
-      },
-      false
-    );
+    // window.parent.pwCallback &&
+    //   window.parent.pwCallback.modifyTitle('制定计划');
+    // // 监听父窗口发送的 message 事件
+    // window.addEventListener(
+    //   'message',
+    //   e => {
+    //     if (!e || !e.source || !e.source.pwCallback) {
+    //       return;
+    //     }
+    //     // 当事件类型为 "goBack"（即返回上一页时）
+    //     // 1. 调用 history.goBack() 方法放回上一页
+    //     // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+    //     if (e.data.type === 'goBack') {
+    //       this.props.history.goBack();
+    //       e.source.pwCallback.modifyTitle &&
+    //         e.source.pwCallback.modifyTitle('财年计划');
+    //     }
+    //   },
+    //   false
+    // );
   }
 
   loading = false;
@@ -185,7 +185,9 @@ class FJList extends React.Component {
   async getSubData(e) {
     let res = await http().getTable({
       resid: this.props.subResid,
-      cmswhere: `C3_609616893275 = '${e}' and C3_609616805633 = '${this.planid}'`
+      cmswhere: `C3_609616893275 = '${e}' and C3_609616805633 = '${
+        this.planid
+      }'`
     });
     try {
       if (res.error === 0) {
@@ -203,7 +205,9 @@ class FJList extends React.Component {
 
   //获取课程表
   async getSubbData(key) {
-    let cmswhere = `C3_609845305743 = '${this.state.totalData.C3_609615869581}' `;
+    let cmswhere = `C3_609845305743 = '${
+      this.state.totalData.C3_609615869581
+    }' `;
     if (this.state.levelSelect) {
       cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
     }
@@ -489,30 +493,16 @@ class FJList extends React.Component {
               justifyContent: 'space-around'
             }}
           >
-            {/* <Link
-              to={{
-                pathname: '/fnmodule',
-                search:
-                  '?resid=创建计划&recid=610555514606&type=前端功能入口&title=创建计划&planid=' +
-                  this.planid
-              }}
-              target="_self"
-            >
-              <Button type="primary" style={{ marginRight: '10px' }}>
-                创建计划
-              </Button>
-            </Link> */}
-
             <div
               style={{
-                flex: 9,
+                flex: 2,
                 display: 'flex',
                 justifyContent: 'space-around',
                 padding: '0 10px'
               }}
             >
               <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                {totalData.C3_609616006519 == 'SH' ? '上海' : '无锡'}
+                {totalData.C3_609616006519 == 'SHG' ? '上海' : '无锡'}
               </span>
               <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 财年: {totalData.C3_609615869581}
@@ -521,7 +511,7 @@ class FJList extends React.Component {
             <div
               style={{
                 display: 'flex',
-                flex: 3,
+                flex: 1,
                 flexDirection: 'column',
                 justifyContent: 'space-around',
                 alignItems: 'center'
@@ -530,11 +520,25 @@ class FJList extends React.Component {
               <span style={{ fontSize: '14px' }}>
                 人数: {totalData.C3_609615996253}
               </span>
+
+              <span style={{ fontSize: '14px' }}>
+                总费用: {totalData.C3_609616051191}
+              </span>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center'
+              }}
+            >
               <span style={{ fontSize: '14px' }}>
                 总预算: {totalData.C3_609616030566}
               </span>
               <span style={{ fontSize: '14px' }}>
-                总费用: {totalData.C3_609616051191}
+                人均预算: {totalData.C3_611074040082}
               </span>
             </div>
           </div>
@@ -796,23 +800,39 @@ class FJList extends React.Component {
               padding: '5px 0'
             }}
           >
-            {/* <div style={{ flex: 9 }}>
-              <Button
-                type="primary"
-                onClick={() => this.setState({ showHistory: true })}
-              >
-                计划详情
-              </Button>
-            </div> */}
             <div
               style={{
                 display: 'flex',
                 flex: 2,
                 flexDirection: 'column',
                 justifyContent: 'space-around',
-                height: '63px'
+                height: '42px'
               }}
             >
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  padding: '5px 0'
+                }}
+              >
+                <Button
+                  type="default"
+                  style={{ width: 'calc(50% - 80px)' }}
+                  onClick={() => this.setState({ visibleAdd: true })}
+                >
+                  添加课程
+                </Button>
+                <Button
+                  type="default"
+                  style={{ width: 'calc(50% - 80px)' }}
+                  onClick={() => this.setState({ visibleCustom: true })}
+                >
+                  自定义课程
+                </Button>
+              </div>
               {/* <span style={{fontSize:"14px"}}>
                 课程数:10
               </span>
@@ -824,6 +844,7 @@ class FJList extends React.Component {
               </span> */}
             </div>
           </div>
+
           {subData.length > 0 ? (
             <div style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}>
               {subData.map((item, i) => (
@@ -970,31 +991,7 @@ class FJList extends React.Component {
               dataSource={subData}
             />
           )}
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              padding: '5px 0',
-              marginTop: '20px'
-            }}
-          >
-            <Button
-              type="default"
-              style={{ width: 'calc(50% - 80px)' }}
-              onClick={() => this.setState({ visibleAdd: true })}
-            >
-              添加课程
-            </Button>
-            <Button
-              type="default"
-              style={{ width: 'calc(50% - 80px)' }}
-              onClick={() => this.setState({ visibleCustom: true })}
-            >
-              自定义课程
-            </Button>
-          </div>
+
           <Modal
             title="计划详情"
             width={'80%'}
