@@ -28,7 +28,7 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: {},
+    selectedPlan: null,
     currentResid: 0,
     selectModel: 'single'
   };
@@ -120,34 +120,38 @@ class FiscalYearPlan extends React.Component {
     this.setState({ plans, selectedPlan });
   };
   applyPlan = () => {
-    console.log(this.state.selectedPlan)
-    let resid = 609883172764
-    let data = [{
-      REC_ID: this.state.selectedPlan.REC_ID,
-      C3_609874867626: "Y",
-    }]
-    const newPlans = this.state.plans.filter((e) => {
+    console.log(this.state.selectedPlan);
+    let resid = 609883172764;
+    let data = [
+      {
+        REC_ID: this.state.selectedPlan.REC_ID,
+        C3_609874867626: 'Y'
+      }
+    ];
+    const newPlans = this.state.plans.filter(e => {
       if (e.REC_ID != this.state.selectedPlan.REC_ID) {
-        return e
+        return e;
       }
-    })
-    http().modifyRecords({
-      resid,
-      data
-    }).then(res => {
-      console.log(res)
-      if (res.Error === 0) {
-        message.success('提交成功');
-        this.setState({
-          current: 3,
-          plans: newPlans,
-          selectedPlan: null
-        })
-      } else {
-        message.error(res.message);
-      }
-    })
-  }
+    });
+    http()
+      .modifyRecords({
+        resid,
+        data
+      })
+      .then(res => {
+        console.log(res);
+        if (res.Error === 0) {
+          message.success('提交成功');
+          this.setState({
+            current: 3,
+            plans: newPlans,
+            selectedPlan: null
+          });
+        } else {
+          message.error(res.message);
+        }
+      });
+  };
   render() {
     const { loading, current, selectedPlan } = this.state;
     let page;
@@ -164,7 +168,11 @@ class FiscalYearPlan extends React.Component {
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
                   onClick={() => {
-                    this.setState({ current: 1 });
+                    if (this.state.selectedPlan) {
+                      this.setState({ current: 1 });
+                    } else {
+                      message.error('未选择财年计划，请先选择财年计划！');
+                    }
                   }}
                 >
                   下一步
@@ -172,7 +180,8 @@ class FiscalYearPlan extends React.Component {
               </div>
             }
             renderItem={(item, i) => {
-              let branchCompany = item.C3_609616006519 === 'WX' ? '无锡' : '上海';
+              let branchCompany =
+                item.C3_609616006519 === 'WX' ? '无锡' : '上海';
               return (
                 <List.Item
                   style={{ cursor: 'pointer' }}
@@ -186,21 +195,44 @@ class FiscalYearPlan extends React.Component {
                   >
                     <div className="plan_infos">
                       {/* <div className="plan_infos_item">编号:{item.C3_609616660273}</div> */}
-                      <div className="plan_infos_item">财年: {item.C3_609615869581}</div>
-                      <div className="plan_infos_item">制定者：{item.C3_609615939753}</div>
-                      <div className="plan_infos_item">下属人数：{item.C3_609615996253}</div>
-                      <div className="plan_infos_item"> 部门：{item.C3_609616487709}</div>
-                      <div className="plan_infos_item">预算：{item.C3_609616030566}</div>
-                      <div className="plan_infos_item">人均预算：{item.C3_611074040082}</div>
-                      <div className="plan_infos_item">实际费用：{item.C3_609616051191}</div>
-                      <div className="plan_infos_item">是否提交：{item.C3_609874867626}</div>
-                      <div className="plan_infos_item">状态：{item.C3_609874879829}</div>
+                      <div className="plan_infos_item">
+                        财年: {item.C3_609615869581}
+                      </div>
+                      <div className="plan_infos_item">
+                        制定者：{item.C3_609615939753}
+                      </div>
+                      <div className="plan_infos_item">
+                        下属人数：{item.C3_609615996253}
+                      </div>
+                      <div className="plan_infos_item">
+                        {' '}
+                        部门：{item.C3_609616487709}
+                      </div>
+                      <div className="plan_infos_item">
+                        预算：{item.C3_609616030566}
+                      </div>
+                      <div className="plan_infos_item">
+                        人均预算：{item.C3_611074040082}
+                      </div>
+                      <div className="plan_infos_item">
+                        实际费用：{item.C3_609616051191}
+                      </div>
+                      <div className="plan_infos_item">
+                        是否提交：{item.C3_609874867626}
+                      </div>
+                      <div className="plan_infos_item">
+                        状态：{item.C3_609874879829}
+                      </div>
                       {/* <div className="plan_infos_item">一级部门编号：{item.C3_609874956063}</div> */}
-                      <div className="plan_infos_item">一级部门经理：{item.C3_609874982844}</div>
-                      <div className="plan_infos_item">HR：{item.C3_609874947298}</div>
+                      <div className="plan_infos_item">
+                        一级部门经理：{item.C3_609874982844}
+                      </div>
+                      <div className="plan_infos_item">
+                        HR：{item.C3_609874947298}
+                      </div>
                     </div>
                   </Card>
-                </List.Item >
+                </List.Item>
               );
             }}
           />
@@ -292,10 +324,10 @@ class FiscalYearPlan extends React.Component {
         );
         break;
       case 2:
-        page =
+        page = (
           <TableData
             resid={611315248461}
-            key='611315248461'
+            key="611315248461"
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={true}
@@ -305,33 +337,30 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            cmswhere={`C3_609616805633 = '${this.state.selectedPlan.C3_609616660273}'`}
+            cmswhere={`C3_609616805633 = '${
+              this.state.selectedPlan.C3_609616660273
+              }'`}
             //actionBarExtra={this.renderActionBarExtra}
             actionBarExtra={(dataSource, selectedRowKeys) => {
-              if (this.state.selectedPlan) {
-                return null
-              } else {
-                return (
-                  <Popconfirm
-                    title="是否确认提交？"
-                    onConfirm={this.applyPlan}
-                    okText="是"
-                    cancelText="否"
-                  >
-                    <Button>
-                      提交计划
-                    </Button>
-                  </Popconfirm>
-                );
-              }
+              return (
+                <Popconfirm
+                  title="是否确认提交？"
+                  onConfirm={this.applyPlan}
+                  okText="是"
+                  cancelText="否"
+                >
+                  <Button>提交计划</Button>
+                </Popconfirm>
+              );
             }}
-          />;
+          />
+        );
         break;
       case 3:
-        page =
+        page = (
           <TableData
             resid={611165813996}
-            key='611165813996'
+            key="611165813996"
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={false}
@@ -371,7 +400,8 @@ class FiscalYearPlan extends React.Component {
                 }
               }
             ]}
-          />;
+          />
+        );
         break;
       default:
         break;
@@ -394,7 +424,11 @@ class FiscalYearPlan extends React.Component {
             title="制定计划"
             description=""
             onClick={() => {
-              this.setState({ current: 1 });
+              if (this.state.selectedPlan) {
+                this.setState({ current: 1 });
+              } else {
+                message.error('未选择财年计划，请先选择财年计划！');
+              }
             }}
             style={{ cursor: 'pointer' }}
           />
@@ -403,11 +437,12 @@ class FiscalYearPlan extends React.Component {
             description=""
             onClick={() => {
               if (this.state.selectedPlan) {
-                message.error('请先选择一条计划！');
+                this.setState({
+                  current: 2
+                });
+              } else {
+                message.error('未选择财年计划，请先选择财年计划!');
               }
-              this.setState({
-                current: 2,
-              });
             }}
             style={{ cursor: 'pointer' }}
           />
@@ -416,7 +451,7 @@ class FiscalYearPlan extends React.Component {
             description=""
             onClick={() => {
               this.setState({
-                current: 3,
+                current: 3
               });
             }}
             style={{ cursor: 'pointer' }}
