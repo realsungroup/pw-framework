@@ -457,13 +457,15 @@ class OrgChartData extends React.Component {
       enableDelete: true,
 
       orientation: BALKANGraph.orientation[orientation],
-
+      collapse,
       // 可拖动节点
       enableDragDrop,
 
       nodeBinding: showFields,
-      collapse,
       expand,
+     
+
+     
       // 高性能
       lazyLoading,
       // showXScroll: BALKANGraph.scroll.visible,

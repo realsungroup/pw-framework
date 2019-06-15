@@ -5,7 +5,8 @@ import { Button, Popconfirm, message, Spin, Progress, Modal, notification, Icon 
 import http from 'Util20/api';
 import './CreateTotalPlan.less';
 
-const id = 611075833524;
+const SH_id = 611075833524;
+const WS_id = 613848452461;
 
 /**
  * 创建总计划
@@ -123,11 +124,13 @@ class CreateTotalPlan extends React.Component {
   };
 
   handleClick = async (record) => {
-    this.state.record = record
+    this.setState({
+      record: record
+    })
     let res;
     try {
       res = await http().runAutoImport({
-        id
+        SH_id
       });
     } catch (err) {
       this.setState({ loading: false });

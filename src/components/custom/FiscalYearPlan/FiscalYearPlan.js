@@ -5,15 +5,12 @@ import {
   Popconfirm,
   message,
   Spin,
-  Tabs,
   Steps,
   List,
   Radio,
-  Card,
-  Icon
+  Card
 } from 'antd';
 import http from 'Util20/api';
-import { Link } from 'react-router-dom';
 import { getItem } from 'Util20/util';
 import FJList from '../FJList';
 import CreatePlan from '../CreatePlan';
@@ -28,7 +25,7 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: {},
+    selectedPlan: null,
     currentResid: 0,
     selectModel: 'single'
   };
@@ -59,8 +56,8 @@ class FiscalYearPlan extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: '609883172764',
-        cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
+        resid: '609883172764',//财年计划主表
+        //cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
       });
       let plans = res.data;
       plans[0].check = true;
@@ -68,44 +65,7 @@ class FiscalYearPlan extends React.Component {
       this.setState({ plans, selectedPlan });
     } catch (error) { }
   }
-
-  handleConfirm = async (dataSource, selectedRowKeys) => {
-    if (!selectedRowKeys.length) {
-      return message.error('请选择记录');
-    }
-    const { resid } = this.props;
-    this.setState({ loading: true });
-    const data = selectedRowKeys.map(recid => ({
-      REC_ID: recid,
-      C3_605619907534: 'Y'
-    }));
-
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid,
-        data
-      });
-    } catch (err) {
-      this.setState({ loading: false });
-      console.error(err);
-      return message.error(err.message);
-    }
-    this.setState({ loading: false });
-    message.success('操作成功');
-    this.tableDataRef.handleRefresh();
-  };
-
-  renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
-    return (
-      <Popconfirm
-        title="您确定要操作吗？"
-        onConfirm={() => this.handleConfirm(dataSource, selectedRowKeys)}
-      >
-        <Button>确认</Button>
-      </Popconfirm>
-    );
-  };
+  
   onChange = current => {
     console.log('onChange:', current);
     this.setState({ current });
@@ -120,34 +80,38 @@ class FiscalYearPlan extends React.Component {
     this.setState({ plans, selectedPlan });
   };
   applyPlan = () => {
-    console.log(this.state.selectedPlan)
-    let resid = 609883172764
-    let data = [{
-      REC_ID: this.state.selectedPlan.REC_ID,
-      C3_609874867626: "Y",
-    }]
-    const newPlans = this.state.plans.filter((e) => {
+    console.log(this.state.selectedPlan);
+    let resid = 609883172764;
+    let data = [
+      {
+        REC_ID: this.state.selectedPlan.REC_ID,
+        C3_609874867626: 'Y'
+      }
+    ];
+    const newPlans = this.state.plans.filter(e => {
       if (e.REC_ID != this.state.selectedPlan.REC_ID) {
-        return e
+        return e;
       }
-    })
-    http().modifyRecords({
-      resid,
-      data
-    }).then(res => {
-      console.log(res)
-      if (res.Error === 0) {
-        message.success('提交成功');
-        this.setState({
-          current: 3,
-          plans: newPlans,
-          selectedPlan: {}
-        })
-      } else {
-        message.error(res.message);
-      }
-    })
-  }
+    });
+    http()
+      .modifyRecords({
+        resid,
+        data
+      })
+      .then(res => {
+        console.log(res);
+        if (res.Error === 0) {
+          message.success('提交成功');
+          this.setState({
+            current: 3,
+            plans: newPlans,
+            selectedPlan: null
+          });
+        } else {
+          message.error(res.message);
+        }
+      });
+  };
   render() {
     const { loading, current, selectedPlan } = this.state;
     let page;
@@ -159,12 +123,20 @@ class FiscalYearPlan extends React.Component {
             bordered
             loading={this.state.loading}
             dataSource={this.state.plans}
-            style={{ width: '80%', margin: '0 auto' }}
+            style={{
+              width: '100%',
+              margin: '0 auto',
+              backgroundColor: 'white'
+            }}
             header={
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
                   onClick={() => {
-                    this.setState({ current: 1 });
+                    if (this.state.selectedPlan) {
+                      this.setState({ current: 1 });
+                    } else {
+                      message.error('未选择财年计划，请先选择财年计划！');
+                    }
                   }}
                 >
                   下一步
@@ -172,7 +144,8 @@ class FiscalYearPlan extends React.Component {
               </div>
             }
             renderItem={(item, i) => {
-              let branchCompany = item.C3_609616006519 === 'WX' ? '无锡' : '上海';
+              let branchCompany =
+                item.C3_609616006519 === 'WX' ? '无锡' : '上海';
               return (
                 <List.Item
                   style={{ cursor: 'pointer' }}
@@ -186,21 +159,44 @@ class FiscalYearPlan extends React.Component {
                   >
                     <div className="plan_infos">
                       {/* <div className="plan_infos_item">编号:{item.C3_609616660273}</div> */}
-                      <div className="plan_infos_item">财年: {item.C3_609615869581}</div>
-                      <div className="plan_infos_item">制定者：{item.C3_609615939753}</div>
-                      <div className="plan_infos_item">下属人数：{item.C3_609615996253}</div>
-                      <div className="plan_infos_item"> 部门：{item.C3_609616487709}</div>
-                      <div className="plan_infos_item">预算：{item.C3_609616030566}</div>
-                      <div className="plan_infos_item">人均预算：{item.C3_611074040082}</div>
-                      <div className="plan_infos_item">实际费用：{item.C3_609616051191}</div>
-                      <div className="plan_infos_item">是否提交：{item.C3_609874867626}</div>
-                      <div className="plan_infos_item">状态：{item.C3_609874879829}</div>
+                      <div className="plan_infos_item">
+                        财年: {item.C3_609615869581}
+                      </div>
+                      <div className="plan_infos_item">
+                        制定者：{item.C3_609615939753}
+                      </div>
+                      <div className="plan_infos_item">
+                        下属人数：{item.C3_609615996253}
+                      </div>
+                      <div className="plan_infos_item">
+                        {' '}
+                        部门：{item.C3_609616487709}
+                      </div>
+                      <div className="plan_infos_item">
+                        预算：{item.C3_609616030566}
+                      </div>
+                      <div className="plan_infos_item">
+                        人均预算：{item.C3_611074040082}
+                      </div>
+                      <div className="plan_infos_item">
+                        实际费用：{item.C3_609616051191}
+                      </div>
+                      <div className="plan_infos_item">
+                        是否提交：{item.C3_609874867626}
+                      </div>
+                      <div className="plan_infos_item">
+                        状态：{item.C3_609874879829}
+                      </div>
                       {/* <div className="plan_infos_item">一级部门编号：{item.C3_609874956063}</div> */}
-                      <div className="plan_infos_item">一级部门经理：{item.C3_609874982844}</div>
-                      <div className="plan_infos_item">HR：{item.C3_609874947298}</div>
+                      <div className="plan_infos_item">
+                        一级部门经理：{item.C3_609874982844}
+                      </div>
+                      <div className="plan_infos_item">
+                        HR：{item.C3_609874947298}
+                      </div>
                     </div>
                   </Card>
-                </List.Item >
+                </List.Item>
               );
             }}
           />
@@ -209,14 +205,19 @@ class FiscalYearPlan extends React.Component {
       case 1:
         page = (
           <div>
-            <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                display: 'flex',
+                backgroundColor: 'white',
+                padding: 5,
+                borderBottom: '1px solid #dddddd'
+              }}
+            >
               <div
                 style={{
                   display: 'flex',
                   flex: 1,
-                  justifyContent: 'flex-start',
-                  marginRight: 15,
-                  marginBottom: 5
+                  justifyContent: 'flex-start'
                 }}
               >
                 <Radio.Group defaultValue="single">
@@ -268,33 +269,34 @@ class FiscalYearPlan extends React.Component {
               <FJList
                 planid={selectedPlan.C3_609616660273}
                 year={selectedPlan.C3_609615869581}
-                totalResid="609883172764"
-                subResid="611315248461"
-                subbResid="610308370365"
-                levelId="449335746776"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-                resid="610307713776"
+                totalResid="609883172764"//财年明细-待提交
+                subResid="611315248461"//财年计划明细表
+                subbResid="610308370365"//课程表
+                levelId="449335746776"//
+                kcxlResid="610708527386"//课程系列
+                kclbResid="610708543449"//课程类别
+                resid="610307713776"//人员名单
               />
             ) : (
-              <CreatePlan
-                planid={selectedPlan.C3_609616660273}
-                year={selectedPlan.C3_609615869581}
-                resid="610307713776"
-                subResid="610308370365"
-                levelId="449335746776"
-                kcbResid="611315248461"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-              />
-            )}
+                <CreatePlan
+                  planid={selectedPlan.C3_609616660273}
+                  year={selectedPlan.C3_609615869581}
+                  resid="610307713776"
+                  subResid="610308370365"
+                  levelId="449335746776"
+                  kcbResid="611315248461"
+                  kcxlResid="610708527386"
+                  kclbResid="610708543449"
+                />
+              )}
           </div>
         );
         break;
       case 2:
-        page =
+        page = (
           <TableData
             resid={611315248461}
+            key="611315248461"
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={true}
@@ -304,7 +306,9 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            actionBarExtra={this.renderActionBarExtra}
+            cmswhere={`C3_609616805633 = '${
+              this.state.selectedPlan.C3_609616660273
+            }'`}
             actionBarExtra={(dataSource, selectedRowKeys) => {
               return (
                 <Popconfirm
@@ -313,18 +317,18 @@ class FiscalYearPlan extends React.Component {
                   okText="是"
                   cancelText="否"
                 >
-                  <Button>
-                    提交计划
-                  </Button>
+                  <Button>提交计划</Button>
                 </Popconfirm>
               );
             }}
-          />;
+          />
+        );
         break;
       case 3:
-        page =
+        page = (
           <TableData
             resid={611165813996}
+            key="611165813996"
             hasBeBtns={true}
             hasAdd={false}
             hasRowView={false}
@@ -334,37 +338,44 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            subTableArrProps={[
-              {
-                subTableName: '审批记录',
-                subResid: 611144001666,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
+            recordFormType='drawer'
+            recordFormContainerProps={{
+              placement: 'bottom',
+              height: '100vh'
+            }}
+            subTableArrProps={
+              [
+                {
+                  subTableName: '审批记录',
+                  subResid: 611144001666,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  },
+                },
+                {
+                  subTableName: '计划详情',
+                  subResid: 611315248461,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 190,
+                    height: 500,
+                    hasRowView: false
+                  }
                 }
-              },
-              {
-                subTableName: '计划详情',
-                subResid: 611315248461,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  height: 500,
-                  hasRowView: false
-                }
-              }
-            ]}
-          />;
+              ]}
+          />
+        );
         break;
       default:
         break;
@@ -373,7 +384,12 @@ class FiscalYearPlan extends React.Component {
       <Spin spinning={loading}>
         <Steps
           current={current}
-          style={{ width: '80%', margin: '0 auto', padding: 10 }}
+          style={{
+            width: '100%',
+            marginBottom: 10,
+            padding: 10,
+            backgroundColor: 'white'
+          }}
         >
           <Step
             title="选择计划"
@@ -387,7 +403,11 @@ class FiscalYearPlan extends React.Component {
             title="制定计划"
             description=""
             onClick={() => {
-              this.setState({ current: 1 });
+              if (this.state.selectedPlan) {
+                this.setState({ current: 1 });
+              } else {
+                message.error('未选择财年计划，请先选择财年计划！');
+              }
             }}
             style={{ cursor: 'pointer' }}
           />
@@ -395,9 +415,13 @@ class FiscalYearPlan extends React.Component {
             title="确认计划"
             description=""
             onClick={() => {
-              this.setState({
-                current: 2,
-              });
+              if (this.state.selectedPlan) {
+                this.setState({
+                  current: 2
+                });
+              } else {
+                message.error('未选择财年计划，请先选择财年计划!');
+              }
             }}
             style={{ cursor: 'pointer' }}
           />
@@ -406,7 +430,7 @@ class FiscalYearPlan extends React.Component {
             description=""
             onClick={() => {
               this.setState({
-                current: 3,
+                current: 3
               });
             }}
             style={{ cursor: 'pointer' }}

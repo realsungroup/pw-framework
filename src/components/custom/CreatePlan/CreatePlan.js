@@ -23,24 +23,22 @@ class CreatePlan extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      data: [],
-      oldData: [],
-      subData: [],
-      levelData: [],
-      kcxlData: [],
-      kclbData: [],
-      levelSelect: '',
-      xlSelect: '',
-      lbSelect: '',
-      kclbState: '',
-      lkState: '',
-      kcState: '',
+      data: [],//员工列表数据
+      oldData: [],//暂存员工列表
+      subData: [],//课程表数据
+      levelData: [],//员工级别列表
+      kcxlData: [],//课程系列列表
+      kclbData: [],//课程类别列表
+      levelSelect: '',//选中级别
+      xlSelect: '',//选中系列
+      lbSelect: '',//选中类别
+      lkState: '',//选中级别状态
+      kcState: '',//选中课程状态
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
       loading: false,
-      hasMore: true,
-      key: ''
+      key: ''//模糊查询关键字
     };
   }
 
@@ -51,26 +49,26 @@ class CreatePlan extends React.Component {
     this.getLevel();
     this.getKcxl();
     this.getKclb();
-    window.parent.pwCallback &&
-      window.parent.pwCallback.modifyTitle('创建计划');
-    // 监听父窗口发送的 message 事件
-    window.addEventListener(
-      'message',
-      e => {
-        if (!e || !e.source || !e.source.pwCallback) {
-          return;
-        }
-        // 当事件类型为 "goBack"（即返回上一页时）
-        // 1. 调用 history.goBack() 方法放回上一页
-        // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
-        if (e.data.type === 'goBack') {
-          this.props.history.goBack();
-          e.source.pwCallback.modifyTitle &&
-            e.source.pwCallback.modifyTitle('制定计划');
-        }
-      },
-      false
-    );
+    // window.parent.pwCallback &&
+    //   window.parent.pwCallback.modifyTitle('创建计划');
+    // // 监听父窗口发送的 message 事件
+    // window.addEventListener(
+    //   'message',
+    //   e => {
+    //     if (!e || !e.source || !e.source.pwCallback) {
+    //       return;
+    //     }
+    //     // 当事件类型为 "goBack"（即返回上一页时）
+    //     // 1. 调用 history.goBack() 方法放回上一页
+    //     // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
+    //     if (e.data.type === 'goBack') {
+    //       this.props.history.goBack();
+    //       e.source.pwCallback.modifyTitle &&
+    //         e.source.pwCallback.modifyTitle('制定计划');
+    //     }
+    //   },
+    //   false
+    // );
   }
 
   //获取员工列表
@@ -516,7 +514,7 @@ class CreatePlan extends React.Component {
                 </div>
               }
               bordered
-              style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
+              style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}
               dataSource={this.state.subData}
               renderItem={(item, i) => (
                 <List.Item
@@ -545,12 +543,13 @@ class CreatePlan extends React.Component {
                         style={{
                           display: 'flex',
                           flex: 1,
+                          flexWrap: 'wrap',
                           flexDirection: 'row',
                           justifyContent: 'space-between',
-                          marginBottom: '16px'
+                          marginBottom: '16px',
                         }}
                       >
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             课程名称:{' '}
                             {item.C3_609845305680 == null
@@ -558,7 +557,7 @@ class CreatePlan extends React.Component {
                               : item.C3_609845305680}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             讲师:{' '}
                             {item.C3_610390419677 == null
@@ -571,18 +570,20 @@ class CreatePlan extends React.Component {
                             display: 'flex',
                             flex: 1,
                             flexDirection: 'row',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            width: '50%'
                           }}
                         >
-                          <div
+                          {/* <div
                             style={{
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
                               background: '#4a90e2',
-                              marginRight: '16px'
+                              marginRight: '16px',
+                              width: '50%'
                             }}
-                          />
+                          /> */}
                           <span>
                             培训地:{' '}
                             {item.C3_610390410802 == null
@@ -590,7 +591,7 @@ class CreatePlan extends React.Component {
                               : item.C3_610390410802}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div style={{ width: '50%' }}>
                           <span>
                             课程费用:{' '}
                             {item.C3_609845305931 == null
@@ -624,7 +625,7 @@ class CreatePlan extends React.Component {
                         style={{
                           width: '20px',
                           height: '20px',
-                          border: '2px solid #777',
+                          border: '2px solid #0B92E2',
                           borderRadius: '50%',
                           display: 'flex',
                           justifyContent: 'center',
@@ -637,7 +638,7 @@ class CreatePlan extends React.Component {
                           this.setState({ subData });
                         }}
                       >
-                        <Icon type="ellipsis" />
+                        <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
                       </div>
                     </div>
                   </div>
