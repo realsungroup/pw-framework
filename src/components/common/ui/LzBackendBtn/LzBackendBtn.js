@@ -102,7 +102,7 @@ class LzBackendBtn extends React.PureComponent {
         // 缓存 formData 和 defaultRecord
         this._formData = formData;
         this._defaultRecord = defaultRecord;
-        this._controlData = getDataProp(this._formData, {}, false, recordFormDisplayMode === 'classify');
+        this._controlData = getDataProp(this._formData, records.length === 1 ? records[0] : {}, false, recordFormDisplayMode === 'classify');
       }
 
       onConfirm &&
