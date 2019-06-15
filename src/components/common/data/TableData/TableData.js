@@ -689,17 +689,19 @@ class TableData extends React.Component {
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
     const { beBtnsMultiple, beBtnsOther } = this.state;
-    const { size } = this.props;
+    const { size, formProps } = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
+    const recordFormDisplayMode = (formProps && formProps.displayMode) || 'default';
 
     return arr.map(btnInfo => (
       <LzBackendBtn
         backendBtnType="multiple"
         key={btnInfo.Name1}
-        btnInfo={btnInfo}
+        btnInfo={{...btnInfo }}
         resid={id}
+        recordFormDisplayMode={recordFormDisplayMode}
         onConfirm={(
           backendBtnType,
           type,
@@ -727,14 +729,16 @@ class TableData extends React.Component {
 
   // 渲染行后端按钮
   renderRowBeBtns = (beBtnsSingle, record) => {
-    const { size } = this.props;
+    const { size, formProps } = this.props;
     const id = this._id;
+
     return beBtnsSingle.map(btnInfo => (
       <LzBackendBtn
         backendBtnType="single"
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
+        recordFormDisplayMode={formProps && formProps.displayMode || 'default'}
         onConfirm={(
           backendBtnType,
           type,
