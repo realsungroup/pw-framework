@@ -27,13 +27,13 @@ class IdLindex extends Component {
   };
   handlePersonOnClick = item => {
     const { personList } = this.state;
-   const tempPersonList = [...personList]
-   tempPersonList.forEach(item=>{
-         item.isSelected = false
+    const tempPersonList = [...personList];
+    tempPersonList.forEach(item => {
+      item.isSelected = false;
     });
     item.isSelected = true;
     // 并获取该人的详细信息
-    this.setState({ personList:tempPersonList, currentPersonId: item.ID });
+    this.setState({ personList: tempPersonList, currentPersonId: item.ID });
     this.getPersonalInfo(item.ID);
   };
   getSelectClass = isSelected => {
@@ -50,13 +50,13 @@ class IdLindex extends Component {
     try {
       res = await http().getTable({
         resid: 613152690063
-      }); 
+      });
     } catch (err) {
       console.log(err);
     }
-    res.data.map(item=>{
+    res.data.map(item => {
       return (item.isSelected = false);
-    })
+    });
     console.log(res.data);
     this.getPersonalInfo(res.data[0].ID);
     this.setState({
