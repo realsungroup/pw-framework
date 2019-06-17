@@ -300,7 +300,7 @@ class FiscalYearPlan extends React.Component {
             key="611315248461"
             hasBeBtns={true}
             hasAdd={false}
-            hasRowView={true}
+            hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
