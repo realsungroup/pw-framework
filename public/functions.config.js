@@ -1213,12 +1213,6 @@ window[612526844134] = {
   props: {}
 };
 
-// IDL招聘管理员端入口
-window[612612229738] = {
-  name: 'IdLindex',
-  title: 'IDL招聘'
-};
-
 // 个人成绩管理
 window[607168405062] = {
   name: 'PersonGradeManagement',
@@ -1270,8 +1264,14 @@ window['考试图表分析'] = {
 };
 
 // 求职者入口
-window[612874189546] = {
+window[614079025750] = {
   name: 'JobSeeker',
   title: 'IDL求职者',
   props: {}
+};
+
+// IDL招聘管理员端入口
+window[614078684178] = {
+  name: 'IdLindex',
+  title: 'IDL招聘'
 };
