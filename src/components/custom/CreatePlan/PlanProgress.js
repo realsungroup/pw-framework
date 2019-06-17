@@ -19,9 +19,12 @@ class PlanProgress extends React.Component {
   componentDidMount = async () => {
     let { taskList, finishedCount, percent } = this.state;
     let total = taskList.length;
-    taskList.forEach(i=>{
-      i.success =true;
-    })
+    if (total < 1) {
+      return this.setState({ isFinished: true, percent: 100 });
+    }
+    taskList.forEach(i => {
+      i.success = true;
+    });
     await this.handleTasks(finishedCount, total, taskList, percent);
   };
 
@@ -135,7 +138,7 @@ class PlanProgress extends React.Component {
                       flex: 1,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
+                      whiteSpace: 'nowrap'
                     }}
                     color="red"
                     title={item.errorMessage}
