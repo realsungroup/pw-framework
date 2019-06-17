@@ -1,13 +1,13 @@
 import React from 'react';
-import { Modal, Progress, List, message, Icon, Button } from 'antd';
+import { Modal, Progress, List, message, Icon, Button, Tag } from 'antd';
 import http from '../../../util20/api';
 
-const successIcon = (
-  <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-);
-const faileIcon = (
-  <Icon type="close-circle" theme="twoTone" twoToneColor="red" />
-);
+const iconStyle = {
+  display: 'flex',
+  alignItems: 'center' /*垂直居中*/,
+  justifyContent: 'center' /*水平居中*/
+};
+
 class PlanProgress extends React.Component {
   state = {
     visible: true,
@@ -19,11 +19,13 @@ class PlanProgress extends React.Component {
   componentDidMount = async () => {
     let { taskList, finishedCount, percent } = this.state;
     let total = taskList.length;
+    taskList.forEach(i=>{
+      i.success =true;
+    })
     await this.handleTasks(finishedCount, total, taskList, percent);
   };
 
   handleTasks = async (finishedCount, total, taskList, percent) => {
-    let count = 0;
     // await taskList.forEach(async element => {
     //   let res;
     //   try {
@@ -53,7 +55,7 @@ class PlanProgress extends React.Component {
     //   });
     // });
     for (let element of taskList) {
-      let res ={ Error: -1};
+      let res = { Error: -1 };
       try {
         res = await http().addRecords({
           resid: '611315248461',
@@ -63,19 +65,21 @@ class PlanProgress extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
+      finishedCount++;
+      percent = Math.floor((finishedCount / total) * 100);
       if (res.Error === 0) {
-        finishedCount++;
-        percent = Math.floor((finishedCount / total) * 100);
         element.success = true;
+        element.errorMessage =
+          '错误信息错误信息错误信息错误信息错误信息错误信息';
       } else {
         element.success = false;
+        element.errorMessage = res.message;
       }
-      count++;
       this.setState({
         finishedCount,
         percent,
         taskList,
-        isFinished: count === total
+        isFinished: finishedCount === total
       });
     }
   };
@@ -104,7 +108,7 @@ class PlanProgress extends React.Component {
             完成
           </Button>
         }
-        style={{ top: 150, bottom: 20 }}
+        style={{ top: 100, bottom: 20 }}
       >
         <div style={{ padding: 10, width: '50%', margin: '0 auto' }}>
           <Progress percent={percent} status={status} />
@@ -114,7 +118,7 @@ class PlanProgress extends React.Component {
         </div>
         <List
           dataSource={taskList}
-          style={{ overflow: 'scroll', maxHeight: '60vh' }}
+          style={{ overflow: 'scroll', maxHeight: '50vh' }}
           renderItem={item => (
             <List.Item>
               <div
@@ -125,7 +129,37 @@ class PlanProgress extends React.Component {
               >
                 <div style={{ flex: 1 }}>{item.C3_609622263470}</div>
                 <div style={{ flex: 1 }}>{item.C3_609845305680}</div>
-                {item.success ? successIcon : faileIcon}
+                {item.success ? null : (
+                  <Tag
+                    style={{
+                      flex: 1,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                    color="red"
+                    title={item.errorMessage}
+                  >
+                    {item.errorMessage}
+                  </Tag>
+                )}
+                {item.success ? (
+                  <Icon
+                    type="check-circle"
+                    theme="twoTone"
+                    style={iconStyle}
+                    title="任务成功"
+                    twoToneColor="#52c41a"
+                  />
+                ) : (
+                  <Icon
+                    type="close-circle"
+                    theme="twoTone"
+                    twoToneColor="red"
+                    style={iconStyle}
+                    title={item.errorMessage}
+                  />
+                )}
               </div>
             </List.Item>
           )}
