@@ -16,6 +16,7 @@ import MoveTo from 'moveto';
 import http from 'Util20/api';
 import ApplyInformantion from '../ApplayInformnation';
 import TextArea from 'antd/lib/input/TextArea';
+import RadioGroup from 'antd/lib/radio/group';
 const { Option } = Select;
 const MenuList = [
   {
@@ -74,7 +75,8 @@ const languageAbility = [
 ];
 const formItemLayout = {
   labelCol: {
-    span: 10
+    span: 10,
+    offset: -6
   },
   wrapperCol: {
     span: 14
@@ -110,11 +112,25 @@ const Question = () => {
     </p>
   );
 };
+// 教育背景数组
+const educationBackground = [
+  {
+    dataLabel: '日期',
+    dataKey: 'LatestEddate',
+    schoolLabel: '学校名称',
+    schoolKey: 'LatestEdSchool',
+    majorLabel: '专业名称',
+    majorKey: 'LatestEdMajor'
+  },
+  {}
+];
 class JobSeeker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      hasCriminal: '',
+      hasLostTrust: ''
     };
   }
   // 确认提交申请
@@ -130,134 +146,176 @@ class JobSeeker extends Component {
             resid: 613149356409,
             data: [
               {
-                ChName: values.ChName, //中文姓名
-                EnName: values.EnName, //英文姓名
-                appPosition: values.appPosition, //申请职位名称
-                IDCardNumber: values.idNumber, //身份证号码
-                Sex: values.Sex, //性别
-                Tel: values.Phone, //求职者手机号
-                Email: values.Email, //求职者邮箱
-                Nationality: values.Nationality, //国籍
-                Nation: values.Nation, //民族
-                Party: values.Party, //政治面貌
-                BirthDate: values.BirthDate.format('YYYY-MM-DD'), //出生日期
-                BirthPlace: values.BirthPlace, //出生地点
-                PlaceOfHuKou: values.PlaceOfHuKou, //户口所在地
-                BloodType: values.BloodType, //血型
-                CurrentAddress: values.CurrentAddress, //现通讯地址
-                IfRecommendByF: values.IfRecommendByF, //有无推荐人
-                Recommender: values.RecommenderName, //推荐人姓名
-                RecommenderRelation: values.RecommenderRelation, //和推荐人关系
-                MaritalStatus: values.MaritalStatus, //婚姻状况
-                ChildIf: values.ChildIf, //有无子女
-                // 教育背景
-                LatestStartTime:values.LatestEddate
+                ...values,
+                BirthDate: values.BirthDate
+                  ? values.BirthDate.format('YYYY-MM-DD')
+                  : null, //出生日期
+                LatestStartTime: values.LatestEddate
                   ? values.LatestEddate[0].format('YYYY-MM-DD')
                   : null, //最近教育开始时间
                 LatestEndTime: values.LatestEddate
                   ? values.LatestEddate[1].format('YYYY-MM-DD')
                   : null, //最近教育结束时间
-                LatestEdSchool: values.LatestEdSchool, //最近学校名称
-                LatestEdMajor: values.LatestEdMajor, //专业名称
-                LatestEdDegree: values.LatestEdDegree, //学位
-                LatestReference: values.LatestReference, //最近教育证明人
-                LatestReferenceTel: values.LatestReferenceTel, //最近教育证明人电话
                 ThreeEdStartTime: values.ThreeEddate
                   ? values.ThreeEddate[0].format('YYYY-MM-DD')
                   : null, //第三教育开始时间
                 ThreeEdEndTime: values.ThreeEddate
                   ? values.ThreeEddate[1].format('YYYY-MM-DD')
                   : null, //第三教育结束时间
-                ThreeEdSchool: values.ThreeEdSchool, //第三学校名称
-                ThreeEdMajor: values.ThreeEdMajor, //第三专业名称
-                ThreeEdDegree: values.ThreeEdDegree, //第三学位
-                ThreeReference: values.ThreeReference, //第三教育证明人
-                ThreeReferenceTel: values.ThreeReferenceTel, //第三教育证明人电话
                 SecEdStartTime: values.SecEddate
                   ? values.SecEddate[0].format('YYYY-MM-DD')
                   : null, //第二教育开始时间
                 SecEdEndTime: values.SecEddate
                   ? values.SecEddate[1].format('YYYY-MM-DD')
                   : null, //第二教育结束时间
-                SecEdSchool: values.SecEdSchool, //第二教育学校名称
-                SecEdMajor: values.SecEdMajor, //第二教育专业名称
-                SecEdDegree: values.SecEdDegree, //第二教育学位
-                SecReference: values.SecReference, //第二教育证明人
-                SecReferenceTel: values.SecReferenceTel, //第二教育证明人电话
                 FistEdStartTime: values.FirstEddate
                   ? values.FirstEddate[0].format('YYYY-MM-DD')
                   : null, //第一教育开始时间
-                FisrtEdEndTime:values.FirstEddate
+                FisrtEdEndTime: values.FirstEddate
                   ? values.FirstEddate[1].format('YYYY-MM-DD')
                   : null, //第一教育结束时间
-                FirstEdSchool: values.FirstEdSchool, //第一教育学校名称
-                FirstEdMajor: values.FirstEdMajor, //第一教育专业名称
-                FirstEdDegree: values.FirstEdDegree, //第一教育学位
-                FirstReference: values.FirstReference, //第一教育证明人
-                FirstReferenceTel: values.FirstReferenceTel, //第一教育证明人电话
-                //工作经历
-                LatestWorkStartTime:values.LatestWorkStartTime
+                LatestWorkStartTime: values.LatestWorkStartTime
                   ? values.LatestWorkdate[0].format('YYYY-MM-DD')
                   : null, //最近工作开始时间
                 LatestWorkEndTime: values.LatestWorkdate
                   ? values.LatestWorkdate[1].format('YYYY-MM-DD')
-                  : null, //最近工作结束时间
-                LatestComName: values.LatestComName, //最近工作公司名称
-                LatestRank: values.LatestRank, //最近工作公司职位
-                LatestReasonForLeave: values.LatestReasonForLeave, //最近工作离职原因
-                LatestWorkReference: values.LatestWorkReference, //最近工作证明人
-                LatestWorkReferenceTel: values.LatestWorkReferenceTel, //最近工作证明人电话
-
-                ThreeWorkStartTime: values.ThreeWorkdate
-                  ? values.ThreeWorkdate[0].format('YYYY-MM-DD')
-                  : null, //次之工作开始时间
-                ThreeWorkEndTime: values.ThreeWorkdate
-                  ? values.ThreeWorkdate[1].format('YYYY-MM-DD')
-                  : null, //次之工作结束时间
-                ThreeComName: values.ThreeComName, //次之工作公司名称
-                ThreeRank: values.ThreeRank, //次之工作公司职位
-                ThreeReasonForLeave: values.ThreeReasonForLeave, //次之工作离职原因
-                ThreeWorkReference: values.ThreeWorkReference, //次之工作证明人
-                ThreeWorkReferenceTel: values.ThreeWorkReferenceTel, //次之工作证明人电话
-                // 家庭成员及主要关系
-                FamOneName: values.FamOneName, //姓名
-                FamOneRelation: values.FamOneRelation, //关系
-                FamOnePosition: values.FamOnePosition, //职务
-                FamOneComAndAdd: values.FamOneComAndAdd, //公司名称及地址
-                FamOneTel: values.FamOneTel, //电话
-                FamOneBirthDate: values.FamOneBirthDate, //出生年月
-
-                FamToName: values.FamToName, //姓名
-                FamToRelation: values.FamToRelation, //关系
-                FamToPosition: values.FamToPosition, //职务
-                FamToComAndAdd: values.FamToComAndAdd, //公司名称及地址
-                FamToTel: values.FamToTel, //电话
-                FamToBirthDate: values.FamToBirthDate, //出生年月
-                // 专业培训
-                LatestTrainingDate: values.LatestTrainingDate, //最近专业培训开始日期
-                LatestEndTime: values.LatestEndTime, //最近专业培训日期
-                LatestTrainingInstitute: values.LatestTrainingInstitute, //最近培训机构
-                LatestTrainingCourese: values.LatestTrainingCourese, //最近培训课程
-                LatestTrainingQualification: values.LatestTrainingQualification, //最近培训获得证书
-                LatestTrainingReference: values.LatestTrainingReference, //最近培训证明人
-                LatestTrainingRefTel: values.LatestTrainingRefTel, //最近培训证明人电话
-                //相关技能
-                EnCET: values.EnCET, //英语等级
-                Writing: values.Writing, //写作
-                Reading: values.Reading, //阅读
-                Speaking: values.Speaking, //口语
-                ComputerSkill: values.ComputerSkill, //计算机
-                SoftList: values.SoftList, //常用软件
-                OtherSkills: values.OtherSkills, //其他技能
-                //其他信息
-                Weight: values.Weight, //身高
-                Height: values.Height, //体重
-                EyeSight: values.EyeSight, //视力
-                DiseaseStatus: values.DiseaseStatus, //疾病
-                UnemployedStatus: values.UnemployedStatus, //失业情况
-                KnowColleageStatus: values.KnowColleageStatus, //是否认识本公司员工
-                OtherAgreement: values.OtherAgreement //是否有其他合同
+                  : null ,//最近工作结束时间
+                  ThreeWorkStartTime: values.ThreeWorkdate
+                    ? values.ThreeWorkdate[0].format('YYYY-MM-DD')
+                    : null, //次之工作开始时间
+                  ThreeWorkEndTime: values.ThreeWorkdate
+                    ? values.ThreeWorkdate[1].format('YYYY-MM-DD')
+                    : null, //次之工作结束时间
               }
+              // {
+              //   ChName: values.ChName, //中文姓名
+              //   EnName: values.EnName, //英文姓名
+              //   appPosition: values.appPosition, //申请职位名称
+              //   IDCardNumber: values.idNumber, //身份证号码
+              //   Sex: values.Sex, //性别
+              //   Tel: values.Phone, //求职者手机号
+              //   Email: values.Email, //求职者邮箱
+              //   Nationality: values.Nationality, //国籍
+              //   Nation: values.Nation, //民族
+              //   Party: values.Party, //政治面貌
+              //   BirthDate: values.BirthDate?values.BirthDate.format('YYYY-MM-DD'):null, //出生日期
+              //   BirthPlace: values.BirthPlace, //出生地点
+              //   PlaceOfHuKou: values.PlaceOfHuKou, //户口所在地
+              //   BloodType: values.BloodType, //血型
+              //   CurrentAddress: values.CurrentAddress, //现通讯地址
+              //   IfRecommendByF: values.IfRecommendByF, //有无推荐人
+              //   Recommender: values.RecommenderName, //推荐人姓名
+              //   RecommenderRelation: values.RecommenderRelation, //和推荐人关系
+              //   MaritalStatus: values.MaritalStatus, //婚姻状况
+              //   ChildIf: values.ChildIf, //有无子女
+              //   // 教育背景
+              //   LatestStartTime: values.LatestEddate
+              //     ? values.LatestEddate[0].format('YYYY-MM-DD')
+              //     : null, //最近教育开始时间
+              //   LatestEndTime: values.LatestEddate
+              //     ? values.LatestEddate[1].format('YYYY-MM-DD')
+              //     : null, //最近教育结束时间
+              //   LatestEdSchool: values.LatestEdSchool, //最近学校名称
+              //   LatestEdMajor: values.LatestEdMajor, //专业名称
+              //   LatestEdDegree: values.LatestEdDegree, //学位
+              //   LatestReference: values.LatestReference, //最近教育证明人
+              //   LatestReferenceTel: values.LatestReferenceTel, //最近教育证明人电话
+              //   ThreeEdStartTime: values.ThreeEddate
+              //     ? values.ThreeEddate[0].format('YYYY-MM-DD')
+              //     : null, //第三教育开始时间
+              //   ThreeEdEndTime: values.ThreeEddate
+              //     ? values.ThreeEddate[1].format('YYYY-MM-DD')
+              //     : null, //第三教育结束时间
+              //   ThreeEdSchool: values.ThreeEdSchool, //第三学校名称
+              //   ThreeEdMajor: values.ThreeEdMajor, //第三专业名称
+              //   ThreeEdDegree: values.ThreeEdDegree, //第三学位
+              //   ThreeReference: values.ThreeReference, //第三教育证明人
+              //   ThreeReferenceTel: values.ThreeReferenceTel, //第三教育证明人电话
+              //   SecEdStartTime: values.SecEddate
+              //     ? values.SecEddate[0].format('YYYY-MM-DD')
+              //     : null, //第二教育开始时间
+              //   SecEdEndTime: values.SecEddate
+              //     ? values.SecEddate[1].format('YYYY-MM-DD')
+              //     : null, //第二教育结束时间
+              //   SecEdSchool: values.SecEdSchool, //第二教育学校名称
+              //   SecEdMajor: values.SecEdMajor, //第二教育专业名称
+              //   SecEdDegree: values.SecEdDegree, //第二教育学位
+              //   SecReference: values.SecReference, //第二教育证明人
+              //   SecReferenceTel: values.SecReferenceTel, //第二教育证明人电话
+              //   FistEdStartTime: values.FirstEddate
+              //     ? values.FirstEddate[0].format('YYYY-MM-DD')
+              //     : null, //第一教育开始时间
+              //   FisrtEdEndTime: values.FirstEddate
+              //     ? values.FirstEddate[1].format('YYYY-MM-DD')
+              //     : null, //第一教育结束时间
+              //   FirstEdSchool: values.FirstEdSchool, //第一教育学校名称
+              //   FirstEdMajor: values.FirstEdMajor, //第一教育专业名称
+              //   FirstEdDegree: values.FirstEdDegree, //第一教育学位
+              //   FirstReference: values.FirstReference, //第一教育证明人
+              //   FirstReferenceTel: values.FirstReferenceTel, //第一教育证明人电话
+              //   //工作经历
+              //   LatestWorkStartTime: values.LatestWorkStartTime
+              //     ? values.LatestWorkdate[0].format('YYYY-MM-DD')
+              //     : null, //最近工作开始时间
+              //   LatestWorkEndTime: values.LatestWorkdate
+              //     ? values.LatestWorkdate[1].format('YYYY-MM-DD')
+              //     : null, //最近工作结束时间
+              //   LatestComName: values.LatestComName, //最近工作公司名称
+              //   LatestRank: values.LatestRank, //最近工作公司职位
+              //   LatestReasonForLeave: values.LatestReasonForLeave, //最近工作离职原因
+              //   LatestWorkReference: values.LatestWorkReference, //最近工作证明人
+              //   LatestWorkReferenceTel: values.LatestWorkReferenceTel, //最近工作证明人电话
+
+              //   ThreeWorkStartTime: values.ThreeWorkdate
+              //     ? values.ThreeWorkdate[0].format('YYYY-MM-DD')
+              //     : null, //次之工作开始时间
+              //   ThreeWorkEndTime: values.ThreeWorkdate
+              //     ? values.ThreeWorkdate[1].format('YYYY-MM-DD')
+              //     : null, //次之工作结束时间
+              //   ThreeComName: values.ThreeComName, //次之工作公司名称
+              //   ThreeRank: values.ThreeRank, //次之工作公司职位
+              //   ThreeReasonForLeave: values.ThreeReasonForLeave, //次之工作离职原因
+              //   ThreeWorkReference: values.ThreeWorkReference, //次之工作证明人
+              //   ThreeWorkReferenceTel: values.ThreeWorkReferenceTel, //次之工作证明人电话
+              //   // 家庭成员及主要关系
+              //   FamOneName: values.FamOneName, //姓名
+              //   FamOneRelation: values.FamOneRelation, //关系
+              //   FamOnePosition: values.FamOnePosition, //职务
+              //   FamOneComAndAdd: values.FamOneComAndAdd, //公司名称及地址
+              //   FamOneTel: values.FamOneTel, //电话
+              //   FamOneBirthDate: values.FamOneBirthDate, //出生年月
+
+              //   FamToName: values.FamToName, //姓名
+              //   FamToRelation: values.FamToRelation, //关系
+              //   FamToPosition: values.FamToPosition, //职务
+              //   FamToComAndAdd: values.FamToComAndAdd, //公司名称及地址
+              //   FamToTel: values.FamToTel, //电话
+              //   FamToBirthDate: values.FamToBirthDate, //出生年月
+              //   // 专业培训
+              //   LatestTrainingDate: values.LatestTrainingDate, //最近专业培训开始日期
+              //   LatestEndTime: values.LatestEndTime, //最近专业培训日期
+              //   LatestTrainingInstitute: values.LatestTrainingInstitute, //最近培训机构
+              //   LatestTrainingCourese: values.LatestTrainingCourese, //最近培训课程
+              //   LatestTrainingQualification: values.LatestTrainingQualification, //最近培训获得证书
+              //   LatestTrainingReference: values.LatestTrainingReference, //最近培训证明人
+              //   LatestTrainingRefTel: values.LatestTrainingRefTel, //最近培训证明人电话
+              //   //相关技能
+              //   EnCET: values.EnCET, //英语等级
+              //   Writing: values.Writing, //写作
+              //   Reading: values.Reading, //阅读
+              //   Speaking: values.Speaking, //口语
+              //   ComputerSkill: values.ComputerSkill, //计算机
+              //   SoftList: values.SoftList, //常用软件
+              //   OtherSkills: values.OtherSkills, //其他技能
+              //   //其他信息
+              //   Weight: values.Weight, //身高
+              //   Height: values.Height, //体重
+              //   EyeSight: values.EyeSight, //视力
+              //   DiseaseStatus: values.DiseaseStatus, //疾病
+              //   UnemployedStatus: values.UnemployedStatus, //失业情况
+              //   KnowColleageStatus: values.KnowColleageStatus, //是否认识本公司员工
+              //   OtherAgreement: values.OtherAgreement //是否有其他合同
+              // }
             ]
           });
           console.log(res.data);
@@ -274,7 +332,7 @@ class JobSeeker extends Component {
           });
         }
       } else {
-       return  Modal.warning({
+        return Modal.warning({
           title: '提示',
           content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
         });
@@ -303,6 +361,24 @@ class JobSeeker extends Component {
     const tempid = document.getElementById(id);
     moveTo.move(tempid);
   };
+  // 监听犯罪行为是否项的变化
+  isYesChange = value => {
+    console.log(value);
+    this.setState({
+      hasCriminal: value
+    });
+  };
+  // 监听是否有失信行为发生变化
+  isLostTrustChange = value => {
+    this.setState({
+      hasLostTrust: value
+    });
+  };
+  // 添加教育背景
+  handleAddEdBack = () => {
+    const secEdbackground = document.querySelector('.educationBackground');
+    console.log(secEdbackground);
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.state;
@@ -330,9 +406,9 @@ class JobSeeker extends Component {
             </Menu>
           </div>
           <div className="job-seeker__informnation">
-            <Form style={{ width: '90%', margin: '0 auto' }}>
+            <Form style={{ width: '90%', margin: '0 auto' }} labelAlign="left">
               <h3 className="job-seeker__informnation-title" id="个人资料">
-                个人资料/Personal Information
+                个人资料/Personal Informnation
               </h3>
               <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
                 {getFieldDecorator('ChName', {
@@ -530,6 +606,7 @@ class JobSeeker extends Component {
                 教育背景/(请从最近的开始写起)Education Background (Please start
                 from latest education to middle school)
               </h3>
+
               <Form.Item
                 label="日期/latest period from to"
                 {...formItemLayout2}
@@ -550,6 +627,21 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
                 {getFieldDecorator('LatestReferenceTel', {})(<Input />)}
+              </Form.Item>
+              {/* {educationBackground.map((item,index)=>{
+
+                })} */}
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  icon="plus"
+                  onClick={() => {
+                    this.handleAddEdBack();
+                  }}
+                >
+                  添加教育背景
+                </Button>
               </Form.Item>
               <Form.Item label="日期/third period from to" {...formItemLayout2}>
                 {getFieldDecorator('ThreeEddate', {})(<RangePicker />)}
@@ -855,6 +947,42 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item colon={false} label={<Question />}>
                 {getFieldDecorator('DiseaseStatus', {})(<TextArea />)}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="是否有犯罪记录,如有请作详细的说明"
+              >
+                {getFieldDecorator('CriminalStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isYesChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.hasCriminal === '是' ? <Input /> : ''}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="是否有过失信记录等行为,如有请作详细的说明"
+              >
+                {getFieldDecorator('TrustStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isLostTrustChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.hasLostTrust === '是' ? <Input /> : ''}
+                  </div>
+                )}
               </Form.Item>
               <Form.Item
                 colon={false}

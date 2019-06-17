@@ -232,7 +232,7 @@ class TotalStatical extends Component {
         window.open(imgDataURL);
         download(imgDataURL, queryName);
         
-        // if (isChrome) {
+        // if (isChrome()) {
         //   console.log('谷歌');
         //   download(imgDataURL, queryName);
         // } else {
