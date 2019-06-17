@@ -269,7 +269,7 @@ class FJList extends React.Component {
         this.state.addData.C3_609845305931 >
       this.state.totalData.C3_611074040082
     ) {
-      return message.error('已超出预算');
+       message.error('已超出预算');
     }
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
@@ -306,15 +306,14 @@ class FJList extends React.Component {
 
   //添加自定义课程
   async addCustom() {
-    console.log(this.state.totalData.C3_611074040082);
-    console.log(this.state.data[this.state.listIndex].C3_611409509831);
-    console.log(this.state.addCustom.C3_609616906353);
+
     if (
       this.state.totalData.C3_611074040082 <
       this.state.data[this.state.listIndex].C3_611409509831 +
         Number(this.state.addCustom.C3_609616906353)
-    )
-      return message.error('已超出预算');
+    ){
+      message.error('已超出预算');
+    }
     let addCustom = this.state.addCustom;
     if (
       addCustom.C3_609616868478 == '' ||
@@ -390,7 +389,7 @@ class FJList extends React.Component {
         Number(this.state.cnspmxb.C3_609616906353);
     }
     if (allMoney < newMoney) {
-      return message.error('已超出预算');
+       message.error('已超出预算');
     }
     let data = this.state.cnspmxb;
     let editData = this.state.editData;
