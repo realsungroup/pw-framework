@@ -274,10 +274,18 @@ class CreatePlan extends React.Component {
       planData = [];
     let { selectedCourse, selectedEmployee } = this.state;
     let taskList = [];
+    let {totalData} = this.state;
     selectedCourse.forEach(item => {
       selectedEmployee.forEach(i => {
-        let employee_course = { ...item, ...i };
-        delete employee_course.REC_ID;
+        let employee_course = {
+          C3_609616893275: i.C3_609622254861,//员工编号
+          C3_611314816141: item.C3_609845305868,//课程编号
+          C3_609616805805: this.props.year,
+          C3_609616805633: totalData.C3_609616660273, 
+          C3_609622263470: i.C3_609622263470,//员工姓名
+          C3_609845305680: item.C3_609845305680//课程名称
+        };
+        //delete employee_course.REC_ID;
         taskList.push(employee_course);
       });
     });

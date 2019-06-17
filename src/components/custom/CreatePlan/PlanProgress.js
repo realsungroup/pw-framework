@@ -10,20 +10,62 @@ class PlanProgress extends React.Component {
     percent: 0,
     isFinished: false
   };
-   componentDidMount = async ()=> {
+  componentDidMount = async () => {
     let { taskList, finishedCount } = this.state;
     let total = taskList.length;
     await this.handleTasks(finishedCount, total, taskList);
-  }
+  };
 
-   handleTasks = async (finishedCount, total, taskList) => {
-    let count =0;
-    await taskList.forEach(async element => {
+  handleTasks = async (finishedCount, total, taskList) => {
+    let count = 0;
+    // await taskList.forEach(async element => {
+    //   let res;
+    //   try {
+    //     res = await http().addRecords({
+    //       resid: '611315248461',
+    //       data: [
+    //         {
+    //           C3_609616893275: element.C3_609616893275,
+    //           C3_611314816141: element.C3_611314816141,
+    //           C3_609616805805: element.C3_609616805805,
+    //           C3_609616805633: element.C3_609616805633
+    //         }
+    //       ],
+    //       isEditOrAdd: true
+    //     });
+    //   } catch (error) {
+    //     count++;
+    //     return message.error(error.message);
+    //   }
+    //   let percent = 0;
+    //   if (res.Error === 0) {
+    //     finishedCount++;
+    //     percent = Math.floor((finishedCount / total) * 100);
+    //     element.success = true;
+    //   } else {
+    //     element.success = false;
+    //   }
+    //   count++;
+    //   this.setState({
+    //     finishedCount,
+    //     percent,
+    //     taskList,
+    //     isFinished: count === total
+    //   });
+    // });
+    for( let element of taskList){
       let res;
       try {
         res = await http().addRecords({
           resid: '611315248461',
-          data: [element],
+          data: [
+            {
+              C3_609616893275: element.C3_609616893275,
+              C3_611314816141: element.C3_611314816141,
+              C3_609616805805: element.C3_609616805805,
+              C3_609616805633: element.C3_609616805633
+            }
+          ],
           isEditOrAdd: true
         });
       } catch (error) {
@@ -31,18 +73,22 @@ class PlanProgress extends React.Component {
         return message.error(error.message);
       }
       let percent = 0;
-        if (res.Error === 0) {
-          finishedCount = ++finishedCount;
-          percent = Math.floor((finishedCount / total) * 100);
-          element.success = true;
-        } else {
-          element.success = false;
-        }
-        count++;
-        this.setState({ finishedCount, percent, taskList, isFinished: count === total });
-    });
-   }
-  
+      if (res.Error === 0) {
+        finishedCount++;
+        percent = Math.floor((finishedCount / total) * 100);
+        element.success = true;
+      } else {
+        element.success = false;
+      }
+      count++;
+      this.setState({
+        finishedCount,
+        percent,
+        taskList,
+        isFinished: count === total
+      });
+    }
+  };
 
   render() {
     console.log('render');
