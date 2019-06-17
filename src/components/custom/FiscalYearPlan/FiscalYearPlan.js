@@ -31,28 +31,28 @@ class FiscalYearPlan extends React.Component {
   };
   async componentDidMount() {
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
-    let userinfo = JSON.parse(getItem('userInfo')).UserInfo;
-    let grouplist = userinfo.GroupList.replace('(', '')
-      .replace(')', '')
-      .replace(/'/g, '');
-    let listArr = grouplist.split(', ');
-    let tag = false;
-    //判断当前用户是否可以创建财年计划
-    createableGroups.forEach(element => {
-      if (listArr.includes(element)) {
-        tag = true;
-      }
-    });
-    if (tag) {
-      let res;
-      try {
-        res = await http().addRecords({
-          resid: '609615842690', // 表资源 id
-          data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
-          isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
-        });
-      } catch (error) { }
-    }
+    // let userinfo = JSON.parse(getItem('userInfo')).UserInfo;
+    // let grouplist = userinfo.GroupList.replace('(', '')
+    //   .replace(')', '')
+    //   .replace(/'/g, '');
+    // let listArr = grouplist.split(', ');
+    // let tag = false;
+    // //判断当前用户是否可以创建财年计划
+    // createableGroups.forEach(element => {
+    //   if (listArr.includes(element)) {
+    //     tag = true;
+    //   }
+    // });
+    // if (tag) {
+    //   let res;
+    //   try {
+    //     res = await http().addRecords({
+    //       resid: '609615842690', // 表资源 id
+    //       data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
+    //       isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
+    //     });
+    //   } catch (error) { }
+    // }
     let res;
     try {
       res = await http().getTable({
@@ -281,6 +281,7 @@ class FiscalYearPlan extends React.Component {
                 <CreatePlan
                   planid={selectedPlan.C3_609616660273}
                   year={selectedPlan.C3_609615869581}
+                  totalResid="609883172764"//财年明细-待提交
                   resid="610307713776"
                   subResid="610308370365"
                   levelId="449335746776"
