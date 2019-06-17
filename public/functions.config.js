@@ -1085,6 +1085,11 @@ window[611085896611] = {
     subtractH: 220,
     // height:600,
     recordFormType: 'drawer',
+    importConfig: {
+      mode: 'fe',
+      saveState: 'added',
+      containerType: 'drawer'
+    },
     recordFormContainerProps: {
       // placement: 'bottom',
       // height: 600
@@ -1241,6 +1246,34 @@ window[607168405062] = {
       {
         subTableName: '员工成绩',
         subResid: 608809112309,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
+      },
+      {
+        subTableName: '通过人员',
+        subResid: 610297347149,
+        tableProps: {
+          hasAdd: false,
+          hasModify: false,
+          hasRowDelete: false,
+          hasRowModify: false,
+          hasDelete: false,
+          subtractH: 190,
+          height: 500,
+          hasRowView: false
+        }
+      },
+      {
+        subTableName: '未参加人员',
+        subResid: 610299723125,
         tableProps: {
           hasAdd: false,
           hasModify: false,

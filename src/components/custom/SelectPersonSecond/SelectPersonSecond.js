@@ -33,7 +33,7 @@ export default class SelectPersonSecond extends Component {
   render() {
     return (
       <div className="selectPersonSecond">
-        <h3>名单人员</h3>
+        <h3>名单人员:当前共{this.props.persons.length}人</h3>
         <div className="tableBox">
           <div className="tableHead">
             {/* <Checkbox indeterminate>全选</Checkbox>

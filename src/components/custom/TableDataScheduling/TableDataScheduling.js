@@ -127,9 +127,9 @@ class TableDataScheduling extends React.Component {
           </TabPane>
           <TabPane tab="排班导入错误" key="2">
             <TableDataWrap
-              refTargetComponentName="TableData"
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              {...this.props}
+              // refTargetComponentName="TableData"
+              // wrappedComponentRef={element => (this.tableDataRef = element)}
+              // {...this.props}
               resid="527162576853"
               dblinkname="EHR"
               getcolumninfo="1"
@@ -137,7 +137,7 @@ class TableDataScheduling extends React.Component {
               page="1"
               size="small"
               hasRowSelection={false}
-              hasAdd={true}
+              hasAdd={false}
               hasBeBtns={false}
               hasDelete={false}
               hasRowModify={true}
@@ -154,16 +154,14 @@ class TableDataScheduling extends React.Component {
               refTargetComponentName="TableData"
               dblinkname="EHR"
               wrappedComponentRef={element => (this.tableDataRef = element)}
-              {...this.props}
+              // {...this.props}
               resid="612464619921"
-              // baseURL="https://finisar.realsun.me:9092/"
-              // downloadBaseURL="http://finisar.realsun.me:8081/"
               getcolumninfo="1"
               pageSize="10"
               page="1"
               size="small"
               hasRowSelection={false}
-              hasAdd={true}
+              hasAdd={false}
               hasBeBtns={false}
               hasDelete={false}
               hasRowModify={true}

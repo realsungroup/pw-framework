@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const departmentNameKey = 'dept';
+const departmentName = 'deptname';
 
 /**
  * 考试图表分析
@@ -124,8 +125,9 @@ class ExamAnalyze extends React.Component {
 
   renderDepartment = () => {
     const { selectedDepartmentRecord } = this.state;
+    console.log("selectedDepartmentRecord",selectedDepartmentRecord)
     if (selectedDepartmentRecord) {
-      return selectedDepartmentRecord.name;
+      return selectedDepartmentRecord.deptname;
     }
     return (
       <span className="exam-analyze__no-select-question-status">
@@ -235,12 +237,14 @@ class ExamAnalyze extends React.Component {
     const departmentArr = [],
       levelArr = [];
     resData.forEach(item => {
+      console.log("item",item)
       const tempDepartment = departmentArr.find(
         depItem => depItem.id === item.dept
       );
       if (!tempDepartment) {
         departmentArr.push({
           name: item[departmentNameKey],
+          deptname:item[departmentName],
           id: item.dept
         });
       }
@@ -401,8 +405,12 @@ class ExamAnalyze extends React.Component {
 
   departmentTableColumns = [
     {
-      title: '部门',
+      title: '部门编号',
       dataIndex: 'name'
+    },
+    {
+      title: '部门',
+      dataIndex: 'deptname'
     },
     {
       title: '操作',
