@@ -281,6 +281,7 @@ class FiscalYearPlan extends React.Component {
                 <CreatePlan
                   planid={selectedPlan.C3_609616660273}
                   year={selectedPlan.C3_609615869581}
+                  totalResid="609883172764"//财年明细-待提交
                   resid="610307713776"
                   subResid="610308370365"
                   levelId="449335746776"
@@ -299,7 +300,7 @@ class FiscalYearPlan extends React.Component {
             key="611315248461"
             hasBeBtns={true}
             hasAdd={false}
-            hasRowView={true}
+            hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
