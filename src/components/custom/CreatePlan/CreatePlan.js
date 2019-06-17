@@ -60,7 +60,7 @@ class CreatePlan extends React.Component {
     this.getKclb();
     this.setState({ loading: false });
   }
-  async totalData() {
+  totalData = async () => {
     let cmswhere = `C3_609616660273= '${this.planid}'`;
     let res = await http().getTable({ resid: this.props.totalResid, cmswhere });
     try {
@@ -74,7 +74,7 @@ class CreatePlan extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-  }
+  };
   //获取员工列表
   async getData() {
     let pageIndex = this.state.pageIndex;
@@ -262,102 +262,48 @@ class CreatePlan extends React.Component {
     this.setState({ subData, selectedCourse });
   }
   handleShowProgress = () => {
-    let { isShowProgress } = this.state;
-    this.setState({ isShowProgress: !isShowProgress });
+    let { isShowProgress, data, subData } = this.state;
+    data.forEach(i => {
+      i.check = false;
+    });
+    subData.forEach(i => {
+      i.check = false;
+    });
+    this.setState(
+      {
+        isShowProgress: !isShowProgress,
+        selectedCourse: [],
+        selectedEmployee: [],
+        data,
+        subData
+      },
+      () => {
+        this.totalData();
+      }
+    );
   };
   //保存计划
   async onClickSave() {
-    let x = 0,
-      y = 0,
-      data = this.state.data,
-      subData = this.state.subData,
-      planData = [];
     let { selectedCourse, selectedEmployee } = this.state;
+    if (selectedCourse.length < 1 || selectedEmployee.length < 1) {
+      return message.error('请选择员工及课程！');
+    }
     let taskList = [];
-    let {totalData} = this.state;
+    let { totalData } = this.state;
     selectedCourse.forEach(item => {
       selectedEmployee.forEach(i => {
         let employee_course = {
-          C3_609616893275: i.C3_609622254861,//员工编号
-          C3_611314816141: item.C3_609845305868,//课程编号
+          C3_609616893275: i.C3_609622254861, //员工编号
+          C3_611314816141: item.C3_609845305868, //课程编号
           C3_609616805805: this.props.year,
-          C3_609616805633: totalData.C3_609616660273, 
-          C3_609622263470: i.C3_609622263470,//员工姓名
-          C3_609845305680: item.C3_609845305680//课程名称
+          C3_609616805633: totalData.C3_609616660273,
+          C3_609622263470: i.C3_609622263470, //员工姓名
+          C3_609845305680: item.C3_609845305680 //课程名称
         };
-        //delete employee_course.REC_ID;
         taskList.push(employee_course);
       });
     });
     this.setState({ isShowProgress: true, taskList });
-    // let res;
-    // try {
-    //   res = await http().addRecords({
-    //     resid: this.props.kcbResid,
-    //     data: taskList,
-    //     isEditOrAdd: true
-    //   });
-    //   if (res.Error === 0) {
-    //     message.success(res.message);
-    //   } else {
-    //     message.error(res.message);
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    //   return message.error(err.message);
-    // }
-
-    // subData.forEach(ele => {
-    //   if (ele.check === true) {
-    //     y++;
-    //     data.forEach(e => {
-    //       if (e.check === true) {
-    //         x++;
-    //         let obj = JSON.parse(JSON.stringify(ele));
-    //         obj.C3_609616893275 = e.C3_609622254861;
-    //         obj.C3_609616805633 = this.planid;
-    //         obj.C3_609616868478 = obj.C3_609845305680;
-    //         obj.C3_609616906353 = obj.C3_609845305931;
-    //         obj.C3_611314815266 = obj.C3_610390419677;
-    //         obj.C3_611314815485 = obj.C3_610390410802;
-    //         obj.C3_611314815656 = obj.C3_609845463949;
-    //         obj.C3_611314815828 = obj.C3_609845305993;
-    //         obj.C3_611314816141 = obj.C3_609845305868;
-    //         obj.C3_611314816469 = obj.C3_609845305618;
-    //         obj.C3_611314817188 = obj.C3_609845305368;
-    //         obj.C3_611314817359 = obj.C3_609845305305;
-    //         delete obj.REC_ID;
-    //         planData.push(obj);
-    //       }
-    //     });
-    //   }
-    // });
-    // if (y === 0) {
-    //   return message.error('至少选择一个课程');
-    // }
-    // if (x === 0) {
-    //   return message.error('至少选择一个员工');
-    // }
-    // let { totalData } =this.state;
-    // if (totalCost + totalData.C3_609616051191 > totalData.C3_609616030566){
-    //   return message.error("已超出费用总预算");
-    // }
-    //let res;
-    // try {
-    //   res = await http().addRecords({
-    //     resid: this.props.kcbResid,
-    //     data: planData,
-    //     isEditOrAdd: true
-    //   });
-    //   if (res.Error === 0) {
-    //     message.success(res.message);
-    //   } else {
-    //     message.error(res.message);
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    //   return message.error(err.message);
-    // }
   }
 
   render() {
@@ -369,11 +315,6 @@ class CreatePlan extends React.Component {
       <div style={{ padding: '16px', background: '#fff' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ width: '50%', padding: '10px 28px' }}>
-            {/* <div style={{ paddingBottom: '24px' }}>
-              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                选择员工
-              </span>
-            </div> */}
             <div
               style={{
                 display: 'flex',
