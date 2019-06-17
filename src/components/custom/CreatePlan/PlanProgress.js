@@ -66,17 +66,14 @@ class PlanProgress extends React.Component {
           isEditOrAdd: true
         });
       } catch (error) {
-        message.error(error.message);
+        element.success = false;
+        element.errorMessage = error.message;
       }
       finishedCount++;
       percent = Math.floor((finishedCount / total) * 100);
       if (res.Error === 0) {
         element.success = true;
-        element.errorMessage =
-          '错误信息错误信息错误信息错误信息错误信息错误信息';
-      } else {
-        element.success = false;
-        element.errorMessage = res.message;
+        element.errorMessage ='';
       }
       this.setState({
         finishedCount,
