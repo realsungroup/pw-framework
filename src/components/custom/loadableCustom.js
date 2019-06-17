@@ -350,3 +350,10 @@ export const SelectPersonFirstP = Loadable({
     return minLoading;
   }
 });
+//导出Tabs组件
+export const TableDataHR = Loadable({
+  loader: () => import('./TableDataHR'),
+  loading() {
+    return minLoading;
+  }
+});

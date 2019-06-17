@@ -2,6 +2,12 @@ import React from 'react';
 import { Modal, Progress, List, message, Icon, Button } from 'antd';
 import http from '../../../util20/api';
 
+const successIcon = (
+  <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+);
+const faileIcon = (
+  <Icon type="close-circle" theme="twoTone" twoToneColor="red" />
+);
 class PlanProgress extends React.Component {
   state = {
     visible: true,
@@ -11,26 +17,19 @@ class PlanProgress extends React.Component {
     isFinished: false
   };
   componentDidMount = async () => {
-    let { taskList, finishedCount } = this.state;
+    let { taskList, finishedCount, percent } = this.state;
     let total = taskList.length;
-    await this.handleTasks(finishedCount, total, taskList);
+    await this.handleTasks(finishedCount, total, taskList, percent);
   };
 
-  handleTasks = async (finishedCount, total, taskList) => {
+  handleTasks = async (finishedCount, total, taskList, percent) => {
     let count = 0;
     // await taskList.forEach(async element => {
     //   let res;
     //   try {
     //     res = await http().addRecords({
     //       resid: '611315248461',
-    //       data: [
-    //         {
-    //           C3_609616893275: element.C3_609616893275,
-    //           C3_611314816141: element.C3_611314816141,
-    //           C3_609616805805: element.C3_609616805805,
-    //           C3_609616805633: element.C3_609616805633
-    //         }
-    //       ],
+    //       data: [{element}],
     //       isEditOrAdd: true
     //     });
     //   } catch (error) {
@@ -53,26 +52,17 @@ class PlanProgress extends React.Component {
     //     isFinished: count === total
     //   });
     // });
-    for( let element of taskList){
-      let res;
+    for (let element of taskList) {
+      let res ={ Error: -1};
       try {
         res = await http().addRecords({
           resid: '611315248461',
-          data: [
-            {
-              C3_609616893275: element.C3_609616893275,
-              C3_611314816141: element.C3_611314816141,
-              C3_609616805805: element.C3_609616805805,
-              C3_609616805633: element.C3_609616805633
-            }
-          ],
+          data: [element],
           isEditOrAdd: true
         });
       } catch (error) {
-        count++;
-        return message.error(error.message);
+        message.error(error.message);
       }
-      let percent = 0;
       if (res.Error === 0) {
         finishedCount++;
         percent = Math.floor((finishedCount / total) * 100);
@@ -91,18 +81,11 @@ class PlanProgress extends React.Component {
   };
 
   render() {
-    console.log('render');
     let { taskList, percent, finishedCount, isFinished } = this.state;
     let status = percent === 100 ? 'success' : 'active';
     if (percent < 100 && isFinished) {
       status = 'exception';
     }
-    let successIcon = (
-      <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-    );
-    let faileIcon = (
-      <Icon type="close-circle" theme="twoTone" twoToneColor="red" />
-    );
     return (
       <Modal
         closable={false}
@@ -121,7 +104,7 @@ class PlanProgress extends React.Component {
             完成
           </Button>
         }
-        style={{ top: 20, bottom: 20 }}
+        style={{ top: 150, bottom: 20 }}
       >
         <div style={{ padding: 10, width: '50%', margin: '0 auto' }}>
           <Progress percent={percent} status={status} />
