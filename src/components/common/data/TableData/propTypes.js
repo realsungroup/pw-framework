@@ -261,7 +261,7 @@ export const propTypes = {
   // btnSize 表示按钮尺寸
 
   /**
-   * 表格高度 - scroll.y 的值
+   * 表格高度 - scroll.y 的值（当横向滚动条被遮住时，需要添加这个参数。其值为 TableData 组件除去中间内容的其他高度）
    * 默认：0
    */
   subtractH: PropTypes.number,

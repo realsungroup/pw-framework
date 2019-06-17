@@ -46,7 +46,7 @@ class LzBackendBtn extends React.PureComponent {
   _formData = null;
   _defaultRecord = null;
   onConfirm = async () => {
-    const { resid, records, onConfirm, btnInfo, backendBtnType } = this.props;
+    const { resid, records, onConfirm, btnInfo, backendBtnType, recordFormDisplayMode } = this.props;
     const { Code, OkMsgCn, FailMsgCn, Type } = btnInfo;
 
     // 点击后端按钮，请求后台
@@ -102,7 +102,7 @@ class LzBackendBtn extends React.PureComponent {
         // 缓存 formData 和 defaultRecord
         this._formData = formData;
         this._defaultRecord = defaultRecord;
-        this._controlData = getDataProp(this._formData, {}, false, false);
+        this._controlData = getDataProp(this._formData, records.length === 1 ? records[0] : {}, false, recordFormDisplayMode === 'classify');
       }
 
       onConfirm &&

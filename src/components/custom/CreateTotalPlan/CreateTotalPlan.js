@@ -6,7 +6,7 @@ import http from 'Util20/api';
 import './CreateTotalPlan.less';
 
 const SH_id = 611075833524;
-const WS_id = 613848452461;
+const WX_id = 613848452461;
 
 /**
  * 创建总计划
@@ -23,46 +23,55 @@ class CreateTotalPlan extends React.Component {
     isShowModal: false,
   };
   async componentDidMount() {
-    let res;
-    try {
-      res = await http().getAutoImportStatus();
-    } catch (err) {
-      if (err.message === '没有正在运行的任务') {
-        return;
-      }
-      return message.error(err.message);
-    }
-    if (res.error !== 0) {
-      return message.error(res.message);
-    }
-    // 当前任务已完成
-    if (res.IsComplete) {
-      notification.open({
-        message: '通知',
-        description:
-          '当前财年计划人员名单已生成完毕，请注意查看！',
-        icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-        duration: null
-      });
-      this.setState({
-        curIndex: this.state.totalIndex,
-        isTaskComplete: true
-      });
-    }
+    // let res;
+    // try {
+    //   res = await http().getAutoImportStatus();
+    // } catch (err) {
+    //   if (err.message === '没有正在运行的任务') {
+    //     return;
+    //   }
+    //   return message.error(err.message);
+    // }
+    // if (res.error !== 0) {
+    //   return message.error(res.message);
+    // }
+    // // 当前任务已完成
+    // if (res.IsComplete) {
+    //   notification.open({
+    //     message: '通知',
+    //     description:
+    //       '当前财年计划人员名单已生成完毕，请注意查看！',
+    //     icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+    //     duration: null
+    //   });
+    //   this.setState({
+    //     curIndex: this.state.totalIndex,
+    //     isTaskComplete: true
+    //   });
+    // }
   }
   componentWillUnmount = () => {
     this.timer = null;
     this.getTaskInfo = null;
   };
   getTaskInfo = async () => {
-
     let res;
     try {
       res = await http().getAutoImportStatus();
     } catch (err) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
       return message.error(err.message);
     }
     if (res.error !== 0) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
       return message.error(res.message);
     }
     // 当前任务已完成
@@ -77,20 +86,25 @@ class CreateTotalPlan extends React.Component {
         resid,
         data
       }).then(res => {
-        console.log(res)
-        this.tableDataRef.handleRefresh();
+        if(res.Error === 0){
+          notification.open({
+            message: '通知',
+            description:
+              '当前财年计划人员名单已生成完毕，请注意查看！',
+            icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+            duration: null
+          });
+          this.setState({
+            curIndex: this.state.totalIndex,
+            isTaskComplete: true
+          });
+          this.tableDataRef.handleRefresh();
+        }else{
+          message.error(res.message)
+        }
+      }).catch(error => {
+        message.error(error.message)
       })
-      notification.open({
-        message: '通知',
-        description:
-          '当前财年计划人员名单已生成完毕，请注意查看！',
-        icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-        duration: null
-      });
-      this.setState({
-        curIndex: this.state.totalIndex,
-        isTaskComplete: true
-      });
       // 当前任务未完成
     } else {
       this.setState({
@@ -127,10 +141,11 @@ class CreateTotalPlan extends React.Component {
     this.setState({
       record: record
     })
+    let id = record.C3_613838452660==='WX' ? WX_id : SH_id ;
     let res;
     try {
       res = await http().runAutoImport({
-        SH_id
+        id
       });
     } catch (err) {
       this.setState({ loading: false });

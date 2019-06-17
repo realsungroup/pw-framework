@@ -3,6 +3,9 @@ import './NotFound.less';
 import { Button } from 'antd';
 import notFoundImg from '../../assets/404.png';
 export default class NotFound extends React.Component {
+  componentDidMount = () => {
+    this.props.history.push('/');
+  }
   render() {
     return (
       <React.Fragment>

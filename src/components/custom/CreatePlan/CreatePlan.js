@@ -11,9 +11,8 @@ import {
   Modal,
   Input
 } from 'antd';
-import { saveMultipleRecord } from '../../../util/api';
-import qs from 'qs';
 import http from '../../../util20/api';
+import PlanProgress from './PlanProgress';
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -23,54 +22,59 @@ class CreatePlan extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      data: [],//员工列表数据
-      oldData: [],//暂存员工列表
-      subData: [],//课程表数据
-      levelData: [],//员工级别列表
-      kcxlData: [],//课程系列列表
-      kclbData: [],//课程类别列表
-      levelSelect: '',//选中级别
-      xlSelect: '',//选中系列
-      lbSelect: '',//选中类别
-      lkState: '',//选中级别状态
-      kcState: '',//选中课程状态
+      totalData: {}, //统计数据
+      data: [], //员工列表数据
+      oldData: [], //暂存员工列表
+      totalAmount: 0, //后台返回的员工总数量
+      hasMore: true, //是否有更多数据
+      selectedLevel: '', //下拉选中的级别
+      selectedEmployeeLevels: new Set(),
+      selectedEmployee: [], //选择了的员工
+      selectedCourse: [], //选择了的课程
+      subData: [], //课程表数据
+      levelData: [], //员工级别列表
+      kcxlData: [], //课程系列列表
+      kclbData: [], //课程类别列表
+      levelSelect: '', //选中级别
+      xlSelect: '', //选中的系列
+      lbSelect: '', //选中的类别
+      kcState: 'All', //选中课程状态
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
       pageSize: 15, // 每页数量
-      loading: false,
-      key: ''//模糊查询关键字
+      key: '', //模糊查询关键字
+      isShowProgress: false,
+      taskList: []
     };
   }
 
-  componentDidMount() {
-    const qsObj = qs.parse(window.location.search.substring(1));
+  async componentDidMount() {
+    //const qsObj = qs.parse(window.location.search.substring(1));
     this.planid = this.props.planid;
+    this.setState({ loading: true });
+    await this.totalData();
     this.getData();
+    this.getSubData();
     this.getLevel();
     this.getKcxl();
     this.getKclb();
-    // window.parent.pwCallback &&
-    //   window.parent.pwCallback.modifyTitle('创建计划');
-    // // 监听父窗口发送的 message 事件
-    // window.addEventListener(
-    //   'message',
-    //   e => {
-    //     if (!e || !e.source || !e.source.pwCallback) {
-    //       return;
-    //     }
-    //     // 当事件类型为 "goBack"（即返回上一页时）
-    //     // 1. 调用 history.goBack() 方法放回上一页
-    //     // 2. 调用父级 window 对象下的 pwCallback.modifyTitle 方法，来修改窗口左上角的标题，其内容为上一页页面的标题
-    //     if (e.data.type === 'goBack') {
-    //       this.props.history.goBack();
-    //       e.source.pwCallback.modifyTitle &&
-    //         e.source.pwCallback.modifyTitle('制定计划');
-    //     }
-    //   },
-    //   false
-    // );
+    this.setState({ loading: false });
   }
-
+  async totalData() {
+    let cmswhere = `C3_609616660273= '${this.planid}'`;
+    let res = await http().getTable({ resid: this.props.totalResid, cmswhere });
+    try {
+      if (res.error === 0) {
+        let totalData = res.data[0];
+        this.setState({ totalData });
+      } else {
+        message.error(res.message);
+      }
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }
   //获取员工列表
   async getData() {
     let pageIndex = this.state.pageIndex;
@@ -81,7 +85,8 @@ class CreatePlan extends React.Component {
       resid: this.props.resid,
       key,
       pageIndex,
-      pageSize
+      pageSize,
+      cmswhere: `C3_613828994025 = '${this.state.totalData.C3_609616006519}'`
     });
     try {
       this.setState({ loading: false });
@@ -89,15 +94,21 @@ class CreatePlan extends React.Component {
         if (res.data.length > 0) {
           let data = this.state.data;
           data = data.concat(res.data);
-          // console.log(res.data)
           data.forEach(e => {
             e.check = false;
           });
+          let hasMore = this.state.hasMore;
+          if (this.state.oldData.length === this.state.totalAmount) {
+            hasMore = false;
+          }
           this.setState({
             data,
+            hasMore,
             oldData: data,
             pageIndex: ++this.state.pageIndex
           });
+        } else {
+          this.setState({ hasMore: false });
         }
       } else {
         message.error(res.message);
@@ -109,7 +120,7 @@ class CreatePlan extends React.Component {
     }
   }
 
-  //获取员工级别
+  //获取员工级别列表
   async getLevel() {
     let res = await http().getTable({ resid: this.props.levelId });
     try {
@@ -127,20 +138,30 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key) {
+    let { selectedCourse } = this.state;
     let cmswhere = '';
-    if (this.state.levelSelect) {
-      cmswhere += "C3_610763348502='" + this.state.levelSelect + "'";
+    //如果选择了人员级别，则加上级别的条件语句
+    if (this.state.kcState !== 'All' && this.state.selectedLevel) {
+      cmswhere += "C3_610763348502='" + this.state.selectedLevel + "'";
     }
+    //如果选择了一个课程系列，则加上系列的条件语句
     if (this.state.xlSelect) {
-      if (cmswhere != '') cmswhere += ' AND ';
+      if (cmswhere !== '') {
+        cmswhere += ' AND ';
+      }
       cmswhere += "C3_609845305368='" + this.state.xlSelect + "'";
     }
+    //如果选择了一个课程类别，则加上类别的条件语句
     if (this.state.lbSelect) {
-      if (cmswhere != '') cmswhere += ' AND ';
+      if (cmswhere !== '') {
+        cmswhere += ' AND ';
+      }
       cmswhere += "C3_609845305305='" + this.state.lbSelect + "'";
     }
-    if (this.state.kcState == 'Rec' && cmswhere == '')
+    if (this.state.kcState === 'Rec' && cmswhere === '') {
       return this.setState({ subData: [] });
+    }
+
     let res = await http().getTable({
       resid: this.props.subResid,
       key,
@@ -149,9 +170,16 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let subData = res.data;
-        // console.log(subData);
         subData.forEach(e => {
-          e.check = false;
+          if (
+            selectedCourse.find(i => {
+              return i.REC_ID === e.REC_ID;
+            })
+          ) {
+            e.check = true;
+          } else {
+            e.check = false;
+          }
         });
         this.setState({ subData });
       } else {
@@ -163,7 +191,7 @@ class CreatePlan extends React.Component {
     }
   }
 
-  //获取课程系列
+  //获取课程系列列表
   async getKcxl() {
     let res = await http().getTable({ resid: this.props.kcxlResid });
     try {
@@ -179,10 +207,11 @@ class CreatePlan extends React.Component {
     }
   }
 
-  //获取课程类别
+  //获取课程类别列表
   async getKclb() {
-    let res = await http().getTable({ resid: this.props.kclbResid });
+    let res;
     try {
+      res = await http().getTable({ resid: this.props.kclbResid });
       if (res.error === 0) {
         let kclbData = res.data;
         this.setState({ kclbData });
@@ -197,29 +226,45 @@ class CreatePlan extends React.Component {
 
   //选择员工
   onClick(i) {
-    let data = this.state.data;
-    if (data[i].check == true) {
-      // this.setState({ levelSelect: "", lkState: "", subData: [] });
-    } else {
-      this.setState(
-        {
-          levelSelect: data[i].C3_609622292033,
-          lkState: data[i].C3_609622292033
-        },
-        () => this.getSubData()
+    let { data, selectedEmployee } = this.state;
+    if (data[i].check === true) {
+      //删除选中的员工
+      selectedEmployee.splice(
+        selectedEmployee.findIndex(item => item.REC_ID === data[i].REC_ID),
+        1
       );
+    } else {
+      selectedEmployee = [...selectedEmployee, data[i]];
     }
     data[i].check = !data[i].check;
-    this.setState({ data });
+    this.setState(
+      {
+        data,
+        selectedEmployee,
+        selectedLevel: data[i].C3_609622292033
+      },
+      () => this.getSubData()
+    );
   }
 
   //选择课程
   onClickCustom(i) {
-    let subData = this.state.subData;
+    let { subData, selectedCourse } = this.state;
+    if (subData[i].check) {
+      selectedCourse.splice(
+        selectedCourse.findIndex(item => item.REC_ID === subData[i].REC_ID),
+        1
+      );
+    } else {
+      selectedCourse = [...selectedCourse, subData[i]];
+    }
     subData[i].check = !subData[i].check;
-    this.setState({ subData });
+    this.setState({ subData, selectedCourse });
   }
-
+  handleShowProgress = () => {
+    let { isShowProgress } = this.state;
+    this.setState({ isShowProgress: !isShowProgress });
+  };
   //保存计划
   async onClickSave() {
     let x = 0,
@@ -227,71 +272,172 @@ class CreatePlan extends React.Component {
       data = this.state.data,
       subData = this.state.subData,
       planData = [];
-    subData.forEach(ele => {
-      if (ele.check == true) {
-        y++;
-        data.forEach(e => {
-          if (e.check == true) {
-            x++;
-            let obj = JSON.parse(JSON.stringify(ele));
-            obj.C3_609616893275 = e.C3_609622254861;
-            obj.C3_609616805633 = this.planid;
-            obj.C3_609616868478 = obj.C3_609845305680;
-            obj.C3_609616906353 = obj.C3_609845305931;
-            obj.C3_611314815266 = obj.C3_610390419677;
-            obj.C3_611314815485 = obj.C3_610390410802;
-            obj.C3_611314815656 = obj.C3_609845463949;
-            obj.C3_611314815828 = obj.C3_609845305993;
-            obj.C3_611314816141 = obj.C3_609845305868;
-            obj.C3_611314816469 = obj.C3_609845305618;
-            obj.C3_611314817188 = obj.C3_609845305368;
-            obj.C3_611314817359 = obj.C3_609845305305;
-            planData.push(obj);
-          }
-        });
-      }
-    });
-    if (y == 0) return message.error('至少选择一个课程');
-    if (x == 0) return message.error('至少选择一个员工');
-    let res;
-    try {
-      res = await http().addRecords({
-        resid: this.props.kcbResid,
-        data: planData
+    let { selectedCourse, selectedEmployee } = this.state;
+    let taskList = [];
+    let {totalData} = this.state;
+    selectedCourse.forEach(item => {
+      selectedEmployee.forEach(i => {
+        let employee_course = {
+          C3_609616893275: i.C3_609622254861,//员工编号
+          C3_611314816141: item.C3_609845305868,//课程编号
+          C3_609616805805: this.props.year,
+          C3_609616805633: totalData.C3_609616660273, 
+          C3_609622263470: i.C3_609622263470,//员工姓名
+          C3_609845305680: item.C3_609845305680//课程名称
+        };
+        //delete employee_course.REC_ID;
+        taskList.push(employee_course);
       });
-      if (res.Error === 0) {
-        message.success(res.message);
-        // window.location.href =
-        //   '/fnmodule?resid=财年培训课表管理&recid=610555815210&type=前端功能入口&title=财年计划管理&planid=' +
-        //   this.planid;
-      } else {
-        message.error(res.message);
-      }
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
+    });
+    this.setState({ isShowProgress: true, taskList });
+    // let res;
+    // try {
+    //   res = await http().addRecords({
+    //     resid: this.props.kcbResid,
+    //     data: taskList,
+    //     isEditOrAdd: true
+    //   });
+    //   if (res.Error === 0) {
+    //     message.success(res.message);
+    //   } else {
+    //     message.error(res.message);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
+
+    // subData.forEach(ele => {
+    //   if (ele.check === true) {
+    //     y++;
+    //     data.forEach(e => {
+    //       if (e.check === true) {
+    //         x++;
+    //         let obj = JSON.parse(JSON.stringify(ele));
+    //         obj.C3_609616893275 = e.C3_609622254861;
+    //         obj.C3_609616805633 = this.planid;
+    //         obj.C3_609616868478 = obj.C3_609845305680;
+    //         obj.C3_609616906353 = obj.C3_609845305931;
+    //         obj.C3_611314815266 = obj.C3_610390419677;
+    //         obj.C3_611314815485 = obj.C3_610390410802;
+    //         obj.C3_611314815656 = obj.C3_609845463949;
+    //         obj.C3_611314815828 = obj.C3_609845305993;
+    //         obj.C3_611314816141 = obj.C3_609845305868;
+    //         obj.C3_611314816469 = obj.C3_609845305618;
+    //         obj.C3_611314817188 = obj.C3_609845305368;
+    //         obj.C3_611314817359 = obj.C3_609845305305;
+    //         delete obj.REC_ID;
+    //         planData.push(obj);
+    //       }
+    //     });
+    //   }
+    // });
+    // if (y === 0) {
+    //   return message.error('至少选择一个课程');
+    // }
+    // if (x === 0) {
+    //   return message.error('至少选择一个员工');
+    // }
+    // let { totalData } =this.state;
+    // if (totalCost + totalData.C3_609616051191 > totalData.C3_609616030566){
+    //   return message.error("已超出费用总预算");
+    // }
+    //let res;
+    // try {
+    //   res = await http().addRecords({
+    //     resid: this.props.kcbResid,
+    //     data: planData,
+    //     isEditOrAdd: true
+    //   });
+    //   if (res.Error === 0) {
+    //     message.success(res.message);
+    //   } else {
+    //     message.error(res.message);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
   }
 
   render() {
     let levelData = this.state.levelData;
     let kcxlData = this.state.kcxlData;
     let kclbData = this.state.kclbData;
+    let { totalData, taskList } = this.state;
     return (
       <div style={{ padding: '16px', background: '#fff' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ width: '50%', padding: '10px 28px' }}>
-            <div style={{ paddingBottom: '24px' }}>
+            {/* <div style={{ paddingBottom: '24px' }}>
               <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 选择员工
               </span>
+            </div> */}
+            <div
+              style={{
+                display: 'flex',
+                flex: 3,
+                padding: '5px 0',
+                flexDirection: 'row',
+                justifyContent: 'space-around'
+              }}
+            >
+              <div
+                style={{
+                  flex: 2,
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  padding: '0 10px'
+                }}
+              >
+                <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                  {totalData.C3_609616006519 == 'SHG' ? '上海' : '无锡'}
+                </span>
+                <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                  财年: {totalData.C3_609615869581}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+                }}
+              >
+                <span style={{ fontSize: '14px' }}>
+                  人数: {totalData.C3_609615996253}
+                </span>
+
+                <span style={{ fontSize: '14px' }}>
+                  总费用: {totalData.C3_609616051191}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+                }}
+              >
+                <span style={{ fontSize: '14px' }}>
+                  总预算: {totalData.C3_609616030566}
+                </span>
+                <span style={{ fontSize: '14px' }}>
+                  人均预算: {totalData.C3_611074040082}
+                </span>
+              </div>
             </div>
             <div style={{ height: 'calc(100vh - 150px)', overflow: 'auto' }}>
               <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
                 loadMore={this.getData.bind(this)}
-                hasMore={true}
+                hasMore={this.state.hasMore}
                 useWindow={false}
               >
                 <List
@@ -309,16 +455,23 @@ class CreatePlan extends React.Component {
                         defaultValue="All"
                         onChange={e => {
                           let data = [],
+                            level,
                             oldData = this.state.oldData;
-                          if (e == 'All') {
+                          if (e === 'All') {
                             data = oldData;
+                            level = '';
                           } else {
+                            level = e;
                             oldData.forEach(ele => {
                               ele.check = false;
-                              if (ele.C3_609622292033 == e) data.push(ele);
+                              if (ele.C3_609622292033 === e) {
+                                data.push(ele);
+                              }
                             });
                           }
-                          this.setState({ data });
+                          this.setState({ data, selectedLevel: level }, () => {
+                            this.getSubData();
+                          });
                         }}
                       >
                         <Option value="All">全部级别</Option>
@@ -330,12 +483,12 @@ class CreatePlan extends React.Component {
                       </Select>
                       <Search
                         placeholder="搜索"
-                        onSearch={value =>
+                        onSearch={value => {
                           this.setState(
                             { key: value, data: [], pageIndex: 0 },
                             () => this.getData()
-                          )
-                        }
+                          );
+                        }}
                         style={{ width: 200 }}
                       />
                     </div>
@@ -371,9 +524,9 @@ class CreatePlan extends React.Component {
                         >
                           <div>
                             <span>
-                              {item.C3_609622254861 == null
+                              {item.C3_611666091289 == null
                                 ? '无'
-                                : item.C3_609622254861}
+                                : item.C3_611666091289}
                             </span>
                           </div>
                           <div>
@@ -381,6 +534,14 @@ class CreatePlan extends React.Component {
                               {item.C3_609622263470 == null
                                 ? '无'
                                 : item.C3_609622263470}
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              课程数：
+                              {item.C3_611409498941 == null
+                                ? '无'
+                                : item.C3_611409498941}
                             </span>
                           </div>
                         </div>
@@ -435,6 +596,29 @@ class CreatePlan extends React.Component {
                                 : item.C3_609622292033}
                             </span>
                           </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
+                              }}
+                            />
+                            <span>
+                              总费用：
+                              {item.C3_611409509831 == null
+                                ? '无'
+                                : item.C3_611409509831}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </List.Item>
@@ -444,11 +628,20 @@ class CreatePlan extends React.Component {
             </div>
           </div>
           <div style={{ width: '50%', padding: '10px 28px' }}>
-            <div style={{ paddingBottom: '24px' }}>
+            {/* <div style={{ paddingBottom: '24px' }}>
               <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
                 选择课程
               </span>
-            </div>
+            </div> */}
+            <div
+              style={{
+                display: 'flex',
+                flex: 2,
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                height: '52px'
+              }}
+            />
             <List
               size="large"
               header={
@@ -457,17 +650,19 @@ class CreatePlan extends React.Component {
                 >
                   <Select
                     style={{ width: '100px' }}
-                    defaultValue="Rec"
+                    defaultValue="All"
                     onChange={e => {
-                      if (e == 'Rec') {
-                        this.setState(
-                          { levelSelect: this.state.lkState, kcState: e },
-                          () => this.getSubData()
-                        );
+                      if (e === 'Rec') {
+                        //如果未选择员工级别，课程数据则为空
+                        if (this.state.selectedLevel === '') {
+                          message.error('未选择级别，无法推荐课程');
+                          return this.setState({ kcState: e, subData: [] });
+                        }
+                        this.setState({ kcState: e }, () => this.getSubData());
                       } else {
                         this.setState(
                           {
-                            levelSelect: '',
+                            //selectedLevel: '',
                             kcState: 'All'
                           },
                           () => this.getSubData()
@@ -482,12 +677,19 @@ class CreatePlan extends React.Component {
                     style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
+                      if (
+                        this.state.kcState === 'Rec' &&
+                        this.state.selectedLevel === ''
+                      ) {
+                        message.error('未选择级别，无法推荐课程');
+                        return this.setState({ subData: [] });
+                      }
                       this.setState({ xlSelect: e }, () => this.getSubData());
                     }}
                   >
                     <Option value="">全部系列</Option>
                     {kcxlData.map((item, i) => (
-                      <Option value={item.C3_460380578456} key={i}>
+                      <Option value={item.C3_460380572730} key={i}>
                         {item.C3_460380572730}
                       </Option>
                     ))}
@@ -496,12 +698,19 @@ class CreatePlan extends React.Component {
                     style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
+                      if (
+                        this.state.kcState === 'Rec' &&
+                        this.state.selectedLevel === ''
+                      ) {
+                        message.error('未选择级别，无法推荐课程');
+                        return this.setState({ subData: [] });
+                      }
                       this.setState({ lbSelect: e }, () => this.getSubData());
                     }}
                   >
                     <Option value="">全部类别</Option>
                     {kclbData.map((item, i) => (
-                      <Option value={item.C3_460380249034} key={i}>
+                      <Option value={item.C3_460380239253} key={i}>
                         {item.C3_460380239253}
                       </Option>
                     ))}
@@ -546,7 +755,7 @@ class CreatePlan extends React.Component {
                           flexWrap: 'wrap',
                           flexDirection: 'row',
                           justifyContent: 'space-between',
-                          marginBottom: '16px',
+                          marginBottom: '16px'
                         }}
                       >
                         <div style={{ width: '50%' }}>
@@ -656,6 +865,12 @@ class CreatePlan extends React.Component {
             保存
           </Button>
         </div>
+        {this.state.isShowProgress ? (
+          <PlanProgress
+            taskList={taskList}
+            handleShowProgress={this.handleShowProgress}
+          />
+        ) : null}
       </div>
     );
   }
