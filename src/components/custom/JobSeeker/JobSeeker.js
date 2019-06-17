@@ -120,6 +120,7 @@ class JobSeeker extends Component {
   // 确认提交申请
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
+      console.log(values);
       if (!err) {
         this.setState({ loading: true });
         console.log(1111111);
@@ -131,7 +132,7 @@ class JobSeeker extends Component {
               {
                 ChName: values.ChName, //中文姓名
                 EnName: values.EnName, //英文姓名
-                JobTitle: values.appPosition, //申请职位名称
+                appPosition: values.appPosition, //申请职位名称
                 IDCardNumber: values.idNumber, //身份证号码
                 Sex: values.Sex, //性别
                 Tel: values.Phone, //求职者手机号
@@ -139,7 +140,7 @@ class JobSeeker extends Component {
                 Nationality: values.Nationality, //国籍
                 Nation: values.Nation, //民族
                 Party: values.Party, //政治面貌
-                BirthDate: values.BirthOfDate, //出生日期
+                BirthDate: values.BirthDate.format('YYYY-MM-DD'), //出生日期
                 BirthPlace: values.BirthPlace, //出生地点
                 PlaceOfHuKou: values.PlaceOfHuKou, //户口所在地
                 BloodType: values.BloodType, //血型
@@ -150,47 +151,69 @@ class JobSeeker extends Component {
                 MaritalStatus: values.MaritalStatus, //婚姻状况
                 ChildIf: values.ChildIf, //有无子女
                 // 教育背景
-                // LatestStartTime: values.LatestEddate[0].format('YYYY-MM-DD'), //最近教育开始时间
-                // LatestEndTime: values.LatestEddate[1].format('YYYY-MM-DD'), //最近教育结束时间
+                LatestStartTime:values.LatestEddate
+                  ? values.LatestEddate[0].format('YYYY-MM-DD')
+                  : null, //最近教育开始时间
+                LatestEndTime: values.LatestEddate
+                  ? values.LatestEddate[1].format('YYYY-MM-DD')
+                  : null, //最近教育结束时间
                 LatestEdSchool: values.LatestEdSchool, //最近学校名称
                 LatestEdMajor: values.LatestEdMajor, //专业名称
                 LatestEdDegree: values.LatestEdDegree, //学位
                 LatestReference: values.LatestReference, //最近教育证明人
                 LatestReferenceTel: values.LatestReferenceTel, //最近教育证明人电话
-                // ThreeEdStartTime: values.ThreeEddate[0].format('YYYY-MM-DD'), //第三教育开始时间
-                // ThreeEdEndTime: values.ThreeEddate[1].format('YYYY-MM-DD'), //第三教育结束时间
+                ThreeEdStartTime: values.ThreeEddate
+                  ? values.ThreeEddate[0].format('YYYY-MM-DD')
+                  : null, //第三教育开始时间
+                ThreeEdEndTime: values.ThreeEddate
+                  ? values.ThreeEddate[1].format('YYYY-MM-DD')
+                  : null, //第三教育结束时间
                 ThreeEdSchool: values.ThreeEdSchool, //第三学校名称
                 ThreeEdMajor: values.ThreeEdMajor, //第三专业名称
                 ThreeEdDegree: values.ThreeEdDegree, //第三学位
                 ThreeReference: values.ThreeReference, //第三教育证明人
                 ThreeReferenceTel: values.ThreeReferenceTel, //第三教育证明人电话
-                // SecEdStartTime: values.SecEddate[0].format('YYYY-MM-DD'), //第二教育开始时间
-                // SecEdEndTime: values.SecEddate[1].format('YYYY-MM-DD'), //第二教育结束时间
+                SecEdStartTime: values.SecEddate
+                  ? values.SecEddate[0].format('YYYY-MM-DD')
+                  : null, //第二教育开始时间
+                SecEdEndTime: values.SecEddate
+                  ? values.SecEddate[1].format('YYYY-MM-DD')
+                  : null, //第二教育结束时间
                 SecEdSchool: values.SecEdSchool, //第二教育学校名称
                 SecEdMajor: values.SecEdMajor, //第二教育专业名称
                 SecEdDegree: values.SecEdDegree, //第二教育学位
                 SecReference: values.SecReference, //第二教育证明人
                 SecReferenceTel: values.SecReferenceTel, //第二教育证明人电话
-                // FistEdStartTime: values.FirstEddate[0].format('YYY-MM-DD'), //第一教育开始时间
-                // FisrtEdEndTime: values.FirstEddate[1].format('YYY-MM-DD'), //第一教育结束时间
+                FistEdStartTime: values.FirstEddate
+                  ? values.FirstEddate[0].format('YYYY-MM-DD')
+                  : null, //第一教育开始时间
+                FisrtEdEndTime:values.FirstEddate
+                  ? values.FirstEddate[1].format('YYYY-MM-DD')
+                  : null, //第一教育结束时间
                 FirstEdSchool: values.FirstEdSchool, //第一教育学校名称
                 FirstEdMajor: values.FirstEdMajor, //第一教育专业名称
                 FirstEdDegree: values.FirstEdDegree, //第一教育学位
                 FirstReference: values.FirstReference, //第一教育证明人
                 FirstReferenceTel: values.FirstReferenceTel, //第一教育证明人电话
                 //工作经历
-                // LatestWorkStartTime: values.LatestWorkdate[0].format(
-                //   'YYY-MM-DD'
-                // ), //最近工作开始时间
-                // LatestWorkEndTime: values.LatestWorkdate[1].format('YYY-MM-DD'), //最近工作结束时间
+                LatestWorkStartTime:values.LatestWorkStartTime
+                  ? values.LatestWorkdate[0].format('YYYY-MM-DD')
+                  : null, //最近工作开始时间
+                LatestWorkEndTime: values.LatestWorkdate
+                  ? values.LatestWorkdate[1].format('YYYY-MM-DD')
+                  : null, //最近工作结束时间
                 LatestComName: values.LatestComName, //最近工作公司名称
                 LatestRank: values.LatestRank, //最近工作公司职位
                 LatestReasonForLeave: values.LatestReasonForLeave, //最近工作离职原因
                 LatestWorkReference: values.LatestWorkReference, //最近工作证明人
                 LatestWorkReferenceTel: values.LatestWorkReferenceTel, //最近工作证明人电话
 
-                // ThreeWorkStartTime: values.ThreeWorkdate[0].format('YYY-MM-DD'), //次之工作开始时间
-                // ThreeWorkEndTime: values.ThreeWorkdate[1].format('YYY-MM-DD'), //次之工作结束时间
+                ThreeWorkStartTime: values.ThreeWorkdate
+                  ? values.ThreeWorkdate[0].format('YYYY-MM-DD')
+                  : null, //次之工作开始时间
+                ThreeWorkEndTime: values.ThreeWorkdate
+                  ? values.ThreeWorkdate[1].format('YYYY-MM-DD')
+                  : null, //次之工作结束时间
                 ThreeComName: values.ThreeComName, //次之工作公司名称
                 ThreeRank: values.ThreeRank, //次之工作公司职位
                 ThreeReasonForLeave: values.ThreeReasonForLeave, //次之工作离职原因
@@ -212,7 +235,7 @@ class JobSeeker extends Component {
                 FamToBirthDate: values.FamToBirthDate, //出生年月
                 // 专业培训
                 LatestTrainingDate: values.LatestTrainingDate, //最近专业培训开始日期
-                // LatestEndTime: values.LatestEndTime, //最近专业培训日期
+                LatestEndTime: values.LatestEndTime, //最近专业培训日期
                 LatestTrainingInstitute: values.LatestTrainingInstitute, //最近培训机构
                 LatestTrainingCourese: values.LatestTrainingCourese, //最近培训课程
                 LatestTrainingQualification: values.LatestTrainingQualification, //最近培训获得证书
@@ -237,7 +260,7 @@ class JobSeeker extends Component {
               }
             ]
           });
-          console.log(222);
+          console.log(res.data);
           this.setState({ loading: false });
           Modal.success({
             title: '提示',
@@ -251,7 +274,7 @@ class JobSeeker extends Component {
           });
         }
       } else {
-        Modal.warning({
+       return  Modal.warning({
           title: '提示',
           content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
         });
