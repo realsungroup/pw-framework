@@ -714,7 +714,7 @@ export default class FirstStep extends React.Component {
   getWhereBySheet = (sheet1, colName) => {
     const values = [];
     for (let key in sheet1) {
-      if (key.indexOf(colName) !== -1 && key.indexOf('1') === -1) {
+      if (key.indexOf(colName) !== -1 && key !== `${colName}1`) {
         const v = sheet1[key].v;
         values.push(v);
       }

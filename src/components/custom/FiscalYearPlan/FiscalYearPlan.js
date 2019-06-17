@@ -56,7 +56,7 @@ class FiscalYearPlan extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: '609883172764',
+        resid: '609883172764',//财年计划主表
         //cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
       });
       let plans = res.data;
@@ -269,13 +269,13 @@ class FiscalYearPlan extends React.Component {
               <FJList
                 planid={selectedPlan.C3_609616660273}
                 year={selectedPlan.C3_609615869581}
-                totalResid="609883172764"
-                subResid="611315248461"
-                subbResid="610308370365"
-                levelId="449335746776"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-                resid="610307713776"
+                totalResid="609883172764"//财年明细-待提交
+                subResid="611315248461"//财年计划明细表
+                subbResid="610308370365"//课程表
+                levelId="449335746776"//
+                kcxlResid="610708527386"//课程系列
+                kclbResid="610708543449"//课程类别
+                resid="610307713776"//人员名单
               />
             ) : (
                 <CreatePlan

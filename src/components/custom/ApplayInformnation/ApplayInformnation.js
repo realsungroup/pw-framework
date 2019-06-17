@@ -230,6 +230,7 @@ class ApplayInformnation extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { initialValue } = this.props;
+    // console.log(initialValue);
     return (
       <div className="applay__informnation">
         <Form style={{ width: '90%', margin: '0 auto' }}>
@@ -916,7 +917,7 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
             <Button type="primary" onClick={this.handleClick}>
-              确认申请
+              确认打印
             </Button>
           </Form.Item>
         </Form>
