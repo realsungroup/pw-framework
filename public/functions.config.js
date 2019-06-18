@@ -1392,7 +1392,6 @@ window[614079025750] = {
   props: {}
 };
 
-<<<<<<< HEAD
 window[614187065713] = {
   name: 'ExternalTraining', // 组件名称，这里为定制组件名称
   title: '外训管理', // 功能模块名称
@@ -1401,10 +1400,8 @@ window[614187065713] = {
     // resid: 777
   } // 组件所接收的 props
 };
-=======
 // IDL招聘管理员端入口
 window[614078684178] = {
   name: 'IdLindex',
   title: 'IDL招聘'
 };
->>>>>>> 025bdb5efbc234d70d338846b0daaf378ccf6aa0

@@ -1,4 +1,5 @@
 import React from 'react';
+import ETnotice from './ETnotice';
 import { Steps, Spin } from 'antd';
 
 const { Step } = Steps;
