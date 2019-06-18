@@ -145,6 +145,7 @@ export const OneStatistical = Loadable({
   loading() {
     return minLoading;
   }
+
 });
 
 export const ExamPage = Loadable({
@@ -184,13 +185,13 @@ export const MyExam = Loadable({
     return minLoading;
   }
 });
-export const ExamArrange  = Loadable({
+export const ExamArrange = Loadable({
   loader: () => import('./ExamArrange'),
   loading() {
     return minLoading;
   }
 });
-export const ExamManage  = Loadable({
+export const ExamManage = Loadable({
   loader: () => import('./ExamManage'),
   loading() {
     return minLoading;
@@ -205,14 +206,14 @@ export const EditTitle = Loadable({
     return minLoading;
   }
 });
-export const ExamSet  = Loadable({
+export const ExamSet = Loadable({
   loader: () => import('./ExamSet'),
   loading() {
     return minLoading;
   }
 });
 
-export const FJList  = Loadable({
+export const FJList = Loadable({
   loader: () => import('./FJList'),
   loading() {
     return minLoading;
@@ -240,7 +241,7 @@ export const ExpireViolationsList = Loadable({
   }
 });
 
-  
+
 export const QuestionnaireRecords = Loadable({
   loader: () => import('./QuestionnaireRecords'),
   loading() {
@@ -343,7 +344,6 @@ export const SelectPersonFirstP = Loadable({
     return minLoading;
   }
 });
-
 export const ExternalTraining = Loadable({
   loader: () => import('./ExternalTraining'),
   loading() {
