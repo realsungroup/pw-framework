@@ -796,10 +796,6 @@ window['选择人员'] = {
   name: 'SelectPersonFirst'
 };
 
-window['统计分析'] = {
-  title: '统计分析',
-  name: 'Statical'
-};
 // 发送问卷
 window['发送问卷'] = {
   title: '发送问卷',
@@ -1049,7 +1045,7 @@ window[610812799351] = {
   name: 'FiscalYearPlan',
   title: '财年计划',
   props: {
-    CreateableGroups:['611769739518']
+    CreateableGroups: ['611769739518']
   }
 };
 
@@ -1119,7 +1115,7 @@ window[611077057050] = {
     subTableArrProps: [
       {
         subTableName: '人员名单',
-        subResid: 610307713776,
+        subResid: 613847444837,
         tableProps: {
           hasAdd: true,
           hasModify: false,
@@ -1136,27 +1132,73 @@ window[611077057050] = {
 };
 
 //HR预审
+// window[611339874157] = {
+//   name: 'TableData',
+//   title: 'HR预审',
+//   props: {
+//     resid: 611086999042,
+//     recordFormFormWidth: '90%',
+//     hasBeBtns: true,
+//     hasModify: false,
+//     hasDelete: false,
+//     hasAdd: false,
+//     hasRowDelete: false,
+//     hasRowModify: false,
+//     hasRowView: true,
+//     subtractH: 220,
+//     // height:600,
+//     recordFormType: 'drawer',
+//     recordFormContainerProps: {
+//       placement: 'bottom',
+//       height: 600
+//     }
+//   }
+// };
 window[611339874157] = {
-  name: 'TableData',
+  name: 'TableDataHR',
   title: 'HR预审',
-  props: {
-    resid: 611086999042,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: true,
-    subtractH: 220,
-    // height:600,
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    }
-  }
+  props: [
+    (arr = [
+      {
+        resid: 611086999042,
+        TabsTitle: '未审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      },
+      {
+        resid: 611086999042,
+        TabsTitle: '已审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      }
+    ])
+  ]
 };
 //用户端入口
 window[611839500701] = {
@@ -1164,27 +1206,74 @@ window[611839500701] = {
   title: '我的考试资料'
 };
 //总监审批
+// window[611339890532] = {
+//   name: 'TableData',
+//   title: '总监审批',
+//   props: {
+//     resid: 611086978293,
+//     recordFormFormWidth: '90%',
+//     hasBeBtns: true,
+//     hasModify: false,
+//     hasDelete: false,
+//     hasAdd: false,
+//     hasRowDelete: false,
+//     hasRowModify: false,
+//     hasRowView: true,
+//     subtractH: 220,
+//     // height:600,
+//     recordFormType: 'drawer',
+//     recordFormContainerProps: {
+//       placement: 'bottom',
+//       height: 600
+//     }
+//   }
+// };
+
 window[611339890532] = {
-  name: 'TableData',
+  name: 'TableDataHR',
   title: '总监审批',
-  props: {
-    resid: 611086978293,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: true,
-    subtractH: 220,
-    // height:600,
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    }
-  }
+  props: [
+    (arr = [
+      {
+        resid: 611086978293,
+        TabsTitle: '未审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      },
+      {
+        resid: 611086999042,
+        TabsTitle: '已审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      }
+    ])
+  ]
 };
 
 //计划授权
@@ -1216,12 +1305,6 @@ window[612526844134] = {
   name: 'TableDataScheduling',
   title: 'RBA排班',
   props: {}
-};
-
-// IDL招聘管理员端入口
-window[612612229738] = {
-  name: 'IdLindex',
-  title: 'IDL招聘'
 };
 
 // 个人成绩管理
@@ -1303,8 +1386,14 @@ window['考试图表分析'] = {
 };
 
 // 求职者入口
-window[612874189546] = {
+window[614079025750] = {
   name: 'JobSeeker',
   title: 'IDL求职者',
   props: {}
+};
+
+// IDL招聘管理员端入口
+window[614078684178] = {
+  name: 'IdLindex',
+  title: 'IDL招聘'
 };

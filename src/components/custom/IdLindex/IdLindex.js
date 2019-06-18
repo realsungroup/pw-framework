@@ -6,6 +6,8 @@ import ApplayInformnation from '../ApplayInformnation';
 import TableData from '../../common/data/TableData';
 import { assementForm, referenceCheck } from './config.js';
 import { withRecordForm } from '../../common/hoc/withRecordForm';
+import dealControlArr from '../../../util20/controls';
+import { getDataProp } from '../../../util20/formData2ControlsData';
 const { Option } = Select;
 const { TabPane } = Tabs;
 class IdLindex extends Component {
@@ -19,7 +21,6 @@ class IdLindex extends Component {
     personList: [],
     currentPersonInfo: {},
     currentPersonId: '',
-    formVisible: false,
     recordFormName: 'default',
     modalType: '',
     typeVisible: false,
@@ -57,6 +58,7 @@ class IdLindex extends Component {
     res.data.map(item => {
       return (item.isSelected = false);
     });
+    res.data[0].isSelected = true;
     console.log(res.data);
     this.getPersonalInfo(res.data[0].ID);
     this.setState({
@@ -84,7 +86,6 @@ class IdLindex extends Component {
   // 窗体点击确定
   ModalOK = () => {
     this.setState({
-      formVisible: false,
       typeVisible: false
     });
   };
@@ -126,15 +127,51 @@ class IdLindex extends Component {
   // 窗体点击取消
   ModalCancel = () => {
     this.setState({
-      formVisible: false,
       typeVisible: false
     });
   };
   //获取formData数据
-  getFormData = async formName => {
-    this.setState({
-      formVisible: true,
-      recordFormName: formName
+  getFormData = async record => {
+    // 1.看懂高阶组件接收的东西，打开一个模态窗。
+    let res;
+    try {
+      res = await http().getFormData({
+        resid: 613152706922,
+        formname: record.accessCategority
+      });
+    } catch (err) {
+      return console.error(err.message);
+    }
+    console.log('获取到窗体的数据', res);
+    const formMidData = dealControlArr(res.data.columns);
+    // console.log('中间数据', formMidData);
+    const terminalData = getDataProp(formMidData, record, false, true); //得到了最终的data
+    // console.log('最终的数据', terminalData);
+    /**
+     *第一步： 在withRecordForm组件中传过来一个方法叫openRecordForm,
+     *第二步：this.props.openRecordForm 所接收的参数看文档。
+     *第三步:this.props.openRecordForm 其中所接收的一个参数是data,需要从后端取出来然后自己处理，所以回到第1步先处理数据。
+     */
+    //2.打开这个模态窗
+    this.props.openRecordForm({
+      title: '面试评估表',
+      operation: 'modify',
+      formProps: {
+        displayMode: 'classify'
+      },
+      record: record,
+      info:{
+        dataMode:'main',
+        resid:613152706922,
+        hostrecid:record.REC_ID,
+      },
+      data: terminalData,
+      onSuccess: () => {
+        alert('success');
+      },
+      onCancel: () => {
+        this.props.closeRecordForm();
+      }
     });
   };
   // 渲染不同模态框中的内容
@@ -175,7 +212,8 @@ class IdLindex extends Component {
     });
   };
   render() {
-    const { personList, currentPersonInfo, formVisible } = this.state;
+    const { personList, currentPersonInfo } = this.state;
+    console.log(currentPersonInfo);
     return (
       <div className="idlindex">
         <div className="idlindex__person-list">
@@ -214,11 +252,9 @@ class IdLindex extends Component {
                 subtractH={210}
                 hasModify={false}
                 hasAdd={false}
-                recordFormName={this.state.recordFormName}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 hasRowSelection={false}
-                formProps={{ displayMode: 'default' }}
                 hasBeBtns={true}
                 actionBarExtra={() => {
                   return (
@@ -236,7 +272,7 @@ class IdLindex extends Component {
                     return (
                       <Button
                         onClick={() => {
-                          this.getFormData(record.accessCategority);
+                          this.getFormData(record);
                         }}
                       >
                         弹出不同窗体
@@ -268,14 +304,6 @@ class IdLindex extends Component {
               />
             </TabPane>
           </Tabs>
-          <Modal
-            visible={formVisible}
-            onOk={this.ModalOK}
-            onCancel={this.ModalCancel}
-            title={this.state.recordFormName}
-          >
-            <p>这是{this.state.recordFormName}的的内容</p>
-          </Modal>
           <Modal
             title="添加背景调查表/面试评估表"
             visible={this.state.typeVisible}

@@ -140,12 +140,6 @@ export const SelectPersonFirst = Loadable({
     return minLoading;
   }
 });
-export const Statical = Loadable({
-  loader: () => import('./Statical'),
-  loading() {
-    return minLoading;
-  }
-});
 export const OneStatistical = Loadable({
   loader: () => import('./OneStatistical'),
   loading() {
@@ -346,6 +340,13 @@ export const ApplayInformnation = Loadable({
 //
 export const SelectPersonFirstP = Loadable({
   loader: () => import('./SelectPersonFirstP'),
+  loading() {
+    return minLoading;
+  }
+});
+//导出Tabs组件
+export const TableDataHR = Loadable({
+  loader: () => import('./TableDataHR'),
   loading() {
     return minLoading;
   }
