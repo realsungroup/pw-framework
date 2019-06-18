@@ -1,5 +1,6 @@
 import React from 'react';
 import { Steps, Spin } from 'antd';
+import ArrangingCourses from '../ArrangingCourses';
 
 const { Step } = Steps;
 class ExternalTraining extends React.Component {
@@ -8,7 +9,16 @@ class ExternalTraining extends React.Component {
     current: 0
   };
   render() {
-    let { loading, current } = this.state;
+		let { loading, current } = this.state;
+		let page = null;
+		switch (current) {
+			case 0:
+				page = <ArrangingCourses/>
+				break;
+		
+			default:
+				break;
+		}
     return (
       <Spin spinning={loading}>
         <Steps
@@ -61,6 +71,9 @@ class ExternalTraining extends React.Component {
             }}
           />
         </Steps>
+				{
+					page
+				}
       </Spin>
     );
   }
