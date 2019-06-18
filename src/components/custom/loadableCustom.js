@@ -343,20 +343,15 @@ export const SelectPersonFirstP = Loadable({
     return minLoading;
   }
 });
-<<<<<<< HEAD
-
 export const ExternalTraining = Loadable({
   loader: () => import('./ExternalTraining'),
-=======
+  loading() {
+    return minLoading;
+  }
+});
 //导出Tabs组件
-<<<<<<< HEAD
 export const TabsTableData = Loadable({
   loader: () => import('./TabsTableData'),
-=======
-export const TableDataHR = Loadable({
-  loader: () => import('./TableDataHR'),
->>>>>>> 025bdb5efbc234d70d338846b0daaf378ccf6aa0
->>>>>>> 6cbda5e78b9575fbc6d788da4173f20a938c2a0c
   loading() {
     return minLoading;
   }
