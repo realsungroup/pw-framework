@@ -10,16 +10,19 @@ class ExternalTraining extends React.Component {
     current: 0
   };
   render() {
-		let { loading, current } = this.state;
-		let page = null;
-		switch (current) {
-			case 0:
-				page = <ArrangingCourses/>
-				break;
-		
-			default:
-				break;
-		}
+    let { loading, current } = this.state;
+    let page = null;
+    switch (current) {
+      case 0:
+        page = <ArrangingCourses />
+        break;
+      case 1:
+        page = <ETnotice />
+        break;
+
+      default:
+        break;
+    }
     return (
       <Spin spinning={loading}>
         <Steps
@@ -72,9 +75,9 @@ class ExternalTraining extends React.Component {
             }}
           />
         </Steps>
-				{
-					page
-				}
+        {
+          page
+        }
       </Spin>
     );
   }

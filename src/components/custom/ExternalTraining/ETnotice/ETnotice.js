@@ -1,14 +1,11 @@
 import React from 'react';
 
-class ETnotice extends React.Component{
+class ETnotice extends React.Component {
 
 
 
-    render(){
-        <div>
-            
-
-        </div>
-    }
+    render() {
+        return null
+}
 }
 export default ETnotice;
