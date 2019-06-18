@@ -64,7 +64,6 @@ export {
   QuerySet,
   SoleQuery,
   SelectPersonFirst,
-  Statical,
   OneStatistical,
   IdLindex,
   JobSeeker,
