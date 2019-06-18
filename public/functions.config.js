@@ -1308,3 +1308,12 @@ window[612874189546] = {
   title: 'IDL求职者',
   props: {}
 };
+
+window[614187065713] = {
+  name: 'ExternalTraining', // 组件名称，这里为定制组件名称
+  title: '外训管理', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};
