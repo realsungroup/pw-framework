@@ -796,10 +796,6 @@ window['选择人员'] = {
   name: 'SelectPersonFirst'
 };
 
-window['统计分析'] = {
-  title: '统计分析',
-  name: 'Statical'
-};
 // 发送问卷
 window['发送问卷'] = {
   title: '发送问卷',
