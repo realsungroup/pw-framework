@@ -350,3 +350,10 @@ export const SelectPersonFirstP = Loadable({
     return minLoading;
   }
 });
+
+export const ExternalTraining = Loadable({
+  loader: () => import('./ExternalTraining'),
+  loading() {
+    return minLoading;
+  }
+});
