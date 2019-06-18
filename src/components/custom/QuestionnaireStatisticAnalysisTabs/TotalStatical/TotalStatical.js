@@ -57,7 +57,7 @@ class TotalStatical extends Component {
         //   ((record.amount / record.total) * 100).toFixed(0),
         //   10
         // );
-        const percent =((record.amount / record.total)*100).toFixed(2);
+        const percent = ((record.amount / record.total) * 100).toFixed(2);
         return (
           <div>
             <Progress percent={percent} />
@@ -117,7 +117,7 @@ class TotalStatical extends Component {
     } catch (err) {
       console.error(err.message);
     }
-    console.log('qesOptionAnwserGroupbyperson', res.data);
+    // console.log('qesOptionAnwserGroupbyperson', res.data);
     this.setState({ queryQuestionsGroup: res.data });
   };
 
@@ -168,16 +168,17 @@ class TotalStatical extends Component {
         record.total = total;
       });
       const queryQuestionsGroup = this.state.queryQuestionsGroup;
-
+      // console.log('rtamount', queryQuestionsGroup);
       const rt = queryQuestionsGroup.find(
         queryQuestionsGroupItem =>
           dataItem.question_id === queryQuestionsGroupItem.question_id
       );
-
-      dataItem.table.dataSource.push({
-        optionContent: '本题有效填写人次',
-        amount: rt.amount
-      });
+      if (rt) {
+        dataItem.table.dataSource.push({
+          optionContent: '本题有效填写人次',
+          amount: rt.amount
+        });
+      }
     });
     this.setState({ data });
   };
