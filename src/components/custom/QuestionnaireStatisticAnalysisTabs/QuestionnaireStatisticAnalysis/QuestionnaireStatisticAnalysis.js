@@ -13,6 +13,8 @@ const modalTitleMap = {
   level: '选择级别'
 };
 
+const departmentNameKey = 'dept';
+const departmentName = 'deptname';
 const removeRepetition = (resData, key) => {
   const ret = [];
   resData.forEach(resDataItem => {
@@ -70,7 +72,11 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       dataSource: [], // 表格数据
       barOption: {}, // 柱状图 options
       pieOption: {}, // 饼图 options
-      modalMode: '' // 模态窗模式：'question' 显示选择的题目；'department' 显示选择的部门；'level' 显示选择的级别
+      modalMode: '' ,// 模态窗模式：'question' 显示选择的题目；'department' 显示选择的部门；'level' 显示选择的级别
+      selectedDepartmentRecord: null, // 选择的部门记录
+      selectedLevelRecord: null, // 选择的级别记录
+      levelArr: [],
+      departmentArr: []
     };
   }
 
@@ -89,7 +95,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   renderDepartment = () => {
     const { selectedDepartment } = this.state;
     if (selectedDepartment) {
-      return selectedDepartment.C3_461011989333;
+      return selectedDepartment.deptname;
     }
     return (
       <span className="questionnaire-statistic-analysis__no-select-question-status">
@@ -101,7 +107,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   renderLevel = () => {
     const { selectedLevel } = this.state;
     if (selectedLevel) {
-      return selectedLevel.C3_449335790387;
+      return selectedLevel.level;
     }
     return (
       <span className="questionnaire-statistic-analysis__no-select-question-status">
@@ -183,7 +189,9 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       singleSelectColumns,
       dataSource,
       barOption,
-      pieOption
+      pieOption,
+      departmentArr,
+      levelArr
     } = this.dealData(res.data, selectedQuestion, res2.data[0].amount);
 
     console.log({ dataSource });
@@ -193,7 +201,9 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       singleSelectColumns,
       dataSource,
       barOption,
-      pieOption
+      pieOption,
+      departmentArr,
+      levelArr
     });
   };
 
@@ -225,6 +235,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   };
 
   handleSelectDepartment = async record => {
+    console.log("records",record)
     this.setState(
       {
         selectedDepartment: { ...record },
@@ -241,10 +252,11 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           this.setState({ loading: false });
           return message.info('请选择题目');
         }
+        console.log("selectedDepartment.dept",selectedDepartment.name)
         this.getStatisticsData(
           selectedQuestion.question_id,
-          selectedDepartment && selectedDepartment.DEP_ID,
-          selectedLevel && selectedLevel.C3_587136281870,
+          selectedDepartment && selectedDepartment.name,
+          selectedLevel && selectedLevel.level,
           selectedQuestion
         );
       }
@@ -270,8 +282,8 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         }
         this.getStatisticsData(
           selectedQuestion.question_id,
-          selectedDepartment && selectedDepartment.DEP_ID,
-          selectedLevel && selectedLevel.C3_587136281870,
+          selectedDepartment && selectedDepartment.name,
+          selectedLevel && selectedLevel.level,
           selectedQuestion
         );
       }
@@ -279,6 +291,30 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   };
 
   dealData = (resData, record, validateSum) => {
+
+    const departmentArr = [],
+      levelArr = [];
+      console.log("resData",resData)
+    resData.forEach(item => {
+      console.log("item",item)
+      const tempDepartment = departmentArr.find(
+        depItem => depItem.id === item.dept
+      );
+      if (!tempDepartment) {
+        departmentArr.push({
+          name: item[departmentNameKey],
+          deptname:item[departmentName],
+          id: item.dept
+        });
+      }
+      const tempLevel = levelArr.find(
+        levelItem => levelItem.level === item.level
+      );
+      if (!tempLevel) {
+        levelArr.push({ level: item.level });
+      }
+    });
+
     resData = removeRepetition(resData, 'option_id');
 
     const sum = resData.reduce(
@@ -326,7 +362,9 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       singleSelectColumns: columns,
       dataSource: resData,
       barOption,
-      pieOption
+      pieOption,
+      departmentArr,
+      levelArr
     };
   };
 
@@ -490,9 +528,62 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     );
   };
 
+  departmentTableColumns = [
+    {
+      title: '部门编号',
+      dataIndex: 'name'
+    },
+    {
+      title: '部门',
+      dataIndex: 'deptname'
+    },
+    {
+      title: '操作',
+      dataIndex: '操作',
+      render: (value, record, index) => {
+        return (
+          <Button
+            type="primary"
+            onClick={() => this.handleSelectDepartment(record)}
+          >
+            选择
+          </Button>
+        );
+      }
+    }
+  ];
+
+  levelTableColumns = [
+    {
+      title: '级别',
+      dataIndex: 'level'
+    },
+    {
+      title: '操作',
+      dataIndex: '操作',
+      render: (value, record, index) => {
+        return (
+          <Button type="primary" onClick={() => this.handleSelectLevel(record)}>
+            选择
+          </Button>
+        );
+      }
+    }
+  ];
+
   renderModalContent = () => {
-    const { modalMode, hostrecid } = this.state;
-    if (modalMode === 'question' && hostrecid) {
+  const { modalMode, departmentArr, levelArr,hostrecid } = this.state;
+  if (modalMode === 'department') {
+    console.log("部门信息")
+    return (
+      <Table
+        dataSource={departmentArr}
+        columns={this.departmentTableColumns}
+      />
+    );
+  } else if (modalMode === 'level') {
+    return <Table dataSource={levelArr} columns={this.levelTableColumns} />;
+  }else if(modalMode === 'question' && hostrecid){
       return (
         <TableData
           resid={608822905547}
@@ -526,70 +617,109 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           ]}
         />
       );
-    } else if (modalMode === 'department') {
-      return (
-        <TableData
-          resid={613478801590}
-          // width={'98%'}
-          height={420}
-          subtractH={160}
-          hasRowModify={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasAdd={false}
-          hasModify={false}
-          hasDelete={false}
-          hasAdvSearch={false}
-          hasRefresh={false}
-          hasDownload={false}
-          customRowBtns={[
-            (record, btnSize) => {
-              return (
-                <Button
-                  size={btnSize}
-                  onClick={() => this.handleSelectDepartment(record)}
-                  key="选择部门"
-                >
-                  选择
-                </Button>
-              );
-            }
-          ]}
-        />
-      );
-    } else if (modalMode === 'level') {
-      return (
-        <TableData
-          resid={449335746776}
-          // width={'98%'}
-          height={420}
-          subtractH={160}
-          hasRowModify={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasAdd={false}
-          hasModify={false}
-          hasDelete={false}
-          hasAdvSearch={false}
-          hasRefresh={false}
-          hasDownload={false}
-          customRowBtns={[
-            (record, btnSize) => {
-              return (
-                <Button
-                  size={btnSize}
-                  onClick={() => this.handleSelectLevel(record)}
-                  key="选择级别"
-                >
-                  选择
-                </Button>
-              );
-            }
-          ]}
-        />
-      );
-    }
-  };
+  }
+}
+  // renderModalContent = () => {
+    
+  //   const { modalMode, hostrecid } = this.state;
+  //   if (modalMode === 'question' && hostrecid) {
+  //     return (
+  //       <TableData
+  //         resid={608822905547}
+  //         dataMode="sub"
+  //         subresid={613576714181}
+  //         hostrecid={hostrecid}
+  //         // width={'98%'}
+  //         height={420}
+  //         subtractH={160}
+  //         hasRowModify={false}
+  //         hasRowView={false}
+  //         hasRowDelete={false}
+  //         hasAdd={false}
+  //         hasModify={false}
+  //         hasDelete={false}
+  //         hasAdvSearch={false}
+  //         hasRefresh={false}
+  //         hasDownload={false}
+  //         customRowBtns={[
+  //           (record, btnSize) => {
+  //             return (
+  //               <Button
+  //                 size={btnSize}
+  //                 onClick={() => this.handleSelectQuestion(record)}
+  //                 key="选择题目"
+  //               >
+  //                 选择
+  //               </Button>
+  //             );
+  //           }
+  //         ]}
+  //       />
+  //     );
+  //   } else if (modalMode === 'department') {
+  //     return (
+  //       <TableData
+  //         resid={613478801590}
+  //         // width={'98%'}
+  //         height={420}
+  //         subtractH={160}
+  //         hasRowModify={false}
+  //         hasRowView={false}
+  //         hasRowDelete={false}
+  //         hasAdd={false}
+  //         hasModify={false}
+  //         hasDelete={false}
+  //         hasAdvSearch={false}
+  //         hasRefresh={false}
+  //         hasDownload={false}
+  //         customRowBtns={[
+  //           (record, btnSize) => {
+  //             return (
+  //               <Button
+  //                 size={btnSize}
+  //                 onClick={() => this.handleSelectDepartment(record)}
+  //                 key="选择部门"
+  //               >
+  //                 选择
+  //               </Button>
+  //             );
+  //           }
+  //         ]}
+  //       />
+  //     );
+  //   } else if (modalMode === 'level') {
+  //     return (
+  //       <TableData
+  //         resid={449335746776}
+  //         // width={'98%'}
+  //         height={420}
+  //         subtractH={160}
+  //         hasRowModify={false}
+  //         hasRowView={false}
+  //         hasRowDelete={false}
+  //         hasAdd={false}
+  //         hasModify={false}
+  //         hasDelete={false}
+  //         hasAdvSearch={false}
+  //         hasRefresh={false}
+  //         hasDownload={false}
+  //         customRowBtns={[
+  //           (record, btnSize) => {
+  //             return (
+  //               <Button
+  //                 size={btnSize}
+  //                 onClick={() => this.handleSelectLevel(record)}
+  //                 key="选择级别"
+  //               >
+  //                 选择
+  //               </Button>
+  //             );
+  //           }
+  //         ]}
+  //       />
+  //     );
+  //   }
+  // };
 
   render() {
     const {

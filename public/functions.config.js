@@ -796,7 +796,6 @@ window['选择人员'] = {
   name: 'SelectPersonFirst'
 };
 
-
 // 发送问卷
 window['发送问卷'] = {
   title: '发送问卷',
@@ -1046,7 +1045,7 @@ window[610812799351] = {
   name: 'FiscalYearPlan',
   title: '财年计划',
   props: {
-    CreateableGroups:['611769739518']
+    CreateableGroups: ['611769739518']
   }
 };
 
@@ -1116,7 +1115,7 @@ window[611077057050] = {
     subTableArrProps: [
       {
         subTableName: '人员名单',
-        subResid: 610307713776,
+        subResid: 613847444837,
         tableProps: {
           hasAdd: true,
           hasModify: false,
@@ -1133,27 +1132,73 @@ window[611077057050] = {
 };
 
 //HR预审
+// window[611339874157] = {
+//   name: 'TableData',
+//   title: 'HR预审',
+//   props: {
+//     resid: 611086999042,
+//     recordFormFormWidth: '90%',
+//     hasBeBtns: true,
+//     hasModify: false,
+//     hasDelete: false,
+//     hasAdd: false,
+//     hasRowDelete: false,
+//     hasRowModify: false,
+//     hasRowView: true,
+//     subtractH: 220,
+//     // height:600,
+//     recordFormType: 'drawer',
+//     recordFormContainerProps: {
+//       placement: 'bottom',
+//       height: 600
+//     }
+//   }
+// };
 window[611339874157] = {
-  name: 'TableData',
+  name: 'TabsTableData',
   title: 'HR预审',
-  props: {
-    resid: 611086999042,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: true,
-    subtractH: 220,
-    // height:600,
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    }
-  }
+  props: [
+    ([
+      {
+        resid: 611086999042,
+        TabsTitle: '未审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      },
+      {
+        resid: 611086999042,
+        TabsTitle: '已审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      }
+    ])
+  ]
 };
 //用户端入口
 window[611839500701] = {
@@ -1161,27 +1206,74 @@ window[611839500701] = {
   title: '我的考试资料'
 };
 //总监审批
+// window[611339890532] = {
+//   name: 'TableData',
+//   title: '总监审批',
+//   props: {
+//     resid: 611086978293,
+//     recordFormFormWidth: '90%',
+//     hasBeBtns: true,
+//     hasModify: false,
+//     hasDelete: false,
+//     hasAdd: false,
+//     hasRowDelete: false,
+//     hasRowModify: false,
+//     hasRowView: true,
+//     subtractH: 220,
+//     // height:600,
+//     recordFormType: 'drawer',
+//     recordFormContainerProps: {
+//       placement: 'bottom',
+//       height: 600
+//     }
+//   }
+// };
+
 window[611339890532] = {
-  name: 'TableData',
+  name: 'TabsTableData',
   title: '总监审批',
-  props: {
-    resid: 611086978293,
-    recordFormFormWidth: '90%',
-    hasBeBtns: true,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: false,
-    hasRowDelete: false,
-    hasRowModify: false,
-    hasRowView: true,
-    subtractH: 220,
-    // height:600,
-    recordFormType: 'drawer',
-    recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
-    }
-  }
+  props: [
+    ([
+      {
+        resid: 611086978293,
+        TabsTitle: '未审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      },
+      {
+        resid: 611086999042,
+        TabsTitle: '已审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        }
+      }
+    ])
+  ]
 };
 
 //计划授权
@@ -1300,6 +1392,14 @@ window[614079025750] = {
   props: {}
 };
 
+window[614187065713] = {
+  name: 'ExternalTraining', // 组件名称，这里为定制组件名称
+  title: '外训管理', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};
 // IDL招聘管理员端入口
 window[614078684178] = {
   name: 'IdLindex',

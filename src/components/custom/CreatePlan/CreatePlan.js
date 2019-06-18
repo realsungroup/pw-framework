@@ -41,7 +41,7 @@ class CreatePlan extends React.Component {
       kcState: 'All', //选中课程状态
       pageIndex: 0, // 当前页数
       totalPage: 0, // 总页数
-      pageSize: 15, // 每页数量
+      pageSize: 100, // 每页数量
       key: '', //模糊查询关键字
       isShowProgress: false,
       taskList: []
@@ -93,10 +93,11 @@ class CreatePlan extends React.Component {
       if (res.error === 0) {
         if (res.data.length > 0) {
           let data = this.state.data;
-          data = data.concat(res.data);
-          data.forEach(e => {
+          let resData = res.data;
+          resData.forEach(e => {
             e.check = false;
           });
+          data = data.concat(resData);
           let hasMore = this.state.hasMore;
           if (this.state.oldData.length === this.state.totalAmount) {
             hasMore = false;
@@ -126,6 +127,23 @@ class CreatePlan extends React.Component {
     try {
       if (res.error === 0) {
         let levelData = res.data;
+        levelData.sort((o1, o2) => {
+          let level1 = o1.C3_587136281870;
+          let level2 = o2.C3_587136281870;
+          if (level1[0] === level2[0]) {
+            let num1 = parseInt(level1.slice(1));
+            let num2 = parseInt(level2.slice(1));
+            return num1 - num2;
+          } else {
+            if (level1 < level2) {
+              return -1;
+            } else if (level1 > level2) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        });
         this.setState({ levelData });
       } else {
         message.error(res.message);
@@ -441,6 +459,7 @@ class CreatePlan extends React.Component {
                     <List.Item
                       style={{ cursor: 'pointer' }}
                       onClick={this.onClick.bind(this, i)}
+                      key={item.REC_ID}
                     >
                       <div
                         style={{
