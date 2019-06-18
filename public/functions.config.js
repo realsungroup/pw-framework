@@ -1155,10 +1155,10 @@ window[611077057050] = {
 //   }
 // };
 window[611339874157] = {
-  name: 'TableDataHR',
+  name: 'TabsTableData',
   title: 'HR预审',
   props: [
-    ( [
+    ([
       {
         resid: 611086999042,
         TabsTitle: '未审批',
@@ -1230,10 +1230,10 @@ window[611839500701] = {
 // };
 
 window[611339890532] = {
-  name: 'TableDataHR',
+  name: 'TabsTableData',
   title: '总监审批',
   props: [
-    (  [
+    ([
       {
         resid: 611086978293,
         TabsTitle: '未审批',
