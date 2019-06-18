@@ -58,7 +58,7 @@ export const inApplication = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height:600,
+    height:650,
   },
   subTableArrProps: [
     {
@@ -308,3 +308,12 @@ export const history = {
     }
   ]
 };
+// 我申请的访客
+export const MyVisitor= {
+  resid:614184041926,
+  hasAdd:false,
+  hasModify:false,
+  hasDelete:false,
+  hasRowView:true,
+  subtractH: 166,
+}

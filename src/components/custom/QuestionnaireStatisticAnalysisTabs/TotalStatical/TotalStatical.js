@@ -11,8 +11,8 @@ const isChrome = () => {
   if (userAgent.indexOf('chrome') !== -1) {
     //说明找到了 就是谷歌浏览器
     return true;
-  } 
-    return false;
+  }
+  return false;
   //
   // return userAgent.indexOf('chrome')!==-1;
 };
@@ -43,20 +43,21 @@ class TotalStatical extends Component {
     {
       title: '小计',
       dataIndex: 'amount',
-      width: 100
+      width: 80
     },
     {
       title: '比例',
-      width: 100,
+      width: 200,
       dataIndex: 'percentage',
       render: (value, record, index) => {
         if (record.optionContent === '本题有效填写人次') {
           return null;
         }
-        const percent = parseInt(
-          ((record.amount / record.total) * 100).toFixed(0),
-          10
-        );
+        // const percent = parseInt(
+        //   ((record.amount / record.total) * 100).toFixed(0),
+        //   10
+        // );
+        const percent =((record.amount / record.total)*100).toFixed(2);
         return (
           <div>
             <Progress percent={percent} />
@@ -231,7 +232,7 @@ class TotalStatical extends Component {
         const imgDataURL = canvas.toDataURL('image/png');
         window.open(imgDataURL);
         download(imgDataURL, queryName);
-        
+
         // if (isChrome()) {
         //   console.log('谷歌');
         //   download(imgDataURL, queryName);

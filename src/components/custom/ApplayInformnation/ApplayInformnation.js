@@ -460,7 +460,10 @@ class ApplayInformnation extends Component {
           </h3>
           <Form.Item label="日期/latest period from to" {...formItemLayout2}>
             {getFieldDecorator('LatestEddate', {
-              initialValue: null
+              // initialValue: {[
+              //   moment(this.state.startDate, dateFormat),
+              //   moment(this.state.endDate, dateFormat)
+              // ]}
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
