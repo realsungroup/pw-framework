@@ -1155,12 +1155,12 @@ window[611077057050] = {
 //   }
 // };
 window[611339874157] = {
-  name: 'TableDataHR',
+  name: 'TabsTableData',
   title: 'HR预审',
   props: [
     (arr = [
       {
-        resid: 611086999042,
+        resid: 614160204544,
         TabsTitle: '未审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1171,15 +1171,31 @@ window[611339874157] = {
         hasRowModify: false,
         hasRowView: true,
         subtractH: 220,
-        // height:600,
+        height:600,
         recordFormType: 'drawer',
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: true,
+              hasModify: false,
+              hasRowDelete: true,
+              hasRowModify: false,
+              hasDelete: false,
+              subtractH: 190,
+              height: 500,
+              hasRowView: false
+            }
+          }
+        ]
       },
       {
-        resid: 611086999042,
+        resid: 614160247793,
         TabsTitle: '已审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1189,13 +1205,29 @@ window[611339874157] = {
         hasRowDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        subtractH: 220,
-        // height:600,
+        // subtractH: 220,
+        // height:600, 
         recordFormType: 'drawer',
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: true,
+              hasModify: false,
+              hasRowDelete: true,
+              hasRowModify: false,
+              hasDelete: false,
+              subtractH: 190,
+              height: 500,
+              hasRowView: false
+            }
+          }
+        ]
       }
     ])
   ]
@@ -1230,12 +1262,12 @@ window[611839500701] = {
 // };
 
 window[611339890532] = {
-  name: 'TableDataHR',
+  name: 'TabsTableData',
   title: '总监审批',
   props: [
     (arr = [
       {
-        resid: 611086978293,
+        resid: 614160318420,
         TabsTitle: '未审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1251,10 +1283,26 @@ window[611339890532] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: true,
+              hasModify: false,
+              hasRowDelete: true,
+              hasRowModify: false,
+              hasDelete: false,
+              subtractH: 190,
+              height: 500,
+              hasRowView: false
+            }
+          }
+        ]
       },
       {
-        resid: 611086999042,
+        resid: 614160332247,
         TabsTitle: '已审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1270,7 +1318,23 @@ window[611339890532] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: true,
+              hasModify: false,
+              hasRowDelete: true,
+              hasRowModify: false,
+              hasDelete: false,
+              subtractH: 190,
+              height: 500,
+              hasRowView: false
+            }
+          }
+        ]
       }
     ])
   ]

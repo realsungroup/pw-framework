@@ -145,7 +145,6 @@ export const OneStatistical = Loadable({
   loading() {
     return minLoading;
   }
-  
 });
 
 export const ExamPage = Loadable({
@@ -345,8 +344,8 @@ export const SelectPersonFirstP = Loadable({
   }
 });
 //导出Tabs组件
-export const TableDataHR = Loadable({
-  loader: () => import('./TableDataHR'),
+export const TabsTableData = Loadable({
+  loader: () => import('./TabsTableData'),
   loading() {
     return minLoading;
   }
