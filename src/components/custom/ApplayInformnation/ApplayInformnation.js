@@ -4,6 +4,7 @@ import { Form, Input, DatePicker, Radio, Button, Select } from 'antd';
 import MoveTo from 'moveto';
 import http from 'Util20/api';
 import TextArea from 'antd/lib/input/TextArea';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 const { Option } = Select;
 const formItemLayout = {
@@ -222,7 +223,7 @@ class ApplayInformnation extends Component {
     // 打印
     const newEle = document.querySelector('.applay__informnation').innerHTML;
     var oldstr = document.body.innerHTML; //保存当前页面
-    document.body.innerHTML = newEle; //吧当前页面内容替换为要打印的内容
+    document.body.innerHTML = newEle; //把当前页面内容替换为要打印的内容
     window.print();
     document.body.innerHTML = oldstr; //恢复原来的页面
     return false;
@@ -230,7 +231,9 @@ class ApplayInformnation extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { initialValue } = this.props;
-    // console.log(initialValue);
+    console.log(initialValue);
+    // const LatestEddate = {[moment(initialValue.LatestStartTime),moment(initialValue.LatestEndTime)]};
+    // console.log('教育开始时间',LatestEddate);
     return (
       <div className="applay__informnation">
         <Form style={{ width: '90%', margin: '0 auto' }}>
@@ -457,7 +460,7 @@ class ApplayInformnation extends Component {
           </h3>
           <Form.Item label="日期/latest period from to" {...formItemLayout2}>
             {getFieldDecorator('LatestEddate', {
-              initialValue: initialValue.LatestEddate
+              initialValue: null
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/schoolName" {...formItemLayout2}>

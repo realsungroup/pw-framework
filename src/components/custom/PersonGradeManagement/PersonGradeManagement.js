@@ -32,12 +32,6 @@ class PersonGradeManagement extends React.Component {
 
               );
             }
-            ,
-            (record, btnSize) => {
-              return (
-                <Button size={btnSize}>查看通过人数</Button>
-              )
-            }
           ]}
         />
       </div>

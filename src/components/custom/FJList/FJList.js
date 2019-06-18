@@ -104,7 +104,7 @@ class FJList extends React.Component {
     let res = await http().getTable({
       resid: this.props.resid,
       key: key ? key : null,
-      cmswhere: `C3_611264173184 = '${this.state.totalData.C3_609615869581}' and C3_613828994025 = '${this.state.totalData.C3_609616006519}'`,
+      cmswhere: ` C3_613828994025 = '${this.state.totalData.C3_609616006519}'`,
       pageIndex,
       pageSize
     });
@@ -269,7 +269,7 @@ class FJList extends React.Component {
         this.state.addData.C3_609845305931 >
       this.state.totalData.C3_611074040082
     ) {
-      message.error('已超出预算');
+      message.error('已超出人均预算');
     }
     this.setState({ visibleAdd: false, visibleEdit: false });
     let addData = this.state.addData;
@@ -300,7 +300,7 @@ class FJList extends React.Component {
       }
     } catch (err) {
       console.error(err);
-      return message.error('不能选择相同的两门课');
+      return message.error(err.message);
     }
   }
 
@@ -311,7 +311,7 @@ class FJList extends React.Component {
       this.state.data[this.state.listIndex].C3_611409509831 +
         Number(this.state.addCustom.C3_609616906353)
     ) {
-      message.error('已超出预算');
+      message.error('已超出人均预算');
     }
     let addCustom = this.state.addCustom;
     if (
@@ -330,11 +330,12 @@ class FJList extends React.Component {
     ].C3_609622254861;
     addCustom.C3_611406136484 = 'Y';
     addCustom.C3_609616805633 = this.planid;
-    let res = await http().addRecords({
-      resid: this.props.subResid,
-      data: [{ ...addCustom }]
-    });
+    let res;
     try {
+      res = await http().addRecords({
+        resid: this.props.subResid,
+        data: [{ ...addCustom }]
+      });
       if (res.Error === 0) {
         this.getDataForOne();
         this.totalData();
@@ -343,7 +344,6 @@ class FJList extends React.Component {
         message.error(res.message);
       }
     } catch (err) {
-      console.error(err);
       return message.error(err.message);
     }
   }
@@ -388,7 +388,7 @@ class FJList extends React.Component {
         Number(this.state.cnspmxb.C3_609616906353);
     }
     if (allMoney < newMoney) {
-      message.error('已超出预算');
+      message.error('已超出人均预算');
     }
     let data = this.state.cnspmxb;
     let editData = this.state.editData;
@@ -414,7 +414,7 @@ class FJList extends React.Component {
         data: [middleData]
       });
     } catch (err) {
-      return message.error('不能选择相同的两门课');
+      return message.error(err.message);
     }
     if (res.Error === 0) {
       this.getDataForOne();

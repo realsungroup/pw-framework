@@ -101,7 +101,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   renderLevel = () => {
     const { selectedLevel } = this.state;
     if (selectedLevel) {
-      return selectedLevel.C3_449335790387;
+      return selectedLevel.C3_587136281870;
     }
     return (
       <span className="questionnaire-statistic-analysis__no-select-question-status">
