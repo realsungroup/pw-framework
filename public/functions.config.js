@@ -1158,7 +1158,7 @@ window[611339874157] = {
   name: 'TableDataHR',
   title: 'HR预审',
   props: [
-    (arr = [
+    ( [
       {
         resid: 611086999042,
         TabsTitle: '未审批',
@@ -1233,7 +1233,7 @@ window[611339890532] = {
   name: 'TableDataHR',
   title: '总监审批',
   props: [
-    (arr = [
+    (  [
       {
         resid: 611086978293,
         TabsTitle: '未审批',

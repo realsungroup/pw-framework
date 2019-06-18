@@ -344,7 +344,6 @@ export const SelectPersonFirstP = Loadable({
     return minLoading;
   }
 });
-
 export const ExternalTraining = Loadable({
   loader: () => import('./ExternalTraining'),
   loading() {
@@ -352,8 +351,8 @@ export const ExternalTraining = Loadable({
   }
 });
 //导出Tabs组件
-export const TableDataHR = Loadable({
-  loader: () => import('./TableDataHR'),
+export const TabsTableData = Loadable({
+  loader: () => import('./TabsTableData'),
   loading() {
     return minLoading;
   }
