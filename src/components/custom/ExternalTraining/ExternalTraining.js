@@ -1,5 +1,5 @@
 import React from 'react';
-import ETnotice from './ETnotice';
+import ETnoticeMain from './ETnoticeMain';
 import { Steps, Spin } from 'antd';
 import ArrangingCourses from '../ArrangingCourses';
 
@@ -7,7 +7,7 @@ const { Step } = Steps;
 class ExternalTraining extends React.Component {
   state = {
     loading: false,
-    current: 0
+    current: 1
   };
   render() {
     let { current } = this.state;
@@ -17,7 +17,7 @@ class ExternalTraining extends React.Component {
         page = <ArrangingCourses />
         break;
       case 1:
-        page = <ETnotice />
+        page = <ETnoticeMain />
         break;
 
       default:

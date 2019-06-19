@@ -64,11 +64,27 @@ class FiscalYearPlan extends React.Component {
       plans[0].check = true;
       let selectedPlan = plans[0];
       this.setState({ plans, selectedPlan });
-    } catch (error) {}
+    } catch (error) { }
   }
-
+  handleGetSelectedPlan = async () => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: '609883172764',
+        cmswhere: `REC_ID='${this.state.selectedPlan.REC_ID}'`
+      });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (res.error == 0) {
+      this.setState({
+        selectedPlan: res.data[0]
+      })
+    } else {
+      return console.log(res.message);
+    }
+  }
   onChange = current => {
-    console.log('onChange:', current);
     this.setState({ current });
   };
   onPlanClick = index => {
@@ -100,7 +116,6 @@ class FiscalYearPlan extends React.Component {
         data
       })
       .then(res => {
-        console.log(res);
         if (res.Error === 0) {
           message.success('提交成功');
           this.setState({
@@ -305,18 +320,18 @@ class FiscalYearPlan extends React.Component {
                 resid="610307713776" //人员名单
               />
             ) : (
-              <CreatePlan
-                planid={selectedPlan.C3_609616660273}
-                year={selectedPlan.C3_609615869581}
-                totalResid="609883172764" //财年明细-待提交
-                resid="610307713776"
-                subResid="610308370365"
-                levelId="449335746776"
-                kcbResid="611315248461"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-              />
-            )}
+                <CreatePlan
+                  planid={selectedPlan.C3_609616660273}
+                  year={selectedPlan.C3_609615869581}
+                  totalResid="609883172764" //财年明细-待提交
+                  resid="610307713776"
+                  subResid="610308370365"
+                  levelId="449335746776"
+                  kcbResid="611315248461"
+                  kcxlResid="610708527386"
+                  kclbResid="610708543449"
+                />
+              )}
           </div>
         );
         break;
