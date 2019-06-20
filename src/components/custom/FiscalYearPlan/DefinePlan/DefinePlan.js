@@ -11,7 +11,9 @@ class DefinePlan extends React.Component {
     super(props);
     console.log(props);
   }
-
+  componentDidMount = async () => {
+    this.props.onGetSelectedPlan()
+  }
   applyPlan = () => {
     this.props.applyPlan();
   };
@@ -94,18 +96,18 @@ class DefinePlan extends React.Component {
             actionBarFixed={true}
             hasRowModify={false}
             cmswhere={`C3_609616805633 = '${this.props.selectedPlan.C3_609616660273}'`}
-            // actionBarExtra={(dataSource, selectedRowKeys) => {
-            //   return (
-            //     <Popconfirm
-            //       title="是否确认提交？"
-            //       onConfirm={this.applyPlan}
-            //       okText="是"
-            //       cancelText="否"
-            //     >
-            //       <Button>提交计划</Button>
-            //     </Popconfirm>
-            //   );
-            // }}
+          // actionBarExtra={(dataSource, selectedRowKeys) => {
+          //   return (
+          //     <Popconfirm
+          //       title="是否确认提交？"
+          //       onConfirm={this.applyPlan}
+          //       okText="是"
+          //       cancelText="否"
+          //     >
+          //       <Button>提交计划</Button>
+          //     </Popconfirm>
+          //   );
+          // }}
           />
         </Panel>
       </Collapse>

@@ -26,7 +26,7 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: null,
+    selectedPlan: {},
     currentResid: 0,
     selectModel: 'single'
   };
@@ -52,7 +52,7 @@ class FiscalYearPlan extends React.Component {
           data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
           isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
         });
-      } catch (error) { }
+      } catch (error) {}
     }
     let res;
     try {
@@ -64,11 +64,27 @@ class FiscalYearPlan extends React.Component {
       plans[0].check = true;
       let selectedPlan = plans[0];
       this.setState({ plans, selectedPlan });
-    } catch (error) {}
+    } catch (error) { }
   }
-
+  handleGetSelectedPlan = async () => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: '609883172764',
+        cmswhere: `REC_ID='${this.state.selectedPlan.REC_ID}'`
+      });
+    } catch (error) {
+      return console.log(error);
+    }
+    if (res.error == 0) {
+      this.setState({
+        selectedPlan: res.data[0]
+      })
+    } else {
+      return console.log(res.message);
+    }
+  }
   onChange = current => {
-    console.log('onChange:', current);
     this.setState({ current });
   };
   onPlanClick = index => {
@@ -100,7 +116,6 @@ class FiscalYearPlan extends React.Component {
         data
       })
       .then(res => {
-        console.log(res);
         if (res.Error === 0) {
           message.success('提交成功');
           this.setState({
@@ -112,6 +127,30 @@ class FiscalYearPlan extends React.Component {
           message.error(res.message);
         }
       });
+  };
+
+  refreshSelectedPlan = async () => {
+    let res,
+      REC_ID = this.state.selectedPlan.REC_ID;
+    if (!REC_ID) {
+      return;
+    }
+    try {
+      res = await http().getTable({
+        resid: '609883172764', //财年计划主表
+        cmswhere: `REC_ID = '${REC_ID}'`
+      });
+      let plan = res.data[0];
+      plan.check =true;
+      let plans = this.state.plans;
+      let index = plans.findIndex(item => {
+        return (item.check = true);
+      });
+      plans[index] = plan;
+      this.setState({ plans, selectedPlan: plan });
+    } catch (error) {
+      message.error(error.message)
+    }
   };
   render() {
     const { loading, current, selectedPlan } = this.state;
@@ -251,7 +290,9 @@ class FiscalYearPlan extends React.Component {
               >
                 <Button
                   onClick={() => {
-                    this.setState({ current: 0 });
+                    this.setState({ current: 0 }, () => {
+                      this.refreshSelectedPlan();
+                    });
                   }}
                   style={{ marginRight: 5 }}
                 >
@@ -279,23 +320,28 @@ class FiscalYearPlan extends React.Component {
                 resid="610307713776" //人员名单
               />
             ) : (
-              <CreatePlan
-                planid={selectedPlan.C3_609616660273}
-                year={selectedPlan.C3_609615869581}
-                totalResid="609883172764" //财年明细-待提交
-                resid="610307713776"
-                subResid="610308370365"
-                levelId="449335746776"
-                kcbResid="611315248461"
-                kcxlResid="610708527386"
-                kclbResid="610708543449"
-              />
-            )}
+                <CreatePlan
+                  planid={selectedPlan.C3_609616660273}
+                  year={selectedPlan.C3_609615869581}
+                  totalResid="609883172764" //财年明细-待提交
+                  resid="610307713776"
+                  subResid="610308370365"
+                  levelId="449335746776"
+                  kcbResid="611315248461"
+                  kcxlResid="610708527386"
+                  kclbResid="610708543449"
+                />
+              )}
           </div>
         );
         break;
       case 2:
-        page = <DefinePlan  selectedPlan={this.state.selectedPlan} applyPlan={this.applyPlan}/>;
+        page = (
+          <DefinePlan
+            selectedPlan={this.state.selectedPlan}
+            applyPlan={this.applyPlan}
+          />
+        );
         break;
       case 3:
         page = (
@@ -368,7 +414,9 @@ class FiscalYearPlan extends React.Component {
             description=""
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              this.setState({ current: 0 });
+              this.setState({ current: 0 }, () => {
+                this.refreshSelectedPlan();
+              });
             }}
           />
           <Step

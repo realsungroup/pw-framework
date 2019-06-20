@@ -1,5 +1,5 @@
 import React from 'react';
-import ETnotice from './ETnotice';
+import ETnoticeMain from './ETnoticeMain';
 import { Steps, Spin } from 'antd';
 import ArrangingCourses from '../ArrangingCourses';
 
@@ -7,31 +7,31 @@ const { Step } = Steps;
 class ExternalTraining extends React.Component {
   state = {
     loading: false,
-    current: 0
+    current: 1
   };
   render() {
-    let { loading, current } = this.state;
+    let { current } = this.state;
     let page = null;
     switch (current) {
       case 0:
         page = <ArrangingCourses />
         break;
       case 1:
-        page = <ETnotice />
+        page = <ETnoticeMain />
         break;
 
       default:
         break;
     }
     return (
-      <Spin spinning={loading}>
+			<div className="cataner" style={{height:'100vh', display:'flex', flexDirection: 'column'}}>
         <Steps
           current={current}
           style={{
-            width: '100%',
             marginBottom: 10,
             padding: 10,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            flexGrow:0,
           }}
         >
           <Step
@@ -78,7 +78,7 @@ class ExternalTraining extends React.Component {
         {
           page
         }
-      </Spin>
+      </div>
     );
   }
 }
