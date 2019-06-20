@@ -357,3 +357,17 @@ export const TabsTableData = Loadable({
     return minLoading;
   }
 });
+
+export const IdL2 = Loadable({
+  loader: () => import('./IdL2'),
+  loading() {
+    return minLoading;
+  }
+});
+export const PersonInfo = Loadable({
+  loader: () => import('./PersonInfo'),
+  loading() {
+    return minLoading;
+  }
+});
+

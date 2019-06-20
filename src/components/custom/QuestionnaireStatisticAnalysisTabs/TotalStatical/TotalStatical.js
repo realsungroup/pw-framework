@@ -11,8 +11,8 @@ const isChrome = () => {
   if (userAgent.indexOf('chrome') !== -1) {
     //说明找到了 就是谷歌浏览器
     return true;
-  } 
-    return false;
+  }
+  return false;
   //
   // return userAgent.indexOf('chrome')!==-1;
 };
@@ -43,20 +43,21 @@ class TotalStatical extends Component {
     {
       title: '小计',
       dataIndex: 'amount',
-      width: 100
+      width: 80
     },
     {
       title: '比例',
-      width: 100,
+      width: 200,
       dataIndex: 'percentage',
       render: (value, record, index) => {
         if (record.optionContent === '本题有效填写人次') {
           return null;
         }
-        const percent = parseInt(
-          ((record.amount / record.total) * 100).toFixed(0),
-          10
-        );
+        // const percent = parseInt(
+        //   ((record.amount / record.total) * 100).toFixed(0),
+        //   10
+        // );
+        const percent = ((record.amount / record.total) * 100).toFixed(2);
         return (
           <div>
             <Progress percent={percent} />
@@ -116,7 +117,7 @@ class TotalStatical extends Component {
     } catch (err) {
       console.error(err.message);
     }
-    console.log('qesOptionAnwserGroupbyperson', res.data);
+    // console.log('qesOptionAnwserGroupbyperson', res.data);
     this.setState({ queryQuestionsGroup: res.data });
   };
 
@@ -167,16 +168,17 @@ class TotalStatical extends Component {
         record.total = total;
       });
       const queryQuestionsGroup = this.state.queryQuestionsGroup;
-
+      // console.log('rtamount', queryQuestionsGroup);
       const rt = queryQuestionsGroup.find(
         queryQuestionsGroupItem =>
           dataItem.question_id === queryQuestionsGroupItem.question_id
       );
-
-      dataItem.table.dataSource.push({
-        optionContent: '本题有效填写人次',
-        amount: rt.amount
-      });
+      if (rt) {
+        dataItem.table.dataSource.push({
+          optionContent: '本题有效填写人次',
+          amount: rt.amount
+        });
+      }
     });
     this.setState({ data });
   };
@@ -231,7 +233,7 @@ class TotalStatical extends Component {
         const imgDataURL = canvas.toDataURL('image/png');
         window.open(imgDataURL);
         download(imgDataURL, queryName);
-        
+
         // if (isChrome()) {
         //   console.log('谷歌');
         //   download(imgDataURL, queryName);

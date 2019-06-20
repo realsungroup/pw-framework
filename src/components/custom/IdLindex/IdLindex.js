@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Tabs, Modal, Button, Select } from 'antd';
+import { List, Avatar, Tabs, Modal, Button, Select,Input,Icon} from 'antd';
 import http from '../../../util20/api';
 import ApplayInformnation from '../ApplayInformnation';
 import TableData from '../../common/data/TableData';
@@ -217,6 +217,7 @@ class IdLindex extends Component {
     return (
       <div className="idlindex">
         <div className="idlindex__person-list">
+          <div><Input.Search></Input.Search></div>
           <List
             className="idlindex-left"
             itemLayout="horizontal"
@@ -229,9 +230,7 @@ class IdLindex extends Component {
                 }}
               >
                 <Avatar icon="user" />
-                <div>姓名:{item.ChName}</div>
-                <span>职位级别:{item.EnName}</span>
-                <span>申请部门:{item.appPosition}</span>
+                <div style={{color:'#000000',fontSize:19,padding:'0,5px'}}>{item.ChName}</div> 
               </List.Item>
             )}
           />
@@ -255,7 +254,10 @@ class IdLindex extends Component {
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 hasRowSelection={false}
-                hasBeBtns={true}
+                hasDelete={false}
+                hasRowSelection={false}
+                hasRowView={false}
+                hasBeBtns={false}
                 actionBarExtra={() => {
                   return (
                     <Button
@@ -275,7 +277,7 @@ class IdLindex extends Component {
                           this.getFormData(record);
                         }}
                       >
-                        弹出不同窗体
+                        评估详情
                       </Button>
                     );
                   }
