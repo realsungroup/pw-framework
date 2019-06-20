@@ -59,6 +59,7 @@ export const inApplication = {
   hasDelete: false,
   hasRowView: false,
   hasBeBtns: true,
+  defaultColumnWidth: 150,
   recordFormType: 'drawer',
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
@@ -79,6 +80,7 @@ export const inApplication = {
         hasRowDelete: false,
         defaultColumnWidth: 100,
         subtractH: 196,
+        height:400,
         actionBarWidth: 200,
         recordFormFormWidth: '40%',
         recordFormTabsWidth: '60%'
@@ -253,7 +255,7 @@ export const history = {
   resid: 605891824806,
   // height: 500,
   subtractH: 196,
-  actionBarWidth: 200,
+  actionBarWidth: 300,
   formProps: {
     height: 500
   },

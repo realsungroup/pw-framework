@@ -68,13 +68,10 @@ export const inApplication = {
         hasAdd: true,
         hasModify: false,
         hasDelete: false,
-        // hasRowEdit: true,
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
         height: 400,
-        // recordFormFormWidth: '35%',
-        // recordFormTabsWidth: '65%',
         defaultColumnWidth: 100,
         actionBarWidth: 100,
         subtractH: 196,
@@ -271,7 +268,7 @@ export const history = {
   hasRowView: true,
   hasRowDelete: false,
   subtractH: 196,
-  actionBarWidth: 200,
+  actionBarWidth: 300,
   recordFormType: 'drawer',
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
@@ -308,12 +305,4 @@ export const history = {
     }
   ]
 };
-// 我申请的访客
-export const MyVisitor= {
-  resid:614184041926,
-  hasAdd:false,
-  hasModify:false,
-  hasDelete:false,
-  hasRowView:true,
-  subtractH: 166,
-}
+

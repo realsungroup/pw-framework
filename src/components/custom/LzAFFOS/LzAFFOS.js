@@ -67,50 +67,49 @@ export default class LzAFFOS extends React.Component {
       return err.message;
     }
     console.log(res.data);
-    const obj = {
-      C3_605703896083: record.C3_605703896083, //来访事由
-      C3_605703913037: record.C3_605703913037, //访客类型
-      C3_605703930741: record.C3_605703930741, //访客类型
-      C3_605703980025: record.C3_605703980025, //有效开始日期
-      C3_605703992046: record.C3_605703992046, //有效结束日期
-      _state: 'added',
-      _id: 1
-    };
-    const subdata = [
-      {
-        resid: 60716014733,
-        maindata: {
-          C3_605716828937: res.data[0].C3_605716828937, //访客姓名
-          C3_605716301557: res.data[0].C3_605716301557, //访客单位
-          C3_605716867680: res.data[0].C3_605716867680, //访客证件类型
-          C3_606412134505: res.data[0].C3_606412134505, //访客手机号
-          C3_608392189420: res.data[0].C3_608392189420, //登记证件号
-          _state: 'added',
-          _id: 1
-        }
-      }
-    ];
-    const terminalData = [
-      {
-        resid: '605703697147',
-        maindata: obj
-      },
-      subdata
-    ];
-    console.log('主子表数据结构', terminalData);
     // 向申请中表加数据,主子表同时加
-     let res2 ;
-     try{
-    res2 = await   http().saveRecordAndSubTables({
-        data:terminalData
+    let res2;
+    try {
+      res2 = await http().saveRecordAndSubTables({
+        data: [
+          {
+            resid: '605801028375',
+            maindata: {
+              C3_605703896083: record.C3_605703896083, //来访事由
+              C3_605703913037: record.C3_605703913037, //访客类型
+              C3_605703930741: record.C3_605703930741, //访客类型
+              C3_605703980025: record.C3_605703980025, //有效开始日期
+              C3_605703992046: record.C3_605703992046, //有效结束日期
+              C3_605706988162: '',
+              _state: 'added',
+              _id: 1
+            },
+            subdata: [
+              {
+                resid: '606066688508',
+                maindata: {
+                  C3_605716828937: res.data[0].C3_605716828937, //访客姓名
+                  C3_605716301557: res.data[0].C3_605716301557, //访客单位
+                  C3_605716867680: res.data[0].C3_605716867680, //访客证件类型
+                  C3_606412134505: res.data[0].C3_606412134505, //访客手机号
+                  C3_608392189420: res.data[0].C3_608392189420, //登记证件号
+                  _state: 'added',
+                  _id: 1
+                }
+              }
+            ]
+          }
+        ]
       });
-     }catch(err){
-       console.log(err.message);
-       return err.message; 
-     }
-     console.log(res2);
+    } catch (err) {
+      console.log(err.message);
+      return err.message;
+    }
+    console.log(res2);
+    this.tableDataRef.handleRefresh();
     this.setState({ activeKey: '申请中' });
   };
+
   render() {
     const { activeKey, abnormalNum } = this.state;
     const { resids } = this.props;
@@ -123,7 +122,12 @@ export default class LzAFFOS extends React.Component {
         >
           <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 220px)' }}>
-              <TableData {...inApplication} formProps={{ saveText: '提交' }} />
+              <TableData
+                {...inApplication}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                formProps={{ saveText: '提交' }}
+              />
             </div>
           </TabPane>
 
@@ -163,9 +167,6 @@ export default class LzAFFOS extends React.Component {
               />
             </div>
           </TabPane>
-          {/* <TabPane tab="我申请的访客" key="我申请的访客">
-          <div style={{height:'calc(100vh - 220px)'}}><TableData {...MyVisitor}/></div>
-          </TabPane> */}
         </Tabs>
         {!!abnormalNum && (
           <div className="lz-affo__abnormal-num">{abnormalNum}</div>

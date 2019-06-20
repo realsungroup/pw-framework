@@ -67,7 +67,9 @@ export {
   OneStatistical,
   IdLindex,
   JobSeeker,
-  ApplayInformnation
+  IdL2,
+  ApplayInformnation,
+  PersonInfo
 } from '../components/custom/loadableCustom';
 
 // 导出demo
