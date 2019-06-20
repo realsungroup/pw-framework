@@ -7,14 +7,17 @@ const { Step } = Steps;
 class ExternalTraining extends React.Component {
   state = {
     loading: false,
-    current: 1
+    current: 0
   };
+  handleLoading = (loading)=>{
+    this.setState({loading})
+  }
   render() {
     let { current } = this.state;
     let page = null;
     switch (current) {
       case 0:
-        page = <ArrangingCourses />
+        page = <ArrangingCourses onHandleLoading={this.handleLoading} />
         break;
       case 1:
         page = <ETnoticeMain />
@@ -24,6 +27,7 @@ class ExternalTraining extends React.Component {
         break;
     }
     return (
+      <Spin spinning={this.state.loading}>
 			<div className="cataner" style={{height:'100vh', display:'flex', flexDirection: 'column'}}>
         <Steps
           current={current}
@@ -79,6 +83,7 @@ class ExternalTraining extends React.Component {
           page
         }
       </div>
+      </Spin>
     );
   }
 }
