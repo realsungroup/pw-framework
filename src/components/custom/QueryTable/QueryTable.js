@@ -186,7 +186,6 @@ class QueryTable extends Component {
                   <span>
                     <Icon type="sync" /> {item.query_status}
                   </span>
-                  {/* <span className="answercount">答卷:{item.answercount}</span> */}
                   <span>{item.REC_EDTTIME.substring(11, 16)}</span>
                 </div>
               </div>

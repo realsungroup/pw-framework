@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { message, Tabs } from 'antd';
+import { Tabs,Button } from 'antd';
+import http from '../../../util20/api';
 import './ViProvider.less';
 // import TableData from '../../../lib/unit-component/TableData';
 import { TableData } from '../../common/loadableCommon';
@@ -51,7 +52,62 @@ export default class ViProvider extends React.Component {
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
   };
-
+  reApply = async record => {
+    console.log('当前记录', record);
+    // 根据当前记录，找到与之对应的访客信息。
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 605719206028,
+        cmswhere: `C3_606218777003=${record.C3_605993242597}`
+      });
+    } catch (err) {
+      console.error(err.message);
+      return err.message;
+    }
+    console.log(res.data);
+    // 向申请中表加数据,主子表同时加
+    let res2;
+    try {
+      res2 = await http().saveRecordAndSubTables({
+        data: [
+          {
+            resid: '605718030245',
+            maindata: {
+              C3_605718056102: record.C3_605718056102, //访客单位
+              C3_605718133807: record.C3_605718133807, //访客类型
+              C3_605718146773: record.C3_605718146773, //访问地区类型
+              C3_605719340594: record.C3_605719340594, //有效开始日期
+              C3_605719340781: record.C3_605719340781, //有效结束日期
+              C3_605706988162: '',
+              _state: 'added',
+              _id: 1
+            },
+            subdata: [
+              {
+                resid: '605719206028',
+                maindata: {
+                  C3_605719242294: res.data[0].C3_605719242294, //访客姓名
+                  C3_606843168661: res.data[0].C3_606843168661, //访客单位
+                  C3_605719242802: res.data[0].C3_605719242802, //访客证件类型
+                  C3_605719242955: res.data[0].C3_605719242955, //登记证件号
+                  _state: 'added',
+                  _id: 1
+                }
+              }
+            ]
+          }
+        ]
+      });
+    } catch (err) {
+      console.log(err.message);
+      return err.message;
+    }
+    console.log(res2);
+    this.tableDataRef.handleRefresh();
+    this.setState({ activeKey: '申请中' });
+  };
+  
   render() {
     const { activeKey, abnormalNum } = this.state;
     const { resids } = this.props;
@@ -64,7 +120,9 @@ export default class ViProvider extends React.Component {
         >
           <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData {...inApplication}  formProps={{saveText: '提交', height: 480}} />
+              <TableData {...inApplication} 
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData" formProps={{saveText: '提交', height: 480}} />
             </div>
           </TabPane>
 
@@ -85,7 +143,19 @@ export default class ViProvider extends React.Component {
           </TabPane>
           <TabPane tab="历史记录" key="历史记录">
             <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData {...history} />
+              <TableData {...history} customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.reApply(record);
+                        }}
+                      >
+                        重新申请
+                      </Button>
+                    );
+                  }
+                ]}/>
             </div>
           </TabPane>
         </Tabs>

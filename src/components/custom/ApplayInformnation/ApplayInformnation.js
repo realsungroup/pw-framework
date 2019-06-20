@@ -7,6 +7,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 const { Option } = Select;
+const dateFormat ='YYYY-MM-DD';
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -460,7 +461,10 @@ class ApplayInformnation extends Component {
           </h3>
           <Form.Item label="日期/latest period from to" {...formItemLayout2}>
             {getFieldDecorator('LatestEddate', {
-              initialValue: null
+              initialValue: [
+                moment(initialValue.LatestStartTime, dateFormat),
+                moment(initialValue.LatestEndTime, dateFormat)
+              ]
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
@@ -490,7 +494,12 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="日期/third period from to" {...formItemLayout2}>
             {getFieldDecorator('ThreeEddate', {
-              initialValue: initialValue.ThreeEddate
+              // initialValue: initialValue.ThreeEddate
+              initialValue: [
+                moment(initialValue.ThreeEdStartTime, dateFormat),
+                moment(initialValue.ThreeEdEndTime, dateFormat)
+              ]
+
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/third school name" {...formItemLayout2}>
@@ -520,7 +529,11 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="日期/second period from to" {...formItemLayout2}>
             {getFieldDecorator('SecEddate', {
-              initialValue: initialValue.SecEddate
+              // initialValue: initialValue.SecEddate
+              initialValue: [
+                moment(initialValue.SecEdStartTime, dateFormat),
+                moment(initialValue.SecEdEndTime, dateFormat)
+              ]
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/third school name" {...formItemLayout2}>
@@ -550,7 +563,11 @@ class ApplayInformnation extends Component {
           </Form.Item>
           <Form.Item label="日期/first period from to" {...formItemLayout2}>
             {getFieldDecorator('FirstEddate', {
-              initialValue: initialValue.FirstEddate
+              // initialValue: initialValue.FirstEddate FisrtWorkStartTime
+              initialValue: [
+                moment(initialValue.FistEdStartTime, dateFormat),
+                moment(initialValue.FisrtEdEndTime, dateFormat)
+              ]
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item label="学校名称/school name" {...formItemLayout2}>
@@ -584,7 +601,11 @@ class ApplayInformnation extends Component {
           </h3>
           <Form.Item label="任职年限/post period from to " {...formItemLayout2}>
             {getFieldDecorator('LatestWorkdate', {
-              initialValue: initialValue.LatestWorkdate
+              // initialValue: initialValue.LatestWorkdate
+              initialValue: [
+                moment(undefined, dateFormat),
+                moment(initialValue.LatestWorkEndTime, dateFormat)
+              ]
             })(<RangePicker />)}
           </Form.Item>
           <Form.Item
