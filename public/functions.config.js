@@ -1469,3 +1469,14 @@ window[614078684178] = {
   name: 'IdLindex',
   title: 'IDL招聘'
 };
+
+// IDL第二种设计方案
+window[614260227832] = {
+  name: 'IdL2',
+  title: 'IDL招聘新版本',
+};
+//IDl 路由跳转设置
+window['个人表格'] = {
+  title: '个人表格',
+  name: 'PersonInfo'
+};
