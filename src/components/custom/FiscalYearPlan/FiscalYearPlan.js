@@ -26,7 +26,7 @@ class FiscalYearPlan extends React.Component {
     loading: false,
     current: 0,
     plans: [],
-    selectedPlan: {},
+    selectedPlan: null,
     currentResid: 0,
     selectModel: 'single'
   };
@@ -130,11 +130,12 @@ class FiscalYearPlan extends React.Component {
   };
 
   refreshSelectedPlan = async () => {
-    let res,
-      REC_ID = this.state.selectedPlan.REC_ID;
-    if (!REC_ID) {
+    if (!this.state.selectedPlan) {
       return;
     }
+    let res,
+      REC_ID = this.state.selectedPlan.REC_ID;
+    
     try {
       res = await http().getTable({
         resid: '609883172764', //财年计划主表
@@ -340,6 +341,7 @@ class FiscalYearPlan extends React.Component {
           <DefinePlan
             selectedPlan={this.state.selectedPlan}
             applyPlan={this.applyPlan}
+            onGetSelectedPlan={this.handleGetSelectedPlan}
           />
         );
         break;

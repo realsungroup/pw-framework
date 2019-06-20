@@ -11,8 +11,8 @@ const isChrome = () => {
   if (userAgent.indexOf('chrome') !== -1) {
     //说明找到了 就是谷歌浏览器
     return true;
-  } 
-    return false;
+  }
+  return false;
   //
   // return userAgent.indexOf('chrome')!==-1;
 };
@@ -172,11 +172,12 @@ class TotalStatical extends Component {
         queryQuestionsGroupItem =>
           dataItem.question_id === queryQuestionsGroupItem.question_id
       );
-
-      dataItem.table.dataSource.push({
-        optionContent: '本题有效填写人次',
-        amount: rt.amount
-      });
+      if (!rt) {
+        dataItem.table.dataSource.push({
+          optionContent: '本题有效填写人次',
+          amount: rt.amount
+        });
+      }
     });
     this.setState({ data });
   };
@@ -231,7 +232,7 @@ class TotalStatical extends Component {
         const imgDataURL = canvas.toDataURL('image/png');
         window.open(imgDataURL);
         download(imgDataURL, queryName);
-        
+
         // if (isChrome()) {
         //   console.log('谷歌');
         //   download(imgDataURL, queryName);
