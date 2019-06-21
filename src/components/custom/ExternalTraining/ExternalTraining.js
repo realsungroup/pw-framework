@@ -21,16 +21,19 @@ class ExternalTraining extends React.Component {
         page = <ArrangingCourses onHandleLoading={this.handleLoading} />;
         break;
       case 1:
-        page = <ETnoticeMain />;
+        page = <ETnoticeMain key={1} id={1} />;
         break;
       case 2:
         page = <ReviewRequisition />;
+        break;
+      case 3:
+        page = <ETnoticeMain key={2} id={2}/>;
         break;
       case 4:
         page = <ReviewRequisition />;
         break;
       default:
-        page =null
+        page = null
         break;
     }
     return (

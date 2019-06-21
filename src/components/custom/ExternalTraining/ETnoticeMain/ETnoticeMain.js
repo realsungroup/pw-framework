@@ -12,7 +12,19 @@ import moment from 'moment';
 const Search = Input.Search;
 const Option = Select
 const courseArrangmentResid = '613959525708'; //课程安排表id
+let itemId = String
 class ETnoticeMain extends React.Component {
+    constructor(props) {
+        console.log("props",props)
+        if (props.id === 1) {
+            itemId = 'C3_614256491795'
+        } else {
+            itemId = 'C3_614449043675'
+        }
+        console.log(itemId)
+        super(props)
+    }
+
     state = {
         key: '0', //当前是哪个tab页
         courseArrangment: [],
@@ -31,12 +43,13 @@ class ETnoticeMain extends React.Component {
     }
     componentDidMount = () => {
         this.setState({ loading: true })
+        
         this.getCourseArrangment()
     }
     getCourseArrangment = async () => {
         let res;
         let normalData = {
-            resid: '613959525708',
+            resid: courseArrangmentResid,
         }
         try {
             res = await http().getTable(normalData);
@@ -48,7 +61,9 @@ class ETnoticeMain extends React.Component {
             let courseIsApply = []
             let courseNotApply = []
             courseArrangment.forEach((item) => {
-                if (item.C3_614256491795 == 'Y') {
+                console.log(itemId)
+                console.log(item)
+                if (item[itemId] == 'Y') {
                     courseIsApply.push(item)
                 } else {
                     courseNotApply.push(item)
@@ -148,7 +163,7 @@ class ETnoticeMain extends React.Component {
             res = await http().getTable({
                 resid: courseArrangmentResid,
                 key: searchText,
-                cmswhere: ` ${this.state.key === '1' ? "C3_614256491795 = 'Y'" : 'C3_614256491795 IS NULL'}
+                cmswhere: ` ${this.state.key === '1' ? `${itemId} = 'Y'` : `${itemId} IS NULL`}
                  ${isHasPeriod
                         ? ` and StartDatetime > '${searchTime[0]}'  and StartDatetime< '${searchTime[1]}'` : ''}`
             });
@@ -192,10 +207,10 @@ class ETnoticeMain extends React.Component {
             let res = { Error: -1 };
             try {
                 res = await http().modifyRecords({
-                    resid: '613959525708',
+                    resid: courseArrangmentResid,
                     data: [{
                         REC_ID: item.REC_ID,
-                        C3_614256491795: 'Y'
+                        [itemId]: 'Y'
                     }]
                 });
             } catch (err) {
@@ -320,13 +335,13 @@ class ETnoticeMain extends React.Component {
                             type="primary"
                             disabled={(this.state.finishedCount == this.state.allCount) ? false : true}
                             onClick={() =>
-                                 this.setState({ 
-                                     isShowModal: false,
-                                     finishedCount:0,
-                                     allCount:Number,
-                                     taskList:[],
-                                     percent:0,
-                                     }, this.getCourseArrangment)}
+                                this.setState({
+                                    isShowModal: false,
+                                    finishedCount: 0,
+                                    allCount: Number,
+                                    taskList: [],
+                                    percent: 0,
+                                }, this.getCourseArrangment)}
                         >
                             完成
                         </Button>
