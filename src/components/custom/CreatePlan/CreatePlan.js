@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
-
+import './CreatePlan.less';
 const Option = Select.Option;
 const Search = Input.Search;
 
@@ -367,11 +367,17 @@ class CreatePlan extends React.Component {
                 }}
               >
                 <span style={{ fontSize: '14px' }}>
-                  人数: {totalData.C3_609615996253}
+                  人数:{' '}
+                  <span className="create_plan-header-number">
+                    {totalData.C3_609615996253}
+                  </span>
                 </span>
 
                 <span style={{ fontSize: '14px' }}>
-                  总费用: {totalData.C3_609616051191}
+                  总费用:{' '}
+                  <span className="create_plan-header-number">
+                    {totalData.C3_609616051191}
+                  </span>
                 </span>
               </div>
               <div
@@ -384,10 +390,16 @@ class CreatePlan extends React.Component {
                 }}
               >
                 <span style={{ fontSize: '14px' }}>
-                  总预算: {totalData.C3_609616030566}
+                  总预算:{' '}
+                  <span className="create_plan-header-number">
+                    {totalData.C3_609616030566}
+                  </span>
                 </span>
                 <span style={{ fontSize: '14px' }}>
-                  人均预算: {totalData.C3_611074040082}
+                  人均预算:{' '}
+                  <span className="create_plan-header-number">
+                    {totalData.C3_611074040082}
+                  </span>
                 </span>
               </div>
             </div>
@@ -588,20 +600,22 @@ class CreatePlan extends React.Component {
             </div>
           </div>
           <div style={{ width: '50%', padding: '10px 28px' }}>
-            {/* <div style={{ paddingBottom: '24px' }}>
-              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                选择课程
-              </span>
-            </div> */}
+             {/* <div style={{ display: 'flex', justifyContent: 'center' }}></div> */}
             <div
               style={{
                 display: 'flex',
-                flex: 2,
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                height: '52px'
+                justifyContent: 'flex-end',
+                height: '60px'
               }}
-            />
+            >
+              <Button
+                type="primary"
+                style={{ width: '100px' }}
+                onClick={this.onClickSave.bind(this)}
+              >
+                保存
+              </Button>
+            </div>
             <List
               size="large"
               header={
@@ -718,7 +732,7 @@ class CreatePlan extends React.Component {
                           marginBottom: '16px'
                         }}
                       >
-                        <div style={{ width: '50%' }}>
+                        <div style={{ width: '100%', marginBottom: 4 }}>
                           <span>
                             课程名称:{' '}
                             {item.C3_609845305680 == null
@@ -726,41 +740,7 @@ class CreatePlan extends React.Component {
                               : item.C3_609845305680}
                           </span>
                         </div>
-                        <div style={{ width: '50%' }}>
-                          <span>
-                            讲师:{' '}
-                            {item.C3_610390419677 == null
-                              ? '无'
-                              : item.C3_610390419677}
-                          </span>
-                        </div>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flex: 1,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            width: '50%'
-                          }}
-                        >
-                          {/* <div
-                            style={{
-                              width: '10px',
-                              height: '10px',
-                              borderRadius: '50%',
-                              background: '#4a90e2',
-                              marginRight: '16px',
-                              width: '50%'
-                            }}
-                          /> */}
-                          <span>
-                            培训地:{' '}
-                            {item.C3_610390410802 == null
-                              ? '无'
-                              : item.C3_610390410802}
-                          </span>
-                        </div>
-                        <div style={{ width: '50%' }}>
+                        <div style={{ width: '100%' }}>
                           <span>
                             课程费用:{' '}
                             {item.C3_609845305931 == null
@@ -770,7 +750,7 @@ class CreatePlan extends React.Component {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flex: 1 }}>
-                        {item.showDetail && (
+                        {item.showDetail ? null : (
                           <span>
                             简介:{' '}
                             {item.C3_609845305618 == null
@@ -816,15 +796,7 @@ class CreatePlan extends React.Component {
             />
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            type="primary"
-            style={{ width: '100px' }}
-            onClick={this.onClickSave.bind(this)}
-          >
-            保存
-          </Button>
-        </div>
+
         {this.state.isShowProgress ? (
           <PlanProgress
             taskList={taskList}

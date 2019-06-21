@@ -6,6 +6,9 @@
     &__title {
       padding: 0 20px;
   }
+  &__search{
+    margin:6px 3px;
+  }
   &__person-list {
     width: 15%;
     float: left;
@@ -26,7 +29,7 @@
         border-bottom: 1px solid #ccc;
         cursor: pointer;
         background-color: #0086ff;
-        color: #fff;
+        color: #ffffff;
         padding: 20px;
       }
     }
@@ -34,6 +37,12 @@
   &__form-list {
     width: 85%;
     float: right;
+  }
+  &__form-list-nav{
+    .ant-menu{
+          display: flex;
+          justify-content: space-around;
+        }
   }
   &__workform{
     height:100px;
