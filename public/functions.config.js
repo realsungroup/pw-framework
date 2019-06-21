@@ -1177,10 +1177,26 @@ window[611339874157] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
       },
       {
-        resid: 611086999042,
+        resid: 614160247793,
         TabsTitle: '已审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1196,7 +1212,23 @@ window[611339874157] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
       }
     ])
   ]
@@ -1236,7 +1268,7 @@ window[611339890532] = {
   props: [
     ([
       {
-        resid: 611086978293,
+        resid: 614160318420,
         TabsTitle: '未审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1252,10 +1284,26 @@ window[611339890532] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
       },
       {
-        resid: 611086999042,
+        resid: 614160332247,
         TabsTitle: '已审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1271,7 +1319,23 @@ window[611339890532] = {
         recordFormContainerProps: {
           placement: 'bottom',
           height: 600
-        }
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
       }
     ])
   ]
