@@ -53,7 +53,9 @@ class ArrangingCourses extends React.Component {
     targetCourseArrangment: [], //移动人员时可选择的课程安排
     selectedTargetCourseArrangment: '', //移动人员时选中的目标课程安排id
     selectedMoveLearners: [], //移动人员时选中的人员
-    courses: [] //课程
+    courses: [], //课程
+    searchKeyword: '', //搜索的关键词
+    searchPeriod: ['', ''] //搜索时间段
   };
 
   componentDidMount = async () => {
@@ -93,15 +95,21 @@ class ArrangingCourses extends React.Component {
   };
   //搜索课程安排
   searchCourseArrangment = async key => {
-    let res;
+    let res,
+      { searchPeriod, searchKeyword } = this.state;
+    let isHasPeriod = searchPeriod[0] && searchPeriod[1];
     try {
       this.props.onHandleLoading(true);
       res = await http().getTable({
         resid: courseArrangmentResid,
-        key
+        key: searchKeyword,
+        cmswhere: isHasPeriod
+          ? `StartDatetime > '${searchPeriod[0]}'  and StartDatetime < '${
+              searchPeriod[1]
+            }'`
+          : ''
       });
       let courseArrangment = res.data;
-      console.log(courseArrangment);
       this.setState({ courseArrangment });
       this.props.onHandleLoading(false);
     } catch (error) {
@@ -113,6 +121,19 @@ class ArrangingCourses extends React.Component {
     let res;
     try {
       res = await http().addRecords({
+        resid: courseArrangmentResid,
+        data: [data]
+      });
+      message.success(res.message);
+      this.getCourseArrangment();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  modifyCourseArrangment = async data => {
+    let res;
+    try {
+      res = await http().modifyRecords({
         resid: courseArrangmentResid,
         data: [data]
       });
@@ -161,29 +182,45 @@ class ArrangingCourses extends React.Component {
 
   onOk = async value => {
     console.log('onOk: ', value);
-    let res;
-    try {
-      this.props.onHandleLoading(true);
-      res = await http().getTable({
-        resid: courseArrangmentResid,
-        cmswhere: `StartDatetime > '${value[0].format(
-          'YYYY-MM-DD HH:mm:ss'
-        )}'  and StartDatetime < '${value[1].format('YYYY-MM-DD HH:mm:ss')}'`
-      });
-      let courseArrangment = res.data;
-      console.log(courseArrangment);
-      this.setState({ courseArrangment });
-      this.props.onHandleLoading(false);
-    } catch (error) {
-      this.props.onHandleLoading(false);
-    }
+    this.setState(
+      {
+        searchPeriod: [
+          value[0].format('YYYY-MM-DD HH:mm:ss'),
+          value[1].format('YYYY-MM-DD HH:mm:ss')
+        ]
+      },
+      this.searchCourseArrangment
+    );
   };
   onRangeSearchChange = (value, dateString) => {
     console.log('Selected Time: ', value);
-    if (!value.length) {
-      this.getCourseArrangment();
-    }
     console.log('Formatted Selected Time: ', dateString);
+    if (!value.length) {
+      this.setState({ searchPeriod: dateString }, this.searchCourseArrangment);
+    }
+  };
+  setPeriodBySelect = e => {
+		let searchPeriod=[], formatString = 'YYYY-MM-DD HH:mm:ss';
+    switch (e) {
+      case 'all':
+        searchPeriod = ['', ''] ;
+        break;
+      case 'week':
+        searchPeriod =[moment().format(formatString), moment().add(1, 'w').format(formatString)]
+        break;
+      case 'weeks':
+        searchPeriod =[moment().format(formatString), moment().add(2, 'w').format(formatString)]
+        break;
+      case 'month':
+        searchPeriod =[moment().format(formatString), moment().add(1, 'M').format(formatString)]
+        break;
+      case 'months':
+        searchPeriod =[moment().format(formatString), moment().add(2, 'M').format(formatString)]
+        break;
+      default:
+        break;
+		}
+		this.setState({searchPeriod}, this.searchCourseArrangment)
   };
   render() {
     let { courseArrangment, selectedCourseArrangment } = this.state;
@@ -212,7 +249,7 @@ class ArrangingCourses extends React.Component {
               <Select
                 defaultValue="all"
                 style={{ width: 100, marginRight: 10 }}
-                onChange={e => console.log(e)}
+                onChange={e => this.setPeriodBySelect(e)}
               >
                 <Option value="all">全部</Option>
                 <Option value="week">一周内</Option>
@@ -229,7 +266,12 @@ class ArrangingCourses extends React.Component {
               />
               <Search
                 placeholder="输入课程关键字搜索"
-                onSearch={value => this.searchCourseArrangment(value)}
+                onSearch={value => {
+                  this.setState(
+                    { searchKeyword: value },
+                    this.searchCourseArrangment
+                  );
+                }}
                 style={{ width: 200, marginLeft: 5 }}
               />
             </div>
@@ -314,105 +356,114 @@ class ArrangingCourses extends React.Component {
             )}
           </div>
         </div>
-        <Modal
-          visible={this.state.isShowModifyModal}
-          onCancel={() =>
-            this.setState({
-              isShowModifyModal: false,
-              selectedCourseArrangment: {}
-            })
-          }
-					destroyOnClose
-          onOk={() => {
-            this.props.form.validateFieldsAndScroll((err, values) => {
-							console.log(values);
-              // if (!err) {
-              //   console.log(values);
-              //   // let courseArrangment = { ...values };
-              //   // console.log(courseArrangment);
-              //   // //CourseID  StartDatetime  CourseLocation
-              //   // this.addCourseArrangment(courseArrangment);
-              //   // this.setState({
-              //   //   isShowAddCourseArrangment: false,
-              //   //   selectedCourseArrangment: {}
-              //   // });
-              // } else {
-              //   console.log(err);
-              // }
-            });
-            this.setState({
-              isShowModifyModal: false,
-              selectedCourseArrangment: {}
-            });
-          }}
-          title={`修改课程安排：${selectedCourseArrangment.CourseName}`}
-        >
-          <Form {...formItemLayout}>
-            <Form.Item label="课程">
-              {getFieldDecorator('modifyCourseID', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择上课时间!'
-                  }
-                ],
-                initialValue: selectedCourseArrangment.CourseName
-              })(
-                <Select
-                  placeholder="请选择一门课程"
-                  showSearch={true}
-                  optionFilterProp="children"
-                  showArrow={true}
-                  // defaultValue={this.state.selectedCourseArrangment.CourseName}
-                  onChange={e => {
-                    console.log(e);
-                    setFieldsValue({modifyCourseID:e});
-                  }}
-                  filterOption={(input, option) => {
-                    return (
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    );
-                  }}
-                >
-                  {this.state.courses.map(item => (
-                    <Option key={item.REC_ID} value={item.REC_ID}>
-                      {`${item.C3_609845305680} | ${item.C3_609845305743}`}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
+        {this.state.isShowModifyModal ? (
+          <Modal
+            visible={this.state.isShowModifyModal}
+            onCancel={() =>
+              this.setState({
+                isShowModifyModal: false,
+                selectedCourseArrangment: {}
+              })
+            }
+            destroyOnClose
+            onOk={() => {
+              this.props.form.validateFieldsAndScroll((err, values) => {
+                if (!err) {
+                  console.log(values);
+                  let { selectedCourseArrangment } = this.state;
+                  let courseArrangment = {
+                    ...selectedCourseArrangment,
+                    StartDatetime: values.modifyStartDatetime.format(
+                      'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    CourseLocation: values.modifyCourseLocation
+                  };
+                  //CourseID  StartDatetime  CourseLocation
+                  this.modifyCourseArrangment(courseArrangment);
+                  this.setState({
+                    isShowModifyModal: false,
+                    selectedCourseArrangment: {}
+                  });
+                } else {
+                  console.log(err);
+                }
+              });
+            }}
+            title={`修改课程安排：${selectedCourseArrangment.CourseName}`}
+          >
+            <Form {...formItemLayout}>
+              <Form.Item label="课程">
+                {getFieldDecorator('modifyCourseID', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择一门课程!'
+                    }
+                  ],
+                  initialValue: selectedCourseArrangment.CourseName
+                })(
+                  <Select
+                    placeholder="请选择一门课程"
+                    showSearch={true}
+                    optionFilterProp="children"
+                    showArrow={true}
+                    onChange={e => {
+                      this.setState({
+                        selectedCourseArrangment: {
+                          ...this.state.selectedCourseArrangment,
+                          CourseID: e
+                        }
+                      });
+                      setFieldsValue({ modifyCourseID: e });
+                    }}
+                    filterOption={(input, option) => {
+                      return (
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }}
+                  >
+                    {this.state.courses.map(item => (
+                      <Option key={item.REC_ID} value={item.REC_ID}>
+                        {`${item.C3_609845305680} | ${item.C3_609845305743}`}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </Form.Item>
 
-            <Form.Item label="时间">
-              {getFieldDecorator('modifyStartDatetime', {
-                rules: [
-                  {
-                    type: 'object',
-                    required: true,
-                    message: '请选择上课时间!'
-                  }
-                ],
-                initialValue: this.state.selectedCourseArrangment.StartDatetime
-                  ? moment(this.state.selectedCourseArrangment.StartDatetime)
-                  : null
-              })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
-            </Form.Item>
+              <Form.Item label="时间">
+                {getFieldDecorator('modifyStartDatetime', {
+                  rules: [
+                    {
+                      type: 'object',
+                      required: true,
+                      message: '请选择上课时间!'
+                    }
+                  ],
+                  initialValue: this.state.selectedCourseArrangment
+                    .StartDatetime
+                    ? moment(this.state.selectedCourseArrangment.StartDatetime)
+                    : null
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
 
-            <Form.Item label="地点">
-              {getFieldDecorator('modifyCourseLocation', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入上课地点!'
-                  }
-                ],
-                initialValue: this.state.selectedCourseArrangment.CourseLocation
-              })(<Input />)}
-            </Form.Item>
-          </Form>
-        </Modal>
+              <Form.Item label="地点">
+                {getFieldDecorator('modifyCourseLocation', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入上课地点!'
+                    }
+                  ],
+                  initialValue: this.state.selectedCourseArrangment
+                    .CourseLocation
+                })(<Input />)}
+              </Form.Item>
+            </Form>
+          </Modal>
+        ) : null}
         <Modal
           visible={this.state.isShowLearnerInfo}
           onCancel={() =>
@@ -559,92 +610,94 @@ class ArrangingCourses extends React.Component {
             ></List>
           </Radio.Group>
         </Modal>
-        <Modal
-          title="添加课程安排"
-          onCancel={() =>
-            this.setState({
-              isShowAddCourseArrangment: false,
-              selectedCourseArrangment: {}
-            })
-          }
-          destroyOnClose={true}
-          onOk={() => {
-            this.props.form.validateFieldsAndScroll((err, values) => {
-              if (!err) {
-                let courseArrangment = { ...values };
-                console.log(courseArrangment);
-                //CourseID  StartDatetime  CourseLocation
-                this.addCourseArrangment(courseArrangment);
-                this.setState({
-                  isShowAddCourseArrangment: false,
-                  selectedCourseArrangment: {}
-                });
-              } else {
-                console.log(err);
-              }
-            });
-          }}
-          visible={this.state.isShowAddCourseArrangment}
-        >
-          <Form {...formItemLayout}>
-            <Form.Item label="课程">
-              {getFieldDecorator('CourseID', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择一门课程!'
-                  }
-                ]
-              })(
-                <Select
-                  placeholder="请选择一门课程"
-                  showSearch={true}
-                  optionFilterProp="children"
-                  showArrow={true}
-                  filterOption={(input, option) => {
-                    return (
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    );
-                  }}
-                >
-                  {this.state.courses.map(item => (
-                    <Option
-                      key={item.C3_609845305868}
-                      value={item.C3_609845305868}
-                    >
-                      {`${item.C3_609845305680} | ${item.C3_609845305743}`}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
+        {this.state.isShowAddCourseArrangment ? (
+          <Modal
+            title="添加课程安排"
+            onCancel={() =>
+              this.setState({
+                isShowAddCourseArrangment: false,
+                selectedCourseArrangment: {}
+              })
+            }
+            destroyOnClose={true}
+            onOk={() => {
+              this.props.form.validateFieldsAndScroll((err, values) => {
+                if (!err) {
+                  let courseArrangment = { ...values };
+                  console.log(courseArrangment);
+                  //CourseID  StartDatetime  CourseLocation
+                  this.addCourseArrangment(courseArrangment);
+                  this.setState({
+                    isShowAddCourseArrangment: false,
+                    selectedCourseArrangment: {}
+                  });
+                } else {
+                  console.log(err);
+                }
+              });
+            }}
+            visible={this.state.isShowAddCourseArrangment}
+          >
+            <Form {...formItemLayout}>
+              <Form.Item label="课程">
+                {getFieldDecorator('CourseID', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择一门课程!'
+                    }
+                  ]
+                })(
+                  <Select
+                    placeholder="请选择一门课程"
+                    showSearch={true}
+                    optionFilterProp="children"
+                    showArrow={true}
+                    filterOption={(input, option) => {
+                      return (
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }}
+                  >
+                    {this.state.courses.map(item => (
+                      <Option
+                        key={item.C3_609845305868}
+                        value={item.C3_609845305868}
+                      >
+                        {`${item.C3_609845305680} | ${item.C3_609845305743}`}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </Form.Item>
 
-            <Form.Item label="时间">
-              {getFieldDecorator('StartDatetime', {
-                rules: [
-                  {
-                    type: 'object',
-                    required: true,
-                    message: '请选择上课时间!'
-                  }
-                ]
-              })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
-            </Form.Item>
+              <Form.Item label="时间">
+                {getFieldDecorator('StartDatetime', {
+                  rules: [
+                    {
+                      type: 'object',
+                      required: true,
+                      message: '请选择上课时间!'
+                    }
+                  ]
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
 
-            <Form.Item label="地点">
-              {getFieldDecorator('CourseLocation', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入上课地点!'
-                  }
-                ]
-              })(<Input />)}
-            </Form.Item>
-          </Form>
-        </Modal>
+              <Form.Item label="地点">
+                {getFieldDecorator('CourseLocation', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入上课地点!'
+                    }
+                  ]
+                })(<Input />)}
+              </Form.Item>
+            </Form>
+          </Modal>
+        ) : null}
       </div>
     );
   }
