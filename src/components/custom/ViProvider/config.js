@@ -72,7 +72,7 @@ export const inApplication = {
       subTableName: '供应商信息',
       subResid: 606302353251,
       tableProps: {
-        hasAdd: false,
+        hasAdd: true,
         hasModify: false,
         hasDelete: false,
         hasRowModify: true,

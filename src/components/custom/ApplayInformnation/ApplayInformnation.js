@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './ApplayInformnation.less';
 import { Form, Input, DatePicker, Radio, Button, Select } from 'antd';
-import MoveTo from 'moveto';
-import http from 'Util20/api';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -80,145 +78,6 @@ class ApplayInformnation extends Component {
     super(props);
     this.state = {};
   }
-  // 移动
-  hanleMoveTo = id => {
-    const moveTo = new MoveTo({
-      duration: 300,
-      tolerance: 0,
-      container: document.querySelector('.applay__informnation')
-    });
-    // console.log(id);
-    const tempid = document.getElementById(id);
-    moveTo.move(tempid);
-  };
-  // 提交的值
-  handleClick = e => {
-    // e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      // console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
-      console.log('所有值', values);
-      if (!err) {
-        // console.log('接收的值', values.ThreeEddate[0].format('YYYY-MM-DD'));
-        // console.log('Merged values:', keys.map(key => names[key]));
-        let res;
-        try {
-          res = http().addRecords({
-            resid: 613149356409,
-            data: [
-              {
-                ChName: values.ChName, //中文姓名
-                EnName: values.EnName, //英文姓名
-                JobTitle: values.appPosition, //申请职位名称
-                IDCardNumber: values.idNumber, //身份证号码
-                Sex: values.Sex, //性别
-                Tel: values.Phone, //求职者手机号
-                Email: values.Email, //求职者邮箱
-                Nationality: values.Nationality, //国籍
-                Nation: values.Nation, //民族
-                Party: values.Party, //政治面貌
-                BirthDate: values.birthOfDate, //出生日期
-                BirthPlace: values.BirthPlace, //出生地点
-                PlaceOfHuKou: values.PlaceOfHuKou, //户口所在地
-                BloodType: values.BloodType, //血型
-                CurrentAddress: values.CurrentAddress, //现通讯地址
-                IfRecommendByF: values.IfRecommendByF, //有无推荐人
-                Recommender: values.Recommender, //推荐人姓名
-                RecommenderRelation: values.RecommenderRelation, //和推荐人关系
-                MaritalStatus: values.MaritalStatus, //婚姻状况
-                ChildIf: values.ChildIf, //有无子女
-                // 教育背景
-                LatestStartTime: values.LatestStartTime, //最近教育开始时间
-                LatestEndTime: values.LatestEndTime, //最近教育结束时间
-                LatestEdSchool: values.LatestEdSchool, //最近学校名称
-                LatestEdMajor: values.LatestStartTime, //专业名称
-                LatestEdDegree: values.LatestEdDegree, //学位
-                LatestReference: values.LatestEndTime, //最近教育证明人
-                LatestReferenceTel: values.LatestStartTime, //最近教育证明人电话
-                ThreeEdStartTime: values.LatestEndTime, //第三教育开始时间
-                ThreeEdEndTime: values.LatestStartTime, //第三教育结束时间
-                ThreeEdSchool: values.LatestEndTime, //第三学校名称
-                ThreeEdMajor: values.LatestEndTime, //第三专业名称
-                ThreeEdDegree: values.LatestStartTime, //第三学位
-                ThreeReference: values.LatestEndTime, //第三教育证明人
-                ThreeReferenceTel: values.LatestStartTime, //第三教育证明人电话
-                SecEdStartTime: values.LatestEndTime, //第二教育开始时间
-                SecEdEndTime: values.LatestStartTime, //第二教育结束时间
-                SecEdSchool: values.LatestEndTime, //第二教育学校名称
-                SecEdMajor: values.LatestStartTime, //第二教育专业名称
-                SecEdDegree: values.LatestEndTime, //第二教育学位
-                SecReference: values.LatestStartTime, //第二教育证明人
-                SecReferenceTel: values.LatestEndTime, //第二教育证明人电话
-                FistEdStartTime: values.LatestStartTime, //第一教育开始时间
-                FisrtEdEndTime: values.LatestEndTime, //第一教育结束时间
-                FirstEdSchool: values.LatestStartTime, //第一教育学校名称
-                FirstEdMajor: values.LatestEndTime, //第一教育专业名称
-                FirstEdDegree: values.LatestEndTime, //第一教育学位
-                FirstReference: values.LatestEndTime, //第一教育证明人
-                FirstReferenceTel: values.LatestEndTime, //第一教育证明人电话
-                //工作经历
-                LatestWorkStartTime: values.LatestStartTime, //最近工作开始时间
-                LatestWorkEndTime: values.LatestEndTime, //最近工作结束时间
-                LatestComName: values.LatestStartTime, //最近工作公司名称
-                LatestRank: values.LatestEndTime, //最近工作公司职位
-                LatestReasonForLeave: values.LatestEndTime, //最近工作离职原因
-                LatestWorkReference: values.LatestEndTime, //最近工作证明人
-                LatestWorkReferenceTel: values.LatestEndTime, //最近工作证明人电话
-
-                ThreeWorkStartTime: values.LatestStartTime, //次之工作开始时间
-                ThreeWorkEndTime: values.LatestEndTime, //次之工作结束时间
-                ThreeComName: values.LatestStartTime, //次之工作公司名称
-                ThreeRank: values.LatestEndTime, //次之工作公司职位
-                ThreeReasonForLeave: values.LatestEndTime, //次之工作离职原因
-                ThreeWorkReference: values.LatestEndTime, //次之工作证明人
-                ThreeWorkReferenceTel: values.LatestEndTime, //次之工作证明人电话
-                // 家庭成员及主要关系
-                FamOneName: values.LatestStartTime, //姓名
-                FamOneRelation: values.LatestEndTime, //关系
-                FamOnePosition: values.LatestStartTime, //职务
-                FamOneComAndAdd: values.LatestEndTime, //公司名称及地址
-                LatestEndTime: values.LatestEndTime, //电话
-                FamOneBirthDate: values.LatestEndTime, //出生年月
-
-                FamToName: values.LatestStartTime, //姓名
-                FamToRelation: values.LatestEndTime, //关系
-                FamToPosition: values.LatestStartTime, //职务
-                FamToComAndAdd: values.LatestEndTime, //公司名称及地址
-                LatestEndTime: values.LatestEndTime, //电话
-                FamToBirthDate: values.LatestEndTime, //出生年月
-                // 专业培训
-                LatestTrainingDate: values.LatestStartTime, //最近专业培训开始日期
-                // LatestEndTime: values.LatestEndTime, //最近专业培训日期
-                LatestTrainingInstitute: values.LatestStartTime, //最近培训机构
-                LatestTrainingCourese: values.LatestEndTime, //最近培训课程
-                LatestTrainingQualification: values.LatestEndTime, //最近培训获得证书
-                LatestTrainingReference: values.LatestEndTime, //最近培训证明人
-                LatestTrainingRefTel: values.LatestEndTime, //最近培训证明人电话
-                //相关技能
-                EnCET: values.LatestStartTime, //英语等级
-                Writing: values.LatestEndTime, //写作
-                Reading: values.LatestStartTime, //阅读
-                Speaking: values.LatestEndTime, //口语
-                ComputerSkill: values.LatestEndTime, //计算机
-                SoftList: values.LatestEndTime, //常用软件
-                OtherSkills: values.LatestEndTime, //其他技能
-                //其他信息
-                Weight: values.LatestStartTime, //身高
-                Height: values.LatestEndTime, //体重
-                EyeSight: values.LatestStartTime, //视力
-                DiseaseStatus: values.LatestEndTime, //疾病
-                UnemployedStatus: values.LatestEndTime, //失业情况
-                KnowColleageStatus: values.LatestEndTime, //是否认识本公司员工
-                OtherAgreement: values.LatestEndTime //是否有其他合同
-              }
-            ]
-          });
-        } catch (err) {
-          console.error(err.message);
-        }
-        console.log(res);
-      }
-    });
-  };
   // 确认修改并打印
   handleModifyAndPrint = () => {
     // 打印
@@ -232,13 +91,13 @@ class ApplayInformnation extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { initialValue } = this.props;
-    console.log(initialValue);
+    // console.log(initialValue);
     // const LatestEddate = {[moment(initialValue.LatestStartTime),moment(initialValue.LatestEndTime)]};
     // console.log('教育开始时间',LatestEddate);
     return (
       <div className="applay__informnation">
         <Form style={{ width: '90%', margin: '0 auto' }}>
-          <h3 className="applay__informnation-title" id="个人资料">
+          <h3 className="applay__informnation-title" id="工作申请表">
             个人资料/Personal Information
           </h3>
           <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
@@ -940,6 +799,9 @@ class ApplayInformnation extends Component {
             })(<TextArea />)}
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
+          <Button type="primary" >
+              保存
+            </Button>
             <Button type="primary" onClick={this.handleClick}>
               确认打印
             </Button>

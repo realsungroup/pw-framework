@@ -113,24 +113,28 @@ const Question = () => {
   );
 };
 // 教育背景数组
-const educationBackground = [
-  {
-    dataLabel: '日期',
-    dataKey: 'LatestEddate',
-    schoolLabel: '学校名称',
-    schoolKey: 'LatestEdSchool',
-    majorLabel: '专业名称',
-    majorKey: 'LatestEdMajor'
-  },
-  {}
-];
+
 class JobSeeker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       hasCriminal: '',
-      hasLostTrust: ''
+      hasLostTrust: '',
+      currentEd: 1,
+      educationBackground: [
+        {
+          Eddate: '',
+          EdSchool: '',
+          EdMajor: '',
+          EdDegree: '',
+          EdReference: '',
+          EdReferenceTel: ''
+        }
+      ],
+      // workExperise:[
+
+      // ]
     };
   }
   // 确认提交申请
@@ -147,45 +151,6 @@ class JobSeeker extends Component {
             data: [
               {
                 ...values,
-                BirthDate: values.BirthDate
-                  ? values.BirthDate.format('YYYY-MM-DD')
-                  : null, //出生日期
-                LatestStartTime: values.LatestEddate
-                  ? values.LatestEddate[0].format('YYYY-MM-DD')
-                  : null, //最近教育开始时间
-                LatestEndTime: values.LatestEddate
-                  ? values.LatestEddate[1].format('YYYY-MM-DD')
-                  : null, //最近教育结束时间
-                ThreeEdStartTime: values.ThreeEddate
-                  ? values.ThreeEddate[0].format('YYYY-MM-DD')
-                  : null, //第三教育开始时间
-                ThreeEdEndTime: values.ThreeEddate
-                  ? values.ThreeEddate[1].format('YYYY-MM-DD')
-                  : null, //第三教育结束时间
-                SecEdStartTime: values.SecEddate
-                  ? values.SecEddate[0].format('YYYY-MM-DD')
-                  : null, //第二教育开始时间
-                SecEdEndTime: values.SecEddate
-                  ? values.SecEddate[1].format('YYYY-MM-DD')
-                  : null, //第二教育结束时间
-                FistEdStartTime: values.FirstEddate
-                  ? values.FirstEddate[0].format('YYYY-MM-DD')
-                  : null, //第一教育开始时间
-                FisrtEdEndTime: values.FirstEddate
-                  ? values.FirstEddate[1].format('YYYY-MM-DD')
-                  : null, //第一教育结束时间
-                LatestWorkStartTime: values.LatestWorkStartTime
-                  ? values.LatestWorkdate[0].format('YYYY-MM-DD')
-                  : null, //最近工作开始时间
-                LatestWorkEndTime: values.LatestWorkdate
-                  ? values.LatestWorkdate[1].format('YYYY-MM-DD')
-                  : null ,//最近工作结束时间
-                  ThreeWorkStartTime: values.ThreeWorkdate
-                    ? values.ThreeWorkdate[0].format('YYYY-MM-DD')
-                    : null, //次之工作开始时间
-                  ThreeWorkEndTime: values.ThreeWorkdate
-                    ? values.ThreeWorkdate[1].format('YYYY-MM-DD')
-                    : null, //次之工作结束时间
               }
               // {
               //   ChName: values.ChName, //中文姓名
@@ -209,11 +174,11 @@ class JobSeeker extends Component {
               //   MaritalStatus: values.MaritalStatus, //婚姻状况
               //   ChildIf: values.ChildIf, //有无子女
               //   // 教育背景
-              //   LatestStartTime: values.LatestEddate
-              //     ? values.LatestEddate[0].format('YYYY-MM-DD')
+              //   LatestStartTime: values.Eddate
+              //     ? values.Eddate[0].format('YYYY-MM-DD')
               //     : null, //最近教育开始时间
-              //   LatestEndTime: values.LatestEddate
-              //     ? values.LatestEddate[1].format('YYYY-MM-DD')
+              //   LatestEndTime: values.Eddate
+              //     ? values.Eddate[1].format('YYYY-MM-DD')
               //     : null, //最近教育结束时间
               //   LatestEdSchool: values.LatestEdSchool, //最近学校名称
               //   LatestEdMajor: values.LatestEdMajor, //专业名称
@@ -376,12 +341,33 @@ class JobSeeker extends Component {
   };
   // 添加教育背景
   handleAddEdBack = () => {
-    const secEdbackground = document.querySelector('.educationBackground');
-    console.log(secEdbackground);
+    const { educationBackground } = this.state;
+    const tempeducationBackground = [...educationBackground];
+    const obj = {
+      Eddate: '',
+      EdSchool: '',
+      EdMajor: '',
+      EdDegree: '',
+      EdReference: '',
+      EdReferenceTel: ''
+    };
+    tempeducationBackground.push(obj);
+    this.setState({
+      educationBackground: tempeducationBackground
+    });
+  };
+  // 删除教育背景
+  handleDelete = index => {
+    const { educationBackground } = this.state;
+    const tempeducationBackground = [...educationBackground];
+    tempeducationBackground.splice(index, 1);
+    this.setState({
+      educationBackground: tempeducationBackground
+    });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loading } = this.state;
+    const { loading, currentEd, educationBackground } = this.state;
     return (
       <Spin spinning={loading}>
         <div className="job-seeker">
@@ -606,44 +592,82 @@ class JobSeeker extends Component {
                 教育背景/(请从最近的开始写起)Education Background (Please start
                 from latest education to middle school)
               </h3>
-
-              <Form.Item
-                label="日期/latest period from to"
-                {...formItemLayout2}
-              >
-                {getFieldDecorator('LatestEddate', {})(<RangePicker />)}
-              </Form.Item>
-              <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
-                {getFieldDecorator('LatestEdSchool', {})(<Input />)}
-              </Form.Item>
-              <Form.Item label="专业名称/major" {...formItemLayout2}>
-                {getFieldDecorator('LatestEdMajor', {})(<Input />)}
-              </Form.Item>
-              <Form.Item label="学位/degree" {...formItemLayout2}>
-                {getFieldDecorator('LatestEdDegree', {})(<Input />)}
-              </Form.Item>
-              <Form.Item label="证明人/ReferenceName" {...formItemLayout2}>
-                {getFieldDecorator('LatestReference', {})(<Input />)}
-              </Form.Item>
-              <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
-                {getFieldDecorator('LatestReferenceTel', {})(<Input />)}
-              </Form.Item>
-              {/* {educationBackground.map((item,index)=>{
-
-                })} */}
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  icon="plus"
-                  onClick={() => {
-                    this.handleAddEdBack();
-                  }}
-                >
-                  添加教育背景
-                </Button>
-              </Form.Item>
-              <Form.Item label="日期/third period from to" {...formItemLayout2}>
+              {educationBackground.map((item, index) => {
+                return (
+                  <div className="job-seeker__informnation-boundry">
+                    <Form.Item
+                      label="日期/latest period from to"
+                      {...formItemLayout2}
+                    >
+                      {getFieldDecorator(`${item.Eddate}${index}`, {})(
+                        <RangePicker />
+                      )}
+                    </Form.Item>
+                    <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
+                      {getFieldDecorator(`${item.EdSchool}${index}`, {})(
+                        <Input />
+                      )}
+                    </Form.Item>
+                    <Form.Item label="专业名称/major" {...formItemLayout2}>
+                      {getFieldDecorator(`${item.EdMajor}${index}`, {})(
+                        <Input />
+                      )}
+                    </Form.Item>
+                    <Form.Item label="学位/degree" {...formItemLayout2}>
+                      {getFieldDecorator(`${item.EdDegree}${index}`, {})(
+                        <Input />
+                      )}
+                    </Form.Item>
+                    <Form.Item
+                      label="证明人/ReferenceName"
+                      {...formItemLayout2}
+                    >
+                      {getFieldDecorator(`${item.EdReference}${index}`, {})(
+                        <Input />
+                      )}
+                    </Form.Item>
+                    <Form.Item
+                      label="证明人电话/ReferenceTel"
+                      {...formItemLayout2}
+                    >
+                      {getFieldDecorator(`${item.EdReferenceTel}${index}`, {})(
+                        <Input />
+                      )}
+                    </Form.Item>
+                    {index + 1 > 1 ? (
+                      <div className="job-seeker__informnation-boundry__delete">
+                        <Button
+                          type="primary"
+                          icon="delete"
+                          onClick={() => {
+                            this.handleDelete(item.index);
+                          }}
+                        >
+                          删除
+                        </Button>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                );
+              })}
+              {currentEd > 1 ? (
+                ''
+              ) : (
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    icon="plus"
+                    onClick={() => {
+                      this.handleAddEdBack();
+                    }}
+                  >
+                    添加教育背景
+                  </Button>
+                </Form.Item>
+              )}
+              {/* <Form.Item label="日期/third period from to" {...formItemLayout2}>
                 {getFieldDecorator('ThreeEddate', {})(<RangePicker />)}
               </Form.Item>
               <Form.Item
@@ -705,7 +729,7 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item label="证明人电话/ReferenceTel" {...formItemLayout2}>
                 {getFieldDecorator('FirstReferenceTel', {})(<Input />)}
-              </Form.Item>
+              </Form.Item> */}
               <h3 className="job-seeker__informnation-title" id="工作经历">
                 工作经历(请从最近的写起)/Working History (Please start with
                 latest one)
