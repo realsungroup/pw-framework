@@ -694,6 +694,7 @@ window[606071640940] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    height:'80vh',
     recordFormFormWidth: '90%'
   } // 组件所接收的 props
 };
