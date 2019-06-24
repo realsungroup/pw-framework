@@ -15,7 +15,7 @@ const courseArrangmentResid = '613959525708'; //课程安排表id
 let itemId = String
 class ETnoticeMain extends React.Component {
     constructor(props) {
-        console.log("props",props)
+        console.log("props", props)
         if (props.id === 1) {
             itemId = 'C3_614256491795'
         } else {
@@ -43,7 +43,7 @@ class ETnoticeMain extends React.Component {
     }
     componentDidMount = () => {
         this.setState({ loading: true })
-        
+
         this.getCourseArrangment()
     }
     getCourseArrangment = async () => {
@@ -304,7 +304,13 @@ class ETnoticeMain extends React.Component {
                             />
                         </div>
                     }>
-                    <TabPane tab="未通知" key='0'>
+                    <TabPane
+                        style={{
+                            width: '100%',
+                            height: '78vh'
+                        }}
+                        tab="未通知"
+                        key='0'>
                         <ETNoticed
                             infor={this.state}
                             currentCourseIsApply={this.onCurrentCourseIsApply}
@@ -317,7 +323,8 @@ class ETnoticeMain extends React.Component {
                             width: '100%',
                             height: '78vh'
                         }}
-                        tab="已通知" key='1'>
+                        tab="已通知"
+                        key='1'>
                         <ETNoticed infor={this.state} isNotice={1} />
                     </TabPane>
 
