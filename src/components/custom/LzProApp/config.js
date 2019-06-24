@@ -24,6 +24,7 @@ export const inApplication = {
   hasRowDelete: false,
   hasBeBtns: true,
   subtractH:196,
+  hasRowSelection:true,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
