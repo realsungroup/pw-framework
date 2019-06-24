@@ -261,7 +261,7 @@ class FiscalYearPlan extends React.Component {
                   justifyContent: 'flex-start'
                 }}
               >
-                <Radio.Group defaultValue="single">
+                <Radio.Group value={this.state.selectModel}>
                   <Radio.Button
                     value={'single'}
                     onClick={() => {
