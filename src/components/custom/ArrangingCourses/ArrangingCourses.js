@@ -21,14 +21,7 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
-
-// function onChange(value, dateString) {
-//   console.log('Selected Time: ', value);
-//   console.log('Formatted Selected Time: ', dateString);
-// }
-
 const courseArrangmentResid = '613959525708'; //课程安排表id
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -55,26 +48,18 @@ class ArrangingCourses extends React.Component {
     selectedMoveLearners: [], //移动人员时选中的人员
     courses: [], //课程
     searchKeyword: '', //搜索的关键词
-    searchPeriod: ['', ''] //搜索时间段
+    searchPeriod: ['', ''], //搜索时间段
+    selectedRecentPeriod: 'all', //下拉选项的值
+    rangePickerValue: [null, null] // 日期选择器的值
   };
 
   componentDidMount = async () => {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
-    await this.getCourses();
+    // await this.getCourses();
     this.props.onHandleLoading(false);
   };
 
-  //获取课程
-  getCourses = async () => {
-    let res;
-    try {
-      res = await http().getTable({
-        resid: '610308370365'
-      });
-      this.setState({ courses: res.data });
-    } catch (error) {}
-  };
   //获取课程安排
   getCourseArrangment = async () => {
     let res;
@@ -88,7 +73,28 @@ class ArrangingCourses extends React.Component {
     }
     if (res.error === 0) {
       let courseArrangment = res.data;
-      this.setState({ courseArrangment });
+      //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
+      // let courses = courseArrangment.map(item => {
+      //   return JSON.stringify({
+      //     CourseID: item.CourseID,
+      //     CourseName: item.CourseName
+      //   });
+      // });
+      // courses = Array.from(new Set(courses));
+      // courses = courses.map(item => {
+      //   return JSON.parse(item);
+      // });
+
+      //去重方法2 ：使用 Array的 filter + findIndex 实现
+      let courses = courseArrangment
+        .map(item => ({
+          CourseID: item.CourseID,
+          CourseName: item.CourseName
+        }))
+        .filter((item, index, self) => {
+          return self.findIndex(i => item.CourseID === i.CourseID) === index;
+        });
+      this.setState({ courseArrangment, courses });
     } else {
       message.error(res.message);
     }
@@ -180,47 +186,75 @@ class ArrangingCourses extends React.Component {
     }
   };
 
+  //设置确认选择的时间段
   onOk = async value => {
-    console.log('onOk: ', value);
     this.setState(
       {
         searchPeriod: [
           value[0].format('YYYY-MM-DD HH:mm:ss'),
           value[1].format('YYYY-MM-DD HH:mm:ss')
-        ]
+        ],
+        selectedRecentPeriod: 'all'
       },
       this.searchCourseArrangment
     );
   };
+
+  //判断是否为清空操作
   onRangeSearchChange = (value, dateString) => {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
+    let rangePickerValue = value.length ? value : [null, null];
+    this.setState({ rangePickerValue });
     if (!value.length) {
-      this.setState({ searchPeriod: dateString }, this.searchCourseArrangment);
+      this.setState(
+        { searchPeriod: dateString, selectedRecentPeriod: 'all' },
+        this.searchCourseArrangment
+      );
     }
   };
+  //设置搜索的最近时间段
   setPeriodBySelect = e => {
-		let searchPeriod=[], formatString = 'YYYY-MM-DD HH:mm:ss';
+    let searchPeriod = [],
+      formatString = 'YYYY-MM-DD HH:mm:ss';
     switch (e) {
       case 'all':
-        searchPeriod = ['', ''] ;
+        searchPeriod = ['', ''];
         break;
       case 'week':
-        searchPeriod =[moment().format(formatString), moment().add(1, 'w').format(formatString)]
+        searchPeriod = [
+          moment().format(formatString),
+          moment()
+            .add(1, 'w')
+            .format(formatString)
+        ];
         break;
       case 'weeks':
-        searchPeriod =[moment().format(formatString), moment().add(2, 'w').format(formatString)]
+        searchPeriod = [
+          moment().format(formatString),
+          moment()
+            .add(2, 'w')
+            .format(formatString)
+        ];
         break;
       case 'month':
-        searchPeriod =[moment().format(formatString), moment().add(1, 'M').format(formatString)]
+        searchPeriod = [
+          moment().format(formatString),
+          moment()
+            .add(1, 'M')
+            .format(formatString)
+        ];
         break;
       case 'months':
-        searchPeriod =[moment().format(formatString), moment().add(2, 'M').format(formatString)]
+        searchPeriod = [
+          moment().format(formatString),
+          moment()
+            .add(2, 'M')
+            .format(formatString)
+        ];
         break;
       default:
         break;
-		}
-		this.setState({searchPeriod}, this.searchCourseArrangment)
+    }
+    this.setState({ searchPeriod }, this.searchCourseArrangment);
   };
   render() {
     let { courseArrangment, selectedCourseArrangment } = this.state;
@@ -248,8 +282,15 @@ class ArrangingCourses extends React.Component {
             <div className="arranging_courses-header_search">
               <Select
                 defaultValue="all"
-                style={{ width: 100, marginRight: 10 }}
-                onChange={e => this.setPeriodBySelect(e)}
+                value={this.state.selectedRecentPeriod}
+                style={{ width: 100, marginRight: 5 }}
+                onChange={e => {
+                  this.setState({
+                    selectedRecentPeriod: e,
+                    rangePickerValue: [null, null]
+                  });
+                  this.setPeriodBySelect(e);
+                }}
               >
                 <Option value="all">全部</Option>
                 <Option value="week">一周内</Option>
@@ -263,6 +304,7 @@ class ArrangingCourses extends React.Component {
                 placeholder={['开始日期', '结束日期']}
                 onOk={this.onOk}
                 onChange={this.onRangeSearchChange}
+                value={this.state.rangePickerValue}
               />
               <Search
                 placeholder="输入课程关键字搜索"
@@ -369,7 +411,6 @@ class ArrangingCourses extends React.Component {
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
-                  console.log(values);
                   let { selectedCourseArrangment } = this.state;
                   let courseArrangment = {
                     ...selectedCourseArrangment,
@@ -425,8 +466,8 @@ class ArrangingCourses extends React.Component {
                     }}
                   >
                     {this.state.courses.map(item => (
-                      <Option key={item.REC_ID} value={item.REC_ID}>
-                        {`${item.C3_609845305680} | ${item.C3_609845305743}`}
+                      <Option key={item.CourseID} value={item.CourseID}>
+                        {item.CourseName}
                       </Option>
                     ))}
                   </Select>
@@ -624,7 +665,6 @@ class ArrangingCourses extends React.Component {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
                   let courseArrangment = { ...values };
-                  console.log(courseArrangment);
                   //CourseID  StartDatetime  CourseLocation
                   this.addCourseArrangment(courseArrangment);
                   this.setState({
@@ -662,11 +702,8 @@ class ArrangingCourses extends React.Component {
                     }}
                   >
                     {this.state.courses.map(item => (
-                      <Option
-                        key={item.C3_609845305868}
-                        value={item.C3_609845305868}
-                      >
-                        {`${item.C3_609845305680} | ${item.C3_609845305743}`}
+                      <Option key={item.CourseID} value={item.CourseID}>
+                        {item.CourseName}
                       </Option>
                     ))}
                   </Select>
