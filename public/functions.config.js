@@ -1481,3 +1481,27 @@ window['个人表格'] = {
   title: '个人表格',
   name: 'PersonInfo'
 };
+
+//人员表
+window[614706766207] = {
+  name: 'TableData',
+  title: '人员表',
+  props: {
+    resid: 611318802160,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: true,
+    hasRowDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    subtractH: 220,
+    height: 600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    }
+  }
+};

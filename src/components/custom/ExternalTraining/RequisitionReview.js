@@ -10,6 +10,7 @@ function ReviewRequisition(props) {
           {
             resid: 614449812342,
             TabsTitle: '待审核',
+            OutHeight:"80vh",
             recordFormFormWidth: '90%',
             hasBeBtns: true,
             hasModify: false,
@@ -44,6 +45,7 @@ function ReviewRequisition(props) {
           {
             resid: 614449831159,
             TabsTitle: '已审核',
+            OutHeight:"80vh",
             recordFormFormWidth: '90%',
             hasBeBtns: true,
             hasModify: false,
