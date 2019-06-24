@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
+import { TableData } from '../../common/loadableCommon';
 import './CreatePlan.less';
 const Option = Select.Option;
 const Search = Input.Search;
@@ -43,6 +44,7 @@ class CreatePlan extends React.Component {
       totalPage: 0, // 总页数
       pageSize: 100, // 每页数量
       key: '', //模糊查询关键字
+      showHistory: false, //计划详情模态框状态
       isShowProgress: false,
       taskList: []
     };
@@ -600,7 +602,6 @@ class CreatePlan extends React.Component {
             </div>
           </div>
           <div style={{ width: '50%', padding: '10px 28px' }}>
-             {/* <div style={{ display: 'flex', justifyContent: 'center' }}></div> */}
             <div
               style={{
                 display: 'flex',
@@ -608,6 +609,13 @@ class CreatePlan extends React.Component {
                 height: '60px'
               }}
             >
+              <Button
+                  type="default"
+                  style={{ marginRight:6 }}
+                  onClick={()=>{this.setState({showHistory:true})}}
+                >
+                  计划明细
+              </Button>
               <Button
                 type="primary"
                 style={{ width: '100px' }}
@@ -803,6 +811,29 @@ class CreatePlan extends React.Component {
             handleShowProgress={this.handleShowProgress}
           />
         ) : null}
+        <Modal
+            title="计划详情"
+            width={'80%'}
+            destroyOnClose={true}
+            visible={this.state.showHistory}
+            onOk={() => this.setState({ showHistory: false })}
+            onCancel={() => this.setState({ showHistory: false })}
+          >
+            <TableData
+             height={450}
+              resid={611315248461}
+              // cmswhere={`C3_609616805633 = '${this.planid}'`}
+              recordFormFormWidth={'90%'}
+              hasBeBtns={false}
+              subtractH= {240}
+              hasModify={false}
+              hasDelete={false}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasRowView={false}
+            />
+          </Modal>
       </div>
     );
   }
