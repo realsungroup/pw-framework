@@ -30,7 +30,7 @@ class TabsTableData extends React.Component {
         <TableDataWrap
           {...prop}
         />
-      </TabPane>
+      </TabPane>  
       ) 
     })
   }
