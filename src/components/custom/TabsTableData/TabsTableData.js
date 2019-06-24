@@ -14,9 +14,9 @@ class TabsTableData extends React.Component {
   }
   show = () => {
     let arr = []
-    if(this.props[0].length>0){
+    if(this.props[0]&&this.props[0].length>0){
       arr = this.props[0]
-    }else if(this.props.arr.length>0){
+    }else if(this.props.arr&&this.props.arr.length>0){
       arr = this.props.arr
     }
    return  arr&&arr.map((prop,index) => {
@@ -37,7 +37,7 @@ class TabsTableData extends React.Component {
   render() {
     const {data} = this.state
     return (
-      <div className="table-data-wrap" style={{ height: '100vh' }}>
+      <div className="table-data-wrap" style={{flex:1, height:'100vh'}} >
         <Tabs
           defaultActiveKey="1"
           style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
