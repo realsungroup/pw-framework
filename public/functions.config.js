@@ -1426,7 +1426,7 @@ window[607168405062] = {
         }
       },
       {
-        subTableName: '未参加人员',
+        subTableName: '未参加&未通过人员',
         subResid: 610299723125,
         tableProps: {
           hasAdd: false,
