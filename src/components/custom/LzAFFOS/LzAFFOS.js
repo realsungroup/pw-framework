@@ -92,7 +92,7 @@ export default class LzAFFOS extends React.Component {
                   C3_605716301557: res.data[0].C3_605716301557, //访客单位
                   C3_605716867680: res.data[0].C3_605716867680, //访客证件类型
                   C3_606412134505: res.data[0].C3_606412134505, //访客手机号
-                  C3_608392189420: res.data[0].C3_608392189420, //登记证件号
+                  C3_614704116070: res.data[0].C3_614704116070, //登记证件号
                   _state: 'added',
                   _id: 1
                 }

@@ -26,7 +26,7 @@ class TableDataVisitor extends React.Component {
         try {
           res = await http().getTable({
             resid: 606066688508,
-            cmswhere: `C3_608392189420 = ${card.cardno}`
+            cmswhere: `C3_614704116070 = '${card.cardno}'`
           });
           if (res.data.length>0) {
             message.success("查询成功！");
@@ -67,7 +67,7 @@ class TableDataVisitor extends React.Component {
       data.map(item => {
         switch (item.label) {
           case '登记证件号码':
-          item.initialValue = record[0].C3_608392189420;
+          item.initialValue = record[0].C3_614704116070;
             break;
             case '访问类型':
             item.initialValue = record[0].C3_605717078399;
@@ -226,7 +226,7 @@ class TableDataVisitor extends React.Component {
           </Form.Item>
           <Form.Item label="身份证号">
             {getFieldDecorator("cardno", {
-              initialValue: [record && record[0] &&  record[0].C3_608392189420],
+              initialValue: [record && record[0] &&  record[0].C3_614704116070],
               rules: [
                 {
                   required: true,

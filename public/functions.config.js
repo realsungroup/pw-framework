@@ -157,6 +157,11 @@ window[590765309983] = {
           values: ['Y']
         },
         {
+          btnName: '打印',
+          innerFieldNames: ['C3_591373760332'],
+          values: [null]
+        },
+        {
           btnName: '撤销',
           innerFieldNames: [
             'C3_590512213622',
@@ -1481,3 +1486,53 @@ window['个人表格'] = {
   title: '个人表格',
   name: 'PersonInfo'
 };
+
+//符合解除人员
+window[614706766207] = {
+  name: 'TableData',
+  title: '符合解除人员',
+  props: {
+    resid: 614709186509,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    subtractH: 220,
+    height: 600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    }
+  }
+};
+
+
+//违纪未审批记录
+window[614709663995] = {
+  name: 'TableData',
+  title: '违纪未审批记录',
+  props: {
+    resid: 614709499589,
+    recordFormFormWidth: '90%',
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasAdd: false,
+    hasRowDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    subtractH: 220,
+    height: 600,
+    recordFormType: 'drawer',
+    recordFormContainerProps: {
+      placement: 'bottom',
+      height: 600
+    }
+  }
+};
+

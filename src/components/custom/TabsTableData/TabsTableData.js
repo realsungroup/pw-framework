@@ -20,16 +20,22 @@ class TabsTableData extends React.Component {
       arr = this.props.arr
     }
    return  arr&&arr.map((prop,index) => {
+     if(!prop.OutHeight){
+       prop.OutHeight = '90vh'
+     }
      return ( 
      <TabPane
         
         tab={prop.TabsTitle}
         key={index+1}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%',height:"100%"  }}
       >
-        <TableDataWrap
+        
+      <div className="table-data-wrap" style={{height: prop.OutHeight}}>
+        <TableData
           {...prop}
         />
+        </div>
       </TabPane>  
       ) 
     })
@@ -37,10 +43,10 @@ class TabsTableData extends React.Component {
   render() {
     const {data} = this.state
     return (
-      <div className="table-data-wrap" style={{flex:1, height:'100vh'}} >
+      <div className="table-data-wrap" style={{flex:1,width:"100%",height:"100%"}} >
         <Tabs
           defaultActiveKey="1"
-          style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
+          style={{ width: '100%', backgroundColor: '#fff',height:"100%" }}
         >
         
         {this.show()}

@@ -129,7 +129,10 @@ export const inExaminationAndApproval = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
         subtractH: 196,
       }
     }
@@ -182,7 +185,10 @@ export const approved = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
         subtractH: 196,
       }
     }
@@ -247,6 +253,19 @@ export const refused = {
         defaultColumnWidth: 100,
         actionBarWidth: 100
       }
+    },
+    {
+      subTableName: '审批记录',
+      subResid: 605989494375,
+      tableProps:{
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
+      }
     }
   ]
 };
@@ -300,7 +319,10 @@ export const history = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
       }
     }
   ]
