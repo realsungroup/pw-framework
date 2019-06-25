@@ -1,60 +1,28 @@
 .idlindex {
-  background-color: #fff;
-  &__applayBox{
-    width:1000px;
-  }
-    &__title {
-      padding: 0 20px;
-  }
-  &__search{
-    margin:6px 3px;
-  }
-  &__person-list {
-    width: 15%;
-    float: left;
-    height: 800px;
-    overflow: auto;
-    border: 1px solid #cccc;
-    &__antd-y-item {
-      min-height: 60px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #ccc;
-      padding: 20px;
-      cursor: pointer;
-      &__active {
-        min-height: 60px;
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #ccc;
-        cursor: pointer;
-        background-color: #0086ff;
-        color: #ffffff;
-        padding: 20px;
-      }
+  &__header {
+    padding:5px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    &-search{
+      margin-right:5px;
+    }
+    &-nav{
+      flex:1;
+      width:100%;
     }
   }
-  &__form-list {
-    width: 85%;
-    float: right;
+  &__content{
+    display: flex;
+    padding:5px;
+    &-person{
+      width:190px;
+      margin-right:5px;
+      flex-shrink: 0;
+    }
+    &-form{
+      border:1px solid #f40;
+      width:1200px;
+    }
   }
-  &__form-list-nav{
-    .ant-menu{
-          display: flex;
-          justify-content: space-around;
-        }
-  }
-  &__workform{
-    height:100px;
-    border:1px solid #000;
-  }
-}
-.ant-list-items {
-  padding-inline-start: 0;
-}
-.indlindex__applayBox .applay_informnation{
-  text-align: left;
-}
-.indlindex__applayBox .applay_informnation ant-form-item-label{
-  text-align: left;
 }

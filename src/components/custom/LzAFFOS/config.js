@@ -40,7 +40,7 @@ const advSearchConfig = {
 
 // 申请中
 export const inApplication = {
-  resid: 605801028375,
+  resid: 605989494375,
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮

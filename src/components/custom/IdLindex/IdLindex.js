@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Tabs, Modal, Button, Select, Input, Menu } from 'antd';
+import { List, Avatar, Modal, Button, Input, Menu } from 'antd';
 import http from '../../../util20/api';
 import ApplayInformnation from '../ApplayInformnation';
 import TableData from '../../common/data/TableData';
@@ -8,8 +8,6 @@ import { assementForm, referenceCheck } from './config.js';
 import { withRecordForm } from '../../common/hoc/withRecordForm';
 import dealControlArr from '../../../util20/controls';
 import { getDataProp } from '../../../util20/formData2ControlsData';
-const { Option } = Select;
-const { SubMenu } = Menu;
 const MenuList = [
   {
     label: '个人资料',
@@ -82,10 +80,10 @@ class IdLindex extends Component {
       return 'idlindex__person-list__antd-y-item';
     }
   };
-  handleClick = e => {
-    console.log(e.key);
+  handleClick = activeKey => {
+    console.log(activeKey);
     this.setState({
-      activeKey: e.key
+      activeKey
     });
   };
   // 获取人员列表
@@ -222,37 +220,6 @@ class IdLindex extends Component {
       }
     });
   };
-  // 渲染不同模态框中的内容
-  renderContent = () => {
-    const { modalType } = this.state;
-    if (modalType === 'reference') {
-      return (
-        <Select
-          defaultValue="背景调查表"
-          style={{ width: 300 }}
-          onChange={this.handleSelectChange}
-        >
-          <Option value="HR">人事调查</Option>
-          <Option value="Colleague">上级调查</Option>
-        </Select>
-      );
-    } else {
-      return (
-        <Select
-          defaultValue="面试评估表"
-          style={{ width: 300 }}
-          onChange={this.handleSelectChange}
-        >
-          <Option value="T1T2T3T4">T1T2T3T4</Option>
-          <Option value="T6">T6</Option>
-          <Option value="T5">T5</Option>
-          <Option value="T4">T4</Option>
-          <Option value="应届生">应届生</Option>
-          <Option value="Manager">Manager</Option>
-        </Select>
-      );
-    }
-  };
   addFormCategory = modalType => {
     this.setState({
       typeVisible: true,
@@ -279,44 +246,42 @@ class IdLindex extends Component {
         );
       case '面试评估表':
         return (
-          <div>
-            <TableData
-              key={613152706922}
-              {...assementForm}
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              refTargetComponentName="TableData"
-              actionBarExtra={() => {
+          <TableData
+            key={613152706922}
+            {...assementForm}
+            wrappedComponentRef={element => (this.tableDataRef = element)}
+            refTargetComponentName="TableData"
+            actionBarExtra={() => {
+              return (
+                <Button
+                  onClick={() => {
+                    this.addFormCategory('accessment');
+                  }}
+                >
+                  添加
+                </Button>
+              );
+            }}
+            customRowBtns={[
+              (record, btnSize) => {
                 return (
                   <Button
                     onClick={() => {
-                      this.addFormCategory('accessment');
+                      this.getFormData(record);
                     }}
                   >
-                    添加
+                    评估详情
                   </Button>
                 );
-              }}
-              customRowBtns={[
-                (record, btnSize) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.getFormData(record);
-                      }}
-                    >
-                      评估详情
-                    </Button>
-                  );
-                }
-              ]}
-            />
-          </div>
+              }
+            ]}
+          />
         );
       case '背景调查表':
         return (
           <div>
             <TableData
-             key={613152614705}
+              key={613152614705}
               resid={613152614705}
               height={500}
               hasAdd={false}
@@ -343,97 +308,63 @@ class IdLindex extends Component {
     // console.log(currentPersonInfo);
     return (
       <div className="idlindex">
-        <div className="idlindex__person-list">
-          <div className="idlindex__search">
+        <div className="idlindex__header">
+          <div className="idlindex__header-search">
             <Input.Search
               placeholder="请输入关键词进行搜索"
               onSearch={value => this.handleSearchClick(value)}
             />
           </div>
-          <List
-            className="idlindex-left"
-            itemLayout="horizontal"
-            dataSource={personList}
-            renderItem={item => (
-              <List.Item
-                className={this.getSelectClass(item.isSelected)}
-                onClick={() => {
-                  this.handlePersonOnClick(item);
-                }}
-              >
-                <Avatar icon="user" />
-                <div
-                  style={{
-                    fontSize: 14,
-                    width: 50,
-                    height: 40
-                  }}
-                >
-                  <span style={{ display: 'block' }}>{item.ChName}</span>
-                  <span>{item.Sex}</span>
-                </div>
-                <div style={{ width: 70 }}>{item.appPosition}</div>
-              </List.Item>
-            )}
-          />
-        </div>
-        <div className="idlindex__form-list">
-          <div className="idlindex__form-list-nav">
+          <div className="idlindex__header-nav">
             <Menu
               mode="horizontal"
-              onClick={this.handleClick}
               selectedKeys={[this.state.activeKey]}
+              onClick={e => {
+                this.handleClick(e.key);
+              }}
             >
-              <SubMenu title="工作申请表" style={{ witth: '33%' }} key='工作申请表'>
-                <Menu.Item key="工作申请表">
-                  <a href="#工作申请表">个人资料</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#教育背景">教育背景</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#工作经历">工作经历</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#家庭成员及主要社会关系">家庭成员</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#培训经历">培训经历</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#相关技能">相关技能</a>
-                </Menu.Item>
-                <Menu.Item key="工作申请表">
-                  <a href="#其他">其他</a>
-                </Menu.Item>
-              </SubMenu>
-              <Menu.Item key="面试评估表" style={{ witth: '33%' }}>
+              <Menu.Item style={{ width: '30%' }} key="工作申请表">
+                工作申请表
+              </Menu.Item>
+              <Menu.Item style={{ width: '30%' }} key="面试评估表">
                 面试评估表
               </Menu.Item>
-              <Menu.Item key="背景调查表" style={{ witth: '33%' }}>
+              <Menu.Item style={{ width: '30%' }} key="背景调查表">
                 背景调查表
               </Menu.Item>
             </Menu>
           </div>
-          <div className="idlindex__form-list-content">
-            {this.renderContent()}
+        </div>
+        <div className="idlindex__content">
+          <div className="idlindex__content-person">
+            <List
+              className="idlindex-left"
+              itemLayout="horizontal"
+              dataSource={personList}
+              renderItem={item => (
+                <List.Item
+                  className={this.getSelectClass(item.isSelected)}
+                  onClick={() => {
+                    this.handlePersonOnClick(item);
+                  }}
+                >
+                  <Avatar icon="user" />
+                  <div
+                    style={{
+                      fontSize: 14,
+                      width: 50,
+                      height: 40
+                    }}
+                  >
+                    <span style={{ display: 'block' }}>{item.ChName}</span>
+                    <span>{item.Sex}</span>
+                  </div>
+                  <div style={{ width: 70 }}>{item.appPosition}</div>
+                </List.Item>
+              )}
+            />
           </div>
-          {/* <Tabs defaultActiveKey="工作申请表">
-            <TabPane tab="工作申请表" key="工作申请表">
-              <div className="idlindex__applayBox">
-                <ApplayInformnation
-                  hasSubmit={true}
-                  initialValue={currentPersonInfo}
-                />
-              </div>
-            </TabPane>
-            <TabPane tab="面试评估表" key="面试评估表">
-             
-            </TabPane>
-            <TabPane tab="背景调查表" key="背景调查表">
-              
-            </TabPane>
-          </Tabs> */}
+          <div className="idlindex__content-form">{this.renderContent()}</div>
           <Modal
             title="添加背景调查表/面试评估表"
             visible={this.state.typeVisible}

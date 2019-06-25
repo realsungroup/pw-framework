@@ -238,37 +238,39 @@ class JobSeeker extends Component {
   };
   // 添加教育,工作,家庭成员,培训，
   handleAdd = key => {
-    const { educationBackground, workExperise, family, training } = this.state;
-    console.log(key);
-    // const tempeducationBackground = [...educationBackground];
-    // const tempworkExperise = [...workExperise];
-    // const tempfamily = [...family];
-    // const temptraining = [...training];
-    // let obj = {};
-    // switch (key) {
-    //   case 'educationBack':
-    //     return (obj = {
-    //       Eddate: 'Eddate',
-    //       EdSchool: 'EdSchool',
-    //       EdMajor: 'EdMajor',
-    //       EdDegree: 'EdDegree',
-    //       EdReference: 'EdReference',
-    //       EdReferenceTel: 'EdReferenceTel'
-    //     });
-    //   case 'workExperise':
-    //     return (obj = {
-    //       WorkDate: 'WorkDate',
-    //       WorkComName: 'WorkComName',
-    //       WorkRank: 'WorkRank',
-    //       ReasonForLeave: 'ReasonForLeave',
-    //       WorkReference: 'WorkReference',
-    //       WorkReferenceTel: 'WorkReferenceTel'
-    //     });
-    // }
-    // `temp${key}`.push(obj);
-    // this.setState({
-    //   key:`temp${key}`
-    // })
+    const { educationBackground, workExperise  } = this.state;
+    // console.log(key);
+    const tempeducationBackground = [...educationBackground];
+    const tempworkExperise = [...workExperise];
+    let obj = {};
+    switch (key) {
+      case 'educationBackground':
+        obj = {
+          Eddate: 'Eddate',
+          EdSchool: 'EdSchool',
+          EdMajor: 'EdMajor',
+          EdDegree: 'EdDegree',
+          EdReference: 'EdReference',
+          EdReferenceTel: 'EdReferenceTel'
+        };
+        tempeducationBackground.push(obj);
+        break;
+      case 'workExperise':
+        obj = {
+          WorkDate: 'WorkDate',
+          WorkComName: 'WorkComName',
+          WorkRank: 'WorkRank',
+          ReasonForLeave: 'ReasonForLeave',
+          WorkReference: 'WorkReference',
+          WorkReferenceTel: 'WorkReferenceTel'
+        };
+        tempworkExperise.push(obj);
+        break;
+    }
+    this.setState({
+      educationBackground: tempeducationBackground,
+      workExperise: tempworkExperise,
+    });
   };
   // 添加教育背景
   handleAddEdBack = () => {
@@ -284,7 +286,7 @@ class JobSeeker extends Component {
     };
     tempeducationBackground.push(obj);
     this.setState({
-      educationBackground: tempeducationBackground
+      educationBackground:tempeducationBackground
     });
   };
   // // 添加工作经历
@@ -673,7 +675,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAdd(...educationBackground);
+                    this.handleAdd('educationBackground');
                   }}
                 >
                   添加教育背景
@@ -750,7 +752,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAddWork();
+                    this.handleAdd('workExperise');
                   }}
                 >
                   添加工作经历
