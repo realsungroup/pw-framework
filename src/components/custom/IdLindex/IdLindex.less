@@ -1,4 +1,7 @@
 .idlindex {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
   &__header {
     padding:5px;
     height: 50px;
@@ -15,14 +18,17 @@
   &__content{
     display: flex;
     padding:5px;
+    flex: 1;
+    width: 100%;
     &-person{
       width:190px;
+      min-width: 190px;
       margin-right:5px;
       flex-shrink: 0;
     }
     &-form{
-      border:1px solid #f40;
-      width:1200px;
+      width: calc(100% - 195px);
+      flex: 1;
     }
   }
 }
