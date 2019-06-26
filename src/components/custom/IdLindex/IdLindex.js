@@ -75,9 +75,9 @@ class IdLindex extends Component {
   };
   getSelectClass = isSelected => {
     if (isSelected) {
-      return 'idlindex__person-list__antd-y-item__active';
+      return 'idlindex__content-person__active';
     } else {
-      return 'idlindex__person-list__antd-y-item';
+      return 'idlindex__content-person';
     }
   };
   handleClick = activeKey => {
@@ -338,7 +338,6 @@ class IdLindex extends Component {
         <div className="idlindex__content">
           <div className="idlindex__content-person">
             <List
-              className="idlindex-left"
               itemLayout="horizontal"
               dataSource={personList}
               renderItem={item => (
@@ -348,18 +347,12 @@ class IdLindex extends Component {
                     this.handlePersonOnClick(item);
                   }}
                 >
-                  <Avatar icon="user" />
-                  <div
-                    style={{
-                      fontSize: 14,
-                      width: 50,
-                      height: 40
-                    }}
-                  >
-                    <span style={{ display: 'block' }}>{item.ChName}</span>
-                    <span>{item.Sex}</span>
-                  </div>
-                  <div style={{ width: 70 }}>{item.appPosition}</div>
+                  <List.Item.Meta
+                    avatar={<Avatar icon="user" />}
+                    title={item.ChName}
+                    description={item.appPosition}
+                  />
+                  <div style={{padding:'0 10px'}}>{item.Sex}</div>
                 </List.Item>
               )}
             />

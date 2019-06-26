@@ -15,7 +15,6 @@ class QueryTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // questionnaire: [],
       wid: 450,
       giftVisible: false,
       giftwid: '100%',
