@@ -333,4 +333,21 @@ http.createApi('changePassword', {
   url: '/api/user/ChangePassword'
 });
 
+/**
+ * 批量保存数据
+ */
+http.createApi('StartSaveTask', {
+  method: 'post',
+  url: '/api/tablethread/StartSaveTask'
+});
+
+/**
+ * 根据id获取任务状况
+ */
+http.createApi('RetrieveSaveTask', {
+  method: 'get',
+  url: '/api/tablethread/RetrieveSaveTask'
+});
+
+
 export default http;
