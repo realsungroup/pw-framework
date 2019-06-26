@@ -143,9 +143,9 @@ class FiscalYearPlan extends React.Component {
       });
       let plan = res.data[0];
       plan.check =true;
-      let plans = this.state.plans;
+      let plans = [...this.state.plans];
       let index = plans.findIndex(item => {
-        return (item.check = true);
+        return item.check;
       });
       plans[index] = plan;
       this.setState({ plans, selectedPlan: plan });
