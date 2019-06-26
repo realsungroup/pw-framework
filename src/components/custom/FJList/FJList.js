@@ -1013,7 +1013,7 @@ class FJList extends React.Component {
             <TableData
              height={450}
               resid={611315248461}
-              // cmswhere={`C3_609616805633 = '${this.planid}'`}
+              cmswhere={`C3_609616805633 = '${this.planid}'`}
               recordFormFormWidth={'90%'}
               hasBeBtns={false}
               subtractH= {240}
