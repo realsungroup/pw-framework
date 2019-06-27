@@ -255,7 +255,7 @@ class TotalStatical extends Component {
     const { answerData } = this.state;
     // console.log(answerData);
     if (0 <= answerData) {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+      return;
     } else {
       return answerData.map((item, index) => {
         return (
@@ -282,24 +282,28 @@ class TotalStatical extends Component {
   // 渲染单选和多选的表格
   renderCommonChart = () => {
     const { data } = this.state;
-    return data.map((item, index) => {
-      return (
-        <div className="total-statical__chart-wrap" key={item.title}>
-          <h4 className="total-statical__chart-wrap__question-topic">
-            <span>{index + 1}.</span>
-            {item.title}
-          </h4>
-          <Table
-            columns={this.columns}
-            dataSource={item.table.dataSource}
-            bordered
-            size="small"
-            pagination={false}
-            rowKey="optionContent"
-          />
-        </div>
-      );
-    });
+    if (0 >= data.length) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+    } else {
+      return data.map((item, index) => {
+        return (
+          <div className="total-statical__chart-wrap" key={item.title}>
+            <h4 className="total-statical__chart-wrap__question-topic">
+              <span>{index + 1}.</span>
+              {item.title}
+            </h4>
+            <Table
+              columns={this.columns}
+              dataSource={item.table.dataSource}
+              bordered
+              size="small"
+              pagination={false}
+              rowKey="optionContent"
+            />
+          </div>
+        );
+      });
+    }
   };
 
   render() {
