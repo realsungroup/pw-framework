@@ -115,11 +115,11 @@ class MyQuery extends React.Component {
         };
       });
       res.data[index] = obj;
-      console.log('复制的试题', res.data[index]);
+      // console.log('复制的试题', res.data[index]);
       AllQuestionsArrdata.push(obj);
     });
 
-    console.log('所有的试题和试题选项', AllQuestionsArrdata);
+    // console.log('所有的试题和试题选项', AllQuestionsArrdata);
 
     /**
      * 对所有的试题和试题选项改成后端要的数据。

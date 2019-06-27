@@ -150,7 +150,7 @@ class QuerySet extends Component {
   //点击设置保存时
   handlequerySetChange = e => {
     // console.log(e);
-    console.log('问卷id', queryId);
+    // console.log('问卷id', queryId);
     const {
       query_name,
       query_description,
@@ -180,8 +180,8 @@ class QuerySet extends Component {
           ]
         })
         .then(res => {
-          console.log(res);
-          console.log(res);
+          // console.log(res);
+          // console.log(res);
           let tempid = res.data[0].query_id;
           this.setState({ loading: false });
           this.getThisquery(tempid);
@@ -1677,7 +1677,7 @@ class QuerySet extends Component {
 
         AllQuestionDataImportToBck.push(objimrt);
       });
-      console.log('后端要的导入数据', AllQuestionDataImportToBck);
+      // console.log('后端要的导入数据', AllQuestionDataImportToBck);
       this.setState({ loading: true });
       http()
         .saveRecordAndSubTables({

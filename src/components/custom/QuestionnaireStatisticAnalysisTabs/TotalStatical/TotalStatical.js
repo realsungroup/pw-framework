@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, message, Tabs, Table, Progress } from 'antd';
+import { Button, message, Table, Progress, Empty } from 'antd';
 import './TotalStatical.less';
 import http from 'Util20/api';
 import html2canvas from 'html2canvas';
@@ -8,13 +8,7 @@ import domtoimage from 'dom-to-image';
 import { async } from 'q';
 const isChrome = () => {
   const userAgent = navigator.userAgent.toLowerCase();
-  if (userAgent.indexOf('chrome') !== -1) {
-    //说明找到了 就是谷歌浏览器
-    return true;
-  }
-  return false;
-  //
-  // return userAgent.indexOf('chrome')!==-1;
+  return userAgent.indexOf('chrome') !== -1;
 };
 class TotalStatical extends Component {
   constructor(props) {
@@ -53,15 +47,13 @@ class TotalStatical extends Component {
         if (record.optionContent === '本题有效填写人次') {
           return null;
         }
-        // const percent = parseInt(
-        //   ((record.amount / record.total) * 100).toFixed(0),
-        //   10
-        // );
-        const percent = ((record.amount / record.total) * 100).toFixed(2);
+        const percent = (record.amount / record.total).toFixed(2) * 100;
         return (
-          <div>
-            <Progress percent={percent} />
-          </div>
+          <Progress
+            style={{ width: '90%' }}
+            percent={percent}
+            format={percent => percent.toFixed(2) + '%'}
+          />
         );
       }
     }
@@ -219,7 +211,6 @@ class TotalStatical extends Component {
   // 导出图片的功能
   handleExportImgBtnClick = () => {
     const { queryName } = this.state;
-    console.log(isChrome);
     // 下载图片
     function download(src, name) {
       if (!src) return;
@@ -231,16 +222,13 @@ class TotalStatical extends Component {
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png');
-        window.open(imgDataURL);
-        download(imgDataURL, queryName);
-
-        // if (isChrome()) {
-        //   console.log('谷歌');
-        //   download(imgDataURL, queryName);
-        // } else {
-        //   console.log('其他');
-        //   window.open(imgDataURL);
-        // }
+        if (isChrome()) {
+          console.log('谷歌');
+          download(imgDataURL, queryName);
+        } else {
+          console.log('其他');
+          window.open(imgDataURL);
+        }
       }
     );
   };
@@ -294,24 +282,28 @@ class TotalStatical extends Component {
   // 渲染单选和多选的表格
   renderCommonChart = () => {
     const { data } = this.state;
-    return data.map((item, index) => {
-      return (
-        <div className="total-statical__chart-wrap" key={item.title}>
-          <h4 className="total-statical__chart-wrap__question-topic">
-            <span>{index + 1}.</span>
-            {item.title}
-          </h4>
-          <Table
-            columns={this.columns}
-            dataSource={item.table.dataSource}
-            bordered
-            size="small"
-            pagination={false}
-            rowKey="optionContent"
-          />
-        </div>
-      );
-    });
+    if (0 >= data.length) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+    } else {
+      return data.map((item, index) => {
+        return (
+          <div className="total-statical__chart-wrap" key={item.title}>
+            <h4 className="total-statical__chart-wrap__question-topic">
+              <span>{index + 1}.</span>
+              {item.title}
+            </h4>
+            <Table
+              columns={this.columns}
+              dataSource={item.table.dataSource}
+              bordered
+              size="small"
+              pagination={false}
+              rowKey="optionContent"
+            />
+          </div>
+        );
+      });
+    }
   };
 
   render() {
