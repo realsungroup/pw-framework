@@ -100,18 +100,18 @@ const pstyle = {
     textAlign: 'left'
   }
 };
-const Question = () => {
-  return (
-    <p {...pstyle}>
-      Have you ever been suffering from any severe disease? What are your
-      current health? Are you sick for contagion, or chronic etc. now? Do you
-      have criminal history or discredit history? If yes, please give the
-      details.
-      <br />
-      是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等？是否有犯罪记录或失信行为记录？如是，请详细说明
-    </p>
-  );
-};
+// const Question = () => {
+//   return (
+//     <p {...pstyle}>
+//       Have you ever been suffering from any severe disease? What are your
+//       current health? Are you sick for contagion, or chronic etc. now? Do you
+//       have criminal history or discredit history? If yes, please give the
+//       details.
+//       <br />
+//       是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等？是否有犯罪记录或失信行为记录？如是，请详细说明
+//     </p>
+//   );
+// };
 // 教育背景数组
 
 class JobSeeker extends Component {
@@ -121,6 +121,9 @@ class JobSeeker extends Component {
       loading: false,
       hasCriminal: '',
       hasLostTrust: '',
+      hasUnemployee: '',
+      knowColleaguage: '',
+      competitionAgreement: '',
       educationBackground: [
         {
           Eddate: 'Eddate',
@@ -236,9 +239,27 @@ class JobSeeker extends Component {
       hasLostTrust: value
     });
   };
+  // 监听是否有失业经历变化
+  isUnemployeeChange = value => {
+    this.setState({
+      hasUnemployee: value
+    });
+  };
+  // 监听是否有认识本公司员工
+  isKnowColleaguageChange = value => {
+    this.setState({
+      knowColleaguage: value
+    });
+  };
+  // 监听是否签署过竞争协议或者保密协议
+  isCompetitionChange = value => {
+    this.setState({
+      competitionAgreement: value
+    });
+  };
   // 添加教育,工作,家庭成员,培训，
   handleAdd = key => {
-    const { educationBackground, workExperise  } = this.state;
+    const { educationBackground, workExperise } = this.state;
     // console.log(key);
     const tempeducationBackground = [...educationBackground];
     const tempworkExperise = [...workExperise];
@@ -269,7 +290,7 @@ class JobSeeker extends Component {
     }
     this.setState({
       educationBackground: tempeducationBackground,
-      workExperise: tempworkExperise,
+      workExperise: tempworkExperise
     });
   };
   // 添加教育背景
@@ -286,7 +307,7 @@ class JobSeeker extends Component {
     };
     tempeducationBackground.push(obj);
     this.setState({
-      educationBackground:tempeducationBackground
+      educationBackground: tempeducationBackground
     });
   };
   // // 添加工作经历
@@ -1009,7 +1030,10 @@ class JobSeeker extends Component {
               <Form.Item label="视力左 右/eye sight" {...formItemLayout2}>
                 {getFieldDecorator('EyeSight', {})(<Input />)}
               </Form.Item>
-              <Form.Item colon={false} label={<Question />}>
+              <Form.Item
+                colon={false}
+                label="是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等"
+              >
                 {getFieldDecorator('DiseaseStatus', {})(<TextArea />)}
               </Form.Item>
               <Form.Item
@@ -1050,49 +1074,101 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label={
-                  <p {...pstyle}>
-                    Do you have any unemployed period of more than 4 months? If
-                    yes, please give the details.
-                    <br />
-                    是否有过4个月以上的失业经历？如有，请详细说明。
-                  </p>
-                }
+                label="Do you have any unemployed period of more than 4 months? If
+                yes, please give the details.
+                
+                是否有过4个月以上的失业经历？如有，请详细说明。"
               >
-                {getFieldDecorator('UnemployedStatus', {})(<TextArea />)}
+                {getFieldDecorator('UnemployedStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isUnemployeeChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.hasUnemployee === '是' ? <Input /> : ''}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="Do you know any employee of Finisar Shanghai Inc.? If yes,
+                please give his/her name and relationship./
+                是否认识本公司的员工？如是，请详细指出姓名及与其关系。"
+              >
+                {getFieldDecorator('KnowColleageStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isKnowColleaguageChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.knowColleaguage === '是' ? <Input /> : ''}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="Do you have any unexpired contract or service agreement with
+                   your present employer? 
+                   与现任雇主的合同或服务协议是否到期？"
+              >
+                {getFieldDecorator('OtherAgreement', {})(
+                  <div>
+                    <RadioGroup>
+                      <Radio value="是">已到期</Radio>
+                      <Radio value="否">未到期</Radio>
+                    </RadioGroup>
+                  </div>
+                )}
               </Form.Item>
               <Form.Item
                 colon={false}
                 label={
-                  <p {...pstyle}>
-                    Do you know any employee of Finisar Shanghai Inc.? If yes,
-                    please give his/her name and relationship.
-                    <br />
-                    是否认识本公司的员工？如是，请详细指出姓名及与其关系。
+                  <p style={{height:30}}>
+                    Do you have ever signed non-competition agreement or
+                    confidentiality agreement? Please explain when does the
+                    contract or agreement at
+                    term?<br/>是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？
                   </p>
                 }
               >
-                {getFieldDecorator('KnowColleageStatus', {})(<TextArea />)}
+                {getFieldDecorator('CompetitionAgreement', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isCompetitionChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.competitionAgreement === '是' ? <Input /> : ''}
+                  </div>
+                )}
               </Form.Item>
               <Form.Item
-                colon={false}
-                label={
-                  <p {...pstyle}>
-                    Do you have any unexpired contract or service agreement with
-                    your present employer? Do you have ever signed
-                    non-competition agreement or confidentiality agreement?
-                    Please explain when does the contract or agreement at term?
-                    Do you need to pay compensation for demission? How long do
-                    you carry out demission? When would be available for you?
-                    <br />
-                    与现任雇主的合同或服务协议是否到期？是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？办理离职手续需多长时间？如被录用何时可以上班？
-                  </p>
-                }
+                label="办离职需要多长时间/How long do
+                   you carry out demission?"
               >
-                {getFieldDecorator('OtherAgreement', {})(<TextArea />)}
+                {getFieldDecorator('HowLong', {})(<Input />)}
+              </Form.Item>
+              <Form.Item label="如被录用何时上班/When would be available for you?">
+                {getFieldDecorator('WhenOn', {})(<Input />)}
               </Form.Item>
               <Form.Item label="自我评价">
                 {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
+              </Form.Item>
+              <Form.Item>
+                Commitments/本人承诺
+                <p>1) All informantion given are true and accurate ,</p>
+                <p>2)</p>
               </Form.Item>
               <Form.Item style={{ textAlign: 'center' }}>
                 <Button type="primary" onClick={this.handleClick}>
