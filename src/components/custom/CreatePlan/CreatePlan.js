@@ -282,7 +282,9 @@ class CreatePlan extends React.Component {
     this.setState({ subData, selectedCourse });
   }
   handleShowProgress = () => {
-    let { isShowProgress, data, subData } = this.state;
+    let { isShowProgress } = this.state;
+    let data = [...this.state.data];
+    let subData = [...this.state.subData];
     data.forEach(i => {
       i.check = false;
     });
@@ -310,15 +312,15 @@ class CreatePlan extends React.Component {
     }
     let taskList = [];
     let { totalData } = this.state;
-    selectedCourse.forEach(item => {
-      selectedEmployee.forEach(i => {
+     selectedEmployee.forEach(item => {
+      selectedCourse.forEach(i => {
         let employee_course = {
-          C3_609616893275: i.C3_609622254861, //员工编号
-          C3_611314816141: item.C3_609845305868, //课程编号
+          C3_609616893275: item.C3_609622254861, //员工编号
+          C3_611314816141: i.C3_609845305868, //课程编号
           C3_609616805805: this.props.year,
           C3_609616805633: totalData.C3_609616660273,
-          C3_609622263470: i.C3_609622263470, //员工姓名
-          C3_609845305680: item.C3_609845305680 //课程名称
+          C3_609622263470: item.C3_609622263470, //员工姓名
+          C3_609845305680: i.C3_609845305680 //课程名称
         };
         taskList.push(employee_course);
       });
@@ -809,6 +811,10 @@ class CreatePlan extends React.Component {
           <PlanProgress
             taskList={taskList}
             handleShowProgress={this.handleShowProgress}
+            resid ={611315248461}
+            title="多选人员课程列表"
+            showFields={['C3_609622263470','C3_609845305680',]}
+            // width='50%'
           />
         ) : null}
         <Modal
