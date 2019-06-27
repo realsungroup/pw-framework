@@ -312,6 +312,7 @@ class CreatePlan extends React.Component {
     }
     let taskList = [];
     let { totalData } = this.state;
+    let index_id =0;
     selectedEmployee.forEach(item => {
       selectedCourse.forEach((i, index) => {
         let employee_course = {
@@ -321,7 +322,7 @@ class CreatePlan extends React.Component {
           C3_609616805633: totalData.C3_609616660273,
           C3_609622263470: item.C3_609622263470, //员工姓名
           C3_609845305680: i.C3_609845305680, //课程名称
-          _id: index,
+          _id: ++index_id,
           _state: 'editoradd'
         };
         taskList.push(employee_course);
