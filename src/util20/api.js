@@ -334,11 +334,18 @@ http.createApi('changePassword', {
 });
 
 /**
- * 批量保存数据
+ * 批量保存数据（100数据结构）
  */
 http.createApi('StartSaveTask', {
   method: 'post',
   url: '/api/tablethread/StartSaveTask'
+});
+/**
+ * 批量保存数据（200数据结构）
+ */
+http.createApi('StartSaveTask200', {
+  method: 'post',
+  url: '/api/tablethread/StartSaveTask200'
 });
 
 /**
