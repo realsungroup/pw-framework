@@ -31,6 +31,7 @@ class FiscalYearPlan extends React.Component {
     selectModel: 'single'
   };
   async componentDidMount() {
+    this.setState({loading:true})
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
     let userinfo = JSON.parse(getItem('userInfo')).UserInfo;
     let grouplist = userinfo.GroupList.replace('(', '')
@@ -64,7 +65,10 @@ class FiscalYearPlan extends React.Component {
       plans[0].check = true;
       let selectedPlan = plans[0];
       this.setState({ plans, selectedPlan });
-    } catch (error) { }
+    } catch (error) {
+      message.error(error.message)
+     }
+    this.setState({loading:false})
   }
   handleGetSelectedPlan = async () => {
     let res;
@@ -133,6 +137,7 @@ class FiscalYearPlan extends React.Component {
     if (!this.state.selectedPlan) {
       return;
     }
+    this.setState({loading:true})
     let res,
       REC_ID = this.state.selectedPlan.REC_ID;
     
@@ -152,6 +157,7 @@ class FiscalYearPlan extends React.Component {
     } catch (error) {
       message.error(error.message)
     }
+    this.setState({loading:false})
   };
   render() {
     const { loading, current, selectedPlan } = this.state;
@@ -162,7 +168,6 @@ class FiscalYearPlan extends React.Component {
           <List
             size="large"
             bordered
-            loading={this.state.loading}
             dataSource={this.state.plans}
             style={{
               width: '100%',
