@@ -26,7 +26,8 @@ class PlanProgress extends React.Component {
     intCurrent: 0
   };
   componentDidMount = async () => {
-    let { resid } = this.props, taskList = [...this.props.taskList];
+    let { resid } = this.props,
+      taskList = [...this.props.taskList];
     let total = taskList.length;
     if (total < 1) {
       return this.setState({ isFinished: true, percent: 100 });
@@ -171,7 +172,7 @@ class PlanProgress extends React.Component {
       intCurrent,
       intErrLines
     } = this.state;
-    let {taskList} = this.props
+    let { taskList } = this.props;
     let status;
     if (percent < 100) {
       status = 'normal';
@@ -214,21 +215,13 @@ class PlanProgress extends React.Component {
             总数：{taskList.length}，成功：{intCurrent - intErrLines}，出错：
             {intErrLines}
           </div>
-          {intErrLines && (
+          {intErrLines === 0 ? (
             <div style={{ textAlign: 'center' }}>
-              {/* <Button
-                icon="right-circle"
-                onClick={() => {
-                  this.setState({ isShowDetail: !this.state.isShowDetail });
-                }}
-              >
-                错误详情
-              </Button> */}
               <span
                 onClick={() => {
                   this.setState({ isShowDetail: !this.state.isShowDetail });
                 }}
-                style={{ cursor: 'pointer',marginTop:6,fontSize:18 }}
+                style={{ cursor: 'pointer', marginTop: 6, fontSize: 18 }}
               >
                 {this.state.isShowDetail ? '收起错误详情' : '展开错误详情'}
                 {this.state.isShowDetail ? (
@@ -238,7 +231,7 @@ class PlanProgress extends React.Component {
                 )}
               </span>
             </div>
-          )}
+          ) : null}
         </div>
         {this.state.isShowDetail && (
           <List
