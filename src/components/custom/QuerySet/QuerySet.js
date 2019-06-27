@@ -264,7 +264,7 @@ class QuerySet extends Component {
         });
 
         data = [dataObj];
-
+         console.log('最终数据',data);
         http()
           .saveRecordAndSubTables({
             data
@@ -275,6 +275,7 @@ class QuerySet extends Component {
           })
           .catch(err => {
             console.error('添加错误原因', err);
+            this.setState({loading:false})
             message.error('queryset添加失败', err.message);
           });
         break;
@@ -322,6 +323,7 @@ class QuerySet extends Component {
           })
           .catch(err => {
             console.error('添加错误原因', err);
+            this.setState({loading:false})
             message.error('queryset添加问答失败', err.message);
           });
 
@@ -352,6 +354,7 @@ class QuerySet extends Component {
           }
         ];
         data = [dataObj];
+        console.log('最终数据',data);
         http()
           .saveRecordAndSubTables({
             data
@@ -362,6 +365,7 @@ class QuerySet extends Component {
           })
           .catch(err => {
             console.error('添加错误原因', err);
+            this.setState({loading:false})
             message.error('queryset添加失败', err.message);
           });
         break;
@@ -712,6 +716,7 @@ class QuerySet extends Component {
       })
       .catch(err => {
         console.error(err);
+        this.setState({loading:false})
         message.error('queryset获取问卷试题', err.message);
       });
   };
@@ -1693,6 +1698,7 @@ class QuerySet extends Component {
         })
         .catch(err => {
           console.error('添加错误原因', err);
+          this.setState({loading:false})
           message.error('queryset导入失败', err.message);
         });
     }
