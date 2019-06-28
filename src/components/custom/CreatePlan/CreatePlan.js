@@ -83,14 +83,14 @@ class CreatePlan extends React.Component {
     let pageSize = this.state.pageSize;
     let key = this.state.key;
     this.setState({ loading: true });
-    let res = await http().getTable({
-      resid: this.props.resid,
-      key,
-      pageIndex,
-      pageSize,
-      cmswhere: `C3_613828994025 = '${this.state.totalData.C3_609616006519}'`
-    });
     try {
+      let res = await http().getTable({
+        resid: this.props.resid,
+        key,
+        pageIndex,
+        pageSize,
+        cmswhere: `C3_613828994025 = '${this.state.totalData.C3_609616006519}'`
+      });
       this.setState({ loading: false });
       if (res.error === 0) {
         if (res.data.length > 0) {
@@ -99,8 +99,12 @@ class CreatePlan extends React.Component {
           resData.forEach(e => {
             e.check = false;
           });
-          data = data.concat(resData);
-          let hasMore = this.state.hasMore;
+          if(pageIndex === 0){
+            data= resData
+          }else{
+            data = data.concat(resData);
+          }
+          let hasMore=true;
           if (this.state.oldData.length === this.state.totalAmount) {
             hasMore = false;
           }
@@ -159,10 +163,10 @@ class CreatePlan extends React.Component {
   //获取课程表
   async getSubData(key) {
     let { selectedCourse } = this.state;
-    let cmswhere = '';
+    let cmswhere = `C3_609845305743 = '${this.state.totalData.C3_609615869581}' `;
     //如果选择了人员级别，则加上级别的条件语句
     if (this.state.kcState !== 'All' && this.state.selectedLevel) {
-      cmswhere += "C3_610763348502='" + this.state.selectedLevel + "'";
+      cmswhere += "AND C3_610763348502='" + this.state.selectedLevel + "'";
     }
     //如果选择了一个课程系列，则加上系列的条件语句
     if (this.state.xlSelect) {
@@ -297,10 +301,12 @@ class CreatePlan extends React.Component {
         selectedCourse: [],
         selectedEmployee: [],
         data,
-        subData
+        subData,
+        pageIndex: 0
       },
       () => {
         this.totalData();
+        this.getData();
       }
     );
   };
@@ -312,7 +318,7 @@ class CreatePlan extends React.Component {
     }
     let taskList = [];
     let { totalData } = this.state;
-    let index_id =0;
+    let index_id = 0;
     selectedEmployee.forEach(item => {
       selectedCourse.forEach((i, index) => {
         let employee_course = {
