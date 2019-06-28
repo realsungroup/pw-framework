@@ -18,9 +18,9 @@ class ApplyProgress extends React.Component {
             <div>
                 <div style={{ padding: 10, width: '50%', margin: '0 auto' }}>
                     <Progress percent={percent} />
-                    <div style={{ marginTop: 5, textAlign: 'center' }}>
+                    {/* <div style={{ marginTop: 5, textAlign: 'center' }}>
                         {finishedCount} / {allCount}
-                    </div>
+                    </div> */}
                 </div>
                 <List
                     dataSource={taskList}
