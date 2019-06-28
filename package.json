@@ -61,7 +61,7 @@
     "jest-resolve": "23.6.0",
     "js-export-excel": "^1.1.2",
     "jspdf": "^1.5.3",
-    "less": "2.7.2",
+    "less": "3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",
     "lodash.clonedeep": "^4.5.0",
