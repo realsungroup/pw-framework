@@ -249,9 +249,6 @@ class FiscalYearPlan extends React.Component {
                       <div className="plan_infos_item">
                         一级部门经理：{item.C3_609874982844}
                       </div>
-                      <div className="plan_infos_item">
-                        HR：{item.C3_609874947298}
-                      </div>
                     </div>
                   </Card>
                 </List.Item>
