@@ -312,15 +312,17 @@ class CreatePlan extends React.Component {
     }
     let taskList = [];
     let { totalData } = this.state;
-     selectedEmployee.forEach(item => {
-      selectedCourse.forEach(i => {
+    selectedEmployee.forEach(item => {
+      selectedCourse.forEach((i, index) => {
         let employee_course = {
           C3_609616893275: item.C3_609622254861, //员工编号
           C3_611314816141: i.C3_609845305868, //课程编号
           C3_609616805805: this.props.year,
           C3_609616805633: totalData.C3_609616660273,
           C3_609622263470: item.C3_609622263470, //员工姓名
-          C3_609845305680: i.C3_609845305680 //课程名称
+          C3_609845305680: i.C3_609845305680, //课程名称
+          _id: index,
+          _state: 'editoradd'
         };
         taskList.push(employee_course);
       });
@@ -612,11 +614,13 @@ class CreatePlan extends React.Component {
               }}
             >
               <Button
-                  type="default"
-                  style={{ marginRight:6 }}
-                  onClick={()=>{this.setState({showHistory:true})}}
-                >
-                  计划明细
+                type="default"
+                style={{ marginRight: 6 }}
+                onClick={() => {
+                  this.setState({ showHistory: true });
+                }}
+              >
+                计划明细
               </Button>
               <Button
                 type="primary"
@@ -809,37 +813,37 @@ class CreatePlan extends React.Component {
 
         {this.state.isShowProgress ? (
           <PlanProgress
-            taskList={taskList}
-            handleShowProgress={this.handleShowProgress}
-            resid ={611315248461}
+            onFinished={this.handleShowProgress}
+            struct="100"
+            options={{ resid: 611315248461, data: JSON.stringify(taskList) }}
             title="多选人员课程列表"
-            showFields={['C3_609622263470','C3_609845305680',]}
+            showFields={['C3_609622263470', 'C3_609845305680']}
             // width='50%'
           />
         ) : null}
         <Modal
-            title="计划详情"
-            width={'80%'}
-            destroyOnClose={true}
-            visible={this.state.showHistory}
-            onOk={() => this.setState({ showHistory: false })}
-            onCancel={() => this.setState({ showHistory: false })}
-          >
-            <TableData
-             height={450}
-              resid={611315248461}
-              cmswhere={`C3_609616805633 = '${this.planid}'`}
-              recordFormFormWidth={'90%'}
-              hasBeBtns={false}
-              subtractH= {240}
-              hasModify={false}
-              hasDelete={false}
-              hasAdd={false}
-              hasRowDelete={false}
-              hasRowModify={false}
-              hasRowView={false}
-            />
-          </Modal>
+          title="计划详情"
+          width={'80%'}
+          destroyOnClose={true}
+          visible={this.state.showHistory}
+          onOk={() => this.setState({ showHistory: false })}
+          onCancel={() => this.setState({ showHistory: false })}
+        >
+          <TableData
+            height={450}
+            resid={611315248461}
+            cmswhere={`C3_609616805633 = '${this.planid}'`}
+            recordFormFormWidth={'90%'}
+            hasBeBtns={false}
+            subtractH={240}
+            hasModify={false}
+            hasDelete={false}
+            hasAdd={false}
+            hasRowDelete={false}
+            hasRowModify={false}
+            hasRowView={false}
+          />
+        </Modal>
       </div>
     );
   }

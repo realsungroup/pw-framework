@@ -14,7 +14,6 @@ import http from '../../../util20/api';
 class PlanProgress extends React.Component {
   state = {
     visible: true,
-    // taskList: this.props.taskList,
     // resid: this.props.resid,
     // finishedCount: 0,
     percent: 0,
@@ -23,30 +22,28 @@ class PlanProgress extends React.Component {
     errorList: [],
     isShowDetail: false,
     intErrLines: 0,
-    intCurrent: 0
+    intCurrent: 0,
+    intTotalNumber: 0
   };
   componentDidMount = async () => {
-    let { resid } = this.props, taskList = [...this.props.taskList];
-    let total = taskList.length;
-    if (total < 1) {
-      return this.setState({ isFinished: true, percent: 100 });
-    }
-    taskList.forEach((i, index) => {
-      i._id = index;
-      i._state = 'editoradd';
-    });
     let res;
     try {
-      res = await http().StartSaveTask({
-        resid,
-        data: JSON.stringify(taskList)
-      });
+      switch (this.props.struct) {
+        case '100':
+          res = await http().StartSaveTask(this.props.options);
+          break;
+        case '200':
+          res = await http().StartSaveTask200(this.props.options);
+          break;
+        default:
+          res = await http().StartSaveTask(this.props.options);
+          break;
+      }
       let taskid = res.taskid;
       this.getTaskInfo(taskid);
     } catch (error) {
       message.error(error.message);
     }
-    // await this.handleTasks(finishedCount, total, taskList, percent);
   };
   componentWillUnmount = () => {
     this.timer = null;
@@ -81,14 +78,16 @@ class PlanProgress extends React.Component {
           percent,
           isFinished: true,
           intCurrent: data.intCurrent,
-          intErrLines: data.intErrLines
+          intErrLines: data.intErrLines,
+          intTotalNumber: data.intTotalNumber
         });
       } else {
         this.setState({
           percent: 100,
           isFinished: true,
           intCurrent: data.intCurrent,
-          intErrLines: data.intErrLines
+          intErrLines: data.intErrLines,
+          intTotalNumber: data.intTotalNumber
         });
       }
     } else {
@@ -98,68 +97,14 @@ class PlanProgress extends React.Component {
         percent,
         isFinished: false,
         intCurrent: data.intCurrent,
-        intErrLines: data.intErrLines
+        intErrLines: data.intErrLines,
+        intTotalNumber: data.intTotalNumber
       });
       this.timer = setTimeout(async () => {
         if (this.getTaskInfo) {
           await this.getTaskInfo(taskid);
         }
       }, 1000);
-    }
-  };
-  handleTasks = async (finishedCount, total, taskList, percent) => {
-    // await taskList.forEach(async element => {
-    //   let res;
-    //   try {
-    //     res = await http().addRecords({
-    //       resid: '611315248461',
-    //       data: [{element}],
-    //       isEditOrAdd: true
-    //     });
-    //   } catch (error) {
-    //     count++;
-    //     return message.error(error.message);
-    //   }
-    //   let percent = 0;
-    //   if (res.Error === 0) {
-    //     finishedCount++;
-    //     percent = Math.floor((finishedCount / total) * 100);
-    //     element.success = true;
-    //   } else {
-    //     element.success = false;
-    //   }
-    //   count++;
-    //   this.setState({
-    //     finishedCount,
-    //     percent,
-    //     taskList,
-    //     isFinished: count === total
-    //   });
-    // });
-    for (let element of taskList) {
-      let res = { Error: -1 };
-      try {
-        res = await http().addRecords({
-          resid: '611315248461',
-          data: [element],
-          isEditOrAdd: true
-        });
-      } catch (error) {
-        element.success = false;
-        element.errorMessage = error.message;
-      }
-      finishedCount++;
-      percent = Math.floor((finishedCount / total) * 100);
-      if (res.Error === 0) {
-        element.success = true;
-        element.errorMessage = '';
-      }
-      this.setState({
-        finishedCount,
-        percent,
-        taskList,
-        isFinished: finishedCount === total
-      });
     }
   };
 
@@ -169,9 +114,9 @@ class PlanProgress extends React.Component {
       isFinished,
       errorList,
       intCurrent,
-      intErrLines
+      intErrLines,
+      intTotalNumber
     } = this.state;
-    let {taskList} = this.props
     let status;
     if (percent < 100) {
       status = 'normal';
@@ -195,7 +140,7 @@ class PlanProgress extends React.Component {
             block={true}
             type="primary"
             disabled={!isFinished}
-            onClick={this.props.handleShowProgress}
+            onClick={this.props.onFinished}
           >
             完成
           </Button>
@@ -211,24 +156,16 @@ class PlanProgress extends React.Component {
             style={{ margin: '0 auto' }}
           />
           <div style={{ marginTop: 6, textAlign: 'center' }}>
-            总数：{taskList.length}，成功：{intCurrent - intErrLines}，出错：
+            总数：{intTotalNumber}，成功：{intCurrent - intErrLines}，出错：
             {intErrLines}
           </div>
-          {intErrLines && (
+          {intErrLines === 0 ? (
             <div style={{ textAlign: 'center' }}>
-              {/* <Button
-                icon="right-circle"
-                onClick={() => {
-                  this.setState({ isShowDetail: !this.state.isShowDetail });
-                }}
-              >
-                错误详情
-              </Button> */}
               <span
                 onClick={() => {
                   this.setState({ isShowDetail: !this.state.isShowDetail });
                 }}
-                style={{ cursor: 'pointer',marginTop:6,fontSize:18 }}
+                style={{ cursor: 'pointer', marginTop: 6, fontSize: 18 }}
               >
                 {this.state.isShowDetail ? '收起错误详情' : '展开错误详情'}
                 {this.state.isShowDetail ? (
@@ -238,7 +175,7 @@ class PlanProgress extends React.Component {
                 )}
               </span>
             </div>
-          )}
+          ) : null}
         </div>
         {this.state.isShowDetail && (
           <List

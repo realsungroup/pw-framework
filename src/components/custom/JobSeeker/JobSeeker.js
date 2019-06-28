@@ -170,38 +170,71 @@ class JobSeeker extends Component {
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
       console.log(values);
-      // if (!err) {
-      //   this.setState({ loading: true });
-      //   console.log(1111111);
-      //   let res;
-      //   try {
-      //     res = http().addRecords({
-      //       resid: 613149356409,
-      //       data: [
-      //         {
-      //           ...values
-      //         }
-      //       ]
-      //     });
-      //     console.log(res.data);
-      //     this.setState({ loading: false });
-      //     Modal.success({
-      //       title: '提示',
-      //       content: '提交成功'
-      //     });
-      //   } catch (err) {
-      //     console.error(err.message);
-      //     Modal.error({
-      //       title: '提示失败',
-      //       content: err.message
-      //     });
-      //   }
-      // } else {
-      //   return Modal.warning({
-      //     title: '提示',
-      //     content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
-      //   });
-      // }
+      console.log(values.Eddate1[0].format('YYYY-MM-DD'));
+      if (!err) {
+        this.setState({ loading: true });
+        console.log(1111111);
+        let res;
+        try {
+          res = http().addRecords({
+            resid: 613149356409,
+            data: [
+              {
+                ...values,
+                //教育
+                 EdStartTime1:  values.Eddate1 ? 
+                 values.Eddate1[0].format('YYYY-MM-DD'):null,
+                 EdEndTime1:  values.Eddate1 ? 
+                 values.Eddate1[1].format('YYYY-MM-DD'):null,
+                 EdStartTime2:  values.Eddate2 ? 
+                 values.Eddate2[0].format('YYYY-MM-DD'):null,
+                 EdEndTime2:  values.Eddate2 ? 
+                 values.Eddate2[1].format('YYYY-MM-DD'):null,
+                 EdStartTime3:  values.Eddate3 ? 
+                 values.Eddate3[0].format('YYYY-MM-DD'):null,
+                 EdEndTime3:  values.Eddate3 ? 
+                 values.Eddate3[1].format('YYYY-MM-DD'):null,
+                 EdStartTime4:  values.Eddate4 ? 
+                 values.Eddate4[0].format('YYYY-MM-DD'):null,
+                 EdEndTime4:  values.Eddate4 ? 
+                 values.Eddate4[1].format('YYYY-MM-DD'):null,
+                 //工作
+                 WorkStartTime1:  values.WorkDate1 ? 
+                 values.WorkDate1[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime1:  values.WorkDate1 ? 
+                 values.WorkDate1[1].format('YYYY-MM-DD'):null,
+
+                 WorkStartTime2:  values.WorkDate2 ? 
+                 values.WorkDate2[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime2:  values.WorkDate2 ? 
+                 values.WorkDate2[1].format('YYYY-MM-DD'):null,
+
+                 WorkStartTime3:  values.WorkDate3 ? 
+                 values.WorkDate3[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime3:  values.WorkDate3 ? 
+                 values.WorkDate3[1].format('YYYY-MM-DD'):null,
+              }
+            ]
+          });
+          console.log(res.data);
+          this.setState({ loading: false });
+          Modal.success({
+            title: '提示',
+            content: '提交成功'
+          });
+        } catch (err) {
+          console.error(err.message);
+          Modal.error({
+            title: '提示失败',
+            content: err.message
+          });
+        }
+      } else {
+        return Modal.warning({
+          title: '提示',
+          content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
+        });
+      }
     });
   };
   // 提交的值
@@ -1165,11 +1198,11 @@ class JobSeeker extends Component {
               <Form.Item label="自我评价">
                 {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
               </Form.Item>
-              <Form.Item>
-                Commitments/本人承诺
-                <p>1) All informantion given are true and accurate ,</p>
-                <p>2)</p>
-              </Form.Item>
+              <div>
+                <h3>Commitments/本人承诺</h3>
+                <p style={{padding:5,textAlign:'left'}}>1) All informantion given are true and accurate ,otherwise I'm willing to be punished even dismissed.<br/>  所有填表内容真实、准确,如有虚假愿意接受处分包括辞退</p>
+                <p>2) I agree with further background check.本人同意公司进行背景调查</p>
+              </div>
               <Form.Item style={{ textAlign: 'center' }}>
                 <Button type="primary" onClick={this.handleClick}>
                   确认申请

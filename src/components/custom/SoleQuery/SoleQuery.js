@@ -56,7 +56,7 @@ class SoleQuery extends Component {
     } catch (err) {
       return console.error(err);
     }
-    console.log('问卷信息', res);
+    // console.log('问卷信息', res);
 
     this.setState({
       queryDetail: res.data[0],
@@ -101,7 +101,7 @@ class SoleQuery extends Component {
     } catch (err) {
       return console.error(err);
     }
-    console.log('获取到是否提交信息', res);
+    // console.log('获取到是否提交信息', res);
     let hasSubmit = false;
     if (res.data[0].hasSubmit === '已提交') {
       hasSubmit = true;
@@ -485,12 +485,18 @@ class SoleQuery extends Component {
           }
           break;
       }
-      // console.log(answers);
+      console.log(answers);
     });
 
-    // console.log({ answers });
+    console.log({ answers }); 
+    const newanswers =[...answers];
+    newanswers.forEach((answer,index)=>{
+        answer._id = index+1;
+        answer._state ='added';
+    });
+     console.log(newanswers);
     this.setState({
-      taskList: answers
+      taskList: newanswers
     });
 
     // let res;
@@ -745,7 +751,6 @@ class SoleQuery extends Component {
   // 渲染的页面
   render() {
     const { queryDetail, tel, queryStatus, loading, hasSubmit } = this.state;
-
     // 已停止
     if (queryStatus === '已停止') {
       return (
@@ -792,9 +797,9 @@ class SoleQuery extends Component {
           </div>
           {this.state.isShowProgress ? (
             <PlanProgress
-              taskList={this.state.taskList}
-              handleShowProgress={this.handleShowProgress}
-              resid={608838682402}
+              onFinished={this.handleShowProgress}
+              // resid={608838682402}
+              options={{resid:608838682402,data:JSON.stringify(this.state.taskList)}}
               title="上传答案"
               // showFields={['C3_609622263470','C3_609845305680',]}
               // width='50%'

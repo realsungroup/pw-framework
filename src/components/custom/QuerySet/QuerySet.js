@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
+import PlanProgress from '../CreatePlan/PlanProgress';
 import qs from 'qs';
 import { cloneDeep } from 'lodash';
 const { TextArea } = Input;
@@ -123,7 +124,10 @@ class QuerySet extends Component {
       currentactiveQuestionMust: '',
       giftStyle: '',
       loading: false,
-      importQuestions: template
+      importQuestions: template,
+      isShowProgress:false,
+      taskList:[]
+
     };
   }
 
@@ -231,11 +235,11 @@ class QuerySet extends Component {
   };
   handleAddAloneOk = () => {
     const { activeQuestionType, questions, queryId } = this.state;
-    this.setState({ loading: true });
+    this.setState({ isShowProgress:true });
+    let data;
     switch (activeQuestionType) {
       case '1': {
         const singleQuestion = questions[0];
-        let data; // 最终的 data
         const dataObj = {};
         dataObj.resid = 608828418560;
         dataObj.maindata = {
@@ -264,26 +268,12 @@ class QuerySet extends Component {
         });
 
         data = [dataObj];
-         console.log('最终数据',data);
-        http()
-          .saveRecordAndSubTables({
-            data
-          })
-          .then(res => {
-            this.setState({ loading: false });
-            this.getThisQueryQuestions(queryId);
-          })
-          .catch(err => {
-            console.error('添加错误原因', err);
-            this.setState({loading:false})
-            message.error('queryset添加失败', err.message);
-          });
         break;
       }
       case '2': {
         // console.log(questions[1]);
         const multiQuestion = questions[1];
-        let data; // 最终的 data
+
         const dataObj = {};
         dataObj.resid = 608828418560;
         dataObj.maindata = {
@@ -312,26 +302,10 @@ class QuerySet extends Component {
         });
 
         data = [dataObj];
-
-        http()
-          .saveRecordAndSubTables({
-            data
-          })
-          .then(res => {
-            // console.log(res);
-            this.getThisQueryQuestions(queryId);
-          })
-          .catch(err => {
-            console.error('添加错误原因', err);
-            this.setState({loading:false})
-            message.error('queryset添加问答失败', err.message);
-          });
-
         break;
       }
       case '3': {
         console.log(questions[2]);
-        let data; // 最终的 data
         const dataObj = {};
         dataObj.resid = 608828418560;
         dataObj.maindata = {
@@ -354,23 +328,27 @@ class QuerySet extends Component {
           }
         ];
         data = [dataObj];
-        console.log('最终数据',data);
-        http()
-          .saveRecordAndSubTables({
-            data
-          })
-          .then(res => {
-            // console.log(res);
-            this.getThisQueryQuestions(queryId);
-          })
-          .catch(err => {
-            console.error('添加错误原因', err);
-            this.setState({loading:false})
-            message.error('queryset添加失败', err.message);
-          });
         break;
       }
     }
+    console.log('zz',data);
+    this.setState({
+      taskList:data
+    })
+    // http()
+    //       .saveRecordAndSubTables({
+    //         data
+    //       })
+    //       .then(res => {
+    //         // console.log(res);
+    //         this.setState({loading:false})
+    //         this.getThisQueryQuestions(queryId);
+    //       })
+    //       .catch(err => {
+    //         console.error('添加错误原因', err);
+    //         this.setState({loading:false})
+    //         message.error('queryset添加失败', err.message);
+    //       });
     this.setState({
       visible2: false
     });
@@ -1757,6 +1735,14 @@ class QuerySet extends Component {
   toMyQuery = () => {
     window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
   };
+  // 添加成功后的额函数
+  handleShowProgress=()=>{
+    const {queryId} = this.state;
+  this.setState({
+    isShowProgress:false,
+  });
+  this.getThisQueryQuestions(queryId);
+  }
   render() {
     const {
       activeQuestionType,
@@ -2017,6 +2003,16 @@ class QuerySet extends Component {
               />
             </ul>
           </Modal>
+          {this.state.isShowProgress ? (
+            <PlanProgress
+              onFinished={this.handleShowProgress}
+              struct='200'
+              options={{data:this.state.taskList}}
+              title="上传答案"
+              // showFields={['C3_609622263470','C3_609845305680',]}
+              // width='50%'
+            />
+          ) : null}
         </div>
       </Spin>
     );

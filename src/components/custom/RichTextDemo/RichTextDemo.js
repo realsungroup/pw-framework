@@ -10,15 +10,8 @@ export default class RichTextDemo extends Component {
   }
   render() {
     return (
-      <div className="RichTextDemo__block">
-        <Upload  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        listType='picture'>
-          <div>
-            <Icon type="plus" />
-            <div className="ant-upload-text">Upload</div>
-          </div>
-        </Upload>
-        {/* <Control></Control> */}
+      <div className="flex">
+        
       </div>
     );
   }
