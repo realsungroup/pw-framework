@@ -53,7 +53,10 @@ class FiscalYearPlan extends React.Component {
           data: [{ C3_609616006519: 'WX' }, { C3_609616006519: 'SHG' }], // 要添加的记录；如 [{ name: '1', age: 18 }, { name: '2', age: 19 }]
           isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
         });
-      } catch (error) {}
+      } catch (error) {
+        message.error(error.message)
+        console.log(error.message)
+      }
     }
     let res;
     try {
@@ -62,10 +65,16 @@ class FiscalYearPlan extends React.Component {
         //cmswhere: `C3_609615909659 = '${userinfo.EMP_USERCODE}'`
       });
       let plans = res.data;
-      plans[0].check = true;
-      let selectedPlan = plans[0];
+      let selectedPlan;
+      if(plans.length>0){
+        plans[0].check = true;
+        selectedPlan = plans[0];
+      }else{
+        selectedPlan= null
+      }
       this.setState({ plans, selectedPlan });
     } catch (error) {
+      console.log(error.message);
       message.error(error.message)
      }
     this.setState({loading:false})
@@ -130,6 +139,9 @@ class FiscalYearPlan extends React.Component {
         } else {
           message.error(res.message);
         }
+      }).catch(error=>{
+        console.log(error)
+        message.error(error.message)
       });
   };
 
@@ -236,9 +248,6 @@ class FiscalYearPlan extends React.Component {
                       {/* <div className="plan_infos_item">一级部门编号：{item.C3_609874956063}</div> */}
                       <div className="plan_infos_item">
                         一级部门经理：{item.C3_609874982844}
-                      </div>
-                      <div className="plan_infos_item">
-                        HR：{item.C3_609874947298}
                       </div>
                     </div>
                   </Card>
@@ -364,6 +373,8 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
+            height='90vh'
+            subtractH={240}
             recordFormType="drawer"
             recordFormContainerProps={{
               placement: 'bottom',
