@@ -100,19 +100,6 @@ const pstyle = {
     textAlign: 'left'
   }
 };
-// const Question = () => {
-//   return (
-//     <p {...pstyle}>
-//       Have you ever been suffering from any severe disease? What are your
-//       current health? Are you sick for contagion, or chronic etc. now? Do you
-//       have criminal history or discredit history? If yes, please give the
-//       details.
-//       <br />
-//       是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等？是否有犯罪记录或失信行为记录？如是，请详细说明
-//     </p>
-//   );
-// };
-// 教育背景数组
 
 class JobSeeker extends Component {
   constructor(props) {

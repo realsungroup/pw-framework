@@ -69,6 +69,11 @@ class ApplayInformnation extends Component {
     document.body.innerHTML = oldstr; //恢复原来的页面
     return false;
   };
+  handleSave=()=>{
+    this.props.form.validateFields((err,values)=>{
+      console.log(values);
+    })
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const { initialValue } = this.props;
@@ -467,23 +472,15 @@ class ApplayInformnation extends Component {
           <h3 className="applay__informnation-title" id="相关技能">
             相关技能/Related Qualification / Skill (If any)
           </h3>
-          <Form.Item label="语言能力/languageAbility" {...formItemLayout2}>
-            {getFieldDecorator('languageAbility', {
-              initialValue: initialValue.languageAbility
-            })(
-              <Input disabled placeholder="请列明程度,优秀，良好，一般，欠佳" />
-            )}
+          <Form.Item label="常用外语/commonLanguage" {...formItemLayout2}>
+            {getFieldDecorator('Language', {
+              initialValue: initialValue.Language
+            })(<Input />)}
           </Form.Item>
-          <Form.Item label="英语CET/CET" {...formItemLayout2}>
+          <Form.Item label="外语等级" {...formItemLayout2}>
             {getFieldDecorator('EnCET', {
               initialValue: initialValue.EnCET
-            })(
-              <Select>
-                <Option value="四级">四级</Option>
-                <Option value="六级">六级</Option>
-                <Option value="专八">专八</Option>
-              </Select>
-            )}
+            })(<Input />)}
           </Form.Item>
           <Form.Item label="写作/Writing" {...formItemLayout2}>
             {getFieldDecorator('Writing', {
@@ -530,21 +527,7 @@ class ApplayInformnation extends Component {
               </Select>
             )}
           </Form.Item>
-          <Form.Item label="计算机技能/ComputerSkills" {...formItemLayout2}>
-            {getFieldDecorator('ComputerSkills', {
-              initialValue: initialValue.ComputerSkills
-            })(
-              <Select>
-                {languageAbility.map((item, index) => {
-                  return (
-                    <Option key={index} value={item.value}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            )}
-          </Form.Item>
+          <Form.Item label="计算机技能/ComputerSkills" />
           <Form.Item label="列出常用软件/list name of software used">
             {getFieldDecorator('SoftList', {
               initialValue: initialValue.SoftList
@@ -599,9 +582,11 @@ class ApplayInformnation extends Component {
               </p>
             }
           >
-            {getFieldDecorator('CrimianlStatus', {
-              initialValue: initialValue.CrimianlStatus
-            })(<TextArea />)}
+            {getFieldDecorator('Criminal', {
+              initialValue: initialValue.Criminal
+            })(
+              <TextArea/>
+            )}
           </Form.Item>
           <Form.Item
             colon={false}
@@ -693,7 +678,7 @@ class ApplayInformnation extends Component {
             })(<TextArea />)}
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
-            <Button type="primary">保存</Button>
+            <Button type="primary" onClick={this.handleSave}>保存</Button>
             <Button type="primary" onClick={this.handleClick}>
               确认打印
             </Button>

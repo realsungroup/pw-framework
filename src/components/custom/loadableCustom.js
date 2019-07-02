@@ -298,6 +298,14 @@ export const TableDataScheduling = Loadable({
   }
 });
 
+// 课程资源
+export const CourseResources = Loadable({
+  loader: () => import('./CourseResources'),
+  loading() {
+    return minLoading;
+  }
+});
+
 // IDL招聘
 export const IdLindex = Loadable({
   loader: () => import('./IdLindex'),

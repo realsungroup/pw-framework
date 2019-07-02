@@ -82,7 +82,7 @@ class IdLindex extends Component {
     }
   };
   handleClick = activeKey => {
-    console.log(activeKey);
+    // console.log(activeKey);
     this.setState({
       activeKey
     });
