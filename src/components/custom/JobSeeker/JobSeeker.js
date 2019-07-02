@@ -32,12 +32,12 @@ const MenuList = [
   {
     label: '工作经历',
     value: '工作经历',
-    icon: 'apartment'
+    icon: 'desktop'
   },
   {
     label: '家庭成员关系',
     value: '家庭成员关系',
-    icon: 'apartment'
+    icon: 'home'
   },
   {
     label: '专业培训',

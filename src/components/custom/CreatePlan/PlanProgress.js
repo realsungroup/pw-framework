@@ -159,7 +159,7 @@ class PlanProgress extends React.Component {
             总数：{intTotalNumber}，成功：{intCurrent - intErrLines}，出错：
             {intErrLines}
           </div>
-          {intErrLines === 0 ? (
+          {intErrLines !== 0 ? (
             <div style={{ textAlign: 'center' }}>
               <span
                 onClick={() => {

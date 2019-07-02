@@ -3,6 +3,7 @@ import ETnoticeMain from './ETnoticeMain';
 import { Steps, Spin } from 'antd';
 import ArrangingCourses from '../ArrangingCourses';
 import ReviewRequisition from './RequisitionReview';
+import FeedbackReview from './FeedbackReview'
 
 const { Step } = Steps;
 class ExternalTraining extends React.Component {
@@ -30,7 +31,7 @@ class ExternalTraining extends React.Component {
         page = <ETnoticeMain key={2} id={2}/>;
         break;
       case 4:
-        page = <ReviewRequisition />;
+        page = <FeedbackReview />;
         break;
       default:
         page = null

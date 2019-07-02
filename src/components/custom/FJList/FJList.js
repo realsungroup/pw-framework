@@ -1038,11 +1038,12 @@ class FJList extends React.Component {
             visible={this.state.showTab}
             onOk={() => this.setState({ showTab: false })}
             onCancel={() => this.setState({ showTab: false })}
+            centered
+            style={{top:50}}
           >
             <Tabs defaultActiveKey={this.state.tabsKey}>
               <TabPane tab="历年绩效" key="1">
                 <TableData
-                  // height={"calc(100vh - 300px)"}
                   resid={420130498195}
                   recordFormFormWidth={'90%'}
                   hasBeBtns={false}
@@ -1053,11 +1054,12 @@ class FJList extends React.Component {
                   hasRowDelete={false}
                   hasRowModify={false}
                   hasRowView={false}
+                  height={450}
+                  subtractH={200}
                 />
               </TabPane>
               <TabPane tab="历史计划" key="2">
                 <TableData
-                  height={'calc(100vh - 300px)'}
                   resid={611315248461}
                   cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
                   recordFormFormWidth={'90%'}
@@ -1068,7 +1070,8 @@ class FJList extends React.Component {
                   hasRowDelete={false}
                   hasRowModify={false}
                   hasRowView={false}
-                  subtractH={190}
+                  height={450}
+                  subtractH={200}
                 />
               </TabPane>
               <TabPane tab="员工个人发展" key="3">

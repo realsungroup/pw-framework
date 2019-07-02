@@ -297,23 +297,11 @@ class IdLindex extends Component {
         return (
           <div>
             <TableData
+            {...referenceCheck}
               key={613152614705}
-              resid={613152614705}
-              // height={500}
-              hasAdd={false}
+              // actionBarExtra 
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              actionBarExtra={() => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.addFormCategory('reference');
-                    }}
-                  >
-                    添加
-                  </Button>
-                );
-              }}
             />
           </div>
         );

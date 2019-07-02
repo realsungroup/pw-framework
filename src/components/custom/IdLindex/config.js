@@ -18,5 +18,11 @@ export const assementForm = {
 };
 // 背景调查表
 export const referenceCheck = {
-  resid: 613152614705
+  resid: 613152614705,
+  defaultColumnWidth:270,
+  hasAdd:true,
+  hasModify:true,
+  hasDelete:false,
+  hasrowView:true
+
 };

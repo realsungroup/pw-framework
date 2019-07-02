@@ -17,11 +17,13 @@ import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
 import http from 'Util20/api';
 import moment from 'moment';
+import CalendarMode from './CalendarMode'
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
+const courseDetailId = '615054661547';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -31,6 +33,18 @@ const formItemLayout = {
     xs: { span: 24 },
     sm: { span: 16 }
   }
+};
+const activeStyle = {
+  fontSize: 20,
+  marginRight: 6,
+  cursor: 'pointer',
+  color: '#2593fb'
+};
+
+const unactiveStyle = {
+  fontSize: 20,
+  marginRight: 6,
+  cursor: 'pointer'
 };
 
 class ArrangingCourses extends React.Component {
@@ -50,7 +64,8 @@ class ArrangingCourses extends React.Component {
     searchKeyword: '', //搜索的关键词
     searchPeriod: ['', ''], //搜索时间段
     selectedRecentPeriod: 'all', //下拉选项的值
-    rangePickerValue: [null, null] // 日期选择器的值
+    rangePickerValue: [null, null], // 日期选择器的值
+    mode: 'card' // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
   };
 
   componentDidMount = async () => {
@@ -176,7 +191,7 @@ class ArrangingCourses extends React.Component {
     let res;
     try {
       res = await http().modifyRecords({
-        resid: '613959487818',
+        resid: courseDetailId,
         data
       });
       message.success(res.message);
@@ -257,7 +272,7 @@ class ArrangingCourses extends React.Component {
     this.setState({ searchPeriod }, this.searchCourseArrangment);
   };
   render() {
-    let { courseArrangment, selectedCourseArrangment } = this.state;
+    let { courseArrangment, selectedCourseArrangment, mode } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
       <div style={{ flex: 1, display: 'flex' }}>
@@ -273,11 +288,41 @@ class ArrangingCourses extends React.Component {
               >
                 添加课程安排
               </Button>
-              <span style={{ fontSize: 22, fontWeight: 700 }}>显示模式: </span>
-              <Icon
-                type="calendar"
-                style={{ fontSize: 20, color: '#80aef7' }}
-              />
+              <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
+                显示模式:
+              </span>
+              <span>
+                <Icon
+                  type="credit-card"
+                  style={mode === 'card' ? activeStyle : unactiveStyle}
+                  key="card"
+                  theme={mode === 'card' ? 'filled' : null}
+                  title="卡片模式"
+                  onClick={() => {
+                    this.setState({ mode: 'card' });
+                  }}
+                />
+                <Icon
+                  type="table"
+                  style={mode === 'table' ? activeStyle : unactiveStyle}
+                  key="card"
+                  // theme={mode === 'table' ? 'filled' : null}
+                  title="表格模式"
+                  onClick={() => {
+                    this.setState({ mode: 'table' });
+                  }}
+                />
+                <Icon
+                  key="calendar"
+                  type="calendar"
+                  style={mode === 'calendar' ? activeStyle : unactiveStyle}
+                  theme={mode === 'calendar' ? 'filled' : null}
+                  title="日历模式"
+                  onClick={() => {
+                    this.setState({ mode: 'calendar' });
+                  }}
+                />
+              </span>
             </div>
             <div className="arranging_courses-header_search">
               <Select
@@ -318,85 +363,104 @@ class ArrangingCourses extends React.Component {
               />
             </div>
           </header>
-          <div className="arranging_courses-course_list">
-            {courseArrangment.length ? (
-              courseArrangment.map(item => (
-                <Card
-                  title={item.CourseName}
-                  className="arranging_courses_item"
-                  key={item.REC_ID}
-                  extra={
-                    <Icon
-                      type="bell"
-                      onClick={() => {
-                        this.setState({
-                          isShowBells: true,
-                          selectedCourseArrangment: item
-                        });
-                      }}
-                      theme={item.isNotice ? 'twoTone' : ''}
-                      style={{ fontSize: 20 }}
-                    ></Icon>
-                  }
-                  actions={[
-                    <span
-                      onClick={() =>
-                        this.setState({
-                          isShowModifyModal: true,
-                          selectedCourseArrangment: item
-                        })
-                      }
-                    >
-                      <Icon type="edit" />
-                      修改
-                    </span>,
-                    <Popconfirm
-                      title="确认删除？"
-                      onConfirm={this.deleteCourseArrangment.bind(this, item)}
-                      icon={
-                        <Icon
-                          type="question-circle-o"
-                          style={{ color: 'red' }}
-                        />
-                      }
-                    >
-                      <span style={{ color: '#fc4f54' }} type="danger">
-                        <Icon type="delete" />
-                        删除
+          {this.state.mode === 'card' && (
+            <div className="arranging_courses-course_list">
+              {courseArrangment.length ? (
+                courseArrangment.map(item => (
+                  <Card
+                    title={item.CourseName}
+                    className="arranging_courses_item"
+                    key={item.REC_ID}
+                    extra={
+                      <Icon
+                        type="bell"
+                        onClick={() => {
+                          this.setState({
+                            isShowBells: true,
+                            selectedCourseArrangment: item
+                          });
+                        }}
+                        theme={item.isNotice ? 'twoTone' : ''}
+                        style={{ fontSize: 20 }}
+                      ></Icon>
+                    }
+                    actions={[
+                      <span
+                        onClick={() =>
+                          this.setState({
+                            isShowModifyModal: true,
+                            selectedCourseArrangment: item
+                          })
+                        }
+                      >
+                        <Icon type="edit" />
+                        修改
+                      </span>,
+                      <Popconfirm
+                        title="确认删除？"
+                        onConfirm={this.deleteCourseArrangment.bind(this, item)}
+                        icon={
+                          <Icon
+                            type="question-circle-o"
+                            style={{ color: 'red' }}
+                          />
+                        }
+                      >
+                        <span style={{ color: '#fc4f54' }} type="danger">
+                          <Icon type="delete" />
+                          删除
+                        </span>
+                      </Popconfirm>,
+                      <span
+                        onClick={() => {
+                          this.setState({
+                            isShowLearnerInfo: true,
+                            selectedCourseArrangment: item
+                          });
+                        }}
+                      >
+                        <Icon type="team" />
+                        学员信息
                       </span>
-                    </Popconfirm>,
-                    <span
-                      onClick={() => {
-                        this.setState({
-                          isShowLearnerInfo: true,
-                          selectedCourseArrangment: item
-                        });
-                      }}
-                    >
-                      <Icon type="team" />
-                      学员信息
-                    </span>
-                  ]}
-                >
-                  <div className="arranging_courses_item_content">
-                    <div className="content_item">主讲:{item.Teacher}</div>
-                    <div className="content_item">人数:{item.Attendees}</div>
-                    <div className="content_item">
-                      地点:{item.CourseLocation}
+                    ]}
+                  >
+                    <div className="arranging_courses_item_content">
+                      <div className="content_item">主讲:{item.Teacher}</div>
+                      <div className="content_item">人数:{item.Attendees}</div>
+                      <div className="content_item">
+                        地点:{item.CourseLocation}
+                      </div>
+                      <div className="content_item">
+                        时间：{item.StartDatetime}
+                      </div>
+                      <div className="content_item">
+                        实际费用:{  `${item.actualCost}元`}
+                      </div>
                     </div>
-                    <div className="content_item">
-                      时间：{item.StartDatetime}
-                    </div>
-                  </div>
-                </Card>
-              ))
-            ) : (
-              <List
-                dataSource={courseArrangment}
-                style={{ width: '100%' }}
-              ></List>
-            )}
-          </div>
+                  </Card>
+                ))
+              ) : (
+                <List
+                  dataSource={courseArrangment}
+                  style={{ width: '100%' }}
+                ></List>
+              )}
+            </div>
+          )}
+          {this.state.mode === 'calendar' && <div><CalendarMode></CalendarMode></div>}
+          {this.state.mode === 'table' && (
+            <div style={{width:'100%',flex:1}}>
+              <TableData
+                resid="613959487818"
+                // height={440}
+                subtractH={200}
+                hasRowView={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowSelection={true}
+              ></TableData>
+            </div>
+          )}
         </div>
         {this.state.isShowModifyModal ? (
           <Modal
@@ -411,15 +475,17 @@ class ArrangingCourses extends React.Component {
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
+                  console.log(values);
                   let { selectedCourseArrangment } = this.state;
                   let courseArrangment = {
                     ...selectedCourseArrangment,
                     StartDatetime: values.modifyStartDatetime.format(
                       'YYYY-MM-DD HH:mm:ss'
                     ),
-                    CourseLocation: values.modifyCourseLocation
+                    CourseLocation: values.modifyCourseLocation,
+                    classType: values.classType,
+                    actualCost: parseFloat(values.actualCost)
                   };
-                  //CourseID  StartDatetime  CourseLocation
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
                     isShowModifyModal: false,
@@ -502,6 +568,23 @@ class ArrangingCourses extends React.Component {
                     .CourseLocation
                 })(<Input />)}
               </Form.Item>
+
+              <Form.Item label="实际费用">
+                {getFieldDecorator('actualCost', {
+                  initialValue: this.state.selectedCourseArrangment.actualCost
+                })(<Input type="number" />)}
+              </Form.Item>
+              <Form.Item label="课程类型">
+                {getFieldDecorator('classType', {
+                  initialValue: this.state.selectedCourseArrangment.classType
+                })(
+                  <Select placeholder="请选择课程类型">
+                    <Option value="外训">外训</Option>
+                    <Option value="内训">内训</Option>
+                    <Option value="外聘内训">外聘内训</Option>
+                  </Select>
+                )}
+              </Form.Item>
             </Form>
           </Modal>
         ) : null}
@@ -525,17 +608,17 @@ class ArrangingCourses extends React.Component {
           destroyOnClose
         >
           <TableData
-            resid="613959487818"
+            resid={courseDetailId}
             key={selectedCourseArrangment.REC_ID}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             height={440}
-            subtractH={200}
+            subtractH={240}
             hasRowView={false}
             hasModify={false}
             hasDelete={false}
             hasRowSelection={true}
-            cmswhere={`CourseArrangeID = '${this.state.selectedCourseArrangment.CourseArrangeID}'`}
+            cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
             actionBarExtra={records => (
               <Button
                 onClick={() => {
@@ -553,10 +636,14 @@ class ArrangingCourses extends React.Component {
                     );
                   });
                   let keys = records.selectedRowKeys;
-                  let selectedMoveLearners = keys.map(item => {
-                    return records.dataSource.find(i => {
+                  let selectedMoveLearners = [];
+                  keys.forEach(item => {
+                    let learner = records.dataSource.find(i => {
                       return i.REC_ID === item;
                     });
+                    if(learner){
+                      selectedMoveLearners.push(learner);
+                    }
                   });
                   this.setState({
                     isShowMoveLearner: true,
@@ -598,7 +685,7 @@ class ArrangingCourses extends React.Component {
             hasModify={false}
             hasDelete={false}
             hasRowSelection={true}
-            cmswhere={`C3_614184177086 = '${this.state.selectedCourseArrangment.CourseArrangeID}'`}
+            cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
           ></TableData>
         </Modal>
         <Modal
@@ -622,6 +709,7 @@ class ArrangingCourses extends React.Component {
             selectedMoveLearners.forEach(item => {
               item.CourseArrangeID = selectedTargetCourseArrangment;
             });
+            console.log(selectedTargetCourseArrangment)
             await this.moveLearner(selectedMoveLearners);
             this.setState({
               isShowMoveLearner: false,
@@ -640,9 +728,9 @@ class ArrangingCourses extends React.Component {
               renderItem={item => (
                 <div
                   style={{ display: 'flex', width: '100%', marginBottom: 8 }}
-                  key={item.REC_ID}
+                  key={item.CourseArrangeID}
                 >
-                  <Radio checked={item.checked} value={item.REC_ID} />
+                  <Radio checked={item.checked} value={item.CourseArrangeID} />
                   <div style={{ flex: 1 }}>{item.CourseName}</div>
                   <div style={{ flex: 1 }}>{item.StartDatetime}</div>
                   <div style={{ flex: 1 }}>{item.CourseLocation}</div>
@@ -663,9 +751,13 @@ class ArrangingCourses extends React.Component {
             destroyOnClose={true}
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
+                console.log(values);
+                console.log(parseFloat(values.actualCost));
                 if (!err) {
                   let courseArrangment = { ...values };
-                  //CourseID  StartDatetime  CourseLocation
+                  courseArrangment.actualCost = parseFloat(
+                    courseArrangment.actualCost
+                  );
                   this.addCourseArrangment(courseArrangment);
                   this.setState({
                     isShowAddCourseArrangment: false,
@@ -684,7 +776,7 @@ class ArrangingCourses extends React.Component {
                   rules: [
                     {
                       required: true,
-                      message: '请选择一门课程!'
+                      message: '请选择门课程!'
                     }
                   ]
                 })(
@@ -731,6 +823,19 @@ class ArrangingCourses extends React.Component {
                     }
                   ]
                 })(<Input />)}
+              </Form.Item>
+
+              <Form.Item label="实际费用">
+                {getFieldDecorator('actualCost', {})(<Input type="number" />)}
+              </Form.Item>
+              <Form.Item label="课程类型">
+                {getFieldDecorator('classType', {})(
+                  <Select placeholder="请选择课程类型">
+                    <Option value="外训">外训</Option>
+                    <Option value="内训">内训</Option>
+                    <Option value="外聘内训">外聘内训</Option>
+                  </Select>
+                )}
               </Form.Item>
             </Form>
           </Modal>
