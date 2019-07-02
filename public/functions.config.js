@@ -11,7 +11,7 @@ window[606476781618] = {
     hasRowView: true,
     hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: false,
+    hasRowDelete: true,
     subtractH: 220,
     hasRowSelection: true
   }
@@ -229,7 +229,7 @@ window[592305842055] = {
     btnsVisible: {
       check: true,
       mod: false,
-      del: false,
+      del: true,
       edit: false,
       save: false,
       cancel: false
