@@ -1536,3 +1536,12 @@ window[614709663995] = {
   }
 };
 
+//员工 我的课程
+window[615374522659] = {
+  name: 'EmployeeCourses', // 组件名称，这里为定制组件名称
+  title: '我的课程', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};

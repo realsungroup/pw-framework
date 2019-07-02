@@ -81,7 +81,4 @@ export { CreateTotalPlan } from '../components/custom/loadableCustom';
 export { PersonGradeManagement } from '../components/custom/loadableCustom';
 export { ExamAnalyze } from '../components/custom/loadableCustom';
 export { ExternalTraining } from '../components/custom/loadableCustom';
-
-
-
-
+export { EmployeeCourses } from '../components/custom/loadableCustom'

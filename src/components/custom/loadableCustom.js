@@ -371,3 +371,9 @@ export const PersonInfo = Loadable({
   }
 });
 
+export const EmployeeCourses = Loadable({
+  loader: () => import('./EmployeeCourses'),
+  loading() {
+    return minLoading;
+  }
+})
