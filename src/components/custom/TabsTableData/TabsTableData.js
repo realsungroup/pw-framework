@@ -43,7 +43,7 @@ class TabsTableData extends React.Component {
   render() {
     const {data} = this.state
     return (
-      <div className="table-data-wrap" style={{flex:1,width:"100%",height:"100%"}} >
+      <div className="table-data-wrap" style={{width:"100%",height:"100%"}} >
         <Tabs
           defaultActiveKey="1"
           style={{ width: '100%', backgroundColor: '#fff',height:"100%" }}
