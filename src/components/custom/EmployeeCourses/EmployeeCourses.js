@@ -69,9 +69,10 @@ class EmployeeCourses extends React.Component {
     selectedCourse: null, //选中的课程
     calendarEvents: [], //日历事件
     wid: '80%',
-    applyVisible: false,  //申请模态框
-    feebackVisible:false, // 反馈和行动计划模态框
+    applyVisible: false, //申请模态框
+    feebackVisible: false, // 反馈和行动计划模态框
     applyModalMode: 'view', // 申请单的操作，默认为查看
+    feedbackModalMode: 'view', // 反馈的操作，默认为查看
     ReviewRecordModalVisible: false, //申请单审批记录模态窗显示状态
     tipsModalVisible: false // 心得模态窗显示状态
   };
@@ -258,13 +259,14 @@ class EmployeeCourses extends React.Component {
   handleCancel = () => {
     this.setState({
       visible: false,
-      feebackVisible:false,
+      feebackVisible: false,
+      feedbackModalMode: 'view'
     });
   };
   handleOk = () => {
     this.setState({
       visible: false,
-      feebackVisible:false,
+      feebackVisible: false
     });
   };
   handleOpenAppAndFeeback = () => {
@@ -295,6 +297,32 @@ class EmployeeCourses extends React.Component {
       visible: false,
       feebackVisible: true
     });
+  };
+  submitApply = async () => {
+    let res,
+      record = { ...this.state.selectedCourse };
+    try {
+      res = await http().modifyRecords({
+        resid: resid,
+        data: [{ REC_ID: record.REC_ID, C3_615488174421: 'Y' }]
+      });
+      message.success(res.message);
+      let myCourses = [...this.state.myCourses],
+        selectedCourse = {...res.data[0], checked:true};
+      myCourses[
+        myCourses.findIndex(item => item.REC_ID === selectedCourse.REC_ID)
+      ] = selectedCourse;
+      this.setState({
+        applyVisible: false,
+        applyModalMode: 'view',
+        myCourses,
+        selectedCourse
+      });
+      // this.getCourses();
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    }
   };
   renderCoursesList = () => {
     let { myCourses } = this.state;
@@ -498,7 +526,15 @@ class EmployeeCourses extends React.Component {
                       <div>
                         {/* 课程反馈与行动计划 是否为进行中 */}
                         {selectedCourse.C3_615377473913 === 'ing' ? (
-                          <span className="timeline_action">
+                          <span
+                            className="timeline_action"
+                            onClick={() =>
+                              this.setState({
+                                feebackVisible: true,
+                                feedbackModalMode: 'modify'
+                              })
+                            }
+                          >
                             填写课程反馈与行动计划
                           </span>
                         ) : null}
@@ -515,7 +551,12 @@ class EmployeeCourses extends React.Component {
                       </div>
                       <div>
                         {selectedCourse.C3_615377473913 === 'Y' ? (
-                          <span className="timeline_action">
+                          <span
+                            className="timeline_action"
+                            onClick={() =>
+                              this.setState({ feebackVisible: true })
+                            }
+                          >
                             查看课程反馈与行动计划
                           </span>
                         ) : null}
@@ -650,17 +691,25 @@ class EmployeeCourses extends React.Component {
               ? [
                   <Button
                     onClick={() => {
-                      this.setState({ applyVisible: false, applyModalMode: 'view' });
+                      this.setState({
+                        applyVisible: false,
+                        applyModalMode: 'view'
+                      });
                     }}
                   >
                     关闭
                   </Button>,
-                  <Button type='primary'>提交</Button>
+                  <Button type="primary" onClick={this.submitApply}>
+                    提交
+                  </Button>
                 ]
               : [
                   <Button
                     onClick={() => {
-                      this.setState({ applyVisible: false, applyModalMode: 'view' });
+                      this.setState({
+                        applyVisible: false,
+                        applyModalMode: 'view'
+                      });
                     }}
                   >
                     关闭
@@ -668,7 +717,7 @@ class EmployeeCourses extends React.Component {
                 ]
           }
         >
-          <CourseApply mode={this.state.applyModalMode}/>
+          <CourseApply mode={this.state.applyModalMode} />
         </Modal>
         <Modal
           title="反馈和行动计划"
@@ -676,10 +725,24 @@ class EmployeeCourses extends React.Component {
           width={this.state.wid}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={
+            this.state.feedbackModalMode === 'modify'
+              ? null
+              : [
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        feebackVisible: false,
+                        feedbackModalMode: 'view'
+                      });
+                    }}
+                  >
+                    关闭
+                  </Button>
+                ]
+          }
         >
-          <FeedBackAndPlan
-            
-          />
+          <FeedBackAndPlan mode={this.state.feedbackModalMode} />
         </Modal>
         {/* 审批记录模态窗 */}
         <Modal
@@ -693,7 +756,7 @@ class EmployeeCourses extends React.Component {
             this.setState({ ReviewRecordModalVisible: false });
           }}
         ></Modal>
-        {/* 审批记录模态窗 */}
+        {/* 心得模态窗 */}
         <Modal
           title="心得"
           visible={this.state.tipsModalVisible}
