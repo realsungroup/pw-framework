@@ -86,3 +86,4 @@ export { CourseResources } from '../components/custom/loadableCustom';
 
 
 
+export { EmployeeCourses } from '../components/custom/loadableCustom'

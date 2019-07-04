@@ -1,0 +1,23 @@
+.emploee_courses {
+  padding: 0 12px;
+  background-color: #ffffff;
+  &-header {
+    display: flex;
+    &-search {
+      width: 200px;
+    }
+  }
+  &-main {
+    &-course_content {
+      display: flex;
+      flex-wrap: wrap;
+      .course_item {
+        flex-basis: 50%;
+      }
+		}
+		&-course_footer{
+			display: flex;
+			justify-content: space-between;
+		}
+  }
+}

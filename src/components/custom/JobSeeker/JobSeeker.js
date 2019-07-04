@@ -629,21 +629,23 @@ class JobSeeker extends Component {
               <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
                 {getFieldDecorator('RecommenderRelation', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="婚姻状况/Marital status" {...formItemLayout}>
+              <Form.Item label="婚姻状况(选填)/Marital status(Optional)" {...formItemLayout}>
                 {getFieldDecorator('MaritalStatus', {})(
-                  <Radio.Group>
-                    <Radio value="未婚">未婚</Radio>
-                    <Radio value="已婚">已婚</Radio>
-                    <Radio value="离异">离异</Radio>
-                  </Radio.Group>
+                  // <Radio.Group>
+                  //   <Radio value="未婚">未婚</Radio>
+                  //   <Radio value="已婚">已婚</Radio>
+                  //   <Radio value="离异">离异</Radio>
+                  // </Radio.Group>
+                  <Input></Input>
                 )}
               </Form.Item>
-              <Form.Item label="有无子女/children if any" {...formItemLayout}>
+              <Form.Item label="有无子女(选填)/children if any(Optional)" {...formItemLayout}>
                 {getFieldDecorator('ChildIf', {})(
-                  <Radio.Group>
-                    <Radio value="有">有</Radio>
-                    <Radio value="无">无</Radio>
-                  </Radio.Group>
+                  // <Radio.Group>
+                  //   <Radio value="有">有</Radio>
+                  //   <Radio value="无">无</Radio>
+                  // </Radio.Group>
+                  <Input></Input>
                 )}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="教育背景">
