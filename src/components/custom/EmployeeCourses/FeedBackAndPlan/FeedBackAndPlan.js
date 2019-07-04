@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './FeedBackAndPlan.less';
-import { Card, Row, Col, Rate, InputNumber,DatePicker } from 'antd';
+import { Card, Row, Col, Rate, InputNumber, DatePicker } from 'antd';
+import moment from 'moment';
+const dateFormat = 'YYYY-MM-DD';
 
 class FeedBackAndPlan extends Component {
   constructor(props) {
@@ -15,31 +17,87 @@ class FeedBackAndPlan extends Component {
         },
         {
           action: '找出问题的原因',
-          start: '2018-09-10',
-          end: '2019-07-06',
+          start: '2014-09-10',
+          end: '2017-07-06',
           rateOfProgress: '30%'
         },
         {
           action: '寻求可行的解决方案',
-          start: '2018-09-10',
-          end: '2019-07-06',
+          start: '2015-09-10',
+          end: '2018-07-06',
           rateOfProgress: '70%'
         },
         {
           action: '验证方案效果',
-          start: '2018-09-10',
+          start: '2015-09-10',
           end: '2019-07-06',
           rateOfProgress: '50%'
         },
         {
           action: '应用方案并及时反馈',
-          start: '2018-09-10',
-          end: '2019-07-06',
+          start: '2016-09-10',
+          end: '2017-07-06',
           rateOfProgress: '100%'
         }
-      ]
+      ],
+      rate1: 0,
+      rate2: 0,
+      rate3: 0,
+      rate4: 0,
+      rate5: 0,
+      rate6: 0,
+      rate7: 0,
+      rate8: 0
     };
   }
+  rate1Change = value => {
+    console.log(value);
+    this.setState({
+      rate1: value
+    });
+  };
+  rate2Change = value => {
+    console.log(value);
+    this.setState({
+      rate2: value
+    });
+  };
+  rate3Change = value => {
+    console.log(value);
+    this.setState({
+      rate3: value
+    });
+  };
+  rate4Change = value => {
+    console.log(value);
+    this.setState({
+      rate4: value
+    });
+  };
+  rate5Change = value => {
+    console.log(value);
+    this.setState({
+      rate5: value
+    });
+  };
+  rate6Change = value => {
+    console.log(value);
+    this.setState({
+      rate6: value
+    });
+  };
+  rate7Change = value => {
+    console.log(value);
+    this.setState({
+      rate7: value
+    });
+  };
+  rate8Change = value => {
+    console.log(value);
+    this.setState({
+      rate8: value
+    });
+  };
   render() {
     return (
       <div>
@@ -48,7 +106,11 @@ class FeedBackAndPlan extends Component {
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate1Change(value);
+                  }}
+                />
               </Col>
             </Row>
           </Card>
@@ -56,13 +118,21 @@ class FeedBackAndPlan extends Component {
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate2Change(value);
+                  }}
+                />
               </Col>
             </Row>
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate3Change(value);
+                  }}
+                />
               </Col>
             </Row>
           </Card>
@@ -70,19 +140,41 @@ class FeedBackAndPlan extends Component {
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解 内容非常了解</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate4Change(value);
+                  }}
+                />
               </Col>
             </Row>
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解 内容非常了解</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate5Change(value);
+                  }}
+                />
               </Col>
             </Row>
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解授课内容</Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate6Change(value);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>讲师备课充分，对授课内容非常了解授课内容</Col>
+              <Col span={12}>
+                <Rate
+                  onChange={value => {
+                    this.rate7Change(value);
+                  }}
+                />
               </Col>
             </Row>
             <Row>
@@ -90,7 +182,11 @@ class FeedBackAndPlan extends Component {
                 讲师备课充分，对授课内容非常了解内容非常了解内容非常了解
               </Col>
               <Col span={12}>
-                <Rate />
+                <Rate
+                  onChange={value => {
+                    this.rate8Change(value);
+                  }}
+                />
               </Col>
             </Row>
           </Card>
@@ -106,11 +202,17 @@ class FeedBackAndPlan extends Component {
           {this.state.paln.map((item, index) => {
             return (
               <Row>
-                <Col span={2}>{index+1}</Col>
+                <Col span={2}>{index + 1}</Col>
                 <Col span={10}>{item.action}</Col>
-                <Col span={5}><DatePicker></DatePicker></Col>
-                <Col span={5}><DatePicker></DatePicker></Col>
-                <Col span={2}><InputNumber value={item.rateOfProgress} min={1} max={100}></InputNumber></Col>
+                <Col span={5}>
+                  <DatePicker value={moment(`${item.start}`, dateFormat)} />
+                </Col>
+                <Col span={5}>
+                  <DatePicker value={moment(`${item.end}`, dateFormat)} />
+                </Col>
+                <Col span={2}>
+                  <InputNumber value={item.rateOfProgress} min={1} max={100} />
+                </Col>
               </Row>
             );
           })}
