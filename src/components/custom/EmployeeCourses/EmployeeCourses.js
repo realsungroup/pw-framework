@@ -9,7 +9,8 @@ import {
   Divider,
   Timeline,
   Pagination,
-  message
+  message,
+  Modal
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -17,6 +18,8 @@ import http from 'Util20/api';
 import Calendar from 'ic-components/lib/Calendar';
 import 'ic-components/lib/Calendar/style/index.less';
 
+import CourseDetail from './CourseDetail';
+import CourseApply from './CourseApply';
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Search } = Input;
@@ -63,7 +66,9 @@ class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
     selectedCourse: null, //选中的课程
-    calendarEvents: []
+    calendarEvents: [],
+    wid: '80%',
+    applyVisible: false
   };
   componentDidMount() {
     this.getCourses();
@@ -240,12 +245,47 @@ class EmployeeCourses extends React.Component {
       </div>
     </header>
   );
-
+  handleDetailClick = () => {
+    this.setState({
+      visible: true
+    });
+  };
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+  handleOk = () => {
+    this.setState({
+      visible: false
+    });
+  };
+  handleOpenAppAndFeeback = () => {
+    this.setState({
+      applyVisible: true
+    });
+  };
+  handleApplyOk = () => {
+    this.setState({
+      applyVisible: false
+    });
+  };
+  handleApplyCancel = () => {
+    this.setState({
+      applyVisible: false
+    });
+  };
+  closeCourseDetailOpenApply = () => {
+    this.setState({
+      visible: false,
+      applyVisible: true
+    });
+  };
   renderCoursesList = () => {
     let { myCourses } = this.state;
     return myCourses.map(item => (
       <Card
-        extra={<Radio checked={item.checked}></Radio>}
+        extra={<Radio checked={item.checked} />}
         title={item.C3_613941384592}
         style={{ marginBottom: '12px', cursor: 'pointer' }}
         key={item.REC_ID}
@@ -268,7 +308,7 @@ class EmployeeCourses extends React.Component {
         </div>
         <Divider style={{ margin: '12px 0' }} />
         <div className="emploee_courses-main-course_footer">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
             <span
               style={{
                 width: 14,
@@ -281,7 +321,13 @@ class EmployeeCourses extends React.Component {
             {item.C3_613961012148}
           </div>
           <div>
-            <Button type="link" icon="info-circle">
+            <Button
+              type="link"
+              icon="info-circle"
+              onClick={() => {
+                this.handleDetailClick();
+              }}
+            >
               课程详情
             </Button>
           </div>
@@ -529,6 +575,26 @@ class EmployeeCourses extends React.Component {
             </div>
           </TabPane>
         </Tabs>
+        <Modal
+          title="课程详情"
+          visible={this.state.visible}
+          width={this.state.wid}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <CourseDetail
+            onCloseDetailOpenAppply={this.closeCourseDetailOpenApply}
+          />
+        </Modal>
+        <Modal
+          title="申请表和反馈"
+          visible={this.state.applyVisible}
+          onOk={this.handleApplyOk}
+          onCancel={this.handleApplyCancel}
+          width={this.state.wid}
+        >
+          <CourseApply />
+        </Modal>
       </div>
     );
   }

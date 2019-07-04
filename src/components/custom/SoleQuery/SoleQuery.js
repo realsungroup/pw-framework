@@ -11,6 +11,7 @@ import {
   Spin
 } from 'antd';
 import http from '../../../util20/api';
+import PlanProgress from '../CreatePlan/PlanProgress';
 import qs from 'qs';
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
@@ -25,15 +26,17 @@ class SoleQuery extends Component {
       AllQuestions: [],
       subStatus: true,
       wid: 300,
-      isGetgift: '',
+      isGetgift: '', //是否中奖
       tel: '',
       recid: '',
       hasGiftList: [],
       queryStatus: '', // 已停止 | 已发送
-      hasGift: '',
+      hasGift: '', //问卷有无礼品
       loading: true,
       hasSubmit: false,
-      subRecid:'',   // 该用户是否提交记录ID
+      subRecid: '', // 该用户是否提交记录ID
+      isShowProgress: false,
+      taskList: []
     };
   }
 
@@ -53,7 +56,7 @@ class SoleQuery extends Component {
     } catch (err) {
       return console.error(err);
     }
-    console.log('问卷信息', res);
+    // console.log('问卷信息', res);
 
     this.setState({
       queryDetail: res.data[0],
@@ -98,12 +101,12 @@ class SoleQuery extends Component {
     } catch (err) {
       return console.error(err);
     }
-    console.log('获取到是否提交信息', res);
+    // console.log('获取到是否提交信息', res);
     let hasSubmit = false;
     if (res.data[0].hasSubmit === '已提交') {
-       hasSubmit = true;
-    }  
-    this.setState({ hasSubmit ,subRecid:res.data[0].REC_ID});
+      hasSubmit = true;
+    }
+    this.setState({ hasSubmit, subRecid: res.data[0].REC_ID });
     return hasSubmit;
   };
   // 获取问卷试题
@@ -179,11 +182,11 @@ class SoleQuery extends Component {
     const qsObj = qs.parse(quertString.substring(1));
 
     // 获取问卷信息
-   const res =  await  this.getQuery(qsObj.id);
-  //  console.log('res',res);
+    const res = await this.getQuery(qsObj.id);
+    //  console.log('res',res);
     // 查询用户是否已提交
     const hasSubmit = await this.getUserIsSubmmit(qsObj.id);
-  
+
     if (hasSubmit) {
       // // 获取中奖名单
       // this.getHasPrase(qsObj.id);
@@ -194,12 +197,58 @@ class SoleQuery extends Component {
     // 获取问卷试题
     await this.getThisQueryQuestions(qsObj.id);
     // 获取中奖名单
-    if(res.data[0].gift === '1'){
+    if (res.data[0].gift === '1') {
       this.getHasPrase(qsObj.id);
     }
     this.setState({ loading: false });
   }
 
+  // 进度条关闭
+  handleShowProgress = async () => {
+    const { hasGift, queryID } = this.state;
+    // 改变提交状态
+    try {
+      this.setState({ loading: true });
+      await http().modifyRecords({
+        resid: 609613163948,
+        data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
+      });
+    } catch (err) {
+      console.error(err);
+      this.setState({ loading: false });
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+    //  判断有无礼品
+    if (hasGift === '0') {
+      return this.setState({
+        isShowProgress: false,
+        hasSubmit: true
+      });
+    }
+    // 有礼品时
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: 608911532639,
+        data: [
+          {
+            staff_id: userInfo.UserInfo.EMP_ID,
+            query_id: queryID
+          }
+        ]
+      });
+      this.setState({
+        isGetgift: res.data[0].is_get_gift,
+        recid: res.data[0].REC_ID,
+        isShowProgress: false,
+        visible: true
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  };
   handleCheckboxChange = (questionId, optionId, e) => {
     const { AllQuestions } = this.state;
     const question = AllQuestions.find(
@@ -439,63 +488,72 @@ class SoleQuery extends Component {
       console.log(answers);
     });
 
-    console.log({ answers });
+    console.log({ answers }); 
+    const newanswers =[...answers];
+    newanswers.forEach((answer,index)=>{
+        answer._id = index+1;
+        answer._state ='added';
+    });
+     console.log(newanswers);
+    this.setState({
+      taskList: newanswers
+    });
 
-    let res;
-    try {
-      this.setState({loading:true})
-      res = await http().addRecords({
-        resid: '608838682402',
-        data: answers
-      });
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-    // this.setState({loading:true})
-    try {
-      this.setState({loading:true})
-      await http().modifyRecords({
-        resid: 609613163948,
-        data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
-      });
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-     this.setState({loading:false})
-    // 无礼品时
-    if (hasGift === '0') {
-      return Modal.success({
-        title: '问卷已经成功提交',
-        okText: '知道了',
-        onOk: () => {
-          this.setState({
-            hasSubmit: true
-          });
-        }
-      });
-    }
+    // let res;
+    // try {
+    //   this.setState({loading:true})
+    //   res = await http().addRecords({
+    //     resid: '608838682402',
+    //     data: answers
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
+    // // this.setState({loading:true})
+    // try {
+    //   this.setState({loading:true})
+    //   await http().modifyRecords({
+    //     resid: 609613163948,
+    //     data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
+    //  this.setState({loading:false})
+    // // 无礼品时
+    // if (hasGift === '0') {
+    //   return Modal.success({
+    //     title: '问卷已经成功提交',
+    //     okText: '知道了',
+    //     onOk: () => {
+    //       this.setState({
+    //         hasSubmit: true
+    //       });
+    //     }
+    //   });
+    // }
     // 有礼品时
-    try {
-      res = await http().addRecords({
-        resid: 608911532639,
-        data: [
-          {
-            staff_id: userInfo.UserInfo.EMP_ID,
-            query_id: queryID
-          }
-        ]
-      });
-      this.setState({
-        isGetgift: res.data[0].is_get_gift,
-        recid: res.data[0].REC_ID,
-        visible: true
-      });
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
+    // try {
+    //   res = await http().addRecords({
+    //     resid: 608911532639,
+    //     data: [
+    //       {
+    //         staff_id: userInfo.UserInfo.EMP_ID,
+    //         query_id: queryID
+    //       }
+    //     ]
+    //   });
+    //   this.setState({
+    //     isGetgift: res.data[0].is_get_gift,
+    //     recid: res.data[0].REC_ID,
+    //     visible: true
+    //   });
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
   };
 
   //单选选中的值。
@@ -561,14 +619,14 @@ class SoleQuery extends Component {
   };
   //handleCancel
   handleGiveUpgiftCancel = () => {
-    const {isGetgift} = this.state;
-    if(!(isGetgift==='Y')){
+    const { isGetgift } = this.state;
+    if (!(isGetgift === 'Y')) {
       //没有中奖
       this.setState({
-        visible:false,
+        visible: false,
         hasSubmit: true
-      })
-    }else{
+      });
+    } else {
       Modal.warning({
         title: '提示',
         content: '手机号将是您作为领取礼品的凭证，不填写将视为放弃',
@@ -580,7 +638,6 @@ class SoleQuery extends Component {
         }
       });
     }
-    
   };
 
   // 输入手机号点击确定
@@ -683,6 +740,9 @@ class SoleQuery extends Component {
       title: '提示',
       content: '您确定要提交问卷吗？',
       onOk: () => {
+        this.setState({
+          isShowProgress: true
+        });
         this.submitQuery(queryId);
       }
     });
@@ -691,7 +751,6 @@ class SoleQuery extends Component {
   // 渲染的页面
   render() {
     const { queryDetail, tel, queryStatus, loading, hasSubmit } = this.state;
-
     // 已停止
     if (queryStatus === '已停止') {
       return (
@@ -736,6 +795,16 @@ class SoleQuery extends Component {
               </Button>
             </div>
           </div>
+          {this.state.isShowProgress ? (
+            <PlanProgress
+              onFinished={this.handleShowProgress}
+              // resid={608838682402}
+              options={{resid:608838682402,data:JSON.stringify(this.state.taskList)}}
+              title="上传答案"
+              // showFields={['C3_609622263470','C3_609845305680',]}
+              // width='50%'
+            />
+          ) : null}
           <Modal
             title="提交问卷"
             visible={this.state.visible}

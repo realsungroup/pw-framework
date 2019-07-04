@@ -1536,6 +1536,12 @@ window[614709663995] = {
   }
 };
 
+//培训系统————课程资源
+window[615375286006] ={
+  name:'CourseResources',
+  title:'课程资源'
+}
+
 //员工 我的课程
 window[615374522659] = {
   name: 'EmployeeCourses', // 组件名称，这里为定制组件名称

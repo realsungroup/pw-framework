@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Modal, Button, Input, Menu } from 'antd';
+import { List, Avatar, Modal, Button, Input, Menu, Icon } from 'antd';
 import http from '../../../util20/api';
+import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation';
 import TableData from '../../common/data/TableData';
 import { assementForm, referenceCheck } from './config.js';
@@ -77,11 +78,11 @@ class IdLindex extends Component {
     if (isSelected) {
       return 'idlindex__content-person__active';
     } else {
-      return 'idlindex__content-person';
+      return;
     }
   };
   handleClick = activeKey => {
-    console.log(activeKey);
+    // console.log(activeKey);
     this.setState({
       activeKey
     });
@@ -235,14 +236,29 @@ class IdLindex extends Component {
     switch (activeKey) {
       case '工作申请表':
         return (
-          <div>
-            <div className="idlindex__applayBox">
-              <ApplayInformnation
-                hasSubmit={true}
-                initialValue={currentPersonInfo}
-              />
+          <React.Fragment>
+            <ApplayInformnation
+              hasSubmit={true}
+              initialValue={currentPersonInfo}
+            />
+            <div className="idlindex__content-form__info-nav">
+              <Menu style={{ width: 265 ,height:'100vh'}} defaultSelectedKeys={['个人资料']}>
+                {MenuList.map((menuItem, index) => {
+                  return (
+                    <Menu.Item
+                      key={menuItem.value}
+                      onClick={() => {
+                        this.hanleMoveTo(menuItem.value);
+                      }}
+                    >
+                      <Icon type={menuItem.icon} />
+                      {menuItem.label}
+                    </Menu.Item>
+                  );
+                })}
+              </Menu>
             </div>
-          </div>
+          </React.Fragment>
         );
       case '面试评估表':
         return (
@@ -281,27 +297,26 @@ class IdLindex extends Component {
         return (
           <div>
             <TableData
+            {...referenceCheck}
               key={613152614705}
-              resid={613152614705}
-              height={500}
-              hasAdd={false}
+              // actionBarExtra 
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              actionBarExtra={() => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.addFormCategory('reference');
-                    }}
-                  >
-                    添加
-                  </Button>
-                );
-              }}
             />
           </div>
         );
     }
+  };
+  // 移动
+  hanleMoveTo = id => {
+    const moveTo = new MoveTo({
+      duration: 365,
+      tolerance: 195,
+      container: document.querySelector('.applay__informnation')
+    });
+    // console.log(id);
+    const tempid = document.getElementById(id);
+    moveTo.move(tempid);
   };
   render() {
     const { personList, currentPersonInfo } = this.state;
@@ -352,7 +367,7 @@ class IdLindex extends Component {
                     title={item.ChName}
                     description={item.appPosition}
                   />
-                  <div style={{padding:'0 10px'}}>{item.Sex}</div>
+                  <div style={{ padding: '0 10px' }}>{item.Sex}</div>
                 </List.Item>
               )}
             />
@@ -364,7 +379,7 @@ class IdLindex extends Component {
             onOk={this.addFormOK}
             onCancel={this.ModalCancel}
           >
-            <div style={{ height: 300 }}>{this.renderContent()}</div>
+            {/* <div style={{ height: 300 }}>{this.renderContent()}</div> */}
           </Modal>
         </div>
       </div>
