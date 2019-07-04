@@ -16,6 +16,7 @@ import './EmployeeCourses.less';
 import http from 'Util20/api';
 import CourseDetail from './CourseDetail';
 import CourseApply from './CourseApply';
+import FeedBackAndPlan from './FeedBackAndPlan/FeedBackAndPlan';
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Search } = Input;
@@ -27,7 +28,8 @@ class EmployeeCourses extends React.Component {
     myCourses: [], //我的课程
     selectedCourse: null, //选中的课程
     wid: '80%',
-    applyVisible: false
+    applyVisible: false,  //申请模态框
+    feebackVisible:false, // 反馈和行动计划模态框
   };
   componentDidMount() {
     this.getCourses();
@@ -143,12 +145,14 @@ class EmployeeCourses extends React.Component {
   };
   handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
+      feebackVisible:false,
     });
   };
   handleOk = () => {
     this.setState({
-      visible: false
+      visible: false,
+      feebackVisible:false,
     });
   };
   handleOpenAppAndFeeback = () => {
@@ -170,6 +174,13 @@ class EmployeeCourses extends React.Component {
     this.setState({
       visible: false,
       applyVisible: true
+    });
+  };
+  // 关闭详情 打开反馈模态框
+  closeCourseDetailOpenFeeback = () => {
+    this.setState({
+      visible: false,
+      feebackVisible: true
     });
   };
   renderCoursesList = () => {
@@ -285,6 +296,7 @@ class EmployeeCourses extends React.Component {
         >
           <CourseDetail
             onCloseDetailOpenAppply={this.closeCourseDetailOpenApply}
+            onCloseDetailOpenFeeback={this.closeCourseDetailOpenFeeback}
           />
         </Modal>
         <Modal
@@ -295,6 +307,17 @@ class EmployeeCourses extends React.Component {
           width={this.state.wid}
         >
           <CourseApply />
+        </Modal>
+        <Modal
+          title="反馈和行动计划"
+          visible={this.state.feebackVisible}
+          width={this.state.wid}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <FeedBackAndPlan
+            
+          />
         </Modal>
       </div>
     );
