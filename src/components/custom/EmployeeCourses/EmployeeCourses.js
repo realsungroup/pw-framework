@@ -66,9 +66,12 @@ class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
     selectedCourse: null, //选中的课程
-    calendarEvents: [],
+    calendarEvents: [], //日历事件
     wid: '80%',
-    applyVisible: false
+    applyVisible: false,
+    applyModalMode: 'view', // 申请单的操作，默认为查看
+    ReviewRecordModalVisible: false, //申请单审批记录模态窗显示状态
+    tipsModalVisible: false // 心得模态窗显示状态
   };
   componentDidMount() {
     this.getCourses();
@@ -95,12 +98,12 @@ class EmployeeCourses extends React.Component {
               Math.random() * 255 + 0,
               10
             )})`,
-            event_hostheadurl: 'http://placekitten.com/32/32',//事件前面的图片
+            event_hostheadurl: 'http://placekitten.com/32/32', //事件前面的图片
             event_title: item.C3_613941384592,
             occur_begin: moment(item.C3_615393041304).format(), // 事件发生时间
             occur_end: moment(item.C3_615393093633).format(), // 事件发生结束时间
             event_important: ++importantIndex,
-            category_name: item.C3_613941384592,
+            category_name: item.C3_613941384592
           };
         });
         console.log(calendarEvents);
@@ -272,7 +275,8 @@ class EmployeeCourses extends React.Component {
   };
   handleApplyCancel = () => {
     this.setState({
-      applyVisible: false
+      applyVisible: false,
+      applyModalMode: 'view'
     });
   };
   closeCourseDetailOpenApply = () => {
@@ -308,7 +312,7 @@ class EmployeeCourses extends React.Component {
         </div>
         <Divider style={{ margin: '12px 0' }} />
         <div className="emploee_courses-main-course_footer">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <span
               style={{
                 width: 14,
@@ -376,6 +380,7 @@ class EmployeeCourses extends React.Component {
         <Tabs
           defaultActiveKey="MyCourses"
           onChange={this.handleTabsChange}
+          tabBarStyle={{ display: 'flex', justifyContent: 'space-around' }}
         >
           <TabPane tab="课程管理" key="MyCourses">
             {this.renderHeader()}
@@ -410,7 +415,17 @@ class EmployeeCourses extends React.Component {
                       <div>
                         {selectedCourse.C3_613956470258 === 'Y' &&
                         selectedCourse.C3_615377523072 === 'ing' ? (
-                          <span className="timeline_action">填写申请单</span>
+                          <span
+                            className="timeline_action"
+                            onClick={() => {
+                              this.setState({
+                                applyVisible: true,
+                                applyModalMode: 'modify'
+                              });
+                            }}
+                          >
+                            填写申请单
+                          </span>
                         ) : null}
                       </div>
                     </Timeline.Item>
@@ -425,8 +440,22 @@ class EmployeeCourses extends React.Component {
                       </div>
                       {selectedCourse.C3_615377523072 === 'Y' ? (
                         <div>
-                          <span className="timeline_action">查看申请单</span>
-                          <span className="timeline_action">查看审批记录</span>
+                          <span
+                            className="timeline_action"
+                            onClick={() => {
+                              this.setState({ applyVisible: true });
+                            }}
+                          >
+                            查看申请单
+                          </span>
+                          <span
+                            className="timeline_action"
+                            onClick={() => {
+                              this.setState({ ReviewRecordModalVisible: true });
+                            }}
+                          >
+                            查看审批记录
+                          </span>
                         </div>
                       ) : null}
                     </Timeline.Item>
@@ -480,7 +509,14 @@ class EmployeeCourses extends React.Component {
                           </span>
                         ) : null}
                         {selectedCourse.isSubmitFeel === 'ing' ? (
-                          <span className="timeline_action">填写心得</span>
+                          <span
+                            className="timeline_action"
+                            onClick={() => {
+                              this.setState({ tipsModalVisible: true });
+                            }}
+                          >
+                            填写心得
+                          </span>
                         ) : null}
                       </div>
                     </Timeline.Item>
@@ -495,7 +531,14 @@ class EmployeeCourses extends React.Component {
                       </div>
                       <div>
                         {selectedCourse.isSubmitFeel === 'Y' ? (
-                          <span className="timeline_action">查看心得</span>
+                          <span
+                            className="timeline_action"
+                            onClick={() => {
+                              this.setState({ tipsModalVisible: true });
+                            }}
+                          >
+                            查看心得
+                          </span>
                         ) : null}
                       </div>
                     </Timeline.Item>
@@ -563,13 +606,11 @@ class EmployeeCourses extends React.Component {
               </div>
             </main>
           </TabPane>
-          <TabPane tab="课程日历" key="CoursesCalendar">
+          <TabPane tab="课程日历" key="CoursesCalendar" forceRender>
             <div style={{ flex: 1, height: '100%', overflow: 'auto' }}>
               <Calendar
                 eventKeyword=""
-                events={[
-                  ...this.state.calendarEvents
-                ]}
+                events={[...this.state.calendarEvents]}
                 defaultActiveTab="month"
               />
             </div>
@@ -581,20 +622,66 @@ class EmployeeCourses extends React.Component {
           width={this.state.wid}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          centered
         >
           <CourseDetail
             onCloseDetailOpenAppply={this.closeCourseDetailOpenApply}
           />
         </Modal>
         <Modal
-          title="申请表和反馈"
+          title="申请单"
           visible={this.state.applyVisible}
-          onOk={this.handleApplyOk}
           onCancel={this.handleApplyCancel}
           width={this.state.wid}
+          footer={
+            this.state.applyModalMode === 'modify'
+              ? [
+                  <Button
+                    onClick={() => {
+                      this.setState({ applyVisible: false, applyModalMode: 'view' });
+                    }}
+                  >
+                    关闭
+                  </Button>,
+                  <Button type='primary'>提交</Button>
+                ]
+              : [
+                  <Button
+                    onClick={() => {
+                      this.setState({ applyVisible: false, applyModalMode: 'view' });
+                    }}
+                  >
+                    关闭
+                  </Button>
+                ]
+          }
         >
-          <CourseApply />
+          <CourseApply mode={this.state.applyModalMode}/>
         </Modal>
+        {/* 审批记录模态窗 */}
+        <Modal
+          title="审批记录"
+          visible={this.state.ReviewRecordModalVisible}
+          width="70%"
+          onOk={() => {
+            this.setState({ ReviewRecordModalVisible: false });
+          }}
+          onCancel={() => {
+            this.setState({ ReviewRecordModalVisible: false });
+          }}
+        ></Modal>
+        {/* 审批记录模态窗 */}
+        <Modal
+          title="心得"
+          visible={this.state.tipsModalVisible}
+          width="70%"
+          onOk={() => {
+            this.setState({ tipsModalVisible: false });
+          }}
+          onCancel={() => {
+            this.setState({ tipsModalVisible: false });
+          }}
+        ></Modal>
       </div>
     );
   }
