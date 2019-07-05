@@ -4,7 +4,7 @@ import { Card, Col, Row } from 'antd';
 const CourseInfo = function(props) {
   let { course } = props;
   return (
-    <Card title="课程信息" size="small" className="courseDetail__card">
+    <Card title="课程信息" type='inner' size="small" className="courseDetail__card">
       <Row>
         <Col span={8}>课程名称:{course.C3_613941384592}</Col>
         <Col span={8}>课程编号:{course.C3_614182469763}</Col>

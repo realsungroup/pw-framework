@@ -56,8 +56,34 @@ class EmployeeCourses extends React.Component {
     years: [], //所有财年
     selectedYear: '', //下拉选中的财年
     selcetedCourseType: 'all', //下拉选中的课程类型
-    searchKey: '' //搜索的关键字
-  };
+    searchKey: '', //搜索的关键字
+    // 内训
+    rate: {
+      rate1: 0,
+      rate2: 0,
+      rate3: 0,
+      rate4: 0,
+      rate5: 0,
+      rate6: 0,
+      rate7: 0,
+      rate8: 0
+    },
+    // 外训
+    rateOut: {
+      rate1: 0,
+      rate2: 0,
+      rate3: 0,
+      rate4: 0
+    },
+    planWrite: [
+      {
+        actions: '',
+        startTime: '2016-01-01',
+        endTime: '2016-01-01',
+        progress: 0
+      }
+    ]
+  }
   componentDidMount = async () => {
     await this.getYears();
     this.getCourses();
@@ -71,7 +97,7 @@ class EmployeeCourses extends React.Component {
         resid: resid,
         cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`
       });
-      console.log(res);
+      // console.log(res);
       let myCourses = res.data;
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
@@ -176,6 +202,24 @@ class EmployeeCourses extends React.Component {
   };
 
   //点击选中课程
+  // 拿子组件的评分
+  setRate = async rate => {
+    console.log(rate);
+    if (this.state.selectedCourse.courseType === '内训') {
+      this.setState({ rate });
+    } else {
+      this.setState({
+        rateOut: rate
+      });
+    }
+  };
+  // 拿到子组件填写的行动计划数据
+  setPlanWrite =(planWrite) =>{
+    this.setState({
+      planWrite,
+    })
+  }
+  handleTabsChange = key => {};
   handleSelectCourse = item => {
     let myCourses = [...this.state.myCourses];
     myCourses.forEach(course => {
@@ -257,7 +301,7 @@ class EmployeeCourses extends React.Component {
             style={{
               backgroundColor: '#57c22d'
             }}
-          ></span>
+          />
           已完成
         </div>
         <div className="emploee_courses-header-status_description-item">
@@ -265,7 +309,7 @@ class EmployeeCourses extends React.Component {
             style={{
               backgroundColor: '#2593fc'
             }}
-          ></span>
+          />
           进行中
         </div>
         <div className="emploee_courses-header-status_description-item">
@@ -273,7 +317,7 @@ class EmployeeCourses extends React.Component {
             style={{
               backgroundColor: '#aaa'
             }}
-          ></span>
+          />
           待完成
         </div>
       </div>
@@ -466,7 +510,7 @@ class EmployeeCourses extends React.Component {
       console.log(error.message);
       message.error(error.message);
     }
-  };
+  }
 
   renderCoursesList = () => {
     let { myCourses } = this.state;
@@ -504,7 +548,7 @@ class EmployeeCourses extends React.Component {
                 backgroundColor: '#2470e8',
                 marginRight: 6
               }}
-            ></span>
+            />
             {item.C3_613961012148}
           </div>
           <div>
@@ -521,7 +565,7 @@ class EmployeeCourses extends React.Component {
         </div>
       </Card>
     ));
-  };
+  }
   getColor(key) {
     let color = '#aaa';
     switch (key) {
@@ -552,7 +596,45 @@ class EmployeeCourses extends React.Component {
       },
       selcetedTip: {}
     });
+  // 提交评分和行动计划反馈
+  submitRate = async () => {
+    const {rateOut,planWrite} = this.state;
+    let res; //反馈
+    try {
+      res = await http().addRecords({
+        resid: 478367996508,
+        data: [
+          {
+            C3_478368118696: this.state.selectedCourse.CourseArrangeDetailID, //  课程安排明细ID
+            C3_478370015482: rateOut.rate1, //培训机构服务满意度
+            C3_478370045169: rateOut.rate2, //培训讲师满意度
+            C3_615580966131: rateOut.rate3, //内容关联度
+            C3_478370100284: rateOut.rate4 //是否推荐同事参加该老师课程
+          }
+        ]
+      });
+    } catch (err) {
+      console.log(err);
+    };
+    console.log(res);
+    let res2;//行动计划
+     planWrite.forEach((item)=>{
+    item.courseArrange = this.state.selectedCourse.CourseArrangeDetailID;
+    });
+    console.log(planWrite);
+    try{
+      res2= await http().addRecords({
+        resid:615571557694,
+        data:planWrite  
+      })
+    }catch(err){
+      console.log(err);
+    }
+    console.log(res2);
+    
+  };
   render() {
+    // console.log(this.state.selectedCourse);
     let selectedCourse = { ...this.state.selectedCourse },
       startColor = '#aaa',
       endColor = '#aaa';
@@ -831,6 +913,9 @@ class EmployeeCourses extends React.Component {
           <CourseDetail
             onCloseDetailOpenAppply={this.closeCourseDetailOpenApply}
             onCloseDetailOpenFeeback={this.closeCourseDetailOpenFeeback}
+            onCourseType={
+              this.state.selectedCourse && this.state.selectedCourse.courseType
+            }
           />
         </Modal>
         <Modal
@@ -888,7 +973,25 @@ class EmployeeCourses extends React.Component {
           onCancel={this.handleCancel}
           footer={
             this.state.feedbackModalMode === 'modify'
-              ? null
+              ? [
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        feebackVisible: false,
+                        feedbackModalMode: 'view'
+                      });
+                    }}
+                  >
+                    关闭
+                  </Button>,
+                  <Button
+                    onClick={() => {
+                      this.submitRate();
+                    }}
+                  >
+                    确定提交
+                  </Button>
+                ]
               : [
                   <Button
                     onClick={() => {
@@ -903,7 +1006,15 @@ class EmployeeCourses extends React.Component {
                 ]
           }
         >
-          <FeedBackAndPlan mode={this.state.feedbackModalMode} />
+          <FeedBackAndPlan
+            onSubmit={this.setRate}
+            onCourseDetailID ={this.state.selectedCourse &&this.state.selectedCourse.CourseArrangeDetailID}
+            onSetPlanWrite ={this.setPlanWrite}
+            mode={this.state.feedbackModalMode}
+            onCourseType={
+              this.state.selectedCourse && this.state.selectedCourse.courseType
+            }
+          />
         </Modal>
         {/* 审批记录模态窗 */}
         <Modal
