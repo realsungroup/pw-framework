@@ -74,10 +74,36 @@ class EmployeeCourses extends React.Component {
     applyModalMode: 'view', // 申请单的操作，默认为查看
     feedbackModalMode: 'view', // 反馈的操作，默认为查看
     ReviewRecordModalVisible: false, //申请单审批记录模态窗显示状态
-    tipsModalVisible: false // 心得模态窗显示状态
+    tipsModalVisible: false, // 心得模态窗显示状态
+    // 内训
+    rate: {
+      rate1: 0,
+      rate2: 0,
+      rate3: 0,
+      rate4: 0,
+      rate5: 0,
+      rate6: 0,
+      rate7: 0,
+      rate8: 0
+    },
+    // 外训
+    rateOut: {
+      rate1: 0,
+      rate2: 0,
+      rate3: 0,
+      rate4: 0
+    },
+    planWrite: [
+      {
+        actions: '',
+        startTime: '2016-01-01',
+        endTime: '2016-01-01',
+        progress: 0
+      }
+    ]
   };
-  componentDidMount() {
-    this.getCourses();
+  async componentDidMount() {
+    await this.getCourses();
   }
   getCourses = async () => {
     let res;
@@ -85,7 +111,7 @@ class EmployeeCourses extends React.Component {
       res = await http().getTable({
         resid: resid
       });
-      console.log(res);
+      // console.log(res);
       let myCourses = res.data;
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
@@ -109,7 +135,7 @@ class EmployeeCourses extends React.Component {
             category_name: item.C3_613941384592
           };
         });
-        console.log(calendarEvents);
+        // console.log(calendarEvents);
         this.setState({ myCourses, selectedCourse, calendarEvents });
       }
     } catch (error) {
@@ -117,6 +143,23 @@ class EmployeeCourses extends React.Component {
       console.log(error);
     }
   };
+  // 拿子组件的评分
+  setRate = async rate => {
+    console.log(rate);
+    if (this.state.selectedCourse.courseType === '内训') {
+      this.setState({ rate });
+    } else {
+      this.setState({
+        rateOut: rate
+      });
+    }
+  };
+  // 拿到子组件填写的行动计划数据
+  setPlanWrite =(planWrite) =>{
+    this.setState({
+      planWrite,
+    })
+  }
   handleTabsChange = key => {};
   handleSelectCourse = item => {
     let myCourses = [...this.state.myCourses];
@@ -221,7 +264,7 @@ class EmployeeCourses extends React.Component {
               backgroundColor: '#57c22d',
               marginRight: 6
             }}
-          ></span>
+          />
           已完成
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -233,7 +276,7 @@ class EmployeeCourses extends React.Component {
               backgroundColor: '#2593fc',
               marginRight: 6
             }}
-          ></span>
+          />
           进行中
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -245,7 +288,7 @@ class EmployeeCourses extends React.Component {
               backgroundColor: '#aaa',
               marginRight: 6
             }}
-          ></span>
+          />
           待完成
         </div>
       </div>
@@ -308,7 +351,7 @@ class EmployeeCourses extends React.Component {
       });
       message.success(res.message);
       let myCourses = [...this.state.myCourses],
-        selectedCourse = {...res.data[0], checked:true};
+        selectedCourse = { ...res.data[0], checked: true };
       myCourses[
         myCourses.findIndex(item => item.REC_ID === selectedCourse.REC_ID)
       ] = selectedCourse;
@@ -360,7 +403,7 @@ class EmployeeCourses extends React.Component {
                 backgroundColor: '#2470e8',
                 marginRight: 6
               }}
-            ></span>
+            />
             {item.C3_613961012148}
           </div>
           <div>
@@ -396,8 +439,45 @@ class EmployeeCourses extends React.Component {
     }
     return color;
   }
-
+  // 提交评分和行动计划反馈
+  submitRate = async () => {
+    const {rateOut,planWrite} = this.state;
+    let res; //反馈
+    try {
+      res = await http().addRecords({
+        resid: 478367996508,
+        data: [
+          {
+            C3_478368118696: this.state.selectedCourse.CourseArrangeDetailID, //  课程安排明细ID
+            C3_478370015482: rateOut.rate1, //培训机构服务满意度
+            C3_478370045169: rateOut.rate2, //培训讲师满意度
+            C3_615580966131: rateOut.rate3, //内容关联度
+            C3_478370100284: rateOut.rate4 //是否推荐同事参加该老师课程
+          }
+        ]
+      });
+    } catch (err) {
+      console.log(err);
+    };
+    console.log(res);
+    let res2;//行动计划
+     planWrite.forEach((item)=>{
+    item.courseArrange = this.state.selectedCourse.CourseArrangeDetailID;
+    });
+    console.log(planWrite);
+    try{
+      res2= await http().addRecords({
+        resid:615571557694,
+        data:planWrite  
+      })
+    }catch(err){
+      console.log(err);
+    }
+    console.log(res2);
+    
+  };
   render() {
+    // console.log(this.state.selectedCourse);
     let selectedCourse = { ...this.state.selectedCourse },
       startColor = '#aaa',
       endColor = '#aaa';
@@ -679,6 +759,9 @@ class EmployeeCourses extends React.Component {
           <CourseDetail
             onCloseDetailOpenAppply={this.closeCourseDetailOpenApply}
             onCloseDetailOpenFeeback={this.closeCourseDetailOpenFeeback}
+            onCourseType={
+              this.state.selectedCourse && this.state.selectedCourse.courseType
+            }
           />
         </Modal>
         <Modal
@@ -727,7 +810,25 @@ class EmployeeCourses extends React.Component {
           onCancel={this.handleCancel}
           footer={
             this.state.feedbackModalMode === 'modify'
-              ? null
+              ? [
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        feebackVisible: false,
+                        feedbackModalMode: 'view'
+                      });
+                    }}
+                  >
+                    关闭
+                  </Button>,
+                  <Button
+                    onClick={() => {
+                      this.submitRate();
+                    }}
+                  >
+                    确定提交
+                  </Button>
+                ]
               : [
                   <Button
                     onClick={() => {
@@ -742,7 +843,15 @@ class EmployeeCourses extends React.Component {
                 ]
           }
         >
-          <FeedBackAndPlan mode={this.state.feedbackModalMode} />
+          <FeedBackAndPlan
+            onSubmit={this.setRate}
+            onCourseDetailID ={this.state.selectedCourse &&this.state.selectedCourse.CourseArrangeDetailID}
+            onSetPlanWrite ={this.setPlanWrite}
+            mode={this.state.feedbackModalMode}
+            onCourseType={
+              this.state.selectedCourse && this.state.selectedCourse.courseType
+            }
+          />
         </Modal>
         {/* 审批记录模态窗 */}
         <Modal
@@ -755,7 +864,7 @@ class EmployeeCourses extends React.Component {
           onCancel={() => {
             this.setState({ ReviewRecordModalVisible: false });
           }}
-        ></Modal>
+        />
         {/* 心得模态窗 */}
         <Modal
           title="心得"
@@ -767,7 +876,7 @@ class EmployeeCourses extends React.Component {
           onCancel={() => {
             this.setState({ tipsModalVisible: false });
           }}
-        ></Modal>
+        />
       </div>
     );
   }

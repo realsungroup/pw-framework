@@ -14,7 +14,7 @@ class CourseApply extends Component {
     return (
       <div className="courseApply">
         {this.props.mode === 'modify' ? null : (
-          <Card title="申请表" size="small" className="courseApply__card">
+          <Card title="申请表" type='inner' size="small" className="courseApply__card">
             <Steps progressDot={true}>
               <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
               <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
@@ -22,7 +22,7 @@ class CourseApply extends Component {
             </Steps>
           </Card>
         )}
-        <Card title="申请人信息" size="small" className="courseApply__card">
+        <Card title="申请人信息" type='inner' size="small" className="courseApply__card">
           <Row>
             <Col span={8}>课程名称:新员工培训</Col>
             <Col span={8}>课程编号:2198374637383</Col>

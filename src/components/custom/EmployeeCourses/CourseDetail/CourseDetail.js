@@ -11,11 +11,20 @@ class CourseDetail extends Component {
     };
   }
   render() {
-    const { onCloseDetailOpenAppply, onCloseDetailOpenFeeback } = this.props;
+    const {
+      onCloseDetailOpenAppply,
+      onCloseDetailOpenFeeback,
+      onCourseType
+    } = this.props;
     return (
       <div className="courseDetail">
         <CourseInfo />
-        <Card title="课程选项" size="small" className="courseDetail__card">
+        <Card
+          title="课程选项"
+          type="inner"
+          size="small"
+          className="courseDetail__card"
+        >
           <Row className="courseDetail__courseOptional">
             <Col span={3}>
               <Icon type="paper-clip" />
@@ -47,21 +56,23 @@ class CourseDetail extends Component {
             </Col>
             <Col span={16}>2018年9月5日 3:06:44</Col>
           </Row>
-          <Row className="courseDetail__courseOptional">
-            <Col span={3}>
-              <Icon type="paper-clip" />
-            </Col>
-            <Col span={5}>
-              <a
-                onClick={() => {
-                  onCloseDetailOpenFeeback();
-                }}
-              >
-                行动计划
-              </a>
-            </Col>
-            <Col span={16}>2018年9月5日 3:06:44</Col>
-          </Row>
+          {this.props.onCourseType === '内训' ? null : (
+            <Row className="courseDetail__courseOptional">
+              <Col span={3}>
+                <Icon type="paper-clip" />
+              </Col>
+              <Col span={5}>
+                <a
+                  onClick={() => {
+                    onCloseDetailOpenFeeback();
+                  }}
+                >
+                  行动计划
+                </a>
+              </Col>
+              <Col span={16}>2018年9月5日 3:06:44</Col>
+            </Row>
+          )}
         </Card>
       </div>
     );

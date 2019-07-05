@@ -1,222 +1,493 @@
 import React, { Component } from 'react';
 import './FeedBackAndPlan.less';
-import { Card, Row, Col, Rate, InputNumber, DatePicker } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Rate,
+  InputNumber,
+  DatePicker,
+  Input,
+  Button
+} from 'antd';
 import moment from 'moment';
+import http from 'Util20/api';
 const dateFormat = 'YYYY-MM-DD';
 
 class FeedBackAndPlan extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      paln: [
+      planView: [],
+      planWrite: [
         {
-          action: '查找到现有流程中的瓶颈',
-          start: '2018-09-10',
-          end: '2019-07-06',
-          rateOfProgress: '50%'
-        },
-        {
-          action: '找出问题的原因',
-          start: '2014-09-10',
-          end: '2017-07-06',
-          rateOfProgress: '30%'
-        },
-        {
-          action: '寻求可行的解决方案',
-          start: '2015-09-10',
-          end: '2018-07-06',
-          rateOfProgress: '70%'
-        },
-        {
-          action: '验证方案效果',
-          start: '2015-09-10',
-          end: '2019-07-06',
-          rateOfProgress: '50%'
-        },
-        {
-          action: '应用方案并及时反馈',
-          start: '2016-09-10',
-          end: '2017-07-06',
-          rateOfProgress: '100%'
+          actions: '',
+          startTime: ' ',
+          endTime: ' ',
+          progress: 0
         }
       ],
-      rate1: 0,
-      rate2: 0,
-      rate3: 0,
-      rate4: 0,
-      rate5: 0,
-      rate6: 0,
-      rate7: 0,
-      rate8: 0
+      // 内训评分
+      rate: {
+        rate1: null,
+        rate2: null,
+        rate3: null,
+        rate4: null,
+        rate5: null,
+        rate6: null,
+        rate7: null,
+        rate8: null
+      },
+      //外训评分
+      rateOut: {
+        rate1: null,
+        rate2: null,
+        rate3: null,
+        rate4: null
+      }
     };
+  };
+  componentDidMount(){
+    if(this.props.mode === 'view'){
+      // 
+      this.getFeebackAndRate();
+    }
+  };
+  // 获取后台反馈的分数和行动计划
+  getFeebackAndRate = async()=>{
+    const {rate,rateOut} = this.state;
+    let res;   //课程反馈
+   try{
+     res = await http().getTable({
+      resid:478367996508,
+      cmswhere:`C3_478368118696 =${this.props.onCourseDetailID}`
+    })
+   }catch(err){
+     console.log(err.message)
+   } 
+   console.log('res',res);
+   if(res.data[0].C3_615639406401 === '外训'){
+     const tempRateOut = {...rateOut};
+     tempRateOut.rate1 = res.data[0].C3_478370015482; //机构服务满意度
+     tempRateOut.rate2 = res.data[0].C3_478370045169; //讲师满意度
+     tempRateOut.rate3 = res.data[0].C3_615580966131; //内容关联度
+     tempRateOut.rate4 = res.data[0].C3_478370100284; //是否推荐同事参加考试课程
+     this.setState({
+        rateOut:tempRateOut,
+     });
+     console.log('后端返回的外训评分',this.state.rateOut);
+   }else{
+     const tempRate ={...rate};
+     tempRate.rate1 = res.data[0].C3_615639978971;  //讲师备课充分
+     tempRate.rate2 = res.data[0].C3_615640010121;  //我认为课程主题准确，结构清晰，内容充实
+     tempRate.rate3 = res.data[0].C3_615640043869;  //所学的内容对实际工作有很大帮助
+     tempRate.rate4 = res.data[0].C3_615640107592;  //讲师语言表达能力好,讲解清楚生动,运用肢体语言
+     tempRate.rate5 = res.data[0].C3_615640157603;  // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+     tempRate.rate6 = res.data[0].C3_615640180269;  //我能够积极参与到课堂中去
+     tempRate.rate7 = res.data[0].C3_615640206802;  //我的提问能够得到讲师认真,满意的答复
+     tempRate.rate8 = res.data[0].C3_615654391051;   //时间控制合理使我感到舒适
+      this.setState({
+        rate:tempRate,
+      });
+      console.log('后盾返回的内训评分',this.state.rate);
+   }
+   let res2; //行动计划
+   try{
+    res2 = await http().getTable({
+      resid:615571557694,
+      cmswhere:`courseArrange =${this.props.onCourseDetailID}`
+    })
+   }catch(err){
+     console.log(err)
+   }
+   console.log('后端返回的行动计划',res2);
+  this.setState({
+    planView :res2.data,
+  })
   }
+  // 内训评分反馈
   rate1Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate1 = value;
     this.setState({
-      rate1: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate2Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate2 = value;
     this.setState({
-      rate2: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate3Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate3 = value;
     this.setState({
-      rate3: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate4Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate4 = value;
     this.setState({
-      rate4: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate5Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate5 = value;
     this.setState({
-      rate5: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate6Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate6 = value;
     this.setState({
-      rate6: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate7Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate7 = value;
     this.setState({
-      rate7: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
   rate8Change = value => {
-    console.log(value);
+    const tempRate = { ...this.state.rate };
+    tempRate.rate8 = value;
     this.setState({
-      rate8: value
+      rate: tempRate
     });
+    this.props.onSubmit(tempRate);
   };
-  render() {
-    return (
-      <div>
-        <Card title="课程反馈">
-          <Card type="inner" title="讲师专业水平" className="cardinner">
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate1Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-          </Card>
-          <Card type="inner" title="课程内容安排" className="cardinner">
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate2Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate3Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-          </Card>
-          <Card type="inner" title="授课技巧" className="cardinner">
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解 内容非常了解</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate4Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解 内容非常了解</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate5Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解授课内容</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate6Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>讲师备课充分，对授课内容非常了解授课内容</Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate7Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                讲师备课充分，对授课内容非常了解内容非常了解内容非常了解
-              </Col>
-              <Col span={12}>
-                <Rate
-                  onChange={value => {
-                    this.rate8Change(value);
-                  }}
-                />
-              </Col>
-            </Row>
-          </Card>
-        </Card>
-        <Card title="行动计划">
-          <Row>
-            <Col span={2}>序号</Col>
-            <Col span={12}>具体行动</Col>
-            <Col span={4}>开始时间</Col>
-            <Col span={4}>结束时间</Col>
-            <Col span={2}>进度</Col>
-          </Row>
-          {this.state.paln.map((item, index) => {
+  // 外训评分关键
+  rateOut1Change = value => {
+    const tempRate = { ...this.state.rateOut };
+    tempRate.rate1 = value;
+    this.setState({
+      rateOut: tempRate
+    });
+    this.props.onSubmit(tempRate);
+  };
+  rateOut2Change = value => {
+    const tempRate = { ...this.state.rateOut };
+    tempRate.rate2 = value;
+    this.setState({
+      rateOut: tempRate
+    });
+    this.props.onSubmit(tempRate);
+  };
+  rateOut3Change = value => {
+    const tempRate = { ...this.state.rateOut };
+    tempRate.rate3 = value;
+    this.setState({
+      rateOut: tempRate
+    });
+    this.props.onSubmit(tempRate);
+  };
+  rateOut4Change = value => {
+    const tempRate = { ...this.state.rateOut };
+    tempRate.rate4 = value;
+    this.setState({
+      rateOut: tempRate
+    });
+    this.props.onSubmit(tempRate);
+  };
+  // 添加计划明细和进度
+  addPlanwrite =()=>{
+    const obj={
+        actions: '',
+        startTime: '',
+        endTime: '',
+        progress: ''
+    };
+    const tempPlanWrite =[...this.state.planWrite];
+    tempPlanWrite.push(obj);
+    this.setState({
+      planWrite:tempPlanWrite,
+    });
+    this.props.onSetPlanWrite(tempPlanWrite);
+  };
+  // 删除计划
+  removePlanWrite=(index)=>{
+    const temPlanWrite = [...this.state.planWrite];
+    temPlanWrite.splice(index,1);
+    this.setState({
+      planWrite:temPlanWrite,
+    });
+    this.props.onSetPlanWrite(temPlanWrite);
+  };
+  // 监听输入行动的变化
+  handlePlanChange =(value,index)=>{
+    const temPlanWrite =[...this.state.planWrite];
+    temPlanWrite[index].actions = value;
+    this.setState({
+      planWrite:temPlanWrite,
+    });
+    this.props.onSetPlanWrite(temPlanWrite);
+  }
+  // 监听开始日期的变化
+  handlestartTimeChange=(date,dataString,index)=>{
+    const temPlanWrite =[...this.state.planWrite];
+    console.log(temPlanWrite,index);
+    temPlanWrite[index].startTime = dataString;
+    this.setState({
+      planWrite:temPlanWrite,
+    });
+    this.props.onSetPlanWrite(temPlanWrite);
+  }
+  // 监听结束日期的变化
+  handleendTimeChange=(data,dataString,index)=>{
+    const temPlanWrite =[...this.state.planWrite];
+    temPlanWrite[index].endTime = dataString;
+    this.setState({
+      planWrite:temPlanWrite,
+    });
+    this.props.onSetPlanWrite(temPlanWrite);
+  }
+  // handleProgressChange
+  handleProgressChange =(value,index)=>{
+    const temPlanWrite =[...this.state.planWrite];
+    temPlanWrite[index].progress = value;
+    this.setState({
+      planWrite:temPlanWrite,
+    });
+    this.props.onSetPlanWrite(temPlanWrite);
+  }
+  renderViewOrModify = () => {
+    // console.log(this.props.mode);
+    if (this.props.mode === 'view') {
+      return (
+        <React.Fragment>
+          {this.state.planView.map((item, index) => {
             return (
-              <Row>
+              <Row key={index}>
                 <Col span={2}>{index + 1}</Col>
-                <Col span={10}>{item.action}</Col>
-                <Col span={5}>
-                  <DatePicker value={moment(`${item.start}`, dateFormat)} />
+                <Col span={8}>{item.actions}</Col>
+                <Col span={4}>
+                  <DatePicker value={moment(`${item.startTime}`, dateFormat)} disabled/>
                 </Col>
-                <Col span={5}>
-                  <DatePicker value={moment(`${item.end}`, dateFormat)} />
+                <Col span={4}>
+                  <DatePicker value={moment(`${item.endTime}`, dateFormat)} disabled/>
                 </Col>
                 <Col span={2}>
-                  <InputNumber value={item.rateOfProgress} min={1} max={100} />
+                  <InputNumber value={item.progress} min={1} max={100} disabled/>
                 </Col>
               </Row>
             );
           })}
-        </Card>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          {this.state.planWrite.map((item, index) => {
+            return (
+              <Row key={index}>
+                <Col span={2}>{index + 1}</Col>
+                <Col span={8}>
+                  <Input  onChange={(e)=>{this.handlePlanChange(e.target.value,index)}}/>
+                </Col>
+                <Col span={4}>
+                  <DatePicker onChange={(date,dateString)=>{this.handlestartTimeChange(date,dateString,index)}}/>
+                </Col>
+                <Col span={4}>
+                  <DatePicker onChange ={(date,dateString,)=>{this.handleendTimeChange(date,dateString,index)}}/>
+                </Col>
+                <Col span={3}>
+                  <InputNumber onChange={(value)=>{this.handleProgressChange(value,index)}}/>
+                </Col>
+                <Col span={3}>
+                  <Button onClick={()=>{this.addPlanwrite()}}>增加</Button>
+                  <Button onClick={()=>{this.removePlanWrite(index)}}>删除</Button>
+                </Col>
+              </Row>
+            );
+          })}
+        </React.Fragment>
+      );
+    }
+  };
+  render() {
+    console.log('行动计划',this.state.palnView);
+    console.log('外训平分',this.state.rateOut);
+    console.log('内训评分',this.state.rate);
+    return (
+      <div>
+        {this.props.onCourseType === '内训' ? (
+          <Card title="课程反馈">
+            <Card type="inner" title="讲师专业水平" className="cardinner">
+              <Row>
+                <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
+                <Col span={12}>
+                  <Rate
+                  value ={this.state.rate.rate1}
+                    onChange={value => {
+                      this.rate1Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Card>
+            <Card type="inner" title="课程内容安排" className="cardinner">
+              <Row>
+                <Col span={12}>我认为课程主题准确，结构清晰，内容充实</Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate2}
+                    onChange={value => {
+                      this.rate2Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>所学的内容对实际工作有很大帮助</Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate3}
+                    onChange={value => {
+                      this.rate3Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Card>
+            <Card type="inner" title="授课技巧" className="cardinner">
+              <Row>
+                <Col span={12}>
+                  讲师语言表达能力好,讲解清楚生动,运用肢体语言
+                </Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate4}
+                    onChange={value => {
+                      this.rate4Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+                </Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate5}
+                    onChange={value => {
+                      this.rate5Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>我能够积极参与到课堂中去</Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate6}
+                    onChange={value => {
+                      this.rate6Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>我的提问能够得到讲师认真,满意的答复</Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate7}
+                    onChange={value => {
+                      this.rate7Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>时间控制合理使我感到舒适</Col>
+                <Col span={12}>
+                  <Rate
+                   value ={this.state.rate.rate8}
+                    onChange={value => {
+                      this.rate8Change(value);
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Card>
+          </Card>
+        ) : (
+          <Card type="inner" title="讲师专业水平" className="cardinner">
+            <Row>
+              <Col span={12}>培训机构服务满意度</Col>
+              <Col span={12}>
+                <Rate
+                 value ={this.state.rateOut.rate1}
+                  onChange={value => {
+                    this.rateOut1Change(value);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>培训讲师满意度</Col>
+              <Col span={12}>
+                <Rate
+                value ={this.state.rateOut.rate2}
+                  onChange={value => {
+                    this.rateOut2Change(value);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>培训内容和工作内容关联度</Col>
+              <Col span={12}>
+                <Rate
+                value ={this.state.rateOut.rate3}
+                  onChange={value => {
+                    this.rateOut3Change(value);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>是否推荐同事参加该课程</Col>
+              <Col span={12}>
+                <Rate
+                value ={this.state.rateOut.rate4}
+                  onChange={value => {
+                    this.rateOut4Change(value);
+                  }}
+                />
+              </Col>
+            </Row>
+          </Card>
+        )}
+        {this.props.onCourseType === '内训' ? null : (
+          <Card title="行动计划" style={{ marginTop: 10 }}>
+            <Row>
+              <Col span={2}>序号</Col>
+              <Col span={8}>具体行动</Col>
+              <Col span={4}>开始时间</Col>
+              <Col span={4}>结束时间</Col>
+              <Col span={3}>进度</Col>
+              {this.props.mode === 'view'?(null):(
+                 <Col span={3}>操作</Col>
+              )}
+            </Row>
+            {this.renderViewOrModify()}
+          </Card>
+        )}
       </div>
     );
   }

@@ -3,7 +3,7 @@ import { Card,Col,Row, } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 const CourseInfo = function(props) {
   return (
-    <Card title="课程信息" size="small" className="courseDetail__card">
+    <Card title="课程信息" type='inner' size="small" className="courseDetail__card">
       <Row>
         <Col span={8}>课程名称:新员工培训</Col>
         <Col span={8}>课程编号:2198374637383</Col>
