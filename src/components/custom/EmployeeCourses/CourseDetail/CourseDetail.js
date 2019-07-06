@@ -10,53 +10,50 @@ class CourseDetail extends Component {
       ApplyAndFeebackVisible: false
     };
   }
+  //C3_615377473913
   render() {
     const {
       onCloseDetailOpenAppply,
       onCloseDetailOpenFeeback,
-      onCourseType
+      onCloseCourseDetailOpenTip,
+      onCourseType,
+      course
     } = this.props;
+    // alert(onCourseType )
+    // alert(course.C3_615377473913 )
     return (
       <div className="courseDetail">
-        <CourseInfo />
+        <CourseInfo
+          course={course}
+          mode="view"
+          extraCost={course.extraCharge}
+        />
         <Card
           title="课程选项"
           type="inner"
           size="small"
           className="courseDetail__card"
         >
-          <Row className="courseDetail__courseOptional">
-            <Col span={3}>
-              <Icon type="paper-clip" />
-            </Col>
-            <Col span={5}>
-              <a
-                onClick={() => {
-                  onCloseDetailOpenAppply();
-                }}
-              >
-                申请单
-              </a>
-            </Col>
-            <Col span={16}>2018年9月5日 3:06:44</Col>
-          </Row>
-
-          <Row className="courseDetail__courseOptional">
-            <Col span={3}>
-              <Icon type="paper-clip" />
-            </Col>
-            <Col span={5}>
-              <a
-                onClick={() => {
-                  onCloseDetailOpenFeeback();
-                }}
-              >
-                反馈表
-              </a>
-            </Col>
-            <Col span={16}>2018年9月5日 3:06:44</Col>
-          </Row>
-          {this.props.onCourseType === '内训' ? null : (
+          {this.props.onCourseType === '外训' ||
+          course.C3_615377523072 === 'Y' ? (
+            <Row className="courseDetail__courseOptional">
+              <Col span={3}>
+                <Icon type="paper-clip" />
+              </Col>
+              <Col span={5}>
+                <a
+                  onClick={() => {
+                    onCloseDetailOpenAppply();
+                  }}
+                >
+                  申请单
+                </a>
+              </Col>
+              <Col span={16}>{course.C3_615377538264}</Col>
+            </Row>
+          ) : null}
+          {/* 课程反馈，行动计划已提交才显示 */}
+          {course.C3_615377473913 === 'Y' && onCourseType=== '外训'? (
             <Row className="courseDetail__courseOptional">
               <Col span={3}>
                 <Icon type="paper-clip" />
@@ -67,12 +64,46 @@ class CourseDetail extends Component {
                     onCloseDetailOpenFeeback();
                   }}
                 >
-                  行动计划
+                  反馈表和行动计划表
                 </a>
               </Col>
-              <Col span={16}>2018年9月5日 3:06:44</Col>
+              <Col span={16}>{course.C3_615377481222}</Col>
             </Row>
-          )}
+          ) : null}
+          {course.isInnerFeedBack === 'Y' && onCourseType=== '内训'? (
+            <Row className="courseDetail__courseOptional">
+              <Col span={3}>
+                <Icon type="paper-clip" />
+              </Col>
+              <Col span={5}>
+                <a
+                  onClick={() => {
+                    onCloseDetailOpenFeeback();
+                  }}
+                >
+                  反馈表
+                </a>
+              </Col>
+              <Col span={16}>{course.C3_615377481222}</Col>
+            </Row>
+          ) : null}
+          {this.props.onCourseType === '外训' && course.isSubmitFeel === 'Y' ? (
+            <Row className="courseDetail__courseOptional">
+              <Col span={3}>
+                <Icon type="paper-clip" />
+              </Col>
+              <Col span={5}>
+                <a
+                  onClick={() => {
+                    onCloseCourseDetailOpenTip();
+                  }}
+                >
+                  课程心得
+                </a>
+              </Col>
+              <Col span={16}>{course.submitFeelTime}</Col>
+            </Row>
+          ) : null}
         </Card>
       </div>
     );

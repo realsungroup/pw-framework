@@ -10,20 +10,29 @@ class CourseApply extends Component {
     this.state = {};
   }
   render() {
-    console.log(this.props);
-    let { course } = this.props
+    let { course } = this.props;
     return (
       <div className="courseApply">
-        {this.props.mode === 'modify' ? null : (
-          <Card title="申请表" type='inner' size="small" className="courseApply__card">
+        {/* {this.props.mode === 'modify' ? null : (
+          <Card
+            title="申请表"
+            type="inner"
+            size="small"
+            className="courseApply__card"
+          >
             <Steps progressDot={true}>
               <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
               <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
               <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
             </Steps>
           </Card>
-        )}
-        <Card title="申请人信息" type='inner' size="small" className="courseApply__card">
+        )} */}
+        <Card
+          title="申请人信息"
+          type="inner"
+          size="small"
+          className="courseApply__card"
+        >
           <Row>
             <Col span={8}>申请人:{course.C3_613941385305}</Col>
             <Col span={8}>员工号:{course.C3_615642868855}</Col>
@@ -35,7 +44,12 @@ class CourseApply extends Component {
             <Col span={8}>部门负责人:{course.C3_615642922917}</Col>
           </Row>
         </Card>
-        <CourseInfo course={course}/>
+        <CourseInfo
+          course={course}
+          extraCost={this.props.mode === 'view' ? course.extraCharge : this.props.extraCost}
+          onChangeExtraCost={this.props.onChangeExtraCost}
+          mode={this.props.mode}
+        />
       </div>
     );
   }
