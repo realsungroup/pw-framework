@@ -1551,3 +1551,10 @@ window[615374522659] = {
     // resid: 777
   } // 组件所接收的 props
 };
+
+
+//培训系统————内训管理
+window[615898415042] ={
+  name: 'InternalTraining',
+  title: '内训管理',
+}
