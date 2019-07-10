@@ -613,7 +613,7 @@ class EmployeeCourses extends React.Component {
   // 提交评分和行动计划反馈
   submitRate = async () => {
     const { rateOut, planWrite, selectedCourse, rate } = this.state;
-    if (selectedCourse.courseType === '外训') {
+    if (selectedCourse.courseType === '外训' || selectedCourse.courseType === '外聘内训') {
       let res; //反馈
       try {
         res = await http().addRecords({
@@ -995,7 +995,7 @@ class EmployeeCourses extends React.Component {
               <Calendar
                 eventKeyword=""
                 events={[...this.state.calendarEvents]}
-                defaultActiveTab="month"
+                defaultActiveTab="year"
                 height={'calc(100vh - 116px)'}
               />
             </div>

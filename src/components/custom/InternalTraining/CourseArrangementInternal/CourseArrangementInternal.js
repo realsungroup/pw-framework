@@ -284,12 +284,16 @@ class CourseArrangementInternal extends React.Component {
                         <span
                           className="arranging_courses-course_list-course_type"
                           style={
-                            item.innerArrangeType === '必'
+                            item.innerArrangeType === '必修课'
                               ? { backgroundColor: '#1787fb' }
-                              : { backgroundColor: '#57c22d' }
+                              : item.innerArrangeType === '公开课'
+                              ? { backgroundColor: '#57c22d' }
+                              : {
+                                  backgroundColor: '#f1882b'
+                                }
                           }
                         >
-                          {item.innerArrangeType}
+                          {item.innerArrangeType.substring(0, 1)}
                         </span>
                       </div>
                     }
@@ -339,10 +343,12 @@ class CourseArrangementInternal extends React.Component {
                       </Popconfirm>,
                       <span
                         onClick={() => {
-                          this.setState({
-                            // isShowLearnerInfo: true,
-                            selectedCourseArrangment: item
-                          }, this.props.onHandleCurrent);
+                          // this.setState({
+                          //   isShowLearnerInfo: true,
+                          //   selectedCourseArrangment: item
+                          // });
+                          this.props.onHandleSelectCourseArrangement(item);
+                          this.props.onHandleCurrent(1);
                         }}
                       >
                         <Icon type="team" />
@@ -377,7 +383,7 @@ class CourseArrangementInternal extends React.Component {
             </div>
           )}
           {this.state.mode === 'calendar' && (
-            <div style={{height: '100%'}}>
+            <div style={{ height: '100%' }}>
               <InternalCourseCalendar events={this.state.calendarEvents} />
             </div>
           )}
