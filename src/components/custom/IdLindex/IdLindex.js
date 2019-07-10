@@ -3,12 +3,14 @@ import './IdLindex.less';
 import { List, Avatar, Modal, Button, Input, Menu, Icon } from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
-import ApplayInformnation from '../ApplayInformnation';
+import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
 import TableData from '../../common/data/TableData';
-import { assementForm, referenceCheck } from './config.js';
+import { assementForm, referenceCheck } from './config.js'; //面试评估表和背景调查表的配置
 import { withRecordForm } from '../../common/hoc/withRecordForm';
-import dealControlArr from '../../../util20/controls';
-import { getDataProp } from '../../../util20/formData2ControlsData';
+ //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
+import dealControlArr from '../../../util20/controls'; //处理数据
+import { getDataProp } from '../../../util20/formData2ControlsData'; //处理数据
+// 左侧导航栏列表的清单
 const MenuList = [
   {
     label: '个人资料',
@@ -54,15 +56,14 @@ class IdLindex extends Component {
     this.getPersonList();
   };
   state = {
-    personList: [],
-    currentPersonInfo: {},
-    currentPersonId: '',
-    recordFormName: 'default',
-    modalType: '',
+    personList: [], //人员列表
+    currentPersonInfo: {}, //当前选中人员的信息
+    currentPersonId: '', //当前选中人员ID
+    recordFormName: 'default',  
     typeVisible: false,
-    accessCategority: '',
     activeKey: '工作申请表'
   };
+  // 点击某个人时候设置样式
   handlePersonOnClick = item => {
     const { personList } = this.state;
     const tempPersonList = [...personList];
@@ -74,6 +75,7 @@ class IdLindex extends Component {
     this.setState({ personList: tempPersonList, currentPersonId: item.ID });
     this.getPersonalInfo(item.ID);
   };
+  // 给当前选中的人添加类名控制样式
   getSelectClass = isSelected => {
     if (isSelected) {
       return 'idlindex__content-person__active';
@@ -81,6 +83,7 @@ class IdLindex extends Component {
       return;
     }
   };
+  // 监听Tabs页的变化
   handleClick = activeKey => {
     // console.log(activeKey);
     this.setState({
@@ -113,7 +116,7 @@ class IdLindex extends Component {
       console.log('获取人员列表失败');
     }
   };
-  // 获取人员详细信息
+  // 获取当前人员人员详细信息
   getPersonalInfo = async id => {
     let res;
     try {
@@ -129,53 +132,6 @@ class IdLindex extends Component {
         content: err.message
       });
     }
-  };
-  // 窗体点击确定
-  ModalOK = () => {
-    this.setState({
-      typeVisible: false
-    });
-  };
-  // addFormOK
-  addFormOK = () => {
-    const { modalType, currentPersonId, accessCategority } = this.state;
-    let resid;
-    if (modalType === 'accessment') {
-      resid = 613152706922;
-    } else {
-      resid = 613152614705;
-    }
-    http()
-      .addRecords({
-        resid: resid,
-        data: [
-          {
-            ID: currentPersonId,
-            accessCategority
-          }
-        ]
-      })
-      .then(res => {
-        this.tableDataRef.handleRefresh();
-      })
-      .catch(err => {
-        console.error(err.message);
-      });
-    this.setState({
-      typeVisible: false
-    });
-  };
-  //监听添加表类型变化
-  handleSelectChange = value => {
-    this.setState({
-      accessCategority: value
-    });
-  };
-  // 窗体点击取消
-  ModalCancel = () => {
-    this.setState({
-      typeVisible: false
-    });
   };
   //获取formData数据
   getFormData = async record => {
@@ -221,12 +177,6 @@ class IdLindex extends Component {
       }
     });
   };
-  addFormCategory = modalType => {
-    this.setState({
-      typeVisible: true,
-      modalType
-    });
-  };
   handleSearchClick = value => {
     //  console.log(value);
     this.getPersonList(value);
@@ -267,17 +217,6 @@ class IdLindex extends Component {
             {...assementForm}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
-            actionBarExtra={() => {
-              return (
-                <Button
-                  onClick={() => {
-                    this.addFormCategory('accessment');
-                  }}
-                >
-                  添加
-                </Button>
-              );
-            }}
             customRowBtns={[
               (record, btnSize) => {
                 return (
@@ -299,7 +238,6 @@ class IdLindex extends Component {
             <TableData
             {...referenceCheck}
               key={613152614705}
-              // actionBarExtra 
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
             />
@@ -319,7 +257,7 @@ class IdLindex extends Component {
     moveTo.move(tempid);
   };
   render() {
-    const { personList, currentPersonInfo } = this.state;
+    const { personList} = this.state;
     // console.log(currentPersonInfo);
     return (
       <div className="idlindex">
@@ -373,14 +311,6 @@ class IdLindex extends Component {
             />
           </div>
           <div className="idlindex__content-form">{this.renderContent()}</div>
-          <Modal
-            title="添加背景调查表/面试评估表"
-            visible={this.state.typeVisible}
-            onOk={this.addFormOK}
-            onCancel={this.ModalCancel}
-          >
-            {/* <div style={{ height: 300 }}>{this.renderContent()}</div> */}
-          </Modal>
         </div>
       </div>
     );
