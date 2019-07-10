@@ -65,31 +65,32 @@ class FeedBackAndPlan extends Component {
     } catch (err) {
       console.log(err.message);
     }
-    console.log('res', res);
-    if (res.data[0].C3_615639406401 === '外训') {
-      const tempRateOut = { ...rateOut };
-      tempRateOut.rate1 = res.data[0].C3_478370015482; //机构服务满意度
-      tempRateOut.rate2 = res.data[0].C3_478370045169; //讲师满意度
-      tempRateOut.rate3 = res.data[0].C3_615580966131; //内容关联度
-      tempRateOut.rate4 = res.data[0].C3_478370100284; //是否推荐同事参加考试课程
-      this.setState({
-        rateOut: tempRateOut
-      });
-      // console.log('后端返回的外训评分', this.state.rateOut);
-    } else {
-      const tempRate = { ...rate };
-      tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
-      tempRate.rate2 = res.data[0].C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
-      tempRate.rate3 = res.data[0].C3_615640043869; //所学的内容对实际工作有很大帮助
-      tempRate.rate4 = res.data[0].C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-      tempRate.rate5 = res.data[0].C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-      tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
-      tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
-      tempRate.rate8 = res.data[0].C3_615654391051; //时间控制合理使我感到舒适
-      this.setState({
-        rate: tempRate
-      });
-      console.log('后盾返回的内训评分', this.state.rate);
+    if (res.data.length > 0) {
+      if (res.data[0].C3_615639406401 === '外训') {
+        const tempRateOut = { ...rateOut };
+        tempRateOut.rate1 = res.data[0].C3_478370015482; //机构服务满意度
+        tempRateOut.rate2 = res.data[0].C3_478370045169; //讲师满意度
+        tempRateOut.rate3 = res.data[0].C3_615580966131; //内容关联度
+        tempRateOut.rate4 = res.data[0].C3_478370100284; //是否推荐同事参加考试课程
+        this.setState({
+          rateOut: tempRateOut
+        });
+        // console.log('后端返回的外训评分', this.state.rateOut);
+      } else {
+        const tempRate = { ...rate };
+        tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
+        tempRate.rate2 = res.data[0].C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
+        tempRate.rate3 = res.data[0].C3_615640043869; //所学的内容对实际工作有很大帮助
+        tempRate.rate4 = res.data[0].C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
+        tempRate.rate5 = res.data[0].C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+        tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
+        tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
+        tempRate.rate8 = res.data[0].C3_615640235456; //时间控制合理使我感到舒适
+        this.setState({
+          rate: tempRate
+        });
+        console.log('后盾返回的内训评分', tempRate);
+      }
     }
     let res2; //行动计划
     try {
@@ -265,7 +266,7 @@ class FeedBackAndPlan extends Component {
     this.props.onSetPlanWrite(temPlanWrite);
   };
   // handleNumberChange 查看时进度变化
-  handleNumberChange  = async (value,index,item)=>{
+  handleNumberChange = async (value, index, item) => {
     const planView = [...this.state.planView];
     console.log(index, planView);
     planView[index].progress = value;
@@ -273,22 +274,24 @@ class FeedBackAndPlan extends Component {
       planView: planView
     });
     // 向后端发请求
-      // console.log('item',item);  
-      // console.log('现在',this.state.planWrite);
-      let res;
-      try{
-        res = await http().modifyRecords({
-          resid:615571557694,
-          data:[{
-            REC_ID:item.REC_ID,
-            progress:this.state.planView[index].progress,
-          }]
-        })
-      }catch(err){
-        console.log(err.message)
-      }
-      this.getFeebackAndRate();
-  }
+    // console.log('item',item);
+    // console.log('现在',this.state.planWrite);
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 615571557694,
+        data: [
+          {
+            REC_ID: item.REC_ID,
+            progress: this.state.planView[index].progress
+          }
+        ]
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+    this.getFeebackAndRate();
+  };
   renderViewOrModify = () => {
     // console.log(this.props.mode);
     if (this.props.mode === 'view') {
@@ -312,7 +315,12 @@ class FeedBackAndPlan extends Component {
                   />
                 </Col>
                 <Col span={2}>
-                  <InputNumber value={item.progress}  onChange={(value)=>{this.handleNumberChange(value,index,item)}} />
+                  <InputNumber
+                    value={item.progress}
+                    onChange={value => {
+                      this.handleNumberChange(value, index, item);
+                    }}
+                  />
                 </Col>
               </Row>
             );
@@ -384,7 +392,7 @@ class FeedBackAndPlan extends Component {
     return (
       <div>
         {this.props.onCourseType === '内训' ? (
-          <Card title="课程反馈">
+          <Card>
             <Card type="inner" title="讲师专业水平" className="cardinner">
               <Row>
                 <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
@@ -456,7 +464,7 @@ class FeedBackAndPlan extends Component {
                 </Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate4} disabled />
+                    <Rate value={this.state.rate.rate5} disabled />
                   ) : (
                     <Rate
                       value={this.state.rate.rate5}

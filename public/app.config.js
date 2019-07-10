@@ -10,7 +10,7 @@ window.pwConfig = {
     // baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
       //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
-
+   
     // 个人中心配置
     personCenterResIds: [
       {
