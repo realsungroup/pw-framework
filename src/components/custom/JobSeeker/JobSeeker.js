@@ -12,12 +12,13 @@ import {
   Modal,
   Spin
 } from 'antd';
-import MoveTo from 'moveto';
+import MoveTo from 'moveto';  //引入moveto这个库
 import http from 'Util20/api';
-import ApplyInformantion from '../ApplayInformnation';
+// import ApplyInformantion from '../ApplayInformnation';
 import TextArea from 'antd/lib/input/TextArea';
 import RadioGroup from 'antd/lib/radio/group';
 const { Option } = Select;
+// 左侧导航栏
 const MenuList = [
   {
     label: '个人资料',
@@ -55,6 +56,7 @@ const MenuList = [
     icon: 'user-add'
   }
 ];
+// 语言能力评估的程度
 const languageAbility = [
   {
     label: '优秀',
@@ -73,6 +75,7 @@ const languageAbility = [
     value: '欠佳'
   }
 ];
+// 栅格系统的布局
 const formItemLayout = {
   labelCol: {
     span: 10,
@@ -91,26 +94,18 @@ const formItemLayout2 = {
   }
 };
 const { RangePicker } = DatePicker;
-const pstyle = {
-  style: {
-    width: 600,
-    padding: 10,
-    lineHeight: '14px',
-    whiteSpace: 'pre-line',
-    textAlign: 'left'
-  }
-};
 
 class JobSeeker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      hasCriminal: '',
-      hasLostTrust: '',
-      hasUnemployee: '',
-      knowColleaguage: '',
-      competitionAgreement: '',
+      hasCriminal: '', //是否有犯罪记录
+      hasLostTrust: '', //是否有失信行为
+      hasUnemployee: '', //是否失业四个月经历
+      knowColleaguage: '', //是否认识菲尼萨员工
+      competitionAgreement: '', //是否签署过竞争协议
+       //教育背景
       educationBackground: [
         {
           Eddate: 'Eddate',
@@ -121,6 +116,7 @@ class JobSeeker extends Component {
           EdReferenceTel: 'EdReferenceTel'
         }
       ],
+      //工作经历
       workExperise: [
         {
           WorkDate: 'WorkDate',
@@ -131,6 +127,7 @@ class JobSeeker extends Component {
           WorkReferenceTel: 'WorkReferenceTel'
         }
       ],
+      //家庭成员
       family: [
         {
           FamName: 'FamName',
@@ -141,6 +138,7 @@ class JobSeeker extends Component {
           FamTel: 'FamTel'
         }
       ],
+      //培训经历
       training: [
         {
           TrainingDate: 'TrainingDate',
@@ -160,7 +158,7 @@ class JobSeeker extends Component {
       console.log(values.Eddate1[0].format('YYYY-MM-DD'));
       if (!err) {
         this.setState({ loading: true });
-        console.log(1111111);
+        // console.log(1111111);
         let res;
         try {
           res = http().addRecords({
@@ -277,42 +275,6 @@ class JobSeeker extends Component {
       competitionAgreement: value
     });
   };
-  // 添加教育,工作,家庭成员,培训，
-  handleAdd = key => {
-    const { educationBackground, workExperise } = this.state;
-    // console.log(key);
-    const tempeducationBackground = [...educationBackground];
-    const tempworkExperise = [...workExperise];
-    let obj = {};
-    switch (key) {
-      case 'educationBackground':
-        obj = {
-          Eddate: 'Eddate',
-          EdSchool: 'EdSchool',
-          EdMajor: 'EdMajor',
-          EdDegree: 'EdDegree',
-          EdReference: 'EdReference',
-          EdReferenceTel: 'EdReferenceTel'
-        };
-        tempeducationBackground.push(obj);
-        break;
-      case 'workExperise':
-        obj = {
-          WorkDate: 'WorkDate',
-          WorkComName: 'WorkComName',
-          WorkRank: 'WorkRank',
-          ReasonForLeave: 'ReasonForLeave',
-          WorkReference: 'WorkReference',
-          WorkReferenceTel: 'WorkReferenceTel'
-        };
-        tempworkExperise.push(obj);
-        break;
-    }
-    this.setState({
-      educationBackground: tempeducationBackground,
-      workExperise: tempworkExperise
-    });
-  };
   // 添加教育背景
   handleAddEdBack = () => {
     const { educationBackground } = this.state;
@@ -330,7 +292,7 @@ class JobSeeker extends Component {
       educationBackground: tempeducationBackground
     });
   };
-  // // 添加工作经历
+  //  添加工作经历
   handleAddWork = () => {
     const { workExperise } = this.state;
     const tempworkExperise = [...workExperise];
@@ -718,7 +680,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAdd('educationBackground');
+                    this. handleAddEdBack();
                   }}
                 >
                   添加教育背景
@@ -795,7 +757,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAdd('workExperise');
+                    this.handleAddWork();
                   }}
                 >
                   添加工作经历

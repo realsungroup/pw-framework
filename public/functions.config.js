@@ -1558,3 +1558,9 @@ window[615898415042] ={
   name: 'InternalTraining',
   title: '内训管理',
 }
+
+// 616081514704
+window[616081514704] ={
+  name: 'TableData',
+  title: '测试',
+}

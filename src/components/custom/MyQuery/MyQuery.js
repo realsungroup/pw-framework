@@ -53,9 +53,13 @@ class MyQuery extends React.Component {
       loading: false
     });
   };
-  // 复制问卷开始
+  // 复制问卷
   copyQuery = async item => {
-    console.log('复制', item);
+    // 此处的item是所要复制的问卷的详细信息,复制分为两步，
+    /**第1步先复制问卷的信息,
+     * 第2步复制该问卷中所包含的问卷试题
+     */
+    // console.log('复制', item);
     const newItem = [
       {
         query_name: item.query_name,
@@ -64,7 +68,7 @@ class MyQuery extends React.Component {
     ];
     this.setState({ loading: true });
 
-    // 1
+    // 1 复制问卷的信息，在此场景中问卷信息包括问卷的名称和问卷描述,在问卷表中添加一条新的记录。
     let res;
     try {
       res = await http().addRecords({
@@ -86,7 +90,10 @@ class MyQuery extends React.Component {
       searchValue
     } = this.state;
     this.getData(current, pageSize, folderId, queryStatus, searchValue);
-    // 2
+    /**
+     * 第二步:复制问卷试题,
+     * 2.1:首先拿到原问卷的试题，去后台查表的内容(问卷试题表和试题选项表)
+     */
     let res2;
     try {
       res2 = await http().getTable({
@@ -98,6 +105,7 @@ class MyQuery extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
+    // 处理拿到的原问卷试题和试题的选项,subdata对应的是该试题的选项,一个试题多个选项
     let AllQuestionsArrdata = [];
     res2.data.map((question, index) => {
       const obj = {
