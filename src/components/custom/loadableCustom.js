@@ -385,3 +385,10 @@ export const EmployeeCourses = Loadable({
     return minLoading;
   }
 })
+
+export const InternalTraining = Loadable({
+  loader: () => import('./InternalTraining'),
+  loading() {
+    return minLoading;
+  }
+})

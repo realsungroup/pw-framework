@@ -528,7 +528,7 @@ class EmployeeCourses extends React.Component {
     return myCourses.map(item => (
       <Card
         extra={<Radio checked={item.checked} />}
-        title={item.C3_613941384592}
+        title={`${item.courseType} / ${item.C3_613941384592}`}
         style={{ marginBottom: '12px', cursor: 'pointer' }}
         key={item.REC_ID}
         bodyStyle={{ padding: 8 }}
@@ -710,7 +710,7 @@ class EmployeeCourses extends React.Component {
     return (
       <div className="emploee_courses">
         <Tabs defaultActiveKey="MyCourses" tabBarStyle={TABBARSTYLE}>
-          <TabPane tab="课程管理" key="MyCourses" >
+          <TabPane tab="课程管理" key="MyCourses">
             {this.renderHeader()}
             <main className="emploee_courses-main">
               <div
@@ -737,7 +737,9 @@ class EmployeeCourses extends React.Component {
               </div>
               {/* 右侧TimeLine */}
               <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse && selectedCourse.courseType === '外训' ? (
+                {selectedCourse &&
+                (selectedCourse.courseType === '外训' ||
+                  selectedCourse.courseType === '外聘内训') ? (
                   <Timeline>
                     <Timeline.Item
                       color={this.getColor(selectedCourse.isSubmitPlan)}
@@ -869,7 +871,8 @@ class EmployeeCourses extends React.Component {
                             查看课程反馈与行动计划
                           </span>
                         ) : null}
-                        {selectedCourse.isSubmitFeel === 'ing' ? (
+                        {selectedCourse.isSubmitFeel === 'ing' &&
+                        selectedCourse.courseType === '外训' ? (
                           <span
                             className="timeline_action"
                             onClick={this.openWriteTip}
@@ -879,29 +882,31 @@ class EmployeeCourses extends React.Component {
                         ) : null}
                       </div>
                     </Timeline.Item>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isSubmitFeel)}
-                    >
-                      <div>
-                        <span>心得体会</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.submitFeelTime}
-                        </span>
-                      </div>
-                      <div>
-                        {selectedCourse.isSubmitFeel === 'Y' ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() => {
-                              this.setState({ tipsModalMode: 'view' });
-                              this.getTip();
-                            }}
-                          >
-                            查看心得
+                    {selectedCourse.courseType === '外训' && (
+                      <Timeline.Item
+                        color={this.getColor(selectedCourse.isSubmitFeel)}
+                      >
+                        <div>
+                          <span>心得体会</span>
+                          <span style={{ paddingLeft: 12 }}>
+                            {selectedCourse.submitFeelTime}
                           </span>
-                        ) : null}
-                      </div>
-                    </Timeline.Item>
+                        </div>
+                        <div>
+                          {selectedCourse.isSubmitFeel === 'Y' ? (
+                            <span
+                              className="timeline_action"
+                              onClick={() => {
+                                this.setState({ tipsModalMode: 'view' });
+                                this.getTip();
+                              }}
+                            >
+                              查看心得
+                            </span>
+                          ) : null}
+                        </div>
+                      </Timeline.Item>
+                    )}
                   </Timeline>
                 ) : null}
                 {selectedCourse && selectedCourse.courseType === '内训' ? (
@@ -986,11 +991,12 @@ class EmployeeCourses extends React.Component {
             </main>
           </TabPane>
           <TabPane tab="课程日历" key="CoursesCalendar" forceRender>
-            <div style={{ flex: 1, height: '100%', overflow: 'auto' }}>
+            <div style={{ height:'100%' }}>
               <Calendar
                 eventKeyword=""
                 events={[...this.state.calendarEvents]}
                 defaultActiveTab="month"
+                height={'calc(100vh - 116px)'}
               />
             </div>
           </TabPane>
