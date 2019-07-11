@@ -1,48 +1,67 @@
-.arranging_courses {
-  background-color: white;
-  padding: 5px 24px;
+.internal_rrangement {
   display: flex;
-  height: 100%;
-  width: 100%;
   flex: 1;
-  flex-direction: column;
-  &-header {
-    padding: 5px;
-    flex-grow: 0;
+  
+  .arranging_courses {
+    background-color: white;
+    padding: 5px 24px;
     display: flex;
-    justify-content: space-between;
-    &_Mode {
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    flex-direction: column;
+    &-header {
+      padding: 5px;
+      flex-grow: 0;
       display: flex;
-      margin-right: 24px;
-      align-items: center;
-    }
-  }
-  &-course_list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    overflow: scroll;
-    flex-grow: 1;
-    align-items: flex-start;
-    &-course_type {
-      margin-left: 12px;
-      font-size: 20px;
-      height: 30px;
-      width: 30px;
-      border-radius: 50%;
-      color: #fff;
-      text-align: center;
-    }
-    .arranging_courses_item {
-      flex-basis: 49%;
-      margin-bottom: 12px;
-      .arranging_courses_item_content {
+      justify-content: space-between;
+      &_Mode {
         display: flex;
-        flex-wrap: wrap;
-        .content_item {
-          flex-basis: 50%;
+        margin-right: 24px;
+        align-items: center;
+      }
+    }
+    &-course_list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      overflow: scroll;
+      flex-grow: 1;
+      align-items: flex-start;
+      &-course_type {
+        margin-left: 12px;
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        color: #fff;
+        text-align: center;
+      }
+      .arranging_courses_item {
+        flex-basis: 49%;
+        margin-bottom: 12px;
+        .arranging_courses_item_content {
+          display: flex;
+          flex-wrap: wrap;
+          .content_item {
+            flex-basis: 50%;
+          }
         }
       }
     }
+  }
+}
+.add_arrangement_input_row{
+  display: flex;
+  padding:  6px;
+  .add_arrangement_input_item {
+    &-label {
+      flex-shrink: 0;
+      width: 80px; 
+    }
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-right: 24px;
   }
 }

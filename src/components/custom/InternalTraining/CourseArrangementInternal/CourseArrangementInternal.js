@@ -11,7 +11,8 @@ import {
   List,
   Radio,
   Form,
-  Select
+  Select,
+  Tag
 } from 'antd';
 import moment from 'moment';
 import './CourseArrangementInternal.less';
@@ -24,6 +25,7 @@ const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '615549231946'; //课程安排表id
 const courseDetailId = '615054661547';
+const InternalCoursesResid = '616155060405';
 
 const datetimeFormatString = 'YYYY-MM-DD HH:mm';
 const dateFormatString = 'YYYY-MM-DD';
@@ -54,21 +56,38 @@ const formItemLayout = {
 class CourseArrangementInternal extends React.Component {
   state = {
     mode: 'card', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
-    courseArrangments: [], //内训课程安排
+    courseArrangements: [], //内训课程安排
+    internalCourses: [], //内训课程
     searchKeyword: '', //搜索的关键词
     searchPeriod: ['', ''], //搜索时间段
-    selectedCourseArrangment: {}, //选中的课程安排
+    selectedCourseArrangement: {}, //选中的课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
+    isShowAddCourseArrangment: false, //是否显示添加课程安排模态窗
     modifiedCourseArrangement: {}, //修改后的课程安排
-    calendarEvents: [] //日历事件
+    calendarEvents: [], //日历事件
+    isSelectedCourse: false,
+    selectedCourse: {},
+    //添加时输入的课程安排数据
+    inputCourseArrangement: {
+      teacher: '',
+      startDate: '',
+      endDate: '',
+      courseType: '必修课',
+      places: undefined,
+      location: ''
+      // price: undefined,
+      // classHour: undefined,
+    }
   };
 
   async componentDidMount() {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
+    this.getInternalCourses();
     this.props.onHandleLoading(false);
   }
 
+  //获取课程安排
   getCourseArrangment = async () => {
     let res;
     try {
@@ -80,8 +99,8 @@ class CourseArrangementInternal extends React.Component {
       return console.log(error);
     }
     if (res.error === 0) {
-      let courseArrangments = res.data;
-      let courses = courseArrangments
+      let courseArrangements = res.data;
+      let courses = courseArrangements
         .map(item => ({
           CourseID: item.CourseID,
           CourseName: item.CourseName
@@ -90,7 +109,7 @@ class CourseArrangementInternal extends React.Component {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
       let importantIndex = 0;
-      let calendarEvents = courseArrangments.map(item => {
+      let calendarEvents = courseArrangements.map(item => {
         return {
           occur_id: item.REC_ID,
           category_color: `rgb(${parseInt(
@@ -108,16 +127,70 @@ class CourseArrangementInternal extends React.Component {
           category_name: item.CourseName
         };
       });
-      // console.log(courseArrangments,calendarEvents);
-      this.setState({ courseArrangments, courses, calendarEvents });
+      console.log(courseArrangements, calendarEvents);
+      this.setState({ courseArrangements, courses, calendarEvents });
     } else {
       message.error(res.message);
     }
   };
 
+  getInternalCourses = async () => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: InternalCoursesResid
+      });
+      console.log(res.data);
+      this.setState({ internalCourses: res.data });
+    } catch (error) {
+      message.error(error.message);
+      return console.log(error);
+    }
+  };
+
+  //添加课程安排
+  saveCourseArrangement = async (courseArrangement, CourseID) => {
+    try {
+      let res = await http().addRecords({
+        resid: courseArrangmentResid,
+        data: [
+          {
+            CourseID,
+            CourseLocation: courseArrangement.location,
+            EndDatetime: courseArrangement.endDate,
+            StartDatetime: courseArrangement.startDate,
+            innerArrangeType: courseArrangement.courseType,
+            classType: '内训',
+            places: courseArrangement.places,
+            Teacher: courseArrangement.teacher
+          }
+        ]
+      });
+      message.success('添加成功');
+      let courseArrangements = [res.data[0], ...this.state.courseArrangements];
+      this.setState({
+        isShowAddCourseArrangment: false,
+        isSelectedCourse: false,
+        selectedCourse: {},
+        inputCourseArrangement: {
+          teacher: '',
+          startDate: '',
+          endDate: '',
+          courseType: '必修课',
+          places: undefined,
+          location: ''
+        },
+        courseArrangements
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error.message);
+    }
+  };
+
   //删除课程安排
   deleteCourseArrangment = async arrangment => {
-    let { courseArrangments } = this.state;
+    let { courseArrangements } = this.state;
     let res;
     try {
       res = await http().removeRecords({
@@ -125,13 +198,13 @@ class CourseArrangementInternal extends React.Component {
         data: [arrangment]
       });
       message.success(res.message);
-      courseArrangments.splice(
-        courseArrangments.findIndex(item => {
+      courseArrangements.splice(
+        courseArrangements.findIndex(item => {
           return item.REC_ID === arrangment.REC_ID;
         }),
         1
       );
-      this.setState({ courseArrangments });
+      this.setState({ courseArrangements });
     } catch (error) {
       message.error(error.message);
     }
@@ -166,8 +239,8 @@ class CourseArrangementInternal extends React.Component {
             }'`
           : ''
       });
-      let courseArrangments = res.data;
-      this.setState({ courseArrangments });
+      let courseArrangements = res.data;
+      this.setState({ courseArrangements });
       this.props.onHandleLoading(false);
     } catch (error) {
       this.props.onHandleLoading(false);
@@ -199,10 +272,13 @@ class CourseArrangementInternal extends React.Component {
     }
   };
   render() {
-    let { mode, courseArrangments, selectedCourseArrangment } = this.state;
+    let { mode, courseArrangements, selectedCourseArrangement } = this.state;
     let modifiedCourseArrangement = { ...this.state.modifiedCourseArrangement };
+    let internalCourses = [...this.state.internalCourses];
+    let selectedCourse = { ...this.state.selectedCourse };
+    let inputCourseArrangement = { ...this.state.inputCourseArrangement };
     return (
-      <div style={{ flex: 1, display: 'flex' }}>
+      <div className="internal_rrangement">
         <div className="arranging_courses">
           <header className="arranging_courses-header">
             <div className="arranging_courses-header_Mode">
@@ -275,8 +351,8 @@ class CourseArrangementInternal extends React.Component {
           </header>
           {this.state.mode === 'card' && (
             <div className="arranging_courses-course_list">
-              {courseArrangments.length ? (
-                courseArrangments.map(item => (
+              {courseArrangements.length ? (
+                courseArrangements.map(item => (
                   <Card
                     title={
                       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -306,7 +382,7 @@ class CourseArrangementInternal extends React.Component {
                         onClick={() => {
                           this.setState({
                             isShowBells: true,
-                            selectedCourseArrangment: item
+                            selectedCourseArrangement: item
                           });
                         }}
                         theme={item.isNotice ? 'twoTone' : ''}
@@ -318,7 +394,7 @@ class CourseArrangementInternal extends React.Component {
                         onClick={() =>
                           this.setState({
                             isShowModifyModal: true,
-                            selectedCourseArrangment: item,
+                            selectedCourseArrangement: item,
                             modifiedCourseArrangement: item
                           })
                         }
@@ -345,7 +421,7 @@ class CourseArrangementInternal extends React.Component {
                         onClick={() => {
                           // this.setState({
                           //   isShowLearnerInfo: true,
-                          //   selectedCourseArrangment: item
+                          //   selectedCourseArrangement: item
                           // });
                           this.props.onHandleSelectCourseArrangement(item);
                           this.props.onHandleCurrent(1);
@@ -376,7 +452,7 @@ class CourseArrangementInternal extends React.Component {
                 ))
               ) : (
                 <List
-                  dataSource={courseArrangments}
+                  dataSource={courseArrangements}
                   style={{ width: '100%' }}
                 ></List>
               )}
@@ -394,7 +470,7 @@ class CourseArrangementInternal extends React.Component {
             onCancel={() =>
               this.setState({
                 isShowModifyModal: false,
-                selectedCourseArrangment: {},
+                selectedCourseArrangement: {},
                 modifiedCourseArrangement: {}
               })
             }
@@ -404,11 +480,11 @@ class CourseArrangementInternal extends React.Component {
               this.modifyCourseArrangment(modifiedCourseArrangement);
               this.setState({
                 isShowModifyModal: false,
-                selectedCourseArrangment: {},
+                selectedCourseArrangement: {},
                 modifiedCourseArrangement: {}
               });
             }}
-            title={`修改课程安排：${selectedCourseArrangment.CourseName}`}
+            title={`修改课程安排：${selectedCourseArrangement.CourseName}`}
           >
             <Form {...formItemLayout}>
               <Form.Item label="课程">
@@ -528,75 +604,307 @@ class CourseArrangementInternal extends React.Component {
             </Form>
           </Modal>
         ) : null}
-        {/* <Modal
-          visible={this.state.isShowLearnerInfo}
+        <Modal
+          visible={this.state.isShowAddCourseArrangment}
           onCancel={() =>
             this.setState({
-              isShowLearnerInfo: false,
-              selectedCourseArrangment: {}
+              isShowAddCourseArrangment: false,
+              selectedCourseArrangement: {},
+              isSelectedCourse: false
             })
           }
           onOk={() =>
             this.setState({
-              isShowLearnerInfo: false,
-              selectedCourseArrangment: {}
+              isShowAddCourseArrangment: false,
+              selectedCourseArrangement: {}
             })
           }
-          width="99%"
-          title="学员信息"
-          centered={true}
+          width="80%"
+          title="添加课程安排"
+          // centered={true}
           destroyOnClose
+          footer={null}
         >
-          <TableData
-            resid={courseDetailId}
-            key={selectedCourseArrangment.REC_ID}
-            wrappedComponentRef={element => (this.tableDataRef = element)}
-            refTargetComponentName="TableData"
-            height={440}
-            subtractH={240}
-            hasRowView={false}
-            hasModify={false}
-            hasDelete={false}
-            hasRowSelection={true}
-            cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
-            actionBarExtra={records => (
-              <Button
-                onClick={() => {
-                  if (!records.selectedRowKeys.length) {
-                    return message.error('请选择一条记录');
-                  }
-                  let {
-                    courseArrangment,
-                    selectedCourseArrangment
-                  } = this.state;
-                  let targetCourseArrangment = courseArrangment.filter(item => {
-                    return (
-                      item.CourseID === selectedCourseArrangment.CourseID &&
-                      item.REC_ID !== selectedCourseArrangment.REC_ID
-                    );
-                  });
-                  let keys = records.selectedRowKeys;
-                  let selectedMoveLearners = [];
-                  keys.forEach(item => {
-                    let learner = records.dataSource.find(i => {
-                      return i.REC_ID === item;
-                    });
-                    if(learner){
-                      selectedMoveLearners.push(learner);
-                    }
-                  });
-                  this.setState({
-                    isShowMoveLearner: true,
-                    targetCourseArrangment,
-                    selectedMoveLearners
-                  });
+          <div style={{ height: '80vh', overflow: 'auto' }}>
+            {this.state.isSelectedCourse ? (
+              <Card
+                title={selectedCourse.C3_609845305680}
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
+                bodyStyle={{flex:1}}
+                actions={[
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        isSelectedCourse: false,
+                        selectedCourse: {},
+                        inputCourseArrangement: {
+                          teacher: '',
+                          startDate: '',
+                          endDate: '',
+                          courseType: '必修课',
+                          places: undefined,
+                          location: ''
+                        }
+                      });
+                    }}
+                    icon="rollback"
+                    type="link"
+                  >
+                    返回选择课程
+                  </Button>,
+                  <Button
+                    // type="primary"
+                    onClick={() => {
+                      this.saveCourseArrangement(
+                        this.state.inputCourseArrangement,
+                        this.state.selectedCourse.C3_609845305868
+                      );
+                    }}
+                    icon="save"
+                    type="link"
+                  >
+                    保存
+                  </Button>
+                ]}
               >
-                移动人员至
-              </Button>
+                <div className="add_arrangement_input_row">
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      地点:
+                    </label>
+                    <Input
+                      placeholder="请输入地点"
+                      value={inputCourseArrangement.location}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            location: e.target.value
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      讲师:
+                    </label>
+                    <Input
+                      placeholder="请输入讲师"
+                      value={inputCourseArrangement.teacher}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            teacher: e.target.value
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="add_arrangement_input_row">
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      课程类别:
+                    </label>
+                    <Select
+                      value={inputCourseArrangement.courseType}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            courseType: e
+                          }
+                        });
+                      }}
+                    >
+                      <Option key="必修" value="必修课">
+                        必修课
+                      </Option>
+                      <Option key="计划" value="计划课">
+                        计划课
+                      </Option>
+                      <Option key="公开" value="公开课">
+                        公开课
+                      </Option>
+                    </Select>
+                  </div>
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      名额:
+                    </label>
+                    <Input
+                      placeholder="请输入名额"
+                      value={inputCourseArrangement.places}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            places: parseFloat(e.target.value)
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="add_arrangement_input_row">
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      开始时间:
+                    </label>
+                    <DatePicker
+                      showTime
+                      id="startDate"
+                      value={
+                        inputCourseArrangement.startDate &&
+                        moment(inputCourseArrangement.startDate)
+                      }
+                      format={datetimeFormatString}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            startDate: e.format(datetimeFormatString)
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="add_arrangement_input_item">
+                    <label className="add_arrangement_input_item-label">
+                      结束时间:
+                    </label>
+                    <DatePicker
+                      showTime
+                      id="endDate"
+                      value={
+                        inputCourseArrangement.endDate &&
+                        moment(inputCourseArrangement.endDate)
+                      }
+                      format={datetimeFormatString}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            endDate: e.format(datetimeFormatString)
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="add_arrangement_input_row">
+                  {/* <div
+                    style={{ flex: 1, display: 'flex', alignItems: 'center' }}
+                  >
+                    <label style={{ flexShrink: 0, width: 80 }}>课时:</label>
+                    <Input
+                      placeholder="请输入课时"
+                      value={inputCourseArrangement.classHour}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            classHour: parseFloat(e.target.value)
+                          }
+                        });
+                      }}
+                    />
+                  </div> */}
+                  {/* <div
+                    style={{ flex: 1, display: 'flex', alignItems: 'center' }}
+                  >
+                    <label style={{ flexShrink: 0, width: 80 }}>价格:</label>
+                    <Input
+                      placeholder="请输入价格"
+                      value={inputCourseArrangement.price}
+                      onChange={e => {
+                        this.setState({
+                          inputCourseArrangement: {
+                            ...inputCourseArrangement,
+                            price: parseFloat(e.target.value)
+                          }
+                        });
+                      }}
+                    />
+                  </div> */}
+                </div>
+                <div>
+                  <p>
+                    课程大纲:
+                    {selectedCourse.C3_609845305618}
+                  </p>
+                </div>
+                {/* <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    padding: 12
+                  }}
+                >
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        isSelectedCourse: false,
+                        selectedCourse: {},
+                        inputCourseArrangement: {
+                          teacher: '',
+                          startDate: '',
+                          endDate: '',
+                          courseType: '必修课',
+                          places: undefined,
+                          location: ''
+                        }
+                      });
+                    }}
+                  >
+                    返回选择课程
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      this.saveCourseArrangement(
+                        this.state.inputCourseArrangement,
+                        this.state.selectedCourse.C3_609845305868
+                      );
+                    }}
+                  >
+                    保存
+                  </Button>
+                </div> */}
+              </Card>
+            ) : (
+              <List
+                bordered
+                dataSource={internalCourses}
+                renderItem={item => {
+                  return (
+                    <List.Item
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        this.setState({
+                          isSelectedCourse: true,
+                          selectedCourse: item
+                        });
+                      }}
+                    >
+                      <Radio>
+                        <span style={{ marginRight: 12 }}>
+                          {item.C3_609845305680}
+                        </span>
+                      </Radio>
+                    </List.Item>
+                  );
+                }}
+              />
             )}
-          ></TableData>
-        </Modal> */}
+          </div>
+        </Modal>
       </div>
     );
   }

@@ -5,12 +5,13 @@ import 'ic-components/lib/Calendar/style/index.less';
 class CalendarMode extends React.Component {
   render() {
     return (
-      <div style={{flex:1,height:'100%',overflow:'auto'}}>
+      <div style={{flex:1,height:'100%'}}>
         <Calendar
           eventKeyword=""
           events={[]}
           defaultActiveTab="month"
-        ></Calendar>
+          height={'calc(100vh - 166px)'}
+        />
       </div>
     );
   }

@@ -447,7 +447,7 @@ class ArrangingCourses extends React.Component {
               )}
             </div>
           )}
-          {this.state.mode === 'calendar' && <div><CalendarMode></CalendarMode></div>}
+          {this.state.mode === 'calendar' && <div style={{height:'100%'}}><CalendarMode/></div>}
           {this.state.mode === 'table' && (
             <div style={{width:'100%',flex:1}}>
               <TableData
