@@ -1,20 +1,37 @@
 import React, { Component } from 'react';
-import { Spin, Steps } from 'antd';
+import { Spin, Steps, message } from 'antd';
 import './InternalTraining.less';
 // import { TableData } from '../../common/loadableCommon';
 import CourseArrangementInternal from './CourseArrangementInternal';
+import ReviewEmployee from './ReviewEmployee';
 
 const { Step } = Steps;
 
 class InternalTraining extends Component {
   state = {
     loading: false,
-    current: 0
+    current: 0,
+    selectedCourseArrangement: null //选中的课程安排
   };
 
   handleLoading = loading => this.setState({ loading });
 
-  handleCurrent = current => this.setState(current);
+  handleCurrent = current => this.setState({ current });
+
+  handleConfirmList = () => {
+    this.setState({
+      selectedCourseArrangement: {
+        ...this.state.selectedCourseArrangement,
+        isStopApply: 'Y'
+      }
+    });
+  };
+
+  handleSelectCourseArrangement = selectedCourseArrangement => {
+    this.setState({
+      selectedCourseArrangement: { ...selectedCourseArrangement }
+    });
+  };
   render() {
     let { current } = this.state;
     let page = null;
@@ -24,11 +41,17 @@ class InternalTraining extends Component {
           <CourseArrangementInternal
             onHandleLoading={this.handleLoading}
             onHandleCurrent={this.handleCurrent}
+            onHandleSelectCourseArrangement={this.handleSelectCourseArrangement}
           />
         );
         break;
       case 1:
-        page = <div />;
+        page = (
+          <ReviewEmployee
+            courseArrangement={this.state.selectedCourseArrangement}
+            onConfirmList={this.handleConfirmList}
+          />
+        );
         break;
       case 2:
         page = <div />;
@@ -62,7 +85,9 @@ class InternalTraining extends Component {
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                this.setState({ current: 1 });
+                if (this.state.current !== 1) {
+                  message.info('请点击“学员审核”进入');
+                }
               }}
             />
             <Step

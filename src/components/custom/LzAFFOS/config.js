@@ -52,9 +52,9 @@ export const inApplication = {
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
   // height:500,
-  formProps:{
-    height:500,
- },
+//   formProps:{
+//     height:500,
+//  },
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
