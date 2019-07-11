@@ -51,7 +51,6 @@ export {
   LzStepY,
   LzStepAflY,
   LzSelectPersons,
-  Card
 } from '../components/custom/loadableCustom';
 
 

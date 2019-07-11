@@ -47,12 +47,7 @@ export const LzSelectPersons = Loadable({
     return minLoading;
   }
 });
-export const Card = Loadable({
-  loader: () => import('./Card'),
-  loading() {
-    return minLoading;
-  }
-});
+
 export const LzRegister = Loadable({
   loader: () => import('./LzRegister'),
   loading() {
