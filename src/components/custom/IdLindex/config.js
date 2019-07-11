@@ -9,7 +9,7 @@ export const assementForm = {
   // height: 600,
   subtractH: 210,
   hasModify: false,
-  hasAdd: false,
+  hasAdd: true,
   hasRowSelection: false,
   hasDelete: false,
   hasRowSelection: false,
