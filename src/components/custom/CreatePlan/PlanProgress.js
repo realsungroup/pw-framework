@@ -6,15 +6,21 @@ import {
   message,
   Icon,
   Button,
-  Tag,
-  notification
 } from 'antd';
+// import PropTypes from 'prop-types';
 import http from '../../../util20/api';
 
 class PlanProgress extends React.Component {
+  // static propTypes = {
+  //   struct: PropTypes.string,
+  //   options: PropTypes.object,
+  //   title: PropTypes.string,
+  //   width: PropTypes.string,
+  //   onFinished: PropTypes.func,
+  //   showFields: PropTypes.array,
+  // } 
   state = {
     visible: true,
-    // resid: this.props.resid,
     // finishedCount: 0,
     percent: 0,
     isFinished: false,

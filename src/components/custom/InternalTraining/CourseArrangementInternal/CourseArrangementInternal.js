@@ -72,7 +72,7 @@ class CourseArrangementInternal extends React.Component {
       teacher: '',
       startDate: '',
       endDate: '',
-      courseType: '必修课',
+      courseType: '普通内训课',
       places: undefined,
       location: ''
       // price: undefined,
@@ -150,6 +150,8 @@ class CourseArrangementInternal extends React.Component {
 
   //添加课程安排
   saveCourseArrangement = async (courseArrangement, CourseID) => {
+    console.log(courseArrangement.courseType);
+    
     try {
       let res = await http().addRecords({
         resid: courseArrangmentResid,
@@ -159,7 +161,7 @@ class CourseArrangementInternal extends React.Component {
             CourseLocation: courseArrangement.location,
             EndDatetime: courseArrangement.endDate,
             StartDatetime: courseArrangement.startDate,
-            innerArrangeType: courseArrangement.courseType,
+            C3_616254048241: courseArrangement.courseType,
             classType: '内训',
             places: courseArrangement.places,
             Teacher: courseArrangement.teacher
@@ -176,7 +178,7 @@ class CourseArrangementInternal extends React.Component {
           teacher: '',
           startDate: '',
           endDate: '',
-          courseType: '必修课',
+          courseType: '普通内训课',
           places: undefined,
           location: ''
         },
@@ -438,9 +440,9 @@ class CourseArrangementInternal extends React.Component {
                       <div className="content_item">
                         地点:{item.CourseLocation}
                       </div>
-                      <div className="content_item">
+                      {/* <div className="content_item">
                         预计时间：{item.CoursePlanDate}
-                      </div>
+                      </div> */}
                       <div className="content_item">
                         开课时间：{item.StartDatetime}
                       </div>
@@ -517,7 +519,7 @@ class CourseArrangementInternal extends React.Component {
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item label="预计日期">
+              {/* <Form.Item label="预计日期">
                 <DatePicker
                   id="CoursePlanDate"
                   value={
@@ -534,7 +536,7 @@ class CourseArrangementInternal extends React.Component {
                     });
                   }}
                 />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="开课时间">
                 <DatePicker
                   id="StartDatetime"
@@ -545,7 +547,7 @@ class CourseArrangementInternal extends React.Component {
                     this.setState({
                       modifiedCourseArrangement: {
                         ...modifiedCourseArrangement,
-                        StartDatetime: e.format(datetimeFormatString)
+                        StartDatetime: e && e.format(datetimeFormatString)
                       }
                     });
                   }}
@@ -561,7 +563,22 @@ class CourseArrangementInternal extends React.Component {
                     this.setState({
                       modifiedCourseArrangement: {
                         ...modifiedCourseArrangement,
-                        EndDatetime: e.format(datetimeFormatString)
+                        EndDatetime: e && e.format(datetimeFormatString)
+                      }
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="讲师">
+                <Input
+                  id="teacher"
+                  type="text"
+                  value={modifiedCourseArrangement.Teacher}
+                  onChange={e => {
+                    this.setState({
+                      modifiedCourseArrangement: {
+                        ...modifiedCourseArrangement,
+                        Teacher: e.target.value
                       }
                     });
                   }}
@@ -582,23 +599,22 @@ class CourseArrangementInternal extends React.Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="课程类型">
+              <Form.Item label="安排类型">
                 <Select
                   id="classType"
-                  placeholder="请选择课程类型"
+                  placeholder="请选择安排类型"
                   onChange={v => {
                     this.setState({
                       modifiedCourseArrangement: {
                         ...modifiedCourseArrangement,
-                        classType: v
+                        C3_616254048241: v
                       }
                     });
                   }}
-                  value={modifiedCourseArrangement.classType}
+                  value={modifiedCourseArrangement.C3_616254048241}
                 >
-                  <Option value="外训">外训</Option>
-                  <Option value="内训">内训</Option>
-                  <Option value="外聘内训">外聘内训</Option>
+                  <Option value="普通内训课">普通内训课</Option>
+                  <Option value="好讲师">好讲师</Option>
                 </Select>
               </Form.Item>
             </Form>
@@ -645,7 +661,7 @@ class CourseArrangementInternal extends React.Component {
                           teacher: '',
                           startDate: '',
                           endDate: '',
-                          courseType: '必修课',
+                          courseType: '普通内训课',
                           places: undefined,
                           location: ''
                         }
@@ -715,6 +731,7 @@ class CourseArrangementInternal extends React.Component {
                     <Select
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
+                        console.log(e)
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
@@ -723,14 +740,11 @@ class CourseArrangementInternal extends React.Component {
                         });
                       }}
                     >
-                      <Option key="必修" value="必修课">
-                        必修课
+                      <Option key="普通内训课" value="普通内训课">
+                        普通内训课
                       </Option>
-                      <Option key="计划" value="计划课">
-                        计划课
-                      </Option>
-                      <Option key="公开" value="公开课">
-                        公开课
+                      <Option key="好讲师" value="好讲师">
+                        好讲师
                       </Option>
                     </Select>
                   </div>
@@ -769,7 +783,7 @@ class CourseArrangementInternal extends React.Component {
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
-                            startDate: e.format(datetimeFormatString)
+                            startDate: e && e.format(datetimeFormatString)
                           }
                         });
                       }}
@@ -799,40 +813,6 @@ class CourseArrangementInternal extends React.Component {
                   </div>
                 </div>
                 <div className="add_arrangement_input_row">
-                  {/* <div
-                    style={{ flex: 1, display: 'flex', alignItems: 'center' }}
-                  >
-                    <label style={{ flexShrink: 0, width: 80 }}>课时:</label>
-                    <Input
-                      placeholder="请输入课时"
-                      value={inputCourseArrangement.classHour}
-                      onChange={e => {
-                        this.setState({
-                          inputCourseArrangement: {
-                            ...inputCourseArrangement,
-                            classHour: parseFloat(e.target.value)
-                          }
-                        });
-                      }}
-                    />
-                  </div> */}
-                  {/* <div
-                    style={{ flex: 1, display: 'flex', alignItems: 'center' }}
-                  >
-                    <label style={{ flexShrink: 0, width: 80 }}>价格:</label>
-                    <Input
-                      placeholder="请输入价格"
-                      value={inputCourseArrangement.price}
-                      onChange={e => {
-                        this.setState({
-                          inputCourseArrangement: {
-                            ...inputCourseArrangement,
-                            price: parseFloat(e.target.value)
-                          }
-                        });
-                      }}
-                    />
-                  </div> */}
                 </div>
                 <div>
                   <p>

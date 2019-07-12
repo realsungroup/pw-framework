@@ -1,26 +1,126 @@
 import React from 'react';
 import './ReviewEmployee.less';
 import { TableData } from '../../../common/loadableCommon';
-import { Button, Modal, Popconfirm, message, Tag, List, Radio } from 'antd';
+import {
+  Button,
+  Modal,
+  Popconfirm,
+  message,
+  Tag,
+  List,
+  Radio,
+  Progress,
+  notification,
+  Icon
+} from 'antd';
 import SelectEmployeeToNotice from './SelectEmployeeToNotice';
 import http from 'Util20/api';
+import NoticeProgress from '../../CreatePlan/PlanProgress';
 
-const ReviewEmployeeResid = '616073391736';
-const NoticeResid = '616099620782';
+const ReviewEmployeeResid = '616073391736'; // 人员审核表id
+const NoticeResid = '616099620782'; //通知表id
 const courseArrangmentResid = '615549231946'; //课程安排表id
-
+const NoticeTaskId = '616153300255'; //通知全部报名任务id
 class ReviewEmployee extends React.Component {
+  
   state = {
     noticeModalVisible: false, // 通知人员报名模态窗状态
     selectCourseArrangementVisible: false, // 选择课程安排模态窗状态
     courseArrangements: [], // 可选择的课程安排
     targetCourseArrangement: '', //选中的课程安排编号
-    selectedEmployees: [] //要移动的人员
+    selectedEmployees: [], //要移动的人员
+    isShowProgress: false, // 是否显示进度模态窗
+
+    totalIndex: 0, // 任务总进度
+    curIndex: 0, // 当前任务进度
+    isTaskComplete: false, // 当前任务是否已完成
+    isShowModal: false
   };
 
   componentDidMount() {
     this.getCourseArrangements();
   }
+
+  componentWillUnmount = () => {
+    this.timer = null;
+    this.getTaskInfo = null;
+  };
+
+  handleNotice = async record => {
+    this.setState({
+      record: record
+    });
+    let res;
+    try {
+      res = await http().runAutoImport({
+        id:NoticeTaskId
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      message.error('正在通知全部人员，请耐心等候');
+    }
+    this.setState({ isShowModal: true });
+    this.getTaskInfo();
+  };
+
+  renderTaskProgress = () => {
+    const { totalIndex, curIndex } = this.state;
+    let percent = 0;
+    if (this.state.isTaskComplete) {
+      percent = 100;
+    } else if (totalIndex) {
+      percent = Math.floor((curIndex / totalIndex) * 100);
+    }
+    return (
+      <div className="total-plan__seed_personnel">
+        <Progress width={240} type="circle" percent={percent} />
+        <div style={{ marginTop: 20 }}>
+          {curIndex} / {totalIndex}
+        </div>
+      </div>
+    );
+  };
+
+  getTaskInfo = async () => {
+    let res;
+    try {
+      res = await http().getAutoImportStatus();
+    } catch (err) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+      return message.error(err.message);
+    }
+    if (res.error !== 0) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+      return message.error(res.message);
+    }
+    // 当前任务已完成
+    if (res.IsComplete) {
+      message.success('通知完成')
+    // 当前任务未完成
+    } else {
+      this.setState({
+        totalIndex: res.data.Total,
+        curIndex: res.data.Index,
+        isTaskComplete: false
+      });
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+    }
+  };
+
+  // 获取课程安排
   getCourseArrangements = async () => {
     let courseArrangement = this.props.courseArrangement;
     try {
@@ -38,6 +138,8 @@ class ReviewEmployee extends React.Component {
       console.log(error.message);
     }
   };
+
+  // 通知人员报名
   noticeEmployee = async employees => {
     console.log(employees);
     let res;
@@ -62,6 +164,7 @@ class ReviewEmployee extends React.Component {
     }
   };
 
+  //确认人员名单 截止报名
   comfirmList = () => {
     try {
       http().modifyRecords({
@@ -81,7 +184,6 @@ class ReviewEmployee extends React.Component {
     }
   };
   onMoveEmployees = async record => {
-    console.log(record);
     let dataSource = [...record.dataSource];
     let selectedEmployees = record.selectedRowKeys.map(item =>
       dataSource.find(
@@ -91,6 +193,7 @@ class ReviewEmployee extends React.Component {
     this.setState({ selectCourseArrangementVisible: true, selectedEmployees });
   };
 
+  //移动人员
   moveEmployees = async () => {
     let employees = [...this.state.selectedEmployees];
     let { targetCourseArrangement } = this.state;
@@ -138,6 +241,7 @@ class ReviewEmployee extends React.Component {
       </div>
     );
   }
+  // 关闭所有模态窗
   closeModals = () => {
     this.setState({
       noticeModalVisible: false,
@@ -233,9 +337,15 @@ class ReviewEmployee extends React.Component {
                   onClick={() => {
                     this.setState({ noticeModalVisible: true });
                   }}
-                  // type="primary"
                 >
                   通知报名
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.setState({ isShowModal: true }, this.handleNotice);
+                  }}
+                >
+                  通知全部报名
                 </Button>
                 {this.props.courseArrangement.isStopApply === 'Y' ? (
                   <Tag color="red">报名已截止</Tag>
@@ -303,16 +413,18 @@ class ReviewEmployee extends React.Component {
   }
 
   render() {
-    //classType innerArrangeType
     let courseArrangement = { ...this.props.courseArrangement };
     let table = null;
-    if (courseArrangement.innerArrangeType === '公开课') {
+    if (courseArrangement.innerArrangeType === '2') {
       table = this.renderPublic();
     }
-    if (courseArrangement.innerArrangeType === '必修课') {
-      table = this.renderCompulsory();
-    }
-    if (courseArrangement.innerArrangeType === '计划课') {
+    // if (courseArrangement.innerArrangeType === '必修课') {
+    //   table = this.renderCompulsory();
+    // }
+    // if (courseArrangement.innerArrangeType === '计划课') {
+    //   table = this.renderInplan();
+    // }
+    if (courseArrangement.innerArrangeType === '1') {
       table = this.renderInplan();
     }
 
@@ -362,6 +474,41 @@ class ReviewEmployee extends React.Component {
             ))}
           </List>
         </Modal>
+        <Modal
+          title="通知全部人员报名"
+          visible={this.state.isShowModal}
+          okText="完成"
+          cancelText="关闭"
+          closable={false}
+          onOk={() => {
+            this.setState({
+              isShowModal: false,
+              totalIndex: 0,
+              curIndex: 0,
+              isTaskComplete: false
+            });
+          }}
+          onCancel={() => {
+            this.setState({
+              isShowModal: false,
+              totalIndex: 0,
+              curIndex: 0,
+              isTaskComplete: false
+            });
+          }}
+        >
+          {this.renderTaskProgress()}
+        </Modal>
+        {/* {this.state.isShowProgress ? (
+          <Progress
+            onFinished={this.handleShowProgress}
+            struct="100"
+            options={{ resid: 611315248461, data: JSON.stringify({}) }}
+            title="通知报名"
+            showFields={['C3_609622263470', 'C3_609845305680']}
+            // width='50%'
+          />
+        ) : null} */}
       </div>
     );
   }

@@ -5,7 +5,7 @@ import 'ic-components/lib/Calendar/style/index.less';
 class CalendarMode extends React.Component {
   render() {
     return (
-      <div style={{flex:1,height:'100%'}}>
+      <div style={{flex:1}}>
         <Calendar
           eventKeyword=""
           events={[]}

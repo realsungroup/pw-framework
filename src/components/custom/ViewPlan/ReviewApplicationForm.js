@@ -15,7 +15,6 @@ const ReviewApplicationForm = props => {
             hasModify: false,
             hasDelete: false,
             hasAdd: false,
-            actionBarWidth:250,
             hasRowDelete: false,
             hasRowModify: false,
             hasRowView: true,
