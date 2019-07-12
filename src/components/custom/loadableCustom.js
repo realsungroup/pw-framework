@@ -387,3 +387,10 @@ export const InternalTraining = Loadable({
     return minLoading;
   }
 })
+
+export const ViewPlan = Loadable({
+  loader: () => import('./ViewPlan'),
+  loading() {
+    return minLoading;
+  }
+})
