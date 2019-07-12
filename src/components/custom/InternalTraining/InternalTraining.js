@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Spin, Steps, message } from 'antd';
+import { Spin, Steps, message, Modal } from 'antd';
 import './InternalTraining.less';
 // import { TableData } from '../../common/loadableCommon';
 import CourseArrangementInternal from './CourseArrangementInternal';
 import ReviewEmployee from './ReviewEmployee';
+import NoticeAttendClass from './NoticeAttendClass';
+import SeeFeedback from './SeeFeedback/SeeFeedback';
 
 const { Step } = Steps;
 
@@ -54,8 +56,19 @@ class InternalTraining extends Component {
         );
         break;
       case 2:
-        page = <div />;
+        page = (
+          <NoticeAttendClass
+            onHandleLoading={this.handleLoading}
+            onCheckPeople={this.onCheckPeople}
+          />
+        );
         break;
+        case 3:
+          page = (
+            <SeeFeedback
+            />
+          );
+          break;
       default:
         page = null;
         break;
@@ -98,6 +111,23 @@ class InternalTraining extends Component {
                 this.setState({ current: 2 });
               }}
             />
+
+            <Step
+              title="查看反馈"
+              description=""
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ current: 3 });
+              }}
+            />
+            <Modal
+              title="查看人员"
+              visible={this.state.checkPeopleVisible}
+              width="80%"
+              onCancel={this.closeModals}
+              footer={null}
+              destroyOnClose
+            ></Modal>
           </Steps>
           {page}
         </div>

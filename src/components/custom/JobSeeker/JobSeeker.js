@@ -879,7 +879,7 @@ class JobSeeker extends Component {
                         {}
                       )(<Input />)}
                     </Form.Item>
-                    <Form.Item label="证明人/Reference" {...formItemLayout2}>
+                    {/* <Form.Item label="证明人/Reference" {...formItemLayout2}>
                       {getFieldDecorator(
                         `${item.TrainingReference}${index + 1}`,
                         {}
@@ -893,7 +893,7 @@ class JobSeeker extends Component {
                         `${item.TrainingReferenceTel}${index + 1}`,
                         {}
                       )(<Input />)}
-                    </Form.Item>
+                    </Form.Item> */}
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
                         type="primary"

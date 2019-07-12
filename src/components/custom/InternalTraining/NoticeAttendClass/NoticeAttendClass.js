@@ -25,10 +25,9 @@ const { RangePicker } = DatePicker;
 const { Search } = Input;
 const courseArrangmentResid = '615549231946'; //课程安排表id
 
-const noNoticeID = '616168186243'
-const NoticedID = '616168268408'
-const allArrangeID = '616168233494'
-
+const noNoticeID = '616168186243';
+const NoticedID = '616168268408';
+const allArrangeID = '616168233494';
 
 const datetimeFormatString = 'YYYY-MM-DD HH:mm';
 const dateFormatString = 'YYYY-MM-DD';
@@ -64,11 +63,11 @@ class NoticeAttendClass extends React.Component {
     searchPeriod: ['', ''], //搜索时间段
     selectedCourseArrangment: {}, //选中的课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
-    isShowModal:false,
+    isShowModal: false,
     modifiedCourseArrangement: {}, //修改后的课程安排
     calendarEvents: [], //日历事件
-    currentArrangeID:'616168186243',
-    key:''
+    currentArrangeID: '616168186243',
+    key: ''
   };
 
   async componentDidMount() {
@@ -77,46 +76,45 @@ class NoticeAttendClass extends React.Component {
     this.props.onHandleLoading(false);
   }
 
-  onGetData = async(key) => {
-    if(key){
-    this.setState({
-      key:key,
-      mode:'card'
-    })
-    }else{
-      key = this.state.key
+  onGetData = async key => {
+    if (key) {
+      this.setState({
+        key: key,
+        mode: 'card'
+      });
+    } else {
+      key = this.state.key;
     }
-    await this.getCourseArrangment(key)
-  }
-  getCourseArrangment = async (key) => {
+    await this.getCourseArrangment(key);
+  };
+  getCourseArrangment = async key => {
     let res;
     let arrangeID = '616168186243';
-    console.log("key",key)
-    if(key === '0'){
-      arrangeID = noNoticeID
+    console.log('key', key);
+    if (key === '0') {
+      arrangeID = noNoticeID;
       this.setState({
-        currentArrangeID:arrangeID
-      })
-    }else if(key === '1'){
-      arrangeID = NoticedID
+        currentArrangeID: arrangeID
+      });
+    } else if (key === '1') {
+      arrangeID = NoticedID;
       this.setState({
-        currentArrangeID:arrangeID
-      })
-    }else if(key === '2'){
-      arrangeID = allArrangeID
+        currentArrangeID: arrangeID
+      });
+    } else if (key === '2') {
+      arrangeID = allArrangeID;
       this.setState({
-        currentArrangeID:arrangeID
-      })
-    }else{
+        currentArrangeID: arrangeID
+      });
+    } else {
       this.setState({
-        currentArrangeID:arrangeID
-      })
-
+        currentArrangeID: arrangeID
+      });
     }
-  
+
     try {
       res = await http().getTable({
-        resid: arrangeID,
+        resid: arrangeID
       });
     } catch (error) {
       message.error(error.message);
@@ -242,549 +240,564 @@ class NoticeAttendClass extends React.Component {
     }
   };
   //点击通知
-  onMessage = async(item) => {
-    console.log("item",item)
-    let res ;
-    item.C3_614449043675 = 'Y'
+  onMessage = async item => {
+    console.log('item', item);
+    let res;
+    item.C3_614449043675 = 'Y';
     try {
       res = await http().modifyRecords({
-        resid:courseArrangmentResid,
-        data:[item]
-      })
-      message.success("通知成功！")
-      this.onGetData()
+        resid: courseArrangmentResid,
+        data: [item]
+      });
+      message.success('通知成功！');
+      this.onGetData();
     } catch (error) {
-      message.error(error.message)
-    } 
-  }
+      message.error(error.message);
+    }
+  };
   render() {
     let { mode, courseArrangments } = this.state;
     return (
       <div style={{ flex: 1, display: 'flex' }}>
         <div className="notice_attend_class">
-          <Tabs defaultActiveKey='0' onChange={this.onGetData.bind(this)}> 
-          <TabPane
-        
-        tab={'未通知'}
-        key="0"
-        style={{ width: '100%',height:"100%"  }}
-      >
-          <header className="notice_attend_class-header">
-            <div className="notice_attend_class-header_Mode">
-            
-              <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
-                显示模式:
-              </span>
-              <div>
-                <Icon
-                  type="credit-card"
-                  style={mode === 'card' ? activeStyle : unactiveStyle}
-                  key="card"
-                  theme={mode === 'card' ? 'filled' : null}
-                  title="卡片模式"
-                  onClick={() => {
-                    this.setState({ mode: 'card' });
-                  }}
-                />
-                <Icon
-                  type="table"
-                  style={mode === 'table' ? activeStyle : unactiveStyle}
-                  key="card"
-                  // theme={mode === 'table' ? 'filled' : null}
-                  title="表格模式"
-                  onClick={() => {
-                    this.setState({ mode: 'table' });
-                  }}
-                />
-                <Icon
-                  key="calendar"
-                  type="calendar"
-                  style={mode === 'calendar' ? activeStyle : unactiveStyle}
-                  theme={mode === 'calendar' ? 'filled' : null}
-                  title="日历模式"
-                  onClick={() => {
-                    this.setState({ mode: 'calendar' });
-                  }}
-                />
-              </div>
-            </div>
-            <div className="notice_attend_class-header_search">
-              <RangePicker
-                showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD HH:mm"
-                placeholder={['开始日期', '结束日期']}
-                onOk={this.onOk}
-                onChange={this.onRangeSearchChange}
-                value={this.state.rangePickerValue}
-              />
-              <Search
-                placeholder="输入课程关键字搜索"
-                onSearch={value => {
-                  this.setState(
-                    { searchKeyword: value },
-                    this.searchCourseArrangment
-                  );
-                }}
-                enterButton
-                style={{ width: 200, marginLeft: 5 }}
-              />
-            </div>
-          </header>
-          {this.state.mode === 'card' && (
-            <div className="notice_attend_class-course_list">
-              {courseArrangments.length ? (
-                courseArrangments.map(item => (
-                  <Card
-                    title={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span>{item.CourseName}</span>
-                        <span
-                          className="notice_attend_class-course_list-course_type"
-                          style={
-                            item.innerArrangeType === '必修课'
-                              ? { backgroundColor: '#1787fb' }
-                              : item.innerArrangeType === '公开课'
-                              ? { backgroundColor: '#57c22d' }
-                              : {
-                                  backgroundColor: '#f1882b'
-                                }
-                          }
-                        >
-                          {item.innerArrangeType}
-                        </span>
-                      </div>
-                    }
-                    className="notice_attend_class_item"
-                    key={item.REC_ID}
-                    hoverable
-                    extra={
-                      <Icon
-                        type="bell"
-                        onClick={() => {
-                          this.setState({
-                            isShowBells: true,
-                            selectedCourseArrangment: item
-                          });
-                        }}
-                        theme={item.isNotice ? 'twoTone' : ''}
-                        style={{ fontSize: 20 }}
-                      ></Icon>
-                    }
-                    actions={[   <Popconfirm
-                      title="确认通知？"
-                      onConfirm={this.onMessage.bind(this, item)}
-                      icon={
-                        <Icon
-                          type="question-circle-o"
-                          style={{ color: 'red' }}
-                        />
-                      }
-                    >
-                      <span
-                      >
-                        <Icon type="message" />
-                        通知
-                      </span></Popconfirm>
-                      ,
-                      <span
-                        onClick={() => {
-                          // this.setState({
-                          //   isShowLearnerInfo: true,
-                          //   selectedCourseArrangment: item
-                          // });
-                          this.setState({
-                            isShowModal:true
-                          })
-                          // this.props.onCheckPeople();
-                        }}
-                      >
-                        <Icon type="team" />
-                        查看人员
-                      </span>
-                    ]}
+          <Tabs defaultActiveKey="0" onChange={this.onGetData.bind(this)}>
+            <TabPane
+              tab={'未通知'}
+              key="0"
+              style={{ width: '100%', height: '100%' }}
+            >
+              <header className="notice_attend_class-header">
+                <div className="notice_attend_class-header_Mode">
+                  <span
+                    style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}
                   >
-                    <div className="notice_attend_class_item_content">
-                      <div className="content_item">主讲:{item.Teacher}</div>
-                      <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      <div className="content_item">
-                        预计时间：{item.CoursePlanDate}
-                      </div>
-                      <div className="content_item">
-                        开课时间：{item.StartDatetime}
-                      </div>
-                      <div className="content_item">
-                        结束时间：{item.EndDatetime}
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <List
-                  dataSource={courseArrangments}
-                  style={{ width: '100%' }}
-                ></List>
+                    显示模式:
+                  </span>
+                  <div>
+                    <Icon
+                      type="credit-card"
+                      style={mode === 'card' ? activeStyle : unactiveStyle}
+                      key="card"
+                      theme={mode === 'card' ? 'filled' : null}
+                      title="卡片模式"
+                      onClick={() => {
+                        this.setState({ mode: 'card' });
+                      }}
+                    />
+                    <Icon
+                      type="table"
+                      style={mode === 'table' ? activeStyle : unactiveStyle}
+                      key="card"
+                      // theme={mode === 'table' ? 'filled' : null}
+                      title="表格模式"
+                      onClick={() => {
+                        this.setState({ mode: 'table' });
+                      }}
+                    />
+                    <Icon
+                      key="calendar"
+                      type="calendar"
+                      style={mode === 'calendar' ? activeStyle : unactiveStyle}
+                      theme={mode === 'calendar' ? 'filled' : null}
+                      title="日历模式"
+                      onClick={() => {
+                        this.setState({ mode: 'calendar' });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="notice_attend_class-header_search">
+                  <RangePicker
+                    showTime={{ format: 'HH:mm' }}
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder={['开始日期', '结束日期']}
+                    onOk={this.onOk}
+                    onChange={this.onRangeSearchChange}
+                    value={this.state.rangePickerValue}
+                  />
+                  <Search
+                    placeholder="输入课程关键字搜索"
+                    onSearch={value => {
+                      this.setState(
+                        { searchKeyword: value },
+                        this.searchCourseArrangment
+                      );
+                    }}
+                    enterButton
+                    style={{ width: 200, marginLeft: 5 }}
+                  />
+                </div>
+              </header>
+              {this.state.mode === 'card' && (
+                <div className="notice_attend_class-course_list">
+                  {courseArrangments.length ? (
+                    courseArrangments.map(item => (
+                      <Card
+                        title={
+                          <div
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <span>{item.CourseName}</span>
+                            <span
+                              className="notice_attend_class-course_list-course_type"
+                              style={
+                                item.innerArrangeType === '1'
+                                  ? { backgroundColor: '#1787fb' }
+                                  : { backgroundColor: '#57c22d' }
+                              }
+                            >
+                              {item.C3_616254048241}
+                            </span>
+                          </div>
+                        }
+                        className="notice_attend_class_item"
+                        key={item.REC_ID}
+                        hoverable
+                        actions={[
+                          <Popconfirm
+                            title="确认通知？"
+                            onConfirm={this.onMessage.bind(this, item)}
+                            icon={
+                              <Icon
+                                type="question-circle-o"
+                                style={{ color: 'red' }}
+                              />
+                            }
+                          >
+                            <span>
+                              <Icon type="message" />
+                              通知
+                            </span>
+                          </Popconfirm>,
+                          <span
+                            onClick={() => {
+                              // this.setState({
+                              //   isShowLearnerInfo: true,
+                              //   selectedCourseArrangment: item
+                              // });
+                              this.setState({
+                                isShowModal: true
+                              });
+                              // this.props.onCheckPeople();
+                            }}
+                          >
+                            <Icon type="team" />
+                            查看人员
+                          </span>
+                        ]}
+                      >
+                        <div className="notice_attend_class_item_content">
+                          <div className="content_item">
+                            主讲:{item.Teacher}
+                          </div>
+                          <div className="content_item">
+                            人数:{item.Attendees}
+                          </div>
+                          <div className="content_item">
+                            地点:{item.CourseLocation}
+                          </div>
+                          <div className="content_item">
+                            预计时间：{item.CoursePlanDate}
+                          </div>
+                          <div className="content_item">
+                            开课时间：{item.StartDatetime}
+                          </div>
+                          <div className="content_item">
+                            结束时间：{item.EndDatetime}
+                          </div>
+                        </div>
+                      </Card>
+                    ))
+                  ) : (
+                    <List
+                      dataSource={courseArrangments}
+                      style={{ width: '100%' }}
+                    ></List>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-          {this.state.mode === 'calendar' && (
-            <div style={{ height: '100%' }}>
-              <InternalCourseCalendar events={this.state.calendarEvents} />
-            </div>
-          )}
-        </TabPane>
-          <TabPane
-        
-        tab={'已通知'}
-        key="1"
-        style={{ width: '100%',height:"100%"  }}
-      >
-          <header className="notice_attend_class-header">
-            <div className="notice_attend_class-header_Mode">
-            
-              <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
-                显示模式:
-              </span>
-              <div>
-                <Icon
-                  type="credit-card"
-                  style={mode === 'card' ? activeStyle : unactiveStyle}
-                  key="card"
-                  theme={mode === 'card' ? 'filled' : null}
-                  title="卡片模式"
-                  onClick={() => {
-                    this.setState({ mode: 'card' });
-                  }}
-                />
-                <Icon
-                  type="table"
-                  style={mode === 'table' ? activeStyle : unactiveStyle}
-                  key="card"
-                  // theme={mode === 'table' ? 'filled' : null}
-                  title="表格模式"
-                  onClick={() => {
-                    this.setState({ mode: 'table' });
-                  }}
-                />
-                <Icon
-                  key="calendar"
-                  type="calendar"
-                  style={mode === 'calendar' ? activeStyle : unactiveStyle}
-                  theme={mode === 'calendar' ? 'filled' : null}
-                  title="日历模式"
-                  onClick={() => {
-                    this.setState({ mode: 'calendar' });
-                  }}
-                />
-              </div>
-            </div>
-            <div className="notice_attend_class-header_search">
-              <RangePicker
-                showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD HH:mm"
-                placeholder={['开始日期', '结束日期']}
-                onOk={this.onOk}
-                onChange={this.onRangeSearchChange}
-                value={this.state.rangePickerValue}
-              />
-              <Search
-                placeholder="输入课程关键字搜索"
-                onSearch={value => {
-                  this.setState(
-                    { searchKeyword: value },
-                    this.searchCourseArrangment
-                  );
-                }}
-                enterButton
-                style={{ width: 200, marginLeft: 5 }}
-              />
-            </div>
-          </header>
-          {this.state.mode === 'card' && (
-            <div className="notice_attend_class-course_list">
-              {courseArrangments.length ? (
-                courseArrangments.map(item => (
-                  <Card
-                    title={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span>{item.CourseName}</span>
-                        <span
-                          className="notice_attend_class-course_list-course_type"
-                          style={
-                            item.innerArrangeType === '必修课'
-                              ? { backgroundColor: '#1787fb' }
-                              : item.innerArrangeType === '公开课'
-                              ? { backgroundColor: '#57c22d' }
-                              : {
-                                  backgroundColor: '#f1882b'
-                                }
-                          }
-                        >
-                          {item.innerArrangeType}
-                        </span>
-                      </div>
-                    }
-                    className="notice_attend_class_item"
-                    key={item.REC_ID}
-                    hoverable
-                    extra={
-                      <Icon
-                        type="bell"
-                        onClick={() => {
-                          this.setState({
-                            isShowBells: true,
-                            selectedCourseArrangment: item
-                          });
-                        }}
-                        theme={item.isNotice ? 'twoTone' : ''}
-                        style={{ fontSize: 20 }}
-                      ></Icon>
-                    }
-                    actions={[   <Popconfirm
-                      title="确认通知？"
-                      onConfirm={this.onMessage.bind(this, item)}
-                      icon={
-                        <Icon
-                          type="question-circle-o"
-                          style={{ color: 'red' }}
-                        />
-                      }
-                    >
-                      <span
-                      >
-                        <Icon type="message" />
-                        通知
-                      </span></Popconfirm>
-                      ,
-                      <span
-                        onClick={() => {
-                          // this.setState({
-                          //   isShowLearnerInfo: true,
-                          //   selectedCourseArrangment: item
-                          // });
-                          this.setState({
-                            isShowModal:true
-                          })
-                          // this.props.onCheckPeople();
-                        }}
-                      >
-                        <Icon type="team" />
-                        查看人员
-                      </span>
-                    ]}
+              {this.state.mode === 'calendar' && (
+                <div style={{ height: '100%' }}>
+                  <InternalCourseCalendar events={this.state.calendarEvents} />
+                </div>
+              )}
+              {this.state.mode === 'table' && (
+                <div style={{ height: '100%' }}>
+                  <TableData
+                    resid={616168186243}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasAdd={false}
+                    hasRowDelete={false}
+                    hasRowVModify={false}
+                    hasRowView={false}
+                    subtractH={240}
+                  ></TableData>
+                </div>
+              )}
+            </TabPane>
+            <TabPane
+              tab={'已通知'}
+              key="1"
+              style={{ width: '100%', height: '100%' }}
+            >
+              <header className="notice_attend_class-header">
+                <div className="notice_attend_class-header_Mode">
+                  <span
+                    style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}
                   >
-                    <div className="notice_attend_class_item_content">
-                      <div className="content_item">主讲:{item.Teacher}</div>
-                      <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      <div className="content_item">
-                        预计时间：{item.CoursePlanDate}
-                      </div>
-                      <div className="content_item">
-                        开课时间：{item.StartDatetime}
-                      </div>
-                      <div className="content_item">
-                        结束时间：{item.EndDatetime}
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <List
-                  dataSource={courseArrangments}
-                  style={{ width: '100%' }}
-                ></List>
+                    显示模式:
+                  </span>
+                  <div>
+                    <Icon
+                      type="credit-card"
+                      style={mode === 'card' ? activeStyle : unactiveStyle}
+                      key="card"
+                      theme={mode === 'card' ? 'filled' : null}
+                      title="卡片模式"
+                      onClick={() => {
+                        this.setState({ mode: 'card' });
+                      }}
+                    />
+                    <Icon
+                      type="table"
+                      style={mode === 'table' ? activeStyle : unactiveStyle}
+                      key="card"
+                      // theme={mode === 'table' ? 'filled' : null}
+                      title="表格模式"
+                      onClick={() => {
+                        this.setState({ mode: 'table' });
+                      }}
+                    />
+                    <Icon
+                      key="calendar"
+                      type="calendar"
+                      style={mode === 'calendar' ? activeStyle : unactiveStyle}
+                      theme={mode === 'calendar' ? 'filled' : null}
+                      title="日历模式"
+                      onClick={() => {
+                        this.setState({ mode: 'calendar' });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="notice_attend_class-header_search">
+                  <RangePicker
+                    showTime={{ format: 'HH:mm' }}
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder={['开始日期', '结束日期']}
+                    onOk={this.onOk}
+                    onChange={this.onRangeSearchChange}
+                    value={this.state.rangePickerValue}
+                  />
+                  <Search
+                    placeholder="输入课程关键字搜索"
+                    onSearch={value => {
+                      this.setState(
+                        { searchKeyword: value },
+                        this.searchCourseArrangment
+                      );
+                    }}
+                    enterButton
+                    style={{ width: 200, marginLeft: 5 }}
+                  />
+                </div>
+              </header>
+              {this.state.mode === 'card' && (
+                <div className="notice_attend_class-course_list">
+                  {courseArrangments.length ? (
+                    courseArrangments.map(item => (
+                      <Card
+                        title={
+                          <div
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <span>{item.CourseName}</span>
+                            <span
+                              className="notice_attend_class-course_list-course_type"
+                              style={
+                                item.innerArrangeType === '1'
+                                  ? { backgroundColor: '#1787fb' }
+                                  : { backgroundColor: '#57c22d' }
+                              }
+                            >
+                              {item.C3_616254048241}
+                            </span>
+                          </div>
+                        }
+                        className="notice_attend_class_item"
+                        key={item.REC_ID}
+                        hoverable
+                        actions={[
+                          <Popconfirm
+                            title="确认通知？"
+                            onConfirm={this.onMessage.bind(this, item)}
+                            icon={
+                              <Icon
+                                type="question-circle-o"
+                                style={{ color: 'red' }}
+                              />
+                            }
+                          >
+                            <span>
+                              <Icon type="message" />
+                              通知
+                            </span>
+                          </Popconfirm>,
+                          <span
+                            onClick={() => {
+                              // this.setState({
+                              //   isShowLearnerInfo: true,
+                              //   selectedCourseArrangment: item
+                              // });
+                              this.setState({
+                                isShowModal: true
+                              });
+                              // this.props.onCheckPeople();
+                            }}
+                          >
+                            <Icon type="team" />
+                            查看人员
+                          </span>
+                        ]}
+                      >
+                        <div className="notice_attend_class_item_content">
+                          <div className="content_item">
+                            主讲:{item.Teacher}
+                          </div>
+                          <div className="content_item">
+                            人数:{item.Attendees}
+                          </div>
+                          <div className="content_item">
+                            地点:{item.CourseLocation}
+                          </div>
+                          <div className="content_item">
+                            预计时间：{item.CoursePlanDate}
+                          </div>
+                          <div className="content_item">
+                            开课时间：{item.StartDatetime}
+                          </div>
+                          <div className="content_item">
+                            结束时间：{item.EndDatetime}
+                          </div>
+                        </div>
+                      </Card>
+                    ))
+                  ) : (
+                    <List
+                      dataSource={courseArrangments}
+                      style={{ width: '100%' }}
+                    ></List>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-          {this.state.mode === 'calendar' && (
-            <div style={{ height: '100%' }}>
-              <InternalCourseCalendar events={this.state.calendarEvents} />
-            </div>
-          )}
-        </TabPane>
-          <TabPane
-        
-        tab={'全部'}
-        key="2"
-        style={{ width: '100%',height:"100%"  }}
-      >  <header className="notice_attend_class-header">
-            <div className="notice_attend_class-header_Mode">
-            
-              <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
-                显示模式:
-              </span>
-              <div>
-                <Icon
-                  type="credit-card"
-                  style={mode === 'card' ? activeStyle : unactiveStyle}
-                  key="card"
-                  theme={mode === 'card' ? 'filled' : null}
-                  title="卡片模式"
-                  onClick={() => {
-                    this.setState({ mode: 'card' });
-                  }}
-                />
-                <Icon
-                  type="table"
-                  style={mode === 'table' ? activeStyle : unactiveStyle}
-                  key="card"
-                  // theme={mode === 'table' ? 'filled' : null}
-                  title="表格模式"
-                  onClick={() => {
-                    this.setState({ mode: 'table' });
-                  }}
-                />
-                <Icon
-                  key="calendar"
-                  type="calendar"
-                  style={mode === 'calendar' ? activeStyle : unactiveStyle}
-                  theme={mode === 'calendar' ? 'filled' : null}
-                  title="日历模式"
-                  onClick={() => {
-                    this.setState({ mode: 'calendar' });
-                  }}
-                />
-              </div>
-            </div>
-            <div className="notice_attend_class-header_search">
-              <RangePicker
-                showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD HH:mm"
-                placeholder={['开始日期', '结束日期']}
-                onOk={this.onOk}
-                onChange={this.onRangeSearchChange}
-                value={this.state.rangePickerValue}
-              />
-              <Search
-                placeholder="输入课程关键字搜索"
-                onSearch={value => {
-                  this.setState(
-                    { searchKeyword: value },
-                    this.searchCourseArrangment
-                  );
-                }}
-                enterButton
-                style={{ width: 200, marginLeft: 5 }}
-              />
-            </div>
-          </header>
-          {this.state.mode === 'card' && (
-            <div className="notice_attend_class-course_list">
-              {courseArrangments.length ? (
-                courseArrangments.map(item => (
-                  <Card
-                    title={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span>{item.CourseName}</span>
-                        <span
-                          className="notice_attend_class-course_list-course_type"
-                          style={
-                            item.innerArrangeType === '必修课'
-                              ? { backgroundColor: '#1787fb' }
-                              : item.innerArrangeType === '公开课'
-                              ? { backgroundColor: '#57c22d' }
-                              : {
-                                  backgroundColor: '#f1882b'
-                                }
-                          }
-                        >
-                          {item.innerArrangeType}
-                        </span>
-                      </div>
-                    }
-                    className="notice_attend_class_item"
-                    key={item.REC_ID}
-                    hoverable
-                    extra={
-                      <Icon
-                        type="bell"
-                        onClick={() => {
-                          this.setState({
-                            isShowBells: true,
-                            selectedCourseArrangment: item
-                          });
-                        }}
-                        theme={item.isNotice ? 'twoTone' : ''}
-                        style={{ fontSize: 20 }}
-                      ></Icon>
-                    }
-                    actions={[   <Popconfirm
-                      title="确认通知？"
-                      onConfirm={this.onMessage.bind(this, item)}
-                      icon={
-                        <Icon
-                          type="question-circle-o"
-                          style={{ color: 'red' }}
-                        />
-                      }
-                    >
-                      <span
-                      >
-                        <Icon type="message" />
-                        通知
-                      </span></Popconfirm>
-                      ,
-                      <span
-                        onClick={() => {
-                          // this.setState({
-                          //   isShowLearnerInfo: true,
-                          //   selectedCourseArrangment: item
-                          // });
-                          this.setState({
-                            isShowModal:true
-                          })
-                          // this.props.onCheckPeople();
-                        }}
-                      >
-                        <Icon type="team" />
-                        查看人员
-                      </span>
-                    ]}
+              {this.state.mode === 'calendar' && (
+                <div style={{ height: '100%' }}>
+                  <InternalCourseCalendar events={this.state.calendarEvents} />
+                </div>
+              )}
+              {this.state.mode === 'table' && (
+                <div style={{ height: '100%' }}>
+                  <TableData
+                    resid={616168268408}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasAdd={false}
+                    hasRowDelete={false}
+                    hasRowVModify={false}
+                    hasRowView={false}
+                    subtractH={240}
+                  ></TableData>
+                </div>
+              )}
+            </TabPane>
+            <TabPane
+              tab={'全部'}
+              key="2"
+              style={{ width: '100%', height: '100%' }}
+            >
+              {' '}
+              <header className="notice_attend_class-header">
+                <div className="notice_attend_class-header_Mode">
+                  <span
+                    style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}
                   >
-                    <div className="notice_attend_class_item_content">
-                      <div className="content_item">主讲:{item.Teacher}</div>
-                      <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      <div className="content_item">
-                        预计时间：{item.CoursePlanDate}
-                      </div>
-                      <div className="content_item">
-                        开课时间：{item.StartDatetime}
-                      </div>
-                      <div className="content_item">
-                        结束时间：{item.EndDatetime}
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <List
-                  dataSource={courseArrangments}
-                  style={{ width: '100%' }}
-                ></List>
+                    显示模式:
+                  </span>
+                  <div>
+                    <Icon
+                      type="credit-card"
+                      style={mode === 'card' ? activeStyle : unactiveStyle}
+                      key="card"
+                      theme={mode === 'card' ? 'filled' : null}
+                      title="卡片模式"
+                      onClick={() => {
+                        this.setState({ mode: 'card' });
+                      }}
+                    />
+                    <Icon
+                      type="table"
+                      style={mode === 'table' ? activeStyle : unactiveStyle}
+                      key="card"
+                      // theme={mode === 'table' ? 'filled' : null}
+                      title="表格模式"
+                      onClick={() => {
+                        this.setState({ mode: 'table' });
+                      }}
+                    />
+                    <Icon
+                      key="calendar"
+                      type="calendar"
+                      style={mode === 'calendar' ? activeStyle : unactiveStyle}
+                      theme={mode === 'calendar' ? 'filled' : null}
+                      title="日历模式"
+                      onClick={() => {
+                        this.setState({ mode: 'calendar' });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="notice_attend_class-header_search">
+                  <RangePicker
+                    showTime={{ format: 'HH:mm' }}
+                    format="YYYY-MM-DD HH:mm"
+                    placeholder={['开始日期', '结束日期']}
+                    onOk={this.onOk}
+                    onChange={this.onRangeSearchChange}
+                    value={this.state.rangePickerValue}
+                  />
+                  <Search
+                    placeholder="输入课程关键字搜索"
+                    onSearch={value => {
+                      this.setState(
+                        { searchKeyword: value },
+                        this.searchCourseArrangment
+                      );
+                    }}
+                    enterButton
+                    style={{ width: 200, marginLeft: 5 }}
+                  />
+                </div>
+              </header>
+              {this.state.mode === 'card' && (
+                <div className="notice_attend_class-course_list">
+                  {courseArrangments.length ? (
+                    courseArrangments.map(item => (
+                      <Card
+                        title={
+                          <div
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <span>{item.CourseName}</span>
+                            <span
+                              className="notice_attend_class-course_list-course_type"
+                              style={
+                                item.innerArrangeType === '1'
+                                  ? { backgroundColor: '#1787fb' }
+                                  : { backgroundColor: '#57c22d' }
+                                //  item.innerArrangeType === '2'
+                                // ? { backgroundColor: '#57c22d' }
+                                // : {
+                                //     backgroundColor: '#f1882b'
+                                //   }
+                              }
+                            >
+                              {item.C3_616254048241}
+                            </span>
+                          </div>
+                        }
+                        className="notice_attend_class_item"
+                        key={item.REC_ID}
+                        hoverable
+                        actions={[
+                          <Popconfirm
+                            title="确认通知？"
+                            onConfirm={this.onMessage.bind(this, item)}
+                            icon={
+                              <Icon
+                                type="question-circle-o"
+                                style={{ color: 'red' }}
+                              />
+                            }
+                          >
+                            <span>
+                              <Icon type="message" />
+                              通知
+                            </span>
+                          </Popconfirm>,
+                          <span
+                            onClick={() => {
+                              // this.setState({
+                              //   isShowLearnerInfo: true,
+                              //   selectedCourseArrangment: item
+                              // });
+                              this.setState({
+                                isShowModal: true
+                              });
+                              // this.props.onCheckPeople();
+                            }}
+                          >
+                            <Icon type="team" />
+                            查看人员
+                          </span>
+                        ]}
+                      >
+                        <div className="notice_attend_class_item_content">
+                          <div className="content_item">
+                            主讲:{item.Teacher}
+                          </div>
+                          <div className="content_item">
+                            人数:{item.Attendees}
+                          </div>
+                          <div className="content_item">
+                            地点:{item.CourseLocation}
+                          </div>
+                          <div className="content_item">
+                            预计时间：{item.CoursePlanDate}
+                          </div>
+                          <div className="content_item">
+                            开课时间：{item.StartDatetime}
+                          </div>
+                          <div className="content_item">
+                            结束时间：{item.EndDatetime}
+                          </div>
+                        </div>
+                      </Card>
+                    ))
+                  ) : (
+                    <List
+                      dataSource={courseArrangments}
+                      style={{ width: '100%' }}
+                    ></List>
+                  )}
+                </div>
               )}
-            </div>
-          )}
-          {this.state.mode === 'calendar' && (
-            <div style={{ height: '100%' }}>
-              <InternalCourseCalendar events={this.state.calendarEvents} />
-            </div>
-          )}
-        </TabPane>
+              {this.state.mode === 'calendar' && (
+                <div style={{ height: '100%' }}>
+                  <InternalCourseCalendar events={this.state.calendarEvents} />
+                </div>
+              )}
+              {this.state.mode === 'table' && (
+                <div style={{ height: 'calc(100vh - 166px)' }}>
+                  <TableData
+                    resid={616168233494}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasAdd={false}
+                    hasRowDelete={false}
+                    hasRowVModify={false}
+                    hasRowView={false}
+                    subtractH={240}
+                  ></TableData>
+                </div>
+              )}
+            </TabPane>
           </Tabs>
-        
         </div>
         {this.state.isShowModal ? (
           <Modal
             visible={this.state.isShowModal}
-            width='80%'
+            width="80%"
             onCancel={() =>
               this.setState({
                 isShowModal: false,
@@ -802,20 +815,18 @@ class NoticeAttendClass extends React.Component {
                 modifiedCourseArrangement: {}
               });
             }}
-            title='查看人员'
+            title="查看人员"
           >
-           
-            <TableData 
-            resid={616073391736}
-            hasModify={false}
-            hasDelete={false}
-            hasAdd={false}
-            hasRowDelete={false}
-            hasRowVModify={false}
-            hasRowView={false}
-            >
-
-            </TableData>
+            <TableData
+              resid={616073391736}
+              hasModify={false}
+              hasDelete={false}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowVModify={false}
+              hasRowView={false}
+              subtractH={240}
+            ></TableData>
           </Modal>
         ) : null}
       </div>

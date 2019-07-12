@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import LzStepY from '../LzStepY';
 import { getMainTableData, addRecords } from 'Util/api';
 import DateTimePicker from '../../../pages/components/DateTimePicker';
-import Card from '../Card'
 const { RangePicker } = DatePicker;
 // const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -87,7 +86,6 @@ class LzStepAflY extends React.Component {
               rules: [{ required: true, message: '请输入请假事由' }]
             })(<TextArea />)}
           </FormItem> */}
-          <Card/>
         </Form>
       </div>
     );
