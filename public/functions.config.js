@@ -11,7 +11,7 @@ window[606476781618] = {
     hasRowView: true,
     hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: false,
+    hasRowDelete: true,
     subtractH: 220,
     hasRowSelection: true
   }
@@ -177,8 +177,9 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
-          values: ['Y', 'Y']
+          innerFieldNames: ['C3_591373760332'],
+          // innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
+          values: ['Y']
         }
       ],
       formHeaderRecords: [
@@ -229,7 +230,7 @@ window[592305842055] = {
     btnsVisible: {
       check: true,
       mod: false,
-      del: false,
+      del: true,
       edit: false,
       save: false,
       cancel: false
@@ -1165,6 +1166,41 @@ window[611339874157] = {
   title: 'HR预审',
   props: [
     ([
+      {
+        resid: 614686575134,
+        TabsTitle: '待提交',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
+      },
       {
         resid: 611086999042,
         TabsTitle: '未审批',

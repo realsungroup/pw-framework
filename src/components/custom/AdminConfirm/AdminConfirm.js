@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin } from 'antd';
+import { Button, Popconfirm, message, Spin,Modal } from 'antd';
 import http from 'Util20/api';
 
 /**
@@ -11,6 +11,19 @@ class AdminConfirm extends React.Component {
     loading: false
   };
 
+  handleDownMaterial = url => {
+    // console.log("url111",url)
+    if (!url) {
+      return Modal.warning({
+        title: '您还未上传过资料'
+      });
+    }
+    const urls = url.split(';file;');
+    for (let i = 0, len = urls.length; i < len; i++) {
+      const obj = JSON.parse(urls[i])
+      window.open(obj.url);
+    }
+  };
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
       return message.error('请选择记录');
@@ -59,6 +72,19 @@ class AdminConfirm extends React.Component {
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
+            customRowBtns={[
+              (record, btnSize) => {
+                return (
+                  <Button
+                    onClick={() => {
+                      this.handleDownMaterial(record.C3_590515131157);
+                    }}
+                  >
+                    下载查阅
+                  </Button>
+                );
+              }
+            ]}
           />
         </div>
       </Spin>

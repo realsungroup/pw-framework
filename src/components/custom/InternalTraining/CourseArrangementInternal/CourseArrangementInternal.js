@@ -362,35 +362,19 @@ class CourseArrangementInternal extends React.Component {
                         <span
                           className="arranging_courses-course_list-course_type"
                           style={
-                            item.innerArrangeType === '必修课'
+                            item.innerArrangeType === '1'
                               ? { backgroundColor: '#1787fb' }
-                              : item.innerArrangeType === '公开课'
-                              ? { backgroundColor: '#57c22d' }
-                              : {
-                                  backgroundColor: '#f1882b'
-                                }
+                              :
+                               { backgroundColor: '#57c22d' }
                           }
                         >
-                          {item.innerArrangeType.substring(0, 1)}
+                          {item.C3_616254048241}
                         </span>
                       </div>
                     }
                     className="arranging_courses_item"
                     key={item.REC_ID}
                     hoverable
-                    extra={
-                      <Icon
-                        type="bell"
-                        onClick={() => {
-                          this.setState({
-                            isShowBells: true,
-                            selectedCourseArrangement: item
-                          });
-                        }}
-                        theme={item.isNotice ? 'twoTone' : ''}
-                        style={{ fontSize: 20 }}
-                      ></Icon>
-                    }
                     actions={[
                       <span
                         onClick={() =>

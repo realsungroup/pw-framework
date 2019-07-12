@@ -130,7 +130,7 @@ export default class LzAFFOS extends React.Component {
                 {...inApplication}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
-                formProps={{ saveText: '提交' }}
+                formProps={{ saveText: '提交',height:500 }}
               />
             </div>
           </TabPane>
