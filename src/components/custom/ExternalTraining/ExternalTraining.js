@@ -3,7 +3,8 @@ import ETnoticeMain from './ETnoticeMain';
 import { Steps, Spin } from 'antd';
 import ArrangingCourses from '../ArrangingCourses';
 import ReviewRequisition from './RequisitionReview';
-import FeedbackReview from './FeedbackReview'
+import FeedbackReview from './FeedbackReview';
+import ViewActions from './ViewActions';
 
 const { Step } = Steps;
 class ExternalTraining extends React.Component {
@@ -28,13 +29,16 @@ class ExternalTraining extends React.Component {
         page = <ReviewRequisition />;
         break;
       case 3:
-        page = <ETnoticeMain key={2} id={2}/>;
+        page = <ETnoticeMain key={2} id={2} />;
         break;
       case 4:
+        page = <ViewActions />;
+        break;
+      case 5:
         page = <FeedbackReview />;
         break;
       default:
-        page = null
+        page = null;
         break;
     }
     return (
@@ -85,11 +89,19 @@ class ExternalTraining extends React.Component {
               }}
             />
             <Step
-              title="反馈审核"
+              title="查看行动计划"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 this.setState({ current: 4 });
+              }}
+            />
+            <Step
+              title="心得审核"
+              description=""
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ current: 5 });
               }}
             />
           </Steps>
