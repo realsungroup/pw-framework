@@ -579,9 +579,8 @@ class ArrangingCourses extends React.Component {
                   initialValue: this.state.selectedCourseArrangment.classType
                 })(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训">外训</Option>
-                    <Option value="内训">内训</Option>
-                    <Option value="外聘内训">外聘内训</Option>
+                    <Option value="外训" key='外训'>外训</Option>
+                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
                   </Select>
                 )}
               </Form.Item>
@@ -831,9 +830,8 @@ class ArrangingCourses extends React.Component {
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {})(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训">外训</Option>
-                    <Option value="内训">内训</Option>
-                    <Option value="外聘内训">外聘内训</Option>
+                    <Option value="外训" key='外训'>外训</Option>
+                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
                   </Select>
                 )}
               </Form.Item>
