@@ -1601,6 +1601,12 @@ window[616242189307] ={
   title: '查阅计划',
 }
 
+//培训系统————下属课程
+window[616504759208] ={
+  name: 'SubordinateCourses',
+  title: '下属课程',
+}
+
 // 616081514704
 window[616081514704] ={
   name: 'TableData',
