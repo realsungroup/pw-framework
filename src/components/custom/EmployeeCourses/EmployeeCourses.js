@@ -23,6 +23,7 @@ import 'ic-components/lib/Calendar/style/index.less';
 import CourseDetail from './CourseDetail';
 import CourseApply from './CourseApply';
 import FeedBackAndPlan from './FeedBackAndPlan/FeedBackAndPlan';
+import EmployeeApplyCourse from './EmployeeApplyCourse'
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -539,16 +540,19 @@ class EmployeeCourses extends React.Component {
             讲师:
             <span style={{ paddingLeft: 12 }}>{item.C3_613941386081}</span>
           </div>
-          <div className="course_item">
+          {/* <div className="course_item">
             人数:
             <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
-          </div>
+          </div> */}
           <div className="course_item">
             地点:
             <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
           </div>
           <div className="course_item">
-            时间:<span style={{ paddingLeft: 12 }}>{item.courseTime}</span>
+            开始时间:<span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
+          </div>
+          <div className="course_item">
+            结束时间:<span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
           </div>
         </div>
         <Divider style={{ margin: '12px 0' }} />
@@ -613,7 +617,10 @@ class EmployeeCourses extends React.Component {
   // 提交评分和行动计划反馈
   submitRate = async () => {
     const { rateOut, planWrite, selectedCourse, rate } = this.state;
-    if (selectedCourse.courseType === '外训' || selectedCourse.courseType === '外聘内训') {
+    if (
+      selectedCourse.courseType === '外训' ||
+      selectedCourse.courseType === '外聘内训'
+    ) {
       let res; //反馈
       try {
         res = await http().addRecords({
@@ -710,6 +717,12 @@ class EmployeeCourses extends React.Component {
     return (
       <div className="emploee_courses">
         <Tabs defaultActiveKey="MyCourses" tabBarStyle={TABBARSTYLE}>
+          <TabPane
+            tab="课程申请"
+            key="applyCourse"
+          >
+             <EmployeeApplyCourse/>
+          </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             {this.renderHeader()}
             <main className="emploee_courses-main">
@@ -991,11 +1004,11 @@ class EmployeeCourses extends React.Component {
             </main>
           </TabPane>
           <TabPane tab="课程日历" key="CoursesCalendar" forceRender>
-            <div style={{ height:'100%' }}>
+            <div style={{ height: '100%' }}>
               <Calendar
                 eventKeyword=""
                 events={[...this.state.calendarEvents]}
-                defaultActiveTab="year"
+                defaultActiveTab="month"
                 height={'calc(100vh - 116px)'}
               />
             </div>
