@@ -422,9 +422,9 @@ class NoticeAttendClass extends React.Component {
                 </div>
               )}
               {this.state.mode === 'table' && (
-                <div style={{ height: '100%' }}>
+                <div style={{ height: 'calc(100vh - 170px)' }}>
                   <TableData
-                    resid={616168186243}
+                    resid={616073391736}
                     hasModify={false}
                     hasDelete={false}
                     hasAdd={false}
@@ -597,9 +597,9 @@ class NoticeAttendClass extends React.Component {
                 </div>
               )}
               {this.state.mode === 'table' && (
-                <div style={{ height: '100%' }}>
+                <div style={{ height: 'calc(100vh - 170px)' }}>
                   <TableData
-                    resid={616168268408}
+                    resid={616073391736}
                     hasModify={false}
                     hasDelete={false}
                     hasAdd={false}
@@ -607,6 +607,7 @@ class NoticeAttendClass extends React.Component {
                     hasRowVModify={false}
                     hasRowView={false}
                     subtractH={240}
+                    height="100%"
                   ></TableData>
                 </div>
               )}
@@ -778,9 +779,9 @@ class NoticeAttendClass extends React.Component {
                 </div>
               )}
               {this.state.mode === 'table' && (
-                <div style={{ height: 'calc(100vh - 166px)' }}>
+                <div style={{ height: 'calc(100vh - 170px)' }}>
                   <TableData
-                    resid={616168233494}
+                    resid={616073391736}
                     hasModify={false}
                     hasDelete={false}
                     hasAdd={false}

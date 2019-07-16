@@ -257,7 +257,6 @@ window[592305842055] = {
       labelWidth: '24%',
       rowWidth: '100%',
       dateRanges: [
-        // date
         {
           title: '违纪日期',
           visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
@@ -268,11 +267,6 @@ window[592305842055] = {
           visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
           innerFieldName: 'C3_591363529469' // 内部字段
         }
-        // {
-        //   title: '入职日期',
-        //   visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-        //   innerFieldName: 'C3_590512068786' // 内部字段
-        // }
       ],
       tag: [
         // tag

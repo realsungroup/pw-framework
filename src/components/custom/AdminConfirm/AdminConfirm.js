@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin,Modal } from 'antd';
+import { Button, Popconfirm, message, Spin, Modal } from 'antd';
 import http from 'Util20/api';
 
 /**
@@ -11,6 +11,24 @@ class AdminConfirm extends React.Component {
     loading: false
   };
 
+  onSendBack = async record => {
+    let res;
+    record.C3_591373760332 = '';
+    try {
+      res = await http().modifyRecords({
+        resid: 605617716920,
+        data: [record]
+      });
+
+      if (res.Error === 0) {
+        message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   handleDownMaterial = url => {
     // console.log("url111",url)
     if (!url) {
@@ -20,7 +38,7 @@ class AdminConfirm extends React.Component {
     }
     const urls = url.split(';file;');
     for (let i = 0, len = urls.length; i < len; i++) {
-      const obj = JSON.parse(urls[i])
+      const obj = JSON.parse(urls[i]);
       window.open(obj.url);
     }
   };
@@ -82,6 +100,22 @@ class AdminConfirm extends React.Component {
                   >
                     下载查阅
                   </Button>
+                );
+              },
+              (record, btnSize) => {
+                return (
+                  <Popconfirm
+                    title="您确定要操作吗？"
+                    onConfirm={() => this.onSendBack(record)}
+                  >
+                    <Button
+                    // onClick={() => {
+                    //   this.onSendBack(record);
+                    // }}
+                    >
+                      退回
+                    </Button>
+                  </Popconfirm>
                 );
               }
             ]}

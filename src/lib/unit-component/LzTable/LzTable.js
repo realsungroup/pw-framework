@@ -3062,7 +3062,8 @@ class LzTable extends React.Component {
       return message.error(err.message);
     }
     downloadFile(
-      window.powerWorks.fileDownloadUrl + res.data,
+      // window.powerWorks.fileDownloadUrl + res.data,
+      window.pwConfig[process.env.NODE_ENV].fileDownloadUrl + res.data,
       this.props.tableTitle + '.xls'
     );
     this.setState({ loading: false });
