@@ -1148,7 +1148,6 @@ class EmployeeCourses extends React.Component {
         >
           {this.state.selectedCourse ? (
             <TableData
-            id="pw-table"
               resid={REVIEW_RECOR_RESID}
               subtractH={240}
               hasBeBtns={true}
@@ -1162,25 +1161,19 @@ class EmployeeCourses extends React.Component {
               hasRowModify={false}
               height="70vh"
               cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              actionBarExtra={() => {
-                return (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      window.document.body.innerText = document.getElementsByTagName(
-                        'table'
-                      )[0].innerText
-                      console.log("a",document.getElementsByTagName(
-                        'table'
-                      ))
-                      window.print();
-                      window.location.reload();
-                    }}
-                  >
-                    打印
-                  </Button>
-                );
-              }}
+              // actionBarExtra={() => {
+              //   return (
+              //     <Button
+              //       type="primary"
+              //       onClick={() => {
+              //         window.print();
+              //         window.location.reload();
+              //       }}
+              //     >
+              //       打印
+              //     </Button>
+              //   );
+              // }}
             />
           ) : null}
         </Modal>
