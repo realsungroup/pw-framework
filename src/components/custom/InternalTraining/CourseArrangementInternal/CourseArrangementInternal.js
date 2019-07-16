@@ -151,7 +151,7 @@ class CourseArrangementInternal extends React.Component {
   //添加课程安排
   saveCourseArrangement = async (courseArrangement, CourseID) => {
     console.log(courseArrangement.courseType);
-    
+
     try {
       let res = await http().addRecords({
         resid: courseArrangmentResid,
@@ -311,7 +311,6 @@ class CourseArrangementInternal extends React.Component {
                   type="table"
                   style={mode === 'table' ? activeStyle : unactiveStyle}
                   key="card"
-                  // theme={mode === 'table' ? 'filled' : null}
                   title="表格模式"
                   onClick={() => {
                     this.setState({ mode: 'table' });
@@ -364,8 +363,7 @@ class CourseArrangementInternal extends React.Component {
                           style={
                             item.innerArrangeType === '1'
                               ? { backgroundColor: '#1787fb' }
-                              :
-                               { backgroundColor: '#57c22d' }
+                              : { backgroundColor: '#57c22d' }
                           }
                         >
                           {item.C3_616254048241}
@@ -443,6 +441,20 @@ class CourseArrangementInternal extends React.Component {
                 ></List>
               )}
             </div>
+          )}
+          {this.state.mode === 'table' && (
+            <TableData
+              resid="616073391736"
+              subtractH={240}
+              hasRowView={true}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowSelection={false}
+              hasRowDelete={false}
+              actionBarWidth={150}
+              hasRowModify={false}
+            />
           )}
           {this.state.mode === 'calendar' && (
             <div style={{ height: '100%' }}>
@@ -634,7 +646,7 @@ class CourseArrangementInternal extends React.Component {
                   display: 'flex',
                   flexDirection: 'column'
                 }}
-                bodyStyle={{flex:1}}
+                bodyStyle={{ flex: 1 }}
                 actions={[
                   <Button
                     onClick={() => {
@@ -715,7 +727,7 @@ class CourseArrangementInternal extends React.Component {
                     <Select
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
-                        console.log(e)
+                        console.log(e);
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
@@ -796,8 +808,7 @@ class CourseArrangementInternal extends React.Component {
                     />
                   </div>
                 </div>
-                <div className="add_arrangement_input_row">
-                </div>
+                <div className="add_arrangement_input_row"></div>
                 <div>
                   <p>
                     课程大纲:
