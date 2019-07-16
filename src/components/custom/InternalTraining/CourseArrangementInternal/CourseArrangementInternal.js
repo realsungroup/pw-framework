@@ -811,7 +811,7 @@ class CourseArrangementInternal extends React.Component {
                 <div className="add_arrangement_input_row"></div>
                 <div>
                   <p>
-                    课程大纲:
+                    课程简介:
                     {selectedCourse.C3_609845305618}
                   </p>
                 </div>
