@@ -44,7 +44,6 @@ class ExternalTraining extends React.Component {
     return (
       <Spin spinning={this.state.loading}>
         <div
-          className="cataner"
           style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
         >
           <Steps

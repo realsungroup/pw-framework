@@ -301,6 +301,16 @@ http.createApi('runAutoImport', {
 });
 
 /**
+ * 开始自动导入 post请求
+ * 参数：{ id }
+ * 1. id: id
+ */
+http.createApi('PostRunAutoImport', {
+  method: 'post',
+  url: '/api/Resource/PostRunAutoImport'
+});
+
+/**
  * 获取任务进度
  * 
  */

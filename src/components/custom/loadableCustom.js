@@ -394,3 +394,9 @@ export const ViewPlan = Loadable({
     return minLoading;
   }
 })
+export const SubordinateCourses = Loadable({
+  loader: () => import('./SubordinateCourses'),
+  loading() {
+    return minLoading;
+  }
+})

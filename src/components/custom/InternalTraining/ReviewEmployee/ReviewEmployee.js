@@ -52,8 +52,11 @@ class ReviewEmployee extends React.Component {
     });
     let res;
     try {
-      res = await http().runAutoImport({
-        id:NoticeTaskId
+      res = await http().PostRunAutoImport({
+        id:NoticeTaskId,
+        params :{
+          arrangeID: this.props.courseArrangement.CourseArrangeID
+        }
       });
     } catch (err) {
       this.setState({ loading: false });
