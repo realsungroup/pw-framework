@@ -22,7 +22,6 @@ const NoticeResid = '616099620782'; //通知表id
 const courseArrangmentResid = '615549231946'; //课程安排表id
 const NoticeTaskId = '616153300255'; //通知全部报名任务id
 class ReviewEmployee extends React.Component {
-  
   state = {
     noticeModalVisible: false, // 通知人员报名模态窗状态
     selectCourseArrangementVisible: false, // 选择课程安排模态窗状态
@@ -53,8 +52,8 @@ class ReviewEmployee extends React.Component {
     let res;
     try {
       res = await http().PostRunAutoImport({
-        id:NoticeTaskId,
-        params :{
+        id: NoticeTaskId,
+        params: {
           arrangeID: this.props.courseArrangement.CourseArrangeID
         }
       });
@@ -107,8 +106,8 @@ class ReviewEmployee extends React.Component {
     }
     // 当前任务已完成
     if (res.IsComplete) {
-      message.success('通知完成')
-    // 当前任务未完成
+      message.success('通知完成');
+      // 当前任务未完成
     } else {
       this.setState({
         totalIndex: res.data.Total,
@@ -225,21 +224,19 @@ class ReviewEmployee extends React.Component {
   renderCourseName() {
     let { courseArrangement } = this.props;
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <span style={{ fontSize: 20, fontWeight: 800 }}>
           {courseArrangement.CourseName}
         </span>
         <span
           className="course_type"
           style={
-            courseArrangement.innerArrangeType === '必修课'
+            courseArrangement.innerArrangeType === '1'
               ? { backgroundColor: '#1787fb' }
-              : courseArrangement.innerArrangeType === '公开课'
-              ? { backgroundColor: '#57c22d' }
-              : { backgroundColor: '#f1882b' }
+              : { backgroundColor: '#57c22d' }
           }
         >
-          {courseArrangement.innerArrangeType.substring(0, 1)}
+          {courseArrangement.C3_616254048241}
         </span>
       </div>
     );
@@ -253,50 +250,6 @@ class ReviewEmployee extends React.Component {
       selectedEmployees: []
     });
   };
-  //必修课
-  renderCompulsory() {
-    return (
-      <TableData
-        resid={ReviewEmployeeResid}
-        wrappedComponentRef={element => (this.tableDataRef = element)}
-        refTargetComponentName="TableData"
-        subtractH={240}
-        hasBeBtns={true}
-        hasAdd={false}
-        hasRowView={false}
-        hasRowDelete={true}
-        hasRowEdit={false}
-        hasDelete={false}
-        hasModify={false}
-        actionBarFixed={true}
-        hasRowModify={false}
-        hasRowSelection={true}
-        cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
-        key="compulsory"
-        actionBarExtra={record => {
-          return (
-            <div className="review_employee-table_action_bar_extra">
-              {this.renderCourseName()}
-              <div className="review_employee-table_action_bar_extra-buttons">
-                <Button
-                  onClick={() => {
-                    if (record.selectedRowKeys.length) {
-                      this.onMoveEmployees(record);
-                    } else {
-                      this.setState({ selectCourseArrangementVisible: false });
-                      message.error('请选择至少一条记录');
-                    }
-                  }}
-                >
-                  移动人员
-                </Button>
-              </div>
-            </div>
-          );
-        }}
-      />
-    );
-  }
 
   //公开课
   renderPublic() {
@@ -322,37 +275,47 @@ class ReviewEmployee extends React.Component {
           return (
             <div className="review_employee-table_action_bar_extra">
               {this.renderCourseName()}
-              <div className="review_employee-table_action_bar_extra-buttons">
-                <Button
-                  onClick={() => {
-                    if (record.selectedRowKeys.length) {
-                      this.onMoveEmployees(record);
-                    } else {
-                      this.setState({ selectCourseArrangementVisible: false });
-                      message.error('请选择至少一条记录');
-                    }
-                  }}
-                  // onClick={this.onMoveEmployees.bind(this, records)}
-                >
-                  移动人员
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.setState({ noticeModalVisible: true });
+              {this.props.courseArrangement.isStopApply === 'Y' ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginLeft: 6
                   }}
                 >
-                  通知报名
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.setState({ isShowModal: true }, this.handleNotice);
-                  }}
-                >
-                  通知全部报名
-                </Button>
-                {this.props.courseArrangement.isStopApply === 'Y' ? (
                   <Tag color="red">报名已截止</Tag>
-                ) : (
+                </div>
+              ) : (
+                <div className="review_employee-table_action_bar_extra-buttons">
+                  <Button
+                    onClick={() => {
+                      if (record.selectedRowKeys.length) {
+                        this.onMoveEmployees(record);
+                      } else {
+                        this.setState({
+                          selectCourseArrangementVisible: false
+                        });
+                        message.error('请选择至少一条记录');
+                      }
+                    }}
+                    // onClick={this.onMoveEmployees.bind(this, records)}
+                  >
+                    移动人员
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.setState({ noticeModalVisible: true });
+                    }}
+                  >
+                    通知报名
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.setState({ isShowModal: true }, this.handleNotice);
+                    }}
+                  >
+                    通知全部报名
+                  </Button>
                   <Popconfirm
                     title="报名截止？"
                     onConfirm={() => {
@@ -361,8 +324,8 @@ class ReviewEmployee extends React.Component {
                   >
                     <Button>报名截止</Button>
                   </Popconfirm>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           );
         }}

@@ -65,8 +65,9 @@ class CourseArrangementInternal extends React.Component {
     isShowAddCourseArrangment: false, //是否显示添加课程安排模态窗
     modifiedCourseArrangement: {}, //修改后的课程安排
     calendarEvents: [], //日历事件
-    isSelectedCourse: false,
-    selectedCourse: {},
+    isSelectedCourse: false, //是否已经选择了课程
+    selectedCourse: {}, // 选中的课程
+    searchCourseKey: '', //搜索课程是的关键字
     //添加时输入的课程安排数据
     inputCourseArrangement: {
       teacher: '',
@@ -134,11 +135,29 @@ class CourseArrangementInternal extends React.Component {
     }
   };
 
+  //获取内训课程
   getInternalCourses = async () => {
     let res;
     try {
       res = await http().getTable({
         resid: InternalCoursesResid
+      });
+      console.log(res.data);
+      this.setState({ internalCourses: res.data });
+    } catch (error) {
+      message.error(error.message);
+      return console.log(error);
+    }
+  };
+
+  //搜索内训课程
+
+  searchInternalCourses = async () => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: InternalCoursesResid,
+        key: this.state.searchCourseKey,
       });
       console.log(res.data);
       this.setState({ internalCourses: res.data });
@@ -403,10 +422,6 @@ class CourseArrangementInternal extends React.Component {
                       </Popconfirm>,
                       <span
                         onClick={() => {
-                          // this.setState({
-                          //   isShowLearnerInfo: true,
-                          //   selectedCourseArrangement: item
-                          // });
                           this.props.onHandleSelectCourseArrangement(item);
                           this.props.onHandleCurrent(1);
                         }}
@@ -815,48 +830,40 @@ class CourseArrangementInternal extends React.Component {
                     {selectedCourse.C3_609845305618}
                   </p>
                 </div>
-                {/* <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: 12
-                  }}
-                >
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        isSelectedCourse: false,
-                        selectedCourse: {},
-                        inputCourseArrangement: {
-                          teacher: '',
-                          startDate: '',
-                          endDate: '',
-                          courseType: '必修课',
-                          places: undefined,
-                          location: ''
-                        }
-                      });
-                    }}
-                  >
-                    返回选择课程
-                  </Button>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.saveCourseArrangement(
-                        this.state.inputCourseArrangement,
-                        this.state.selectedCourse.C3_609845305868
-                      );
-                    }}
-                  >
-                    保存
-                  </Button>
-                </div> */}
               </Card>
             ) : (
               <List
                 bordered
                 dataSource={internalCourses}
+                header={
+                  <header style={{ display: 'flex' }}>
+                    <Select defaultValue="all">
+                      <Option key="all" value="all">
+                        培训类型
+                      </Option>
+                      <Option key="外训" value="外训">
+                        外训
+                      </Option>
+                      <Option key="内训" value="内训">
+                        内训
+                      </Option>
+                      <Option key="外聘内训" value="外聘内训">
+                        外聘内训
+                      </Option>
+                    </Select>
+                    <Input.Search
+                      style={{ width: 250, marginLeft: 12 }}
+                      placeholder="输入课程关键字搜索"
+                      value={this.state.searchCourseKey}
+                      onChange={(e) => {
+                        this.setState({ searchCourseKey: e.target.value }, this.searchInternalCourses);
+                      }}
+                      onSearch={key => {
+                        this.setState({ searchCourseKey: key }, this.searchInternalCourses);
+                      }}
+                    />
+                  </header>
+                }
                 renderItem={item => {
                   return (
                     <List.Item

@@ -11,7 +11,9 @@ import {
   Pagination,
   message,
   Modal,
-  Popconfirm
+  Popconfirm,
+  Upload,
+  Icon
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -23,7 +25,7 @@ import 'ic-components/lib/Calendar/style/index.less';
 import CourseDetail from './CourseDetail';
 import CourseApply from './CourseApply';
 import FeedBackAndPlan from './FeedBackAndPlan/FeedBackAndPlan';
-import EmployeeApplyCourse from './EmployeeApplyCourse'
+import EmployeeApplyCourse from './EmployeeApplyCourse';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -84,7 +86,8 @@ class EmployeeCourses extends React.Component {
         endTime: '2016-01-01',
         progress: 0
       }
-    ]
+    ],
+    fileList: []
   };
   componentDidMount = async () => {
     await this.getYears();
@@ -343,6 +346,20 @@ class EmployeeCourses extends React.Component {
       feebackVisible: false
     });
   };
+  handleFileChange = info => {
+    console.log(info)
+    let fileList = [...info.fileList];
+    // 2. Read from response and show file link
+    fileList = fileList.map(file => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    this.setState({ fileList });
+  };
   handleOpenAppAndFeeback = () => {
     this.setState({
       applyVisible: true
@@ -549,10 +566,12 @@ class EmployeeCourses extends React.Component {
             <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
           </div>
           <div className="course_item">
-            开始时间:<span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
+            开始时间:
+            <span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
           </div>
           <div className="course_item">
-            结束时间:<span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
+            结束时间:
+            <span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
           </div>
         </div>
         <Divider style={{ margin: '12px 0' }} />
@@ -717,11 +736,8 @@ class EmployeeCourses extends React.Component {
     return (
       <div className="emploee_courses">
         <Tabs defaultActiveKey="MyCourses" tabBarStyle={TABBARSTYLE}>
-          <TabPane
-            tab="课程申请"
-            key="applyCourse"
-          >
-             <EmployeeApplyCourse/>
+          <TabPane tab="课程申请" key="applyCourse">
+            <EmployeeApplyCourse />
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             {this.renderHeader()}
@@ -750,9 +766,7 @@ class EmployeeCourses extends React.Component {
               </div>
               {/* 右侧TimeLine */}
               <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse &&
-                (selectedCourse.courseType === '外训' ||
-                  selectedCourse.courseType === '外聘内训') ? (
+                {selectedCourse && selectedCourse.courseType !== '内训' ? (
                   <Timeline>
                     <Timeline.Item
                       color={this.getColor(selectedCourse.isSubmitPlan)}
@@ -1195,6 +1209,17 @@ class EmployeeCourses extends React.Component {
         >
           {this.state.tipsModalMode === 'modify' ? (
             <div style={{ padding: 12 }}>
+              <div>
+                <Upload
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  onChange={this.handleFileChange}
+                  fileList={this.state.fileList}
+                >
+                  <Button>
+                    <Icon type="upload" /> Upload
+                  </Button>
+                </Upload>
+              </div>
               <div>
                 <label>
                   <strong>标题</strong>
