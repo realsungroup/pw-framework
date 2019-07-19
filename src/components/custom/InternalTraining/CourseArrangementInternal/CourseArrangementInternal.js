@@ -157,7 +157,7 @@ class CourseArrangementInternal extends React.Component {
     try {
       res = await http().getTable({
         resid: InternalCoursesResid,
-        key: this.state.searchCourseKey,
+        key: this.state.searchCourseKey
       });
       console.log(res.data);
       this.setState({ internalCourses: res.data });
@@ -552,7 +552,11 @@ class CourseArrangementInternal extends React.Component {
                 <DatePicker
                   id="StartDatetime"
                   showTime
-                  value={moment(modifiedCourseArrangement.StartDatetime)}
+                  value={
+                    modifiedCourseArrangement.StartDatetime
+                      ? moment(modifiedCourseArrangement.StartDatetime)
+                      : ''
+                  }
                   format={datetimeFormatString}
                   onChange={e => {
                     this.setState({
@@ -568,7 +572,11 @@ class CourseArrangementInternal extends React.Component {
                 <DatePicker
                   id="EndDatetime"
                   showTime
-                  value={moment(modifiedCourseArrangement.EndDatetime)}
+                  value={
+                    modifiedCourseArrangement.EndDatetime
+                      ? moment(modifiedCourseArrangement.EndDatetime)
+                      : ''
+                  }
                   format={datetimeFormatString}
                   onChange={e => {
                     this.setState({
@@ -855,11 +863,17 @@ class CourseArrangementInternal extends React.Component {
                       style={{ width: 250, marginLeft: 12 }}
                       placeholder="输入课程关键字搜索"
                       value={this.state.searchCourseKey}
-                      onChange={(e) => {
-                        this.setState({ searchCourseKey: e.target.value }, this.searchInternalCourses);
+                      onChange={e => {
+                        this.setState(
+                          { searchCourseKey: e.target.value },
+                          this.searchInternalCourses
+                        );
                       }}
                       onSearch={key => {
-                        this.setState({ searchCourseKey: key }, this.searchInternalCourses);
+                        this.setState(
+                          { searchCourseKey: key },
+                          this.searchInternalCourses
+                        );
                       }}
                     />
                   </header>
