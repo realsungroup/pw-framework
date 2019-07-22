@@ -299,7 +299,7 @@ class CourseArrangementInternal extends React.Component {
     let selectedCourse = { ...this.state.selectedCourse };
     let inputCourseArrangement = { ...this.state.inputCourseArrangement };
     return (
-      <div className="internal_rrangement">
+      <div className="internal_arrangement">
         <div className="arranging_courses">
           <header className="arranging_courses-header">
             <div className="arranging_courses-header_Mode">
@@ -458,18 +458,20 @@ class CourseArrangementInternal extends React.Component {
             </div>
           )}
           {this.state.mode === 'table' && (
-            <TableData
-              resid="616073391736"
-              subtractH={240}
-              hasRowView={true}
-              hasAdd={false}
-              hasModify={false}
-              hasDelete={false}
-              hasRowSelection={false}
-              hasRowDelete={false}
-              actionBarWidth={150}
-              hasRowModify={false}
-            />
+            <div style={{ width: '100%',flex:1 }}>
+              <TableData
+                resid="616073391736"
+                subtractH={220}
+                hasRowView={true}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                actionBarWidth={150}
+                hasRowModify={false}
+              />
+            </div>
           )}
           {this.state.mode === 'calendar' && (
             <div style={{ height: '100%' }}>

@@ -5,6 +5,7 @@ import ArrangingCourses from '../ArrangingCourses';
 import ReviewRequisition from './RequisitionReview';
 import FeedbackReview from './FeedbackReview';
 import ViewActions from './ViewActions';
+import './ExternalTraining.less'
 
 const { Step } = Steps;
 class ExternalTraining extends React.Component {
@@ -43,9 +44,7 @@ class ExternalTraining extends React.Component {
     }
     return (
       <Spin spinning={this.state.loading}>
-        <div
-          style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
-        >
+        <div className="external_training">
           <Steps
             current={current}
             style={{
