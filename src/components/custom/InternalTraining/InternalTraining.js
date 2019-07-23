@@ -21,11 +21,12 @@ class InternalTraining extends Component {
   handleCurrent = current => this.setState({ current });
 
   handleConfirmList = () => {
+    console.log("onConfirmListonConfirmList")
     this.setState({
       selectedCourseArrangement: {
         ...this.state.selectedCourseArrangement,
-        isStopApply: 'Y'
-      }
+        isStopApply: 'Y',
+      } 
     });
   };
 

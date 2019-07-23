@@ -56,10 +56,8 @@ const form = props => {
       </Form.Item>
       <Form.Item label="费用">
         {getFieldDecorator('cost', {
-          rules: [
-            { required: true, message: '请输入费用' },
-          ]
-        })(<Input placeholder="费用" type='number' />)}
+          rules: [{ required: true, message: '请输入费用' }]
+        })(<Input placeholder="费用" type="number" />)}
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button style={{ marginRight: 12 }} onClick={props.closeModal}>
@@ -91,7 +89,8 @@ class EmployeeApplyCourse extends React.Component {
     applyByQualificationCertificateVisible: false, // 资格证书申请模态窗状态
     applyByUnexistCourseVisible: false, // 自定义课程申请模态窗状态
     isSelectedCourse: false,
-    selectedCourse: {}
+    selectedCourse: {},
+    searchKey: ''
   };
 
   componentDidMount() {
@@ -105,6 +104,22 @@ class EmployeeApplyCourse extends React.Component {
         resid: '610308370365'
       });
       this.setState({ courses: [...res.data] });
+    } catch (error) {
+      console.error(error.message);
+      message.error(error.message);
+    }
+  };
+
+  searchCourses = async () => {
+    let { searchKey } = this.state;
+    try {
+      let res = await http().getTable({
+        resid: '610308370365',
+        key: searchKey
+      });
+      this.setState({
+        courses: [...res.data]
+      });
     } catch (error) {
       console.error(error.message);
       message.error(error.message);
@@ -195,7 +210,7 @@ class EmployeeApplyCourse extends React.Component {
             >
               自定义课程申请
             </Button>,
-            <Button>资格证书申请</Button>
+            // <Button>资格证书申请</Button>
           ]}
         />
         <Modal
@@ -214,7 +229,7 @@ class EmployeeApplyCourse extends React.Component {
           }
           width="80%"
           title="添加课程安排"
-          // centered={true}
+          centered={true}
           destroyOnClose
           footer={null}
         >
@@ -294,6 +309,38 @@ class EmployeeApplyCourse extends React.Component {
               <List
                 bordered
                 dataSource={courses}
+                header={
+                  <header style={{ display: 'flex' }}>
+                    <Select defaultValue="all">
+                      <Option key="all" value="all">
+                        培训类型
+                      </Option>
+                      <Option key="外训" value="外训">
+                        外训
+                      </Option>
+                      <Option key="内训" value="内训">
+                        内训
+                      </Option>
+                      <Option key="外聘内训" value="外聘内训">
+                        外聘内训
+                      </Option>
+                    </Select>
+                    <Input.Search
+                      style={{ width: 250, marginLeft: 12 }}
+                      placeholder="输入课程关键字搜索"
+                      onChange={e =>
+                        this.setState(
+                          { searchKey: e.target.value },
+                          this.searchCourses
+                        )
+                      }
+                      value={this.state.searchKey}
+                      onSearch={key =>
+                        this.setState({ searchKey: key }, this.searchCourses)
+                      }
+                    />
+                  </header>
+                }
                 renderItem={item => {
                   return (
                     <List.Item

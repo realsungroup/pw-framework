@@ -1,14 +1,17 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin, Modal } from 'antd';
+import { Button, Popconfirm, message, Spin, Modal, Input } from 'antd';
 import http from 'Util20/api';
 
 /**
  * 管理员确认
  */
+const { TextArea } = Input;
 class AdminConfirm extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    deleteReason:null,
+    sendBackReason:null
   };
 
   onSendBack = async record => {
@@ -22,6 +25,33 @@ class AdminConfirm extends React.Component {
 
       if (res.Error === 0) {
         message.success(res.message);
+      } else {
+        message.error(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  onChangeDeleteReason = (event) => {
+    this.setState({
+      deleteReason:event.target.value
+    })
+  }
+  onDelete = async record => {
+    let res;
+    record.C3_591556634215 = 'Y';
+    record.C3_617205061601 = this.state.deleteReason
+    try {
+      res = await http().modifyRecords({
+        resid: 605617716920,
+        data: [record]
+      });
+      console.log("res",res)
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.setState({
+          deleteReason:null
+        })
       } else {
         message.error(res.message);
       }
@@ -114,6 +144,26 @@ class AdminConfirm extends React.Component {
                     // }}
                     >
                       退回
+                    </Button>
+                  </Popconfirm>
+                );
+              },
+              (record, btnSize) => {
+                return (
+                  <Popconfirm
+                    title={
+                      <React.Fragment>
+                      <span>请输入删除原因</span>
+                      <TextArea value={this.state.deleteReason} onChange={this.onChangeDeleteReason}></TextArea></React.Fragment>
+                    }
+                    onConfirm={() => this.onDelete(record)}
+                  >
+                    <Button
+                    // onClick={() => {
+                    //   this.onSendBack(record);
+                    // }}
+                    >
+                      删除
                     </Button>
                   </Popconfirm>
                 );

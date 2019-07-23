@@ -129,10 +129,10 @@ class ViewActions extends React.Component {
 
   render() {
     return (
-      <div style={{ flex: 1, height: '100%' }}>
+      <div style={{  height: '100%' }}>
         <TableData
           resid={courseDetailId}
-          subtractH={200}
+          // subtractH='220px'
           hasAdd={false}
           hasRowView={false}
           hasModify={false}
@@ -140,6 +140,10 @@ class ViewActions extends React.Component {
           hasRowSelection={true}
           hasRowDelete={false}
           hasRowModify={false}
+          subtractH='220'
+          height='600'
+          // height="calc(100vh - 64px)"
+          recordFormType='drawer'
           customRowBtns={[
             record => {
               return (

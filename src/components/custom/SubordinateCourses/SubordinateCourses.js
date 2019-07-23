@@ -193,9 +193,9 @@ class SubordinateCourses extends React.Component {
       let employeePersonalCourses = res.data;
       this.setState({ employeePersonalCourses });
     } catch (error) {
-			console.error(error.message)
-			message.error(error.message)
-		}
+      console.error(error.message);
+      message.error(error.message);
+    }
   };
 
   handleOk = () => {
@@ -224,8 +224,7 @@ class SubordinateCourses extends React.Component {
     this.setState({
       applyDrawerVisible: false,
       feedbackDrawerVisible: false,
-      tipsDrawerVisible: false,
-      courseArrangmentDetailToSearch: {}
+      tipsDrawerVisible: false
     });
   };
   renderSummary() {
@@ -351,11 +350,13 @@ class SubordinateCourses extends React.Component {
                             <Button
                               type="link"
                               onClick={() => {
-                                this.setState({
-                                  feedbackDrawerVisible: true,
-                                  courseArrangmentDetailToSearch: { ...item }
-                                });
-                                this.getFeebackAndRate();
+                                this.setState(
+                                  {
+                                    feedbackDrawerVisible: true,
+                                    courseArrangmentDetailToSearch: { ...item }
+                                  },
+                                  this.getFeebackAndRate
+                                );
                               }}
                             >
                               反馈表和行动计划表
@@ -368,7 +369,18 @@ class SubordinateCourses extends React.Component {
                         {/* 内训和外聘内训没有行动计划 */}
                         {item.courseType !== '外训' &&
                           (item.isInnerFeedBack === 'Y' ? (
-                            <Button type="link" onClick={() => {}}>
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                this.setState(
+                                  {
+                                    feedbackDrawerVisible: true,
+                                    courseArrangmentDetailToSearch: { ...item }
+                                  },
+                                  this.getFeebackAndRate
+                                );
+                              }}
+                            >
                               反馈表
                             </Button>
                           ) : (
@@ -382,11 +394,13 @@ class SubordinateCourses extends React.Component {
                             <Button
                               type="link"
                               onClick={() => {
-                                this.setState({
-                                  tipsDrawerVisible: true,
-                                  courseArrangmentDetailToSearch: { ...item }
-                                });
-                                this.getTips();
+                                this.setState(
+                                  {
+                                    tipsDrawerVisible: true,
+                                    courseArrangmentDetailToSearch: { ...item }
+                                  },
+                                  this.getTips
+                                );
                               }}
                             >
                               课程心得

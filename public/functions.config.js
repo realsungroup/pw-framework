@@ -10,8 +10,7 @@ window[606476781618] = {
     hasDelete: false,
     hasRowView: true,
     hasRowModify: false,
-    hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     subtractH: 220,
     hasRowSelection: true
   }
@@ -205,7 +204,6 @@ window[590765309983] = {
 // 统计分析与录入
 window[592305842055] = {
   title: '统计分析与录入',
-
   // 单元组件
   name: 'LzTable',
   props: {
@@ -270,48 +268,48 @@ window[592305842055] = {
       ],
       tag: [
         // tag
-        {
-          title: '部门',
-          op: 'or', // 操作符：'or' | 'and'
-          tags: [
-            {
-              label: 'OA',
-              value: 'OA',
-              isSelected: false,
-              innerFieldName: 'C3_590510763625' // 内部字段名
-            },
-            {
-              label: 'OPS',
-              value: 'OPS',
-              isSelected: false,
-              innerFieldName: 'C3_590510763625'
-            }
-          ]
-        },
-        {
-          title: '状态',
-          op: 'or',
-          tags: [
-            {
-              label: '已撤销',
-              value: '已撤销',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            },
-            {
-              label: '已录入',
-              value: '已录入',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            },
-            {
-              label: '进行中',
-              value: '进行中',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            }
-          ]
-        },
+        // {
+        //   title: '部门',
+        //   op: 'or', // 操作符：'or' | 'and'
+        //   tags: [
+        //     {
+        //       label: 'OA',
+        //       value: 'OA',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590510763625' // 内部字段名
+        //     },
+        //     {
+        //       label: 'OPS',
+        //       value: 'OPS',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590510763625'
+        //     }
+        //   ]
+        // },
+        // {
+        //   title: '状态',
+        //   op: 'or',
+        //   tags: [
+        //     {
+        //       label: '已撤销',
+        //       value: '已撤销',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     },
+        //     {
+        //       label: '已录入',
+        //       value: '已录入',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     },
+        //     {
+        //       label: '进行中',
+        //       value: '进行中',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     }
+        //   ]
+        // },
         {
           title: '合同类别',
           op: 'or',
@@ -360,26 +358,26 @@ window[592305842055] = {
             }
           ]
         },
+        // {
+        //   title: '是否撤销',
+        //   op: 'or',
+        //   tags: [
+        //     {
+        //       label: '是',
+        //       value: 'Y',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590512213622'
+        //     },
+        //     {
+        //       label: '否',
+        //       value: 'N',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590512213622'
+        //     }
+        //   ]
+        // },
         {
-          title: '是否撤销',
-          op: 'or',
-          tags: [
-            {
-              label: '是',
-              value: 'Y',
-              isSelected: false,
-              innerFieldName: 'C3_590512213622'
-            },
-            {
-              label: '否',
-              value: 'N',
-              isSelected: false,
-              innerFieldName: 'C3_590512213622'
-            }
-          ]
-        },
-        {
-          title: '是否确认审批',
+          title: '到期撤销',
           op: 'or',
           tags: [
             {
@@ -413,6 +411,18 @@ window[592305842055] = {
         {
           title: '职级',
           innerFieldNames: ['C3_590512134594']
+        },
+        {
+          title: '一级部门',
+          innerFieldNames: ['C3_590516541218']
+        },
+        {
+          title: '二级部门',
+          innerFieldNames: ['C3_590516558243']
+        },
+        {
+          title: '三级部门',
+          innerFieldNames: ['C3_590516572216']
         }
       ]
     }

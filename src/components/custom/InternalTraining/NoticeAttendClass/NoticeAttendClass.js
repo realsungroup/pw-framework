@@ -67,7 +67,8 @@ class NoticeAttendClass extends React.Component {
     modifiedCourseArrangement: {}, //修改后的课程安排
     calendarEvents: [], //日历事件
     currentArrangeID: '616168186243',
-    key: ''
+    key: '',
+    CourseArrangeID:""
   };
 
   async componentDidMount() {
@@ -371,10 +372,11 @@ class NoticeAttendClass extends React.Component {
                           </Popconfirm>,
                           <span
                             onClick={() => {
-                              // this.setState({
-                              //   isShowLearnerInfo: true,
-                              //   selectedCourseArrangment: item
-                              // });
+                              this.setState({
+                                CourseArrangeID:item.CourseArrangeID
+                                // isShowLearnerInfo: true,
+                                // selectedCourseArrangment: item
+                              });
                               this.setState({
                                 isShowModal: true
                               });
@@ -546,10 +548,11 @@ class NoticeAttendClass extends React.Component {
                           </Popconfirm>,
                           <span
                             onClick={() => {
-                              // this.setState({
-                              //   isShowLearnerInfo: true,
-                              //   selectedCourseArrangment: item
-                              // });
+                              this.setState({
+                                CourseArrangeID:item.CourseArrangeID
+                                // isShowLearnerInfo: true,
+                                // selectedCourseArrangment: item
+                              });
                               this.setState({
                                 isShowModal: true
                               });
@@ -728,10 +731,11 @@ class NoticeAttendClass extends React.Component {
                           </Popconfirm>,
                           <span
                             onClick={() => {
-                              // this.setState({
-                              //   isShowLearnerInfo: true,
-                              //   selectedCourseArrangment: item
-                              // });
+                              this.setState({
+                                CourseArrangeID:item.CourseArrangeID
+                                // isShowLearnerInfo: true,
+                                // selectedCourseArrangment: item
+                              });
                               this.setState({
                                 isShowModal: true
                               });
@@ -824,9 +828,10 @@ class NoticeAttendClass extends React.Component {
               hasDelete={false}
               hasAdd={false}
               hasRowDelete={false}
-              hasRowVModify={false}
-              hasRowView={false}
+              hasRowModify={false}
+              hasRowView={true}
               subtractH={240}
+              cmswhere={`CourseArrangeID=${this.state.CourseArrangeID}`}
             ></TableData>
           </Modal>
         ) : null}

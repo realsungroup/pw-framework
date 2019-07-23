@@ -95,26 +95,47 @@ class CourseResources extends Component {
     let { appliedCourses } = this.state;
     let btns = [
       record => {
+        console.log("record.lastPlaces",record.lastPlaces,record.places)
         let isApplied = appliedCourses.find(
           item => item.CourseArrangeID === record.CourseArrangeID
         );
-        return isApplied ? (
-          <Popconfirm
+        if(isApplied&&record.classType === '内训'){
+          return ( <Popconfirm
             title="确认取消报名？"
             onConfirm={this.handleCancelAppply.bind(this, record)}
           >
             <Button type="danger">取消报名</Button>
-          </Popconfirm>
-        ) : record.lastPlaces === 0 && record.places ? (
-          <Alert message="人数已满，无法报名" type="warning" showIcon></Alert>
-        ) : (
-          <Popconfirm
+          </Popconfirm>)
+        }else if(record.lastPlaces === 0 && record.places){
+          return (
+            <Alert message="人数已满，无法报名" type="info" showIcon></Alert>
+          )
+        }else if(record.classType === '内训'){
+          return (
+            <Popconfirm
             onConfirm={this.handleConfirm.bind(this, record)}
             title="请确认报名"
           >
             <Button>报名</Button>
           </Popconfirm>
-        );
+          )
+        }else{
+          return (
+            <Alert message="外训不可报名" type="warning" showIcon></Alert>
+          )
+        }
+        // return isApplied&&record.courseType === '内训' ? (
+         
+        // ) : record.lastPlaces === 0 && record.places ? (
+        //   <Alert message="人数已满，无法报名" type="warning" showIcon></Alert>
+        // ) : (
+        //   <Popconfirm
+        //     onConfirm={this.handleConfirm.bind(this, record)}
+        //     title="请确认报名"
+        //   >
+        //     <Button>报名</Button>
+        //   </Popconfirm>
+        // )
       }
     ];
     return (
