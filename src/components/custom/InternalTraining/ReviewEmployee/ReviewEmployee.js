@@ -185,6 +185,7 @@ class ReviewEmployee extends React.Component {
       });
       message.success('确认名单成功');
       this.props.onConfirmList();
+      this.forceUpdate()
     } catch (error) {
       message.error(error.message);
       console.log(error.message);
@@ -258,6 +259,74 @@ class ReviewEmployee extends React.Component {
 
   //公开课
   renderPublic() {
+    let actionBarExtra = null;
+    console.log(this.props.courseArrangement.isStopApply)
+    if (this.props.courseArrangement.isStopApply === 'Y') {
+      actionBarExtra = 
+        <div className="review_employee-table_action_bar_extra">
+          {this.renderCourseName()}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: 6
+            }}
+          >
+            <Tag color="red">报名已截止</Tag>
+          </div>
+        </div>
+    } else {
+      console.log(2)
+      actionBarExtra = record => (
+        
+        <div className="review_employee-table_action_bar_extra">
+        {this.renderCourseName()}
+        
+
+
+
+        <div className="review_employee-table_action_bar_extra-buttons">
+          <Button
+            onClick={() => {
+              if (record.selectedRowKeys.length) {
+                this.onMoveEmployees(record);
+              } else {
+                this.setState({
+                  selectCourseArrangementVisible: false
+                });
+                message.error('请选择至少一条记录');
+              }
+            }}
+          >
+            移动人员
+          </Button>
+          <Button
+            onClick={() => {
+              this.setState({ noticeModalVisible: true });
+            }}
+          >
+            通知报名
+          </Button>
+          <Button
+            onClick={() => {
+              this.setState({ isShowModal: true }, this.handleNotice);
+            }}
+          >
+            通知全部报名
+          </Button>
+          <Popconfirm
+            title="报名截止？"
+            onConfirm={() => {
+              this.comfirmList();
+            }}
+          >
+            <Button>报名截止</Button>
+          </Popconfirm>
+        </div>
+
+      </div>
+      );
+    }
     return (
       <TableData
         resid={ReviewEmployeeResid}
@@ -276,64 +345,7 @@ class ReviewEmployee extends React.Component {
         hasRowSelection={true}
         cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
         key="public"
-        actionBarExtra={record => {
-          return (
-            <div className="review_employee-table_action_bar_extra">
-              {this.renderCourseName()}
-              {this.props.courseArrangement.isStopApply === 'Y' ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginLeft: 6
-                  }}
-                >
-                  <Tag color="red">报名已截止</Tag>
-                </div>
-              ) : (
-                <div className="review_employee-table_action_bar_extra-buttons">
-                  <Button
-                    onClick={() => {
-                      if (record.selectedRowKeys.length) {
-                        this.onMoveEmployees(record);
-                      } else {
-                        this.setState({
-                          selectCourseArrangementVisible: false
-                        });
-                        message.error('请选择至少一条记录');
-                      }
-                    }}
-                    // onClick={this.onMoveEmployees.bind(this, records)}
-                  >
-                    移动人员
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      this.setState({ noticeModalVisible: true });
-                    }}
-                  >
-                    通知报名
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      this.setState({ isShowModal: true }, this.handleNotice);
-                    }}
-                  >
-                    通知全部报名
-                  </Button>
-                  <Popconfirm
-                    title="报名截止？"
-                    onConfirm={() => {
-                      this.comfirmList();
-                    }}
-                  >
-                    <Button>报名截止</Button>
-                  </Popconfirm>
-                </div>
-              )}
-            </div>
-          );
-        }}
+        actionBarExtra={actionBarExtra}
       />
     );
   }

@@ -174,7 +174,7 @@ class CourseArrangementInternal extends React.Component {
     try {
       res = await http().getTable({
         resid: InternalCoursesResid,
-        key: this.state.searchCourseKey,
+        key: this.state.searchCourseKey
       });
       console.log(res.data);
       this.setState({ internalCourses: res.data });
@@ -316,7 +316,7 @@ class CourseArrangementInternal extends React.Component {
     let selectedCourse = { ...this.state.selectedCourse };
     let inputCourseArrangement = { ...this.state.inputCourseArrangement };
     return (
-      <div className="internal_rrangement">
+      <div className="internal_arrangement">
         <div className="arranging_courses">
           <header className="arranging_courses-header">
             <div className="arranging_courses-header_Mode">
@@ -475,18 +475,20 @@ class CourseArrangementInternal extends React.Component {
             </div>
           )}
           {this.state.mode === 'table' && (
-            <TableData
-              resid="616073391736"
-              subtractH={240}
-              hasRowView={true}
-              hasAdd={false}
-              hasModify={false}
-              hasDelete={false}
-              hasRowSelection={false}
-              hasRowDelete={false}
-              actionBarWidth={150}
-              hasRowModify={false}
-            />
+            <div style={{ width: '100%',flex:1 }}>
+              <TableData
+                resid="616073391736"
+                subtractH={220}
+                hasRowView={true}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                actionBarWidth={150}
+                hasRowModify={false}
+              />
+            </div>
           )}
           {this.state.mode === 'calendar' && (
             <div style={{ height: '100%' }}>
@@ -569,7 +571,11 @@ class CourseArrangementInternal extends React.Component {
                 <DatePicker
                   id="StartDatetime"
                   showTime
-                  value={moment(modifiedCourseArrangement.StartDatetime)}
+                  value={
+                    modifiedCourseArrangement.StartDatetime
+                      ? moment(modifiedCourseArrangement.StartDatetime)
+                      : ''
+                  }
                   format={datetimeFormatString}
                   onChange={e => {
                     this.setState({
@@ -585,7 +591,11 @@ class CourseArrangementInternal extends React.Component {
                 <DatePicker
                   id="EndDatetime"
                   showTime
-                  value={moment(modifiedCourseArrangement.EndDatetime)}
+                  value={
+                    modifiedCourseArrangement.EndDatetime
+                      ? moment(modifiedCourseArrangement.EndDatetime)
+                      : ''
+                  }
                   format={datetimeFormatString}
                   onChange={e => {
                     this.setState({
@@ -648,7 +658,6 @@ class CourseArrangementInternal extends React.Component {
                     )
                   })
                 }
-                  {/* // <Option value="好讲师">好讲师</Option> */}
                 </Select>
               </Form.Item>
             </Form>
@@ -781,12 +790,7 @@ class CourseArrangementInternal extends React.Component {
                     )
                   })
                 }
-                      {/* <Option key="普通内训课" value="普通内训课">
-                        普通内训课
-                      </Option>
-                      <Option key="好讲师" value="好讲师">
-                        好讲师
-                      </Option> */}
+                     
                     </Select>
                   </div>
                   <div className="add_arrangement_input_item">
@@ -885,11 +889,17 @@ class CourseArrangementInternal extends React.Component {
                       style={{ width: 250, marginLeft: 12 }}
                       placeholder="输入课程关键字搜索"
                       value={this.state.searchCourseKey}
-                      onChange={(e) => {
-                        this.setState({ searchCourseKey: e.target.value }, this.searchInternalCourses);
+                      onChange={e => {
+                        this.setState(
+                          { searchCourseKey: e.target.value },
+                          this.searchInternalCourses
+                        );
                       }}
                       onSearch={key => {
-                        this.setState({ searchCourseKey: key }, this.searchInternalCourses);
+                        this.setState(
+                          { searchCourseKey: key },
+                          this.searchInternalCourses
+                        );
                       }}
                     />
                   </header>

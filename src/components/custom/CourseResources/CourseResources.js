@@ -110,7 +110,7 @@ class CourseResources extends Component {
           return (
             <Alert message="人数已满，无法报名" type="info" showIcon></Alert>
           )
-        }else if(record.classType === '内训'){
+        }else if(record.isStopApply !== 'Y' && record.classType === '内训' ){
           return (
             <Popconfirm
             onConfirm={this.handleConfirm.bind(this, record)}
@@ -119,7 +119,12 @@ class CourseResources extends Component {
             <Button>报名</Button>
           </Popconfirm>
           )
-        }else{
+        }else if(record.isStopApply === 'Y' && record.classType === '内训'){
+          return (
+            <Alert message="报名已截止" type="info" showIcon></Alert>
+          )
+        }
+        else{
           return (
             <Alert message="外训不可报名" type="warning" showIcon></Alert>
           )

@@ -210,6 +210,7 @@ class EmployeeCourses extends React.Component {
   // 拿子组件的评分
   setRate = async rate => {
     console.log(rate);
+    console.log("this.state.selectedCourse.courseType",this.state.selectedCourse.courseType)
     if (this.state.selectedCourse.courseType === '内训') {
       this.setState({ rate });
     } else {
@@ -636,6 +637,7 @@ class EmployeeCourses extends React.Component {
   // 提交评分和行动计划反馈
   submitRate = async () => {
     const { rateOut, planWrite, selectedCourse, rate } = this.state;
+    console.log("selectedCourse.courseType",selectedCourse.courseType)
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'

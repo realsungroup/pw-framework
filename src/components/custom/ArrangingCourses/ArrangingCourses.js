@@ -452,13 +452,12 @@ class ArrangingCourses extends React.Component {
             <div style={{width:'100%',flex:1}}>
               <TableData
                 resid="613959487818"
-                // height={440}
-                subtractH={200}
+                subtractH={220}
                 hasRowView={false}
                 hasModify={false}
                 hasDelete={false}
                 hasRowSelection={true}
-              ></TableData>
+              />
             </div>
           )}
         </div>

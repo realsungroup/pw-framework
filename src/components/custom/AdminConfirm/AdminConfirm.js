@@ -10,57 +10,66 @@ const { TextArea } = Input;
 class AdminConfirm extends React.Component {
   state = {
     loading: false,
-    deleteReason:null,
-    sendBackReason:null
+    deleteReason: null,
+    sendBackReason: null
   };
 
   onSendBack = async record => {
     let res;
     record.C3_591373760332 = '';
+    record.C3_617212255449 = this.state.sendBackReason;
     try {
       res = await http().modifyRecords({
         resid: 605617716920,
         data: [record]
       });
-
       if (res.Error === 0) {
         message.success(res.message);
-      } else {
-        message.error(res.message);
       }
     } catch (error) {
       message.error(error.message);
     }
-  };
-  onChangeDeleteReason = (event) => {
     this.setState({
-      deleteReason:event.target.value
-    })
-  }
+      sendBackReason: null
+    });
+  };
+  onChangeDeleteReason = event => {
+    this.setState({
+      deleteReason: event.target.value
+    });
+  };
+  onChangeSendBackReason = event => {
+    this.setState({
+      sendBackReason: event.target.value
+    });
+  };
+  onClearReason = () => {
+    this.setState({
+      sendBackReason: null,
+      deleteReason: null
+    });
+  };
   onDelete = async record => {
     let res;
     record.C3_591556634215 = 'Y';
-    record.C3_617205061601 = this.state.deleteReason
+    record.C3_617205061601 = this.state.deleteReason;
     try {
       res = await http().modifyRecords({
         resid: 605617716920,
         data: [record]
       });
-      console.log("res",res)
+      console.log('res', res);
       if (res.Error === 0) {
         message.success(res.message);
-        this.setState({
-          deleteReason:null
-        })
-      } else {
-        message.error(res.message);
       }
     } catch (error) {
       message.error(error.message);
     }
+    this.setState({
+      deleteReason: null
+    });
   };
   handleDownMaterial = url => {
-    // console.log("url111",url)
     if (!url) {
       return Modal.warning({
         title: '您还未上传过资料'
@@ -121,7 +130,7 @@ class AdminConfirm extends React.Component {
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             customRowBtns={[
-              (record, btnSize) => {
+              record => {
                 return (
                   <Button
                     onClick={() => {
@@ -132,39 +141,42 @@ class AdminConfirm extends React.Component {
                   </Button>
                 );
               },
-              (record, btnSize) => {
-                return (
-                  <Popconfirm
-                    title="您确定要操作吗？"
-                    onConfirm={() => this.onSendBack(record)}
-                  >
-                    <Button
-                    // onClick={() => {
-                    //   this.onSendBack(record);
-                    // }}
-                    >
-                      退回
-                    </Button>
-                  </Popconfirm>
-                );
-              },
-              (record, btnSize) => {
+              record => {
                 return (
                   <Popconfirm
                     title={
                       <React.Fragment>
-                      <span>请输入删除原因</span>
-                      <TextArea value={this.state.deleteReason} onChange={this.onChangeDeleteReason}></TextArea></React.Fragment>
+                        <span>请输入退回原因</span>
+                        <TextArea
+                          value={this.state.sendBackReason}
+                          onChange={this.onChangeSendBackReason}
+                        ></TextArea>
+                      </React.Fragment>
+                    }
+                    onConfirm={() => this.onSendBack(record)}
+                    onCancel={() => {
+                      this.onClearReason();
+                    }}
+                  >
+                    <Button>退回</Button>
+                  </Popconfirm>
+                );
+              },
+              record => {
+                return (
+                  <Popconfirm
+                    title={
+                      <React.Fragment>
+                        <span>请输入删除原因</span>
+                        <TextArea
+                          value={this.state.deleteReason}
+                          onChange={this.onChangeDeleteReason}
+                        ></TextArea>
+                      </React.Fragment>
                     }
                     onConfirm={() => this.onDelete(record)}
                   >
-                    <Button
-                    // onClick={() => {
-                    //   this.onSendBack(record);
-                    // }}
-                    >
-                      删除
-                    </Button>
+                    <Button>删除</Button>
                   </Popconfirm>
                 );
               }

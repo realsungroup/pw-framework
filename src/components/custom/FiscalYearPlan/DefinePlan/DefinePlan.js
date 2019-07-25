@@ -32,7 +32,7 @@ class DefinePlan extends React.Component {
               计划基本信息
               <Popconfirm
                 placement="topRight"
-                title={'确认要删除么?'}
+                title={'确认要提交吗?'}
                 onConfirm={this.applyPlan}
                 okText="确认"
                 cancelText="取消"
