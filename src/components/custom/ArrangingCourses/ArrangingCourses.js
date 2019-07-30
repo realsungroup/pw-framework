@@ -436,6 +436,9 @@ class ArrangingCourses extends React.Component {
                       <div className="content_item">
                         实际费用:{  `${item.actualCost}元`}
                       </div>
+                      <div className="content_item">
+                        季度:{  `${item.quarter}元`}
+                      </div>
                     </div>
                   </Card>
                 ))
@@ -483,7 +486,8 @@ class ArrangingCourses extends React.Component {
                     ),
                     CourseLocation: values.modifyCourseLocation,
                     classType: values.classType,
-                    actualCost: parseFloat(values.actualCost)
+                    actualCost: parseFloat(values.actualCost),
+                    quarter:values.quarter
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -572,6 +576,12 @@ class ArrangingCourses extends React.Component {
                 {getFieldDecorator('actualCost', {
                   initialValue: this.state.selectedCourseArrangment.actualCost
                 })(<Input type="number" />)}
+              </Form.Item>
+
+              <Form.Item label="季度">
+                {getFieldDecorator('quarter', {
+                  initialValue: this.state.selectedCourseArrangment.quarter
+                })(<Input />)}
               </Form.Item>
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {
@@ -825,6 +835,9 @@ class ArrangingCourses extends React.Component {
 
               <Form.Item label="实际费用">
                 {getFieldDecorator('actualCost', {})(<Input type="number" />)}
+              </Form.Item>
+              <Form.Item label="季度">
+                {getFieldDecorator('quarter', {})(<Input />)}
               </Form.Item>
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {})(

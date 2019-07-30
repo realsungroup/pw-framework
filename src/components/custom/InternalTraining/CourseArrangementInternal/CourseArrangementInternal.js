@@ -200,7 +200,9 @@ class CourseArrangementInternal extends React.Component {
             C3_616254048241: courseArrangement.courseType,
             classType: '内训',
             places: courseArrangement.places,
-            Teacher: courseArrangement.teacher
+            Teacher: courseArrangement.teacher,
+            quarter: courseArrangement.quarter,
+
           }
         ]
       });
@@ -212,6 +214,7 @@ class CourseArrangementInternal extends React.Component {
         selectedCourse: {},
         inputCourseArrangement: {
           teacher: '',
+          quarter:'',
           startDate: '',
           endDate: '',
           courseType: '普通内训课',
@@ -463,6 +466,9 @@ class CourseArrangementInternal extends React.Component {
                       <div className="content_item">
                         结束时间：{item.EndDatetime}
                       </div>
+                      <div className="content_item">
+                        季度：{item.quarter}
+                      </div>
                     </div>
                   </Card>
                 ))
@@ -607,6 +613,23 @@ class CourseArrangementInternal extends React.Component {
                   }}
                 />
               </Form.Item>
+
+              <Form.Item label="季度">
+                <Input
+                  id="quarter"
+                  type="text"
+                  value={modifiedCourseArrangement.quarter}
+                  onChange={e => {
+                    this.setState({
+                      modifiedCourseArrangement: {
+                        ...modifiedCourseArrangement,
+                        quarter: e.target.value
+                      }
+                    });
+                  }}
+                />
+              </Form.Item>
+
               <Form.Item label="讲师">
                 <Input
                   id="teacher"

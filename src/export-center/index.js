@@ -89,3 +89,4 @@ export { EmployeeCourses } from '../components/custom/loadableCustom'
 export { InternalTraining } from '../components/custom/loadableCustom'
 export { ViewPlan } from '../components/custom/loadableCustom';
 export { SubordinateCourses } from '../components/custom/loadableCustom';
+export { MyTeam } from '../components/custom/loadableCustom';

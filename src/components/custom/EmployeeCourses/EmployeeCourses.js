@@ -13,7 +13,8 @@ import {
   Modal,
   Popconfirm,
   Upload,
-  Icon
+  Icon,
+  Empty
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -544,7 +545,8 @@ class EmployeeCourses extends React.Component {
 
   renderCoursesList = () => {
     let { myCourses } = this.state;
-    return myCourses.map(item => (
+  return  myCourses.length?
+     myCourses.map(item => (
       <Card
         extra={<Radio checked={item.checked} />}
         title={`${item.courseType} / ${item.C3_613941384592}`}
@@ -602,8 +604,9 @@ class EmployeeCourses extends React.Component {
           </div>
         </div>
       </Card>
-    ));
-  };
+    )):<Empty style={{marginTop:"100px"}}></Empty>
+            }
+  
   getColor(key) {
     let color = '#aaa';
     switch (key) {
@@ -768,7 +771,7 @@ class EmployeeCourses extends React.Component {
               </div>
               {/* 右侧TimeLine */}
               <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse && selectedCourse.courseType !== '内训' ? (
+                {selectedCourse.length && selectedCourse.courseType !== '内训' ? (
                   <Timeline>
                     <Timeline.Item
                       color={this.getColor(selectedCourse.isSubmitPlan)}
