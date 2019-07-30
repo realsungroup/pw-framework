@@ -1,45 +1,70 @@
-.idp-contain{
-    width: 100%;
-    height: 100%;
-    color: #fff!important;
-    font-size: 18px;
-    display:flex;
-    // justify-content: center;
-    align-items: center;
-    flex-direction:column;
-    
-    &-card{
-        width:568px;
-        height: 320px;
-        background:linear-gradient(360deg,rgba(10,207,254,1) 0%,rgba(73,90,255,1) 100%)!important;
-        color: #fff!important;
-        filter:blur(0px);
-        box-shadow: 4px 4px 2px #ccc;
-        margin: 20px 0;
-    }
-    &-smallcards{
-        display: flex;
-        flex-direction: row;
-        width: 652px;
-        overflow-x:auto;
-        &-card{
-            width: 320px;
-            height: 207px;
-            margin: 6px;
-            flex-shrink: 0;
-            &-content{
-                color: rgba(0, 0, 0, .65)
+.idp-contain {
+  width: 100%;
+  height: 100%;
+  color: #fff !important;
+  font-size: 18px;
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-            }
-        }
+  .ant-card-head::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-image: linear-gradient(
+      to right,
+      #fff 0%,
+      #fff 50%,
+      transparent 50%
+    );
+    background-size: 16px 1px;
+    background-repeat: repeat-x;
+  }
+  
+  &-card {
+    width: 568px;
+    height: 320px;
+    background: linear-gradient(
+      360deg,
+      rgba(10, 207, 254, 1) 0%,
+      rgba(73, 90, 255, 1) 100%
+    ) !important;
+    color: #fff !important;
+    filter: blur(0px);
+    box-shadow: 4px 4px 2px #ccc;
+    margin: 20px 0;
+     span{
+      color: #fff;
+       font-size: 16px
     }
+  }
+  &-smallcards {
+    display: flex;
+    flex-direction: row;
+    width: 652px;
+    overflow-x: auto;
+    &-card {
+      width: 320px;
+      height: 207px;
+      margin: 6px;
+      flex-shrink: 0;
+      &-content {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
 }
-.ant-steps-item-description{
-    color: #fff!important;
+.ant-steps-item-description {
+  color: #fff !important;
 }
-.ant-steps-item-title{
-    color: #fff!important;
+.ant-steps-item-title {
+  color: #fff !important;
 }
-.image{
-    background-image: url('./形状@2x.png')
+.image {
+  background-image: url('../images/形状@2x.png');
+}
+.ant-card-head {
+  border-bottom: none !important;
 }
