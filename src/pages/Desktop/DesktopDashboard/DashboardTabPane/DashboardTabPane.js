@@ -119,7 +119,7 @@ export default class DashboardTabPane extends React.PureComponent {
         <div style={{ textAlign: 'center', marginTop: 100 }}>加载中...</div>
       );
     } else {
-      return <DashboardPage rows={this.state.rows} mode="view" />;
+      return <DashboardPage rows={this.state.rows} mode="view"  showSearchBar={true}/>;
     }
   }
 }

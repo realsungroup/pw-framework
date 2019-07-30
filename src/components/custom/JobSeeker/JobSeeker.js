@@ -12,12 +12,13 @@ import {
   Modal,
   Spin
 } from 'antd';
-import MoveTo from 'moveto';
+import MoveTo from 'moveto';  //引入moveto这个库
 import http from 'Util20/api';
-import ApplyInformantion from '../ApplayInformnation';
+// import ApplyInformantion from '../ApplayInformnation';
 import TextArea from 'antd/lib/input/TextArea';
 import RadioGroup from 'antd/lib/radio/group';
 const { Option } = Select;
+// 左侧导航栏
 const MenuList = [
   {
     label: '个人资料',
@@ -32,12 +33,12 @@ const MenuList = [
   {
     label: '工作经历',
     value: '工作经历',
-    icon: 'apartment'
+    icon: 'desktop'
   },
   {
     label: '家庭成员关系',
     value: '家庭成员关系',
-    icon: 'apartment'
+    icon: 'home'
   },
   {
     label: '专业培训',
@@ -55,6 +56,7 @@ const MenuList = [
     icon: 'user-add'
   }
 ];
+// 语言能力评估的程度
 const languageAbility = [
   {
     label: '优秀',
@@ -73,6 +75,7 @@ const languageAbility = [
     value: '欠佳'
   }
 ];
+// 栅格系统的布局
 const formItemLayout = {
   labelCol: {
     span: 10,
@@ -91,36 +94,18 @@ const formItemLayout2 = {
   }
 };
 const { RangePicker } = DatePicker;
-const pstyle = {
-  style: {
-    width: 600,
-    padding: 10,
-    lineHeight: '14px',
-    whiteSpace: 'pre-line',
-    textAlign: 'left'
-  }
-};
-const Question = () => {
-  return (
-    <p {...pstyle}>
-      Have you ever been suffering from any severe disease? What are your
-      current health? Are you sick for contagion, or chronic etc. now? Do you
-      have criminal history or discredit history? If yes, please give the
-      details.
-      <br />
-      是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等？是否有犯罪记录或失信行为记录？如是，请详细说明
-    </p>
-  );
-};
-// 教育背景数组
 
 class JobSeeker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      hasCriminal: '',
-      hasLostTrust: '',
+      hasCriminal: '', //是否有犯罪记录
+      hasLostTrust: '', //是否有失信行为
+      hasUnemployee: '', //是否失业四个月经历
+      knowColleaguage: '', //是否认识菲尼萨员工
+      competitionAgreement: '', //是否签署过竞争协议
+       //教育背景
       educationBackground: [
         {
           Eddate: 'Eddate',
@@ -131,6 +116,7 @@ class JobSeeker extends Component {
           EdReferenceTel: 'EdReferenceTel'
         }
       ],
+      //工作经历
       workExperise: [
         {
           WorkDate: 'WorkDate',
@@ -141,6 +127,7 @@ class JobSeeker extends Component {
           WorkReferenceTel: 'WorkReferenceTel'
         }
       ],
+      //家庭成员
       family: [
         {
           FamName: 'FamName',
@@ -151,6 +138,7 @@ class JobSeeker extends Component {
           FamTel: 'FamTel'
         }
       ],
+      //培训经历
       training: [
         {
           TrainingDate: 'TrainingDate',
@@ -167,38 +155,71 @@ class JobSeeker extends Component {
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
       console.log(values);
-      // if (!err) {
-      //   this.setState({ loading: true });
-      //   console.log(1111111);
-      //   let res;
-      //   try {
-      //     res = http().addRecords({
-      //       resid: 613149356409,
-      //       data: [
-      //         {
-      //           ...values
-      //         }
-      //       ]
-      //     });
-      //     console.log(res.data);
-      //     this.setState({ loading: false });
-      //     Modal.success({
-      //       title: '提示',
-      //       content: '提交成功'
-      //     });
-      //   } catch (err) {
-      //     console.error(err.message);
-      //     Modal.error({
-      //       title: '提示失败',
-      //       content: err.message
-      //     });
-      //   }
-      // } else {
-      //   return Modal.warning({
-      //     title: '提示',
-      //     content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
-      //   });
-      // }
+      console.log(values.Eddate1[0].format('YYYY-MM-DD'));
+      if (!err) {
+        this.setState({ loading: true });
+        // console.log(1111111);
+        let res;
+        try {
+          res = http().addRecords({
+            resid: 613149356409,
+            data: [
+              {
+                ...values,
+                //教育
+                 EdStartTime1:  values.Eddate1 ? 
+                 values.Eddate1[0].format('YYYY-MM-DD'):null,
+                 EdEndTime1:  values.Eddate1 ? 
+                 values.Eddate1[1].format('YYYY-MM-DD'):null,
+                 EdStartTime2:  values.Eddate2 ? 
+                 values.Eddate2[0].format('YYYY-MM-DD'):null,
+                 EdEndTime2:  values.Eddate2 ? 
+                 values.Eddate2[1].format('YYYY-MM-DD'):null,
+                 EdStartTime3:  values.Eddate3 ? 
+                 values.Eddate3[0].format('YYYY-MM-DD'):null,
+                 EdEndTime3:  values.Eddate3 ? 
+                 values.Eddate3[1].format('YYYY-MM-DD'):null,
+                 EdStartTime4:  values.Eddate4 ? 
+                 values.Eddate4[0].format('YYYY-MM-DD'):null,
+                 EdEndTime4:  values.Eddate4 ? 
+                 values.Eddate4[1].format('YYYY-MM-DD'):null,
+                 //工作
+                 WorkStartTime1:  values.WorkDate1 ? 
+                 values.WorkDate1[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime1:  values.WorkDate1 ? 
+                 values.WorkDate1[1].format('YYYY-MM-DD'):null,
+
+                 WorkStartTime2:  values.WorkDate2 ? 
+                 values.WorkDate2[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime2:  values.WorkDate2 ? 
+                 values.WorkDate2[1].format('YYYY-MM-DD'):null,
+
+                 WorkStartTime3:  values.WorkDate3 ? 
+                 values.WorkDate3[0].format('YYYY-MM-DD'):null,
+                 WorkEndTime3:  values.WorkDate3 ? 
+                 values.WorkDate3[1].format('YYYY-MM-DD'):null,
+              }
+            ]
+          });
+          console.log(res.data);
+          this.setState({ loading: false });
+          Modal.success({
+            title: '提示',
+            content: '提交成功'
+          });
+        } catch (err) {
+          console.error(err.message);
+          Modal.error({
+            title: '提示失败',
+            content: err.message
+          });
+        }
+      } else {
+        return Modal.warning({
+          title: '提示',
+          content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
+        });
+      }
     });
   };
   // 提交的值
@@ -236,40 +257,22 @@ class JobSeeker extends Component {
       hasLostTrust: value
     });
   };
-  // 添加教育,工作,家庭成员,培训，
-  handleAdd = key => {
-    const { educationBackground, workExperise  } = this.state;
-    // console.log(key);
-    const tempeducationBackground = [...educationBackground];
-    const tempworkExperise = [...workExperise];
-    let obj = {};
-    switch (key) {
-      case 'educationBackground':
-        obj = {
-          Eddate: 'Eddate',
-          EdSchool: 'EdSchool',
-          EdMajor: 'EdMajor',
-          EdDegree: 'EdDegree',
-          EdReference: 'EdReference',
-          EdReferenceTel: 'EdReferenceTel'
-        };
-        tempeducationBackground.push(obj);
-        break;
-      case 'workExperise':
-        obj = {
-          WorkDate: 'WorkDate',
-          WorkComName: 'WorkComName',
-          WorkRank: 'WorkRank',
-          ReasonForLeave: 'ReasonForLeave',
-          WorkReference: 'WorkReference',
-          WorkReferenceTel: 'WorkReferenceTel'
-        };
-        tempworkExperise.push(obj);
-        break;
-    }
+  // 监听是否有失业经历变化
+  isUnemployeeChange = value => {
     this.setState({
-      educationBackground: tempeducationBackground,
-      workExperise: tempworkExperise,
+      hasUnemployee: value
+    });
+  };
+  // 监听是否有认识本公司员工
+  isKnowColleaguageChange = value => {
+    this.setState({
+      knowColleaguage: value
+    });
+  };
+  // 监听是否签署过竞争协议或者保密协议
+  isCompetitionChange = value => {
+    this.setState({
+      competitionAgreement: value
     });
   };
   // 添加教育背景
@@ -286,10 +289,10 @@ class JobSeeker extends Component {
     };
     tempeducationBackground.push(obj);
     this.setState({
-      educationBackground:tempeducationBackground
+      educationBackground: tempeducationBackground
     });
   };
-  // // 添加工作经历
+  //  添加工作经历
   handleAddWork = () => {
     const { workExperise } = this.state;
     const tempworkExperise = [...workExperise];
@@ -588,21 +591,23 @@ class JobSeeker extends Component {
               <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
                 {getFieldDecorator('RecommenderRelation', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="婚姻状况/Marital status" {...formItemLayout}>
+              <Form.Item label="婚姻状况(选填)/Marital status(Optional)" {...formItemLayout}>
                 {getFieldDecorator('MaritalStatus', {})(
-                  <Radio.Group>
-                    <Radio value="未婚">未婚</Radio>
-                    <Radio value="已婚">已婚</Radio>
-                    <Radio value="离异">离异</Radio>
-                  </Radio.Group>
+                  // <Radio.Group>
+                  //   <Radio value="未婚">未婚</Radio>
+                  //   <Radio value="已婚">已婚</Radio>
+                  //   <Radio value="离异">离异</Radio>
+                  // </Radio.Group>
+                  <Input></Input>
                 )}
               </Form.Item>
-              <Form.Item label="有无子女/children if any" {...formItemLayout}>
+              <Form.Item label="有无子女(选填)/children if any(Optional)" {...formItemLayout}>
                 {getFieldDecorator('ChildIf', {})(
-                  <Radio.Group>
-                    <Radio value="有">有</Radio>
-                    <Radio value="无">无</Radio>
-                  </Radio.Group>
+                  // <Radio.Group>
+                  //   <Radio value="有">有</Radio>
+                  //   <Radio value="无">无</Radio>
+                  // </Radio.Group>
+                  <Input></Input>
                 )}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="教育背景">
@@ -675,7 +680,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAdd('educationBackground');
+                    this. handleAddEdBack();
                   }}
                 >
                   添加教育背景
@@ -752,7 +757,7 @@ class JobSeeker extends Component {
                   type="primary"
                   icon="plus"
                   onClick={() => {
-                    this.handleAdd('workExperise');
+                    this.handleAddWork();
                   }}
                 >
                   添加工作经历
@@ -874,7 +879,7 @@ class JobSeeker extends Component {
                         {}
                       )(<Input />)}
                     </Form.Item>
-                    <Form.Item label="证明人/Reference" {...formItemLayout2}>
+                    {/* <Form.Item label="证明人/Reference" {...formItemLayout2}>
                       {getFieldDecorator(
                         `${item.TrainingReference}${index + 1}`,
                         {}
@@ -888,7 +893,7 @@ class JobSeeker extends Component {
                         `${item.TrainingReferenceTel}${index + 1}`,
                         {}
                       )(<Input />)}
-                    </Form.Item>
+                    </Form.Item> */}
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
                         type="primary"
@@ -1009,7 +1014,10 @@ class JobSeeker extends Component {
               <Form.Item label="视力左 右/eye sight" {...formItemLayout2}>
                 {getFieldDecorator('EyeSight', {})(<Input />)}
               </Form.Item>
-              <Form.Item colon={false} label={<Question />}>
+              <Form.Item
+                colon={false}
+                label="是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等"
+              >
                 {getFieldDecorator('DiseaseStatus', {})(<TextArea />)}
               </Form.Item>
               <Form.Item
@@ -1050,50 +1058,102 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label={
-                  <p {...pstyle}>
-                    Do you have any unemployed period of more than 4 months? If
-                    yes, please give the details.
-                    <br />
-                    是否有过4个月以上的失业经历？如有，请详细说明。
-                  </p>
-                }
+                label="Do you have any unemployed period of more than 4 months? If
+                yes, please give the details.
+                
+                是否有过4个月以上的失业经历？如有，请详细说明。"
               >
-                {getFieldDecorator('UnemployedStatus', {})(<TextArea />)}
+                {getFieldDecorator('UnemployedStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isUnemployeeChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.hasUnemployee === '是' ? <Input /> : ''}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="Do you know any employee of Finisar Shanghai Inc.? If yes,
+                please give his/her name and relationship./
+                是否认识本公司的员工？如是，请详细指出姓名及与其关系。"
+              >
+                {getFieldDecorator('KnowColleageStatus', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isKnowColleaguageChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.knowColleaguage === '是' ? <Input /> : ''}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item
+                colon={false}
+                label="Do you have any unexpired contract or service agreement with
+                   your present employer? 
+                   与现任雇主的合同或服务协议是否到期？"
+              >
+                {getFieldDecorator('OtherAgreement', {})(
+                  <div>
+                    <RadioGroup>
+                      <Radio value="是">已到期</Radio>
+                      <Radio value="否">未到期</Radio>
+                    </RadioGroup>
+                  </div>
+                )}
               </Form.Item>
               <Form.Item
                 colon={false}
                 label={
-                  <p {...pstyle}>
-                    Do you know any employee of Finisar Shanghai Inc.? If yes,
-                    please give his/her name and relationship.
-                    <br />
-                    是否认识本公司的员工？如是，请详细指出姓名及与其关系。
+                  <p style={{height:30}}>
+                    Do you have ever signed non-competition agreement or
+                    confidentiality agreement? Please explain when does the
+                    contract or agreement at
+                    term?<br/>是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？
                   </p>
                 }
               >
-                {getFieldDecorator('KnowColleageStatus', {})(<TextArea />)}
+                {getFieldDecorator('CompetitionAgreement', {})(
+                  <div>
+                    <RadioGroup
+                      onChange={e => {
+                        this.isCompetitionChange(e.target.value);
+                      }}
+                    >
+                      <Radio value="是">是</Radio>
+                      <Radio value="否">否</Radio>
+                    </RadioGroup>
+                    {this.state.competitionAgreement === '是' ? <Input /> : ''}
+                  </div>
+                )}
               </Form.Item>
               <Form.Item
-                colon={false}
-                label={
-                  <p {...pstyle}>
-                    Do you have any unexpired contract or service agreement with
-                    your present employer? Do you have ever signed
-                    non-competition agreement or confidentiality agreement?
-                    Please explain when does the contract or agreement at term?
-                    Do you need to pay compensation for demission? How long do
-                    you carry out demission? When would be available for you?
-                    <br />
-                    与现任雇主的合同或服务协议是否到期？是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？办理离职手续需多长时间？如被录用何时可以上班？
-                  </p>
-                }
+                label="办离职需要多长时间/How long do
+                   you carry out demission?"
               >
-                {getFieldDecorator('OtherAgreement', {})(<TextArea />)}
+                {getFieldDecorator('HowLong', {})(<Input />)}
+              </Form.Item>
+              <Form.Item label="如被录用何时上班/When would be available for you?">
+                {getFieldDecorator('WhenOn', {})(<Input />)}
               </Form.Item>
               <Form.Item label="自我评价">
                 {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
               </Form.Item>
+              <div>
+                <h3>Commitments/本人承诺</h3>
+                <p style={{padding:5,textAlign:'left'}}>1) All informantion given are true and accurate ,otherwise I'm willing to be punished even dismissed.<br/>  所有填表内容真实、准确,如有虚假愿意接受处分包括辞退</p>
+                <p>2) I agree with further background check.本人同意公司进行背景调查</p>
+              </div>
               <Form.Item style={{ textAlign: 'center' }}>
                 <Button type="primary" onClick={this.handleClick}>
                   确认申请

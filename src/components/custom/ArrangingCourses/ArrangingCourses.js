@@ -23,6 +23,7 @@ const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
+const courseDetailId = '615054661547';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -190,7 +191,7 @@ class ArrangingCourses extends React.Component {
     let res;
     try {
       res = await http().modifyRecords({
-        resid: '613959487818',
+        resid: courseDetailId,
         data
       });
       message.success(res.message);
@@ -432,6 +433,12 @@ class ArrangingCourses extends React.Component {
                       <div className="content_item">
                         时间：{item.StartDatetime}
                       </div>
+                      <div className="content_item">
+                        实际费用:{  `${item.actualCost}元`}
+                      </div>
+                      <div className="content_item">
+                        季度:{  `${item.quarter}元`}
+                      </div>
                     </div>
                   </Card>
                 ))
@@ -443,18 +450,17 @@ class ArrangingCourses extends React.Component {
               )}
             </div>
           )}
-          {this.state.mode === 'calendar' && <div><CalendarMode></CalendarMode></div>}
+          {this.state.mode === 'calendar' && <div style={{height:'100%'}}><CalendarMode/></div>}
           {this.state.mode === 'table' && (
             <div style={{width:'100%',flex:1}}>
               <TableData
                 resid="613959487818"
-                // height={440}
-                subtractH={200}
+                subtractH={220}
                 hasRowView={false}
                 hasModify={false}
                 hasDelete={false}
                 hasRowSelection={true}
-              ></TableData>
+              />
             </div>
           )}
         </div>
@@ -480,7 +486,8 @@ class ArrangingCourses extends React.Component {
                     ),
                     CourseLocation: values.modifyCourseLocation,
                     classType: values.classType,
-                    actualCost: parseFloat(values.actualCost)
+                    actualCost: parseFloat(values.actualCost),
+                    quarter:values.quarter
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -570,14 +577,19 @@ class ArrangingCourses extends React.Component {
                   initialValue: this.state.selectedCourseArrangment.actualCost
                 })(<Input type="number" />)}
               </Form.Item>
+
+              <Form.Item label="季度">
+                {getFieldDecorator('quarter', {
+                  initialValue: this.state.selectedCourseArrangment.quarter
+                })(<Input />)}
+              </Form.Item>
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {
                   initialValue: this.state.selectedCourseArrangment.classType
                 })(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训">外训</Option>
-                    <Option value="内训">内训</Option>
-                    <Option value="外聘内训">外聘内训</Option>
+                    <Option value="外训" key='外训'>外训</Option>
+                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
                   </Select>
                 )}
               </Form.Item>
@@ -604,17 +616,17 @@ class ArrangingCourses extends React.Component {
           destroyOnClose
         >
           <TableData
-            resid="613959487818"
+            resid={courseDetailId}
             key={selectedCourseArrangment.REC_ID}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             height={440}
-            subtractH={200}
+            subtractH={240}
             hasRowView={false}
             hasModify={false}
             hasDelete={false}
             hasRowSelection={true}
-            cmswhere={`CourseArrangeID = '${this.state.selectedCourseArrangment.CourseArrangeID}'`}
+            cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
             actionBarExtra={records => (
               <Button
                 onClick={() => {
@@ -632,10 +644,14 @@ class ArrangingCourses extends React.Component {
                     );
                   });
                   let keys = records.selectedRowKeys;
-                  let selectedMoveLearners = keys.map(item => {
-                    return records.dataSource.find(i => {
+                  let selectedMoveLearners = [];
+                  keys.forEach(item => {
+                    let learner = records.dataSource.find(i => {
                       return i.REC_ID === item;
                     });
+                    if(learner){
+                      selectedMoveLearners.push(learner);
+                    }
                   });
                   this.setState({
                     isShowMoveLearner: true,
@@ -677,7 +693,7 @@ class ArrangingCourses extends React.Component {
             hasModify={false}
             hasDelete={false}
             hasRowSelection={true}
-            cmswhere={`C3_614184177086 = '${this.state.selectedCourseArrangment.CourseArrangeID}'`}
+            cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
           ></TableData>
         </Modal>
         <Modal
@@ -701,6 +717,7 @@ class ArrangingCourses extends React.Component {
             selectedMoveLearners.forEach(item => {
               item.CourseArrangeID = selectedTargetCourseArrangment;
             });
+            console.log(selectedTargetCourseArrangment)
             await this.moveLearner(selectedMoveLearners);
             this.setState({
               isShowMoveLearner: false,
@@ -719,9 +736,9 @@ class ArrangingCourses extends React.Component {
               renderItem={item => (
                 <div
                   style={{ display: 'flex', width: '100%', marginBottom: 8 }}
-                  key={item.REC_ID}
+                  key={item.CourseArrangeID}
                 >
-                  <Radio checked={item.checked} value={item.REC_ID} />
+                  <Radio checked={item.checked} value={item.CourseArrangeID} />
                   <div style={{ flex: 1 }}>{item.CourseName}</div>
                   <div style={{ flex: 1 }}>{item.StartDatetime}</div>
                   <div style={{ flex: 1 }}>{item.CourseLocation}</div>
@@ -819,12 +836,14 @@ class ArrangingCourses extends React.Component {
               <Form.Item label="实际费用">
                 {getFieldDecorator('actualCost', {})(<Input type="number" />)}
               </Form.Item>
+              <Form.Item label="季度">
+                {getFieldDecorator('quarter', {})(<Input />)}
+              </Form.Item>
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {})(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训">外训</Option>
-                    <Option value="内训">内训</Option>
-                    <Option value="外聘内训">外聘内训</Option>
+                    <Option value="外训" key='外训'>外训</Option>
+                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
                   </Select>
                 )}
               </Form.Item>

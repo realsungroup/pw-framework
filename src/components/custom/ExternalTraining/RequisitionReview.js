@@ -10,7 +10,7 @@ class ReviewRequisition extends React.Component {
         <TabsTableData
           arr={[
             {
-              resid: 613959487818,
+              resid: 614778527180,
               TabsTitle: '待提交',
               recordFormFormWidth: '90%',
               hasBeBtns: true,
@@ -97,7 +97,7 @@ class ReviewRequisition extends React.Component {
               hasAdd: false,
               hasRowDelete: false,
               hasRowModify: false,
-              hasRowView: false,
+              hasRowView: true,
               subtractH: 220,
               recordFormType: 'drawer',
               recordFormContainerProps: {

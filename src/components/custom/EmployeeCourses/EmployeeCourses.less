@@ -1,0 +1,55 @@
+@import '../../../styles/variables.less';
+.emploee_courses {
+  padding: 0 12px;
+	background-color: #ffffff;
+	height: 100%;
+	display: flex;
+  &-header {
+    display: flex;
+    &-search {
+      width: 200px;
+		}
+		&-selector {
+			width: 120px;
+			margin-right: 6px;
+		}
+		&-status_description{
+			width: 30%;
+			display: flex;
+			justify-content: space-around;
+			&-item {
+				display: flex;
+				align-items: center;
+				span {
+					height: 14px;
+					width: 14px;
+					border-radius: 50%;
+					margin-right: 6px
+				}
+			}
+		}
+  }
+  &-main {
+		display: flex;
+		height: 85vh;
+		flex:1;
+		padding-top: 18px;
+    &-course_content {
+      display: flex;
+      flex-wrap: wrap;
+      .course_item {
+        flex-basis: 50%;
+      }
+		}
+		&-course_footer{
+			display: flex;
+			justify-content: space-between;
+		}
+		.timeline_action{
+			text-decoration: underline;
+			cursor: pointer;
+			color: @primary-color;
+			padding:4px;
+		}
+  }
+}

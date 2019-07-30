@@ -193,11 +193,7 @@ class ETNoticed extends React.Component {
                                                 extra={
                                                     this.props.isNotice ?
                                                         (
-                                                            <Icon
-                                                                type="bell"
-                                                                theme='filled'
-                                                                style={{ fontSize: 20 }}
-                                                            />
+                                                           null
                                                         ) : (
                                                             <Popconfirm
                                                                 title="是否立即开始通知?"

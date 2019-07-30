@@ -51,7 +51,6 @@ export {
   LzStepY,
   LzStepAflY,
   LzSelectPersons,
-  Card
 } from '../components/custom/loadableCustom';
 
 
@@ -81,7 +80,13 @@ export { CreateTotalPlan } from '../components/custom/loadableCustom';
 export { PersonGradeManagement } from '../components/custom/loadableCustom';
 export { ExamAnalyze } from '../components/custom/loadableCustom';
 export { ExternalTraining } from '../components/custom/loadableCustom';
+// CourseResources
+export { CourseResources } from '../components/custom/loadableCustom';
 
 
 
-
+export { EmployeeCourses } from '../components/custom/loadableCustom'
+export { InternalTraining } from '../components/custom/loadableCustom'
+export { ViewPlan } from '../components/custom/loadableCustom';
+export { SubordinateCourses } from '../components/custom/loadableCustom';
+export { MyTeam } from '../components/custom/loadableCustom';

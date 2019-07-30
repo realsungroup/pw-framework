@@ -40,7 +40,7 @@ const advSearchConfig = {
 
 // 申请中
 export const inApplication = {
-  resid: 605989494375,
+  resid:605801028375,
   hasSearch: true,
   hasBeBtns: true,
   hasRowModify: true, //行内修改按钮
@@ -52,13 +52,13 @@ export const inApplication = {
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
   // height:500,
-  formProps:{
-    height:500,
- },
+//   formProps:{
+//     height:500,
+//  },
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height:650,
+    height:600,
   },
   subTableArrProps: [
     {

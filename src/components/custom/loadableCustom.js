@@ -47,12 +47,7 @@ export const LzSelectPersons = Loadable({
     return minLoading;
   }
 });
-export const Card = Loadable({
-  loader: () => import('./Card'),
-  loading() {
-    return minLoading;
-  }
-});
+
 export const LzRegister = Loadable({
   loader: () => import('./LzRegister'),
   loading() {
@@ -298,6 +293,14 @@ export const TableDataScheduling = Loadable({
   }
 });
 
+// 课程资源
+export const CourseResources = Loadable({
+  loader: () => import('./CourseResources'),
+  loading() {
+    return minLoading;
+  }
+});
+
 // IDL招聘
 export const IdLindex = Loadable({
   loader: () => import('./IdLindex'),
@@ -370,4 +373,38 @@ export const PersonInfo = Loadable({
     return minLoading;
   }
 });
+
+export const EmployeeCourses = Loadable({
+  loader: () => import('./EmployeeCourses'),
+  loading() {
+    return minLoading;
+  }
+})
+
+export const InternalTraining = Loadable({
+  loader: () => import('./InternalTraining'),
+  loading() {
+    return minLoading;
+  }
+})
+
+export const ViewPlan = Loadable({
+  loader: () => import('./ViewPlan'),
+  loading() {
+    return minLoading;
+  }
+})
+export const SubordinateCourses = Loadable({
+  loader: () => import('./SubordinateCourses'),
+  loading() {
+    return minLoading;
+  }
+})
+
+export const MyTeam = Loadable({
+  loader: () => import('./MyTeam'),
+  loading() {
+    return minLoading;
+  }
+})
 

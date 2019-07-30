@@ -10,7 +10,6 @@ window[606476781618] = {
     hasDelete: false,
     hasRowView: true,
     hasRowModify: false,
-    hasRowView: true,
     hasRowDelete: false,
     subtractH: 220,
     hasRowSelection: true
@@ -177,8 +176,9 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
-          values: ['Y', 'Y']
+          innerFieldNames: ['C3_591373760332'],
+          // innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
+          values: ['Y']
         }
       ],
       formHeaderRecords: [
@@ -204,7 +204,6 @@ window[590765309983] = {
 // 统计分析与录入
 window[592305842055] = {
   title: '统计分析与录入',
-
   // 单元组件
   name: 'LzTable',
   props: {
@@ -229,7 +228,7 @@ window[592305842055] = {
     btnsVisible: {
       check: true,
       mod: false,
-      del: false,
+      del: true,
       edit: false,
       save: false,
       cancel: false
@@ -256,7 +255,6 @@ window[592305842055] = {
       labelWidth: '24%',
       rowWidth: '100%',
       dateRanges: [
-        // date
         {
           title: '违纪日期',
           visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
@@ -267,56 +265,51 @@ window[592305842055] = {
           visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
           innerFieldName: 'C3_591363529469' // 内部字段
         }
-        // {
-        //   title: '入职日期',
-        //   visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-        //   innerFieldName: 'C3_590512068786' // 内部字段
-        // }
       ],
       tag: [
         // tag
-        {
-          title: '部门',
-          op: 'or', // 操作符：'or' | 'and'
-          tags: [
-            {
-              label: 'OA',
-              value: 'OA',
-              isSelected: false,
-              innerFieldName: 'C3_590510763625' // 内部字段名
-            },
-            {
-              label: 'OPS',
-              value: 'OPS',
-              isSelected: false,
-              innerFieldName: 'C3_590510763625'
-            }
-          ]
-        },
-        {
-          title: '状态',
-          op: 'or',
-          tags: [
-            {
-              label: '已撤销',
-              value: '已撤销',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            },
-            {
-              label: '已录入',
-              value: '已录入',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            },
-            {
-              label: '进行中',
-              value: '进行中',
-              isSelected: false,
-              innerFieldName: 'C3_590514418013'
-            }
-          ]
-        },
+        // {
+        //   title: '部门',
+        //   op: 'or', // 操作符：'or' | 'and'
+        //   tags: [
+        //     {
+        //       label: 'OA',
+        //       value: 'OA',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590510763625' // 内部字段名
+        //     },
+        //     {
+        //       label: 'OPS',
+        //       value: 'OPS',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590510763625'
+        //     }
+        //   ]
+        // },
+        // {
+        //   title: '状态',
+        //   op: 'or',
+        //   tags: [
+        //     {
+        //       label: '已撤销',
+        //       value: '已撤销',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     },
+        //     {
+        //       label: '已录入',
+        //       value: '已录入',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     },
+        //     {
+        //       label: '进行中',
+        //       value: '进行中',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590514418013'
+        //     }
+        //   ]
+        // },
         {
           title: '合同类别',
           op: 'or',
@@ -365,26 +358,26 @@ window[592305842055] = {
             }
           ]
         },
+        // {
+        //   title: '是否撤销',
+        //   op: 'or',
+        //   tags: [
+        //     {
+        //       label: '是',
+        //       value: 'Y',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590512213622'
+        //     },
+        //     {
+        //       label: '否',
+        //       value: 'N',
+        //       isSelected: false,
+        //       innerFieldName: 'C3_590512213622'
+        //     }
+        //   ]
+        // },
         {
-          title: '是否撤销',
-          op: 'or',
-          tags: [
-            {
-              label: '是',
-              value: 'Y',
-              isSelected: false,
-              innerFieldName: 'C3_590512213622'
-            },
-            {
-              label: '否',
-              value: 'N',
-              isSelected: false,
-              innerFieldName: 'C3_590512213622'
-            }
-          ]
-        },
-        {
-          title: '是否确认审批',
+          title: '到期撤销',
           op: 'or',
           tags: [
             {
@@ -418,6 +411,18 @@ window[592305842055] = {
         {
           title: '职级',
           innerFieldNames: ['C3_590512134594']
+        },
+        {
+          title: '一级部门',
+          innerFieldNames: ['C3_590516541218']
+        },
+        {
+          title: '二级部门',
+          innerFieldNames: ['C3_590516558243']
+        },
+        {
+          title: '三级部门',
+          innerFieldNames: ['C3_590516572216']
         }
       ]
     }
@@ -1166,6 +1171,41 @@ window[611339874157] = {
   props: [
     ([
       {
+        resid: 614686575134,
+        TabsTitle: '待提交',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+        // height:600,
+        recordFormType: 'drawer',
+        recordFormContainerProps: {
+          placement: 'bottom',
+          height: 600
+        },
+        subTableArrProps: [
+          {
+            subTableName: '计划详情',
+            subResid: 611315248461,
+            tableProps: {
+              hasAdd: false,
+              hasModify: false,
+              hasDelete: false,
+              hasRowModify: false,
+              hasRowView: true,
+              hasRowDelete: false,
+              height: 400,
+              subtractH: 196
+            }
+          }
+        ]
+      },
+      {
         resid: 611086999042,
         TabsTitle: '未审批',
         recordFormFormWidth: '90%',
@@ -1536,3 +1576,47 @@ window[614709663995] = {
   }
 };
 
+//培训系统————课程资源
+window[615375286006] ={
+  name:'CourseResources',
+  title:'课程资源'
+}
+
+//员工 我的课程
+window[615374522659] = {
+  name: 'EmployeeCourses', // 组件名称，这里为定制组件名称
+  title: '我的课程', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};
+
+
+//培训系统————内训管理
+window[615898415042] ={
+  name: 'InternalTraining',
+  title: '内训管理',
+}
+
+//培训系统————二级部门经理 查阅计划
+window[616242189307] ={
+  name: 'ViewPlan',
+  title: '查阅计划',
+}
+
+//培训系统————下属课程
+window[616504759208] ={
+  name: 'SubordinateCourses',
+  title: '下属课程',
+}
+
+// 616081514704
+window[616081514704] ={
+  name: 'TableData',
+  title: '测试',
+}
+window[617733136657] = {
+  name: 'MyTeam',
+  title: '我的团队'
+};

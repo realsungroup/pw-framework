@@ -1,8 +1,7 @@
 import React from 'react';
 import { TableData } from '../../../common/loadableCommon';
-import { Button, Collapse, message, AutoComplete } from 'antd';
+import { Button, Collapse, message, Popconfirm } from 'antd';
 import './DefinePlan.less';
-import http from 'Util20/api';
 
 const Panel = Collapse.Panel;
 
@@ -12,8 +11,8 @@ class DefinePlan extends React.Component {
     console.log(props);
   }
   componentDidMount = async () => {
-    this.props.onGetSelectedPlan()
-  }
+    this.props.onGetSelectedPlan();
+  };
   applyPlan = () => {
     this.props.applyPlan();
   };
@@ -31,14 +30,26 @@ class DefinePlan extends React.Component {
               }}
             >
               计划基本信息
-              <Button
-                onClick={event => {
+              <Popconfirm
+                placement="topRight"
+                title={'确认要提交吗?'}
+                onConfirm={this.applyPlan}
+                okText="确认"
+                cancelText="取消"
+                onCancel={event => {
                   event.stopPropagation();
-                  this.applyPlan();
                 }}
               >
-                提交计划
-              </Button>
+                <Button
+                  type="link"
+                  shape='round'
+                  onClick={event => {
+                    event.stopPropagation();
+                  }}
+                >
+                  提交计划
+                </Button>
+              </Popconfirm>
             </div>
           }
           key="1"
@@ -87,6 +98,8 @@ class DefinePlan extends React.Component {
             resid={611315248461}
             key="611315248461"
             hasBeBtns={true}
+            subtractH={200}
+            height={400}
             hasAdd={false}
             hasRowView={false}
             hasRowDelete={false}
@@ -96,18 +109,18 @@ class DefinePlan extends React.Component {
             actionBarFixed={true}
             hasRowModify={false}
             cmswhere={`C3_609616805633 = '${this.props.selectedPlan.C3_609616660273}'`}
-          // actionBarExtra={(dataSource, selectedRowKeys) => {
-          //   return (
-          //     <Popconfirm
-          //       title="是否确认提交？"
-          //       onConfirm={this.applyPlan}
-          //       okText="是"
-          //       cancelText="否"
-          //     >
-          //       <Button>提交计划</Button>
-          //     </Popconfirm>
-          //   );
-          // }}
+            // actionBarExtra={(dataSource, selectedRowKeys) => {
+            //   return (
+            //     <Popconfirm
+            //       title="是否确认提交？"
+            //       onConfirm={this.applyPlan}
+            //       okText="是"
+            //       cancelText="否"
+            //     >
+            //       <Button>提交计划</Button>
+            //     </Popconfirm>
+            //   );
+            // }}
           />
         </Panel>
       </Collapse>
