@@ -69,7 +69,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
     {
       loader: require.resolve('css-loader'),
       options: cssOptions
-    },
+    }
+    ,
+    
     {
       // Options for PostCSS as we reference these options twice
       // Adds vendor prefixing based on your specified browser support in
@@ -90,9 +92,11 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
         ]
       }
     }
+    
+
   ];
   if (preProcessor) {
-    loaders.push(require.resolve(preProcessor));
+    loaders.push({loader:require.resolve(preProcessor),options: cssOptions});
   }
   return loaders;
 };
@@ -210,6 +214,7 @@ module.exports = {
   module: {
     strictExportPresence: true,
     rules: [
+       
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
@@ -327,12 +332,23 @@ module.exports = {
               importLoaders: 1
             })
           },
+            
+      //    {
+        //    test: lessRegex,
+          //  use: getStyleLoaders(
+            //    {
+              //    importLoaders: 2,
+                //  javascriptEnabled
+                //},
+               // 'less-loader'
+            //)
+          //},
           {
             test: lessRegex,
             use: getStyleLoaders(
                 {
                   importLoaders: 2,
-                  javascriptEnabled: true
+                  javascriptEnabled:true
                 },
                 'less-loader'
             )

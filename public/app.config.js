@@ -7,8 +7,8 @@ window.pwConfig = {
     // 地址
      baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
-    // baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
-      //  baseURL:'http://hr.realsun.me:8081/',
+     //baseURL: 'http://pwhrapi1.realsun.me/', // 请求的基地址
+   // baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -60,7 +60,7 @@ window.pwConfig = {
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
 
     // bi 系统配置
-    biBaseURL: 'http://localhost:3001/', // bi 系统基地址
+    biBaseURL: 'http://localhost:3002/', // bi 系统基地址
 
     // 默认打开的窗口（即在第一次进入桌面时，会自动打开的窗口）；为空字符串时，不会打开任何窗口
     defaultOpenWindow: '',
