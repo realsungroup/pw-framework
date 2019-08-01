@@ -86,7 +86,7 @@ class MyTeam extends React.Component {
           </Menu.Item>
         </Menu>
         </div>
-      <div style={{width:"100%"}}>
+      <div style={{width:"calc(100% - 256px)"}}>
         {this.renderContent()}
       </div>
       </div>

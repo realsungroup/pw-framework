@@ -1,17 +1,8 @@
 import React from 'react';
-import {
-  Button,
-  Menu,
-  Icon,
-  Switch,
-  Card,
-  Steps,
-  Popover,
-  message,
-  Popconfirm
-} from 'antd';
+import { message, Button } from 'antd';
 import './PersonList.less';
 import http from 'Util20/api';
+import TableData from '../../../../common/data/TableData';
 /**
  * 管理员确认
  */
@@ -26,26 +17,70 @@ class PersonList extends React.Component {
     historyPlan: []
   };
   componentDidMount = async () => {
-    let res;
-    try {
-      res = await http().getTable({
-        // resid: developmentPersonID
-      });
-      let [currentPlan, ...historyPlan] = [...res.data];
-      console.log('currentPlan', currentPlan, historyPlan);
-      this.setState({
-        currentPlan,
-        historyPlan
-      });
-    } catch (error) {
-      message.error(error.message);
-    }
   };
   render() {
-    const { currentPlan, historyPlan } = this.state;
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
-        </div>
+        <TableData
+          resid="617725883137"
+          subtractH={220}
+          hasBeBtns={false}
+          hasRowSelection={true}
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          hasAdd={false}
+          hasRowView={false}
+          hasModify={false}
+          hasRowDelete={false}
+          hasDelete={false}
+          hasRowModify={false}
+          actionBarFixed={true}
+          height="100%"
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Button
+                  onClick={() => {
+                    this.props.onLookPerson(record);
+                  }}
+                >
+                  修改
+                </Button>
+              );
+            }
+          ]}
+          actionBarExtra={[
+            <Button
+              onClick={() => {
+                this.setState({ applyByCourseVisible: true });
+              }}
+            >
+              提醒员工
+            </Button>,
+            <Button
+              onClick={() => {
+                this.setState({ applyByUnexistCourseVisible: true });
+              }}
+            >
+              开启员工填写
+            </Button>,
+            <Button
+              onClick={() => {
+                this.setState({ applyByUnexistCourseVisible: true });
+              }}
+            >
+              开启主管填写
+            </Button>,
+            <Button
+              onClick={() => {
+                this.setState({ applyByUnexistCourseVisible: true });
+              }}
+            >
+              关闭填写
+            </Button>
+          ]}
+        />
+      </div>
     );
   }
 }

@@ -3,7 +3,6 @@ import {
   Button,
   Menu,
   Icon,
-  Switch,
   Card,
   Steps,
   Popover,
@@ -12,20 +11,14 @@ import {
 } from 'antd';
 import './IdpCard.less';
 import http from 'Util20/api';
+import PersonList from './PersonList';
+import PersonPlan from './PersonPlan';
 
 /**
  * 管理员确认
  */
 const customDot = (dot, { status, index }) => (
-  <Popover
-    content={
-      <span>
-       状态: {status}
-      </span>
-    }
-  >
-    {dot}
-  </Popover>
+  <Popover content={<span>状态: {status}</span>}>{dot}</Popover>
 );
 const { Step } = Steps;
 const developmentPersonID = '617725883137'; //发展人员表
@@ -37,19 +30,178 @@ class IdpCard extends React.Component {
     selectKey: '1',
     collapsed: false,
     currentPlan: {},
-    historyPlan: []
+    historyPlan: [],
+    currentPage: 1,
+    record: {}
   };
   onMiddleBack = () => {
     let res;
-    try{
-      res = http().modifyData({
-
-      })
-    }catch(error){
-
+    try {
+      // res = http().modifyData({
+      // })
+    } catch (error) {}
+  };
+  onCheck = () => {
+    this.setState({
+      currentPage: 2
+    });
+  };
+  onLookPerson = record => {
+    console.log('record', record);
+    this.setState({
+      currentPage: 3,
+      record: record
+    });
+  };
+  getCurrentPage = () => {
+    let currentPlan = this.state.currentPlan;
+    let historyPlan = this.state.historyPlan;
+    console.log('currentPage', this.state.currentPage);
+    switch (this.state.currentPage) {
+      case 1:
+        return (
+          <React.Fragment>
+            <Card
+              className="idp-contain-card"
+              title={
+                <span style={{ fontSize: '24px', color: '#fff' }}>
+                  员工发展计划
+                </span>
+              }
+              bordered={false}
+              extra={
+                currentPlan.status === '初次填写' ? (
+                  <span>
+                    <Popconfirm
+                      title="确认发起年中回顾吗?"
+                      onConfirm={this.onMiddleBack}
+                      onCancel={this.onCancel}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <span>发起年中回顾 </span>
+                    </Popconfirm>
+                    <span style={{ margin: '0 10px' }}>|</span>
+                    <span onClick={this.onCheck}>查看</span>
+                  </span>
+                ) : (
+                  <span>
+                    <Popconfirm
+                      title="确认发起年末回顾吗?"
+                      onConfirm={this.onEndBack}
+                      onCancel={this}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <span>发起年末回顾</span>
+                    </Popconfirm>
+                    <span style={{ margin: '0 10px' }}>|</span>
+                    <span onClick={this.onCheck}>查看</span>
+                  </span>
+                )
+              }
+            >
+              <div style={{ float: 'left' }}>
+                <p>发起时间:{currentPlan.startTime}</p>
+                <p>进行状态:{currentPlan.status}</p>
+                <p>参与人数:{currentPlan.number}</p>
+                <p>财年:{currentPlan.year}</p>
+              </div>
+              <div
+                className="image"
+                style={{
+                  width: '136px',
+                  height: '135px',
+                  backgroundSize: '100%',
+                  float: 'right'
+                }}
+              ></div>
+              <Steps
+                current={1}
+                progressDot={customDot}
+                style={{ color: '#fff' }}
+              >
+                <Step
+                  title="Finished"
+                  description="初次填写"
+                  style={{ color: '#fff' }}
+                />
+                <Step
+                  title="In Progress"
+                  description="年中回顾"
+                  style={{ color: '#fff' }}
+                />
+                <Step
+                  title="Waiting"
+                  description="年末回顾"
+                  style={{ color: '#fff' }}
+                />
+              </Steps>
+            </Card>
+            <div className="idp-contain-smallcards">
+              <Card
+                className="idp-contain-smallcards-card"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column'
+                }}
+              >
+                <Icon
+                  type="plus"
+                  style={{
+                    display: 'block',
+                    fontSize: '60px',
+                    fontWeight: 'bold'
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  发起新的发展计划
+                </span>
+              </Card>
+              {historyPlan.map(item => {
+                return (
+                  <Card
+                    title={
+                      <span style={{ fontSize: '16px', color: '#000' }}>
+                        员工发展计划
+                      </span>
+                    }
+                    className="idp-contain-smallcards-card"
+                    bordered={false}
+                    extra={
+                      <span style={{ color: '#1890FF', fontSize: '16px' }}>
+                        查看
+                      </span>
+                    }
+                  >
+                    <div className="idp-contain-smallcards-card-content">
+                      发起时间:{item.startTime}
+                    </div>
+                    <div>进行状态:{item.status}</div>
+                    <div>参与人数:{item.number}</div>
+                    <div>财年:{item.year}</div>
+                  </Card>
+                );
+              })}
+            </div>
+          </React.Fragment>
+        );
+        break;
+      case 2:
+        return <PersonList onLookPerson={this.onLookPerson}></PersonList>;
+      case 3:
+        return <PersonPlan record={this.state.record}></PersonPlan>;
+      default:
     }
-    
-  }
+  };
   componentDidMount = async () => {
     let res;
     try {
@@ -57,7 +209,7 @@ class IdpCard extends React.Component {
         resid: developmentPersonID
       });
       let [currentPlan, ...historyPlan] = [...res.data];
-      console.log('currentPlan', currentPlan, historyPlan);
+      // console.log('currentPlan', currentPlan, historyPlan);
       this.setState({
         currentPlan,
         historyPlan
@@ -67,129 +219,10 @@ class IdpCard extends React.Component {
     }
   };
   render() {
-    const { currentPlan, historyPlan } = this.state;
+    const { currentPlan, historyPlan, currentPage } = this.state;
     return (
       <div className="idp-contain" style={{ height: '100%' }}>
-        <Card
-          className="idp-contain-card"
-          title={
-            <span style={{ fontSize: '24px', color: '#fff' }}>
-              员工发展计划
-            </span>
-          }
-          bordered={false}
-          extra={
-            currentPlan.status === '初次填写' ? (
-              <span>
-                <Popconfirm
-                  title="确认发起年中回顾吗?"
-                  onConfirm={this.onMiddleBack}
-                  onCancel={this.onCancel}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <span>发起年中回顾 </span>
-                </Popconfirm>
-                <span style={{ margin: '0 10px' }}>|</span>
-                <span>查看</span>
-              </span>
-            ) : (
-              <span>
-                <Popconfirm
-                  title="确认发起年末回顾吗?"
-                  onConfirm={this.onEndBack}
-                  onCancel={this}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <span>发起年末回顾</span>
-                </Popconfirm>
-                <span style={{ margin: '0 10px' }}>|</span>
-                <span>查看</span>
-              </span>
-            )
-          }
-        >
-          <div style={{ float: 'left' }}>
-            <p>发起时间:{currentPlan.startTime}</p>
-            <p>进行状态:{currentPlan.status}</p>
-            <p>参与人数:{currentPlan.number}</p>
-            <p>财年:{currentPlan.year}</p>
-          </div>
-          <div
-            className="image"
-            style={{
-              width: '136px',
-              height: '135px',
-              // backgroundImage: 'url:(http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg)',
-              backgroundSize: '100%',
-              float: 'right'
-            }}
-          ></div>
-          <Steps current={1} progressDot={customDot} style={{ color: '#fff' }}>
-            <Step
-              title="Finished"
-              description="初次填写"
-              style={{ color: '#fff' }}
-            />
-            <Step
-              title="In Progress"
-              description="年中回顾"
-              style={{ color: '#fff' }}
-            />
-            <Step
-              title="Waiting"
-              description="年末回顾"
-              style={{ color: '#fff' }}
-            />
-          </Steps>
-        </Card>
-        <div className="idp-contain-smallcards">
-          <Card
-            className="idp-contain-smallcards-card"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column'
-            }}
-          >
-            <Icon
-              type="plus"
-              style={{ display: 'block', fontSize: '60px', fontWeight: 'bold' }}
-            />
-            <span
-              style={{ display: 'block', fontSize: '16px', fontWeight: 'bold' }}
-            >
-              发起新的发展计划
-            </span>
-          </Card>
-          {historyPlan.map(item => {
-            return (
-              <Card
-                title={
-                  <span style={{ fontSize: '16px', color: '#000' }}>
-                    员工发展计划
-                  </span>
-                }
-                className="idp-contain-smallcards-card"
-                bordered={false}
-                extra={
-                  <span style={{ color: '#1890FF', fontSize: '16px' }}>
-                    查看
-                  </span>
-                }
-              >
-                <div className="idp-contain-smallcards-card-content">
-                  发起时间:{item.startTime}
-                </div>
-                <div>进行状态:{item.status}</div>
-                <div>参与人数:{item.number}</div>
-                <div>财年:{item.year}</div>
-              </Card>
-            );
-          })}
-        </div>
+        {this.getCurrentPage()}
       </div>
     );
   }
