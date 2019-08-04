@@ -7,6 +7,7 @@ import TableData from '../../../../common/data/TableData';
  * 管理员确认
  */
 
+const personID = '617725883137'; //发展人员表ID
 class PersonList extends React.Component {
   state = {
     mode: 'inline',
@@ -16,8 +17,103 @@ class PersonList extends React.Component {
     currentPlan: {},
     historyPlan: []
   };
-  componentDidMount = async () => {
+  onNoticeEmployee = (dataSource,selectKey) => {
+    // if (!record.selectedRowKeys.length) {
+    //   return message.error('请选择一条记录');
+    // }
+    let res;
+    // dataSource.
+    let data ;
+    dataSource.map((item) => {
+      item.map((items) => {
+        if(items.REC_ID === selectKey){
+          items.isMessage = 'Y'
+        }
+        data.push(item)
+      })
+    })
+    try {
+      res = http().modifyRecords({
+        resid:personID,
+        data
+      })
+      if(res.Error === 0){
+        message.success(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   };
+  onEmployeeWrite = (dataSource,selectKey) => {
+    let res;
+    let data ;
+    dataSource.map((item) => {
+      item.map((items) => {
+        if(items.REC_ID === selectKey){
+          items.sEmployeeWrite = 'Y'
+        }
+        data.push(item)
+      })
+    })
+    try {
+      res = http().modifyRecords({
+        resid:personID,
+        data
+      })
+      if(res.Error === 0){
+        message.success(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
+  };
+  onMangerWrite = (dataSource,selectKey) => {
+    let res;
+    let data ;
+    dataSource.map((item) => {
+      item.map((items) => {
+        if(items.REC_ID === selectKey){
+          items.sMangerWrite = 'Y'
+        }
+        data.push(item)
+      })
+    })
+    try {
+      res = http().modifyRecords({
+        resid:personID,
+        data
+      })
+      if(res.Error === 0){
+        message.success(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
+  };
+  onCloseWrite = (dataSource,selectKey) => {
+    let res;
+    let data ;
+    dataSource.map((item) => {
+      item.map((items) => {
+        if(items.REC_ID === selectKey){
+          items.isCloseWrite = 'Y'
+        }
+        data.push(item)
+      })
+    })
+    try {
+      res = http().modifyRecords({
+        resid:personID,
+        data
+      })
+      if(res.Error === 0){
+        message.success(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
+  };
+  componentDidMount = async () => {};
   render() {
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
@@ -49,36 +145,67 @@ class PersonList extends React.Component {
               );
             }
           ]}
-          actionBarExtra={[
-            <Button
-              onClick={() => {
-                this.setState({ applyByCourseVisible: true });
-              }}
-            >
-              提醒员工
-            </Button>,
-            <Button
-              onClick={() => {
-                this.setState({ applyByUnexistCourseVisible: true });
-              }}
-            >
-              开启员工填写
-            </Button>,
-            <Button
-              onClick={() => {
-                this.setState({ applyByUnexistCourseVisible: true });
-              }}
-            >
-              开启主管填写
-            </Button>,
-            <Button
-              onClick={() => {
-                this.setState({ applyByUnexistCourseVisible: true });
-              }}
-            >
-              关闭填写
-            </Button>
-          ]}
+          actionBarExtra={({ dataSource, selectedRowKeys,data }) => {
+            return (
+              <React.Fragment>
+                <Button
+                  onClick={() => {
+                    this.onNoticeEmployee(dataSource, selectedRowKeys,data)
+                    
+                  }
+                    // this.setState({ applyByCourseVisible: true });
+                  }
+                >
+                  提醒员工
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.onEmployeeWrite(dataSource, selectedRowKeys);
+                  }}
+                >
+                  开启员工填写
+                </Button>
+                ,
+                <Button
+                  onClick={() => {
+                    this.onMangerWrite(dataSource, selectedRowKeys);
+                  }}
+                >
+                  开启主管填写
+                </Button>
+                ,
+                <Button
+                  onClick={() => {
+                    this.onCloseWrite(dataSource, selectedRowKeys);
+                  }}
+                >
+                  关闭填写
+                </Button>
+              </React.Fragment>
+            );
+
+            // <Button
+            //   onClick={() => {
+            //     this.onEmployeeWrite(selectedRowKeys,data)
+            //   }}
+            // >
+            //   开启员工填写
+            // </Button>,
+            // <Button
+            //   onClick={() => {
+            //     this.onMangerWrite(selectedRowKeys,data)
+            //   }}
+            // >
+            //   开启主管填写
+            // </Button>,
+            // <Button
+            //   onClick={() => {
+
+            //     this.onCloseWrite(selectedRowKeys,data)                }}
+            // >
+            //   关闭填写
+            // </Button>
+          }}
         />
       </div>
     );

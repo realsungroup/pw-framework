@@ -44,15 +44,10 @@ class SquareCard extends React.Component {
   // componentWillUpdate = () => {
 
   //   console.log("componentWillUpdate")
-  // }s
+  // }
   renderCard = () => {
-    let val = this.state.val;
-    console.log(
-      'this.props.SquareCardArr',
-      this.state.SquareCardArr,
-      this.props.SquareCardArr
-    );
-    return this.props.SquareCardArr.map((item, index) => {
+    console.log('this.props.SquareCardArr', this.props.SquareCardArr);
+    return this.props.SquareCardArr&&this.props.SquareCardArr.map((item, index) => {
       let data;
       let titleData;
       if (item.authority === 'modify') {
@@ -61,8 +56,15 @@ class SquareCard extends React.Component {
             titleData = (
               <span className="squarecard-contain-title">{item.name}</span>
             );
+            data = <Input></Input>;
+            break;
+          case 'select':
+            titleData = (
+              <span className="squarecard-contain-title">{item.name}</span>
+            );
             data = (
               <Select
+              key = {item.key}
                 defaultValue={item.value}
                 style={{ width: '40%' }}
                 onChange={this.props.onChangeSelect.bind(this, index)}
@@ -115,22 +117,47 @@ class SquareCard extends React.Component {
             break;
           case 'date':
             titleData = (
-              <span
-                className="squarecard-contain-title"
-              >
-                {item.name}
-              </span>
+              <span className="squarecard-contain-title">{item.name}</span>
             );
             data = (
               <DatePicker
-                // onChange={this.props.onChangeDate.bind(this, index)}
+              onChange={this.props.onChangeDate.bind(this, index)}
               />
             );
           default:
             break;
         }
       } else {
-        data = <span>{item.value}</span>;
+        switch (item.type) {
+          case 'select':
+            titleData = (
+              <span className="squarecard-contain-title">{item.name}</span>
+            );
+            data =(
+              <span
+                className="squarecard-contain-title"
+              >{item.value}</span>
+        ) 
+            break;
+            case 'textArea':
+              titleData=(
+                <span
+                className="squarecard-contain-title"
+                style={{ width: '100%' }}
+              >
+                {item.name}
+              </span>
+              )
+              data =(
+                <span
+                  className="squarecard-contain-title"
+                  style={{ width: '100%' }}
+                >{item.value}</span>
+          ) 
+            default:
+              break;
+        }
+       
       }
       // console.log("data",data)
       return (
@@ -143,10 +170,13 @@ class SquareCard extends React.Component {
   };
   componentDidMount = async () => {
     console.log('componentDidMount');
-    this.setState({
-      SquareCardArr: this.props.SquareCardArr
-    });
+    // this.setState({
+      // SquareCardArr: this.props.SquareCardArr
+    // });
   };
+  componentWillReceiveProps =  () => {
+    // console.log("componentWillReceiveProps",this.props.SquareCardArr)
+  }
   render() {
     return (
       <div
