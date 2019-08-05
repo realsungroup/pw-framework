@@ -177,6 +177,7 @@ class PersonPlan extends React.Component {
   state = {
     currentPostion: 1,
     personInfo: {}, //个人信息
+    checkType:null, //查看类型
     ability: [], //能力
     types: [], //所有类别
     // abilitys :[],  //所有胜任力
@@ -185,7 +186,8 @@ class PersonPlan extends React.Component {
     SquareCardArr: [], //能力数组
     yearReview: [], //年度回顾
     abilityArr: [], ////所有胜任力
-    plainOptions: [], //优先发展能力
+    plainOptions: [], //优先发展能力数组
+    checked:[], //优先发展的能力
     developmentMeasures: [] //发展措施
   };
   constructor(props) {
@@ -229,7 +231,9 @@ class PersonPlan extends React.Component {
   };
 
   onChangeCheckBox = checked => {
-    console.log('checked', checked);
+    this.setState({
+      checked
+    })
   };
   onChangeTextArea = (subIndex, e, index, type) => {
     /**
@@ -318,18 +322,25 @@ class PersonPlan extends React.Component {
     let ability;
     let SquareCardArr = this.state.SquareCardArr;
     let plainOptions = this.state.plainOptions;
+    let checked = this.state.checked;
     try {
       res = await http().getTable({
         resid: abilityID,
-        cmwerhe: `projectId = ${record.projectId}`
+        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.menberId}' and year = '${record.year}'` 
       });
       ability = res.data;
       ability.map(item => {
         if (item.competence) {
           plainOptions.push(item.competence);
+          if(item.isPrecedence === 'Y'){
+            checked.push(item.competence)
+          }
         }
       });
-      console.log('plainOptions', plainOptions);
+       this.setState({
+        checked,plainOptions
+      })
+      
       let empty = emptyAbility;
       ability.forEach((item, index) => {
         empty.map(item => {
@@ -365,9 +376,6 @@ class PersonPlan extends React.Component {
             }
           });
         });
-        this.setState({
-          plainOptions
-        });
         // })
       } else {
       }
@@ -384,7 +392,7 @@ class PersonPlan extends React.Component {
     try {
       res = await http().getTable({
         resid: planID,
-        cmwerhe: `projectId = ${record.projectId}`
+        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.menberId}' and year = '${record.year}'` 
       });
       plan = res.data;
 
@@ -627,7 +635,7 @@ class PersonPlan extends React.Component {
   };
   onSaveAbility = async () => {
     let SquareCardArr = this.state.SquareCardArr;
-    let plainOptions = this.state.plainOptions;
+    let checked = this.state.checked;
     let record = {};
     let records = [];
     SquareCardArr.map(item => {
@@ -640,7 +648,8 @@ class PersonPlan extends React.Component {
       record.menberId = item[6].value;
       record.skillTestId = item[7].value;
       console.log('item[8].value,', item[1].value);
-      if (plainOptions.includes(item[1].value)) {
+      console.log("plainOptions",checked)
+      if (checked.includes(item[1].value)) {
         console.log('truetruetruetrue');
         record.isPrecedence = 'Y';
       } else {
@@ -691,17 +700,24 @@ class PersonPlan extends React.Component {
     }
   };
   componentDidMount = async () => {
+    console.log("this.props.record",this.props.record,this.props.checkType)
     let record = this.props.record;
     console.log('record', record);
+    this.setState({
+      personInfo:this.props.record,
+      checkType:this.props.checkType
+    })
     await this.getAbilityEvaluation(record);
     await this.getDevelopmentAction(record);
     await this.getTypes();
     await this.getAbilitys();
     await this.getDevelopmentMeasures();
+    
 
     if (this.state.SquareCardArr.length > 0) {
     } else {
     }
+
 
     // await this.setState({
     //   personInfo: record,
@@ -783,9 +799,9 @@ class PersonPlan extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'column',
-                width: '390px',
+                width: '360px',
                 height: '180px',
-                margin: '10px 20px'
+                margin: '10px 10px'
               }}
               onClick={() => {
                 this.onAdd('ability');
@@ -837,7 +853,7 @@ class PersonPlan extends React.Component {
           <div className="personPlan-contain-plan-check">
             <Checkbox.Group
               options={this.state.plainOptions}
-              defaultValue={[]}
+              defaultValue={[...this.state.checked]}
               onChange={this.onChangeCheckBox}
             />
           </div>
@@ -873,9 +889,9 @@ class PersonPlan extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'column',
-                width: '390px',
+                width: '360px',
                 height: '180px',
-                margin: '10px 20px'
+                margin: '10px 10px'
               }}
               onClick={() => {
                 this.onAdd('plans');

@@ -9,6 +9,7 @@ import IdpCard from './IdpCard';
 /**
  * 管理员确认
  */
+const role = "HR"
 class MyTeam extends React.Component {
   state = {
     mode: 'inline',
@@ -28,18 +29,22 @@ class MyTeam extends React.Component {
     switch (selectKey) {
       case '1':
         return (
-          <div style={{ width: '100%' }}>
             <FiscalYearPlan
               CreateableGroups={['611769739518']}
             ></FiscalYearPlan>
-          </div>
         );
       case '2':
-        return <IdpCard></IdpCard>;
+        return (
+            <IdpCard role={role}></IdpCard>
+        );
       case '3':
         return 'ccc';
       case '4':
-        return <IdpCard></IdpCard>;
+        return (
+          <div style={{ width: '100%' }}>
+            <IdpCard role={role}></IdpCard>
+          </div>
+        );
       case '5':
         return '';
       default:
@@ -55,29 +60,33 @@ class MyTeam extends React.Component {
   render() {
     const { loading } = this.state;
     return (
-      <div className="myteam-contain" style={{ height: '100%' }}>
-        <div style={{ width: 200 }}>
+      <div
+        className="myteam-contain"
+        style={{  display: 'flex' }}
+      >
+        <div style={{width:`${this.state.collapsed ? '80px' : '200px'}`}}>
           <div
             style={{
-              width:"20px",
-              height:"40px",
-              borderRadius: "0px 100px 100px 0px",
+              width: '20px',
+              height: '40px',
+              borderRadius: '0px 100px 100px 0px',
               marginBottom: 16,
               position: 'absolute',
-              background:"#1890ff",
+              background: '#1890ff',
               left: this.state.collapsed ? '79px' : '200px',
               top: (this.state.selectKey - 1) * 48 + 4 + 'px',
-              display:"flex",
-              alignItems:"center",
-              justifyContent:"center",
-              boxShadow:"0px 0px 4px 0px rgba(24,144,255,0.4)"
-
-
+              display: 'flex',
+              alignItems: 'center',
+              zIndex:"999",
+              justifyContent: 'center',
+              boxShadow: '0px 0px 4px 0px rgba(24,144,255,0.4)'
             }}
             onClick={this.toggleCollapsed}
           >
-            <Icon type={this.state.collapsed?'caret-right':'caret-left'} style={{fontSize:"20px",color:"#fff",marginLeft:"-8px"}}/>
-            
+            <Icon
+              type={this.state.collapsed ? 'caret-right' : 'caret-left'}
+              style={{ fontSize: '20px', color: '#fff', marginLeft: '-8px' }}
+            />
           </div>
           {/* <Button
             type="primary"
@@ -118,7 +127,12 @@ class MyTeam extends React.Component {
             </Menu.Item>
           </Menu>
         </div>
-        <div style={{ width: 'calc(100% - 200px)' }}>
+        <div
+          style={{
+            overflow:"auto",
+            width: `${this.state.collapsed?"calc(100% - 40px)":"calc(100% - 200px)"}`
+          }}
+        >
           {this.renderContent()}
         </div>
       </div>

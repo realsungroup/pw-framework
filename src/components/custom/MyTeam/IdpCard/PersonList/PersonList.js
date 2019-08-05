@@ -17,103 +17,113 @@ class PersonList extends React.Component {
     currentPlan: {},
     historyPlan: []
   };
-  onNoticeEmployee = (dataSource,selectKey) => {
-    // if (!record.selectedRowKeys.length) {
-    //   return message.error('请选择一条记录');
-    // }
+  constructor(props) {
+    super(props);
+  }
+  onNoticeEmployee = (dataSource, selectKey) => {
+    if (!selectKey.length > 0) {
+      return message.error('请选择一条记录');
+    }
     let res;
-    // dataSource.
-    let data ;
-    dataSource.map((item) => {
-      item.map((items) => {
-        if(items.REC_ID === selectKey){
-          items.isMessage = 'Y'
-        }
-        data.push(item)
-      })
-    })
+    let data = [];
+    dataSource.map(item => {
+      if (selectKey.includes(item.REC_ID)) {
+        console.log('come in ');
+        item.isMessage = 'Y';
+        data.push(item);
+      }
+    });
     try {
       res = http().modifyRecords({
-        resid:personID,
+        resid: personID,
         data
-      })
-      if(res.Error === 0){
-        message.success(res.message)
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
       }
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
   };
-  onEmployeeWrite = (dataSource,selectKey) => {
+  onEmployeeWrite = (dataSource, selectKey) => {
+    if (!selectKey.length > 0) {
+      return message.error('请选择一条记录');
+    }
     let res;
-    let data ;
-    dataSource.map((item) => {
-      item.map((items) => {
-        if(items.REC_ID === selectKey){
-          items.sEmployeeWrite = 'Y'
-        }
-        data.push(item)
-      })
-    })
+
+    let data = [];
+    dataSource.map(item => {
+      if (selectKey.includes(item.REC_ID)) {
+        console.log('come in ');
+        item.sEmployeeWrite = 'Y';
+        data.push(item);
+      }
+    });
     try {
       res = http().modifyRecords({
-        resid:personID,
+        resid: personID,
         data
-      })
-      if(res.Error === 0){
-        message.success(res.message)
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
       }
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
   };
-  onMangerWrite = (dataSource,selectKey) => {
+  onMangerWrite = (dataSource, selectKey) => {
+    if (!selectKey.length > 0) {
+      return message.error('请选择一条记录');
+    }
     let res;
-    let data ;
-    dataSource.map((item) => {
-      item.map((items) => {
-        if(items.REC_ID === selectKey){
-          items.sMangerWrite = 'Y'
-        }
-        data.push(item)
-      })
-    })
+    let data;
+    dataSource.map(item => {
+      if (selectKey.includes(item.REC_ID)) {
+        console.log('come in ');
+        item.sMangerWrite = 'Y';
+        data.push(item);
+      }
+    });
     try {
       res = http().modifyRecords({
-        resid:personID,
+        resid: personID,
         data
-      })
-      if(res.Error === 0){
-        message.success(res.message)
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
       }
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
   };
-  onCloseWrite = (dataSource,selectKey) => {
+  onCloseWrite = (dataSource, selectKey) => {
+    if (!selectKey.length > 0) {
+      return message.error('请选择一条记录');
+    }
     let res;
-    let data ;
-    dataSource.map((item) => {
-      item.map((items) => {
-        if(items.REC_ID === selectKey){
-          items.isCloseWrite = 'Y'
-        }
-        data.push(item)
-      })
-    })
+    let data;
+    dataSource.map(item => {
+      if (selectKey.includes(item.REC_ID)) {
+        console.log('come in ');
+        item.isCloseWrite = 'Y';
+        data.push(item);
+      }
+    });
     try {
       res = http().modifyRecords({
-        resid:personID,
+        resid: personID,
         data
-      })
-      if(res.Error === 0){
-        message.success(res.message)
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
       }
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
   };
-  componentDidMount = async () => {};
+  componentDidMount = async () => {
+    console.log('props', this.props.record);
+  };
   render() {
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
@@ -132,6 +142,10 @@ class PersonList extends React.Component {
           hasRowModify={false}
           actionBarFixed={true}
           height="100%"
+          cmswhere={`projectId = '${this.props.record &&
+            this.props.record.projectId}' and memberId = '${this.props.record &&
+            this.props.record.menberId}' and year = '${this.props.record &&
+            this.props.record.year}'`}
           customRowBtns={[
             (record, btnSize) => {
               return (
@@ -145,16 +159,13 @@ class PersonList extends React.Component {
               );
             }
           ]}
-          actionBarExtra={({ dataSource, selectedRowKeys,data }) => {
+          actionBarExtra={({ dataSource, selectedRowKeys, data }) => {
             return (
               <React.Fragment>
                 <Button
                   onClick={() => {
-                    this.onNoticeEmployee(dataSource, selectedRowKeys,data)
-                    
-                  }
-                    // this.setState({ applyByCourseVisible: true });
-                  }
+                    this.onNoticeEmployee(dataSource, selectedRowKeys, data);
+                  }}
                 >
                   提醒员工
                 </Button>
@@ -166,13 +177,15 @@ class PersonList extends React.Component {
                   开启员工填写
                 </Button>
                 ,
-                <Button
-                  onClick={() => {
-                    this.onMangerWrite(dataSource, selectedRowKeys);
-                  }}
-                >
-                  开启主管填写
-                </Button>
+                {this.props.role === 'HR' ? (
+                  <Button
+                    onClick={() => {
+                      this.onMangerWrite(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    开启主管填写
+                  </Button>
+                ) : null}
                 ,
                 <Button
                   onClick={() => {

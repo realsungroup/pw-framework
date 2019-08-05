@@ -1,13 +1,11 @@
 import React from 'react';
-import { Icon, Divider, Select, Input, DatePicker, Button } from 'antd';
+import { Icon, Divider, Select, Input, DatePicker, Popconfirm } from 'antd';
 import './SquareCard.less';
 import http from 'Util20/api';
 /**
  * 管理员确认
  */
 
-const width = '390px';
-const height = '317px';
 const Option = Select.Option;
 const { TextArea } = Input;
 class SquareCard extends React.Component {
@@ -181,12 +179,17 @@ class SquareCard extends React.Component {
     return (
       <div
         className="squarecard-contain"
-        style={{ width, margin: '10px 20px' }}
+        style={{ width:"360px", margin: '10px 10px' }}
       >
+         <Popconfirm
+    title="您确定删除吗?"
+    onConfirm={() => {
+      this.props.onRemove(this.props.index);
+    }}
+    okText="Yes"
+    cancelText="No"
+  >
         <Icon
-          onClick={() => {
-            this.props.onRemove(this.props.index);
-          }}
           type="close"
           style={{
             position: 'relative',
@@ -195,7 +198,7 @@ class SquareCard extends React.Component {
             color: '#ccc'
           }}
         />
-
+</Popconfirm>
         {this.renderCard()}
 
         {/* <div style={{margin:"10px 0",width:"100%"}}>
