@@ -235,7 +235,6 @@ class CreateTotalPlan extends React.Component {
                 } else {
                   return <Button size={btnSize}
                     onClick={() => {
-                      console.log('生成人员名单', record)
                       this.handleClick(record)
                     }}
                   >生成人员名单</Button>;

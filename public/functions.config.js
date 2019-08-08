@@ -1616,8 +1616,16 @@ window[616081514704] ={
   name: 'TableData',
   title: '测试',
 }
-window[616504759208] = {
+// window[617733136657] = {
+//   name: 'MyTeam',
+//   title: '我的团队'
+// };
+window[618508577260] = {
   name: 'MyTeam',
   title: '我的团队'
 };
-//617733136657
+
+window[618572873186] = {
+  name: 'IDPMangement',
+  title: '员工个人发展管理'
+};

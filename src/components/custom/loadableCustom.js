@@ -407,4 +407,10 @@ export const MyTeam = Loadable({
     return minLoading;
   }
 })
+export const IDPMangement = Loadable({
+  loader: () => import('./MyTeam/IDPMangement'),
+  loading() {
+    return minLoading;
+  }
+})
 

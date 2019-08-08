@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Divider, Select, Input, DatePicker, Popconfirm } from 'antd';
 import './SquareCard.less';
-import http from 'Util20/api';
+import http from './node_modules/Util20/api';
 import moment from 'moment';
 
 /**

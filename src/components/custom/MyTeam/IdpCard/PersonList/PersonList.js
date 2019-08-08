@@ -7,7 +7,7 @@ import TableData from '../../../../common/data/TableData';
  * 管理员确认
  */
 
-const personID = '617725883137'; //发展人员表ID
+const personID = '618488751596'; //下属发展人员表ID
 class PersonList extends React.Component {
   state = {
     mode: 'inline',
@@ -20,7 +20,7 @@ class PersonList extends React.Component {
   constructor(props) {
     super(props);
   }
-  onNoticeEmployee = (dataSource, selectKey) => {
+  onNoticeEmployee = async(dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
@@ -34,7 +34,7 @@ class PersonList extends React.Component {
       }
     });
     try {
-      res = http().modifyRecords({
+      res = await http().modifyRecords({
         resid: personID,
         data
       });
@@ -45,12 +45,11 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onEmployeeWrite = (dataSource, selectKey) => {
+  onEmployeeWrite = async(dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
     let res;
-
     let data = [];
     dataSource.map(item => {
       if (selectKey.includes(item.REC_ID)) {
@@ -60,10 +59,11 @@ class PersonList extends React.Component {
       }
     });
     try {
-      res = http().modifyRecords({
+      res = await http().modifyRecords({
         resid: personID,
         data
       });
+      console.log("res.Error",res,res.Error)
       if (res.Error === 0) {
         message.success(res.message);
       }
@@ -71,12 +71,12 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onMangerWrite = (dataSource, selectKey) => {
+  onMangerWrite = async(dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
     let res;
-    let data;
+    let data = [];
     dataSource.map(item => {
       if (selectKey.includes(item.REC_ID)) {
         console.log('come in ');
@@ -85,7 +85,7 @@ class PersonList extends React.Component {
       }
     });
     try {
-      res = http().modifyRecords({
+      res =await http().modifyRecords({
         resid: personID,
         data
       });
@@ -96,12 +96,12 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onCloseWrite = (dataSource, selectKey) => {
+  onCloseWrite = async(dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
     let res;
-    let data;
+    let data = [];
     dataSource.map(item => {
       if (selectKey.includes(item.REC_ID)) {
         console.log('come in ');
@@ -110,7 +110,7 @@ class PersonList extends React.Component {
       }
     });
     try {
-      res = http().modifyRecords({
+      res = await http().modifyRecords({
         resid: personID,
         data
       });
@@ -128,7 +128,7 @@ class PersonList extends React.Component {
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
         <TableData
-          resid="617725883137"
+          resid={personID}
           subtractH={220}
           hasBeBtns={false}
           hasRowSelection={true}
@@ -142,10 +142,14 @@ class PersonList extends React.Component {
           hasRowModify={false}
           actionBarFixed={true}
           height="100%"
-          cmswhere={`projectId = '${this.props.record &&
-            this.props.record.projectId}' and memberId = '${this.props.record &&
-            this.props.record.menberId}' and year = '${this.props.record &&
-            this.props.record.year}'`}
+          cmswhere={
+            this.props.role === 'HR'
+              ? `projectId = '${this.props.record &&
+                  this.props.record.projectId}'`
+              : `projectId = '${this.props.record &&
+                  this.props.record.projectId}' and directorId = '${this.props
+                  .record && this.props.record.memberId}' `
+          }
           customRowBtns={[
             (record, btnSize) => {
               return (
@@ -196,28 +200,6 @@ class PersonList extends React.Component {
                 </Button>
               </React.Fragment>
             );
-
-            // <Button
-            //   onClick={() => {
-            //     this.onEmployeeWrite(selectedRowKeys,data)
-            //   }}
-            // >
-            //   开启员工填写
-            // </Button>,
-            // <Button
-            //   onClick={() => {
-            //     this.onMangerWrite(selectedRowKeys,data)
-            //   }}
-            // >
-            //   开启主管填写
-            // </Button>,
-            // <Button
-            //   onClick={() => {
-
-            //     this.onCloseWrite(selectedRowKeys,data)                }}
-            // >
-            //   关闭填写
-            // </Button>
           }}
         />
       </div>
