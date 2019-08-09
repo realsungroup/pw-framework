@@ -210,7 +210,7 @@ class EmployeeApplyCourse extends React.Component {
             >
               自定义课程申请
             </Button>,
-            <Button>资格证书申请</Button>
+            // <Button>资格证书申请</Button>
           ]}
         />
         <Modal

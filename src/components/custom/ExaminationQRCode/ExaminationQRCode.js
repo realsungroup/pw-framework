@@ -30,7 +30,9 @@ class ExaminationQRCode extends React.Component {
 
   getCheckInId = async () => {
     try {
-      let res = await http().getTable({
+      let res = await http({
+        baseURL: 'https://finisarinterview.realsun.me/'
+      }).getTable({
         resid: 617904057962
       });
       if (res.data.length) {

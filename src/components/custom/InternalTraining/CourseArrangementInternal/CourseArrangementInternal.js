@@ -26,6 +26,7 @@ const { Option } = Select;
 const courseArrangmentResid = '615549231946'; //课程安排表id
 const courseDetailId = '615054661547';
 const InternalCoursesResid = '616155060405';
+const courseTypeResid = '617189815964'   //安排类型表id
 
 const datetimeFormatString = 'YYYY-MM-DD HH:mm';
 const dateFormatString = 'YYYY-MM-DD';
@@ -68,6 +69,7 @@ class CourseArrangementInternal extends React.Component {
     isSelectedCourse: false, //是否已经选择了课程
     selectedCourse: {}, // 选中的课程
     searchCourseKey: '', //搜索课程是的关键字
+    courseTypes:[],  //内训课程类型
     //添加时输入的课程安排数据
     inputCourseArrangement: {
       teacher: '',
@@ -85,6 +87,7 @@ class CourseArrangementInternal extends React.Component {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
     this.getInternalCourses();
+    this.getCourseType();
     this.props.onHandleLoading(false);
   }
 
@@ -149,7 +152,21 @@ class CourseArrangementInternal extends React.Component {
       return console.log(error);
     }
   };
-
+  getCourseType = async() => {
+    let res;
+    try{
+      res = await http().getTable({
+        resid:courseTypeResid
+      })
+      this.setState({
+        courseTypes:res.data
+      })
+      console.log("res",res)
+    }catch(err){
+      message.error(err.message)
+      return ;
+    }
+  }
   //搜索内训课程
 
   searchInternalCourses = async () => {
@@ -183,7 +200,9 @@ class CourseArrangementInternal extends React.Component {
             C3_616254048241: courseArrangement.courseType,
             classType: '内训',
             places: courseArrangement.places,
-            Teacher: courseArrangement.teacher
+            Teacher: courseArrangement.teacher,
+            quarter: courseArrangement.quarter,
+
           }
         ]
       });
@@ -195,6 +214,7 @@ class CourseArrangementInternal extends React.Component {
         selectedCourse: {},
         inputCourseArrangement: {
           teacher: '',
+          quarter:'',
           startDate: '',
           endDate: '',
           courseType: '普通内训课',
@@ -446,6 +466,9 @@ class CourseArrangementInternal extends React.Component {
                       <div className="content_item">
                         结束时间：{item.EndDatetime}
                       </div>
+                      <div className="content_item">
+                        季度：{item.quarter}
+                      </div>
                     </div>
                   </Card>
                 ))
@@ -590,6 +613,23 @@ class CourseArrangementInternal extends React.Component {
                   }}
                 />
               </Form.Item>
+
+              <Form.Item label="季度">
+                <Input
+                  id="quarter"
+                  type="text"
+                  value={modifiedCourseArrangement.quarter}
+                  onChange={e => {
+                    this.setState({
+                      modifiedCourseArrangement: {
+                        ...modifiedCourseArrangement,
+                        quarter: e.target.value
+                      }
+                    });
+                  }}
+                />
+              </Form.Item>
+
               <Form.Item label="讲师">
                 <Input
                   id="teacher"
@@ -634,8 +674,13 @@ class CourseArrangementInternal extends React.Component {
                   }}
                   value={modifiedCourseArrangement.C3_616254048241}
                 >
-                  <Option value="普通内训课">普通内训课</Option>
-                  <Option value="好讲师">好讲师</Option>
+                  {this.state.courseTypes.map((type) => {
+                    return (
+                      <Option value={type.arrangeType}>{type.arrangeType}</Option>
+
+                    )
+                  })
+                }
                 </Select>
               </Form.Item>
             </Form>
@@ -761,12 +806,14 @@ class CourseArrangementInternal extends React.Component {
                         });
                       }}
                     >
-                      <Option key="普通内训课" value="普通内训课">
-                        普通内训课
-                      </Option>
-                      <Option key="好讲师" value="好讲师">
-                        好讲师
-                      </Option>
+                      {this.state.courseTypes.map((type) => {
+                    return (
+                      <Option value={type.arrangeType}>{type.arrangeType}</Option>
+
+                    )
+                  })
+                }
+                     
                     </Select>
                   </div>
                   <div className="add_arrangement_input_item">

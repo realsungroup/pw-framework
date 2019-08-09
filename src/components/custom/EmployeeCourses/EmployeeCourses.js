@@ -13,7 +13,8 @@ import {
   Modal,
   Popconfirm,
   Upload,
-  Icon
+  Icon,
+  Empty
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -210,6 +211,7 @@ class EmployeeCourses extends React.Component {
   // 拿子组件的评分
   setRate = async rate => {
     console.log(rate);
+    console.log("this.state.selectedCourse.courseType",this.state.selectedCourse.courseType)
     if (this.state.selectedCourse.courseType === '内训') {
       this.setState({ rate });
     } else {
@@ -543,7 +545,8 @@ class EmployeeCourses extends React.Component {
 
   renderCoursesList = () => {
     let { myCourses } = this.state;
-    return myCourses.map(item => (
+  return  myCourses.length?
+     myCourses.map(item => (
       <Card
         extra={<Radio checked={item.checked} />}
         title={`${item.courseType} / ${item.C3_613941384592}`}
@@ -601,8 +604,9 @@ class EmployeeCourses extends React.Component {
           </div>
         </div>
       </Card>
-    ));
-  };
+    )):<Empty style={{marginTop:"100px"}}></Empty>
+            }
+  
   getColor(key) {
     let color = '#aaa';
     switch (key) {
@@ -636,6 +640,7 @@ class EmployeeCourses extends React.Component {
   // 提交评分和行动计划反馈
   submitRate = async () => {
     const { rateOut, planWrite, selectedCourse, rate } = this.state;
+    console.log("selectedCourse.courseType",selectedCourse.courseType)
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -766,7 +771,7 @@ class EmployeeCourses extends React.Component {
               </div>
               {/* 右侧TimeLine */}
               <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse && selectedCourse.courseType !== '内训' ? (
+                {selectedCourse.length && selectedCourse.courseType !== '内训' ? (
                   <Timeline>
                     <Timeline.Item
                       color={this.getColor(selectedCourse.isSubmitPlan)}
@@ -1185,6 +1190,19 @@ class EmployeeCourses extends React.Component {
               hasRowModify={false}
               height="70vh"
               cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
+              actionBarExtra={() => {
+                return (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      window.print();
+                      // window.location.reload();
+                    }}
+                  >
+                    打印
+                  </Button>
+                );
+              }}
             />
           ) : null}
         </Modal>

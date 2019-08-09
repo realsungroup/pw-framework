@@ -19,5 +19,12 @@ export const downloadFile = (href, fileName) => {
   const el = document.createElement('a');
   el.setAttribute('href', href);
   el.setAttribute('download', fileName);
-  el.click();
+  // el.click()
+  if (el.fireEvent) {
+    el.fireEvent('onclick');
+  } else if (document.createEvent) {
+    const evt = document.createEvent('MouseEvents');
+    evt.initEvent('click', true, true);
+    el.dispatchEvent(evt);
+  }
 };

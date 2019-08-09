@@ -400,3 +400,10 @@ export const ExaminationQRCode = Loadable({
     return minLoading;
   }
 });
+
+export const MyTeam = Loadable({
+  loader: () => import('./MyTeam'),
+  loading() {
+    return minLoading;
+  }
+});

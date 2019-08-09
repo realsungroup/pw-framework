@@ -96,9 +96,11 @@ class QueryTable extends Component {
         data: data
       })
       .then(res => {
+        message.success(res.message)
         console.log('修改返回结果', res);
       })
       .catch(err => {
+        message.error(err.message)
         console.error(err.message);
       });
   };

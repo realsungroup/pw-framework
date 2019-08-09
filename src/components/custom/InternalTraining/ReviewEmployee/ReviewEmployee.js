@@ -35,7 +35,6 @@ class ReviewEmployee extends React.Component {
     isTaskComplete: false, // 当前任务是否已完成
     isShowModal: false
   };
-
   componentDidMount() {
     this.getCourseArrangements();
   }
@@ -53,7 +52,7 @@ class ReviewEmployee extends React.Component {
     try {
       res = await http().PostRunAutoImport({
         id: NoticeTaskId,
-        params: {
+        parms: {
           arrangeID: this.props.courseArrangement.CourseArrangeID
         }
       });
@@ -106,6 +105,11 @@ class ReviewEmployee extends React.Component {
     }
     // 当前任务已完成
     if (res.IsComplete) {
+      this.setState({
+        totalIndex: res.data.Total,
+        curIndex: res.data.Index,
+        isTaskComplete: false
+      });
       message.success('通知完成');
       // 当前任务未完成
     } else {
@@ -124,6 +128,7 @@ class ReviewEmployee extends React.Component {
 
   // 获取课程安排
   getCourseArrangements = async () => {
+    console.log('courseArrangement', this.props.courseArrangement);
     let courseArrangement = this.props.courseArrangement;
     try {
       let res = await http().getTable({
@@ -257,7 +262,6 @@ class ReviewEmployee extends React.Component {
     let actionBarExtra = null;
     console.log(this.props.courseArrangement.isStopApply)
     if (this.props.courseArrangement.isStopApply === 'Y') {
-      console.log(1)
       actionBarExtra = 
         <div className="review_employee-table_action_bar_extra">
           {this.renderCourseName()}
@@ -274,6 +278,13 @@ class ReviewEmployee extends React.Component {
     } else {
       console.log(2)
       actionBarExtra = record => (
+        
+        <div className="review_employee-table_action_bar_extra">
+        {this.renderCourseName()}
+        
+
+
+
         <div className="review_employee-table_action_bar_extra-buttons">
           <Button
             onClick={() => {
@@ -312,6 +323,8 @@ class ReviewEmployee extends React.Component {
             <Button>报名截止</Button>
           </Popconfirm>
         </div>
+
+      </div>
       );
     }
     return (

@@ -20,6 +20,9 @@ const ReviewApplicationForm = props => {
             hasRowView: true,
             subtractH: 220,
             recordFormType: 'drawer',
+            formProps: {
+              height: 550
+            },
             recordFormContainerProps: {
               placement: 'bottom',
               height: 600
@@ -38,6 +41,9 @@ const ReviewApplicationForm = props => {
             hasRowModify: false,
             hasRowView: false,
             subtractH: 220,
+            formProps: {
+              height: 550
+            },
             recordFormType: 'drawer',
             recordFormContainerProps: {
               placement: 'bottom',

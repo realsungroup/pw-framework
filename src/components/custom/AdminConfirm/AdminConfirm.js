@@ -1,18 +1,75 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Spin,Modal } from 'antd';
+import { Button, Popconfirm, message, Spin, Modal, Input } from 'antd';
 import http from 'Util20/api';
 
 /**
  * 管理员确认
  */
+const { TextArea } = Input;
 class AdminConfirm extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    deleteReason: null,
+    sendBackReason: null
   };
 
+  onSendBack = async record => {
+    let res;
+    record.C3_591373760332 = '';
+    record.C3_617212255449 = this.state.sendBackReason;
+    try {
+      res = await http().modifyRecords({
+        resid: 605617716920,
+        data: [record]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+    this.setState({
+      sendBackReason: null
+    });
+  };
+  onChangeDeleteReason = event => {
+    this.setState({
+      deleteReason: event.target.value
+    });
+  };
+  onChangeSendBackReason = event => {
+    this.setState({
+      sendBackReason: event.target.value
+    });
+  };
+  onClearReason = () => {
+    this.setState({
+      sendBackReason: null,
+      deleteReason: null
+    });
+  };
+  onDelete = async record => {
+    let res;
+    record.C3_591556634215 = 'Y';
+    record.C3_617205061601 = this.state.deleteReason;
+    try {
+      res = await http().modifyRecords({
+        resid: 605617716920,
+        data: [record]
+      });
+      console.log('res', res);
+      if (res.Error === 0) {
+        message.success(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+    this.setState({
+      deleteReason: null
+    });
+  };
   handleDownMaterial = url => {
-    // console.log("url111",url)
     if (!url) {
       return Modal.warning({
         title: '您还未上传过资料'
@@ -20,7 +77,7 @@ class AdminConfirm extends React.Component {
     }
     const urls = url.split(';file;');
     for (let i = 0, len = urls.length; i < len; i++) {
-      const obj = JSON.parse(urls[i])
+      const obj = JSON.parse(urls[i]);
       window.open(obj.url);
     }
   };
@@ -73,7 +130,7 @@ class AdminConfirm extends React.Component {
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             customRowBtns={[
-              (record, btnSize) => {
+              record => {
                 return (
                   <Button
                     onClick={() => {
@@ -82,6 +139,45 @@ class AdminConfirm extends React.Component {
                   >
                     下载查阅
                   </Button>
+                );
+              },
+              record => {
+                return (
+                  <Popconfirm
+                    title={
+                      <React.Fragment>
+                        <span>请输入退回原因</span>
+                        <TextArea
+                          value={this.state.sendBackReason}
+                          onChange={this.onChangeSendBackReason}
+                        ></TextArea>
+                      </React.Fragment>
+                    }
+                    onConfirm={() => this.onSendBack(record)}
+                    onCancel={() => {
+                      this.onClearReason();
+                    }}
+                  >
+                    <Button>退回</Button>
+                  </Popconfirm>
+                );
+              },
+              record => {
+                return (
+                  <Popconfirm
+                    title={
+                      <React.Fragment>
+                        <span>请输入删除原因</span>
+                        <TextArea
+                          value={this.state.deleteReason}
+                          onChange={this.onChangeDeleteReason}
+                        ></TextArea>
+                      </React.Fragment>
+                    }
+                    onConfirm={() => this.onDelete(record)}
+                  >
+                    <Button>删除</Button>
+                  </Popconfirm>
                 );
               }
             ]}
