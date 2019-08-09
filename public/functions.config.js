@@ -704,7 +704,7 @@ window[606071640940] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    height:'80vh',
+    height: '80vh',
     recordFormFormWidth: '90%'
   } // 组件所接收的 props
 };
@@ -1169,7 +1169,7 @@ window[611339874157] = {
   name: 'TabsTableData',
   title: 'HR预审',
   props: [
-    ([
+    [
       {
         resid: 614686575134,
         TabsTitle: '待提交',
@@ -1275,7 +1275,7 @@ window[611339874157] = {
           }
         ]
       }
-    ])
+    ]
   ]
 };
 //用户端入口
@@ -1311,7 +1311,7 @@ window[611339890532] = {
   name: 'TabsTableData',
   title: '总监审批',
   props: [
-    ([
+    [
       {
         resid: 614160318420,
         TabsTitle: '未审批',
@@ -1382,7 +1382,7 @@ window[611339890532] = {
           }
         ]
       }
-    ])
+    ]
   ]
 };
 
@@ -1519,7 +1519,7 @@ window[614078684178] = {
 // IDL第二种设计方案
 window[614260227832] = {
   name: 'IdL2',
-  title: 'IDL招聘新版本',
+  title: 'IDL招聘新版本'
 };
 //IDl 路由跳转设置
 window['个人表格'] = {
@@ -1551,7 +1551,6 @@ window[614706766207] = {
   }
 };
 
-
 //违纪未审批记录
 window[614709663995] = {
   name: 'TableData',
@@ -1577,10 +1576,10 @@ window[614709663995] = {
 };
 
 //培训系统————课程资源
-window[615375286006] ={
-  name:'CourseResources',
-  title:'课程资源'
-}
+window[615375286006] = {
+  name: 'CourseResources',
+  title: '课程资源'
+};
 
 //员工 我的课程
 window[615374522659] = {
@@ -1592,30 +1591,30 @@ window[615374522659] = {
   } // 组件所接收的 props
 };
 
-
 //培训系统————内训管理
-window[615898415042] ={
+window[615898415042] = {
   name: 'InternalTraining',
-  title: '内训管理',
-}
+  title: '内训管理'
+};
 
 //培训系统————二级部门经理 查阅计划
-window[616242189307] ={
+window[616242189307] = {
   name: 'ViewPlan',
-  title: '查阅计划',
-}
+  title: '查阅计划'
+};
 
 //培训系统————下属课程
-window[616504759208] ={
+window[616504759208] = {
   name: 'SubordinateCourses',
-  title: '下属课程',
-}
+  title: '下属课程'
+};
 
-// 616081514704
-window[616081514704] ={
-  name: 'TableData',
-  title: '测试',
-}
+//DL招聘————显示考试签到二维码
+window[618661338339] = {
+  name: 'ExaminationQRCode',
+  title: '签到二维码'
+};
+
 // window[617733136657] = {
 //   name: 'MyTeam',
 //   title: '我的团队'
