@@ -86,9 +86,6 @@ export const LzProApp = Loadable({
   }
 });
 
-
-
-
 //导出问卷系统的组件
 export const MyQuery = Loadable({
   loader: () => import('./MyQuery'),
@@ -140,7 +137,6 @@ export const OneStatistical = Loadable({
   loading() {
     return minLoading;
   }
-
 });
 
 export const ExamPage = Loadable({
@@ -193,7 +189,6 @@ export const ExamManage = Loadable({
   }
 });
 
-
 //考试系统组件
 export const EditTitle = Loadable({
   loader: () => import('./EditTitle'),
@@ -235,7 +230,6 @@ export const ExpireViolationsList = Loadable({
     return minLoading;
   }
 });
-
 
 export const QuestionnaireRecords = Loadable({
   loader: () => import('./QuestionnaireRecords'),
@@ -379,24 +373,30 @@ export const EmployeeCourses = Loadable({
   loading() {
     return minLoading;
   }
-})
+});
 
 export const InternalTraining = Loadable({
   loader: () => import('./InternalTraining'),
   loading() {
     return minLoading;
   }
-})
+});
 
 export const ViewPlan = Loadable({
   loader: () => import('./ViewPlan'),
   loading() {
     return minLoading;
   }
-})
+});
 export const SubordinateCourses = Loadable({
   loader: () => import('./SubordinateCourses'),
   loading() {
     return minLoading;
   }
-})
+});
+export const ExaminationQRCode = Loadable({
+  loader: () => import('./ExaminationQRCode'),
+  loading() {
+    return minLoading;
+  }
+});
