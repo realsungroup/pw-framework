@@ -755,7 +755,7 @@ window[606242031630] = {
   } // 组件所接收的 props
 };
 
-window[608050884937] = {
+window[618661462541] = {
   name: 'TableDataInner',
   title: '内部推荐',
   props: {

@@ -171,6 +171,9 @@ class IdpCard extends React.Component {
     try {
       res = await http().runAutoImport({
         id:autoTaskID,
+        parms: {
+          projectId: this.state.currentPlan.projectId
+        }
       });
     } catch (err) {
       message.error('正在生成人员名单，请耐心等候');
