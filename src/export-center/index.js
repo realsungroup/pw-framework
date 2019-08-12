@@ -101,3 +101,4 @@ export { SubordinateCourses } from '../components/custom/loadableCustom';
 export { ExaminationQRCode } from '../components/custom/loadableCustom';
 export { MyTeam } from '../components/custom/loadableCustom';
 export { IDPMangement } from '../components/custom/loadableCustom';
+export { DLEmploy } from '../components/custom/loadableCustom';

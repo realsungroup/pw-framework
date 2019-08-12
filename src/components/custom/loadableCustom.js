@@ -413,4 +413,9 @@ export const IDPMangement = Loadable({
     return minLoading;
   }
 })
-
+export const DLEmploy = Loadable({
+  loader: () => import('./DLEmploy'),
+  loading() {
+    return minLoading;
+  }
+})

@@ -3,15 +3,14 @@ import { TableData } from '../../common/loadableCommon';
 import FiscalYearPlan from '../FiscalYearPlan/index';
 import SubordinateCoures from '../SubordinateCourses'
 import { Button, Menu, Icon, Switch } from 'antd';
-import './MyTeam.less';
+import './DLEmploy.less';
 import http from 'Util20/api';
-import IdpCard from './IdpCard';
 
 /**
  * 管理员确认
  */
 const role = 'Manger';
-class MyTeam extends React.Component {
+class DLEmploy extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -33,7 +32,7 @@ class MyTeam extends React.Component {
     switch (selectKey) {
       case '1':
         return (
-          <FiscalYearPlan CreateableGroups={['611769739518']}></FiscalYearPlan>
+          "a"
         );
       case '2':
         return <SubordinateCoures></SubordinateCoures>
@@ -42,7 +41,6 @@ class MyTeam extends React.Component {
       case '4':
         return (
           <div style={{ width: '100%',height:"100%" }}>
-            <IdpCard role={role}></IdpCard>
           </div>
         );
       case '5':
@@ -133,4 +131,4 @@ class MyTeam extends React.Component {
   }
 }
 
-export default MyTeam;
+export default DLEmploy;

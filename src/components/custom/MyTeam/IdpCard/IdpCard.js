@@ -142,16 +142,17 @@ class IdpCard extends React.Component {
             icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
             duration: null
           });
-          this.setState({
-            curIndex: this.state.totalIndex,
-            isTaskComplete: true
-          });
+         
         }else{
           message.error(res.message)
         }
       }).catch(error => {
         message.error(error.message)
       })
+      this.setState({
+        curIndex: this.state.totalIndex,
+        isTaskComplete: true
+      });
       // 当前任务未完成
     } else {
       this.setState({
