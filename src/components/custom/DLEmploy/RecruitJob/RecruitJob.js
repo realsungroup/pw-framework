@@ -1,7 +1,7 @@
 import React from 'react';
-import './AbilityMangement.less';
+import './RecruitJob.less';
 import TableData from '../../../common/data/TableData';
-class AbilityMangement extends React.Component {
+class RecruitJob extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -12,7 +12,8 @@ class AbilityMangement extends React.Component {
   render() {
     return (
       <TableData
-        resid={618000231193}
+        baseURL = 'http://kingofdinner.realsun.me:1201/'
+        resid={617195632278}
         subtractH={220}
         hasBeBtns={false}
         hasRowSelection={false}
@@ -28,4 +29,4 @@ class AbilityMangement extends React.Component {
   }
 }
 
-export default AbilityMangement;
+export default RecruitJob;

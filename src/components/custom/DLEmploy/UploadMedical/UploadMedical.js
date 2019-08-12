@@ -1,7 +1,7 @@
 import React from 'react';
-import './Development.less';
+import './UploadMedical.less';
 import TableData from '../../../common/data/TableData';
-class Development extends React.Component {
+class UploadMedical extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -12,7 +12,8 @@ class Development extends React.Component {
   render() {
     return (
       <TableData
-        resid={618225629802}
+        baseURL='http://kingofdinner.realsun.me:1201/'
+        resid={618666652590}
         subtractH={220}
         hasBeBtns={false}
         hasRowSelection={false}
@@ -28,4 +29,4 @@ class Development extends React.Component {
   }
 }
 
-export default Development;
+export default UploadMedical;

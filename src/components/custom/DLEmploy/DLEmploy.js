@@ -1,7 +1,12 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import FiscalYearPlan from '../FiscalYearPlan/index';
-import SubordinateCoures from '../SubordinateCourses'
+import JobInterviewRecord from './JobInterviewRecord';
+import JobPeopleList from './JobPeopleList';
+import PastInterviewList from './PastInterviewList';
+import RecruitJob from './RecruitJob';
+import ReportPeople from './ReportPeople';
+import UploadMedical from './UploadMedical';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './DLEmploy.less';
 import http from 'Util20/api';
@@ -11,7 +16,7 @@ import http from 'Util20/api';
  */
 const role = 'Manger';
 class DLEmploy extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       mode: 'inline',
@@ -31,20 +36,21 @@ class DLEmploy extends React.Component {
     console.log('selectKey', selectKey);
     switch (selectKey) {
       case '1':
-        return (
-          "a"
-        );
+        return <JobInterviewRecord></JobInterviewRecord>;
       case '2':
-        return <SubordinateCoures></SubordinateCoures>
+        return <RecruitJob></RecruitJob>
       case '3':
-        return '';
+        return <JobPeopleList></JobPeopleList>
       case '4':
         return (
-          <div style={{ width: '100%',height:"100%" }}>
+          <div style={{ width: '100%', height: "100%" }}>
+            <PastInterviewList></PastInterviewList>
           </div>
         );
       case '5':
-        return '';
+        return <UploadMedical></UploadMedical>;
+      case '6':
+        return <ReportPeople></ReportPeople>;
       default:
         return '';
     }
@@ -91,27 +97,31 @@ class DLEmploy extends React.Component {
             theme={this.state.theme}
             onSelect={this.onSelect}
             inlineCollapsed={this.state.collapsed}
-            // selectedKeys = {this.selectedKeys}
+          // selectedKeys = {this.selectedKeys}
           >
             <Menu.Item key="1">
               <Icon type="mail" />
-              <span> 课程计划</span>
+              <span> 职位面试安排表</span>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="calendar" />
-              <span> 下属课程 </span>
+              <span> 招聘职务管理 </span>
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="calendar" />
-              <span> 团队发展 </span>
+              <span> 求职人员清单 </span>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="calendar" />
-              <span> IDP管理 </span>
+              <span> 面试通过人员 </span>
             </Menu.Item>
             <Menu.Item key="5">
               <Icon type="calendar" />
-              <span> 试用期管理</span>
+              <span> 上传体检报告</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Icon type="calendar" />
+              <span> 报道人员</span>
             </Menu.Item>
           </Menu>
         </div>
@@ -120,12 +130,12 @@ class DLEmploy extends React.Component {
             overflow: 'auto',
             width: `${
               this.state.collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'
-            }`
+              }`
           }}
         >
           {this.renderContent()}
         </div>
-      
+
       </div>
     );
   }

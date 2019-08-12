@@ -1,7 +1,7 @@
 import React from 'react';
-import './TypeManger.less';
+import './JobInterviewRecord.less';
 import TableData from '../../../common/data/TableData';
-class TypeManger extends React.Component {
+class JobInterviewRecord extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -12,7 +12,8 @@ class TypeManger extends React.Component {
   render() {
     return (
       <TableData
-        resid={618000219009}
+        baseURL = 'http://kingofdinner.realsun.me:1201/'
+        resid={617311643033}
         subtractH={220}
         hasBeBtns={false}
         hasRowSelection={false}
@@ -28,4 +29,4 @@ class TypeManger extends React.Component {
   }
 }
 
-export default TypeManger;
+export default JobInterviewRecord;
