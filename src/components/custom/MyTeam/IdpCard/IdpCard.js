@@ -26,7 +26,7 @@ const customDot = (dot, { status, index }) => (
 const { Step } = Steps;
 const developmentPersonID = '617725883137'; //发展人员表
 const hrMangerID = '617725533684'; //发展计划总表
-const autoTaskID = '618594705773'
+const autoTaskID = '618594705773';
 
 class IdpCard extends React.Component {
   state = {
@@ -42,7 +42,7 @@ class IdpCard extends React.Component {
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
-    isShowModal:false,
+    isShowModal: false,
     currentRecord: {} //当前传入的发展计划
   };
 
@@ -90,7 +90,7 @@ class IdpCard extends React.Component {
     const { totalIndex, curIndex } = this.state;
     let percent = 0;
     if (this.state.isTaskComplete) {
-      percent = 100
+      percent = 100;
     } else if (totalIndex) {
       percent = Math.floor((curIndex / totalIndex) * 100);
     }
@@ -126,29 +126,32 @@ class IdpCard extends React.Component {
     // 当前任务已完成
     if (res.IsComplete) {
       //修改当前财年的是否生成人员名单字段
-      const data = [{
-        REC_ID: this.state.currentPlan.REC_ID,
-        isCreatePerson: "Y"
-      }]
-      http().modifyRecords({
-        resid:hrMangerID,
-        data
-      }).then(res => {
-        if(res.Error === 0){
-          notification.open({
-            message: '通知',
-            description:
-              '当前发展计划人员名单已生成完毕，请注意查看！',
-            icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-            duration: null
-          });
-         
-        }else{
-          message.error(res.message)
+      const data = [
+        {
+          REC_ID: this.state.currentPlan.REC_ID,
+          isCreatePerson: 'Y'
         }
-      }).catch(error => {
-        message.error(error.message)
-      })
+      ];
+      http()
+        .modifyRecords({
+          resid: hrMangerID,
+          data
+        })
+        .then(res => {
+          if (res.Error === 0) {
+            notification.open({
+              message: '通知',
+              description: '当前发展计划人员名单已生成完毕，请注意查看！',
+              icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+              duration: null
+            });
+          } else {
+            message.error(res.message);
+          }
+        })
+        .catch(error => {
+          message.error(error.message);
+        });
       this.setState({
         curIndex: this.state.totalIndex,
         isTaskComplete: true
@@ -167,11 +170,11 @@ class IdpCard extends React.Component {
       }, 1000);
     }
   };
-  onRunAutoTask = async() => {
+  onRunAutoTask = async () => {
     let res;
     try {
-      res = await http().runAutoImport({
-        id:autoTaskID,
+      res = await http().PostRunAutoImport({
+        id: autoTaskID,
         parms: {
           projectId: this.state.currentPlan.projectId
         }
@@ -181,14 +184,14 @@ class IdpCard extends React.Component {
     }
     this.setState({ isShowModal: true });
     this.getTaskInfo();
-  }
+  };
   //添加发展计划
-  onAdd = async() => {
+  onAdd = async () => {
     let res;
     try {
       res = await http().addRecords({
-        resid:hrMangerID,
-        data:[{}]
+        resid: hrMangerID,
+        data: [{}]
       });
       if (res.Error === 0) {
         message.success(res.message);
@@ -198,7 +201,7 @@ class IdpCard extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   //查看团队
   onCheckTeam = currentRecord => {
     this.setState({
@@ -225,9 +228,8 @@ class IdpCard extends React.Component {
     let historyPlan = this.state.historyPlan;
     let role = this.props.role;
 
-    return  historyPlan.map(item => {
+    return historyPlan.map(item => {
       return (
-        
         <Card
           title={
             <span style={{ fontSize: '16px', color: '#000' }}>
@@ -469,32 +471,34 @@ class IdpCard extends React.Component {
                 </div>
               </Card>
               <div className="idp-contain-smallcards">
-              <Card
-                 className="idp-contain-smallcards-card addPlan" 
-                onClick={() => {
-                  this.onAdd();
-                }}
-              >
-                <Icon
-                  type="plus"
-                  style={{
-                    display: 'block',
-                    fontSize: '60px',
-                    fontWeight: 'bold'
-                  }}
-                />
-                <span
-                  style={{
-                    display: 'block',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    textAlign: 'center'
-                  }}
-                >
-                  添加新的发展计划
-                </span>
-                <span style={{ color: '#999' }}>Add a new compentecy</span>
-              </Card>
+                {this.props.role === 'HR' ? (
+                  <Card
+                    className="idp-contain-smallcards-card addPlan"
+                    onClick={() => {
+                      this.onAdd();
+                    }}
+                  >
+                    <Icon
+                      type="plus"
+                      style={{
+                        display: 'block',
+                        fontSize: '60px',
+                        fontWeight: 'bold'
+                      }}
+                    />
+                    <span
+                      style={{
+                        display: 'block',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        textAlign: 'center'
+                      }}
+                    >
+                      添加新的发展计划
+                    </span>
+                    <span style={{ color: '#999' }}>Add a new compentecy</span>
+                  </Card>
+                ) : null}
                 {this.renderHistory()}
               </div>
             </div>
@@ -545,9 +549,9 @@ class IdpCard extends React.Component {
     }
   };
   componentDidMount = async () => {
-   this.getData();
+    this.getData();
   };
-  getData = async() => {
+  getData = async () => {
     let resID;
     if (this.props.role === 'HR') {
       resID = hrMangerID;
@@ -567,7 +571,7 @@ class IdpCard extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   render() {
     const { currentPage } = this.state;
     return (
@@ -584,21 +588,21 @@ class IdpCard extends React.Component {
             <Icon type="rollback" style={{ color: '#999' }} />
           </div>
         ) : null}
-         <Modal
-            title="生成人员名单"
-            visible={this.state.isShowModal}
-            okText="完成"
-            cancelText="关闭"
-            closable={false}
-            onOk={() => {
-              this.setState({ isShowModal: false });
-            }}
-            onCancel={() => {
-              this.setState({ isShowModal: false });
-            }}
-          >
-            {this.renderTaskProgress()}
-          </Modal>
+        <Modal
+          title="生成人员名单"
+          visible={this.state.isShowModal}
+          okText="完成"
+          cancelText="关闭"
+          closable={false}
+          onOk={() => {
+            this.setState({ isShowModal: false });
+          }}
+          onCancel={() => {
+            this.setState({ isShowModal: false });
+          }}
+        >
+          {this.renderTaskProgress()}
+        </Modal>
       </div>
     );
   }
