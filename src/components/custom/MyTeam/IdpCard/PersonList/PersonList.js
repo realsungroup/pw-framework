@@ -104,8 +104,7 @@ class PersonList extends React.Component {
     let data = [];
     dataSource.map(item => {
       if (selectKey.includes(item.REC_ID)) {
-        console.log('come in ');
-        item.isCloseWrite = 'Y';
+        item.isEmpployeeWrite = '';
         data.push(item);
       }
     });

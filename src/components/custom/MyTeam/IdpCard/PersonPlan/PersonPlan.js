@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  message,
-  Button,
-  Card,
-  Icon,
-  Checkbox,
-  Popconfirm
-} from 'antd';
+import { message, Button, Card, Icon, Checkbox, Popconfirm } from 'antd';
 import './PersonPlan.less';
 import http from 'Util20/api';
 import SquareCard from './SquareCard';
@@ -171,7 +164,6 @@ const emptyMeasures = [
   }
 ];
 class PersonPlan extends React.Component {
- 
   constructor(props) {
     super(props);
     this.state = {
@@ -744,15 +736,14 @@ class PersonPlan extends React.Component {
         message.success(res.message);
         this.props.goBack();
       }
-      
     } catch (error) {
       message.error(error.message);
     }
   };
-  onAffirm = async() => {
+  onAffirm = async () => {
     let res;
     let personInfo = this.state.personInfo;
-      personInfo.isAffirm = 'Y';
+    personInfo.isAffirm = 'Y';
     try {
       res = await http().modifyRecords({
         resid: personID,
@@ -764,7 +755,7 @@ class PersonPlan extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   onSaveAbility = async () => {
     let SquareCardArr = this.state.SquareCardArr;
     let checked = this.state.checked;
@@ -837,12 +828,15 @@ class PersonPlan extends React.Component {
     });
     if (record.isUpdateAuth === 'Y' && this.props.checkType === 'oneself') {
       isUpdateAuth = 'Y';
-    } else if (this.props.checkType !== 'oneself' && record.isMangerUpdateAuth === 'Y') {
+    } else if (
+      this.props.checkType !== 'oneself' &&
+      record.isMangerUpdateAuth === 'Y'
+    ) {
       isUpdateAuth = 'Y';
-    }else if (this.props.role === 'HR'){
+    } else if (this.props.role === 'HR') {
       isUpdateAuth = 'Y';
     }
-      this.setState({
+    this.setState({
       isUpdateAuth
     });
     await this.getAbilityEvaluation(record, isUpdateAuth);
@@ -1110,7 +1104,6 @@ class PersonPlan extends React.Component {
         ) : null}
       </React.Fragment>
     );
-    console.log('状态', centerContent);
     if (personInfo && personInfo.status === '填写中') {
       return centerContent;
     } else {
@@ -1122,10 +1115,116 @@ class PersonPlan extends React.Component {
       );
     }
   };
+
+  renderSaveBtn = () => {
+    if (this.props.role === 'HR') {
+      return (
+        <Popconfirm
+          title="你确定要保存吗"
+          onConfirm={this.onSave}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+        </Popconfirm>
+      );
+    } else {
+      if (
+        this.state.checkType === 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isPersonSubmit !== 'Y' &&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType !== 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      }
+    }
+  };
+  renderSubmitBtn = () => {
+    if (this.props.role === 'HR') {
+      return (
+        <Popconfirm
+          title="你确定要提交吗"
+          onConfirm={this.onSubmit}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="primary" className="personPlan-contain-bottom-leftbtn">
+            提交
+          </Button>
+        </Popconfirm>
+      );
+    } else {
+      if (
+        this.state.checkType === 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isPersonSubmit !== 'Y'&&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType !== 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isMangerSubmit !== 'Y'&&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
+      }
+    }
+  };
   render() {
-    const {
-      personInfo,
-    } = this.state;
+    const { personInfo } = this.state;
     return (
       <div
         style={{
@@ -1238,19 +1337,28 @@ class PersonPlan extends React.Component {
         </div>
         <div className="personPlan-contain-bottom">
           <div className="personPlan-contain-bottom-btns">
-          {this.state.isUpdateAuth === 'Y' || this.props.role === 'HR' ? 
-            <Popconfirm
-              title="你确定要保存吗"
-              onConfirm={this.onSave}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="personPlan-contain-bottom-leftbtn">
-                保存
-              </Button>
-            </Popconfirm>:null}
+            {this.renderSaveBtn()}
+            {/* {this.state.isUpdateAuth === 'Y' || this.props.role === 'HR' 
+            &&
+            
+            this.state.checkType === 'oneself' &&
+            this.state.isUpdateAuth === 'Y' &&
+            this.state.personInfo.isPersonSubmit !== 'Y' 
+             ? (
+              <Popconfirm
+                title="你确定要保存吗"
+                onConfirm={this.onSave}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  保存
+                </Button>
+              </Popconfirm>
+            ) : null} */}
             {this.state.checkType === 'oneself' &&
-            this.state.isMangerSubmit === 'Y' && this.state.personInfo.isAffirm !== 'Y' ? (
+            this.state.personInfo.isMangerSubmit === 'Y' &&
+            this.state.personInfo.isAffirm !== 'Y' ? (
               <Popconfirm
                 title="你要确认吗"
                 onConfirm={this.onAffirm}
@@ -1262,7 +1370,8 @@ class PersonPlan extends React.Component {
                 </Button>
               </Popconfirm>
             ) : this.state.checkType !== 'oneself' &&
-              this.state.isPersonSubmit === 'Y' &&  this.state.personInfo.isAffirm !== 'Y' ? (
+              this.state.personInfo.isPersonSubmit === 'Y' &&
+              this.state.personInfo.isAffirm !== 'Y' ? (
               <Popconfirm
                 title="你要确认吗"
                 onConfirm={this.onAffirm}
@@ -1274,23 +1383,8 @@ class PersonPlan extends React.Component {
                 </Button>
               </Popconfirm>
             ) : null}
-            {this.state.isUpdateAuth === 'Y' ? (
-              <Popconfirm
-                title="你确定要提交吗"
-                onConfirm={this.onSubmit}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  type="primary"
-                  className="personPlan-contain-bottom-leftbtn"
-                >
-                  提交
-                </Button>
-              </Popconfirm>
-            ) : null}
+            {this.renderSubmitBtn()}
           </div>
-         
         </div>
         {/* <div className="info-line">
           <Timeline>
