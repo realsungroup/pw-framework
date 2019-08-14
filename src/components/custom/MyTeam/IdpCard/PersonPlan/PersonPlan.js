@@ -1,32 +1,15 @@
 import React from 'react';
-import {
-  message,
-  Button,
-  Card,
-  Timeline,
-  Icon,
-  Checkbox,
-  Popconfirm
-} from 'antd';
+import { message, Button, Card, Icon, Checkbox, Popconfirm } from 'antd';
 import './PersonPlan.less';
 import http from 'Util20/api';
-import TableData from '../../../../common/data/TableData';
 import SquareCard from './SquareCard';
-/**
- * 管理员确认
- */
 
-const selectedColor = '#1890FF';
-const color = '#ccc';
+const personID = '618488751596'; //发展人员表
 const abilityID = '617726097875'; //能力测评表ID
 const planID = '617726587425'; //发展行动计划表ID
 const typeID = '618000219009'; //类型表ID
 const winAbilityID = '618000231193'; //胜任力表ID
 const developmentMeasureID = '618225629802'; //发展措施表
-
-const arr = [];
-
-const plans = [];
 const emptyAbility = [
   {
     name: '类别/Category:',
@@ -127,6 +110,13 @@ const emptyPlans = [
     type: 'none',
     options: [],
     authority: 'modify'
+  },
+  {
+    name: '人员编号',
+    value: '',
+    type: 'none',
+    options: [],
+    authority: 'modify'
   }
 ];
 const emptyMeasures = [
@@ -174,26 +164,26 @@ const emptyMeasures = [
   }
 ];
 class PersonPlan extends React.Component {
-  state = {
-    currentPostion: 1,
-    personInfo: {}, //个人信息
-    checkType:null, //查看类型
-    ability: [], //能力
-    types: [], //所有类别
-    // abilitys :[],  //所有胜任力
-    plans: [], //计划数组
-    measures: [], //措施数组
-    SquareCardArr: [], //能力数组
-    yearReview: [], //年度回顾
-    abilityArr: [], ////所有胜任力
-    plainOptions: [], //优先发展能力数组
-    checked:[], //优先发展的能力
-    developmentMeasures: [] //发展措施
-  };
   constructor(props) {
     super(props);
+    this.state = {
+      currentPostion: 1, //左边菜单的位置
+      personInfo: {}, //个人信息
+      checkType: null, //查看类型  如果是自己查看，需判断是否有权限修改，如果是主管查看，需查看主管有无权限修改，如果是HR查看，则可直接修改。
+      ability: [], //能力
+      types: [], //所有类别
+      plans: [], //计划数组
+      measures: [], //措施数组
+      SquareCardArr: [], //能力数组
+      yearReview: [], //年度回顾
+      abilityArr: [], ////所有胜任力
+      plainOptions: [], //优先发展能力数组
+      checked: [], //优先发展的能力
+      developmentMeasures: [] //发展措施
+    };
   }
 
+  //子组件修改下拉框，触发父组件方法
   onChangeSelect = (subIndex, e, index, type) => {
     if (type === 1) {
       let SquareCardArr = this.state.SquareCardArr;
@@ -208,6 +198,7 @@ class PersonPlan extends React.Component {
         });
         SquareCardArr[index][subIndex + 1].options = lastabilityArr;
       }
+      this.onChangePlainOptions();
       this.setState({
         SquareCardArr
       });
@@ -230,11 +221,13 @@ class PersonPlan extends React.Component {
     }
   };
 
+  //子组件修改checkbox，触发父组件方法
   onChangeCheckBox = checked => {
     this.setState({
       checked
-    })
+    });
   };
+  //子组件修改文本域，触发父组件方法
   onChangeTextArea = (subIndex, e, index, type) => {
     /**
      * type
@@ -262,8 +255,8 @@ class PersonPlan extends React.Component {
       });
     }
   };
+  //子组件修改日期，触发父组件方法
   onChangeDate = (subIndex, date, dateString, index) => {
-    console.log('onChangeDate', subIndex, date, dateString, index);
     let plans = this.state.plans;
     plans[index][subIndex].value = dateString;
     this.setState({
@@ -275,6 +268,20 @@ class PersonPlan extends React.Component {
       SquareCardArr
     });
   };
+  onChangePlainOptions = () => {
+    let plainOptions = [];
+    this.state.SquareCardArr.map(item => {
+      item.forEach(items => {
+        if (items.name === '胜任力/Competency:') {
+          plainOptions.push(items.value);
+        }
+      });
+    });
+    this.setState({
+      plainOptions
+    });
+  };
+  //添加能力或计划
   onAdd = type => {
     let SquareCardArr = this.state.SquareCardArr;
     let plans = this.state.plans;
@@ -284,6 +291,8 @@ class PersonPlan extends React.Component {
           item.key = this.state.SquareCardArr.length + 1;
         });
         SquareCardArr.push(this.cloneDeep(emptyAbility));
+        console.log('SquareCardArr', SquareCardArr);
+        this.onChangePlainOptions();
         this.setState({ SquareCardArr });
         break;
       case 'plans':
@@ -297,13 +306,23 @@ class PersonPlan extends React.Component {
     }
     console.log('add数组', SquareCardArr);
   };
+
   onRemove = (index, type) => {
-    // console.log('SquareCardArr', this.state.SquareCardArr, index);
+    let plainOptions = [];
     if (type === 1) {
       let lastArr = this.state.SquareCardArr.filter((item, aindex) => {
         return index !== aindex;
       });
+      //删除后修改显示的checkbox group数组
+      lastArr.map(item => {
+        item.forEach(items => {
+          if (items.name === '胜任力/Competency:') {
+            plainOptions.push(items.value);
+          }
+        });
+      });
       this.setState({
+        plainOptions,
         SquareCardArr: lastArr
       });
     } else {
@@ -317,7 +336,7 @@ class PersonPlan extends React.Component {
     this.onDelete(index, type);
   };
   // 获取能力测评表
-  getAbilityEvaluation = async record => {
+  getAbilityEvaluation = async (record, isUpdateAuth) => {
     let res;
     let ability;
     let SquareCardArr = this.state.SquareCardArr;
@@ -326,21 +345,22 @@ class PersonPlan extends React.Component {
     try {
       res = await http().getTable({
         resid: abilityID,
-        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.menberId}' and year = '${record.year}'` 
+        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.memberId}' `
       });
       ability = res.data;
       ability.map(item => {
         if (item.competence) {
           plainOptions.push(item.competence);
-          if(item.isPrecedence === 'Y'){
-            checked.push(item.competence)
+          if (item.isPrecedence === 'Y') {
+            checked.push(item.competence);
           }
         }
       });
-       this.setState({
-        checked,plainOptions
-      })
-      
+      await this.setState({
+        checked,
+        plainOptions
+      });
+
       let empty = emptyAbility;
       ability.forEach((item, index) => {
         empty.map(item => {
@@ -350,32 +370,73 @@ class PersonPlan extends React.Component {
       });
 
       console.log('SquareCardArrSquareCardArr', SquareCardArr, ability);
+
       if (ability.length > 0) {
-        // ability.map((a,index) => {
-        let arr;
-        arr = SquareCardArr.forEach((item, index) => {
-          item.forEach(items => {
-            if (items.name === '类别/Category:') {
-              items.value = ability[index].categocry;
-            } else if (items.name === '胜任力/Competency:') {
-              items.value = ability[index].competence;
-            } else if (items.name === '目标/Target:') {
-              items.value = ability[index].target;
-            } else if (items.name === '实际/Actual:') {
-              items.value = ability[index].reality;
-            } else if (items.name === '行为指标/Behaviour Indicator:') {
-              items.value = ability[index].indicator;
-            } else if (items.name === '发展总计划ID') {
-              items.value = ability[index].projectId;
-            } else if (items.name === '人员编号') {
-              items.value = ability[index].menberId;
-            } else if (items.name === '能力测评编号') {
-              items.value = ability[index].skillTestId;
-            } else if (items.name === '是否优先发展') {
-              items.value = ability[index].isPrecedence;
-            }
+        if (
+          record.status === '年中回顾' ||
+          record.status === '年末回顾' ||
+          record.status === '已完成' ||
+          isUpdateAuth !== 'Y'
+        ) {
+          SquareCardArr.forEach((item, index) => {
+            item.forEach(items => {
+              if (items.name === '类别/Category:') {
+                items.value = ability[index].categocry;
+                items.authority = 'check';
+              } else if (items.name === '胜任力/Competency:') {
+                items.value = ability[index].competence;
+                items.authority = 'check';
+              } else if (items.name === '目标/Target:') {
+                items.value = ability[index].target;
+                items.authority = 'check';
+              } else if (items.name === '实际/Actual:') {
+                items.value = ability[index].reality;
+                items.authority = 'check';
+              } else if (items.name === '行为指标/Behaviour Indicator:') {
+                items.value = ability[index].indicator;
+                items.authority = 'check';
+              } else if (items.name === '发展总计划ID') {
+                items.value = ability[index].projectId;
+                items.authority = 'check';
+              } else if (items.name === '人员编号') {
+                items.value = ability[index].menberId;
+                items.authority = 'check';
+              } else if (items.name === '能力测评编号') {
+                items.value = ability[index].skillTestId;
+                items.authority = 'check';
+              } else if (items.name === '是否优先发展') {
+                items.value = ability[index].isPrecedence;
+                items.authority = 'check';
+              }
+            });
           });
-        });
+        } else {
+          SquareCardArr.forEach((item, index) => {
+            item.forEach(items => {
+              if (items.name === '类别/Category:') {
+                items.value = ability[index].categocry;
+              } else if (items.name === '胜任力/Competency:') {
+                items.value = ability[index].competence;
+              } else if (items.name === '目标/Target:') {
+                items.value = ability[index].target;
+              } else if (items.name === '实际/Actual:') {
+                items.value = ability[index].reality;
+              } else if (items.name === '行为指标/Behaviour Indicator:') {
+                items.value = ability[index].indicator;
+              } else if (items.name === '发展总计划ID') {
+                items.value = ability[index].projectId;
+              } else if (items.name === '人员编号') {
+                items.value = ability[index].menberId;
+              } else if (items.name === '能力测评编号') {
+                items.value = ability[index].skillTestId;
+              } else if (items.name === '是否优先发展') {
+                items.value = ability[index].isPrecedence;
+              }
+            });
+          });
+        }
+        console.log('SquareCardArr', SquareCardArr);
+        this.setState({ SquareCardArr });
         // })
       } else {
       }
@@ -385,14 +446,15 @@ class PersonPlan extends React.Component {
   };
 
   //获取发展行动计划表
-  getDevelopmentAction = async record => {
+  getDevelopmentAction = async (record, isUpdateAuth) => {
     let res;
     let plan;
     let plans = this.state.plans;
+    let personInfo = this.state.personInfo;
     try {
       res = await http().getTable({
         resid: planID,
-        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.menberId}' and year = '${record.year}'` 
+        cmswhere: `projectId = '${record.projectId}' and menberId = '${record.memberId}' `
       });
       plan = res.data;
 
@@ -408,25 +470,61 @@ class PersonPlan extends React.Component {
       });
 
       console.log('SquareCardArrSquareCardArr', plans, plan);
+
       if (plan.length > 0) {
-        // ability.map((a,index) => {
-        plans.forEach((item, index) => {
-          item.forEach(items => {
-            if (items.name === '发展措施/Measure:') {
-              items.value = plan[index].measures;
-            } else if (items.name === '完成日期/Deadline:') {
-              items.value = plan[index].endTime;
-            } else if (
-              items.name === '具体行动计划/Description of concrete measures:'
-            ) {
-              items.value = plan[index].actionPlan;
-            } else if (items.name === '发展总计划ID') {
-              items.value = plan[index].projectId;
-            } else if (items.name === '发展行动计划编号') {
-              items.value = plan[index].moveId;
-            }
+        if (
+          personInfo.status === '年中回顾' ||
+          personInfo.status === '年末回顾' ||
+          personInfo.status === '已完成' ||
+          isUpdateAuth !== 'Y'
+        ) {
+          plans.forEach((item, index) => {
+            item.forEach(items => {
+              if (items.name === '发展措施/Measure:') {
+                items.value = plan[index].measures;
+                items.authority = 'check';
+              } else if (items.name === '完成日期/Deadline:') {
+                items.value = plan[index].endTime;
+                items.authority = 'check';
+              } else if (
+                items.name === '具体行动计划/Description of concrete measures:'
+              ) {
+                items.value = plan[index].actionPlan;
+                items.authority = 'check';
+              } else if (items.name === '发展总计划ID') {
+                items.value = plan[index].projectId;
+                items.authority = 'check';
+              } else if (items.name === '发展行动计划编号') {
+                items.value = plan[index].moveId;
+                items.authority = 'check';
+              } else if (items.name === '人员编号') {
+                items.value = plan[index].menberId;
+                items.authority = 'check';
+              }
+            });
           });
-        });
+        } else {
+          plans.forEach((item, index) => {
+            item.forEach(items => {
+              if (items.name === '发展措施/Measure:') {
+                items.value = plan[index].measures;
+              } else if (items.name === '完成日期/Deadline:') {
+                items.value = plan[index].endTime;
+              } else if (
+                items.name === '具体行动计划/Description of concrete measures:'
+              ) {
+                items.value = plan[index].actionPlan;
+              } else if (items.name === '发展总计划ID') {
+                items.value = plan[index].projectId;
+              } else if (items.name === '发展行动计划编号') {
+                items.value = plan[index].moveId;
+              } else if (items.name === '人员编号') {
+                items.value = plan[index].menberId;
+              }
+            });
+          });
+        }
+
         measures.forEach((item, index) => {
           item.forEach(items => {
             if (items.name === '发展措施/Measure:') {
@@ -442,11 +540,14 @@ class PersonPlan extends React.Component {
             } else if (items.name === '发展行动计划编号') {
               items.value = plan[index].moveId;
             } else if (items.name === '年中回顾') {
-              if(record.status === '年末回顾'){
-                items.authority = 'check'
+              if (record.status === '年末回顾') {
+                items.authority = 'check';
               }
               items.value = plan[index].yearMid;
             } else if (items.name === '年末回顾') {
+              if (record.status === '年中回顾') {
+                items.type = 'none';
+              }
               items.value = plan[index].yearTail;
             }
           });
@@ -454,24 +555,8 @@ class PersonPlan extends React.Component {
         this.setState({
           measures
         });
-        // })
       } else {
       }
-      // this.setState({ SquareCardArr: res.data });
-      // SquareCardArr.map(item => {
-      //   item.map(items => {
-      //     if (items.name === '类别/Category:') {
-      //       items.value = ability.categocry;
-      //     }
-      //   });
-      // });
-      //  await this.setState({
-      //     SquareCardArr
-      //   })
-      // if()
-      // ability.categocry
-      // await this.getTypes();
-      // await this.getAbilitys();
     } catch (error) {
       message.error(error.message);
     }
@@ -632,6 +717,44 @@ class PersonPlan extends React.Component {
   onSave = async () => {
     this.onSaveAbility();
     this.onSavePlans();
+    this.props.goBack();
+  };
+  onSubmit = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    if (this.state.checkType === 'oneself') {
+      personInfo.isPersonSubmit = 'Y';
+    } else {
+      personInfo.isMangerSubmit = 'Y';
+    }
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  onAffirm = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    personInfo.isAffirm = 'Y';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   onSaveAbility = async () => {
     let SquareCardArr = this.state.SquareCardArr;
@@ -647,13 +770,9 @@ class PersonPlan extends React.Component {
       record.projectId = item[5].value;
       record.menberId = item[6].value;
       record.skillTestId = item[7].value;
-      console.log('item[8].value,', item[1].value);
-      console.log("plainOptions",checked)
       if (checked.includes(item[1].value)) {
-        console.log('truetruetruetrue');
         record.isPrecedence = 'Y';
       } else {
-        console.log('falsefalse');
         record.isPrecedence = 'N';
       }
       records.push(this.cloneDeep(record));
@@ -674,7 +793,6 @@ class PersonPlan extends React.Component {
   };
   onSavePlans = async () => {
     let plans = this.state.plans;
-    console.log('this.state.plans', this.state.plans);
     let planRecord = {};
     let planRecords = [];
     plans.map(item => {
@@ -683,6 +801,7 @@ class PersonPlan extends React.Component {
       planRecord.actionPlan = item[2].value;
       planRecord.projectId = item[3].value;
       planRecord.moveId = item[4].value;
+      planRecord.menberId = item[5].value;
       planRecords.push(this.cloneDeep(planRecord));
     });
     let res;
@@ -700,59 +819,55 @@ class PersonPlan extends React.Component {
     }
   };
   componentDidMount = async () => {
-    console.log("this.props.record",this.props.record,this.props.checkType)
+    console.log('this.props.record', this.props.record, this.props.checkType);
     let record = this.props.record;
-    console.log('record', record);
+    let isUpdateAuth; //是否有权限修改
     this.setState({
-      personInfo:this.props.record,
-      checkType:this.props.checkType
-    })
-    await this.getAbilityEvaluation(record);
-    await this.getDevelopmentAction(record);
+      personInfo: this.props.record,
+      checkType: this.props.checkType
+    });
+    if (record.isUpdateAuth === 'Y' && this.props.checkType === 'oneself') {
+      isUpdateAuth = 'Y';
+    } else if (
+      this.props.checkType !== 'oneself' &&
+      record.isMangerUpdateAuth === 'Y'
+    ) {
+      isUpdateAuth = 'Y';
+    } else if (this.props.role === 'HR') {
+      isUpdateAuth = 'Y';
+    }
+    this.setState({
+      isUpdateAuth
+    });
+    await this.getAbilityEvaluation(record, isUpdateAuth);
+    await this.getDevelopmentAction(record, isUpdateAuth);
     await this.getTypes();
     await this.getAbilitys();
     await this.getDevelopmentMeasures();
-    
-
-    if (this.state.SquareCardArr.length > 0) {
-    } else {
-    }
-
-
-    // await this.setState({
-    //   personInfo: record,
-    //   SquareCardArr: arr,
-    //   plans: plans
-    // });
-    // try {
-    //   res = await http().getTable({
-    //     resid: abilityID,
-    //     cmwerhe: `projectId = ${record.projectId}`
-    //   });
-    //   this.setState({ ability: res.data });
-    // } catch (error) {
-    //   message.error(error.message);
-    // }
-
-    // try {
-    //   res = await http().getTable({
-    //     resid: planID,
-    //     cmwerhe: `projectId = ${record.projectId}`
-    //   });
-    //   this.setState({ plan: res.data });
-    // } catch (error) {
-    //   message.error(error.message);
-    // }
+    emptyAbility.forEach(item => {
+      if (item.name === '发展总计划ID') {
+        item.value = record.projectId;
+      }
+      if (item.name === '人员编号') {
+        item.value = record.memberId;
+      }
+    });
+    emptyPlans.forEach(item => {
+      if (item.name === '发展总计划ID') {
+        item.value = record.projectId;
+      }
+      if (item.name === '人员编号') {
+        item.value = record.memberId;
+      }
+    });
   };
   onChangePostion = currentPostion => {
-    console.log('onChangePostion', currentPostion);
     this.setState({
       currentPostion
     });
   };
   renderCard = () => {
-    let record = this.state.record;
-    //
+    let personInfo = this.state.personInfo;
     let centerContent = (
       <React.Fragment>
         <Card
@@ -774,6 +889,14 @@ class PersonPlan extends React.Component {
             {this.state.SquareCardArr.map((SquareCardArr, index) => {
               return (
                 <SquareCard
+                  icon={
+                    personInfo.status === '年中回顾' ||
+                    personInfo.status === '年末回顾' ||
+                    personInfo.status === '已完成' ||
+                    this.state.isUpdateAuth !== 'Y'
+                      ? 'noClose'
+                      : null
+                  }
                   key={index}
                   SquareCardArr={SquareCardArr}
                   onRemove={subIndex => {
@@ -792,39 +915,37 @@ class PersonPlan extends React.Component {
                 ></SquareCard>
               );
             })}
-            <Card
-              className="idp-contain-smallcards-card"
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                width: '360px',
-                height: '180px',
-                margin: '10px 10px'
-              }}
-              onClick={() => {
-                this.onAdd('ability');
-              }}
-            >
-              <Icon
-                type="plus"
-                style={{
-                  display: 'block',
-                  fontSize: '60px',
-                  fontWeight: 'bold'
-                }}
-              />
-              <span
-                style={{
-                  display: 'block',
-                  fontSize: '16px',
-                  fontWeight: 'bold'
+            {personInfo.status === '年中回顾' ||
+            personInfo.status === '年末回顾' ||
+            personInfo.status === '已完成' ||
+            this.state.isUpdateAuth !== 'Y' ? null : (
+              <Card
+                className="personPlan-contain-smallcards-card"
+                onClick={() => {
+                  this.onAdd('ability');
                 }}
               >
-                添加新的能力
-              </span>
-            </Card>
+                <Icon
+                  type="plus"
+                  style={{
+                    display: 'block',
+                    fontSize: '60px',
+                    fontWeight: 'bold'
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                  }}
+                >
+                  添加新的能力
+                </span>
+                <span style={{ color: '#999' }}>Add a new compentecy</span>
+              </Card>
+            )}
           </div>
         </Card>
 
@@ -853,8 +974,16 @@ class PersonPlan extends React.Component {
           <div className="personPlan-contain-plan-check">
             <Checkbox.Group
               options={this.state.plainOptions}
-              defaultValue={[...this.state.checked]}
+              value={[...this.state.checked]}
               onChange={this.onChangeCheckBox}
+              disabled={
+                personInfo.status === '年中回顾' ||
+                personInfo.status === '年末回顾' ||
+                personInfo.status === '已完成' ||
+                this.state.isUpdateAuth !== 'Y'
+                  ? true
+                  : false
+              }
             />
           </div>
           <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
@@ -862,6 +991,14 @@ class PersonPlan extends React.Component {
               this.state.plans.map((SquareCardArr, index) => {
                 return (
                   <SquareCard
+                    icon={
+                      personInfo.status === '年中回顾' ||
+                      personInfo.status === '年末回顾' ||
+                      personInfo.status === '已完成' ||
+                      this.state.isUpdateAuth !== 'Y'
+                        ? 'noClose'
+                        : null
+                    }
                     key={index}
                     SquareCardArr={SquareCardArr}
                     onRemove={() => {
@@ -882,111 +1019,221 @@ class PersonPlan extends React.Component {
                   ></SquareCard>
                 );
               })}
-            <Card
-              className="idp-contain-smallcards-card"
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                width: '360px',
-                height: '180px',
-                margin: '10px 10px'
-              }}
-              onClick={() => {
-                this.onAdd('plans');
-              }}
-            >
-              <Icon
-                type="plus"
-                style={{
-                  display: 'block',
-                  fontSize: '60px',
-                  fontWeight: 'bold'
-                }}
-              />
-              <span
-                style={{
-                  display: 'block',
-                  fontSize: '16px',
-                  fontWeight: 'bold'
+            {personInfo.status === '年中回顾' ||
+            personInfo.status === '年末回顾' ||
+            personInfo.status === '已完成' ||
+            this.state.isUpdateAuth !== 'Y' ? null : (
+              <Card
+                className="personPlan-contain-smallcards-card"
+                onClick={() => {
+                  this.onAdd('plans');
                 }}
               >
-                添加新的发展计划
-              </span>
-            </Card>
+                <Icon
+                  type="plus"
+                  style={{
+                    display: 'block',
+                    fontSize: '60px',
+                    fontWeight: 'bold'
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                  }}
+                >
+                  添加新的发展计划
+                </span>
+                <span style={{ color: '#999' }}>
+                  Add a new development plan
+                </span>
+              </Card>
+            )}
           </div>
         </Card>
       </React.Fragment>
     );
     let bottomContent = (
       <React.Fragment>
-      <Card
-        title={
-          <React.Fragment>
-            <span style={{ fontSize: '16px', color: '#000' }}>
-              年度回顾 - 回顾职业目标及发展措施
-              <span className="personPlan-contain-info-word">
-                Review of career goals and measures
-              </span>
-            </span>
-          </React.Fragment>
-        }
-        className="personPlan-contain-info"
-        bordered={true}
-      >
-        {' '}
-        <div
-          style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}
-        >
-          {this.state.measures &&
-            this.state.measures.map((SquareCardArr, index) => {
-              return (
-                <SquareCard
-                  key={index}
-                  SquareCardArr={SquareCardArr}
-                  onRemove={() => {
-                    this.onRemove(index, 3);
-                  }}
-                  onChangeSelect={(subIndex, e) => {
-                    this.onChangeSelect(subIndex, e, index, 3);
-                  }}
-                  onUpdateSquareCardArr={() => {
-                    this.onUpdateSquareCardArr(SquareCardArr);
-                  }}
-                  onChangeTextArea={(subIndex, e) => {
-                    this.onChangeTextArea(subIndex, e, index, 3);
-                  }}
-                  onChangeDate={(date, dateString, subIndex) => {
-                    this.onChangeDate(date, dateString, subIndex, index);
-                  }}
-                ></SquareCard>
-              );
-            })}
-        </div>
-      </Card>
-    </React.Fragment>
-    )
-    console.log("状态",centerContent)
-    if(record&&record.status === '填写中'){
+        {personInfo && personInfo.status !== '初次填写' ? (
+          <Card
+            title={
+              <React.Fragment>
+                <span style={{ fontSize: '16px', color: '#000' }}>
+                  年度回顾 - 回顾职业目标及发展措施
+                  <span className="personPlan-contain-info-word">
+                    Review of career goals and measures
+                  </span>
+                </span>
+              </React.Fragment>
+            }
+            className="personPlan-contain-info"
+            bordered={true}
+          >
+            <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
+              {this.state.measures &&
+                this.state.measures.map((SquareCardArr, index) => {
+                  return (
+                    <SquareCard
+                      key={index}
+                      icon="noClose"
+                      SquareCardArr={SquareCardArr}
+                      onRemove={() => {
+                        this.onRemove(index, 3);
+                      }}
+                      onChangeSelect={(subIndex, e) => {
+                        this.onChangeSelect(subIndex, e, index, 3);
+                      }}
+                      onUpdateSquareCardArr={() => {
+                        this.onUpdateSquareCardArr(SquareCardArr);
+                      }}
+                      onChangeTextArea={(subIndex, e) => {
+                        this.onChangeTextArea(subIndex, e, index, 3);
+                      }}
+                      onChangeDate={(date, dateString, subIndex) => {
+                        this.onChangeDate(date, dateString, subIndex, index);
+                      }}
+                    ></SquareCard>
+                  );
+                })}
+            </div>
+          </Card>
+        ) : null}
+      </React.Fragment>
+    );
+    if (personInfo && personInfo.status === '填写中') {
+      return centerContent;
+    } else {
       return (
-        centerContent
-      )
-    }else{
-      return (<React.Fragment> {centerContent}{bottomContent}</React.Fragment>)
+        <React.Fragment>
+          {centerContent}
+          {bottomContent}
+        </React.Fragment>
+      );
+    }
+  };
+
+  renderSaveBtn = () => {
+    if (this.props.role === 'HR') {
+      return (
+        <Popconfirm
+          title="你确定要保存吗"
+          onConfirm={this.onSave}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+        </Popconfirm>
+      );
+    } else {
+      if (
+        this.state.checkType === 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isPersonSubmit !== 'Y' &&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType !== 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      }
+    }
+  };
+  renderSubmitBtn = () => {
+    if (this.props.role === 'HR') {
+      return (
+        <Popconfirm
+          title="你确定要提交吗"
+          onConfirm={this.onSubmit}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="primary" className="personPlan-contain-bottom-leftbtn">
+            提交
+          </Button>
+        </Popconfirm>
+      );
+    } else {
+      if (
+        this.state.checkType === 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isPersonSubmit !== 'Y'&&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType !== 'oneself' &&
+        this.state.isUpdateAuth === 'Y' &&
+        this.state.personInfo.isMangerSubmit !== 'Y'&&
+        this.state.personInfo.isAffirm !== 'Y'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
+      }
     }
   };
   render() {
-    const {
-      personInfo,
-      SquareCardArr,
-      plans,
-      plainOptions,
-      measures,
-      record
-    } = this.state;
+    const { personInfo } = this.state;
     return (
-      <div style={{ width: '100%', display: 'flex', background: '#fff' }}>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          background: '#fff'
+        }}
+      >
         <div className="personPlan-contain">
           <span
             style={{
@@ -1000,7 +1247,7 @@ class PersonPlan extends React.Component {
           </span>
           <span
             style={{
-              color: 'rgba(0,0,0,.65)',
+              color: '#999',
               fontSize: '20px',
               marginBottom: '40px'
             }}
@@ -1024,98 +1271,120 @@ class PersonPlan extends React.Component {
                 <span className="personPlan-contain-info-filed-word">
                   工号：
                 </span>
-                <span>{personInfo.jobNumber}</span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.jobNumber}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
                 <span className="personPlan-contain-info-filed-word">
                   姓名：
                 </span>
-                <span>{personInfo.memberName}</span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.memberName}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
                 <span className="personPlan-contain-info-filed-word">
                   主管编号：
                 </span>
-                <span>{personInfo.directorId}</span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.directorId}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
                 <span className="personPlan-contain-info-filed-word">
                   部门：
                 </span>
-                <span>{personInfo.department}</span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.department}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
                 <span className="personPlan-contain-info-filed-word">
                   级别：
                 </span>
-                <span>{personInfo.level}</span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.level}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
-                人数：{personInfo.num}
+                <span className="personPlan-contain-info-filed-word">
+                  人数：
+                </span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.num}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
-                发起时间：{personInfo.startTime}
+                <span className="personPlan-contain-info-filed-word">
+                  发起时间：
+                </span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.startTime}
+                </span>
               </div>
               <div className="personPlan-contain-info-filed">
-                状态：{personInfo.status}
+                <span className="personPlan-contain-info-filed-word">
+                  状态：
+                </span>
+                <span className="personPlan-contain-info-filed-wordValue">
+                  {personInfo.status}
+                </span>
               </div>
             </div>
           </Card>
-          {this.renderCard()}:
-         
-          }
+          {this.renderCard()}
         </div>
         <div className="personPlan-contain-bottom">
           <div className="personPlan-contain-bottom-btns">
-            <Popconfirm
-              title="你确定要保存吗"
-              onConfirm={this.onSave}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="personPlan-contain-bottom-leftbtn">
-                保存
-              </Button>
-            </Popconfirm>
-            <Popconfirm
-              title="你要确认吗"
-              onConfirm={this.onCheck}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="personPlan-contain-bottom-leftbtn">
-                确认
-              </Button>
-            </Popconfirm>
-            <Popconfirm
-              title="你确定要提交吗"
-              onConfirm={this.onSubmit}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                type="primary"
-                className="personPlan-contain-bottom-leftbtn"
+            {this.renderSaveBtn()}
+            {/* {this.state.isUpdateAuth === 'Y' || this.props.role === 'HR' 
+            &&
+            
+            this.state.checkType === 'oneself' &&
+            this.state.isUpdateAuth === 'Y' &&
+            this.state.personInfo.isPersonSubmit !== 'Y' 
+             ? (
+              <Popconfirm
+                title="你确定要保存吗"
+                onConfirm={this.onSave}
+                okText="Yes"
+                cancelText="No"
               >
-                提交
-              </Button>
-            </Popconfirm>
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  保存
+                </Button>
+              </Popconfirm>
+            ) : null} */}
+            {this.state.checkType === 'oneself' &&
+            this.state.personInfo.isMangerSubmit === 'Y' &&
+            this.state.personInfo.isAffirm !== 'Y' ? (
+              <Popconfirm
+                title="你要确认吗"
+                onConfirm={this.onAffirm}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  确认
+                </Button>
+              </Popconfirm>
+            ) : this.state.checkType !== 'oneself' &&
+              this.state.personInfo.isPersonSubmit === 'Y' &&
+              this.state.personInfo.isAffirm !== 'Y' ? (
+              <Popconfirm
+                title="你要确认吗"
+                onConfirm={this.onAffirm}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  确认
+                </Button>
+              </Popconfirm>
+            ) : null}
+            {this.renderSubmitBtn()}
           </div>
-          {/* <div>
-            <Popconfirm
-              title="你确定要删除吗"
-              onConfirm={this.onSubmit}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                type="danger"
-                className="personPlan-contain-bottom-rightbtn"
-              >
-                删除
-              </Button>
-            </Popconfirm>
-          </div> */}
         </div>
         {/* <div className="info-line">
           <Timeline>

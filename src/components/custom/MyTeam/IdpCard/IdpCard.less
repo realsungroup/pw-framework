@@ -7,7 +7,27 @@
   // justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  &-back {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px;
+    bottom: 80px;
+    background: #fff;
+    z-index: 999;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  &-back:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    // scale: 1.1;
+    font-size: 18px;
+  }
   .ant-card-head::after {
     content: '';
     display: block;
@@ -22,7 +42,7 @@
     background-size: 16px 1px;
     background-repeat: repeat-x;
   }
-  
+
   &-card {
     width: 568px;
     height: 320px;
@@ -35,9 +55,9 @@
     filter: blur(0px);
     box-shadow: 4px 4px 2px #ccc;
     margin: 20px 0;
-     span{
+    span {
       color: #fff;
-       font-size: 16px
+      font-size: 16px;
     }
     .ant-card-head {
       border-bottom: none !important;
@@ -53,8 +73,10 @@
       height: 207px;
       margin: 6px;
       flex-shrink: 0;
+      
       &-content {
         color: rgba(0, 0, 0, 0.65);
+        margin: 4px 0 ;
       }
     }
   }
@@ -67,4 +89,14 @@
 }
 .image {
   background-image: url('../images/形状@2x.png');
-} 
+}
+.addPlan{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+.total-plan__seed_personnel{
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+}

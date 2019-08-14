@@ -5,12 +5,11 @@
   align-items: center;
   background: #fff;
   overflow: auto;
-  height: calc(100% - 64px);
   &-info {
     width: 95%;
     margin: 6px 0;
     &-word {
-      color: rgba(0, 0, 0, 0.65);
+      color: #999;
       display: block;
     }
     &-fileds {
@@ -20,12 +19,24 @@
     &-filed {
       width: 33.3%;
       &-word {
-        width: 120px;
+        width: 80px;
         display: inline-block;
+      }
+       &-wordValue {
+        color: #999;
       }
     }
   }
-
+  &-smallcards-card{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
+    width: 360px;
+    height: 180px;
+    margin: 10px 10px;
+    box-shadow:0px 2px 10px 0px rgba(0, 0, 0, 0.1)
+  }
   &-plan-check {
     margin: 16px 0px;
   }
@@ -35,7 +46,7 @@
     right: 10px;
   }
   &-bottom {
-    width: 80%;
+    width: calc(100% - 80px);
     height: 64px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -58,4 +69,7 @@
 }
 .info-line {
   margin-top: 90px;
+}
+.ant-steps-icon-dot{
+  // background: #fff;
 }

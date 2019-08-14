@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import FiscalYearPlan from '../FiscalYearPlan/index';
+import SubordinateCoures from '../SubordinateCourses'
 import { Button, Menu, Icon, Switch } from 'antd';
 import './MyTeam.less';
 import http from 'Util20/api';
@@ -9,19 +10,31 @@ import IdpCard from './IdpCard';
 /**
  * 管理员确认
  */
-const role = "HR"
+const role = 'Manger';
 class MyTeam extends React.Component {
-  state = {
-    mode: 'inline',
-    theme: 'light',
-    selectKey: '4',
-    collapsed: false
-  };
+  constructor(props){
+    super(props)
+    this.state = {
+      mode: 'inline',
+      theme: 'light',
+      selectKey: '4',
+      collapsed: false,
+      desktop:null
+    };
+  }
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
   };
+  componentDidMount = () => {
+    const userInfo  = JSON.parse(localStorage.getItem("userInfo"))
+    const desktop = userInfo.UserInfo.EMP_MAINPAGE;
+    console.log("desktop",desktop)
+    this.setState({
+      desktop
+    })
+  }
   renderContent = () => {
     // switch()
     let selectKey = this.state.selectKey;
@@ -29,26 +42,22 @@ class MyTeam extends React.Component {
     switch (selectKey) {
       case '1':
         return (
-            <FiscalYearPlan
-              CreateableGroups={['611769739518']}
-            ></FiscalYearPlan>
+          <FiscalYearPlan CreateableGroups={['611769739518']}></FiscalYearPlan>
         );
       case '2':
-        return (
-            <IdpCard role={role}></IdpCard>
-        );
+        return <SubordinateCoures></SubordinateCoures>
       case '3':
-        return 'ccc';
+        return '';
       case '4':
         return (
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%',height:"100%" }}>
             <IdpCard role={role}></IdpCard>
           </div>
         );
       case '5':
         return '';
       default:
-        return 'aaaa';
+        return '';
     }
   };
   onSelect = e => {
@@ -60,11 +69,8 @@ class MyTeam extends React.Component {
   render() {
     const { loading } = this.state;
     return (
-      <div
-        className="myteam-contain"
-        style={{  display: 'flex' }}
-      >
-        <div style={{width:`${this.state.collapsed ? '80px' : '200px'}`}}>
+      <div className="myteam-contain" style={{ display: 'flex' ,height:this.state.desktop === 'DESKTOP'? '100%':'calc(100vh - 160px)' }}>
+        <div style={{ width: `${this.state.collapsed ? '80px' : '200px'}` }}>
           <div
             style={{
               width: '20px',
@@ -74,10 +80,10 @@ class MyTeam extends React.Component {
               position: 'absolute',
               background: '#1890ff',
               left: this.state.collapsed ? '79px' : '200px',
-              top: (this.state.selectKey - 1) * 48 + 4 + 'px',
+              top:  this.state.desktop === 'DESKTOP'? (this.state.selectKey - 1) * 48 + 4 + 'px' :(this.state.selectKey - 1) * 48 + 164 + 'px',
               display: 'flex',
               alignItems: 'center',
-              zIndex:"999",
+              zIndex: '999',
               justifyContent: 'center',
               boxShadow: '0px 0px 4px 0px rgba(24,144,255,0.4)'
             }}
@@ -88,13 +94,6 @@ class MyTeam extends React.Component {
               style={{ fontSize: '20px', color: '#fff', marginLeft: '-8px' }}
             />
           </div>
-          {/* <Button
-            type="primary"
-            onClick={this.toggleCollapsed}
-           
-          >
-            <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
-          </Button> */}
           <Menu
             style={{ height: '100%' }}
             defaultSelectedKeys={['4']}
@@ -129,12 +128,15 @@ class MyTeam extends React.Component {
         </div>
         <div
           style={{
-            overflow:"auto",
-            width: `${this.state.collapsed?"calc(100% - 40px)":"calc(100% - 200px)"}`
+            overflow: 'auto',
+            width: `${
+              this.state.collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'
+            }`
           }}
         >
           {this.renderContent()}
         </div>
+      
       </div>
     );
   }

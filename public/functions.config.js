@@ -755,7 +755,7 @@ window[606242031630] = {
   } // 组件所接收的 props
 };
 
-window[608050884937] = {
+window[618661462541] = {
   name: 'TableDataInner',
   title: '内部推荐',
   props: {
@@ -1610,7 +1610,7 @@ window[616504759208] = {
 };
 
 //DL招聘————显示考试签到二维码
-window[617900923941] = {
+window[618661338339] = {
   name: 'ExaminationQRCode',
   title: '签到二维码'
 };
@@ -1626,8 +1626,22 @@ window[616081514704] = {
   name: 'TableData',
   title: '测试'
 };
-window[616504759208] = {
-  name: 'MyTeam',
-  title: '我的团队'
+// window[616504759208] = {
+// window[617733136657] = {
+//   name: 'MyTeam',
+//   title: '我的团队'
+// };
+// window[618508577260] = {
+//   name: 'MyTeam',
+//   title: '我的团队'
+// };
+// }
+
+window[618572873186] = {
+  name: 'IDPMangement',
+  title: '员工个人发展管理'
 };
-//617733136657
+window[618665452476] = {
+  name: 'DLEmploy',
+  title: '员工个人发展管理'
+};
