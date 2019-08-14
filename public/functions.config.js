@@ -1615,6 +1615,12 @@ window[617900923941] = {
   title: '签到二维码'
 };
 
+//DL招聘————问询系统
+window[619022238607] = {
+  name: 'EnquirySystem',
+  title: '问询中心'
+};
+
 // 616081514704
 window[616081514704] = {
   name: 'TableData',
