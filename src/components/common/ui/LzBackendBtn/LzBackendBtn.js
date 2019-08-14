@@ -69,7 +69,7 @@ class LzBackendBtn extends React.PureComponent {
 
       this.p1 = makeCancelable(
         
-        http({httpParams}).dealButton({
+        http(httpParams).dealButton({
           resid,
           recids,
           strCommand: Code
