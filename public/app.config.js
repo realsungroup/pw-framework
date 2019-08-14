@@ -6,7 +6,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://114.55.58.57:9096/',
+    baseURL: 'http://10.108.2.66:1000',
     fileDownloadUrl: 'http://pwhr1.realsun.me/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
