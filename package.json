@@ -64,6 +64,7 @@
     "jest-pnp-resolver": "1.0.1",
     "jest-resolve": "23.6.0",
     "js-export-excel": "^1.1.2",
+    "js-sha1": "^0.6.0",
     "jspdf": "^1.5.3",
     "less": "3.9.0",
     "less-loader": "^4.1.0",

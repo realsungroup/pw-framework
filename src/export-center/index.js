@@ -99,6 +99,7 @@ export { InternalTraining } from '../components/custom/loadableCustom';
 export { ViewPlan } from '../components/custom/loadableCustom';
 export { SubordinateCourses } from '../components/custom/loadableCustom';
 export { ExaminationQRCode } from '../components/custom/loadableCustom';
+export { EnquirySystem } from '../components/custom/loadableCustom';
 export { MyTeam } from '../components/custom/loadableCustom';
 export { IDPMangement } from '../components/custom/loadableCustom';
 export { DLEmploy } from '../components/custom/loadableCustom';
