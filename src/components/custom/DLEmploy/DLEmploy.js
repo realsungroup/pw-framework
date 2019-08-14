@@ -1,6 +1,4 @@
 import React from 'react';
-import { TableData } from '../../common/loadableCommon';
-import FiscalYearPlan from '../FiscalYearPlan/index';
 import JobInterviewRecord from './JobInterviewRecord';
 import JobPeopleList from './JobPeopleList';
 import PastInterviewList from './PastInterviewList';
@@ -21,7 +19,7 @@ class DLEmploy extends React.Component {
     this.state = {
       mode: 'inline',
       theme: 'light',
-      selectKey: '4',
+      selectKey: '1',
       collapsed: false
     };
   }
@@ -91,7 +89,7 @@ class DLEmploy extends React.Component {
           </div>
           <Menu
             style={{ height: '100%' }}
-            defaultSelectedKeys={['4']}
+            defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             theme={this.state.theme}
