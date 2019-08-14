@@ -46,9 +46,14 @@ class LzBackendBtn extends React.PureComponent {
   _formData = null;
   _defaultRecord = null;
   onConfirm = async () => {
-    const { resid, records, onConfirm, btnInfo, backendBtnType, recordFormDisplayMode } = this.props;
+    const { resid, records, onConfirm, btnInfo, backendBtnType, recordFormDisplayMode,baseUrl } = this.props;
     const { Code, OkMsgCn, FailMsgCn, Type } = btnInfo;
+    const httpParams={};
+    if (baseUrl)
+    {
+      httpParams.baseUrl=baseUrl;
 
+    }
     // 点击后端按钮，请求后台
     if (Type === 1 || Type === 5) {
       let res,
@@ -62,7 +67,8 @@ class LzBackendBtn extends React.PureComponent {
           : (recids += record.REC_ID + ',');
       });
       this.p1 = makeCancelable(
-        http().dealButton({
+        
+        http({httpParams}).dealButton({
           resid,
           recids,
           strCommand: Code
