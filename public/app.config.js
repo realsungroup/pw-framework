@@ -5,20 +5,20 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
-    // baseURL: 'http://kingofdinner.realsun.me:1201/', // 请求的基地址
-      //  baseURL:'http://hr.realsun.me:8081/',
+    // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
+    //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66/', // 导出 Excel 文件下载基地址
-   
+
     // 个人中心配置
     personCenterResIds: [
       {
         title: '基本信息', // 标题：必选
         enTitle: 'Basic Info',
         resid: 1300, // resid：必选
-        formName: 'default',// 窗体名称：可选；不设置时默认为 'default'
-        dbLinkName:'EHR'
+        formName: 'default', // 窗体名称：可选；不设置时默认为 'default'
+        dbLinkName: 'EHR'
       }
     ],
 
@@ -34,7 +34,13 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315,609157644640], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [
+      591549158605,
+      605787603655,
+      608290060436,
+      607189833315,
+      609157644640
+    ], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
@@ -58,9 +64,9 @@ window.pwConfig = {
     upload: {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
-      url: 'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+      url:
+        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
-
 
     // 工作台配置
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
@@ -109,7 +115,8 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -119,7 +126,7 @@ window.pwConfig = {
         enTitle: 'Basic Info',
         resid: 1300, // resid：必选
         formName: 'default', // 窗体名称：可选；不设置时默认为 'default'
-        dbLinkName:'EHR'
+        dbLinkName: 'EHR'
       }
     ],
 
@@ -135,7 +142,12 @@ window.pwConfig = {
     enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
-    businessOptionalResIds: [591549158605, 605787603655,608290060436,607189833315], // 获取多个业务可选功能的 resid 数组
+    businessOptionalResIds: [
+      591549158605,
+      605787603655,
+      608290060436,
+      607189833315
+    ], // 获取多个业务可选功能的 resid 数组
 
     // 主题
     themeColor: {
@@ -154,7 +166,8 @@ window.pwConfig = {
     upload: {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
-      url: 'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+      url:
+        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
