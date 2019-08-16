@@ -1,0 +1,68 @@
+#probation-forms {
+  height: 100%;
+  background-color: #fff;
+  padding-left: 2.78vw;
+  .probation-forms_goback {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    background: #fff;
+    z-index: 999;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .probation-forms_goback:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+  }
+
+  .probation-form {
+    margin-bottom: 24px;
+    .card_title_name__en {
+      color: #999;
+      padding-left: 16px;
+    }
+  }
+  header {
+    text-align: center;
+    padding-top: 32px;
+    padding-bottom: 40px;
+    h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+    p {
+      font-size: 22px;
+      margin: 0;
+    }
+  }
+  .probation-forms_main {
+    display: flex;
+    padding-bottom: 80px;
+    &_tables {
+      flex: 1;
+    }
+    &_sider {
+      width: 176px;
+      padding-left: 21px;
+    }
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    padding: 0 2.78vw;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+}

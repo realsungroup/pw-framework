@@ -408,22 +408,28 @@ export const EnquirySystem = Loadable({
     return minLoading;
   }
 });
+export const HRProbation = Loadable({
+  loader: () => import('./Probation/HRProbation'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const MyTeam = Loadable({
   loader: () => import('./MyTeam'),
   loading() {
     return minLoading;
   }
-})
+});
 export const IDPMangement = Loadable({
   loader: () => import('./MyTeam/IDPMangement'),
   loading() {
     return minLoading;
   }
-})
+});
 export const DLEmploy = Loadable({
   loader: () => import('./DLEmploy'),
   loading() {
     return minLoading;
   }
-})
+});
