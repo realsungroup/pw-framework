@@ -90,7 +90,7 @@ export default class Import extends React.Component {
     const httpParams={};
     if (this.props.baseURL)
     {
-      httpParams.baseURL=baseURL;
+      httpParams.baseURL=this.props.baseURL;
 
     }
     this.state = {
