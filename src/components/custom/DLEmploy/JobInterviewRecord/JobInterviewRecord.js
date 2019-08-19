@@ -1,6 +1,7 @@
 import React from 'react';
 import './JobInterviewRecord.less';
 import TableData from '../../../common/data/TableData';
+import { Icon, LocaleProvider, Button, message } from 'antd';
 class JobInterviewRecord extends React.Component {
   constructor(props) {
     super(props);
@@ -14,8 +15,8 @@ class JobInterviewRecord extends React.Component {
       <TableData
         baseURL = 'http://kingofdinner.realsun.me:1201/'
         resid={617311643033}
-        subtractH={220}
-        hasBeBtns={false}
+        subtractH={520}
+        hasBeBtns={true}
         hasRowSelection={false}
         hasAdd={true}
         hasRowView={false}
@@ -24,7 +25,8 @@ class JobInterviewRecord extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-      ></TableData>
+      >
+      </TableData>
     );
   }
 }
