@@ -1632,11 +1632,10 @@ window[616081514704] = {
 //   name: 'MyTeam',
 //   title: '我的团队'
 // };
-// window[618508577260] = {
-//   name: 'MyTeam',
-//   title: '我的团队'
-// };
-// }
+window[618508577260] = {
+  name: 'MyTeam',
+  title: '个人发展中心'
+};
 
 window[618572873186] = {
   name: 'IDPMangement',

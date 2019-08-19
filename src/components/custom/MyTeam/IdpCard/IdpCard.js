@@ -333,7 +333,7 @@ class IdpCard extends React.Component {
     let currentPlan = this.state.currentPlan;
     let role = this.props.role;
     if (role === 'HR') {
-      switch (currentPlan.status) {
+      switch (currentPlan&&currentPlan.status) {
         case '初次填写':
           return (
             <span>

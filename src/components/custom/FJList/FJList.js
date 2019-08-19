@@ -285,7 +285,7 @@ class FJList extends React.Component {
   async addCustom() {
     if (
       this.state.totalData.C3_611074040082 <
-      this.state.data[this.state.listIndex].C3_611409509831 +
+      // this.state.data[this.state.listIndex].C3_611409509831 +
         Number(this.state.addCustom.C3_609616906353)
     ) {
       message.error('已超出人均预算');
