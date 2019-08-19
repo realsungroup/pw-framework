@@ -6,7 +6,6 @@ import { Card, Select, Input, Icon, Popconfirm, DatePicker } from 'antd';
 const { TextArea } = Input;
 const MentorshipRecord = props => {
   let { mentorshipRecord } = props;
-  console.log(mentorshipRecord);
   return (
     <div id="mentorshi-record" className="probation-form">
       <Card

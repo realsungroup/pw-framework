@@ -1,37 +1,39 @@
 import React from 'react';
 import './OnTheJobTraining.less';
-import { Card, Table, Button } from 'antd';
+import { Card, Table, Button, Popconfirm } from 'antd';
 
-const { Column } = Table;
-
-const data = [
+const columns = [
   {
-    key: '1',
-    no: '1',
-    courses: '行政管理制度、工会介绍',
-    trainer: '邓铭',
-    date: '2019-08-07'
+    title: '序号/No',
+    dataIndex: 'no'
   },
   {
-    key: '2',
-    no: '2',
-    courses: '行政管理制度、工会介绍',
-    trainer: '邓铭',
-    date: '2019-08-07'
+    title: '课程/Courses',
+    dataIndex: 'courses',
+    editable: true
   },
   {
-    key: '3',
-    no: '3',
-    courses: '行政管理制度、工会介绍',
-    trainer: '邓铭',
-    date: '2019-08-07'
+    title: '培训师/Trainer',
+    dataIndex: 'trainer'
   },
   {
-    key: '4',
-    no: '4',
-    courses: '行政管理制度、工会介绍',
-    trainer: '邓铭',
-    date: '2019-08-07'
+    title: '培训日期/Date',
+    dataIndex: 'date'
+  },
+  {
+    title: 'operation',
+    dataIndex: 'operation',
+    render: (text, record) => (
+      <div>
+        <a href="javascript:;">修改</a> |
+        <Popconfirm
+          title="确认删除吗?"
+          onConfirm={() => this.handleDelete(record.key)}
+        >
+          <a href="javascript:;">删除</a>
+        </Popconfirm>
+      </div>
+    )
   }
 ];
 const OnTheJobTraining = props => {
@@ -44,26 +46,22 @@ const OnTheJobTraining = props => {
             <span className="card_title_name__en">On-the-job Training</span>
           </React.Fragment>
         }
-        extra={<Button>添加记录</Button>}
-      >
-        <Table dataSource={data} pagination={false}>
-          <Column title="序号/No" dataIndex="no" key="no" />
-          <Column title="课程/Courses" dataIndex="courses" key="courses" />
-          <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
-          <Column title="培训日期/Date" dataIndex="date" key="date" />
-          <Column
-            title="操作/operation"
-            render={() => {
-              return (
-                <div>
-                  <a href="javascript:;">修改</a> |
-                  <a href="javascript:;">删除</a>
-                </div>
-              );
+        extra={
+          <Button
+            onClick={() => {
+              props.setAddOnJobTrainingVisible(true);
             }}
-            key="operation"
-          />
-        </Table>
+          >
+            添加记录
+          </Button>
+        }
+      >
+        <Table
+          dataSource={props.onTheJobTraining}
+          pagination={false}
+          columns={columns}
+          rowClassName={() => 'editable-row'}
+        />
       </Card>
     </div>
   );

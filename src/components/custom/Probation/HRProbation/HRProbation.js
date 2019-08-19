@@ -53,6 +53,10 @@ class HRProbation extends React.Component {
 
   goBack = () => this.setState({ isShowTable: true });
 
+  setIsShowTable = isShowTable => {
+    this.setState({ isShowTable });
+  };
+
   render() {
     return (
       <div id="hr-probation">
@@ -87,6 +91,7 @@ class HRProbation extends React.Component {
             employeeInfo={this.state.selectedRecord}
             goBack={this.goBack}
             roleName="hr"
+            setIsShowTable={this.setIsShowTable}
           />
         )}
       </div>
