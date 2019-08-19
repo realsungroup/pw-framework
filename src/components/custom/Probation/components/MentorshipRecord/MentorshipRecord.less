@@ -1,0 +1,42 @@
+#mentorshi-record {
+  .mentorshi-record_cards {
+    display: flex;
+    flex-wrap: wrap;
+    .mentorshi-record_card__wrapper {
+      width: 33.33%;
+    }
+    .mentorshi-record_card {
+      width: 25.49vw;
+      padding: 1.67vw 1.46vw;
+      box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(232, 232, 232, 1);
+      position: relative;
+      margin: 0 auto 16px;
+      &_action-btn__delete {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      &_item {
+        margin-bottom: 16px;
+      }
+    }
+  }
+  .mentorshi-record_card__addition {
+    width: 25.49vw;
+    text-align: center;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(232, 232, 232, 1);
+    padding: 27px;
+    height: auto;
+    align-self: flex-start;
+    margin: 0 auto;
+    cursor: pointer;
+    p {
+      margin: 0;
+    }
+    &_icon {
+      font-size: 48px;
+    }
+  }
+}

@@ -290,6 +290,11 @@ http.createApi('saveRecordAndSubTables', {
   url: '/api/200/table/Save'
 });
 
+http.createApi('getRecordAndSubTables', {
+  method: 'get',
+  url: '/api/200/table/Retrieve'
+});
+
 /**
  * 开始自动导入
  * 参数：{ id }
@@ -312,7 +317,7 @@ http.createApi('PostRunAutoImport', {
 
 /**
  * 获取任务进度
- * 
+ *
  */
 http.createApi('getAutoImportStatus', {
   method: 'get',
@@ -365,6 +370,5 @@ http.createApi('RetrieveSaveTask', {
   method: 'get',
   url: '/api/tablethread/RetrieveSaveTask'
 });
-
 
 export default http;

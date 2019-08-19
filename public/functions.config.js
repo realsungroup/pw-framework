@@ -1611,7 +1611,7 @@ window[616504759208] = {
 };
 
 //DL招聘————显示考试签到二维码
-window[618661338339] = {
+window[617900923941] = {
   name: 'ExaminationQRCode',
   title: '签到二维码'
 };
@@ -1622,19 +1622,21 @@ window[619022238607] = {
   title: '问询中心'
 };
 
+//试用期管理————HR
+window[619175063394] = {
+  name: 'HRProbation',
+  title: '试用期管理'
+};
+
 // 616081514704
 window[616081514704] = {
   name: 'TableData',
   title: '测试'
 };
-// window[616504759208] = {
-// window[617733136657] = {
-//   name: 'MyTeam',
-//   title: '我的团队'
-// };
+
 window[618508577260] = {
   name: 'MyTeam',
-  title: '个人发展中心'
+  title: '我的团队'
 };
 
 window[618572873186] = {
