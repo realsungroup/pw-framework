@@ -1,7 +1,8 @@
 import React from 'react';
-import './AbilityMangement.less';
+import './JobInterviewRecord.less';
 import TableData from '../../../common/data/TableData';
-class AbilityMangement extends React.Component {
+import { Icon, LocaleProvider, Button, message } from 'antd';
+class JobInterviewRecord extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -12,9 +13,10 @@ class AbilityMangement extends React.Component {
   render() {
     return (
       <TableData
-        resid={618000231193}
-        subtractH={220}
-        hasBeBtns={false}
+        baseURL = 'http://kingofdinner.realsun.me:1201/'
+        resid={617311643033}
+        subtractH={520}
+        hasBeBtns={true}
         hasRowSelection={false}
         hasAdd={true}
         hasRowView={false}
@@ -23,9 +25,10 @@ class AbilityMangement extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-      ></TableData>
+      >
+      </TableData>
     );
   }
 }
 
-export default AbilityMangement;
+export default JobInterviewRecord;

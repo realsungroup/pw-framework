@@ -173,6 +173,7 @@ class MyExam extends Component {
     return (
       <div style={{ height: '100vh' }}>
         <TableData
+          {...this.props}
           resid={609931927812}
           hasRowModify={false}
           hasRowView={false}

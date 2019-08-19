@@ -86,7 +86,13 @@ export default class Import extends React.Component {
   static defaultProps = {};
   constructor(props) {
     super(props);
+    
+    const httpParams={};
+    if (this.props.baseURL)
+    {
+      httpParams.baseURL=this.props.baseURL;
 
+    }
     this.state = {
       list: [],
       errMsgItem: {},
@@ -97,7 +103,8 @@ export default class Import extends React.Component {
       columninfo: [], // 字段数据
       feMessages: [], // 前端模式处理 Excel 时，的错误字符串数据
       feRecords: [], // excel 中的记录
-      progressIndex: 0
+      progressIndex: 0,
+      httpParams
     };
   }
 
@@ -122,7 +129,7 @@ export default class Import extends React.Component {
     if (mode === 'be') {
       let res;
       this.p1 = makeCancelable(
-        http().getImportConfigs({ resid: this.props.resid, dblinkname })
+        http(this.state.httpParams).getImportConfigs({ resid: this.props.resid, dblinkname })
       );
       try {
         res = await this.p1.promise;
@@ -140,7 +147,7 @@ export default class Import extends React.Component {
       // 获取列定义数据
       let res;
       try {
-        res = await http().getTableColumnDefine({ resid, dblinkname });
+        res = await http(this.state.httpParams).getTableColumnDefine({ resid, dblinkname });
       } catch (err) {
         this.setState({ loading: false });
         console.error(err);
@@ -178,7 +185,7 @@ export default class Import extends React.Component {
     item.timer = setTimeout(async () => {
       let res;
       this.p4 = makeCancelable(
-        http().importingService({
+        http(this.state.httpParams).importingService({
           ImportTaskId: item.taskId,
           cmd: 'GetImportStatus',
           dblinkname
@@ -229,7 +236,7 @@ export default class Import extends React.Component {
     const { dblinkname } = this.props;
     let res;
     this.p5 = makeCancelable(
-      http().importingService({
+      http(this.state.httpParams).importingService({
         ImportTaskId: item.taskId,
         cmd: 'PauseImport',
         dblinkname
@@ -257,7 +264,7 @@ export default class Import extends React.Component {
     const { dblinkname } = this.props;
     let res;
     this.p2 = makeCancelable(
-      http().importingService({
+      http(this.state.httpParams).importingService({
         ImportTaskId: item.taskId,
         cmd: 'ResumeImport',
         dblinkname
@@ -281,7 +288,7 @@ export default class Import extends React.Component {
     const { dblinkname } = this.props;
     let res;
     this.p3 = makeCancelable(
-      http().importingService({
+      http(this.state.httpParams).importingService({
         ImportTaskId: item.taskId,
         cmd: 'TerminateImport',
         dblinkname
@@ -373,7 +380,7 @@ export default class Import extends React.Component {
     const { saveState, dblinkname } = this.props;
     let res;
     try {
-      res = await http().addRecords({
+      res = await http(this.state.httpParams).addRecords({
         resid,
         data: [record],
         isEditOrAdd: saveState === 'editoradd',

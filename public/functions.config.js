@@ -1616,14 +1616,27 @@ window[618661338339] = {
   title: '签到二维码'
 };
 
+//DL招聘————问询系统
+window[619022238607] = {
+  name: 'EnquirySystem',
+  title: '问询中心'
+};
+
+// 616081514704
+window[616081514704] = {
+  name: 'TableData',
+  title: '测试'
+};
+// window[616504759208] = {
 // window[617733136657] = {
 //   name: 'MyTeam',
 //   title: '我的团队'
 // };
-window[618508577260] = {
-  name: 'MyTeam',
-  title: '我的团队'
-};
+// window[618508577260] = {
+//   name: 'MyTeam',
+//   title: '我的团队'
+// };
+// }
 
 window[618572873186] = {
   name: 'IDPMangement',

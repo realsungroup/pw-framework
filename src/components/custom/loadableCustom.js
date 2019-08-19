@@ -394,8 +394,16 @@ export const SubordinateCourses = Loadable({
     return minLoading;
   }
 });
+
 export const ExaminationQRCode = Loadable({
   loader: () => import('./ExaminationQRCode'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const EnquirySystem = Loadable({
+  loader: () => import('./EnquirySystem'),
   loading() {
     return minLoading;
   }
