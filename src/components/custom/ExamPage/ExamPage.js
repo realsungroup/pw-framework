@@ -65,7 +65,8 @@ export default class ExamPage extends Component {
     timeRemaining: 1, // 剩余时间（秒）
     hasGetTime: false, // 是否已获取到了剩余时间
     shortcutsLeft: 1000,
-    record: null
+    record: null,
+    li:null
   };
 
   componentDidMount = async () => {
@@ -133,7 +134,8 @@ export default class ExamPage extends Component {
     // 改试卷是否已提交
     let record = res.data[0];
     this.dealRecord(record);
-
+    let li =   record.C3_619539613886.split("（")
+    console.log("li",li)
     if (record.C3_607198887973 === 'Y') {
       return this.setState({
         hasSubmit: true,
@@ -142,6 +144,11 @@ export default class ExamPage extends Component {
         hasGetTime: true,
         myExamRecord
       });
+    }else{
+      this.setState({
+        record,
+        li:li
+      })
     }
 
     // “考试批次答题表” 数据
@@ -794,6 +801,13 @@ export default class ExamPage extends Component {
         <Spin spinning={loading}>
           <div className="exam-page">
             <h1 style={{ textAlign: 'center' }}>{examName}</h1>
+           <div className='exam-page-rule'>考试规则：{this.state.li&&this.state.li.map((item) => {
+             console.log("item",item)
+              return <div>{item}</div>
+        })}
+        </div> 
+        <div >考试说明：</div>
+        <div className='exam-page-rule'>{this.state.record&&this.state.record.C3_619539624227}</div>
             {hasGetTime && (
               <div className="exam-page__time-remaining">
                 <h1 className="exam-page__time-remaining-title">考试倒计时</h1>

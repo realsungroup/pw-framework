@@ -47,14 +47,12 @@ class MyTeam extends React.Component {
       case '2':
         return <SubordinateCoures></SubordinateCoures>
       case '3':
-        return '';
-      case '4':
         return (
           <div style={{ width: '100%',height:"100%" }}>
             <IdpCard role={role}></IdpCard>
           </div>
         );
-      case '5':
+      case '4':
         return '';
       default:
         return '';
@@ -114,13 +112,9 @@ class MyTeam extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="calendar" />
-              <span> 团队发展 </span>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Icon type="calendar" />
               <span> IDP管理 </span>
             </Menu.Item>
-            <Menu.Item key="5">
+            <Menu.Item key="4">
               <Icon type="calendar" />
               <span> 试用期管理</span>
             </Menu.Item>

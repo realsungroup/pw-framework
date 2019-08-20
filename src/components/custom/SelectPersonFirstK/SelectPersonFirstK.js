@@ -214,7 +214,7 @@ class SelectPersonFirstK extends Component {
                       this.handleSendEmail(dataSource, selectedRowKeys);
                     }}
                   >
-                    <Button>发送补考通知邮件</Button>
+                    {/* <Button>发送补考通知邮件</Button> */}
                   </Popconfirm>
                 );
               }}

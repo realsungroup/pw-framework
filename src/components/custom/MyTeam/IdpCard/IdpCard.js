@@ -9,7 +9,7 @@ import {
   Tag,
   notification,
   Modal,
-  Progress
+  Progress,
 } from 'antd';
 import './IdpCard.less';
 import http from 'Util20/api';
@@ -21,9 +21,10 @@ import PersonPlan from './PersonPlan';
  */
 
 const customDot = (dot, { status, index }) => (
-  <Popover content={<span>状态: {status}</span>}>{dot}</Popover>
+  <Popover content={<span>状态: {status === 'finish'?'已结束':status==='wait'?'等待中':'进行中'} </span>}>{dot}</Popover>
 );
 const { Step } = Steps;
+const { confirm } = Modal;
 const developmentPersonID = '617725883137'; //发展人员表
 const hrMangerID = '617725533684'; //发展计划总表
 const autoTaskID = '618594705773';
@@ -71,6 +72,26 @@ class IdpCard extends React.Component {
     let res;
     let currentPlan = this.state.currentPlan;
     currentPlan.status = '年末回顾';
+    try {
+      res = http().modifyRecords({
+        resid: hrMangerID,
+        data: [currentPlan]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+      }
+      this.setState({
+        currentPlan
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  //结束计划
+  onStopPlan = () => {
+    let res;
+    let currentPlan = this.state.currentPlan;
+    currentPlan.status = '已完成';
     try {
       res = http().modifyRecords({
         resid: hrMangerID,
@@ -170,13 +191,13 @@ class IdpCard extends React.Component {
       }, 1000);
     }
   };
-  onRunAutoTask = async () => {
+  onRunAutoTask = async (projectId) => {
     let res;
     try {
       res = await http().PostRunAutoImport({
         id: autoTaskID,
         parms: {
-          projectId: this.state.currentPlan.projectId
+          projectId: projectId
         }
       });
     } catch (err) {
@@ -187,20 +208,31 @@ class IdpCard extends React.Component {
   };
   //添加发展计划
   onAdd = async () => {
-    let res;
-    try {
-      res = await http().addRecords({
-        resid: hrMangerID,
-        data: [{}]
+    // let that = this;
+      confirm({
+        title: '你确定要开启新的发展计划吗?',
+        content: '在开启之前，请确保历史财年的计划已经结束！',
+        onOk :async() =>{
+          let res;
+          try {
+            res = await http().addRecords({
+              resid: hrMangerID,
+              data: [{}]
+            });
+            if (res.Error === 0) {  
+              message.success(res.message);
+              this.onRunAutoTask(res.data[0].projectId);
+              this.getData();
+            }
+          } catch (error) {
+            message.error(error.message);
+          }
+        },
+        onCancel:function() {
+        },
+        
       });
-      if (res.Error === 0) {
-        message.success(res.message);
-        this.onRunAutoTask();
-        this.getData();
-      }
-    } catch (error) {
-      message.error(error.message);
-    }
+      
   };
   //查看团队
   onCheckTeam = currentRecord => {
@@ -301,7 +333,7 @@ class IdpCard extends React.Component {
     let currentPlan = this.state.currentPlan;
     let role = this.props.role;
     if (role === 'HR') {
-      switch (currentPlan.status) {
+      switch (currentPlan&&currentPlan.status) {
         case '初次填写':
           return (
             <span>
@@ -331,7 +363,6 @@ class IdpCard extends React.Component {
               <Popconfirm
                 title="确认发起年末回顾吗?"
                 onConfirm={this.onEndBack}
-                onCancel={this}
                 okText="Yes"
                 cancelText="No"
               >
@@ -351,13 +382,12 @@ class IdpCard extends React.Component {
           return (
             <React.Fragment>
               <Popconfirm
-                title="确认发起年末回顾吗?"
-                onConfirm={this.onEndBack}
-                onCancel={this}
+                title="确认结束计划吗?"
+                onConfirm={this.onStopPlan}
                 okText="Yes"
                 cancelText="No"
               >
-                <span>发起年末回顾</span>
+                <span>结束</span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
               <span
@@ -368,6 +398,16 @@ class IdpCard extends React.Component {
                 查看
               </span>
             </React.Fragment>
+          );
+        case '已完成':
+          return (
+            <span
+              onClick={() => {
+                this.onCheckTeam(this.state.currentPlan);
+              }}
+            >
+              查看
+            </span>
           );
         default:
           break;
@@ -432,16 +472,16 @@ class IdpCard extends React.Component {
                 extra={this.renderBtns()}
               >
                 <div style={{ float: 'left' }}>
-                  <div>发起时间: {currentPlan.startTime}</div>
+                  <div>发起时间: {currentPlan&&currentPlan.startTime}</div>
                   <br />
-                  <div>进行状态: {currentPlan.status}</div>
+                  <div>进行状态: {currentPlan&&currentPlan.status}</div>
                   <br />
                   <div>
                     {this.props.role === 'HR' ? '参与人数:' : '下属人数:'}
-                    {currentPlan.number}
+                    {currentPlan&&currentPlan.number}
                   </div>
                   <br />
-                  <div>财年: {currentPlan.year}</div>
+                  <div>财年: {currentPlan&&currentPlan.year}</div>
                   <br />
                 </div>
                 <div
@@ -456,9 +496,9 @@ class IdpCard extends React.Component {
                 <div style={{ marginTop: '160px' }}>
                   <Steps
                     current={
-                      currentPlan.status === '初次填写'
+                      currentPlan&&currentPlan.status === '初次填写'
                         ? 0
-                        : currentPlan.status === '年中回顾'
+                        : currentPlan&&currentPlan.status === '年中回顾'
                         ? 1
                         : 3
                     }
@@ -475,7 +515,7 @@ class IdpCard extends React.Component {
                   <Card
                     className="idp-contain-smallcards-card addPlan"
                     onClick={() => {
-                      this.onAdd();
+                      this.onAdd()
                     }}
                   >
                     <Icon
