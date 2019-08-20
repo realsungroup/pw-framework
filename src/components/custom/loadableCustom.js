@@ -414,6 +414,30 @@ export const HRProbation = Loadable({
     return minLoading;
   }
 });
+export const EmployeeProbation = Loadable({
+  loader: () => import('./Probation/EmployeeProbation'),
+  loading() {
+    return minLoading;
+  }
+});
+export const TutorshipProbation = Loadable({
+  loader: () => import('./Probation/TutorshipProbation'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ManagerProbation = Loadable({
+  loader: () => import('./Probation/ManagerProbation'),
+  loading() {
+    return minLoading;
+  }
+});
+export const DirectorProbation = Loadable({
+  loader: () => import('./Probation/DirectorProbation'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const MyTeam = Loadable({
   loader: () => import('./MyTeam'),
