@@ -2,41 +2,47 @@ import React from 'react';
 import './OnTheJobTraining.less';
 import { Card, Table, Button, Popconfirm } from 'antd';
 
-const columns = [
-  {
-    title: '序号/No',
-    dataIndex: 'no'
-  },
-  {
-    title: '课程/Courses',
-    dataIndex: 'courses',
-    editable: true
-  },
-  {
-    title: '培训师/Trainer',
-    dataIndex: 'trainer'
-  },
-  {
-    title: '培训日期/Date',
-    dataIndex: 'date'
-  },
-  {
-    title: 'operation',
-    dataIndex: 'operation',
-    render: (text, record) => (
-      <div>
-        <a href="javascript:;">修改</a> |
-        <Popconfirm
-          title="确认删除吗?"
-          onConfirm={() => this.handleDelete(record.key)}
-        >
-          <a href="javascript:;">删除</a>
-        </Popconfirm>
-      </div>
-    )
-  }
-];
 const OnTheJobTraining = props => {
+  const columns = [
+    {
+      title: '序号/No',
+      dataIndex: 'no'
+    },
+    {
+      title: '课程/Courses',
+      dataIndex: 'course',
+      editable: true
+    },
+    {
+      title: '培训师/Trainer',
+      dataIndex: 'trainer'
+    },
+    {
+      title: '培训日期/Date',
+      dataIndex: 'trainDate'
+    },
+    {
+      title: 'operation',
+      dataIndex: 'operation',
+      render: (text, record) => (
+        <div>
+          <a
+            href="javascript:;"
+            onClick={() => props.openModifyOnJobTrainingModal(record)}
+          >
+            修改
+          </a>
+          &nbsp;|&nbsp;
+          <Popconfirm
+            title="确认删除吗?"
+            onConfirm={() => props.deleteOnJobTraining(record.REC_ID)}
+          >
+            <a href="javascript:;">删除</a>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ];
   return (
     <div id="on-the-job-training" className="probation-form">
       <Card

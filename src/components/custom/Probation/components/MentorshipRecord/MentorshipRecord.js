@@ -1,7 +1,7 @@
 import React from 'react';
 import './MentorshipRecord.less';
 import moment from 'moment';
-import { Card, Select, Input, Icon, Popconfirm, DatePicker } from 'antd';
+import { Card, Input, Icon, Popconfirm, DatePicker, Button } from 'antd';
 
 const { TextArea } = Input;
 const MentorshipRecord = props => {
@@ -62,6 +62,18 @@ const MentorshipRecord = props => {
                     rows={3}
                   />
                 </div>
+                <footer className="mentorshi-record_card_buttons">
+                  {item.isConfirm === 'Y' ? (
+                    <Button disabled>已确认</Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => props.confirmMentor(index)}
+                    >
+                      确认
+                    </Button>
+                  )}
+                </footer>
               </div>
             </div>
           ))}

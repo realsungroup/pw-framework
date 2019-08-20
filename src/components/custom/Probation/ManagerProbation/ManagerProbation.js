@@ -16,27 +16,16 @@ class EmployeeProbation extends React.Component {
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
           <Button
-            type="primary"
             onClick={() => {
               if (record.selectedRowKeys.length) {
                 // this.onMoveEmployees(record);
               } else {
-                this.setState({
-                  selectCourseArrangementVisible: false
-                });
                 message.error('请选择至少一条记录');
               }
             }}
           >
-            批量审批
+            同意转正
           </Button>
-          <Select style={{ width: 120 }} placeholder="提醒">
-            <Option value="员工填写">员工填写</Option>
-            <Option value="主管填写">主管填写</Option>
-            <Option value="辅导员填写">辅导员填写</Option>
-            <Option value="员工确认辅导">员工确认辅导</Option>
-          </Select>
-          <Button>转正申请</Button>
         </div>
       </div>
     );
@@ -90,7 +79,7 @@ class EmployeeProbation extends React.Component {
           <ProbationForms
             employeeInfo={this.state.selectedRecord}
             goBack={this.goBack}
-            roleName="hr"
+            roleName="经理"
             setIsShowTable={this.setIsShowTable}
           />
         )}

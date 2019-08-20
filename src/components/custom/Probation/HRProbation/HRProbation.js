@@ -63,7 +63,7 @@ class HRProbation extends React.Component {
         {this.state.isShowTable ? (
           <div style={{ height: '100vh' }}>
             <TableData
-              resid="618591396440"
+              resid="619609481002"
               subtractH={240}
               hasAdd={false}
               hasRowView={false}
@@ -90,7 +90,7 @@ class HRProbation extends React.Component {
           <ProbationForms
             employeeInfo={this.state.selectedRecord}
             goBack={this.goBack}
-            roleName="hr"
+            roleName="HR"
             setIsShowTable={this.setIsShowTable}
           />
         )}

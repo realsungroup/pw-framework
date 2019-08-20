@@ -1,7 +1,11 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Input, Select } from 'antd';
+import { Card, Row, Col, Select } from 'antd';
 
+const { Option } = Select;
+const handleOptionClick = (props, item) => {
+  return () => props.setTutorship(item);
+};
 const EmployeeInformation = props => {
   const { employeeInformation } = props;
   return (
@@ -48,12 +52,35 @@ const EmployeeInformation = props => {
           </Col>
           <Col span={8}>
             <span className="employee-imformation_lable">辅导员/Mentor:</span>
-            <Select
+            {/* <Select
               showSearch
               style={{ width: 200 }}
               value={employeeInformation.instructor}
               placeholder="请选择"
-            />
+            /> */}
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="请选择辅导员"
+              optionFilterProp="children"
+              onSearch={val => {}}
+              value={employeeInformation.instructor}
+              filterOption={(input, option) =>
+                option.props.children
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {props.tutorships.map(item => (
+                <Option
+                  value={item.C3_609845305868}
+                  key={item.C3_609845305868}
+                  onClick={handleOptionClick(props, item)}
+                >
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
           </Col>
         </Row>
       </Card>
