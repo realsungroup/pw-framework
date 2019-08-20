@@ -806,8 +806,6 @@ export default class ExamPage extends Component {
               return <div>{item}</div>
         })}
         </div> 
-        <div >考试说明：</div>
-        <div className='exam-page-rule'>{this.state.record&&this.state.record.C3_619539624227}</div>
             {hasGetTime && (
               <div className="exam-page__time-remaining">
                 <h1 className="exam-page__time-remaining-title">考试倒计时</h1>

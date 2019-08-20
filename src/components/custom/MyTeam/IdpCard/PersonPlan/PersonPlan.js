@@ -376,8 +376,9 @@ class PersonPlan extends React.Component {
           record.status === '年中回顾' ||
           record.status === '年末回顾' ||
           record.status === '已完成' ||
-          isUpdateAuth !== 'Y'|| 
-          (record.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
+          isUpdateAuth !== 'Y' ||
+          (record.isMangerSubmit === 'Y' &&
+            this.props.checkType !== 'oneself') ||
           (record.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')
         ) {
           SquareCardArr.forEach((item, index) => {
@@ -437,7 +438,6 @@ class PersonPlan extends React.Component {
             });
           });
         }
-        console.log('SquareCardArr', SquareCardArr);
         this.setState({ SquareCardArr });
         // })
       } else {
@@ -478,8 +478,10 @@ class PersonPlan extends React.Component {
           personInfo.status === '年中回顾' ||
           personInfo.status === '年末回顾' ||
           personInfo.status === '已完成' ||
-          (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-          (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
+          (personInfo.isMangerSubmit === 'Y' &&
+            this.props.checkType !== 'oneself') ||
+          (personInfo.isPersonSubmit === 'Y' &&
+            this.props.checkType === 'oneself') ||
           isUpdateAuth !== 'Y'
         ) {
           plans.forEach((item, index) => {
@@ -544,12 +546,12 @@ class PersonPlan extends React.Component {
             } else if (items.name === '发展行动计划编号') {
               items.value = plan[index].moveId;
             } else if (items.name === '年中回顾') {
-              if (record.status === '年末回顾') {
+              if (record.status === '年末回顾' || record.status === '已完成') {
                 items.authority = 'check';
               }
               items.value = plan[index].yearMid;
             } else if (items.name === '年末回顾') {
-              if (record.status === '年中回顾') {
+              if (record.status === '年中回顾' || record.status === '已完成') {
                 items.type = 'none';
               }
               items.value = plan[index].yearTail;
@@ -798,6 +800,7 @@ class PersonPlan extends React.Component {
   };
   onSavePlans = async () => {
     let plans = this.state.plans;
+    let measures = this.state.measures;
     let planRecord = {};
     let planRecords = [];
     plans.map(item => {
@@ -807,6 +810,12 @@ class PersonPlan extends React.Component {
       planRecord.projectId = item[3].value;
       planRecord.moveId = item[4].value;
       planRecord.menberId = item[5].value;
+      measures.map(items => {
+        if (items[3].value === item[4].value) {
+          planRecord.yearMid = items[4].value;
+          planRecord.yearTail = items[5].value;
+        }
+      });
       planRecords.push(this.cloneDeep(planRecord));
     });
     let res;
@@ -844,6 +853,7 @@ class PersonPlan extends React.Component {
     this.setState({
       isUpdateAuth
     });
+    console.log('isUpdateAuth', isUpdateAuth, record);
     await this.getAbilityEvaluation(record, isUpdateAuth);
     await this.getDevelopmentAction(record, isUpdateAuth);
     await this.getTypes();
@@ -898,8 +908,10 @@ class PersonPlan extends React.Component {
                     personInfo.status === '年中回顾' ||
                     personInfo.status === '年末回顾' ||
                     personInfo.status === '已完成' ||
-                    (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-                    (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
+                    (personInfo.isMangerSubmit === 'Y' &&
+                      this.props.checkType !== 'oneself') ||
+                    (personInfo.isPersonSubmit === 'Y' &&
+                      this.props.checkType === 'oneself') ||
                     this.state.isUpdateAuth !== 'Y'
                       ? 'noClose'
                       : null
@@ -924,10 +936,11 @@ class PersonPlan extends React.Component {
             })}
             {personInfo.status === '年中回顾' ||
             personInfo.status === '年末回顾' ||
-            personInfo.status === '已完成' || 
-            (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-            (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
-            
+            personInfo.status === '已完成' ||
+            (personInfo.isMangerSubmit === 'Y' &&
+              this.props.checkType !== 'oneself') ||
+            (personInfo.isPersonSubmit === 'Y' &&
+              this.props.checkType === 'oneself') ||
             this.state.isUpdateAuth !== 'Y' ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
@@ -990,8 +1003,10 @@ class PersonPlan extends React.Component {
                 personInfo.status === '年中回顾' ||
                 personInfo.status === '年末回顾' ||
                 personInfo.status === '已完成' ||
-                (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-                (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
+                (personInfo.isMangerSubmit === 'Y' &&
+                  this.props.checkType !== 'oneself') ||
+                (personInfo.isPersonSubmit === 'Y' &&
+                  this.props.checkType === 'oneself') ||
                 this.state.isUpdateAuth !== 'Y'
                   ? true
                   : false
@@ -1007,8 +1022,10 @@ class PersonPlan extends React.Component {
                       personInfo.status === '年中回顾' ||
                       personInfo.status === '年末回顾' ||
                       personInfo.status === '已完成' ||
-                      (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-                      (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
+                      (personInfo.isMangerSubmit === 'Y' &&
+                        this.props.checkType !== 'oneself') ||
+                      (personInfo.isPersonSubmit === 'Y' &&
+                        this.props.checkType === 'oneself') ||
                       this.state.isUpdateAuth !== 'Y'
                         ? 'noClose'
                         : null
@@ -1036,8 +1053,10 @@ class PersonPlan extends React.Component {
             {personInfo.status === '年中回顾' ||
             personInfo.status === '年末回顾' ||
             personInfo.status === '已完成' ||
-            (personInfo.isMangerSubmit === 'Y' && this.props.checkType !== 'oneself')|| 
-            (personInfo.isPersonSubmit === 'Y' && this.props.checkType === 'oneself')||
+            (personInfo.isMangerSubmit === 'Y' &&
+              this.props.checkType !== 'oneself') ||
+            (personInfo.isPersonSubmit === 'Y' &&
+              this.props.checkType === 'oneself') ||
             this.state.isUpdateAuth !== 'Y' ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
@@ -1165,7 +1184,23 @@ class PersonPlan extends React.Component {
         this.state.checkType !== 'oneself' &&
         this.state.isUpdateAuth === 'Y' &&
         this.state.personInfo.isMangerSubmit !== 'Y' &&
-        this.state.personInfo.isAffirm !== 'Y'
+        this.state.personInfo.isAffirm !== 'Y' &&
+        this.state.personInfo.status !== '已完成'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      } else if (
+        (this.state.checkType !== 'oneself' &&
+          this.state.personInfo.status === '年中回顾') ||
+        this.state.personInfo.status === '年末回顾'
       ) {
         return (
           <Popconfirm
@@ -1198,7 +1233,7 @@ class PersonPlan extends React.Component {
       if (
         this.state.checkType === 'oneself' &&
         this.state.isUpdateAuth === 'Y' &&
-        this.state.personInfo.isPersonSubmit !== 'Y'&&
+        this.state.personInfo.isPersonSubmit !== 'Y' &&
         this.state.personInfo.isAffirm !== 'Y'
       ) {
         return (
@@ -1219,8 +1254,9 @@ class PersonPlan extends React.Component {
       } else if (
         this.state.checkType !== 'oneself' &&
         this.state.isUpdateAuth === 'Y' &&
-        this.state.personInfo.isMangerSubmit !== 'Y'&&
-        this.state.personInfo.isAffirm !== 'Y'
+        this.state.personInfo.isMangerSubmit !== 'Y' &&
+        this.state.personInfo.isAffirm !== 'Y' &&
+        this.state.personInfo.status !== '已完成'
       ) {
         return (
           <Popconfirm
