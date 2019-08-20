@@ -20,7 +20,7 @@ class PersonList extends React.Component {
   constructor(props) {
     super(props);
   }
-  onNoticeEmployee = async(dataSource, selectKey) => {
+  onNoticeEmployee = async (dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
@@ -45,7 +45,7 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onEmployeeWrite = async(dataSource, selectKey) => {
+  onEmployeeWrite = async (dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
@@ -63,7 +63,7 @@ class PersonList extends React.Component {
         resid: personID,
         data
       });
-      console.log("res.Error",res,res.Error)
+      console.log('res.Error', res, res.Error);
       if (res.Error === 0) {
         message.success(res.message);
       }
@@ -71,7 +71,7 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onMangerWrite = async(dataSource, selectKey) => {
+  onMangerWrite = async (dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
@@ -85,7 +85,7 @@ class PersonList extends React.Component {
       }
     });
     try {
-      res =await http().modifyRecords({
+      res = await http().modifyRecords({
         resid: personID,
         data
       });
@@ -96,7 +96,7 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  onCloseWrite = async(dataSource, selectKey) => {
+  onCloseWrite = async (dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
     }
@@ -104,7 +104,7 @@ class PersonList extends React.Component {
     let data = [];
     dataSource.map(item => {
       if (selectKey.includes(item.REC_ID)) {
-        item.isEmpployeeWrite = '';
+        item.sEmployeeWrite = '';
         data.push(item);
       }
     });
@@ -179,8 +179,7 @@ class PersonList extends React.Component {
                 >
                   开启员工填写
                 </Button>
-                ,
-                {this.props.role === 'HR' ? (
+                {/* {this.props.role === 'HR' ? (
                   <Button
                     onClick={() => {
                       this.onMangerWrite(dataSource, selectedRowKeys);
@@ -188,14 +187,13 @@ class PersonList extends React.Component {
                   >
                     开启主管填写
                   </Button>
-                ) : null}
-                ,
+                ) : null} */}
                 <Button
                   onClick={() => {
                     this.onCloseWrite(dataSource, selectedRowKeys);
                   }}
                 >
-                  关闭填写
+                  关闭员工填写
                 </Button>
               </React.Fragment>
             );

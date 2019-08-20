@@ -9,7 +9,7 @@ import {
   Tag,
   notification,
   Modal,
-  Progress,
+  Progress
 } from 'antd';
 import './IdpCard.less';
 import http from 'Util20/api';
@@ -21,13 +21,27 @@ import PersonPlan from './PersonPlan';
  */
 
 const customDot = (dot, { status, index }) => (
-  <Popover content={<span>状态: {status === 'finish'?'已结束':status==='wait'?'等待中':'进行中'} </span>}>{dot}</Popover>
+  <Popover
+    content={
+      <span>
+        状态:{' '}
+        {status === 'finish'
+          ? '已结束'
+          : status === 'wait'
+          ? '等待中'
+          : '进行中'}{' '}
+      </span>
+    }
+  >
+    {dot}
+  </Popover>
 );
 const { Step } = Steps;
 const { confirm } = Modal;
 const developmentPersonID = '617725883137'; //发展人员表
 const hrMangerID = '617725533684'; //发展计划总表
-const autoTaskID = '618594705773';
+const autoTaskID = '618594705773'; //自动同步无锡发展人员表
+const autoTaskSHID = '619623421822'; //自动同步上海发展人员表
 
 class IdpCard extends React.Component {
   state = {
@@ -191,7 +205,7 @@ class IdpCard extends React.Component {
       }, 1000);
     }
   };
-  onRunAutoTask = async (projectId) => {
+  onRunAutoTask = async projectId => {
     let res;
     try {
       res = await http().PostRunAutoImport({
@@ -209,30 +223,27 @@ class IdpCard extends React.Component {
   //添加发展计划
   onAdd = async () => {
     // let that = this;
-      confirm({
-        title: '你确定要开启新的发展计划吗?',
-        content: '在开启之前，请确保历史财年的计划已经结束！',
-        onOk :async() =>{
-          let res;
-          try {
-            res = await http().addRecords({
-              resid: hrMangerID,
-              data: [{}]
-            });
-            if (res.Error === 0) {  
-              message.success(res.message);
-              this.onRunAutoTask(res.data[0].projectId);
-              this.getData();
-            }
-          } catch (error) {
-            message.error(error.message);
+    confirm({
+      title: '你确定要开启新的发展计划吗?',
+      content: '在开启之前，请确保历史财年的计划已经结束！',
+      onOk: async () => {
+        let res;
+        try {
+          res = await http().addRecords({
+            resid: hrMangerID,
+            data: [{}]
+          });
+          if (res.Error === 0) {
+            message.success(res.message);
+            this.onRunAutoTask(res.data[0].projectId);
+            this.getData();
           }
-        },
-        onCancel:function() {
-        },
-        
-      });
-      
+        } catch (error) {
+          message.error(error.message);
+        }
+      },
+      onCancel: function() {}
+    });
   };
   //查看团队
   onCheckTeam = currentRecord => {
@@ -333,7 +344,7 @@ class IdpCard extends React.Component {
     let currentPlan = this.state.currentPlan;
     let role = this.props.role;
     if (role === 'HR') {
-      switch (currentPlan&&currentPlan.status) {
+      switch (currentPlan && currentPlan.status) {
         case '初次填写':
           return (
             <span>
@@ -461,61 +472,71 @@ class IdpCard extends React.Component {
                 alignItems: 'center'
               }}
             >
-              <Card
-                className="idp-contain-card"
-                title={
-                  <span style={{ fontSize: '24px', color: '#fff' }}>
-                    员工发展计划
-                  </span>
-                }
-                bordered={false}
-                extra={this.renderBtns()}
-              >
-                <div style={{ float: 'left' }}>
-                  <div>发起时间: {currentPlan&&currentPlan.startTime}</div>
-                  <br />
-                  <div>进行状态: {currentPlan&&currentPlan.status}</div>
-                  <br />
-                  <div>
-                    {this.props.role === 'HR' ? '参与人数:' : '下属人数:'}
-                    {currentPlan&&currentPlan.number}
+              {currentPlan ? (
+                <Card
+                  className="idp-contain-card"
+                  title={
+                    <span style={{ fontSize: '24px', color: '#fff' }}>
+                      员工发展计划
+                    </span>
+                  }
+                  bordered={false}
+                  extra={this.renderBtns()}
+                >
+                  <div style={{ float: 'left' }}>
+                    <div>发起时间: {currentPlan && currentPlan.startTime}</div>
+                    <br />
+                    <div>进行状态: {currentPlan && currentPlan.status}</div>
+                    <br />
+                    <div>
+                      {this.props.role === 'HR' ? '参与人数:' : '下属人数:'}
+                      {currentPlan && currentPlan.num}
+                    </div>
+                    <br />
+                    <div>财年: {currentPlan && currentPlan.year}</div>
+                    <br />
                   </div>
-                  <br />
-                  <div>财年: {currentPlan&&currentPlan.year}</div>
-                  <br />
-                </div>
-                <div
-                  className="image"
-                  style={{
-                    width: '136px',
-                    height: '135px',
-                    backgroundSize: '100%',
-                    float: 'right'
-                  }}
-                ></div>
-                <div style={{ marginTop: '160px' }}>
-                  <Steps
-                    current={
-                      currentPlan&&currentPlan.status === '初次填写'
-                        ? 0
-                        : currentPlan&&currentPlan.status === '年中回顾'
-                        ? 1
-                        : 3
-                    }
-                    progressDot={customDot}
-                  >
-                    <Step description="初次填写" style={{ color: '#fff' }} />
-                    <Step description="年中回顾" style={{ color: '#fff' }} />
-                    <Step description="年末回顾" style={{ color: '#fff' }} />
-                  </Steps>
-                </div>
-              </Card>
-              <div className="idp-contain-smallcards">
+                  <div
+                    className="image"
+                    style={{
+                      width: '136px',
+                      height: '135px',
+                      backgroundSize: '100%',
+                      float: 'right'
+                    }}
+                  ></div>
+                  <div style={{ marginTop: '160px' }}>
+                    <Steps
+                      current={
+                        currentPlan && currentPlan.status === '初次填写'
+                          ? 0
+                          : currentPlan && currentPlan.status === '年中回顾'
+                          ? 1
+                          : 3
+                      }
+                      progressDot={customDot}
+                    >
+                      <Step description="初次填写" style={{ color: '#fff' }} />
+                      <Step description="年中回顾" style={{ color: '#fff' }} />
+                      <Step description="年末回顾" style={{ color: '#fff' }} />
+                    </Steps>
+                  </div>
+                </Card>
+              ) : null}
+              <div
+                className="idp-contain-smallcards"
+                style={{
+                  marginTop: currentPlan ? '0px' : '100px'
+                }}
+              >
                 {this.props.role === 'HR' ? (
                   <Card
                     className="idp-contain-smallcards-card addPlan"
                     onClick={() => {
-                      this.onAdd()
+                      this.onAdd();
+                    }}
+                    style={{
+                      marginLeft: historyPlan.length > 0 ? '0' : '176px'
                     }}
                   >
                     <Icon

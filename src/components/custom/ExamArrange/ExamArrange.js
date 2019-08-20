@@ -76,6 +76,7 @@ class ExamArrange extends Component {
             style={{ width: '100%', height: '100%' }}
           >
             <TableData
+              {...this.props}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
               resid="607188943833"
