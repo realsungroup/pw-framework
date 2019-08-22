@@ -1,7 +1,8 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import FiscalYearPlan from '../FiscalYearPlan/index';
-import SubordinateCoures from '../SubordinateCourses'
+import SubordinateCoures from '../SubordinateCourses';
+import DirectorProbation from '../Probation/DirectorProbation';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './MyTeam.less';
 import http from 'Util20/api';
@@ -12,14 +13,14 @@ import IdpCard from './IdpCard';
  */
 const role = 'Manger';
 class MyTeam extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       mode: 'inline',
       theme: 'light',
       selectKey: '4',
       collapsed: false,
-      desktop:null
+      desktop: null
     };
   }
   toggleCollapsed = () => {
@@ -28,13 +29,13 @@ class MyTeam extends React.Component {
     });
   };
   componentDidMount = () => {
-    const userInfo  = JSON.parse(localStorage.getItem("userInfo"))
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
-    console.log("desktop",desktop)
+    console.log('desktop', desktop);
     this.setState({
       desktop
-    })
-  }
+    });
+  };
   renderContent = () => {
     // switch()
     let selectKey = this.state.selectKey;
@@ -45,15 +46,15 @@ class MyTeam extends React.Component {
           <FiscalYearPlan CreateableGroups={['611769739518']}></FiscalYearPlan>
         );
       case '2':
-        return <SubordinateCoures></SubordinateCoures>
+        return <SubordinateCoures></SubordinateCoures>;
       case '3':
         return (
-          <div style={{ width: '100%',height:"100%" }}>
+          <div style={{ width: '100%', height: '100%' }}>
             <IdpCard role={role}></IdpCard>
           </div>
         );
       case '4':
-        return '';
+        return <DirectorProbation></DirectorProbation>;
       default:
         return '';
     }
@@ -67,7 +68,14 @@ class MyTeam extends React.Component {
   render() {
     const { loading } = this.state;
     return (
-      <div className="myteam-contain" style={{ display: 'flex' ,height:this.state.desktop === 'DESKTOP'? '100%':'calc(100vh - 160px)' }}>
+      <div
+        className="myteam-contain"
+        style={{
+          display: 'flex',
+          height:
+            this.state.desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
+        }}
+      >
         <div style={{ width: `${this.state.collapsed ? '80px' : '200px'}` }}>
           <div
             style={{
@@ -78,7 +86,10 @@ class MyTeam extends React.Component {
               position: 'absolute',
               background: '#1890ff',
               left: this.state.collapsed ? '79px' : '200px',
-              top:  this.state.desktop === 'DESKTOP'? (this.state.selectKey - 1) * 48 + 4 + 'px' :(this.state.selectKey - 1) * 48 + 164 + 'px',
+              top:
+                this.state.desktop === 'DESKTOP'
+                  ? (this.state.selectKey - 1) * 48 + 4 + 'px'
+                  : (this.state.selectKey - 1) * 48 + 164 + 'px',
               display: 'flex',
               alignItems: 'center',
               zIndex: '999',
@@ -130,7 +141,6 @@ class MyTeam extends React.Component {
         >
           {this.renderContent()}
         </div>
-      
       </div>
     );
   }

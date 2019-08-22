@@ -6,6 +6,7 @@ import IdpCard from './IdpCard';
 import TypeManger from './TypeManger/TypeManger';
 import AbilityMangement from './AbilityMangement/AbilityMangement';
 import Development from './Development/Development';
+import IDPAnalyze from './IDPAnalyze';
 
 /**
  * 管理员确认
@@ -17,7 +18,7 @@ class IDPMangement extends React.Component {
     this.state = {
       mode: 'inline',
       theme: 'light',
-      selectKey: '1',
+      selectKey: '5',
       collapsed: false
     };
   }
@@ -41,6 +42,8 @@ class IDPMangement extends React.Component {
         return <AbilityMangement></AbilityMangement>;
       case '4':
         return <Development></Development>;
+      case '5':
+        return <IDPAnalyze></IDPAnalyze>;
       default:
         break;
     }
@@ -81,7 +84,7 @@ class IDPMangement extends React.Component {
           </div>
           <Menu
             style={{ height: '100%' }}
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={['5']}
             defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             theme={this.state.theme}
@@ -103,6 +106,10 @@ class IDPMangement extends React.Component {
             <Menu.Item key="4">
               <Icon type="calendar" />
               <span> 发展措施管理 </span>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Icon type="calendar" />
+              <span> 图表分析</span>
             </Menu.Item>
           </Menu>
         </div>

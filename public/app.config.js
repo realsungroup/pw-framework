@@ -115,8 +115,8 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
+    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
