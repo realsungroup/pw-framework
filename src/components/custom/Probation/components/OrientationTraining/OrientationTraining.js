@@ -16,8 +16,13 @@ const OrientationTraining = props => {
         }
       >
         <Table dataSource={props.orientationTraining} pagination={false}>
-          <Column title="序号/No" dataIndex="no" key="no" />
-          <Column title="课程/Courses" dataIndex="course" key="course" />
+          <Column title="序号/No" dataIndex="no" key="no" width={100} />
+          <Column
+            title="课程/Courses"
+            dataIndex="course"
+            key="course"
+            // width={300}
+          />
           <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
           <Column title="培训日期/Date" dataIndex="trainDate" key="trainDate" />
         </Table>

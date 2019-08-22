@@ -1174,7 +1174,7 @@ window[611339874157] = {
         resid: 614686575134,
         TabsTitle: '待提交',
         recordFormFormWidth: '90%',
-        columnsWidth:{财年:50},
+        columnsWidth: { 财年: 50 },
         hasBeBtns: true,
         hasModify: false,
         hasDelete: false,
@@ -1630,7 +1630,10 @@ window[619175063394] = {
 //我的试用期————员工
 window[619175111028] = {
   name: 'EmployeeProbation',
-  title: '我的试用期'
+  title: '我的试用期',
+  props: {
+    roleName: '员工'
+  }
 };
 //试用期————辅导员
 window[619175547350] = {

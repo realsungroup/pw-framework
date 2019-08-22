@@ -14,13 +14,15 @@ const InternalTraining = props => {
           </React.Fragment>
         }
         extra={
-          <Button
-            onClick={() => {
-              props.setAddInternalCourseVisible(true);
-            }}
-          >
-            添加记录
-          </Button>
+          props.auth.hasAdd && (
+            <Button
+              onClick={() => {
+                props.setAddInternalCourseVisible(true);
+              }}
+            >
+              添加记录
+            </Button>
+          )
         }
       >
         <div>
@@ -33,33 +35,49 @@ const InternalTraining = props => {
           </p>
         </div>
         <Table dataSource={props.internalTraining} pagination={false}>
-          <Column title="序号/No" dataIndex="no" key="no" />
-          <Column title="课程/Courses" dataIndex="course" key="course" />
-          <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
-          <Column title="培训日期/Date" dataIndex="trainDate" key="trainDate" />
+          <Column title="序号/No" dataIndex="no" key="no" width={100} />
+          <Column
+            title="课程/Courses"
+            dataIndex="C3_613941384592"
+            key="course"
+            width={300}
+          />
+          <Column
+            title="培训师/Trainer"
+            dataIndex="C3_613941386081"
+            key="trainer"
+          />
+          <Column
+            title="培训日期/Date"
+            dataIndex="C3_615393041304"
+            key="trainDate"
+          />
           <Column
             title="操作/operation"
             render={(text, record) => {
               return (
-                <div>
-                  <a
-                    href="javascript:;"
-                    onClick={() => {
-                      props.openModifyInternalCourseModal(record);
-                    }}
-                  >
-                    修改
-                  </a>
-                  &nbsp;|&nbsp;
-                  <Popconfirm
-                    title="确认删除吗?"
-                    onConfirm={() => {
-                      props.deleteInternalCourse(record.REC_ID);
-                    }}
-                  >
-                    <a href="javascript:;">删除</a>
-                  </Popconfirm>
-                </div>
+                props.auth.hasDelete &&
+                props.auth.hasModify && (
+                  <div>
+                    <a
+                      href="javascript:;"
+                      onClick={() => {
+                        props.openModifyInternalCourseModal(record);
+                      }}
+                    >
+                      修改
+                    </a>
+                    &nbsp;|&nbsp;
+                    <Popconfirm
+                      title="确认删除吗?"
+                      onConfirm={() => {
+                        props.deleteInternalCourse(record.REC_ID);
+                      }}
+                    >
+                      <a href="javascript:;">删除</a>
+                    </Popconfirm>
+                  </div>
+                )
               );
             }}
             key="operation"

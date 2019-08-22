@@ -1,10 +1,13 @@
 import React from 'react';
 import './IndividualSummary.less';
-import { Card, Input, Col } from 'antd';
+import { Card, Input } from 'antd';
 
 const { TextArea } = Input;
 
 const IndividualSummary = props => {
+  const { roleName } = props;
+  const disabled = !(roleName === 'HR' || roleName === '员工');
+  console.log(disabled);
   return (
     <div id="individual-summary" className="probation-form">
       <Card
@@ -18,6 +21,7 @@ const IndividualSummary = props => {
         <TextArea
           placeholder="请输入个人小结"
           value={props.summary}
+          disabled={disabled}
           onChange={v => {
             props.summaryChange(v.target.value);
           }}

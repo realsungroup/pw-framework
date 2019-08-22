@@ -25,42 +25,56 @@ const MentorshipRecord = props => {
           {mentorshipRecord.map((item, index) => (
             <div className="mentorshi-record_card__wrapper">
               <div className="mentorshi-record_card">
-                <Popconfirm
-                  title="确认删除吗？"
-                  icon={
-                    <Icon type="question-circle-o" style={{ color: 'red' }} />
-                  }
-                  onConfirm={() => {
-                    props.removeMentor(index);
-                  }}
-                >
-                  <Icon
-                    type="close"
-                    className="mentorshi-record_card_action-btn__delete"
-                  />
-                </Popconfirm>
+                {props.auth.hasDelete && (
+                  <Popconfirm
+                    title="确认删除吗？"
+                    icon={
+                      <Icon type="question-circle-o" style={{ color: 'red' }} />
+                    }
+                    onConfirm={() => {
+                      props.removeMentor(index);
+                    }}
+                  >
+                    <Icon
+                      type="close"
+                      className="mentorshi-record_card_action-btn__delete"
+                    />
+                  </Popconfirm>
+                )}
                 <div className="mentorshi-record_card_item">
                   日期/Date
-                  <DatePicker
-                    style={{ width: 140, marginLeft: '1.25vw' }}
-                    onChange={v => {
-                      item.editDate = v && v.format('YYYY-MM-DD');
-                      props.modifyMentor(index, item);
-                    }}
-                    value={item.editDate ? moment(item.editDate) : undefined}
-                  />
+                  {props.auth.hasModify ? (
+                    <DatePicker
+                      style={{ width: 140, marginLeft: '1.25vw' }}
+                      onChange={v => {
+                        item.editDate = v && v.format('YYYY-MM-DD');
+                        props.modifyMentor(index, item);
+                      }}
+                      value={item.editDate ? moment(item.editDate) : undefined}
+                    />
+                  ) : (
+                    <span style={{ marginLeft: '1.25vw' }}>
+                      {item.editDate}
+                    </span>
+                  )}
                 </div>
                 <div className="mentorshi-record_card_item">
                   辅导记录/Mentorship Record
-                  <TextArea
-                    placeholder="请输入辅导记录"
-                    value={item.instructionRecord}
-                    onChange={v => {
-                      item.instructionRecord = v.target.value;
-                      props.modifyMentor(index, item);
-                    }}
-                    rows={3}
-                  />
+                  {props.auth.hasModify ? (
+                    <TextArea
+                      placeholder="请输入辅导记录"
+                      value={item.instructionRecord}
+                      onChange={v => {
+                        item.instructionRecord = v.target.value;
+                        props.modifyMentor(index, item);
+                      }}
+                      rows={3}
+                    />
+                  ) : (
+                    <p className="mentorshi-record_card_item_content">
+                      {item.instructionRecord}
+                    </p>
+                  )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
                   {item.isConfirm === 'Y' ? (
@@ -77,20 +91,22 @@ const MentorshipRecord = props => {
               </div>
             </div>
           ))}
-          <div className="mentorshi-record_card__wrapper">
-            <div
-              className="mentorshi-record_card__addition"
-              onClick={props.addMentor}
-            >
-              <div className="mentorshi-record_card__addition_icon">
-                <Icon type="plus" />
-              </div>
-              <div>
-                <p>添加新的辅导记录</p>
-                <p>Add a mentorship record</p>
+          {props.auth.hasAdd && (
+            <div className="mentorshi-record_card__wrapper">
+              <div
+                className="mentorshi-record_card__addition"
+                onClick={props.addMentor}
+              >
+                <div className="mentorshi-record_card__addition_icon">
+                  <Icon type="plus" />
+                </div>
+                <div>
+                  <p>添加新的辅导记录</p>
+                  <p>Add a mentorship record</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </Card>
     </div>
