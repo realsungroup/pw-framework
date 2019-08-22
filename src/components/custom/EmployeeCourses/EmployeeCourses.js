@@ -210,8 +210,6 @@ class EmployeeCourses extends React.Component {
   //点击选中课程
   // 拿子组件的评分
   setRate = async rate => {
-    console.log(rate);
-    console.log("this.state.selectedCourse.courseType",this.state.selectedCourse.courseType)
     if (this.state.selectedCourse.courseType === '内训') {
       this.setState({ rate });
     } else {
@@ -349,7 +347,6 @@ class EmployeeCourses extends React.Component {
     });
   };
   handleFileChange = info => {
-    console.log(info)
     let fileList = [...info.fileList];
     // 2. Read from response and show file link
     fileList = fileList.map(file => {
@@ -545,68 +542,71 @@ class EmployeeCourses extends React.Component {
 
   renderCoursesList = () => {
     let { myCourses } = this.state;
-  return  myCourses.length?
-     myCourses.map(item => (
-      <Card
-        extra={<Radio checked={item.checked} />}
-        title={`${item.courseType} / ${item.C3_613941384592}`}
-        style={{ marginBottom: '12px', cursor: 'pointer' }}
-        key={item.REC_ID}
-        bodyStyle={{ padding: 8 }}
-        onClick={this.handleSelectCourse.bind(this, item)}
-      >
-        <div className="emploee_courses-main-course_content">
-          <div className="course_item">
-            讲师:
-            <span style={{ paddingLeft: 12 }}>{item.C3_613941386081}</span>
-          </div>
-          {/* <div className="course_item">
+    return myCourses.length ? (
+      myCourses.map(item => (
+        <Card
+          extra={<Radio checked={item.checked} />}
+          title={`${item.courseType} / ${item.C3_613941384592}`}
+          style={{ marginBottom: '12px', cursor: 'pointer' }}
+          key={item.REC_ID}
+          bodyStyle={{ padding: 8 }}
+          onClick={this.handleSelectCourse.bind(this, item)}
+        >
+          <div className="emploee_courses-main-course_content">
+            <div className="course_item">
+              讲师:
+              <span style={{ paddingLeft: 12 }}>{item.C3_613941386081}</span>
+            </div>
+            {/* <div className="course_item">
             人数:
             <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
           </div> */}
-          <div className="course_item">
-            地点:
-            <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
+            <div className="course_item">
+              地点:
+              <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
+            </div>
+            <div className="course_item">
+              开始时间:
+              <span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
+            </div>
+            <div className="course_item">
+              结束时间:
+              <span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
+            </div>
           </div>
-          <div className="course_item">
-            开始时间:
-            <span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
+          <Divider style={{ margin: '12px 0' }} />
+          <div className="emploee_courses-main-course_footer">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: '50%',
+                  backgroundColor: '#2470e8',
+                  marginRight: 6
+                }}
+              />
+              {item.C3_613961012148}
+            </div>
+            <div>
+              <Button
+                type="link"
+                icon="info-circle"
+                onClick={() => {
+                  this.handleDetailClick();
+                }}
+              >
+                课程详情
+              </Button>
+            </div>
           </div>
-          <div className="course_item">
-            结束时间:
-            <span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
-          </div>
-        </div>
-        <Divider style={{ margin: '12px 0' }} />
-        <div className="emploee_courses-main-course_footer">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span
-              style={{
-                width: 14,
-                height: 14,
-                borderRadius: '50%',
-                backgroundColor: '#2470e8',
-                marginRight: 6
-              }}
-            />
-            {item.C3_613961012148}
-          </div>
-          <div>
-            <Button
-              type="link"
-              icon="info-circle"
-              onClick={() => {
-                this.handleDetailClick();
-              }}
-            >
-              课程详情
-            </Button>
-          </div>
-        </div>
-      </Card>
-    )):<Empty style={{marginTop:"100px"}}></Empty>
-            }
-  
+        </Card>
+      ))
+    ) : (
+      <Empty style={{ marginTop: '100px' }}></Empty>
+    );
+  };
+
   getColor(key) {
     let color = '#aaa';
     switch (key) {
@@ -640,7 +640,7 @@ class EmployeeCourses extends React.Component {
   // 提交评分和行动计划反馈
   submitRate = async () => {
     const { rateOut, planWrite, selectedCourse, rate } = this.state;
-    console.log("selectedCourse.courseType",selectedCourse.courseType)
+    console.log('selectedCourse.courseType', selectedCourse.courseType);
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -719,7 +719,6 @@ class EmployeeCourses extends React.Component {
     this.setState({ extraCost: parseFloat(extraCost) });
   };
   render() {
-    // console.log(this.state.selectedCourse);
     let selectedCourse = { ...this.state.selectedCourse },
       startColor = '#aaa',
       endColor = '#aaa';
@@ -771,7 +770,7 @@ class EmployeeCourses extends React.Component {
               </div>
               {/* 右侧TimeLine */}
               <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse.length && selectedCourse.courseType !== '内训' ? (
+                {selectedCourse && selectedCourse.courseType !== '内训' ? (
                   <Timeline>
                     <Timeline.Item
                       color={this.getColor(selectedCourse.isSubmitPlan)}

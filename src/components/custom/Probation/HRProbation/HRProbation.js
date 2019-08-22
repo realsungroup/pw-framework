@@ -88,7 +88,7 @@ class HRProbation extends React.Component {
           </div>
         ) : (
           <ProbationForms
-            employeeInfo={this.state.selectedRecord}
+            memberId={this.state.selectedRecord.memberId}
             goBack={this.goBack}
             roleName="HR"
             setIsShowTable={this.setIsShowTable}

@@ -6,12 +6,13 @@ const OnTheJobTraining = props => {
   const columns = [
     {
       title: '序号/No',
-      dataIndex: 'no'
+      dataIndex: 'no',
+      width: 100
     },
     {
       title: '课程/Courses',
       dataIndex: 'course',
-      editable: true
+      width: 300
     },
     {
       title: '培训师/Trainer',
@@ -22,25 +23,27 @@ const OnTheJobTraining = props => {
       dataIndex: 'trainDate'
     },
     {
-      title: 'operation',
+      title: '操作/operation',
       dataIndex: 'operation',
-      render: (text, record) => (
-        <div>
-          <a
-            href="javascript:;"
-            onClick={() => props.openModifyOnJobTrainingModal(record)}
-          >
-            修改
-          </a>
-          &nbsp;|&nbsp;
-          <Popconfirm
-            title="确认删除吗?"
-            onConfirm={() => props.deleteOnJobTraining(record.REC_ID)}
-          >
-            <a href="javascript:;">删除</a>
-          </Popconfirm>
-        </div>
-      )
+      render: (text, record) =>
+        props.auth.hasDelete &&
+        props.auth.hasModify && (
+          <div>
+            <a
+              href="javascript:;"
+              onClick={() => props.openModifyOnJobTrainingModal(record)}
+            >
+              修改
+            </a>
+            &nbsp;|&nbsp;
+            <Popconfirm
+              title="确认删除吗?"
+              onConfirm={() => props.deleteOnJobTraining(record.REC_ID)}
+            >
+              <a href="javascript:;">删除</a>
+            </Popconfirm>
+          </div>
+        )
     }
   ];
   return (
@@ -53,13 +56,15 @@ const OnTheJobTraining = props => {
           </React.Fragment>
         }
         extra={
-          <Button
-            onClick={() => {
-              props.setAddOnJobTrainingVisible(true);
-            }}
-          >
-            添加记录
-          </Button>
+          props.auth.hasAdd && (
+            <Button
+              onClick={() => {
+                props.setAddOnJobTrainingVisible(true);
+              }}
+            >
+              添加记录
+            </Button>
+          )
         }
       >
         <Table

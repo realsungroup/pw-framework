@@ -145,7 +145,6 @@ class IDPAnalyze extends React.Component {
         newOption.push(item);
       });
       deepOption.series[1].data = newOption;
-      console.log('bbbbb', newOption);
       this.setState({
         option: deepOption
       });

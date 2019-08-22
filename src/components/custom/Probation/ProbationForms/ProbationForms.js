@@ -20,22 +20,25 @@ import {
   Input
 } from 'antd';
 import http from 'Util20/api';
+import { getItem } from 'Util20/util';
 import './ProbationForms.less';
 import moment from 'moment';
 
 const { Link } = Anchor;
 const { Option } = Select;
-const resid1 = '618591396440'; //新员工个人信息表
+const { TextArea } = Input;
+
+const resid1 = '619694861346'; //新员工个人信息表
 const resid2 = '618591416723'; //工作目标表
 const resid3 = '618591427140'; //入职培训表
-const resid4 = '618591437750'; //内训课程上课记录表
+const resid4 = '619640552055'; //内训课程上课记录表
 const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
-const resid7 = '618591476071'; //个人总结表
 const resid8 = '619268906732'; //评估周期
 
 const internalCourse = '616155060405'; //内训课程表
 const tutorshipResid = '619281130628'; //辅导员表
+const authResid = '619703562233';
 
 class ProbationForms extends React.Component {
   state = {
@@ -45,32 +48,57 @@ class ProbationForms extends React.Component {
     internalTraining: [], //内训课程
     onTheJobTraining: [], //在岗培训
     mentorshipRecord: [], //辅导记录
-
     addInternalCourseData: {}, //添加用到的内训课程数据
     modifyInternalCourseData: {}, //修改用到的内训课程数据
-
     addOnJobTrainingData: {}, //添加用到的在岗培训数据
     modifyOnJobTrainingData: {}, //修改用到的在岗培训数据
-
+    addProbationObjective: {
+      objective: '', //目标内容
+      assessment: '' //评估指标
+    }, //添加工作目标用到的数据
+    modifyProbationObjectiveData: {}, //修改工作目标用到的数据
+    modifyProbationObjectiveIndex: undefined, //修改的工作目标的下标
     assessmentCycle: [], //评估周期
     internalCourses: [], //内训课程
     tutorships: [], //辅导员
-
+    viewableTable: {
+      objectiveResid: undefined, //工作目标表
+      mentorRecordResid: undefined, //辅导记录表
+      orientationResid: undefined, //入职培训表
+      internalResid: undefined, // 内训课程表
+      onJobResid: undefined //在岗培训表
+    },
+    tableAuth: {
+      objective: {}, //工作目标表权限
+      mentorRecord: {}, //辅导记录表权限
+      orientation: {}, //入职培训表权限
+      internal: {}, // 内训课程表权限
+      onJob: {} //在岗培训表权限
+    },
     loading: false,
     addOnJobTrainingVisible: false,
     addInternalCourseVisible: false,
     modifyInternalCourseVisible: false,
-    modifyOnJobTrainingVisible: false
+    modifyOnJobTrainingVisible: false,
+    modifyProbationObjectiveVisible: false
   };
   async componentDidMount() {
     this.setState({ loading: true });
-    await this.getRecords();
+    let memberId;
+    if (this.props.roleName === '员工') {
+      memberId = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+    } else {
+      memberId = this.props.memberId;
+    }
+    await this.getAuth();
+    await this.getRecords(memberId);
     await this.getCircle();
     this.getInternalCourses();
     this.getTutorships();
     this.setState({ loading: false });
   }
 
+  // 点击保存
   handleSubmit = async () => {
     try {
       let subdata = [];
@@ -132,7 +160,9 @@ class ProbationForms extends React.Component {
         ]
       });
       this.setState({ loading: false });
-      this.props.setIsShowTable(true);
+      if (this.props.roleName !== '员工') {
+        this.props.setIsShowTable(true);
+      }
       message.success('提交成功');
     } catch (error) {
       message.error(error.message);
@@ -140,21 +170,78 @@ class ProbationForms extends React.Component {
       this.setState({ loading: false });
     }
   };
-  //获取主子表记录
-  getRecords = async () => {
+  getAuth = async () => {
+    let { viewableTable } = this.state;
     try {
+      let res = await http().getTable({
+        resid: authResid,
+        cmswhere: `roleType = '${this.props.roleName}'`
+      });
+      let data = {};
+      res.data.forEach(item => {
+        switch (item.resourceType) {
+          case '工作目标':
+            data.objectiveResid = item.resourceID;
+            break;
+          case '入职培训':
+            data.orientationResid = item.resourceID;
+            break;
+          case '内训课程':
+            data.internalResid = item.resourceID;
+            break;
+          case '在岗培训':
+            data.onJobResid = item.resourceID;
+            break;
+          case '辅导记录':
+            data.mentorRecordResid = item.resourceID;
+            break;
+          default:
+            break;
+        }
+      });
+      this.setState({
+        viewableTable: {
+          ...viewableTable,
+          ...data
+        }
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
+  //获取主子表记录
+  getRecords = async memberId => {
+    try {
+      const { viewableTable } = this.state;
+      let subresid = '';
+      Object.keys(viewableTable).forEach(item => {
+        if (viewableTable[item]) {
+          subresid += viewableTable[item] + ',';
+        }
+      });
       const res = await http().getRecordAndSubTables({
         resid: resid1,
-        subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},${resid7},`
+        // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
+        subresid,
+        cmswhere: `memberId = '${memberId}'`,
+        getsubresource: 1
       });
+      const SubResource = res.SubResource;
       const data = res.data[0];
       this.setState({
         employeeInformation: data,
-        probationObjectives: data[resid2],
-        orientationTraining: data[resid3],
-        internalTraining: data[resid4],
-        onTheJobTraining: data[resid5],
-        mentorshipRecord: data[resid6]
+        probationObjectives: data[viewableTable.objectiveResid],
+        // orientationTraining: data[viewableTable.orientationResid],
+        internalTraining: data[viewableTable.internalResid],
+        onTheJobTraining: data[viewableTable.onJobResid],
+        mentorshipRecord: data[viewableTable.mentorRecordResid],
+        tableAuth: {
+          onJob: SubResource[viewableTable.onJobResid],
+          mentorRecord: SubResource[viewableTable.mentorRecordResid],
+          objective: SubResource[viewableTable.objectiveResid],
+          internal: SubResource[viewableTable.internalResid]
+        }
       });
     } catch (error) {
       message.error(error.message);
@@ -201,8 +288,15 @@ class ProbationForms extends React.Component {
 
   //添加目标
   addObjective = () => {
-    const probationObjectives = [...this.state.probationObjectives, {}];
-    this.setState({ probationObjectives });
+    const probationObjectives = [
+      ...this.state.probationObjectives,
+      {
+        target: this.state.addProbationObjective.objective,
+        assessment: this.state.addProbationObjective.assessment
+      }
+    ];
+    this.setState({ probationObjectives, addProbationObjective: {} });
+    message.success('已添加，不要忘记点下方保存哦');
   };
   //删除目标
   removeObjective = index => {
@@ -220,12 +314,21 @@ class ProbationForms extends React.Component {
     }
     probationObjectives.splice(index, 1);
     this.setState({ probationObjectives });
+    message.success('已删除');
   };
   //修改目标
-  modifyObjective = (index, objective) => {
+  modifyObjective = () => {
     const probationObjectives = [...this.state.probationObjectives];
-    probationObjectives[index] = objective;
-    this.setState({ probationObjectives });
+    probationObjectives[
+      this.state.modifyProbationObjectiveIndex
+    ] = this.state.modifyProbationObjectiveData;
+    this.setState({
+      probationObjectives,
+      modifyProbationObjectiveVisible: false,
+      modifyProbationObjectiveData: {},
+      modifyProbationObjectiveIndex: undefined
+    });
+    message.success('已修改，不要忘记点下方保存哦');
   };
 
   //添加辅导记录
@@ -280,6 +383,16 @@ class ProbationForms extends React.Component {
     }
   };
 
+  //处理工作目标内容变化
+  handleObjectvieChange = ({ objective, assessment }) => {
+    this.setState({
+      addProbationObjective: {
+        objective,
+        assessment
+      }
+    });
+  };
+
   //个人总结内容变化
   summaryChange = summary => {
     this.setState({
@@ -308,10 +421,9 @@ class ProbationForms extends React.Component {
         resid: resid4,
         data: [
           {
-            courseId: this.state.addInternalCourseData.courseId,
-            menberId: this.state.employeeInformation.memberId,
-            trainDate: this.state.addInternalCourseData.trainDate,
-            trainer: this.state.addInternalCourseData.teacher
+            C3_614182469763: this.state.addInternalCourseData.courseId,
+            C3_613941384832: this.state.employeeInformation.memberId,
+            C3_615393041304: this.state.addInternalCourseData.trainDate
           }
         ]
       });
@@ -443,6 +555,11 @@ class ProbationForms extends React.Component {
     this.setState({
       modifyOnJobTrainingVisible: visible
     });
+  //控制修改工作目标显示模态窗状态
+  setModifyProbationObjectiveVisible = visible =>
+    this.setState({
+      modifyProbationObjectiveVisible: visible
+    });
 
   //控制修改内训课程模态窗状态
   setModifyInternalCourseVisible = visible =>
@@ -462,6 +579,14 @@ class ProbationForms extends React.Component {
     });
   };
 
+  openModifyProbationObjectiveModal = (data, index) => {
+    this.setState({
+      modifyProbationObjectiveVisible: true,
+      modifyProbationObjectiveData: data,
+      modifyProbationObjectiveIndex: index
+    });
+  };
+
   openModifyOnJobTrainingModal = data => {
     this.setState({
       modifyOnJobTrainingVisible: true,
@@ -475,9 +600,11 @@ class ProbationForms extends React.Component {
     return (
       <Spin spinning={loading}>
         <div id="probation-forms">
-          <div className="probation-forms_goback" onClick={this.props.goBack}>
-            <Icon type="rollback" style={{ color: '#999' }} />
-          </div>
+          {this.props.roleName !== '员工' && (
+            <div className="probation-forms_goback" onClick={this.props.goBack}>
+              <Icon type="rollback" style={{ color: '#999' }} />
+            </div>
+          )}
           <header>
             <h1>新员工试用期考核表</h1>
             <p>New Employee Probation Appraisal Form</p>
@@ -488,18 +615,27 @@ class ProbationForms extends React.Component {
                 employeeInformation={this.state.employeeInformation}
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
+                roleName={roleName}
               />
               <ProbationObjectives
                 probationObjectives={this.state.probationObjectives}
+                addProbationObjective={this.state.addProbationObjective}
+                onAddProbationObjectiveChange={this.handleObjectvieChange}
                 addObjective={this.addObjective}
                 removeObjective={this.removeObjective}
-                modifyObjective={this.modifyObjective}
+                // modifyObjective={this.modifyObjective}
                 assessmentCycle={this.state.assessmentCycle}
+                roleName={roleName}
+                openModifyProbationObjectiveModal={
+                  this.openModifyProbationObjectiveModal
+                }
+                auth={this.state.tableAuth.objective}
               />
               <OrientationTraining
                 orientationTraining={this.state.orientationTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
                 )}
+                roleName={roleName}
               />
               <InternalTraining
                 setAddInternalCourseVisible={this.setAddInternalCourseVisible}
@@ -510,6 +646,8 @@ class ProbationForms extends React.Component {
                 openModifyInternalCourseModal={
                   this.openModifyInternalCourseModal
                 }
+                roleName={roleName}
+                auth={this.state.tableAuth.internal}
               />
               <OnTheJobTraining
                 onTheJobTraining={this.state.onTheJobTraining.map(
@@ -518,6 +656,8 @@ class ProbationForms extends React.Component {
                 setAddOnJobTrainingVisible={this.setAddOnJobTrainingVisible}
                 deleteOnJobTraining={this.deleteOnJobTraining}
                 openModifyOnJobTrainingModal={this.openModifyOnJobTrainingModal}
+                roleName={roleName}
+                auth={this.state.tableAuth.onJob}
               />
               <MentorshipRecord
                 mentorshipRecord={this.state.mentorshipRecord}
@@ -525,10 +665,13 @@ class ProbationForms extends React.Component {
                 removeMentor={this.removeMentor}
                 modifyMentor={this.modifyMentor}
                 confirmMentor={this.confirmMentor}
+                roleName={roleName}
+                auth={this.state.tableAuth.mentorRecord}
               />
               <IndividualSummary
                 summary={this.state.employeeInformation.smmary}
                 summaryChange={this.summaryChange}
+                roleName={roleName}
               />
             </div>
             <aside className="probation-forms_main_sider">
@@ -549,7 +692,7 @@ class ProbationForms extends React.Component {
               style={{ marginRight: 16 }}
               onClick={this.handleSubmit}
             >
-              提交
+              保存
             </Button>
             {roleName === '主管' && (
               <React.Fragment>
@@ -656,7 +799,7 @@ class ProbationForms extends React.Component {
                 placeholder="请选择课程"
                 optionFilterProp="children"
                 onSearch={val => {}}
-                value={this.state.modifyInternalCourseData.courseId}
+                value={this.state.modifyInternalCourseData.C3_614182469763}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -671,8 +814,7 @@ class ProbationForms extends React.Component {
                       this.setState({
                         modifyInternalCourseData: {
                           ...this.state.modifyInternalCourseData,
-                          courseId: item.C3_609845305868,
-                          trainer: item.C3_610390419677
+                          C3_614182469763: item.C3_609845305868
                         }
                       });
                     }}
@@ -687,7 +829,9 @@ class ProbationForms extends React.Component {
             <Col span={4} offset={4}>
               培训师:
             </Col>
-            <Col span={12}>{this.state.modifyInternalCourseData.trainer}</Col>
+            <Col span={12}>
+              {this.state.modifyInternalCourseData.C3_613941386081}
+            </Col>
           </Row>
           <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
@@ -697,15 +841,17 @@ class ProbationForms extends React.Component {
               <DatePicker
                 showTime
                 value={
-                  this.state.modifyInternalCourseData.trainDate
-                    ? moment(this.state.modifyInternalCourseData.trainDate)
+                  this.state.modifyInternalCourseData.C3_615393041304
+                    ? moment(
+                        this.state.modifyInternalCourseData.C3_615393041304
+                      )
                     : undefined
                 }
                 onChange={val => {
                   this.setState({
                     modifyInternalCourseData: {
                       ...this.state.modifyInternalCourseData,
-                      trainDate: val && val.format('YYYY-MM-DD HH:mm:ss')
+                      C3_615393041304: val && val.format('YYYY-MM-DD HH:mm:ss')
                     }
                   });
                 }}
@@ -842,6 +988,61 @@ class ProbationForms extends React.Component {
                     }
                   });
                 }}
+              />
+            </Col>
+          </Row>
+        </Modal>
+        <Modal
+          title="修改工作目标"
+          visible={this.state.modifyProbationObjectiveVisible}
+          onCancel={() => {
+            this.setModifyProbationObjectiveVisible(false);
+            this.setState({
+              modifyProbationObjectiveData: {},
+              modifyProbationObjectiveIndex: undefined
+            });
+          }}
+          onOk={() => this.modifyObjective()}
+          destroyOnClose
+          okText="修改"
+        >
+          <Row className="probation-forms_modal_inputrow">
+            <Col span={4} offset={2}>
+              工作目标:
+            </Col>
+            <Col span={16}>
+              <TextArea
+                placeholder="请输入"
+                value={this.state.modifyProbationObjectiveData.target}
+                rows={4}
+                onChange={e =>
+                  this.setState({
+                    modifyProbationObjectiveData: {
+                      ...this.state.modifyProbationObjectiveData,
+                      target: e.target.value
+                    }
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row className="probation-forms_modal_inputrow">
+            <Col span={4} offset={2}>
+              评估指标:
+            </Col>
+            <Col span={16}>
+              <TextArea
+                placeholder="请输入"
+                value={this.state.modifyProbationObjectiveData.assessment}
+                rows={4}
+                onChange={e =>
+                  this.setState({
+                    modifyProbationObjectiveData: {
+                      ...this.state.modifyProbationObjectiveData,
+                      assessment: e.target.value
+                    }
+                  })
+                }
               />
             </Col>
           </Row>

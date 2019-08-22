@@ -415,7 +415,7 @@ export const HRProbation = Loadable({
   }
 });
 export const EmployeeProbation = Loadable({
-  loader: () => import('./Probation/EmployeeProbation'),
+  loader: () => import('./Probation/ProbationForms'),
   loading() {
     return minLoading;
   }
