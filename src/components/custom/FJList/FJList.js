@@ -11,7 +11,7 @@ import {
   Modal,
   Input,
   Popconfirm,
-  Tabs,
+  Tabs
 } from 'antd';
 import http from '../../../util20/api';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -286,7 +286,7 @@ class FJList extends React.Component {
     if (
       this.state.totalData.C3_611074040082 <
       // this.state.data[this.state.listIndex].C3_611409509831 +
-        Number(this.state.addCustom.C3_609616906353)
+      Number(this.state.addCustom.C3_609616906353)
     ) {
       message.error('已超出人均预算');
     }
@@ -518,11 +518,17 @@ class FJList extends React.Component {
               }}
             >
               <span style={{ fontSize: '14px' }}>
-                人数: <span className='fjlist-header-number'>{totalData.C3_609615996253}</span>
+                人数:{' '}
+                <span className="fjlist-header-number">
+                  {totalData.C3_609615996253}
+                </span>
               </span>
 
               <span style={{ fontSize: '14px' }}>
-                总费用: <span className='fjlist-header-number'>{totalData.C3_609616051191}</span>
+                总费用:{' '}
+                <span className="fjlist-header-number">
+                  {totalData.C3_609616051191}
+                </span>
               </span>
             </div>
             <div
@@ -535,10 +541,16 @@ class FJList extends React.Component {
               }}
             >
               <span style={{ fontSize: '14px' }}>
-                总预算: <span className='fjlist-header-number'>{totalData.C3_609616030566}</span>
+                总预算:{' '}
+                <span className="fjlist-header-number">
+                  {totalData.C3_609616030566}
+                </span>
               </span>
               <span style={{ fontSize: '14px' }}>
-                人均预算: <span className='fjlist-header-number'>{totalData.C3_611074040082}</span>
+                人均预算:{' '}
+                <span className="fjlist-header-number">
+                  {totalData.C3_611074040082}
+                </span>
               </span>
             </div>
           </div>
@@ -822,7 +834,9 @@ class FJList extends React.Component {
                 <Button
                   type="default"
                   style={{ width: 'calc(50% - 80px)' }}
-                  onClick={()=>{this.setState({showHistory:true})}}
+                  onClick={() => {
+                    this.setState({ showHistory: true });
+                  }}
                 >
                   计划明细
                 </Button>
@@ -1011,12 +1025,12 @@ class FJList extends React.Component {
             onCancel={() => this.setState({ showHistory: false })}
           >
             <TableData
-             height={450}
+              height={450}
               resid={611315248461}
               cmswhere={`C3_609616805633 = '${this.planid}'`}
               recordFormFormWidth={'90%'}
               hasBeBtns={false}
-              subtractH= {240}
+              subtractH={240}
               hasModify={false}
               hasDelete={false}
               hasAdd={false}
@@ -1039,7 +1053,7 @@ class FJList extends React.Component {
             onOk={() => this.setState({ showTab: false })}
             onCancel={() => this.setState({ showTab: false })}
             centered
-            style={{top:50}}
+            style={{ top: 50 }}
           >
             <Tabs defaultActiveKey={this.state.tabsKey}>
               <TabPane tab="历年绩效" key="1">
@@ -1595,7 +1609,6 @@ class FJList extends React.Component {
                   </div>
                   <div style={{ flex: 3 }}>
                     <Input
-                      type="number"
                       defaultValue={this.state.cnspmxb.C3_609616868478}
                       onChange={e => {
                         let cnspmxb = JSON.parse(
@@ -1630,6 +1643,7 @@ class FJList extends React.Component {
                   <div style={{ flex: 3 }}>
                     <Input
                       defaultValue={this.state.cnspmxb.C3_609616906353}
+                      type="number"
                       onChange={e => {
                         let cnspmxb = JSON.parse(
                           JSON.stringify(this.state.cnspmxb)

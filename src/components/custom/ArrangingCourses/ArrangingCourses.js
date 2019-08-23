@@ -17,7 +17,7 @@ import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
 import http from 'Util20/api';
 import moment from 'moment';
-import CalendarMode from './CalendarMode'
+import CalendarMode from './CalendarMode';
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
@@ -434,11 +434,9 @@ class ArrangingCourses extends React.Component {
                         时间：{item.StartDatetime}
                       </div>
                       <div className="content_item">
-                        实际费用:{  `${item.actualCost}元`}
+                        实际费用:{`${item.actualCost}元`}
                       </div>
-                      <div className="content_item">
-                        季度:{  `${item.quarter}元`}
-                      </div>
+                      <div className="content_item">季度:{item.quarter}</div>
                     </div>
                   </Card>
                 ))
@@ -450,9 +448,13 @@ class ArrangingCourses extends React.Component {
               )}
             </div>
           )}
-          {this.state.mode === 'calendar' && <div style={{height:'100%'}}><CalendarMode/></div>}
+          {this.state.mode === 'calendar' && (
+            <div style={{ height: '100%' }}>
+              <CalendarMode />
+            </div>
+          )}
           {this.state.mode === 'table' && (
-            <div style={{width:'100%',flex:1}}>
+            <div style={{ width: '100%', flex: 1 }}>
               <TableData
                 resid="613959487818"
                 subtractH={220}
@@ -487,7 +489,7 @@ class ArrangingCourses extends React.Component {
                     CourseLocation: values.modifyCourseLocation,
                     classType: values.classType,
                     actualCost: parseFloat(values.actualCost),
-                    quarter:values.quarter
+                    quarter: values.quarter
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -588,8 +590,12 @@ class ArrangingCourses extends React.Component {
                   initialValue: this.state.selectedCourseArrangment.classType
                 })(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训" key='外训'>外训</Option>
-                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
+                    <Option value="外训" key="外训">
+                      外训
+                    </Option>
+                    <Option value="外聘内训" key="外聘内训">
+                      外聘内训
+                    </Option>
                   </Select>
                 )}
               </Form.Item>
@@ -649,7 +655,7 @@ class ArrangingCourses extends React.Component {
                     let learner = records.dataSource.find(i => {
                       return i.REC_ID === item;
                     });
-                    if(learner){
+                    if (learner) {
                       selectedMoveLearners.push(learner);
                     }
                   });
@@ -717,7 +723,7 @@ class ArrangingCourses extends React.Component {
             selectedMoveLearners.forEach(item => {
               item.CourseArrangeID = selectedTargetCourseArrangment;
             });
-            console.log(selectedTargetCourseArrangment)
+            console.log(selectedTargetCourseArrangment);
             await this.moveLearner(selectedMoveLearners);
             this.setState({
               isShowMoveLearner: false,
@@ -842,8 +848,12 @@ class ArrangingCourses extends React.Component {
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {})(
                   <Select placeholder="请选择课程类型">
-                    <Option value="外训" key='外训'>外训</Option>
-                    <Option value="外聘内训" key='外聘内训'>外聘内训</Option>
+                    <Option value="外训" key="外训">
+                      外训
+                    </Option>
+                    <Option value="外聘内训" key="外聘内训">
+                      外聘内训
+                    </Option>
                   </Select>
                 )}
               </Form.Item>
