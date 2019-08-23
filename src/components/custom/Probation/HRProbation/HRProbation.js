@@ -1,9 +1,10 @@
 import React from 'react';
 import './HRProbation.less';
 import TableData from '../../../common/data/TableData';
-import { Button, message, Select } from 'antd';
+import { Button, message, Select, } from 'antd';
 import ProbationForms from '../ProbationForms';
-
+import http from 'Util20/api';
+import { isConstructorDeclaration } from 'typescript';
 const { Option } = Select;
 class HRProbation extends React.Component {
   state = {
@@ -11,13 +12,91 @@ class HRProbation extends React.Component {
     selectedRecord: {}
   };
 
+  // 点击下拉框
+  handleSel = async (record,selectValue) => {
+    if (record.selectedRowKeys.length) {
+      let res;
+      let data = [];
+      record.dataSource.map(item => {
+        if (record.selectedRowKeys.includes(item.REC_ID)) {
+          if(selectValue === '主管填写'){
+            item.isDirectorFill = 'Y';
+          }else if (selectValue === '员工填写') {
+            item.isEmployeeFill = 'Y';
+          }else if (selectValue === '辅导员填写') {
+            item.isCounselorFill = 'Y';
+          }else if (selectValue === '员工确认辅导') {
+            item.isStaffConfirm = 'Y';
+          }
+          data.push(item);
+        }
+      });
+    try {
+      res = await http().modifyRecords({
+        resid:619609481002,
+        data
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+      this.setState({
+        selectCourseArrangementVisible: false
+      });
+      
+    }else{
+      message.error('请选择至少一条记录');
+    }
+    
+  }
+
+  // 点击转正申请
+  handleApply = async (record) =>{
+    console.log("record转正111",record)
+    if (record.selectedRowKeys.length) {
+      this.setState({
+        selectCourseArrangementVisible: false
+      });
+      let res;
+      let data = [];
+      record.dataSource.map(item => {
+        if (record.selectedRowKeys.includes(item.REC_ID)) {
+          console.log('come in ');
+          item.isRegularNotice = 'Y';
+          data.push(item);
+        }
+      });
+      try {
+        res = await http().modifyRecords({
+          resid:619609481002 ,
+          data
+        });
+        if (res.Error === 0) {
+          message.success(res.message);
+        }
+      } catch (error) {
+        message.error(error.message);
+      }
+    }else{
+      message.error('请选择至少一条记录');
+    }
+    
+
+    
+  }
+
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
-          <Button
+          {/* <Button
             type="primary"
             onClick={() => {
+              console.log("come in ")
+              this.handMul(record);
+              console.log("record批量审批",record);
               if (record.selectedRowKeys.length) {
                 // this.onMoveEmployees(record);
               } else {
@@ -27,16 +106,26 @@ class HRProbation extends React.Component {
                 message.error('请选择至少一条记录');
               }
             }}
+            
           >
             批量审批
-          </Button>
-          <Select style={{ width: 120 }} placeholder="提醒">
+          </Button> */}
+          <Select style={{ width: 120 }} placeholder="提醒"
+            onChange={(selectValue) => {
+              this.handleSel(record,selectValue)
+              console.log("record下拉框",record);
+            }}
+          >
             <Option value="员工填写">员工填写</Option>
             <Option value="主管填写">主管填写</Option>
             <Option value="辅导员填写">辅导员填写</Option>
             <Option value="员工确认辅导">员工确认辅导</Option>
           </Select>
-          <Button>转正申请</Button>
+          <Button
+            onClick = {(RegularApply) => {
+              this.handleApply(record);
+            }}
+          >转正申请</Button>
         </div>
       </div>
     );

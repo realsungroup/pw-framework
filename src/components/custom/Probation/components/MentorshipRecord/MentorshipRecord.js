@@ -76,10 +76,26 @@ const MentorshipRecord = props => {
                     </p>
                   )}
                 </div>
-                <footer className="mentorshi-record_card_buttons">
+                <div className="mentorshi-record_card_item">
+                  状态/Status：
                   {item.isConfirm === 'Y' ? (
+                    <span style={{ color: '#2593fc' }}>已确认</span>
+                  ) : (
+                    <span style={{ color: '#f22635' }}>待确认</span>
+                  )}
+                </div>
+                <footer className="mentorshi-record_card_buttons">
+                  {/* {props.roleName === '员工' && item.isConfirm === 'Y' ? (
                     <Button disabled>已确认</Button>
                   ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => props.confirmMentor(index)}
+                    >
+                      确认
+                    </Button>
+                  )} */}
+                  {props.roleName === '员工' && item.isConfirm !== 'Y' && (
                     <Button
                       type="primary"
                       onClick={() => props.confirmMentor(index)}

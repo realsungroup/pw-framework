@@ -35,6 +35,7 @@ const resid4 = '619640552055'; //内训课程上课记录表
 const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
+const resid9 = '619808533610';
 
 const internalCourse = '616155060405'; //内训课程表
 const tutorshipResid = '619281130628'; //辅导员表
@@ -54,7 +55,7 @@ class ProbationForms extends React.Component {
     modifyOnJobTrainingData: {}, //修改用到的在岗培训数据
     addProbationObjective: {
       objective: '', //目标内容
-      assessment: '' //评估指标
+      quota: '' //结果指标
     }, //添加工作目标用到的数据
     modifyProbationObjectiveData: {}, //修改工作目标用到的数据
     modifyProbationObjectiveIndex: undefined, //修改的工作目标的下标
@@ -120,6 +121,16 @@ class ProbationForms extends React.Component {
             _state: 'editoradd',
             _id: index++
           }
+        });
+        item[resid9].forEach(i => {
+          subdata.push({
+            resid: resid9,
+            maindata: {
+              ...i,
+              _state: 'editoradd',
+              _id: index++
+            }
+          });
         });
       });
       orientationTraining.forEach(item => {
@@ -220,6 +231,7 @@ class ProbationForms extends React.Component {
           subresid += viewableTable[item] + ',';
         }
       });
+      subresid += resid9;
       const res = await http().getRecordAndSubTables({
         resid: resid1,
         // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
@@ -292,7 +304,7 @@ class ProbationForms extends React.Component {
       ...this.state.probationObjectives,
       {
         target: this.state.addProbationObjective.objective,
-        assessment: this.state.addProbationObjective.assessment
+        quota: this.state.addProbationObjective.quota
       }
     ];
     this.setState({ probationObjectives, addProbationObjective: {} });
@@ -317,18 +329,16 @@ class ProbationForms extends React.Component {
     message.success('已删除');
   };
   //修改目标
-  modifyObjective = () => {
+  modifyObjective = (index, data) => {
     const probationObjectives = [...this.state.probationObjectives];
-    probationObjectives[
-      this.state.modifyProbationObjectiveIndex
-    ] = this.state.modifyProbationObjectiveData;
+    probationObjectives[index] = data;
     this.setState({
       probationObjectives,
       modifyProbationObjectiveVisible: false,
       modifyProbationObjectiveData: {},
       modifyProbationObjectiveIndex: undefined
     });
-    message.success('已修改，不要忘记点下方保存哦');
+    // message.success('已修改，不要忘记点下方保存哦');
   };
 
   //添加辅导记录
@@ -384,11 +394,11 @@ class ProbationForms extends React.Component {
   };
 
   //处理工作目标内容变化
-  handleObjectvieChange = ({ objective, assessment }) => {
+  handleObjectvieChange = ({ objective, quota }) => {
     this.setState({
       addProbationObjective: {
         objective,
-        assessment
+        quota
       }
     });
   };
@@ -623,7 +633,7 @@ class ProbationForms extends React.Component {
                 onAddProbationObjectiveChange={this.handleObjectvieChange}
                 addObjective={this.addObjective}
                 removeObjective={this.removeObjective}
-                // modifyObjective={this.modifyObjective}
+                modifyObjective={this.modifyObjective}
                 assessmentCycle={this.state.assessmentCycle}
                 roleName={roleName}
                 openModifyProbationObjectiveModal={
@@ -1002,7 +1012,12 @@ class ProbationForms extends React.Component {
               modifyProbationObjectiveIndex: undefined
             });
           }}
-          onOk={() => this.modifyObjective()}
+          onOk={() =>
+            this.modifyObjective(
+              this.state.modifyProbationObjectiveIndex,
+              this.state.modifyProbationObjectiveData
+            )
+          }
           destroyOnClose
           okText="修改"
         >
@@ -1033,13 +1048,13 @@ class ProbationForms extends React.Component {
             <Col span={16}>
               <TextArea
                 placeholder="请输入"
-                value={this.state.modifyProbationObjectiveData.assessment}
+                value={this.state.modifyProbationObjectiveData.quota}
                 rows={4}
                 onChange={e =>
                   this.setState({
                     modifyProbationObjectiveData: {
                       ...this.state.modifyProbationObjectiveData,
-                      assessment: e.target.value
+                      quota: e.target.value
                     }
                   })
                 }
