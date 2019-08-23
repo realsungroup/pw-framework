@@ -61,24 +61,12 @@ class IDPAnalyze extends React.Component {
               borderColor: '#aaa',
               borderWidth: 1,
               borderRadius: 4,
-              // shadowBlur:3,
-              // shadowOffsetX: 2,
-              // shadowOffsetY: 2,
-              // shadowColor: '#999',
-              // padding: [0, 7],
               rich: {
                 a: {
                   color: '#999',
                   lineHeight: 22,
                   align: 'center'
                 },
-                // abg: {
-                //     backgroundColor: '#333',
-                //     width: '100%',
-                //     align: 'right',
-                //     height: 22,
-                //     borderRadius: [4, 4, 0, 0]
-                // },
                 hr: {
                   borderColor: '#aaa',
                   width: '100%',
@@ -101,7 +89,10 @@ class IDPAnalyze extends React.Component {
           data: [
             { value: 0, name: '员工填写' },
             { value: 0, name: '主管填写' },
-            { value: 0, name: '未填写' }
+            { value: 0, name: '未填写' },
+            { value: 0, name: '员工确认' },
+            { value: 0, name: '主管确认' },
+            { value: 0, name: '未确认' }
           ]
         }
       ]
@@ -133,13 +124,13 @@ class IDPAnalyze extends React.Component {
             item.value = data.noWrite;
             break;
           case '主管确认':
-            item.value = data;
+            item.value = data.managerAffirm;
             break;
           case '员工确认':
-            item.value = data.noWrite;
+            item.value = data.employeeAffirm;
             break;
           case '未确认':
-            item.value = data.noWrite;
+            item.value = data.noAffirm;
             break;
         }
         newOption.push(item);
@@ -156,21 +147,11 @@ class IDPAnalyze extends React.Component {
       <div className="idp-analyze">
         <div className="">
           <EchartsOfReact
-            id="exam-analyze__chart-bar"
             option={option}
             defaultWidth={1000}
             defaultHeight={600}
           />
         </div>
-
-        {/* <div className="exam-analyze__chart-wrap">
-          <EchartsOfReact
-            id="exam-analyze__chart-pie"
-            option={pieOption}
-            defaultWidth={760}
-            defaultHeight={400}
-          />
-        </div> */}
       </div>
     );
   }
