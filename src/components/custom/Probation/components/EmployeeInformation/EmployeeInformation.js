@@ -58,7 +58,7 @@ const EmployeeInformation = props => {
               value={employeeInformation.instructor}
               placeholder="请选择"
             /> */}
-            {props.roleName === '主管' ? (
+            {props.roleName === '主管' || props.roleName === 'HR' ? (
               <Select
                 showSearch
                 style={{ width: 200 }}
