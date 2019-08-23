@@ -872,7 +872,14 @@ window[607168416937] = {
     resid: 607188943833,
     hasAdd: false,
     hasModify: false,
-    hasDelete: false
+    hasDelete: false,
+    columnsWidth:{
+      '考试名称':250,
+      '考试次数':110,
+      '是否通过':110,
+      '剩余参加考试次数':170,
+      '有效日期':220,
+    }
   }
 };
 //人员信息
@@ -900,6 +907,24 @@ window[607562749445] = {
     recordFormContainerProps: {
       placement: 'bottom',
       height: 500
+    },
+    columnsWidth:{
+      '考试名称':250,
+      '试卷名称':250,
+      '人员工号':120,
+      '姓名':120,
+      '考试总分':120,
+      '通过分数':120,
+      '考试成绩':120,
+      '考试状态':120,
+      '交卷时间':180,
+      '考试剩余次数':150,
+      '考试时长':120,
+      '进入时间':180,
+      '是否通过考试':150,
+      '考试用时':120,
+      '参加次数':120,
+      '已参加次数':120,
     },
     // recordFormFormWidth: '45%',
     subTableArrProps: [
@@ -1018,6 +1043,22 @@ window[610657933222] = {
     hasRowModify: false,
     hasRowView: true,
     subtractH: 220,
+    columnsWidth:{
+      '考试名称':250,
+      '试卷名称':250,
+      '人员工号':100,
+      '考试总分':100,
+      '通过分数':100,
+      '考试成绩':100,
+      '考试状态':100,
+      '交卷时间':180,
+      '考试剩余次数':150,
+      '考试时长':100,
+      '进入时间':180,
+      '是否通过考试':150,
+      '考试用时':100,
+      '参加次数':100,
+    },
     // height:600,
     recordFormType: 'drawer',
     recordFormContainerProps: {
