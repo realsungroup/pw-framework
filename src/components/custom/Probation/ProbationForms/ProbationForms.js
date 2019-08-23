@@ -120,17 +120,17 @@ class ProbationForms extends React.Component {
             ...item,
             _state: 'editoradd',
             _id: index++
-          }
-        });
-        item[resid9].forEach(i => {
-          subdata.push({
-            resid: resid9,
-            maindata: {
-              ...i,
-              _state: 'editoradd',
-              _id: index++
-            }
-          });
+          },
+          subData: item[resid9].map(i => {
+            return {
+              resid: resid9,
+              maindata: {
+                ...i,
+                _state: 'editoradd',
+                _id: index++
+              }
+            };
+          })
         });
       });
       orientationTraining.forEach(item => {
@@ -300,12 +300,18 @@ class ProbationForms extends React.Component {
 
   //添加目标
   addObjective = () => {
+    const memberId = this.state.employeeInformation.memberId;
+    const assessmentCycle = this.state.assessmentCycle;
+    let subData = [];
+    assessmentCycle.forEach(item => {
+      subData.push({
+        period: item,
+        memberId
+      });
+    });
     const probationObjectives = [
       ...this.state.probationObjectives,
-      {
-        target: this.state.addProbationObjective.objective,
-        quota: this.state.addProbationObjective.quota
-      }
+      { [resid9]: subData }
     ];
     this.setState({ probationObjectives, addProbationObjective: {} });
     message.success('已添加，不要忘记点下方保存哦');
@@ -629,12 +635,11 @@ class ProbationForms extends React.Component {
               />
               <ProbationObjectives
                 probationObjectives={this.state.probationObjectives}
-                addProbationObjective={this.state.addProbationObjective}
-                onAddProbationObjectiveChange={this.handleObjectvieChange}
+                // addProbationObjective={this.state.addProbationObjective}
+                // onAddProbationObjectiveChange={this.handleObjectvieChange}
                 addObjective={this.addObjective}
                 removeObjective={this.removeObjective}
                 modifyObjective={this.modifyObjective}
-                assessmentCycle={this.state.assessmentCycle}
                 roleName={roleName}
                 openModifyProbationObjectiveModal={
                   this.openModifyProbationObjectiveModal

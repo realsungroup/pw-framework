@@ -1,20 +1,11 @@
 import React from 'react';
 import './ProbationObjectives.less';
-import {
-  Card,
-  Select,
-  Input,
-  Icon,
-  InputNumber,
-  Popconfirm,
-  Button
-} from 'antd';
+import { Card, Input, Icon, InputNumber, Popconfirm, Button } from 'antd';
 
-const { Option } = Select;
 const { TextArea } = Input;
 const resid1 = '619808533610';
 const ProbationObjectives = props => {
-  let { probationObjectives, assessmentCycle } = props;
+  let { probationObjectives, modifyObjective } = props;
   const hasOperation = props.auth.hasDelete && props.auth.hasModify;
   return (
     <div id="probation-objectives" className="probation-form">
@@ -41,91 +32,21 @@ const ProbationObjectives = props => {
           </p>
         </div>
         <div className="probation-objectives_fill-stage">
-          <div className="probation-objectives_fill-stage_show-area">
-            <div className="probation-objectives_fill-stage_show-area_header">
-              <div className=" probation-objectives_fill-stage_show-area_header_item">
-                序号
-              </div>
-              <div className=" probation-objectives_fill-stage_show-area_header_item">
-                工作目标
-              </div>
-              <div className=" probation-objectives_fill-stage_show-area_header_item">
-                结果指标
-              </div>
-              {hasOperation && (
-                <div className=" probation-objectives_fill-stage_show-area_header_item">
-                  操作
-                </div>
-              )}
-            </div>
-            <div className="probation-objectives_fill-stage_show-area_content">
-              {probationObjectives.map((item, index) => (
-                <div className="probation-objectives_fill-stage_show-area_content_item">
-                  <div className="probation-objectives_fill-stage_show-area_content_item__no">
-                    {index + 1}
-                  </div>
-                  <div className="probation-objectives_fill-stage_show-area_content_item__objective">
-                    {item.target}
-                  </div>
-                  <div className="probation-objectives_fill-stage_show-area_content_item__assessment">
-                    {item.quota}
-                  </div>
-                  {hasOperation && (
-                    <div className="probation-objectives_fill-stage_show-area_content_item__actions">
-                      <a
-                        href="javascript:;"
-                        onClick={() =>
-                          props.openModifyProbationObjectiveModal(item, index)
-                        }
-                      >
-                        修改
-                      </a>
-                      &nbsp;|&nbsp;
-                      <Popconfirm
-                        title="确认删除吗？"
-                        onConfirm={() => props.removeObjective(index)}
-                      >
-                        <a href="javascript:;">删除</a>
-                      </Popconfirm>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
           {props.auth.hasAdd && (
             <div className="probation-objectives_fill-stage_fill-area">
-              <div className="probation-objectives_fill-stage_fill-area_item">
-                <span>工作目标：</span>
-                <TextArea
-                  placeholder="请输入工作目标"
-                  value={props.addProbationObjective.objective}
-                  rows={4}
-                  onChange={v => {
-                    props.onAddProbationObjectiveChange({
-                      ...props.addProbationObjective,
-                      objective: v.target.value
-                    });
-                  }}
-                />
-              </div>
-              <div className="probation-objectives_fill-stage_fill-area_item">
-                <span>结果指标：</span>
-                <TextArea
-                  placeholder="请输入结果指标"
-                  value={props.addProbationObjective.quota}
-                  onChange={v => {
-                    props.onAddProbationObjectiveChange({
-                      ...props.addProbationObjective,
-                      quota: v.target.value
-                    });
-                  }}
-                  rows={4}
-                />
-              </div>
-              <div className="probation-objectives_fill-stage_fill-area_item probation-objectives_fill-stage_fill-area_action">
-                <Button type="primary" onClick={props.addObjective}>
+              <div className="probation-objectives_fill-stage_fill-area_action">
+                <Button
+                  type="primary"
+                  className="probation-objectives_fill-stage_fill-area_action__addbtn"
+                  onClick={props.addObjective}
+                >
                   添加
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={props.openModifyProbationObjectiveModal}
+                >
+                  历史修改记录
                 </Button>
               </div>
             </div>
@@ -134,69 +55,98 @@ const ProbationObjectives = props => {
         <div className="probation-objectives_audit-stage">
           {probationObjectives.map((item, index) => (
             <div className="probation-objectives_audit-stage_objective-card">
+              {props.auth.hasDelete && (
+                <Popconfirm
+                  title="确认删除吗？"
+                  icon={
+                    <Icon type="question-circle-o" style={{ color: 'red' }} />
+                  }
+                  onConfirm={() => {
+                    props.removeObjective(index);
+                  }}
+                >
+                  <Icon
+                    type="close"
+                    className="probation-objectives_audit-stage_objective-card_btn__delete"
+                  />
+                </Popconfirm>
+              )}
               <div className="probation-objectives_audit-stage_objective-card_item">
                 <h4>工作目标/Objectives</h4>
-                <p>{item.target}</p>
+                <TextArea
+                  placeholder="请输入工作目标"
+                  value={item.target}
+                  disabled={!hasOperation}
+                  onChange={v => {
+                    modifyObjective(index, {
+                      ...item,
+                      target: v.target.value
+                    });
+                  }}
+                  rows={4}
+                />
               </div>
               <div className="probation-objectives_audit-stage_objective-card_item">
-                <h4>评估指标/Measurable Indicator</h4>
-                <p>{item.quota}</p>
+                <h4>结果指标/Measurable Indicator</h4>
+                <TextArea
+                  value={item.quota}
+                  placeholder="请输入结果指标"
+                  disabled={!hasOperation}
+                  rows={4}
+                  onChange={v => {
+                    modifyObjective(index, {
+                      ...item,
+                      quota: v.target.value
+                    });
+                  }}
+                />
               </div>
               <div className="probation-objectives_audit-stage_objective-card_item">
-                {item[resid1].map((i, ind) => (
-                  <div className="probation-objectives_audit-stage_objective-card_item__assessment-card">
-                    <div className="assessment-card_item">
-                      <p>评估周期/Assessment Cycle</p>
-                      <p>{i.period}</p>
-                    </div>
-                    <div className="assessment-card_item">
-                      <p>目标绩效完成评估/Comments</p>
-                      <TextArea
-                        rows="8"
-                        placeholder="请输入评估"
-                        value={i.assessment}
-                        onChange={v => {
-                          let data = [...item[resid1]];
-                          data[ind] = { ...i, assessment: v.target.value };
-                          props.modifyObjective(index, {
-                            ...item,
-                            [resid1]: data
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="assessment-card_item">
-                      <span>评分/Mark</span>
-                      <InputNumber
-                        min={0}
-                        max={10}
-                        value={i.score}
-                        onChange={v => {
-                          let data = [...item[resid1]];
-                          data[ind] = { ...i, score: v };
-                          props.modifyObjective(index, {
-                            ...item,
-                            [resid1]: data
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                {/* <div className="probation-objectives_audit-stage_objective-card_item__assessment-card">
-                  <div className="assessment-card_item">
-                    <p>评估周期/Assessment Cycle</p>
-                    <p>5个月</p>
-                  </div>
-                  <div className="assessment-card_item">
-                    <p>目标绩效完成评估/Comments</p>
-                    <TextArea rows="8" placeholder="请输入评估" />
-                  </div>
-                  <div className="assessment-card_item">
-                    <span>评分/Mark</span>
-                    <InputNumber min={0} max={10} />
-                  </div>
-                </div> */}
+                {item[resid1] &&
+                  item[resid1].map((i, ind) => {
+                    return (
+                      <div className="probation-objectives_audit-stage_objective-card_item__assessment-card">
+                        <div className="assessment-card_item">
+                          <p>评估周期/Assessment Cycle</p>
+                          <p style={{ color: '#2593fc' }}>{i.period}</p>
+                        </div>
+                        <div className="assessment-card_item">
+                          <p>目标绩效完成评估/Comments</p>
+                          <TextArea
+                            rows="8"
+                            placeholder="请输入评估"
+                            disabled={!hasOperation}
+                            value={i.assessment}
+                            onChange={v => {
+                              let data = [...item[resid1]];
+                              data[ind] = { ...i, assessment: v.target.value };
+                              modifyObjective(index, {
+                                ...item,
+                                [resid1]: data
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="assessment-card_item">
+                          <span>评分/Mark</span>
+                          <InputNumber
+                            min={0}
+                            max={10}
+                            value={i.score}
+                            disabled={!hasOperation}
+                            onChange={v => {
+                              let data = [...item[resid1]];
+                              data[ind] = { ...i, score: v };
+                              modifyObjective(index, {
+                                ...item,
+                                [resid1]: data
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           ))}

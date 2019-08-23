@@ -85,16 +85,6 @@ const MentorshipRecord = props => {
                   )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
-                  {/* {props.roleName === '员工' && item.isConfirm === 'Y' ? (
-                    <Button disabled>已确认</Button>
-                  ) : (
-                    <Button
-                      type="primary"
-                      onClick={() => props.confirmMentor(index)}
-                    >
-                      确认
-                    </Button>
-                  )} */}
                   {props.roleName === '员工' && item.isConfirm !== 'Y' && (
                     <Button
                       type="primary"
