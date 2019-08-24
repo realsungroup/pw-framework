@@ -1711,3 +1711,10 @@ window[618665452476] = {
   name: 'DLEmploy',
   title: '员工个人发展管理'
 };
+window[619954194724] = {
+  name: 'IdpCard',
+  title: '我的IDP',
+  props:{
+    role:"Employee"
+  }
+};
