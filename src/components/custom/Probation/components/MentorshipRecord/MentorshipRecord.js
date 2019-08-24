@@ -5,7 +5,15 @@ import { Card, Input, Icon, Popconfirm, DatePicker, Button } from 'antd';
 
 const { TextArea } = Input;
 const MentorshipRecord = props => {
-  let { mentorshipRecord } = props;
+  let {
+    mentorshipRecord,
+    auth,
+    roleName,
+    addMentor,
+    confirmMentor,
+    modifyMentor,
+    removeMentor
+  } = props;
   return (
     <div id="mentorshi-record" className="probation-form">
       <Card
@@ -25,14 +33,14 @@ const MentorshipRecord = props => {
           {mentorshipRecord.map((item, index) => (
             <div className="mentorshi-record_card__wrapper">
               <div className="mentorshi-record_card">
-                {props.auth.hasDelete && (
+                {auth.hasDelete && (
                   <Popconfirm
                     title="确认删除吗？"
                     icon={
                       <Icon type="question-circle-o" style={{ color: 'red' }} />
                     }
                     onConfirm={() => {
-                      props.removeMentor(index);
+                      removeMentor(index);
                     }}
                   >
                     <Icon
@@ -43,12 +51,12 @@ const MentorshipRecord = props => {
                 )}
                 <div className="mentorshi-record_card_item">
                   日期/Date
-                  {props.auth.hasModify ? (
+                  {auth.hasModify ? (
                     <DatePicker
                       style={{ width: 140, marginLeft: '1.25vw' }}
                       onChange={v => {
                         item.editDate = v && v.format('YYYY-MM-DD');
-                        props.modifyMentor(index, item);
+                        modifyMentor(index, item);
                       }}
                       value={item.editDate ? moment(item.editDate) : undefined}
                     />
@@ -60,13 +68,13 @@ const MentorshipRecord = props => {
                 </div>
                 <div className="mentorshi-record_card_item">
                   辅导记录/Mentorship Record
-                  {props.auth.hasModify ? (
+                  {auth.hasModify ? (
                     <TextArea
                       placeholder="请输入辅导记录"
                       value={item.instructionRecord}
                       onChange={v => {
                         item.instructionRecord = v.target.value;
-                        props.modifyMentor(index, item);
+                        modifyMentor(index, item);
                       }}
                       rows={3}
                     />
@@ -85,23 +93,24 @@ const MentorshipRecord = props => {
                   )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
-                  {props.roleName === '员工' && item.isConfirm !== 'Y' && (
-                    <Button
-                      type="primary"
-                      onClick={() => props.confirmMentor(index)}
-                    >
-                      确认
-                    </Button>
-                  )}
+                  {(roleName === '员工' || roleName === 'HR') &&
+                    item.isConfirm !== 'Y' && (
+                      <Button
+                        type="primary"
+                        onClick={() => confirmMentor(index)}
+                      >
+                        确认
+                      </Button>
+                    )}
                 </footer>
               </div>
             </div>
           ))}
-          {props.auth.hasAdd && (
+          {auth.hasAdd && (
             <div className="mentorshi-record_card__wrapper">
               <div
                 className="mentorshi-record_card__addition"
-                onClick={props.addMentor}
+                onClick={addMentor}
               >
                 <div className="mentorshi-record_card__addition_icon">
                   <Icon type="plus" />

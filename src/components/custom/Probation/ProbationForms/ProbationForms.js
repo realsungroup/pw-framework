@@ -6,6 +6,7 @@ import InternalTraining from '../components/InternalTraining';
 import OnTheJobTraining from '../components/OnTheJobTraining';
 import MentorshipRecord from '../components/MentorshipRecord';
 import IndividualSummary from '../components/IndividualSummary';
+import TableData from '../../../common/data/TableData';
 import {
   Button,
   Anchor,
@@ -26,7 +27,7 @@ import moment from 'moment';
 
 const { Link } = Anchor;
 const { Option } = Select;
-const { TextArea } = Input;
+const { confirm } = Modal;
 
 const resid1 = '619694861346'; //新员工个人信息表
 const resid2 = '618591416723'; //工作目标表
@@ -382,7 +383,7 @@ class ProbationForms extends React.Component {
   confirmMentor = async index => {
     try {
       const mentorshipRecord = [...this.state.mentorshipRecord];
-      const res = await http().modifyRecords({
+      await http().modifyRecords({
         resid: resid6,
         data: [
           {
@@ -610,9 +611,47 @@ class ProbationForms extends React.Component {
     });
   };
 
+  //isManagerRegular isRegular
+  isAgree = isAgree => {
+    confirm({
+      title: isAgree ? '确认同意转正?' : '确认不同意转正?',
+      onOk: async () => {
+        try {
+          let data;
+          if (this.props.roleName === '主管') {
+            data = [
+              {
+                REC_ID: this.state.employeeInformation.REC_ID,
+                isRegular: isAgree ? 'Y' : 'N'
+              }
+            ];
+          }
+          if (this.props.roleName === '经理') {
+            data = [
+              {
+                REC_ID: this.state.employeeInformation.REC_ID,
+                isManagerRegular: isAgree ? 'Y' : 'N'
+              }
+            ];
+          }
+          await http().modifyRecords({
+            resid: resid1,
+            data
+          });
+          message.success('操作成功');
+          this.props.goBack();
+        } catch (error) {
+          message.error(error.message);
+          console.log(error);
+        }
+      },
+      onCancel() {}
+    });
+  };
+
   render() {
     const { roleName } = this.props;
-    const { loading } = this.state;
+    const { loading, employeeInformation } = this.state;
     return (
       <Spin spinning={loading}>
         <div id="probation-forms">
@@ -628,15 +667,13 @@ class ProbationForms extends React.Component {
           <main className="probation-forms_main">
             <div className="probation-forms_main_tables">
               <EmployeeInformation
-                employeeInformation={this.state.employeeInformation}
+                employeeInformation={employeeInformation}
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
                 roleName={roleName}
               />
               <ProbationObjectives
                 probationObjectives={this.state.probationObjectives}
-                // addProbationObjective={this.state.addProbationObjective}
-                // onAddProbationObjectiveChange={this.handleObjectvieChange}
                 addObjective={this.addObjective}
                 removeObjective={this.removeObjective}
                 modifyObjective={this.modifyObjective}
@@ -684,7 +721,7 @@ class ProbationForms extends React.Component {
                 auth={this.state.tableAuth.mentorRecord}
               />
               <IndividualSummary
-                summary={this.state.employeeInformation.smmary}
+                summary={employeeInformation.smmary}
                 summaryChange={this.summaryChange}
                 roleName={roleName}
               />
@@ -701,25 +738,44 @@ class ProbationForms extends React.Component {
               </Anchor>
             </aside>
           </main>
-          <footer className="probation-forms_footer">
-            <Button
-              type="primary"
-              style={{ marginRight: 16 }}
-              onClick={this.handleSubmit}
-            >
-              保存
-            </Button>
-            {roleName === '主管' && (
-              <React.Fragment>
-                <Button type="primary" style={{ marginRight: 16 }}>
-                  同意转正
-                </Button>
-                <Button type="danger" style={{ marginRight: 16 }}>
-                  不同意转正
-                </Button>
-              </React.Fragment>
+          {!loading &&
+            (roleName === 'HR' ||
+              employeeInformation.currentPeriod !== '已结束') && (
+              <footer className="probation-forms_footer">
+                {(roleName === 'HR' ||
+                  employeeInformation.currentPeriod !== '已结束') && (
+                  <Button
+                    type="primary"
+                    style={{ marginRight: 16 }}
+                    onClick={this.handleSubmit}
+                  >
+                    保存
+                  </Button>
+                )}
+                {employeeInformation.currentPeriod === '转正中' &&
+                  ((roleName === '主管' &&
+                    employeeInformation.isRegular !== 'Y') ||
+                    (roleName === '经理' &&
+                      employeeInformation.isManagerRegular !== 'Y')) && (
+                    <React.Fragment>
+                      <Button
+                        type="primary"
+                        style={{ marginRight: 16 }}
+                        onClick={() => this.isAgree(true)}
+                      >
+                        同意转正
+                      </Button>
+                      <Button
+                        type="danger"
+                        style={{ marginRight: 16 }}
+                        onClick={() => this.isAgree(false)}
+                      >
+                        不同意转正
+                      </Button>
+                    </React.Fragment>
+                  )}
+              </footer>
             )}
-          </footer>
         </div>
         <Modal
           title="添加内训课程"
@@ -1008,7 +1064,7 @@ class ProbationForms extends React.Component {
           </Row>
         </Modal>
         <Modal
-          title="修改工作目标"
+          title="历史修改记录"
           visible={this.state.modifyProbationObjectiveVisible}
           onCancel={() => {
             this.setModifyProbationObjectiveVisible(false);
@@ -1017,55 +1073,47 @@ class ProbationForms extends React.Component {
               modifyProbationObjectiveIndex: undefined
             });
           }}
-          onOk={() =>
-            this.modifyObjective(
-              this.state.modifyProbationObjectiveIndex,
-              this.state.modifyProbationObjectiveData
-            )
-          }
+          width="90%"
+          style={{ top: 50 }}
+          onOk={() => {
+            this.setModifyProbationObjectiveVisible(false);
+          }}
           destroyOnClose
-          okText="修改"
         >
-          <Row className="probation-forms_modal_inputrow">
-            <Col span={4} offset={2}>
-              工作目标:
-            </Col>
-            <Col span={16}>
-              <TextArea
-                placeholder="请输入"
-                value={this.state.modifyProbationObjectiveData.target}
-                rows={4}
-                onChange={e =>
-                  this.setState({
-                    modifyProbationObjectiveData: {
-                      ...this.state.modifyProbationObjectiveData,
-                      target: e.target.value
-                    }
-                  })
+          <TableData
+            key="historyRecord"
+            resid="619960233127"
+            subTableArrProps={[
+              {
+                subResid: 619960210668,
+                subTableName: '工作目标评估历史',
+                tableProps: {
+                  hasAdd: false,
+                  hasModify: false,
+                  hasDelete: false,
+                  hasRowModify: false,
+                  hasRowView: true,
+                  hasRowDelete: false,
+                  height: 400,
+                  subtractH: 196,
+                  actionBarWidth: 100
                 }
-              />
-            </Col>
-          </Row>
-          <Row className="probation-forms_modal_inputrow">
-            <Col span={4} offset={2}>
-              评估指标:
-            </Col>
-            <Col span={16}>
-              <TextArea
-                placeholder="请输入"
-                value={this.state.modifyProbationObjectiveData.quota}
-                rows={4}
-                onChange={e =>
-                  this.setState({
-                    modifyProbationObjectiveData: {
-                      ...this.state.modifyProbationObjectiveData,
-                      quota: e.target.value
-                    }
-                  })
-                }
-              />
-            </Col>
-          </Row>
+              }
+            ]}
+            cmswhere={`memberId = '${this.state.employeeInformation.memberId}'`}
+            subtractH={220}
+            height={600}
+            actionBarWidth={200}
+            hasBeBtns={true}
+            hasAdd={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            hasRowModify={false}
+            hasRowSelection={false}
+          />
         </Modal>
       </Spin>
     );
