@@ -77,6 +77,7 @@ class ProbationForms extends React.Component {
       internal: {}, // 内训课程表权限
       onJob: {} //在岗培训表权限
     },
+    trainerData: [],
     loading: false,
     addOnJobTrainingVisible: false,
     addInternalCourseVisible: false,
@@ -96,7 +97,7 @@ class ProbationForms extends React.Component {
     await this.getRecords(memberId);
     await this.getCircle();
     this.getInternalCourses();
-    this.getTutorships();
+    // this.getTutorships();
     this.setState({ loading: false });
   }
 
@@ -287,15 +288,39 @@ class ProbationForms extends React.Component {
     }
   };
   //获取辅导员
-  getTutorships = async () => {
+  // getTutorships = async () => {
+  //   try {
+  //     const res = await http().getTable({
+  //       resid: tutorshipResid
+  //     });
+  //     this.setState({ tutorships: res.data });
+  //   } catch (error) {
+  //     message.error(error.message);
+  //     console.log(error);
+  //   }
+  // };
+
+  //根据工号搜索培训师
+  fetchUser = async value => {
+    this.setState({ trainerData: [], fetching: true });
     try {
       const res = await http().getTable({
-        resid: tutorshipResid
+        resid: '609599795438',
+        cmswhere: `C3_227192472953 = '${value}'`
       });
-      this.setState({ tutorships: res.data });
+      const trainerData = res.data.map(user => ({
+        label: `${user.C3_227192484125}`,
+        key: user.C3_305737857578
+      }));
+
+      this.setState({
+        trainerData
+      });
     } catch (error) {
-      message.error(error.message);
       console.log(error);
+      message.error(error.message);
+    } finally {
+      this.setState({ fetching: false });
     }
   };
 
@@ -611,7 +636,7 @@ class ProbationForms extends React.Component {
     });
   };
 
-  //isManagerRegular isRegular
+  //是否同意转正
   isAgree = isAgree => {
     confirm({
       title: isAgree ? '确认同意转正?' : '确认不同意转正?',
@@ -647,6 +672,22 @@ class ProbationForms extends React.Component {
       },
       onCancel() {}
     });
+  };
+
+  //邀请培训师确认
+  inviteConfirm = async data => {
+    this.setState({ loading: true });
+    try {
+      await http().modifyRecords({
+        resid: resid5,
+        data: [data]
+      });
+      message.success('已邀请');
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+    this.setState({ loading: false });
   };
 
   render() {
@@ -710,6 +751,7 @@ class ProbationForms extends React.Component {
                 openModifyOnJobTrainingModal={this.openModifyOnJobTrainingModal}
                 roleName={roleName}
                 auth={this.state.tableAuth.onJob}
+                inviteConfirm={this.inviteConfirm}
               />
               <MentorshipRecord
                 mentorshipRecord={this.state.mentorshipRecord}
@@ -961,19 +1003,31 @@ class ProbationForms extends React.Component {
               培训师:
             </Col>
             <Col span={12}>
-              <Input
-                placeholder="请输入"
-                onChange={e =>
+              <Select
+                style={{ width: 150 }}
+                placeholder="请输入培训师工号"
+                showSearch
+                filterOption={false}
+                onSearch={this.fetchUser}
+                onChange={v => {
                   this.setState({
                     addOnJobTrainingData: {
                       ...this.state.addOnJobTrainingData,
-                      trainer: e.target.value
+                      trainer: v.label,
+                      trainerMemberId: v.key
                     }
-                  })
-                }
-              />
+                  });
+                }}
+                labelInValue
+                loading={this.state.fetching}
+              >
+                {this.state.trainerData.map(d => (
+                  <Option key={d.key}>{d.label}</Option>
+                ))}
+              </Select>
             </Col>
           </Row>
+
           <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
               培训日期:
@@ -1025,18 +1079,32 @@ class ProbationForms extends React.Component {
               培训师:
             </Col>
             <Col span={12}>
-              <Input
-                placeholder="请输入"
-                value={this.state.modifyOnJobTrainingData.trainer}
-                onChange={e =>
+              <Select
+                style={{ width: 150 }}
+                placeholder="请输入培训师工号"
+                showSearch
+                filterOption={false}
+                onSearch={this.fetchUser}
+                value={{
+                  label: this.state.modifyOnJobTrainingData.trainer,
+                  key: this.state.modifyOnJobTrainingData.trainerMemberId
+                }}
+                onChange={v => {
                   this.setState({
                     modifyOnJobTrainingData: {
                       ...this.state.modifyOnJobTrainingData,
-                      trainer: e.target.value
+                      trainer: v.label,
+                      trainerMemberId: v.key
                     }
-                  })
-                }
-              />
+                  });
+                }}
+                labelInValue
+                loading={this.state.fetching}
+              >
+                {this.state.trainerData.map(d => (
+                  <Option key={d.key}>{d.label}</Option>
+                ))}
+              </Select>
             </Col>
           </Row>
           <Row className="probation-forms_modal_inputrow">

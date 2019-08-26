@@ -2,50 +2,16 @@ import React from 'react';
 import './OnTheJobTraining.less';
 import { Card, Table, Button, Popconfirm } from 'antd';
 
+const { Column } = Table;
 const OnTheJobTraining = props => {
-  const columns = [
-    {
-      title: '序号/No',
-      dataIndex: 'no',
-      width: 100
-    },
-    {
-      title: '课程/Courses',
-      dataIndex: 'course',
-      width: 300
-    },
-    {
-      title: '培训师/Trainer',
-      dataIndex: 'trainer'
-    },
-    {
-      title: '培训日期/Date',
-      dataIndex: 'trainDate'
-    },
-    {
-      title: '操作/operation',
-      dataIndex: 'operation',
-      render: (text, record) =>
-        props.auth.hasDelete &&
-        props.auth.hasModify && (
-          <div>
-            <a
-              href="javascript:;"
-              onClick={() => props.openModifyOnJobTrainingModal(record)}
-            >
-              修改
-            </a>
-            &nbsp;|&nbsp;
-            <Popconfirm
-              title="确认删除吗?"
-              onConfirm={() => props.deleteOnJobTraining(record.REC_ID)}
-            >
-              <a href="javascript:;">删除</a>
-            </Popconfirm>
-          </div>
-        )
-    }
-  ];
+  const {
+    auth,
+    openModifyOnJobTrainingModal,
+    deleteOnJobTraining,
+    setAddOnJobTrainingVisible,
+    onTheJobTraining,
+    inviteConfirm
+  } = props;
   return (
     <div id="on-the-job-training" className="probation-form">
       <Card
@@ -56,10 +22,10 @@ const OnTheJobTraining = props => {
           </React.Fragment>
         }
         extra={
-          props.auth.hasAdd && (
+          auth.hasAdd && (
             <Button
               onClick={() => {
-                props.setAddOnJobTrainingVisible(true);
+                setAddOnJobTrainingVisible(true);
               }}
             >
               添加记录
@@ -68,11 +34,54 @@ const OnTheJobTraining = props => {
         }
       >
         <Table
-          dataSource={props.onTheJobTraining}
+          dataSource={onTheJobTraining}
           pagination={false}
-          columns={columns}
-          rowClassName={() => 'editable-row'}
-        />
+          scroll={{ x: 1200 }}
+        >
+          <Column title="序号/No" dataIndex="no" fixed="left" width={100} />
+          <Column title="课程/Courses" dataIndex="course" />
+          <Column title="培训师/Trainer" dataIndex="trainer" />
+          <Column
+            title="已通知确认/IsNoticeConfirm"
+            dataIndex="isNoticeTrainer"
+          />
+          <Column title="培训日期/Date" dataIndex="trainDate" />
+          <Column
+            title="操作/operation"
+            dataIndex="operation"
+            fixed="right"
+            width={160}
+            render={(text, record) =>
+              auth.hasDelete &&
+              auth.hasModify && (
+                <div>
+                  <a
+                    href="javascript:;"
+                    onClick={() => openModifyOnJobTrainingModal(record)}
+                  >
+                    修改
+                  </a>
+                  &nbsp;|&nbsp;
+                  <Popconfirm
+                    title="确认删除吗?"
+                    onConfirm={() => deleteOnJobTraining(record.REC_ID)}
+                  >
+                    <a href="javascript:;">删除</a>
+                  </Popconfirm>
+                  &nbsp;|&nbsp;
+                  <Popconfirm
+                    title="确认邀请吗?"
+                    onConfirm={() =>
+                      inviteConfirm({ ...record, isNoticeTrainer: 'Y' })
+                    }
+                  >
+                    <a href="javascript:;">邀请确认</a>
+                  </Popconfirm>
+                </div>
+              )
+            }
+          />
+        </Table>
       </Card>
     </div>
   );

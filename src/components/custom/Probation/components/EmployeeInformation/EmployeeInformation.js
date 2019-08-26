@@ -1,13 +1,11 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, Spin, message } from 'antd';
+import { Card, Row, Col, Select, message } from 'antd';
 import http from 'Util20/api';
 import debounce from 'lodash/debounce';
 
 const { Option } = Select;
-const handleOptionClick = (props, item) => {
-  return () => props.setTutorship(item);
-};
+
 //609599795438  全部人员
 class EmployeeInformation extends React.Component {
   state = {
@@ -19,16 +17,17 @@ class EmployeeInformation extends React.Component {
     this.fetchUser = debounce(this.fetchUser, 800);
   }
 
+  //根据工号搜索辅导员
   fetchUser = async value => {
     this.setState({ data: [], fetching: true });
     try {
       const res = await http().getTable({
-        resid: '609599795438',
-        cmswhere: `C3_227192472953 = '${value}'`
+        resid: '619281130628',
+        cmswhere: `userID = '${value}'`
       });
       const data = res.data.map(user => ({
-        label: `${user.C3_227192484125}`,
-        key: user.C3_305737857578
+        label: `${user.name}`,
+        key: user.userID
       }));
 
       this.setState({
@@ -41,6 +40,7 @@ class EmployeeInformation extends React.Component {
       this.setState({ fetching: false });
     }
   };
+
   handleChange = value => {
     this.props.setTutorship({ name: value.label, userMemberId: value.key });
   };
@@ -70,11 +70,13 @@ class EmployeeInformation extends React.Component {
               <span className="employee-imformation_lable">
                 工号/Job Number:
               </span>
+              {employeeInformation.C3_620142532140}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">
                 入职日期/Join Date:
               </span>
+              {employeeInformation.joinCompanyDate}
             </Col>
           </Row>
           <Row style={{ paddingBottom: 26 }}>
@@ -82,12 +84,15 @@ class EmployeeInformation extends React.Component {
               <span className="employee-imformation_lable">
                 部门/Department:
               </span>
+              {employeeInformation.Department}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">职位/Position:</span>
+              {employeeInformation.Position}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">级别/Level:</span>
+              {employeeInformation.Level}
             </Col>
           </Row>
           <Row style={{ paddingBottom: 21 }}>
@@ -109,7 +114,6 @@ class EmployeeInformation extends React.Component {
                   onChange={this.handleChange}
                   labelInValue
                   value={value}
-                  // notFoundContent={fetching ? <Spin size="small" /> : null}
                   loading={fetching}
                 >
                   {data.map(d => (
