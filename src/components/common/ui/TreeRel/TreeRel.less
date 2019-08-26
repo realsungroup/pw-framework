@@ -1,46 +1,79 @@
-.adv-search {
-  width: 100%;
-  padding: 16px;
-  &__select-field {
+.sideWrap{
+  position:fixed;
+  top:0;
+  left:0;
+}
+.sideWrapInner{
+  position:relative;
+  width:260px;
+  height: 100vh;
+  top:0;
+  left:0;
+}
+.sideBg{
+  width: 240px;
+  height: 100vh;
+  overflow:auto;
+  borderRight:1px solid #dcdcdc;
+  background:#fff;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  border-right:1px solid #dcdcdc;
+  box-sizing:border-box;
+}
+.sideShrink{
+  width:40px;
+  height:40px;
+  background:rgba(24,144,255,1);
+  border-radius:50%;
+  position:absolute;
+  top:8px;
+  right:10px;
+  transition:.3s;
+  cursor:pointer;
+  box-shadow: 0 0 8px rgba(24,144,255,.4);
+  i{
+    font-size:16px;
+    color:#fff;
+    line-height: 40px;
+    float:right;
+    margin-right: 5px;
   }
-  &__search-item {
-    display: flex;
-    align-items: center;
-    height: 34px;
+}
+.sideOpen{
+  right:0px;
+}
+.ant-tree{
+  *{
+    font-size: 14px;
+    box-sizing:border-box;
   }
-  &__search-item-logic,
-  &__select-field,
-  &__compare-symbol,
-  &__value-control {
-    margin-right: 4px;
+  .ant-tree-title{
+    width:calc(100% - 40px);
+    display:block;
+    overflow:hidden;
+    text-overflow : ellipsis;
   }
-  &__search-item-logic {
-    width: 36px;
-    cursor: pointer;
+  .anticon{
+    line-height: 40px;
+    text-align: right;
   }
-  &__compare-symbol {
-    width: 100px;
+  li{
+    padding:8px 0!important;
   }
-  &__select-field {
-    min-width: 100px;
-  }
-  &__value-control {
-    width: 120px;
-  }
-  &__add-btn {
-    height: 34px;
-    line-height: 34px;
-    border: 1px dashed #d4d3d3;
-    border-radius: 4px;
-    text-align: center;
-    cursor: pointer;
-    margin: 8px 0;
-  }
-  &__confirm-btn {
-    margin: 8px 0;
-  }
-  &__remove-search-item {
-    margin-left: 4px;
-    cursor: pointer;
-  }
+  li .ant-tree-node-content-wrapper{
+   height:auto!important;
+   width:calc(100% - 24px);
+   padding:0;
+ }
+ .ant-tree-title{
+   height: 40px;
+   line-height:40px;
+   text-indent: 8px;
+ }
+ .ant-tree-treenode-switcher-open>.ant-tree-switcher{
+   height:40px;
+ }
 }

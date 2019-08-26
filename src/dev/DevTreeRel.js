@@ -21,23 +21,15 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <div style={{
-            width: '200px',
-            height: '100vh',
-            borderRight:'1px solid #dcdcdc',
-            background:'#fff',
-            position:'fixed',
-            top:'0',
-            left:'0'
-          }}>
+
           <TreeRel
             url='api/OrgChart/GetNodesData'
             resid='602348115218'
             ColumnOfID='C3_602347243263'
             ColumnOfPID='C3_602347244770'
             ProductIDs='1360564'
+            autoExpandParent='true'
           ></TreeRel>
-        </div>
       </TemplateWrap>
     );
   }
