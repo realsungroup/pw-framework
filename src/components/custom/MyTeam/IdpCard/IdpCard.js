@@ -267,6 +267,41 @@ class IdpCard extends React.Component {
       checkType
     });
   };
+  renderHistoryBtns = item => {
+    switch (this.props.role) {
+      case 'HR':
+        return (
+          <span
+            onClick={() => {
+              this.onCheckTeam(item);
+            }}
+          >
+            查看
+          </span>
+        );
+      case 'Employee':
+        return (
+          <span
+            onClick={() => {
+              this.onLookPerson(item, 'oneself');
+            }}
+          >
+            查看自己
+          </span>
+        );
+      case 'Manager':
+      default:
+        return (
+          <span
+            onClick={() => {
+              this.onCheckTeam(item);
+            }}
+          >
+            查看团队
+          </span>
+        );
+    }
+  };
   renderHistory = () => {
     let historyPlan = this.state.historyPlan;
     let role = this.props.role;
@@ -281,48 +316,7 @@ class IdpCard extends React.Component {
           }
           className="idp-contain-smallcards-card"
           bordered={false}
-          extra={
-            role === 'HR' ? (
-              <span
-                onClick={() => {
-                  this.onCheckTeam(item);
-                }}
-              >
-                查看
-              </span>
-            ) : (
-              <span style={{ color: '#1890FF', fontSize: '16px' }}>
-                <Popover
-                  content={
-                    <React.Fragment>
-                      <p>
-                        <Tag
-                          color="#f50"
-                          onClick={() => {
-                            this.onCheckTeam(item);
-                          }}
-                        >
-                          查看团队
-                        </Tag>
-                      </p>
-                      <p>
-                        <Tag
-                          color="#108ee9"
-                          onClick={() => {
-                            this.onLookPerson(item, 'oneself');
-                          }}
-                        >
-                          查看自己
-                        </Tag>
-                      </p>
-                    </React.Fragment>
-                  }
-                >
-                  查看
-                </Popover>
-              </span>
-            )
-          }
+          extra={this.renderHistoryBtns(item)}
         >
           <div className="idp-contain-smallcards-card-content">
             发起时间: {item.startTime}
@@ -423,36 +417,25 @@ class IdpCard extends React.Component {
         default:
           break;
       }
+    } else if (this.props.role === 'Employee') {
+      return (
+        <span
+          onClick={() => {
+            this.onLookPerson(this.state.currentPlan, 'oneself');
+          }}
+        >
+          查看自己
+        </span>
+      );
     } else {
       return (
-        <Popover
-          content={
-            <React.Fragment>
-              <p>
-                <Tag
-                  color="#f50"
-                  onClick={() => {
-                    this.onCheckTeam(this.state.currentPlan);
-                  }}
-                >
-                  查看团队
-                </Tag>
-              </p>
-              <p>
-                <Tag
-                  color="#108ee9"
-                  onClick={() => {
-                    this.onLookPerson(this.state.currentPlan, 'oneself');
-                  }}
-                >
-                  查看自己
-                </Tag>
-              </p>
-            </React.Fragment>
-          }
+        <span
+          onClick={() => {
+            this.onCheckTeam(this.state.currentPlan);
+          }}
         >
-          <span onClick={this.onCheck}>查看</span>
-        </Popover>
+          查看团队
+        </span>
       );
     }
   };

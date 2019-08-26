@@ -79,7 +79,7 @@ const emptyPlans = [
   {
     name: '发展措施/Measure:',
     value: '',
-    type: 'select',
+    type: 'tagSelect',
     options: [],
     authority: 'modify'
   },
@@ -220,6 +220,42 @@ class PersonPlan extends React.Component {
       });
     }
   };
+  onChangeTagSelect = (subIndex, e, index, type) => {
+    if (type === 1) {
+      let SquareCardArr = this.state.SquareCardArr;
+      let abilityArr = this.state.abilityArr;
+      let lastabilityArr = [];
+      SquareCardArr[index][subIndex].value = e[0];
+      if (subIndex === 0) {
+        abilityArr.map(item => {
+          if (item.type === e[0]) {
+            lastabilityArr.push(item.ability);
+          }
+        });
+        SquareCardArr[index][subIndex + 1].options = lastabilityArr;
+      }
+      this.onChangePlainOptions();
+      this.setState({
+        SquareCardArr
+      });
+    } else {
+      let plans = this.state.plans;
+      let abilityArr = this.state.abilityArr;
+      let lastabilityArr = [];
+      plans[index][subIndex].value = e[0];
+      if (subIndex === 0) {
+        abilityArr.map(item => {
+          if (item.type === e[0]) {
+            lastabilityArr.push(item.ability);
+          }
+        });
+        plans[index][subIndex + 1].options = lastabilityArr;
+      }
+      this.setState({
+        plans
+      });
+    }
+  };
 
   //子组件修改checkbox，触发父组件方法
   onChangeCheckBox = checked => {
@@ -291,7 +327,6 @@ class PersonPlan extends React.Component {
           item.key = this.state.SquareCardArr.length + 1;
         });
         SquareCardArr.push(this.cloneDeep(emptyAbility));
-        console.log('SquareCardArr', SquareCardArr);
         this.onChangePlainOptions();
         this.setState({ SquareCardArr });
         break;
@@ -304,7 +339,6 @@ class PersonPlan extends React.Component {
         break;
       default:
     }
-    console.log('add数组', SquareCardArr);
   };
 
   onRemove = (index, type) => {
@@ -369,7 +403,6 @@ class PersonPlan extends React.Component {
         SquareCardArr.push(this.cloneDeep(empty));
       });
 
-      console.log('SquareCardArrSquareCardArr', SquareCardArr, ability);
 
       if (ability.length > 0) {
         if (
@@ -471,8 +504,6 @@ class PersonPlan extends React.Component {
         measures.push(this.cloneDeep(emptyMeasures));
       });
 
-      console.log('SquareCardArrSquareCardArr', plans, plan);
-
       if (plan.length > 0) {
         if (
           personInfo.status === '年中回顾' ||
@@ -569,7 +600,6 @@ class PersonPlan extends React.Component {
   };
   //获取类别表
   getTypes = async () => {
-    console.log('plansplansplansplans', this.state.plans);
     let SquareCardArr = this.state.SquareCardArr;
     let res;
     try {
@@ -832,6 +862,25 @@ class PersonPlan extends React.Component {
       message.error(error.message);
     }
   };
+  judgeRender = () => {
+    let personInfo = this.state.personInfo;
+    if (
+      personInfo.status === '年中回顾' ||
+      personInfo.status === '年末回顾' ||
+      personInfo.status === '已完成' ||
+      (personInfo.isMangerSubmit === 'Y' &&
+        this.props.checkType !== 'oneself') ||
+      (personInfo.isPersonSubmit === 'Y' &&
+        this.props.checkType === 'oneself') ||
+      this.state.isUpdateAuth !== 'Y' ||
+      this.props.role !== 'HR'
+      
+    ) {
+      return true;
+    } else  {
+      return false;
+    }
+  };
   componentDidMount = async () => {
     console.log('this.props.record', this.props.record, this.props.checkType);
     let record = this.props.record;
@@ -853,7 +902,6 @@ class PersonPlan extends React.Component {
     this.setState({
       isUpdateAuth
     });
-    console.log('isUpdateAuth', isUpdateAuth, record);
     await this.getAbilityEvaluation(record, isUpdateAuth);
     await this.getDevelopmentAction(record, isUpdateAuth);
     await this.getTypes();
@@ -905,14 +953,7 @@ class PersonPlan extends React.Component {
               return (
                 <SquareCard
                   icon={
-                    personInfo.status === '年中回顾' ||
-                    personInfo.status === '年末回顾' ||
-                    personInfo.status === '已完成' ||
-                    (personInfo.isMangerSubmit === 'Y' &&
-                      this.props.checkType !== 'oneself') ||
-                    (personInfo.isPersonSubmit === 'Y' &&
-                      this.props.checkType === 'oneself') ||
-                    this.state.isUpdateAuth !== 'Y'
+                    this.judgeRender()
                       ? 'noClose'
                       : null
                   }
@@ -925,6 +966,9 @@ class PersonPlan extends React.Component {
                   onChangeSelect={(subIndex, e) => {
                     this.onChangeSelect(subIndex, e, index, 1);
                   }}
+                  onChangeTagSelect={(subIndex, e) => {
+                    this.onChangeTagSelect(subIndex, e, index, 1);
+                  }}
                   onUpdateSquareCardArr={() => {
                     this.onUpdateSquareCardArr(SquareCardArr);
                   }}
@@ -934,14 +978,9 @@ class PersonPlan extends React.Component {
                 ></SquareCard>
               );
             })}
-            {personInfo.status === '年中回顾' ||
-            personInfo.status === '年末回顾' ||
-            personInfo.status === '已完成' ||
-            (personInfo.isMangerSubmit === 'Y' &&
-              this.props.checkType !== 'oneself') ||
-            (personInfo.isPersonSubmit === 'Y' &&
-              this.props.checkType === 'oneself') ||
-            this.state.isUpdateAuth !== 'Y' ? null : (
+
+            {this.judgeRender()? null
+            : (
               <Card
                 className="personPlan-contain-smallcards-card"
                 onClick={() => {
@@ -1000,16 +1039,7 @@ class PersonPlan extends React.Component {
               value={[...this.state.checked]}
               onChange={this.onChangeCheckBox}
               disabled={
-                personInfo.status === '年中回顾' ||
-                personInfo.status === '年末回顾' ||
-                personInfo.status === '已完成' ||
-                (personInfo.isMangerSubmit === 'Y' &&
-                  this.props.checkType !== 'oneself') ||
-                (personInfo.isPersonSubmit === 'Y' &&
-                  this.props.checkType === 'oneself') ||
-                this.state.isUpdateAuth !== 'Y'
-                  ? true
-                  : false
+                this.judgeRender()
               }
             />
           </div>
@@ -1019,14 +1049,7 @@ class PersonPlan extends React.Component {
                 return (
                   <SquareCard
                     icon={
-                      personInfo.status === '年中回顾' ||
-                      personInfo.status === '年末回顾' ||
-                      personInfo.status === '已完成' ||
-                      (personInfo.isMangerSubmit === 'Y' &&
-                        this.props.checkType !== 'oneself') ||
-                      (personInfo.isPersonSubmit === 'Y' &&
-                        this.props.checkType === 'oneself') ||
-                      this.state.isUpdateAuth !== 'Y'
+                     this.judgeRender()
                         ? 'noClose'
                         : null
                     }
@@ -1037,6 +1060,9 @@ class PersonPlan extends React.Component {
                     }}
                     onChangeSelect={(subIndex, e) => {
                       this.onChangeSelect(subIndex, e, index, 2);
+                    }}
+                    onChangeTagSelect={(subIndex, e) => {
+                      this.onChangeTagSelect(subIndex, e, index, 2);
                     }}
                     onUpdateSquareCardArr={() => {
                       this.onUpdateSquareCardArr(SquareCardArr);
@@ -1050,14 +1076,7 @@ class PersonPlan extends React.Component {
                   ></SquareCard>
                 );
               })}
-            {personInfo.status === '年中回顾' ||
-            personInfo.status === '年末回顾' ||
-            personInfo.status === '已完成' ||
-            (personInfo.isMangerSubmit === 'Y' &&
-              this.props.checkType !== 'oneself') ||
-            (personInfo.isPersonSubmit === 'Y' &&
-              this.props.checkType === 'oneself') ||
-            this.state.isUpdateAuth !== 'Y' ? null : (
+            {this.judgeRender()? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
                 onClick={() => {
@@ -1121,6 +1140,9 @@ class PersonPlan extends React.Component {
                       }}
                       onChangeSelect={(subIndex, e) => {
                         this.onChangeSelect(subIndex, e, index, 3);
+                      }}
+                      onChangeTagSelect={(subIndex, e) => {
+                        this.onChangeTagSelect(subIndex, e, index, 3);
                       }}
                       onUpdateSquareCardArr={() => {
                         this.onUpdateSquareCardArr(SquareCardArr);
@@ -1391,24 +1413,6 @@ class PersonPlan extends React.Component {
         <div className="personPlan-contain-bottom">
           <div className="personPlan-contain-bottom-btns">
             {this.renderSaveBtn()}
-            {/* {this.state.isUpdateAuth === 'Y' || this.props.role === 'HR' 
-            &&
-            
-            this.state.checkType === 'oneself' &&
-            this.state.isUpdateAuth === 'Y' &&
-            this.state.personInfo.isPersonSubmit !== 'Y' 
-             ? (
-              <Popconfirm
-                title="你确定要保存吗"
-                onConfirm={this.onSave}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="personPlan-contain-bottom-leftbtn">
-                  保存
-                </Button>
-              </Popconfirm>
-            ) : null} */}
             {this.state.checkType === 'oneself' &&
             this.state.personInfo.isMangerSubmit === 'Y' &&
             this.state.personInfo.isAffirm !== 'Y' ? (
@@ -1439,42 +1443,6 @@ class PersonPlan extends React.Component {
             {this.renderSubmitBtn()}
           </div>
         </div>
-        {/* <div className="info-line">
-          <Timeline>
-            <Timeline.Item
-              onClick={() => {
-                this.onChangePostion(1);
-              }}
-              color={currentPostion === 1 ? selectedColor : color}
-            >
-              个人信息
-            </Timeline.Item>
-            <Timeline.Item
-              onClick={() => {
-                this.onChangePostion(2);
-              }}
-              color={currentPostion === 2 ? selectedColor : color}
-            >
-              能力测评
-            </Timeline.Item>
-            <Timeline.Item
-              onClick={() => {
-                this.onChangePostion(3);
-              }}
-              color={currentPostion === 3 ? selectedColor : color}
-            >
-              职业能力发展计划
-            </Timeline.Item>
-            <Timeline.Item
-              onClick={() => {
-                this.onChangePostion(4);
-              }}
-              color={currentPostion === 4 ? selectedColor : color}
-            >
-              年度回顾
-            </Timeline.Item>
-          </Timeline>
-        </div> */}
       </div>
     );
   }

@@ -457,3 +457,9 @@ export const DLEmploy = Loadable({
     return minLoading;
   }
 });
+export const IdpCard = Loadable({
+  loader: () => import('./MyTeam/IdpCard'),
+  loading() {
+    return minLoading;
+  }
+});
