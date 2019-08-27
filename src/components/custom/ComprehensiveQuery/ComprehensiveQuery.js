@@ -4,11 +4,17 @@ import './ComprehensiveQuery.less';
 
 class ComprehensiveQuery extends React.Component {
   state = {
-    node: []
+    node: [],
+    isShrink: false
   };
   setSelect = node => {
     this.setState({
       node
+    });
+  };
+  setShrink = isShrink => {
+    this.setState({
+      isShrink
     });
   };
   render() {
@@ -22,6 +28,7 @@ class ComprehensiveQuery extends React.Component {
           ProductIDs="1360564"
           autoExpandParent="true"
           onSelect={this.setSelect}
+          onShrinkChange={this.setShrink}
         />
         <div
           style={{
