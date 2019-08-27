@@ -44,7 +44,6 @@ class TreeRel extends React.Component {
     // this.state.ColumnOfID=props.ColumnOfID;
     // this.state.ColumnOfPID=props.ColumnOfPID;
 
-
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onShrinkClick = this.onShrinkClick.bind(this);
@@ -189,6 +188,7 @@ onLoadData = async treeNode =>{
       this.setState({hover:false});
 
     }
+    this.props.onSelect(selectedKeys);
     console.log(this.refs.shrink);
   };
   componentDidMount = () => {
@@ -201,9 +201,12 @@ onLoadData = async treeNode =>{
         <div className='sideWrapInner'>
             <div className={'sideBg' + ' ' + (this.state.shrink?'shrink':'')}>
               <Tree selectedKeys={this.state.selectedId} onSelect={this.onSelect} loadData={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>
+              <div className='iconbar'>
+
               </div>
+            </div>
             <div className={'sideShrink' + ' ' + (this.state.hover?'sideOpen':'')} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref='shrink' onClick={this.onShrinkClick}>
-              <Icon type="caret-left" />
+              <Icon type="caret-left"/>
             </div>
         </div>
       </div>
@@ -211,6 +214,5 @@ onLoadData = async treeNode =>{
     );
   }
 }
-
 
 export default TreeRel;
