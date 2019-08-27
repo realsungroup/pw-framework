@@ -17,7 +17,20 @@ import TreeRel from '../components/common/ui/TreeRel';
 // 这是要将组建渲染进去的外层元素
 
 class App extends Component {
-
+  state = {
+    node: [],
+    isShrink: false
+  };
+  setSelect = node => {
+    this.setState({
+      node
+    });
+  };
+  setShrink = isShrink => {
+    this.setState({
+      isShrink
+    });
+  };
   render() {
     return (
       <TemplateWrap>
@@ -29,6 +42,8 @@ class App extends Component {
             ColumnOfPID='C3_602347244770'
             ProductIDs='1360564'
             autoExpandParent='true'
+            onSelect={this.setSelect}
+            onShrinkChange={this.setShrink}
           ></TreeRel>
       </TemplateWrap>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Icon, Input, Button } from 'antd';
+import { Select, Icon, Input, Button} from 'antd';
 import { Tree } from 'antd';
 import http from 'Util20/api';
 import './TreeRel.less';
@@ -34,7 +34,11 @@ class TreeRel extends React.Component {
           url:props.url,
           ProductIDs:props.ProductIDs,
           shrink:false,
-          orgID:props.ProductIDs
+          orgID:props.ProductIDs,
+          prevID:'top',
+          prevIDAction:'top',
+          showBack:false,
+          treeHis:[]
       };
     //
     // this.state.url=props.url;
@@ -47,6 +51,10 @@ class TreeRel extends React.Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onShrinkClick = this.onShrinkClick.bind(this);
+    this.onSetRoot = this.onSetRoot.bind(this);
+    this.onSetBack = this.onSetBack.bind(this);
+    this.onExpand = this.onExpand.bind(this);
+
 
     // 输出选中项ID的方法
     // this.getId=this.getIdProto();
@@ -54,6 +62,119 @@ class TreeRel extends React.Component {
     // this.getOffsetTop=this.getOffsetTopProto();
   }
 
+  onSetRoot = async () =>{
+    console.log('set root');
+    var sel=this.state.selectedId[0];
+    console.log(this.state.selectedId)
+    this.setState({ProductIDs:sel});
+    this.setState({selectedKeys:sel});
+    this.setState({showBack:true});
+    this.setState({prevIDAction:sel});
+    this.refs.setRoot.style.top = '-40px';
+    this.refs.shrink.style.top = '8px';
+    try {
+      let res = await http().postTreeData({
+        resid:this.state.resid,//表ID
+        Levels:2,//查找的层级，比如查父节点-子节点-孙节点就写3，查父节点-子节点就写2
+        MoveDirection:1,//不用管它，数据写死，照抄就行
+        MoveLevels:1,//不用管它，数据写死，照抄就行
+        ColumnOfID:this.state.ColumnOfID,//要查的人的ID的字段名
+        ColumnOfPID:this.state.ColumnOfPID,//要查的人的父ID的字段名
+        ProductIDs:sel//要查的人的ID
+      });
+      var arr=[];
+      var n=0;
+      while(n<res.nodes.length){
+        if(this.state.ProductIDs==res.nodes[n].C3_602347243263){
+          arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263,prevID:'top'});
+        }
+        n++;
+      }
+      console.log(this.state.prevIDAction)
+      this.setState({treeData:arr})
+      var arr2=this.state.treeHis;
+      arr2.push(arr)
+      this.setState({treeHis:arr2})
+
+    } catch (error) {
+      console.log(error.message);
+    }
+    // this.setState({treeData:[]})
+  }
+  onSetBack = async treeNode =>{
+    console.log('set back');
+    var sel=this.state.prevIDAction;
+    console.log(sel,this.state.orgID)
+    if((sel==this.state.orgID)||(sel==0)){
+      this.setState({showBack:false});
+    }else{
+      this.setState({showBack:true});
+    }
+    this.setState({ProductIDs:sel});
+    this.setState({selectedKeys:sel});
+    this.refs.setRoot.style.top = '-40px';
+    this.refs.shrink.style.top = '8px';
+    try {
+      let res = await http().postTreeData({
+        resid:this.state.resid,//表ID
+        Levels:2,//查找的层级，比如查父节点-子节点-孙节点就写3，查父节点-子节点就写2
+        MoveDirection:1,//不用管它，数据写死，照抄就行
+        MoveLevels:1,//不用管它，数据写死，照抄就行
+        ColumnOfID:this.state.ColumnOfID,//要查的人的ID的字段名
+        ColumnOfPID:this.state.ColumnOfPID,//要查的人的父ID的字段名
+        ProductIDs:sel//要查的人的ID
+      });
+      var arr=[];
+      var n=0;
+      while(n<res.nodes.length){
+        if(this.state.ProductIDs==res.nodes[n].C3_602347243263){
+          arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263,prevID:'top'});
+          this.setState({prevIDAction:res.nodes[n].C3_602347244770});
+        }
+        n++;
+      }
+      console.log(arr)
+        this.setState({treeData:arr})
+        // treeNode.props.dataRef.children = arr;
+        // this.setState({
+        //   treeData: [...this.state.treeData],
+        // });
+        console.log(this.state)
+    } catch (error) {
+      console.log(error.message);
+    }
+    // this.setState({treeData:[]})
+
+  }
+
+  // onSetBack(){
+  //   var sT=this.refs.sideBg.scrollTop;
+  //   var arr=this.state.treeHis;
+  //   // console.log(arr)
+  //   arr.pop();
+  //   console.log(arr)
+  //   this.setState({treeData:arr[arr.length-1]});
+  //   this.setState({treeHis:arr});
+  //   console.log(this.refs.tree)
+  //   if(arr.length==1){
+  //     this.setState({showBack:false});
+  //   }else{
+  //     this.setState({showBack:true});
+  //   }
+  //   this.props.onSelect(this.refs.tree.tree.props.selectedKeys);
+  //   this.refs.shrink.style.top = (this.state.selectedOffsetTop-sT)+'px';
+  //   this.refs.setRoot.style.top = (this.state.selectedOffsetTop)+'px';
+  //
+  // }
+  onExpand(selectedKeys,e){
+    // console.log('66666',selectedKeys,e)
+    var sT=this.refs.sideBg.scrollTop;
+    // console.log(e.node.props.selected);
+    if(e.node.props.selected==false){
+      this.refs.shrink.style.top = '8px';
+      this.refs.setRoot.style.top ='-40px';
+    }
+  }
   onMouseEnter(){
       this.setState({
           hover: true,
@@ -102,7 +223,6 @@ onLoadData = async treeNode =>{
           ProductIDs:treeNode.props.dataRef.key//要查的人的ID
 
         });
-        console.log(res)
         var arr=[];
         var n=0;
         while(n<res.nodes.length){
@@ -111,7 +231,7 @@ onLoadData = async treeNode =>{
               arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263,isLeaf:true});
 
             }else{
-              arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263});
+              arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263,prevID:treeNode.props.dataRef.key});
 
             }
           }
@@ -121,7 +241,10 @@ onLoadData = async treeNode =>{
         this.setState({
           treeData: [...this.state.treeData],
         });
-        console.log('加载',this.state)
+        var arr2=this.state.treeHis;
+        arr2.pop();
+        arr2.push(this.state.treeData);
+        this.setState({treeHis:arr2});
       //   resolve();
       //
       } catch (error) {
@@ -131,23 +254,18 @@ onLoadData = async treeNode =>{
     };
 
   renderTreeNodes = data =>
-    data.map(item => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode key={item.key} {...item} dataRef={item} />;
-    });
-
-  getIdProto(){
-    return this.state.selectedId;
-  }
-  getOffsetTopProto(){
-    return this.state.selectedOffsetTop;
-  }
+  {
+    // console.log(data)
+    return data.map(item => {
+    if (item.children) {
+      return (
+        <TreeNode title={item.title} key={item.key} dataRef={item}>
+          {this.renderTreeNodes(item.children)}
+        </TreeNode>
+      );
+    }
+    return <TreeNode key={item.key} {...item} dataRef={item} />;
+  })}
 
 
   // 获取树的数据
@@ -166,30 +284,52 @@ onLoadData = async treeNode =>{
       var n=0;
       while(n<res.nodes.length){
         if(this.state.ProductIDs==res.nodes[n].C3_602347243263){
-          arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263});
+          arr.push({title:(res.nodes[n].C3_613753776398||'')+(res.nodes[n].C3_602347246317||'')+(res.nodes[n].C3_612377399102||''),key:res.nodes[n].C3_602347243263,prevID:'top'});
         }
         n++;
       }
+
       this.setState({treeData:arr})
+      var arr2=this.state.treeHis
+      arr2.push(arr)
+      this.setState({treeHis:arr2})
+
     } catch (error) {
       console.log(error.message);
     }
   };
 
 
-
   onSelect = (selectedKeys,e) =>{
+    var sT=this.refs.sideBg.scrollTop
     this.setState({selectedOffsetTop:e.node.selectHandle.offsetTop});
     this.setState({selectedId:selectedKeys});
-    this.refs.shrink.style.top = e.node.selectHandle.offsetTop+'px';
+    console.log(selectedKeys)
+    if(e.selectedNodes[0]){
+        this.setState({prevID:(e.selectedNodes[0].props.prevID||'')});
+    }else{
+      this.setState({prevID:''});
+    }
+
+    this.refs.shrink.style.top = (e.node.selectHandle.offsetTop-sT)+'px';
     if(selectedKeys.length>0){
       this.setState({hover:true});
+      if(e.node.selectHandle.offsetTop!=8){
+        if(e.node.props.isLeaf!=true){
+          this.refs.setRoot.style.top = (e.node.selectHandle.offsetTop)+'px';
+        }else{
+          this.refs.setRoot.style.top = '-40px';
+        }
+      }else{
+        this.refs.setRoot.style.top = '-40px';
+      }
     }else{
       this.setState({selectedId:''});
       this.setState({hover:false});
-
+      this.refs.setRoot.style.top = '-40px';
     }
     this.props.onSelect(selectedKeys);
+
   };
   componentDidMount = () => {
     this.getData();
@@ -199,10 +339,18 @@ onLoadData = async treeNode =>{
     return(
       <div className='sideWrap'>
         <div className='sideWrapInner'>
-            <div className={'sideBg' + ' ' + (this.state.shrink?'shrink':'')}>
-              <Tree selectedKeys={this.state.selectedId} onSelect={this.onSelect} loadData={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>
+            <div ref='sideBg' className={'sideBg' + ' ' + (this.state.shrink?'shrink':'')}>
+              <Tree selectedKeys={this.state.selectedId} ref='tree' onSelect={this.onSelect} onExpand={this.onExpand} loadData={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>
               <div className='iconbar'>
-
+                  <div onClick={this.onSetBack} className={(this.state.showBack?'':'hidden')}>
+                    <Icon type="arrow-up" />
+                  </div>
+                  <div>
+                    <Icon type="box-plot" />
+                  </div>
+                  <div ref='setRoot' onClick={this.onSetRoot}>
+                    <Icon type="folder-open"/>
+                  </div>
               </div>
             </div>
             <div className={'sideShrink' + ' ' + (this.state.hover?'sideOpen':'')} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref='shrink' onClick={this.onShrinkClick}>
