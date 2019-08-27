@@ -77,12 +77,13 @@ class TreeRel extends React.Component {
       this.setState({
         shrink:true
       });
+      this.props.onShrinkChange(this.state.shrink);
     }else{
       this.setState({
         shrink:false
       });
+      this.props.onShrinkChange(this.state.shrink);
     }
-
   }
 onLoadData = async treeNode =>{
     // new Promise(resolve => {
@@ -189,7 +190,6 @@ onLoadData = async treeNode =>{
 
     }
     this.props.onSelect(selectedKeys);
-    console.log(this.refs.shrink);
   };
   componentDidMount = () => {
     this.getData();
