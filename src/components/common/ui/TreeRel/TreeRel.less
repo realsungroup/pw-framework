@@ -1,0 +1,79 @@
+.sideWrap{
+  position:fixed;
+  top:0;
+  left:0;
+}
+.sideWrapInner{
+  position:relative;
+  width:260px;
+  height: 100vh;
+  top:0;
+  left:0;
+}
+.sideBg{
+  width: 240px;
+  height: 100vh;
+  overflow:auto;
+  borderRight:1px solid #dcdcdc;
+  background:#fff;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:2;
+  border-right:1px solid #dcdcdc;
+  box-sizing:border-box;
+}
+.sideShrink{
+  width:40px;
+  height:40px;
+  background:rgba(24,144,255,1);
+  border-radius:50%;
+  position:absolute;
+  top:8px;
+  right:10px;
+  transition:.3s;
+  cursor:pointer;
+  box-shadow: 0 0 8px rgba(24,144,255,.4);
+  i{
+    font-size:16px;
+    color:#fff;
+    line-height: 40px;
+    float:right;
+    margin-right: 5px;
+  }
+}
+.sideOpen{
+  right:0px;
+}
+.ant-tree{
+  *{
+    font-size: 14px;
+    box-sizing:border-box;
+  }
+  .ant-tree-title{
+    width:calc(100% - 40px);
+    display:block;
+    overflow:hidden;
+    text-overflow : ellipsis;
+  }
+  .anticon{
+    line-height: 40px;
+    text-align: right;
+  }
+  li{
+    padding:8px 0!important;
+  }
+  li .ant-tree-node-content-wrapper{
+   height:auto!important;
+   width:calc(100% - 24px);
+   padding:0;
+ }
+ .ant-tree-title{
+   height: 40px;
+   line-height:40px;
+   text-indent: 8px;
+ }
+ .ant-tree-treenode-switcher-open>.ant-tree-switcher{
+   height:40px;
+ }
+}
