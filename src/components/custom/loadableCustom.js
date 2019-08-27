@@ -439,6 +439,13 @@ export const DirectorProbation = Loadable({
   }
 });
 
+export const ComprehensiveQuery = Loadable({
+  loader: () => import('./ComprehensiveQuery'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const MyTeam = Loadable({
   loader: () => import('./MyTeam'),
   loading() {

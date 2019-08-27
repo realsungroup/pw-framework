@@ -103,6 +103,7 @@ export { EnquirySystem } from '../components/custom/loadableCustom';
 export { HRProbation } from '../components/custom/loadableCustom';
 export { TutorshipProbation } from '../components/custom/loadableCustom';
 export { EmployeeProbation } from '../components/custom/loadableCustom';
+export { ComprehensiveQuery } from '../components/custom/loadableCustom';
 export { ManagerProbation } from '../components/custom/loadableCustom';
 export { DirectorProbation } from '../components/custom/loadableCustom';
 export { MyTeam } from '../components/custom/loadableCustom';
