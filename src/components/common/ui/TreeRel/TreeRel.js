@@ -33,7 +33,8 @@ class TreeRel extends React.Component {
           hover:true,
           url:props.url,
           ProductIDs:props.ProductIDs,
-
+          shrink:false,
+          orgID:props.ProductIDs
       };
     //
     // this.state.url=props.url;
@@ -46,8 +47,8 @@ class TreeRel extends React.Component {
 
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onShrinkClick = this.onShrinkClick.bind(this);
 
-    console.log(this.state)
     // 输出选中项ID的方法
     // this.getId=this.getIdProto();
     // 输出选中项offsetTop的方法
@@ -61,7 +62,6 @@ class TreeRel extends React.Component {
   }
 
   onMouseLeave(){
-    console.log(this.state.selectedId)
     if(!this.state.selectedId){
       this.setState({
           hover: false,
@@ -73,7 +73,18 @@ class TreeRel extends React.Component {
     }
 
   }
+  onShrinkClick(){
+    if(this.state.shrink==false){
+      this.setState({
+        shrink:true
+      });
+    }else{
+      this.setState({
+        shrink:false
+      });
+    }
 
+  }
 onLoadData = async treeNode =>{
     // new Promise(resolve => {
       if (treeNode.props.children) {
@@ -188,10 +199,10 @@ onLoadData = async treeNode =>{
     return(
       <div className='sideWrap'>
         <div className='sideWrapInner'>
-            <div className='sideBg'>
+            <div className={'sideBg' + ' ' + (this.state.shrink?'shrink':'')}>
               <Tree selectedKeys={this.state.selectedId} onSelect={this.onSelect} loadData={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>
               </div>
-            <div className={'sideShrink' + ' ' + (this.state.hover?'sideOpen':'')} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref='shrink' >
+            <div className={'sideShrink' + ' ' + (this.state.hover?'sideOpen':'')} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} ref='shrink' onClick={this.onShrinkClick}>
               <Icon type="caret-left" />
             </div>
         </div>
