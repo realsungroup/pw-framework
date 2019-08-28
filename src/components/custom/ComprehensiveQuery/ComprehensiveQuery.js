@@ -3,13 +3,15 @@ import { Tabs } from 'antd';
 import TreeRel from '../../common/ui/TreeRel';
 import './ComprehensiveQuery.less';
 import PerformanceQuery from './components/PerformanceQuery';
+import PersonnelQuery from './components/PersonnelQuery';
+
 
 const { TabPane } = Tabs;
 class ComprehensiveQuery extends React.Component {
   state = {
     node: [], //选中的人员信息
     isExpand: true, //左侧展开状态
-    currentTab: 'performance'
+    currentTab: 'personnel'
   };
   setSelect = node => {
     this.setState({
@@ -30,7 +32,7 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = null;
+        page = <PersonnelQuery />;
         break;
       case 'attendance':
         page = null;
