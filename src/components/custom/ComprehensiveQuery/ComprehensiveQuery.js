@@ -1,25 +1,79 @@
 import React from 'react';
+import { Tabs } from 'antd';
 import TreeRel from '../../common/ui/TreeRel';
 import './ComprehensiveQuery.less';
+import PerformanceQuery from './components/PerformanceQuery';
 
+const { TabPane } = Tabs;
 class ComprehensiveQuery extends React.Component {
   state = {
-    node: [],
-    isShrink: false
+    node: [], //选中的人员信息
+    isExpand: true, //左侧展开状态
+    currentTab: 'performance'
   };
   setSelect = node => {
     this.setState({
       node
     });
   };
-  setShrink = isShrink => {
+  setShrink = isExpand => {
     this.setState({
-      isShrink
+      isExpand
     });
   };
+  handleTabChange = activeKey =>
+    this.setState({
+      currentTab: activeKey
+    });
+
+  renderTabPane = currentTab => {
+    let page = null;
+    switch (currentTab) {
+      case 'personnel':
+        page = null;
+        break;
+      case 'attendance':
+        page = null;
+        break;
+      case 'performance':
+        page = <PerformanceQuery />;
+        break;
+      case 'rating':
+        page = null;
+        break;
+
+      default:
+        break;
+    }
+    return page;
+  };
   render() {
+    const { isExpand, currentTab } = this.state;
     return (
       <div id="comprehensive-query">
+        <main style={{ left: isExpand ? 240 : 4 }} className="main-content">
+          <header className="nav-header">
+            <Tabs
+              defaultActiveKey="1"
+              onChange={this.handleTabChange}
+              style={{ backgroundColor: '#fff' }}
+              activeKey={currentTab}
+            >
+              <TabPane tab="人事信息" key="personnel"></TabPane>
+              <TabPane tab="考勤查询" key="attendance"></TabPane>
+              <TabPane tab="绩效查询" key="performance"></TabPane>
+              <TabPane tab="评级评优查询" key="rating"></TabPane>
+            </Tabs>
+          </header>
+          <div
+            style={{
+              margin: '24px 24px 24px 36px ',
+              flex: 1
+            }}
+          >
+            {this.renderTabPane(currentTab)}
+          </div>
+        </main>
         <TreeRel
           url="api/OrgChart/GetNodesData"
           resid="602348115218"
@@ -30,18 +84,6 @@ class ComprehensiveQuery extends React.Component {
           onSelect={this.setSelect}
           onShrinkChange={this.setShrink}
         />
-        <div
-          style={{
-            height: 500,
-            backgroundColor: '#fff',
-            position: 'fixed',
-            top: 0,
-            // left: 'calc(100% - )',
-            right: 0
-          }}
-        >
-          asfd
-        </div>
       </div>
     );
   }
