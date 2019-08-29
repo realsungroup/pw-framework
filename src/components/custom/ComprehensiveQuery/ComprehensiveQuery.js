@@ -82,6 +82,9 @@ class ComprehensiveQuery extends React.Component {
           ColumnOfPID="C3_602347244770"
           ProductIDs="1360564"
           autoExpandParent="true"
+          nameOfID='C3_613753776398'
+          locationOfID='C3_612377399102'
+          nameEnOfID='C3_602347246317'
           onSelect={this.setSelect}
           onShrinkChange={this.setShrink}
         />

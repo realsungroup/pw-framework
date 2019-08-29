@@ -237,6 +237,7 @@ class TreeRel extends React.Component {
         ColumnOfPID: this.state.ColumnOfPID, //要查的人的父ID的字段名
         ProductIDs: treeNode.props.dataRef.key //要查的人的ID
       });
+
       var arr = [];
       var arrData=this.state.dataNode;
       var n = 0;
