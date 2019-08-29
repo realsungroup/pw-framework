@@ -182,7 +182,6 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     } catch (err) {
       return console.error(err.message);
     }
-    console.log('res2:', res2.data[0].amount);
     // this.setState({ queryQuestionsGroup: res.data });
 
     const {

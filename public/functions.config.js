@@ -176,7 +176,7 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['C3_591373760332'],
+          innerFieldNames: ['noDelete'],
           // innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
           values: ['Y']
         }
@@ -755,7 +755,7 @@ window[606242031630] = {
   } // 组件所接收的 props
 };
 
-window[618661462541] = {
+window[608050884937] = {
   name: 'TableDataInner',
   title: '内部推荐',
   props: {
