@@ -4,6 +4,7 @@ import TreeRel from '../../common/ui/TreeRel';
 import './ComprehensiveQuery.less';
 import PerformanceQuery from './components/PerformanceQuery';
 import PersonnelQuery from './components/PersonnelQuery';
+import Attendance from './components/Attendance';
 
 
 const { TabPane } = Tabs;
@@ -35,7 +36,7 @@ class ComprehensiveQuery extends React.Component {
         page = <PersonnelQuery />;
         break;
       case 'attendance':
-        page = null;
+        page = <Attendance />;
         break;
       case 'performance':
         page = <PerformanceQuery />;

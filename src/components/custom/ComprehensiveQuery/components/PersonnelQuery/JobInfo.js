@@ -4,9 +4,9 @@ import { Button } from 'antd';
 class JobInfo extends React.Component {
   actionBarExtra = () => {
     return (
-      <Button>查看合同</Button>
+      <Button className='viewDetail'>查看合同</Button>
     );
-  };
+  }
   render() {
     return (
       <div style={{ height: '100%' }}>
