@@ -272,8 +272,7 @@ class TreeRel extends React.Component {
         treeData: [...this.state.treeData]
       });
       this.setState({ dataNode: arrData });
-      var obj=this.state.dataNode[0];
-      this.props.onSelect(obj);
+
       // var arr2 = this.state.treeHis;
       // arr2.pop();
       // arr2.push(this.state.treeData);
@@ -335,7 +334,8 @@ class TreeRel extends React.Component {
       // var arr2 = this.state.treeHis;
       // arr2.push(arr);
       this.setState({ dataNode: arrData });
-
+      var obj=this.state.dataNode[0];
+      this.props.onSelect(obj);
     } catch (error) {
       console.log(error.message);
     }
