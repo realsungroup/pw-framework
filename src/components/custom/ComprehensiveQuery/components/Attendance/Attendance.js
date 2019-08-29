@@ -2,6 +2,7 @@ import React from 'react';
 import './WorkInfo.less';
 import WorkInfo from './WorkInfo';
 
+
 const activeClasssName = 'performance-query_nav_item__active';
 const activeTargetItem = 'performance-query_item_nav_item__active';
 class Attendance extends React.Component {
@@ -16,6 +17,7 @@ class Attendance extends React.Component {
     return (
       <div className="performance-query">
         <WorkInfo></WorkInfo>
+        
       </div>
     );
   }
