@@ -6,13 +6,15 @@ import PerformanceQuery from './components/PerformanceQuery';
 import ViewRate from './components/ViewRate';
 import { getItem } from 'Util20/util';
 import http from 'Util20/api';
+import PersonnelQuery from './components/PersonnelQuery';
+import Attendance from './components/Attendance';
 
 const { TabPane } = Tabs;
 class ComprehensiveQuery extends React.Component {
   state = {
     node: {}, //选中的人员信息
     isExpand: true, //左侧展开状态
-    currentTab: 'performance'
+    currentTab: 'personnel'
   };
   componentDidMount() {
     http().getTable({
@@ -39,10 +41,10 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = null;
+        page = <PersonnelQuery />;
         break;
       case 'attendance':
-        page = null;
+        page = <Attendance node={this.state.node} />;
         break;
       case 'performance':
         page = <PerformanceQuery person={this.state.node} />;

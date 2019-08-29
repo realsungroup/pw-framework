@@ -363,7 +363,7 @@ class TreeRel extends React.Component {
     console.log(this.state.selectedId);
     return (
       <div className="sideWrap">
-        <div className="sideWrapInner">
+        <div className={'sideWrapInner' + ' ' + (this.state.shrink ? 'shrinkOuter' : '')}>
           <div
             ref="sideBg"
             className={'sideBg' + ' ' + (this.state.shrink ? 'shrink' : '')}
