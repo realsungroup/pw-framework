@@ -31,7 +31,7 @@
   border-radius:50%;
   position:absolute;
   top:8px;
-  right:10px;
+  left:210px;
   transition:.3s;
   cursor:pointer;
   box-shadow: 0 0 8px rgba(24,144,255,.4);
@@ -129,4 +129,19 @@
 }
 .hidden{
   display:none;
+}
+.sideShrink:hover{
+  i{
+    position:relative;
+    animation-name:jump;
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+  }
+}
+@keyframes jump {
+  0%{top:0;}
+  25%{top:-4px;}
+  50%{top:0;}
+  75%{top:-2px;}
+  100%{top:0;}
 }
