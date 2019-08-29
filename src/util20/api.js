@@ -290,6 +290,11 @@ http.createApi('saveRecordAndSubTables', {
   url: '/api/200/table/Save'
 });
 
+http.createApi('postTreeData', {
+  method: 'post',
+  url: '/api/OrgChart/GetNodesData'
+});
+
 http.createApi('getRecordAndSubTables', {
   method: 'get',
   url: '/api/200/table/Retrieve'
