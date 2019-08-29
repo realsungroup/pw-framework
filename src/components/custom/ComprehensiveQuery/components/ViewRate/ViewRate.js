@@ -8,7 +8,7 @@ class ViewRate extends React.Component {
       <div id="view-rate-query">
         <TableData
           key="view-rate-query"
-          resid="619609481002"
+          resid="467144601287"
           subtractH={240}
           hasAdvSearch={true}
           hasAdd={false}

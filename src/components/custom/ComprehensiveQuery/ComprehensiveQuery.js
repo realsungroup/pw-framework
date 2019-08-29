@@ -16,12 +16,7 @@ class ComprehensiveQuery extends React.Component {
     isExpand: true, //左侧展开状态
     currentTab: 'personnel'
   };
-  componentDidMount() {
-    http().getTable({
-      resid: '446576761435',
-      cmswhere: "C3_417993417686= '1360564'"
-    });
-  }
+  componentDidMount() {}
   setSelect = node => {
     this.setState({
       node
