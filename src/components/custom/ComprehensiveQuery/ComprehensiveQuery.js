@@ -36,7 +36,7 @@ class ComprehensiveQuery extends React.Component {
         page = <PersonnelQuery />;
         break;
       case 'attendance':
-        page = <Attendance />;
+        page = <Attendance node={this.state.node}/>;
         break;
       case 'performance':
         page = <PerformanceQuery />;

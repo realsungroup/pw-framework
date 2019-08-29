@@ -13,7 +13,8 @@ class Repo extends React.Component {
       memberId:'12345',//员工ID
       EnI:'HR',//一级英文
       EnII:'HR',//二级英文
-      EnIII:'HR'//三级英文
+      EnIII:'HR',//三级英文
+      node:props.node
     }
   }
   render() {

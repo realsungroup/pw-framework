@@ -10,6 +10,7 @@ class WorkInfo extends React.Component {
     super(props);
     this.state = {
       curPage:'Home',
+      node:props.node
     };
 
     this.onCliMon = this.onCliMon.bind(this);
@@ -19,6 +20,7 @@ class WorkInfo extends React.Component {
   }
   onCliMon(){
     this.setState({curPage:'monRepo'})
+    console.log('333',this.state.node)
   }
   onCliYea(){
     this.setState({curPage:'yeaRepo'})
@@ -38,7 +40,7 @@ class WorkInfo extends React.Component {
           </div>)}
           {(this.state.curPage=='monRepo'||this.state.curPage=='yeaRepo')&&(
             <div className='monRepo'>
-              <Repo curPage={this.state.curPage}></Repo>
+              <Repo curPage={this.state.curPage} node={this.state.node}></Repo>
 
             </div>)}
         {this.state.curPage=='Home'&&(
