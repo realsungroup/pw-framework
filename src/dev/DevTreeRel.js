@@ -40,6 +40,9 @@ class App extends Component {
             resid='602348115218'
             ColumnOfID='C3_602347243263'
             ColumnOfPID='C3_602347244770'
+            nameOfID='C3_613753776398'
+            locationOfID='C3_612377399102'
+            nameEnOfID='C3_602347246317'
             ProductIDs='1360564'
             autoExpandParent='true'
             onSelect={this.setSelect}

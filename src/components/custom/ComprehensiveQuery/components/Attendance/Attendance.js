@@ -12,7 +12,7 @@ class Attendance extends React.Component {
       currentNav: 'target',
       targetSelectItem: 'target',
       middleOfYearSelectItem: 'targetSelfAppraise',
-      node:props.node[0]
+      node:props.node
     };
   }
 
