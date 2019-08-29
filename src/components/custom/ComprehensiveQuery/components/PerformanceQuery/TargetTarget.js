@@ -3,15 +3,14 @@ import TableData from '../../../../common/data/TableData';
 import { Select } from 'antd';
 
 const { Option } = Select;
-
-class TargetSelfAppraise extends React.Component {
+class TargetTarget extends React.Component {
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
           <Select
             style={{ width: 120 }}
-            placeholder="选择财年"
+            placeholder="提醒"
             onSelect={selectValue => {
               // this.handleSel(record, selectValue);
               // this.showConfirm(record, selectValue);
@@ -28,9 +27,9 @@ class TargetSelfAppraise extends React.Component {
   };
   render() {
     return (
-      <div id="target-self-appraise">
+      <div id="target-history">
         <TableData
-          key="TargetSelfAppraise"
+          key="1"
           resid="619609481002"
           subtractH={240}
           hasAdvSearch={false}
@@ -49,4 +48,4 @@ class TargetSelfAppraise extends React.Component {
     );
   }
 }
-export default TargetSelfAppraise;
+export default TargetTarget;
