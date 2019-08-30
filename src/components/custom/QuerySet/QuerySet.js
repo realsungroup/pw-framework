@@ -1331,7 +1331,6 @@ class QuerySet extends Component {
         console.error(err);
       }
     }
-    this.setState({ loading: true });
   };
   //编辑中添加选项
   addCurrentQuestionOption = async (questiontype, questionId) => {
