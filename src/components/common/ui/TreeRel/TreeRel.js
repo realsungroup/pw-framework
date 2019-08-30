@@ -39,10 +39,10 @@ class TreeRel extends React.Component {
       prevIDAction: 'top',
       showBack: false,
       treeHis: [],
-      name:props.nameOfID,
-      location:props.locationOfID,
-      nameEn:props.nameEnOfID,
-      dataNode:[]
+      name: props.nameOfID,
+      location: props.locationOfID,
+      nameEn: props.nameEnOfID,
+      dataNode: []
     };
     //
     // this.state.url=props.url;
@@ -239,7 +239,7 @@ class TreeRel extends React.Component {
       });
 
       var arr = [];
-      var arrData=this.state.dataNode;
+      var arrData = this.state.dataNode;
       var n = 0;
       while (n < res.nodes.length) {
         if (treeNode.props.dataRef.key != res.nodes[n][this.state.ColumnOfID]) {
@@ -248,17 +248,17 @@ class TreeRel extends React.Component {
             arr.push({
               title:
                 (res.nodes[n][this.state.name] || '') +
-               (res.nodes[n][this.state.nameEn] || '')+
+                (res.nodes[n][this.state.nameEn] || '') +
                 (res.nodes[n][this.state.location] || ''),
               key: res.nodes[n][this.state.ColumnOfID],
               isLeaf: true
             });
           } else {
-            arrData.push(res.nodes[n])
+            arrData.push(res.nodes[n]);
             arr.push({
               title:
                 (res.nodes[n][this.state.name] || '') +
-                (res.nodes[n][this.state.nameEn] || '')+
+                (res.nodes[n][this.state.nameEn] || '') +
                 (res.nodes[n][this.state.location] || ''),
               key: res.nodes[n][this.state.ColumnOfID],
               prevID: treeNode.props.dataRef.key
@@ -311,18 +311,17 @@ class TreeRel extends React.Component {
         ProductIDs: this.state.ProductIDs //要查的人的ID
       });
       var arr = [];
-      var arrData=this.state.dataNode;
+      var arrData = this.state.dataNode;
 
       var n = 0;
       while (n < res.nodes.length) {
         if (this.state.ProductIDs == res.nodes[n][this.state.ColumnOfID]) {
-          arrData.push(res.nodes[n])
+          arrData.push(res.nodes[n]);
           arr.push({
             title:
               (res.nodes[n][this.state.name] || '') +
-              (res.nodes[n][this.state.nameEn] || '')+
-              (res.nodes[n][this.state.location] || '')
-              ,
+              (res.nodes[n][this.state.nameEn] || '') +
+              (res.nodes[n][this.state.location] || ''),
             key: res.nodes[n][this.state.ColumnOfID],
             prevID: 'top'
           });
@@ -334,7 +333,7 @@ class TreeRel extends React.Component {
       // var arr2 = this.state.treeHis;
       // arr2.push(arr);
       this.setState({ dataNode: arrData });
-      var obj=this.state.dataNode[0];
+      var obj = this.state.dataNode[0];
       this.props.onSelect(obj);
     } catch (error) {
       console.log(error.message);
@@ -345,7 +344,7 @@ class TreeRel extends React.Component {
     var sT = this.refs.sideBg.scrollTop;
     this.setState({ selectedOffsetTop: e.node.selectHandle.offsetTop });
     this.setState({ selectedId: selectedKeys });
-    console.log(selectedKeys);
+    // console.log(selectedKeys);
     if (e.selectedNodes[0]) {
       this.setState({ prevID: e.selectedNodes[0].props.prevID || '' });
     } else {
@@ -369,26 +368,29 @@ class TreeRel extends React.Component {
       this.setState({ hover: false });
       this.refs.setRoot.style.top = '-40px';
     }
-    var i=0
+    var i = 0;
     var obj;
-    while(i<this.state.dataNode.length){
-      if(this.state.dataNode[i][this.state.ColumnOfID]==selectedKeys[0]){
-        obj=this.state.dataNode[i];
-      };
+    while (i < this.state.dataNode.length) {
+      if (this.state.dataNode[i][this.state.ColumnOfID] == selectedKeys[0]) {
+        obj = this.state.dataNode[i];
+      }
       i++;
     }
     this.props.onSelect(obj);
-
   };
   componentDidMount = () => {
     this.getData();
   };
 
   render() {
-    console.log(this.state.selectedId);
+    // console.log(this.state.selectedId);
     return (
       <div className="sideWrap">
-        <div className={'sideWrapInner' + ' ' + (this.state.shrink ? 'shrinkOuter' : '')}>
+        <div
+          className={
+            'sideWrapInner' + ' ' + (this.state.shrink ? 'shrinkOuter' : '')
+          }
+        >
           <div
             ref="sideBg"
             className={'sideBg' + ' ' + (this.state.shrink ? 'shrink' : '')}

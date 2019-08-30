@@ -5,9 +5,11 @@ import TargetHistory from './TargetHistory';
 import TargetSelfAppraise from './TargetSelfAppraise';
 import AdvantageShortcoming from './AdvantageShortcoming';
 import ViewTarget from './ViewTarget';
-import ViewRate from './ViewRate';
 import ViewComments from './ViewComments';
+import http from 'Util20/api';
+import { message, Select } from 'antd';
 
+const { Option } = Select;
 const activeClasssName = 'performance-query_nav_item__active';
 const activeTargetItem = 'performance-query_item_nav_item__active';
 class PerformanceQuery extends React.Component {
@@ -16,9 +18,51 @@ class PerformanceQuery extends React.Component {
     targetSelectItem: 'target',
     middleOfYearSelectItem: 'targetSelfAppraise',
     endOfYearSelectItem: 'targetSelfAppraise',
-    directlySelectItem: 'viewTarget'
+    directlySelectItem: 'viewTarget',
+    years: [],
+    selectYear: { key: 0, label: '请选择财年' }
   };
-
+  componentDidMount = async () => {
+    const { person } = this.props;
+    let id;
+    if (person) {
+      id = person.C3_305737857578;
+    }
+    this.getYearsTarget(id);
+  };
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
+    ) {
+      this.getYearsTarget(this.props.person.C3_305737857578);
+    }
+  }
+  getYearsTarget = async id => {
+    try {
+      const res = await http().getTable({
+        resid: '620409727880',
+        cparm1: id,
+        dblinkname: 'ehr'
+      });
+      if (res.data.length) {
+        this.setState({
+          years: res.data,
+          selectYear: {
+            key: res.data[0].C3_420297595131,
+            label: res.data[0].C3_420150922019
+          }
+        });
+      } else {
+        this.setState({
+          years: [],
+          selectYear: { key: 0, label: '请选择财年' }
+        });
+      }
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
   handleNavChange = key => {
     return () => {
       this.setState({
@@ -54,16 +98,37 @@ class PerformanceQuery extends React.Component {
       });
     };
   };
+
+  renderSelect = () => {
+    return (
+      <Select
+        style={{ width: 120, marginBottom: 16 }}
+        placeholder="选择财年"
+        value={this.state.selectYear}
+        onSelect={selectValue => {
+          this.setState({ selectYear: selectValue });
+        }}
+        labelInValue
+      >
+        {this.state.years.map(target => (
+          <Option value={target.C3_420297595131}>
+            {target.C3_420150922019}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
   render() {
     const {
       currentNav,
       targetSelectItem,
       middleOfYearSelectItem,
       endOfYearSelectItem,
-      directlySelectItem
+      directlySelectItem,
+      selectYear,
+      years
     } = this.state;
-    const { personId } = this.props;
-    console.log(this.props);
+    const { person } = this.props;
     return (
       <div className="performance-query">
         <nav className="performance-query_nav">
@@ -118,10 +183,14 @@ class PerformanceQuery extends React.Component {
               </div>
               <div className="performance-query_item_content_wrap">
                 {targetSelectItem === 'target' && (
-                  <TargetTarget personId={personId} />
+                  <TargetTarget person={person} selectYear={selectYear}>
+                    {this.renderSelect()}
+                  </TargetTarget>
                 )}
                 {targetSelectItem === 'history' && (
-                  <TargetHistory personId={personId} />
+                  <TargetHistory person={person} selectYear={selectYear}>
+                    {this.renderSelect()}
+                  </TargetHistory>
                 )}
               </div>
             </div>
@@ -151,10 +220,22 @@ class PerformanceQuery extends React.Component {
               </div>
               <div className="performance-query_item_content_wrap">
                 {middleOfYearSelectItem === 'targetSelfAppraise' && (
-                  <TargetSelfAppraise personId={personId} />
+                  <TargetSelfAppraise
+                    person={person}
+                    selectYear={selectYear}
+                    type="年中"
+                  >
+                    {this.renderSelect()}
+                  </TargetSelfAppraise>
                 )}
                 {middleOfYearSelectItem === 'advantageShortcoming' && (
-                  <AdvantageShortcoming personId={personId} />
+                  <AdvantageShortcoming
+                    person={person}
+                    selectYear={selectYear}
+                    type="年中"
+                  >
+                    {this.renderSelect()}
+                  </AdvantageShortcoming>
                 )}
               </div>
             </div>
@@ -182,10 +263,22 @@ class PerformanceQuery extends React.Component {
               </div>
               <div className="performance-query_item_content_wrap">
                 {endOfYearSelectItem === 'targetSelfAppraise' && (
-                  <TargetSelfAppraise personId={personId} />
+                  <TargetSelfAppraise
+                    person={person}
+                    type="年末"
+                    selectYear={selectYear}
+                  >
+                    {this.renderSelect()}
+                  </TargetSelfAppraise>
                 )}
                 {endOfYearSelectItem === 'advantageShortcoming' && (
-                  <AdvantageShortcoming personId={personId} />
+                  <AdvantageShortcoming
+                    person={person}
+                    selectYear={selectYear}
+                    type="年末"
+                  >
+                    {this.renderSelect()}
+                  </AdvantageShortcoming>
                 )}
               </div>
             </div>
@@ -208,23 +301,15 @@ class PerformanceQuery extends React.Component {
                 >
                   评语查看
                 </span>
-                <span
-                  onClick={this.handleDirectlyNavChange('viewRate')}
-                  className={`performance-query_item_nav_item ${directlySelectItem ===
-                    'viewRate' && activeTargetItem}`}
-                >
-                  评优评级查看
-                </span>
               </div>
               <div className="performance-query_item_content_wrap">
                 {directlySelectItem === 'viewTarget' && (
-                  <ViewTarget personId={personId} />
+                  <ViewTarget person={person} selectYear={selectYear}>
+                    {this.renderSelect()}
+                  </ViewTarget>
                 )}
                 {directlySelectItem === 'viewComments' && (
-                  <ViewComments personId={personId} />
-                )}
-                {directlySelectItem === 'viewRate' && (
-                  <ViewRate personId={personId} />
+                  <ViewComments person={person} />
                 )}
               </div>
             </div>

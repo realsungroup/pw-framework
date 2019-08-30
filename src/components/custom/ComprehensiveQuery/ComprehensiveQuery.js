@@ -16,6 +16,10 @@ class ComprehensiveQuery extends React.Component {
     isExpand: true, //左侧展开状态
     currentTab: 'personnel'
   };
+  constructor(props) {
+    super(props);
+    this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+  }
   componentDidMount() {}
   setSelect = node => {
     this.setState({
@@ -36,7 +40,7 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = <PersonnelQuery />;
+        page = <PersonnelQuery node={this.state.node} />;
         break;
       case 'attendance':
         page = <Attendance node={this.state.node} />;
@@ -77,14 +81,14 @@ class ComprehensiveQuery extends React.Component {
         </main>
         <TreeRel
           url="api/OrgChart/GetNodesData"
-          resid="602348115218"
-          ColumnOfID="C3_602347243263"
-          ColumnOfPID="C3_602347244770"
-          ProductIDs="1360564"
+          resid="609599795438"
+          ColumnOfID="C3_305737857578"
+          ColumnOfPID="C3_417993417686"
+          ProductIDs={this.UserCode}
           autoExpandParent="true"
-          nameOfID='C3_613753776398'
-          locationOfID='C3_612377399102'
-          nameEnOfID='C3_602347246317'
+          nameOfID="C3_227192484125"
+          locationOfID="C3_423229407315"
+          nameEnOfID="C3_227192496109"
           onSelect={this.setSelect}
           onShrinkChange={this.setShrink}
         />

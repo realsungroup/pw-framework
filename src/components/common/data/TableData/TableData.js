@@ -119,6 +119,20 @@ class TableData extends React.Component {
     window.removeEventListener('resize', this.cb);
   };
 
+  async componentDidUpdate(prevProps) {
+    if (
+      this.props.cparm1 !== prevProps.cparm1 ||
+      this.props.cparm2 !== prevProps.cparm2 ||
+      this.props.cparm3 !== prevProps.cparm3 ||
+      this.props.cparm4 !== prevProps.cparm4 ||
+      this.props.cparm5 !== prevProps.cparm5 ||
+      this.props.cparm6 !== prevProps.cparm6
+    ) {
+      this.setState({ loading: true });
+      await this.getData();
+      this.setState({ loading: false });
+    }
+  }
   addEventListener = () => {
     this.cb = debounce(this.handleResize, 200);
     window.addEventListener('resize', this.cb);
@@ -281,7 +295,13 @@ class TableData extends React.Component {
       cmscolumns,
       storeWay,
       baseURL,
-      dblinkname
+      dblinkname,
+      cparm1,
+      cparm2,
+      cparm3,
+      cparm4,
+      cparm5,
+      cparm6
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -308,7 +328,13 @@ class TableData extends React.Component {
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
-            dblinkname
+            dblinkname,
+            cparm1,
+            cparm2,
+            cparm3,
+            cparm4,
+            cparm5,
+            cparm6
           };
           this.p3 = makeCancelable(http(httpParams).getTable(params));
           res = await this.p3.promise;
@@ -327,7 +353,13 @@ class TableData extends React.Component {
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
-            dblinkname
+            dblinkname,
+            cparm1,
+            cparm2,
+            cparm3,
+            cparm4,
+            cparm5,
+            cparm6
           };
           this.p3 = makeCancelable(http(httpParams).getSubTable(params));
           res = await this.p3.promise;
@@ -619,7 +651,6 @@ class TableData extends React.Component {
       downloadBaseURL,
       dblinkname,
       dataMode
-     
     } = this.props;
     //console.log("handleDownload");
     //console.log(this.props);
@@ -633,16 +664,14 @@ class TableData extends React.Component {
     const downloadBaseURL_ =
       downloadBaseURL || window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
 
-     let hostresid=this.props.resid;
-     let hostrecid=this.props.hostrecid;
-      
+    let hostresid = this.props.resid;
+    let hostrecid = this.props.hostrecid;
+
     if (dataMode === 'main') {
-      hostresid = "";
+      hostresid = '';
 
-      hostrecid = "";
-
+      hostrecid = '';
     }
-
 
     await downloadFile(
       requestBaseURL,
@@ -688,19 +717,20 @@ class TableData extends React.Component {
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
-    const { beBtnsMultiple, beBtnsOther ,baseURL} = this.state;
+    const { beBtnsMultiple, beBtnsOther, baseURL } = this.state;
     const { size, formProps } = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
-    const recordFormDisplayMode = (formProps && formProps.displayMode) || 'default';
+    const recordFormDisplayMode =
+      (formProps && formProps.displayMode) || 'default';
 
     return arr.map(btnInfo => (
       <LzBackendBtn
         baseURL={baseURL}
         backendBtnType="multiple"
         key={btnInfo.Name1}
-        btnInfo={{...btnInfo }}
+        btnInfo={{ ...btnInfo }}
         resid={id}
         recordFormDisplayMode={recordFormDisplayMode}
         onConfirm={(
@@ -721,7 +751,6 @@ class TableData extends React.Component {
               defaultRecord,
               recordFormData,
               baseURL
-              
             );
           });
         }}
@@ -733,7 +762,7 @@ class TableData extends React.Component {
 
   // 渲染行后端按钮
   renderRowBeBtns = (beBtnsSingle, record) => {
-    const { size, formProps ,baseURL} = this.props;
+    const { size, formProps, baseURL } = this.props;
     const id = this._id;
 
     return beBtnsSingle.map(btnInfo => (
@@ -743,7 +772,9 @@ class TableData extends React.Component {
         key={btnInfo.Name1}
         btnInfo={btnInfo}
         resid={id}
-        recordFormDisplayMode={formProps && formProps.displayMode || 'default'}
+        recordFormDisplayMode={
+          (formProps && formProps.displayMode) || 'default'
+        }
         onConfirm={(
           backendBtnType,
           type,
@@ -1532,10 +1563,9 @@ class TableData extends React.Component {
       importConfig,
       bordered,
       actionBarExtra,
-      headerExtra,
-     
+      headerExtra
     } = this.props;
-    
+
     const {
       pagination,
       dataSource,
@@ -1552,7 +1582,6 @@ class TableData extends React.Component {
     return (
       <PwTable
         title={title}
-       
         editingKey={editingKey}
         components={components}
         pagination={pagination}
