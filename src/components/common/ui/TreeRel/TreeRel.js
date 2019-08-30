@@ -42,7 +42,8 @@ class TreeRel extends React.Component {
       name: props.nameOfID,
       location: props.locationOfID,
       nameEn: props.nameEnOfID,
-      dataNode: []
+      dataNode: [],
+      lastSelected:{},
     };
     //
     // this.state.url=props.url;
@@ -333,10 +334,16 @@ class TreeRel extends React.Component {
       // var arr2 = this.state.treeHis;
       // arr2.push(arr);
       this.setState({ dataNode: arrData });
+
+
       var obj = this.state.dataNode[0];
       this.props.onSelect(obj);
+      this.setState({ lastSelected: this.refs.sideBg.children[0].children[0].children[1]});
+
+
     } catch (error) {
       console.log(error.message);
+
     }
   };
 
@@ -353,33 +360,41 @@ class TreeRel extends React.Component {
 
     this.refs.shrink.style.top = e.node.selectHandle.offsetTop - sT + 'px';
     if (selectedKeys.length > 0) {
-      this.setState({ hover: true });
+      // this.setState({ hover: true });
       if (e.node.selectHandle.offsetTop != 8) {
         if (e.node.props.isLeaf != true) {
           this.refs.setRoot.style.top = e.node.selectHandle.offsetTop + 'px';
         } else {
-          this.refs.setRoot.style.top = '-40px';
+          // this.refs.setRoot.style.top = '-40px';
         }
       } else {
-        this.refs.setRoot.style.top = '-40px';
+        // this.refs.setRoot.style.top = '-40px';
       }
     } else {
       this.setState({ selectedId: '' });
-      this.setState({ hover: false });
-      this.refs.setRoot.style.top = '-40px';
+      // this.setState({ hover: false });
+      // this.refs.setRoot.style.top = '-40px';
     }
     var i = 0;
     var obj;
+    var lst=this.state.lastSelected;
     while (i < this.state.dataNode.length) {
       if (this.state.dataNode[i][this.state.ColumnOfID] == selectedKeys[0]) {
         obj = this.state.dataNode[i];
+        lst = e;
       }
       i++;
     }
+    var dom;
+    // 变魔术
     if(obj){
       this.props.onSelect(obj);
+        dom=this.state.lastSelected
+        dom.style.cssText=""
+      this.setState({lastSelected:lst.nativeEvent.path[1]});
     }else{
-      
+        dom=this.state.lastSelected
+        dom.style.cssText="background-color:#bae7ff;"
     }
   };
   componentDidMount = () => {
@@ -400,6 +415,7 @@ class TreeRel extends React.Component {
             className={'sideBg' + ' ' + (this.state.shrink ? 'shrink' : '')}
           >
             <Tree
+              id='tree'
               selectedKeys={this.state.selectedId}
               ref="tree"
               onSelect={this.onSelect}
