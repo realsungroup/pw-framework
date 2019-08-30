@@ -1308,6 +1308,7 @@ class QuerySet extends Component {
   delcurrentOption = async (optionId, index) => {
     const { currentQuestion } = this.state;
     currentQuestion.subdata.splice(index, 1);
+    // console.log("subdata",subdata)
     this.setState({
       currentQuestion: currentQuestion
     });
