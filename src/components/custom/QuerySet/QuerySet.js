@@ -677,6 +677,7 @@ class QuerySet extends Component {
   };
   //获取指定问卷试题
   getThisQueryQuestions = queryId => {
+    
     this.setState({ loading: true });
     // console.log('问卷试题表中问卷Id', queryId);
     http()
@@ -1541,7 +1542,7 @@ class QuerySet extends Component {
     );
   }
   //点击编辑模态框中的保存
-  handleEditModalSave = () => {
+  handleEditModalSave = async() => {
     const { currentQuestion } = this.state;
     this.setState({ loading: true });
     // console.log('当前更新的问题', currentQuestion);
@@ -1587,7 +1588,7 @@ class QuerySet extends Component {
     // console.log('编辑后的数据', terminal);
 
     // 向后端发送请求
-    http()
+    await  http()
       .saveRecordAndSubTables({
         data: terminal
       })
@@ -1602,6 +1603,7 @@ class QuerySet extends Component {
       CurrentQuestionVisible: false,
       loading: false
     });
+    await this.getThisQueryQuestions(this.state.queryId);
   };
   // 打开导入模板的模态框
   showTempleteModal = () => {
@@ -1940,6 +1942,14 @@ class QuerySet extends Component {
             onCancel={this.handleEditModal}
             width={this.state.wid}
             destroyOnClose={true}
+            footer={[
+              <Button key="back" onClick={this.handleEditModal}>
+                取消
+              </Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleEditModalSave}>
+                确定
+              </Button>,
+            ]}
           >
             {this.renderCurrentQuestion(
               this.state.currentQuestion.question_type
