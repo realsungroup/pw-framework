@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Col, Select } from 'antd';
-class AdvantageShortcoming extends React.Component {
+import { Row, Col, Select, Divider } from 'antd';
+class ViewComments extends React.Component {
   render() {
     return (
       <div id="advantage-shortcoming">
@@ -35,24 +35,54 @@ class AdvantageShortcoming extends React.Component {
               <label>考核年度 Fisical Year:</label>
             </Col>
           </Row>
-          <Row style={{ paddingBottom: 32 }}>
+          <Row>
             <Col span={8}>
               <label>直接主管 Supervior:</label>
             </Col>
           </Row>
+          <Divider />
           <Row style={{ paddingBottom: 32 }}>
             <Col span={6}>
-              自评总评：
+              年中评级：
               <div style={{ paddingBottom: 8 }}></div>
             </Col>
             <Col span={6} offset={2}>
-              自评评级：
+              年中评优：
               <div style={{ paddingBottom: 8 }}></div>
             </Col>
           </Row>
           <Row>
             <Col span={6}>
-              优点：
+              年中直评：
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+            <Col span={6} offset={2}>
+              优点
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+            <Col span={6} offset={2}>
+              有待改善：
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+          </Row>
+          <Divider />
+          <Row style={{ paddingBottom: 32 }}>
+            <Col span={6}>
+              年末评级：
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+            <Col span={6} offset={2}>
+              年末评优：
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}>
+              年末直评：
+              <div style={{ paddingBottom: 8 }}></div>
+            </Col>
+            <Col span={6} offset={2}>
+              优点
               <div style={{ paddingBottom: 8 }}></div>
             </Col>
             <Col span={6} offset={2}>
@@ -65,4 +95,4 @@ class AdvantageShortcoming extends React.Component {
     );
   }
 }
-export default AdvantageShortcoming;
+export default ViewComments;

@@ -1,19 +1,19 @@
 import React from 'react';
 import TableData from '../../../../common/data/TableData';
 
-class TargetHistory extends React.Component {
+class TargetTarget extends React.Component {
   render() {
     const { selectYear } = this.props;
     return (
       <div id="target-history">
         {this.props.children}
         <TableData
-          key="1"
-          resid="462586715318"
+          key="table-target-target"
+          resid="462402075404"
           subtractH={240}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -28,4 +28,4 @@ class TargetHistory extends React.Component {
     );
   }
 }
-export default TargetHistory;
+export default TargetTarget;

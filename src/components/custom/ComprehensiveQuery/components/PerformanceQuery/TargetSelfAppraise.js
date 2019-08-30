@@ -3,11 +3,19 @@ import TableData from '../../../../common/data/TableData';
 
 class TargetSelfAppraise extends React.Component {
   render() {
+    const { type } = this.props;
+    let resid = '462553161418',
+      key = 'MiddleTargetSelfAppraise';
+    if (type === '年末') {
+      resid = '462583603607';
+      key = 'EndTargetSelfAppraise';
+    }
     return (
       <div id="target-self-appraise">
+        {this.props.children}
         <TableData
-          key="TargetSelfAppraise"
-          resid="619609481002"
+          key={key}
+          resid={resid}
           subtractH={240}
           hasAdvSearch={false}
           hasAdd={false}
@@ -19,7 +27,8 @@ class TargetSelfAppraise extends React.Component {
           hasRowModify={false}
           hasRowSelection={true}
           actionBarWidth={100}
-          actionBarExtra={this.actionBarExtra}
+          dblinkname="ehr"
+          cparm1={this.props.selectYear.key}
         />
       </div>
     );
