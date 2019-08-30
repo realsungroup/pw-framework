@@ -376,7 +376,11 @@ class TreeRel extends React.Component {
       }
       i++;
     }
-    this.props.onSelect(obj);
+    if(obj){
+      this.props.onSelect(obj);
+    }else{
+      
+    }
   };
   componentDidMount = () => {
     this.getData();
