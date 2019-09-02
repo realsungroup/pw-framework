@@ -18,6 +18,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
+import { uploadFile } from '../../../util/api';
 import http from 'Util20/api';
 import { TableData } from '../../common/loadableCommon';
 import Calendar from 'ic-components/lib/Calendar';
@@ -348,15 +349,10 @@ class EmployeeCourses extends React.Component {
   };
   handleFileChange = info => {
     let fileList = [...info.fileList];
-    // 2. Read from response and show file link
-    fileList = fileList.map(file => {
-      if (file.response) {
-        // Component will show file.url as link
-        file.url = file.response.url;
-      }
-      return file;
-    });
-
+    // fileList = fileList.map(file => {
+    //   uploadFile(file);
+    // });
+    // console.log(info);
     this.setState({ fileList });
   };
   handleOpenAppAndFeeback = () => {
@@ -456,6 +452,7 @@ class EmployeeCourses extends React.Component {
     if (tip.tips.trim() === '') {
       return message.error('心得感悟不能为空');
     }
+    console.log(this.state.fileList.url);
     try {
       res = await this.saveTip(tip, false);
       this.setState({
@@ -479,6 +476,7 @@ class EmployeeCourses extends React.Component {
             C3_614964239022: tip.title,
             C3_614964225030: tip.tips,
             C3_614964322197: isSubmit ? 'Y' : '',
+            Filepath: this.state.fileList[0].url,
             C3_615479417558: this.state.selectedCourse.CourseArrangeDetailID
           }
         ],
@@ -497,9 +495,9 @@ class EmployeeCourses extends React.Component {
     if (tip.title.trim() === '') {
       return message.error('标题不能为空');
     }
-    if (tip.tips.trim() === '') {
-      return message.error('心得感悟不能为空');
-    }
+    // if (tip.tips.trim() === '') {
+    //   return message.error('心得感悟不能为空');
+    // }
     try {
       res = await this.saveTip(tip, true);
       message.success(res.message);
@@ -718,6 +716,7 @@ class EmployeeCourses extends React.Component {
   setExtraCost = extraCost => {
     this.setState({ extraCost: parseFloat(extraCost) });
   };
+
   render() {
     let selectedCourse = { ...this.state.selectedCourse },
       startColor = '#aaa',
@@ -1227,17 +1226,6 @@ class EmployeeCourses extends React.Component {
           {this.state.tipsModalMode === 'modify' ? (
             <div style={{ padding: 12 }}>
               <div>
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  onChange={this.handleFileChange}
-                  fileList={this.state.fileList}
-                >
-                  <Button>
-                    <Icon type="upload" /> Upload
-                  </Button>
-                </Upload>
-              </div>
-              <div>
                 <label>
                   <strong>标题</strong>
                 </label>
@@ -1250,7 +1238,30 @@ class EmployeeCourses extends React.Component {
                   }}
                 />
               </div>
-              <div>
+              <div style={{ marginTop: 16 }}>
+                <Upload
+                  onChange={this.handleFileChange}
+                  fileList={this.state.fileList}
+                  customRequest={async file => {
+                    const res = await uploadFile(file.file);
+                    this.setState({
+                      fileList: [
+                        {
+                          name: file.file.name,
+                          url: res,
+                          status: 'done',
+                          uid: '1'
+                        }
+                      ]
+                    });
+                  }}
+                >
+                  <Button>
+                    <Icon type="upload" /> 上传心得文件
+                  </Button>
+                </Upload>
+              </div>
+              {/* <div>
                 <label>
                   <strong>心得感悟</strong>
                 </label>
@@ -1263,7 +1274,7 @@ class EmployeeCourses extends React.Component {
                     this.setState({ tip });
                   }}
                 />
-              </div>
+              </div> */}
             </div>
           ) : (
             <div style={{ padding: 12 }}>

@@ -8,7 +8,8 @@ import {
   InputNumber,
   DatePicker,
   Input,
-  Button
+  Button,
+  Tooltip
 } from 'antd';
 import moment from 'moment';
 import http from 'Util20/api';
@@ -585,7 +586,9 @@ class FeedBackAndPlan extends Component {
           <Card title="行动计划" style={{ marginTop: 10 }}>
             <Row>
               <Col span={2}>序号</Col>
-              <Col span={8}>具体行动</Col>
+              <Col span={8}>
+                <Tooltip title="这是行动描述">具体行动</Tooltip>
+              </Col>
               <Col span={4}>开始时间</Col>
               <Col span={4}>结束时间</Col>
               <Col span={3}>进度</Col>
