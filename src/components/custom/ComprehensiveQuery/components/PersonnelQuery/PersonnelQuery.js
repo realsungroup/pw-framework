@@ -15,7 +15,7 @@ class PersonnelQuery extends React.Component {
     const { currentNav, targetSelectItem, middleOfYearSelectItem } = this.state;
     return (
       <div className="performance-query">
-        <PersonInfo></PersonInfo>
+        <PersonInfo person={this.props.node}></PersonInfo>
       </div>
     );
   }

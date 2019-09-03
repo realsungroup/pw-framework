@@ -221,7 +221,68 @@ class FormData extends React.Component {
       </Tabs>
     );
   };
+  renderSubTablesAbsolute = () => {
+    const { defaultActiveKey } = this.state;
+    const { subTableArr, data } = this.props;
 
+    return (
+      <Tabs
+        defaultActiveKey={defaultActiveKey}
+        className={classNames('form-data__tabs', {
+          'form-data__tabs--full': !data.length
+        })}
+        style={{
+          width: subTableArr[0].FrmWidth,
+          position: 'absolute',
+          top: subTableArr[0].FrmTop,
+          left: subTableArr[0].FrmLeft
+        }}
+      >
+        {subTableArr.map((subTable, index) =>
+          this.renderTabPaneAbsolute(subTable, index, subTableArr)
+        )}
+      </Tabs>
+    );
+  };
+  renderTabPaneAbsolute = (subTable, index, subTableArr) => {
+    const { subTableArrProps, record, info, operation } = this.props;
+    const { resid } = info;
+
+    const subTableProps = subTableArrProps.find(
+      item => item.subResid === subTable.subResid
+    );
+
+    const { tableProps = {} } = subTableProps || {};
+
+    const tab =
+      (subTableProps && subTableProps.subTableName) || subTable.subResid;
+
+    const props = {
+      hasZoomInOut: false
+    };
+
+    const storeWay = operation === 'add' ? 'fe' : 'be';
+
+    return (
+      <TabPane tab={tab} key={index}>
+        <TableData
+          wrappedComponentRef={element =>
+            (this[`tableDataRef${index}`] = element)
+          }
+          refTargetComponentName="TableData"
+          dataMode="sub"
+          resid={resid}
+          subresid={subTable.subResid}
+          hostrecid={record.REC_ID}
+          size="small"
+          {...props}
+          {...tableProps}
+          storeWay={storeWay}
+          height={subTableArr[0].FrmHeight}
+        />
+      </TabPane>
+    );
+  };
   renderTabPane = (subTable, index) => {
     const { subTableArrProps, record, info, operation } = this.props;
     const { resid } = info;
@@ -270,7 +331,8 @@ class FormData extends React.Component {
       beforeSaveFields,
       info,
       width,
-      dblinkname
+      dblinkname,
+      useAbsolute
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -282,15 +344,21 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     const { resid } = info;
-    return (
+    let containerData,
+      filterData = [];
+    if (data.length) {
+      containerData = data[data.length - 1][0];
+      filterData = data.filter(item => item.controlData);
+    }
+    return !useAbsolute ? (
       <div className="form-data">
-        {!!data.length && (
+        {!!filterData.length && (
           <div
             style={{ width: hasSubTables ? width.formWidth : '100%' }}
             className="form-data__form-wrap"
           >
             <PwForm
-              data={data}
+              data={filterData}
               {...formProps}
               mode={mode}
               {...otherProps}
@@ -305,6 +373,32 @@ class FormData extends React.Component {
           </div>
         )}
         {hasSubTables && this.renderSubTables()}
+      </div>
+    ) : (
+      <div
+        style={{
+          height: containerData.FrmHeight,
+          width: containerData.FrmWidth,
+          position: 'relative'
+        }}
+      >
+        {filterData.map(item => {
+          return (
+            <div
+              className="form-data_item"
+              style={{
+                position: 'absolute',
+                top: item.controlData.FrmTop,
+                left: item.controlData.FrmLeft,
+                width: item.controlData.FormWidth
+              }}
+            >
+              <label>{item.label}:</label>
+              <span>{item.initialValue}</span>
+            </div>
+          );
+        })}
+        {hasSubTables && this.renderSubTablesAbsolute()}
       </div>
     );
   }

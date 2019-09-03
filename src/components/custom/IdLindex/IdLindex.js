@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Modal, Button, Input, Menu, Icon } from 'antd';
+import { List, Avatar, Modal, Button, Input, Menu, Icon  } from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
 import TableData from '../../common/data/TableData';
 import { assementForm, referenceCheck } from './config.js'; //面试评估表和背景调查表的配置
 import { withRecordForm } from '../../common/hoc/withRecordForm';
-//高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
+ //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
 import dealControlArr from '../../../util20/controls'; //处理数据
 import { getDataProp } from '../../../util20/formData2ControlsData'; //处理数据
-// 左侧导航栏列表的清单
+// 右侧导航栏列表的清单
 const MenuList = [
   {
     label: '个人资料',
@@ -54,26 +54,35 @@ class IdLindex extends Component {
   }
   componentDidMount = () => {
     this.getPersonList();
+    // 清楚缓存
+    http().clearCache();
   };
   state = {
     personList: [], //人员列表
     currentPersonInfo: {}, //当前选中人员的信息
     currentPersonId: '', //当前选中人员ID
-    recordFormName: 'default',
+    recordFormName: 'default',  
     typeVisible: false,
     activeKey: '工作申请表'
   };
   // 点击某个人时候设置样式
   handlePersonOnClick = item => {
-    const { personList } = this.state;
-    const tempPersonList = [...personList];
+    let { personList, activeKey } = this.state;
+    let tempPersonList = [...personList];
     tempPersonList.forEach(item => {
       item.isSelected = false;
     });
     item.isSelected = true;
     // 并获取该人的详细信息
     this.setState({ personList: tempPersonList, currentPersonId: item.ID });
-    this.getPersonalInfo(item.ID);
+    //
+    if(activeKey === '工作申请表'){
+      this.getPersonalInfo(item.ID);
+    } else {
+      this.tableDataRef.handleRefresh();  
+    }
+    
+    
   };
   // 给当前选中的人添加类名控制样式
   getSelectClass = isSelected => {
@@ -135,7 +144,7 @@ class IdLindex extends Component {
   };
   //获取formData数据
   getFormData = async record => {
-    // 1.看高阶组件接收的东西，打开一个模态窗。
+    // 1.看懂高阶组件接收的东西，打开一个模态窗。
     let res;
     try {
       res = await http().getFormData({
@@ -145,13 +154,6 @@ class IdLindex extends Component {
     } catch (err) {
       return console.error(err.message);
     }
-    // 处理数据的过程参考docs下面的form-data.md文件的说明
-    /**
-     *
-     *1 通过调用 `http().getFormData(params)` 来获取得到`窗体数据`
-     *2 将得到的`窗体数据`传给 `util20/controls.js` 中的 `dealControlArr()` 函数处理，得到 `处理后的窗体`
-     *3 最后，将得到的 `处理后的窗体数据` 传给 `util20/formData2ControlsData.js` 中的 `getDataProp()` 函数处理，得到 `data`。此 `data` 便是 `FormData` 组件所接收的 `data` 属性值。
-     */
     // console.log('获取到窗体的数据', res);
     const formMidData = dealControlArr(res.data.columns);
     // console.log('中间数据', formMidData);
@@ -189,16 +191,14 @@ class IdLindex extends Component {
     this.getPersonList(value);
   };
   renderContent = () => {
-    const { activeKey, currentPersonInfo } = this.state;
+    let { activeKey, currentPersonInfo } = this.state;
+    // eslint-disable-next-line default-case
     switch (activeKey) {
       case '工作申请表':
         return (
           <React.Fragment>
             <div className="idlindex__content-form__info-nav">
-              <Menu
-                style={{ width: 265, height: '100vh' }}
-                defaultSelectedKeys={['个人资料']}
-              >
+              <Menu style={{ width: 216 ,height:'100vh'}} defaultSelectedKeys={['个人资料']}>
                 {MenuList.map((menuItem, index) => {
                   return (
                     <Menu.Item
@@ -214,30 +214,41 @@ class IdLindex extends Component {
                 })}
               </Menu>
             </div>
-            <ApplayInformnation
-              hasSubmit={true}
-              initialValue={currentPersonInfo}
-            />
+            <ApplayInformnation personDetail={currentPersonInfo} />
           </React.Fragment>
         );
       case '面试评估表':
         return (
           <TableData
             key={613152706922}
-            {...assementForm}
+            {...assementForm} 
+            cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
+            // resid={613152706922}
             wrappedComponentRef={element => (this.tableDataRef = element)}
-            cmswhere={`ID='${this.state.currentPersonId}'`}
             refTargetComponentName="TableData"
+            cmswhere = {`ID = ${this.state.currentPersonId}`}
+            actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
+              return <Button>添加面试官</Button>
+            }}
             customRowBtns={[
               (record, btnSize) => {
                 return (
-                  <Button
-                    onClick={() => {
-                      this.getFormData(record);
-                    }}
-                  >
-                    填写
-                  </Button>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        this.getFormData(record);
+                      }}
+                    >
+                      评估详情
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.getFormData(record);
+                      }}
+                    >
+                      添加面试官
+                    </Button>
+                  </div>
                 );
               }
             ]}
@@ -247,11 +258,11 @@ class IdLindex extends Component {
         return (
           <div>
             <TableData
-              {...referenceCheck}
+            {...referenceCheck}
               key={613152614705}
-              cmswhere={`ID='${this.state.currentPersonId}'`}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
+              cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
             />
           </div>
         );
@@ -269,7 +280,7 @@ class IdLindex extends Component {
     moveTo.move(tempid);
   };
   render() {
-    const { personList } = this.state;
+    const { personList} = this.state;
     // console.log(currentPersonInfo);
     return (
       <div className="idlindex">
@@ -302,6 +313,7 @@ class IdLindex extends Component {
         </div>
         <div className="idlindex__content">
           <div className="idlindex__content-person">
+            {/* 面试候选人名单 */}
             <List
               itemLayout="horizontal"
               dataSource={personList}

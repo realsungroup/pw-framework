@@ -39,10 +39,11 @@ class TreeRel extends React.Component {
       prevIDAction: 'top',
       showBack: false,
       treeHis: [],
-      name:props.nameOfID,
-      location:props.locationOfID,
-      nameEn:props.nameEnOfID,
-      dataNode:[]
+      name: props.nameOfID,
+      location: props.locationOfID,
+      nameEn: props.nameEnOfID,
+      dataNode: [],
+      lastSelected:{},
     };
     //
     // this.state.url=props.url;
@@ -239,7 +240,7 @@ class TreeRel extends React.Component {
       });
 
       var arr = [];
-      var arrData=this.state.dataNode;
+      var arrData = this.state.dataNode;
       var n = 0;
       while (n < res.nodes.length) {
         if (treeNode.props.dataRef.key != res.nodes[n][this.state.ColumnOfID]) {
@@ -248,17 +249,17 @@ class TreeRel extends React.Component {
             arr.push({
               title:
                 (res.nodes[n][this.state.name] || '') +
-               (res.nodes[n][this.state.nameEn] || '')+
+                (res.nodes[n][this.state.nameEn] || '') +
                 (res.nodes[n][this.state.location] || ''),
               key: res.nodes[n][this.state.ColumnOfID],
               isLeaf: true
             });
           } else {
-            arrData.push(res.nodes[n])
+            arrData.push(res.nodes[n]);
             arr.push({
               title:
                 (res.nodes[n][this.state.name] || '') +
-                (res.nodes[n][this.state.nameEn] || '')+
+                (res.nodes[n][this.state.nameEn] || '') +
                 (res.nodes[n][this.state.location] || ''),
               key: res.nodes[n][this.state.ColumnOfID],
               prevID: treeNode.props.dataRef.key
@@ -311,18 +312,17 @@ class TreeRel extends React.Component {
         ProductIDs: this.state.ProductIDs //要查的人的ID
       });
       var arr = [];
-      var arrData=this.state.dataNode;
+      var arrData = this.state.dataNode;
 
       var n = 0;
       while (n < res.nodes.length) {
         if (this.state.ProductIDs == res.nodes[n][this.state.ColumnOfID]) {
-          arrData.push(res.nodes[n])
+          arrData.push(res.nodes[n]);
           arr.push({
             title:
               (res.nodes[n][this.state.name] || '') +
-              (res.nodes[n][this.state.nameEn] || '')+
-              (res.nodes[n][this.state.location] || '')
-              ,
+              (res.nodes[n][this.state.nameEn] || '') +
+              (res.nodes[n][this.state.location] || ''),
             key: res.nodes[n][this.state.ColumnOfID],
             prevID: 'top'
           });
@@ -334,10 +334,16 @@ class TreeRel extends React.Component {
       // var arr2 = this.state.treeHis;
       // arr2.push(arr);
       this.setState({ dataNode: arrData });
-      var obj=this.state.dataNode[0];
+
+
+      var obj = this.state.dataNode[0];
       this.props.onSelect(obj);
+      this.setState({ lastSelected: this.refs.sideBg.children[0].children[0].children[1]});
+
+
     } catch (error) {
       console.log(error.message);
+
     }
   };
 
@@ -345,7 +351,7 @@ class TreeRel extends React.Component {
     var sT = this.refs.sideBg.scrollTop;
     this.setState({ selectedOffsetTop: e.node.selectHandle.offsetTop });
     this.setState({ selectedId: selectedKeys });
-    console.log(selectedKeys);
+    // console.log(selectedKeys);
     if (e.selectedNodes[0]) {
       this.setState({ prevID: e.selectedNodes[0].props.prevID || '' });
     } else {
@@ -354,46 +360,62 @@ class TreeRel extends React.Component {
 
     this.refs.shrink.style.top = e.node.selectHandle.offsetTop - sT + 'px';
     if (selectedKeys.length > 0) {
-      this.setState({ hover: true });
+      // this.setState({ hover: true });
       if (e.node.selectHandle.offsetTop != 8) {
         if (e.node.props.isLeaf != true) {
           this.refs.setRoot.style.top = e.node.selectHandle.offsetTop + 'px';
         } else {
-          this.refs.setRoot.style.top = '-40px';
+          // this.refs.setRoot.style.top = '-40px';
         }
       } else {
-        this.refs.setRoot.style.top = '-40px';
+        // this.refs.setRoot.style.top = '-40px';
       }
     } else {
       this.setState({ selectedId: '' });
-      this.setState({ hover: false });
-      this.refs.setRoot.style.top = '-40px';
+      // this.setState({ hover: false });
+      // this.refs.setRoot.style.top = '-40px';
     }
-    var i=0
+    var i = 0;
     var obj;
-    while(i<this.state.dataNode.length){
-      if(this.state.dataNode[i][this.state.ColumnOfID]==selectedKeys[0]){
-        obj=this.state.dataNode[i];
-      };
+    var lst=this.state.lastSelected;
+    while (i < this.state.dataNode.length) {
+      if (this.state.dataNode[i][this.state.ColumnOfID] == selectedKeys[0]) {
+        obj = this.state.dataNode[i];
+        lst = e;
+      }
       i++;
     }
-    this.props.onSelect(obj);
-
+    var dom;
+    // 变魔术
+    if(obj){
+      this.props.onSelect(obj);
+        dom=this.state.lastSelected
+        dom.style.cssText=""
+      this.setState({lastSelected:lst.nativeEvent.path[1]});
+    }else{
+        dom=this.state.lastSelected
+        dom.style.cssText="background-color:#bae7ff;"
+    }
   };
   componentDidMount = () => {
     this.getData();
   };
 
   render() {
-    console.log(this.state.selectedId);
+    // console.log(this.state.selectedId);
     return (
       <div className="sideWrap">
-        <div className={'sideWrapInner' + ' ' + (this.state.shrink ? 'shrinkOuter' : '')}>
+        <div
+          className={
+            'sideWrapInner' + ' ' + (this.state.shrink ? 'shrinkOuter' : '')
+          }
+        >
           <div
             ref="sideBg"
             className={'sideBg' + ' ' + (this.state.shrink ? 'shrink' : '')}
           >
             <Tree
+              id='tree'
               selectedKeys={this.state.selectedId}
               ref="tree"
               onSelect={this.onSelect}

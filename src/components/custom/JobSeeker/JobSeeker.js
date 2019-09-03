@@ -10,7 +10,8 @@ import {
   Button,
   Select,
   Modal,
-  Spin
+  Spin,
+  message
 } from 'antd';
 import MoveTo from 'moveto';  //引入moveto这个库
 import http from 'Util20/api';
@@ -94,7 +95,10 @@ const formItemLayout2 = {
   }
 };
 const { RangePicker } = DatePicker;
-
+const eduResid =  620392895622;//教育背景表
+const workResid = 620475141560;//工作经验表
+const familyResid = 620478243451;//家庭主要成员表
+const trainResid = 620479827779;//专业培训表
 class JobSeeker extends Component {
   constructor(props) {
     super(props);
@@ -106,63 +110,95 @@ class JobSeeker extends Component {
       knowColleaguage: '', //是否认识菲尼萨员工
       competitionAgreement: '', //是否签署过竞争协议
        //教育背景
-      educationBackground: [
-        {
-          Eddate: 'Eddate',
-          EdSchool: 'EdSchool',
-          EdMajor: 'EdMajor',
-          EdDegree: 'EdDegree',
-          EdReference: 'EdReference',
-          EdReferenceTel: 'EdReferenceTel'
-        }
-      ],
+      educationBackground: [{}],
       //工作经历
-      workExperise: [
-        {
-          WorkDate: 'WorkDate',
-          WorkComName: 'WorkComName',
-          WorkRank: 'WorkRank',
-          ReasonForLeave: 'ReasonForLeave',
-          WorkReference: 'WorkReference',
-          WorkReferenceTel: 'WorkReferenceTel'
-        }
-      ],
+      workExperise: [{}],
       //家庭成员
-      family: [
-        {
-          FamName: 'FamName',
-          FamRelation: 'FamRelation',
-          FamBirthDate: 'FamBirthDate',
-          FamPosition: 'FamPosition',
-          FamComAndAdd: 'FamComAndAdd',
-          FamTel: 'FamTel'
-        }
-      ],
+      family: [{}],
       //培训经历
-      training: [
-        {
-          TrainingDate: 'TrainingDate',
-          TrainingInstitute: 'TrainingInstitute',
-          TrainingCourses: 'TrainingCourses',
-          TrainingQualification: 'TrainignQualification',
-          TrainingReference: 'TrainingReference',
-          TrainingReferenceTel: 'TrainingReferenceTel'
-        }
-      ]
+      training: [{}]
     };
   }
+
+  componentDidMount(){
+    // 清除缓存
+    http().clearCache();
+  }
+
+  confirmAppalyTotal = () =>{
+    this.confirmAppaly();//提交工作申请表信息
+    this.confirmEdu();//提交教育经历信息
+    this.confirmWork();//提交工作经历方法
+    this.confirmFam();// 提交家庭主要成员方法
+    this.confirmTrain();//提交专业培训方法
+  }
+
+  // 提交教育经历方法
+  confirmEdu = async () =>{
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: eduResid,
+        data: this.state.educationBackground
+      });
+      message.success(res.message);
+    } catch (error) {
+      message.error(error.message);
+    }
+  } 
+
+  // 提交工作经历方法
+  confirmWork = async () =>{
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: workResid,
+        data: this.state.workExperise
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  } 
+
+  // 提交家庭主要成员方法
+  confirmFam = async () =>{
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: familyResid,
+        data: this.state.family
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  } 
+
+  // 提交专业培训方法
+  confirmTrain = async () =>{
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: trainResid,
+        data: this.state.training
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  } 
+  
+
   // 确认提交申请
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
       console.log(values);
-      console.log(values.Eddate1[0].format('YYYY-MM-DD'));
+      // console.log(values.Eddate1[0].format('YYYY-MM-DD'));
       if (!err) {
         this.setState({ loading: true });
         // console.log(1111111);
         let res;
         try {
           res = http().addRecords({
-            resid: 613149356409,
+            resid: 613149356409,//工作申请表 业务数据 
             data: [
               {
                 ...values,
@@ -229,7 +265,7 @@ class JobSeeker extends Component {
       title: '确认要提交吗?',
       content: '请您最后再次确认一遍再提交',
       onOk: () => {
-        this.confirmAppaly();
+        this.confirmAppalyTotal();
       }
     });
   };
@@ -280,12 +316,12 @@ class JobSeeker extends Component {
     const { educationBackground } = this.state;
     const tempeducationBackground = [...educationBackground];
     const obj = {
-      Eddate: 'Eddate',
-      EdSchool: 'EdSchool',
-      EdMajor: 'EdMajor',
-      EdDegree: 'EdDegree',
-      EdReference: 'EdReference',
-      EdReferenceTel: 'EdReferenceTel'
+      EduPeriod: '',
+      Colleges: '',
+      Major: '',
+      Degree: '',
+      Reference: '',
+      Telephone: ''
     };
     tempeducationBackground.push(obj);
     this.setState({
@@ -297,12 +333,12 @@ class JobSeeker extends Component {
     const { workExperise } = this.state;
     const tempworkExperise = [...workExperise];
     const obj = {
-      WorkDate: 'WorkDate',
-      WorkComName: 'WorkComName',
-      WorkRank: 'WorkRank',
-      ReasonForLeave: 'ReasonForLeave',
-      WorkReference: 'WorkReference',
-      WorkReferenceTel: 'WorkReferenceTel'
+      workPeriod: '',
+      CompanyName: '',
+      Position: '',
+      Reason: '',
+      Reference: '',
+      Telephone: ''
     };
     tempworkExperise.push(obj);
     this.setState({
@@ -314,12 +350,12 @@ class JobSeeker extends Component {
     const { family } = this.state;
     const tempfamily = [...family];
     const obj = {
-      FamName: 'FamName',
-      FamRelation: 'FamRelation',
-      FamBirthDate: 'FamBirthDate',
-      FamPosition: 'FamPosition',
-      FamComAndAdd: 'FamComAndAdd',
-      FamTel: 'FamTel'
+      Name: '',
+      Relationship: '',
+      DateofBirth: '',
+      Position: '',
+      Company: '',
+      Telephone: ''
     };
     tempfamily.push(obj);
     this.setState({
@@ -331,12 +367,13 @@ class JobSeeker extends Component {
     const { training } = this.state;
     const temptraining = [...training];
     const obj = {
-      TrainingDate: 'TrainingDate',
-      TrainingInstitute: 'TrainingInstitute',
-      TrainingCourses: 'TrainingCourses',
-      TrainingQualification: 'TrainignQualification',
-      TrainingReference: 'TrainingReference',
-      TrainingReferenceTel: 'TrainingReferenceTel'
+      EduPeriod: '',
+      EduPeriodEnd:'',
+      TrainingName: '',
+      TrainingCourses: '',
+      Professional: '',
+      TrainingReference: '',
+      TrainingReferenceTel: ''
     };
     temptraining.push(obj);
     this.setState({
@@ -379,6 +416,146 @@ class JobSeeker extends Component {
       training: temptraining
     });
   };
+  //选择日期
+  onChangeDate = (date, dateString) => {
+    console.log(date, dateString);
+  }
+
+  //教育背景信息 选择大学
+  handelEduColleges = (index, e) =>{
+    this.state.educationBackground[index].Colleges=e.target.value;
+    this.setState({})
+  }
+
+  //教育背景信息 选择时间
+  handelDate = (index, date, dateString) =>{
+    this.state.educationBackground[index].EduPeriod=dateString[0];
+    this.state.educationBackground[index].EduPeriodEnd=dateString[1];
+    this.setState({})
+  }
+
+  //教育背景信息 选择专业
+  handelEduMajor = (index, e) =>{
+    this.state.educationBackground[index].Major=e.target.value;
+    this.setState({})
+  }
+
+  //教育背景信息 选择学位
+  handelEduDegree = (index, e) =>{
+    this.state.educationBackground[index].Degree=e.target.value;
+    this.setState({})
+  }
+
+  //教育背景信息 选择证明人
+  handelEduReference = (index, e) =>{
+    this.state.educationBackground[index].Reference=e.target.value;
+    this.setState({})
+  }
+
+  //教育背景信息 选择证明人电话
+  handelEduTelephone = (index, e) =>{
+    this.state.educationBackground[index].Telephone=e.target.value;
+    this.setState({})
+  }
+
+  //工作经历 任职年限
+  handelworkPeriod = (index, date, dateString) =>{
+    this.state.workExperise[index].workPeriod=dateString[0];
+    this.state.workExperise[index].EduPeriodEnd=dateString[1];
+    this.setState({})
+  }
+
+  //工作经历 公司名称&类型
+  handelCompanyName = (index, e) =>{
+    this.state.workExperise[index].CompanyName=e.target.value;
+    this.setState({})
+  }
+
+  //工作经历 职位
+  handelPosition = (index, e) =>{
+    this.state.workExperise[index].Position=e.target.value;
+    this.setState({})
+  }
+
+  //工作经历 离职原因
+  handelReason = (index, e) =>{
+    this.state.workExperise[index].Reason=e.target.value;
+    this.setState({})
+  }
+
+  //工作经历 证明人
+  handelReference = (index, e) =>{
+    this.state.workExperise[index].Reference=e.target.value;
+    this.setState({})
+  }
+
+  //工作经历 证明人电话
+  handelTelephone = (index, e) =>{
+    this.state.workExperise[index].Telephone=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 姓名
+  handelFamName = (index, e) =>{
+    this.state.family[index].Name=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 关系
+  handelFamRelationship = (index, e) =>{
+    this.state.family[index].Relationship=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 出生日期
+  handelFamDateofBirth = (index, e) =>{
+    this.state.family[index].DateofBirth=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 职务
+  handelFamPosition = (index, e) =>{
+    this.state.family[index].Position=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 电话
+  handelFamTelephone = (index, e) =>{
+    this.state.family[index].Telephone=e.target.value;
+    this.setState({})
+  }
+
+  //家庭成员信息 公司名称 
+  handelFamCompany = (index, e) =>{
+    this.state.family[index].Company=e.target.value;
+    this.setState({})
+  }
+
+  // 专业培训 年限
+  handelTrainPeriod = (index, e, dateString) =>{
+    this.state.training[index].Period=dateString[0];
+    this.state.training[index].PeriodEnd=dateString[1];
+    this.setState({})
+  }
+
+  // 专业培训 培训机构
+  handelTrainingName = (index, e) =>{
+    this.state.training[index].TrainingName=e.target.value;
+    this.setState({})
+  }
+
+  // 专业培训 培训课程
+  handelTrainingCourses = (index, e) =>{
+    this.state.training[index].TrainingCourses=e.target.value;
+    this.setState({})
+  }
+
+  // 专业培训 专业资格
+  handelTrainProfessional = (index, e) =>{
+    this.state.training[index].Professional=e.target.value;
+    this.setState({})
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const {
@@ -426,10 +603,10 @@ class JobSeeker extends Component {
                   ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="英文姓名/EnglishName" {...formItemLayout}>
+              <Form.Item label="英文姓名/Name in English" {...formItemLayout}>
                 {getFieldDecorator('EnName', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="申请职位名称/jobTitle" {...formItemLayout}>
+              <Form.Item label="申请职位名称/Position for Applied" {...formItemLayout}>
                 {getFieldDecorator('appPosition', {
                   // rules: [
                   //   {
@@ -439,7 +616,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="身份证号码/IDCardNumber" {...formItemLayout}>
+              <Form.Item label="身份证号码/Number of ID Card" {...formItemLayout}>
                 {getFieldDecorator('idNumber', {
                   // rules: [
                   //   {
@@ -449,7 +626,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="性别/Sex" {...formItemLayout}>
+              <Form.Item label="性别/Gender" {...formItemLayout}>
                 {getFieldDecorator('Sex', {
                   // rules: [
                   //   {
@@ -464,7 +641,7 @@ class JobSeeker extends Component {
                   </Radio.Group>
                 )}
               </Form.Item>
-              <Form.Item label="手机/Phone" {...formItemLayout}>
+              <Form.Item label="手机/MP" {...formItemLayout}>
                 {getFieldDecorator('Phone', {
                   // rules: [
                   //   {
@@ -504,7 +681,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="政治面貌/Party" {...formItemLayout}>
+              <Form.Item label="政治面貌/Party Affiliation" {...formItemLayout}>
                 {getFieldDecorator('Party', {
                   // rules: [
                   //   {
@@ -514,7 +691,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="出生日期/BirhtOfDate" {...formItemLayout}>
+              <Form.Item label="出生日期/Date Of Birth" {...formItemLayout}>
                 {getFieldDecorator('BirthOfDate', {
                   // rules: [
                   //   {
@@ -522,9 +699,11 @@ class JobSeeker extends Component {
                   //     message: '输入出生日期'
                   //   }
                   // ]
-                })(<DatePicker />)}
+                })(
+                  <DatePicker onChange={this.onChangeDate} />
+                )}
               </Form.Item>
-              <Form.Item label="出生地点/PlaceOfBirth" {...formItemLayout}>
+              <Form.Item label="出生地点/Place of Birth" {...formItemLayout}>
                 {getFieldDecorator('BirthPlace', {
                   // rules: [
                   //   {
@@ -534,7 +713,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="户口所在地/PlaceOfHuKou" {...formItemLayout}>
+              <Form.Item label="户口所在地/Place Of HuKou Registered(Province/City)" {...formItemLayout}>
                 {getFieldDecorator('PlaceOfHukou', {
                   // rules: [
                   //   {
@@ -544,7 +723,7 @@ class JobSeeker extends Component {
                   // ]
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="血型/BloodType" {...formItemLayout}>
+              <Form.Item label="血型/Blood Type" {...formItemLayout}>
                 {getFieldDecorator('BloodType', {
                   // rules: [
                   //   {
@@ -555,7 +734,7 @@ class JobSeeker extends Component {
                 })(<Input />)}
               </Form.Item>
               <Form.Item
-                label="现通讯地址/CurrentCorrespondAddress"
+                label="现通讯地址/Current Correspond Address"
                 {...formItemLayout}
               >
                 {getFieldDecorator('CurrentAddress', {
@@ -585,13 +764,13 @@ class JobSeeker extends Component {
                   </Radio.Group>
                 )}
               </Form.Item>
-              <Form.Item label="推荐人姓名/recommender" {...formItemLayout}>
+              <Form.Item label="推荐人姓名/Recommended by" {...formItemLayout}>
                 {getFieldDecorator('RecommenderName', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="和推荐人关系/relationship" {...formItemLayout}>
+              <Form.Item label="和推荐人关系/Relationship" {...formItemLayout}>
                 {getFieldDecorator('RecommenderRelation', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="婚姻状况(选填)/Marital status(Optional)" {...formItemLayout}>
+              <Form.Item label="婚姻状况(选填)/Marital Status(Optional)" {...formItemLayout}>
                 {getFieldDecorator('MaritalStatus', {})(
                   // <Radio.Group>
                   //   <Radio value="未婚">未婚</Radio>
@@ -601,7 +780,7 @@ class JobSeeker extends Component {
                   <Input></Input>
                 )}
               </Form.Item>
-              <Form.Item label="有无子女(选填)/children if any(Optional)" {...formItemLayout}>
+              <Form.Item label="有无子女(选填)/Children,of any(Optional)" {...formItemLayout}>
                 {getFieldDecorator('ChildIf', {})(
                   // <Radio.Group>
                   //   <Radio value="有">有</Radio>
@@ -614,67 +793,77 @@ class JobSeeker extends Component {
                 教育背景/(请从最近的开始写起)Education Background (Please start
                 from latest education to middle school)
               </h3>
-              {educationBackground.map((item, index) => {
-                return (
-                  <div className="job-seeker__informnation-boundry">
-                    <Form.Item
-                      label="日期/latest period from to"
-                      {...formItemLayout2}
-                    >
-                      {getFieldDecorator(`${item.Eddate}${index + 1}`, {})(
-                        <RangePicker />
-                      )}
-                    </Form.Item>
-                    <Form.Item label="学校名称/schoolName" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.EdSchool}${index + 1}`, {})(
-                        <Input />
-                      )}
-                    </Form.Item>
-                    <Form.Item label="专业名称/major" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.EdMajor}${index + 1}`, {})(
-                        <Input />
-                      )}
-                    </Form.Item>
-                    <Form.Item label="学位/degree" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.EdDegree}${index + 1}`, {})(
-                        <Input />
-                      )}
-                    </Form.Item>
-                    <Form.Item
-                      label="证明人/ReferenceName"
-                      {...formItemLayout2}
-                    >
-                      {getFieldDecorator(`${item.EdReference}${index + 1}`, {})(
-                        <Input />
-                      )}
-                    </Form.Item>
-                    <Form.Item
-                      label="证明人电话/ReferenceTel"
-                      {...formItemLayout2}
-                    >
-                      {getFieldDecorator(
-                        `${item.EdReferenceTel}${index + 1}`,
-                        {}
-                      )(<Input />)}
-                    </Form.Item>
-                    {index + 1 > 1 ? (
+              {
+                educationBackground.map((item,index) =>{
+                  return(
+                    <div className="job-seeker__informnation-boundry">
+                      <Form.Item
+                        label="年限（年/月）/Period(Year/Month)"
+                        {...formItemLayout2}
+                      >
+                        <RangePicker  onChange={this.handelDate.bind(this, index)}/>
+                      </Form.Item>
+                      <Form.Item
+                        label="学校名称/Name of School"
+                        {...formItemLayout2}
+                      >
+                        <Input 
+                          value={item.Colleges} 
+                          onChange={this.handelEduColleges.bind(this, index)}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label="专业名称/Major"
+                        {...formItemLayout2}
+                      >
+                        <Input 
+                          value={item.Major} 
+                          onChange={this.handelEduMajor.bind(this, index)}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label="学位/Degree"
+                        {...formItemLayout2}
+                      >
+                        <Input 
+                          value={item.Degree} 
+                          onChange={this.handelEduDegree.bind(this, index)}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label="证明人/Reference"
+                        {...formItemLayout2}
+                      >
+                        <Input 
+                          value={item.Reference} 
+                          onChange={this.handelEduReference.bind(this, index)}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label="证明人电话/Telephone"
+                        {...formItemLayout2}
+                      >
+                        <Input 
+                          value={item.Telephone} 
+                          onChange={this.handelEduTelephone.bind(this, index)}
+                        />
+                      </Form.Item>
                       <div className="job-seeker__informnation-boundry__delete">
-                        <Button
-                          type="primary"
-                          icon="delete"
-                          onClick={() => {
-                            this.handleDelete(item.index);
-                          }}
-                        >
-                          删除
-                        </Button>
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                );
-              })}
+                      <Button
+                        type="primary"
+                        icon="delete"
+                        onClick={() => {
+                          this.handleDelete(item.index);
+                        }}
+                      >
+                        删除
+                      </Button>
+                    </div>
+                    </div>
+                  )
+                })
+              }
+              
               <Form.Item>
                 <Button
                   type="primary"
@@ -697,46 +886,46 @@ class JobSeeker extends Component {
                       label="任职年限/post period from to "
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`${item.WorkDate}${index + 1}`, {})(
-                        <RangePicker />
-                      )}
+                      <RangePicker  onChange={this.handelworkPeriod.bind(this, index)}/>
                     </Form.Item>
                     <Form.Item
-                      label="公司名称&类型/name of Com&type"
+                      label="公司名称&类型/Name of Company & Type"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`${item.WorkComName}${index + 1}`, {})(
-                        <Input />
-                      )}
+                      <Input 
+                          value={item.CompanyName} 
+                          onChange={this.handelCompanyName.bind(this, index)}
+                        />
                     </Form.Item>
-                    <Form.Item label="职位/position" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.WorkRank}${index + 1}`, {})(
-                        <Input />
-                      )}
+                    <Form.Item label="职位/Position" {...formItemLayout2}>
+                      <Input 
+                          value={item.Position} 
+                          onChange={this.handelPosition.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item
-                      label="离职原因/Reasons for leaving"
+                      label="离职原因/Reason For Leaving"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.ReasonForLeave}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.Reason} 
+                          onChange={this.handelReason.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator(
-                        `${item.WorkReference}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.Reference} 
+                          onChange={this.handelReference.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item
-                      label="证明人电话/Reference phone"
+                      label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.WorkReferenceTel}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.Telephone} 
+                          onChange={this.handelTelephone.bind(this, index)}
+                        />
                     </Form.Item>
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
@@ -764,49 +953,54 @@ class JobSeeker extends Component {
                 </Button>
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="家庭成员关系">
-                家庭成员及主要社会关系/Family Members and Mainly Social
+                家庭成员及主要社会关系/Family Members and Mainly Social Relationship
               </h3>
               {family.map((item, index) => {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="姓名/Name" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.FamName}${index + 1}`, {})(
-                        <Input />
-                      )}
+                      <Input 
+                          value={item.Name} 
+                          onChange={this.handelFamName.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item label="关系/Relationship" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.FamRelation}${index + 1}`, {})(
-                        <Input />
-                      )}
-                    </Form.Item>
-                    <Form.Item label="职务/position" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.FamPosition}${index + 1}`, {})(
-                        <Input />
-                      )}
+                      <Input 
+                          value={item.Relationship} 
+                          onChange={this.handelFamRelationship.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item
-                      label="公司名称&地址/name of Com&Add"
+                      label="出生年月/Date of Birth"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.FamComAndAdd}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.DateofBirth} 
+                          onChange={this.handelFamDateofBirth.bind(this, index)}
+                        />
                     </Form.Item>
-                    <Form.Item label="电话/TelPhone" {...formItemLayout2}>
-                      {getFieldDecorator(`${item.FamTel}${index + 1}`, {})(
-                        <Input />
-                      )}
+                    <Form.Item label="职务/Position" {...formItemLayout2}>
+                      <Input 
+                          value={item.Position} 
+                          onChange={this.handelFamPosition.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item
-                      label="出生年月/birthOfDate"
+                      label="公司名称&地址/Name of Company&Address"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.FamBirthDate}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.Company} 
+                          onChange={this.handelFamCompany.bind(this, index)}
+                        />
                     </Form.Item>
+                    <Form.Item label="电话/Telephone" {...formItemLayout2}>
+                      <Input 
+                          value={item.Telephone} 
+                          onChange={this.handelFamTelephone.bind(this, index)}
+                        />
+                    </Form.Item>
+                    
                     {index + 1 > 1 ? (
                       <div className="job-seeker__informnation-boundry__delete">
                         <Button
@@ -843,57 +1037,40 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item
-                      label="日期/post period from to "
+                      label="日期/Date/Period "
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.TrainingDate}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <RangePicker  onChange={this.handelTrainPeriod.bind(this, index)}/>
                     </Form.Item>
                     <Form.Item
-                      label="培训机构/name of Com&type"
+                      label="培训机构/Name of Training Institute"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.TrainingInstitute}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.TrainingName} 
+                          onChange={this.handelTrainingName.bind(this, index)}
+                        />
                     </Form.Item>
 
                     <Form.Item
-                      label="培训课程/TrainingCourses"
+                      label="培训课程/Training Courses"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.TrainingCourses}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.TrainingCourses} 
+                          onChange={this.handelTrainingCourses.bind(this, index)}
+                        />
                     </Form.Item>
                     <Form.Item
-                      label="专业资格/professionalQualification"
+                      label="专业资格/Pofessional Qualification"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(
-                        `${item.TrainingQualification}${index + 1}`,
-                        {}
-                      )(<Input />)}
+                      <Input 
+                          value={item.Professional} 
+                          onChange={this.handelTrainProfessional.bind(this, index)}
+                        />
                     </Form.Item>
-                    {/* <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator(
-                        `${item.TrainingReference}${index + 1}`,
-                        {}
-                      )(<Input />)}
-                    </Form.Item>
-                    <Form.Item
-                      label="证明人电话/Reference phone"
-                      {...formItemLayout2}
-                    >
-                      {getFieldDecorator(
-                        `${item.TrainingReferenceTel}${index + 1}`,
-                        {}
-                      )(<Input />)}
-                    </Form.Item> */}
+                    
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
                         type="primary"
@@ -922,11 +1099,11 @@ class JobSeeker extends Component {
               <h3 className="job-seeker__informnation-title" id="相关技能">
                 相关技能/Related Qualification / Skill (If any)
               </h3>
-              <Form.Item label="常用外语" {...formItemLayout2}>
+              <Form.Item label="常用外语/CommonLanguage" {...formItemLayout2}>
                 {getFieldDecorator('Language', {})(<Input />)}
               </Form.Item>
               <Form.Item
-                label="外语等级"
+                label="外语等级/Level"
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
@@ -983,7 +1160,7 @@ class JobSeeker extends Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="计算机技能/ComputerSkills" {...formItemLayout2}>
+              <Form.Item label="计算机技能/Computer Skill" {...formItemLayout2}>
                 {getFieldDecorator('ComputerSkills', {})(
                   <Select>
                     {languageAbility.map((item, index) => {
@@ -996,33 +1173,49 @@ class JobSeeker extends Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="列出常用软件/list name of software used">
+              <Form.Item label="列出常用软件/List Name of Software Used">
                 {getFieldDecorator('SoftList', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="其他技能/other skills">
+              <Form.Item label="其他技能/Other Skill(If any)">
                 {getFieldDecorator('OtherSkills', {})(<Input />)}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="其他">
                 其他/other informnation
               </h3>
-              <Form.Item label="身高cm/height" {...formItemLayout2}>
+              <Form.Item label="身高CM/Height" {...formItemLayout2}>
                 {getFieldDecorator('Height', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="体重kg/weight" {...formItemLayout2}>
+              <Form.Item label="体重KG/Weight" {...formItemLayout2}>
                 {getFieldDecorator('Weight', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="视力左 右/eye sight" {...formItemLayout2}>
+              <Form.Item label="视力左/Eye Left sight" {...formItemLayout2}>
                 {getFieldDecorator('EyeSight', {})(<Input />)}
               </Form.Item>
+              <Form.Item label="视力右/Eye Right sight" {...formItemLayout2}>
+                {getFieldDecorator('EyeSight', {})(<Input />)}
+              </Form.Item>
+              
               <Form.Item
                 colon={false}
-                label="是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等"
+                label={
+                  <p style={{height:30}}>
+                    Have you ever been suffering from any severe disease? What are
+                    your current health? Are you sick for contagion, or chronic etc.
+                    term?<br/>是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等
+                  </p>
+                }
               >
                 {getFieldDecorator('DiseaseStatus', {})(<TextArea />)}
               </Form.Item>
               <Form.Item
                 colon={false}
-                label="是否有犯罪记录,如有请作详细的说明"
+                label=
+                {
+                  <p style={{height:30}}>
+                    Do you have criminal history or discredit history? If yes,
+                please give the details.<br/>是否有犯罪记录,如有请作详细的说明
+                  </p>
+                }
               >
                 {getFieldDecorator('CriminalStatus', {})(
                   <div>
@@ -1058,10 +1251,13 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label="Do you have any unemployed period of more than 4 months? If
-                yes, please give the details.
-                
-                是否有过4个月以上的失业经历？如有，请详细说明。"
+                label=
+                {
+                  <p style={{height:30}}>
+                    Do you have any unemployed period of more than 4 months? If
+                yes, please give the details..<br/>是否有过4个月以上的失业经历？如有，请详细说明。
+                  </p>
+                }
               >
                 {getFieldDecorator('UnemployedStatus', {})(
                   <div>
@@ -1079,9 +1275,13 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label="Do you know any employee of Finisar Shanghai Inc.? If yes,
-                please give his/her name and relationship./
-                是否认识本公司的员工？如是，请详细指出姓名及与其关系。"
+                label=
+                {
+                  <p style={{height:30}}>
+                    Do you know any employee of Finisar Shanghai Inc.? If yes,
+                please give his/her name and relationship.<br/>是否认识本公司的员工？如是，请详细指出姓名及与其关系。
+                  </p>
+                }
               >
                 {getFieldDecorator('KnowColleageStatus', {})(
                   <div>
@@ -1099,9 +1299,13 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label="Do you have any unexpired contract or service agreement with
-                   your present employer? 
-                   与现任雇主的合同或服务协议是否到期？"
+                label=
+                   {
+                    <p style={{height:30}}>
+                      Do you have any unexpired contract or service agreement with
+                   your present employer? <br/>与现任雇主的合同或服务协议是否到期？
+                    </p>
+                  }
               >
                 {getFieldDecorator('OtherAgreement', {})(
                   <div>

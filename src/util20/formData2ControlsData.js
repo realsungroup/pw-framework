@@ -340,12 +340,11 @@ export const getDataProp = (
   rulesControl = true
 ) => {
   let data = [];
-  const { canOpControlArr } = formData;
-
+  const { canOpControlArr, containerControlArr } = formData;
   // 默认布局
   if (!isClassifyLayout) {
     data = getData(canOpControlArr, rulesControl);
-
+    data.push(containerControlArr);
     // 分类布局
   } else {
     const klasses = assortFields(canOpControlArr);
