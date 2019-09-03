@@ -256,7 +256,7 @@ class IdLindex extends Component {
         );
       case '背景调查表':
         return (
-          <div>
+          <div style = {{width:"100%",height:"100%"}}>
             <TableData
             {...referenceCheck}
               key={613152614705}

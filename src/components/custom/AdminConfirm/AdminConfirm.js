@@ -10,7 +10,7 @@ const { TextArea } = Input;
 class AdminConfirm extends React.Component {
   state = {
     loading: false,
-    deleteReason: null,
+    deleteReason: '',
     sendBackReason: null
   };
 
@@ -53,6 +53,9 @@ class AdminConfirm extends React.Component {
     let res;
     record.C3_591556634215 = 'Y';
     record.C3_617205061601 = this.state.deleteReason;
+    if(!this.state.deleteReason){
+      return message.error("请填写删除原因！")
+    }
     try {
       res = await http().modifyRecords({
         resid: 605617716920,
@@ -68,6 +71,7 @@ class AdminConfirm extends React.Component {
     this.setState({
       deleteReason: null
     });
+    this.tableDataRef.handleRefresh();
   };
   handleDownMaterial = url => {
     if (!url) {
