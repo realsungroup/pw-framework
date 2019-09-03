@@ -5,6 +5,7 @@ import PastInterviewList from './PastInterviewList';
 import RecruitJob from './RecruitJob';
 import ReportPeople from './ReportPeople';
 import UploadMedical from './UploadMedical';
+import LaborCorSelect from './LaborCorSelect';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './DLEmploy.less';
 import http from 'Util20/api';
@@ -49,6 +50,8 @@ class DLEmploy extends React.Component {
         return <UploadMedical></UploadMedical>;
       case '6':
         return <ReportPeople></ReportPeople>;
+        case '7':
+        return <LaborCorSelect></LaborCorSelect>;
       default:
         return '';
     }
@@ -120,6 +123,10 @@ class DLEmploy extends React.Component {
             <Menu.Item key="6">
               <Icon type="calendar" />
               <span> 报道人员</span>
+            </Menu.Item>
+            <Menu.Item key="7">
+              <Icon type="calendar" />
+              <span> 劳务公司分配</span>
             </Menu.Item>
           </Menu>
         </div>

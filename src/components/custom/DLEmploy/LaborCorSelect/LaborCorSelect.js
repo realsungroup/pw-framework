@@ -1,27 +1,24 @@
 import React from 'react';
-import './JobPeopleList.less';
+import './LaborCorSelect.less';
 import TableData from '../../../common/data/TableData';
 import {Card,Button,Select} from 'antd';
 
 
 const { Option } = Select;
 // const { RangePicker } = DatePicker;
-class JobPeopleList extends React.Component {
+class LaborCorSelect extends React.Component {
   constructor(props) {
     super(props);
   }
   state = {
-    SquareCardArr: [],
-    val: null,
-    selectedRecentPeriod: 'all', //下拉选项的值
-    searchPeriod: ['', ''], //搜索时间段
+    
   };
     
   render() {
     return (
       <TableData
         baseURL = 'http://kingofdinner.realsun.me:1201/'
-        resid={618666208275}
+        resid={620816140260}
         subtractH={220}
         hasBeBtns={false}
         hasRowSelection={false}
@@ -38,4 +35,4 @@ class JobPeopleList extends React.Component {
   }
 }
 
-export default JobPeopleList;
+export default LaborCorSelect;
