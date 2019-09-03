@@ -1284,7 +1284,13 @@ class EmployeeCourses extends React.Component {
               </h2>
               <Divider />
               {/* 内容 */}
-              <pre>{this.state.selcetedTip.C3_614964225030}</pre>
+              {this.state.selcetedTip.Filepath ? (
+                <a href={this.state.selcetedTip.Filepath} target="_blank">
+                  附件:{this.state.selcetedTip.Filepath}
+                </a>
+              ) : (
+                <p>无附件</p>
+              )}
             </div>
           )}
         </Modal>

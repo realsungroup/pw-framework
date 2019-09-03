@@ -587,7 +587,9 @@ class FeedBackAndPlan extends Component {
             <Row>
               <Col span={2}>序号</Col>
               <Col span={8}>
-                <Tooltip title="这是行动描述">具体行动</Tooltip>
+                <Tooltip title="运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。">
+                  具体行为
+                </Tooltip>
               </Col>
               <Col span={4}>开始时间</Col>
               <Col span={4}>结束时间</Col>
