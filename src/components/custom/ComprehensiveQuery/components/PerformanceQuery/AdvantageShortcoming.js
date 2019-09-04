@@ -14,7 +14,6 @@ class AdvantageShortcoming extends React.Component {
     let resid = '462400643808';
     let formName = '员工自评查看';
     if (type === '年末') {
-      // resid = '462583603607';
       formName = '员工年末自评查看';
     }
     this.state = {
@@ -40,11 +39,11 @@ class AdvantageShortcoming extends React.Component {
     if (
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
     ) {
-      await this.getYearsTarget(this.props.person.C3_305737857578);
-      await this.getAdvantageShortcoming(
-        this.state.resid,
-        this.props.person.C3_305737857578
-      );
+      // await this.getYearsTarget(this.props.person.C3_305737857578);
+      // await this.getAdvantageShortcoming(
+      //   this.state.resid,
+      //   this.props.person.C3_305737857578
+      // );
       await this.getFormData(this.state.advantageShortcoming);
     }
   }
@@ -58,6 +57,7 @@ class AdvantageShortcoming extends React.Component {
       });
       const formData = dealControlArr(res.data.columns);
       const dataProp = getDataProp(formData, record, true, false, false);
+      // console.log(formData, dataProp);
       this.setState({ dataProp });
     } catch (err) {
       console.log(err);

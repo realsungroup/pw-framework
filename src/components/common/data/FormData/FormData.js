@@ -344,21 +344,16 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     const { resid } = info;
-    let containerData,
-      filterData = [];
-    if (data.length) {
-      containerData = data[data.length - 1][0];
-      filterData = data.filter(item => item.controlData);
-    }
-    return !useAbsolute ? (
+    let { containerControlArr, labelControllArr } = data;
+    return useAbsolute ? (
       <div className="form-data">
-        {!!filterData.length && (
+        {!!data.length && (
           <div
             style={{ width: hasSubTables ? width.formWidth : '100%' }}
             className="form-data__form-wrap"
           >
             <PwForm
-              data={filterData}
+              data={data}
               {...formProps}
               mode={mode}
               {...otherProps}
@@ -377,31 +372,49 @@ class FormData extends React.Component {
     ) : (
       <div
         style={{
-          height: containerData && containerData.FrmHeight,
-          width: containerData && containerData.FrmWidth,
+          height: containerControlArr && containerControlArr[0].FrmHeight,
+          width: containerControlArr && containerControlArr[0].FrmWidth,
           position: 'relative'
         }}
       >
-        {filterData.map(item => {
-          console.log(item.controlData);
-          const { customStyle } = item.controlData;
-          return (
-            <div
-              className="form-data_item"
-              style={{
-                position: 'absolute',
-                top: customStyle.top,
-                left: customStyle.left,
-                width: customStyle.width,
-                height: customStyle.height,
-                overflow: 'auto'
-              }}
-            >
-              <label style={{ fontWeight: 600 }}>{item.label}: </label>
-              <span>{item.initialValue}</span>
-            </div>
-          );
-        })}
+        {!!labelControllArr &&
+          labelControllArr.map(item => {
+            const { customStyle } = item;
+            return (
+              <label
+                style={{
+                  fontWeight: 600,
+                  position: 'absolute',
+                  top: customStyle.top,
+                  left: customStyle.left,
+                  width: customStyle.width,
+                  height: customStyle.height,
+                  overflow: 'auto'
+                }}
+              >
+                {`${item.FrmText}:`}
+              </label>
+            );
+          })}
+        {!!data.length &&
+          data.map(item => {
+            const { customStyle } = item.controlData;
+            console.log(item.label, item.initialValue);
+            return (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: customStyle.top,
+                  left: customStyle.left,
+                  width: customStyle.width,
+                  height: customStyle.height,
+                  overflow: 'auto'
+                }}
+              >
+                {item.initialValue}
+              </div>
+            );
+          })}
         {hasSubTables && this.renderSubTablesAbsolute()}
       </div>
     );

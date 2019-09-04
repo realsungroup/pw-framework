@@ -6,24 +6,25 @@ class ViewTarget extends React.Component {
     return (
       <div id="view-target">
         {this.props.children}
-        <TableData
-          key="view-target"
-          resid="462622744495"
-          subtractH={240}
-          hasAdvSearch={false}
-          hasAdd={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasRowEdit={false}
-          hasDelete={false}
-          hasModify={false}
-          hasRowModify={false}
-          hasRowSelection={true}
-          actionBarWidth={100}
-          dblinkname="ehr"
-          height={'cacl(100% - 48px)'}
-          cparm1={this.props.selectYear.key}
-        />
+        <div className="table-data-wrapper">
+          <TableData
+            key="view-target"
+            resid="462622744495"
+            subtractH={200}
+            hasAdvSearch={false}
+            hasAdd={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            hasRowModify={false}
+            hasRowSelection={true}
+            actionBarWidth={100}
+            dblinkname="ehr"
+            cparm1={this.props.selectYear.key}
+          />
+        </div>
       </div>
     );
   }
