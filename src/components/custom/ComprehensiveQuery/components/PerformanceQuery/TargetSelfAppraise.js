@@ -13,23 +13,25 @@ class TargetSelfAppraise extends React.Component {
     return (
       <div id="target-self-appraise">
         {this.props.children}
-        <TableData
-          key={key}
-          resid={resid}
-          subtractH={240}
-          hasAdvSearch={false}
-          hasAdd={false}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasRowEdit={false}
-          hasDelete={false}
-          hasModify={false}
-          hasRowModify={false}
-          hasRowSelection={true}
-          actionBarWidth={100}
-          dblinkname="ehr"
-          cparm1={this.props.selectYear.key}
-        />
+        <div className="table-data-wrapper">
+          <TableData
+            key={key}
+            resid={resid}
+            subtractH={200}
+            hasAdvSearch={false}
+            hasAdd={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            hasRowModify={false}
+            hasRowSelection={true}
+            actionBarWidth={100}
+            dblinkname="ehr"
+            cparm1={this.props.selectYear.key}
+          />
+        </div>
       </div>
     );
   }

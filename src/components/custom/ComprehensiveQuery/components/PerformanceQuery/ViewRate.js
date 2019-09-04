@@ -1,29 +1,12 @@
 import React from 'react';
 import TableData from '../../../../common/data/TableData';
-import { Select } from 'antd';
 
-const { Option } = Select;
 class ViewRate extends React.Component {
-  actionBarExtra = record => {
-    return (
-      <div className="hr-probation_table-action-bar-extra">
-        <div className="hr-probation_table-action-bar-extra_buttons">
-          <Select
-            style={{ width: 120 }}
-            placeholder="提醒"
-            onSelect={selectValue => {}}
-          >
-            <Option value="员工填写">员工填写</Option>
-          </Select>
-        </div>
-      </div>
-    );
-  };
   render() {
     return (
-      <div id="target-history">
+      <div id="ViewRate">
         <TableData
-          key="1"
+          key="ViewRate"
           resid="619609481002"
           subtractH={240}
           hasAdvSearch={false}
@@ -36,7 +19,6 @@ class ViewRate extends React.Component {
           hasRowModify={false}
           hasRowSelection={true}
           actionBarWidth={100}
-          actionBarExtra={this.actionBarExtra}
         />
       </div>
     );

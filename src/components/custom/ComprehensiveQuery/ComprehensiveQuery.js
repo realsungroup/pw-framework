@@ -5,7 +5,6 @@ import './ComprehensiveQuery.less';
 import PerformanceQuery from './components/PerformanceQuery';
 import ViewRate from './components/ViewRate';
 import { getItem } from 'Util20/util';
-import http from 'Util20/api';
 import PersonnelQuery from './components/PersonnelQuery';
 import Attendance from './components/Attendance';
 

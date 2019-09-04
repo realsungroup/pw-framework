@@ -125,8 +125,7 @@ class PerformanceQuery extends React.Component {
       middleOfYearSelectItem,
       endOfYearSelectItem,
       directlySelectItem,
-      selectYear,
-      years
+      selectYear
     } = this.state;
     const { person } = this.props;
     return (
@@ -231,11 +230,8 @@ class PerformanceQuery extends React.Component {
                 {middleOfYearSelectItem === 'advantageShortcoming' && (
                   <AdvantageShortcoming
                     person={person}
-                    selectYear={selectYear}
                     type="年中"
-                  >
-                    {this.renderSelect()}
-                  </AdvantageShortcoming>
+                  ></AdvantageShortcoming>
                 )}
               </div>
             </div>
@@ -274,11 +270,8 @@ class PerformanceQuery extends React.Component {
                 {endOfYearSelectItem === 'advantageShortcoming' && (
                   <AdvantageShortcoming
                     person={person}
-                    selectYear={selectYear}
                     type="年末"
-                  >
-                    {this.renderSelect()}
-                  </AdvantageShortcoming>
+                  ></AdvantageShortcoming>
                 )}
               </div>
             </div>

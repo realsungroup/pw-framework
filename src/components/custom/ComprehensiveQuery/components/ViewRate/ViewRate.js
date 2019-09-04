@@ -33,9 +33,6 @@ class ViewRate extends React.Component {
         dblinkname: 'ehr'
       });
       if (res.data.length) {
-        let years = res.data.map(year => {
-          //  return {key:}
-        });
         this.setState({
           years: res.data,
           selectYear: {
@@ -75,7 +72,6 @@ class ViewRate extends React.Component {
   };
   render() {
     const id = this.props.person.C3_305737857578;
-    console.log(this.props.person);
     return (
       <div id="view-rate-query">
         {this.renderSelect()}

@@ -403,6 +403,7 @@ export default function dealControlArr(controlArr) {
     subTableArr, // 子表控件
     allControlArr, // 所有控件
     canOpControlArr, // 可操作的控件（如 input）
-    containerControlArr // 容器控件
+    containerControlArr, // 容器控件
+    labelControllArr
   };
 }
