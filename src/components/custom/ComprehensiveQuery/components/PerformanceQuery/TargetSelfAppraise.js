@@ -16,7 +16,7 @@ class TargetSelfAppraise extends React.Component {
         <TableData
           key={key}
           resid={resid}
-          subtractH={240}
+          subtractH={220}
           hasAdvSearch={false}
           hasAdd={false}
           hasRowView={false}
@@ -28,6 +28,7 @@ class TargetSelfAppraise extends React.Component {
           hasRowSelection={true}
           actionBarWidth={100}
           dblinkname="ehr"
+          height={'cacl(100% - 48px)'}
           cparm1={this.props.selectYear.key}
         />
       </div>

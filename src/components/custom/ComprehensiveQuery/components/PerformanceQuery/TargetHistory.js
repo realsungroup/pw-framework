@@ -3,14 +3,13 @@ import TableData from '../../../../common/data/TableData';
 
 class TargetHistory extends React.Component {
   render() {
-    const { selectYear } = this.props;
     return (
-      <div id="target-history">
+      <div id="target-target">
         {this.props.children}
         <TableData
-          key="1"
+          key="target-targe"
           resid="462586715318"
-          subtractH={240}
+          subtractH={220}
           hasAdvSearch={false}
           hasAdd={false}
           hasRowView={false}
@@ -22,7 +21,7 @@ class TargetHistory extends React.Component {
           hasRowSelection={true}
           actionBarWidth={100}
           dblinkname="ehr"
-          cparm1={selectYear.key}
+          cparm1={this.props.selectYear.key}
         />
       </div>
     );

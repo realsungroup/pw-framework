@@ -4,9 +4,10 @@ import TableData from '../../../../common/data/TableData';
 class ViewTarget extends React.Component {
   render() {
     return (
-      <div id="target-history">
+      <div id="view-target">
+        {this.props.children}
         <TableData
-          key="1"
+          key="view-target"
           resid="462622744495"
           subtractH={240}
           hasAdvSearch={false}
@@ -20,6 +21,7 @@ class ViewTarget extends React.Component {
           hasRowSelection={true}
           actionBarWidth={100}
           dblinkname="ehr"
+          height={'cacl(100% - 48px)'}
           cparm1={this.props.selectYear.key}
         />
       </div>

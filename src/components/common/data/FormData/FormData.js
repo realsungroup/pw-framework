@@ -377,23 +377,27 @@ class FormData extends React.Component {
     ) : (
       <div
         style={{
-          height: containerData.FrmHeight,
-          width: containerData.FrmWidth,
+          height: containerData && containerData.FrmHeight,
+          width: containerData && containerData.FrmWidth,
           position: 'relative'
         }}
       >
         {filterData.map(item => {
+          console.log(item.controlData);
+          const { customStyle } = item.controlData;
           return (
             <div
               className="form-data_item"
               style={{
                 position: 'absolute',
-                top: item.controlData.FrmTop,
-                left: item.controlData.FrmLeft,
-                width: item.controlData.FormWidth
+                top: customStyle.top,
+                left: customStyle.left,
+                width: customStyle.width,
+                height: customStyle.height,
+                overflow: 'auto'
               }}
             >
-              <label>{item.label}:</label>
+              <label style={{ fontWeight: 600 }}>{item.label}: </label>
               <span>{item.initialValue}</span>
             </div>
           );
