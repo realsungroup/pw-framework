@@ -80,7 +80,8 @@ class ArrangingCourses extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: courseArrangmentResid
+        resid: courseArrangmentResid,
+        cmswhere: "organization = '外训'"
       });
     } catch (error) {
       message.error(error.message);
@@ -275,10 +276,10 @@ class ArrangingCourses extends React.Component {
     let { courseArrangment, selectedCourseArrangment, mode } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
-      <div style={{ flex: 1, display: 'flex' }}>
-        <div className="arranging_courses">
-          <header className="arranging_courses-header">
-            <div className="arranging_courses-header_Mode">
+      <div className="external-training">
+        <div className="external-training_arranging_courses">
+          <header className="external-training_arranging_courses-header">
+            <div className="external-training_arranging_courses-header_Mode">
               <Button
                 onClick={() => {
                   this.setState({ isShowAddCourseArrangment: true });
@@ -302,7 +303,7 @@ class ArrangingCourses extends React.Component {
                     this.setState({ mode: 'card' });
                   }}
                 />
-                <Icon
+                {/* <Icon
                   type="table"
                   style={mode === 'table' ? activeStyle : unactiveStyle}
                   key="card"
@@ -311,7 +312,7 @@ class ArrangingCourses extends React.Component {
                   onClick={() => {
                     this.setState({ mode: 'table' });
                   }}
-                />
+                /> */}
                 <Icon
                   key="calendar"
                   type="calendar"
@@ -324,7 +325,7 @@ class ArrangingCourses extends React.Component {
                 />
               </span>
             </div>
-            <div className="arranging_courses-header_search">
+            <div className="external-training_arranging_courses-header_search">
               <Select
                 defaultValue="all"
                 value={this.state.selectedRecentPeriod}
@@ -364,7 +365,7 @@ class ArrangingCourses extends React.Component {
             </div>
           </header>
           {this.state.mode === 'card' && (
-            <div className="arranging_courses-course_list">
+            <div className="external-training_arranging_courses-course_list">
               {courseArrangment.length ? (
                 courseArrangment.map(item => (
                   <Card
@@ -428,10 +429,13 @@ class ArrangingCourses extends React.Component {
                       <div className="content_item">主讲:{item.Teacher}</div>
                       <div className="content_item">人数:{item.Attendees}</div>
                       <div className="content_item">
-                        地点:{item.CourseLocation}
+                        开始时间：{item.StartDatetime}
                       </div>
                       <div className="content_item">
-                        时间：{item.StartDatetime}
+                        结束时间：{item.EndDatetime}
+                      </div>
+                      <div className="content_item">
+                        地点:{item.CourseLocation}
                       </div>
                       <div className="content_item">
                         实际费用:{`${item.actualCost}元`}
@@ -486,10 +490,14 @@ class ArrangingCourses extends React.Component {
                     StartDatetime: values.modifyStartDatetime.format(
                       'YYYY-MM-DD HH:mm:ss'
                     ),
+                    EndDatetime: values.modifyEndDatetime.format(
+                      'YYYY-MM-DD HH:mm:ss'
+                    ),
                     CourseLocation: values.modifyCourseLocation,
                     classType: values.classType,
                     actualCost: parseFloat(values.actualCost),
-                    quarter: values.quarter
+                    quarter: values.quarter,
+                    Teacher: values.modifyTeacher
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -545,13 +553,13 @@ class ArrangingCourses extends React.Component {
                 )}
               </Form.Item>
 
-              <Form.Item label="时间">
+              <Form.Item label="开始时间">
                 {getFieldDecorator('modifyStartDatetime', {
                   rules: [
                     {
                       type: 'object',
                       required: true,
-                      message: '请选择上课时间!'
+                      message: '请选择课程开始时间!'
                     }
                   ],
                   initialValue: this.state.selectedCourseArrangment
@@ -559,6 +567,32 @@ class ArrangingCourses extends React.Component {
                     ? moment(this.state.selectedCourseArrangment.StartDatetime)
                     : null
                 })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
+              <Form.Item label="结束时间">
+                {getFieldDecorator('modifyEndDatetime', {
+                  rules: [
+                    {
+                      type: 'object',
+                      required: true,
+                      message: '请选择课程结束时间!'
+                    }
+                  ],
+                  initialValue: this.state.selectedCourseArrangment.EndDatetime
+                    ? moment(this.state.selectedCourseArrangment.EndDatetime)
+                    : null
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
+
+              <Form.Item label="讲师">
+                {getFieldDecorator('modifyTeacher', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入讲师姓名!'
+                    }
+                  ],
+                  initialValue: this.state.selectedCourseArrangment.Teacher
+                })(<Input />)}
               </Form.Item>
 
               <Form.Item label="地点">
@@ -816,16 +850,39 @@ class ArrangingCourses extends React.Component {
                 )}
               </Form.Item>
 
-              <Form.Item label="时间">
+              <Form.Item label="开始时间">
                 {getFieldDecorator('StartDatetime', {
                   rules: [
                     {
                       type: 'object',
                       required: true,
-                      message: '请选择上课时间!'
+                      message: '请选择课程开始时间!'
                     }
                   ]
                 })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
+
+              <Form.Item label="结束时间">
+                {getFieldDecorator('EndDatetime', {
+                  rules: [
+                    {
+                      type: 'object',
+                      required: true,
+                      message: '请选择课程结束时间!'
+                    }
+                  ]
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
+              </Form.Item>
+
+              <Form.Item label="讲师">
+                {getFieldDecorator('Teacher', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '讲师'
+                    }
+                  ]
+                })(<Input />)}
               </Form.Item>
 
               <Form.Item label="地点">

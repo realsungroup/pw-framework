@@ -26,7 +26,7 @@ const { Option } = Select;
 const courseArrangmentResid = '615549231946'; //课程安排表id
 const courseDetailId = '615054661547';
 const InternalCoursesResid = '616155060405';
-const courseTypeResid = '617189815964'   //安排类型表id
+const courseTypeResid = '617189815964'; //安排类型表id
 
 const datetimeFormatString = 'YYYY-MM-DD HH:mm';
 const dateFormatString = 'YYYY-MM-DD';
@@ -69,7 +69,7 @@ class CourseArrangementInternal extends React.Component {
     isSelectedCourse: false, //是否已经选择了课程
     selectedCourse: {}, // 选中的课程
     searchCourseKey: '', //搜索课程是的关键字
-    courseTypes:[],  //内训课程类型
+    courseTypes: [], //内训课程类型
     //添加时输入的课程安排数据
     inputCourseArrangement: {
       teacher: '',
@@ -152,21 +152,21 @@ class CourseArrangementInternal extends React.Component {
       return console.log(error);
     }
   };
-  getCourseType = async() => {
+  getCourseType = async () => {
     let res;
-    try{
+    try {
       res = await http().getTable({
-        resid:courseTypeResid
-      })
+        resid: courseTypeResid
+      });
       this.setState({
-        courseTypes:res.data
-      })
-      console.log("res",res)
-    }catch(err){
-      message.error(err.message)
-      return ;
+        courseTypes: res.data
+      });
+      console.log('res', res);
+    } catch (err) {
+      message.error(err.message);
+      return;
     }
-  }
+  };
   //搜索内训课程
 
   searchInternalCourses = async () => {
@@ -201,8 +201,7 @@ class CourseArrangementInternal extends React.Component {
             classType: '内训',
             places: courseArrangement.places,
             Teacher: courseArrangement.teacher,
-            quarter: courseArrangement.quarter,
-
+            quarter: courseArrangement.quarter
           }
         ]
       });
@@ -214,7 +213,7 @@ class CourseArrangementInternal extends React.Component {
         selectedCourse: {},
         inputCourseArrangement: {
           teacher: '',
-          quarter:'',
+          quarter: '',
           startDate: '',
           endDate: '',
           courseType: '普通内训课',
@@ -346,7 +345,7 @@ class CourseArrangementInternal extends React.Component {
                     this.setState({ mode: 'card' });
                   }}
                 />
-                <Icon
+                {/* <Icon
                   type="table"
                   style={mode === 'table' ? activeStyle : unactiveStyle}
                   key="card"
@@ -354,7 +353,7 @@ class CourseArrangementInternal extends React.Component {
                   onClick={() => {
                     this.setState({ mode: 'table' });
                   }}
-                />
+                /> */}
                 <Icon
                   key="calendar"
                   type="calendar"
@@ -412,54 +411,88 @@ class CourseArrangementInternal extends React.Component {
                     className="arranging_courses_item"
                     key={item.REC_ID}
                     hoverable
-                    actions={[
-                      <span
-                        onClick={() =>
-                          this.setState({
-                            isShowModifyModal: true,
-                            selectedCourseArrangement: item,
-                            modifiedCourseArrangement: item
-                          })
-                        }
-                      >
-                        <Icon type="edit" />
-                        修改
-                      </span>,
-                      <Popconfirm
-                        title="确认删除？"
-                        onConfirm={this.deleteCourseArrangment.bind(this, item)}
-                        icon={
-                          <Icon
-                            type="question-circle-o"
-                            style={{ color: 'red' }}
-                          />
-                        }
-                      >
-                        <span style={{ color: '#fc4f54' }} type="danger">
-                          <Icon type="delete" />
-                          删除
-                        </span>
-                      </Popconfirm>,
-                      <span
-                        onClick={() => {
-                          this.props.onHandleSelectCourseArrangement(item);
-                          this.props.onHandleCurrent(1);
-                        }}
-                      >
-                        <Icon type="team" />
-                        学员审核
-                      </span>
-                    ]}
+                    actions={
+                      item.innerArrangeType === '2'
+                        ? [
+                            <span
+                              onClick={() =>
+                                this.setState({
+                                  isShowModifyModal: true,
+                                  selectedCourseArrangement: item,
+                                  modifiedCourseArrangement: item
+                                })
+                              }
+                            >
+                              <Icon type="edit" />
+                              修改
+                            </span>,
+                            <Popconfirm
+                              title="确认删除？"
+                              onConfirm={this.deleteCourseArrangment.bind(
+                                this,
+                                item
+                              )}
+                              icon={
+                                <Icon
+                                  type="question-circle-o"
+                                  style={{ color: 'red' }}
+                                />
+                              }
+                            >
+                              <span style={{ color: '#fc4f54' }} type="danger">
+                                <Icon type="delete" />
+                                删除
+                              </span>
+                            </Popconfirm>,
+                            <span
+                              onClick={() => {
+                                this.props.onHandleSelectCourseArrangement(
+                                  item
+                                );
+                                this.props.onHandleCurrent(2);
+                              }}
+                            >
+                              <Icon type="team" />
+                              学员审核
+                            </span>
+                          ]
+                        : [
+                            <span
+                              onClick={() =>
+                                this.setState({
+                                  isShowModifyModal: true,
+                                  selectedCourseArrangement: item,
+                                  modifiedCourseArrangement: item
+                                })
+                              }
+                            >
+                              <Icon type="edit" />
+                              修改
+                            </span>,
+                            <Popconfirm
+                              title="确认删除？"
+                              onConfirm={this.deleteCourseArrangment.bind(
+                                this,
+                                item
+                              )}
+                              icon={
+                                <Icon
+                                  type="question-circle-o"
+                                  style={{ color: 'red' }}
+                                />
+                              }
+                            >
+                              <span style={{ color: '#fc4f54' }} type="danger">
+                                <Icon type="delete" />
+                                删除
+                              </span>
+                            </Popconfirm>
+                          ]
+                    }
                   >
                     <div className="arranging_courses_item_content">
                       <div className="content_item">主讲:{item.Teacher}</div>
                       <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      {/* <div className="content_item">
-                        预计时间：{item.CoursePlanDate}
-                      </div> */}
                       <div className="content_item">
                         开课时间：{item.StartDatetime}
                       </div>
@@ -467,8 +500,9 @@ class CourseArrangementInternal extends React.Component {
                         结束时间：{item.EndDatetime}
                       </div>
                       <div className="content_item">
-                        季度：{item.quarter}
+                        地点:{item.CourseLocation}
                       </div>
+                      <div className="content_item">季度：{item.quarter}</div>
                     </div>
                   </Card>
                 ))
@@ -481,7 +515,7 @@ class CourseArrangementInternal extends React.Component {
             </div>
           )}
           {this.state.mode === 'table' && (
-            <div style={{ width: '100%',flex:1 }}>
+            <div style={{ width: '100%', flex: 1 }}>
               <TableData
                 resid="616073391736"
                 subtractH={220}
@@ -674,13 +708,13 @@ class CourseArrangementInternal extends React.Component {
                   }}
                   value={modifiedCourseArrangement.C3_616254048241}
                 >
-                  {this.state.courseTypes.map((type) => {
+                  {this.state.courseTypes.map(type => {
                     return (
-                      <Option value={type.arrangeType}>{type.arrangeType}</Option>
-
-                    )
-                  })
-                }
+                      <Option value={type.arrangeType}>
+                        {type.arrangeType}
+                      </Option>
+                    );
+                  })}
                 </Select>
               </Form.Item>
             </Form>
@@ -806,14 +840,13 @@ class CourseArrangementInternal extends React.Component {
                         });
                       }}
                     >
-                      {this.state.courseTypes.map((type) => {
-                    return (
-                      <Option value={type.arrangeType}>{type.arrangeType}</Option>
-
-                    )
-                  })
-                }
-                     
+                      {this.state.courseTypes.map(type => {
+                        return (
+                          <Option value={type.arrangeType}>
+                            {type.arrangeType}
+                          </Option>
+                        );
+                      })}
                     </Select>
                   </div>
                   <div className="add_arrangement_input_item">
@@ -823,11 +856,12 @@ class CourseArrangementInternal extends React.Component {
                     <Input
                       placeholder="请输入名额"
                       value={inputCourseArrangement.places}
+                      type="number"
                       onChange={e => {
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
-                            places: parseFloat(e.target.value)
+                            places: e.target.value
                           }
                         });
                       }}
@@ -894,20 +928,6 @@ class CourseArrangementInternal extends React.Component {
                 dataSource={internalCourses}
                 header={
                   <header style={{ display: 'flex' }}>
-                    <Select defaultValue="all">
-                      <Option key="all" value="all">
-                        培训类型
-                      </Option>
-                      <Option key="外训" value="外训">
-                        外训
-                      </Option>
-                      <Option key="内训" value="内训">
-                        内训
-                      </Option>
-                      <Option key="外聘内训" value="外聘内训">
-                        外聘内训
-                      </Option>
-                    </Select>
                     <Input.Search
                       style={{ width: 250, marginLeft: 12 }}
                       placeholder="输入课程关键字搜索"

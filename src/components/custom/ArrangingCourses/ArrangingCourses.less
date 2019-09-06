@@ -1,4 +1,6 @@
-.arranging_courses{
+.external-training {
+  height: calc(100vh - 62px);
+  &_arranging_courses {
     background-color: white;
     padding: 5px 24px;
     display: flex;
@@ -7,34 +9,35 @@
     max-width: 100%;
     flex: 1;
     flex-direction: column;
-    &-header{
-        padding: 5px;
-        flex-grow: 0;
+    &-header {
+      padding: 5px;
+      flex-grow: 0;
+      display: flex;
+      justify-content: space-between;
+      &_Mode {
         display: flex;
-        justify-content: space-between;
-        &_Mode{
-            display: flex;
-            margin-right: 24px;
-            align-items: center;
-        }
+        margin-right: 24px;
+        align-items: center;
+      }
     }
-    &-course_list{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        overflow: scroll;
-        flex-grow: 1;
-        align-items: flex-start;
-        .arranging_courses_item{
-            flex-basis: 49%;
-            margin-bottom: 12px;
-            .arranging_courses_item_content{
-                display: flex;
-                flex-wrap: wrap;
-                .content_item{
-                    flex-basis: 50%;
-                }
-            }
+    &-course_list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      overflow: scroll;
+      flex-grow: 1;
+      align-items: flex-start;
+      .arranging_courses_item {
+        flex-basis: 49%;
+        margin-bottom: 12px;
+        .arranging_courses_item_content {
+          display: flex;
+          flex-wrap: wrap;
+          .content_item {
+            flex-basis: 50%;
+          }
         }
+      }
     }
+  }
 }

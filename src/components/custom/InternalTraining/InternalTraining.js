@@ -21,12 +21,12 @@ class InternalTraining extends Component {
   handleCurrent = current => this.setState({ current });
 
   handleConfirmList = () => {
-    console.log("onConfirmListonConfirmList")
+    console.log('onConfirmListonConfirmList');
     this.setState({
       selectedCourseArrangement: {
         ...this.state.selectedCourseArrangement,
-        isStopApply: 'Y',
-      } 
+        isStopApply: 'Y'
+      }
     });
   };
 
@@ -50,26 +50,24 @@ class InternalTraining extends Component {
         break;
       case 1:
         page = (
+          <NoticeAttendClass
+            onHandleLoading={this.handleLoading}
+            onCheckPeople={this.onCheckPeople}
+          />
+        );
+
+        break;
+      case 2:
+        page = (
           <ReviewEmployee
             courseArrangement={this.state.selectedCourseArrangement}
             onConfirmList={this.handleConfirmList}
           />
         );
         break;
-      case 2:
-        page = (
-          <NoticeAttendClass
-            onHandleLoading={this.handleLoading}
-            onCheckPeople={this.onCheckPeople}
-          />
-        );
+      case 3:
+        page = <SeeFeedback />;
         break;
-        case 3:
-          page = (
-            <SeeFeedback
-            />
-          );
-          break;
       default:
         page = null;
         break;
@@ -95,21 +93,23 @@ class InternalTraining extends Component {
               }}
             />
             <Step
+              // title="人员审核"
+              title="通知报名"
+              description=""
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ current: 1 });
+              }}
+            />
+            <Step
+              // title="通知上课"
               title="人员审核"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                if (this.state.current !== 1) {
+                if (this.state.current !== 2) {
                   message.info('请点击“学员审核”进入');
                 }
-              }}
-            />
-            <Step
-              title="通知上课"
-              description=""
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                this.setState({ current: 2 });
               }}
             />
 
