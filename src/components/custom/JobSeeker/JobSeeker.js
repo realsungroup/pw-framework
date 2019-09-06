@@ -593,7 +593,7 @@ class JobSeeker extends Component {
               <h3 className="job-seeker__informnation-title" id="个人资料">
                 个人资料/Personal Informnation
               </h3>
-              <Form.Item label="中文姓名/ChineseName" {...formItemLayout}>
+              <Form.Item label="中文姓名/Chinese Name" {...formItemLayout}>
                 {getFieldDecorator('ChName', {
                   rules: [
                     {
@@ -636,8 +636,8 @@ class JobSeeker extends Component {
                   // ]
                 })(
                   <Radio.Group>
-                    <Radio value="男">男</Radio>
-                    <Radio value="女">女</Radio>
+                    <Radio value="男">男/Male</Radio>
+                    <Radio value="女">女/Female</Radio>
                   </Radio.Group>
                 )}
               </Form.Item>
@@ -747,7 +747,7 @@ class JobSeeker extends Component {
                 })(<Input />)}
               </Form.Item>
               <Form.Item
-                label="有无推荐人/if have recommender"
+                label="有无推荐人/If have recommender"
                 {...formItemLayout}
               >
                 {getFieldDecorator('IfRecommendByF', {
@@ -759,8 +759,8 @@ class JobSeeker extends Component {
                   // ]
                 })(
                   <Radio.Group>
-                    <Radio value="有">有</Radio>
-                    <Radio value="无">无</Radio>
+                    <Radio value="有">有/Yes</Radio>
+                    <Radio value="无">无/No</Radio>
                   </Radio.Group>
                 )}
               </Form.Item>
@@ -883,7 +883,7 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item
-                      label="任职年限/post period from to "
+                      label="任职年限/Post period from to "
                       {...formItemLayout2}
                     >
                       <RangePicker  onChange={this.handelworkPeriod.bind(this, index)}/>
@@ -1031,7 +1031,7 @@ class JobSeeker extends Component {
                 </Button>
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="专业培训">
-                专业培训training
+              Professional Qualification/Training/专业资格/培训
               </h3>
               {training.map((item, index) => {
                 return (
@@ -1107,7 +1107,14 @@ class JobSeeker extends Component {
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('EnCET', {})(<Input />)}
+                {getFieldDecorator('EnCET', {})
+                (<Select>
+                  <Option value = "CET-4">CET-4</Option>
+                  <Option value = "CET-6">CET-6</Option>
+                  <Option value = "TEM-4">TEM-4</Option>
+                  <Option value = "TEM-8">TEM-8</Option>
+                  <Option value = "公共英语三级">公共英语三级</Option>
+                </Select>)}
               </Form.Item>
               <Form.Item
                 label="写作/Writing"
@@ -1160,6 +1167,23 @@ class JobSeeker extends Component {
                   </Select>
                 )}
               </Form.Item>
+              <Form.Item
+                label="听力/Listening"
+                {...formItemLayout2}
+                style={{ display: 'inline-block', width: '50%' }}
+              >
+                {getFieldDecorator('Listening', {})(
+                  <Select>
+                    {languageAbility.map((item, index) => {
+                      return (
+                        <Option key={index} value={item.value}>
+                          {item.label}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
+              </Form.Item>
               <Form.Item label="计算机技能/Computer Skill" {...formItemLayout2}>
                 {getFieldDecorator('ComputerSkills', {})(
                   <Select>
@@ -1180,12 +1204,12 @@ class JobSeeker extends Component {
                 {getFieldDecorator('OtherSkills', {})(<Input />)}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="其他">
-                其他/other informnation
+                其他/Other informnation
               </h3>
-              <Form.Item label="身高CM/Height" {...formItemLayout2}>
+              <Form.Item label="身高(CM)/Height" {...formItemLayout2}>
                 {getFieldDecorator('Height', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="体重KG/Weight" {...formItemLayout2}>
+              <Form.Item label="体重(KG)/Weight" {...formItemLayout2}>
                 {getFieldDecorator('Weight', {})(<Input />)}
               </Form.Item>
               <Form.Item label="视力左/Eye Left sight" {...formItemLayout2}>
@@ -1269,7 +1293,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasUnemployee === '是' ? <Input /> : ''}
+                    {this.state.hasUnemployee === '是' ? <TextArea /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1293,7 +1317,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.knowColleaguage === '是' ? <Input /> : ''}
+                    {this.state.knowColleaguage === '是' ? <TextArea /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1337,7 +1361,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.competitionAgreement === '是' ? <Input /> : ''}
+                    {this.state.competitionAgreement === '是' ? <TextArea /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1350,7 +1374,7 @@ class JobSeeker extends Component {
               <Form.Item label="如被录用何时上班/When would be available for you?">
                 {getFieldDecorator('WhenOn', {})(<Input />)}
               </Form.Item>
-              <Form.Item label="自我评价">
+              <Form.Item label="自我评价/Self Appraisement">
                 {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
               </Form.Item>
               <div>

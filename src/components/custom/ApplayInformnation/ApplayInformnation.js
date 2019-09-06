@@ -138,7 +138,7 @@ class ApplayInformnation extends Component {
             <h3 className="applay__informnation-title" id="个人资料">
               个人资料/Personal Information
             </h3>
-            <Form.Item label="中文姓名/Name in Chinese" {...formItemLayout} className="applay__informnation-content">
+            <Form.Item label="中文姓名/Chinese Name" {...formItemLayout} className="applay__informnation-content">
               {getFieldDecorator('ChName', {
                 initialValue: currentInfo.ChName,
                 rules: [
@@ -313,7 +313,7 @@ class ApplayInformnation extends Component {
               })(<Input />)}
             </Form.Item>
             <Form.Item
-              label="有无推荐人/if have recommender"
+              label="有无推荐人/If have recommender"
               {...formItemLayout}
               className="applay__informnation-content"
             >
@@ -556,7 +556,15 @@ class ApplayInformnation extends Component {
           <Form.Item label="外语等级/Level" {...formItemLayout2} className="applay__informnation-content">
             {getFieldDecorator('EnCET', {
               initialValue: currentInfo.EnCET
-            })(<Input />)}
+            })(<Select>
+              {languageAbility.map((item, index) => {
+                return (
+                  <Option key={index} value={item.value}>
+                    {item.label}
+                  </Option>
+                );
+              })}
+            </Select>)}
           </Form.Item>
           <Form.Item label="写作/Writing" {...formItemLayout2} className="applay__informnation-content">
             {getFieldDecorator('Writing', {
@@ -603,6 +611,21 @@ class ApplayInformnation extends Component {
               </Select>
             )}
           </Form.Item>
+          <Form.Item label="听力/Listening" {...formItemLayout2} className="applay__informnation-content">
+            {getFieldDecorator('Listening', {
+              initialValue: currentInfo.Listening
+            })(
+              <Select>
+                {languageAbility.map((item, index) => {
+                  return (  
+                    <Option key={index} value={item.value}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
+          </Form.Item>
           {/* <Form.Item label="计算机技能/ComputerSkills" /> */}
           <Form.Item label="计算机技能/Computer Skill" {...formItemLayout2} className="applay__informnation-content">
             {getFieldDecorator('ComputerSkills', {
@@ -632,12 +655,12 @@ class ApplayInformnation extends Component {
           <h3 className="applay__informnation-title" id="其他">
             Other Informnation 其他资料
           </h3>
-          <Form.Item label="身高CM/Height" {...formItemLayout2} className="applay__informnation-content">
+          <Form.Item label="身高(CM)/Height" {...formItemLayout2} className="applay__informnation-content">
             {getFieldDecorator('Height', {
               initialValue: currentInfo.Height
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="体重KG/Weight" {...formItemLayout2} className="applay__informnation-content">
+          <Form.Item label="体重(KG)/Weight" {...formItemLayout2} className="applay__informnation-content">
             {getFieldDecorator('Weight', {
               initialValue: currentInfo.Weight
             })(<Input />)}
