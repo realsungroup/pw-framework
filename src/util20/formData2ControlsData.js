@@ -319,6 +319,8 @@ export const setDataInitialValue = (
       dataItem.initialValue = record[dataItem.id];
     });
   }
+  newData.containerControlArr = data.containerControlArr;
+  newData.labelControllArr = data.labelControllArr;
   return newData;
 };
 

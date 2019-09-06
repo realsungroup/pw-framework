@@ -12,7 +12,7 @@ class AdvantageShortcoming extends React.Component {
     super(props);
     const { type } = this.props;
     let resid = '462400643808';
-    let formName = '员工自评查看';
+    let formName = '员工自评查看2';
     if (type === '年末') {
       formName = '员工年末自评查看';
     }
@@ -51,13 +51,14 @@ class AdvantageShortcoming extends React.Component {
   getFormData = async record => {
     let res;
     try {
-      res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getFormData({
+      res = await http().getFormData({
         resid: this.state.resid,
-        formName: this.state.formName
+        formName: this.state.formName,
+        dblinkname: 'ehr'
       });
       const formData = dealControlArr(res.data.columns);
       const dataProp = getDataProp(formData, record, true, false, false);
-      // console.log(formData, dataProp);
+      console.log(dataProp);
       this.setState({ dataProp });
     } catch (err) {
       console.log(err);
@@ -66,7 +67,7 @@ class AdvantageShortcoming extends React.Component {
   };
   getYearsTarget = async id => {
     try {
-      const res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getTable({
+      const res = await http().getTable({
         resid: '620409727880',
         cparm1: id,
         dblinkname: 'ehr'
@@ -90,7 +91,7 @@ class AdvantageShortcoming extends React.Component {
 
   getAdvantageShortcoming = async (resid, id) => {
     try {
-      const res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getTable({
+      const res = await http().getTable({
         resid,
         dblinkname: 'ehr',
         cparm1: id,
@@ -147,6 +148,7 @@ class AdvantageShortcoming extends React.Component {
             operation="view"
             data={this.state.dataProp}
             record={this.state.advantageShortcoming}
+            useAbsolute={true}
           />
         </div>
       </div>
