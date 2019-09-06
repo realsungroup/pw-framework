@@ -892,7 +892,8 @@ class TableData extends React.Component {
       beforeSaveFields,
       recordFormContainerProps,
       subTableArrProps,
-      storeWay
+      storeWay,
+      recordFormUseAbsolute
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -958,7 +959,8 @@ class TableData extends React.Component {
       storeWay,
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
-      dblinkname
+      dblinkname,
+      useAbsolute: recordFormUseAbsolute
     });
   };
 

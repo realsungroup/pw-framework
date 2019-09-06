@@ -66,6 +66,7 @@ class PersonInfo extends React.Component {
                 dblinkname="ehr"
                 formProps={{ width: 1000 }}
                 baseURL="http://10.108.2.66:9091/"
+                recordFormUseAbsolute={true}
               />
             )}
           </div>

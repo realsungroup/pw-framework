@@ -265,21 +265,24 @@ class FormData extends React.Component {
 
     return (
       <TabPane tab={tab} key={index}>
-        <TableData
-          wrappedComponentRef={element =>
-            (this[`tableDataRef${index}`] = element)
-          }
-          refTargetComponentName="TableData"
-          dataMode="sub"
-          resid={resid}
-          subresid={subTable.subResid}
-          hostrecid={record.REC_ID}
-          size="small"
-          {...props}
-          {...tableProps}
-          storeWay={storeWay}
-          height={subTableArr[0].FrmHeight}
-        />
+        <div style={{ height: 500 }}>
+          <TableData
+            wrappedComponentRef={element =>
+              (this[`tableDataRef${index}`] = element)
+            }
+            refTargetComponentName="TableData"
+            dataMode="sub"
+            resid={resid}
+            subresid={subTable.subResid}
+            hostrecid={record.REC_ID}
+            size="small"
+            {...props}
+            {...tableProps}
+            storeWay={storeWay}
+            height={subTableArr[0].FrmHeight}
+            subtractH={150}
+          />
+        </div>
       </TabPane>
     );
   };
@@ -345,7 +348,7 @@ class FormData extends React.Component {
     }
     const { resid } = info;
     let { containerControlArr, labelControllArr } = data;
-    return useAbsolute ? (
+    return !useAbsolute ? (
       <div className="form-data">
         {!!data.length && (
           <div
@@ -372,8 +375,14 @@ class FormData extends React.Component {
     ) : (
       <div
         style={{
-          height: containerControlArr && containerControlArr[0].FrmHeight,
-          width: containerControlArr && containerControlArr[0].FrmWidth,
+          height:
+            containerControlArr &&
+            containerControlArr.length &&
+            containerControlArr[0].FrmHeight,
+          width:
+            containerControlArr &&
+            containerControlArr.length &&
+            containerControlArr[0].FrmWidth,
           position: 'relative'
         }}
       >
@@ -399,7 +408,6 @@ class FormData extends React.Component {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
-            console.log(item.label, item.initialValue);
             return (
               <div
                 style={{
