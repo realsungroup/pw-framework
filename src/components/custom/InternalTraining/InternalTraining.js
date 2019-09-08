@@ -50,18 +50,18 @@ class InternalTraining extends Component {
         break;
       case 1:
         page = (
-          <NoticeAttendClass
-            onHandleLoading={this.handleLoading}
-            onCheckPeople={this.onCheckPeople}
+          <ReviewEmployee
+            courseArrangement={this.state.selectedCourseArrangement}
+            onConfirmList={this.handleConfirmList}
           />
         );
 
         break;
       case 2:
         page = (
-          <ReviewEmployee
-            courseArrangement={this.state.selectedCourseArrangement}
-            onConfirmList={this.handleConfirmList}
+          <NoticeAttendClass
+            onHandleLoading={this.handleLoading}
+            onCheckPeople={this.onCheckPeople}
           />
         );
         break;
@@ -93,23 +93,21 @@ class InternalTraining extends Component {
               }}
             />
             <Step
-              // title="人员审核"
-              title="通知报名"
-              description=""
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                this.setState({ current: 1 });
-              }}
-            />
-            <Step
-              // title="通知上课"
               title="人员审核"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                if (this.state.current !== 2) {
+                if (this.state.current !== 1) {
                   message.info('请点击“学员审核”进入');
                 }
+              }}
+            />
+            <Step
+              title="通知上课"
+              description=""
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ current: 2 });
               }}
             />
 

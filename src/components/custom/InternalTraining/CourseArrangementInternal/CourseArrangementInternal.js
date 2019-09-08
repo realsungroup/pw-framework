@@ -449,7 +449,7 @@ class CourseArrangementInternal extends React.Component {
                                 this.props.onHandleSelectCourseArrangement(
                                   item
                                 );
-                                this.props.onHandleCurrent(2);
+                                this.props.onHandleCurrent(1);
                               }}
                             >
                               <Icon type="team" />
