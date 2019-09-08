@@ -401,7 +401,7 @@ class FormData extends React.Component {
                   overflow: 'auto'
                 }}
               >
-                {`${item.FrmText}:`}
+                {`${item.FrmText}`}
               </label>
             );
           })}
@@ -416,7 +416,9 @@ class FormData extends React.Component {
                   left: customStyle.left,
                   width: customStyle.width,
                   height: customStyle.height,
-                  overflow: 'auto'
+                  overflow: 'auto',
+                  border: '1px #ccc solid',
+                  borderRadius: 4
                 }}
               >
                 {item.initialValue}
