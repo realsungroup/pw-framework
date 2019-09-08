@@ -18,7 +18,8 @@ class TotalStatical extends Component {
       queryQuestions: [],
       answerData: [],
       queryQuestionsGroup: [],
-      data: []
+      data: [],
+      
     };
   }
   componentDidMount = () => {
@@ -262,6 +263,7 @@ class TotalStatical extends Component {
           <div className="total-statical__chart-wrap" key={item.question_id}>
             <h4 className="total-statical__chart-wrap__question-topic">
               <br />
+              <span>{this.state.data.length + index+1}.</span>
               {item.question_topic}
             </h4>
             <ul className="total-statical__ubox">
@@ -289,7 +291,7 @@ class TotalStatical extends Component {
         return (
           <div className="total-statical__chart-wrap" key={item.title}>
             <h4 className="total-statical__chart-wrap__question-topic">
-              <span>{index + 1}.</span>
+              <span>{index+1}.</span>
               {item.title}
             </h4>
             <Table
