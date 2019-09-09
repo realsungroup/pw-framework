@@ -1722,3 +1722,7 @@ window[620212364621] = {
   name: 'ComprehensiveQuery',
   title: '综合查询'
 };
+window[621257502796] = {
+  name: 'AttendanceManage',
+  title: '考勤申请'
+};

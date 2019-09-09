@@ -221,7 +221,7 @@ class FormData extends React.Component {
       </Tabs>
     );
   };
-  renderSubTablesAbsolute = () => {
+  renderSubTablesAbsolute = (containerHeight, containerWidth) => {
     const { defaultActiveKey } = this.state;
     const { subTableArr, data } = this.props;
 
@@ -234,7 +234,7 @@ class FormData extends React.Component {
         style={{
           width: subTableArr[0].FrmWidth,
           position: 'absolute',
-          top: subTableArr[0].FrmTop,
+          top: subTableArr[0].FrmTop - containerHeight * 0.1,
           left: subTableArr[0].FrmLeft
         }}
       >
@@ -265,7 +265,7 @@ class FormData extends React.Component {
 
     return (
       <TabPane tab={tab} key={index}>
-        <div style={{ height: 500 }}>
+        <div style={{}}>
           <TableData
             wrappedComponentRef={element =>
               (this[`tableDataRef${index}`] = element)
@@ -348,6 +348,14 @@ class FormData extends React.Component {
     }
     const { resid } = info;
     let { containerControlArr, labelControllArr } = data;
+    const containerHeight =
+      containerControlArr &&
+      containerControlArr.length &&
+      containerControlArr[0].FrmHeight;
+    const containerWidth =
+      containerControlArr &&
+      containerControlArr.length &&
+      containerControlArr[0].FrmWidth;
     return !useAbsolute ? (
       <div className="form-data">
         {!!data.length && (
@@ -375,15 +383,12 @@ class FormData extends React.Component {
     ) : (
       <div
         style={{
-          height:
-            containerControlArr &&
-            containerControlArr.length &&
-            containerControlArr[0].FrmHeight,
-          width:
-            containerControlArr &&
-            containerControlArr.length &&
-            containerControlArr[0].FrmWidth,
-          position: 'relative'
+          height: containerHeight,
+          width: containerWidth,
+          position: 'relative',
+          transform: 'scale(1.1)',
+          marginLeft: containerWidth * 0.1,
+          fontSize: 12
         }}
       >
         {!!labelControllArr &&
@@ -394,11 +399,12 @@ class FormData extends React.Component {
                 style={{
                   fontWeight: 600,
                   position: 'absolute',
-                  top: customStyle.top,
-                  left: customStyle.left,
-                  width: customStyle.width,
-                  height: customStyle.height,
-                  overflow: 'auto'
+                  top: (customStyle.top / containerHeight) * 100 + '%',
+                  left: (customStyle.left / containerWidth) * 100 + '%',
+                  width: (customStyle.width / containerWidth) * 100 + '%',
+                  height: (customStyle.height / containerHeight) * 100 + '%',
+                  overflow: 'auto',
+                  textAlign: customStyle.textAlign
                 }}
               >
                 {`${item.FrmText}`}
@@ -408,24 +414,25 @@ class FormData extends React.Component {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
+            console.log(customStyle.textAlign);
             return (
-              <div
+              <span
                 style={{
                   position: 'absolute',
-                  top: customStyle.top,
-                  left: customStyle.left,
-                  width: customStyle.width,
-                  height: customStyle.height,
+                  top: (customStyle.top / containerHeight) * 100 + '%',
+                  left: (customStyle.left / containerWidth) * 100 + '%',
+                  width: 'auto',
+                  height: (customStyle.height / containerHeight) * 100 + '%',
                   overflow: 'auto',
-                  border: '1px #ccc solid',
-                  borderRadius: 4
+                  lineHeight: 2.4
                 }}
               >
                 {item.initialValue}
-              </div>
+              </span>
             );
           })}
-        {hasSubTables && this.renderSubTablesAbsolute()}
+        {hasSubTables &&
+          this.renderSubTablesAbsolute(containerHeight, containerWidth)}
       </div>
     );
   }

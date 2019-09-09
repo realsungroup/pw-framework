@@ -39,11 +39,11 @@ class AdvantageShortcoming extends React.Component {
     if (
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
     ) {
-      // await this.getYearsTarget(this.props.person.C3_305737857578);
-      // await this.getAdvantageShortcoming(
-      //   this.state.resid,
-      //   this.props.person.C3_305737857578
-      // );
+      await this.getYearsTarget(this.props.person.C3_305737857578);
+      await this.getAdvantageShortcoming(
+        this.state.resid,
+        this.props.person.C3_305737857578
+      );
       await this.getFormData(this.state.advantageShortcoming);
     }
   }

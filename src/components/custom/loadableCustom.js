@@ -445,6 +445,12 @@ export const ComprehensiveQuery = Loadable({
     return minLoading;
   }
 });
+export const AttendanceManage = Loadable({
+  loader: () => import('./AttendanceManage'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const MyTeam = Loadable({
   loader: () => import('./MyTeam'),
