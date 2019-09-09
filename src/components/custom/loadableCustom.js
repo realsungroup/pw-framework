@@ -470,3 +470,9 @@ export const IdpCard = Loadable({
     return minLoading;
   }
 });
+export const OfferLetter = Loadable({
+  loader: () => import('./OfferLetter'),
+  loading() {
+    return minLoading;
+  }
+});

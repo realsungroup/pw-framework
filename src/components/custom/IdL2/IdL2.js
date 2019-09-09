@@ -3,6 +3,7 @@ import './IdL2.less';
 import TableData from '../../common/data/TableData';
 import {Button} from 'antd';
 import { Link } from 'react-router-dom';
+import OfferLetter from '../OfferLetter';
 class IdL2 extends React.Component {
   constructor(props) {
     super(props);
@@ -22,13 +23,14 @@ class IdL2 extends React.Component {
           hasRowModify={false}
           customRowBtns={[
             (record, btnSize) => {
-              return <Link to={{
+              return(<div><Link to={{
                 pathname: '/fnmodule',
                 search: `?resid=个人表格&recid=608296075283&type=前端功能入口&title=问卷首页`
               }}
               target="_self">
                  <Button>查看详细信息</Button>
-              </Link>;
+              </Link>
+              <OfferLetter> </OfferLetter></div>);
             }
           ]}
         />
