@@ -453,7 +453,7 @@ class CourseArrangementInternal extends React.Component {
                               }}
                             >
                               <Icon type="team" />
-                              学员审核
+                              学员通知及审核
                             </span>
                           ]
                         : [
@@ -486,7 +486,18 @@ class CourseArrangementInternal extends React.Component {
                                 <Icon type="delete" />
                                 删除
                               </span>
-                            </Popconfirm>
+                            </Popconfirm>,
+                            <span
+                              onClick={() => {
+                                this.props.onHandleSelectCourseArrangement(
+                                  item
+                                );
+                                this.props.onHandleCurrent(1);
+                              }}
+                            >
+                              <Icon type="team" />
+                              查看人员
+                            </span>
                           ]
                     }
                   >
