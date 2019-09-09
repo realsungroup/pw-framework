@@ -1,7 +1,6 @@
 import React from 'react';
 import TableData from '../../../../common/data/TableData';
 
-const resid = '462586715318';
 class TargetHistory extends React.Component {
   render() {
     return (
@@ -23,6 +22,7 @@ class TargetHistory extends React.Component {
             hasRowSelection={true}
             actionBarWidth={100}
             dblinkname="ehr"
+            height={440}
             cparm1={this.props.selectYear.key}
           />
         </div>
