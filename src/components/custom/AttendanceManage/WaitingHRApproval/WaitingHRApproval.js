@@ -1,14 +1,17 @@
 import React from 'react';
-import './WorkOvertimeApply.less';
+import './WaitingHRApproval.less';
 import TableData from '../../../common/data/TableData';
 
-class WorkOvertimeApply extends React.Component {
+/*
+ *待HR审批
+ */
+class WaitingHRApproval extends React.Component {
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
-          key="work-overtime-apply"
-          resid="489233670834"
+          key="waiting-hr-approval"
+          resid="544795775918"
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
@@ -27,4 +30,4 @@ class WorkOvertimeApply extends React.Component {
   }
 }
 
-export default WorkOvertimeApply;
+export default WaitingHRApproval;

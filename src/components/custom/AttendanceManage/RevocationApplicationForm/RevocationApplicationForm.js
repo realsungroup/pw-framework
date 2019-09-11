@@ -1,14 +1,18 @@
 import React from 'react';
-import './WorkOvertimeApply.less';
+import './RevocationApplicationForm.less';
 import TableData from '../../../common/data/TableData';
 
-class WorkOvertimeApply extends React.Component {
+/*
+ * 已撤销
+ */
+
+class RevocationApplicationForm extends React.Component {
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
-          key="work-overtime-apply"
-          resid="489233670834"
+          key="revocation-application-form"
+          resid="449599471726"
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
@@ -27,4 +31,4 @@ class WorkOvertimeApply extends React.Component {
   }
 }
 
-export default WorkOvertimeApply;
+export default RevocationApplicationForm;
