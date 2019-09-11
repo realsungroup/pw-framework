@@ -222,11 +222,12 @@ class IdLindex extends Component {
           <TableData
             key={613152706922}
             {...assementForm} 
-            cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
+            style ={{height:"100%"}}
+            // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
             // resid={613152706922}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
-            cmswhere = {`ID = ${this.state.currentPersonId}`}
+            // cmswhere = {`ID = ${this.state.currentPersonId}`}
             actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
               return <Button>添加面试官</Button>
             }}
@@ -262,7 +263,7 @@ class IdLindex extends Component {
               key={613152614705}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
+              // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
             />
           </div>
         );

@@ -1563,6 +1563,10 @@ window[614260227832] = {
   name: 'IdL2',
   title: 'IDL招聘新版本'
 };
+window[616084074623] = {
+  name: 'OfferLetter',
+  title: 'IDLOfferLetter'
+};
 //IDl 路由跳转设置
 window['个人表格'] = {
   title: '个人表格',
