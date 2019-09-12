@@ -664,7 +664,7 @@ window[606071626403] = {
     formProps: {
       height: 500
     },
-    subtractH: 166,
+    subtractH: 220,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -1566,6 +1566,10 @@ window[614260227832] = {
 window[616084074623] = {
   name: 'OfferLetter',
   title: 'IDLOfferLetter'
+};
+window[621418936996] = {
+  name: 'IDLExamination',
+  title: 'IDLExamination'
 };
 //IDl 路由跳转设置
 window['个人表格'] = {

@@ -482,3 +482,9 @@ export const OfferLetter = Loadable({
     return minLoading;
   }
 });
+export const IDLExamination = Loadable({
+  loader: () => import('./IDLExamination'),
+  loading() {
+    return minLoading;
+  }
+});

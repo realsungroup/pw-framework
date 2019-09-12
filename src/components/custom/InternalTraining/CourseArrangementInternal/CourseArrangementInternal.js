@@ -345,7 +345,7 @@ class CourseArrangementInternal extends React.Component {
                     this.setState({ mode: 'card' });
                   }}
                 />
-                {/* <Icon
+                <Icon
                   type="table"
                   style={mode === 'table' ? activeStyle : unactiveStyle}
                   key="card"
@@ -353,7 +353,7 @@ class CourseArrangementInternal extends React.Component {
                   onClick={() => {
                     this.setState({ mode: 'table' });
                   }}
-                /> */}
+                />
                 <Icon
                   key="calendar"
                   type="calendar"

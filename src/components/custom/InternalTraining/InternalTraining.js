@@ -93,7 +93,7 @@ class InternalTraining extends Component {
               }}
             />
             <Step
-              title="上课人员"
+              title="选择人员"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {

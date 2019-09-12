@@ -59,6 +59,26 @@ const form = props => {
           rules: [{ required: true, message: '请输入费用' }]
         })(<Input placeholder="费用" type="number" />)}
       </Form.Item>
+      <Form.Item label="开始上课时间">
+        {getFieldDecorator('beginClassTime', {
+          rules: [{ required: true, message: '请填写上课时间' }]
+        })(<DatePicker placeholder="请填写上课时间" />)}
+      </Form.Item>
+      <Form.Item label="结束上课时间">
+        {getFieldDecorator('endClassTime', {
+          rules: [{ required: true, message: '请填写结束时间' }]
+        })(<DatePicker placeholder="请填写结束时间" />)}
+      </Form.Item>
+      <Form.Item label="上课地点">
+        {getFieldDecorator('TranningOrganization', {
+          rules: [{ required: true, message: '请填写上课地点' }]
+        })(<Input placeholder="请填写上课地点" />)}
+      </Form.Item>
+      <Form.Item label="课程概要">
+        {getFieldDecorator('courseIntroduction', {
+          rules: [{ required: true, message: '请填写课程概要' }]
+        })(<Input placeholder="请填写课程概要" />)}
+      </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button style={{ marginRight: 12 }} onClick={props.closeModal}>
           取消
@@ -133,7 +153,12 @@ class EmployeeApplyCourse extends React.Component {
         data: [
           {
             C3_613941384592: course.courseName,
-            C3_613941385069: course.cost
+            C3_613941385069: course.cost,
+            C3_615393041304: course.beginClassTime,
+            C3_615393093633: course.endClassTime,
+            C3_613941386325: course.TranningOrganization,
+            courseIntroduction: course.courseIntroduction
+
           }
         ]
       });

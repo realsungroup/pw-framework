@@ -112,3 +112,4 @@ export { IDPMangement } from '../components/custom/loadableCustom';
 export { DLEmploy } from '../components/custom/loadableCustom';
 export { IdpCard } from '../components/custom/loadableCustom';
 export { OfferLetter } from '../components/custom/loadableCustom';
+export { IDLExamination } from '../components/custom/loadableCustom';
