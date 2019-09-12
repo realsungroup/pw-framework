@@ -1,19 +1,23 @@
 import React from 'react';
-import './WorkOvertimeApply.less';
+import './ManagerApprovalRecordHistory.less';
 import TableData from '../../../common/data/TableData';
 
-class WorkOvertimeApply extends React.Component {
+/*
+ * 经理审批记录历史
+ */
+
+class ManagerApprovalRecordHistory extends React.Component {
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
-          key="work-overtime-apply"
-          resid="489233670834"
+          key="invalid-application-form"
+          resid="470689569411"
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
           hasRowView={false}
-          hasRowDelete={false}
+          hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={false}
           hasModify={false}
@@ -27,4 +31,4 @@ class WorkOvertimeApply extends React.Component {
   }
 }
 
-export default WorkOvertimeApply;
+export default ManagerApprovalRecordHistory;

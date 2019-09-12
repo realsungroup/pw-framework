@@ -237,8 +237,8 @@ class Login extends React.Component {
                     required: true,
                     message: (
                       <FM
-                        id="Login.userNameTip"
-                        defaultMessage="请输入用户名"
+                        id={loginMode=== 'normal'?'Login.DomainUserNameTip':'Login.userNameTip'}
+                        defaultMessage={loginMode === 'normal'?'请输入工号':'请输入用户名'}
                       />
                     )
                   }
@@ -248,7 +248,7 @@ class Login extends React.Component {
                   prefix={
                     <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder={intl.messages['Login.UsernamePlaceholder']}
+                  placeholder={loginMode === 'normal' ? intl.messages['Login.DomainUsernamePlaceholder'] :intl.messages['Login.UsernamePlaceholder'] }
                   addonAfter={this.renderAddonAfterNode()}
                 />
               )}

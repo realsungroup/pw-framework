@@ -253,6 +253,18 @@ http.createApi('getFieldAggregateValue', {
 });
 
 /**
+ * 根据数据源名称和执行sql语句获取单个值
+ * 参数：{ dblink, sql, dblinkname }
+ * 1. dblink
+ * 2. sql
+ * 3. dblinkname
+ */
+http.createApi('getFieldBySql', {
+  method: 'get',
+  url: '/api/Resource/GetFieldBySql'
+});
+
+/**
  * 获取表格列定义数据
  * 参数：{ resid }
  * 1. resid：资源id
