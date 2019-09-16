@@ -1,10 +1,10 @@
-// 节日登记
+// IBD定制
 window[588425594397] = {
   title: '患者信息',
   name: 'PatientInfo',
   props: {
     tableDataProps: {
-      resid: 586639160406,
+      resid: 621017579152,
       subtractH: 100,
       actionBarFixed: false,
       height: 500,

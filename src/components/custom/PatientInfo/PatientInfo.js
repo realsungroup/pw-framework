@@ -32,13 +32,13 @@ class PatientInfo extends React.Component {
     this.p1 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_600539035945 = 'UC'`
+        cmswhere: `C3_617809531670 = 'UC'`
       })
     );
     this.p2 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_600539035945 = 'CD'`
+        cmswhere: `C3_617809531670 = 'CD'`
       })
     );
     const pArr = [this.p1.promise, this.p2.promise];
@@ -64,7 +64,7 @@ class PatientInfo extends React.Component {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_603466824586'
+      navListResidField: 'C3_620929565473'
     });
   };
 
@@ -72,7 +72,7 @@ class PatientInfo extends React.Component {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_603466838675'
+      navListResidField: 'C3_620929861096'
     });
   };
 
@@ -80,7 +80,7 @@ class PatientInfo extends React.Component {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_603566638673'
+      navListResidField: 'C3_620929845890'
     });
   };
 
@@ -166,12 +166,12 @@ class PatientInfo extends React.Component {
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
-              resid={586639160406}
+              resid={621017579152}
               userInfoFields={[
-                { label: '姓名', innerFieldName: 'C3_586890765790' },
-                { label: '住院号', innerFieldName: 'C3_586890758859' },
-                { label: '性别', innerFieldName: 'C3_589053299408' },
-                { label: '出生年月', innerFieldName: 'C3_586890847629' }
+                { label: '姓名', innerFieldName: 'C3_617809531835' },
+                { label: '住院号', innerFieldName: 'C3_617809584020' },
+                { label: '性别', innerFieldName: 'C3_617809531996' },
+                { label: '出生年月', innerFieldName: 'C3_617809532320' }
               ]}
               record={record}
               advSearchConfig={{
