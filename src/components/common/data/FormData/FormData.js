@@ -356,7 +356,7 @@ class FormData extends React.Component {
       containerControlArr &&
       containerControlArr.length &&
       containerControlArr[0].FrmWidth;
-    return !useAbsolute ? (
+    return !useAbsolute || mode !== 'view' ? (
       <div className="form-data">
         {!!data.length && (
           <div
@@ -385,10 +385,7 @@ class FormData extends React.Component {
         style={{
           height: containerHeight,
           width: containerWidth,
-          position: 'relative',
-          transform: 'scale(1.1)',
-          marginLeft: containerWidth * 0.1,
-          fontSize: 12
+          position: 'relative'
         }}
       >
         {!!labelControllArr &&
@@ -404,7 +401,8 @@ class FormData extends React.Component {
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
                   overflow: 'auto',
-                  textAlign: customStyle.textAlign
+                  textAlign: customStyle.textAlign,
+                  fontSize: customStyle.fontSize
                 }}
               >
                 {`${item.FrmText}`}
@@ -414,7 +412,6 @@ class FormData extends React.Component {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
-            console.log(customStyle.textAlign);
             return (
               <span
                 style={{
@@ -424,7 +421,8 @@ class FormData extends React.Component {
                   width: 'auto',
                   height: (customStyle.height / containerHeight) * 100 + '%',
                   overflow: 'auto',
-                  lineHeight: 2.4
+                  lineHeight: 2.4,
+                  fontSize: customStyle.fontSize
                 }}
               >
                 {item.initialValue}
