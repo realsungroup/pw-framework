@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Row, Input } from 'antd';
+import { Card, Col, Row, Input,Modal,Button } from 'antd';
 
 const CourseInfo = function(props) {
   let { course } = props;
@@ -48,6 +48,7 @@ const CourseInfo = function(props) {
         </Col>
       </Row>
     </Card>
+    
   );
 };
 export default CourseInfo;

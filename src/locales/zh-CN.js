@@ -33,8 +33,10 @@ const Login = {
   'Login.DomainLogin': '域登录',
   'Login.UsernamePlaceholder': '用户名',
   'Login.PassworkPlaceholder': '密码',
+  'Login.DomainUsernamePlaceholder': '工号',
   'Login.Login': '登录',
   'Login.userNameTip': '请输入用户名',
+  'Login.DomainUserNameTip': '请输入工号',
   'Login.passwordTip': '请输入密码'
 };
 

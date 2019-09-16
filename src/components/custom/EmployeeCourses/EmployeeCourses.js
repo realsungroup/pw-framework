@@ -89,7 +89,8 @@ class EmployeeCourses extends React.Component {
         progress: 0
       }
     ],
-    fileList: []
+    fileList: [],
+    isfirst: true //是否首次加载组件
   };
   componentDidMount = async () => {
     await this.getYears();
@@ -717,6 +718,25 @@ class EmployeeCourses extends React.Component {
     this.setState({ extraCost: parseFloat(extraCost) });
   };
 
+  //点击放弃
+  isAbandon = async () => {
+    let res,
+      record = { ...this.state.selectedCourse };
+
+    try {
+      res = await http().modifyRecords({
+        resid: resid,
+        data: [{ REC_ID: record.REC_ID, isAbandon: 'Y' }]
+      });
+      this.setState({
+        applyVisible:false
+      })
+      message.success(res.message);
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    }
+  };
   render() {
     let selectedCourse = { ...this.state.selectedCourse },
       startColor = '#aaa',
@@ -821,7 +841,10 @@ class EmployeeCourses extends React.Component {
                           <span
                             className="timeline_action"
                             onClick={() => {
-                              this.setState({ applyVisible: true });
+                              this.setState({
+                                applyVisible: true,
+                                isfirst: false
+                              });
                             }}
                           >
                             查看申请单
@@ -1076,7 +1099,10 @@ class EmployeeCourses extends React.Component {
                     onConfirm={this.submitApply}
                   >
                     <Button type="primary">提交</Button>
-                  </Popconfirm>
+                  </Popconfirm>,
+                  <Button type="danger" onClick={this.isAbandon}>
+                    放弃
+                  </Button>
                 ]
               : [
                   <Button
@@ -1099,6 +1125,36 @@ class EmployeeCourses extends React.Component {
             extraCost={this.state.extraCost}
             onChangeExtraCost={this.setExtraCost}
           />
+          {this.state.isfirst ? null : (
+            <TableData
+              resid={REVIEW_RECOR_RESID}
+              subtractH={240}
+              hasBeBtns={true}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              actionBarFixed={true}
+              hasRowModify={false}
+              height="70vh"
+              cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
+              actionBarExtra={() => {
+                return (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      window.print();
+                      // window.location.reload();
+                    }}
+                  >
+                    打印
+                  </Button>
+                );
+              }}
+            />
+          )}
         </Modal>
         <Modal
           title={

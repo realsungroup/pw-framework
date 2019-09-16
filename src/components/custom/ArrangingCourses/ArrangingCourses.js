@@ -876,12 +876,7 @@ class ArrangingCourses extends React.Component {
 
               <Form.Item label="讲师">
                 {getFieldDecorator('Teacher', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '讲师'
-                    }
-                  ]
+                  
                 })(<Input />)}
               </Form.Item>
 

@@ -120,7 +120,7 @@ class JobSeeker extends Component {
       family: [{}],
       //培训经历
       training: [{}],
-      options:[]
+      options: []
     };
   }
 
@@ -143,10 +143,14 @@ class JobSeeker extends Component {
       if (cities) {
         for (let city of Object.entries(cities)) {
           let cityObj = { value: city[0], label: city[1], children: [] };
-          let areas = cityData[city[0]]
-          if(areas){
-            for(let area of Object.entries(areas)){
-              cityObj.children.push({value:area[0],label:area[1],children:[]})
+          let areas = cityData[city[0]];
+          if (areas) {
+            for (let area of Object.entries(areas)) {
+              cityObj.children.push({
+                value: area[0],
+                label: area[1],
+                children: []
+              });
             }
           }
           provinceObj.children.push(cityObj);
@@ -154,11 +158,9 @@ class JobSeeker extends Component {
       }
       data.push(provinceObj);
     }
-    this.setState({options:data})
-    console.log(this.state.options)
+    this.setState({ options: data });
+    console.log(this.state.options);
     return data;
-   
-
   };
 
   confirmAppalyTotal = () => {
@@ -670,12 +672,12 @@ class JobSeeker extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('appPosition', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: 'Please input your E-mail!'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input your E-mail!'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item
@@ -683,22 +685,22 @@ class JobSeeker extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('idNumber', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: 'Please input your E-mail!'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input your E-mail!'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="性别/Gender" {...formItemLayout}>
                 {getFieldDecorator('Sex', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '请选择性别'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择性别'
+                    }
+                  ]
                 })(
                   <Radio.Group>
                     <Radio value="男">男/Male</Radio>
@@ -708,72 +710,72 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item label="手机/MP" {...formItemLayout}>
                 {getFieldDecorator('Phone', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '请务必输入手机号，方便我们联系您'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请务必输入手机号，方便我们联系您'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="个人邮箱/E-mail" {...formItemLayout}>
                 {getFieldDecorator('Email', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '请务必输入邮箱，方便我们联系您'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请务必输入邮箱，方便我们联系您'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="国籍/Nationality" {...formItemLayout}>
                 {getFieldDecorator('Nationality', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入国籍'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入国籍'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="民族/Nationality" {...formItemLayout}>
                 {getFieldDecorator('Nation', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入民族'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入民族'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="政治面貌/Party Affiliation" {...formItemLayout}>
                 {getFieldDecorator('Party', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入政党'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入政党'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="出生日期/Date Of Birth" {...formItemLayout}>
                 {getFieldDecorator('BirthOfDate', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入出生日期'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入出生日期'
+                    }
+                  ]
                 })(<DatePicker onChange={this.onChangeDate} />)}
               </Form.Item>
               <Form.Item label="出生地点/Place of Birth" {...formItemLayout}>
                 {getFieldDecorator('BirthPlace', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输出生地点'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输出生地点'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item
@@ -781,22 +783,27 @@ class JobSeeker extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('PlaceOfHukou', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '户口所在地必填'
-                  //   }
-                  // ]
-                })(<Cascader options = {this.state.options} placeholder = "please select" ></Cascader>)}
+                  rules: [
+                    {
+                      required: true,
+                      message: '户口所在地必填'
+                    }
+                  ]
+                })(
+                  <Cascader
+                    options={this.state.options}
+                    placeholder="please select"
+                  ></Cascader>
+                )}
               </Form.Item>
               <Form.Item label="血型/Blood Type" {...formItemLayout}>
                 {getFieldDecorator('BloodType', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '血型必须要填'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '血型必须要填'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item
@@ -804,12 +811,12 @@ class JobSeeker extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('CurrentAddress', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入现居住的地址'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入现居住的地址'
+                    }
+                  ]
                 })(<Input />)}
               </Form.Item>
               <Form.Item
@@ -817,12 +824,12 @@ class JobSeeker extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('IfRecommendByF', {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: '输入国籍'
-                  //   }
-                  // ]
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入国籍'
+                    }
+                  ]
                 })(
                   <Radio.Group>
                     <Radio value="有">有/Yes</Radio>
@@ -872,45 +879,99 @@ class JobSeeker extends Component {
                       label="年限（年/月）/Period(Year/Month)"
                       {...formItemLayout2}
                     >
-                      <RangePicker
-                        onChange={this.handelDate.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <RangePicker
+                          onChange={this.handelDate.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="学校名称/Name of School"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Colleges}
-                        onChange={this.handelEduColleges.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写学校名称'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Colleges}
+                          onChange={this.handelEduColleges.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="专业名称/Major" {...formItemLayout2}>
-                      <Input
-                        value={item.Major}
-                        onChange={this.handelEduMajor.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Major}
+                          onChange={this.handelEduMajor.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="学位/Degree" {...formItemLayout2}>
-                      <Input
-                        value={item.Degree}
-                        onChange={this.handelEduDegree.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Degree}
+                          onChange={this.handelEduDegree.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      <Input
-                        value={item.Reference}
-                        onChange={this.handelEduReference.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Reference}
+                          onChange={this.handelEduReference.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Telephone}
-                        onChange={this.handelEduTelephone.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Telephone}
+                          onChange={this.handelEduTelephone.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
@@ -949,48 +1010,102 @@ class JobSeeker extends Component {
                       label="任职年限/Post period"
                       {...formItemLayout2}
                     >
-                      <RangePicker
-                        onChange={this.handelworkPeriod.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <RangePicker
+                          onChange={this.handelworkPeriod.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="公司名称&类型/Name of Company & Type"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.CompanyName}
-                        onChange={this.handelCompanyName.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.CompanyName}
+                          onChange={this.handelCompanyName.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="职位/Position" {...formItemLayout2}>
-                      <Input
-                        value={item.Position}
-                        onChange={this.handelPosition.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Position}
+                          onChange={this.handelPosition.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="离职原因/Reason For Leaving"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Reason}
-                        onChange={this.handelReason.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Reason}
+                          onChange={this.handelReason.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      <Input
-                        value={item.Reference}
-                        onChange={this.handelReference.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Reference}
+                          onChange={this.handelReference.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Telephone}
-                        onChange={this.handelTelephone.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Telephone}
+                          onChange={this.handelTelephone.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
@@ -1025,46 +1140,103 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="姓名/Name" {...formItemLayout2}>
-                      <Input
-                        value={item.Name}
-                        onChange={this.handelFamName.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Name}
+                          onChange={this.handelFamName.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="关系/Relationship" {...formItemLayout2}>
-                      <Input
-                        value={item.Relationship}
-                        onChange={this.handelFamRelationship.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Relationship}
+                          onChange={this.handelFamRelationship.bind(
+                            this,
+                            index
+                          )}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="出生年月/Date of Birth"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.DateofBirth}
-                        onChange={this.handelFamDateofBirth.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.DateofBirth}
+                          onChange={this.handelFamDateofBirth.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="职务/Position" {...formItemLayout2}>
-                      <Input
-                        value={item.Position}
-                        onChange={this.handelFamPosition.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Position}
+                          onChange={this.handelFamPosition.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="公司名称&地址/Name of Company&Address"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Company}
-                        onChange={this.handelFamCompany.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Company}
+                          onChange={this.handelFamCompany.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                      <Input
-                        value={item.Telephone}
-                        onChange={this.handelFamTelephone.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Telephone}
+                          onChange={this.handelFamTelephone.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
 
                     {index + 1 > 1 ? (
@@ -1103,52 +1275,109 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="日期/Date/Period " {...formItemLayout2}>
-                      <RangePicker
-                        onChange={this.handelTrainPeriod.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <RangePicker
+                          onChange={this.handelTrainPeriod.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="培训机构/Name of Training Institute"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.TrainingName}
-                        onChange={this.handelTrainingName.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.TrainingName}
+                          onChange={this.handelTrainingName.bind(this, index)}
+                        />
+                      )}
                     </Form.Item>
 
                     <Form.Item
                       label="培训课程/Training Courses"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.TrainingCourses}
-                        onChange={this.handelTrainingCourses.bind(this, index)}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.TrainingCourses}
+                          onChange={this.handelTrainingCourses.bind(
+                            this,
+                            index
+                          )}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="专业资格/Pofessional Qualification"
                       {...formItemLayout2}
                     >
-                      <Input
-                        value={item.Professional}
-                        onChange={this.handelTrainProfessional.bind(
-                          this,
-                          index
-                        )}
-                      />
+                      {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message: '请填写年限'
+                          }
+                        ]
+                      })(
+                        <Input
+                          value={item.Professional}
+                          onChange={this.handelTrainProfessional.bind(
+                            this,
+                            index
+                          )}
+                        />
+                      )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      <Input
+                    {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )
+                      (<Input
                         value={item.Reference}
                         onChange={this.handelTrainReference.bind(this, index)}
-                      />
+                      />)}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                      <Input
+                    {getFieldDecorator('Period', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )
+                      (<Input
                         value={item.Telephone}
                         onChange={this.handelTrainTelephone.bind(this, index)}
-                      />
+                      />)}
                     </Form.Item>
 
                     <div className="job-seeker__informnation-boundry__delete">
@@ -1180,14 +1409,30 @@ class JobSeeker extends Component {
                 Related Qualification/Skill (If any) 相关技能
               </h3>
               <Form.Item label="常用外语/Common Language" {...formItemLayout2}>
-                {getFieldDecorator('Language', {})(<Input />)}
+                {getFieldDecorator('Language', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(<Input />)}
               </Form.Item>
               <Form.Item
                 label="外语等级/Level"
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('EnCET', {})(
+                {getFieldDecorator('EnCET', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     <Option value="CET-4">CET-4</Option>
                     <Option value="CET-6">CET-6</Option>
@@ -1202,7 +1447,15 @@ class JobSeeker extends Component {
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('Writing', {})(
+                {getFieldDecorator('Writing',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     {languageAbility.map((item, index) => {
                       return (
@@ -1219,7 +1472,15 @@ class JobSeeker extends Component {
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('Reading', {})(
+                {getFieldDecorator('Reading',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     {languageAbility.map((item, index) => {
                       return (
@@ -1236,7 +1497,15 @@ class JobSeeker extends Component {
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('Speaking', {})(
+                {getFieldDecorator('Speaking',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     {languageAbility.map((item, index) => {
                       return (
@@ -1253,7 +1522,15 @@ class JobSeeker extends Component {
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
-                {getFieldDecorator('Listening', {})(
+                {getFieldDecorator('Listening', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     {languageAbility.map((item, index) => {
                       return (
@@ -1266,7 +1543,15 @@ class JobSeeker extends Component {
                 )}
               </Form.Item>
               <Form.Item label="计算机技能/Computer Skill" {...formItemLayout2}>
-                {getFieldDecorator('ComputerSkills', {})(
+                {getFieldDecorator('ComputerSkills',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <Select>
                     {languageAbility.map((item, index) => {
                       return (
@@ -1279,25 +1564,72 @@ class JobSeeker extends Component {
                 )}
               </Form.Item>
               <Form.Item label="列出常用软件/List Name of Software Used">
-                {getFieldDecorator('SoftList', {})(<Input />)}
+                {getFieldDecorator('SoftList', {
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  }
+                  )(<Input />)}
               </Form.Item>
               <Form.Item label="其他技能/Other Skill(If any)">
-                {getFieldDecorator('OtherSkills', {})(<Input />)}
+                {getFieldDecorator('OtherSkills',{
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  }
+                  )(<Input />)}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="其他">
                 Other information 其他
               </h3>
               <Form.Item label="身高(CM)/Height" {...formItemLayout2}>
-                {getFieldDecorator('Height', {})(<Input />)}
+                {getFieldDecorator('Height',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(<Input />)}
               </Form.Item>
               <Form.Item label="体重(KG)/Weight" {...formItemLayout2}>
-                {getFieldDecorator('Weight', {})(<Input />)}
+                {getFieldDecorator('Weight',{
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  }
+                  )(<Input />)}
               </Form.Item>
               <Form.Item label="视力左/Eye Left sight" {...formItemLayout2}>
-                {getFieldDecorator('EyeSight', {})(<Input />)}
+                {getFieldDecorator('EyeSight', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(<Input />)}
               </Form.Item>
               <Form.Item label="视力右/Eye Right sight" {...formItemLayout2}>
-                {getFieldDecorator('EyeSight', {})(<Input />)}
+                {getFieldDecorator('EyeSight', {
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  })(<Input />)}
               </Form.Item>
 
               <Form.Item
@@ -1312,7 +1644,14 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('DiseaseStatus', {})(<TextArea />)}
+                {getFieldDecorator('DiseaseStatus',{
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  })(<TextArea />)}
               </Form.Item>
               <Form.Item
                 colon={false}
@@ -1325,7 +1664,14 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('CriminalStatus', {})(
+                {getFieldDecorator('CriminalStatus',{
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  })(
                   <div>
                     <RadioGroup
                       onChange={e => {
@@ -1343,7 +1689,15 @@ class JobSeeker extends Component {
                 colon={false}
                 label="是否有过失信记录等行为,如有请作详细的说明"
               >
-                {getFieldDecorator('TrustStatus', {})(
+                {getFieldDecorator('TrustStatus', {
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <div>
                     <RadioGroup
                       onChange={e => {
@@ -1368,7 +1722,14 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('UnemployedStatus', {})(
+                {getFieldDecorator('UnemployedStatus',{
+                    rules: [
+                      {
+                        required: true,
+                        message:"请填写年限"
+                      }
+                    ]
+                  })(
                   <div>
                     <RadioGroup
                       onChange={e => {
@@ -1393,7 +1754,15 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('KnowColleageStatus', {})(
+                {getFieldDecorator('KnowColleageStatus',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <div>
                     <RadioGroup
                       onChange={e => {
@@ -1417,7 +1786,15 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('OtherAgreement', {})(
+                {getFieldDecorator('OtherAgreement',{
+                        rules: [
+                          {
+                            required: true,
+                            message:"请填写年限"
+                          }
+                        ]
+                      }
+                      )(
                   <div>
                     <RadioGroup>
                       <Radio value="是">已到期</Radio>

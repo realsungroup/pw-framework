@@ -190,6 +190,7 @@ class TableDataVisitor extends React.Component {
       <div
         className="table-data-wrap"
         style={{ height: 'calc(100vh - 220px)' }}
+        // style={{ height: '100vh' }}
       >
         <TableData
           {...this.props}

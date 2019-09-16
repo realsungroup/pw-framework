@@ -656,12 +656,14 @@ class QuerySet extends Component {
     this.setState({ activeQuestionType: e.target.value });
   };
   handleDateChange = (date, dateStrings) => {
+    let dateValue = date.length?date:[null,null]
     // console.log(dateStrings);
+    console.log(dateValue);
     // console.log('选择的日期', dates[0]._d);
     this.setState({
-      startDate: dateStrings[0],
-      endDate: dateStrings[1]
-    });
+      startDate: dateValue[0],
+      endDate: dateValue[1]
+    },()=>console.log(this.state));
   };
   handlequerSetNameChange = e => {
     // console.log(e.target.value);
@@ -1818,10 +1820,10 @@ class QuerySet extends Component {
               <label className="query-set__setTitle">时间设置</label>
               <div>
                 <RangePicker
-                  value={[
+                  value={this.state.startDate&&this.state.endDate? [
                     moment(this.state.startDate, dateFormat),
                     moment(this.state.endDate, dateFormat)
-                  ]}
+                  ]:[null,null]}
                   // showTime
                   onChange={this.handleDateChange}
                   dateRender={current => {
