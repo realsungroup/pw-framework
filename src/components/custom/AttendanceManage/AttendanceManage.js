@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon, Modal } from 'antd';
+import { Menu, Icon, Modal, Spin, Badge } from 'antd';
 import './AttendanceManage.less';
 import WorkOvertimeApply from './WorkOvertimeApply';
 import AttendanceApply from './AttendanceApply';
@@ -28,7 +28,9 @@ class AttendanceManage extends React.Component {
       selectKey: 'workOverTimeApply',
       collapsed: false,
       desktop: null,
-      approvalRecordVisible: false
+      approvalRecordVisible: false,
+      selectRecord: {},
+      loading: false
     };
   }
   componentDidMount = () => {
@@ -44,8 +46,10 @@ class AttendanceManage extends React.Component {
     });
   };
 
-  openApprovalRecordModal = () =>
-    this.setState({ approvalRecordVisible: true });
+  setLoading = loading => this.setState({ loading });
+
+  openApprovalRecordModal = selectRecord =>
+    this.setState({ approvalRecordVisible: true, selectRecord });
 
   renderContent = () => {
     let selectKey = this.state.selectKey;
@@ -53,16 +57,17 @@ class AttendanceManage extends React.Component {
     switch (selectKey) {
       // 加班批量审批
       case 'workOverTimeApply':
-        page = <WorkOvertimeApply />;
+        page = <WorkOvertimeApply setLoading={this.setLoading} />;
         break;
       // 我的考勤申请单
       case 'sub1-1':
-        page = <WaitingHRApproval />;
+        page = <WaitingHRApproval setLoading={this.setLoading} />;
         break;
       case 'sub1-2':
         page = (
           <WaitingApproval
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
+            setLoading={this.setLoading}
           />
         );
         break;
@@ -71,6 +76,7 @@ class AttendanceManage extends React.Component {
         page = (
           <ApprovalingApplicationForm
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
+            setLoading={this.setLoading}
           />
         );
         break;
@@ -78,37 +84,43 @@ class AttendanceManage extends React.Component {
         page = (
           <ApprovaledApplicationForm
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
+            setLoading={this.setLoading}
           />
         );
         break;
       case 'sub1-5':
-        page = <InvalidApplicationForm />;
+        page = <InvalidApplicationForm setLoading={this.setLoading} />;
         break;
       case 'sub1-6':
-        page = <RevocationApplicationForm />;
+        page = <RevocationApplicationForm setLoading={this.setLoading} />;
         break;
       case 'sub1-7':
-        page = <AttendanceApply />;
+        page = <AttendanceApply setLoading={this.setLoading} />;
         break;
       // 经理人考勤审批
       case 'sub2-1':
-        page = <ManagerAttendanceApproval />;
+        page = (
+          <ManagerAttendanceApproval
+            setLoading={this.setLoading}
+            onOpenApprovalRecordModal={this.openApprovalRecordModal}
+          />
+        );
         break;
       case 'sub2-2':
-        page = <ManagerCurrentMonthRecord />;
+        page = <ManagerCurrentMonthRecord setLoading={this.setLoading} />;
         break;
       case 'sub2-3':
-        page = <ManagerApprovalRecordHistory />;
+        page = <ManagerApprovalRecordHistory setLoading={this.setLoading} />;
         break;
       case 'sub2-4':
-        page = <OverdueApprovalRecord />;
+        page = <OverdueApprovalRecord setLoading={this.setLoading} />;
         break;
       case 'sub2-5':
-        page = <ManagerAttendanceApprovalAuth />;
+        page = <ManagerAttendanceApprovalAuth setLoading={this.setLoading} />;
         break;
       // 部门独立授权
       case 'departmentAuth':
-        page = <DepartmentAuth />;
+        page = <DepartmentAuth setLoading={this.setLoading} />;
         break;
       default:
         break;
@@ -129,136 +141,155 @@ class AttendanceManage extends React.Component {
       desktop,
       collapsed,
       mode,
-      theme
+      theme,
+      selectRecord,
+      loading
     } = this.state;
     return (
-      <div
-        id="attendance-manage"
-        style={{
-          display: 'flex',
-          height: desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
-        }}
-      >
+      <Spin spinning={loading}>
         <div
+          id="attendance-manage"
           style={{
-            width: `${collapsed ? '80px' : '200px'}`,
-            height: '100%',
-            overflow: 'auto',
-            backgroundColor: '#fff'
+            display: 'flex',
+            height: desktop === 'DESKTOP' ? '100vh' : 'calc(100vh - 160px)'
           }}
         >
           <div
             style={{
-              width: '20px',
-              height: '40px',
-              borderRadius: '0px 100px 100px 0px',
-              marginBottom: 16,
-              position: 'absolute',
-              background: '#1890ff',
-              left: collapsed ? '79px' : '200px',
-              top: 4,
-              display: 'flex',
-              alignItems: 'center',
-              zIndex: '999',
-              justifyContent: 'center',
-              boxShadow: '0px 0px 4px 0px rgba(24,144,255,0.4)'
+              width: `${collapsed ? '80px' : '200px'}`,
+              height: '100%',
+              overflow: 'auto',
+              backgroundColor: '#fff'
             }}
-            onClick={this.toggleCollapsed}
           >
-            <Icon
-              type={collapsed ? 'caret-right' : 'caret-left'}
-              style={{ fontSize: '20px', color: '#fff', marginLeft: '-8px' }}
-            />
+            <div
+              style={{
+                width: '20px',
+                height: '40px',
+                borderRadius: '0px 100px 100px 0px',
+                marginBottom: 16,
+                position: 'absolute',
+                background: '#1890ff',
+                left: collapsed ? '79px' : '200px',
+                top: 4,
+                display: 'flex',
+                alignItems: 'center',
+                zIndex: '999',
+                justifyContent: 'center',
+                boxShadow: '0px 0px 4px 0px rgba(24,144,255,0.4)'
+              }}
+              onClick={this.toggleCollapsed}
+            >
+              <Icon
+                type={collapsed ? 'caret-right' : 'caret-left'}
+                style={{ fontSize: '20px', color: '#fff', marginLeft: '-8px' }}
+              />
+            </div>
+            <Menu
+              style={{ height: '100%' }}
+              defaultSelectedKeys={['workOverTimeApply']}
+              defaultOpenKeys={['sub1', 'sub2']}
+              mode={mode}
+              theme={theme}
+              onSelect={this.onSelect}
+              inlineCollapsed={collapsed}
+              // selectedKeys = {this.selectedKeys}
+            >
+              <SubMenu
+                key="sub1"
+                title={
+                  <span>
+                    <Icon type="appstore" />
+                    <span className="attendance-manage_menu__level1">
+                      我的考勤申请单
+                    </span>
+                  </span>
+                }
+              >
+                <Menu.Item key="workOverTimeApply">加班批量申请</Menu.Item>
+                <Menu.Item key="sub1-7">考勤申请</Menu.Item>
+                <Menu.Item key="sub1-1">待HR审核</Menu.Item>
+
+                <Menu.Item key="sub1-2">
+                  待审批
+                  <Badge count={100} />
+                </Menu.Item>
+                <Menu.Item key="sub1-3">
+                  审批中
+                  <Badge count={100} />
+                </Menu.Item>
+                <Menu.Item key="sub1-4">已审批</Menu.Item>
+                <Menu.Item key="sub1-5">已作废</Menu.Item>
+                <Menu.Item key="sub1-6">已撤销</Menu.Item>
+              </SubMenu>
+              <SubMenu
+                key="sub2"
+                title={
+                  <span>
+                    <Icon type="appstore" />
+                    <span className="attendance-manage_menu__level1">
+                      经理人考勤审批
+                    </span>
+                  </span>
+                }
+              >
+                <Menu.Item key="sub2-1">
+                  考勤审批
+                  <Badge count={100} />
+                </Menu.Item>
+                <Menu.Item key="sub2-2">当月审批记录</Menu.Item>
+                <Menu.Item key="sub2-3">历史审批记录</Menu.Item>
+                <Menu.Item key="sub2-4">已过期未审批记录</Menu.Item>
+                <Menu.Item key="sub2-5">考勤审批授权</Menu.Item>
+              </SubMenu>
+              <Menu.Item key="departmentAuth">
+                <Icon type="calendar" />
+                <span className="attendance-manage_menu__level1">
+                  部门独立授权
+                </span>
+              </Menu.Item>
+            </Menu>
           </div>
-          <Menu
-            style={{ height: '100%' }}
-            defaultSelectedKeys={['workOverTimeApply']}
-            defaultOpenKeys={['sub1']}
-            mode={mode}
-            theme={theme}
-            onSelect={this.onSelect}
-            inlineCollapsed={collapsed}
-            // selectedKeys = {this.selectedKeys}
+          <div
+            style={{
+              overflow: 'auto',
+              backgroundColor: '#fff',
+              padding: 28,
+              width: `${collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'}`
+            }}
           >
-            <Menu.Item key="workOverTimeApply">
-              <Icon type="mail" />
-              <span className="attendance-manage_menu__level1">
-                加班批量申请
-              </span>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="appstore" />
-                  <span className="attendance-manage_menu__level1">
-                    我的考勤申请单
-                  </span>
-                </span>
-              }
-            >
-              <Menu.Item key="sub1-7">考勤申请</Menu.Item>
-              <Menu.Item key="sub1-1">待HR审批</Menu.Item>
-              <Menu.Item key="sub1-2">待审批</Menu.Item>
-              <Menu.Item key="sub1-3">审批中</Menu.Item>
-              <Menu.Item key="sub1-4">已审批</Menu.Item>
-              <Menu.Item key="sub1-5">已作废</Menu.Item>
-              <Menu.Item key="sub1-6">已撤销</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="appstore" />
-                  <span className="attendance-manage_menu__level1">
-                    经理人考勤审批
-                  </span>
-                </span>
-              }
-            >
-              <Menu.Item key="sub2-1">考勤审批</Menu.Item>
-              <Menu.Item key="sub2-2">当月审批记录</Menu.Item>
-              <Menu.Item key="sub2-3">历史审批记录</Menu.Item>
-              <Menu.Item key="sub2-4">已过期未审批记录</Menu.Item>
-              <Menu.Item key="sub2-5">考勤审批授权</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="departmentAuth">
-              <Icon type="calendar" />
-              <span className="attendance-manage_menu__level1">
-                部门独立授权
-              </span>
-            </Menu.Item>
-          </Menu>
+            {this.renderContent()}
+          </div>
+          <Modal
+            title="审批记录"
+            visible={approvalRecordVisible}
+            width="90%"
+            destroyOnClose
+            onCancel={() => this.setState({ approvalRecordVisible: false })}
+            onOk={() => this.setState({ approvalRecordVisible: false })}
+          >
+            <TableData
+              key="revocation-application-form"
+              resid="449441441589"
+              subtractH={100}
+              hasAdvSearch={false}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={true}
+              actionBarWidth={100}
+              dblinkname="ehr"
+              height="60vh"
+              cmswhere={`C3_446915623989 = '${selectRecord.C3_446915623989 ||
+                selectRecord.C3_449011109791}'`}
+            />
+          </Modal>
         </div>
-        <div
-          style={{
-            overflow: 'auto',
-            backgroundColor: '#fff',
-            padding: 28,
-            width: `${collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'}`
-          }}
-        >
-          {this.renderContent()}
-        </div>
-        <Modal title="审批记录" visible={approvalRecordVisible} width="80%">
-          <TableData
-            key="revocation-application-form"
-            resid="449441441589"
-            subtractH={200}
-            hasAdvSearch={false}
-            hasAdd={false}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowEdit={false}
-            hasDelete={false}
-            hasModify={false}
-            hasRowModify={false}
-            hasRowSelection={true}
-            actionBarWidth={100}
-            dblinkname="ehr"
-          />
-        </Modal>
-      </div>
+      </Spin>
     );
   }
 }

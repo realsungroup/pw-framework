@@ -1,2 +1,2 @@
-import ComprehensiveQuery from './ComprehensiveQuery';
+import ComprehensiveQuery from './ComprehensiveQueryIndex';
 export default ComprehensiveQuery;
