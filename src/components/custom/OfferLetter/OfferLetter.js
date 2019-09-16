@@ -678,6 +678,7 @@ class OfferLetter extends React.Component {
               at Finisar Wuxi, Incorporated. I have reviewed and agree the
               following hiring and on-board conditions.
               <br />
+              <br />
               <p style={{ margin: '0' }}>
                 Signature:{' '}
                 <strong>
@@ -722,10 +723,15 @@ class OfferLetter extends React.Component {
                 you receive it. If not, the offer letter will become invalid.
               </p>
             </p>
+            <br />
+            <br />
+            <br />
             {/* <div className="logos"></div> */}
             <div className="logoTwo ">
               <img src={logo} />
             </div>
+            <br />
+            <br />
             <h3>聘用条件</h3>
             <br />
             <p>
@@ -771,6 +777,7 @@ class OfferLetter extends React.Component {
               </li>
               <li>其他不符合录用条件的情形。</li>
             </ul>
+            <br />
             <br />
             <br />
             {/* <div className="logot"></div> */}

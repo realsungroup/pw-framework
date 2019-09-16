@@ -31,7 +31,7 @@ class IDLExamination extends React.Component {
         status: '否',
         mail: '12939128391@163.com',
         isRecom: '是',
-        ability:"良好"
+        ability: '良好'
       }
     };
   }
@@ -1277,8 +1277,8 @@ class IDLExamination extends React.Component {
           </p>
           <div style={{ clear: 'both', marginBottom: '10px' }}>
             <table border="1">
-              <tr style={{ fontSize: '10px', height: '35px' }} >
-                <th style={{ width: '842px', padding: '0px' }}>
+              <tr style={{ fontSize: '10px', height: '35px' }}>
+                <th style={{ width: '842px', padding: '0px' }} colspan = "6">
                   <div
                     style={{
                       float: 'middle',
@@ -1294,19 +1294,30 @@ class IDLExamination extends React.Component {
                   </div>
                 </th>
               </tr>
-              <tr >
-                <td rowspan= "1">
+              <tr>
+                <td colspan="1" style = {{float:"left",border:"none"}}>
                   <p>English</p>
                   <p>英语</p>
                 </td>
                 <td>
                   <p>CET</p>
-                  <p>{this.state.data.ability}</p>
                 </td>
-                <th> </th>
-                <th> </th>
-                <th> </th>
-                <th> </th>
+                <th>
+                  <p>English</p>
+                  <p>英语</p>
+                </th>
+                <th>
+                  <p>English</p>
+                  <p>英语</p>
+                </th>
+                <th>
+                  <p>English</p>
+                  <p>英语</p>
+                </th>
+                <th>
+                  <p>English</p>
+                  <p>英语</p>
+                </th>
               </tr>
             </table>
           </div>

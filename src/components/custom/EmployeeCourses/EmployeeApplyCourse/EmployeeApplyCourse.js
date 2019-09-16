@@ -10,10 +10,11 @@ import {
   List,
   message,
   Popconfirm,
-  Form
+  Form,
 } from 'antd';
 import { TableData } from '../../../common/loadableCommon';
 import http from 'Util20/api';
+import TextArea from 'antd/lib/input/TextArea';
 import './EmployeeApplyCourse.less';
 
 const { Option } = Select;
@@ -59,15 +60,15 @@ const form = props => {
           rules: [{ required: true, message: '请输入费用' }]
         })(<Input placeholder="费用" type="number" />)}
       </Form.Item>
-      <Form.Item label="开始上课时间">
+      <Form.Item label="开始上课日期">
         {getFieldDecorator('beginClassTime', {
-          rules: [{ required: true, message: '请填写上课时间' }]
-        })(<DatePicker placeholder="请填写上课时间" />)}
+          rules: [{ required: true, message: '请选择上课日期' }]
+        })(<DatePicker placeholder="请选择上课日期" />)}
       </Form.Item>
-      <Form.Item label="结束上课时间">
+      <Form.Item label="上课结束日期">
         {getFieldDecorator('endClassTime', {
-          rules: [{ required: true, message: '请填写结束时间' }]
-        })(<DatePicker placeholder="请填写结束时间" />)}
+          rules: [{ required: true, message: '请选择结束日期' }]
+        })(<DatePicker placeholder="请选择结束日期" />)}
       </Form.Item>
       <Form.Item label="上课地点">
         {getFieldDecorator('TranningOrganization', {
@@ -77,7 +78,7 @@ const form = props => {
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
           rules: [{ required: true, message: '请填写课程概要' }]
-        })(<Input placeholder="请填写课程概要" />)}
+        })(<TextArea placeholder="请填写课程概要" />)}
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button style={{ marginRight: 12 }} onClick={props.closeModal}>
