@@ -44,9 +44,15 @@ class WorkInfo extends React.Component {
           this.setState({ selectMonth: selectValue });
         }}
         showSearch
-        filterOption={(input, option) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
+        filterOption={(input, option) => {
+          console.log(input, option);
+          return (
+            option.props.children
+              .toString()
+              .toLowerCase()
+              .indexOf(input.toLowerCase()) >= 0
+          );
+        }}
       >
         {this.state.months.map(month => (
           <Option value={month.C3_424358155202}>{month.C3_424358155202}</Option>
@@ -55,7 +61,6 @@ class WorkInfo extends React.Component {
     );
   };
   render() {
-    console.log(this.props);
     return (
       <div className="WorkInfoQuery">
         <div className="Home">
