@@ -126,7 +126,8 @@ class TableData extends React.Component {
       this.props.cparm3 !== prevProps.cparm3 ||
       this.props.cparm4 !== prevProps.cparm4 ||
       this.props.cparm5 !== prevProps.cparm5 ||
-      this.props.cparm6 !== prevProps.cparm6
+      this.props.cparm6 !== prevProps.cparm6 ||
+      this.props.cmsWhere !== prevProps.cmsWhere
     ) {
       this.setState({ loading: true });
       await this.getData();
@@ -1580,7 +1581,6 @@ class TableData extends React.Component {
     const newColumns = this.getNewColumns(columns);
 
     const { addText, enAddText, modifyText, enModifyText } = this.props;
-
     return (
       <PwTable
         title={title}
