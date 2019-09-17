@@ -23,13 +23,24 @@ img{
   margin-top: 10px;
 }
 
-.hospitalImg{
-  width: 724px;
-  height: 399px;
-  background: url(../../../assets/hospital.png) 50% 50% no-repeat;
-  background-size: contain;
-  margin:0 auto;
+.signPerson{
+  float: left;
 }
-.header{
+.signPerson::after{
+  content:"请填写你的签名";
+  color:#fff;
+  border-bottom:1px solid black; 
+  clear: both;
+  
+}
+.signDate{
+  width: 300px;
+  margin-left: 450px;
+}
+.signDate::after{
+  content:"请填写签名日期";
+  color:#fff;
+  border-bottom:1px solid black; 
+  clear: both;
   
 }
