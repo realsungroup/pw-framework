@@ -33,19 +33,24 @@ class CustomForm2 extends React.Component {
         return;
       }
       let { startTime, endTime, reason } = values;
-      let data = {
-        reason,
-        startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-        endTime: endTime.format('YYYY-MM-DD HH:mm:ss')
-      };
-
+      if (!startTime && !startTime) {
+        return message.info('至少选择上、下班时间中的一个');
+      }
       try {
         let res = await http().addRecords({
           resid: '449440966625',
           data: [
             {
               C3_449349153817: 40, //项目编号
-              C3_449663289150: data.reason //事由
+              C3_449663289150: reason, //事由
+              C3_449349070185: startTime && startTime.format('YYYY-MM-DD'), //开始日期
+              C3_449349087938: startTime && startTime.format('HH'), //开始小时
+              C3_449349105582: startTime && startTime.format('mm'), //开始分钟
+              C3_449349077689: endTime && endTime.format('YYYY-MM-DD'), //结束日期
+              C3_449349100590: endTime && endTime.format('HH'), //结束小时
+              C3_449349105691: endTime && endTime.format('mm'), //结束分钟
+              C3_479576033832: startTime && 'Y',
+              C3_479576038621: endTime && 'Y'
             }
           ],
           dblinkname: 'ehr'
@@ -70,22 +75,34 @@ class CustomForm2 extends React.Component {
             <Col span={16}>填单时间：{currentTime}</Col>
           </Row>
 
-          <Form.Item {...formItemLayout} label="上班时间：">
-            {getFieldDecorator('startTime', {
-              rules: [{ required: true, message: '请选择开始时间!' }]
-            })(<DatePicker showTime />)}
+          <Form.Item
+            {...formItemLayout}
+            label="上班时间："
+            help={
+              <span style={{ color: '#f22735' }}>
+                选择上班时间即代表补上班卡点
+              </span>
+            }
+          >
+            {getFieldDecorator('startTime', {})(<DatePicker showTime />)}
           </Form.Item>
 
-          <Form.Item {...formItemLayout} label="下班时间：">
-            {getFieldDecorator('endTime', {
-              rules: [{ required: true, message: '请选择结束时间!' }]
-            })(<DatePicker showTime />)}
+          <Form.Item
+            {...formItemLayout}
+            label="下班时间："
+            help={
+              <span style={{ color: '#f22735' }}>
+                选择下班时间即代表补下班卡点
+              </span>
+            }
+          >
+            {getFieldDecorator('endTime', {})(<DatePicker showTime />)}
           </Form.Item>
 
           <Form.Item {...formItemLayout} label="事由：">
-            {getFieldDecorator('reason', {
-              rules: [{ required: true, message: '请输入事由!' }]
-            })(<TextArea placeholder="请输入事由" />)}
+            {getFieldDecorator('reason', {})(
+              <TextArea placeholder="请输入事由" />
+            )}
           </Form.Item>
 
           <Row>

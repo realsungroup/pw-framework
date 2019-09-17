@@ -121,6 +121,7 @@ class ViewComments extends React.Component {
             operation="view"
             data={this.state.dataProp}
             record={this.state.comment}
+            useAbsolute={true}
           />
         </div>
       </div>

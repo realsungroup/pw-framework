@@ -15,15 +15,16 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           resid="449582852659"
           subtractH={200}
           hasAdvSearch={false}
-          hasAdd={false}
+          hasAdd={true}
           hasRowView={false}
-          hasRowDelete={false}
+          hasRowDelete={true}
           hasRowEdit={false}
-          hasDelete={false}
+          hasDelete={true}
           hasModify={false}
-          hasRowModify={false}
+          hasRowModify={true}
           hasRowSelection={true}
           actionBarWidth={100}
+          hasBeBtns={true}
           dblinkname="ehr"
         />
       </div>

@@ -12,7 +12,7 @@ class AdvantageShortcoming extends React.Component {
     super(props);
     const { type } = this.props;
     let resid = '462400643808';
-    let formName = '员工自评查看2';
+    let formName = '员工自评查看';
     if (type === '年末') {
       formName = '员工年末自评查看';
     }
@@ -58,7 +58,6 @@ class AdvantageShortcoming extends React.Component {
       });
       const formData = dealControlArr(res.data.columns);
       const dataProp = getDataProp(formData, record, true, false, false);
-      console.log(dataProp);
       this.setState({ dataProp });
     } catch (err) {
       console.log(err);
