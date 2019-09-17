@@ -13,6 +13,7 @@ class ManagerAttendanceApproval extends React.Component {
     approvaling: false,
     rejectting: false
   };
+
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">

@@ -3,15 +3,18 @@ import { Select, message } from 'antd';
 import TableData from '../../../../common/data/TableData';
 import './WorkInfo.less';
 import http from 'Util20/api';
+import { getItem } from 'Util20/util';
 
 const { Option } = Select;
 class WorkInfo extends React.Component {
+  state = {
+    months: [],
+    selectMonth: '',
+    userCode: ''
+  };
   constructor(props) {
     super(props);
-    this.state = {
-      months: [],
-      selectMonth: ''
-    };
+    this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
   }
   componentDidMount = async () => {
     await this.getYearMonths();
@@ -80,7 +83,7 @@ class WorkInfo extends React.Component {
             hasRowSelection={false}
             actionBarWidth={100}
             dblinkname="ehr"
-            cparm1={this.props.person.C3_305737857578}
+            cparm1={this.props.person.C3_305737857578 || this.UserCode}
             cparm2={this.state.selectMonth}
             baseURL="http://10.108.2.66:9091/"
           />

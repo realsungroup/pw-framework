@@ -59,10 +59,13 @@ class EditableCell extends React.Component {
       default:
         break;
     }
-    let _children = children;
-    if (typeof children[2] !== 'object') {
-      _children = <Tooltip title={children[2]}>{children}</Tooltip>;
-    }
+    let _children =
+      typeof children[2] !== 'object' ? (
+        <Tooltip title={children[2]}>{children}</Tooltip>
+      ) : (
+        children
+      );
+
     return (
       <td {...restProps}>
         {editing ? (
@@ -110,7 +113,7 @@ class WorkOvertimeApply extends React.Component {
         width: 230
       },
       {
-        title: '小时',
+        title: '小时数',
         dataIndex: 'hours',
         type: InputType.InputNumber,
         editable: true,
@@ -135,6 +138,7 @@ class WorkOvertimeApply extends React.Component {
       },
       {
         title: '操作',
+
         dataIndex: 'operation',
         fixed: 'right',
         width: 100,

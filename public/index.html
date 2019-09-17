@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="overflow:hidden">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -23,7 +23,9 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <!-- 能在 iframe 中使用 react develpoer tools 进行调试 -->
-    <script> __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ </script>
+    <script>
+      __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+    </script>
     <script src="%PUBLIC_URL%/es-shim.min.js"></script>
     <script src="%PUBLIC_URL%/app.config.js"></script>
     <script src="%PUBLIC_URL%/functions.config.js"></script>

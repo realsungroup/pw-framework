@@ -20,19 +20,17 @@ import TableData from '../../common/data/TableData';
 const { SubMenu } = Menu;
 
 class AttendanceManage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: 'inline',
-      theme: 'light',
-      selectKey: 'workOverTimeApply',
-      collapsed: false,
-      desktop: null,
-      approvalRecordVisible: false,
-      selectRecord: {},
-      loading: false
-    };
-  }
+  state = {
+    mode: 'inline',
+    theme: 'light',
+    selectKey: 'workOverTimeApply',
+    collapsed: false,
+    desktop: null,
+    approvalRecordVisible: false,
+    selectRecord: {},
+    loading: false
+  };
+
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
@@ -40,6 +38,18 @@ class AttendanceManage extends React.Component {
       desktop
     });
   };
+
+  componentDidUpdate(pervProps, prevState) {
+    const { selectKey } = this.state;
+    if (selectKey !== prevState.selectKey) {
+      this.getNotices();
+    }
+  }
+
+  getNotices = async () => {
+    console.log('getnotices');
+  };
+
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed
