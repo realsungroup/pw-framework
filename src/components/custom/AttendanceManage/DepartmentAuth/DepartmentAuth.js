@@ -72,9 +72,9 @@ class DepartmentAuth extends React.Component {
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
-          key="invalid-application-form"
+          key="department-auth"
           resid="475845337597"
-          subtractH={200}
+          subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
           hasRowView={false}

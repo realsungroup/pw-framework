@@ -57,6 +57,7 @@ class CustomForm2 extends React.Component {
         });
         message.success(res.message);
         this.props.goBack();
+        this.props.getNotices();
       } catch (error) {
         console.log(error);
         message.error(error.message);

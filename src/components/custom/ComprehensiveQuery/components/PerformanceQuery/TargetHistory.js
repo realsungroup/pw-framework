@@ -13,7 +13,7 @@ class TargetHistory extends React.Component {
             subtractH={200}
             hasAdvSearch={false}
             hasAdd={false}
-            hasRowView={false}
+            hasRowView={true}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
@@ -24,6 +24,7 @@ class TargetHistory extends React.Component {
             dblinkname="ehr"
             height={440}
             cparm1={this.props.selectYear.key}
+            baseURL="http://10.108.2.66:9091/"
           />
         </div>
       </div>

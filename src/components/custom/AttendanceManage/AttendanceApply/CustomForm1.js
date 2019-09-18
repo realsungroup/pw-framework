@@ -214,11 +214,12 @@ class CustomForm1 extends React.Component {
       return message.info('请上传附件');
     }
     this.setState({ submitting: true });
-    const { startTime, endTime } = filledData;
+    const { startTime, endTime, timeLength } = filledData;
     try {
       let result = await this.judgeCanSubmit(
         startTime,
         endTime,
+        timeLength,
         selectedTypeId,
         currentUserCode
       );
@@ -243,6 +244,7 @@ class CustomForm1 extends React.Component {
         });
         message.success(res.message);
         this.props.goBack();
+        this.props.getNotices();
       } else {
         message.error(result.data);
       }
@@ -257,13 +259,14 @@ class CustomForm1 extends React.Component {
   judgeCanSubmit = async (
     startTime,
     endTime,
+    timeLength,
     selectedTypeId,
     currentUserCode
   ) => {
     try {
       let res = await http().getFieldBySql({
         dblink: 'ehr',
-        sql: `select dbo.[fn_check_regvocation](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}', 0)`
+        sql: `select dbo.[fn_check_regvocation](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',${timeLength} )`
       });
       return res;
     } catch (error) {
@@ -329,11 +332,13 @@ class CustomForm1 extends React.Component {
       startHours = typeSubData[selectedTypeId].startHours;
       endHours = typeSubData[selectedTypeId].endHours;
     }
+    let disabled = true;
     if (!startHours.length) {
       if (applyType === '请假') {
         endHours = startHours = vacateHours;
       } else if (applyType === '加班') {
         endHours = startHours = workOvertimeHours;
+        disabled = false;
       }
     }
     return (
@@ -456,7 +461,7 @@ class CustomForm1 extends React.Component {
             validateStatus={errors.timeLength && 'error'}
             help={errors.timeLength && '请输入时间长度'}
           >
-            <InputNumber disabled value={filledData.timeLength} />
+            <InputNumber disabled={disabled} value={filledData.timeLength} />
           </Form.Item>
           {isNeedAttachment && (
             <Form.Item {...formItemLayout} label="附件：" required>

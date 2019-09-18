@@ -11,7 +11,7 @@ class ViewRate extends React.Component {
           subtractH={240}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}

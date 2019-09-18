@@ -17,6 +17,7 @@ class ComprehensiveQueryIndex extends React.Component {
   };
   setTab = tabKey => () => this.setState({ target: tabKey });
 
+  goBack = () => this.setState({ target: '' });
   renderCards = () => {
     return (
       <div className="comprehensive-query-index_cards">
@@ -76,7 +77,11 @@ class ComprehensiveQueryIndex extends React.Component {
     const { target } = this.state;
     return (
       <div className="comprehensive-query-index">
-        {target ? <ComprehensiveQuery tabKey={target} /> : this.renderCards()}
+        {target ? (
+          <ComprehensiveQuery tabKey={target} goBack={this.goBack} />
+        ) : (
+          this.renderCards()
+        )}
       </div>
     );
   }

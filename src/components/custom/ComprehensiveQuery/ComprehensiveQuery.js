@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from 'antd';
+import { Tabs, Icon } from 'antd';
 import TreeRel from '../../common/ui/TreeRel';
 import './ComprehensiveQuery.less';
 import PerformanceQuery from './components/PerformanceQuery';
@@ -79,6 +79,12 @@ class ComprehensiveQuery extends React.Component {
     return (
       <div id="comprehensive-query">
         <main style={{ left: isExpand ? 240 : 4 }} className="main-content">
+          <div
+            className="comprehensive-query_goback-btn"
+            onClick={this.props.goBack}
+          >
+            <Icon type="rollback" style={{ color: '#999' }} />
+          </div>
           <header className="nav-header">
             <Tabs
               defaultActiveKey="1"

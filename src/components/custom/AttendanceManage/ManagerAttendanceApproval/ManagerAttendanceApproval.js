@@ -9,11 +9,6 @@ import http from 'Util20/api';
  */
 
 class ManagerAttendanceApproval extends React.Component {
-  state = {
-    approvaling: false,
-    rejectting: false
-  };
-
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
@@ -83,6 +78,7 @@ class ManagerAttendanceApproval extends React.Component {
       });
       message.success(res.message);
       this.tableDataRef.handleRefresh();
+      this.props.getNotices();
     } catch (error) {
       message.error(error.message);
       console.log(error);

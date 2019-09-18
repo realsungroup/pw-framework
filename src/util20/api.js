@@ -388,4 +388,12 @@ http.createApi('RetrieveSaveTask', {
   url: '/api/tablethread/RetrieveSaveTask'
 });
 
+/**
+ * 根据resids获取通知数
+ */
+http.createApi('getRowCountOfResource', {
+  method: 'get',
+  url: '/api/resource/GetRowCountOfResource'
+});
+
 export default http;

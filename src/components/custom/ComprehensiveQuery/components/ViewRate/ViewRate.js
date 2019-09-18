@@ -81,7 +81,7 @@ class ViewRate extends React.Component {
           subtractH={220}
           hasAdvSearch={true}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -92,8 +92,8 @@ class ViewRate extends React.Component {
           cparm1={id}
           cparm2={this.state.selectYear.label}
           dblinkname="ehr"
-          // height="calc(100vh - 150px)"
           height="95%"
+          baseURL="http://10.108.2.66:9091/"
         />
       </div>
     );

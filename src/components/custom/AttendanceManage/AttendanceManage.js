@@ -16,9 +16,13 @@ import ManagerApprovalRecordHistory from './ManagerApprovalRecordHistory';
 import OverdueApprovalRecord from './OverdueApprovalRecord';
 import ManagerAttendanceApprovalAuth from './ManagerAttendanceApprovalAuth';
 import TableData from '../../common/data/TableData';
+import http from 'Util20/api';
 
 const { SubMenu } = Menu;
 
+const waitingApproval = 449449634592;
+const approvaling = 544795775918;
+const managerApproval = 449442699960;
 class AttendanceManage extends React.Component {
   state = {
     mode: 'inline',
@@ -28,7 +32,12 @@ class AttendanceManage extends React.Component {
     desktop: null,
     approvalRecordVisible: false,
     selectRecord: {},
-    loading: false
+    loading: false,
+    notices: {
+      [waitingApproval]: 0,
+      [approvaling]: 0,
+      [managerApproval]: 0
+    }
   };
 
   componentDidMount = () => {
@@ -37,6 +46,7 @@ class AttendanceManage extends React.Component {
     this.setState({
       desktop
     });
+    this.getNotices();
   };
 
   componentDidUpdate(pervProps, prevState) {
@@ -47,7 +57,22 @@ class AttendanceManage extends React.Component {
   }
 
   getNotices = async () => {
-    console.log('getnotices');
+    try {
+      let res = await http().getRowCountOfResource({
+        resids: '449449634592,544795775918,449442699960',
+        dblinkname: 'ehr'
+      });
+      let data = [...res.data];
+      let notices = {};
+      data.forEach(item => {
+        notices[item.resid] = item.count;
+      });
+      this.setState({
+        notices
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   toggleCollapsed = () => {
@@ -77,6 +102,7 @@ class AttendanceManage extends React.Component {
         page = (
           <WaitingApproval
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
+            getNotices={this.getNotices}
             setLoading={this.setLoading}
           />
         );
@@ -87,6 +113,7 @@ class AttendanceManage extends React.Component {
           <ApprovalingApplicationForm
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
             setLoading={this.setLoading}
+            getNotices={this.getNotices}
           />
         );
         break;
@@ -105,7 +132,12 @@ class AttendanceManage extends React.Component {
         page = <RevocationApplicationForm setLoading={this.setLoading} />;
         break;
       case 'sub1-7':
-        page = <AttendanceApply setLoading={this.setLoading} />;
+        page = (
+          <AttendanceApply
+            setLoading={this.setLoading}
+            getNotices={this.getNotices}
+          />
+        );
         break;
       // 经理人考勤审批
       case 'sub2-1':
@@ -113,6 +145,7 @@ class AttendanceManage extends React.Component {
           <ManagerAttendanceApproval
             setLoading={this.setLoading}
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
+            getNotices={this.getNotices}
           />
         );
         break;
@@ -153,7 +186,8 @@ class AttendanceManage extends React.Component {
       mode,
       theme,
       selectRecord,
-      loading
+      loading,
+      notices
     } = this.state;
     return (
       <Spin spinning={loading}>
@@ -222,11 +256,11 @@ class AttendanceManage extends React.Component {
 
                 <Menu.Item key="sub1-2">
                   待审批
-                  <Badge count={100} />
+                  <Badge count={notices[waitingApproval]} />
                 </Menu.Item>
                 <Menu.Item key="sub1-3">
                   审批中
-                  <Badge count={100} />
+                  <Badge count={notices[approvaling]} />
                 </Menu.Item>
                 <Menu.Item key="sub1-4">已审批</Menu.Item>
                 <Menu.Item key="sub1-5">已作废</Menu.Item>
@@ -245,7 +279,7 @@ class AttendanceManage extends React.Component {
               >
                 <Menu.Item key="sub2-1">
                   考勤审批
-                  <Badge count={100} />
+                  <Badge count={notices[managerApproval]} />
                 </Menu.Item>
                 <Menu.Item key="sub2-2">当月审批记录</Menu.Item>
                 <Menu.Item key="sub2-3">历史审批记录</Menu.Item>
