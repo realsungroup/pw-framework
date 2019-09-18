@@ -13,7 +13,7 @@ class TargetTarget extends React.Component {
             subtractH={200}
             hasAdvSearch={false}
             hasAdd={false}
-            hasRowView={false}
+            hasRowView={true}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
@@ -23,6 +23,7 @@ class TargetTarget extends React.Component {
             actionBarWidth={100}
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
+            baseURL="http://10.108.2.66:9091/"
           />
         </div>
       </div>

@@ -70,7 +70,7 @@ class WorkInfo extends React.Component {
           <div className="buttonLine">{this.renderSelect()}</div>
           <TableData
             resid="460481857607"
-            subtractH={200}
+            subtractH={220}
             hasAdvSearch={false}
             hasAdd={false}
             hasRowView={false}

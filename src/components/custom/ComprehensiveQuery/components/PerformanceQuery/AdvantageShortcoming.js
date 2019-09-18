@@ -11,7 +11,7 @@ class AdvantageShortcoming extends React.Component {
   constructor(props) {
     super(props);
     const { type } = this.props;
-    let resid = '462400643808';
+    let resid = '620409727880';
     let formName = '员工自评查看';
     if (type === '年末') {
       formName = '员工年末自评查看';
@@ -31,7 +31,6 @@ class AdvantageShortcoming extends React.Component {
     const { person } = this.props;
     const id = person.C3_305737857578;
     await this.getYearsTarget(id);
-    await this.getAdvantageShortcoming(this.state.resid, id);
     await this.getFormData(this.state.advantageShortcoming);
   }
 
@@ -40,10 +39,6 @@ class AdvantageShortcoming extends React.Component {
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
     ) {
       await this.getYearsTarget(this.props.person.C3_305737857578);
-      await this.getAdvantageShortcoming(
-        this.state.resid,
-        this.props.person.C3_305737857578
-      );
       await this.getFormData(this.state.advantageShortcoming);
     }
   }
@@ -74,37 +69,21 @@ class AdvantageShortcoming extends React.Component {
       if (res.data.length) {
         this.setState({
           years: res.data,
-          selectYear: res.data[0].C3_420150922019
+          selectYear: res.data[0].C3_420150922019,
+          advantageShortcomings: res.data,
+          advantageShortcoming: res.data[0]
         });
       } else {
         this.setState({
           years: [],
-          selectYear: ''
+          selectYear: '',
+          advantageShortcomings: [],
+          advantageShortcoming: {}
         });
       }
     } catch (error) {
       message.error(error.message);
       console.log(error);
-    }
-  };
-
-  getAdvantageShortcoming = async (resid, id) => {
-    try {
-      const res = await http().getTable({
-        resid,
-        dblinkname: 'ehr',
-        cparm1: id,
-        cparm2: this.state.selectYear
-      });
-      this.setState({
-        advantageShortcomings: res.data,
-        advantageShortcoming: res.data.find(
-          item => item.C3_420150922019 === this.state.selectYear
-        )
-      });
-    } catch (error) {
-      message.error(error.message);
-      console.error(error);
     }
   };
 

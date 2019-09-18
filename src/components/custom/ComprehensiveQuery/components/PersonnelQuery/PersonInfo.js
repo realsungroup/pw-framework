@@ -63,10 +63,25 @@ class PersonInfo extends React.Component {
                 hasRowSelection={false}
                 actionBarWidth={300}
                 cparm1={id}
-                dblinkname="ehr"
                 formProps={{ width: 1000 }}
                 baseURL="http://10.108.2.66:9091/"
                 recordFormUseAbsolute={true}
+                subTableArrProps={[
+                  {
+                    subTableName: '合同记录', // 必选（若不选则标签页标题为子表的 resid）
+                    subResid: 446580376907, // 必选
+                    tableProps: {
+                      hasAdvSearch: false,
+                      hasDelete: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasRowView: true,
+                      hasBeBtns: false,
+                      baseURL: 'http://10.108.2.66:9091/'
+                      // recordFormUseAbsolute: true
+                    }
+                  }
+                ]}
               />
             )}
           </div>

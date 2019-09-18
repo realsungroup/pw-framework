@@ -6,7 +6,7 @@ import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
 
 const { Option } = Select;
-const resid = '462400643808';
+const resid = '620409727880';
 class ViewComments extends React.Component {
   constructor(props) {
     super(props);
@@ -22,15 +22,23 @@ class ViewComments extends React.Component {
     const { person } = this.props;
     const id = person.C3_305737857578;
     await this.getYearsTarget(id);
-    await this.getComments(resid, id);
     await this.getFormData(this.state.comment);
+  }
+  async componentDidUpdate(prevProps) {
+    if (
+      prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
+    ) {
+      await this.getYearsTarget(this.props.person.C3_305737857578);
+      await this.getFormData(this.state.comment);
+    }
   }
   getFormData = async record => {
     let res;
     try {
-      res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getFormData({
-        resid: resid,
-        formName: '财年评语查看'
+      res = await http().getFormData({
+        resid,
+        formName: '财年评语查看',
+        dblinkname: 'ehr'
       });
       const formData = dealControlArr(res.data.columns);
       const dataProp = getDataProp(formData, record, true, false, false);
@@ -42,20 +50,24 @@ class ViewComments extends React.Component {
   };
   getYearsTarget = async id => {
     try {
-      const res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getTable({
-        resid: '620409727880',
+      const res = await http().getTable({
+        resid,
         cparm1: id,
         dblinkname: 'ehr'
       });
       if (res.data.length) {
         this.setState({
           years: res.data,
-          selectYear: res.data[0].C3_420150922019
+          selectYear: res.data[0].C3_420150922019,
+          comments: res.data,
+          comment: res.data[0]
         });
       } else {
         this.setState({
           years: [],
-          selectYear: ''
+          selectYear: '',
+          comments: [],
+          comment: {}
         });
       }
     } catch (error) {
@@ -63,25 +75,7 @@ class ViewComments extends React.Component {
       console.log(error);
     }
   };
-  getComments = async (resid, id) => {
-    try {
-      const res = await http({ baseURL: 'http://10.108.2.66:9091/' }).getTable({
-        resid,
-        dblinkname: 'ehr',
-        cparm1: id,
-        cparm2: this.state.selectYear
-      });
-      this.setState({
-        comments: res.data,
-        comment: res.data.find(
-          item => item.C3_420150922019 === this.state.selectYear
-        )
-      });
-    } catch (error) {
-      message.error(error.message);
-      console.error(error);
-    }
-  };
+
   renderSelect = () => {
     return (
       <Select
