@@ -359,11 +359,11 @@ class SubordinateCourses extends React.Component {
                                 );
                               }}
                             >
-                              反馈表和行动计划表
+                              行动计划表
                             </Button>
                           ) : (
                             <Button type="link" disabled>
-                              反馈表和行动计划表
+                              行动计划表
                             </Button>
                           ))}
                         {/* 内训和外聘内训没有行动计划 */}
@@ -479,7 +479,7 @@ class SubordinateCourses extends React.Component {
                     this.getFeebackAndRate();
                   }}
                 >
-                  反馈表和行动计划表
+                  行动计划表
                 </Button>
               </Col>
               <Col span={16}>{course.C3_615377481222}</Col>

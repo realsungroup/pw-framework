@@ -64,7 +64,7 @@ class CourseDetail extends Component {
                     onCloseDetailOpenFeeback();
                   }}
                 >
-                  反馈表和行动计划表
+                  行动计划表
                 </a>
               </Col>
               <Col span={16}>{course.C3_615377481222}</Col>

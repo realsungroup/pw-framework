@@ -50,6 +50,18 @@ class ViewTips extends React.Component {
       tips: {}
     });
 
+  //下载查阅
+    handleDownMaterial = url => {
+      if (!url) {
+        return Modal.warning({
+          title: '还未上传心得'
+        });
+      }
+      const urls = url.split(';file;');
+      for (let i = 0, len = urls.length; i < len; i++) {
+        window.open(urls[i]);
+      }
+    };
   render() {
     let { tips } = this.state;
     return (
@@ -66,7 +78,7 @@ class ViewTips extends React.Component {
           hasRowModify={false}
 					actionBarWidth={150}
           customRowBtns={[
-            record => {
+            (record,btnSize) => {
               return (
                 <Button
                   onClick={() => {
@@ -80,6 +92,17 @@ class ViewTips extends React.Component {
                   }}
                 >
                   查看心得
+                </Button>
+              );
+            },
+            (record, btnSize) => {
+              return (
+                <Button
+                  onClick={() => {
+                    this.handleDownMaterial(record.Filepath);
+                  }}
+                >
+                  下载查阅
                 </Button>
               );
             }

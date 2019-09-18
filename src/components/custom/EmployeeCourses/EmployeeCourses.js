@@ -898,7 +898,7 @@ class EmployeeCourses extends React.Component {
                               })
                             }
                           >
-                            填写课程反馈与行动计划
+                            填写课程行动计划
                           </span>
                         ) : null}
                       </div>
@@ -907,7 +907,7 @@ class EmployeeCourses extends React.Component {
                       color={this.getColor(selectedCourse.C3_615377473913)}
                     >
                       <div>
-                        <span>课程反馈与行动计划</span>
+                        <span>课程行动计划</span>
                         <span style={{ paddingLeft: 12 }}>
                           {selectedCourse.C3_615377481222}
                         </span>
@@ -921,7 +921,7 @@ class EmployeeCourses extends React.Component {
                               this.setState({ feebackVisible: true })
                             }
                           >
-                            查看课程反馈与行动计划
+                            查看课程行动计划
                           </span>
                         ) : null}
                         {selectedCourse.isSubmitFeel === 'ing' &&
@@ -930,7 +930,7 @@ class EmployeeCourses extends React.Component {
                             className="timeline_action"
                             onClick={this.openWriteTip}
                           >
-                            填写心得
+                            填写心得体会(分享记录)
                           </span>
                         ) : null}
                       </div>
@@ -940,7 +940,7 @@ class EmployeeCourses extends React.Component {
                         color={this.getColor(selectedCourse.isSubmitFeel)}
                       >
                         <div>
-                          <span>心得体会</span>
+                          <span>心得体会(分享记录)</span>
                           <span style={{ paddingLeft: 12 }}>
                             {selectedCourse.submitFeelTime}
                           </span>
@@ -954,7 +954,7 @@ class EmployeeCourses extends React.Component {
                                 this.getTip();
                               }}
                             >
-                              查看心得
+                              查看心得体会(分享记录)
                             </span>
                           ) : null}
                         </div>
@@ -1159,7 +1159,7 @@ class EmployeeCourses extends React.Component {
         <Modal
           title={
             selectedCourse.courseType === '外训'
-              ? '课程反馈和行动计划'
+              ? '课程行动计划'
               : '课程反馈'
           }
           visible={this.state.feebackVisible}
