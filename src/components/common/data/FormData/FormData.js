@@ -394,7 +394,7 @@ class FormData extends React.Component {
             return (
               <label
                 style={{
-                  fontWeight: 600,
+                  fontWeight: item.FrmFontBold * 500,
                   position: 'absolute',
                   top: (customStyle.top / containerHeight) * 100 + '%',
                   left: (customStyle.left / containerWidth) * 100 + '%',
@@ -402,7 +402,9 @@ class FormData extends React.Component {
                   height: (customStyle.height / containerHeight) * 100 + '%',
                   overflow: 'auto',
                   textAlign: customStyle.textAlign,
-                  fontSize: customStyle.fontSize
+                  fontSize: customStyle.fontSize,
+                  color: item.FrmForeColor,
+                  fontFamily: item.FrmFontName
                 }}
               >
                 {`${item.FrmText}`}
@@ -420,8 +422,8 @@ class FormData extends React.Component {
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
-                  overflow: 'auto',
-                  lineHeight: 2.4,
+                  overflow: 'scroll',
+                  // lineHeight: 2.4,
                   fontSize: customStyle.fontSize
                 }}
               >
