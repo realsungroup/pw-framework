@@ -80,6 +80,7 @@ class ApprovalingApplicationForm extends React.Component {
         dblinkname: 'ehr'
       });
       this.tableDataRef.handleRefresh();
+      this.props.getNotices();
     } catch (error) {
       message.error(error.message);
       console.log(error);

@@ -33,10 +33,20 @@ class AttendanceApply extends React.Component {
     let page = null;
     switch (current) {
       case 1:
-        page = <CustomForm1 goBack={this.goBack} />;
+        page = (
+          <CustomForm1
+            goBack={this.goBack}
+            getNotices={this.props.getNotices}
+          />
+        );
         break;
       case 2:
-        page = <CustomForm2 goBack={this.goBack} />;
+        page = (
+          <CustomForm2
+            goBack={this.goBack}
+            getNotices={this.props.getNotices}
+          />
+        );
         break;
       default:
         break;
