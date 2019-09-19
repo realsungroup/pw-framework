@@ -1092,6 +1092,7 @@ class IDLExamination extends React.Component {
                     float: 'left',
                     height: 45,
                     width: 100
+                    ,borderLeft:'1px solid grey'
                   }}
                 >
                   <p style={{ float: 'left', marginLeft: 5 }}>Left</p>
@@ -1107,6 +1108,8 @@ class IDLExamination extends React.Component {
                     float: 'left',
                     height: 45,
                     width: 100
+                    ,borderLeft:'1px solid grey'
+                    
                   }}
                 >
                   <p style={{ float: 'left', marginLeft: 5 }}>Right</p>
