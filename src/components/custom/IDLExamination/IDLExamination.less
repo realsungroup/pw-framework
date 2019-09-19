@@ -40,3 +40,89 @@ img{
   border-bottom:1px solid #000;
   margin-left: 8px;
 }
+.baseInfo th{
+  position:relative;
+  width:408px;
+}
+.baseInfo th div:last-child{
+  position:absolute;
+  right:5px;
+}
+dl{
+  border:1px solid grey;
+  border-right:none;
+  border-bottom:none;
+  width:842px;
+  *{
+    margin:0;
+    padding:0;
+  }
+  dt{
+    overflow: hidden;
+    rect{
+      height:36px;
+    }
+  }
+  dd{
+    width:100%;
+    overflow: hidden;
+  }
+  rect{
+    float:left;
+    height:58px;
+    border-right:1px solid grey;
+    border-bottom:1px solid grey;
+    div,p{
+      display: flex;
+      width:100%;
+      font-size: 12px;
+      height:32px;
+      font-weight: bold;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      p{
+        height:14px;
+      }
+    }
+    div:last-child{
+      height:26px;
+    }
+  }
+  rect:first-child{
+      width:137px;
+      overflow: hidden;
+      div{
+        display: block;
+        width:50%;
+        height:26px;
+        line-height:26px;
+        text-align: center;
+        float:left;
+
+        &:nth-child(1){
+          width:100%;
+          height: 32px;
+          line-height:16px;
+          p{
+            display: block;
+            line-height:16px;
+          }
+          border-bottom:1px solid grey;
+        }
+        &:nth-child(2){
+          border-right:1px solid grey;
+        }
+      }
+
+  }
+  rect:nth-child(2),rect:nth-child(3){
+      width:190px;
+  }
+  rect:nth-child(4),rect:nth-child(5){
+      width:100px;
+  }
+  rect:last-child{
+      width:123px;
+  }
+}

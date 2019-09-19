@@ -100,9 +100,9 @@ class IDLExamination extends React.Component {
             Personal Information 个人资料
           </div>
           <div style={{ clear: 'both', marginBottom: '10px' }}>
-            <table border="1">
+            <table border="1" className='baseInfo'>
               <tr style={{ fontSize: '10px', height: '35px' }}>
-                <th>
+                <th >
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Position for Applied</p>
                     <p>申请职位名称:</p>
@@ -295,7 +295,7 @@ class IDLExamination extends React.Component {
                   </div>
                   <div
                     style={{
-                      marginTop: '-16px',
+                      marginTop: '20px',
                       marginLeft: '20x',
                       float: 'right'
                     }}
@@ -357,7 +357,7 @@ class IDLExamination extends React.Component {
                   </div>
                   <div
                     style={{
-                      marginTop: '-20px',
+                      marginTop: '20px',
                       marginLeft: '20x',
                       float: 'right'
                     }}
@@ -451,538 +451,173 @@ class IDLExamination extends React.Component {
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
           <div style={{ clear: 'both', marginBottom: '10px' }}>
-            <table border="1">
-              <tr style={{ fontSize: '10px', height: '35px' }}>
-                <th style={{ width: '137px', padding: '0px' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Period (Year / Month)</p>
-                    <p>年限(年/月)</p>
-                  </div>
-                  <div
-                    style={{
-                      width: '68px',
-                      height: '19px',
-                      border: '1px solid black',
-                      borderLeft: 'none',
-                      borderBottom: 'none',
-                      float: 'left'
-                    }}
-                  >
-                    From 由
-                  </div>
-                  <div
-                    style={{
-                      width: '69px',
-                      height: '19px',
-                      border: '1px solid black',
-                      borderRight: 'none',
-                      borderBottom: 'none',
-                      borderLeft: 'none',
-                      marginTop: -19,
-                      float: 'right'
-                    }}
-                  >
-                    To 至{' '}
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Name of School/Colleges/Universities</p>
-                    <p>学校/学院/大学:</p>
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Major</p>
-                    <p>专业</p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Degree</p>
-                    <p>学位</p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Reference</p>
-                    <p>证明人</p>
-                  </div>
-                </th>
-                <th style={{ width: '122px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>Telephone</p>
-                    <p>电话</p>
-                  </div>
-                </th>
-              </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
-                <tr style={{ height: '35px' }}>
-                  <th
-                    style={{
-                      width: '68px',
-                      borderLeft: 'none',
-                      borderBottom: 'none',
-                      borderTop: 'none'
-                    }}
-                  >{this.state.data.education[0].from}</th>
-                  <th
-                    style={{
-                      width: '69px',
-                      borderRight: 'none',
-                      borderBottom: 'none',
-                      borderTop: 'none'
-                    }}
-                  >{this.state.data.education[0].to}</th>
-                </tr>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>{this.state.data.education[0].school}</p>
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>{this.state.data.education[0].major}</p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>{this.state.data.education[0].degree}</p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>{this.state.data.education[0].reference}</p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '122px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p>{this.state.data.education[0].tel}</p>
-                    <p></p>
-                  </div>
-                </th>
-              </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
-                <tr style={{ height: '35px' }}>
-                  <th
-                    style={{
-                      width: '68px',
-                      borderLeft: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                  <th
-                    style={{
-                      width: '69px',
-                      borderRight: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                </tr>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '122px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-              </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
-                <tr style={{ height: '35px' }}>
-                  <th
-                    style={{
-                      width: '68px',
-                      borderLeft: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                  <th
-                    style={{
-                      width: '69px',
-                      borderRight: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                </tr>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '122px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-              </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
-                <tr style={{ height: '35px' }}>
-                  <th
-                    style={{
-                      width: '68px',
-                      borderLeft: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                  <th
-                    style={{
-                      width: '69px',
-                      borderRight: 'none',
-                      borderBottom: 'none'
-                      // borderTop:"none"
-                    }}
-                  ></th>
-                </tr>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '190px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '122px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-              </tr>
-            </table>
+            <dl>
+              <dd>
+                <rect>
+                  <div>Period(Year/Month)<p>年限（年/月）</p></div>
+                  <div>From由</div>
+                  <div>To至</div>
+                </rect>
+                <rect>
+                  <div>Name of School/Colleges/Universities</div><div>学校/学院/大学</div>
+                </rect>
+                <rect>
+                  <div>Major</div><div>专业</div>
+                </rect>
+                <rect>
+                  <div>Degree</div><div>学位</div>
+                </rect>
+                <rect>
+                  <div>Reference</div><div>证明人</div>
+                </rect>
+                <rect>
+                  <div>Telephone</div><div>电话</div>
+                </rect>
+              </dd>
+              <dt>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+              </dt>
+              <dt>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+              </dt>
+              <dt>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+              </dt>
+              <dt>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+                <rect>
+                </rect>
+              </dt>
+            </dl>
           </div>
-          
+
          <p style={{ float: 'left', fontWeight: 'bold' }}>
           Working History (Please start with latest one)
           工作经验（请从最近职位开始填写）
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
-          <table border="1">
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <th style={{ width: '137px', padding: '0px' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Post Period</p>
-                  <p>任职年限</p>
-                </div>
-                <tr>
-                  <th
-                    style={{
-                      width: '68px',
-                      borderLeft: 'none',
-                      borderBottom: 'none'
-                    }}
-                  >
-                    From 由
-                  </th>
-                  <th
-                    style={{
-                      width: '69px',
-                      borderRight: 'none',
-                      borderBottom: 'none'
-                    }}
-                  >
-                    To 至{' '}
-                  </th>
-                </tr>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Name of Company & Type</p>
-                  <p>公司名称及类型</p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Position</p>
-                  <p>职位</p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Reason For Leaving</p>
-                  <p>离职原因</p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Reference</p>
-                  <p>证明人</p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p>Telephone</p>
-                  <p>电话</p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <tr style={{ height: '35px' }}>
-                <th
-                  style={{
-                    width: '68px',
-                    borderLeft: 'none',
-                    borderBottom: 'none',
-                    borderTop: 'none'
-                  }}
-                ></th>
-                <th
-                  style={{
-                    width: '69px',
-                    borderRight: 'none',
-                    borderBottom: 'none',
-                    borderTop: 'none'
-                  }}
-                ></th>
-              </tr>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <tr style={{ height: '35px' }}>
-                <th
-                  style={{
-                    width: '68px',
-                    borderLeft: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-                <th
-                  style={{
-                    width: '69px',
-                    borderRight: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-              </tr>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <tr style={{ height: '35px' }}>
-                <th
-                  style={{
-                    width: '68px',
-                    borderLeft: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-                <th
-                  style={{
-                    width: '69px',
-                    borderRight: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-              </tr>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <tr style={{ height: '35px' }}>
-                <th
-                  style={{
-                    width: '68px',
-                    borderLeft: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-                <th
-                  style={{
-                    width: '69px',
-                    borderRight: 'none',
-                    borderBottom: 'none'
-                    // borderTop:"none"
-                  }}
-                ></th>
-              </tr>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{  marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{ marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-          </table>
+        <dl>
+          <dd>
+            <rect>
+              <div>Post Period<p>任职年限</p></div>
+              <div>From由</div>
+              <div>To至</div>
+            </rect>
+            <rect>
+              <div>Name of Company&Type</div><div>公司名称及类型</div>
+            </rect>
+            <rect>
+              <div>Position</div><div>职位</div>
+            </rect>
+            <rect>
+              <div>Reason For Leaving</div><div>离职原因</div>
+            </rect>
+            <rect>
+              <div>Reference</div><div>证明人</div>
+            </rect>
+            <rect>
+              <div>Telephone</div><div>电话</div>
+            </rect>
+          </dd>
+          <dt>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+          </dt>
+          <dt>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+          </dt>
+          <dt>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+          </dt>
+          <dt>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+            <rect>
+            </rect>
+          </dt>
+        </dl>
         </div>
 
         <p style={{ float: 'left', fontWeight: 'bold' }}>
