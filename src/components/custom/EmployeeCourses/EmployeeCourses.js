@@ -1073,7 +1073,7 @@ class EmployeeCourses extends React.Component {
           />
         </Modal>
         <Modal
-          title="申请单"
+          title="培训申请单"
           visible={this.state.applyVisible}
           onCancel={this.handleApplyCancel}
           destroyOnClose
@@ -1217,7 +1217,7 @@ class EmployeeCourses extends React.Component {
         </Modal>
         {/* 审批记录模态窗 */}
         <Modal
-          title="申请单审批记录"
+          title="培训申请单审批记录"
           visible={this.state.ReviewRecordModalVisible}
           width="70%"
           onOk={() => {

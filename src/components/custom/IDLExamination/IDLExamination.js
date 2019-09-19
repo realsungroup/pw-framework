@@ -46,7 +46,36 @@ class IDLExamination extends React.Component {
         jobImformation: '',
         relationImfor: '',
         contract: '',
-        appraisement: ''
+        appraisement: '',
+        education:[
+          {
+            from:"201907",
+            to:"201909",
+            school:"北京大学",
+            major:"computer",
+            degree:'学士',
+            reference:'zhangsan',
+            tel:'13127123711'
+          },
+          {
+            from:"201907",
+            to:"201909",
+            school:"北京大学",
+            major:"computer",
+            degree:'学士',
+            reference:'zhangsan',
+            tel:'13127123711'
+          },
+          {
+            from:"201907",
+            to:"201909",
+            school:"北京大学",
+            major:"computer",
+            degree:'学士',
+            reference:'zhangsan',
+            tel:'13127123711'
+          },
+        ]
       }
     };
   }
@@ -496,7 +525,7 @@ class IDLExamination extends React.Component {
                       borderBottom: 'none',
                       borderTop: 'none'
                     }}
-                  ></th>
+                  >{this.state.data.education[0].from}</th>
                   <th
                     style={{
                       width: '69px',
@@ -504,35 +533,34 @@ class IDLExamination extends React.Component {
                       borderBottom: 'none',
                       borderTop: 'none'
                     }}
-                  ></th>
+                  >{this.state.data.education[0].to}</th>
                 </tr>
                 <th style={{ width: '190px', clear: 'both' }}>
                   <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
+                    <p>{this.state.data.education[0].school}</p>
                   </div>
                 </th>
                 <th style={{ width: '190px', clear: 'both' }}>
                   <div style={{ marginLeft: '5px' }}>
-                    <p></p>
-                    <p></p>
-                  </div>
-                </th>
-                <th style={{ width: '100px', clear: 'both' }}>
-                  <div style={{ marginLeft: '5px' }}>
-                    <p></p>
+                    <p>{this.state.data.education[0].major}</p>
                     <p></p>
                   </div>
                 </th>
                 <th style={{ width: '100px', clear: 'both' }}>
                   <div style={{ marginLeft: '5px' }}>
+                    <p>{this.state.data.education[0].degree}</p>
                     <p></p>
+                  </div>
+                </th>
+                <th style={{ width: '100px', clear: 'both' }}>
+                  <div style={{ marginLeft: '5px' }}>
+                    <p>{this.state.data.education[0].reference}</p>
                     <p></p>
                   </div>
                 </th>
                 <th style={{ width: '122px', clear: 'both' }}>
                   <div style={{ marginLeft: '5px' }}>
-                    <p></p>
+                    <p>{this.state.data.education[0].tel}</p>
                     <p></p>
                   </div>
                 </th>
@@ -1583,8 +1611,8 @@ class IDLExamination extends React.Component {
           </p>
         </div>
         <div style ={{clear:"both",marginBottom:20}}>
-          <p className = "signPerson">Signature of Applicant/申请人签名</p>
-          <p className = "signDate">Date/日期</p>
+          <p className = "signPerson">Signature of Applicant/申请人签名<b></b></p>
+          <p className = "signDate">Date/日期<b></b></p>
         </div>
         </div>
         <div>
