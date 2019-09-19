@@ -131,7 +131,6 @@ class CourseArrangementInternal extends React.Component {
           category_name: item.CourseName
         };
       });
-      console.log(courseArrangements, calendarEvents);
       this.setState({ courseArrangements, courses, calendarEvents });
     } else {
       message.error(res.message);
@@ -145,7 +144,6 @@ class CourseArrangementInternal extends React.Component {
       res = await http().getTable({
         resid: InternalCoursesResid
       });
-      console.log(res.data);
       this.setState({ internalCourses: res.data });
     } catch (error) {
       message.error(error.message);
@@ -161,7 +159,6 @@ class CourseArrangementInternal extends React.Component {
       this.setState({
         courseTypes: res.data
       });
-      console.log('res', res);
     } catch (err) {
       message.error(err.message);
       return;

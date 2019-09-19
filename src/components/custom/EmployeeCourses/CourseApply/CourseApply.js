@@ -13,20 +13,6 @@ class CourseApply extends Component {
     let { course } = this.props;
     return (
       <div className="courseApply">
-        {/* {this.props.mode === 'modify' ? null : (
-          <Card
-            title="申请表"
-            type="inner"
-            size="small"
-            className="courseApply__card"
-          >
-            <Steps progressDot={true}>
-              <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
-              <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
-              <Step description="直接主管/部门负责人 刘哲 2019-08-01 2:00pm" />
-            </Steps>
-          </Card>
-        )} */}
         <Card
           title="申请人信息"
           type="inner"
@@ -46,7 +32,11 @@ class CourseApply extends Component {
         </Card>
         <CourseInfo
           course={course}
-          extraCost={this.props.mode === 'view' ? course.extraCharge : this.props.extraCost}
+          extraCost={
+            this.props.mode === 'view'
+              ? course.extraCharge
+              : this.props.extraCost
+          }
           onChangeExtraCost={this.props.onChangeExtraCost}
           mode={this.props.mode}
         />

@@ -2,11 +2,22 @@
   display: grid;
   height: 100%;
   grid-template-columns: 60% 40%;
-  grid-template-rows: calc(100vh - 48px);
-  #nodes {
-    width: 100%;
+  grid-template-rows: 100%;
+  &_right {
     height: 100%;
-    position: relative;
-    background: rgba(240, 242, 245, 1);
+    #nodes {
+      width: 100%;
+      height: 50%;
+      position: relative;
+      background: rgba(240, 242, 245, 1);
+    }
+    .dotted rect {
+      // stroke-dasharray: 3;
+      stroke: blue;
+    }
+    &_employee_info {
+      border: 1px solid rgba(232, 232, 232, 1);
+      height: 50%;
+    }
   }
 }

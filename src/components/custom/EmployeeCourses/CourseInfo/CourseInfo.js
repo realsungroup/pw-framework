@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Row, Input,Modal,Button } from 'antd';
+import { Card, Col, Row, Input, Modal, Button } from 'antd';
 
 const CourseInfo = function(props) {
   let { course } = props;
@@ -13,7 +13,7 @@ const CourseInfo = function(props) {
       <Row>
         <Col span={8}>课程名称:{course.C3_613941384592}</Col>
         <Col span={8}>课程编号:{course.C3_614182469763}</Col>
-        <Col span={8}>价格：{course.C3_613941385069}</Col>
+        <Col span={8}>价格：{course.C3_622227141162}</Col>
       </Row>
       <Row>
         <Col span={8}>开始时间:{course.C3_615393041304} </Col>
@@ -48,7 +48,6 @@ const CourseInfo = function(props) {
         </Col>
       </Row>
     </Card>
-    
   );
 };
 export default CourseInfo;

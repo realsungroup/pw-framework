@@ -9,12 +9,13 @@ import {
   DatePicker,
   Input,
   Button,
-  Tooltip
+  Tooltip,
+  Form
 } from 'antd';
 import moment from 'moment';
 import http from 'Util20/api';
 const dateFormat = 'YYYY-MM-DD';
-
+const { TextArea } = Input;
 class FeedBackAndPlan extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +40,10 @@ class FeedBackAndPlan extends Component {
         rate7: null,
         rate8: null
       },
+      otherAdvice: {
+        advantages: '',
+        shortcommings: ''
+      },
       //外训评分
       rateOut: {
         rate1: null,
@@ -50,7 +55,6 @@ class FeedBackAndPlan extends Component {
   }
   componentDidMount() {
     if (this.props.mode === 'view') {
-      //
       this.getFeebackAndRate();
     }
   }
@@ -76,21 +80,25 @@ class FeedBackAndPlan extends Component {
         this.setState({
           rateOut: tempRateOut
         });
-        // console.log('后端返回的外训评分', this.state.rateOut);
       } else {
         const tempRate = { ...rate };
-        tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
-        tempRate.rate2 = res.data[0].C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
-        tempRate.rate3 = res.data[0].C3_615640043869; //所学的内容对实际工作有很大帮助
-        tempRate.rate4 = res.data[0].C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-        tempRate.rate5 = res.data[0].C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-        tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
-        tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
-        tempRate.rate8 = res.data[0].C3_615640235456; //时间控制合理使我感到舒适
+        const data = res.data[0];
+        tempRate.rate1 = data.C3_615639978971; //讲师备课充分
+        tempRate.rate2 = data.C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
+        tempRate.rate3 = data.C3_615640043869; //所学的内容对实际工作有很大帮助
+        tempRate.rate4 = data.C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
+        tempRate.rate5 = data.C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+        tempRate.rate6 = data.C3_615640180269; //我能够积极参与到课堂中去
+        tempRate.rate7 = data.C3_615640206802; //我的提问能够得到讲师认真,满意的答复
+        tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适
+        const otherAdvice = {
+          shortcommings: data.C3_622216725340,
+          advantages: data.C3_622216706104
+        };
         this.setState({
-          rate: tempRate
+          rate: tempRate,
+          otherAdvice
         });
-        console.log('后盾返回的内训评分', tempRate);
       }
     }
     let res2; //行动计划
@@ -102,7 +110,6 @@ class FeedBackAndPlan extends Component {
     } catch (err) {
       console.log(err);
     }
-    console.log('后端返回的行动计划', res2);
     this.setState({
       planView: res2.data
     });
@@ -387,9 +394,7 @@ class FeedBackAndPlan extends Component {
     }
   };
   render() {
-    // console.log('行动计划', this.state.palnView);
-    // console.log('外训平分', this.state.rateOut);
-    // console.log('内训评分', this.state.rate);
+    const required = !(this.props.mode === 'view');
     return (
       <div>
         {this.props.onCourseType === '内训' ? (
@@ -520,6 +525,50 @@ class FeedBackAndPlan extends Component {
                 </Col>
               </Row>
             </Card>
+            <Form.Item
+              label="我很有收获的内容"
+              labelCol="4"
+              required={required}
+            >
+              <TextArea
+                placeholder="我很有收获的内容"
+                disabled={this.props.mode === 'view'}
+                value={this.state.otherAdvice.advantages}
+                onChange={e => {
+                  this.setState(
+                    {
+                      otherAdvice: {
+                        ...this.state.otherAdvice,
+                        advantages: e.target.value
+                      }
+                    },
+                    () => this.props.onAdviceChange(this.state.otherAdvice)
+                  );
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="我希望改进的内容"
+              labelCol="4"
+              required={required}
+            >
+              <TextArea
+                placeholder="我希望改进的内容"
+                value={this.state.otherAdvice.shortcommings}
+                disabled={this.props.mode === 'view'}
+                onChange={e => {
+                  this.setState(
+                    {
+                      otherAdvice: {
+                        ...this.state.otherAdvice,
+                        shortcommings: e.target.value
+                      }
+                    },
+                    () => this.props.onAdviceChange(this.state.otherAdvice)
+                  );
+                }}
+              />
+            </Form.Item>
           </Card>
         ) : (
           <Card type="inner" title="讲师专业水平" className="cardinner">
