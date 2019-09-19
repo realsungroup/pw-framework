@@ -864,6 +864,10 @@ class PersonPlan extends React.Component {
   };
   judgeRender = () => {
     let personInfo = this.state.personInfo;
+    if(
+      this.props.role === 'HR'){
+        return false;
+      }
     if (
       personInfo.status === '年中回顾' ||
       personInfo.status === '年末回顾' ||
@@ -872,9 +876,7 @@ class PersonPlan extends React.Component {
         this.props.checkType !== 'oneself') ||
       (personInfo.isPersonSubmit === 'Y' &&
         this.props.checkType === 'oneself') ||
-      this.state.isUpdateAuth !== 'Y' ||
-      this.props.role !== 'HR'
-      
+      this.state.isUpdateAuth !== 'Y' 
     ) {
       return true;
     } else  {

@@ -49,7 +49,7 @@ class ViewPlan extends React.Component {
               }}
             />
             <Step
-              title="查看反馈"
+              title="查看反馈或行动计划"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {

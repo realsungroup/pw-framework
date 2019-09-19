@@ -19,6 +19,7 @@ import './NoticeAttendClass.less';
 import http from 'Util20/api';
 import InternalCourseCalendar from './InternalCourseCalendar';
 import { TableData } from '../../../common/loadableCommon';
+import TextArea from 'antd/lib/input/TextArea';
 const TabPane = Tabs.TabPane;
 
 const { RangePicker } = DatePicker;
@@ -64,11 +65,14 @@ class NoticeAttendClass extends React.Component {
     selectedCourseArrangment: {}, //选中的课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
     isShowModal: false,
+    isShowNotice:false,
     modifiedCourseArrangement: {}, //修改后的课程安排
     calendarEvents: [], //日历事件
     currentArrangeID: '616168186243',
     key: '',
-    CourseArrangeID:""
+    CourseArrangeID:"",
+    classNotice:"",
+    CourseArrange:{}
   };
 
   async componentDidMount() {
@@ -256,6 +260,35 @@ class NoticeAttendClass extends React.Component {
       message.error(error.message);
     }
   };
+
+  inputChange = (e) =>{
+    let value = e.target.value;
+    console.log(value)
+    this.setState({
+      classNotice : value
+    })
+  }
+
+  saveClassNotice = async() => {
+    this.setState({
+    isShowNotice: false,
+    });
+    let CourseArrange = {};
+    CourseArrange = this.state.CourseArrange;
+    let classNotice = this.state.classNotice;
+    CourseArrange.classNotice = classNotice;
+    CourseArrange.C3_614449043675 = "Y"
+    console.log(CourseArrange)
+    try{
+      CourseArrange = await http().modifyRecords({
+      resid:613938895111,
+      data : [CourseArrange]
+     });
+     message.success("上课通知发送成功")
+    }catch(error){
+      message.error(error.message);
+    }
+  }
   render() {
     let { mode, courseArrangments } = this.state;
     return (
@@ -355,32 +388,58 @@ class NoticeAttendClass extends React.Component {
                         key={item.REC_ID}
                         hoverable
                         actions={[
-                          <Popconfirm
-                            title="确认通知？"
-                            onConfirm={this.onMessage.bind(this, item)}
-                            icon={
-                              <Icon
-                                type="question-circle-o"
-                                style={{ color: 'red' }}
-                              />
-                            }
-                          >
-                            <span>
+                          // <Popconfirm
+                          //   title="确认通知？"
+                          //   onConfirm={this.onMessage.bind(this, item)}
+                          //   icon={
+                          //     <Icon
+                          //       type="question-circle-o"
+                          //       style={{ color: 'red' }}
+                          //     />
+                          //   }
+                          // >
+                            // <span>
+                            //   <Icon type="message" />
+                            //   通知
+                            // </span>
+                          // </Popconfirm>,
+                          // <span
+                          //   onClick={() => {
+                          //     this.setState({
+                          //       CourseArrangeID:item.CourseArrangeID
+                                // isShowLearnerInfo: true,
+                                // selectedCourseArrangment: item
+                              // });
+                              // this.setState({
+                              //   isShowModal: true
+                              // });
+                              // this.props.onCheckPeople();
+                          //   }}
+                          // >
+                          //   <Icon type="team" />
+                          //   查看人员
+                          // </span><span
+                          <span
+                            onClick = {() =>{
+                              this.setState({
+                                CourseArrange:item,
+                                isShowNotice:true
+                                
+                              });
+                              console.log(this.state.isShowNotice)
+                            }}
+                            >
                               <Icon type="message" />
                               通知
-                            </span>
-                          </Popconfirm>,
+                            </span>,
                           <span
                             onClick={() => {
                               this.setState({
-                                CourseArrangeID:item.CourseArrangeID
-                                // isShowLearnerInfo: true,
-                                // selectedCourseArrangment: item
+                                CourseArrange:item
                               });
                               this.setState({
                                 isShowModal: true
                               });
-                              // this.props.onCheckPeople();
                             }}
                           >
                             <Icon type="team" />
@@ -714,21 +773,30 @@ class NoticeAttendClass extends React.Component {
                         key={item.REC_ID}
                         hoverable
                         actions={[
-                          <Popconfirm
-                            title="确认通知？"
-                            onConfirm={this.onMessage.bind(this, item)}
-                            icon={
-                              <Icon
-                                type="question-circle-o"
-                                style={{ color: 'red' }}
-                              />
-                            }
-                          >
-                            <span>
+                          // <Popconfirm
+                          //   title="确认通知？"
+                          //   onConfirm={this.onMessage.bind(this, item)}
+                          //   icon={
+                          //     <Icon
+                          //       type="question-circle-o"
+                          //       style={{ color: 'red' }}
+                          //     />
+                          //   }
+                          // >
+                            <span
+                            onClick = {() =>{
+                              this.setState({
+                                CourseArrange:item,
+                                isShowNotice:true
+                                
+                              });
+                              console.log(this.state.isShowNotice)
+                            }}
+                            >
                               <Icon type="message" />
                               通知
-                            </span>
-                          </Popconfirm>,
+                            </span>,
+                          // </Popconfirm>,
                           <span
                             onClick={() => {
                               this.setState({
@@ -833,6 +901,28 @@ class NoticeAttendClass extends React.Component {
               subtractH={240}
               cmswhere={`CourseArrangeID=${this.state.CourseArrangeID}`}
             ></TableData>
+          </Modal>
+        ) : null}
+        {this.state.isShowNotice ? (
+          <Modal
+            visible={this.state.isShowNotice}
+            width="80%"
+            onCancel={() =>
+              this.setState({
+                isShowNotice: false,
+              })
+            }
+            destroyOnClose
+            onOk={this.saveClassNotice}
+            title="编辑上课须知"
+          >
+            <Form.Item
+              label = "上课须知"
+              colon
+              cla
+            >
+              <TextArea onChange = {this.inputChange} value = {this.state.classNotice}/>
+            </Form.Item>
           </Modal>
         ) : null}
       </div>

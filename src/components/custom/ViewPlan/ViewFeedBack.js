@@ -154,7 +154,7 @@ class ViewFeedBack extends React.Component {
                     );
                   }}
                 >
-                  {record.courseType === '内训' ? '查看课程反馈': '查看反馈和行动计划'}
+                  {record.courseType === '内训' ? '查看课程反馈': '查看行动计划'}
                 </Button>
               );
             }
@@ -162,7 +162,7 @@ class ViewFeedBack extends React.Component {
           // cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
         />
         <Modal
-          title="查看反馈和行动计划"
+          title="查看行动计划"
           visible={this.state.viewActionsVisible}
           onCancel={this.handleCloseModal}
           onOk={this.handleCloseModal}

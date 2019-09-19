@@ -243,7 +243,7 @@ class ProbationForms extends React.Component {
       });
       const SubResource = res.SubResource;
       const data = res.data[0];
-      this.setState({
+      data&& this.setState({
         employeeInformation: data,
         probationObjectives: data[viewableTable.objectiveResid],
         // orientationTraining: data[viewableTable.orientationResid],
