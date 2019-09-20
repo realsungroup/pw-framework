@@ -24,6 +24,7 @@ const InputType = {
   DataTime: 'DateTime'
 };
 
+const DateTimeFormatter = 'YYYY-MM-DD HH:mm';
 class EditableCell extends React.Component {
   renderCell = ({ getFieldDecorator }) => {
     const {
@@ -41,7 +42,7 @@ class EditableCell extends React.Component {
     let initialValue = null;
     switch (type) {
       case InputType.DataTime:
-        input = <DatePicker showTime />;
+        input = <DatePicker showTime format={DateTimeFormatter} />;
         initialValue = record[dataIndex] && moment(record[dataIndex]);
         break;
       case InputType.Input:
@@ -240,10 +241,10 @@ class WorkOvertimeApply extends React.Component {
         try {
           let res = await this.hadnleSave({
             C3_489231991382: row.startTime.format
-              ? row.startTime.format('YYYY-MM-DD HH:mm:ss')
+              ? row.startTime.format('YYYY-MM-DD HH:mm')
               : row.startTime,
             C3_489231991601: row.endTime.format
-              ? row.endTime.format('YYYY-MM-DD HH:mm:ss')
+              ? row.endTime.format('YYYY-MM-DD HH:mm')
               : row.endTime,
             C3_489232060991: row.hours,
             C3_489232525436: row.reason,
