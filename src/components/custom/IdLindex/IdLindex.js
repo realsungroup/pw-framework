@@ -5,6 +5,7 @@ import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
 import TableData from '../../common/data/TableData';
+import InterviewAssessment from '../InterviewAssessment';
 import { assementForm, referenceCheck } from './config.js'; //面试评估表和背景调查表的配置
 import { withRecordForm } from '../../common/hoc/withRecordForm';
  //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
@@ -61,9 +62,10 @@ class IdLindex extends Component {
     personList: [], //人员列表
     currentPersonInfo: {}, //当前选中人员的信息
     currentPersonId: '', //当前选中人员ID
-    recordFormName: 'default',  
+    recordFormName: 'default',
     typeVisible: false,
-    activeKey: '工作申请表'
+    activeKey: '工作申请表',
+    showAssessment:false
   };
   // 点击某个人时候设置样式
   handlePersonOnClick = item => {
@@ -79,10 +81,10 @@ class IdLindex extends Component {
     if(activeKey === '工作申请表'){
       this.getPersonalInfo(item.ID);
     } else {
-      this.tableDataRef.handleRefresh();  
+      this.tableDataRef.handleRefresh();
     }
-    
-    
+
+
   };
   // 给当前选中的人添加类名控制样式
   getSelectClass = isSelected => {
@@ -219,41 +221,55 @@ class IdLindex extends Component {
         );
       case '面试评估表':
         return (
-          <TableData
-            key={613152706922}
-            {...assementForm} 
-            style ={{height:"100%"}}
-            // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
-            // resid={613152706922}
-            wrappedComponentRef={element => (this.tableDataRef = element)}
-            refTargetComponentName="TableData"
-            // cmswhere = {`ID = ${this.state.currentPersonId}`}
-            actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
-              return <Button>添加面试官</Button>
-            }}
-            customRowBtns={[
-              (record, btnSize) => {
-                return (
-                  <div>
-                    <Button
-                      onClick={() => {
-                        this.getFormData(record);
-                      }}
-                    >
-                      评估详情
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.getFormData(record);
-                      }}
-                    >
-                      添加面试官
-                    </Button>
-                  </div>
-                );
-              }
-            ]}
-          />
+          <rect style={{
+            width:'100%',
+
+          }}>
+          <div className={this.state.showAssessment?'':'hidden'}>
+          <InterviewAssessment>
+          </InterviewAssessment>
+          </div>
+
+            <TableData
+              key={613152706922}
+              {...assementForm}
+              style ={{height:"100%"}}
+              // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
+              // resid={613152706922}
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData"
+              // cmswhere = {`ID = ${this.state.currentPersonId}`}
+              actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
+                return <Button>添加面试官</Button>
+              }}
+              customRowBtns={[
+                (record, btnSize) => {
+                  return (
+
+                    <div>
+                      <Button
+                        onClick={() => {
+                          this.setState({showAssessment:true});
+                          // this.getFormData(record);
+
+                        }}
+                      >
+                        评估详情
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.getFormData(record);
+                        }}
+                      >
+                        添加面试官
+                      </Button>
+
+                    </div>
+                  );
+                }
+              ]}
+            />
+            </rect>
         );
       case '背景调查表':
         return (
