@@ -25,6 +25,14 @@ const formItemLayout = {
 const { TextArea } = Input;
 const { Option } = Select;
 const vacateHours = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
   '08',
   '09',
   '10',
@@ -34,17 +42,7 @@ const vacateHours = [
   '14',
   '15',
   '16',
-  '17'
-];
-const workOvertimeHours = [
-  '00',
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
+  '17',
   '18',
   '19',
   '20',
@@ -52,6 +50,7 @@ const workOvertimeHours = [
   '22',
   '23'
 ];
+
 class CustomForm1 extends React.Component {
   state = {
     types: [],
@@ -352,7 +351,7 @@ class CustomForm1 extends React.Component {
       if (applyType === '请假') {
         endHours = startHours = vacateHours;
       } else if (applyType === '加班') {
-        endHours = startHours = workOvertimeHours;
+        endHours = startHours = endHours;
         disabled = false;
       }
     }
@@ -414,6 +413,7 @@ class CustomForm1 extends React.Component {
               placeholder="时"
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('startHour')}
+              notFoundContent="未选择类别"
             >
               {startHours.map(hour => (
                 <Option value={hour}>{hour}</Option>
@@ -441,6 +441,7 @@ class CustomForm1 extends React.Component {
               placeholder="时"
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endHour')}
+              notFoundContent="未选择类别"
             >
               {endHours.map(hour => (
                 <Option value={hour}>{hour}</Option>
