@@ -140,14 +140,28 @@ class CustomForm1 extends React.Component {
         dblink: 'ehr',
         sql: `select dbo.[fn_get_regvocationhours](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',0)`
       });
-      const timeLength = Number(res.data.trim());
+      const timeLength = Number(res.data);
       if (isNaN(timeLength)) {
         message.info(res.data);
+        this.setState({
+          filledData: {
+            ...this.state.filledData,
+            timeLength: null
+          },
+          errors: {
+            ...this.state.errors,
+            timeLength: true
+          }
+        });
       } else {
         this.setState({
           filledData: {
             ...this.state.filledData,
             timeLength
+          },
+          errors: {
+            ...this.state.errors,
+            timeLength: false
           }
         });
       }
@@ -203,9 +217,10 @@ class CustomForm1 extends React.Component {
       selectedTypeId,
       currentUserCode,
       isNeedAttachment,
-      fileList
+      fileList,
+      errors
     } = this.state;
-    for (let v of Object.values(this.state.errors)) {
+    for (let v of Object.values(errors)) {
       if (v) {
         return message.info('信息未填写完整');
       }
@@ -459,7 +474,7 @@ class CustomForm1 extends React.Component {
             label="时间长度："
             required
             validateStatus={errors.timeLength && 'error'}
-            help={errors.timeLength && '请输入时间长度'}
+            help={errors.timeLength && '输入时间有误'}
           >
             <InputNumber disabled={disabled} value={filledData.timeLength} />
           </Form.Item>
