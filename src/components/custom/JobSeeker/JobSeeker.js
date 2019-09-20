@@ -507,6 +507,7 @@ class JobSeeker extends Component {
   handelEduTelephone = (index, e) => {
     this.state.educationBackground[index].Telephone = e.target.value;
     this.setState({});
+    console.log(index,this.state)
   };
 
   //工作经历 任职年限
@@ -879,7 +880,7 @@ class JobSeeker extends Component {
                       label="年限（年/月）/Period(Year/Month)"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`Period${index}`, {
                         rules: [
                           {
                             required: true,
@@ -896,7 +897,7 @@ class JobSeeker extends Component {
                       label="学校名称/Name of School"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`School${index}`, {
                         rules: [
                           {
                             required: true,
@@ -911,11 +912,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="专业名称/Major" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`Major${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写专业'
                           }
                         ]
                       })(
@@ -926,11 +927,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="学位/Degree" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`Degree${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写学位'
                           }
                         ]
                       })(
@@ -941,11 +942,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`EduReference${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写证明人'
                           }
                         ]
                       })(
@@ -959,11 +960,11 @@ class JobSeeker extends Component {
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`EduTelephone${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写证明人电话'
                           }
                         ]
                       })(
@@ -1010,7 +1011,7 @@ class JobSeeker extends Component {
                       label="任职年限/Post period"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`PostPeriod${index}`, {
                         rules: [
                           {
                             required: true,
@@ -1027,11 +1028,11 @@ class JobSeeker extends Component {
                       label="公司名称&类型/Name of Company & Type"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`ComType${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写公司名称&类型'
                           }
                         ]
                       })(
@@ -1042,11 +1043,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="职位/Position" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`Position${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写职位'
                           }
                         ]
                       })(
@@ -1060,11 +1061,11 @@ class JobSeeker extends Component {
                       label="离职原因/Reason For Leaving"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`ROF${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写离职原因'
                           }
                         ]
                       })(
@@ -1075,11 +1076,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`WorkReference${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写证明人'
                           }
                         ]
                       })(
@@ -1093,11 +1094,11 @@ class JobSeeker extends Component {
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`WorkTelephone${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写证明人电话'
                           }
                         ]
                       })(
@@ -1140,11 +1141,11 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="姓名/Name" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamName${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写姓名'
                           }
                         ]
                       })(
@@ -1155,11 +1156,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="关系/Relationship" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamRelationship${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写关系'
                           }
                         ]
                       })(
@@ -1176,11 +1177,11 @@ class JobSeeker extends Component {
                       label="出生年月/Date of Birth"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamDateOfBirth${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写出生年月'
                           }
                         ]
                       })(
@@ -1191,11 +1192,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="职务/Position" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamPosition${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写职务'
                           }
                         ]
                       })(
@@ -1209,11 +1210,11 @@ class JobSeeker extends Component {
                       label="公司名称&地址/Name of Company&Address"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamCompany${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写公司名称&地址'
                           }
                         ]
                       })(
@@ -1224,11 +1225,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`FamTelephone${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写电话'
                           }
                         ]
                       })(
@@ -1275,11 +1276,11 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="日期/Date/Period " {...formItemLayout2}>
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`TrainPeriod${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写日期'
                           }
                         ]
                       })(
@@ -1292,11 +1293,11 @@ class JobSeeker extends Component {
                       label="培训机构/Name of Training Institute"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`TrainingName${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写培训机构'
                           }
                         ]
                       })(
@@ -1311,11 +1312,11 @@ class JobSeeker extends Component {
                       label="培训课程/Training Courses"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`TrainingCourse${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写培训课程'
                           }
                         ]
                       })(
@@ -1332,11 +1333,11 @@ class JobSeeker extends Component {
                       label="专业资格/Pofessional Qualification"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator('Period', {
+                      {getFieldDecorator(`TrainingProfessional${index}`, {
                         rules: [
                           {
                             required: true,
-                            message: '请填写年限'
+                            message: '请填写专业资格'
                           }
                         ]
                       })(
@@ -1350,11 +1351,11 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                    {getFieldDecorator('Period', {
+                    {getFieldDecorator(`TrainingPeriod${index}`, {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写证明人"
                           }
                         ]
                       }
@@ -1365,11 +1366,11 @@ class JobSeeker extends Component {
                       />)}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                    {getFieldDecorator('Period', {
+                    {getFieldDecorator(`TrainTelephone${index}`, {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写电话"
                           }
                         ]
                       }
@@ -1413,7 +1414,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写相关技能"
                           }
                         ]
                       }
@@ -1421,6 +1422,7 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 label="外语等级/Level"
+                className='half'
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
@@ -1428,7 +1430,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写外语等级"
                           }
                         ]
                       }
@@ -1443,6 +1445,7 @@ class JobSeeker extends Component {
                 )}
               </Form.Item>
               <Form.Item
+                className='half'
                 label="写作/Writing"
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
@@ -1451,7 +1454,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写写作能力"
                           }
                         ]
                       }
@@ -1469,6 +1472,7 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 label="阅读/Reading"
+                className='half'
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
@@ -1476,7 +1480,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写阅读能力"
                           }
                         ]
                       }
@@ -1494,6 +1498,7 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 label="口语/Speaking"
+                className='half'
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
@@ -1501,7 +1506,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写口语能力"
                           }
                         ]
                       }
@@ -1519,6 +1524,7 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 label="听力/Listening"
+                className='half'
                 {...formItemLayout2}
                 style={{ display: 'inline-block', width: '50%' }}
               >
@@ -1526,7 +1532,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写听力能力"
                           }
                         ]
                       }
@@ -1547,7 +1553,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写计算机能力"
                           }
                         ]
                       }
@@ -1568,7 +1574,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写常用软件能力"
                       }
                     ]
                   }
@@ -1579,7 +1585,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写其他技能"
                       }
                     ]
                   }
@@ -1593,7 +1599,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写身高"
                           }
                         ]
                       }
@@ -1604,7 +1610,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写体重"
                       }
                     ]
                   }
@@ -1615,7 +1621,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写视力左"
                           }
                         ]
                       }
@@ -1626,7 +1632,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写视力右"
                       }
                     ]
                   })(<Input />)}
@@ -1648,7 +1654,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写身体状况"
                       }
                     ]
                   })(<TextArea />)}
@@ -1668,7 +1674,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写是否有犯罪记录"
                       }
                     ]
                   })(
@@ -1693,7 +1699,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写是否有失信记录"
                           }
                         ]
                       }
@@ -1726,7 +1732,7 @@ class JobSeeker extends Component {
                     rules: [
                       {
                         required: true,
-                        message:"请填写年限"
+                        message:"请填写是否有4个月以上失业经历"
                       }
                     ]
                   })(
@@ -1758,7 +1764,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写是否认识本司员工"
                           }
                         ]
                       }
@@ -1790,7 +1796,7 @@ class JobSeeker extends Component {
                         rules: [
                           {
                             required: true,
-                            message:"请填写年限"
+                            message:"请填写与现任雇主的合同是否到期"
                           }
                         ]
                       }

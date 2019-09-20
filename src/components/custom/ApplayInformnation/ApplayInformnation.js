@@ -86,7 +86,7 @@ class Applayinformation extends Component {
       eduInfo:[],
       ID:''
     };
-  
+
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -99,8 +99,8 @@ class Applayinformation extends Component {
         this.searchEdu(this.state.ID);
       });
     }
-    // let ID = ''  
-    
+    // let ID = ''
+
   }
 
   // 查询教育背景
@@ -189,7 +189,7 @@ class Applayinformation extends Component {
                 ]
               })(<Input   />)}
             </Form.Item>
-            <Form.Item label="申请职位名称/Position for Applied" {...formItemLayout} 
+            <Form.Item label="申请职位名称/Position for Applied" {...formItemLayout}
               className="applay__information-content">
               {getFieldDecorator('appPosition', {
                 initialValue: currentInfo.appPosition,
@@ -534,7 +534,7 @@ class Applayinformation extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
-            
+
           </div>
           <h3 className="applay__information-title" id="专业培训" >
             Professional Qualification/Training 专业资格/培训
@@ -636,7 +636,7 @@ class Applayinformation extends Component {
             })(
               <Select>
                 {languageAbility.map((item, index) => {
-                  return (  
+                  return (
                     <Option key={index} value={item.value}>
                       {item.label}
                     </Option>
@@ -651,7 +651,7 @@ class Applayinformation extends Component {
             })(
               <Select>
                 {languageAbility.map((item, index) => {
-                  return (  
+                  return (
                     <Option key={index} value={item.value}>
                       {item.label}
                     </Option>
@@ -706,7 +706,7 @@ class Applayinformation extends Component {
           </Form.Item>
           <Form.Item label="视力右 /Eye Right sight" {...formItemLayout2} className="applay__information-content">
             {getFieldDecorator('EyeRightSight', {
-              initialValue: currentInfo.EyeSightR 
+              initialValue: currentInfo.EyeSightR
             })(<Input />)}
           </Form.Item>
           <Form.Item
