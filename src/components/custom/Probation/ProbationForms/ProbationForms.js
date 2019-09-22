@@ -102,20 +102,25 @@ class ProbationForms extends React.Component {
     this.setState({ loading: false });
   }
 
-  //positiveApply
+  //申请转正
   positiveApply = async () => {
     try {
+      this.setState({ loading: true });
       await http().modifyRecords({
         resid: resid1,
         data: [
-          {
-            REC_ID: this.state.employeeInformation
-          }
+          // {
+          //   REC_ID: this.state.employeeInformation.REC_ID
+          // }
+          this.state.employeeInformation
         ]
       });
+      message.success('转正申请成功');
     } catch (error) {
       message.error(error.message);
       console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   };
   // 点击保存
@@ -813,7 +818,10 @@ class ProbationForms extends React.Component {
                   </Button>
                 )}
                 {roleName === '员工' && (
-                  <Popconfirm title="确认提交转正申请？" onConfirm={() => {}}>
+                  <Popconfirm
+                    title="确认提交转正申请？"
+                    onConfirm={this.positiveApply}
+                  >
                     <Button type="primary" style={{ marginRight: 16 }}>
                       申请转正
                     </Button>
