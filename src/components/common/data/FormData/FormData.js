@@ -422,7 +422,7 @@ class FormData extends React.Component {
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
-                  overflow: 'scroll',
+                  overflow: 'auto',
                   // lineHeight: 2.4,
                   fontSize: customStyle.fontSize
                 }}

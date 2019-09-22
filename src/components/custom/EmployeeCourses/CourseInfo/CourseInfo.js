@@ -1,6 +1,10 @@
 import React from 'react';
-import { Card, Col, Row, Input,Modal,Button } from 'antd';
+import './CourseInfo.less';
+import { Card, Col, Row, Input } from 'antd';
 
+const rowStyle = {
+  marginBottom: 16
+};
 const CourseInfo = function(props) {
   let { course } = props;
   return (
@@ -10,25 +14,57 @@ const CourseInfo = function(props) {
       size="small"
       className="courseDetail__card"
     >
-      <Row>
-        <Col span={8}>课程名称:{course.C3_613941384592}</Col>
-        <Col span={8}>课程编号:{course.C3_614182469763}</Col>
-        <Col span={8}>价格：{course.C3_613941385069}</Col>
+      <Row style={rowStyle}>
+        <Col md={12}>
+          <span className="course-info_label">课程名称:</span>
+          {course.C3_613941384592}
+        </Col>
+        <Col md={12}>
+          <span className="course-info_label">课程编号:</span>
+          {course.C3_614182469763}
+        </Col>
       </Row>
-      <Row>
-        <Col span={8}>开始时间:{course.C3_615393041304} </Col>
-        <Col span={8}>结束时间:{course.C3_615393093633} </Col>
-        <Col span={8}>课时:{course.C3_613941385843}</Col>
+      <Row style={rowStyle}>
+        <Col md={12}>
+          <span className="course-info_label">价格:</span>
+          {course.C3_622227141162}
+        </Col>
+        <Col md={12}>
+          <span className="course-info_label">开始时间:</span>
+          {course.C3_615393041304.slice(0, 10)}
+        </Col>
       </Row>
-      <Row>
-        <Col span={8}>课程类别:{course.courseType}</Col>
-        <Col span={8}>培训机构:{course.trainingClub}</Col>
-        <Col span={8}>讲师:{course.C3_613941386081}</Col>
+      <Row style={rowStyle}>
+        <Col md={12}>
+          <span className="course-info_label">结束时间:</span>
+          {course.C3_615393093633.slice(0, 10)}
+        </Col>
+        <Col md={12}>
+          <span className="course-info_label">课时:</span>
+          {course.C3_613941385843}
+        </Col>
       </Row>
-      <Row>
-        <Col span={8}>地点:{course.C3_613941386325}</Col>
-        <Col span={8} style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ flexShrink: 0 }}>附加费用:</span>
+      <Row style={rowStyle}>
+        {/* <Col md={12}>课程类别:{course.courseType}</Col> */}
+        <Col md={12}>
+          <span className="course-info_label">培训机构:</span>
+          {course.trainingClub}
+        </Col>
+        <Col md={12}>
+          <span className="course-info_label">课程简介:</span>
+          {course.courseIntroduction}
+        </Col>
+        {/* <Col md={12}>讲师:{course.C3_613941386081}</Col> */}
+      </Row>
+      <Row style={rowStyle}>
+        <Col md={12}>
+          <span className="course-info_label">地点:</span>
+          {course.C3_613941386325}
+        </Col>
+        <Col md={12} style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="course-info_label" style={{ flexShrink: 0 }}>
+            附加费用:
+          </span>
           {props.mode === 'view' ? (
             <p>{props.extraCost}</p>
           ) : (
@@ -42,13 +78,7 @@ const CourseInfo = function(props) {
           )}
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <p>课程简介: {course.courseIntroduction}</p>
-        </Col>
-      </Row>
     </Card>
-    
   );
 };
 export default CourseInfo;

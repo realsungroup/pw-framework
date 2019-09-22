@@ -8,13 +8,13 @@ import {
   Button,
   Divider,
   Timeline,
-  Pagination,
   message,
   Modal,
   Popconfirm,
   Upload,
   Icon,
-  Empty
+  Empty,
+  Table
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -38,10 +38,41 @@ const YEAR_RESID = '420161931474'; //财年表id
 const REVIEW_RECOR_RESID = '615663201836'; // 申请单审批记录表id  C3_615657103208 课程安排明细编号
 const TABBARSTYLE = { display: 'flex', justifyContent: 'space-around' };
 
+const columns = [
+  {
+    title: '审批人',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '工号',
+    dataIndex: 'employeeID',
+    key: 'employeeID'
+  },
+  {
+    title: '审批结果',
+    dataIndex: 'result',
+    key: 'result'
+  },
+  {
+    title: '审批时间',
+    dataIndex: 'time',
+    key: 'time'
+  }
+];
+const data = [
+  {
+    name: '邓铭',
+    employeeID: '1234',
+    result: '通过',
+    time: '2019-09-20 10:10:00'
+  }
+];
 class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
     selectedCourse: null, //选中的课程
+    approvalRecords: [], //申请单审批记录
     calendarEvents: [], //日历事件
     wid: '80%',
     applyVisible: false, //申请模态框
@@ -81,6 +112,10 @@ class EmployeeCourses extends React.Component {
       rate3: 0,
       rate4: 0
     },
+    internalTrainingOtherAdvice: {
+      advantages: '',
+      shortcommings: ''
+    },
     planWrite: [
       {
         actions: '',
@@ -90,7 +125,10 @@ class EmployeeCourses extends React.Component {
       }
     ],
     fileList: [],
-    isfirst: true //是否首次加载组件
+    isfirst: true, //是否首次加载组件
+    loadings: {
+      submitTipLoading: false
+    }
   };
   componentDidMount = async () => {
     await this.getYears();
@@ -101,12 +139,14 @@ class EmployeeCourses extends React.Component {
     let res,
       { currentYear } = this.state;
     try {
-      res = await http().getTable({
+      res = await http().getRecordAndSubTables({
         resid: resid,
-        cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`
+        cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`,
+        subresid: '622466450977',
+        getsubresource: 1
       });
-      console.log(res);
       let myCourses = res.data;
+      console.log(myCourses);
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
         let selectedCourse = { ...myCourses[0] };
@@ -144,7 +184,6 @@ class EmployeeCourses extends React.Component {
       res = await http().getTable({
         resid: YEAR_RESID
       });
-      console.log(res.data);
       let years = [...res.data];
       let currentYear = years.find(item => item.C3_478179065325 === 'Y');
       this.setState({
@@ -209,6 +248,28 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  getApprovalRecords = async () => {
+    try {
+      const res = await http().getTable({
+        resid: REVIEW_RECOR_RESID,
+        cmswhere: `C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `
+      });
+      let approvalRecords = res.data.map(item => {
+        return {
+          name: item.C3_615657104492,
+          employeeID: item.C3_615657105254,
+          time: item.C3_615657104984,
+          result: item.C3_615657104736 === 'Y' ? '通过' : '拒绝'
+        };
+      });
+      this.setState({
+        approvalRecords
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  };
   //点击选中课程
   // 拿子组件的评分
   setRate = async rate => {
@@ -226,6 +287,13 @@ class EmployeeCourses extends React.Component {
       planWrite
     });
   };
+
+  setOtherAdvice = advice => {
+    this.setState({
+      internalTrainingOtherAdvice: advice
+    });
+  };
+
   handleTabsChange = key => {};
   handleSelectCourse = item => {
     let myCourses = [...this.state.myCourses];
@@ -276,22 +344,7 @@ class EmployeeCourses extends React.Component {
           <Option value="外训">外训</Option>
           <Option value="内训">内训</Option>
         </Select>
-        {/* <Select
-          defaultValue="all"
-          className="emploee_courses-header-selector"
-          // value={this.state.selectedRecentPeriod}
-          // onChange={e => {
-          //   this.setState({
-          //     selectedRecentPeriod: e,
-          //     rangePickerValue: [null, null]
-          //   });
-          //   this.setPeriodBySelect(e);
-          // }}
-        >
-          <Option value="all">状态</Option>
-          <Option value="outside">外训</Option>
-          <Option value="inside">内训</Option>
-        </Select> */}
+
         <Search
           className="emploee_courses-header-search"
           placeholder="请输入"
@@ -349,12 +402,15 @@ class EmployeeCourses extends React.Component {
     });
   };
   handleFileChange = info => {
-    let fileList = [...info.fileList];
-    // fileList = fileList.map(file => {
-    //   uploadFile(file);
-    // });
-    // console.log(info);
+    console.log(info);
+    let { file, fileList } = info;
+    // if (file.status === 'removed') {
+    //   this.setState({
+    //     fileList: fileList.filter(item => item.uid !== file.uid)
+    //   });
+    // } else {
     this.setState({ fileList });
+    // }
   };
   handleOpenAppAndFeeback = () => {
     this.setState({
@@ -363,13 +419,15 @@ class EmployeeCourses extends React.Component {
   };
   handleApplyOk = () => {
     this.setState({
-      applyVisible: false
+      applyVisible: false,
+      approvalRecords: []
     });
   };
   handleApplyCancel = () => {
     this.setState({
       applyVisible: false,
-      applyModalMode: 'view'
+      applyModalMode: 'view',
+      approvalRecords: []
     });
   };
   closeCourseDetailOpenApply = () => {
@@ -434,10 +492,19 @@ class EmployeeCourses extends React.Component {
       res = await this.getTip();
       if (res.data.length > 0) {
         let tip = {
-          title: res.data[0].C3_614964239022,
-          tips: res.data[0].C3_614964225030
+          title: res.data[0].C3_614964239022
+          // tips: res.data[0].C3_614964225030,
         };
-        this.setState({ tip });
+        const fileList = res.data[0].Filepath.split(',').map((item, index) => {
+          return {
+            url: item,
+            status: 'done',
+            name: `附件${index + 1}`,
+            uid: -index - 1
+          };
+        });
+        console.log(tip, fileList);
+        this.setState({ tip, fileList });
       }
     } catch (error) {
       console.log(error.message);
@@ -450,10 +517,6 @@ class EmployeeCourses extends React.Component {
     if (tip.title.trim() === '') {
       return message.error('标题不能为空');
     }
-    if (tip.tips.trim() === '') {
-      return message.error('心得感悟不能为空');
-    }
-    console.log(this.state.fileList.url);
     try {
       res = await this.saveTip(tip, false);
       this.setState({
@@ -469,6 +532,11 @@ class EmployeeCourses extends React.Component {
   //调用后端接口保存心得
   saveTip = async (tip, isSubmit) => {
     let res;
+    let Filepath = '';
+    this.state.fileList.forEach(file => {
+      Filepath += file.url + ',';
+    });
+    Filepath = Filepath.substring(0, Filepath.length - 1);
     try {
       res = await http().addRecords({
         resid: TIPS_RESID,
@@ -477,7 +545,7 @@ class EmployeeCourses extends React.Component {
             C3_614964239022: tip.title,
             C3_614964225030: tip.tips,
             C3_614964322197: isSubmit ? 'Y' : '',
-            Filepath: this.state.fileList[0].url,
+            Filepath: Filepath,
             C3_615479417558: this.state.selectedCourse.CourseArrangeDetailID
           }
         ],
@@ -496,17 +564,24 @@ class EmployeeCourses extends React.Component {
     if (tip.title.trim() === '') {
       return message.error('标题不能为空');
     }
-    // if (tip.tips.trim() === '') {
-    //   return message.error('心得感悟不能为空');
-    // }
     try {
+      this.setState({
+        loadings: {
+          ...this.state.loadings,
+          submitTipLoading: true
+        }
+      });
       res = await this.saveTip(tip, true);
       message.success(res.message);
       await this.getCourseById();
       this.setState({
         tipsModalVisible: false,
         tipsModalMode: 'view',
-        tip: { title: '', tips: '' }
+        tip: { title: '', tips: '' },
+        loadings: {
+          ...this.state.loadings,
+          submitTipLoading: true
+        }
       });
     } catch (error) {
       console.log(error.message);
@@ -638,8 +713,13 @@ class EmployeeCourses extends React.Component {
     });
   // 提交评分和行动计划反馈
   submitRate = async () => {
-    const { rateOut, planWrite, selectedCourse, rate } = this.state;
-    console.log('selectedCourse.courseType', selectedCourse.courseType);
+    const {
+      rateOut,
+      planWrite,
+      selectedCourse,
+      rate,
+      internalTrainingOtherAdvice
+    } = this.state;
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -684,28 +764,38 @@ class EmployeeCourses extends React.Component {
     } else {
       //内训只提交反馈数据
       let res;
+
       try {
-        console.log(rate);
-        res = await http().addRecords({
-          resid: 478367996508,
-          data: [
-            {
-              C3_478368118696: this.state.selectedCourse.CourseArrangeDetailID, //  课程安排明细ID
-              C3_615639978971: rate.rate1, //讲师备课充分，对授课内容非常了解
-              C3_615640010121: rate.rate2, //我认为课程主题准确，结构清晰，内容充实
-              C3_615640043869: rate.rate3, //所学的内容对实际工作有很大帮助
-              C3_615640107592: rate.rate4, //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-              C3_615640157603: rate.rate5, //讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-              C3_615640180269: rate.rate6, //我能够积极参与到课堂中去
-              C3_615640206802: rate.rate7, //我的提问能够得到讲师认真,满意的答复
-              C3_615640235456: rate.rate8 //时间控制合理使我感到舒适
-            }
-          ],
-          isEditOrAdd: true
-        });
-        message.success(res.message);
-        this.setState({ feebackVisible: false, feedbackModalMode: 'view' });
-        this.getCourseById();
+        if (
+          internalTrainingOtherAdvice.advantages.trim() &&
+          internalTrainingOtherAdvice.shortcommings.trim()
+        ) {
+          res = await http().addRecords({
+            resid: 478367996508,
+            data: [
+              {
+                C3_478368118696: this.state.selectedCourse
+                  .CourseArrangeDetailID, //  课程安排明细ID
+                C3_615639978971: rate.rate1, //讲师备课充分，对授课内容非常了解
+                C3_615640010121: rate.rate2, //我认为课程主题准确，结构清晰，内容充实
+                C3_615640043869: rate.rate3, //所学的内容对实际工作有很大帮助
+                C3_615640107592: rate.rate4, //讲师语言表达能力好,讲解清楚生动,运用肢体语言
+                C3_615640157603: rate.rate5, //讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+                C3_615640180269: rate.rate6, //我能够积极参与到课堂中去
+                C3_615640206802: rate.rate7, //我的提问能够得到讲师认真,满意的答复
+                C3_615640235456: rate.rate8, //时间控制合理使我感到舒适
+                C3_622216706104: internalTrainingOtherAdvice.advantages,
+                C3_622216725340: internalTrainingOtherAdvice.shortcommings
+              }
+            ],
+            isEditOrAdd: true
+          });
+          message.success(res.message);
+          this.setState({ feebackVisible: false, feedbackModalMode: 'view' });
+          this.getCourseById();
+        } else {
+          return message.info('收益内容与改进内容为必填项');
+        }
       } catch (error) {
         message.error(error.message);
         console.log(error);
@@ -729,8 +819,8 @@ class EmployeeCourses extends React.Component {
         data: [{ REC_ID: record.REC_ID, isAbandon: 'Y' }]
       });
       this.setState({
-        applyVisible:false
-      })
+        applyVisible: false
+      });
       message.success(res.message);
     } catch (error) {
       console.log(error);
@@ -841,6 +931,7 @@ class EmployeeCourses extends React.Component {
                           <span
                             className="timeline_action"
                             onClick={() => {
+                              this.getApprovalRecords();
                               this.setState({
                                 applyVisible: true,
                                 isfirst: false
@@ -1073,7 +1164,7 @@ class EmployeeCourses extends React.Component {
           />
         </Modal>
         <Modal
-          title="培训申请单"
+          title=""
           visible={this.state.applyVisible}
           onCancel={this.handleApplyCancel}
           destroyOnClose
@@ -1115,52 +1206,60 @@ class EmployeeCourses extends React.Component {
                     }}
                   >
                     关闭
-                  </Button>
-                ]
-          }
-        >
-          <CourseApply
-            mode={this.state.applyModalMode}
-            course={this.state.selectedCourse}
-            extraCost={this.state.extraCost}
-            onChangeExtraCost={this.setExtraCost}
-          />
-          {this.state.isfirst ? null : (
-            <TableData
-              resid={REVIEW_RECOR_RESID}
-              subtractH={240}
-              hasBeBtns={true}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              actionBarFixed={true}
-              hasRowModify={false}
-              height="70vh"
-              cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              actionBarExtra={() => {
-                return (
+                  </Button>,
                   <Button
                     type="primary"
                     onClick={() => {
+                      const bodyHtml = window.document.body.innerHTML;
+                      window.document.body.innerHTML = this.printer.innerHTML;
                       window.print();
-                      // window.location.reload();
+                      window.document.body.innerHTML = bodyHtml;
+                      window.location.reload();
                     }}
                   >
                     打印
                   </Button>
-                );
-              }}
+                ]
+          }
+        >
+          <div id="apply-printer" ref={element => (this.printer = element)}>
+            <h2 style={{ textAlign: 'center' }}>培训申请单</h2>
+            <CourseApply
+              mode={this.state.applyModalMode}
+              course={this.state.selectedCourse}
+              extraCost={this.state.extraCost}
+              onChangeExtraCost={this.setExtraCost}
             />
-          )}
+            <Card title="培训审批" type="inner" size="small">
+              <Table
+                columns={columns}
+                dataSource={this.state.approvalRecords}
+                pagination={false}
+              />
+            </Card>
+
+            {/* {this.state.isfirst ? null : (
+              <TableData
+                resid={REVIEW_RECOR_RESID}
+                subtractH={240}
+                hasBeBtns={true}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                actionBarFixed={true}
+                hasRowModify={false}
+                height={300}
+                cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
+              />
+            )} */}
+          </div>
         </Modal>
         <Modal
           title={
-            selectedCourse.courseType === '外训'
-              ? '课程行动计划'
-              : '课程反馈'
+            selectedCourse.courseType === '外训' ? '课程行动计划' : '课程反馈'
           }
           visible={this.state.feebackVisible}
           width={this.state.wid}
@@ -1204,6 +1303,7 @@ class EmployeeCourses extends React.Component {
         >
           <FeedBackAndPlan
             onSubmit={this.setRate}
+            onAdviceChange={this.setOtherAdvice}
             onCourseDetailID={
               this.state.selectedCourse &&
               this.state.selectedCourse.CourseArrangeDetailID
@@ -1271,8 +1371,12 @@ class EmployeeCourses extends React.Component {
             this.state.tipsModalMode === 'modify'
               ? [
                   <Button onClick={this.onCloseTipModal}>关闭</Button>,
-                  <Button onClick={this.onSaveTip}>保存</Button>,
-                  <Button type="primary" onClick={this.submitTip}>
+                  // <Button onClick={this.onSaveTip}>保存</Button>,
+                  <Button
+                    type="primary"
+                    onClick={this.submitTip}
+                    loading={this.state.loadings.submitTipLoading}
+                  >
                     提交
                   </Button>
                 ]
@@ -1300,15 +1404,15 @@ class EmployeeCourses extends React.Component {
                   fileList={this.state.fileList}
                   customRequest={async file => {
                     const res = await uploadFile(file.file);
+                    let { fileList } = this.state;
+                    fileList[fileList.length - 1] = {
+                      name: file.file.name,
+                      url: res,
+                      status: 'done',
+                      uid: -fileList.length
+                    };
                     this.setState({
-                      fileList: [
-                        {
-                          name: file.file.name,
-                          url: res,
-                          status: 'done',
-                          uid: '1'
-                        }
-                      ]
+                      fileList
                     });
                   }}
                 >
@@ -1317,20 +1421,6 @@ class EmployeeCourses extends React.Component {
                   </Button>
                 </Upload>
               </div>
-              {/* <div>
-                <label>
-                  <strong>心得感悟</strong>
-                </label>
-                <div>要求：请写下您在培训中的收获，2~3点，不少于100字</div>
-                <Input.TextArea
-                  rows={15}
-                  value={this.state.tip.tips}
-                  onChange={e => {
-                    let tip = { ...this.state.tip, tips: e.target.value };
-                    this.setState({ tip });
-                  }}
-                />
-              </div> */}
             </div>
           ) : (
             <div style={{ padding: 12 }}>
@@ -1341,9 +1431,15 @@ class EmployeeCourses extends React.Component {
               <Divider />
               {/* 内容 */}
               {this.state.selcetedTip.Filepath ? (
-                <a href={this.state.selcetedTip.Filepath} target="_blank">
-                  附件:{this.state.selcetedTip.Filepath}
-                </a>
+                this.state.selcetedTip.Filepath.split(',').map(
+                  (item, index) => (
+                    <p>
+                      <a href={item} target="_blank">
+                        附件{index + 1}
+                      </a>
+                    </p>
+                  )
+                )
               ) : (
                 <p>无附件</p>
               )}

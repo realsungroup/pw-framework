@@ -18,7 +18,8 @@ import {
   Row,
   Col,
   DatePicker,
-  Input
+  Input,
+  Popconfirm
 } from 'antd';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
@@ -101,6 +102,22 @@ class ProbationForms extends React.Component {
     this.setState({ loading: false });
   }
 
+  //positiveApply
+  positiveApply = async () => {
+    try {
+      await http().modifyRecords({
+        resid: resid1,
+        data: [
+          {
+            REC_ID: this.state.employeeInformation
+          }
+        ]
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
   // 点击保存
   handleSubmit = async () => {
     try {
@@ -243,20 +260,21 @@ class ProbationForms extends React.Component {
       });
       const SubResource = res.SubResource;
       const data = res.data[0];
-      data&& this.setState({
-        employeeInformation: data,
-        probationObjectives: data[viewableTable.objectiveResid],
-        // orientationTraining: data[viewableTable.orientationResid],
-        internalTraining: data[viewableTable.internalResid],
-        onTheJobTraining: data[viewableTable.onJobResid],
-        mentorshipRecord: data[viewableTable.mentorRecordResid],
-        tableAuth: {
-          onJob: SubResource[viewableTable.onJobResid],
-          mentorRecord: SubResource[viewableTable.mentorRecordResid],
-          objective: SubResource[viewableTable.objectiveResid],
-          internal: SubResource[viewableTable.internalResid]
-        }
-      });
+      data &&
+        this.setState({
+          employeeInformation: data,
+          probationObjectives: data[viewableTable.objectiveResid],
+          // orientationTraining: data[viewableTable.orientationResid],
+          internalTraining: data[viewableTable.internalResid],
+          onTheJobTraining: data[viewableTable.onJobResid],
+          mentorshipRecord: data[viewableTable.mentorRecordResid],
+          tableAuth: {
+            onJob: SubResource[viewableTable.onJobResid],
+            mentorRecord: SubResource[viewableTable.mentorRecordResid],
+            objective: SubResource[viewableTable.objectiveResid],
+            internal: SubResource[viewableTable.internalResid]
+          }
+        });
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -793,6 +811,13 @@ class ProbationForms extends React.Component {
                   >
                     保存
                   </Button>
+                )}
+                {roleName === '员工' && (
+                  <Popconfirm title="确认提交转正申请？" onConfirm={() => {}}>
+                    <Button type="primary" style={{ marginRight: 16 }}>
+                      申请转正
+                    </Button>
+                  </Popconfirm>
                 )}
                 {employeeInformation.currentPeriod === '转正中' &&
                   ((roleName === '主管' &&

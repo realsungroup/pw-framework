@@ -724,8 +724,6 @@ class OfferLetter extends React.Component {
               </p>
             </p>
             <br />
-            <br />
-            <br />
             {/* <div className="logos"></div> */}
             <div className="logoTwo ">
               <img src={logo} />
@@ -777,8 +775,6 @@ class OfferLetter extends React.Component {
               </li>
               <li>其他不符合录用条件的情形。</li>
             </ul>
-            <br />
-            <br />
             <br />
             {/* <div className="logot"></div> */}
             <div className="logoThree ">

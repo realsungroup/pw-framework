@@ -1,11 +1,10 @@
 import React from 'react';
 import './HRProbation.less';
 import TableData from '../../../common/data/TableData';
-import { Button, message, Select, Menu, Icon, Modal } from 'antd';
+import { Button, message, Menu, Icon, Modal } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
 
-const { Option } = Select;
 const { confirm } = Modal;
 
 class HRProbation extends React.Component {
@@ -223,7 +222,7 @@ class HRProbation extends React.Component {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
-          <Select
+          {/* <Select
             style={{ width: 120 }}
             placeholder="提醒"
             onSelect={selectValue => {
@@ -235,13 +234,49 @@ class HRProbation extends React.Component {
             <Option value="主管填写">主管填写</Option>
             <Option value="辅导员填写">辅导员填写</Option>
             <Option value="员工确认辅导">员工确认辅导</Option>
-          </Select>
+          </Select> */}
+          <Button
+            type="danger"
+            onClick={RegularApply => {
+              this.handleApply(record);
+            }}
+          >
+            退回申请
+          </Button>
           <Button
             onClick={RegularApply => {
               this.handleApply(record);
             }}
           >
-            转正申请
+            同意转正
+          </Button>
+          <Button
+            onClick={RegularApply => {
+              this.handleApply(record);
+            }}
+          >
+            员工填写
+          </Button>
+          <Button
+            onClick={RegularApply => {
+              this.handleApply(record);
+            }}
+          >
+            主管填写
+          </Button>
+          <Button
+            onClick={RegularApply => {
+              this.handleApply(record);
+            }}
+          >
+            辅导员填写
+          </Button>
+          <Button
+            onClick={RegularApply => {
+              this.handleApply(record);
+            }}
+          >
+            员工确认辅导
           </Button>
         </div>
       </div>
@@ -263,17 +298,25 @@ class HRProbation extends React.Component {
     this.setState({ isShowTable });
   };
   render() {
-    const { loading } = this.state;
     return (
       <div
-        className="myteam-contain"
+        className="hr-probation"
         style={{
           display: 'flex',
           height:
             this.state.desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
         }}
       >
-        <div style={{ width: `${this.state.collapsed ? '80px' : '200px'}` }}>
+        <div
+          style={{
+            position: 'fixed',
+            left: 0,
+            bottom: 0,
+            top: 0,
+            width: `${this.state.collapsed ? '80px' : '200px'}`,
+            height: '100vh'
+          }}
+        >
           <div
             style={{
               width: '20px',
@@ -328,10 +371,11 @@ class HRProbation extends React.Component {
         </div>
         <div
           style={{
-            overflow: 'auto',
+            position: 'relative',
             width: `${
               this.state.collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'
-            }`
+            }`,
+            left: `${this.state.collapsed ? '100px' : '220px'}`
           }}
         >
           {this.renderContent()}
@@ -339,46 +383,6 @@ class HRProbation extends React.Component {
       </div>
     );
   }
-  // render() {
-  //   return (
-  // <div id="hr-probation">
-  //   {this.state.isShowTable ? (
-  //     <div style={{ height: '100vh' }}>
-  //       <TableData
-  //         resid="619609481002"
-  //         subtractH={240}
-  //         hasAdd={false}
-  //         hasRowView={false}
-  //         hasRowDelete={false}
-  //         hasRowEdit={false}
-  //         hasDelete={false}
-  //         hasModify={false}
-  //         hasRowModify={false}
-  //         hasRowSelection={true}
-  //         customRowBtns={[
-  //           record => (
-  //             <Button
-  //               type="primary"
-  //               onClick={this.onCustomViewBtnClick(record)}
-  //             >
-  //               查看
-  //             </Button>
-  //           )
-  //         ]}
-  //         actionBarExtra={this.actionBarExtra}
-  //       />
-  //     </div>
-  //   ) : (
-  //     <ProbationForms
-  //       memberId={this.state.selectedRecord.memberId}
-  //       goBack={this.goBack}
-  //       roleName="HR"
-  //       setIsShowTable={this.setIsShowTable}
-  //     />
-  //   )}
-  // </div>
-  //   );
-  // }
 }
 
 export default HRProbation;

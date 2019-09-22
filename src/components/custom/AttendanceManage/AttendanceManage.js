@@ -27,7 +27,7 @@ class AttendanceManage extends React.Component {
   state = {
     mode: 'inline',
     theme: 'light',
-    selectKey: 'workOverTimeApply',
+    selectKey: 'sub1-7',
     collapsed: false,
     desktop: null,
     approvalRecordVisible: false,
@@ -90,10 +90,10 @@ class AttendanceManage extends React.Component {
     let selectKey = this.state.selectKey;
     let page = null;
     switch (selectKey) {
-      // 加班批量审批
-      case 'workOverTimeApply':
-        page = <WorkOvertimeApply setLoading={this.setLoading} />;
-        break;
+      // // 加班批量审批
+      // case 'workOverTimeApply':
+      //   page = <WorkOvertimeApply setLoading={this.setLoading} />;
+      // break;
       // 我的考勤申请单
       case 'sub1-1':
         page = <WaitingHRApproval setLoading={this.setLoading} />;
@@ -231,7 +231,7 @@ class AttendanceManage extends React.Component {
             </div>
             <Menu
               style={{ height: '100%' }}
-              defaultSelectedKeys={['workOverTimeApply']}
+              defaultSelectedKeys={['sub1-7']}
               defaultOpenKeys={['sub1', 'sub2']}
               mode={mode}
               theme={theme}
@@ -250,7 +250,6 @@ class AttendanceManage extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="workOverTimeApply">加班批量申请</Menu.Item>
                 <Menu.Item key="sub1-7">考勤申请</Menu.Item>
                 <Menu.Item key="sub1-1">待HR审核</Menu.Item>
 

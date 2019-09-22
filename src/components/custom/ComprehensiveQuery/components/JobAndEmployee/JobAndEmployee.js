@@ -46,8 +46,11 @@ const orgChartConfig = {
   keyField: 'C3_602347243459'
 };
 class JobAndEmployee extends React.Component {
+  state = {
+    selectedNode: {}
+  };
   componentDidMount() {
-    new OrgChart(document.getElementById('nodes'), {
+    this.chart = new OrgChart(document.getElementById('nodes'), {
       template: 'ula',
       nodeBinding: {
         field_0: 'name',
@@ -55,17 +58,39 @@ class JobAndEmployee extends React.Component {
         img_0: 'img'
       },
       enableSearch: false,
-      onClick: function(sender, node) {
+      onClick: (sender, node) => {
+        this.setState({ selectedNode: node });
+        let nodes = [...sender.config.nodes];
+        nodes = nodes.filter(item => node.id !== item.id);
+        if (node.tags && node.tags.includes('dotted')) {
+          sender.updateNode({ ...node, tags: [] });
+        } else {
+          nodes.forEach(item => {
+            item.tags = [];
+            sender.update(item);
+          });
+          sender.update({ ...node, tags: ['dotted'] });
+          sender.draw();
+        }
         return false;
       },
+      tags: {
+        dotted: 'dotted'
+      },
+      scaleInitial: BALKANGraph.match.height,
       scaleMin: 0.3,
       mouseScroolBehaviour: BALKANGraph.action.zoom,
+      nodeMenu: {
+        add: { text: '添加' }
+      },
       nodes: [
         {
           id: 1,
           name: '姓名：张三',
           title: 'CEO',
-          img: '//balkangraph.com/js/img/1.jpg'
+          img: '//balkangraph.com/js/img/1.jpg',
+          mobile: '0878108255',
+          height: 1.66
         },
         {
           id: 2,
@@ -106,6 +131,9 @@ class JobAndEmployee extends React.Component {
         </div>
         <div className="training-query_right">
           <div id="nodes" />
+          <div className="training-query_right_employee_info">
+            {this.state.selectedNode.name}
+          </div>
           {/* <OrgChartData {...orgChartConfig} /> */}
         </div>
       </div>
