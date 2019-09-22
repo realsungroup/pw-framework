@@ -10,7 +10,7 @@
       border-right: none;
     }
   }
-  
+
   &__informnation {
     padding: 10px;
     // flex: 1;
@@ -20,20 +20,52 @@
     background-color: #fff;
     &-title {
       text-align: center;
+      margin-top: 16px;
+      margin-bottom: 24px;
     }
     &-boundry {
-      border: 2px solid #000;
-      padding:4px;
+      border: 1px solid #e8e8e8;
+      padding:8px;
       margin-bottom:3px;
       position:relative;
       &__delete{
         position:absolute;
-        right:5px;
-        top:5px;
+        right:8px;
+        top:8px;
       }
     }
     // .ant-form-item-label{
     //   text-align: left;
     // }
+  }
+}
+@media (min-width: 0px) and (max-width: 1024px) and (orientation: landscape) {
+
+  //平板
+  .ant-col-10,.ant-col-8,.ant-col-14,.ant-col-16{
+    width:100%!important;
+    background: #fff;
+
+  }
+  .job-seeker__nav{
+    height:100vh;
+  }
+  .job-seeker__nav ul{
+    width:160px!important;
+  }
+  .job-seeker__informnation{
+    width:calc(100% - 160px);
+    left:160px;
+    overflow: auto;
+    position:fixed;
+
+  }
+  p{
+    white-space:normal!important;
+    height:auto!important;
+
+  }
+  .half{
+    width:100%!important;
   }
 }
