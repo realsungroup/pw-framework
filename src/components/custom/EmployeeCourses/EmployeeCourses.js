@@ -125,7 +125,10 @@ class EmployeeCourses extends React.Component {
       }
     ],
     fileList: [],
-    isfirst: true //是否首次加载组件
+    isfirst: true, //是否首次加载组件
+    loadings: {
+      submitTipLoading: false
+    }
   };
   componentDidMount = async () => {
     await this.getYears();
@@ -139,7 +142,7 @@ class EmployeeCourses extends React.Component {
       res = await http().getRecordAndSubTables({
         resid: resid,
         cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`,
-        subresid: TIPS_RESID,
+        subresid: '622466450977',
         getsubresource: 1
       });
       let myCourses = res.data;
@@ -489,10 +492,19 @@ class EmployeeCourses extends React.Component {
       res = await this.getTip();
       if (res.data.length > 0) {
         let tip = {
-          title: res.data[0].C3_614964239022,
-          tips: res.data[0].C3_614964225030
+          title: res.data[0].C3_614964239022
+          // tips: res.data[0].C3_614964225030,
         };
-        this.setState({ tip });
+        const fileList = res.data[0].Filepath.split(',').map((item, index) => {
+          return {
+            url: item,
+            status: 'done',
+            name: `附件${index + 1}`,
+            uid: -index - 1
+          };
+        });
+        console.log(tip, fileList);
+        this.setState({ tip, fileList });
       }
     } catch (error) {
       console.log(error.message);
@@ -553,13 +565,23 @@ class EmployeeCourses extends React.Component {
       return message.error('标题不能为空');
     }
     try {
+      this.setState({
+        loadings: {
+          ...this.state.loadings,
+          submitTipLoading: true
+        }
+      });
       res = await this.saveTip(tip, true);
       message.success(res.message);
       await this.getCourseById();
       this.setState({
         tipsModalVisible: false,
         tipsModalMode: 'view',
-        tip: { title: '', tips: '' }
+        tip: { title: '', tips: '' },
+        loadings: {
+          ...this.state.loadings,
+          submitTipLoading: true
+        }
       });
     } catch (error) {
       console.log(error.message);
@@ -698,7 +720,6 @@ class EmployeeCourses extends React.Component {
       rate,
       internalTrainingOtherAdvice
     } = this.state;
-    console.log('selectedCourse.courseType', selectedCourse.courseType);
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -1350,8 +1371,12 @@ class EmployeeCourses extends React.Component {
             this.state.tipsModalMode === 'modify'
               ? [
                   <Button onClick={this.onCloseTipModal}>关闭</Button>,
-                  <Button onClick={this.onSaveTip}>保存</Button>,
-                  <Button type="primary" onClick={this.submitTip}>
+                  // <Button onClick={this.onSaveTip}>保存</Button>,
+                  <Button
+                    type="primary"
+                    onClick={this.submitTip}
+                    loading={this.state.loadings.submitTipLoading}
+                  >
                     提交
                   </Button>
                 ]
@@ -1409,10 +1434,7 @@ class EmployeeCourses extends React.Component {
                 this.state.selcetedTip.Filepath.split(',').map(
                   (item, index) => (
                     <p>
-                      <a
-                        href={item}
-                        target="_blank"
-                      >
+                      <a href={item} target="_blank">
                         附件{index + 1}
                       </a>
                     </p>
