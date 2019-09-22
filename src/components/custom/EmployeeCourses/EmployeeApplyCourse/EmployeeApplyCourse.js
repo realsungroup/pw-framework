@@ -75,6 +75,11 @@ const form = props => {
           rules: [{ required: true, message: '请填写上课地点' }]
         })(<Input placeholder="请填写上课地点" />)}
       </Form.Item>
+      <Form.Item label="课程类别">
+        {getFieldDecorator('courseCategory', {
+          rules: [{ required: true, message: '请填写课程类别' }]
+        })(<Input placeholder="请填写课程类别" />)}
+      </Form.Item>
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
           rules: [{ required: true, message: '请填写课程概要' }]
@@ -158,11 +163,12 @@ class EmployeeApplyCourse extends React.Component {
             C3_615393041304: course.beginClassTime,
             C3_615393093633: course.endClassTime,
             C3_613941386325: course.TranningOrganization,
-            courseIntroduction: course.courseIntroduction
-
+            courseIntroduction: course.courseIntroduction,
+            courseType: course.courseCategory
           }
         ]
       });
+      console.log(res)
       message.success(res.message);
       this.tableDataRef.handleRefresh();
       this.setState({ applyByUnexistCourseVisible: false });
