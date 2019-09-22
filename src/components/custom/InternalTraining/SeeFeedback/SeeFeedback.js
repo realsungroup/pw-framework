@@ -1,11 +1,23 @@
 import React from 'react';
 import './SeeFeedback.less';
 import { TableData } from '../../../common/loadableCommon';
-import { Button, Modal, message, Card, Row, Col, Rate } from 'antd';
+import {
+  Button,
+  Modal,
+  message,
+  Card,
+  Row,
+  Col,
+  Rate,
+  Input,
+  Form,
+  Popconfirm
+} from 'antd';
 import http from 'Util20/api';
 
 const InnerTrainID = '615549231946';
 const InnerTrainPersonID = '616073391736';
+const { TextArea } = Input;
 class SeeFeedback extends React.Component {
   state = {
     seeFeedbackVisible: false, //
@@ -64,7 +76,7 @@ class SeeFeedback extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="internal-training_see-feed-back">
         <TableData
           resid={InnerTrainID}
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -231,6 +243,7 @@ class SeeFeedback extends React.Component {
               hasDelete={false}
               hasModify={false}
               actionBarFixed={true}
+              actionBarWidth={100}
               hasRowModify={false}
               hasRowSelection={true}
               cmswhere={`CourseArrangeID = '${this.state.selectedCourseId}'`}
@@ -265,10 +278,94 @@ class SeeFeedback extends React.Component {
           }}
           centered
           destroyOnClose
+          footer={[
+            <Button
+              onClick={() => this.setState({ feedbackOverallVisible: false })}
+            >
+              取消
+            </Button>,
+            <Popconfirm
+              title="确认发送？"
+              onConfirm={() => {
+                this.setState({
+                  feedbackOverallVisible: false
+                });
+              }}
+            >
+              <Button type="primary">发给培训师</Button>
+            </Popconfirm>
+          ]}
         >
-          <div style={{ height: 500 }}>暗室逢灯</div>
+          <div>
+            <div>
+              <Card type="inner" title="讲师专业水平" className="cardinner">
+                <Row>
+                  <Col span={8}>讲师备课充分，对授课内容非常了解</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate1} disabled />
+                  </Col>
+                </Row>
+              </Card>
+              <Card type="inner" title="课程内容安排" className="cardinner">
+                <Row>
+                  <Col span={8}>我认为课程主题准确，结构清晰，内容充实</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate2} disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={8}>所学的内容对实际工作有很大帮助</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate3} disabled />
+                  </Col>
+                </Row>
+              </Card>
+              <Card type="inner" title="授课技巧" className="cardinner">
+                <Row>
+                  <Col span={8}>
+                    讲师语言表达能力好,讲解清楚生动,运用肢体语言
+                  </Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate4} disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={8}>
+                    讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+                  </Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate5} disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={8}>我能够积极参与到课堂中去</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate6} disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={8}>我的提问能够得到讲师认真,满意的答复</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate7} disabled />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={8}>时间控制合理使我感到舒适</Col>
+                  <Col span={8}>
+                    <Rate value={this.state.rate.rate8} disabled />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <Form.Item required label="收益内容总结" labelCol={4}>
+              <TextArea placeholder="收益内容总结" rows={4} />
+            </Form.Item>
+            <Form.Item required label="改进内容总结" labelCol={4}>
+              <TextArea placeholder="改进内容总结" rows={4} />
+            </Form.Item>
+          </div>
         </Modal>
-      </React.Fragment>
+      </div>
     );
   }
 }

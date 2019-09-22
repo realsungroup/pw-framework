@@ -344,7 +344,8 @@ class WorkOvertimeApply extends React.Component {
       this.props.setLoading(true);
       await http().modifyRecords({
         resid: '489233670834',
-        data
+        data,
+        dblinkname: 'ehr'
       });
       message.success('提交成功');
       this.getRecords();
@@ -424,7 +425,13 @@ class WorkOvertimeApply extends React.Component {
                 提交申请
               </Button>
             </Popconfirm>
-
+            <Button
+              onClick={() => this.props.goBack()}
+              icon="rollback"
+              style={{ marginBottom: 16, marginRight: 8 }}
+            >
+              返回
+            </Button>
             <Table
               components={components}
               scroll={{ x: 1200 }}

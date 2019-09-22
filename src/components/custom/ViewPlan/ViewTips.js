@@ -3,8 +3,8 @@ import {
   Button,
   message,
   Modal,
-	Divider,
-	Empty,
+  Divider,
+  Empty,
   Card,
   Row,
   Col,
@@ -50,25 +50,13 @@ class ViewTips extends React.Component {
       tips: {}
     });
 
-  //下载查阅
-    handleDownMaterial = url => {
-      if (!url) {
-        return Modal.warning({
-          title: '还未上传心得'
-        });
-      }
-      const urls = url.split(';file;');
-      for (let i = 0, len = urls.length; i < len; i++) {
-        window.open(urls[i]);
-      }
-    };
   render() {
     let { tips } = this.state;
     return (
       <div style={{ flex: 1, height: '100%' }}>
         <TableData
           resid={CourseArrangementDetailResid}
-          subtractH={240}
+          subtractH={200}
           hasRowView={false}
           hasAdd={false}
           hasModify={false}
@@ -76,9 +64,9 @@ class ViewTips extends React.Component {
           hasRowSelection={true}
           hasRowDelete={false}
           hasRowModify={false}
-					actionBarWidth={150}
+          actionBarWidth={150}
           customRowBtns={[
-            (record,btnSize) => {
+            (record, btnSize) => {
               return (
                 <Button
                   onClick={() => {
@@ -94,17 +82,6 @@ class ViewTips extends React.Component {
                   查看心得
                 </Button>
               );
-            },
-            (record, btnSize) => {
-              return (
-                <Button
-                  onClick={() => {
-                    this.handleDownMaterial(record.Filepath);
-                  }}
-                >
-                  下载查阅
-                </Button>
-              );
             }
           ]}
           cmswhere={`courseType <> '外聘内训'`}
@@ -117,13 +94,25 @@ class ViewTips extends React.Component {
           width="70%"
           destroyOnClose
         >
-          {tips.C3_614964225030?<div style={{ padding: 12 }}>
-            {/* 标题 */}
-            <h2 style={{ textAlign: 'center' }}>{tips.C3_614964239022}</h2>
-            <Divider />
-            {/* 内容 */}
-            <pre>{tips.C3_614964225030}</pre>
-          </div>: <Empty description='未提交心得'></Empty>}
+          {tips.C3_614964239022 ? (
+            <div style={{ padding: 12 }}>
+              {/* 标题 */}
+              <h2 style={{ textAlign: 'center' }}>{tips.C3_614964239022}</h2>
+              {this.state.tips.Filepath ? (
+                this.state.tips.Filepath.split(',').map((item, index) => (
+                  <p>
+                    <a href={item} target="_blank">
+                      附件{index + 1}
+                    </a>
+                  </p>
+                ))
+              ) : (
+                <p>无附件</p>
+              )}
+            </div>
+          ) : (
+            <Empty description="未提交心得"></Empty>
+          )}
         </Modal>
       </div>
     );

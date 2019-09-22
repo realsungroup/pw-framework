@@ -8,13 +8,13 @@ import {
   Button,
   Divider,
   Timeline,
-  Pagination,
   message,
   Modal,
   Popconfirm,
   Upload,
   Icon,
-  Empty
+  Empty,
+  Table
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -38,10 +38,41 @@ const YEAR_RESID = '420161931474'; //财年表id
 const REVIEW_RECOR_RESID = '615663201836'; // 申请单审批记录表id  C3_615657103208 课程安排明细编号
 const TABBARSTYLE = { display: 'flex', justifyContent: 'space-around' };
 
+const columns = [
+  {
+    title: '审批人',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '工号',
+    dataIndex: 'employeeID',
+    key: 'employeeID'
+  },
+  {
+    title: '审批结果',
+    dataIndex: 'result',
+    key: 'result'
+  },
+  {
+    title: '审批时间',
+    dataIndex: 'time',
+    key: 'time'
+  }
+];
+const data = [
+  {
+    name: '邓铭',
+    employeeID: '1234',
+    result: '通过',
+    time: '2019-09-20 10:10:00'
+  }
+];
 class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
     selectedCourse: null, //选中的课程
+    approvalRecords: [], //申请单审批记录
     calendarEvents: [], //日历事件
     wid: '80%',
     applyVisible: false, //申请模态框
@@ -105,12 +136,14 @@ class EmployeeCourses extends React.Component {
     let res,
       { currentYear } = this.state;
     try {
-      res = await http().getTable({
+      res = await http().getRecordAndSubTables({
         resid: resid,
-        cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`
+        cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`,
+        subresid: TIPS_RESID,
+        getsubresource: 1
       });
-      console.log(res);
       let myCourses = res.data;
+      console.log(myCourses);
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
         let selectedCourse = { ...myCourses[0] };
@@ -148,7 +181,6 @@ class EmployeeCourses extends React.Component {
       res = await http().getTable({
         resid: YEAR_RESID
       });
-      console.log(res.data);
       let years = [...res.data];
       let currentYear = years.find(item => item.C3_478179065325 === 'Y');
       this.setState({
@@ -213,6 +245,28 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  getApprovalRecords = async () => {
+    try {
+      const res = await http().getTable({
+        resid: REVIEW_RECOR_RESID,
+        cmswhere: `C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `
+      });
+      let approvalRecords = res.data.map(item => {
+        return {
+          name: item.C3_615657104492,
+          employeeID: item.C3_615657105254,
+          time: item.C3_615657104984,
+          result: item.C3_615657104736 === 'Y' ? '通过' : '拒绝'
+        };
+      });
+      this.setState({
+        approvalRecords
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  };
   //点击选中课程
   // 拿子组件的评分
   setRate = async rate => {
@@ -362,13 +416,15 @@ class EmployeeCourses extends React.Component {
   };
   handleApplyOk = () => {
     this.setState({
-      applyVisible: false
+      applyVisible: false,
+      approvalRecords: []
     });
   };
   handleApplyCancel = () => {
     this.setState({
       applyVisible: false,
-      applyModalMode: 'view'
+      applyModalMode: 'view',
+      approvalRecords: []
     });
   };
   closeCourseDetailOpenApply = () => {
@@ -854,6 +910,7 @@ class EmployeeCourses extends React.Component {
                           <span
                             className="timeline_action"
                             onClick={() => {
+                              this.getApprovalRecords();
                               this.setState({
                                 applyVisible: true,
                                 isfirst: false
@@ -1086,7 +1143,7 @@ class EmployeeCourses extends React.Component {
           />
         </Modal>
         <Modal
-          title="培训申请单"
+          title=""
           visible={this.state.applyVisible}
           onCancel={this.handleApplyCancel}
           destroyOnClose
@@ -1128,52 +1185,60 @@ class EmployeeCourses extends React.Component {
                     }}
                   >
                     关闭
-                  </Button>
-                ]
-          }
-        >
-          <CourseApply
-            mode={this.state.applyModalMode}
-            course={this.state.selectedCourse}
-            extraCost={this.state.extraCost}
-            onChangeExtraCost={this.setExtraCost}
-          />
-          {this.state.isfirst ? null : (
-            <TableData
-              resid={REVIEW_RECOR_RESID}
-              subtractH={240}
-              hasBeBtns={true}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              actionBarFixed={true}
-              hasRowModify={false}
-              height="70vh"
-              cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              actionBarExtra={() => {
-                return (
+                  </Button>,
                   <Button
                     type="primary"
                     onClick={() => {
+                      const bodyHtml = window.document.body.innerHTML;
+                      window.document.body.innerHTML = this.printer.innerHTML;
                       window.print();
-                      // window.location.reload();
+                      window.document.body.innerHTML = bodyHtml;
+                      window.location.reload();
                     }}
                   >
                     打印
                   </Button>
-                );
-              }}
+                ]
+          }
+        >
+          <div id="apply-printer" ref={element => (this.printer = element)}>
+            <h2 style={{ textAlign: 'center' }}>培训申请单</h2>
+            <CourseApply
+              mode={this.state.applyModalMode}
+              course={this.state.selectedCourse}
+              extraCost={this.state.extraCost}
+              onChangeExtraCost={this.setExtraCost}
             />
-          )}
+            <Card title="培训审批" type="inner" size="small">
+              <Table
+                columns={columns}
+                dataSource={this.state.approvalRecords}
+                pagination={false}
+              />
+            </Card>
+
+            {/* {this.state.isfirst ? null : (
+              <TableData
+                resid={REVIEW_RECOR_RESID}
+                subtractH={240}
+                hasBeBtns={true}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                actionBarFixed={true}
+                hasRowModify={false}
+                height={300}
+                cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
+              />
+            )} */}
+          </div>
         </Modal>
         <Modal
           title={
-            selectedCourse.courseType === '外训'
-              ? '课程行动计划'
-              : '课程反馈'
+            selectedCourse.courseType === '外训' ? '课程行动计划' : '课程反馈'
           }
           visible={this.state.feebackVisible}
           width={this.state.wid}
@@ -1344,8 +1409,11 @@ class EmployeeCourses extends React.Component {
                 this.state.selcetedTip.Filepath.split(',').map(
                   (item, index) => (
                     <p>
-                      <a href={item} target="_blank">
-                        附件{index + 1} : {item}
+                      <a
+                        href={item}
+                        target="_blank"
+                      >
+                        附件{index + 1}
                       </a>
                     </p>
                   )

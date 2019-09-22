@@ -5,6 +5,7 @@ import img1Large from './img/1-large.png';
 import img2Large from './img/2-large.png';
 import CustomForm1 from './CustomForm1';
 import CustomForm2 from './CustomForm2';
+import WorkOverTimeApply from '../WorkOvertimeApply';
 
 const { Meta } = Card;
 
@@ -48,6 +49,14 @@ class AttendanceApply extends React.Component {
           />
         );
         break;
+      case 3:
+        page = (
+          <WorkOverTimeApply
+            goBack={this.goBack}
+            getNotices={this.props.getNotices}
+          />
+        );
+        break;
       default:
         break;
     }
@@ -73,6 +82,13 @@ class AttendanceApply extends React.Component {
               onClick={this.onCardClick(2)}
             >
               <Meta title="补刷卡申请" description="忘记刷卡点这里" />
+            </Card>
+            <Card
+              hoverable
+              cover={<img alt="example" src={img2Large} />}
+              onClick={this.onCardClick(3)}
+            >
+              <Meta title="加班批量申请" description="加班批量申请点这里" />
             </Card>
           </div>
         ) : (

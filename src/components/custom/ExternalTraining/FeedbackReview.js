@@ -1,18 +1,16 @@
 import React from 'react';
 import TabsTableData from '../TabsTableData';
-import { Button, message,Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import http from 'Util20/api';
 
 class ReviewRequisition extends React.Component {
-
-
   handleDownMaterial = url => {
     if (!url) {
       return Modal.warning({
         title: '还未上传心得'
       });
     }
-    const urls = url.split(';file;');
+    const urls = url.split(',');
     for (let i = 0, len = urls.length; i < len; i++) {
       window.open(urls[i]);
     }
@@ -40,7 +38,7 @@ class ReviewRequisition extends React.Component {
                 placement: 'bottom',
                 height: 600
               },
-              customRowBtns:[
+              customRowBtns: [
                 (record, btnSize) => {
                   return (
                     <Button

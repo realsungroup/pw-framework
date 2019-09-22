@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './CourseApply.less';
-import { Card, Row, Col, Divider, Icon, Steps } from 'antd';
+import { Card, Row, Col } from 'antd';
 import CourseInfo from '../CourseInfo';
-const { Step } = Steps;
 
+const rowStyle = {
+  marginBottom: 16
+};
 class CourseApply extends Component {
   constructor(props) {
     super(props);
@@ -19,15 +21,35 @@ class CourseApply extends Component {
           size="small"
           className="courseApply__card"
         >
-          <Row>
-            <Col span={8}>申请人:{course.C3_613941385305}</Col>
-            <Col span={8}>员工号:{course.C3_615642868855}</Col>
-            <Col span={8}>职务:{course.C3_615642934644}</Col>
+          <Row style={rowStyle} class="courseApply_row">
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">申请人:</span>
+              {course.C3_613941385305}
+            </Col>
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">员工号:</span>
+              {course.C3_615642868855}
+            </Col>
           </Row>
-          <Row>
-            <Col span={8}>所在部门:{course.C3_615642887103}</Col>
-            <Col span={8}>直接主管:{course.C3_615642911765}</Col>
-            <Col span={8}>部门负责人:{course.C3_615642922917}</Col>
+          <Row style={rowStyle} class="courseApply_row">
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">职务:</span>
+              {course.C3_615642934644}
+            </Col>
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">所在部门:</span>
+              {course.C3_615642887103}
+            </Col>
+          </Row>
+          <Row style={rowStyle} class="courseApply_row">
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">直接主管:</span>
+              {course.C3_615642911765}
+            </Col>
+            <Col md={12} sm={12}>
+              <span className="courseApply_label">部门负责人:</span>
+              {course.C3_615642922917}
+            </Col>
           </Row>
         </Card>
         <CourseInfo
