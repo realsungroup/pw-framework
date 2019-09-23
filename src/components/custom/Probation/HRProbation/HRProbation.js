@@ -288,7 +288,7 @@ class HRProbation extends React.Component {
             }}
             type="primary"
           >
-            员工填写
+            提醒员工填写
           </Button>
           <Button
             onClick={RegularApply => {
@@ -296,7 +296,7 @@ class HRProbation extends React.Component {
             }}
             type="primary"
           >
-            主管填写
+            提醒主管填写
           </Button>
           <Button
             onClick={RegularApply => {
@@ -304,7 +304,7 @@ class HRProbation extends React.Component {
             }}
             type="primary"
           >
-            辅导员填写
+            提醒辅导员填写
           </Button>
           <Button
             onClick={RegularApply => {
@@ -312,7 +312,7 @@ class HRProbation extends React.Component {
             }}
             type="primary"
           >
-            员工确认辅导
+            提醒员工确认辅导
           </Button>
         </div>
       </div>

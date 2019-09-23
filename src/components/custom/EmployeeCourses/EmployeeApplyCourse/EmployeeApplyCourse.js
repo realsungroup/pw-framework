@@ -10,7 +10,7 @@ import {
   List,
   message,
   Popconfirm,
-  Form,
+  Form
 } from 'antd';
 import { TableData } from '../../../common/loadableCommon';
 import http from 'Util20/api';
@@ -168,7 +168,6 @@ class EmployeeApplyCourse extends React.Component {
           }
         ]
       });
-      console.log(res)
       message.success(res.message);
       this.tableDataRef.handleRefresh();
       this.setState({ applyByUnexistCourseVisible: false });
@@ -241,7 +240,7 @@ class EmployeeApplyCourse extends React.Component {
               }}
             >
               自定义课程申请
-            </Button>,
+            </Button>
             // <Button>资格证书申请</Button>
           ]}
         />
@@ -319,7 +318,7 @@ class EmployeeApplyCourse extends React.Component {
                     <label>讲师</label>
                     <span>{selectedCourse.teacher}</span>
                   </div>
-                  <div className="course_info-item">
+                  {/* <div className="course_info-item">
                     <label>讲师</label>
                     <span>{selectedCourse.teacher}</span>
                   </div>
@@ -330,7 +329,7 @@ class EmployeeApplyCourse extends React.Component {
                   <div className="course_info-item">
                     <label>讲师</label>
                     <span>{selectedCourse.teacher}</span>
-                  </div>
+                  </div> */}
                   <div className="course_info-item" style={{ flex: 1 }}>
                     <label>简介</label>
                     <span>{selectedCourse.C3_609845305618}</span>
@@ -343,20 +342,6 @@ class EmployeeApplyCourse extends React.Component {
                 dataSource={courses}
                 header={
                   <header style={{ display: 'flex' }}>
-                    <Select defaultValue="all">
-                      <Option key="all" value="all">
-                        培训类型
-                      </Option>
-                      <Option key="外训" value="外训">
-                        外训
-                      </Option>
-                      <Option key="内训" value="内训">
-                        内训
-                      </Option>
-                      <Option key="外聘内训" value="外聘内训">
-                        外聘内训
-                      </Option>
-                    </Select>
                     <Input.Search
                       style={{ width: 250, marginLeft: 12 }}
                       placeholder="输入课程关键字搜索"
@@ -376,6 +361,7 @@ class EmployeeApplyCourse extends React.Component {
                 renderItem={item => {
                   return (
                     <List.Item
+                      key={item.REC_ID}
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
                         this.setState({
