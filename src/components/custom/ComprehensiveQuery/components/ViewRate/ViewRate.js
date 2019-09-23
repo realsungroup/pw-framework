@@ -75,26 +75,27 @@ class ViewRate extends React.Component {
     return (
       <div id="view-rate-query">
         {this.renderSelect()}
-        <TableData
-          key="view-rate-query"
-          resid="620406435673"
-          subtractH={220}
-          hasAdvSearch={true}
-          hasAdd={false}
-          hasRowView={true}
-          hasRowDelete={false}
-          hasRowEdit={false}
-          hasDelete={false}
-          hasModify={false}
-          hasRowModify={false}
-          hasRowSelection={true}
-          actionBarWidth={100}
-          cparm1={id}
-          cparm2={this.state.selectYear.label}
-          dblinkname="ehr"
-          height="95%"
-          baseURL="http://10.108.2.66:9091/"
-        />
+        <div style={{ flex: 1 }}>
+          <TableData
+            key="view-rate-query"
+            resid="620406435673"
+            subtractH={220}
+            hasAdvSearch={true}
+            hasAdd={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            hasRowModify={false}
+            hasRowSelection={true}
+            actionBarWidth={100}
+            cparm1={id}
+            cparm2={this.state.selectYear.label}
+            dblinkname="ehr"
+            baseURL="http://10.108.2.66:9091/"
+          />
+        </div>
       </div>
     );
   }

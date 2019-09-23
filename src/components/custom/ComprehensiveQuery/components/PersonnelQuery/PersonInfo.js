@@ -39,13 +39,7 @@ class PersonInfo extends React.Component {
           </div>
         )}
         {this.state.curPage == 'Home' && (
-          <div className="Home">
-            <div className="buttonLine">
-              {/* <Button onClick={this.onCliJob}>任职信息</Button>
-              <Button>查阅个人发展报告</Button>
-              <Button>个人详细信息</Button>
-              <Button>人事信息导出</Button> */}
-            </div>
+          <div style={{ height: '100%' }}>
             {id && (
               <TableData
                 key="1"

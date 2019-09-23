@@ -22,7 +22,7 @@ class TargetHistory extends React.Component {
             hasRowSelection={true}
             actionBarWidth={100}
             dblinkname="ehr"
-            height={440}
+            // height={440}
             cparm1={this.props.selectYear.key}
             baseURL="http://10.108.2.66:9091/"
           />
