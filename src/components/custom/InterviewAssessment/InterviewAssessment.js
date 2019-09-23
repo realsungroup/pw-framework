@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Button
+  Button,
+  Icon
 } from 'antd';
 import './InterviewAssessment.less';
 class InterviewAssessment extends React.Component {
@@ -13,7 +14,7 @@ class InterviewAssessment extends React.Component {
         hiringManger:'李四',
         interviewer:'王五',
         interviewer2:'赵六',
-        chara:6,
+        chara:8,
         eduOther:'',
         graFrom:'',
         workExp:'',
@@ -82,6 +83,19 @@ class InterviewAssessment extends React.Component {
         vPM:'',
         vMoOt:'',
         vCM:'',
+        //tech
+        vTS8:'',
+        vPreSk:'',
+        vProSol:'',
+        vPeRe:'',
+        vAcOr:'',
+        //Fresh
+        vTS9:'',
+        vcrea:'',
+        vPresentSkill:'',
+        vProblemSol:'',
+        vPeerRel:'',
+        vPersonaLe:''
 
     }
   }
@@ -122,6 +136,10 @@ class InterviewAssessment extends React.Component {
       this.refs.S9.classList.remove('hidden')
     }else if(this.state.chara==6){
       this.refs.S10.classList.remove('hidden')
+    }else if(this.state.chara==7){
+      this.refs.Tech.classList.remove('hidden')
+    }else if(this.state.chara==8){
+      this.refs.Tech.classList.remove('hidden')
     }
   }
   onPrinting = () => {
@@ -143,6 +161,12 @@ class InterviewAssessment extends React.Component {
       <div className='IA'>
         <Button type='primary'>保存</Button>
         <Button onClick={this.onPrinting}>打印</Button>
+        <div className='cls' onClick={()=>{
+
+            this.props.clsAss();
+        }}>
+          <Icon type="close-circle" />
+        </div>
         <div id='toPrint' ref={p => (this.printer = p)}>
           <div className='wrap'>
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAA1CAYAAABiKw8nAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNTgzQkQzQjIzQUExMUU5QTlFMEIwOTExQjRGOEI4MiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNTgzQkQzQzIzQUExMUU5QTlFMEIwOTExQjRGOEI4MiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA1ODNCRDM5MjNBQTExRTlBOUUwQjA5MTFCNEY4QjgyIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA1ODNCRDNBMjNBQTExRTlBOUUwQjA5MTFCNEY4QjgyIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+teLRYwAADlxJREFUeNrsXQu4VUUV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"/>
@@ -790,13 +814,13 @@ class InterviewAssessment extends React.Component {
                 <b>
                   <input type='radio' name='vOrg' id='vOrg1' value='1' checked={this.state.vOrg=='1'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg1')}}/><label for='vOrg1'>1</label>
 
-                  <input type='radio' name='vOrg' id='vOrg2' value='2' checked={this.state.vOrg=='2'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg1')}}/><label for='vOrg2'>2</label>
+                  <input type='radio' name='vOrg' id='vOrg2' value='2' checked={this.state.vOrg=='2'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg2')}}/><label for='vOrg2'>2</label>
 
-                  <input type='radio' name='vOrg' id='vOrg3' value='3' checked={this.state.vOrg=='3'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg1')}}/><label for='vOrg3'>3</label>
+                  <input type='radio' name='vOrg' id='vOrg3' value='3' checked={this.state.vOrg=='3'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg3')}}/><label for='vOrg3'>3</label>
 
-                  <input type='radio' name='vOrg' id='vOrg4' value='4' checked={this.state.vOrg=='4'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg1')}}/><label for='vOrg4'>4</label>
+                  <input type='radio' name='vOrg' id='vOrg4' value='4' checked={this.state.vOrg=='4'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg4')}}/><label for='vOrg4'>4</label>
 
-                  <input type='radio' name='vOrg' id='vOrg5' value='5' checked={this.state.vOrg=='5'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg1')}}/><label for='vOrg5'>5</label>
+                  <input type='radio' name='vOrg' id='vOrg5' value='5' checked={this.state.vOrg=='5'?'checked':''} onChange={v=>{this.handlechange("vOrg",v,'vOrg5')}}/><label for='vOrg5'>5</label>
                 </b>
                 <b>
                   <input type='radio' name='vPriS' id='vPriS1' value='1' checked={this.state.vPriS=='1'?'checked':''} onChange={v=>{this.handlechange("vPriS",v,'vPriS1')}}/><label for='vPriS1'>1</label>
@@ -888,13 +912,13 @@ class InterviewAssessment extends React.Component {
                 <b>
                   <input type='radio' name='vMoOt' id='vMoOt1' value='1' checked={this.state.vMoOt=='1'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt1')}}/><label for='vMoOt1'>1</label>
 
-                  <input type='radio' name='vMoOt' id='vMoOt2' value='2' checked={this.state.vMoOt=='2'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt1')}}/><label for='vMoOt2'>2</label>
+                  <input type='radio' name='vMoOt' id='vMoOt2' value='2' checked={this.state.vMoOt=='2'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt2')}}/><label for='vMoOt2'>2</label>
 
-                  <input type='radio' name='vMoOt' id='vMoOt3' value='3' checked={this.state.vMoOt=='3'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt1')}}/><label for='vMoOt3'>3</label>
+                  <input type='radio' name='vMoOt' id='vMoOt3' value='3' checked={this.state.vMoOt=='3'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt3')}}/><label for='vMoOt3'>3</label>
 
-                  <input type='radio' name='vMoOt' id='vMoOt4' value='4' checked={this.state.vMoOt=='4'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt1')}}/><label for='vMoOt4'>4</label>
+                  <input type='radio' name='vMoOt' id='vMoOt4' value='4' checked={this.state.vMoOt=='4'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt4')}}/><label for='vMoOt4'>4</label>
 
-                  <input type='radio' name='vMoOt' id='vMoOt5' value='5' checked={this.state.vMoOt=='5'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt1')}}/><label for='vMoOt5'>5</label>
+                  <input type='radio' name='vMoOt' id='vMoOt5' value='5' checked={this.state.vMoOt=='5'?'checked':''} onChange={v=>{this.handlechange("vMoOt",v,'vMoOt5')}}/><label for='vMoOt5'>5</label>
                 </b>
                 <b>
                   <input type='radio' name='vCM' id='vCM1' value='1' checked={this.state.vCM=='1'?'checked':''} onChange={v=>{this.handlechange("vCM",v,'vCM1')}}/><label for='vCM1'>1</label>
@@ -917,6 +941,190 @@ class InterviewAssessment extends React.Component {
                   <input type='radio' name='vDQ' id='vDQ4' value='4' checked={this.state.vDQ=='4'?'checked':''} onChange={v=>{this.handlechange("vDQ",v,'vDQ4')}}/><label for='vDQ4'>4</label>
 
                   <input type='radio' name='vDQ' id='vDQ5' value='5' checked={this.state.vDQ=='5'?'checked':''} onChange={v=>{this.handlechange("vDQ",v,'vDQ5')}}/><label for='vDQ5'>5</label>
+                </b>
+                </cell>
+              </rect>
+            </div>
+
+            <div ref='Tech' className='hidden'>
+              <rect className='alter1 alter6'>
+                <cell>
+                  <b>
+                    技术胜任力<br/>Technical Competency
+                  </b>
+                </cell>
+                <cell>
+                  <b>专业技术/Technical Skills</b>
+                </cell>
+                <cell>
+                  <b>
+                    <input type='radio' name='vTS8' id='vTS36' value='1' checked={this.state.vTS8=='1'?'checked':''} onChange={v=>{this.handlechange("vTS8",v,'vTS36')}}/><label for='vTS36'>1</label>
+
+                    <input type='radio' name='vTS8' id='vTS37' value='2' checked={this.state.vTS8=='2'?'checked':''} onChange={v=>{this.handlechange("vTS8",v,'vTS37')}}/><label for='vTS37'>2</label>
+
+                    <input type='radio' name='vTS8' id='vTS38' value='3' checked={this.state.vTS8=='3'?'checked':''} onChange={v=>{this.handlechange("vTS8",v,'vTS38')}}/><label for='vTS38'>3</label>
+
+                    <input type='radio' name='vTS8' id='vTS39' value='4' checked={this.state.vTS8=='4'?'checked':''} onChange={v=>{this.handlechange("vTS8",v,'vTS39')}}/><label for='vTS39'>4</label>
+
+                    <input type='radio' name='vTS8' id='vTS40' value='5' checked={this.state.vTS8=='5'?'checked':''} onChange={v=>{this.handlechange("vTS8",v,'vTS40')}}/><label for='vTS40'>5</label>
+                  </b>
+
+                </cell>
+              </rect>
+              <rect className='alter1 alter2 '>
+                <cell>
+                  <b>
+                    岗位胜任力<br/>Technical Competency
+                  </b>
+                </cell>
+                <cell>
+                  <b>表达技能/Presentation Skills</b>
+                  <b>解决问题/Problem Solving</b>
+                  <b>同事关系/Peer Relationship</b>
+                  <b>以行动为导向/Action Oriented</b>
+                </cell>
+                <cell>
+                <b>
+                  <input type='radio' name='vPreSk' id='vPreSk1' value='1' checked={this.state.vPreSk=='1'?'checked':''} onChange={v=>{this.handlechange("vPreSk",v,'vPreSk1')}}/><label for='vPreSk1'>1</label>
+
+                  <input type='radio' name='vPreSk' id='vPreSk2' value='2' checked={this.state.vPreSk=='2'?'checked':''} onChange={v=>{this.handlechange("vPreSk",v,'vPreSk2')}}/><label for='vPreSk2'>2</label>
+
+                  <input type='radio' name='vPreSk' id='vPreSk3' value='3' checked={this.state.vPreSk=='3'?'checked':''} onChange={v=>{this.handlechange("vPreSk",v,'vPreSk3')}}/><label for='vPreSk3'>3</label>
+
+                  <input type='radio' name='vPreSk' id='vPreSk4' value='4' checked={this.state.vPreSk=='4'?'checked':''} onChange={v=>{this.handlechange("vPreSk",v,'vPreSk4')}}/><label for='vPreSk4'>4</label>
+
+                  <input type='radio' name='vPreSk' id='vPreSk5' value='5' checked={this.state.vPreSk=='5'?'checked':''} onChange={v=>{this.handlechange("vPreSk",v,'vPreSk5')}}/><label for='vPreSk5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vProSol' id='vProSol1' value='1' checked={this.state.vProSol=='1'?'checked':''} onChange={v=>{this.handlechange("vProSol",v,'vProSol1')}}/><label for='vProSol1'>1</label>
+
+                  <input type='radio' name='vProSol' id='vProSol2' value='2' checked={this.state.vProSol=='2'?'checked':''} onChange={v=>{this.handlechange("vProSol",v,'vProSol2')}}/><label for='vProSol2'>2</label>
+
+                  <input type='radio' name='vProSol' id='vProSol3' value='3' checked={this.state.vProSol=='3'?'checked':''} onChange={v=>{this.handlechange("vProSol",v,'vProSol3')}}/><label for='vProSol3'>3</label>
+
+                  <input type='radio' name='vProSol' id='vProSol4' value='4' checked={this.state.vProSol=='4'?'checked':''} onChange={v=>{this.handlechange("vProSol",v,'vProSol4')}}/><label for='vProSol4'>4</label>
+
+                  <input type='radio' name='vProSol' id='vProSol5' value='5' checked={this.state.vProSol=='5'?'checked':''} onChange={v=>{this.handlechange("vProSol",v,'vProSol5')}}/><label for='vProSol5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vPeRe' id='vPeRe1' value='1' checked={this.state.vPeRe=='1'?'checked':''} onChange={v=>{this.handlechange("vPeRe",v,'vPeRe1')}}/><label for='vPeRe1'>1</label>
+
+                  <input type='radio' name='vPeRe' id='vPeRe2' value='2' checked={this.state.vPeRe=='2'?'checked':''} onChange={v=>{this.handlechange("vPeRe",v,'vPeRe2')}}/><label for='vPeRe2'>2</label>
+
+                  <input type='radio' name='vPeRe' id='vPeRe3' value='3' checked={this.state.vPeRe=='3'?'checked':''} onChange={v=>{this.handlechange("vPeRe",v,'vPeRe3')}}/><label for='vPeRe3'>3</label>
+
+                  <input type='radio' name='vPeRe' id='vPeRe4' value='4' checked={this.state.vPeRe=='4'?'checked':''} onChange={v=>{this.handlechange("vPeRe",v,'vPeRe4')}}/><label for='vPeRe4'>4</label>
+
+                  <input type='radio' name='vPeRe' id='vPeRe5' value='5' checked={this.state.vPeRe=='5'?'checked':''} onChange={v=>{this.handlechange("vPeRe",v,'vPeRe5')}}/><label for='vPeRe5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vAcOr' id='vAcOr1' value='1' checked={this.state.vAcOr=='1'?'checked':''} onChange={v=>{this.handlechange("vAcOr",v,'vAcOr1')}}/><label for='vAcOr1'>1</label>
+
+                  <input type='radio' name='vAcOr' id='vAcOr2' value='2' checked={this.state.vAcOr=='2'?'checked':''} onChange={v=>{this.handlechange("vAcOr",v,'vAcOr2')}}/><label for='vAcOr2'>2</label>
+
+                  <input type='radio' name='vAcOr' id='vAcOr3' value='3' checked={this.state.vAcOr=='3'?'checked':''} onChange={v=>{this.handlechange("vAcOr",v,'vAcOr3')}}/><label for='vAcOr3'>3</label>
+
+                  <input type='radio' name='vAcOr' id='vAcOr4' value='4' checked={this.state.vAcOr=='4'?'checked':''} onChange={v=>{this.handlechange("vAcOr",v,'vAcOr4')}}/><label for='vAcOr4'>4</label>
+
+                  <input type='radio' name='vAcOr' id='vAcOr5' value='5' checked={this.state.vAcOr=='5'?'checked':''} onChange={v=>{this.handlechange("vAcOr",v,'vAcOr5')}}/><label for='vAcOr5'>5</label>
+                </b>
+                </cell>
+              </rect>
+            </div>
+
+            <div ref='Fresh' className='hidden'>
+              <rect className='alter1 alter6'>
+                <cell>
+                  <b>
+                    技术胜任力<br/>Technical Competency
+                  </b>
+                </cell>
+                <cell>
+                  <b>专业技术/Technical Skills</b>
+                </cell>
+                <cell>
+                  <b>
+                    <input type='radio' name='vTS9' id='vTS41' value='1' checked={this.state.vTS9=='1'?'checked':''} onChange={v=>{this.handlechange("vTS9",v,'vTS41')}}/><label for='vTS41'>1</label>
+
+                    <input type='radio' name='vTS9' id='vTS42' value='2' checked={this.state.vTS9=='2'?'checked':''} onChange={v=>{this.handlechange("vTS9",v,'vTS42')}}/><label for='vTS42'>2</label>
+
+                    <input type='radio' name='vTS9' id='vTS43' value='3' checked={this.state.vTS9=='3'?'checked':''} onChange={v=>{this.handlechange("vTS9",v,'vTS43')}}/><label for='vTS43'>3</label>
+
+                    <input type='radio' name='vTS9' id='vTS44' value='4' checked={this.state.vTS9=='4'?'checked':''} onChange={v=>{this.handlechange("vTS9",v,'vTS44')}}/><label for='vTS44'>4</label>
+
+                    <input type='radio' name='vTS9' id='vTS45' value='5' checked={this.state.vTS9=='5'?'checked':''} onChange={v=>{this.handlechange("vTS9",v,'vTS45')}}/><label for='vTS45'>5</label>
+                  </b>
+
+                </cell>
+              </rect>
+              <rect className='alter1 alter2 alter7'>
+                <cell>
+                  <b>
+                    岗位胜任力<br/>Technical Competency
+                  </b>
+                </cell>
+                <cell>
+                  <b>创造力/Creativity</b>
+                  <b>沟通能力/Presentation Skills</b>
+                  <b>分析解决问题/Problem Solving</b>
+                  <b>团队合作/Peer Relationship</b>
+                  <b>学习能力/Personal Learning</b>
+                </cell>
+                <cell>
+                <b>
+                  <input type='radio' name='vcrea' id='vcrea1' value='1' checked={this.state.vcrea=='1'?'checked':''} onChange={v=>{this.handlechange("vcrea",v,'vcrea1')}}/><label for='vcrea1'>1</label>
+
+                  <input type='radio' name='vcrea' id='vcrea2' value='2' checked={this.state.vcrea=='2'?'checked':''} onChange={v=>{this.handlechange("vcrea",v,'vcrea2')}}/><label for='vcrea2'>2</label>
+
+                  <input type='radio' name='vcrea' id='vcrea3' value='3' checked={this.state.vcrea=='3'?'checked':''} onChange={v=>{this.handlechange("vcrea",v,'vcrea3')}}/><label for='vcrea3'>3</label>
+
+                  <input type='radio' name='vcrea' id='vcrea4' value='4' checked={this.state.vcrea=='4'?'checked':''} onChange={v=>{this.handlechange("vcrea",v,'vcrea4')}}/><label for='vcrea4'>4</label>
+
+                  <input type='radio' name='vcrea' id='vcrea5' value='5' checked={this.state.vcrea=='5'?'checked':''} onChange={v=>{this.handlechange("vcrea",v,'vcrea5')}}/><label for='vcrea5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vPresentSkill' id='vPresentSkill1' value='1' checked={this.state.vPresentSkill=='1'?'checked':''} onChange={v=>{this.handlechange("vPresentSkill",v,'vPresentSkill1')}}/><label for='vPresentSkill1'>1</label>
+
+                  <input type='radio' name='vPresentSkill' id='vPresentSkill2' value='2' checked={this.state.vPresentSkill=='2'?'checked':''} onChange={v=>{this.handlechange("vPresentSkill",v,'vPresentSkill2')}}/><label for='vPresentSkill2'>2</label>
+
+                  <input type='radio' name='vPresentSkill' id='vPresentSkill3' value='3' checked={this.state.vPresentSkill=='3'?'checked':''} onChange={v=>{this.handlechange("vPresentSkill",v,'vPresentSkill3')}}/><label for='vPresentSkill3'>3</label>
+
+                  <input type='radio' name='vPresentSkill' id='vPresentSkill4' value='4' checked={this.state.vPresentSkill=='4'?'checked':''} onChange={v=>{this.handlechange("vPresentSkill",v,'vPresentSkill4')}}/><label for='vPresentSkill4'>4</label>
+
+                  <input type='radio' name='vPresentSkill' id='vPresentSkill5' value='5' checked={this.state.vPresentSkill=='5'?'checked':''} onChange={v=>{this.handlechange("vPresentSkill",v,'vPresentSkill5')}}/><label for='vPresentSkill5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vProblemSol' id='vProblemSol1' value='1' checked={this.state.vProblemSol=='1'?'checked':''} onChange={v=>{this.handlechange("vProblemSol",v,'vProblemSol1')}}/><label for='vProblemSol1'>1</label>
+
+                  <input type='radio' name='vProblemSol' id='vProblemSol2' value='2' checked={this.state.vProblemSol=='2'?'checked':''} onChange={v=>{this.handlechange("vProblemSol",v,'vProblemSol2')}}/><label for='vProblemSol2'>2</label>
+
+                  <input type='radio' name='vProblemSol' id='vProblemSol3' value='3' checked={this.state.vProblemSol=='3'?'checked':''} onChange={v=>{this.handlechange("vProblemSol",v,'vProblemSol3')}}/><label for='vProblemSol3'>3</label>
+
+                  <input type='radio' name='vProblemSol' id='vProblemSol4' value='4' checked={this.state.vProblemSol=='4'?'checked':''} onChange={v=>{this.handlechange("vProblemSol",v,'vProblemSol4')}}/><label for='vProblemSol4'>4</label>
+
+                  <input type='radio' name='vProblemSol' id='vProblemSol5' value='5' checked={this.state.vProblemSol=='5'?'checked':''} onChange={v=>{this.handlechange("vProblemSol",v,'vProblemSol5')}}/><label for='vProblemSol5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vPeerRel' id='vPeerRel1' value='1' checked={this.state.vPeerRel=='1'?'checked':''} onChange={v=>{this.handlechange("vPeerRel",v,'vPeerRel1')}}/><label for='vPeerRel1'>1</label>
+
+                  <input type='radio' name='vPeerRel' id='vPeerRel2' value='2' checked={this.state.vPeerRel=='2'?'checked':''} onChange={v=>{this.handlechange("vPeerRel",v,'vPeerRel2')}}/><label for='vPeerRel2'>2</label>
+
+                  <input type='radio' name='vPeerRel' id='vPeerRel3' value='3' checked={this.state.vPeerRel=='3'?'checked':''} onChange={v=>{this.handlechange("vPeerRel",v,'vPeerRel3')}}/><label for='vPeerRel3'>3</label>
+
+                  <input type='radio' name='vPeerRel' id='vPeerRel4' value='4' checked={this.state.vPeerRel=='4'?'checked':''} onChange={v=>{this.handlechange("vPeerRel",v,'vPeerRel4')}}/><label for='vPeerRel4'>4</label>
+
+                  <input type='radio' name='vPeerRel' id='vPeerRel5' value='5' checked={this.state.vPeerRel=='5'?'checked':''} onChange={v=>{this.handlechange("vPeerRel",v,'vPeerRel5')}}/><label for='vPeerRel5'>5</label>
+                </b>
+                <b>
+                  <input type='radio' name='vPersonaLe' id='vPersonaLe1' value='1' checked={this.state.vPersonaLe=='1'?'checked':''} onChange={v=>{this.handlechange("vPersonaLe",v,'vPersonaLe1')}}/><label for='vPersonaLe1'>1</label>
+
+                  <input type='radio' name='vPersonaLe' id='vPersonaLe2' value='2' checked={this.state.vPersonaLe=='2'?'checked':''} onChange={v=>{this.handlechange("vPersonaLe",v,'vPersonaLe2')}}/><label for='vPersonaLe2'>2</label>
+
+                  <input type='radio' name='vPersonaLe' id='vPersonaLe3' value='3' checked={this.state.vPersonaLe=='3'?'checked':''} onChange={v=>{this.handlechange("vPersonaLe",v,'vPersonaLe3')}}/><label for='vPersonaLe3'>3</label>
+
+                  <input type='radio' name='vPersonaLe' id='vPersonaLe4' value='4' checked={this.state.vPersonaLe=='4'?'checked':''} onChange={v=>{this.handlechange("vPersonaLe",v,'vPersonaLe4')}}/><label for='vPersonaLe4'>4</label>
+
+                  <input type='radio' name='vPersonaLe' id='vPersonaLe5' value='5' checked={this.state.vPersonaLe=='5'?'checked':''} onChange={v=>{this.handlechange("vPersonaLe",v,'vPersonaLe5')}}/><label for='vPersonaLe5'>5</label>
                 </b>
                 </cell>
               </rect>
