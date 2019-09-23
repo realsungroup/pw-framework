@@ -60,14 +60,7 @@ const columns = [
     key: 'time'
   }
 ];
-const data = [
-  {
-    name: '邓铭',
-    employeeID: '1234',
-    result: '通过',
-    time: '2019-09-20 10:10:00'
-  }
-];
+
 class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
@@ -255,11 +248,22 @@ class EmployeeCourses extends React.Component {
         cmswhere: `C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `
       });
       let approvalRecords = res.data.map(item => {
+        let result = '';
+        if (item.C3_615657104736) {
+          if (item.C3_615657104736 === 'Y') {
+            result = '通过';
+          }
+          if (item.C3_615657104736 === 'N') {
+            result = '拒绝';
+          }
+        } else {
+          result = '审核中';
+        }
         return {
           name: item.C3_615657104492,
           employeeID: item.C3_615657105254,
           time: item.C3_615657104984,
-          result: item.C3_615657104736 === 'Y' ? '通过' : '拒绝'
+          result
         };
       });
       this.setState({
@@ -1223,38 +1227,22 @@ class EmployeeCourses extends React.Component {
           }
         >
           <div id="apply-printer" ref={element => (this.printer = element)}>
-            <h2 style={{ textAlign: 'center' }}>培训申请单</h2>
-            <CourseApply
-              mode={this.state.applyModalMode}
-              course={this.state.selectedCourse}
-              extraCost={this.state.extraCost}
-              onChangeExtraCost={this.setExtraCost}
-            />
-            <Card title="培训审批" type="inner" size="small">
-              <Table
-                columns={columns}
-                dataSource={this.state.approvalRecords}
-                pagination={false}
+            <div style={{ backgroundColor: '#fff', height: '100%' }}>
+              <h2 style={{ textAlign: 'center' }}>培训申请单</h2>
+              <CourseApply
+                mode={this.state.applyModalMode}
+                course={this.state.selectedCourse}
+                extraCost={this.state.extraCost}
+                onChangeExtraCost={this.setExtraCost}
               />
-            </Card>
-
-            {/* {this.state.isfirst ? null : (
-              <TableData
-                resid={REVIEW_RECOR_RESID}
-                subtractH={240}
-                hasBeBtns={true}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                actionBarFixed={true}
-                hasRowModify={false}
-                height={300}
-                cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              />
-            )} */}
+              <Card title="培训审批" type="inner" size="small">
+                <Table
+                  columns={columns}
+                  dataSource={this.state.approvalRecords}
+                  pagination={false}
+                />
+              </Card>
+            </div>
           </div>
         </Modal>
         <Modal

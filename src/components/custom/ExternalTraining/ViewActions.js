@@ -52,7 +52,7 @@ class ViewActions extends React.Component {
         cmswhere: `C3_478368118696 =${selectedCourseArrangmentDetail.CourseArrangeDetailID}`
       });
     } catch (err) {
-      message.error(err.message)
+      message.error(err.message);
       console.log(err.message);
     }
     if (res.data.length > 0) {
@@ -90,7 +90,7 @@ class ViewActions extends React.Component {
           cmswhere: `courseArrange =${selectedCourseArrangmentDetail.CourseArrangeDetailID}`
         });
       } catch (err) {
-        message.error(err.message)
+        message.error(err.message);
         console.log(err);
       }
       console.log('后端返回的行动计划', res2);
@@ -129,7 +129,7 @@ class ViewActions extends React.Component {
 
   render() {
     return (
-      <div style={{  height: '100%' }}>
+      <div style={{ flex: 1 }}>
         <TableData
           resid={courseDetailId}
           // subtractH='220px'
@@ -140,10 +140,10 @@ class ViewActions extends React.Component {
           hasRowSelection={true}
           hasRowDelete={false}
           hasRowModify={false}
-          subtractH='220'
-          height='600'
+          subtractH={200}
+          // height='600'
           // height="calc(100vh - 64px)"
-          recordFormType='drawer'
+          recordFormType="drawer"
           customRowBtns={[
             record => {
               return (

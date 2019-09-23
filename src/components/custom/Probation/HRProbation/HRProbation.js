@@ -1,12 +1,12 @@
 import React from 'react';
 import './HRProbation.less';
 import TableData from '../../../common/data/TableData';
-import { Button, message, Menu, Icon, Modal } from 'antd';
+import { Button, message, Menu, Icon, Modal, Spin, Popconfirm } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
 
 const { confirm } = Modal;
-
+const resid = '619609481002';
 class HRProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
@@ -14,7 +14,9 @@ class HRProbation extends React.Component {
     desktop: null,
     mode: 'inline',
     theme: 'light',
-    selectKey: '1'
+    selectKey: '1',
+    spinning: false,
+    collapsed: false
   };
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -43,7 +45,7 @@ class HRProbation extends React.Component {
               <div style={{ height: '100vh' }}>
                 <TableData
                   key="1"
-                  resid="619609481002"
+                  resid={resid}
                   subtractH={240}
                   hasAdd={false}
                   hasRowView={false}
@@ -54,6 +56,8 @@ class HRProbation extends React.Component {
                   hasRowModify={false}
                   hasRowSelection={true}
                   actionBarWidth={100}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
                   customRowBtns={[
                     record => (
                       <Button
@@ -136,7 +140,7 @@ class HRProbation extends React.Component {
     }
   };
   // 点击下拉框
-  handleSel = async (record, selectValue) => {
+  handleNotice = async (record, selectValue) => {
     if (record.selectedRowKeys.length) {
       let res;
       let data = [];
@@ -154,9 +158,10 @@ class HRProbation extends React.Component {
           data.push(item);
         }
       });
+      this.setState({ spinning: true });
       try {
         res = await http().modifyRecords({
-          resid: 619609481002,
+          resid: resid,
           data
         });
         if (res.Error === 0) {
@@ -164,9 +169,12 @@ class HRProbation extends React.Component {
         }
       } catch (error) {
         message.error(error.message);
+        console.log(error);
       }
+      this.tableDataRef.handleRefresh();
       this.setState({
-        selectCourseArrangementVisible: false
+        selectCourseArrangementVisible: false,
+        spinning: false
       });
     } else {
       message.error('请选择至少一条记录');
@@ -181,30 +189,31 @@ class HRProbation extends React.Component {
       title: '确认提醒?',
       content: '点击确认后将发送邮件至人员邮箱',
       onOk: () => {
-        this.handleSel(record, selectValue);
+        this.handleNotice(record, selectValue);
       },
       onCancel() {}
     });
   };
-  // 点击转正申请
+  // 点击退回申请
   handleApply = async record => {
-    console.log('record转正111', record);
     if (record.selectedRowKeys.length) {
       this.setState({
-        selectCourseArrangementVisible: false
+        selectCourseArrangementVisible: false,
+        spinning: true
       });
       let res;
       let data = [];
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
-          console.log('come in ');
-          item.isRegularNotice = 'Y';
-          data.push(item);
+          data.push({
+            isRegularNotice: '',
+            REC_ID: item.REC_ID
+          });
         }
       });
       try {
         res = await http().modifyRecords({
-          resid: 619609481002,
+          resid,
           data
         });
         if (res.Error === 0) {
@@ -212,6 +221,40 @@ class HRProbation extends React.Component {
         }
       } catch (error) {
         message.error(error.message);
+      }
+      this.tableDataRef.handleRefresh();
+      this.setState({ spinning: false });
+    } else {
+      message.error('请选择至少一条记录');
+    }
+  };
+
+  // 同意转正
+  hadleApproval = async record => {
+    if (record.selectedRowKeys.length) {
+      try {
+        let res;
+        let data = [];
+        this.setState({ spinning: true });
+        record.dataSource.forEach(item => {
+          if (record.selectedRowKeys.includes(item.REC_ID)) {
+            data.push({
+              isRegularNotice: 'Y',
+              REC_ID: item.REC_ID
+            });
+          }
+        });
+        res = await http().modifyRecords({
+          resid: resid,
+          data
+        });
+        message.success(res.message);
+        this.tableDataRef.handleRefresh();
+      } catch (error) {
+        message.error(error.message);
+        console.log(error);
+      } finally {
+        this.setState({ spinning: false });
       }
     } else {
       message.error('请选择至少一条记录');
@@ -222,61 +265,54 @@ class HRProbation extends React.Component {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
-          {/* <Select
-            style={{ width: 120 }}
-            placeholder="提醒"
-            onSelect={selectValue => {
-              // this.handleSel(record, selectValue);
-              this.showConfirm(record, selectValue);
-            }}
-          >
-            <Option value="员工填写">员工填写</Option>
-            <Option value="主管填写">主管填写</Option>
-            <Option value="辅导员填写">辅导员填写</Option>
-            <Option value="员工确认辅导">员工确认辅导</Option>
-          </Select> */}
-          <Button
-            type="danger"
-            onClick={RegularApply => {
+          <Popconfirm
+            title="确认退回申请？"
+            onConfirm={() => {
               this.handleApply(record);
             }}
           >
-            退回申请
+            <Button type="danger">退回申请</Button>
+          </Popconfirm>
+          <Popconfirm
+            title="确认同意转正？"
+            onConfirm={() => {
+              this.hadleApproval(record);
+            }}
+          >
+            <Button type="primary">同意转正</Button>
+          </Popconfirm>
+
+          <Button
+            onClick={RegularApply => {
+              this.showConfirm(record, '员工填写');
+            }}
+            type="primary"
+          >
+            提醒员工填写
           </Button>
           <Button
             onClick={RegularApply => {
-              this.handleApply(record);
+              this.showConfirm(record, '主管填写');
             }}
+            type="primary"
           >
-            同意转正
+            提醒主管填写
           </Button>
           <Button
             onClick={RegularApply => {
-              this.handleApply(record);
+              this.showConfirm(record, '辅导员填写');
             }}
+            type="primary"
           >
-            员工填写
+            提醒辅导员填写
           </Button>
           <Button
             onClick={RegularApply => {
-              this.handleApply(record);
+              this.showConfirm(record, '员工确认辅导');
             }}
+            type="primary"
           >
-            主管填写
-          </Button>
-          <Button
-            onClick={RegularApply => {
-              this.handleApply(record);
-            }}
-          >
-            辅导员填写
-          </Button>
-          <Button
-            onClick={RegularApply => {
-              this.handleApply(record);
-            }}
-          >
-            员工确认辅导
+            提醒员工确认辅导
           </Button>
         </div>
       </div>
@@ -298,13 +334,13 @@ class HRProbation extends React.Component {
     this.setState({ isShowTable });
   };
   render() {
+    const { spinning, desktop, selectKey, collapsed, mode, theme } = this.state;
     return (
       <div
         className="hr-probation"
         style={{
           display: 'flex',
-          height:
-            this.state.desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
+          height: desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
         }}
       >
         <div
@@ -313,7 +349,7 @@ class HRProbation extends React.Component {
             left: 0,
             bottom: 0,
             top: 0,
-            width: `${this.state.collapsed ? '80px' : '200px'}`,
+            width: `${collapsed ? '80px' : '200px'}`,
             height: '100vh'
           }}
         >
@@ -325,11 +361,11 @@ class HRProbation extends React.Component {
               marginBottom: 16,
               position: 'absolute',
               background: '#1890ff',
-              left: this.state.collapsed ? '79px' : '200px',
+              left: collapsed ? '79px' : '200px',
               top:
-                this.state.desktop === 'DESKTOP'
-                  ? (this.state.selectKey - 1) * 48 + 4 + 'px'
-                  : (this.state.selectKey - 1) * 48 + 164 + 'px',
+                desktop === 'DESKTOP'
+                  ? (selectKey - 1) * 48 + 4 + 'px'
+                  : (selectKey - 1) * 48 + 164 + 'px',
               display: 'flex',
               alignItems: 'center',
               zIndex: '999',
@@ -339,17 +375,17 @@ class HRProbation extends React.Component {
             onClick={this.toggleCollapsed}
           >
             <Icon
-              type={this.state.collapsed ? 'caret-right' : 'caret-left'}
+              type={collapsed ? 'caret-right' : 'caret-left'}
               style={{ fontSize: '20px', color: '#fff', marginLeft: '-8px' }}
             />
           </div>
           <Menu
             style={{ height: '100%' }}
             defaultSelectedKeys={['1']}
-            mode={this.state.mode}
-            theme={this.state.theme}
+            mode={mode}
+            theme={theme}
             onSelect={this.onSelect}
-            inlineCollapsed={this.state.collapsed}
+            inlineCollapsed={collapsed}
           >
             <Menu.Item key="1">
               <Icon type="mail" />
@@ -372,13 +408,11 @@ class HRProbation extends React.Component {
         <div
           style={{
             position: 'relative',
-            width: `${
-              this.state.collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'
-            }`,
-            left: `${this.state.collapsed ? '100px' : '220px'}`
+            width: `${collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'}`,
+            left: `${collapsed ? '100px' : '220px'}`
           }}
         >
-          {this.renderContent()}
+          <Spin spinning={spinning}>{this.renderContent()}</Spin>
         </div>
       </div>
     );
