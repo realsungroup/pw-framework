@@ -98,7 +98,7 @@ class InternalTraining extends Component {
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 if (this.state.current !== 1) {
-                  message.info('请点击“学员审核”进入');
+                  message.info('请点击“学员通知及审核”进入');
                 }
               }}
             />
