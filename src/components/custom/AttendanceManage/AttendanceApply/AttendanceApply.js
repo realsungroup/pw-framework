@@ -78,17 +78,17 @@ class AttendanceApply extends React.Component {
             </Card>
             <Card
               hoverable
-              cover={<img alt="example" src={img2Large} />}
-              onClick={this.onCardClick(2)}
+              cover={<img alt="example" src={img1Large} />}
+              onClick={this.onCardClick(3)}
             >
-              <Meta title="补刷卡申请" description="忘记刷卡点这里" />
+              <Meta title="加班批量申请" description="加班批量申请点这里" />
             </Card>
             <Card
               hoverable
               cover={<img alt="example" src={img2Large} />}
-              onClick={this.onCardClick(3)}
+              onClick={this.onCardClick(2)}
             >
-              <Meta title="加班批量申请" description="加班批量申请点这里" />
+              <Meta title="补刷卡申请" description="忘记刷卡点这里" />
             </Card>
           </div>
         ) : (
