@@ -33,6 +33,11 @@ window[606493652444] = {
   }
 };
 
+window[622544912704] = {
+  name: 'TableDataDiscipline',
+  title: '查看个人违纪'
+};
+
 // 违纪管理;
 window[590765309983] = {
   title: '违纪管理',

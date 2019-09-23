@@ -488,3 +488,9 @@ export const IDLExamination = Loadable({
     return minLoading;
   }
 });
+export const TableDataDiscipline = Loadable({
+  loader: () => import('./TableDataDiscipline'),
+  loading() {
+    return minLoading;
+  }
+});
