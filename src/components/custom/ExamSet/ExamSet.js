@@ -702,20 +702,37 @@ class ExamSet extends Component {
   //循环遍历所有的题目
   renderGetAllQuestions() {
     const { AllQuestions } = this.state;
-    // console.log('渲染时的问卷试题', AllQuestions);
-    return AllQuestions.map((item, index) => {
-      switch (item.C3_607025683815) {
-        case '单选题': {
-          return this.renderGetSingleChoice(item, index);
-        }
-        case '多选题': {
-          return this.renderGetMultiChoice(item, index);
-        }
-        case '判断题': {
-          return this.renderGetAnswerChoice(item, index);
-        }
-      }
-    });
+    const singleChoice = AllQuestions.filter(
+      questions => questions.C3_607025683815 === '单选题'
+    );
+    const multiChoice = AllQuestions.filter(
+      questions => questions.C3_607025683815 === '多选题'
+    );
+    const answerChoice = AllQuestions.filter(
+      questions => questions.C3_607025683815 === '判断题'
+    );
+    return (
+      <div>
+        <div>
+          <h2 style={{ marginLeft: 16 }}>单选题</h2>
+          {singleChoice.map((item, index) =>
+            this.renderGetSingleChoice(item, index)
+          )}
+        </div>
+        <div>
+          <h2 style={{ marginLeft: 16 }}>多选题</h2>
+          {multiChoice.map((item, index) =>
+            this.renderGetMultiChoice(item, index)
+          )}
+        </div>
+        <div>
+          <h2 style={{ marginLeft: 16 }}>判断题</h2>
+          {answerChoice.map((item, index) =>
+            this.renderGetAnswerChoice(item, index)
+          )}
+        </div>
+      </div>
+    );
   }
 
   renderGetSingleChoice(item, index) {
