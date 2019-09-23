@@ -7,6 +7,9 @@
   background-color: #fff;
   top:0;
   left:0;
+  *{
+    float:none;
+  }
   button{
     margin-top: 16px;
     margin-left: 16px;
@@ -14,12 +17,16 @@
   }
   #toPrint{
     width:842px;
-    position:fixed;
+    height:1191px;
     margin-left: calc(50% - 421px);
     box-sizing:border-box;
     padding:16px;
     .wrap{
-      width: 842%;
+      width: 842px;
+      height:1191px;
+      div rect:last-child{
+        border-bottom:0;
+      }
       img{
         width:120px;
       }
@@ -27,7 +34,166 @@
         text-align: center;
         margin-top:8px;
         width:842px;
+        font-size: 18px;
       }
+    }
+    ul{
+      list-style: none;
+      overflow: hidden;
+      width:100%;
+      padding:0;
+      margin-top: 16px;
+      li{
+        width:25%;
+        float:left;
+        overflow: hidden;
+        b{
+          display: block;
+          float: left;
+          width:50%;
+        }
+        p{
+          width: 50%;
+          float: left;
+          margin:0;
+        }
+        span{
+        font-weight: bold;
+        }
+      }
+    }
+    rect{
+      display: block;
+      width:842px;
+      border-top:1px solid #000;
+      border-left:1px solid #000;
+      overflow: hidden;
+      box-sizing:border-box;
+    }
+    cell{
+      float:left;
+      display: block;
+      border-right:1px solid #000;
+      padding:10px;
+      min-height:38px;
+      box-sizing: border-box;
+    }
+    cell b{
+      width:100%;
+      font-size: 12px;
+      display: block;
+    }
+    cell:first-child{
+      width:25%;
+    }
+    cell:last-child{
+      width:75%;
+    }
+    input{
+      margin-right:8px;
+    }
+    cell label{
+      margin-right:16px;
+    }
+    cell:last-child b{
+      width:auto;
+      display:inline-block;
+    }
+    cell .fillText{
+      width:104px;
+      font-size: 12px;
+      outline:none;
+      border:none;
+      border-bottom:1px solid #000;
+    }
+    .byline b{
+      padding-top:5px;
+      padding-bottom:5px;
+    }
+    .uniline{
+      padding-top:16px;
+      padding-bottom:19px;
+    }
+    .triSlice cell:nth-child(3){
+      width:40%;
+      height:38px;
+    }
+    .triSlice cell:nth-child(3) b{
+      position:relative;
+      top:-2px;
+    }
+    .triSlice cell:nth-child(2){
+      width:35%;
+    }
+    .alter1 cell:first-child b{
+      padding-top:10px;
+      padding-bottom:11px;
+    }
+    .alter1 cell:nth-child(2){
+      padding:0;
+      width:35%;
+    }
+    .alter1 cell:nth-child(3){
+      width:40%;
+      padding:0;
+    }
+    .alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{
+      padding:0;
+      line-height:25px;
+      border-bottom:1px solid #000;
+      display:block;
+      width:100%;
+      text-indent:10px;
+    }
+    .alter1 cell b:last-child{
+      border:none;
+    }
+    .alter2 cell:first-child{
+      padding-top:23px;
+      padding-bottom:23px;
+    }
+    .wholeLine{
+      width:100%;
+      padding:10px;
+      border-right:1px solid #000;
+    }
+    textarea{
+      width:100%;
+      border:none;
+      outline:none;
+      height:31px!important;
+      resize:none;
+
+    }
+    .alter3{
+      padding-top:25px;
+      padding-bottom:26px;
+
+    }
+    .alterFill{
+      margin-left: 8px;
+      margin-right: 24px;
+    }
+    h4{
+      text-align: center;
+      margin:0;
+    }
+    .alter4{
+      padding-top:32px;
+      padding-bottom:33px;
+    }
+    rect:last-child{
+      border-bottom:1px solid #000;
+    }
+    .GIC{
+      height:56px!important;
+    }
+    .alter5{
+      padding-top:22px;
+      padding-bottom:23px;
+    }
+    .hidden{
+      display:none;
     }
 
   }
