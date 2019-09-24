@@ -2,7 +2,7 @@ import React from 'react';
 import './ViewRate.less';
 import TableData from '../../../../common/data/TableData';
 import http from 'Util20/api';
-import { message, Select } from 'antd';
+import { message, Select, Skeleton } from 'antd';
 
 const { Option } = Select;
 class ViewRate extends React.Component {
@@ -18,6 +18,7 @@ class ViewRate extends React.Component {
     }
     this.getYearsTarget(id);
   };
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
@@ -25,6 +26,7 @@ class ViewRate extends React.Component {
       this.getYearsTarget(this.props.person.C3_305737857578);
     }
   }
+
   getYearsTarget = async id => {
     try {
       const res = await http().getTable({
@@ -72,29 +74,32 @@ class ViewRate extends React.Component {
   };
   render() {
     const id = this.props.person.C3_305737857578;
+    const { selectYear } = this.state;
     return (
       <div id="view-rate-query">
         {this.renderSelect()}
         <div style={{ flex: 1 }}>
-          <TableData
-            key="view-rate-query"
-            resid="620406435673"
-            subtractH={220}
-            hasAdvSearch={true}
-            hasAdd={false}
-            hasRowView={true}
-            hasRowDelete={false}
-            hasRowEdit={false}
-            hasDelete={false}
-            hasModify={false}
-            hasRowModify={false}
-            hasRowSelection={true}
-            actionBarWidth={100}
-            cparm1={id}
-            cparm2={this.state.selectYear.label}
-            dblinkname="ehr"
-            baseURL="http://10.108.2.66:9091/"
-          />
+          <Skeleton loading={!id}>
+            <TableData
+              key="view-rate-query"
+              resid="620406435673"
+              subtractH={220}
+              hasAdvSearch={true}
+              hasAdd={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={true}
+              actionBarWidth={100}
+              cparm1={id}
+              cparm2={selectYear.label}
+              dblinkname="ehr"
+              baseURL="http://10.108.2.66:9091/"
+            />
+          </Skeleton>
         </div>
       </div>
     );

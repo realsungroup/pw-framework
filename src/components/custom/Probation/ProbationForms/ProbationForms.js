@@ -488,7 +488,8 @@ class ProbationForms extends React.Component {
           {
             C3_614182469763: this.state.addInternalCourseData.courseId,
             C3_613941384832: this.state.employeeInformation.memberId,
-            C3_615393041304: this.state.addInternalCourseData.trainDate
+            C3_615393041304: this.state.addInternalCourseData.trainDate,
+            C3_613941386081: this.state.addInternalCourseData.teacher
           }
         ]
       });

@@ -42,7 +42,16 @@ class EditableCell extends React.Component {
     let initialValue = null;
     switch (type) {
       case InputType.DataTime:
-        input = <DatePicker showTime format={DateTimeFormatter} />;
+        input = (
+          <DatePicker
+            showTime={{
+              format: 'HH:mm',
+              minuteStep: 30,
+              defaultValue: moment('00:00', 'HH:mm')
+            }}
+            format={DateTimeFormatter}
+          />
+        );
         initialValue = record[dataIndex] && moment(record[dataIndex]);
         break;
       case InputType.Input:
@@ -393,6 +402,7 @@ class WorkOvertimeApply extends React.Component {
               onClick={this.handleAdd}
               type="primary"
               style={{ marginBottom: 16, marginRight: 8 }}
+              icon="edit"
             >
               新建
             </Button>

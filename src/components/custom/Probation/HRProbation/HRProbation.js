@@ -408,7 +408,7 @@ class HRProbation extends React.Component {
         <div
           style={{
             position: 'relative',
-            width: `${collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'}`,
+            width: `${collapsed ? 'calc(100% - 100px)' : 'calc(100% - 220px)'}`,
             left: `${collapsed ? '100px' : '220px'}`
           }}
         >
