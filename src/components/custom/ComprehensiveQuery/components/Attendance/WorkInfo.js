@@ -111,7 +111,7 @@ class WorkInfo extends React.Component {
       <div className="WorkInfoQuery">
         <div className="Home">
           <div className="buttonLine">{this.renderSelect()}</div>
-          <Skeleton loading={!person.C3_305737857578}>
+          <Skeleton loading={!person.C3_305737857578 && !selectMonth}>
             <TableData
               resid="460481857607"
               subtractH={220}
