@@ -11,12 +11,12 @@ class ViewRate extends React.Component {
     selectYear: { key: 0, label: '请选择财年' }
   };
   componentDidMount = async () => {
-    const { person } = this.props;
-    let id;
-    if (person) {
-      id = person.C3_305737857578;
-    }
-    this.getYearsTarget(id);
+    // const { person } = this.props;
+    // let id;
+    // if (person) {
+    //   id = person.C3_305737857578;
+    // }
+    // this.getYearsTarget(id);
   };
 
   componentDidUpdate(prevProps) {
@@ -79,7 +79,7 @@ class ViewRate extends React.Component {
       <div id="view-rate-query">
         {this.renderSelect()}
         <div style={{ flex: 1 }}>
-          <Skeleton loading={!id}>
+          <Skeleton loading={!id || !selectYear}>
             <TableData
               key="view-rate-query"
               resid="620406435673"

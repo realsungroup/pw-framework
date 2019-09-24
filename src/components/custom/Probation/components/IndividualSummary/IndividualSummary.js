@@ -5,8 +5,8 @@ import { Card, Input } from 'antd';
 const { TextArea } = Input;
 
 const IndividualSummary = props => {
-  const { roleName } = props;
-  const disabled = !(roleName === 'HR' || roleName === '员工');
+  const { roleName, editable } = props;
+  const disabled = !(roleName === 'HR' || roleName === '员工' || editable);
   return (
     <div id="individual-summary" className="probation-form">
       <Card

@@ -4,7 +4,6 @@ import TableData from '../../../common/data/TableData';
 import { Button, message, Select } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
-const { Option } = Select;
 class TutorshipProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
@@ -12,34 +11,31 @@ class TutorshipProbation extends React.Component {
   };
 
   //点击提醒确认
-  handleConfirm = async (record) =>{
+  handleConfirm = async record => {
     if (record.selectedRowKeys.length) {
-      // this.onMoveEmployees(record);
       let res;
-    let data = [];
-    record.dataSource.map(item => {
-      if (record.selectedRowKeys.includes(item.REC_ID)) {
-        console.log("item",item);
-        item.isRemindConfirm = 'Y';
-        data.push(item);
-      }
-    });
-    try {
-      res = await http().modifyRecords({
-        resid:618591396440 ,
-        data
+      let data = [];
+      record.dataSource.map(item => {
+        if (record.selectedRowKeys.includes(item.REC_ID)) {
+          item.isRemindConfirm = 'Y';
+          data.push(item);
+        }
       });
-      if (res.Error === 0) {
-        message.success(res.message);
+      try {
+        res = await http().modifyRecords({
+          resid: 618591396440,
+          data
+        });
+        if (res.Error === 0) {
+          message.success(res.message);
+        }
+      } catch (error) {
+        message.error(error.message);
       }
-    } catch (error) {
-      message.error(error.message);
-    }
     } else {
       message.error('请选择至少一条记录');
     }
-    
-  }
+  };
 
   actionBarExtra = record => {
     return (
@@ -48,11 +44,6 @@ class TutorshipProbation extends React.Component {
           <Button
             onClick={() => {
               this.handleConfirm(record);
-              // if (record.selectedRowKeys.length) {
-              //   // this.onMoveEmployees(record);
-              // } else {
-              //   message.error('请选择至少一条记录');
-              // }
             }}
           >
             提醒确认

@@ -109,10 +109,10 @@ class ProbationForms extends React.Component {
       await http().modifyRecords({
         resid: resid1,
         data: [
-          // {
-          //   REC_ID: this.state.employeeInformation.REC_ID
-          // }
-          this.state.employeeInformation
+          {
+            REC_ID: this.state.employeeInformation.REC_ID,
+            C3_622649502021: 'Y'
+          }
         ]
       });
       message.success('转正申请成功');
@@ -717,6 +717,7 @@ class ProbationForms extends React.Component {
   render() {
     const { roleName } = this.props;
     const { loading, employeeInformation } = this.state;
+    const editable = employeeInformation.regStatus === '待转正';
     return (
       <Spin spinning={loading}>
         <div id="probation-forms">
@@ -736,6 +737,7 @@ class ProbationForms extends React.Component {
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
                 roleName={roleName}
+                editable={editable}
               />
               <ProbationObjectives
                 probationObjectives={this.state.probationObjectives}
@@ -747,12 +749,14 @@ class ProbationForms extends React.Component {
                   this.openModifyProbationObjectiveModal
                 }
                 auth={this.state.tableAuth.objective}
+                editable={editable}
               />
               <OrientationTraining
                 orientationTraining={this.state.orientationTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
                 )}
                 roleName={roleName}
+                editable={editable}
               />
               <InternalTraining
                 setAddInternalCourseVisible={this.setAddInternalCourseVisible}
@@ -765,6 +769,7 @@ class ProbationForms extends React.Component {
                 }
                 roleName={roleName}
                 auth={this.state.tableAuth.internal}
+                editable={editable}
               />
               <OnTheJobTraining
                 onTheJobTraining={this.state.onTheJobTraining.map(
@@ -776,6 +781,7 @@ class ProbationForms extends React.Component {
                 roleName={roleName}
                 auth={this.state.tableAuth.onJob}
                 inviteConfirm={this.inviteConfirm}
+                editable={editable}
               />
               <MentorshipRecord
                 mentorshipRecord={this.state.mentorshipRecord}
@@ -785,11 +791,13 @@ class ProbationForms extends React.Component {
                 confirmMentor={this.confirmMentor}
                 roleName={roleName}
                 auth={this.state.tableAuth.mentorRecord}
+                editable={editable}
               />
               <IndividualSummary
                 summary={employeeInformation.smmary}
                 summaryChange={this.summaryChange}
                 roleName={roleName}
+                editable={editable}
               />
             </div>
             <aside className="probation-forms_main_sider">
@@ -806,10 +814,10 @@ class ProbationForms extends React.Component {
           </main>
           {!loading &&
             (roleName === 'HR' ||
-              employeeInformation.currentPeriod !== '已结束') && (
+              employeeInformation.regStatus !== '已转正') && (
               <footer className="probation-forms_footer">
                 {(roleName === 'HR' ||
-                  employeeInformation.currentPeriod !== '已结束') && (
+                  employeeInformation.regStatus === '待转正') && (
                   <Button
                     type="primary"
                     style={{ marginRight: 16 }}
@@ -818,17 +826,18 @@ class ProbationForms extends React.Component {
                     保存
                   </Button>
                 )}
-                {roleName === '员工' && (
-                  <Popconfirm
-                    title="确认提交转正申请？"
-                    onConfirm={this.positiveApply}
-                  >
-                    <Button type="primary" style={{ marginRight: 16 }}>
-                      申请转正
-                    </Button>
-                  </Popconfirm>
-                )}
-                {employeeInformation.currentPeriod === '转正中' &&
+                {roleName === '员工' &&
+                  employeeInformation.regStatus === '待转正' && (
+                    <Popconfirm
+                      title="确认提交转正申请？"
+                      onConfirm={this.positiveApply}
+                    >
+                      <Button type="primary" style={{ marginRight: 16 }}>
+                        申请转正
+                      </Button>
+                    </Popconfirm>
+                  )}
+                {employeeInformation.regStatus === '转正中' &&
                   ((roleName === '主管' &&
                     employeeInformation.isRegular !== 'Y') ||
                     (roleName === '经理' &&

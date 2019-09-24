@@ -206,8 +206,8 @@ class HRProbation extends React.Component {
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
           data.push({
-            isRegularNotice: '',
-            REC_ID: item.REC_ID
+            REC_ID: item.REC_ID,
+            C3_622649568463: 'N'
           });
         }
       });
@@ -239,8 +239,8 @@ class HRProbation extends React.Component {
         record.dataSource.forEach(item => {
           if (record.selectedRowKeys.includes(item.REC_ID)) {
             data.push({
-              isRegularNotice: 'Y',
-              REC_ID: item.REC_ID
+              REC_ID: item.REC_ID,
+              C3_622649568463: 'Y'
             });
           }
         });

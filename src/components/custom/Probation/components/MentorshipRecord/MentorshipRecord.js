@@ -12,7 +12,8 @@ const MentorshipRecord = props => {
     addMentor,
     confirmMentor,
     modifyMentor,
-    removeMentor
+    removeMentor,
+    editable
   } = props;
   return (
     <div id="mentorshi-record" className="probation-form">
@@ -33,7 +34,7 @@ const MentorshipRecord = props => {
           {mentorshipRecord.map((item, index) => (
             <div className="mentorshi-record_card__wrapper">
               <div className="mentorshi-record_card">
-                {auth.hasDelete && (
+                {auth.hasDelete && editable && (
                   <Popconfirm
                     title="确认删除吗？"
                     icon={
@@ -106,7 +107,7 @@ const MentorshipRecord = props => {
               </div>
             </div>
           ))}
-          {auth.hasAdd && (
+          {auth.hasAdd && editable && (
             <div className="mentorshi-record_card__wrapper">
               <div
                 className="mentorshi-record_card__addition"

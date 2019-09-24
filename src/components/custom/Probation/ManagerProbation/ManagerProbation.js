@@ -1,10 +1,9 @@
 import React from 'react';
 import './ManagerProbation.less';
 import TableData from '../../../common/data/TableData';
-import { Button, message, Select } from 'antd';
+import { Button, message } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
-const { Option } = Select;
 class EmployeeProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
@@ -12,20 +11,19 @@ class EmployeeProbation extends React.Component {
   };
 
   // 点击同意转正
-  handleAgreed = async (record) =>{
+  handleAgreed = async record => {
     if (record.selectedRowKeys.length) {
       let res;
       let data = [];
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
-          console.log("item",item);
           item.isManagerRegular = 'Y';
           data.push(item);
         }
       });
       try {
         res = await http().modifyRecords({
-          resid:618591396440 ,
+          resid: 618591396440,
           data
         });
         if (res.Error === 0) {
@@ -37,64 +35,15 @@ class EmployeeProbation extends React.Component {
     } else {
       message.error('请选择至少一条记录');
     }
-
-    
-  }
-  // 点击批量审批
-  approval = async (record) =>{
-    if (record.selectedRowKeys.length) {
-      this.setState({
-        selectCourseArrangementVisible: false
-      });
-      let res;
-      let data = [];
-      record.dataSource.map(item => {
-        if (record.selectedRowKeys.includes(item.REC_ID)) {
-          console.log('come in ');
-          item.isManageApproval = 'Y';
-          data.push(item);
-        }
-      });
-      try {
-        res = await http().modifyRecords({
-          resid:619609481002 ,
-          data
-        });
-        if (res.Error === 0) {
-          message.success(res.message);
-        }
-      } catch (error) {
-        message.error(error.message);
-      }
-    }else{
-      message.error('请选择至少一条记录');
-    }
-  }
+  };
 
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
-        <Button
-            type="primary"
-            onClick={() => {
-              this.approval(record);
-              // if (record.selectedRowKeys.length) {
-              //   // this.onMoveEmployees(record);
-              // } else {
-              //   this.setState({
-              //     selectCourseArrangementVisible: false
-              //   });
-              //   message.error('请选择至少一条记录');
-              // }
-            }}
-          >
-            批量审批
-          </Button>
           <Button
             onClick={() => {
               this.handleAgreed(record);
-              
             }}
           >
             同意转正

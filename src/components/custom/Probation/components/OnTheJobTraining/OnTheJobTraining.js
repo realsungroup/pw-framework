@@ -10,7 +10,8 @@ const OnTheJobTraining = props => {
     deleteOnJobTraining,
     setAddOnJobTrainingVisible,
     onTheJobTraining,
-    inviteConfirm
+    inviteConfirm,
+    editable
   } = props;
   return (
     <div id="on-the-job-training" className="probation-form">
@@ -22,7 +23,8 @@ const OnTheJobTraining = props => {
           </React.Fragment>
         }
         extra={
-          auth.hasAdd && (
+          auth.hasAdd &&
+          editable && (
             <Button
               onClick={() => {
                 setAddOnJobTrainingVisible(true);
@@ -53,7 +55,8 @@ const OnTheJobTraining = props => {
             width={160}
             render={(text, record) =>
               auth.hasDelete &&
-              auth.hasModify && (
+              auth.hasModify &&
+              editable && (
                 <div>
                   <a
                     href="javascript:;"

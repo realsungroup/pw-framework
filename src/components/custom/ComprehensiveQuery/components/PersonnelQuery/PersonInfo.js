@@ -14,12 +14,14 @@ class PersonInfo extends React.Component {
     this.state = {
       personalInfoVisible: false,
       personInfo: {},
-      dataProp: []
+      dataProp: [],
+      loadingPersonInfo: false
     };
   }
 
   getPersonalInfo = async id => {
     try {
+      this.setState({ loadingPersonInfo: true });
       const res = await http().getTable({
         resid: '622576278943',
         dblinkname: 'ehr',
@@ -32,6 +34,8 @@ class PersonInfo extends React.Component {
     } catch (error) {
       message.error(error.message);
       console.log(error);
+    } finally {
+      this.setState({ loadingPersonInfo: false });
     }
   };
 
@@ -53,7 +57,12 @@ class PersonInfo extends React.Component {
   };
   render() {
     const { person } = this.props;
-    const { personalInfoVisible, personInfo, dataProp } = this.state;
+    const {
+      personalInfoVisible,
+      personInfo,
+      dataProp,
+      loadingPersonInfo
+    } = this.state;
     let id;
     if (person) {
       id = person.C3_305737857578;
@@ -90,7 +99,6 @@ class PersonInfo extends React.Component {
                           personalInfoVisible: true
                         });
                         await this.getPersonalInfo(record.C3_305737857578);
-                        // await this.getFormData(personInfo);
                       }}
                     >
                       个人信息详情
@@ -110,7 +118,6 @@ class PersonInfo extends React.Component {
                     hasRowView: true,
                     hasBeBtns: false,
                     baseURL: 'http://10.108.2.66:9091/'
-                    // recordFormUseAbsolute: true
                   }
                 }
               ]}
@@ -126,7 +133,7 @@ class PersonInfo extends React.Component {
           width="70%"
         >
           <div>
-            <Spin spinning={false}>
+            <Spin spinning={loadingPersonInfo}>
               <FormData
                 info={{ dataMode: 'main', resid: '622576278943' }}
                 operation="view"

@@ -5,8 +5,8 @@ import { Card, Input, Icon, InputNumber, Popconfirm, Button } from 'antd';
 const { TextArea } = Input;
 const resid1 = '619808533610';
 const ProbationObjectives = props => {
-  let { probationObjectives, modifyObjective } = props;
-  const hasOperation = props.auth.hasDelete && props.auth.hasModify;
+  let { probationObjectives, modifyObjective, editable } = props;
+  const hasOperation = props.auth.hasDelete && props.auth.hasModify && editable;
   return (
     <div id="probation-objectives" className="probation-form">
       <Card
@@ -32,7 +32,7 @@ const ProbationObjectives = props => {
           </p>
         </div>
         <div className="probation-objectives_fill-stage">
-          {props.auth.hasAdd && (
+          {props.auth.hasAdd && editable && (
             <div className="probation-objectives_fill-stage_fill-area">
               <div className="probation-objectives_fill-stage_fill-area_action">
                 <Button
@@ -55,7 +55,7 @@ const ProbationObjectives = props => {
         <div className="probation-objectives_audit-stage">
           {probationObjectives.map((item, index) => (
             <div className="probation-objectives_audit-stage_objective-card">
-              {props.auth.hasDelete && (
+              {props.auth.hasDelete && editable && (
                 <Popconfirm
                   title="确认删除吗？"
                   icon={

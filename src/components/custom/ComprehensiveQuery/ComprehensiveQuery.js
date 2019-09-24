@@ -76,7 +76,7 @@ class ComprehensiveQuery extends React.Component {
   };
   render() {
     const { isExpand, currentTab } = this.state;
-    return (
+    return !(process.env.NODE_ENV === 'production') ? (
       <div id="comprehensive-query">
         <main style={{ left: isExpand ? 240 : 4 }} className="main-content">
           <div
@@ -87,7 +87,6 @@ class ComprehensiveQuery extends React.Component {
           </div>
           <header className="nav-header">
             <Tabs
-              defaultActiveKey="1"
               onChange={this.handleTabChange}
               style={{ backgroundColor: '#fff' }}
               activeKey={currentTab}
@@ -120,6 +119,8 @@ class ComprehensiveQuery extends React.Component {
           onShrinkChange={this.setShrink}
         />
       </div>
+    ) : (
+      <div>生产环境内容</div>
     );
   }
 }

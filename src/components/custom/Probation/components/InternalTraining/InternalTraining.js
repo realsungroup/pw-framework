@@ -14,7 +14,8 @@ const InternalTraining = props => {
           </React.Fragment>
         }
         extra={
-          props.auth.hasAdd && (
+          props.auth.hasAdd &&
+          props.editable && (
             <Button
               onClick={() => {
                 props.setAddInternalCourseVisible(true);
@@ -57,7 +58,8 @@ const InternalTraining = props => {
             render={(text, record) => {
               return (
                 props.auth.hasDelete &&
-                props.auth.hasModify && (
+                props.auth.hasModify &&
+                props.editable && (
                   <div>
                     <a
                       href="javascript:;"

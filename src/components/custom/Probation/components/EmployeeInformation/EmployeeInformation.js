@@ -45,7 +45,7 @@ class EmployeeInformation extends React.Component {
     this.props.setTutorship({ name: value.label, userMemberId: value.key });
   };
   render() {
-    const { employeeInformation, roleName } = this.props;
+    const { employeeInformation, roleName, editable } = this.props;
     let value = {
       label: employeeInformation.instructor,
       key: employeeInformation.instructorID
@@ -103,8 +103,14 @@ class EmployeeInformation extends React.Component {
               {employeeInformation.director}
             </Col>
             <Col span={8}>
+              <span className="employee-imformation_lable">
+                转正状态/Status:
+              </span>
+              {employeeInformation.regStatus}
+            </Col>
+            <Col span={8}>
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
-              {roleName === '主管' || roleName === 'HR' ? (
+              {(roleName === '主管' || roleName === 'HR') && editable ? (
                 <Select
                   style={{ width: 150 }}
                   placeholder="请输入辅导员工号"
