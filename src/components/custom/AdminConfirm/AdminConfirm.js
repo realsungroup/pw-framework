@@ -73,6 +73,7 @@ class AdminConfirm extends React.Component {
     });
     this.tableDataRef.handleRefresh();
   };
+
   handleDownMaterial = url => {
     if (!url) {
       return Modal.warning({
@@ -138,7 +139,7 @@ class AdminConfirm extends React.Component {
                 return (
                   <Button
                     onClick={() => {
-                      this.handleDownMaterial(record.C3_590515131157);
+                      this.handleDownMaterial(record.C3_590515131157||record.C3_590516276367);
                     }}
                   >
                     下载查阅

@@ -188,6 +188,9 @@ class IdLindex extends Component {
       }
     });
   };
+  clsAss =()=>{
+    this.setState({showAssessment:false});
+  }
   handleSearchClick = value => {
     //  console.log(value);
     this.getPersonList(value);
@@ -226,7 +229,7 @@ class IdLindex extends Component {
 
           }}>
           <div className={this.state.showAssessment?'':'hidden'}>
-          <InterviewAssessment>
+          <InterviewAssessment clsAss={this.clsAss}>
           </InterviewAssessment>
           </div>
 
