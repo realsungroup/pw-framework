@@ -1,6 +1,6 @@
 import React from 'react';
 import http from 'Util20/api';
-import { message, Select } from 'antd';
+import { message, Select, Spin } from 'antd';
 import FormData from '../../../../common/data/FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
@@ -23,23 +23,36 @@ class AdvantageShortcoming extends React.Component {
       advantageShortcoming: {},
       resid,
       formName,
-      dataProp: []
+      dataProp: [],
+      spinning: false
     };
   }
 
   async componentDidMount() {
     const { person } = this.props;
     const id = person.C3_305737857578;
+    this.setState({
+      spinning: true
+    });
     await this.getYearsTarget(id);
     await this.getFormData(this.state.advantageShortcoming);
+    this.setState({
+      spinning: false
+    });
   }
 
   async componentDidUpdate(prevProps) {
     if (
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
     ) {
+      this.setState({
+        spinning: true
+      });
       await this.getYearsTarget(this.props.person.C3_305737857578);
       await this.getFormData(this.state.advantageShortcoming);
+      this.setState({
+        spinning: false
+      });
     }
   }
 
@@ -115,19 +128,22 @@ class AdvantageShortcoming extends React.Component {
   };
 
   render() {
+    const { spinning } = this.state;
     return (
       <div id="advantage-shortcoming">
         <div className="advantage-shortcoming_select-year">
           {this.renderSelect()}
         </div>
         <div className="advantage-shortcoming_content">
-          <FormData
-            info={{ dataMode: 'main', resid: this.state.resid }}
-            operation="view"
-            data={this.state.dataProp}
-            record={this.state.advantageShortcoming}
-            useAbsolute={true}
-          />
+          <Spin spinning={spinning}>
+            <FormData
+              info={{ dataMode: 'main', resid: this.state.resid }}
+              operation="view"
+              data={this.state.dataProp}
+              record={this.state.advantageShortcoming}
+              useAbsolute={true}
+            />
+          </Spin>
         </div>
       </div>
     );

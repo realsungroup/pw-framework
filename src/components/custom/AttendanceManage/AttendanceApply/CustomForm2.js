@@ -85,7 +85,16 @@ class CustomForm2 extends React.Component {
               </span>
             }
           >
-            {getFieldDecorator('startTime', {})(<DatePicker showTime />)}
+            {getFieldDecorator('startTime', {})(
+              <DatePicker
+                showTime={{
+                  format: 'HH:mm',
+                  minuteStep: 30,
+                  defaultValue: moment('00:00', 'HH:mm')
+                }}
+                format="YYYY-MM-DD HH:mm"
+              />
+            )}
           </Form.Item>
 
           <Form.Item
@@ -97,7 +106,16 @@ class CustomForm2 extends React.Component {
               </span>
             }
           >
-            {getFieldDecorator('endTime', {})(<DatePicker showTime />)}
+            {getFieldDecorator('endTime', {})(
+              <DatePicker
+                showTime={{
+                  format: 'HH:mm',
+                  minuteStep: 30,
+                  defaultValue: moment('00:00', 'HH:mm')
+                }}
+                format="YYYY-MM-DD HH:mm"
+              />
+            )}
           </Form.Item>
 
           <Form.Item {...formItemLayout} label="事由：">

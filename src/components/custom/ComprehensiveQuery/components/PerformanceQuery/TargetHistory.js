@@ -8,7 +8,7 @@ class TargetHistory extends React.Component {
         {this.props.children}
         <div className="table-data-wrapper">
           <TableData
-            key="target-target"
+            key="target-history"
             resid="462586715318"
             subtractH={200}
             hasAdvSearch={false}

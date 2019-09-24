@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Select, message } from 'antd';
+import { Row, Col, Select, message, Spin } from 'antd';
 import http from 'Util20/api';
 import FormData from '../../../../common/data/FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
@@ -15,21 +15,26 @@ class ViewComments extends React.Component {
       selectYear: '',
       comments: [],
       comment: {},
-      dataProp: []
+      dataProp: [],
+      spinning: false
     };
   }
   async componentDidMount() {
     const { person } = this.props;
     const id = person.C3_305737857578;
+    this.setState({ spinning: true });
     await this.getYearsTarget(id);
     await this.getFormData(this.state.comment);
+    this.setState({ spinning: false });
   }
   async componentDidUpdate(prevProps) {
     if (
       prevProps.person.C3_305737857578 !== this.props.person.C3_305737857578
     ) {
+      this.setState({ spinning: true });
       await this.getYearsTarget(this.props.person.C3_305737857578);
       await this.getFormData(this.state.comment);
+      this.setState({ spinning: false });
     }
   }
   getFormData = async record => {
@@ -103,6 +108,7 @@ class ViewComments extends React.Component {
     );
   };
   render() {
+    const { spinning } = this.state;
     return (
       <div id="advantage-shortcoming">
         <div className="advantage-shortcoming_select-year">
@@ -110,13 +116,15 @@ class ViewComments extends React.Component {
           {this.renderSelect()}
         </div>
         <div className="advantage-shortcoming_content">
-          <FormData
-            info={{ dataMode: 'main', resid: resid }}
-            operation="view"
-            data={this.state.dataProp}
-            record={this.state.comment}
-            useAbsolute={true}
-          />
+          <Spin spinning={spinning}>
+            <FormData
+              info={{ dataMode: 'main', resid: resid }}
+              operation="view"
+              data={this.state.dataProp}
+              record={this.state.comment}
+              useAbsolute={true}
+            />
+          </Spin>
         </div>
       </div>
     );

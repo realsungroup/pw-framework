@@ -400,11 +400,11 @@ class FormData extends React.Component {
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
-                  overflow: 'auto',
                   textAlign: customStyle.textAlign,
                   fontSize: customStyle.fontSize,
                   color: item.FrmForeColor,
-                  fontFamily: item.FrmFontName
+                  fontFamily: item.FrmFontName,
+                  overflow: 'visible'
                 }}
               >
                 {`${item.FrmText}`}
@@ -414,6 +414,7 @@ class FormData extends React.Component {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
+            console.log(item);
             return (
               <span
                 style={{
@@ -422,9 +423,9 @@ class FormData extends React.Component {
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
-                  overflow: 'auto',
-                  // lineHeight: 2.4,
-                  fontSize: customStyle.fontSize
+                  fontSize: customStyle.fontSize,
+                  overflow: 'auto'
+                  // lineHeight: 2,
                 }}
               >
                 {item.initialValue}
