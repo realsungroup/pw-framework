@@ -1741,3 +1741,7 @@ window[621257502796] = {
   name: 'AttendanceManage',
   title: '考勤申请'
 };
+window[622577431745] = {
+  name: 'ReferenceCheck',
+  title: '背景调查'
+};

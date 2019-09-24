@@ -494,3 +494,9 @@ export const TableDataDiscipline = Loadable({
     return minLoading;
   }
 });
+export const ReferenceCheck = Loadable({
+  loader: () => import('./ReferenceCheck'),
+  loading() {
+    return minLoading;
+  }
+});
