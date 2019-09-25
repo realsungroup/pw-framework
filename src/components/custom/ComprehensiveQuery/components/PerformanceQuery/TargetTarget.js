@@ -2,6 +2,13 @@ import React from 'react';
 import TableData from '../../../../common/data/TableData';
 
 class TargetTarget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+  }
   render() {
     return (
       <div id="target-target">
@@ -23,7 +30,7 @@ class TargetTarget extends React.Component {
             actionBarWidth={100}
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
-            baseURL="http://10.108.2.66:9091/"
+            baseURL={this.baseURL}
           />
         </div>
       </div>

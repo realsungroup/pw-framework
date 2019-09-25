@@ -21,6 +21,10 @@ class WorkInfo extends React.Component {
   constructor(props) {
     super(props);
     this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
   }
 
   componentDidMount = async () => {
@@ -128,7 +132,7 @@ class WorkInfo extends React.Component {
               actionBarWidth={200}
               cparm1={person.C3_305737857578 || this.UserCode}
               cparm2={selectMonth}
-              baseURL="http://10.108.2.66:9091/"
+              baseURL={this.baseURL}
               customRowBtns={[
                 (record, btnSize) => {
                   return (
@@ -172,7 +176,7 @@ class WorkInfo extends React.Component {
               hasRowSelection={false}
               actionBarWidth={100}
               cmswhere={`C3_375380046640 = '${selectRecord.YGNO}' and YEARMONTH= '${selectMonth}'`}
-              baseURL="http://10.108.2.66:9091/"
+              baseURL={this.baseURL}
             />
           </div>
         </Modal>
@@ -200,7 +204,7 @@ class WorkInfo extends React.Component {
               hasRowSelection={false}
               actionBarWidth={100}
               cmswhere={`C3_426438637535 = '${selectRecord.YGNO}'`}
-              baseURL="http://10.108.2.66:9091/"
+              baseURL={this.baseURL}
             />
           </div>
         </Modal>

@@ -146,6 +146,10 @@ class LzBackendBtn extends React.PureComponent {
 
   render() {
     const { btnInfo, size } = this.props;
+    const { Url, Type } = btnInfo;
+    if (Type !== 4 && Url) {
+      return null;
+    }
     // 有 Popconfirm 组件
     if (btnInfo.isUsePopconfirm) {
       return (
