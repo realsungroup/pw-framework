@@ -10,6 +10,7 @@ import { withHttpGetBeBtns, withHttpGetFormData } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch';
 import withImport from '../../hoc/withImport';
+import withModalDrawer from '../../hoc/withModalDrawer';
 import withDownloadFile from '../../hoc/withDownloadFile';
 import { withRecordForm } from '../../hoc/withRecordForm';
 
@@ -741,7 +742,8 @@ class TableData extends React.Component {
           controlData,
           defaultRecord,
           recordFormData,
-          baseURL
+          baseURL,
+          iframeURL
         ) => {
           this.setState({ recordFormShowMode: '' }, () => {
             this.beBtnConfirm(
@@ -751,7 +753,8 @@ class TableData extends React.Component {
               controlData,
               defaultRecord,
               recordFormData,
-              baseURL
+              baseURL,
+              iframeURL
             );
           });
         }}
@@ -1201,11 +1204,27 @@ class TableData extends React.Component {
     controlData,
     defaultRecord,
     recordFormData,
-    baseURL
+    baseURL,
+    iframeURL
   ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
+    } else if (type === 4) {
+      this.props.openModalOrDrawer(
+        'modal',
+        {
+          width: '90%',
+          onCancel: this.props.closeModalOrDrawer,
+          onOk: this.props.closeModalOrDrawer,
+          footer: null,
+        },
+        () => (
+          <div style={{height:'100vh'}}>
+            <iframe title='iframe' src={iframeURL} width="100%"  height="100%" style={{ border: 'none' }}/>
+          </div>
+        )
+      );
     } else if (type === 6) {
       this.openRecordForm(
         backendBtnType,
@@ -1654,6 +1673,7 @@ const composedHoc = compose(
   withHttpGetFormData,
   withAdvSearch(),
   withDownloadFile,
+  withModalDrawer(),
   withRecordForm(),
   injectIntl,
   withImport
