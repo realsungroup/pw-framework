@@ -1745,3 +1745,7 @@ window[622577431745] = {
   name: 'ReferenceCheck',
   title: '背景调查'
 };
+window[622577498761] = {
+  name: 'PhysicalExamination',
+  title: '体检通知'
+};
