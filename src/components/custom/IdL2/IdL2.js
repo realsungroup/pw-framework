@@ -8,6 +8,7 @@ class IdL2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+                  // <OfferLetter> </OfferLetter>
   }
 
   render() {
@@ -30,7 +31,8 @@ class IdL2 extends React.Component {
               target="_self">
                  <Button>查看详细信息</Button>
               </Link>
-              <OfferLetter> </OfferLetter></div>);
+
+              </div>);
             }
           ]}
         />
