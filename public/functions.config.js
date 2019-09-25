@@ -1673,7 +1673,7 @@ window[618661338339] = {
 };
 
 //DL招聘————问询系统
-window[619022238607] = {
+window[619020712280] = {
   name: 'EnquirySystem',
   title: '问询中心'
 };

@@ -42,34 +42,41 @@ class ComprehensiveQueryIndex extends React.Component {
         >
           <Meta title="评级评优查询" description="查看员工的评级评优情况" />
         </Card>
-        <Card
-          hoverable
-          cover={<img alt="example" src={img4} />}
-          onClick={this.setTab('training')}
-        >
-          <Meta title="培训查询" description="查询员工的培训情况" />
-        </Card>
-        <Card
-          hoverable
-          cover={<img alt="example" src={img1} />}
-          onClick={this.setTab('jobAndEmployee')}
-        >
-          <Meta title="岗位与人员调动" description="查询岗位和人员变动情况" />
-        </Card>
-        <Card
-          hoverable
-          cover={<img alt="example" src={img3} />}
-          onClick={this.setTab('dimission')}
-        >
-          <Meta title="离职情况" description="查询员工的离职情况" />
-        </Card>
-        <Card
-          hoverable
-          cover={<img alt="example" src={img7} />}
-          onClick={this.setTab('induction')}
-        >
-          <Meta title="入职情况" description="查询员工的入职情况" />
-        </Card>
+        {process.env.NODE_ENV === 'development' && (
+          <>
+            <Card
+              hoverable
+              cover={<img alt="example" src={img4} />}
+              onClick={this.setTab('training')}
+            >
+              <Meta title="培训查询" description="查询员工的培训情况" />
+            </Card>
+            <Card
+              hoverable
+              cover={<img alt="example" src={img1} />}
+              onClick={this.setTab('jobAndEmployee')}
+            >
+              <Meta
+                title="岗位与人员调动"
+                description="查询岗位和人员变动情况"
+              />
+            </Card>
+            <Card
+              hoverable
+              cover={<img alt="example" src={img3} />}
+              onClick={this.setTab('dimission')}
+            >
+              <Meta title="离职情况" description="查询员工的离职情况" />
+            </Card>
+            <Card
+              hoverable
+              cover={<img alt="example" src={img7} />}
+              onClick={this.setTab('induction')}
+            >
+              <Meta title="入职情况" description="查询员工的入职情况" />
+            </Card>
+          </>
+        )}
       </div>
     );
   };
