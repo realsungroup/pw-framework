@@ -9,7 +9,7 @@ import {
 
 class ReferenceCheck extends React.Component {
   state = {
-    chara:'supervisor',
+    chara:'hr',
     date:'',
     candiName:'Sun Zhang',
     coName:'Finisar(Wx)',
@@ -42,11 +42,9 @@ class ReferenceCheck extends React.Component {
     Client2:'',
     skillWO:'',
     skillTM:''
-
   };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
-
      var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
      var headstr = "<html><head><title></title></head><body>";
@@ -57,7 +55,6 @@ class ReferenceCheck extends React.Component {
   };
 
   handlechange(key,val,ref){
-
         this.setState({
             [key]:val.target.value   
         })
@@ -71,7 +68,20 @@ class ReferenceCheck extends React.Component {
         }
 
     }
+  changeChara = (v) =>{
+      document.getElementById('selHR').classList.remove('current');
+      document.getElementById('selSup').classList.remove('current');
 
+
+      if(v=='HR'){
+        this.setState({chara:'hr'});
+        document.getElementById('selHR').classList.add('current');
+      }else{
+        this.setState({chara:'supervisor'});
+        document.getElementById('selSup').classList.add('current');
+
+      }
+  }
   componentDidMount(){
     var myDate=new Date();
     var str=myDate.getFullYear()+'-'+(myDate.getMonth()+1)+'-'+myDate.getDate();
@@ -87,8 +97,14 @@ class ReferenceCheck extends React.Component {
     return (
       <div className='reference'>
         <div className='buttonLine'>
-          <Button type='primary'>提交</Button>
+
           <Button onClick={this.onPrinting}>打印</Button>
+
+          <ul className='charaChange'>
+            <li id='selHR' className='current' onClick={() => this.changeChara('HR')}>HR</li>
+            <li id='selSup' onClick={() => this.changeChara('supervisor')}>主管</li>
+          </ul>
+
         </div>
 
         <div id='toPrint' style={{width:'842px',marginLeft:'calc(50% - 421px)',background:'#fff',paddingBottom:'56px'}}>

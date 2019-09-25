@@ -3,6 +3,7 @@
   background:#fff;
   padding:0;
   margin:0;
+  padding-bottom:56px;
 }
 .buttonLine{
   position:fixed;
@@ -19,5 +20,47 @@
   }
   button:last-child{
     margin-left: 8px;
+  }
+  .charaChange{
+    position:fixed;
+    right:16px;
+    bottom:-16px;
+    list-style: none;
+    overflow: hidden;
+    height:56px;
+    .current{
+      background: #1890ff;
+      color:#fff;
+      box-shadow: 0 0 4px rgba(24,144,255,1);
+      border:none;
+      &:hover{
+        color:#fff;
+        opacity: 0.8;
+      }
+    }
+    li{
+      margin-top: 8px;
+      font-size: 12px;
+      cursor:pointer;
+      border-radius:50%;
+      box-shadow:0 0 8px rgba(0,0,0,0.09);
+      border:1px solid #e8e8e8;
+      width:40px;
+      height:40px;
+      text-align: center;
+      line-height: 40px;
+      float:left;
+      margin-left:8px;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Chrome/Safari/Opera */
+      -khtml-user-select: none; /* Konqueror */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently
+      not supported by any browser */
+      &:hover{
+        color:#1890ff;
+      }
+    }
   }
 }
