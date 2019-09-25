@@ -51,7 +51,7 @@ class ManagerAttendanceApproval extends React.Component {
         >
           <Button type="danger">拒绝</Button>
         </Popconfirm>
-        <Popconfirm title="确认一键审批吗？" onConfirm={() => {}}>
+        {/* <Popconfirm title="确认一键审批吗？" onConfirm={() => {}}>
           <Button type="primary" onClick={() => {}}>
             一键审批
           </Button>
@@ -62,7 +62,7 @@ class ManagerAttendanceApproval extends React.Component {
         </Button>
         <Button type="primary" onClick={() => {}}>
           下属加班汇总
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -97,7 +97,7 @@ class ManagerAttendanceApproval extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={true}
+          hasRowView={false}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -108,7 +108,8 @@ class ManagerAttendanceApproval extends React.Component {
           hasBeBtns={true}
           formProps={{ width: 1000 }}
           recordFormUseAbsolute={true}
-          dblinkname="ehr"
+          // dblinkname="ehr"
+          baseURL="http://10.108.2.66:9091/"
           customRowBtns={[
             record => {
               return (
