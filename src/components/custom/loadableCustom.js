@@ -500,3 +500,9 @@ export const ReferenceCheck = Loadable({
     return minLoading;
   }
 });
+export const PhysicalExamination = Loadable({
+  loader: () => import('./PhysicalExamination'),
+  loading() {
+    return minLoading;
+  }
+});
