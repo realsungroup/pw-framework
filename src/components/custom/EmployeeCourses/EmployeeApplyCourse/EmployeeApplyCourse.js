@@ -19,6 +19,7 @@ import './EmployeeApplyCourse.less';
 
 const { Option } = Select;
 const CourseDetailResid = '615054661547';
+const CourseArrangeResid = '613959525708';
 const form = props => {
   const {
     getFieldDecorator,
@@ -50,10 +51,15 @@ const form = props => {
   };
   return (
     <Form {...formItemLayout}>
-      <Form.Item label="课程名">
+      <Form.Item label="课程名称">
         {getFieldDecorator('courseName', {
-          rules: [{ required: true, message: '请输入课程名' }]
-        })(<Input placeholder="课程名" />)}
+          rules: [{ required: true, message: '请输入课程名称' }]
+        })(<Input placeholder="课程名称" />)}
+      </Form.Item>
+      <Form.Item label="培训机构">
+        {getFieldDecorator('TranningOrganization', {
+          rules: [{ required: true, message: '请填写培训机构' }]
+        })(<Input placeholder="请填写培训机构" />)}
       </Form.Item>
       <Form.Item label="费用">
         {getFieldDecorator('cost', {
@@ -71,14 +77,14 @@ const form = props => {
         })(<DatePicker placeholder="请选择结束日期" />)}
       </Form.Item>
       <Form.Item label="上课地点">
-        {getFieldDecorator('TranningOrganization', {
+        {getFieldDecorator('TranningLocation', {
           rules: [{ required: true, message: '请填写上课地点' }]
         })(<Input placeholder="请填写上课地点" />)}
       </Form.Item>
-      <Form.Item label="课程类别">
-        {getFieldDecorator('courseCategory', {
-          rules: [{ required: true, message: '请填写课程类别' }]
-        })(<Input placeholder="请填写课程类别" />)}
+      <Form.Item label="培训类别">
+        {getFieldDecorator('TranningType', {
+          rules: [{ required: true, message: '请填写培训类别' }]
+        })(<Select placeholder="请填写培训类别" />)}
       </Form.Item>
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
@@ -152,6 +158,12 @@ class EmployeeApplyCourse extends React.Component {
     }
   };
 
+
+  submitCourse = async course =>{
+    // this.submitSelfDefineCourse(course);
+    this.submitCentrolList(course);
+  }
+  //明细表添加记录
   submitSelfDefineCourse = async course => {
     try {
       let res = await http().addRecords({
@@ -162,9 +174,12 @@ class EmployeeApplyCourse extends React.Component {
             C3_613941385069: course.cost,
             C3_615393041304: course.beginClassTime,
             C3_615393093633: course.endClassTime,
-            C3_613941386325: course.TranningOrganization,
+            C3_613941386325: course.TranningLocation,
             courseIntroduction: course.courseIntroduction,
-            courseType: course.courseCategory
+            courseType: course.TranningType,
+            organization:course.TranningOrganization,
+            CourseArrangeID:course.CourseArrangeID,
+            C3_613941384328:course.year
           }
         ]
       });
@@ -176,6 +191,37 @@ class EmployeeApplyCourse extends React.Component {
       message.error(error.message);
     }
   };
+
+  //主表添加记录
+  submitCentrolList = async course => {
+    try {
+      let res = await http().addRecords({
+        resid: CourseArrangeResid,
+        data: [
+          {
+            CourseName: course.courseName,
+            actualCost: course.cost,
+            StartDatetime: course.beginClassTime,
+            EndDatetime: course.endClassTime,
+            CourseLocation: course.TranningLocation,
+            courseInformation: course.courseIntroduction,
+            classType: course.TranningType,
+            organization:course.TranningOrganization,
+            isCustom:"Y",
+            FisYear:course.year
+          }
+        ]
+      });
+      const data = res.data[0];
+      this.submitSelfDefineCourse({...course, CourseArrangeID:data.CourseArrangeID})
+      message.success(res.message);
+      this.setState({ applyByUnexistCourseVisible: false });
+    } catch (error) {
+      console.error(error.message);
+      message.error(error.message);
+    }
+  };
+
   //提交申请
   submitApply = async () => {
     let { selectedCourse } = this.state;
@@ -391,7 +437,7 @@ class EmployeeApplyCourse extends React.Component {
         >
           <SelfDefineCourseForm
             closeModal={this.closeModal}
-            onSubmit={this.submitSelfDefineCourse}
+            onSubmit={this.submitCourse}
           />
         </Modal>
       </div>
