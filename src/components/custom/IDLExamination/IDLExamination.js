@@ -92,18 +92,18 @@ class IDLExamination extends React.Component {
     return (
       <div className="container">
         <div id="content" ref={p => (this.printer = p)}>
-          <img src={logo}></img>
+
           <div style={{ textAlign: 'center' }}>
             <h2 className="header">Job Application From / 工作申请表</h2>
           </div>
           <div style={{ float: 'left', fontWeight: 'bold' }}>
             Personal Information 个人资料
           </div>
-          <div style={{ clear: 'both', marginBottom: '10px' }}>
-            <table border="1" className='baseInfo'>
+          <div style={{ clear: 'both', marginBottom: '10px',width:'100%' }}>
+            <table border="1" className='baseInfo' style={{width:'100%'}}>
               <tr style={{ fontSize: '10px', height: '35px' }}>
-                <th >
-                  <div style={{ float: 'left', marginLeft: '5px' }}>
+                <th style={{width:'311px'}} >
+                  <div style={{ float: 'left', marginLeft: '5px'}}>
                     <p>Position for Applied</p>
                     <p>申请职位名称:</p>
                   </div>
@@ -450,85 +450,85 @@ class IDLExamination extends React.Component {
             Education Background (Please start from latest education to middle
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
-          <div style={{ clear: 'both', marginBottom: '10px' }}>
-            <dl>
-              <dd>
-                <rect>
+          <div style={{ clear: 'both', marginBottom: '10px' ,width:'100%'}}>
+            <dl >
+              <dd >
+                <div className='innerRect'>
                   <div>Period(Year/Month)<p>年限（年/月）</p></div>
                   <div>From由</div>
                   <div>To至</div>
-                </rect>
-                <rect>
+                </div>
+                <div className='innerRect'>
                   <div>Name of School/Colleges/Universities</div><div>学校/学院/大学</div>
-                </rect>
-                <rect>
+                </div>
+                <div className='innerRect'>
                   <div>Major</div><div>专业</div>
-                </rect>
-                <rect>
+                </div>
+                <div className='innerRect'>
                   <div>Degree</div><div>学位</div>
-                </rect>
-                <rect>
+                </div>
+                <div className='innerRect'>
                   <div>Reference</div><div>证明人</div>
-                </rect>
-                <rect>
+                </div>
+                <div className='innerRect'>
                   <div>Telephone</div><div>电话</div>
-                </rect>
+                </div>
               </dd>
               <dt>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
               </dt>
               <dt>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
               </dt>
               <dt>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
               </dt>
               <dt>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
-                <rect>
-                </rect>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
+                <div className='innerRect'>
+                </div>
               </dt>
             </dl>
           </div>
@@ -540,82 +540,82 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '10px' }}>
         <dl>
           <dd>
-            <rect>
+            <div className='innerRect'>
               <div>Post Period<p>任职年限</p></div>
               <div>From由</div>
               <div>To至</div>
-            </rect>
-            <rect>
+            </div>
+            <div className='innerRect'>
               <div>Name of Company&Type</div><div>公司名称及类型</div>
-            </rect>
-            <rect>
+            </div>
+            <div className='innerRect'>
               <div>Position</div><div>职位</div>
-            </rect>
-            <rect>
+            </div>
+            <div className='innerRect'>
               <div>Reason For Leaving</div><div>离职原因</div>
-            </rect>
-            <rect>
+            </div>
+            <div className='innerRect'>
               <div>Reference</div><div>证明人</div>
-            </rect>
-            <rect>
+            </div>
+            <div className='innerRect'>
               <div>Telephone</div><div>电话</div>
-            </rect>
+            </div>
           </dd>
           <dt>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
           </dt>
           <dt>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
           </dt>
           <dt>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
           </dt>
           <dt>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
-            <rect>
-            </rect>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
+            <div className='innerRect'>
+            </div>
           </dt>
         </dl>
         </div>
@@ -839,7 +839,7 @@ class IDLExamination extends React.Component {
                   <p>姓名</p>
                 </div>
               </th>
-              <th style={{ width: '190px', clear: 'both' }}>
+              <th style={{ width: '90px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
                   <p>Relationship</p>
                   <p>关系</p>
@@ -863,7 +863,7 @@ class IDLExamination extends React.Component {
                   <p>公司名称及地址</p>
                 </div>
               </th>
-              <th style={{ width: '122px', clear: 'both' }}>
+              <th style={{ width: '120px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
                   <p>Telephone</p>
                   <p>电话</p>
@@ -955,7 +955,7 @@ class IDLExamination extends React.Component {
           </table>
         </div>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
-          <img src={logo} style={{}}></img>
+
         </div>
         <p style={{ float: 'left', fontWeight: 'bold' }}>
           Related Qualification / Skill (If any) 相关技能
@@ -1024,7 +1024,7 @@ class IDLExamination extends React.Component {
               </th>
             </tr>
             <tr style={{}}>
-              <td style={{ width: 852 }} colspan="6">
+              <td style={{ width: 842 }} colspan="6">
                 <span style={{ float: 'left', padding: '3px 0 3px 0' }}>
                   Computer Skill 计算机技能：
                 </span>
@@ -1034,7 +1034,7 @@ class IDLExamination extends React.Component {
               </td>
             </tr>
             <tr style={{}}>
-              <td style={{ width: 852 }} colspan="6">
+              <td style={{ width: 842 }} colspan="6">
                 <p style={{ float: 'left' }}>List Name of Software Used</p>
                 <br />
                 <p style={{ float: 'left' }}>列出常用软件</p>
@@ -1044,7 +1044,7 @@ class IDLExamination extends React.Component {
               </td>
             </tr>
             <tr style={{}}>
-              <td style={{ width: 852 }} colspan="6">
+              <td style={{ width: 842 }} colspan="6">
                 <span style={{ float: 'left', padding: '3px 0 3px 0' }}>
                   Other Skill(If any)其他技能：
                 </span>
@@ -1063,7 +1063,7 @@ class IDLExamination extends React.Component {
         </div>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
           <table border="1">
-            <tr style={{ width: 852 }}>
+            <tr style={{ width: 842 }}>
               <th style={{ width: '150px', textAlign: 'left' }}>
                 <p style={{ float: 'left', marginLeft: 5 }}>Weight</p>
                 <br />
@@ -1080,7 +1080,7 @@ class IDLExamination extends React.Component {
                   {this.state.data.height}CM
                 </p>
               </th>
-              <th style={{ width: '552px', textAlign: 'left' }}>
+              <th style={{ width: '542px', textAlign: 'left' }}>
                 <div style={{ marginLeft: 5, float: 'left', height: 45 }}>
                   <p style={{ float: 'left', marginLeft: 5 }}>Eye Sight</p>
                   <br />
@@ -1109,7 +1109,7 @@ class IDLExamination extends React.Component {
                     height: 45,
                     width: 100
                     ,borderLeft:'1px solid grey'
-                    
+
                   }}
                 >
                   <p style={{ float: 'left', marginLeft: 5 }}>Right</p>
@@ -1121,7 +1121,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ width: 852 }}>
+            <tr style={{ width: 842 }}>
               <td colspan="6">
                 <p style={{ textAlign: 'left', marginLeft: 5 }}>
                   Have you ever been suffering from any severe disease? What
@@ -1144,7 +1144,7 @@ class IDLExamination extends React.Component {
                 )}
               </td>
             </tr>
-            <tr style={{ width: 852 }}>
+            <tr style={{ width: 842 }}>
               <td colspan="6">
                 <p style={{ textAlign: 'left', marginLeft: 5 }}>
                   Do you have any unemployed period of more than 4 months? If
@@ -1165,7 +1165,7 @@ class IDLExamination extends React.Component {
                 )}
               </td>
             </tr>
-            <tr style={{ width: 852 }}>
+            <tr style={{ width: 842 }}>
               <td colspan="6">
                 <p style={{ textAlign: 'left', marginLeft: 5 }}>
                   Do you know any employee of Finisar Shanghai Inc.? If yes,
@@ -1186,9 +1186,9 @@ class IDLExamination extends React.Component {
                 )}
               </td>
             </tr>
-            <tr style={{ width: 852 }}>
+            <tr style={{ width: 842 }}>
               <td colspan="6">
-                <p style={{ textAlign: 'left', marginLeft: 5 }}>
+                <p style={{ textAlign: 'left', marginLeft: 5,whiteSpace:'normal'}}>
                   Do you have any unexpired contract or service agreement with
                   your present employer? Do you have ever signed
                   non-competition agreement or confidentiality agreement?
@@ -1219,7 +1219,7 @@ class IDLExamination extends React.Component {
         <div style={{ marginBottom: '20px' }}>
           <table border="1">
             <tr>
-              <td colspan="6" style={{ width: 852 }}>
+              <td colspan="6" style={{ width: 842 }}>
                 {this.state.data.appraisement ? (
                   <p>{this.state.data.appraisement}</p>
                 ) : (

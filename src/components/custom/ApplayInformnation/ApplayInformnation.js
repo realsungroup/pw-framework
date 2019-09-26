@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './ApplayInformnation.less';
-import { Form, Input, DatePicker, Radio, Button, Select } from 'antd';
+import { Form, Input, DatePicker, Radio, Button, Select ,Icon} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
+import IDLExamination from '../IDLExamination';
 import http from '../../../util20/api';
 import PropTypes from 'prop-types';
 const { Option } = Select;
@@ -80,6 +81,7 @@ class Applayinformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showPrint:false,
       currentInfo: {},
       mode: ['month', 'month'],
       value: [],
@@ -143,7 +145,11 @@ class Applayinformation extends Component {
       console.log(values);
     })
   }
+  printClz=()=>{
+    document.getElementById('idlEx').classList.add('hidden');
+  }
   handleClick =() =>{
+    document.getElementById('idlEx').classList.remove('hidden');
 
   }
   render() {
@@ -156,9 +162,13 @@ class Applayinformation extends Component {
     return (
       <div
         className="applay__information"
-        style={{ height: '90vh', overflow: 'scroll' }}
+        style={{ width:'100%',height: '90vh', overflow: 'scroll',background:'#fff',padding:'0' }}
       >
-        <Form>
+        <rect className='idlEx hidden' id='idlEx'>
+          <Icon type="close-circle" style={{cursor:'pointer',position:'fixed',right:'32px',top:'16px'}} onClick={this.printClz}/>
+          <IDLExamination></IDLExamination>
+        </rect>
+        <Form style={{padding:'16px',boxSizing:'border-box'}}>
           <div className="information__boundary">
             <h3 className="applay__information-title" id="个人资料">
             Personal Information 个人资料
@@ -866,7 +876,7 @@ class Applayinformation extends Component {
             </div>
             <Form.Item style={{ textAlign: 'center' }}>
               <Button type="primary" onClick={this.handleSave}>保存</Button>
-              <Button type="primary" onClick={this.handleClick}>
+              <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印
               </Button>
             </Form.Item>
