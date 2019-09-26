@@ -14,6 +14,7 @@ import JobAndEmployee from './components/JobAndEmployee';
 import TrainingQuery from './components/TrainingQuery';
 
 const { TabPane } = Tabs;
+
 class ComprehensiveQuery extends React.Component {
   state = {
     node: {}, //选中的人员信息
@@ -76,7 +77,7 @@ class ComprehensiveQuery extends React.Component {
   };
   render() {
     const { isExpand, currentTab } = this.state;
-    return !(process.env.NODE_ENV === 'production') ? (
+    return (
       <div id="comprehensive-query">
         <main style={{ left: isExpand ? 240 : 4 }} className="main-content">
           <div
@@ -95,10 +96,18 @@ class ComprehensiveQuery extends React.Component {
               <TabPane tab="考勤查询" key="attendance"></TabPane>
               <TabPane tab="绩效查询" key="performance"></TabPane>
               <TabPane tab="评级评优查询" key="rating"></TabPane>
-              <TabPane tab="培训查询" key="training"></TabPane>
-              <TabPane tab="岗位与人员调动" key="jobAndEmployee"></TabPane>
-              <TabPane tab="离职情况" key="dimission"></TabPane>
-              <TabPane tab="入职情况" key="induction"></TabPane>
+              {process.env.NODE_ENV === 'development' && (
+                <TabPane tab="培训查询" key="training"></TabPane>
+              )}
+              {process.env.NODE_ENV === 'development' && (
+                <TabPane tab="岗位与人员调动" key="jobAndEmployee"></TabPane>
+              )}
+              {process.env.NODE_ENV === 'development' && (
+                <TabPane tab="离职情况" key="dimission"></TabPane>
+              )}
+              {process.env.NODE_ENV === 'development' && (
+                <TabPane tab="入职情况" key="induction"></TabPane>
+              )}
             </Tabs>
           </header>
           <div className="comprehensive-query_main-content-wrap">
@@ -119,8 +128,6 @@ class ComprehensiveQuery extends React.Component {
           onShrinkChange={this.setShrink}
         />
       </div>
-    ) : (
-      <div>生产环境内容</div>
     );
   }
 }

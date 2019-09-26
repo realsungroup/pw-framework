@@ -10,13 +10,22 @@ class ViewRate extends React.Component {
     years: [],
     selectYear: { key: 0, label: '请选择财年' }
   };
+
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+  }
+
   componentDidMount = async () => {
-    // const { person } = this.props;
-    // let id;
-    // if (person) {
-    //   id = person.C3_305737857578;
-    // }
-    // this.getYearsTarget(id);
+    const { person } = this.props;
+    let id;
+    if (person) {
+      id = person.C3_305737857578;
+    }
+    this.getYearsTarget(id);
   };
 
   componentDidUpdate(prevProps) {
@@ -97,7 +106,7 @@ class ViewRate extends React.Component {
               cparm1={id}
               cparm2={selectYear.label}
               dblinkname="ehr"
-              baseURL="http://10.108.2.66:9091/"
+              baseURL={this.baseURL}
             />
           </Skeleton>
         </div>

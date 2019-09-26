@@ -11,13 +11,13 @@ class ReferenceCheck extends React.Component {
   state = {
     chara:'hr',
     date:'',
-    candiName:'Sun Zhang',
-    coName:'Finisar(Wx)',
-    reName:'Cee Lee',
-    title:'Super Admin',
-    phone:'15121176700',
-    mail:'SZ@yahoo.co.jp',
-    rel:'null',
+    candiName:'',
+    coName:'',
+    reName:'',
+    title:'',
+    phone:'',
+    mail:'',
+    rel:'',
     Management:'',
     LineManager:'',
     Colleague:'',
@@ -41,7 +41,11 @@ class ReferenceCheck extends React.Component {
     coworkers:'',
     Client2:'',
     skillWO:'',
-    skillTM:''
+    skillTM:'',
+    q1hr:'',
+    q2hr:'',
+    q3hr:'',
+    q5hr:''
   };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
@@ -76,10 +80,13 @@ class ReferenceCheck extends React.Component {
       if(v=='HR'){
         this.setState({chara:'hr'});
         document.getElementById('selHR').classList.add('current');
+          this.refs.hr.style.display='block';
+          this.refs.supervisor.style.display='none';
       }else{
         this.setState({chara:'supervisor'});
         document.getElementById('selSup').classList.add('current');
-
+        this.refs.supervisor.style.display='block';
+        this.refs.hr.style.display='none';
       }
   }
   componentDidMount(){
@@ -156,15 +163,15 @@ class ReferenceCheck extends React.Component {
             <ul style={{listStyle:'none',display:'none'}} ref='hr'>
               <li>
                 <label style={{marginBottom:'16px'}}>1.What is the candidate’s on-board date?</label>
-                <textarea value={this.state.q1} onChange={v=>{this.handlechange("q1",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                <textarea value={this.state.q1hr} onChange={v=>{this.handlechange("q1hr",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
               <li>
-                <label style={{marginBottom:'16px'}}>1.What is the candidate’s terminate date?</label>
-                <textarea value={this.state.q2} onChange={v=>{this.handlechange("q2",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                <label style={{marginBottom:'16px'}}>2.What is the candidate’s terminate date?</label>
+                <textarea value={this.state.q2hr} onChange={v=>{this.handlechange("q2hr",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
               <li>
                 <label style={{marginBottom:'16px'}}>3.What were the title and department of the candidate before he left the company?</label>
-                <textarea value={this.state.q3} onChange={v=>{this.handlechange("q3",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                <textarea value={this.state.q3hr} onChange={v=>{this.handlechange("q3hr",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
               <li>
                 <label style={{marginBottom:'16px'}}>4.How about the relationship between the candidate and co-worker? </label>
@@ -201,7 +208,7 @@ class ReferenceCheck extends React.Component {
               </li>
               <li>
                 <label style={{marginBottom:'16px'}}>5.  Why the candidate leave your company?</label>
-                <textarea value={this.state.q5} onChange={v=>{this.handlechange("q5",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                <textarea value={this.state.q5hr} onChange={v=>{this.handlechange("q5hr",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
             </ul>
 

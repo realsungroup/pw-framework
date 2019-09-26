@@ -55,14 +55,13 @@ dl{
   border:1px solid grey;
   border-right:none;
   border-bottom:none;
-  width:852px;
   *{
     margin:0;
     padding:0;
   }
   dt{
     overflow: hidden;
-    rect{
+    .innerRect{
       height:36px;
     }
   }
@@ -70,7 +69,9 @@ dl{
     width:100%;
     overflow: hidden;
   }
-  rect{
+  .innerRect{
+    display: block;
+    box-sizing: border-box;
     float:left;
     height:58px;
     border-right:1px solid grey;
@@ -92,7 +93,7 @@ dl{
       height:26px;
     }
   }
-  rect:first-child{
+  .innerRect:first-child{
       width:137px;
       overflow: hidden;
       div{
@@ -119,13 +120,13 @@ dl{
       }
 
   }
-  rect:nth-child(2),rect:nth-child(3){
+  .innerRect:nth-child(2),.innerRect:nth-child(3){
       width:190px;
   }
-  rect:nth-child(4),rect:nth-child(5){
+  .innerRect:nth-child(4),.innerRect:nth-child(5){
       width:100px;
   }
-  rect:last-child{
-      width:133px;
+  .innerRect:last-child{
+      width:124px;
   }
 }

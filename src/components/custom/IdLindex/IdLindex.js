@@ -65,7 +65,7 @@ class IdLindex extends Component {
     recordFormName: 'default',
     typeVisible: false,
     activeKey: '工作申请表',
-    showAssessment:false
+    showAssessment:false,
   };
   // 点击某个人时候设置样式
   handlePersonOnClick = item => {
@@ -202,23 +202,7 @@ class IdLindex extends Component {
       case '工作申请表':
         return (
           <React.Fragment>
-            <div className="idlindex__content-form__info-nav">
-              <Menu style={{ width: 216 ,height:'100vh'}} defaultSelectedKeys={['个人资料']}>
-                {MenuList.map((menuItem, index) => {
-                  return (
-                    <Menu.Item
-                      key={menuItem.value}
-                      onClick={() => {
-                        this.hanleMoveTo(menuItem.value);
-                      }}
-                    >
-                      <Icon type={menuItem.icon} />
-                      {menuItem.label}
-                    </Menu.Item>
-                  );
-                })}
-              </Menu>
-            </div>
+
             <ApplayInformnation personDetail={currentPersonInfo} />
           </React.Fragment>
         );
@@ -256,15 +240,9 @@ class IdLindex extends Component {
                           // this.getFormData(record);
 
                         }}
+                        style={{marginTop:'8px'}}
                       >
                         评估详情
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          this.getFormData(record);
-                        }}
-                      >
-                        添加面试官
                       </Button>
 
                     </div>

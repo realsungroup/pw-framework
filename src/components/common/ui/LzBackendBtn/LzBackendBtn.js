@@ -46,13 +46,19 @@ class LzBackendBtn extends React.PureComponent {
   _formData = null;
   _defaultRecord = null;
   onConfirm = async () => {
-    const { resid, records, onConfirm, btnInfo, backendBtnType, recordFormDisplayMode,baseURL } = this.props;
+    const {
+      resid,
+      records,
+      onConfirm,
+      btnInfo,
+      backendBtnType,
+      recordFormDisplayMode,
+      baseURL
+    } = this.props;
     const { Code, OkMsgCn, FailMsgCn, Type } = btnInfo;
-    const httpParams={};
-    if (baseURL)
-    {
-      httpParams.baseURL=baseURL;
-
+    const httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
     }
     // 点击后端按钮，请求后台
     if (Type === 1 || Type === 5) {
@@ -68,7 +74,6 @@ class LzBackendBtn extends React.PureComponent {
       });
 
       this.p1 = makeCancelable(
-        
         http(httpParams).dealButton({
           resid,
           recids,
@@ -85,9 +90,19 @@ class LzBackendBtn extends React.PureComponent {
 
       // 跳转地址的按钮
     } else if (Type === 4) {
-      const { url } = this.props;
-      window.open(url, '_blank');
-      onConfirm && onConfirm(backendBtnType, Type);
+      const { Url } = this.props.btnInfo;
+      // window.open(Url, '_blank');
+      onConfirm &&
+        onConfirm(
+          backendBtnType,
+          Type,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          Url
+        );
 
       // 打开指定的 formName 的表单进行 编辑（6）/ 查看（7）/ 添加（8）
     } else if (Type === 6 || Type === 7 || Type === 8) {
@@ -109,7 +124,12 @@ class LzBackendBtn extends React.PureComponent {
         // 缓存 formData 和 defaultRecord
         this._formData = formData;
         this._defaultRecord = defaultRecord;
-        this._controlData = getDataProp(this._formData, records.length === 1 ? records[0] : {}, false, recordFormDisplayMode === 'classify');
+        this._controlData = getDataProp(
+          this._formData,
+          records.length === 1 ? records[0] : {},
+          false,
+          recordFormDisplayMode === 'classify'
+        );
       }
 
       onConfirm &&
@@ -126,6 +146,10 @@ class LzBackendBtn extends React.PureComponent {
 
   render() {
     const { btnInfo, size } = this.props;
+    const { Url, Type } = btnInfo;
+    if (Type !== 4 && Url) {
+      return null;
+    }
     // 有 Popconfirm 组件
     if (btnInfo.isUsePopconfirm) {
       return (

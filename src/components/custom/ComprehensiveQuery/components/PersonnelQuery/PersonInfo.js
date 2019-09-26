@@ -11,6 +11,10 @@ import './personInfo.less';
 class PersonInfo extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
     this.state = {
       personalInfoVisible: false,
       personInfo: {},
@@ -88,7 +92,7 @@ class PersonInfo extends React.Component {
               actionBarWidth={400}
               cparm1={id}
               formProps={{ width: 1000 }}
-              baseURL="http://10.108.2.66:9091/"
+              baseURL={this.baseURL}
               recordFormUseAbsolute={true}
               customRowBtns={[
                 record => {
@@ -117,7 +121,7 @@ class PersonInfo extends React.Component {
                     hasRowModify: false,
                     hasRowView: true,
                     hasBeBtns: false,
-                    baseURL: 'http://10.108.2.66:9091/'
+                    baseURL: this.baseURL
                   }
                 }
               ]}

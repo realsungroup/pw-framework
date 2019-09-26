@@ -2622,11 +2622,9 @@ class LzTable extends React.Component {
     return (
       <Fragment>
         {backEndBtns.map(btnInfo => {
-          const url = `${
-            btnInfo.Url
-          }?resid=${resid}&subresid=${subresid}&hostrecid=${hostrecid}&subrecid=${
-            record.REC_ID
-          }&token=${token}&searchvalue=${searchValue}`;
+          let Url = btnInfo.Url;
+          Url = Url.substring(0, Url.indexOf('&'));
+          const url = `${Url}?resid=${resid}&subresid=${subresid}&hostrecid=${hostrecid}&subrecid=${record.REC_ID}&token=${token}&searchvalue=${searchValue}`;
           return (
             <LzBackendBtn
               key={btnInfo.Name1}

@@ -12,6 +12,12 @@ window.pwConfig = {
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66/', // 导出 Excel 文件下载基地址
 
+    //各定制组件需用到的基地址
+    customURLs: {
+      attendanceBaseURL: 'http://10.108.2.21:9091/', //考勤审批
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
+    },
+
     // 个人中心配置
     personCenterResIds: [
       {
@@ -120,6 +126,11 @@ window.pwConfig = {
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
+    //各定制组件需用到的基地址
+    customURLs: {
+      attendanceBaseURL: 'http://10.108.2.21:9091/', //考勤审批
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
+    },
     // 个人中心配置
     personCenterResIds: [
       {
