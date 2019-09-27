@@ -555,6 +555,12 @@ export const propTypes = {
   recordFormType: PropTypes.oneOf(['modal', 'drawer']),
 
   /**
+   * 记录表单是否使用绝对定位模式显示
+   * 默认：false
+   */
+  recordFormUseAbsolute: PropTypes.bool,
+
+  /**
    * 记录表单容器（Modal/Drawer）所接收的 props
    * 默认：-
    */

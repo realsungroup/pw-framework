@@ -10,6 +10,7 @@ import { withHttpGetBeBtns, withHttpGetFormData } from '../../hoc/withHttp';
 import { compose } from 'recompose';
 import withAdvSearch from '../../hoc/withAdvSearch';
 import withImport from '../../hoc/withImport';
+import withModalDrawer from '../../hoc/withModalDrawer';
 import withDownloadFile from '../../hoc/withDownloadFile';
 import { withRecordForm } from '../../hoc/withRecordForm';
 
@@ -119,6 +120,21 @@ class TableData extends React.Component {
     window.removeEventListener('resize', this.cb);
   };
 
+  async componentDidUpdate(prevProps) {
+    if (
+      this.props.cparm1 !== prevProps.cparm1 ||
+      this.props.cparm2 !== prevProps.cparm2 ||
+      this.props.cparm3 !== prevProps.cparm3 ||
+      this.props.cparm4 !== prevProps.cparm4 ||
+      this.props.cparm5 !== prevProps.cparm5 ||
+      this.props.cparm6 !== prevProps.cparm6 ||
+      this.props.cmsWhere !== prevProps.cmsWhere
+    ) {
+      this.setState({ loading: true });
+      await this.getData();
+      this.setState({ loading: false });
+    }
+  }
   addEventListener = () => {
     this.cb = debounce(this.handleResize, 200);
     window.addEventListener('resize', this.cb);
@@ -281,7 +297,13 @@ class TableData extends React.Component {
       cmscolumns,
       storeWay,
       baseURL,
-      dblinkname
+      dblinkname,
+      cparm1,
+      cparm2,
+      cparm3,
+      cparm4,
+      cparm5,
+      cparm6
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -308,7 +330,13 @@ class TableData extends React.Component {
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
-            dblinkname
+            dblinkname,
+            cparm1,
+            cparm2,
+            cparm3,
+            cparm4,
+            cparm5,
+            cparm6
           };
           this.p3 = makeCancelable(http(httpParams).getTable(params));
           res = await this.p3.promise;
@@ -327,7 +355,13 @@ class TableData extends React.Component {
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
-            dblinkname
+            dblinkname,
+            cparm1,
+            cparm2,
+            cparm3,
+            cparm4,
+            cparm5,
+            cparm6
           };
           this.p3 = makeCancelable(http(httpParams).getSubTable(params));
           res = await this.p3.promise;
@@ -619,7 +653,7 @@ class TableData extends React.Component {
       downloadBaseURL,
       dblinkname,
       dataMode
-     
+
     } = this.props;
     //console.log("handleDownload");
     //console.log(this.props);
@@ -633,9 +667,9 @@ class TableData extends React.Component {
     const downloadBaseURL_ =
       downloadBaseURL || window.pwConfig[process.env.NODE_ENV].fileDownloadUrl;
 
-     let hostresid=this.props.resid;
-     let hostrecid=this.props.hostrecid;
-      
+    let hostresid=this.props.resid;
+    let hostrecid=this.props.hostrecid;
+
     if (dataMode === 'main') {
       hostresid = "";
 
@@ -688,12 +722,13 @@ class TableData extends React.Component {
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
-    const { beBtnsMultiple, beBtnsOther ,baseURL} = this.state;
+    const { beBtnsMultiple, beBtnsOther, baseURL } = this.state;
     const { size, formProps } = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
-    const recordFormDisplayMode = (formProps && formProps.displayMode) || 'default';
+    const recordFormDisplayMode =
+      (formProps && formProps.displayMode) || 'default';
 
     return arr.map(btnInfo => (
       <LzBackendBtn
@@ -710,7 +745,8 @@ class TableData extends React.Component {
           controlData,
           defaultRecord,
           recordFormData,
-          baseURL
+          baseURL,
+          iframeURL
         ) => {
           this.setState({ recordFormShowMode: '' }, () => {
             this.beBtnConfirm(
@@ -720,8 +756,8 @@ class TableData extends React.Component {
               controlData,
               defaultRecord,
               recordFormData,
-              baseURL
-              
+              baseURL,
+              iframeURL
             );
           });
         }}
@@ -861,7 +897,8 @@ class TableData extends React.Component {
       beforeSaveFields,
       recordFormContainerProps,
       subTableArrProps,
-      storeWay
+      storeWay,
+      recordFormUseAbsolute
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -927,7 +964,8 @@ class TableData extends React.Component {
       storeWay,
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
-      dblinkname
+      dblinkname,
+      useAbsolute: recordFormUseAbsolute
     });
   };
 
@@ -1167,11 +1205,33 @@ class TableData extends React.Component {
     controlData,
     defaultRecord,
     recordFormData,
-    baseURL
+    baseURL,
+    iframeURL
   ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
+    } else if (type === 4) {
+      this.props.openModalOrDrawer(
+        'modal',
+        {
+          width: '90%',
+          onCancel: this.props.closeModalOrDrawer,
+          onOk: this.props.closeModalOrDrawer,
+          footer: null
+        },
+        () => (
+          <div style={{ height: '80vh' }}>
+            <iframe
+              title="iframe"
+              src={iframeURL}
+              width="100%"
+              height="100%"
+              style={{ border: 'none' }}
+            />
+          </div>
+        )
+      );
     } else if (type === 6) {
       this.openRecordForm(
         backendBtnType,
@@ -1533,9 +1593,9 @@ class TableData extends React.Component {
       bordered,
       actionBarExtra,
       headerExtra,
-     
+
     } = this.props;
-    
+
     const {
       pagination,
       dataSource,
@@ -1552,7 +1612,7 @@ class TableData extends React.Component {
     return (
       <PwTable
         title={title}
-       
+
         editingKey={editingKey}
         components={components}
         pagination={pagination}
@@ -1623,6 +1683,7 @@ const composedHoc = compose(
   withHttpGetFormData,
   withAdvSearch(),
   withDownloadFile,
+  withModalDrawer(),
   withRecordForm(),
   injectIntl,
   withImport
