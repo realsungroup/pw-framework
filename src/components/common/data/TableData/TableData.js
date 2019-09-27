@@ -1217,11 +1217,17 @@ class TableData extends React.Component {
           width: '90%',
           onCancel: this.props.closeModalOrDrawer,
           onOk: this.props.closeModalOrDrawer,
-          footer: null,
+          footer: null
         },
         () => (
-          <div style={{height:'100vh'}}>
-            <iframe title='iframe' src={iframeURL} width="100%"  height="100%" style={{ border: 'none' }}/>
+          <div style={{ height: '80vh' }}>
+            <iframe
+              title="iframe"
+              src={iframeURL}
+              width="100%"
+              height="100%"
+              style={{ border: 'none' }}
+            />
           </div>
         )
       );
@@ -1655,7 +1661,6 @@ class TableData extends React.Component {
 
   render() {
     const { loading, width, height } = this.state;
-
     return (
       <div
         className="table-data"

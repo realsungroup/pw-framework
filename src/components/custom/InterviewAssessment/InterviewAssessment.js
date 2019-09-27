@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
 import {
   Button,
-  Icon
+  Icon,
+  Select,
+  Modal
 } from 'antd';
 import './InterviewAssessment.less';
+const { Option } = Select;
+const { confirm } = Modal;
 class InterviewAssessment extends React.Component {
   constructor() {
     super();
     this.state = {
+        userChara:'HR',
+        data:[
+          {text:'张三',value:'11212'},
+          {text:'李四',value:'22312'},
+          {text:'王大麻子',value:'1100'},
+          {text:'李三',value:'0512'},
+
+        ],
         name:'张三',
         position:'HR',
         level:'g3',
         hiringManger:'李四',
         interviewer:'王五',
         interviewer2:'赵六',
-        chara:8,
+        chara:0,
         eduOther:'',
         graFrom:'',
         workExp:'',
@@ -95,10 +107,44 @@ class InterviewAssessment extends React.Component {
         vPresentSkill:'',
         vProblemSol:'',
         vPeerRel:'',
-        vPersonaLe:''
+        vPersonaLe:'',
+        //复试
+        round2:false
 
     }
   }
+
+showConfirm() {
+  confirm({
+    title: '确认退回这个表格吗?',
+    onOk() {
+      return new Promise((resolve, reject) => {
+        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+      }).catch(() => console.log('Oops errors!'));
+    },
+    onCancel() {},
+  });
+}
+
+showConfirmMail() {
+  confirm({
+    title: '确认发送邮件吗?',
+    onOk() {
+      return new Promise((resolve, reject) => {
+        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+      }).catch(() => console.log('Oops errors!'));
+    },
+    onCancel() {},
+  });
+}
+
+  handleSearch = value => {
+    if (value) {
+      fetch(value, data => this.setState({ data }));
+    } else {
+      this.setState({ data: [] });
+    }
+  };
   handlechange(key,val,ref){
 
         this.setState({
@@ -122,25 +168,12 @@ class InterviewAssessment extends React.Component {
     this.setState({newdate:yy+'-'+mm+'-'+dd});
     this.setState({interviewer:'张三'});
     this.setState({interviewer2:'李四'});
-    if(this.state.chara==0){
-      this.refs.T1.classList.remove('hidden')
-    }else if(this.state.chara==1){
-      this.refs.T5.classList.remove('hidden')
-    }else if(this.state.chara==2){
-      this.refs.T6.classList.remove('hidden')
-    }else if(this.state.chara==3){
-      this.refs.S5.classList.remove('hidden')
-    }else if(this.state.chara==4){
-      this.refs.S6.classList.remove('hidden')
-    }else if(this.state.chara==5){
-      this.refs.S9.classList.remove('hidden')
-    }else if(this.state.chara==6){
-      this.refs.S10.classList.remove('hidden')
-    }else if(this.state.chara==7){
-      this.refs.Tech.classList.remove('hidden')
-    }else if(this.state.chara==8){
-      this.refs.Tech.classList.remove('hidden')
-    }
+  }
+  changeChara = (v) =>{
+    this.setState({chara:v});
+  }
+  changeRound = (v) =>{
+    this.setState({round2:v});
   }
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
@@ -148,7 +181,7 @@ class InterviewAssessment extends React.Component {
      var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
 
-     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;height:1191px;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}cell .fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:32px;padding-bottom:33px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:56px!important;}.alter5{padding-top:22px;padding-bottom:23px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
+     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}cell .fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:31px;padding-bottom:31px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:56px!important;}.alter5{padding-top:22px;padding-bottom:23px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
 
      var headstr = "<html><head><title></title>"+style+"</head><body>";
      document.body.innerHTML = headstr + newstr + footstr;
@@ -156,11 +189,70 @@ class InterviewAssessment extends React.Component {
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
   };
+
   render() {
+    const options = this.state.data.map(d => <Option key={d.value}>{d.text}</Option>);
+
     return (
       <div className='IA'>
-        <Button type='primary'>保存</Button>
-        <Button onClick={this.onPrinting}>打印</Button>
+        <div className='chooseClass'>
+          <rect className={this.state.chara=='0'?'current':''} onClick={e => {this.changeChara(0);}}>
+            T1 T2 T3 T4
+          </rect>
+          <rect className={this.state.chara=='1'?'current':''} onClick={e => {this.changeChara(1);}}>
+            T5
+          </rect>
+          <rect className={this.state.chara=='2'?'current':''} onClick={e => {this.changeChara(2);}}>
+            T6
+          </rect >
+          <rect className={this.state.chara=='3'?'current':''} onClick={e => {this.changeChara(3);}}>
+            S5 S6 Sr. Specialist
+          </rect>
+          <rect className={this.state.chara=='4'?'current':''} onClick={e => {this.changeChara(4);}}>
+            S6 Supervisor S7 S8 T4 ManagerI
+          </rect>
+          <rect className={this.state.chara=='5'?'current':''} onClick={e => {this.changeChara(5);}}>
+            S9 T5Manager II
+          </rect>
+          <rect className={this.state.chara=='6'?'current':''} onClick={e => {this.changeChara(6);}}>
+            S10 T6Sr.Manager
+          </rect>
+          <rect className={this.state.chara=='7'?'current':''} onClick={e => {this.changeChara(7);}}>
+            Technician
+          </rect>
+          <rect className={this.state.chara=='8'?'current':''} onClick={e => {this.changeChara(8);}}>
+            应届生
+          </rect>
+        </div>
+        <div className='chooseClass chooseRound'>
+          <rect className={this.state.round2==false?'current':''} onClick={e => {this.changeRound(false);}}>
+            不显示复试内容
+          </rect>
+          <rect className={this.state.round2==true?'current':''} onClick={e => {this.changeRound(true);}}>
+            显示复试内容
+          </rect>
+        </div>
+        <div className='chooseClass choosePeople'>
+          <div className='innerWrap'>
+            <Select
+              showSearch
+              value={this.state.value}
+              placeholder='请选择收件人'
+              onSearch={this.handleSearch}
+              onChange={v => {this.setState({value:v})}}
+              notFoundContent={null}
+            >
+              {options}
+            </Select>
+            <Button type='primary' onClick={this.showConfirmMail}>发送提醒邮件</Button>
+          </div>
+        </div>
+        <div className='buttonLine'>
+          <Button type='primary' className={this.state.userChara=='HR'?'hidden':''}>提交</Button>
+          <Button type='primary' className={this.state.userChara=='hidden'?'HR':''}>确认</Button>
+          <Button onClick={this.onPrinting}>打印</Button>
+          <Button type='danger' onClick={this.showConfirm}>退回表格</Button>
+        </div>
         <div className='cls' onClick={()=>{
 
             this.props.clsAss();
@@ -169,7 +261,6 @@ class InterviewAssessment extends React.Component {
         </div>
         <div id='toPrint' ref={p => (this.printer = p)}>
           <div className='wrap'>
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAA1CAYAAABiKw8nAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowNTgzQkQzQjIzQUExMUU5QTlFMEIwOTExQjRGOEI4MiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowNTgzQkQzQzIzQUExMUU5QTlFMEIwOTExQjRGOEI4MiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjA1ODNCRDM5MjNBQTExRTlBOUUwQjA5MTFCNEY4QjgyIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjA1ODNCRDNBMjNBQTExRTlBOUUwQjA5MTFCNEY4QjgyIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+teLRYwAADlxJREFUeNrsXQu4VUUV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"/>
             <h3>面试评估表 <br/> Interview Assessment</h3>
             <ul>
               <li>
@@ -251,7 +342,7 @@ class InterviewAssessment extends React.Component {
                 <b>得分/Items</b>
               </cell>
             </rect>
-        <div className='hidden' ref='T1'>
+        <div className={this.state.chara=='0'?'':'hidden'} ref='T1'>
             <rect className='alter1'>
               <cell>
                 <b>
@@ -360,7 +451,7 @@ class InterviewAssessment extends React.Component {
             </rect>
           </div>
 
-          <div ref='T5' className='hidden'>
+          <div className={this.state.chara=='1'?'':'hidden'} ref='T5'>
             <rect className='alter1 alter2'>
               <cell>
                 <b>
@@ -468,7 +559,7 @@ class InterviewAssessment extends React.Component {
               </cell>
             </rect>
             </div>
-            <div ref='T6' className='hidden'>
+            <div className={this.state.chara== 2 ?'':'hidden'} ref='T6'>
               <rect className='alter1 alter2'>
                 <cell>
                   <b>
@@ -577,7 +668,7 @@ class InterviewAssessment extends React.Component {
               </rect>
             </div>
 
-            <div ref='S5' className='hidden'>
+            <div ref='S5' className={this.state.chara=='3'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -663,7 +754,7 @@ class InterviewAssessment extends React.Component {
               </rect>
             </div>
 
-            <div ref='S6' className='hidden'>
+            <div ref='S6' className={this.state.chara=='4'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -750,7 +841,7 @@ class InterviewAssessment extends React.Component {
             </div>
 
 
-            <div ref='S9' className='hidden'>
+            <div ref='S9' className={this.state.chara=='5'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -848,7 +939,7 @@ class InterviewAssessment extends React.Component {
               </rect>
             </div>
 
-            <div ref='S10' className='hidden'>
+            <div ref='S10' className={this.state.chara=='6'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -946,7 +1037,7 @@ class InterviewAssessment extends React.Component {
               </rect>
             </div>
 
-            <div ref='Tech' className='hidden'>
+            <div ref='Tech' className={this.state.chara=='7'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1032,7 +1123,7 @@ class InterviewAssessment extends React.Component {
               </rect>
             </div>
 
-            <div ref='Fresh' className='hidden'>
+            <div ref='Fresh' className={this.state.chara=='8'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1216,7 +1307,7 @@ class InterviewAssessment extends React.Component {
                   </textarea>
                 </cell>
               </rect>
-              <rect>
+              <rect style={{borderBottom:'1px solid #000'}}>
                 <cell className='alter3'>
                   <b>小组面试结论<br/>Group Hiring Decision</b>
                 </cell>
@@ -1233,24 +1324,26 @@ class InterviewAssessment extends React.Component {
                 <b>日期/Date:{this.state.newdate}</b>
                 </cell>
               </rect>
-              <rect className='wholeLine'>
-                <h4>复试评价记录 Retrial Comments</h4>
-              </rect>
-              <rect>
-                <cell className='alter4'>
-                  <b>复试评语<br/>Second Round Interview</b>
-                </cell>
-                <cell>
-                  <textarea value={this.state.secRound} onChange={v=>{this.handlechange("secRound",v)}}></textarea>
-                  <b>Hiring Decision：</b>
-                  <input type='radio' name='SRI' id='hire2' value='hire2' checked={this.state.SRI=='hire2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'hire2')}}/><label for='hire2'>Hire 聘用</label>
-                  <input type='radio' name='SRI' id='reject2' value='reject2' checked={this.state.SRI=='reject2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'reject2')}}/><label for='reject2'>Reject 淘汰</label>
-                  <input type='radio' name='SRI' id='backup2' value='backup2' checked={this.state.SRI=='backup2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'backup2')}}/><label for='backup2'>Backup 保留</label>
-                  <br/>
-                  <b style={{marginRight:'24px'}}>面试官/Interviewer:{this.state.interviewer2}</b>
-                  <b>日期/Date:{this.state.newdate}</b>
-                </cell>
-              </rect>
+              <div className={this.state.round2==true?'':'hidden'}  style={{borderBottom:'1px solid #000'}}>
+                <rect className='wholeLine'>
+                  <h4>复试评价记录 Retrial Comments</h4>
+                </rect>
+                <rect>
+                  <cell className='alter4'>
+                    <b>复试评语<br/>Second Round Interview</b>
+                  </cell>
+                  <cell>
+                    <textarea value={this.state.secRound} onChange={v=>{this.handlechange("secRound",v)}}></textarea>
+                    <b>Hiring Decision：</b>
+                    <input type='radio' name='SRI' id='hire2' value='hire2' checked={this.state.SRI=='hire2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'hire2')}}/><label for='hire2'>Hire 聘用</label>
+                    <input type='radio' name='SRI' id='reject2' value='reject2' checked={this.state.SRI=='reject2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'reject2')}}/><label for='reject2'>Reject 淘汰</label>
+                    <input type='radio' name='SRI' id='backup2' value='backup2' checked={this.state.SRI=='backup2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'backup2')}}/><label for='backup2'>Backup 保留</label>
+                    <br/>
+                    <b style={{marginRight:'24px'}}>面试官/Interviewer:{this.state.interviewer2}</b>
+                    <b>日期/Date:{this.state.newdate}</b>
+                  </cell>
+                </rect>
+              </div>
           </div>
 
         </div>

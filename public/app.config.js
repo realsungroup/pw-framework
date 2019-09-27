@@ -5,16 +5,16 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
-    // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
+    baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66/', // 导出 Excel 文件下载基地址
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.2.21:9091/', //考勤审批
+      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
     },
 

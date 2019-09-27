@@ -155,9 +155,9 @@ class Applayinformation extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { initialValue } = this.props;
-    console.log(initialValue);
+    // console.log(initialValue);
     let {currentInfo} = this.state;
-    console.log("currentInfo",currentInfo);
+    // console.log("currentInfo",currentInfo);
     const { value, mode } = this.state;
     return (
       <div

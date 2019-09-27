@@ -15,7 +15,6 @@ class ManagerAttendanceApproval extends React.Component {
     this.UserCode = JSON.parse(getItem('userInfo')).UserCode;
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
-    console.log(this.baseURL);
   }
   actionBarExtra = record => {
     return (
@@ -59,34 +58,17 @@ class ManagerAttendanceApproval extends React.Component {
         >
           <Button type="danger">拒绝</Button>
         </Popconfirm>
-        <Popconfirm
-          title="确认一键审批吗？"
-          onConfirm={() => {
-            if (isNaN(Number(this.UserCode))) {
-              return message.info('工号非法');
-            }
-            let sql =
-              "update  CT446915608629  set OneKeyAudit ='Y' where C3_446915646834=(select ID from view_attendance_yg where ygno='" +
-              this.UserCode +
-              "') and ISNULL( C3_446915685257,'')='' and ISNULL(OneKeyAudit,'')<>'Y' and C3_449443494224=(select min(C3_424358155202)  from CT424358078333 where ISNULL(C3_424358188666,'')='Y') and C3_446945943924='Y' and C3_515595953233 >=CONVERT(char(8),getdate(),112) and isnull(C3_447032685982,'')<>'Y' and C3_447161788710='请假加班申请' and C3_447166742900='用户审批'";
-            http().runBySql({
-              dblink: 'ehr',
-              sql
-            });
-          }}
-        >
-          <Button type="primary" onClick={() => {}}>
-            一键审批
-          </Button>
+        <Popconfirm title="确认一键审批吗？" onConfirm={this.approvalAll}>
+          <Button type="primary">一键审批</Button>
         </Popconfirm>
       </div>
     );
   };
+
+  //批准或拒绝
   isApproval = async (isApproval, data) => {
     try {
-      this.setState({
-        revocatting: true
-      });
+      this.props.setLoading(true);
       let res = await http().modifyRecords({
         resid: '449442699960',
         data,
@@ -99,11 +81,34 @@ class ManagerAttendanceApproval extends React.Component {
       message.error(error.message);
       console.log(error);
     } finally {
-      this.setState({
-        revocatting: false
-      });
+      this.props.setLoading(false);
     }
   };
+
+  //一键审批
+  approvalAll = async () => {
+    try {
+      this.props.setLoading(true);
+      if (isNaN(Number(this.UserCode))) {
+        return message.info('工号非法');
+      }
+      let sql =
+        "update  CT446915608629  set OneKeyAudit ='Y' where C3_446915646834=(select ID from view_attendance_yg where ygno='" +
+        this.UserCode +
+        "') and ISNULL( C3_446915685257,'')='' and ISNULL(OneKeyAudit,'')<>'Y' and C3_449443494224=(select min(C3_424358155202)  from CT424358078333 where ISNULL(C3_424358188666,'')='Y') and C3_446945943924='Y' and C3_515595953233 >=CONVERT(char(8),getdate(),112) and isnull(C3_447032685982,'')<>'Y' and C3_447161788710='请假加班申请' and C3_447166742900='用户审批'";
+      await http().runBySql({
+        dblink: 'ehr',
+        sql
+      });
+      message.success('一键审批成功');
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    } finally {
+      this.props.setLoading(false);
+    }
+  };
+
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">

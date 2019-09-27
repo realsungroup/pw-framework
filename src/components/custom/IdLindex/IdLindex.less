@@ -19,18 +19,23 @@
   &__content{
     display: flex;
     padding:10px;
+    background: #fff;
     // overflow: scroll;
     border-top:1px solid #ccc;
     &-person{
       width:189px;
       margin-right:5px;
-      height:100%;
+      height:100vh;
+
       flex-shrink: 0;
       border-right: 1px solid #ccc;
       overflow: scroll;
       &__active{
-        color: #fff;
-        background: #5fd4ff;
+        *{
+          color: #fff!important;
+
+        }
+        background:#1890ff;
       }
     }
     &-form{
@@ -53,4 +58,11 @@
 }
 .hidden{
   display: none;
+}
+.ant-list-item-meta{
+  margin-left:8px;
+}
+.ant-empty-image img{
+  margin:0!important;
+  width:auto!important;
 }
