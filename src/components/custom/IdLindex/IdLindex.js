@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Modal, Button, Input, Menu, Icon  } from 'antd';
+import { List, Avatar, Modal, Button, Input, Menu, Icon ,Spin} from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
 import TableData from '../../common/data/TableData';
 import InterviewAssessment from '../InterviewAssessment';
+import ReferenceCheck from '../ReferenceCheck';
+
 import { assementForm, referenceCheck } from './config.js'; //面试评估表和背景调查表的配置
 import { withRecordForm } from '../../common/hoc/withRecordForm';
  //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
@@ -59,6 +61,8 @@ class IdLindex extends Component {
     http().clearCache();
   };
   state = {
+    showRef:false,
+    loading:true,
     personList: [], //人员列表
     currentPersonInfo: {}, //当前选中人员的信息
     currentPersonId: '', //当前选中人员ID
@@ -69,6 +73,7 @@ class IdLindex extends Component {
   };
   // 点击某个人时候设置样式
   handlePersonOnClick = item => {
+    this.setState({loading:'true'});
     let { personList, activeKey } = this.state;
     let tempPersonList = [...personList];
     tempPersonList.forEach(item => {
@@ -78,14 +83,32 @@ class IdLindex extends Component {
     // 并获取该人的详细信息
     this.setState({ personList: tempPersonList, currentPersonId: item.ID });
     //
+    console.log('id',item.ID)
     if(activeKey === '工作申请表'){
-      this.getPersonalInfo(item.ID);
+      this.getPersonalInfo(613149356409,item.ID);
     } else {
       this.tableDataRef.handleRefresh();
+      this.setState({loading:false});
+
+
     }
 
 
   };
+  // 添加面试评估表记录
+  addAssess = async key => {
+    console.log(this.state.currentPersonId)
+
+    // let res;
+    // try {
+    //   res = await http().addRecords({
+    //     resid: 613152690063,
+    //     data:[]
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  }
   // 给当前选中的人添加类名控制样式
   getSelectClass = isSelected => {
     if (isSelected) {
@@ -118,7 +141,7 @@ class IdLindex extends Component {
       });
       res.data[0].isSelected = true;
       // console.log(res.data);
-      this.getPersonalInfo(res.data[0].ID);
+      this.getPersonalInfo(613149356409,res.data[0].ID);
       this.setState({
         personList: res.data,
         currentPersonId: res.data[0].ID
@@ -128,20 +151,24 @@ class IdLindex extends Component {
     }
   };
   // 获取当前人员人员详细信息
-  getPersonalInfo = async id => {
+  getPersonalInfo = async (resid,id) => {
     let res;
     try {
       res = await http().getTable({
-        resid: 613149356409,
+        resid: resid,
         cmswhere: `ID=${id}`
       });
-      // console.log('人员详细信息',res.data)
+      console.log('人员详细信息',res.data)
       this.setState({ currentPersonInfo: res.data[0] });
+      this.setState({loading:false});
+
     } catch (err) {
       Modal.error({
         title: '提示',
         content: err.message
       });
+      this.setState({loading:false});
+
     }
   };
   //获取formData数据
@@ -153,8 +180,10 @@ class IdLindex extends Component {
         resid: 613152706922,
         formname: record.accessCategority
       });
+
     } catch (err) {
       return console.error(err.message);
+
     }
     // console.log('获取到窗体的数据', res);
     const formMidData = dealControlArr(res.data.columns);
@@ -210,25 +239,28 @@ class IdLindex extends Component {
         return (
           <rect style={{
             width:'100%',
-
+            background:'#fff'
           }}>
           <div className={this.state.showAssessment?'':'hidden'}>
           <InterviewAssessment clsAss={this.clsAss}>
           </InterviewAssessment>
           </div>
+          <Button type='primary' onClick={this.addAssess} style={{margin:'16px'}}>新建</Button>
 
             <TableData
               key={613152706922}
               {...assementForm}
+              hasAdd={false}
+              hasRowModify={false}
               style ={{height:"100%"}}
               // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
               // resid={613152706922}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
               // cmswhere = {`ID = ${this.state.currentPersonId}`}
-              actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
-                return <Button>添加面试官</Button>
-              }}
+              // actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
+              //   return <Button>添加面试官</Button>
+              // }}
               customRowBtns={[
                 (record, btnSize) => {
                   return (
@@ -242,7 +274,7 @@ class IdLindex extends Component {
                         }}
                         style={{marginTop:'8px'}}
                       >
-                        评估详情
+                        Modify
                       </Button>
 
                     </div>
@@ -250,18 +282,52 @@ class IdLindex extends Component {
                 }
               ]}
             />
+
             </rect>
         );
       case '背景调查表':
         return (
-          <div style = {{width:"100%",height:"100%"}}>
-            <TableData
-            {...referenceCheck}
-              key={613152614705}
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              refTargetComponentName="TableData"
-              // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
-            />
+          <div style={{width:'100%',background:'#fff'}}>
+            <div className={this.state.showRef==true?'':'hidden'}style={{width:'100vw',height:'100vh',background:'#fff',position:'fixed',top:'0',left:'0',zIndex:'999'}}>
+              <Icon type="close-circle" style={{position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
+              <ReferenceCheck></ReferenceCheck>
+            </div>
+            <div style = {{width:"100%",height:"100%"}}>
+              <TableData
+              {...referenceCheck}
+                key={613152614705}
+                hasAdd={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasRowView={false}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+
+                      <div>
+                        <Button
+                          onClick={() => {
+                            this.setState({showRef:true})
+                            // this.getFormData(record);
+
+                          }}
+                          style={{marginTop:'8px'}}
+                        >
+                          Modify
+                        </Button>
+
+                      </div>
+                    );
+                  }
+                ]}
+                actionBarExtra={records => (
+                    <Button type='primary'>新建</Button>
+                )}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
+              />
+            </div>
           </div>
         );
     }
@@ -282,6 +348,8 @@ class IdLindex extends Component {
     // console.log(currentPersonInfo);
     return (
       <div className="idlindex">
+      <Spin spinning={this.state.loading}>
+
         <div className="idlindex__header">
           <div className="idlindex__header-search">
             <Input.Search
@@ -334,6 +402,7 @@ class IdLindex extends Component {
           </div>
           <div className="idlindex__content-form">{this.renderContent()}</div>
         </div>
+        </Spin>
       </div>
     );
   }

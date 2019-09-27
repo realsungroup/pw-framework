@@ -1628,7 +1628,7 @@ class JobSeeker extends Component {
                       )(<Input />)}
               </Form.Item>
               <Form.Item label="视力右/Eye Right sight" {...formItemLayout2}>
-                {getFieldDecorator('EyeSight', {
+                {getFieldDecorator('EyeSightR', {
                     rules: [
                       {
                         required: true,
