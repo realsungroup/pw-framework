@@ -1658,6 +1658,12 @@ window[616242189307] = {
   title: '查阅计划'
 };
 
+//HR部门经理审批申请单
+window[622831415092] = {
+  name: 'ApplyApprove',
+  title: '申请单审批'
+};
+
 //培训系统————下属课程
 window[616504759208] = {
   name: 'SubordinateCourses',

@@ -116,3 +116,4 @@ export { IDLExamination } from '../components/custom/loadableCustom';
 export { TableDataDiscipline } from '../components/custom/loadableCustom';
 export { ReferenceCheck } from '../components/custom/loadableCustom';
 export { PhysicalExamination } from '../components/custom/loadableCustom';
+export { ApplyApprove } from '../components/custom/loadableCustom';

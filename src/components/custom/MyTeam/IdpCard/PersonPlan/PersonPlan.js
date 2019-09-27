@@ -1222,7 +1222,7 @@ class PersonPlan extends React.Component {
           </Popconfirm>
         );
       } else if (
-        (this.state.checkType !== 'oneself' &&
+        (this.state.checkType == 'oneself' &&
           this.state.personInfo.status === '年中回顾') ||
         this.state.personInfo.status === '年末回顾'
       ) {
