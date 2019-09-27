@@ -22,64 +22,11 @@ class IDLExamination extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: {
-        test: 'Sr.Web development engineer',
-        chinaName: '李三四',
-        englishName: 'Karl.Zhang',
-        sex: 'male',
-        date: '2019-09-08',
-        place: '北京市北京市朝阳区',
-        status: '否',
-        mail: '12939128391@163.com',
-        isRecom: '是',
-        ability: '良好',
-        engGrade: '公共英语三级',
-        option: ['卓越', '优秀', '一般', '欠佳'],
-        cSkill: '计算机一级证书',
-        software: 'office,excel,word',
-        oSkill: '',
-        weight: '75',
-        height: '180',
-        sightL: '5.1',
-        sightR: '5.0',
-        sickImformation: '',
-        jobImformation: '',
-        relationImfor: '',
-        contract: '',
-        appraisement: '',
-        education:[
-          {
-            from:"201907",
-            to:"201909",
-            school:"北京大学",
-            major:"computer",
-            degree:'学士',
-            reference:'zhangsan',
-            tel:'13127123711'
-          },
-          {
-            from:"201907",
-            to:"201909",
-            school:"北京大学",
-            major:"computer",
-            degree:'学士',
-            reference:'zhangsan',
-            tel:'13127123711'
-          },
-          {
-            from:"201907",
-            to:"201909",
-            school:"北京大学",
-            major:"computer",
-            degree:'学士',
-            reference:'zhangsan',
-            tel:'13127123711'
-          },
-        ]
-      }
+
     };
   }
-  componentDidMount = () => {};
+  componentDidMount = () => {
+  };
 
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
@@ -114,7 +61,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.test}
+                  {this.props.data.appPosition}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -129,7 +76,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.ChName}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -144,7 +91,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.englishName}
+                    {this.props.data.EnName}
                   </div>
                 </th>
                 <th style={{ width: '152px' }}>
@@ -159,7 +106,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.sex}
+                    {this.props.data.Sex}
                   </div>
                 </th>
               </tr>
@@ -176,7 +123,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.test}
+                    {this.props.data.IDCardNumber}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -191,7 +138,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.Nationality}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -206,7 +153,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.englishName}
+                    {this.props.data.Nation}
                   </div>
                 </th>
                 <th style={{ width: '152px' }}>
@@ -221,7 +168,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.sex}
+                    {this.props.data.Party}
                   </div>
                 </th>
               </tr>
@@ -238,7 +185,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.date}
+                    {this.props.data.BirthDate}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -253,7 +200,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.BirthPlace}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -268,7 +215,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.englishName}
+                    {this.props.data.NativePlace}
                   </div>
                 </th>
                 <th style={{ width: '152px' }}>
@@ -283,7 +230,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.sex}
+                    {this.props.data.BloodType}
                   </div>
                 </th>
               </tr>
@@ -300,7 +247,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.place}
+                    {this.props.data.PlaceOfHuKou}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -315,7 +262,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.Tel}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -330,7 +277,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.status}
+                    {this.props.data.MaritalStatus}
                   </div>
                 </th>
                 <th style={{ width: '152px' }}>
@@ -345,7 +292,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.sex}
+                    {this.props.data.ChildIf}
                   </div>
                 </th>
               </tr>
@@ -362,7 +309,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.test}
+                    {this.props.data.CurrentAddress}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -377,7 +324,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.ZipCard}
                   </div>
                 </th>
                 <th style={{ width: '190px' }} colSpan="2">
@@ -392,7 +339,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.mail}
+                    {this.props.data.Email}
                   </div>
                 </th>
                 {/* <th style = {{borderLeft:"none"}}></th> */}
@@ -410,7 +357,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.isRecom}
+                    {this.props.data.Recommender?'是':'否'}
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -425,7 +372,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.chinaName}
+                    {this.props.data.Recommender}
                   </div>
                 </th>
                 <th colspan="2" style={{ width: '190px' }}>
@@ -440,7 +387,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.state.data.englishName}
+                    {this.props.data.RecomenderRelation}
                   </div>
                 </th>
               </tr>
@@ -476,59 +423,103 @@ class IDLExamination extends React.Component {
               </dd>
               <dt>
                 <div className='innerRect'>
+                {this.props.data.EdStartTime1} {this.props.data.EdEndTime1}
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdSchool1}
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdMajor1}
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdDegree1}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReference1}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReferenceTel1}
                 </div>
               </dt>
               <dt>
                 <div className='innerRect'>
+                {this.props.data.EdStartTime2} {this.props.data.EdEndTime2}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdSchool2}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdMajor2}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdDegree2}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReference2}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReferenceTel2}
+
                 </div>
               </dt>
               <dt>
                 <div className='innerRect'>
+                {this.props.data.EdStartTime3} {this.props.data.EdEndTime3}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdSchool3}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdMajor3}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdDegree3}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReference3}
+
                 </div>
                 <div className='innerRect'>
+                {this.props.data.EdReferenceTel3}
+
                 </div>
               </dt>
               <dt>
-                <div className='innerRect'>
-                </div>
-                <div className='innerRect'>
-                </div>
-                <div className='innerRect'>
-                </div>
-                <div className='innerRect'>
-                </div>
-                <div className='innerRect'>
-                </div>
-                <div className='innerRect'>
-                </div>
+              <div className='innerRect'>
+              {this.props.data.EdStartTime4} {this.props.data.EdEndTime4}
+
+              </div>
+              <div className='innerRect'>
+              {this.props.data.EdSchool4}
+
+              </div>
+              <div className='innerRect'>
+              {this.props.data.EdMajor4}
+
+              </div>
+              <div className='innerRect'>
+              {this.props.data.EdDegree4}
+
+              </div>
+              <div className='innerRect'>
+              {this.props.data.EdReference4}
+
+              </div>
+              <div className='innerRect'>
+              {this.props.data.EdReferenceTel4}
+
+              </div>
               </dt>
             </dl>
           </div>
@@ -563,59 +554,99 @@ class IDLExamination extends React.Component {
           </dd>
           <dt>
             <div className='innerRect'>
+            {this.props.data.WorkStartTime1} {this.props.data.WorkEndTime1}
             </div>
             <div className='innerRect'>
+            {this.props.data.WorkComName1}
             </div>
             <div className='innerRect'>
+            {this.props.data.WorkRank1}
+
             </div>
             <div className='innerRect'>
+            {this.props.data.ReasonForLeave1}
+
             </div>
             <div className='innerRect'>
+            {this.props.data.WorkReference1}
+
             </div>
             <div className='innerRect'>
+            {this.props.data.WorkReferenceTel1}
+
             </div>
           </dt>
           <dt>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
+          <div className='innerRect'>
+          {this.props.data.WorkStartTime2} {this.props.data.WorkEndTime2}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkComName2}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkRank2}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.ReasonForLeave2}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReference2}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReferenceTel2}
+
+          </div>
           </dt>
           <dt>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
+          <div className='innerRect'>
+          {this.props.data.WorkStartTime3} {this.props.data.WorkEndTime3}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkComName3}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkRank3}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.ReasonForLeave3}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReference3}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReferenceTel3}
+
+          </div>
           </dt>
           <dt>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
-            <div className='innerRect'>
-            </div>
+          <div className='innerRect'>
+          {this.props.data.WorkStartTime4} {this.props.data.WorkEndTime4}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkComName4}
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkRank4}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.ReasonForLeave4}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReference4}
+
+          </div>
+          <div className='innerRect'>
+          {this.props.data.WorkReferenceTel4}
+
+          </div>
           </dt>
         </dl>
         </div>
@@ -668,160 +699,155 @@ class IDLExamination extends React.Component {
                 style={{
                   width: '68px',
                   borderLeft: 'none',
+                  borderBottom: '1px solid #000',
+                  borderTop: 'none'
+                }}
+              >
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>  {this.props.data.TrainingDate1}</p>
+              </div>
+
+              </th>
+
+              <th style={{ width: '190px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingInstitute1}</p>
+                </div>
+              </th>
+              <th style={{ width: '190px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingCourese1}</p>
+                </div>
+              </th>
+              <th style={{ width: '100px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingQualification1}</p>
+                </div>
+              </th>
+              <th style={{ width: '100px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingReference1}</p>
+                </div>
+              </th>
+              <th style={{ width: '122px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingRefTel1}</p>
+                </div>
+              </th>
+            </tr>
+            <tr style={{ fontSize: '10px', height: '35px' }}>
+              <th
+                style={{
+                  width: '68px',
+                  borderLeft: 'none',
+                  borderBottom: '1px solid #000',
+
+                  borderTop: 'none'
+                }}
+              >
+                {this.props.data.TrainingDate2}
+              </th>
+
+              <th style={{ width: '190px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingInstitute2}</p>
+                </div>
+              </th>
+              <th style={{ width: '190px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingCourese2}</p>
+                </div>
+              </th>
+              <th style={{ width: '100px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingQualification2}</p>
+                </div>
+              </th>
+              <th style={{ width: '100px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingReference2}</p>
+                </div>
+              </th>
+              <th style={{ width: '122px', clear: 'both' }}>
+                <div style={{ float: 'middle', marginLeft: '5px' }}>
+                  <p>{this.props.data.TrainingRefTel2}</p>
+                </div>
+              </th>
+            </tr>
+            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <th
+              style={{
+                width: '68px',
+                borderLeft: 'none',
+                borderBottom: '1px solid #000',
+
+                borderTop: 'none'
+              }}
+            >
+              {this.props.data.TrainingDate3}
+            </th>
+
+            <th style={{ width: '190px', clear: 'both' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>{this.props.data.TrainingInstitute3}</p>
+              </div>
+            </th>
+            <th style={{ width: '190px', clear: 'both' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>{this.props.data.TrainingCourese3}</p>
+              </div>
+            </th>
+            <th style={{ width: '100px', clear: 'both' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>{this.props.data.TrainingQualification3}</p>
+              </div>
+            </th>
+            <th style={{ width: '100px', clear: 'both' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>{this.props.data.TrainingReference3}</p>
+              </div>
+            </th>
+            <th style={{ width: '122px', clear: 'both' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' }}>
+                <p>{this.props.data.TrainingRefTel3}</p>
+              </div>
+            </th>
+            </tr>
+            <tr style={{ fontSize: '10px', height: '35px' }}>
+              <th
+                style={{
+                  width: '68px',
+                  borderLeft: 'none',
                   borderBottom: 'none',
                   borderTop: 'none'
                 }}
-              ></th>
+              >
+                {this.props.data.TrainingDate4}
+              </th>
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.TrainingInstitute4}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.TrainingCourese4}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.TrainingQualification4}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.TrainingReference4}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <th
-                style={{
-                  width: '68px',
-                  borderLeft: 'none',
-                  borderBottom: 'none'
-                  // borderTop:"none"
-                }}
-              ></th>
-
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <th
-                style={{
-                  width: '68px',
-                  borderLeft: 'none',
-                  borderBottom: 'none'
-                  // borderTop:"none"
-                }}
-              ></th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-            </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
-              <th
-                style={{
-                  width: '68px',
-                  borderLeft: 'none',
-                  borderBottom: 'none'
-                  // borderTop:"none"
-                }}
-              ></th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '190px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '100px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
-                </div>
-              </th>
-              <th style={{ width: '122px', clear: 'both' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.TrainingRefTel4}</p>
                 </div>
               </th>
             </tr>
@@ -875,39 +901,36 @@ class IDLExamination extends React.Component {
                 style={{
                   width: '68px',
                   borderLeft: 'none',
-                  borderBottom: 'none',
+                  borderBottom: '1px solid #000',
                   borderTop: 'none'
                 }}
-              ></th>
+              >
+                {this.props.data.FamName1}
+              </th>
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamRelation1}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamBirthDate1}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamPosition1}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamComAndAdd1}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamOneTel}</p>
                 </div>
               </th>
             </tr>
@@ -916,39 +939,36 @@ class IDLExamination extends React.Component {
                 style={{
                   width: '68px',
                   borderLeft: 'none',
-                  borderBottom: 'none'
-                  // borderTop: 'none'
+                  borderBottom: 'none',
+                  borderTop: 'none'
                 }}
-              ></th>
+              >
+                {this.props.data.FamName2}
+              </th>
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamRelation2}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamBirthDate2}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamPosition2}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamComAndAdd2}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p></p>
-                  <p></p>
+                  <p>{this.props.data.FamToTel}</p>
                 </div>
               </th>
             </tr>
@@ -957,7 +977,7 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '10px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold' }}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'48px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -981,21 +1001,17 @@ class IDLExamination extends React.Component {
             </tr>
             <tr>
               <td colspan="1" style={{ float: 'left', border: 'none' }}>
-                <p>English</p>
-                <p>英语</p>
+                {this.props.data.Language}
               </td>
-              <td style={{ width: '130px' }}>
-                <span style={{ float: 'left', marginLeft: 5 }}>CET</span>
-                <span style={{ float: 'right' }}>
-                  {this.state.data.engGrade}
-                </span>
+              <td style={{ width: '140px' }}>
+                  {this.props.data.EnCET}
               </td>
-              <th style={{ width: '150px', textAlign: 'left' }}>
+              <th style={{ width: '140px', textAlign: 'left' }}>
                 <p style={{ float: 'left', marginLeft: 5 }}>Writing</p>
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>写作</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.option[0]}
+                  {this.props.data.Writing}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
@@ -1003,7 +1019,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>阅读</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.option[1]}
+                  {this.props.data.Reading}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
@@ -1011,7 +1027,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>口语</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.option[2]}
+                  {this.props.data.Speaking}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
@@ -1019,7 +1035,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>听力</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.option[3]}
+                  {this.props.data.Listening}
                 </p>
               </th>
             </tr>
@@ -1029,7 +1045,7 @@ class IDLExamination extends React.Component {
                   Computer Skill 计算机技能：
                 </span>
                 <span style={{ float: 'right', padding: '3px 0 3px 0' }}>
-                  {this.state.data.cSkill}
+                  {this.props.data.ComputerSkills}
                 </span>
               </td>
             </tr>
@@ -1039,7 +1055,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left' }}>列出常用软件</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.software}
+                  {this.props.data.SoftList}
                 </p>
               </td>
             </tr>
@@ -1049,7 +1065,7 @@ class IDLExamination extends React.Component {
                   Other Skill(If any)其他技能：
                 </span>
                 <span style={{ float: 'right', padding: '3px 0 3px 0' }}>
-                  {this.state.data.oSkill}
+                  {this.props.data.OtherSkills}
                 </span>
               </td>
             </tr>
@@ -1069,7 +1085,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>体重</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.weight}KG
+                  {this.props.data.Weight}KG
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
@@ -1077,7 +1093,7 @@ class IDLExamination extends React.Component {
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>身高</p>
                 <p style={{ float: 'right', marginTop: '-10px' }}>
-                  {this.state.data.height}CM
+                  {this.props.data.Height}CM
                 </p>
               </th>
               <th style={{ width: '542px', textAlign: 'left' }}>
@@ -1099,7 +1115,7 @@ class IDLExamination extends React.Component {
                   <br />
                   <p style={{ float: 'left', marginLeft: 5 }}>左</p>
                   <p style={{ float: 'right', marginTop: '-10px' }}>
-                    {this.state.data.sightL}
+                    {this.props.data.EyeSight}
                   </p>
                 </div>
                 <div
@@ -1116,7 +1132,7 @@ class IDLExamination extends React.Component {
                   <br />
                   <p style={{ float: 'left', marginLeft: 5 }}>右</p>
                   <p style={{ float: 'right', marginTop: '-10px' }}>
-                    {this.state.data.sightR}
+                    {this.props.data.EyeSightR}
                   </p>
                 </div>
               </th>
@@ -1131,38 +1147,25 @@ class IDLExamination extends React.Component {
                   <br />
                   是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等？是否有犯罪记录或失信行为记录？如是，请详细说明。
                 </p>
-                {this.state.data.sickImformation ? (
-                  <p style={{ textAlign: 'left', marginLeft: 5 }}>
-                    {this.state.data.sickImformation}
+                  <p style={{ textAlign: 'left',  padding:'8px' }}>
+                    {this.props.data.DiseaseStatus}
                   </p>
-                ) : (
-                  <div>
-                    <br />
-                    <br />
-                    <br />
-                  </div>
-                )}
+
               </td>
             </tr>
             <tr style={{ width: 842 }}>
               <td colspan="6">
-                <p style={{ textAlign: 'left', marginLeft: 5 }}>
+                <p style={{ textAlign: 'left',  padding:'8px'  }}>
                   Do you have any unemployed period of more than 4 months? If
                   yes, please give the details.
                   <br />
                   是否有过4个月以上的失业经历？如有，请详细说明。
                 </p>
-                {this.state.data.sickImformation ? (
-                  <p style={{ textAlign: 'left', marginLeft: 5 }}>
-                    {this.state.data.sickImformation}
+
+                  <p style={{ textAlign: 'left', padding:'8px' }}>
+                  {this.props.data.UnemployedStatus}
                   </p>
-                ) : (
-                  <div>
-                    <br />
-                    <br />
-                    <br />
-                  </div>
-                )}
+
               </td>
             </tr>
             <tr style={{ width: 842 }}>
@@ -1173,9 +1176,9 @@ class IDLExamination extends React.Component {
                   <br />
                   是否认识本公司的员工？如是，请详细指出姓名及与其关系。
                 </p>
-                {this.state.data.sickImformation ? (
-                  <p style={{ textAlign: 'left', marginLeft: 5 }}>
-                    {this.state.data.sickImformation}
+                {this.props.data.KnowColleageStatus ? (
+                  <p style={{ textAlign: 'left', padding:'8px'}}>
+                    {this.props.data.KnowColleageStatus?'是':'否'}{this.props.data.KnowColleageStatus}
                   </p>
                 ) : (
                   <div>
@@ -1198,17 +1201,9 @@ class IDLExamination extends React.Component {
                   <br />
                   与现任雇主的合同或服务协议是否到期？是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？办理离职手续需多长时间？如被录用何时可以上班？
                 </p>
-                {this.state.data.sickImformation ? (
-                  <p style={{ textAlign: 'left', marginLeft: 5 }}>
-                    {this.state.data.sickImformation}
+                  <p style={{ textAlign: 'left', padding:'8px' }}>
+                    {this.props.data.OtherAgreement} {this.props.data.CompetitionAgreement} {this.props.data.ifToNeedReparations} {this.props.data.HowLong}
                   </p>
-                ) : (
-                  <div>
-                    <br />
-                    <br />
-                    <br />
-                  </div>
-                )}
               </td>
             </tr>
           </table>
@@ -1220,8 +1215,8 @@ class IDLExamination extends React.Component {
           <table border="1">
             <tr>
               <td colspan="6" style={{ width: 842 }}>
-                {this.state.data.appraisement ? (
-                  <p>{this.state.data.appraisement}</p>
+                {this.props.data.SelfAccessment ? (
+                  <p style={{padding:'8px'}}>{this.props.data.SelfAccessment}</p>
                 ) : (
                   <div>
                     <br />

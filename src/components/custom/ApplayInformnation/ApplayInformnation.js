@@ -166,7 +166,7 @@ class Applayinformation extends Component {
       >
         <rect className='idlEx hidden' id='idlEx'>
           <Icon type="close-circle" style={{cursor:'pointer',position:'fixed',right:'32px',top:'16px'}} onClick={this.printClz}/>
-          <IDLExamination></IDLExamination>
+          <IDLExamination data={this.state.currentInfo}></IDLExamination>
         </rect>
         <Form style={{padding:'16px',boxSizing:'border-box'}}>
           <div className="information__boundary">

@@ -3,9 +3,12 @@ import {
   Button,
   Icon,
   Select,
-  Modal
+  Modal,
+  Spin
 } from 'antd';
 import './InterviewAssessment.less';
+import http from '../../../util20/api';
+
 const { Option } = Select;
 const { confirm } = Modal;
 class InterviewAssessment extends React.Component {
@@ -20,12 +23,12 @@ class InterviewAssessment extends React.Component {
           {text:'李三',value:'0512'},
 
         ],
-        name:'张三',
-        position:'HR',
-        level:'g3',
-        hiringManger:'李四',
-        interviewer:'王五',
-        interviewer2:'赵六',
+        name:'',
+        position:'',
+        level:'',
+        hiringManger:'',
+        interviewer:'',
+        interviewer2:'',
         chara:0,
         eduOther:'',
         graFrom:'',
@@ -166,9 +169,107 @@ showConfirmMail() {
     var mm = mydate.getMonth()+1;
     var dd = mydate.getDate();
     this.setState({newdate:yy+'-'+mm+'-'+dd});
-    this.setState({interviewer:'张三'});
-    this.setState({interviewer2:'李四'});
+
   }
+  getInfo = async (resid,id,id2) => {
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().getTable({
+        resid: resid,
+        cmswhere: `REC_ID=${id}`
+      });
+      this.setState({
+        name:res.data[0].CandidateName,
+        eduBack:res.data[0].edBackground,
+        eduOther:res.data[0].eduOther,//缺
+        graFrom:res.data[0].graduateForm,
+        workExp:res.data[0].workExperise,
+        wkExp:res.data[0].wkExp,//缺
+        wkOther:res.data[0].wkOther,//缺
+        lanSki:res.data[0].languageSkill,
+        vTS:res.data[0].tecSkills,
+        vTS2:res.data[0].tecSkills,
+        vTS3:res.data[0].tecSkills,
+        vTS4:res.data[0].tecSkills,
+        vTS5:res.data[0].tecSkills,
+        vTS6:res.data[0].tecSkills,
+        vTS9:res.data[0].tecSkills,
+        vTS8:res.data[0].tecSkills,
+        vTS7:res.data[0].tecSkills,
+        vEA:res.data[0].executiveAbility,
+        vTE:res.data[0].tecExchange,
+        vAO:res.data[0].actionOriented,
+        vPS:res.data[0].problemSloving,
+        vSd:res.data[0].selfDevelopment,
+        vLF:res.data[0].learnOnfly,
+        vTO:res.data[0].tecOutLook,
+        vTD:res.data[0].tecDecomposition,
+        vTE2:res.data[0].tecExchange,
+        vCr:res.data[0].creativity,
+        vSA:res.data[0].standingAlone,
+        vPrA:res.data[0].prioritySetting,
+        vTC:res.data[0].tecConstruct,
+        vTO2:res.data[0].tecOutLook,
+        vTE3:res.data[0].tecExchange,
+        vDwA:res.data[0].dealWithAug,
+        vIM:res.data[0].innovationMange,
+        vStrA:res.data[0].strategicAgility,
+        vAO2:res.data[0].actionOriented,
+        vPS2:res.data[0].problemSloving,
+        vSd2:res.data[0].selfDevelopment,
+        vLF2:res.data[0].learnOnfly,
+        vAO3:res.data[0].actionOriented,
+
+      })
+      console.log('详细信息',res.data)
+      this.getInfo2(id2)
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  };
+  getInfo2 = async (id) => {
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 613149356409,
+        cmswhere: `id=${id}`
+      });
+      this.setState({position:res.data[0].appPosition});
+      this.setState({loading:false});
+      console.log('详细信息2',res.data)
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  };
+  componentDidUpdate(prevProps, prevState, snapshot){
+    // if(prevProps.record.)
+    if(this.props.record.REC_ID !== prevProps.record.REC_ID ){
+      this.getInfo(613152706922,this.props.record.REC_ID,this.props.record.ID);
+
+    }
+  }
+
+  subData = () =>{
+
+  }
+
   changeChara = (v) =>{
     this.setState({chara:v});
   }
@@ -181,7 +282,7 @@ showConfirmMail() {
      var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
 
-     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}cell .fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:31px;padding-bottom:31px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:56px!important;}.alter5{padding-top:22px;padding-bottom:23px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
+     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}.fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:31px;padding-bottom:31px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:56px!important;}.alter5{padding-top:22px;padding-bottom:23px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
 
      var headstr = "<html><head><title></title>"+style+"</head><body>";
      document.body.innerHTML = headstr + newstr + footstr;
@@ -195,6 +296,7 @@ showConfirmMail() {
 
     return (
       <div className='IA'>
+      <Spin spinning={this.state.loading}>
         <div className='chooseClass'>
           <rect className={this.state.chara=='0'?'current':''} onClick={e => {this.changeChara(0);}}>
             T1 T2 T3 T4
@@ -253,7 +355,7 @@ showConfirmMail() {
           <Button onClick={this.onPrinting}>打印</Button>
           <Button type='danger' onClick={this.showConfirm}>退回表格</Button>
         </div>
-        <div className='cls' onClick={()=>{
+        <div className='cls' style={{position:'fixed'}}onClick={()=>{
 
             this.props.clsAss();
         }}>
@@ -272,19 +374,24 @@ showConfirmMail() {
                 <span>Position</span>
               </li>
               <li>
-                <b>级别</b><p> {this.state.level}</p>
+                <b style={{width:'40px'}}>级别</b>
+                <input type='text'className='fillText' style={{width:'136px'}}value={this.state.level} onChange={v=>{this.handlechange("level",v)}}/>
+
                 <span>Name of Interviewee</span>
               </li>
               <li>
-                <b>岗位招聘经理</b><p> {this.state.hiringManger}</p>
-                <span>Hiring Manger</span>
+              <b style={{width:'88px'}}>岗位招聘经理</b>
+              <input type='text'className='fillText' style={{width:'104px'}}value={this.state.hiringManger} onChange={v=>{this.handlechange("hiringManger",v)}}/>
+              <span>Hiring Manger</span>
+
               </li>
             </ul>
             <rect>
               <cell>
                 <b>面试官/Intervieweer</b>
               </cell>
-              <cell>
+              <cell style={{padding:0}}>
+                <textarea style={{paddingTop:'8px',paddingLeft:'8px'}} value={this.state.interviewer} onChange={v=>{this.handlechange("interviewer",v)}}></textarea>
               </cell>
             </rect>
             <rect>
@@ -1339,7 +1446,8 @@ showConfirmMail() {
                     <input type='radio' name='SRI' id='reject2' value='reject2' checked={this.state.SRI=='reject2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'reject2')}}/><label for='reject2'>Reject 淘汰</label>
                     <input type='radio' name='SRI' id='backup2' value='backup2' checked={this.state.SRI=='backup2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'backup2')}}/><label for='backup2'>Backup 保留</label>
                     <br/>
-                    <b style={{marginRight:'24px'}}>面试官/Interviewer:{this.state.interviewer2}</b>
+                    <b style={{marginRight:'24px'}}>面试官/Interviewer:</b><input type='text'className='fillText' style={{width:'136px'}}value={this.state.interviewer2} onChange={v=>{this.handlechange("interviewer2",v)}}/>
+
                     <b>日期/Date:{this.state.newdate}</b>
                   </cell>
                 </rect>
@@ -1347,6 +1455,7 @@ showConfirmMail() {
           </div>
 
         </div>
+        </Spin>
       </div>
 
     )
