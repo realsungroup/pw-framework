@@ -116,7 +116,7 @@ class IdLindex extends Component {
     try {
       res = await http().addRecords({
         resid: resid,
-        data:[{ID:id,CandidateName:this.state.curName,CandidateId:id}]
+        data:[{ID:id,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
       });
       openNotification();
       this.tableDataRef.handleRefresh();
@@ -317,9 +317,10 @@ class IdLindex extends Component {
         return (
           <div style={{width:'100%',background:'#fff'}}>
             <div className={this.state.showRef==true?'':'hidden'}style={{width:'100vw',height:'100vh',background:'#fff',position:'fixed',top:'0',left:'0',zIndex:'999'}}>
-              <Icon type="close-circle" style={{position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
-              <ReferenceCheck></ReferenceCheck>
+              <Icon type="close-circle" style={{zIndex:'1000',cursor:'pointer',position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
+              <ReferenceCheck record={selectedRecord}></ReferenceCheck>
             </div>
+            <Button style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板文档</Button>
             <div style = {{width:"100%",height:"100%"}}>
               <TableData
               {...referenceCheck}
@@ -335,7 +336,7 @@ class IdLindex extends Component {
                       <div>
                         <Button
                           onClick={() => {
-                            this.setState({showRef:true})
+                            this.setState({showRef:true,selectedRecord:record})
                             // this.getFormData(record);
 
                           }}

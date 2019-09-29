@@ -4,7 +4,8 @@ import {
   Icon,
   Select,
   Modal,
-  Spin
+  Spin,
+  message
 } from 'antd';
 import './InterviewAssessment.less';
 import http from '../../../util20/api';
@@ -29,7 +30,7 @@ class InterviewAssessment extends React.Component {
         hiringManger:'',
         interviewer:'',
         interviewer2:'',
-        chara:0,
+        chara:'T1/T2/T3/T4',
         eduOther:'',
         graFrom:'',
         workExp:'',
@@ -117,25 +118,30 @@ class InterviewAssessment extends React.Component {
     }
   }
 
-showConfirm() {
+showConfirm = () => {
   confirm({
     title: '确认退回这个表格吗?',
     onOk() {
-      return new Promise((resolve, reject) => {
-        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch(() => console.log('Oops errors!'));
+      return this.fightBack();
     },
     onCancel() {},
   });
 }
 
-showConfirmMail() {
+showConfirmMail = () => {
   confirm({
     title: '确认发送邮件吗?',
     onOk() {
-      return new Promise((resolve, reject) => {
-        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch(() => console.log('Oops errors!'));
+      return this.sendMail();
+    },
+    onCancel() {},
+  });
+}
+subConfirm = () => {
+  confirm({
+    title: '确认提交表格吗?',
+    onOk(){
+        return this.subData();
     },
     onCancel() {},
   });
@@ -164,11 +170,6 @@ showConfirmMail() {
 
     }
   componentDidMount(){
-    var mydate = new Date();
-    var yy = mydate.getFullYear();
-    var mm = mydate.getMonth()+1;
-    var dd = mydate.getDate();
-    this.setState({newdate:yy+'-'+mm+'-'+dd});
 
   }
   getInfo = async (resid,id,id2) => {
@@ -180,10 +181,14 @@ showConfirmMail() {
         resid: resid,
         cmswhere: `REC_ID=${id}`
       });
+
       this.setState({
+        progress:'未送邮（初试）',
         name:res.data[0].CandidateName,
         eduBack:res.data[0].edBackground,
         eduOther:res.data[0].eduOther,//缺
+        level:res.data[0].leveleInterviewee,
+        hiringManger:res.data[0].hireManager,
         graFrom:res.data[0].graduateForm,
         workExp:res.data[0].workExperise,
         wkExp:res.data[0].wkExp,//缺
@@ -221,9 +226,69 @@ showConfirmMail() {
         vSd2:res.data[0].selfDevelopment,
         vLF2:res.data[0].learnOnfly,
         vAO3:res.data[0].actionOriented,
+        vPS3:res.data[0].problemSloving,
+        vDO:res.data[0].direcOhters,
+        vDevO:res.data[0].developOthers,
+        vPlan:res.data[0].planning,
+        vCDR:res.data[0].confrontDirReports,
+        vPriS:res.data[0].prioritySetting,
+        vMMW:res.data[0].managerAndMeasure,
+        vBET:res.data[0].buildEffictive,
+        vPM:res.data[0].processManagement,
+        vMoOt:res.data[0].mottivateingOthers,
+        vCM:res.data[0].conflictManagement,
+        vDQ:res.data[0].decisionQuality,
+        vPreSk:res.data[0].presentationSkills,
+        vProSol:res.data[0].problemSloving,
+        vPeRe:res.data[0].peerRelation,
+        vAcOr:res.data[0].actionOriented,
+        vcrea:res.data[0].creativity,
+        vPresentSkill:res.data[0].presentationSkills,
+        vProblemSol:res.data[0].problemSloving,
+        vPeerRel:res.data[0].peerRelation,
+        vPersonaLe:res.data[0].personlearning,//缺
+        vIT:res.data[0].intergintyTrust,
+        vLA:res.data[0].learning,
+        vCF:res.data[0].customerFocus,
+        vDR:res.data[0].driveResults,
+        groupInter:res.data[0].groupComments,
+        p4r:res.data[0].propsRetrial,
+        GHB:res.data[0].groupDecision,
+        secRound:res.data[0].secondRound,
+        SRI:res.data[0].SRI,//缺
+        interviewer:res.data[0].interviewer,
+        interviewer2:res.data[0].secondRoundInterviewer,
+        round2:res.data[0].isSecondRound,
+        isBack:res.data[0].isBack,
+        date:res.data[0].date,//缺
+        date2:res.data[0].secondRoundDate,
+        chara:res.data[0].accessCategority
 
       })
+      if((res.data[0].C3_622921647557=='未送邮（初试）')||(res.data[0].C3_622921647557=='未送邮（复试）')){
+        if(this.state.userChara=='HR'){
+          this.setState({showMail:true})
+        }
+      }
+      if((res.data[0].C3_622921647557=='已提交（初试）')||(res.data[0].C3_622921647557=='已提交（复试）')){
+        if(this.state.userChara=='HR'){
+          this.setState({showConBtn:true})
+        }
+      }
+      if((res.data[0].C3_622921647557=='未提交（初试）')||(res.data[0].C3_622921647557=='未提交（复试）')){
+        if(this.state.userChara!='HR'){
+          this.setState({showSub:true})
+        }
+      }
       console.log('详细信息',res.data)
+      if(!this.state.round2){
+        this.setState({round2:'N'})
+      }
+      if(!this.state.chara){
+        this.setState({chara:'T1/T2/T3/T4'})
+      }if(!this.state.isBack){
+        this.setState({isBack:'N'})
+      }
       this.getInfo2(id2)
 
     } catch (err) {
@@ -265,9 +330,210 @@ showConfirmMail() {
 
     }
   }
+  sendMail = async (id) =>{
+    this.setState({loading:true});
+    var nxtStep;
+    if(this.state.C3_622921647557=='未送邮（初试）'){
+      nxtStep='未提交（初试）'
+    }else if(this.state.C3_622921647557=='未送邮（复试）'){
+      nxtStep='未提交（复试）'
+    }
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152706922,
+        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+        data:[{
+           REC_ID:this.props.record.REC_ID,
+           C3_622921647557:nxtStep,
+         }]
+       })
+       Modal.success({
+         title: '邮件发送成功',
+         content: '',
+         onOk() {
+           window.location.reload();
+         }
+       });
 
-  subData = () =>{
+  }catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
 
+    }
+  }
+
+  fightBack = async (id) =>{
+    this.setState({loading:true});
+    var nxtStep;
+    if(this.state.C3_622921647557=='已提交（初试）'){
+      nxtStep='未提交（初试）'
+    }else if(this.state.C3_622921647557=='已提交（复试）'){
+      nxtStep='未提交（复试）'
+    }
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152706922,
+        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+        data:[{
+           REC_ID:this.props.record.REC_ID,
+           C3_622921647557:nxtStep,
+         }]
+       })
+       Modal.success({
+         title: '退回成功',
+         content: '',
+         onOk() {
+           window.location.reload();
+         }
+       });
+
+  }catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  }
+
+  hrConfirm = async (id) =>{
+    this.setState({loading:true});
+    var nxtStep;
+    if(this.state.C3_622921647557=='已提交（初试）'){
+      nxtStep='未送邮（复试）'
+    }else if(this.state.C3_622921647557=='已提交（复试）'){
+      nxtStep='已完成（复试）'
+    }
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152706922,
+        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+        data:[{
+           REC_ID:this.props.record.REC_ID,
+           C3_622921647557:nxtStep,
+         }]
+       })
+       Modal.success({
+         title: '确认成功',
+         content: '',
+         onOk() {
+           window.location.reload();
+         }
+       });
+
+  }catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  }
+
+  subData = async (id) => {
+    this.setState({loading:true});
+    console.log(this.props.record.REC_ID);
+    var nxtStep;
+    if(this.state.C3_622921647557=='未提交（初试）'){
+      nxtStep='待确认（初试）'
+    }else{
+      nxtStep='待确认（复试）'
+    }
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152706922,
+        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+        data:[{
+           REC_ID:this.props.record.REC_ID,
+           C3_622921647557:nxtStep,
+           CandidateName:this.state.name,
+           edBackground:this.state.eduBack,
+           eduOther:this.state.eduOther,//缺
+           leveleInterviewee:this.state.level,
+           hireManager:this.state.hiringManger,
+           graduateForm:this.state.graFrom,
+           workExperise:this.state.workExp,
+           wkExp:this.state.wkExp,//缺
+           wkOther:this.state.wkOther,//缺
+           languageSkill:this.state.lanSki,
+           tecSkills:this.state.vTS,
+           executiveAbility:this.state.vEA,
+           tecExchange:this.state.vTE,
+           actionOriented:this.state.vAO,
+           problemSloving:this.state.vPS,
+           selfDevelopment:this.state.vSd,
+           learnOnfly:this.state.vLF,
+           tecOutLook:this.state.vTO,
+           tecDecomposition:this.state.vTD,
+           creativity:this.state.vCr,
+           standingAlone:this.state.vSA,
+           prioritySetting:this.state.vPrA,
+           tecConstruct:this.state.vTC,
+           dealWithAug:this.state.vDwA,
+           innovationMange:this.state.vIM,
+           strategicAgility:this.state.vStrA,
+           direcOhters:this.state.vDO,
+           developOthers:this.state.vDevO,
+           planning:this.state.vPlan,
+           confrontDirReports:this.state.vCDR,
+           SprioritySetting:this.state.vPri,
+           managerAndMeasure:this.state.vMMW,
+           buildEffictive:this.state.vBET,
+           processManagement:this.state.vPM,
+           mottivateingOthers:this.state.vMoOt,
+           conflictManagement:this.state.vCM,
+           decisionQuality:this.state.vDQ,
+           presentationSkills:this.state.vPreSk,
+           peerRelation:this.state.vPeRe,
+           creativity:this.state.vcrea,
+           personlearning:this.state.vPersonaLe,//缺
+           intergintyTrust:this.state.vIT,
+           learning:this.state.vLA,
+           customerFocus:this.state.vCF,
+           driveResults:this.state.vDR,
+           groupComments:this.state.groupInter,
+           propsRetrial:this.state.p4r,
+           groupDecision:this.state.GHB,
+           secondRound:this.state.secRound,
+           SRI:this.state.SRI,//缺
+           interviewer:this.state.interviewer,
+           secondRoundInterviewer:this.state.interviewer2,
+           isSecondRound:this.state.round2,
+           isBack:this.state.isBack,
+           date:this.state.date,//缺
+           secondRoundDate:this.state.date2,
+           accessCategority:this.state.chara
+        }]
+      });
+
+      this.setState({loading:false});
+
+      Modal.success({
+        title: '提交成功',
+        content: '',
+        onOk() {
+          window.location.reload();
+        }
+      });
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
   }
 
   changeChara = (v) =>{
@@ -298,43 +564,43 @@ showConfirmMail() {
       <div className='IA'>
       <Spin spinning={this.state.loading}>
         <div className='chooseClass'>
-          <rect className={this.state.chara=='0'?'current':''} onClick={e => {this.changeChara(0);}}>
+          <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
             T1 T2 T3 T4
           </rect>
-          <rect className={this.state.chara=='1'?'current':''} onClick={e => {this.changeChara(1);}}>
+          <rect className={this.state.chara=='T5'?'current':''} onClick={e => {this.changeChara('T5');}}>
             T5
           </rect>
-          <rect className={this.state.chara=='2'?'current':''} onClick={e => {this.changeChara(2);}}>
+          <rect className={this.state.chara=='T6'?'current':''} onClick={e => {this.changeChara('T6');}}>
             T6
           </rect >
-          <rect className={this.state.chara=='3'?'current':''} onClick={e => {this.changeChara(3);}}>
+          <rect className={this.state.chara=='S5/S6/Sr.Specialist'?'current':''} onClick={e => {this.changeChara('S5/S6/Sr.Specialist');}}>
             S5 S6 Sr. Specialist
           </rect>
-          <rect className={this.state.chara=='4'?'current':''} onClick={e => {this.changeChara(4);}}>
+          <rect className={this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'?'current':''} onClick={e => {this.changeChara('S6/Supervisor/S7/S8/T4/ManagerI');}}>
             S6 Supervisor S7 S8 T4 ManagerI
           </rect>
-          <rect className={this.state.chara=='5'?'current':''} onClick={e => {this.changeChara(5);}}>
-            S9 T5Manager II
+          <rect className={this.state.chara=='S9/T5/ManagerII'?'current':''} onClick={e => {this.changeChara('S9/T5/ManagerII');}}>
+            S9 T5 Manager II
           </rect>
-          <rect className={this.state.chara=='6'?'current':''} onClick={e => {this.changeChara(6);}}>
-            S10 T6Sr.Manager
+          <rect className={this.state.chara=='S10/T6/Sr.Manager'?'current':''} onClick={e => {this.changeChara('S10/T6/Sr.Manager');}}>
+            S10 T6 Sr.Manager
           </rect>
-          <rect className={this.state.chara=='7'?'current':''} onClick={e => {this.changeChara(7);}}>
+          <rect className={this.state.chara=='Technician'?'current':''} onClick={e => {this.changeChara('Technician');}}>
             Technician
           </rect>
-          <rect className={this.state.chara=='8'?'current':''} onClick={e => {this.changeChara(8);}}>
+          <rect className={this.state.chara=='应届生'?'current':''} onClick={e => {this.changeChara('应届生');}}>
             应届生
           </rect>
         </div>
         <div className='chooseClass chooseRound'>
-          <rect className={this.state.round2==false?'current':''} onClick={e => {this.changeRound(false);}}>
+          <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}}>
             不显示复试内容
           </rect>
-          <rect className={this.state.round2==true?'current':''} onClick={e => {this.changeRound(true);}}>
+          <rect className={this.state.round2=='Y'?'current':''} onClick={e => {this.changeRound('Y');}}>
             显示复试内容
           </rect>
         </div>
-        <div className='chooseClass choosePeople'>
+        <div className={this.state.showMail?'chooseClass choosePeople':'chooseClass choosePeople hidden'}>
           <div className='innerWrap'>
             <Select
               showSearch
@@ -350,10 +616,10 @@ showConfirmMail() {
           </div>
         </div>
         <div className='buttonLine'>
-          <Button type='primary' className={this.state.userChara=='HR'?'hidden':''}>提交</Button>
-          <Button type='primary' className={this.state.userChara=='hidden'?'HR':''}>确认</Button>
+          <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':''}>提交</Button>
+          <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>确认</Button>
           <Button onClick={this.onPrinting}>打印</Button>
-          <Button type='danger' onClick={this.showConfirm}>退回表格</Button>
+          <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>退回表格</Button>
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
 
@@ -449,7 +715,7 @@ showConfirmMail() {
                 <b>得分/Items</b>
               </cell>
             </rect>
-        <div className={this.state.chara=='0'?'':'hidden'} ref='T1'>
+        <div className={this.state.chara=='T1/T2/T3/T4'?'':'hidden'} ref='T1'>
             <rect className='alter1'>
               <cell>
                 <b>
@@ -558,7 +824,7 @@ showConfirmMail() {
             </rect>
           </div>
 
-          <div className={this.state.chara=='1'?'':'hidden'} ref='T5'>
+          <div className={this.state.chara=='T5'?'':'hidden'} ref='T5'>
             <rect className='alter1 alter2'>
               <cell>
                 <b>
@@ -666,7 +932,7 @@ showConfirmMail() {
               </cell>
             </rect>
             </div>
-            <div className={this.state.chara== 2 ?'':'hidden'} ref='T6'>
+            <div className={this.state.chara== 'T6' ?'':'hidden'} ref='T6'>
               <rect className='alter1 alter2'>
                 <cell>
                   <b>
@@ -775,7 +1041,7 @@ showConfirmMail() {
               </rect>
             </div>
 
-            <div ref='S5' className={this.state.chara=='3'?'':'hidden'}>
+            <div ref='S5' className={this.state.chara=='S5/S6/Sr.Specialist'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -861,7 +1127,7 @@ showConfirmMail() {
               </rect>
             </div>
 
-            <div ref='S6' className={this.state.chara=='4'?'':'hidden'}>
+            <div ref='S6' className={this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -948,7 +1214,7 @@ showConfirmMail() {
             </div>
 
 
-            <div ref='S9' className={this.state.chara=='5'?'':'hidden'}>
+            <div ref='S9' className={this.state.chara=='S9/T5/ManagerII'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1046,7 +1312,7 @@ showConfirmMail() {
               </rect>
             </div>
 
-            <div ref='S10' className={this.state.chara=='6'?'':'hidden'}>
+            <div ref='S10' className={this.state.chara=='S10/T6/Sr.Manager'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1144,7 +1410,7 @@ showConfirmMail() {
               </rect>
             </div>
 
-            <div ref='Tech' className={this.state.chara=='7'?'':'hidden'}>
+            <div ref='Tech' className={this.state.chara=='Technician'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1230,7 +1496,7 @@ showConfirmMail() {
               </rect>
             </div>
 
-            <div ref='Fresh' className={this.state.chara=='8'?'':'hidden'}>
+            <div ref='Fresh' className={this.state.chara=='应届生'?'':'hidden'}>
               <rect className='alter1 alter6'>
                 <cell>
                   <b>
@@ -1428,10 +1694,11 @@ showConfirmMail() {
                 <br/>
                 <b>签名/Signature:</b>
                 <input type='text'className='fillText alterFill'/>
-                <b>日期/Date:{this.state.newdate}</b>
+                <b>日期/Date:</b>
+                <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date} onChange={v=>{this.handlechange("date",v)}}/>
                 </cell>
               </rect>
-              <div className={this.state.round2==true?'':'hidden'}  style={{borderBottom:'1px solid #000'}}>
+              <div className={this.state.round2=='Y'?'':'hidden'}  style={{borderBottom:'1px solid #000'}}>
                 <rect className='wholeLine'>
                   <h4>复试评价记录 Retrial Comments</h4>
                 </rect>
@@ -1448,7 +1715,9 @@ showConfirmMail() {
                     <br/>
                     <b style={{marginRight:'24px'}}>面试官/Interviewer:</b><input type='text'className='fillText' style={{width:'136px'}}value={this.state.interviewer2} onChange={v=>{this.handlechange("interviewer2",v)}}/>
 
-                    <b>日期/Date:{this.state.newdate}</b>
+                    <b>日期/Date:</b>
+                    <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date2} onChange={v=>{this.handlechange("date2",v)}}/>
+
                   </cell>
                 </rect>
               </div>
