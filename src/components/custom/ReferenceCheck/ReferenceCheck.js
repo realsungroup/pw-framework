@@ -4,7 +4,9 @@ import './ReferenceCheck.less';
 import http from 'Util20/api';
 import {
   Button,
-  Icon
+  Icon,
+  Spin,
+  Modal
 } from 'antd';
 
 class ReferenceCheck extends React.Component {
@@ -47,6 +49,130 @@ class ReferenceCheck extends React.Component {
     q3hr:'',
     q5hr:''
   };
+
+  subData = async (id) =>{
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152614705,
+        cmswhere: `REC_ID=${id}`
+      });
+      this.setState({
+        REC_ID:id,
+        date:this.state.date,
+        candiName:this.state.CandidateName,
+        coName:this.state.comNameHr,
+        reName:this.state.nameHr,
+        title:this.state.refereceTitleHr,
+        phone:this.state.referPhoneHr,
+        mail:this.state.referenceEmaiHr,
+        rel:this.state.RelationAndCandidate,
+        q1hr:this.state.candidateOndate,
+        q2hr:this.state.candidateTerminalDateHr,
+        q3hr:this.state.candidateTitleAndDeptHr,
+        LineManager:this.state.LineRealationHr,
+        Colleague:this.state.colleagueRealationHr,
+        Management:this.state.manangeRealtionHr,
+        Client:this.state.clientRealationHr,
+        q5hr:this.state.reasonForLeaveHr,
+        q1:this.state.knowLongSuper,
+        q2:this.state.manageRelationSuper,
+        q3:this.state.positionAndJobSuper,
+        q4:this.state.commentAndAttitudeSuper,
+        q5:this.state.confirmEmployeDateSuper,
+        q6:this.state.considerStrengthSuper,
+        q7:this.state.considerAreaImprovSuper,
+        Management2:this.state.manageRelationSuper,
+        directManager:this.state.directManagerRelationSuper,
+        coworkers:this.state.coworkerRelationSuper,
+        Client2:this.state.clientRelationSuper,
+        skillWO:this.state.skillWO,//缺
+        q10:this.state.commentManageSkillsSuper,
+        q11:this.state.commentTimeManageSkillsSuper,//缺
+        skillTM:this.state.skillTM,//缺
+        q12:this.state.positionSuitSuper,
+        q13:this.state.reasonForleaveSuper,
+        q14:this.state.reHireSuper,
+
+
+      })
+      this.setState({loading:false});
+      console.log('详细信息3',res.data)
+
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  }
+  getInfo = async (id) => {
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 613152614705,
+        cmswhere: `REC_ID=${id}`
+      });
+      this.setState({
+        date:res.data[0].date,
+        candiName:res.data[0].CandidateName,
+        coName:res.data[0].comNameHr,
+        reName:res.data[0].nameHr,
+        title:res.data[0].refereceTitleHr,
+        phone:res.data[0].referPhoneHr,
+        mail:res.data[0].referenceEmaiHr,
+        rel:res.data[0].RelationAndCandidate,
+        q1hr:res.data[0].candidateOndate,
+        q2hr:res.data[0].candidateTerminalDateHr,
+        q3hr:res.data[0].candidateTitleAndDeptHr,
+        LineManager:res.data[0].LineRealationHr,
+        Colleague:res.data[0].colleagueRealationHr,
+        Management:res.data[0].manangeRealtionHr,
+        Client:res.data[0].clientRealationHr,
+        q5hr:res.data[0].reasonForLeaveHr,
+        q1:res.data[0].knowLongSuper,
+        q2:res.data[0].manageRelationSuper,
+        q3:res.data[0].positionAndJobSuper,
+        q4:res.data[0].commentAndAttitudeSuper,
+        q5:res.data[0].confirmEmployeDateSuper,
+        q6:res.data[0].considerStrengthSuper,
+        q7:res.data[0].considerAreaImprovSuper,
+        Management2:res.data[0].manageRelationSuper,
+        directManager:res.data[0].directManagerRelationSuper,
+        coworkers:res.data[0].coworkerRelationSuper,
+        Client2:res.data[0].clientRelationSuper,
+        skillWO:res.data[0].skillWO,//缺
+        q10:res.data[0].commentManageSkillsSuper,
+        q11:res.data[0].commentTimeManageSkillsSuper,//缺
+        skillTM:res.data[0].skillTM,//缺
+        q12:res.data[0].positionSuitSuper,
+        q13:res.data[0].reasonForleaveSuper,
+        q14:res.data[0].reHireSuper,
+
+
+      })
+      this.setState({loading:false});
+      console.log('详细信息3',res.data)
+
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
      var footstr = "</body>";
@@ -57,7 +183,14 @@ class ReferenceCheck extends React.Component {
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
   };
+  componentDidUpdate(prevProps, prevState, snapshot){
+    // if(prevProps.record.)
 
+    if(this.props.record.REC_ID !== prevProps.record.REC_ID ){
+      this.getInfo(this.props.record.REC_ID)
+
+    }
+  }
   handlechange(key,val,ref){
         this.setState({
             [key]:val.target.value   
@@ -103,6 +236,7 @@ class ReferenceCheck extends React.Component {
   render() {
     return (
       <div className='reference'>
+        <Spin spinning={this.state.loading}>
         <div className='buttonLine'>
 
           <Button onClick={this.onPrinting}>打印</Button>
@@ -115,7 +249,7 @@ class ReferenceCheck extends React.Component {
         </div>
 
         <div id='toPrint' style={{width:'842px',marginLeft:'calc(50% - 421px)',background:'#fff',paddingBottom:'56px'}}>
-          <div style={{width:'842px',background:'#fff'}}>
+          <div style={{width:'842px',height:'100vh',overflow:'auto',background:'#fff'}}>
             <h3 style={{lineHeight:'4',fontSize:'20px',textAlign:'center'}}>Reference Check</h3>
 
             <div style={{width:'60%',float:'left', }}>
@@ -322,6 +456,7 @@ class ReferenceCheck extends React.Component {
             </ul>
           </div>
         </div>
+        </Spin>
       </div>
     );
   }
