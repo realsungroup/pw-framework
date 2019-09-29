@@ -121,8 +121,8 @@ class InterviewAssessment extends React.Component {
 showConfirm = () => {
   confirm({
     title: '确认退回这个表格吗?',
-    onOk() {
-      return this.fightBack();
+    onOk:() => {
+      this.fightBack();
     },
     onCancel() {},
   });
@@ -131,7 +131,7 @@ showConfirm = () => {
 showConfirmMail = () => {
   confirm({
     title: '确认发送邮件吗?',
-    onOk() {
+    onOk:() => {
       return this.sendMail();
     },
     onCancel() {},
@@ -140,8 +140,8 @@ showConfirmMail = () => {
 subConfirm = () => {
   confirm({
     title: '确认提交表格吗?',
-    onOk(){
-        return this.subData();
+    onOk:() => {
+        this.subData();
     },
     onCancel() {},
   });
@@ -265,6 +265,11 @@ subConfirm = () => {
         chara:res.data[0].accessCategority
 
       })
+        this.setState({
+          showMail:false,
+          showConBtn:false,
+          showSub:false
+        })
       if((res.data[0].C3_622921647557=='未送邮（初试）')||(res.data[0].C3_622921647557=='未送邮（复试）')){
         if(this.state.userChara=='HR'){
           this.setState({showMail:true})
@@ -559,6 +564,7 @@ subConfirm = () => {
 
   render() {
     const options = this.state.data.map(d => <Option key={d.value}>{d.text}</Option>);
+
 
     return (
       <div className='IA'>

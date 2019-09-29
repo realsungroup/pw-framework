@@ -212,12 +212,12 @@ class Applayinformation extends Component {
               })(<Input />)}
             </Form.Item>
             <Form.Item label="身份证号码/Number of ID Card" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('idNumber', {
+              {getFieldDecorator('IDCardNumber', {
                 initialValue: currentInfo.IDCardNumber,
                 rules: [
                   {
                     required: true,
-                    message: 'Please input your E-mail!'
+                    message: 'Please input your ID Card number!'
                   }
                 ]
               })(<Input />)}
