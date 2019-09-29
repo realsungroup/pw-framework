@@ -262,7 +262,8 @@ subConfirm = () => {
         isBack:res.data[0].isBack,
         date:res.data[0].date,//缺
         date2:res.data[0].secondRoundDate,
-        chara:res.data[0].accessCategority
+        chara:res.data[0].accessCategority,
+        C3_622921647557:res.data[0].C3_622921647557
 
       })
         this.setState({
@@ -270,21 +271,32 @@ subConfirm = () => {
           showConBtn:false,
           showSub:false
         })
-      if((res.data[0].C3_622921647557=='未送邮（初试）')||(res.data[0].C3_622921647557=='未送邮（复试）')){
+      if(!this.state.C3_622921647557){
+        this.setState({C3_622921647557:'未送邮（初试）'})
+      }
+      if((this.state.C3_622921647557=='未送邮（初试）')||(this.state.C3_622921647557=='未送邮（复试）')){
         if(this.state.userChara=='HR'){
           this.setState({showMail:true})
         }
       }
-      if((res.data[0].C3_622921647557=='已提交（初试）')||(res.data[0].C3_622921647557=='已提交（复试）')){
+      if((this.state.C3_622921647557=='待确认（初试）')||(this.state.C3_622921647557=='待确认（复试）')){
         if(this.state.userChara=='HR'){
           this.setState({showConBtn:true})
         }
       }
-      if((res.data[0].C3_622921647557=='未提交（初试）')||(res.data[0].C3_622921647557=='未提交（复试）')){
+      if((this.state.C3_622921647557=='未提交（初试）')||(this.state.C3_622921647557=='未提交（复试）')){
         if(this.state.userChara!='HR'){
           this.setState({showSub:true})
         }
       }
+      if(this.state.C3_622921647557=='已完成'){
+        this.setState({
+          showMail:false,
+          showConBtn:false,
+          showSub:false
+        })
+      }
+
       console.log('详细信息',res.data)
       if(!this.state.round2){
         this.setState({round2:'N'})
@@ -374,9 +386,9 @@ subConfirm = () => {
   fightBack = async (id) =>{
     this.setState({loading:true});
     var nxtStep;
-    if(this.state.C3_622921647557=='已提交（初试）'){
+    if(this.state.C3_622921647557=='待确认（初试）'){
       nxtStep='未提交（初试）'
-    }else if(this.state.C3_622921647557=='已提交（复试）'){
+    }else if(this.state.C3_622921647557=='待确认（复试）'){
       nxtStep='未提交（复试）'
     }
     let res;
@@ -410,10 +422,10 @@ subConfirm = () => {
   hrConfirm = async (id) =>{
     this.setState({loading:true});
     var nxtStep;
-    if(this.state.C3_622921647557=='已提交（初试）'){
+    if(this.state.C3_622921647557=='待确认（初试）'){
       nxtStep='未送邮（复试）'
-    }else if(this.state.C3_622921647557=='已提交（复试）'){
-      nxtStep='已完成（复试）'
+    }else if(this.state.C3_622921647557=='待确认（复试）'){
+      nxtStep='已完成'
     }
     let res;
     try {
@@ -622,7 +634,7 @@ subConfirm = () => {
           </div>
         </div>
         <div className='buttonLine'>
-          <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':''}>提交</Button>
+          <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':'hidden'}>提交</Button>
           <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>确认</Button>
           <Button onClick={this.onPrinting}>打印</Button>
           <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>退回表格</Button>
