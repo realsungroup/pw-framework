@@ -1400,14 +1400,6 @@ class PersonPlan extends React.Component {
                   {personInfo.startTime}
                 </span>
               </div>
-              <div className="personPlan-contain-info-filed">
-                <span className="personPlan-contain-info-filed-word">
-                  状态：
-                </span>
-                <span className="personPlan-contain-info-filed-wordValue">
-                  {personInfo.status}
-                </span>
-              </div>
             </div>
           </Card>
           {this.renderCard()}
