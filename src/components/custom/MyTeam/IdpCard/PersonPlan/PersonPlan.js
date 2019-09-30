@@ -1,15 +1,42 @@
 import React from 'react';
-import { message, Button, Card, Icon, Checkbox, Popconfirm } from 'antd';
+import {
+  message,
+  Button,
+  Card,
+  Icon,
+  Checkbox,
+  Popconfirm,
+  Steps,
+  Popover
+} from 'antd';
 import './PersonPlan.less';
 import http from 'Util20/api';
 import SquareCard from './SquareCard';
 
+const Step = Steps.Step;
 const personID = '618488751596'; //发展人员表
 const abilityID = '617726097875'; //能力测评表ID
 const planID = '617726587425'; //发展行动计划表ID
 const typeID = '618000219009'; //类型表ID
 const winAbilityID = '618000231193'; //胜任力表ID
 const developmentMeasureID = '618225629802'; //发展措施表
+
+const customDot = (dot, { status, index }) => (
+  <Popover
+    content={
+      <span>
+        状态:{' '}
+        {status === 'finish'
+          ? '已结束'
+          : status === 'wait'
+          ? '等待中'
+          : '进行中'}{' '}
+      </span>
+    }
+  >
+    {dot}
+  </Popover>
+);
 const emptyAbility = [
   {
     name: '类别/Category:',
@@ -117,6 +144,13 @@ const emptyPlans = [
     type: 'none',
     options: [],
     authority: 'modify'
+  },
+  {
+    name: '胜任力/Competency:',
+    value: '',
+    type: 'select',
+    options: [],
+    authority: 'modify'
   }
 ];
 const emptyMeasures = [
@@ -188,15 +222,23 @@ class PersonPlan extends React.Component {
     if (type === 1) {
       let SquareCardArr = this.state.SquareCardArr;
       let abilityArr = this.state.abilityArr;
-      let lastabilityArr = [];
+      let lastabilityArr = []; //胜任力数组
+      let lastabilityDetailArr = []; //胜任力描述数组
       SquareCardArr[index][subIndex].value = e;
       if (subIndex === 0) {
         abilityArr.map(item => {
           if (item.type === e) {
             lastabilityArr.push(item.ability);
+            lastabilityDetailArr.push({
+              adept: item.adept,
+              notAdept: item.notAdept,
+              overuse: item.overuse,
+              ability: item.ability
+            });
           }
         });
         SquareCardArr[index][subIndex + 1].options = lastabilityArr;
+        SquareCardArr[index][subIndex + 1].detailOptions = lastabilityDetailArr;
       }
       this.onChangePlainOptions();
       this.setState({
@@ -306,12 +348,18 @@ class PersonPlan extends React.Component {
   };
   onChangePlainOptions = () => {
     let plainOptions = [];
+
     this.state.SquareCardArr.map(item => {
       item.forEach(items => {
         if (items.name === '胜任力/Competency:') {
           plainOptions.push(items.value);
         }
       });
+    });
+    emptyPlans.map(item => {
+      if (item.name === '胜任力/Competency:') {
+        item.options = plainOptions;
+      }
     });
     this.setState({
       plainOptions
@@ -402,7 +450,6 @@ class PersonPlan extends React.Component {
         });
         SquareCardArr.push(this.cloneDeep(empty));
       });
-
 
       if (ability.length > 0) {
         if (
@@ -517,7 +564,10 @@ class PersonPlan extends React.Component {
         ) {
           plans.forEach((item, index) => {
             item.forEach(items => {
-              if (items.name === '发展措施/Measure:') {
+              if (items.name === '胜任力/Competency:') {
+                items.value = plan[index].ability;
+                items.authority = 'check';
+              } else if (items.name === '发展措施/Measure:') {
                 items.value = plan[index].measures;
                 items.authority = 'check';
               } else if (items.name === '完成日期/Deadline:') {
@@ -541,9 +591,12 @@ class PersonPlan extends React.Component {
             });
           });
         } else {
+          console.log('Competency', this.state.plainOptions);
           plans.forEach((item, index) => {
             item.forEach(items => {
-              if (items.name === '发展措施/Measure:') {
+              if (items.name === '胜任力/Competency:') {
+                items.value = plan[index].ability;
+              } else if (items.name === '发展措施/Measure:') {
                 items.value = plan[index].measures;
               } else if (items.name === '完成日期/Deadline:') {
                 items.value = plan[index].endTime;
@@ -564,7 +617,9 @@ class PersonPlan extends React.Component {
 
         measures.forEach((item, index) => {
           item.forEach(items => {
-            if (items.name === '发展措施/Measure:') {
+            if (items.name === '胜任力/Competency:') {
+              items.value = plan[index].ability;
+            } else if (items.name === '发展措施/Measure:') {
               items.value = plan[index].measures;
             } else if (items.name === '完成日期/Deadline:') {
               items.value = plan[index].endTime;
@@ -644,7 +699,13 @@ class PersonPlan extends React.Component {
     }
     let abilityArr = [];
     res.data.map(item => {
-      abilityArr.push({ type: item.linkType, ability: item.abilityName });
+      abilityArr.push({
+        type: item.linkType,
+        ability: item.abilityName,
+        adept: item.C3_622921779282,
+        notAdept: item.C3_622921790616,
+        overuse: item.C3_622921804575
+      });
     });
     this.setState({
       abilityArr
@@ -666,10 +727,13 @@ class PersonPlan extends React.Component {
     res.data.map(item => {
       measuresArr.push(item.measures);
     });
+    console.log('measuresArr', measuresArr);
     plans.map(item => {
       item.map(items => {
         if (items.name === '发展措施/Measure:') {
           items.options = measuresArr;
+        } else if (items.name === '胜任力/Competency:') {
+          items.options = this.state.plainOptions;
         }
       });
     });
@@ -776,10 +840,106 @@ class PersonPlan extends React.Component {
       message.error(error.message);
     }
   };
+  onSubmitMid = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    personInfo.yearMidSubmit = 'Y';
+    personInfo.midManageApply = '';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  onSubmitTail = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    personInfo.yearTailSubmit = 'Y';
+    personInfo.tailManageApply = '';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   onAffirm = async () => {
     let res;
     let personInfo = this.state.personInfo;
     personInfo.isAffirm = 'Y';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  //确认年中回顾
+  onAffirmMid = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    personInfo.midManageApply = 'Y';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  //确认年末回顾
+  onAffirmTail = async () => {
+    let res;
+    let personInfo = this.state.personInfo;
+    personInfo.tailManageApply = 'Y';
+    try {
+      res = await http().modifyRecords({
+        resid: personID,
+        data: [personInfo]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.props.goBack();
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  //退回操作
+  onReject = async(type) => {
+    let personInfo = this.state.personInfo;
+    if(type === 'mid'){
+    personInfo.midManageApply = 'N';
+    personInfo.yearMidSubmit = '';
+    }else{
+    personInfo.tailManageApply = 'N';
+    personInfo.yearTailSubmit = '';
+    }
+    let res;
     try {
       res = await http().modifyRecords({
         resid: personID,
@@ -840,6 +1000,7 @@ class PersonPlan extends React.Component {
       planRecord.projectId = item[3].value;
       planRecord.moveId = item[4].value;
       planRecord.menberId = item[5].value;
+      planRecord.ability = item[6].value;
       measures.map(items => {
         if (items[3].value === item[4].value) {
           planRecord.yearMid = items[4].value;
@@ -864,10 +1025,9 @@ class PersonPlan extends React.Component {
   };
   judgeRender = () => {
     let personInfo = this.state.personInfo;
-    if(
-      this.props.role === 'HR'){
-        return false;
-      }
+    if (this.props.role === 'HR') {
+      return false;
+    }
     if (
       personInfo.status === '年中回顾' ||
       personInfo.status === '年末回顾' ||
@@ -876,15 +1036,14 @@ class PersonPlan extends React.Component {
         this.props.checkType !== 'oneself') ||
       (personInfo.isPersonSubmit === 'Y' &&
         this.props.checkType === 'oneself') ||
-      this.state.isUpdateAuth !== 'Y' 
+      this.state.isUpdateAuth !== 'Y'
     ) {
       return true;
-    } else  {
+    } else {
       return false;
     }
   };
   componentDidMount = async () => {
-    console.log('this.props.record', this.props.record, this.props.checkType);
     let record = this.props.record;
     let isUpdateAuth; //是否有权限修改
     this.setState({
@@ -954,11 +1113,7 @@ class PersonPlan extends React.Component {
             {this.state.SquareCardArr.map((SquareCardArr, index) => {
               return (
                 <SquareCard
-                  icon={
-                    this.judgeRender()
-                      ? 'noClose'
-                      : null
-                  }
+                  icon={this.judgeRender() ? 'noClose' : null}
                   key={index}
                   SquareCardArr={SquareCardArr}
                   onRemove={subIndex => {
@@ -981,8 +1136,7 @@ class PersonPlan extends React.Component {
               );
             })}
 
-            {this.judgeRender()? null
-            : (
+            {this.judgeRender() ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
                 onClick={() => {
@@ -1040,9 +1194,7 @@ class PersonPlan extends React.Component {
               options={this.state.plainOptions}
               value={[...this.state.checked]}
               onChange={this.onChangeCheckBox}
-              disabled={
-                this.judgeRender()
-              }
+              disabled={this.judgeRender()}
             />
           </div>
           <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
@@ -1050,11 +1202,7 @@ class PersonPlan extends React.Component {
               this.state.plans.map((SquareCardArr, index) => {
                 return (
                   <SquareCard
-                    icon={
-                     this.judgeRender()
-                        ? 'noClose'
-                        : null
-                    }
+                    icon={this.judgeRender() ? 'noClose' : null}
                     key={index}
                     SquareCardArr={SquareCardArr}
                     onRemove={() => {
@@ -1078,7 +1226,7 @@ class PersonPlan extends React.Component {
                   ></SquareCard>
                 );
               })}
-            {this.judgeRender()? null : (
+            {this.judgeRender() ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
                 onClick={() => {
@@ -1222,8 +1370,23 @@ class PersonPlan extends React.Component {
           </Popconfirm>
         );
       } else if (
-        (this.state.checkType == 'oneself' &&
-          this.state.personInfo.status === '年中回顾') ||
+        this.state.checkType == 'oneself' &&
+        this.state.personInfo.yearMidSubmit !== 'Y' &&
+        this.state.personInfo.status === '年中回顾'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要保存吗"
+            onConfirm={this.onSave}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="personPlan-contain-bottom-leftbtn">保存</Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType == 'oneself' &&
+        this.state.personInfo.yearTailSubmit !== 'Y' &&
         this.state.personInfo.status === '年末回顾'
       ) {
         return (
@@ -1297,27 +1460,100 @@ class PersonPlan extends React.Component {
             </Button>
           </Popconfirm>
         );
+      } else if (
+        this.state.checkType === 'oneself' &&
+        this.state.personInfo.isAffirm === 'Y' &&
+        this.state.personInfo.yearMidSubmit !== 'Y' &&
+        this.state.personInfo.status !== '已完成'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmitMid}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
+      } else if (
+        this.state.checkType === 'oneself' &&
+        this.state.personInfo.isAffirm === 'Y' &&
+        this.state.personInfo.yearMidSubmit === 'Y' &&
+        this.state.personInfo.yearTailSubmit !== 'Y' &&
+        this.state.personInfo.status === '年末回顾'
+      ) {
+        return (
+          <Popconfirm
+            title="你确定要提交吗"
+            onConfirm={this.onSubmitTail}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              className="personPlan-contain-bottom-leftbtn"
+            >
+              提交
+            </Button>
+          </Popconfirm>
+        );
       }
     }
   };
   render() {
     const { personInfo } = this.state;
+    const { record } = this.props;
     return (
       <div
         style={{
           width: '100%',
           height: '100%',
           display: 'flex',
-          background: '#fff'
+          background: '#fff',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
+        <div style={{ marginTop: '16px', marginLeft: '32px' }}>
+          <Steps
+            current={
+              record && record.status === '初次填写'
+                ? 0
+                : record && record.status === '年中回顾'
+                ? 1
+                : 3
+            }
+            progressDot={customDot}
+          >
+            <Step
+              title="初次填写"
+              description="初次填写"
+              style={{ color: '#fff' }}
+            />
+            <Step
+              title="年中回顾"
+              description="年中回顾"
+              style={{ color: '#fff' }}
+            />
+            <Step
+              title="年末回顾"
+              description="年末回顾"
+              style={{ color: '#fff' }}
+            />
+          </Steps>
+        </div>
         <div className="personPlan-contain">
           <span
             style={{
               color: 'rgba(0,0,0)',
               fontSize: '26px',
-              fontWeight: 'bold',
-              marginTop: '40px'
+              fontWeight: 'bold'
             }}
           >
             员工职业能力发展计划
@@ -1434,6 +1670,74 @@ class PersonPlan extends React.Component {
                 </Button>
               </Popconfirm>
             ) : null}
+
+            {this.state.checkType !== 'oneself' &&
+            this.state.personInfo.yearMidSubmit === 'Y' &&
+            this.state.personInfo.midManageApply !== 'Y' &&  this.state.personInfo.midManageApply !== 'N'  ? (
+              <Popconfirm
+                title="你要确认吗"
+                onConfirm={this.onAffirmMid}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  确认年中回顾
+                </Button>
+              </Popconfirm>
+            ) : null
+            }
+
+            {this.state.checkType !== 'oneself' &&
+            this.state.personInfo.yearMidSubmit === 'Y' &&
+            this.state.personInfo.midManageApply !== 'Y' &&  this.state.personInfo.midManageApply !== 'N' ?<Popconfirm
+                title="你确定要退回吗"
+                onConfirm={() => {
+                  this.onReject('mid');
+                }}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button
+                  className="personPlan-contain-bottom-leftbtn"
+                  type="danger"
+                >
+                  退回
+                </Button>
+              </Popconfirm>:null}
+
+
+              {this.state.checkType !== 'oneself' &&
+            this.state.personInfo.yearTailSubmit === 'Y' &&
+             this.state.personInfo.tailManageApply !== 'Y' && this.state.personInfo.tailManageApply !== 'N' ?<Popconfirm
+                title="你确定要退回吗"
+                onConfirm={() => {
+                  this.onReject('tail');
+                }}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button
+                  className="personPlan-contain-bottom-leftbtn"
+                  type="danger"
+                >
+                  退回年末
+                </Button>
+              </Popconfirm>:null}
+            {this.state.checkType !== 'oneself' &&
+            this.state.personInfo.yearTailSubmit === 'Y' &&
+            this.state.personInfo.tailManageApply !== 'Y' && this.state.personInfo.tailManageApply !== 'N'  ? (
+              <Popconfirm
+                title="你要确认吗"
+                onConfirm={this.onAffirmTail}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="personPlan-contain-bottom-leftbtn">
+                  确认年末回顾
+                </Button>
+              </Popconfirm>
+            ) :null}
+
             {this.renderSubmitBtn()}
           </div>
         </div>

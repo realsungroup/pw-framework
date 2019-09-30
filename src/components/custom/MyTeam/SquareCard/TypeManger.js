@@ -52,9 +52,10 @@ class SquareCard extends React.Component {
                 break;
               case 'select':
                 titleData = (
-                  <span className="squarecard-contain-title">{item.name}</span>
+                  <span className="squarecard-contain-title">{item.name}</span>   
                 );
                 data = (
+                  <React.Fragment>
                   <Select
                     className="word-color"
                     key={item.key}
@@ -88,6 +89,7 @@ class SquareCard extends React.Component {
                       return <Option value={item}>{item}</Option>;
                     })}
                   </Select>
+                  <span>描述</span></React.Fragment>
                 );
                 break;
               case 'textArea':
@@ -222,50 +224,6 @@ class SquareCard extends React.Component {
         ) : null}
 
         {this.renderCard()}
-
-        {/* <div style={{margin:"10px 0",width:"100%"}}>
-          <span className="squarecard-contain-title">类别/Category：</span>{' '}
-          <Select
-            defaultValue="lucy"
-            style={{ width: '40%' }}
-            dropdownRender={menu => (
-              <div>
-                {menu}
-                <Divider style={{ margin: '4px 0' }} />
-                <div style={{ padding: '8px', cursor: 'pointer' }}>
-                  <Icon type="plus" /> Add item
-                </div>
-              </div>
-            )}
-          >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-          </Select>
-        </div>
-        <div style={{margin:"10px 0",width:"100%"}}>
-          <span className="squarecard-contain-title">类别/Category：</span>{' '}
-          <Select
-            defaultValue="lucy"
-            style={{ width: '40%' }}
-            dropdownRender={menu => (
-              <div>
-                {menu}
-                <Divider style={{ margin: '4px 0' }} />
-                <div style={{ padding: '8px', cursor: 'pointer' }}>
-                  <Icon type="plus" /> Add item
-                </div>
-              </div>
-            )}
-          >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-          </Select>
-        </div> */}
-
-        {/* <div style={{ margin: '10px 0', width: '100%' }}>
-          <span className="squarecard-contain-title">行为指标：</span>{' '}
-          <TextArea rows={4} className="squarecard-contain-area"></TextArea>
-        </div> */}
       </div>
     );
   }
