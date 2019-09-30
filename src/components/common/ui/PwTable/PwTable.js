@@ -60,6 +60,10 @@ class PwTable extends React.Component {
     this.props.onZoomOut && this.props.onZoomOut();
   };
 
+  handleStatisticalAnalysis = () => {
+    this.props.onStatisticalAnalysis && this.props.onStatisticalAnalysis();
+  };
+
   renderPagination = () => {
     const { pagination, size, intl } = this.props;
     const rang = getRang(pagination);
@@ -76,9 +80,7 @@ class PwTable extends React.Component {
           {hasTotal &&
             getIntlVal(
               intl.locale,
-              `${rang.start} ~ ${rang.end} ，${
-                pagination.total
-              } Records Totally`,
+              `${rang.start} ~ ${rang.end} ，${pagination.total} Records Totally`,
               `${rang.start} ~ ${rang.end} ，${pagination.total} 条记录`
             )}
         </div>
@@ -174,6 +176,7 @@ class PwTable extends React.Component {
                   onRefresh={this.handleRefresh}
                   hasAdvSearch={hasAdvSearch}
                   onAdvSearch={this.handleAdvSearch}
+                  onStatisticalAnalysis={this.handleStatisticalAnalysis}
                   hasZoomInOut={hasZoomInOut}
                   onZoomIn={this.handleZoomIn}
                   onZoomOut={this.handleZoomOut}

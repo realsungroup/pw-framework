@@ -22,7 +22,8 @@ const { Option } = Select;
 class CustomForm2 extends React.Component {
   state = {
     currentUser: JSON.parse(getItem('userInfo')).Data,
-    currentTime: moment().format('YYYY-MM-DD HH:mm:ss')
+    currentTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+    submitting: false
   };
 
   handleSubmit = async e => {
@@ -37,6 +38,7 @@ class CustomForm2 extends React.Component {
         return message.info('至少选择上、下班时间中的一个');
       }
       try {
+        this.setState({ submitting: true });
         let res = await http().addRecords({
           resid: '449440966625',
           data: [
@@ -61,12 +63,14 @@ class CustomForm2 extends React.Component {
       } catch (error) {
         console.log(error);
         message.error(error.message);
+      } finally {
+        this.setState({ submitting: false });
       }
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { currentUser, currentTime } = this.state;
+    const { currentUser, currentTime, submitting } = this.state;
     return (
       <div className="attendace-aplly_form__wrapper">
         <Form className="attendace-aplly_form" onSubmit={this.handleSubmit}>
@@ -125,7 +129,12 @@ class CustomForm2 extends React.Component {
           </Form.Item>
 
           <Row>
-            <Button type="primary" htmlType="submit" style={{ marginRight: 8 }}>
+            <Button
+              loading={submitting}
+              type="primary"
+              htmlType="submit"
+              style={{ marginRight: 8 }}
+            >
               提交
             </Button>
             <Button onClick={this.props.goBack}>返回</Button>
