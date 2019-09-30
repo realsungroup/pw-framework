@@ -16,7 +16,7 @@ class InterviewAssessment extends React.Component {
   constructor() {
     super();
     this.state = {
-        userChara:'HR',
+        userChara:'',
         data:[
           {text:'张三',value:'11212'},
           {text:'李四',value:'22312'},
@@ -170,6 +170,41 @@ subConfirm = () => {
 
     }
   componentDidMount(){
+    var usrChara = localStorage.getItem('userInfo');
+    usrChara=JSON.parse(usrChara)
+    usrChara=usrChara.UserInfo.GroupList;
+    var arr=[];
+    var n=0;
+    var bol=false;
+    var str='';
+    while(n<usrChara.length){
+      if(usrChara.slice(n, n+1)=="\'"){
+
+        if(bol==true){
+          bol=false;
+          arr.push(str);
+          str='';
+        }else{
+          bol=true;
+        }
+      }
+      if(bol==true){
+        str+=usrChara.slice(n+1, n+2)
+      }
+      n++;
+    }
+
+    var hrCode='611241074739';
+    n=0;
+    this.setState({userChara:'others'});
+
+    while(n<arr.length){
+      var j=hrCode+"\'"
+      if(j==arr[n]){
+        this.setState({userChara:'HR'});
+      }
+      n++;
+    }
 
   }
   getInfo = async (resid,id,id2) => {
