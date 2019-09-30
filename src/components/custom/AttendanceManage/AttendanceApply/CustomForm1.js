@@ -341,18 +341,17 @@ class CustomForm1 extends React.Component {
       errors
     } = this.state;
     let startHours = [],
-      endHours = [];
+      endHours = [],
+      disabled = true;
+
     if (selectedTypeId) {
       startHours = typeSubData[selectedTypeId].startHours;
       endHours = typeSubData[selectedTypeId].endHours;
-    }
-    let disabled = true;
-    if (!startHours.length) {
-      if (applyType === '请假') {
+      if (!startHours.length) {
         endHours = startHours = vacateHours;
-      } else if (applyType === '加班') {
-        endHours = startHours = endHours;
-        disabled = false;
+        if (applyType === '加班') {
+          disabled = false;
+        }
       }
     }
     return (

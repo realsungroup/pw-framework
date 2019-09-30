@@ -175,12 +175,26 @@ class WorkOvertimeApply extends React.Component {
               </Popconfirm>
             </span>
           ) : (
-            <a
-              disabled={editingKey !== ''}
-              onClick={() => this.edit(record.key)}
-            >
-              编辑
-            </a>
+            <>
+              <a
+                disabled={editingKey !== ''}
+                style={{ marginRight: 8 }}
+                onClick={() => this.edit(record.key)}
+              >
+                编辑
+              </a>
+              <Popconfirm
+                title="确认删除吗?"
+                onConfirm={() => this.handleDelete(record.key)}
+              >
+                <a
+                  disabled={editingKey !== ''}
+                  style={{ color: editingKey === '' ? 'red' : '#ccc' }}
+                >
+                  删除
+                </a>
+              </Popconfirm>
+            </>
           );
         }
       }
@@ -265,7 +279,8 @@ class WorkOvertimeApply extends React.Component {
             startTime: res.C3_489231991382,
             endTime: res.C3_489231991601,
             hours: res.C3_489232060991,
-            reason: res.C3_489232525436
+            reason: res.C3_489232525436,
+            tips: res.C3_489237393687
           });
           this.setState({ dataSource: newData, editingKey: '' });
         } catch (error) {
@@ -310,8 +325,23 @@ class WorkOvertimeApply extends React.Component {
     this.setState({ editingKey: key });
   }
   handleDelete = key => {
+    this.props.setLoading(true);
     const dataSource = [...this.state.dataSource];
+    const record = dataSource.find(item => item.key === key);
     this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    try {
+      http().removeRecords({
+        resid: '489233670834',
+        data: [{ REC_ID: record.REC_ID }],
+        dblinkname: 'ehr'
+      });
+      message.success('删除成功');
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    } finally {
+      this.props.setLoading(false);
+    }
   };
 
   handleAdd = () => {
