@@ -506,3 +506,9 @@ export const PhysicalExamination = Loadable({
     return minLoading;
   }
 });
+export const ApplyApprove = Loadable({
+  loader: () => import('./ApplyApprove'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -4,7 +4,9 @@ import './ReferenceCheck.less';
 import http from 'Util20/api';
 import {
   Button,
-  Icon
+  Icon,
+  Spin,
+  Modal
 } from 'antd';
 
 class ReferenceCheck extends React.Component {
@@ -47,17 +49,157 @@ class ReferenceCheck extends React.Component {
     q3hr:'',
     q5hr:''
   };
+
+  subData = async (id) =>{
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152614705,
+        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+        data:[{
+         REC_ID:this.props.record.REC_ID,
+         checkDateHr:this.state.date,
+         CandidateName:this.state.candiName,
+         comNameHr:this.state.coName,
+         nameHr:this.state.reName,
+         refereceTitleHr:this.state.title,
+         referPhoneHr:this.state.phone,
+         referenceEmaiHr:this.state.mail,
+         RelationAndCandidate:this.state.rel,
+         candidateOndate:this.state.q1hr,
+         candidateTerminalDateHr:this.state.q2hr,
+         candidateTitleAndDeptHr:this.state.q3hr,
+         LineRealationHr:this.state.LineManager,
+         colleagueRealationHr:this.state.Colleague,
+         manangeRealtionHr:this.state.Management,
+         clientRealationHr:this.state.Client,
+         reasonForLeaveHr:this.state.q5hr,
+         knowLongSuper:this.state.q1,
+         positionAndJobSuper:this.state.q2,
+         projectSuper:this.state.q3,
+         commentAndAttitudeSuper:this.state.q4,
+         confirmEmployeDateSuper:this.state.q5,
+         considerStrengthSuper:this.state.q6,
+         considerAreaImprovSuper:this.state.q7,
+         describeOrientedSuper:this.state.q9,
+         manageRelationSuper:this.stateManagement2,
+         directManagerRelationSuper:this.state.directManager,
+         coworkerRelationSuper:this.state.coworkers,
+         clientRelationSuper:this.state.Client2,
+         skillWO:this.state.skillWO,//缺
+         commentManageSkillsSuper:this.state.q10,
+         commentTimeManageSkillsSuper:this.state.q11,//缺
+         skillTM:this.state.skillTM,//缺
+         positionSuitSuper:this.state.q12,
+         reasonForleaveSuper:this.state.q13,
+         reHireSuper:this.state.q14,
+         referenceCategory:this.state.chara
+
+      }]
+    });
+
+      this.setState({loading:false});
+      Modal.success({
+        title: '提交成功',
+        content: '',
+        onOk() {
+          window.location.reload();
+        }
+      });
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  }
+  getInfo = async (id) => {
+    this.setState({loading:true});
+
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 613152614705,
+        cmswhere: `REC_ID=${id}`
+      });
+      this.setState({
+        chara:this.state.chara.referenceCategory,
+        date:res.data[0].checkDateHr,
+        candiName:res.data[0].CandidateName,
+        coName:res.data[0].comNameHr,
+        reName:res.data[0].nameHr,
+        title:res.data[0].refereceTitleHr,
+        phone:res.data[0].referPhoneHr,
+        mail:res.data[0].referenceEmaiHr,
+        rel:res.data[0].RelationAndCandidate,
+        q1hr:res.data[0].candidateOndate,
+        q2hr:res.data[0].candidateTerminalDateHr,
+        q3hr:res.data[0].candidateTitleAndDeptHr,
+        LineManager:res.data[0].LineRealationHr,
+        Colleague:res.data[0].colleagueRealationHr,
+        Management:res.data[0].manangeRealtionHr,
+        Client:res.data[0].clientRealationHr,
+        q5hr:res.data[0].reasonForLeaveHr,
+        q1:res.data[0].knowLongSuper,
+        q2:res.data[0].positionAndJobSuper,
+        q3:res.data[0].projectSuper,
+        q4:res.data[0].commentAndAttitudeSuper,
+        q5:res.data[0].confirmEmployeDateSuper,
+        q6:res.data[0].considerStrengthSuper,
+        q7:res.data[0].considerAreaImprovSuper,
+        q9:res.data[0].describeOrientedSuper,
+        Management2:res.data[0].manageRelationSuper,
+        directManager:res.data[0].directManagerRelationSuper,
+        coworkers:res.data[0].coworkerRelationSuper,
+        Client2:res.data[0].clientRelationSuper,
+        skillWO:res.data[0].skillWO,//缺
+        q10:res.data[0].commentManageSkillsSuper,
+        q11:res.data[0].commentTimeManageSkillsSuper,//缺
+        skillTM:res.data[0].skillTM,//缺
+        q12:res.data[0].positionSuitSuper,
+        q13:res.data[0].reasonForleaveSuper,
+        q14:res.data[0].reHireSuper,
+
+
+      })
+      this.setState({loading:false});
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
      var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
-     var headstr = "<html><head><title></title></head><body>";
+     var headstr = "<html><head><title></title><style>.hidden{display:none}</style></head><body>";
      document.body.innerHTML = headstr + newstr + footstr;
      window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
   };
+  componentDidUpdate(prevProps, prevState, snapshot){
+    // if(prevProps.record.)
 
+    if(this.props.record.REC_ID !== prevProps.record.REC_ID ){
+      this.getInfo(this.props.record.REC_ID)
+
+    }
+  }
+  changeChara(v){
+    this.setState({chara:v})
+  }
   handlechange(key,val,ref){
         this.setState({
             [key]:val.target.value   
@@ -72,50 +214,23 @@ class ReferenceCheck extends React.Component {
         }
 
     }
-  changeChara = (v) =>{
-      document.getElementById('selHR').classList.remove('current');
-      document.getElementById('selSup').classList.remove('current');
-
-
-      if(v=='HR'){
-        this.setState({chara:'hr'});
-        document.getElementById('selHR').classList.add('current');
-          this.refs.hr.style.display='block';
-          this.refs.supervisor.style.display='none';
-      }else{
-        this.setState({chara:'supervisor'});
-        document.getElementById('selSup').classList.add('current');
-        this.refs.supervisor.style.display='block';
-        this.refs.hr.style.display='none';
-      }
-  }
-  componentDidMount(){
-    var myDate=new Date();
-    var str=myDate.getFullYear()+'-'+(myDate.getMonth()+1)+'-'+myDate.getDate();
-    this.setState({date:str});
-    if(this.state.chara=='hr'){
-      this.refs.hr.style.display='block';
-    }else if(this.state.chara=='supervisor'){
-      this.refs.supervisor.style.display='block';
-    }
-
-  }
   render() {
     return (
       <div className='reference'>
+        <Spin spinning={this.state.loading}>
         <div className='buttonLine'>
-
+          <Button type='primary' onClick={this.subData}>保存</Button>
           <Button onClick={this.onPrinting}>打印</Button>
 
           <ul className='charaChange'>
-            <li id='selHR' className='current' onClick={() => this.changeChara('HR')}>HR</li>
-            <li id='selSup' onClick={() => this.changeChara('supervisor')}>主管</li>
+            <li id='selHR' className={this.state.chara=='HR'?'current':''} onClick={() => this.changeChara('HR')}>HR</li>
+            <li id='selSup' className={this.state.chara=='HR'?'':'current'} onClick={() => this.changeChara('supervisor')}>主管</li>
           </ul>
 
         </div>
 
         <div id='toPrint' style={{width:'842px',marginLeft:'calc(50% - 421px)',background:'#fff',paddingBottom:'56px'}}>
-          <div style={{width:'842px',background:'#fff'}}>
+          <div style={{width:'842px',height:'100vh',overflow:'auto',background:'#fff'}}>
             <h3 style={{lineHeight:'4',fontSize:'20px',textAlign:'center'}}>Reference Check</h3>
 
             <div style={{width:'60%',float:'left', }}>
@@ -123,7 +238,7 @@ class ReferenceCheck extends React.Component {
             </div>
 
             <div style={{width:'40%',float:'left', }}>
-              <b>Date：</b><span>{this.state.date}</span>
+              <b>Date：</b><input type='date' value={this.state.date} onChange={v=>{this.handlechange("date",v)}} style={{outline:'none',border:'none',borderBottom:'1px solid #000'}}/>
             </div>
 
             <div style={{clear:'both',width:'100%', height:'16px'}}></div>
@@ -160,7 +275,7 @@ class ReferenceCheck extends React.Component {
 
             <h4 style={{marginTop:'24px',marginBottom:'16px'}}>Questions</h4>
 
-            <ul style={{listStyle:'none',display:'none'}} ref='hr'>
+            <ul ref='hr' className={this.state.chara=='HR'?'':'hidden'} style={{listStyle:'none'}}>
               <li>
                 <label style={{marginBottom:'16px'}}>1.What is the candidate’s on-board date?</label>
                 <textarea value={this.state.q1hr} onChange={v=>{this.handlechange("q1hr",v)}} style={{resize:'none',width:'100%',height:'120px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
@@ -212,7 +327,7 @@ class ReferenceCheck extends React.Component {
               </li>
             </ul>
 
-            <ul style={{listStyle:'none',display:'none'}} ref='supervisor'>
+            <ul style={{listStyle:'none'}} className={this.state.chara=='HR'?'hidden':''} ref='supervisor'>
               <li>
                 <label style={{marginBottom:'16px'}}>1.How long have you known/supervised the candidate?</label>
                 <textarea value={this.state.q1} onChange={v=>{this.handlechange("q1",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
@@ -278,7 +393,7 @@ class ReferenceCheck extends React.Component {
               </li>
 
               <li>
-                <label style={{marginBottom:'16px'}}>9.Would you consider that there were any areas that needed improvement?</label>
+                <label style={{marginBottom:'16px'}}>9.Would you describe this person as being people oriented or result oriented?</label>
                 <textarea value={this.state.q9} onChange={v=>{this.handlechange("q9",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
 
@@ -322,6 +437,7 @@ class ReferenceCheck extends React.Component {
             </ul>
           </div>
         </div>
+        </Spin>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Modal, Button, Input, Menu, Icon ,Spin} from 'antd';
+import { List, Avatar, Modal, Button, Input, Menu, Icon ,Spin,notification} from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
@@ -13,6 +13,19 @@ import { withRecordForm } from '../../common/hoc/withRecordForm';
  //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
 import dealControlArr from '../../../util20/controls'; //处理数据
 import { getDataProp } from '../../../util20/formData2ControlsData'; //处理数据
+
+const openNotification = () => {
+  notification.open({
+    message: 'A new Record has been added!',
+    description:
+      'Click "Modify" to edit the details.',
+    onClick: () => {
+
+    },
+  });
+};
+
+
 // 右侧导航栏列表的清单
 const MenuList = [
   {
@@ -70,6 +83,8 @@ class IdLindex extends Component {
     typeVisible: false,
     activeKey: '工作申请表',
     showAssessment:false,
+    curName:'',
+    selectedRecord:{}//选中的记录
   };
   // 点击某个人时候设置样式
   handlePersonOnClick = item => {
@@ -81,33 +96,37 @@ class IdLindex extends Component {
     });
     item.isSelected = true;
     // 并获取该人的详细信息
-    this.setState({ personList: tempPersonList, currentPersonId: item.ID });
+    this.setState({ personList: tempPersonList, currentPersonId: item.ID,curName:item.ChName });
     //
-    console.log('id',item.ID)
+    console.log('id',item.ID,this.state.curName)
     if(activeKey === '工作申请表'){
       this.getPersonalInfo(613149356409,item.ID);
     } else {
-      this.tableDataRef.handleRefresh();
+      // this.tableDataRef.handleRefresh();
       this.setState({loading:false});
-
-
     }
 
 
   };
-  // 添加面试评估表记录
-  addAssess = async key => {
-    console.log(this.state.currentPersonId)
+  // 添加面试评估表与背景调查表记录
+  addRec = async (resid,key) => {
+    this.setState({loading:true});
+    var id=this.state.currentPersonId
+    let res;
+    try {
+      res = await http().addRecords({
+        resid: resid,
+        data:[{ID:id,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
+      });
+      openNotification();
+      this.tableDataRef.handleRefresh();
+      this.setState({loading:false});
 
-    // let res;
-    // try {
-    //   res = await http().addRecords({
-    //     resid: 613152690063,
-    //     data:[]
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    } catch (err) {
+      console.log(err);
+      this.setState({loading:false});
+
+    }
   }
   // 给当前选中的人添加类名控制样式
   getSelectClass = isSelected => {
@@ -123,6 +142,10 @@ class IdLindex extends Component {
     this.setState({
       activeKey
     });
+    if(activeKey === '工作申请表'){
+      this.setState({loading:true})
+      this.getPersonalInfo(613149356409,this.state.currentPersonId);
+    }
   };
   // 获取人员列表
   getPersonList = async key => {
@@ -144,7 +167,9 @@ class IdLindex extends Component {
       this.getPersonalInfo(613149356409,res.data[0].ID);
       this.setState({
         personList: res.data,
-        currentPersonId: res.data[0].ID
+        currentPersonId: res.data[0].ID,
+        curName:res.data[0].ChName
+
       });
     } else {
       console.log('获取人员列表失败');
@@ -158,9 +183,10 @@ class IdLindex extends Component {
         resid: resid,
         cmswhere: `ID=${id}`
       });
-      console.log('人员详细信息',res.data)
       this.setState({ currentPersonInfo: res.data[0] });
       this.setState({loading:false});
+      console.log('人员详细信息',res.data)
+
 
     } catch (err) {
       Modal.error({
@@ -225,7 +251,7 @@ class IdLindex extends Component {
     this.getPersonList(value);
   };
   renderContent = () => {
-    let { activeKey, currentPersonInfo } = this.state;
+    let { activeKey, currentPersonInfo, selectedRecord } = this.state;
     // eslint-disable-next-line default-case
     switch (activeKey) {
       case '工作申请表':
@@ -242,10 +268,9 @@ class IdLindex extends Component {
             background:'#fff'
           }}>
           <div className={this.state.showAssessment?'':'hidden'}>
-          <InterviewAssessment clsAss={this.clsAss}>
+          <InterviewAssessment record={selectedRecord} clsAss={this.clsAss} data={currentPersonInfo}>
           </InterviewAssessment>
           </div>
-          <Button type='primary' onClick={this.addAssess} style={{margin:'16px'}}>新建</Button>
 
             <TableData
               key={613152706922}
@@ -261,6 +286,10 @@ class IdLindex extends Component {
               // actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
               //   return <Button>添加面试官</Button>
               // }}
+              actionBarExtra={records => (
+                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}}>新建</Button>
+
+              )}
               customRowBtns={[
                 (record, btnSize) => {
                   return (
@@ -268,8 +297,7 @@ class IdLindex extends Component {
                     <div>
                       <Button
                         onClick={() => {
-                          this.setState({showAssessment:true});
-                          // this.getFormData(record);
+                          this.setState({showAssessment:true, selectedRecord:record});
 
                         }}
                         style={{marginTop:'8px'}}
@@ -289,9 +317,10 @@ class IdLindex extends Component {
         return (
           <div style={{width:'100%',background:'#fff'}}>
             <div className={this.state.showRef==true?'':'hidden'}style={{width:'100vw',height:'100vh',background:'#fff',position:'fixed',top:'0',left:'0',zIndex:'999'}}>
-              <Icon type="close-circle" style={{position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
-              <ReferenceCheck></ReferenceCheck>
+              <Icon type="close-circle" style={{zIndex:'1000',cursor:'pointer',position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
+              <ReferenceCheck record={selectedRecord}></ReferenceCheck>
             </div>
+            <Button style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板文档</Button>
             <div style = {{width:"100%",height:"100%"}}>
               <TableData
               {...referenceCheck}
@@ -307,7 +336,7 @@ class IdLindex extends Component {
                       <div>
                         <Button
                           onClick={() => {
-                            this.setState({showRef:true})
+                            this.setState({showRef:true,selectedRecord:record})
                             // this.getFormData(record);
 
                           }}
@@ -321,7 +350,7 @@ class IdLindex extends Component {
                   }
                 ]}
                 actionBarExtra={records => (
-                    <Button type='primary'>新建</Button>
+                    <Button type='primary' onClick={v => {this.addRec(613152614705)}}>新建</Button>
                 )}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"

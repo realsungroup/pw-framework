@@ -38,6 +38,7 @@ const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
 const resid9 = '619808533610';
+ // const resid10 = '622983009643'; //入职培训管理表
 
 const internalCourse = '616155060405'; //内训课程表
 const tutorshipResid = '619281130628'; //辅导员表
@@ -100,6 +101,7 @@ class ProbationForms extends React.Component {
     this.getInternalCourses();
     // this.getTutorships();
     this.setState({ loading: false });
+    this.getOrientationTraining();
   }
 
   //申请转正
@@ -293,6 +295,20 @@ class ProbationForms extends React.Component {
         resid: internalCourse
       });
       this.setState({ internalCourses: res.data });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
+
+
+  //获取入职培训表数据
+  getOrientationTraining = async () => {
+    try {
+      let res = await http().getTable({
+        resid: resid3
+      });
+      this.setState({ orientationTraining: res.data });
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -754,7 +770,8 @@ class ProbationForms extends React.Component {
               <OrientationTraining
                 orientationTraining={this.state.orientationTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
-                )}
+                )
+              }
                 roleName={roleName}
                 editable={editable}
               />

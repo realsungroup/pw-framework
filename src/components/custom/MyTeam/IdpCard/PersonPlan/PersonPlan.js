@@ -1222,7 +1222,7 @@ class PersonPlan extends React.Component {
           </Popconfirm>
         );
       } else if (
-        (this.state.checkType !== 'oneself' &&
+        (this.state.checkType == 'oneself' &&
           this.state.personInfo.status === '年中回顾') ||
         this.state.personInfo.status === '年末回顾'
       ) {
@@ -1398,14 +1398,6 @@ class PersonPlan extends React.Component {
                 </span>
                 <span className="personPlan-contain-info-filed-wordValue">
                   {personInfo.startTime}
-                </span>
-              </div>
-              <div className="personPlan-contain-info-filed">
-                <span className="personPlan-contain-info-filed-word">
-                  状态：
-                </span>
-                <span className="personPlan-contain-info-filed-wordValue">
-                  {personInfo.status}
                 </span>
               </div>
             </div>

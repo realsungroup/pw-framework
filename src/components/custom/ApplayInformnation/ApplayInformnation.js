@@ -166,7 +166,7 @@ class Applayinformation extends Component {
       >
         <rect className='idlEx hidden' id='idlEx'>
           <Icon type="close-circle" style={{cursor:'pointer',position:'fixed',right:'32px',top:'16px'}} onClick={this.printClz}/>
-          <IDLExamination></IDLExamination>
+          <IDLExamination data={this.state.currentInfo}></IDLExamination>
         </rect>
         <Form style={{padding:'16px',boxSizing:'border-box'}}>
           <div className="information__boundary">
@@ -212,12 +212,12 @@ class Applayinformation extends Component {
               })(<Input />)}
             </Form.Item>
             <Form.Item label="身份证号码/Number of ID Card" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('idNumber', {
+              {getFieldDecorator('IDCardNumber', {
                 initialValue: currentInfo.IDCardNumber,
                 rules: [
                   {
                     required: true,
-                    message: 'Please input your E-mail!'
+                    message: 'Please input your ID Card number!'
                   }
                 ]
               })(<Input />)}
