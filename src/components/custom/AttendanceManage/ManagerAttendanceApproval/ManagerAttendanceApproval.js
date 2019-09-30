@@ -143,6 +143,24 @@ class ManagerAttendanceApproval extends React.Component {
               );
             }
           ]}
+          subTableArrProps={[
+            {
+              subTableName: '加班明细', // 必选（若不选则标签页标题为子表的 resid）
+              subResid: 485881703207, // 必选
+              tableProps: {
+                hasAdvSearch: false,
+                hasDelete: false,
+                hasRowDelete: false,
+                hasRowModify: false,
+                hasRowView: true,
+                hasAdd: false,
+                hasModify: false,
+                hasBeBtns: false,
+                actionBarWidth: 100,
+                baseURL: this.baseURL
+              }
+            }
+          ]}
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"

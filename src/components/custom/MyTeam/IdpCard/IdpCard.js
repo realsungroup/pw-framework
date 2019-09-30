@@ -322,9 +322,6 @@ class IdpCard extends React.Component {
             发起时间: {item.startTime}
           </div>
           <div className="idp-contain-smallcards-card-content">
-            进行状态: {item.status}
-          </div>
-          <div className="idp-contain-smallcards-card-content">
             参与人数: {item.number}
           </div>
           <div className="idp-contain-smallcards-card-content">
@@ -468,8 +465,6 @@ class IdpCard extends React.Component {
                 >
                   <div style={{ float: 'left' }}>
                     <div>发起时间: {currentPlan && currentPlan.startTime}</div>
-                    <br />
-                    <div>进行状态: {currentPlan && currentPlan.status}</div>
                     <br />
                     <div>
                       {this.props.role === 'HR' ? '参与人数:' : '下属人数:'}

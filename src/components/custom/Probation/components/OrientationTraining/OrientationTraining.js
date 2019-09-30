@@ -3,7 +3,6 @@ import './OrientationTraining.less';
 import { Card, Table } from 'antd';
 
 const { Column } = Table;
-
 const OrientationTraining = props => {
   return (
     <div id="orientation-training" className="probation-form">
@@ -15,7 +14,10 @@ const OrientationTraining = props => {
           </React.Fragment>
         }
       >
-        <Table dataSource={props.orientationTraining} pagination={false}>
+        <Table
+          dataSource={props.orientationTraining}
+          pagination={false}
+        >
           <Column title="序号/No" dataIndex="no" key="no" width={100} />
           <Column
             title="课程/Courses"

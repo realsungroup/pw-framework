@@ -131,6 +131,7 @@ class EmployeeCourses extends React.Component {
   getCourses = async () => {
     let res,
       { currentYear } = this.state;
+      console.log(currentYear)
     try {
       res = await http().getRecordAndSubTables({
         resid: resid,

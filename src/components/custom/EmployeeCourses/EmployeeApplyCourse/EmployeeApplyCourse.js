@@ -19,6 +19,7 @@ import './EmployeeApplyCourse.less';
 
 const { Option } = Select;
 const CourseDetailResid = '615054661547';
+const CourseArrangeResid = '613959525708';
 const form = props => {
   const {
     getFieldDecorator,
@@ -50,15 +51,25 @@ const form = props => {
   };
   return (
     <Form {...formItemLayout}>
-      <Form.Item label="课程名">
+      <Form.Item label="课程名称">
         {getFieldDecorator('courseName', {
-          rules: [{ required: true, message: '请输入课程名' }]
-        })(<Input placeholder="课程名" />)}
+          rules: [{ required: true, message: '请输入课程名称' }]
+        })(<Input placeholder="课程名称" />)}
+      </Form.Item>
+      <Form.Item label="培训机构">
+        {getFieldDecorator('TrainingOrganization', {
+          rules: [{ required: true, message: '请填写培训机构' }]
+        })(<Input placeholder="请填写培训机构" />)}
       </Form.Item>
       <Form.Item label="费用">
         {getFieldDecorator('cost', {
           rules: [{ required: true, message: '请输入费用' }]
         })(<Input placeholder="费用" type="number" />)}
+      </Form.Item>
+      <Form.Item label="当前财年">
+        {getFieldDecorator('currentYear', {
+          rules: [{ required: true, message: '请输入当前财年' }]
+        })(<Input placeholder="请输入当前财年，例如：FY2020"  />)}
       </Form.Item>
       <Form.Item label="开始上课日期">
         {getFieldDecorator('beginClassTime', {
@@ -71,14 +82,19 @@ const form = props => {
         })(<DatePicker placeholder="请选择结束日期" />)}
       </Form.Item>
       <Form.Item label="上课地点">
-        {getFieldDecorator('TranningOrganization', {
+        {getFieldDecorator('TranningLocation', {
           rules: [{ required: true, message: '请填写上课地点' }]
         })(<Input placeholder="请填写上课地点" />)}
       </Form.Item>
-      <Form.Item label="课程类别">
-        {getFieldDecorator('courseCategory', {
-          rules: [{ required: true, message: '请填写课程类别' }]
-        })(<Input placeholder="请填写课程类别" />)}
+      <Form.Item label="培训类别">
+        {getFieldDecorator('TranningType', {
+          rules: [{ required: true, message: '请选择培训类别' }]
+        })(<Select defaultValue ="外训" placeholder="请选择培训类别"
+        >
+          <Option value ="内训">内训</Option>
+          <Option value ="外训">外训</Option>
+          </Select>
+          )}
       </Form.Item>
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
@@ -116,7 +132,8 @@ class EmployeeApplyCourse extends React.Component {
     applyByUnexistCourseVisible: false, // 自定义课程申请模态窗状态
     isSelectedCourse: false,
     selectedCourse: {},
-    searchKey: ''
+    searchKey: '',
+    courseArrangeID:''
   };
 
   componentDidMount() {
@@ -152,6 +169,12 @@ class EmployeeApplyCourse extends React.Component {
     }
   };
 
+
+  submitCourse = async course =>{
+    // this.submitSelfDefineCourse(course);
+    this.submitCentrolList(course);
+  }
+  //明细表添加记录
   submitSelfDefineCourse = async course => {
     try {
       let res = await http().addRecords({
@@ -162,9 +185,14 @@ class EmployeeApplyCourse extends React.Component {
             C3_613941385069: course.cost,
             C3_615393041304: course.beginClassTime,
             C3_615393093633: course.endClassTime,
-            C3_613941386325: course.TranningOrganization,
+            C3_613941386325: course.TranningLocation,
             courseIntroduction: course.courseIntroduction,
-            courseType: course.courseCategory
+            courseType: course.TranningType,
+            trainingClub:course.TrainingOrganization,
+            CourseArrangeID:course.CourseArrangeID,
+            C3_613941384328:course.currentYear,
+            C3_613956470258:"Y",
+            // C3_613941386081:classTime
           }
         ]
       });
@@ -176,15 +204,80 @@ class EmployeeApplyCourse extends React.Component {
       message.error(error.message);
     }
   };
+
+  //主表添加记录
+  submitCentrolList = async course => {
+    try {
+      let res = await http().addRecords({
+        resid: CourseArrangeResid,
+        data: [
+          {
+            CourseName: course.courseName,
+            actualCost: course.cost,
+            StartDatetime: course.beginClassTime,
+            EndDatetime: course.endClassTime,
+            CourseLocation: course.TranningLocation,
+            courseInformation: course.courseIntroduction,
+            classType: course.TranningType,
+            organization:course.TrainingOrganization,
+            isCustom:"Y",
+            FisYear:course.currentYear,
+          }
+        ]
+      });
+      const data = res.data[0];
+      this.setState({ 
+        applyByUnexistCourseVisible: false
+       });
+      this.submitSelfDefineCourse({...course, CourseArrangeID:data.CourseArrangeID})
+      message.success(res.message);
+      
+    } catch (error) {
+      console.error(error.message);
+      message.error(error.message);
+    }
+  };
+
+  //内训课课程申请添加至课程安排主表
+  submitInternelCourse = async course => {
+    let { selectedCourse } = this.state;
+    try {
+      let res = await http().addRecords({
+        resid: CourseArrangeResid,
+        data: [
+          {
+            CourseName: selectedCourse.C3_609845305680,
+            courseInformation: selectedCourse.C3_609845305618,
+            classType: selectedCourse.C3_612436740323,
+            FisYear:selectedCourse.C3_609845305743,
+          }
+        ]
+      });
+      const data = res.data[0];
+      this.setState({ applyByUnexistCourseVisible: false,
+        courseArrangeID:data.CourseArrangeID });
+      this.submitApply()
+      message.success(res.message);
+    } catch (error) {
+      console.error(error.message);
+      message.error(error.message);
+    }
+  };
+
   //提交申请
   submitApply = async () => {
     let { selectedCourse } = this.state;
+    let { courseArrangeID } = this.state;
+    console.log("selectedCourse",selectedCourse)
     try {
       let res = await http().addRecords({
         resid: CourseDetailResid,
         data: [
           {
-            C3_614182469763: selectedCourse.C3_609845305868
+            C3_614182469763: selectedCourse.C3_609845305868,
+            CourseArrangeID: courseArrangeID
+            
+
           }
         ]
       });
@@ -297,7 +390,7 @@ class EmployeeApplyCourse extends React.Component {
                   </Button>,
                   <Popconfirm
                     title="确认提交申请？"
-                    onConfirm={this.submitApply}
+                    onConfirm={this.submitInternelCourse}
                   >
                     <Button icon="save" type="link">
                       提交申请
@@ -316,17 +409,17 @@ class EmployeeApplyCourse extends React.Component {
                   </div>
                   <div className="course_info-item">
                     <label>讲师</label>
-                    <span>{selectedCourse.teacher}</span>
+                    <span>{selectedCourse.C3_610390419677}</span>
+                  </div>
+                  <div className="course_info-item">
+                    <label>财年</label>
+                    <span>{selectedCourse.C3_609845305743}</span>
+                  </div>
+                  <div className="course_info-item">
+                    <label>机构</label>
+                    <span>{selectedCourse.C3_612436740323}</span>
                   </div>
                   {/* <div className="course_info-item">
-                    <label>讲师</label>
-                    <span>{selectedCourse.teacher}</span>
-                  </div>
-                  <div className="course_info-item">
-                    <label>讲师</label>
-                    <span>{selectedCourse.teacher}</span>
-                  </div>
-                  <div className="course_info-item">
                     <label>讲师</label>
                     <span>{selectedCourse.teacher}</span>
                   </div> */}
@@ -391,7 +484,7 @@ class EmployeeApplyCourse extends React.Component {
         >
           <SelfDefineCourseForm
             closeModal={this.closeModal}
-            onSubmit={this.submitSelfDefineCourse}
+            onSubmit={this.submitCourse}
           />
         </Modal>
       </div>
