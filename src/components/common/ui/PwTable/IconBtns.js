@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon, Tooltip } from 'antd';
 import IconWithTooltip from '../IconWithTooltip';
 
 const iconSizeMap = {
@@ -24,10 +25,23 @@ const IconBtns = React.memo(
     zoomStatus,
     onZoomIn,
     onZoomOut,
-    size
+    size,
+    onStatisticalAnalysis
   }) => {
     return (
       <React.Fragment>
+        <Tooltip
+          className="pw-table__header-icon"
+          placement="top"
+          title="统计分析"
+          onClick={onStatisticalAnalysis}
+        >
+          <Icon
+            type="bar-chart"
+            style={{ fontSize: iconSizeMap[size], color: 'green' }}
+          />
+        </Tooltip>
+
         {hasImport && (
           <IconWithTooltip
             className="pw-table__header-icon"

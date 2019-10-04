@@ -54,6 +54,7 @@ class AttendanceApply extends React.Component {
           <WorkOverTimeApply
             goBack={this.goBack}
             getNotices={this.props.getNotices}
+            setLoading={this.props.setLoading}
           />
         );
         break;

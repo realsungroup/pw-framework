@@ -235,7 +235,7 @@ class IdpCard extends React.Component {
           });
           if (res.Error === 0) {
             message.success(res.message);
-            this.onRunAutoTask(res.data[0].projectId);
+            // this.onRunAutoTask(res.data[0].projectId);
             this.getData();
           }
         } catch (error) {
@@ -276,7 +276,7 @@ class IdpCard extends React.Component {
               this.onCheckTeam(item);
             }}
           >
-            查看
+            员工列表
           </span>
         );
       case 'Employee':
@@ -355,7 +355,7 @@ class IdpCard extends React.Component {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
               >
-                查看
+                员工列表
               </span>
             </span>
           );
@@ -376,7 +376,7 @@ class IdpCard extends React.Component {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
               >
-                查看
+                员工列表
               </span>
             </React.Fragment>
           );
@@ -397,7 +397,7 @@ class IdpCard extends React.Component {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
               >
-                查看
+                员工列表
               </span>
             </React.Fragment>
           );
@@ -408,7 +408,7 @@ class IdpCard extends React.Component {
                 this.onCheckTeam(this.state.currentPlan);
               }}
             >
-              查看
+              员工列表
             </span>
           );
         default:

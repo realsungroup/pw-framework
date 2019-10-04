@@ -37,11 +37,12 @@ class ApprovaledApplicationForm extends React.Component {
   revocat = async data => {
     try {
       this.props.setLoading(true);
-      await http().modifyRecords({
+      let res = await http().modifyRecords({
         resid: '449449427225',
         data,
         dblinkname: 'ehr'
       });
+      message.success(res.message);
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);

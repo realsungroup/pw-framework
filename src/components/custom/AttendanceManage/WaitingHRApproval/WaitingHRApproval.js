@@ -47,7 +47,7 @@ class WaitingHRApproval extends React.Component {
       message.error(error.message);
       console.log(error);
     } finally {
-      this.props.setLoading(true);
+      this.props.setLoading(false);
     }
   };
   render() {

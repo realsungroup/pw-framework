@@ -18,7 +18,7 @@ class IDPMangement extends React.Component {
     this.state = {
       mode: 'inline',
       theme: 'light',
-      selectKey: '5',
+      selectKey: '1',
       collapsed: false
     };
   }
@@ -84,7 +84,7 @@ class IDPMangement extends React.Component {
           </div>
           <Menu
             style={{ height: '100%' }}
-            defaultSelectedKeys={['5']}
+            defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             theme={this.state.theme}
