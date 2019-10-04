@@ -24,7 +24,7 @@ import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
-import BIGrid from 'lz-components-and-utils/lib/BIGrid';
+// import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const { Fragment } = React;
 
@@ -1718,8 +1718,8 @@ class TableData extends React.Component {
           <Button onClick={() => this.setState({ isShowGrid: false })}>
             返回
           </Button>
-          {gridProps.length ? (
-            <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+          {gridProps.length ? (<div></div>
+            // <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
           ) : (
             <div>暂无配置</div>
           )}
