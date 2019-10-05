@@ -16,7 +16,7 @@ class RevocationApplicationForm extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={false}

@@ -228,10 +228,18 @@ class JobSeeker extends Component {
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
       console.log(values);
-      // console.log(values.Eddate1[0].format('YYYY-MM-DD'));
-      if (!err) {
+      var strHuKou;
+      var instr=values.PlaceOfHuKou[0];
+      var instr2=values.PlaceOfHuKou[1];
+      var instr3=values.PlaceOfHuKou[2];
+      strHuKou=cityData[86][instr]+cityData[instr][instr2]+cityData[instr2][instr3];
+      console.log(strHuKou)
+      if (
+        !err
+        // err==err
+      ) {
         this.setState({ loading: true });
-        // console.log(1111111);
+        console.log('date',values.Eddate1[0].format('YYYY-MM-DD'));
         let res;
         try {
           res = http().addRecords({
@@ -239,6 +247,7 @@ class JobSeeker extends Component {
             data: [
               {
                 ...values,
+                PlaceOfHuKou:strHuKou,
                 //教育
                 EdStartTime1: values.Eddate1
                   ? values.Eddate1[0].format('YYYY-MM-DD')
@@ -284,7 +293,16 @@ class JobSeeker extends Component {
                   : null,
                 WorkEndTime3: values.WorkDate3
                   ? values.WorkDate3[1].format('YYYY-MM-DD')
-                  : null
+                  : null,
+                TrainingDate1: values.TrainingD1
+                  ? values.TrainingD1[0].format('YYYY-MM-DD')+'-'+values.TrainingD1[1].format('YYYY-MM-DD')
+                  : null,
+                  TrainingDate2: values.TrainingD2
+                    ? values.TrainingD2[0].format('YYYY-MM-DD')+'-'+values.TrainingD2[1].format('YYYY-MM-DD')
+                    : null,
+                    TrainingDate3: values.TrainingD3
+                      ? values.TrainingD3[0].format('YYYY-MM-DD')+'-'+values.TrainingD3[1].format('YYYY-MM-DD')
+                      : null,
               }
             ]
           });
@@ -368,11 +386,11 @@ class JobSeeker extends Component {
     const tempeducationBackground = [...educationBackground];
     const obj = {
       EduPeriod: '',
-      Colleges: '',
-      Major: '',
-      Degree: '',
-      Reference: '',
-      Telephone: ''
+      EdSchool: '',
+      EdMajor: '',
+      EdDegree: '',
+      EdReference: '',
+      EdReferenceTel: ''
     };
     tempeducationBackground.push(obj);
     this.setState({
@@ -685,7 +703,7 @@ class JobSeeker extends Component {
                 label="身份证号码/Number of ID Card"
                 {...formItemLayout}
               >
-                {getFieldDecorator('idNumber', {
+                {getFieldDecorator('IDCardNumber', {
                   rules: [
                     {
                       required: true,
@@ -710,7 +728,7 @@ class JobSeeker extends Component {
                 )}
               </Form.Item>
               <Form.Item label="手机/MP" {...formItemLayout}>
-                {getFieldDecorator('Phone', {
+                {getFieldDecorator('Tel', {
                   rules: [
                     {
                       required: true,
@@ -739,6 +757,16 @@ class JobSeeker extends Component {
                   ]
                 })(<Input />)}
               </Form.Item>
+              <Form.Item label="籍贯/NativePlace" {...formItemLayout}>
+                {getFieldDecorator('NativePlace', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '输入籍贯'
+                    }
+                  ]
+                })(<Input />)}
+              </Form.Item>
               <Form.Item label="民族/Nationality" {...formItemLayout}>
                 {getFieldDecorator('Nation', {
                   rules: [
@@ -760,7 +788,7 @@ class JobSeeker extends Component {
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="出生日期/Date Of Birth" {...formItemLayout}>
-                {getFieldDecorator('BirthOfDate', {
+                {getFieldDecorator('BirthDate', {
                   rules: [
                     {
                       required: true,
@@ -783,7 +811,7 @@ class JobSeeker extends Component {
                 label="户口所在地/Place Of HuKou Registered(Province/City)"
                 {...formItemLayout}
               >
-                {getFieldDecorator('PlaceOfHukou', {
+                {getFieldDecorator('PlaceOfHuKou', {
                   rules: [
                     {
                       required: true,
@@ -839,10 +867,10 @@ class JobSeeker extends Component {
                 )}
               </Form.Item>
               <Form.Item label="推荐人姓名/Recommended by" {...formItemLayout}>
-                {getFieldDecorator('RecommenderName', {})(<Input />)}
+                {getFieldDecorator('Recommender', {})(<Input />)}
               </Form.Item>
               <Form.Item label="和推荐人关系/Relationship" {...formItemLayout}>
-                {getFieldDecorator('RecommenderRelation', {})(<Input />)}
+                {getFieldDecorator('RecomenderRelation', {})(<Input />)}
               </Form.Item>
               <Form.Item
                 label="婚姻状况(选填)/Marital Status(Optional)"
@@ -880,7 +908,7 @@ class JobSeeker extends Component {
                       label="年限（年/月）/Period(Year/Month)"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`Period${index}`, {
+                      {getFieldDecorator(`Eddate${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -897,7 +925,7 @@ class JobSeeker extends Component {
                       label="学校名称/Name of School"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`School${index}`, {
+                      {getFieldDecorator(`EdSchool${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -912,7 +940,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="专业名称/Major" {...formItemLayout2}>
-                      {getFieldDecorator(`Major${index}`, {
+                      {getFieldDecorator(`EdMajor${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -927,7 +955,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="学位/Degree" {...formItemLayout2}>
-                      {getFieldDecorator(`Degree${index}`, {
+                      {getFieldDecorator(`EdDegree${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -942,7 +970,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator(`EduReference${index}`, {
+                      {getFieldDecorator(`EdReference${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -960,7 +988,7 @@ class JobSeeker extends Component {
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`EduTelephone${index}`, {
+                      {getFieldDecorator(`EdReferenceTel${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1011,7 +1039,7 @@ class JobSeeker extends Component {
                       label="任职年限/Post period"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`PostPeriod${index}`, {
+                      {getFieldDecorator(`WorkDate${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1028,7 +1056,7 @@ class JobSeeker extends Component {
                       label="公司名称&类型/Name of Company & Type"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`ComType${index}`, {
+                      {getFieldDecorator(`WorkComName${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1043,7 +1071,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="职位/Position" {...formItemLayout2}>
-                      {getFieldDecorator(`Position${index}`, {
+                      {getFieldDecorator(`WorkRank${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1061,7 +1089,7 @@ class JobSeeker extends Component {
                       label="离职原因/Reason For Leaving"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`ROF${index}`, {
+                      {getFieldDecorator(`ReasonForLeave${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1076,7 +1104,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                      {getFieldDecorator(`WorkReference${index}`, {
+                      {getFieldDecorator(`WorkReference${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1094,7 +1122,7 @@ class JobSeeker extends Component {
                       label="证明人电话/Telephone"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`WorkTelephone${index}`, {
+                      {getFieldDecorator(`WorkReferenceTel${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1141,7 +1169,7 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="姓名/Name" {...formItemLayout2}>
-                      {getFieldDecorator(`FamName${index}`, {
+                      {getFieldDecorator(`FamName${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1156,7 +1184,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="关系/Relationship" {...formItemLayout2}>
-                      {getFieldDecorator(`FamRelationship${index}`, {
+                      {getFieldDecorator(`FamRelation${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1177,7 +1205,7 @@ class JobSeeker extends Component {
                       label="出生年月/Date of Birth"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`FamDateOfBirth${index}`, {
+                      {getFieldDecorator(`FamBirthDate${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1186,13 +1214,15 @@ class JobSeeker extends Component {
                         ]
                       })(
                         <Input
+                        type='date'
+
                           value={item.DateofBirth}
                           onChange={this.handelFamDateofBirth.bind(this, index)}
                         />
                       )}
                     </Form.Item>
                     <Form.Item label="职务/Position" {...formItemLayout2}>
-                      {getFieldDecorator(`FamPosition${index}`, {
+                      {getFieldDecorator(`FamPosition${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1210,7 +1240,7 @@ class JobSeeker extends Component {
                       label="公司名称&地址/Name of Company&Address"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`FamCompany${index}`, {
+                      {getFieldDecorator(`FamComAndAdd${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1225,7 +1255,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                      {getFieldDecorator(`FamTelephone${index}`, {
+                      {getFieldDecorator(`FamTel${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1276,7 +1306,7 @@ class JobSeeker extends Component {
                 return (
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="日期/Date/Period " {...formItemLayout2}>
-                      {getFieldDecorator(`TrainPeriod${index}`, {
+                      {getFieldDecorator(`TrainingD${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1293,7 +1323,7 @@ class JobSeeker extends Component {
                       label="培训机构/Name of Training Institute"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`TrainingName${index}`, {
+                      {getFieldDecorator(`TrainingInstitute${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1312,7 +1342,7 @@ class JobSeeker extends Component {
                       label="培训课程/Training Courses"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`TrainingCourse${index}`, {
+                      {getFieldDecorator(`TrainingCourese${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1333,7 +1363,7 @@ class JobSeeker extends Component {
                       label="专业资格/Pofessional Qualification"
                       {...formItemLayout2}
                     >
-                      {getFieldDecorator(`TrainingProfessional${index}`, {
+                      {getFieldDecorator(`TrainingQualification${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1351,7 +1381,7 @@ class JobSeeker extends Component {
                       )}
                     </Form.Item>
                     <Form.Item label="证明人/Reference" {...formItemLayout2}>
-                    {getFieldDecorator(`TrainingPeriod${index}`, {
+                    {getFieldDecorator(`TrainingReference${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1366,7 +1396,7 @@ class JobSeeker extends Component {
                       />)}
                     </Form.Item>
                     <Form.Item label="电话/Telephone" {...formItemLayout2}>
-                    {getFieldDecorator(`TrainTelephone${index}`, {
+                    {getFieldDecorator(`TrainingRefTel${index+1}`, {
                         rules: [
                           {
                             required: true,
@@ -1670,7 +1700,7 @@ class JobSeeker extends Component {
                   </p>
                 }
               >
-                {getFieldDecorator('CriminalStatus',{
+                {getFieldDecorator('Criminal',{
                     rules: [
                       {
                         required: true,

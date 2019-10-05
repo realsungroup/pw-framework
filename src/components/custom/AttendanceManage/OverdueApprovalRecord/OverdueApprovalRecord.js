@@ -16,7 +16,7 @@ class OverdueApprovalRecord extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}

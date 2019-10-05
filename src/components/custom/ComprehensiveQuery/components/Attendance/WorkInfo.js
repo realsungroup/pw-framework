@@ -4,7 +4,10 @@ import TableData from '../../../../common/data/TableData';
 import './WorkInfo.less';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
+<<<<<<< HEAD
 // import BIGrid from 'lz-components-and-utils/lib/BIGrid';
+=======
+>>>>>>> 697ea9f0e79a9eb80e1e49d281ed21c09b6d571f
 
 const { Option } = Select;
 const modalWrapperStyle = { height: '80vh' };

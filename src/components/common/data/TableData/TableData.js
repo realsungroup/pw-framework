@@ -916,7 +916,8 @@ class TableData extends React.Component {
       recordFormContainerProps,
       subTableArrProps,
       storeWay,
-      recordFormUseAbsolute
+      recordFormUseAbsolute,
+      baseURL
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -963,7 +964,6 @@ class TableData extends React.Component {
     if (backendBtnType === 'single') {
       newHostRecid = record.REC_ID;
     }
-
     openRecordForm({
       type: recordFormType,
       title,
@@ -983,7 +983,8 @@ class TableData extends React.Component {
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
       dblinkname,
-      useAbsolute: recordFormUseAbsolute
+      useAbsolute: recordFormUseAbsolute,
+      baseURL
     });
   };
 
@@ -1158,7 +1159,10 @@ class TableData extends React.Component {
       };
     }
     await this.getTableData(obj);
-    this.setState({ loading: false });
+    this.setState({
+      loading: false,
+      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+    });
   };
 
   handleAdvSearch = () => {
@@ -1705,7 +1709,7 @@ class TableData extends React.Component {
             {this.renderPwTable()}
           </div>
         </Spin>
-        <div
+        {/* <div
           style={{
             position: 'absolute',
             top: 0,
@@ -1719,11 +1723,15 @@ class TableData extends React.Component {
             返回
           </Button>
           {gridProps.length ? (<div></div>
+<<<<<<< HEAD
             // <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+=======
+            <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+>>>>>>> 697ea9f0e79a9eb80e1e49d281ed21c09b6d571f
           ) : (
             <div>暂无配置</div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }

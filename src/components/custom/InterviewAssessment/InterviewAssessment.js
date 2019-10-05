@@ -9,12 +9,14 @@ import {
 } from 'antd';
 import './InterviewAssessment.less';
 import http from '../../../util20/api';
-
+import debounce from 'lodash/debounce';
 const { Option } = Select;
 const { confirm } = Modal;
 class InterviewAssessment extends React.Component {
   constructor() {
     super();
+    this.handleSearch = debounce(this.handleSearch, 800);
+
     this.state = {
         userChara:'',
         data:[
@@ -141,10 +143,45 @@ subConfirm = () => {
     onCancel() {},
   });
 }
-
-  handleSearch = value => {
+handleChangeS=(value,obj)=>{
+  this.setState({
+      value,
+      data:[],
+      postName:obj.props.children,
+      postID:value,
+      fetching: false,
+    });
+}
+  handleSearch = async (value) => {
     if (value) {
-      fetch(value, data => this.setState({ data }));
+      // this.getF(value);
+
+      this.setState({fetching:true});
+
+      let res;
+      try {
+        res = await http().getTable({
+          resid: 623153143463,
+          key:value
+        });
+
+        const data =res.data.map(data => ({
+                  text: `${data.C3_421886426562}`,
+                  value: data.REC_ID,
+                }));
+
+                  this.setState({ data, fetching: false });
+      }catch (err) {
+        Modal.error({
+          title: '提示',
+          content: err.message
+        });
+        this.setState({fetching:false});
+
+      }
+
+
+      // fetch(value, data => this.setState({ data }));
     } else {
       this.setState({ data: [] });
     }
@@ -203,35 +240,9 @@ subConfirm = () => {
     }
     // 获取面试官名单
     // 623153143463
-    this.getF();
+    // this.getF();
 }
-getF = async ()=>{
-  this.setState({loading:true});
 
-  let res;
-  try {
-    res = await http().getTable({
-      resid: 623153143463,
-    });
-  var arr=[];
-  var n=0;
-  console.log('length',res.data.length)
-  while(n<res.data.length){
-    arr.push({text:res.data[n].C3_421886426562,value:res.data[n].REC_ID})
-    n++;
-  }
-
-  this.setState({loading:false,data:arr});
-  }catch (err) {
-    Modal.error({
-      title: '提示',
-      content: err.message
-    });
-    this.setState({loading:false});
-
-  }
-
-}
   getInfo = async (resid,id,id2) => {
     this.setState({loading:true});
 
@@ -408,39 +419,48 @@ getF = async ()=>{
     }
   }
   sendMail = async (id) =>{
-    this.setState({loading:true});
-    var nxtStep;
-    if(this.state.C3_622921647557=='未送邮（初试）'){
-      nxtStep='未提交（初试）'
-    }else if(this.state.C3_622921647557=='未送邮（复试）'){
-      nxtStep='未提交（复试）'
-    }
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid: 613152706922,
-        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
-        data:[{
-           REC_ID:this.props.record.REC_ID,
-           C3_622921647557:nxtStep,
-         }]
-       })
-       Modal.success({
-         title: '邮件发送成功',
-         content: '',
-         onOk() {
-           window.location.reload();
-         }
-       });
+    if(this.state.postID){
+      this.setState({loading:true});
+      var nxtStep;
+      if(this.state.C3_622921647557=='未送邮（初试）'){
+        nxtStep='未提交（初试）'
+      }else if(this.state.C3_622921647557=='未送邮（复试）'){
+        nxtStep='未提交（复试）'
+      }
+      let res;
+      try {
+        res = await http().modifyRecords({
+          resid: 613152706922,
+          cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+          data:[{
+             REC_ID:this.props.record.REC_ID,
+             C3_622921647557:nxtStep,
+             interviewer:this.state.postID
+           }]
+         })
+         Modal.success({
+           title: '邮件发送成功',
+           content: '',
+           onOk() {
+             window.location.reload();
+           }
+         });
 
-  }catch (err) {
+    }catch (err) {
+        Modal.error({
+          title: '提示',
+          content: err.message
+        });
+        this.setState({loading:false});
+
+      }
+    }else{
       Modal.error({
         title: '提示',
-        content: err.message
+        content: '您还未选择收件人！'
       });
-      this.setState({loading:false});
-
     }
+
   }
 
   fightBack = async (id) =>{
@@ -635,8 +655,6 @@ getF = async ()=>{
   };
 
   render() {
-    const options = this.state.data.map(d => <Option key={d.value}>{d.text}</Option>);
-
 
     return (
       <div className='IA'>
@@ -681,14 +699,20 @@ getF = async ()=>{
         <div className={this.state.showMail?'chooseClass choosePeople':'chooseClass choosePeople hidden'}>
           <div className='innerWrap'>
             <Select
-              showSearch
-              value={this.state.value}
-              placeholder='请选择收件人'
-              onSearch={this.handleSearch}
-              onChange={v => {this.setState({value:v})}}
-              notFoundContent={null}
+            showSearch
+
+      value={this.state.postName}
+      placeholder="请选择收件人"
+      notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
+      filterOption={false}
+      onSearch={this.handleSearch}
+      onChange={this.handleChangeS}
+      style={{ width:'100%',maxHeight:'88px',overflow:'auto'}}
+
             >
-              {options}
+            {this.state.data.map(d => (
+                      <Option key={d.value}>{d.text}</Option>
+                    ))}
             </Select>
             <Button type='primary' onClick={this.showConfirmMail}>发送提醒邮件</Button>
           </div>
