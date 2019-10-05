@@ -98,14 +98,16 @@ class WaitingApproval extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={false}
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
+          recordFormUseAbsolute={true}
           actionBarWidth={200}
+          formProps={{ width: 700 }}
           dblinkname="ehr"
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}

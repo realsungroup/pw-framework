@@ -16,7 +16,7 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={true}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={true}
