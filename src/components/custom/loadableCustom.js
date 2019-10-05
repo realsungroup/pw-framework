@@ -512,3 +512,9 @@ export const ApplyApprove = Loadable({
     return minLoading;
   }
 });
+export const CyberMoney = Loadable({
+  loader: () => import('./CyberMoney'),
+  loading() {
+    return minLoading;
+  }
+});

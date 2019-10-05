@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ApplayInformnation.less';
-import { Form, Input, DatePicker, Radio, Button, Select ,Icon} from 'antd';
+import { Form, Input, DatePicker, Radio, Button, Select ,Icon,Modal} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
 import IDLExamination from '../IDLExamination';
@@ -97,6 +97,7 @@ class Applayinformation extends Component {
         currentInfo: nextProps.personDetail,
         ChName:nextProps.personDetail.ChName,
         ID:nextProps.personDetail.ID,
+        REC_ID:nextProps.personDetail.REC_ID
       }, () => {
         this.searchEdu(this.state.ID);
       });
@@ -114,6 +115,7 @@ class Applayinformation extends Component {
         cmswhere:`ID=${ID}`
       });
       this.setState({ eduInfo: res.data.data });
+
     } catch (error) {
       console.log(error);
     }
@@ -142,7 +144,34 @@ class Applayinformation extends Component {
   };
   handleSave=()=>{
     this.props.form.validateFields((err,values)=>{
-      console.log(values);
+      this.setState({ loading: true });
+      let res;
+      try {
+        res = http().modifyRecords({
+          resid: 613149356409, //工作申请表 业务数据
+          data: [
+
+            {...values,REC_ID:this.state.REC_ID,}]
+        })
+        Modal.success({
+          title: '提示',
+          content: '保存成功',
+          onOk: () => {
+            window.location.reload();
+
+          }
+        });
+        this.setState({ loading: false });
+
+      }catch (err) {
+        console.error(err.message);
+        this.setState({ loading: false });
+
+        Modal.error({
+          title: '提示失败',
+          content: err.message
+        });
+      }
     })
   }
   printClz=()=>{
@@ -206,7 +235,7 @@ class Applayinformation extends Component {
                 rules: [
                   {
                     required: true,
-                    message: 'Please input your E-mail!'
+                    message: '请输入申请职位名称!'
                   }
                 ]
               })(<Input />)}
@@ -235,7 +264,7 @@ class Applayinformation extends Component {
               )}
             </Form.Item>
             <Form.Item label="手机/MP" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('Phone', {
+              {getFieldDecorator('Tel', {
                 initialValue: currentInfo.Tel,
                 rules: [
                   {
@@ -267,6 +296,17 @@ class Applayinformation extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
+            <Form.Item label="籍贯/NativePlace" {...formItemLayout} className="applay__information-content">
+              {getFieldDecorator('NativePlace', {
+                initialValue: currentInfo.NativePlace,
+                rules: [
+                  {
+                    required: true,
+                    message: '输入籍贯'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
             <Form.Item label="民族/Nationality" {...formItemLayout} className="applay__information-content">
               {getFieldDecorator('Nation', {
                 initialValue: currentInfo.Nation,
@@ -290,7 +330,7 @@ class Applayinformation extends Component {
               })(<Input />)}
             </Form.Item>
             <Form.Item label="出生日期/Date Of Birth(year/month/day)" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('BirthOfDate', {
+              {getFieldDecorator('BirthDate', {
                 initialValue: currentInfo.BirthDate,
                 rules: [
                   {
@@ -314,8 +354,8 @@ class Applayinformation extends Component {
                 ]
               })(<Input />)}
             </Form.Item>
-            <Form.Item label="籍贯/Native Place" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('PlaceOfHukou', {
+            <Form.Item label="户口所在地/Native Place" {...formItemLayout} className="applay__information-content">
+              {getFieldDecorator('PlaceOfHuKou', {
                 initialValue: currentInfo.PlaceOfHuKou,
                 rules: [
                   {
@@ -365,12 +405,12 @@ class Applayinformation extends Component {
               )}
             </Form.Item>
             <Form.Item label="推荐人姓名/Recommended by" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('RecommenderName', {
+              {getFieldDecorator('Recommender', {
                 initialValue: currentInfo.Recommender
               })(<Input />)}
             </Form.Item>
             <Form.Item label="和推荐人关系/Relationship" {...formItemLayout} className="applay__information-content">
-              {getFieldDecorator('RecommenderRelation', {
+              {getFieldDecorator('RecomenderRelation', {
                 initialValue: currentInfo.RecomenderRelation
               })(<Input />)}
             </Form.Item>
@@ -389,48 +429,165 @@ class Applayinformation extends Component {
           Education Background (Please start from latest education to middle school)/教育背景(请从最近教育开始填写至中学)
           </h3>
           <div className="information__boundary">
-            <Form.Item label="年限（年/月）/Period(Year/Month)" {...formItemLayout2} className="applay__information-content">
-              {getFieldDecorator('Eddate1', {
-                initialValue: currentInfo.ChildIf
-                // initialValue: [
-                //   moment(initialValue.EdStartTime1, dateFormat),
-                //   moment(initialValue.EdEndTime1, dateFormat)
-                // ]
+            <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdStartTime1', {
+                initialValue: currentInfo.EdStartTime1
               })(
                 <Input />
-              // <RangePicker
-              //   placeholder={['Start month', 'End month']}
-              //   format="YYYY-MM"
-              //   value={value}
-              //   mode={mode}
-              //   onChange={this.handleChange}
-              //   onPanelChange={this.handlePanelChange}
-              // />
+              )}
+            </Form.Item>
+            <Form.Item label="结束日期（年/月）/EndTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdEndTime1', {
+                initialValue: currentInfo.EdEndTime1
+              })(
+                <Input />
               )}
             </Form.Item>
             <Form.Item label="学校/学院/大学Name of School/Colleges/Universities" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdSchool1', {
-                initialValue: initialValue.EdSchool1
+                initialValue: currentInfo.EdSchool1
               })(<Input />)}
             </Form.Item>
+
             <Form.Item label="专业名称/Major" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdMajor1', {
-                initialValue: initialValue.EdMajor1
+                initialValue: currentInfo.EdMajor1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="学位/Degree" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdDegree1', {
-                initialValue: initialValue.EdDegree1
+                initialValue: currentInfo.EdDegree1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdReference1', {
-                initialValue: initialValue.EdReference1
+                initialValue: currentInfo.EdReference1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdReferenceTel1', {
-                initialValue: initialValue.EdReferenceTel1
+                initialValue: currentInfo.EdReferenceTel1
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+
+            <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdStartTime2', {
+                initialValue: currentInfo.EdStartTime2
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="结束日期（年/月）/EndTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdEndTime2', {
+                initialValue: currentInfo.EdEndTime2
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="学校/学院/大学Name of School/Colleges/Universities" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdSchool2', {
+                initialValue: currentInfo.EdSchool2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="专业名称/Major" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdMajor2', {
+                initialValue: currentInfo.EdMajor2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="学位/Degree" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdDegree2', {
+                initialValue: currentInfo.EdDegree2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReference2', {
+                initialValue: currentInfo.EdReference2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReferenceTel2', {
+                initialValue: currentInfo.EdReferenceTel2
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdStartTime3', {
+                initialValue: currentInfo.EdStartTime3
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="结束日期（年/月）/EndTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdEndTime3', {
+                initialValue: currentInfo.EdEndTime3
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="学校/学院/大学Name of School/Colleges/Universities" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdSchool3', {
+                initialValue: currentInfo.EdSchool3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="专业名称/Major" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdMajor3', {
+                initialValue: currentInfo.EdMajor3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="学位/Degree" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdDegree3', {
+                initialValue: currentInfo.EdDegree3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReference3', {
+                initialValue: currentInfo.EdReference3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReferenceTel3', {
+                initialValue: currentInfo.EdReferenceTel3
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdStartTime4', {
+                initialValue: currentInfo.EdStartTime4
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="结束日期（年/月）/EndTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdEndTime4', {
+                initialValue: currentInfo.EdEndTime4
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="学校/学院/大学Name of School/Colleges/Universities" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdSchool4', {
+                initialValue: currentInfo.EdSchool4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="专业名称/Major" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdMajor4', {
+                initialValue: currentInfo.EdMajor4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="学位/Degree" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdDegree4', {
+                initialValue: currentInfo.EdDegree4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReference4', {
+                initialValue: currentInfo.EdReference4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('EdReferenceTel4', {
+                initialValue: currentInfo.EdReferenceTel4
               })(<Input />)}
             </Form.Item>
           </div>
@@ -439,18 +596,24 @@ class Applayinformation extends Component {
           </h3>
           <div className="information__boundary">
             <Form.Item
-              label="任职年限(年/月)/Period(Year/Month)  "
+              label="开始时间(年/月)/StartTime(Year/Month)  "
               {...formItemLayout2}
               className="applay__information-content"
             >
-              {getFieldDecorator('WorkDate1', {
-                initialValue: initialValue.EdReferenceTel1
-                // initialValue: [
-                //   moment(initialValue.WorkStartTime1, dateFormat),
-                //   moment(initialValue.WorkEndTime1, dateFormat)
-                // ]
-              })(
-              // <RangePicker />
+              {getFieldDecorator('WorkStartTime1', {
+                initialValue: currentInfo.WorkStartTime1
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="结束时间(年/月)/EndTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkEndTime1', {
+                initialValue: currentInfo.WorkEndTime1
+                  })(
               <Input />
               )}
             </Form.Item>
@@ -460,12 +623,12 @@ class Applayinformation extends Component {
               className="applay__information-content"
             >
               {getFieldDecorator('WorkComName1', {
-                initialValue: initialValue.WorkComName1
+                initialValue: currentInfo.WorkComName1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="职位/Position" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('WorkRank1', {
-                initialValue: initialValue.WorkRank1
+                initialValue: currentInfo.WorkRank1
               })(<Input />)}
             </Form.Item>
             <Form.Item
@@ -474,17 +637,185 @@ class Applayinformation extends Component {
               className="applay__information-content"
             >
               {getFieldDecorator('ReasonForLeave1', {
-                initialValue: initialValue.ReasonForLeave1
+                initialValue: currentInfo.ReasonForLeave1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('WorkReference1', {
-                initialValue: initialValue.WorkReference1
+                initialValue: currentInfo.WorkReference1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('WorkReferenceTel1', {
-                initialValue: initialValue.WorkReferenceTel1
+                initialValue: currentInfo.WorkReferenceTel1
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item
+              label="开始时间(年/月)/StartTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkStartTime2', {
+                initialValue: currentInfo.WorkStartTime2
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="结束时间(年/月)/EndTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkEndTime2', {
+                initialValue: currentInfo.WorkEndTime2
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="公司名称及类型/Name of Company & Type"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkComName2', {
+                initialValue: currentInfo.WorkComName2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="职位/Position" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkRank2', {
+                initialValue: currentInfo.WorkRank2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="离职原因/Reason For Leaving"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('ReasonForLeave2', {
+                initialValue: currentInfo.ReasonForLeave2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReference2', {
+                initialValue: currentInfo.WorkReference2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReferenceTel2', {
+                initialValue: currentInfo.WorkReferenceTel2
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item
+              label="开始时间(年/月)/StartTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkStartTime3', {
+                initialValue: currentInfo.WorkStartTime3
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="结束时间(年/月)/EndTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkEndTime3', {
+                initialValue: currentInfo.WorkEndTime3
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="公司名称及类型/Name of Company & Type"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkComName3', {
+                initialValue: currentInfo.WorkComName3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="职位/Position" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkRank3', {
+                initialValue: currentInfo.WorkRank3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="离职原因/Reason For Leaving"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('ReasonForLeave3', {
+                initialValue: currentInfo.ReasonForLeave3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReference3', {
+                initialValue: currentInfo.WorkReference3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReferenceTel3', {
+                initialValue: currentInfo.WorkReferenceTel3
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item
+              label="开始时间(年/月)/StartTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkStartTime4', {
+                initialValue: currentInfo.WorkStartTime4
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="结束时间(年/月)/EndTime(Year/Month)  "
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkEndTime4', {
+                initialValue: currentInfo.WorkEndTime4
+                  })(
+              <Input />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="公司名称及类型/Name of Company & Type"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('WorkComName4', {
+                initialValue: currentInfo.WorkComName4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="职位/Position" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkRank4', {
+                initialValue: currentInfo.WorkRank4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="离职原因/Reason For Leaving"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('ReasonForLeave14', {
+                initialValue: currentInfo.ReasonForLeave4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReference4', {
+                initialValue: currentInfo.WorkReference4
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('WorkReferenceTel4', {
+                initialValue: currentInfo.WorkReferenceTel4
               })(<Input />)}
             </Form.Item>
           </div>
@@ -494,7 +825,7 @@ class Applayinformation extends Component {
           <div className="information__boundary">
             <Form.Item label="姓名/Name" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamName1', {
-                initialValue: initialValue.FamName1,
+                initialValue: currentInfo.FamName1,
                 rules: [
                   {
                     required: true,
@@ -505,7 +836,7 @@ class Applayinformation extends Component {
             </Form.Item>
             <Form.Item label="关系/Relationship" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamRelation1', {
-                initialValue: initialValue.FamRelation1,
+                initialValue: currentInfo.FamRelation1,
                 rules: [
                   {
                     required: true,
@@ -516,12 +847,12 @@ class Applayinformation extends Component {
             </Form.Item>
             <Form.Item label="出生年月/Date of Birth" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamBirthDate1', {
-                initialValue: initialValue.FamBirthDate1
+                initialValue: currentInfo.FamBirthDate1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="职务/Position" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamPosition1', {
-                initialValue: initialValue.FamPosition1
+                initialValue: currentInfo.FamPosition1
               })(<Input />)}
             </Form.Item>
             <Form.Item
@@ -530,15 +861,67 @@ class Applayinformation extends Component {
               className="applay__information-content"
             >
               {getFieldDecorator('FamComAndAdd1', {
-                initialValue: initialValue.FamComAndAdd1
+                initialValue: currentInfo.FamComAndAdd1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="电话/Telephone" {...formItemLayout2} className="applay__information-content">
-              {getFieldDecorator('FamOneTel', {
-                initialValue: currentInfo.WorkReferenceTel1,
+              {getFieldDecorator('FamTel1', {
+                initialValue: currentInfo.FamTel1,
                 rules: [
                   {
                     required: true,
+                    message: '输入该成员的电话号码'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+
+            <hr/>
+
+            <Form.Item label="姓名/Name" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('FamName2', {
+                initialValue: currentInfo.FamName2,
+                rules: [
+                  {
+                    message: '输入姓名'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="关系/Relationship" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('FamRelation2', {
+                initialValue: currentInfo.FamRelation2,
+                rules: [
+                  {
+                    message: '输入与该成员的关系'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="出生年月/Date of Birth" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('FamBirthDate2', {
+                initialValue: currentInfo.FamBirthDate2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="职务/Position" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('FamPosition2', {
+                initialValue: currentInfo.FamPosition2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="公司名称及地址/Name of Company&Address"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('FamComAndAdd2', {
+                initialValue: currentInfo.FamComAndAdd2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('FamTel2', {
+                initialValue: currentInfo.FamTel2,
+                rules: [
+                  {
                     message: '输入该成员的电话号码'
                   }
                 ]
@@ -552,12 +935,12 @@ class Applayinformation extends Component {
           <div className="information__boundary">
             <Form.Item label="日期/Date/Period " {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingDate1', {
-                initialValue: initialValue.TrainingDate1
+                initialValue: currentInfo.TrainingDate1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="培训机构/Name of Training Institute" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingInstitute1', {
-                initialValue: initialValue.TrainingInstitute1
+                initialValue: currentInfo.TrainingInstitute1
               })(<Input />)}
             </Form.Item>
             <Form.Item
@@ -565,8 +948,8 @@ class Applayinformation extends Component {
               {...formItemLayout2}
               className="applay__information-content"
             >
-              {getFieldDecorator('TrainingCourses', {
-                initialValue: initialValue.TrainingCourses
+              {getFieldDecorator('TrainingCourese1', {
+                initialValue: currentInfo.TrainingCourese1
               })(<Input />)}
             </Form.Item>
             <Form.Item
@@ -575,17 +958,95 @@ class Applayinformation extends Component {
               className="applay__information-content"
             >
               {getFieldDecorator('TrainingQualification1', {
-                initialValue: initialValue.TrainingQualification1
+                initialValue: currentInfo.TrainingQualification1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingReference1', {
-                initialValue: initialValue.TrainingReference1
+                initialValue: currentInfo.TrainingReference1
               })(<Input />)}
             </Form.Item>
             <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingRefTel1', {
-                initialValue: initialValue.TrainingRefTel1
+                initialValue: currentInfo.TrainingRefTel1
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item label="日期/Date/Period " {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingDate2', {
+                initialValue: currentInfo.TrainingDate2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="培训机构/Name of Training Institute" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingInstitute2', {
+                initialValue: currentInfo.TrainingInstitute2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="培训课程/Training Courses"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('TrainingCourese2', {
+                initialValue: currentInfo.TrainingCourese2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="专业资格/Pofessional Qualification"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('TrainingQualification2', {
+                initialValue: currentInfo.TrainingQualification2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingReference2', {
+                initialValue: currentInfo.TrainingReference2
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingRefTel2', {
+                initialValue: currentInfo.TrainingRefTel2
+              })(<Input />)}
+            </Form.Item>
+            <hr/>
+            <Form.Item label="日期/Date/Period " {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingDate3', {
+                initialValue: currentInfo.TrainingDate3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="培训机构/Name of Training Institute" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingInstitute3', {
+                initialValue: currentInfo.TrainingInstitute3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="培训课程/Training Courses"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('TrainingCourese3', {
+                initialValue: currentInfo.TrainingCourese3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label="专业资格/Pofessional Qualification"
+              {...formItemLayout2}
+              className="applay__information-content"
+            >
+              {getFieldDecorator('TrainingQualification3', {
+                initialValue: currentInfo.TrainingQualification3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人/Reference" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingReference3', {
+                initialValue: currentInfo.TrainingReference3
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="证明人电话/Telephone" {...formItemLayout2} className="applay__information-content">
+              {getFieldDecorator('TrainingRefTel3', {
+                initialValue: currentInfo.TrainingRefTel3
               })(<Input />)}
             </Form.Item>
           </div>
@@ -710,12 +1171,12 @@ class Applayinformation extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="视力左 /Eye Left sight" {...formItemLayout2} className="applay__information-content">
-            {getFieldDecorator('EyeLeftSight', {
+            {getFieldDecorator('EyeSight', {
               initialValue: currentInfo.EyeSight
             })(<Input />)}
           </Form.Item>
           <Form.Item label="视力右 /Eye Right sight" {...formItemLayout2} className="applay__information-content">
-            {getFieldDecorator('EyeRightSight', {
+            {getFieldDecorator('EyeSightR', {
               initialValue: currentInfo.EyeSightR
             })(<Input />)}
           </Form.Item>
@@ -772,18 +1233,49 @@ class Applayinformation extends Component {
             colon={false}
             label={
               <p style={{ height: 25 }}>
-                是否认识本公司的员工？如是，请详细指出姓名及与其关系。
+                是否认识本公司的员工？
                 <br />
-                Do you know any employee of Finisar Shanghai Inc.? If yes,
-                please give his/her name and relationship.
+                Do you know any employee of Finisar Shanghai Inc.?
               </p>
             }
             className="applay__information-content"
           >
             {getFieldDecorator('KnowColleageStatus', {
               initialValue: [
-                currentInfo.KnowColleageStatus,
-                currentInfo.Recommender,
+                currentInfo.KnowColleageStatus
+              ]
+            })(<TextArea />)}
+          </Form.Item>
+          <Form.Item
+            colon={false}
+            label={
+              <p style={{ height: 25 }}>
+                请详细指出姓名。
+                <br />
+                Please give his/her name and relationship.
+              </p>
+            }
+            className="applay__information-content"
+          >
+            {getFieldDecorator('Recommender', {
+              initialValue: [
+                currentInfo.Recommender
+              ]
+            })(<TextArea />)}
+          </Form.Item>
+          <Form.Item
+            colon={false}
+            label={
+              <p style={{ height: 25 }}>
+                请详细指出与其关系。
+                <br />
+                Please give his/her name and relationship.
+              </p>
+            }
+            className="applay__information-content"
+          >
+            {getFieldDecorator('RecomenderRelation', {
+              initialValue: [
                 currentInfo.RecomenderRelation
               ]
             })(<TextArea />)}
@@ -820,8 +1312,6 @@ class Applayinformation extends Component {
             {getFieldDecorator('CompetitionAgreement', {
               initialValue: [
                 currentInfo.CompetitionAgreement,
-                currentInfo.TimeofExpiration,
-                currentInfo.ifToNeedReparations
               ]
             })(<TextArea />)}
           </Form.Item>
@@ -859,7 +1349,7 @@ class Applayinformation extends Component {
           自我评价/Self Appraisement
           </h3>
           <Form.Item label="自我评价/Appraisement" {...formItemLayout2} className="applay__information-content">
-            {getFieldDecorator('Appraisement', {
+            {getFieldDecorator('SelfAccessment', {
               initialValue: currentInfo.SelfAccessment
             })(<TextArea />)}
           </Form.Item>
@@ -874,7 +1364,7 @@ class Applayinformation extends Component {
               <div className = "applay__informnation-signPerson" > 申请人签名/Signature of Applicant </div>
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
-            <Form.Item style={{ textAlign: 'center' }}>
+            <Form.Item style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
               <Button type="primary" onClick={this.handleSave}>保存</Button>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印

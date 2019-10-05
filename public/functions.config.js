@@ -1755,3 +1755,7 @@ window[622577498761] = {
   name: 'PhysicalExamination',
   title: '体检通知'
 };
+window[623529591025] = {
+  name: 'CyberMoney',
+  title: '积分系统'
+};
