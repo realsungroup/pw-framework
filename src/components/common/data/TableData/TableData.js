@@ -1735,7 +1735,11 @@ class TableData extends React.Component {
             返回
           </Button>
           {gridProps.length ? (<div></div>
+<<<<<<< HEAD
+            // <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+=======
             <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+>>>>>>> 697ea9f0e79a9eb80e1e49d281ed21c09b6d571f
           ) : (
             <div>暂无配置</div>
           )}
