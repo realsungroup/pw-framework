@@ -7,6 +7,11 @@ import TableData from '../../../common/data/TableData';
  */
 
 class OverdueApprovalRecord extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -16,7 +21,7 @@ class OverdueApprovalRecord extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -24,7 +29,9 @@ class OverdueApprovalRecord extends React.Component {
           hasRowModify={false}
           hasRowSelection={true}
           actionBarWidth={100}
+          downloadBaseURL="http://10.108.2.66:80/"
           dblinkname="ehr"
+          baseURL={this.baseURL}
         />
       </div>
     );

@@ -7,6 +7,11 @@ import TableData from '../../../common/data/TableData';
  */
 
 class ManagerAttendanceApprovalAuth extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -16,7 +21,7 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={true}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={true}
@@ -26,6 +31,7 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           actionBarWidth={100}
           hasBeBtns={true}
           dblinkname="ehr"
+          baseURL={this.baseURL}
         />
       </div>
     );

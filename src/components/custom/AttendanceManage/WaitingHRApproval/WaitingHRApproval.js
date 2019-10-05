@@ -11,6 +11,11 @@ class WaitingHRApproval extends React.Component {
   state = {
     revocatting: false
   };
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => {
     return (
       <Popconfirm
@@ -59,7 +64,7 @@ class WaitingHRApproval extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -71,6 +76,7 @@ class WaitingHRApproval extends React.Component {
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
+          baseURL={this.baseURL}
         />
       </div>
     );

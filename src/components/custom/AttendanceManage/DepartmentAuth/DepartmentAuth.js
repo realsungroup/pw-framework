@@ -9,6 +9,11 @@ import http from 'Util20/api';
  */
 
 class DepartmentAuth extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => (
     <div className="">
       <Popconfirm
@@ -77,7 +82,7 @@ class DepartmentAuth extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -89,6 +94,7 @@ class DepartmentAuth extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           actionBarExtra={this.actionBarExtra}
+          baseURL={this.baseURL}
         />
       </div>
     );

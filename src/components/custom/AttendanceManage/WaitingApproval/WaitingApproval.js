@@ -8,6 +8,11 @@ import http from 'Util20/api';
  *待审批
  */
 class WaitingApproval extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
@@ -98,18 +103,21 @@ class WaitingApproval extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={false}
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
+          recordFormUseAbsolute={true}
           actionBarWidth={200}
+          formProps={{ width: 700 }}
           dblinkname="ehr"
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
+          baseURL={this.baseURL}
           customRowBtns={[
             record => {
               return (

@@ -51,12 +51,17 @@ class FormData extends React.Component {
       record,
       storeWay,
       subTableArr,
-      dblinkname
+      dblinkname,
+      baseURL
     } = this.props;
+    console.log(this.props);
     const { hasSubTables } = this.state;
     const { dataMode, resid, subresid, hostrecid } = info;
     const id = getResid(dataMode, resid, subresid);
-
+    let httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
     form.validateFields(async (err, values) => {
       if (err) {
         return message.error('表单数据有误');
@@ -103,7 +108,7 @@ class FormData extends React.Component {
           data = [dataObj];
 
           this.p1 = makeCancelable(
-            http().saveRecordAndSubTables({ data, dblinkname })
+            http(httpParams).saveRecordAndSubTables({ data, dblinkname })
           );
           try {
             const res = await this.p1.promise;
@@ -123,7 +128,7 @@ class FormData extends React.Component {
             params.hostresid = resid;
             params.hostrecid = hostrecid;
           }
-          this.p1 = makeCancelable(http().addRecords(params));
+          this.p1 = makeCancelable(http(httpParams).addRecords(params));
           try {
             await this.p1.promise;
           } catch (err) {
@@ -142,7 +147,7 @@ class FormData extends React.Component {
             params.hostresid = resid;
             params.hostrecid = hostrecid;
           }
-          this.p1 = makeCancelable(http().modifyRecords(params));
+          this.p1 = makeCancelable(http(httpParams).modifyRecords(params));
           try {
             await this.p1.promise;
           } catch (err) {
@@ -188,7 +193,7 @@ class FormData extends React.Component {
         data = [dataObj];
 
         this.p1 = makeCancelable(
-          http().saveRecordAndSubTables({ data, dblinkname })
+          http(httpParams).saveRecordAndSubTables({ data, dblinkname })
         );
         try {
           const res = await this.p1.promise;

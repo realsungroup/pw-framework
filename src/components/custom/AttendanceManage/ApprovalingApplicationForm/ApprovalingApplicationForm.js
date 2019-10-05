@@ -8,6 +8,11 @@ import http from 'Util20/api';
  * 审批中
  */
 class ApprovalingApplicationForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
@@ -58,7 +63,7 @@ class ApprovalingApplicationForm extends React.Component {
     try {
       this.props.setLoading(true);
       await http().modifyRecords({
-        resid: '544795775918',
+        resid: '449449141530',
         data,
         dblinkname: 'ehr'
       });
@@ -75,7 +80,7 @@ class ApprovalingApplicationForm extends React.Component {
     try {
       this.props.setLoading(true);
       await http().modifyRecords({
-        resid: '544795775918',
+        resid: '449449141530',
         data,
         dblinkname: 'ehr'
       });
@@ -93,18 +98,20 @@ class ApprovalingApplicationForm extends React.Component {
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
           key="approvaling-application-form"
-          resid="544795775918"
+          resid="449449141530"
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
+          recordFormUseAbsolute={true}
           actionBarWidth={100}
+          baseURL={this.baseURL}
           dblinkname="ehr"
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}

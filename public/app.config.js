@@ -128,7 +128,7 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.2.21:9091/', //考勤审批
+      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
     },
     // 个人中心配置

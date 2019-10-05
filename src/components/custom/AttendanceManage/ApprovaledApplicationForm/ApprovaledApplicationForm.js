@@ -9,6 +9,11 @@ import http from 'Util20/api';
  */
 
 class ApprovaledApplicationForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
@@ -60,7 +65,7 @@ class ApprovaledApplicationForm extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
@@ -72,6 +77,7 @@ class ApprovaledApplicationForm extends React.Component {
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
+          baseURL={this.baseURL}
         />
       </div>
     );

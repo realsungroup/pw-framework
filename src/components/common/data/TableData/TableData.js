@@ -671,7 +671,13 @@ class TableData extends React.Component {
       baseURL,
       downloadBaseURL,
       dblinkname,
-      dataMode
+      dataMode,
+      cparm1 = '',
+      cparm2 = '',
+      cparm3 = '',
+      cparm4 = '',
+      cparm5 = '',
+      cparm6 = ''
     } = this.props;
     //console.log("handleDownload");
     //console.log(this.props);
@@ -703,7 +709,13 @@ class TableData extends React.Component {
       hostrecid,
       mergedCmsWhere,
       fileType,
-      dblinkname
+      dblinkname,
+      cparm1,
+      cparm2,
+      cparm3,
+      cparm4,
+      cparm5,
+      cparm6
     );
     this.setState({ loading: false });
   };
@@ -916,7 +928,8 @@ class TableData extends React.Component {
       recordFormContainerProps,
       subTableArrProps,
       storeWay,
-      recordFormUseAbsolute
+      recordFormUseAbsolute,
+      baseURL
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -963,7 +976,6 @@ class TableData extends React.Component {
     if (backendBtnType === 'single') {
       newHostRecid = record.REC_ID;
     }
-
     openRecordForm({
       type: recordFormType,
       title,
@@ -983,7 +995,8 @@ class TableData extends React.Component {
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
       dblinkname,
-      useAbsolute: recordFormUseAbsolute
+      useAbsolute: recordFormUseAbsolute,
+      baseURL
     });
   };
 
@@ -1708,7 +1721,7 @@ class TableData extends React.Component {
             {this.renderPwTable()}
           </div>
         </Spin>
-        <div
+        {/* <div
           style={{
             position: 'absolute',
             top: 0,
@@ -1722,11 +1735,11 @@ class TableData extends React.Component {
             返回
           </Button>
           {gridProps.length ? (<div></div>
-            /**<BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />**/
+            <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
           ) : (
             <div>暂无配置</div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }

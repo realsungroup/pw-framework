@@ -7,6 +7,11 @@ import TableData from '../../../common/data/TableData';
  */
 
 class RevocationApplicationForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   render() {
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -16,7 +21,7 @@ class RevocationApplicationForm extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={false}
+          hasRowView={true}
           hasRowDelete={true}
           hasRowEdit={false}
           hasDelete={false}
@@ -25,6 +30,7 @@ class RevocationApplicationForm extends React.Component {
           hasRowSelection={true}
           actionBarWidth={100}
           dblinkname="ehr"
+          baseURL={this.baseURL}
         />
       </div>
     );
