@@ -671,7 +671,13 @@ class TableData extends React.Component {
       baseURL,
       downloadBaseURL,
       dblinkname,
-      dataMode
+      dataMode,
+      cparm1 = '',
+      cparm2 = '',
+      cparm3 = '',
+      cparm4 = '',
+      cparm5 = '',
+      cparm6 = ''
     } = this.props;
     //console.log("handleDownload");
     //console.log(this.props);
@@ -703,7 +709,13 @@ class TableData extends React.Component {
       hostrecid,
       mergedCmsWhere,
       fileType,
-      dblinkname
+      dblinkname,
+      cparm1,
+      cparm2,
+      cparm3,
+      cparm4,
+      cparm5,
+      cparm6
     );
     this.setState({ loading: false });
   };

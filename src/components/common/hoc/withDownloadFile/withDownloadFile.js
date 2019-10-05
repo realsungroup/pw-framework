@@ -29,10 +29,16 @@ const withDownloadFile = WrappedComponent => {
       hostrecid,
       cmsWhere,
       fileType = 'xls',
-      dblinkname
+      dblinkname,
+      cparm1 = '',
+      cparm2 = '',
+      cparm3 = '',
+      cparm4 = '',
+      cparm5 = '',
+      cparm6 = ''
     ) => {
       this.setState({ loading: true });
-      console.log("withDownloadFile");
+      console.log('withDownloadFile');
       console.log(hostresid);
       console.log(hostrecid);
       this.p1 = makeCancelable(
@@ -42,7 +48,13 @@ const withDownloadFile = WrappedComponent => {
           hostrecid,
           cmswhere: cmsWhere,
           filetype: fileType,
-          dblinkname
+          dblinkname,
+          cparm1,
+          cparm2,
+          cparm3,
+          cparm4,
+          cparm5,
+          cparm6
         })
       );
       let res;
@@ -57,7 +69,7 @@ const withDownloadFile = WrappedComponent => {
         const index = res.data.lastIndexOf('/');
         name = res.data.slice(index + 1);
       }
-
+      console.log(downloadBaseURL);
       window.open(downloadBaseURL + res.data);
       return;
     };

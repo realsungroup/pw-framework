@@ -8,6 +8,11 @@ import http from 'Util20/api';
  *待审批
  */
 class WaitingApproval extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  }
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
@@ -112,6 +117,7 @@ class WaitingApproval extends React.Component {
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
+          baseURL={this.baseURL}
           customRowBtns={[
             record => {
               return (
