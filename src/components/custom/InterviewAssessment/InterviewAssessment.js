@@ -148,6 +148,7 @@ handleChangeS=(value,obj)=>{
       value,
       data:[],
       postName:obj.props.children,
+      postID:value,
       fetching: false,
     });
 }
@@ -225,8 +226,8 @@ handleChangeS=(value,obj)=>{
       n++;
     }
 // 判别hr角色
-var hrCode='623086556807';
-    // var hrCode='demo';
+// var hrCode='623086556807';
+    var hrCode='demo';
     n=0;
     this.setState({userChara:'others'});
 
@@ -241,35 +242,7 @@ var hrCode='623086556807';
     // 623153143463
     // this.getF();
 }
-// getF = async (v)=>{
-//   this.setState({loading:true});
-//
-//   let res;
-//   try {
-//     res = await http().getTable({
-//       resid: 623153143463,
-//       key:v
-//     });
-//   var arr=[];
-//   var n=0;
-//   console.log('length',res.data.length)
-//   while(n<res.data.length){
-//     arr.push({text:res.data[n].C3_421886426562,value:res.data[n].REC_ID})
-//     n++;
-//   }
-//
-//   this.setState({loading:false,data:arr});
-//   console.log(this.state.data)
-//   }catch (err) {
-//     Modal.error({
-//       title: '提示',
-//       content: err.message
-//     });
-//     this.setState({loading:false});
-//
-//   }
-//
-// }
+
   getInfo = async (resid,id,id2) => {
     this.setState({loading:true});
 
@@ -446,39 +419,48 @@ var hrCode='623086556807';
     }
   }
   sendMail = async (id) =>{
-    this.setState({loading:true});
-    var nxtStep;
-    if(this.state.C3_622921647557=='未送邮（初试）'){
-      nxtStep='未提交（初试）'
-    }else if(this.state.C3_622921647557=='未送邮（复试）'){
-      nxtStep='未提交（复试）'
-    }
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid: 613152706922,
-        cmswhere: `REC_ID=${this.props.record.REC_ID}`,
-        data:[{
-           REC_ID:this.props.record.REC_ID,
-           C3_622921647557:nxtStep,
-         }]
-       })
-       Modal.success({
-         title: '邮件发送成功',
-         content: '',
-         onOk() {
-           window.location.reload();
-         }
-       });
+    if(this.state.postID){
+      this.setState({loading:true});
+      var nxtStep;
+      if(this.state.C3_622921647557=='未送邮（初试）'){
+        nxtStep='未提交（初试）'
+      }else if(this.state.C3_622921647557=='未送邮（复试）'){
+        nxtStep='未提交（复试）'
+      }
+      let res;
+      try {
+        res = await http().modifyRecords({
+          resid: 613152706922,
+          cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+          data:[{
+             REC_ID:this.props.record.REC_ID,
+             C3_622921647557:nxtStep,
+             interviewer:this.state.postID
+           }]
+         })
+         Modal.success({
+           title: '邮件发送成功',
+           content: '',
+           onOk() {
+             window.location.reload();
+           }
+         });
 
-  }catch (err) {
+    }catch (err) {
+        Modal.error({
+          title: '提示',
+          content: err.message
+        });
+        this.setState({loading:false});
+
+      }
+    }else{
       Modal.error({
         title: '提示',
-        content: err.message
+        content: '您还未选择收件人！'
       });
-      this.setState({loading:false});
-
     }
+
   }
 
   fightBack = async (id) =>{
