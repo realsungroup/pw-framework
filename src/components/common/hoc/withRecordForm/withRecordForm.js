@@ -64,7 +64,8 @@ export function withRecordForm(options = {}) {
         onSuccess = () => {},
         onCancel = () => {},
         dblinkname,
-        useAbsolute = false
+        useAbsolute = false,
+        baseURL = ''
       }) => {
         const FormDataProps = {
           data,
@@ -84,7 +85,8 @@ export function withRecordForm(options = {}) {
           subTableArrProps,
           storeWay,
           dblinkname,
-          useAbsolute
+          useAbsolute,
+          baseURL
         };
         const containerProps = {
           title,

@@ -24,7 +24,7 @@ import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
-import BIGrid from 'lz-components-and-utils/lib/BIGrid';
+// import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const { Fragment } = React;
 
@@ -916,7 +916,8 @@ class TableData extends React.Component {
       recordFormContainerProps,
       subTableArrProps,
       storeWay,
-      recordFormUseAbsolute
+      recordFormUseAbsolute,
+      baseURL
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -963,7 +964,6 @@ class TableData extends React.Component {
     if (backendBtnType === 'single') {
       newHostRecid = record.REC_ID;
     }
-
     openRecordForm({
       type: recordFormType,
       title,
@@ -983,7 +983,8 @@ class TableData extends React.Component {
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
       dblinkname,
-      useAbsolute: recordFormUseAbsolute
+      useAbsolute: recordFormUseAbsolute,
+      baseURL
     });
   };
 
@@ -1708,7 +1709,7 @@ class TableData extends React.Component {
             {this.renderPwTable()}
           </div>
         </Spin>
-        <div
+        {/* <div
           style={{
             position: 'absolute',
             top: 0,
@@ -1726,7 +1727,7 @@ class TableData extends React.Component {
           ) : (
             <div>暂无配置</div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
