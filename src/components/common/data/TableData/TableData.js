@@ -1139,7 +1139,10 @@ class TableData extends React.Component {
       };
     }
     await this.getTableData(obj);
-    this.setState({ loading: false });
+    this.setState({
+      loading: false,
+      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+    });
   };
 
   handleAdvSearch = () => {
