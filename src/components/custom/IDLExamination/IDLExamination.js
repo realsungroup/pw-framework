@@ -185,7 +185,7 @@ class IDLExamination extends React.Component {
                       float: 'right'
                     }}
                   >
-                    {this.props.data.BirthDate}
+                    <p style={{width:"78px",whiteSpace:'nowrap',overflow:'hidden'}}>{this.props.data.BirthDate}</p>
                   </div>
                 </th>
                 <th style={{ width: '190px' }}>
@@ -198,6 +198,7 @@ class IDLExamination extends React.Component {
                       marginTop: '7px',
                       marginLeft: '15px',
                       float: 'right'
+                      ,width:'90px'
                     }}
                   >
                     {this.props.data.BirthPlace}
@@ -297,7 +298,7 @@ class IDLExamination extends React.Component {
                 </th>
               </tr>
               <tr style={{ fontSize: '10px', height: '35px' }}>
-                <th>
+                <th colSpan="2">
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Current Correspondence Address</p>
                     <p style={{ width: '106px' }}>现通讯地址:</p>
@@ -312,22 +313,8 @@ class IDLExamination extends React.Component {
                     {this.props.data.CurrentAddress}
                   </div>
                 </th>
-                <th style={{ width: '190px' }}>
-                  <div style={{ float: 'left', marginLeft: '5px' }}>
-                    <p>Zip Card</p>
-                    <p>邮编:</p>
-                  </div>
-                  <div
-                    style={{
-                      marginTop: '7px',
-                      marginLeft: '15px',
-                      float: 'right'
-                    }}
-                  >
-                    {this.props.data.ZipCard}
-                  </div>
-                </th>
-                <th style={{ width: '190px' }} colSpan="2">
+
+                <th style={{ width: '380px' }} colSpan="2">
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>E-mail</p>
                     <p style={{ width: '77px' }}>邮箱:</p>
@@ -422,8 +409,8 @@ class IDLExamination extends React.Component {
                 </div>
               </dd>
               <dt>
-                <div className='innerRect'>
-                {this.props.data.EdStartTime1} {this.props.data.EdEndTime1}
+                <div className='innerRect' style={{fontSize:'12px'}}>
+                {this.props.data.EdStartTime1}<br/>{this.props.data.EdEndTime1}
                 </div>
                 <div className='innerRect'>
                 {this.props.data.EdSchool1}
@@ -444,8 +431,8 @@ class IDLExamination extends React.Component {
                 </div>
               </dt>
               <dt>
-                <div className='innerRect'>
-                {this.props.data.EdStartTime2} {this.props.data.EdEndTime2}
+                <div className='innerRect' style={{fontSize:'12px'}}>
+                {this.props.data.EdStartTime2}<br/>{this.props.data.EdEndTime2}
 
                 </div>
                 <div className='innerRect'>
@@ -470,8 +457,8 @@ class IDLExamination extends React.Component {
                 </div>
               </dt>
               <dt>
-                <div className='innerRect'>
-                {this.props.data.EdStartTime3} {this.props.data.EdEndTime3}
+                <div className='innerRect' style={{fontSize:'12px'}}>
+                {this.props.data.EdStartTime3}<br/>{this.props.data.EdEndTime3}
 
                 </div>
                 <div className='innerRect'>
@@ -496,8 +483,8 @@ class IDLExamination extends React.Component {
                 </div>
               </dt>
               <dt>
-              <div className='innerRect'>
-              {this.props.data.EdStartTime4} {this.props.data.EdEndTime4}
+              <div className='innerRect' style={{fontSize:'12px'}}>
+              {this.props.data.EdStartTime4}<br/>{this.props.data.EdEndTime4}
 
               </div>
               <div className='innerRect'>
@@ -553,8 +540,8 @@ class IDLExamination extends React.Component {
             </div>
           </dd>
           <dt>
-            <div className='innerRect'>
-            {this.props.data.WorkStartTime1} {this.props.data.WorkEndTime1}
+            <div className='innerRect'style={{fontSize:'12px'}}>
+            {this.props.data.WorkStartTime1}<br/>{this.props.data.WorkEndTime1}
             </div>
             <div className='innerRect'>
             {this.props.data.WorkComName1}
@@ -577,8 +564,8 @@ class IDLExamination extends React.Component {
             </div>
           </dt>
           <dt>
-          <div className='innerRect'>
-          {this.props.data.WorkStartTime2} {this.props.data.WorkEndTime2}
+          <div className='innerRect' style={{fontSize:'12px'}}>
+          {this.props.data.WorkStartTime2}<br/>{this.props.data.WorkEndTime2}
           </div>
           <div className='innerRect'>
           {this.props.data.WorkComName2}
@@ -601,8 +588,8 @@ class IDLExamination extends React.Component {
           </div>
           </dt>
           <dt>
-          <div className='innerRect'>
-          {this.props.data.WorkStartTime3} {this.props.data.WorkEndTime3}
+          <div className='innerRect' style={{fontSize:'12px'}}>
+          {this.props.data.WorkStartTime3}<br/>{this.props.data.WorkEndTime3}
           </div>
           <div className='innerRect'>
           {this.props.data.WorkComName3}
@@ -625,8 +612,8 @@ class IDLExamination extends React.Component {
           </div>
           </dt>
           <dt>
-          <div className='innerRect'>
-          {this.props.data.WorkStartTime4} {this.props.data.WorkEndTime4}
+          <div className='innerRect' style={{fontSize:'12px'}}>
+          {this.props.data.WorkStartTime4}<br/>{this.props.data.WorkEndTime4}
           </div>
           <div className='innerRect'>
           {this.props.data.WorkComName4}
@@ -703,7 +690,7 @@ class IDLExamination extends React.Component {
                   borderTop: 'none'
                 }}
               >
-              <div style={{ float: 'middle', marginLeft: '5px' }}>
+              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px'}}>
                 <p>  {this.props.data.TrainingDate1}</p>
               </div>
 
@@ -741,7 +728,7 @@ class IDLExamination extends React.Component {
                   width: '68px',
                   borderLeft: 'none',
                   borderBottom: '1px solid #000',
-
+                  fontSize:'12px',
                   borderTop: 'none'
                 }}
               >
@@ -780,7 +767,7 @@ class IDLExamination extends React.Component {
                 width: '68px',
                 borderLeft: 'none',
                 borderBottom: '1px solid #000',
-
+                fontSize:'12px',
                 borderTop: 'none'
               }}
             >
@@ -819,7 +806,8 @@ class IDLExamination extends React.Component {
                   width: '68px',
                   borderLeft: 'none',
                   borderBottom: 'none',
-                  borderTop: 'none'
+                  borderTop: 'none',
+                  fontSize:'12px'
                 }}
               >
                 {this.props.data.TrainingDate4}
@@ -930,7 +918,7 @@ class IDLExamination extends React.Component {
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamOneTel}</p>
+                  <p>{this.props.data.FamTel1}</p>
                 </div>
               </th>
             </tr>
@@ -968,7 +956,7 @@ class IDLExamination extends React.Component {
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamToTel}</p>
+                  <p>{this.props.data.FamTel2}</p>
                 </div>
               </th>
             </tr>
@@ -1000,10 +988,10 @@ class IDLExamination extends React.Component {
               </th>
             </tr>
             <tr>
-              <td colspan="1" style={{ float: 'left', border: 'none' }}>
+              <td colspan="1" style={{ float: 'left', border: 'none' ,fontWeight:'bold',lineHeight:'45px'}}>
                 {this.props.data.Language}
               </td>
-              <td style={{ width: '140px' }}>
+              <td style={{ width: '140px' ,fontWeight:'bold'}}>
                   {this.props.data.EnCET}
               </td>
               <th style={{ width: '140px', textAlign: 'left' }}>
@@ -1041,30 +1029,30 @@ class IDLExamination extends React.Component {
             </tr>
             <tr style={{}}>
               <td style={{ width: 842 }} colspan="6">
-                <span style={{ float: 'left', padding: '3px 0 3px 0' }}>
+                <span style={{ float: 'left', padding: '3px 0 3px 0' ,marginLeft:'8px',fontWeight:'bold'}}>
                   Computer Skill 计算机技能：
                 </span>
-                <span style={{ float: 'right', padding: '3px 0 3px 0' }}>
+                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'bold'}}>
                   {this.props.data.ComputerSkills}
                 </span>
               </td>
             </tr>
             <tr style={{}}>
               <td style={{ width: 842 }} colspan="6">
-                <p style={{ float: 'left' }}>List Name of Software Used</p>
+                <p style={{ float: 'left' ,marginLeft:'8px',fontWeight:'bold'}}>List Name of Software Used</p>
                 <br />
-                <p style={{ float: 'left' }}>列出常用软件</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'left',marginLeft:'8px',fontWeight:'bold' }}>列出常用软件</p>
+                <p style={{ float: 'right', marginTop: '-10px' ,fontWeight:'bold',marginRight:'8px'}}>
                   {this.props.data.SoftList}
                 </p>
               </td>
             </tr>
             <tr style={{}}>
               <td style={{ width: 842 }} colspan="6">
-                <span style={{ float: 'left', padding: '3px 0 3px 0' }}>
+                <span style={{ float: 'left', padding: '3px 0 3px 0' ,marginLeft:'8px',fontWeight:'bold'}}>
                   Other Skill(If any)其他技能：
                 </span>
-                <span style={{ float: 'right', padding: '3px 0 3px 0' }}>
+                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'bold'}}>
                   {this.props.data.OtherSkills}
                 </span>
               </td>

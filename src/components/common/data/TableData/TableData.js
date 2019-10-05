@@ -1722,7 +1722,7 @@ class TableData extends React.Component {
           <Button onClick={() => this.setState({ isShowGrid: false })}>
             返回
           </Button>
-          {gridProps.length ? (
+          {gridProps.length ? (<div></div>
             <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
           ) : (
             <div>暂无配置</div>
