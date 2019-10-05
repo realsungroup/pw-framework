@@ -1,6 +1,6 @@
 import React from 'react';
 import PwTable from '../../ui/PwTable';
-import { message, Button, Spin } from 'antd';
+import { message, Button, Spin, Modal } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
 import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
@@ -24,6 +24,7 @@ import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
+import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const { Fragment } = React;
 
@@ -82,7 +83,8 @@ class TableData extends React.Component {
       scrollXY: { x: 1000, y: 1000 },
       editingKey: null, // 正在进行行内编辑的记录 REC_ID
       width,
-      height
+      height,
+      gridProps: []
     };
   }
 
@@ -401,7 +403,24 @@ class TableData extends React.Component {
       secondParams.hasBeSort = false;
       dataSource = [];
     }
-
+    console.log(res.ResourceData.AnalysisConfig);
+    if (Array.isArray(res.ResourceData.AnalysisConfig)) {
+      let config = [...res.ResourceData.AnalysisConfig];
+      config = config.map(item => {
+        return {
+          ...item,
+          baseURL: this.props.baseURL,
+          resid: this.props.resid,
+          cparm1: this.props.cparm1,
+          cparm2: this.props.cparm2,
+          cmswhere: item.cmswhere ? this.props.cmswhere : '',
+          keyValue: item.key ? this.props.key : ''
+        };
+      });
+      this.setState({ gridProps: config });
+    } else {
+      console.error('该配置未设成数组');
+    }
     const { columns, components } = getColumns(
       res.cmscolumninfo,
       secondParams,
@@ -1186,6 +1205,10 @@ class TableData extends React.Component {
     );
   };
 
+  handleStatisticalAnalysis = () => {
+    this.setState({ isShowGrid: true });
+  };
+
   handleZoomIn = () => {
     this.props.hasResizeableBox || this.props.zoomIn();
   };
@@ -1640,6 +1663,7 @@ class TableData extends React.Component {
         hasDownload={hasDownload && this._hasDownload}
         hasRefresh={hasRefresh && this._hasRefresh}
         onAdvSearch={this.handleAdvSearch}
+        onStatisticalAnalysis={this.handleStatisticalAnalysis}
         hasAdvSearch={hasAdvSearch && this._hasAdvSearch}
         hasSearch={hasSearch && this._hasSearch}
         // hasZoomInOut={hasZoomInOut}
@@ -1663,14 +1687,46 @@ class TableData extends React.Component {
   };
 
   render() {
-    const { loading, width, height } = this.state;
+    const { loading, width, height, isShowGrid, gridProps } = this.state;
     return (
       <div
         className="table-data"
-        style={{ width, height }}
+        style={{ width, height, position: 'relative' }}
         ref={element => (this.tableDataRef = element)}
       >
-        <Spin spinning={loading}>{this.renderPwTable()}</Spin>
+        <Spin spinning={loading}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: isShowGrid ? 'none' : ''
+            }}
+          >
+            {this.renderPwTable()}
+          </div>
+        </Spin>
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: !isShowGrid ? 'none' : ''
+          }}
+        >
+          <Button onClick={() => this.setState({ isShowGrid: false })}>
+            返回
+          </Button>
+          {gridProps.length ? (
+            <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+          ) : (
+            <div>暂无配置</div>
+          )}
+        </div>
       </div>
     );
   }

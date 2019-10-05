@@ -320,7 +320,9 @@ class IdLindex extends Component {
               <Icon type="close-circle" style={{zIndex:'1000',cursor:'pointer',position:'fixed',right:'16px',top:'16px'}} onClick={()=>{this.setState({showRef:false})}}/>
               <ReferenceCheck record={selectedRecord}></ReferenceCheck>
             </div>
-            <Button style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板文档</Button>
+            <Button onClick={()=>{window.open('http://wux-hr03.china.ads.finisar.com/rispweb/upfiles/Reference Check Letter-HR.doc')}} style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板HR</Button>
+            <Button onClick={()=>{window.open('http://wux-hr03.china.ads.finisar.com/rispweb/upfiles/Reference Check Letter-Colleague.doc')}} style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板Colleague</Button>
+            <Button onClick={()=>{window.open('http://wux-hr03.china.ads.finisar.com/rispweb/upfiles/Reference Check Letter-Supervisor.doc')}} style={{marginLeft:'8px',marginBottom:'8px'}}>下载模板Supervisor</Button>
             <div style = {{width:"100%",height:"100%"}}>
               <TableData
               {...referenceCheck}

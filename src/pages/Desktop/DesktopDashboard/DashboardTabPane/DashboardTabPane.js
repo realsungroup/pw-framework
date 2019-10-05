@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardPage from 'lz-components-and-utils/lib/DashboardPage';
+import 'lz-components-and-utils/lib/AdvSearch/style';
 import cloneDeep from 'lodash/cloneDeep';
 import http from 'Util20/api';
 import { message } from 'antd';
@@ -113,13 +114,26 @@ export default class DashboardTabPane extends React.PureComponent {
   };
   getData = async () => {};
 
+  handleSearch = async (mode, Rows) => {
+    const newRows = cloneDeep(Rows);
+    await calcRows(newRows);
+    this.setState({ rows: newRows, hasReqChartData: true });
+  };
+
   render() {
     if (!this.state.hasReqChartData) {
       return (
         <div style={{ textAlign: 'center', marginTop: 100 }}>加载中...</div>
       );
     } else {
-      return <DashboardPage rows={this.state.rows} mode="view"  showSearchBar={true}/>;
+      return (
+        <DashboardPage
+          onSearch={this.handleSearch}
+          rows={this.state.rows}
+          mode="view"
+          showSearchBar={true}
+        />
+      );
     }
   }
 }

@@ -1,5 +1,13 @@
 import React from 'react';
-import { Icon, Divider, Select, Input, DatePicker, Popconfirm } from 'antd';
+import {
+  Icon,
+  Divider,
+  Select,
+  Input,
+  DatePicker,
+  Popconfirm,
+  Popover
+} from 'antd';
 import './SquareCard.less';
 import http from 'Util20/api';
 import moment from 'moment';
@@ -38,6 +46,7 @@ class SquareCard extends React.Component {
     return (
       this.props.SquareCardArr &&
       this.props.SquareCardArr.map((item, index) => {
+        console.log('detailOptions', item);
         if (item.type !== 'none') {
           let data;
           let titleData;
@@ -90,17 +99,70 @@ class SquareCard extends React.Component {
                   <span className="squarecard-contain-title">{item.name}</span>
                 );
                 data = (
-                  <Select
-                    className="word-color"
-                    key={item.key}
-                    defaultValue={item.value}
-                    style={{ width: '40%' }}
-                    onChange={this.props.onChangeSelect.bind(this, index)}
-                  >
-                    {item.options.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
+                  <React.Fragment>
+                    <Select
+                      className="word-color"
+                      key={item.key}
+                      defaultValue={item.value}
+                      style={{ width: '40%' }}
+                      onChange={this.props.onChangeSelect.bind(this, index)}
+                    >
+                      {item.options.map(item => {
+                        return <Option value={item}>{item}</Option>;
+                      })}
+                    </Select>
+                    {item.name === '胜任力/Competency:' ? (
+                      <Popover
+                        content={
+                          <div>
+                            {item.detailOptions &&
+                              item.detailOptions.map((items, index) => {
+                                let aDeptArr =
+                                  items.adept && items.adept.split('.');
+                                let notAdeptArr =
+                                  items.adept && items.notAdept.split('.');
+                                let overUseArr =
+                                  items.adept && items.overuse.split('.');
+                                console.log('aDeptArr', aDeptArr);
+                                if (item.value === items.ability) {
+                                  return (
+                                    <div>
+                                      <div style={{ padding: '16px' }}>
+                                        <h4>擅长</h4>
+                                        <ul>
+                                          {aDeptArr.map(item => {
+                                            return <li>{item}</li>;
+                                          })}
+                                        </ul>
+                                      </div>
+                                      <div style={{ padding: '16px' }}>
+                                        <h4>不擅长</h4>
+                                        <ul>
+                                          {notAdeptArr.map(item => {
+                                            return <li>{item}</li>;
+                                          })}
+                                        </ul>
+                                      </div>
+                                      <div style={{ padding: '16px' }}>
+                                        <h4>过度使用</h4>
+                                        <ul>
+                                          {overUseArr.map(item => {
+                                            return <li>{item}</li>;
+                                          })}
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              })}
+                          </div>
+                        }
+                        title="胜任力描述"
+                      >
+                        <span className="squarecard-contain-detail">描述</span>
+                      </Popover>
+                    ) : null}
+                  </React.Fragment>
                 );
                 break;
               case 'textArea':

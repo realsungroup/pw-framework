@@ -18,11 +18,6 @@ class InterviewAssessment extends React.Component {
     this.state = {
         userChara:'',
         data:[
-          {text:'张三',value:'11212'},
-          {text:'李四',value:'22312'},
-          {text:'王大麻子',value:'1100'},
-          {text:'李三',value:'0512'},
-
         ],
         name:'',
         position:'',
@@ -193,8 +188,9 @@ subConfirm = () => {
       }
       n++;
     }
-
-    var hrCode='611241074739';
+// 判别hr角色
+// var hrCode='623086556807';
+    var hrCode='demo';
     n=0;
     this.setState({userChara:'others'});
 
@@ -205,8 +201,37 @@ subConfirm = () => {
       }
       n++;
     }
+    // 获取面试官名单
+    // 623153143463
+    this.getF();
+}
+getF = async ()=>{
+  this.setState({loading:true});
+
+  let res;
+  try {
+    res = await http().getTable({
+      resid: 623153143463,
+    });
+  var arr=[];
+  var n=0;
+  console.log('length',res.data.length)
+  while(n<res.data.length){
+    arr.push({text:res.data[n].C3_421886426562,value:res.data[n].REC_ID})
+    n++;
+  }
+
+  this.setState({loading:false,data:arr});
+  }catch (err) {
+    Modal.error({
+      title: '提示',
+      content: err.message
+    });
+    this.setState({loading:false});
 
   }
+
+}
   getInfo = async (resid,id,id2) => {
     this.setState({loading:true});
 
