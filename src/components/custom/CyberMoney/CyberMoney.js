@@ -6,6 +6,16 @@ import './CyberMoney.less'
    constructor(props){
     super(props);
     this.state ={
+      teamData:[
+        {
+          Name:'王大麻子',
+          status:98
+
+        },{
+          Name:'王二麻子',
+          status:70
+        }
+      ]
     };
    }
    render(){
@@ -91,199 +101,16 @@ import './CyberMoney.less'
  				<div class='team'>
           <div>
             <h4>团队成长记录</h4>
-            <button>周</button>
+            <button className='current'>季度</button>
             <button>月</button>
-            <button>季度</button>
+            <button>周</button>
+
           </div>
           <ul>
             <li>
               <span><b>王大麻子</b> 108</span>
               <bar>
                 <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li><li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li><li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li><li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li><li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
-                </filter>
-              </bar>
-            </li><li>
-              <span><b>王大麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'100%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王二麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'60%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王三麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'50%'}}>
-                </filter>
-              </bar>
-            </li>
-            <li>
-              <span><b>王四麻子</b> 108</span>
-              <bar>
-                <filter style={{width:'40%'}}>
                 </filter>
               </bar>
             </li>
