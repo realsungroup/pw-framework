@@ -123,14 +123,13 @@ class SquareCard extends React.Component {
                                   items.adept && items.notAdept.split('.');
                                 let overUseArr =
                                   items.adept && items.overuse.split('.');
-                                console.log('aDeptArr', aDeptArr);
                                 if (item.value === items.ability) {
                                   return (
                                     <div>
                                       <div style={{ padding: '16px' }}>
                                         <h4>擅长</h4>
                                         <ul>
-                                          {aDeptArr.map(item => {
+                                          {aDeptArr&&aDeptArr.map(item => {
                                             return <li>{item}</li>;
                                           })}
                                         </ul>
@@ -138,7 +137,7 @@ class SquareCard extends React.Component {
                                       <div style={{ padding: '16px' }}>
                                         <h4>不擅长</h4>
                                         <ul>
-                                          {notAdeptArr.map(item => {
+                                          {notAdeptArr&&notAdeptArr.map(item => {
                                             return <li>{item}</li>;
                                           })}
                                         </ul>
@@ -146,7 +145,7 @@ class SquareCard extends React.Component {
                                       <div style={{ padding: '16px' }}>
                                         <h4>过度使用</h4>
                                         <ul>
-                                          {overUseArr.map(item => {
+                                          {overUseArr&&overUseArr.map(item => {
                                             return <li>{item}</li>;
                                           })}
                                         </ul>
