@@ -518,3 +518,9 @@ export const CyberMoney = Loadable({
     return minLoading;
   }
 });
+export const ProjectBonus = Loadable({
+  loader: () => import('./ProjectBonus'),
+  loading() {
+    return minLoading;
+  }
+});

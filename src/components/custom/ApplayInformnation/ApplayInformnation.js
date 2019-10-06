@@ -168,7 +168,7 @@ class Applayinformation extends Component {
         this.setState({ loading: false });
 
         Modal.error({
-          title: '提示失败',
+          title: '保存失败',
           content: err.message
         });
       }
