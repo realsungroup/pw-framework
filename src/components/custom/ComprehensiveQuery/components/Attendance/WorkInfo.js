@@ -25,6 +25,8 @@ class WorkInfo extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
 
   componentDidMount = async () => {
@@ -133,6 +135,7 @@ class WorkInfo extends React.Component {
               cparm1={person.C3_305737857578 || this.UserCode}
               cparm2={selectMonth}
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
               customRowBtns={[
                 (record, btnSize) => {
                   return (

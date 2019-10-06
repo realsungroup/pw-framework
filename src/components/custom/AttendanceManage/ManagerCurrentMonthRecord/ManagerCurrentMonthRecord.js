@@ -11,6 +11,8 @@ class ManagerCurrentMonthRecord extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
     return (
@@ -31,6 +33,7 @@ class ManagerCurrentMonthRecord extends React.Component {
           actionBarWidth={100}
           dblinkname="ehr"
           baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
         />
       </div>
     );

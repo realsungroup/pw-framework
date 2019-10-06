@@ -11,6 +11,8 @@ class ManagerAttendanceApprovalAuth extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
     return (
@@ -32,6 +34,7 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           hasBeBtns={true}
           dblinkname="ehr"
           baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
         />
       </div>
     );

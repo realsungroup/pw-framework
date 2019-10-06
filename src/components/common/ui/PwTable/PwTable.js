@@ -15,6 +15,7 @@ import './PwTable.less';
 import 'react-resizable/css/styles.css';
 import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
+import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const Search = Input.Search;
 
@@ -138,9 +139,10 @@ class PwTable extends React.Component {
       actionBarExtraParams,
       dataSource,
       headerExtra,
+      isShowGrid,
+      gridProps,
       ...restProps
     } = this.props;
-
     const hasActionBar =
       hasAdd ||
       hasModify ||
@@ -155,7 +157,6 @@ class PwTable extends React.Component {
     const hasHeader = hasIconBtns || title;
 
     const { locale } = this.props.intl;
-
     return (
       <div className="pw-table">
         {hasHeader && (
@@ -199,80 +200,94 @@ class PwTable extends React.Component {
           </div>
         )}
 
-        {hasActionBar && (
-          <div className={`pw-table__action-bar pw-table__action-bar--${size}`}>
-            <div className="pw-table__action-btns">
-              {renderOtherBtns && renderOtherBtns()}
-              {hasAdd && (
-                <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                  {/* 添加 */}
-                  {getIntlVal(intl.locale, enAddText, addText)}
-                </Button>
-              )}
-              {hasModify && (
-                <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                  {/* 修改 */}
-                  {getIntlVal(intl.locale, enModifyText, modifyText)}
-                </Button>
-              )}
-              {hasDelete && (
-                <ButtonWithConfirm
-                  popConfirmProps={{
-                    onConfirm: this.handleDelete,
-                    title: getIntlVal(
-                      locale,
-                      'Are you sure to delete?',
-                      '您确定要删除吗？'
-                    )
-                  }}
-                  buttonProps={{
-                    size: btnSizeMap[size],
-                    type: 'danger'
-                  }}
-                >
-                  <FM id="common.delete" defaultMessage="删除" />
-                </ButtonWithConfirm>
-              )}
-            </div>
+        {!isShowGrid ? (
+          <div>
+            {hasActionBar && (
+              <div
+                className={`pw-table__action-bar pw-table__action-bar--${size}`}
+              >
+                <div className="pw-table__action-btns">
+                  {renderOtherBtns && renderOtherBtns()}
+                  {hasAdd && (
+                    <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
+                      {/* 添加 */}
+                      {getIntlVal(intl.locale, enAddText, addText)}
+                    </Button>
+                  )}
+                  {hasModify && (
+                    <Button size={btnSizeMap[size]} onClick={this.handleModify}>
+                      {/* 修改 */}
+                      {getIntlVal(intl.locale, enModifyText, modifyText)}
+                    </Button>
+                  )}
+                  {hasDelete && (
+                    <ButtonWithConfirm
+                      popConfirmProps={{
+                        onConfirm: this.handleDelete,
+                        title: getIntlVal(
+                          locale,
+                          'Are you sure to delete?',
+                          '您确定要删除吗？'
+                        )
+                      }}
+                      buttonProps={{
+                        size: btnSizeMap[size],
+                        type: 'danger'
+                      }}
+                    >
+                      <FM id="common.delete" defaultMessage="删除" />
+                    </ButtonWithConfirm>
+                  )}
+                </div>
 
-            {actionBarExtra && (
-              <div className="pw-table__action-bar-extra">
-                {(function() {
-                  if (typeof actionBarExtra === 'function') {
-                    return actionBarExtra(actionBarExtraParams);
-                  } else {
-                    return actionBarExtra;
-                  }
-                })()}
+                {actionBarExtra && (
+                  <div className="pw-table__action-bar-extra">
+                    {(function() {
+                      if (typeof actionBarExtra === 'function') {
+                        return actionBarExtra(actionBarExtraParams);
+                      } else {
+                        return actionBarExtra;
+                      }
+                    })()}
+                  </div>
+                )}
+
+                <div className="pw-table__search">
+                  {hasSearch && (
+                    <Search
+                      placeholder={getIntlVal(
+                        locale,
+                        'Enter the key',
+                        '请输入关键词'
+                      )}
+                      onChange={this.handleSearchChange}
+                      size={inputSizeMap[size]}
+                      style={{ width: 150 }}
+                      onSearch={this.handleSearch}
+                    />
+                  )}
+                </div>
               </div>
             )}
 
-            <div className="pw-table__search">
-              {hasSearch && (
-                <Search
-                  placeholder={getIntlVal(
-                    locale,
-                    'Enter the key',
-                    '请输入关键词'
-                  )}
-                  onChange={this.handleSearchChange}
-                  size={inputSizeMap[size]}
-                  style={{ width: 150 }}
-                  onSearch={this.handleSearch}
-                />
-              )}
-            </div>
+            <Table
+              dataSource={dataSource}
+              {...restProps}
+              pagination={false}
+              size={tableSizeMap[size]}
+            />
+
+            {this.renderPagination()}
+          </div>
+        ) : (
+          <div style={{ height: 'calc(100% - 28px)', width: '100%' }}>
+            {gridProps.length ? (
+              <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+            ) : (
+              <div>暂无配置</div>
+            )}
           </div>
         )}
-
-        <Table
-          dataSource={dataSource}
-          {...restProps}
-          pagination={false}
-          size={tableSizeMap[size]}
-        />
-
-        {this.renderPagination()}
       </div>
     );
   }
