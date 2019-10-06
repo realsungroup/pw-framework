@@ -1485,6 +1485,23 @@ after@0.8.2:
   resolved "https://registry.npm.taobao.org/after/download/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
+ag-grid-community@^21.2.0:
+  version "21.2.2"
+  resolved "https://registry.npm.taobao.org/ag-grid-community/download/ag-grid-community-21.2.2.tgz#a5696a303fa04d03d26e4c9e09e114d308ff4ad4"
+  integrity sha1-pWlqMD+gTQPSbkyeCeEU0wj/StQ=
+
+ag-grid-enterprise@^21.2.1:
+  version "21.2.2"
+  resolved "https://registry.npm.taobao.org/ag-grid-enterprise/download/ag-grid-enterprise-21.2.2.tgz#9e32b6cee5a13e644c9b174f245c96ff63b7b37b"
+  integrity sha1-njK2zuWhPmRMmxdPJFyW/2O3s3s=
+
+ag-grid-react@^21.2.0:
+  version "21.2.2"
+  resolved "https://registry.npm.taobao.org/ag-grid-react/download/ag-grid-react-21.2.2.tgz#55f19eb3bb14a3beddd642adb0bb03da1249ae59"
+  integrity sha1-VfGes7sUo77d1kKtsLsD2hJJrlk=
+  dependencies:
+    prop-types "^15.6.2"
+
 ajv-errors@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/ajv-errors/download/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
@@ -8046,14 +8063,17 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-lz-components-and-utils@1.6.1:
-  version "1.6.1"
-  resolved "https://registry.npm.taobao.org/lz-components-and-utils/download/lz-components-and-utils-1.6.1.tgz#743ca69572f62eda8eb07554739cff3a896be8fa"
-  integrity sha1-dDymlXL2LtqOsHVUc5z/Oolr6Po=
+lz-components-and-utils@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.npm.taobao.org/lz-components-and-utils/download/lz-components-and-utils-1.6.6.tgz#cc147d7464f4559f1430b416842c21da1c4db2cb"
+  integrity sha1-zBR9dGT0VZ8UMLQWhCwh2hxNsss=
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.4.0"
     "@babel/polyfill" "^7.4.3"
     "@notadd/neditor" "^2.1.18"
+    ag-grid-community "^21.2.0"
+    ag-grid-enterprise "^21.2.1"
+    ag-grid-react "^21.2.0"
     antd "^3.16.5"
     classnames "^2.2.6"
     cross-spawn "^6.0.5"
@@ -8070,13 +8090,6 @@ lz-components-and-utils@1.6.1:
     react-dom "^16.8.6"
     style-loader "^0.23.1"
     wangeditor "^3.1.1"
-
-lz-request@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npm.taobao.org/lz-request/download/lz-request-0.6.0.tgz#85e43d7dc059fc37732c69a2e6b7fdefaf7d1cf2"
-  integrity sha1-heQ9fcBZ/DdzLGmi5rf97699HPI=
-  dependencies:
-    axios "^0.18.0"
 
 lz-request@^0.9.3:
   version "0.9.3"
