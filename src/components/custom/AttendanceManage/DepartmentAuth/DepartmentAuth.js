@@ -13,6 +13,8 @@ class DepartmentAuth extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => (
     <div className="">
@@ -95,6 +97,7 @@ class DepartmentAuth extends React.Component {
           refTargetComponentName="TableData"
           actionBarExtra={this.actionBarExtra}
           baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
         />
       </div>
     );

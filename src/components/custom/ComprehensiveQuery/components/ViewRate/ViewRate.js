@@ -17,6 +17,8 @@ class ViewRate extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
 
   componentDidMount = async () => {
@@ -107,6 +109,7 @@ class ViewRate extends React.Component {
               cparm2={selectYear.label}
               dblinkname="ehr"
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
             />
           </Skeleton>
         </div>

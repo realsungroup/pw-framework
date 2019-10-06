@@ -8,6 +8,8 @@ class TargetHistory extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
     return (
@@ -32,6 +34,7 @@ class TargetHistory extends React.Component {
             // height={440}
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}
+            downloadBaseURL={this.attendanceDownloadURL}
           />
         </div>
       </div>

@@ -12,6 +12,8 @@ class ApprovalingApplicationForm extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => {
     return (
@@ -112,6 +114,7 @@ class ApprovalingApplicationForm extends React.Component {
           recordFormUseAbsolute={true}
           actionBarWidth={100}
           baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
           dblinkname="ehr"
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}

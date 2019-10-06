@@ -2,6 +2,15 @@ import React from 'react';
 import TableData from '../../../../common/data/TableData';
 
 class ViewTarget extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
+  }
   render() {
     return (
       <div id="view-target">
@@ -23,6 +32,8 @@ class ViewTarget extends React.Component {
             actionBarWidth={100}
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
+            baseURL={this.baseURL}
+            downloadBaseURL={this.attendanceDownloadURL}
           />
         </div>
       </div>

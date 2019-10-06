@@ -11,6 +11,8 @@ class OverdueApprovalRecord extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
     return (
@@ -29,7 +31,7 @@ class OverdueApprovalRecord extends React.Component {
           hasRowModify={false}
           hasRowSelection={true}
           actionBarWidth={100}
-          downloadBaseURL="http://10.108.2.66:80/"
+          downloadBaseURL={this.attendanceDownloadURL}
           dblinkname="ehr"
           baseURL={this.baseURL}
         />
