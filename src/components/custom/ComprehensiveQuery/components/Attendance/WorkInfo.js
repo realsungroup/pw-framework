@@ -4,7 +4,6 @@ import TableData from '../../../../common/data/TableData';
 import './WorkInfo.less';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
-// import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const { Option } = Select;
 const modalWrapperStyle = { height: '80vh' };
@@ -26,6 +25,8 @@ class WorkInfo extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
 
   componentDidMount = async () => {
@@ -134,6 +135,7 @@ class WorkInfo extends React.Component {
               cparm1={person.C3_305737857578 || this.UserCode}
               cparm2={selectMonth}
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
               customRowBtns={[
                 (record, btnSize) => {
                   return (

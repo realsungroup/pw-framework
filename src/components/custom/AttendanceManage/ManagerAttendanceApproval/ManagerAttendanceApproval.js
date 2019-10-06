@@ -15,6 +15,8 @@ class ManagerAttendanceApproval extends React.Component {
     this.UserCode = JSON.parse(getItem('userInfo')).UserCode;
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => {
     return (
@@ -130,6 +132,7 @@ class ManagerAttendanceApproval extends React.Component {
           formProps={{ width: 1000 }}
           recordFormUseAbsolute={true}
           baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
           customRowBtns={[
             record => {
               return (

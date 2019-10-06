@@ -15,6 +15,8 @@ class PersonInfo extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
     this.state = {
       personalInfoVisible: false,
       personInfo: {},
@@ -93,6 +95,7 @@ class PersonInfo extends React.Component {
               cparm1={id}
               formProps={{ width: 1000 }}
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
               recordFormUseAbsolute={true}
               customRowBtns={[
                 record => {

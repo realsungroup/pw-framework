@@ -8,6 +8,8 @@ class TargetTarget extends React.Component {
       window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
     return (
@@ -31,6 +33,7 @@ class TargetTarget extends React.Component {
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}
+            downloadBaseURL={this.attendanceDownloadURL}
           />
         </div>
       </div>

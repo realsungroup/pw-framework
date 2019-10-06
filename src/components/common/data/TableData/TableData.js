@@ -24,7 +24,6 @@ import { getIntlVal } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
-// import BIGrid from 'lz-components-and-utils/lib/BIGrid';
 
 const { Fragment } = React;
 
@@ -671,7 +670,13 @@ class TableData extends React.Component {
       baseURL,
       downloadBaseURL,
       dblinkname,
-      dataMode
+      dataMode,
+      cparm1 = '',
+      cparm2 = '',
+      cparm3 = '',
+      cparm4 = '',
+      cparm5 = '',
+      cparm6 = ''
     } = this.props;
     //console.log("handleDownload");
     //console.log(this.props);
@@ -703,7 +708,13 @@ class TableData extends React.Component {
       hostrecid,
       mergedCmsWhere,
       fileType,
-      dblinkname
+      dblinkname,
+      cparm1,
+      cparm2,
+      cparm3,
+      cparm4,
+      cparm5,
+      cparm6
     );
     this.setState({ loading: false });
   };
@@ -1207,7 +1218,7 @@ class TableData extends React.Component {
   };
 
   handleStatisticalAnalysis = () => {
-    this.setState({ isShowGrid: true });
+    this.setState({ isShowGrid: !this.state.isShowGrid });
   };
 
   handleZoomIn = () => {
@@ -1628,7 +1639,9 @@ class TableData extends React.Component {
       rowSelection,
       scrollXY,
       components,
-      editingKey
+      editingKey,
+      gridProps,
+      isShowGrid
     } = this.state;
     const newColumns = this.getNewColumns(columns);
 
@@ -1683,55 +1696,20 @@ class TableData extends React.Component {
           recordFormData: this._recordFormData
         }}
         headerExtra={headerExtra}
+        isShowGrid={isShowGrid}
+        gridProps={gridProps}
       />
     );
   };
 
   render() {
-    const { loading, width, height, isShowGrid, gridProps } = this.state;
+    const { loading } = this.state;
     return (
       <div
         className="table-data"
-        style={{ width, height, position: 'relative' }}
         ref={element => (this.tableDataRef = element)}
       >
-        <Spin spinning={loading}>
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              display: isShowGrid ? 'none' : ''
-            }}
-          >
-            {this.renderPwTable()}
-          </div>
-        </Spin>
-        {/* <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: !isShowGrid ? 'none' : ''
-          }}
-        >
-          <Button onClick={() => this.setState({ isShowGrid: false })}>
-            返回
-          </Button>
-          {gridProps.length ? (<div></div>
-<<<<<<< HEAD
-            // <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
-=======
-            <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
->>>>>>> 697ea9f0e79a9eb80e1e49d281ed21c09b6d571f
-          ) : (
-            <div>暂无配置</div>
-          )}
-        </div> */}
+        <Spin spinning={loading}>{this.renderPwTable()}</Spin>
       </div>
     );
   }

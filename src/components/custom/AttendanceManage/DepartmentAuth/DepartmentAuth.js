@@ -9,6 +9,13 @@ import http from 'Util20/api';
  */
 
 class DepartmentAuth extends React.Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.attendanceDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
+  }
   actionBarExtra = record => (
     <div className="">
       <Popconfirm
@@ -89,6 +96,8 @@ class DepartmentAuth extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           actionBarExtra={this.actionBarExtra}
+          baseURL={this.baseURL}
+          downloadBaseURL={this.attendanceDownloadURL}
         />
       </div>
     );
