@@ -65,14 +65,14 @@ class NoticeAttendClass extends React.Component {
     selectedCourseArrangment: {}, //选中的课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
     isShowModal: false,
-    isShowNotice:false,
+    isShowNotice: false,
     modifiedCourseArrangement: {}, //修改后的课程安排
     calendarEvents: [], //日历事件
     currentArrangeID: '616168186243',
     key: '',
-    CourseArrangeID:"",
-    classNotice:"",
-    CourseArrange:{}
+    CourseArrangeID: '',
+    classNotice: '',
+    CourseArrange: {}
   };
 
   async componentDidMount() {
@@ -261,34 +261,34 @@ class NoticeAttendClass extends React.Component {
     }
   };
 
-  inputChange = (e) =>{
+  inputChange = e => {
     let value = e.target.value;
-    console.log(value)
+    console.log(value);
     this.setState({
-      classNotice : value
-    })
-  }
+      classNotice: value
+    });
+  };
 
-  saveClassNotice = async() => {
+  saveClassNotice = async () => {
     this.setState({
-    isShowNotice: false,
+      isShowNotice: false
     });
     let CourseArrange = {};
     CourseArrange = this.state.CourseArrange;
     let classNotice = this.state.classNotice;
     CourseArrange.classNotice = classNotice;
-    CourseArrange.C3_614449043675 = "Y"
-    console.log(CourseArrange)
-    try{
+    CourseArrange.C3_614449043675 = 'Y';
+    console.log(CourseArrange);
+    try {
       CourseArrange = await http().modifyRecords({
-      resid:613938895111,
-      data : [CourseArrange]
-     });
-     message.success("上课通知发送成功")
-    }catch(error){
+        resid: 613938895111,
+        data: [CourseArrange]
+      });
+      message.success('上课通知发送成功');
+    } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   render() {
     let { mode, courseArrangments } = this.state;
     return (
@@ -398,44 +398,43 @@ class NoticeAttendClass extends React.Component {
                           //     />
                           //   }
                           // >
-                            // <span>
-                            //   <Icon type="message" />
-                            //   通知
-                            // </span>
+                          // <span>
+                          //   <Icon type="message" />
+                          //   通知
+                          // </span>
                           // </Popconfirm>,
                           // <span
                           //   onClick={() => {
                           //     this.setState({
                           //       CourseArrangeID:item.CourseArrangeID
-                                // isShowLearnerInfo: true,
-                                // selectedCourseArrangment: item
-                              // });
-                              // this.setState({
-                              //   isShowModal: true
-                              // });
-                              // this.props.onCheckPeople();
+                          // isShowLearnerInfo: true,
+                          // selectedCourseArrangment: item
+                          // });
+                          // this.setState({
+                          //   isShowModal: true
+                          // });
+                          // this.props.onCheckPeople();
                           //   }}
                           // >
                           //   <Icon type="team" />
                           //   查看人员
                           // </span><span
                           <span
-                            onClick = {() =>{
+                            onClick={() => {
                               this.setState({
-                                CourseArrange:item,
-                                isShowNotice:true
-                                
+                                CourseArrange: item,
+                                isShowNotice: true
                               });
-                              console.log(this.state.isShowNotice)
+                              console.log(this.state.isShowNotice);
                             }}
-                            >
-                              <Icon type="message" />
-                              通知
-                            </span>,
+                          >
+                            <Icon type="message" />
+                            通知
+                          </span>,
                           <span
                             onClick={() => {
                               this.setState({
-                                CourseArrange:item
+                                CourseArrange: item
                               });
                               this.setState({
                                 isShowModal: true
@@ -608,7 +607,7 @@ class NoticeAttendClass extends React.Component {
                           <span
                             onClick={() => {
                               this.setState({
-                                CourseArrangeID:item.CourseArrangeID
+                                CourseArrangeID: item.CourseArrangeID
                                 // isShowLearnerInfo: true,
                                 // selectedCourseArrangment: item
                               });
@@ -783,24 +782,23 @@ class NoticeAttendClass extends React.Component {
                           //     />
                           //   }
                           // >
-                            <span
-                            onClick = {() =>{
+                          <span
+                            onClick={() => {
                               this.setState({
-                                CourseArrange:item,
-                                isShowNotice:true
-                                
+                                CourseArrange: item,
+                                isShowNotice: true
                               });
-                              console.log(this.state.isShowNotice)
+                              console.log(this.state.isShowNotice);
                             }}
-                            >
-                              <Icon type="message" />
-                              通知
-                            </span>,
+                          >
+                            <Icon type="message" />
+                            通知
+                          </span>,
                           // </Popconfirm>,
                           <span
                             onClick={() => {
                               this.setState({
-                                CourseArrangeID:item.CourseArrangeID
+                                CourseArrangeID: item.CourseArrangeID
                                 // isShowLearnerInfo: true,
                                 // selectedCourseArrangment: item
                               });
@@ -879,6 +877,7 @@ class NoticeAttendClass extends React.Component {
               })
             }
             destroyOnClose
+            centered
             onOk={() => {
               let { modifiedCourseArrangement } = this.state;
               this.modifyCourseArrangment(modifiedCourseArrangement);
@@ -890,17 +889,19 @@ class NoticeAttendClass extends React.Component {
             }}
             title="查看人员"
           >
-            <TableData
-              resid={616073391736}
-              hasModify={false}
-              hasDelete={false}
-              hasAdd={false}
-              hasRowDelete={false}
-              hasRowModify={false}
-              hasRowView={true}
-              subtractH={240}
-              cmswhere={`CourseArrangeID=${this.state.CourseArrangeID}`}
-            ></TableData>
+            <div style={{ height: 500 }}>
+              <TableData
+                resid={616073391736}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasRowView={true}
+                subtractH={200}
+                cmswhere={`CourseArrangeID=${this.state.CourseArrangeID}`}
+              ></TableData>
+            </div>
           </Modal>
         ) : null}
         {this.state.isShowNotice ? (
@@ -909,19 +910,18 @@ class NoticeAttendClass extends React.Component {
             width="80%"
             onCancel={() =>
               this.setState({
-                isShowNotice: false,
+                isShowNotice: false
               })
             }
             destroyOnClose
             onOk={this.saveClassNotice}
             title="编辑上课须知"
           >
-            <Form.Item
-              label = "上课须知"
-              colon
-              cla
-            >
-              <TextArea onChange = {this.inputChange} value = {this.state.classNotice}/>
+            <Form.Item label="上课须知" colon cla>
+              <TextArea
+                onChange={this.inputChange}
+                value={this.state.classNotice}
+              />
             </Form.Item>
           </Modal>
         ) : null}

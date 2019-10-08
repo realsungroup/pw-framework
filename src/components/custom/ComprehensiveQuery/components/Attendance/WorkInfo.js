@@ -180,6 +180,7 @@ class WorkInfo extends React.Component {
               actionBarWidth={100}
               cmswhere={`C3_375380046640 = '${selectRecord.YGNO}' and YEARMONTH= '${selectMonth}'`}
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
             />
           </div>
         </Modal>
@@ -208,6 +209,7 @@ class WorkInfo extends React.Component {
               actionBarWidth={100}
               cmswhere={`C3_426438637535 = '${selectRecord.YGNO}'`}
               baseURL={this.baseURL}
+              downloadBaseURL={this.attendanceDownloadURL}
             />
           </div>
         </Modal>

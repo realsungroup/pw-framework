@@ -7,7 +7,7 @@ import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内�
 import TableData from '../../common/data/TableData';
 import InterviewAssessment from '../InterviewAssessment';
 import ReferenceCheck from '../ReferenceCheck';
-
+import OfferLetter from'../OfferLetter';
 import { assementForm, referenceCheck } from './config.js'; //面试评估表和背景调查表的配置
 import { withRecordForm } from '../../common/hoc/withRecordForm';
  //高阶组件,点击评估详情弹出后台对应不同的窗体需要用到高阶组件withRecordForm
@@ -361,6 +361,13 @@ class IdLindex extends Component {
             </div>
           </div>
         );
+        case '工作邀请函':
+          return(
+            <div>
+            <OfferLetter></OfferLetter>
+            
+            </div>
+          )
     }
   };
   // 移动
@@ -396,14 +403,17 @@ class IdLindex extends Component {
                 this.handleClick(e.key);
               }}
             >
-              <Menu.Item style={{ width: '30%' }} key="工作申请表">
+              <Menu.Item style={{ width: '25%' }} key="工作申请表">
                 工作申请表
               </Menu.Item>
-              <Menu.Item style={{ width: '30%' }} key="面试评估表">
+              <Menu.Item style={{ width: '25%' }} key="面试评估表">
                 面试评估表
               </Menu.Item>
-              <Menu.Item style={{ width: '30%' }} key="背景调查表">
+              <Menu.Item style={{ width: '25%' }} key="背景调查表">
                 背景调查表
+              </Menu.Item>
+              <Menu.Item style={{ width: '25%' }} key="工作邀请函">
+                工作邀请函
               </Menu.Item>
             </Menu>
           </div>

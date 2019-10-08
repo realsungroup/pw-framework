@@ -124,7 +124,9 @@ class PersonInfo extends React.Component {
                     hasRowModify: false,
                     hasRowView: true,
                     hasBeBtns: false,
-                    baseURL: this.baseURL
+                    baseURL: this.baseURL,
+                    height: 300,
+                    downloadBaseURL: this.attendanceDownloadURL
                   }
                 }
               ]}
