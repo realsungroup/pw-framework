@@ -26,21 +26,24 @@ const IconBtns = React.memo(
     onZoomIn,
     onZoomOut,
     size,
-    onStatisticalAnalysis
+    onStatisticalAnalysis,
+    hasStatisticalAnalysis
   }) => {
     return (
       <React.Fragment>
-        <Tooltip
-          className="pw-table__header-icon"
-          placement="top"
-          title="统计分析"
-          onClick={onStatisticalAnalysis}
-        >
-          <Icon
-            type="bar-chart"
-            style={{ fontSize: iconSizeMap[size], color: 'green' }}
-          />
-        </Tooltip>
+        {hasStatisticalAnalysis && (
+          <Tooltip
+            className="pw-table__header-icon"
+            placement="top"
+            title="统计分析"
+            onClick={onStatisticalAnalysis}
+          >
+            <Icon
+              type="bar-chart"
+              style={{ fontSize: iconSizeMap[size], color: 'green' }}
+            />
+          </Tooltip>
+        )}
 
         {hasImport && (
           <IconWithTooltip

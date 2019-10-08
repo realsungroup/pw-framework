@@ -56,7 +56,9 @@ class SubordinateCourses extends React.Component {
       rate5: null,
       rate6: null,
       rate7: null,
-      rate8: null
+      rate8: null,
+      advantange: '',
+      shortcomming: ''
     },
     //外训评分
     rateOut: {
@@ -132,10 +134,12 @@ class SubordinateCourses extends React.Component {
         tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
         tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
         tempRate.rate8 = res.data[0].C3_615640235456; //时间控制合理使我感到舒适
+        tempRate.advantange = res.data[0].C3_622216706104;
+        tempRate.shortcomming = res.data[0].C3_622216725340;
         this.setState({
           rate: tempRate
         });
-        console.log('后盾返回的内训评分', tempRate);
+        console.log('后盾返回的内训评分', res.data[0]);
       }
     }
     if (courseArrangmentDetailToSearch.courseType !== '内训') {
@@ -531,16 +535,15 @@ class SubordinateCourses extends React.Component {
     let {
       selectedCourseArrangmentDetail,
       tips,
-      courseArrangmentDetailToSearch
+      courseArrangmentDetailToSearch,
+      summaryVisible,
+      courseDetailVisible
     } = this.state;
     return (
-      <div
-        className="cataner"
-        style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
-      >
+      <div className="cataner">
         <TableData
           resid={CourseArrangementDetailRESID}
-          subtractH={240}
+          subtractH={200}
           hasRowView={false}
           hasRowDelete={false}
           hasRowModify={false}
@@ -584,16 +587,21 @@ class SubordinateCourses extends React.Component {
             }
           ]}
         />
-        {/* 查看课程 的Modal及Drawer */}
         <Modal
-          title="课程详情"
-          visible={this.state.courseDetailVisible}
-          width="70%"
+          title={`${summaryVisible ? '员工课程汇总' : ''}${
+            courseDetailVisible ? '课程详情' : ''
+          }`}
+          width="100%"
+          visible={summaryVisible || courseDetailVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          top={10}
+          destroyOnClose
           centered
         >
-          {this.renderCourseDetail(selectedCourseArrangmentDetail)}
+          {summaryVisible && this.renderSummary()}
+          {courseDetailVisible &&
+            this.renderCourseDetail(selectedCourseArrangmentDetail)}
         </Modal>
         <Drawer
           width={640}
@@ -638,7 +646,7 @@ class SubordinateCourses extends React.Component {
           />
         </Drawer>
         <Drawer
-          width={'60%'}
+          width="60%"
           placement="right"
           closable={false}
           visible={this.state.feedbackDrawerVisible}
@@ -704,6 +712,17 @@ class SubordinateCourses extends React.Component {
                   </Col>
                 </Row>
               </Card>
+
+              <div>
+                <div>
+                  <h3>我很有收获的内容</h3>
+                  <p>{this.state.rate.advantange}</p>
+                </div>
+                <div>
+                  <h3>我希望改进的内容</h3>
+                  <p>{this.state.rate.shortcomming}</p>
+                </div>
+              </div>
             </Card>
           ) : (
             <Card type="inner" title="讲师专业水平" className="cardinner">
@@ -776,29 +795,28 @@ class SubordinateCourses extends React.Component {
           visible={this.state.tipsDrawerVisible}
           onClose={this.handleColseDrawers}
         >
-          {tips.C3_614964225030 ? (
+          {tips.C3_614964239022 ? (
             <div style={{ padding: 12 }}>
               {/* 标题 */}
               <h2 style={{ textAlign: 'center' }}>{tips.C3_614964239022}</h2>
               <Divider />
               {/* 内容 */}
-              <pre>{tips.C3_614964225030}</pre>
+              {tips.Filepath ? (
+                tips.Filepath.split(',').map((item, index) => (
+                  <p>
+                    <a href={item} target="_blank">
+                      附件{index + 1}
+                    </a>
+                  </p>
+                ))
+              ) : (
+                <p>无附件</p>
+              )}
             </div>
           ) : (
             <Empty description="未提交心得"></Empty>
           )}
         </Drawer>
-        <Modal
-          title="员工课程汇总"
-          width="100%"
-          visible={this.state.summaryVisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          top={10}
-          destroyOnClose
-        >
-          {this.renderSummary()}
-        </Modal>
       </div>
     );
   }

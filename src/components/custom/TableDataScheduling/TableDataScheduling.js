@@ -1,14 +1,14 @@
-import React from "react";
-import { TableDataC } from "../loadableCustom";
-import { TableData } from "../../common/loadableCommon";
-import { Button, Modal, DatePicker, message, Tabs } from "antd";
-import { saveMultipleRecord } from "../../../util/api";
-import http from "../../../util20/api";
-import TableDataWrap from "../TableDataWrap";
+import React from 'react';
+import { TableDataC } from '../loadableCustom';
+import { TableData } from '../../common/loadableCommon';
+import { Button, Modal, DatePicker, message, Tabs } from 'antd';
+import { saveMultipleRecord } from '../../../util/api';
+import http from '../../../util20/api';
+import TableDataWrap from '../TableDataWrap';
 const TabPane = Tabs.TabPane;
 
 class TableDataScheduling extends React.Component {
-  state = { visible: false, date: "", dataSource: [], selectedRowKeys: "" };
+  state = { visible: false, date: '', dataSource: [], selectedRowKeys: '' };
 
   onChange = (date, dateString) => {
     console.log(date, dateString);
@@ -24,14 +24,14 @@ class TableDataScheduling extends React.Component {
       this.state.selectedRowKeys.map(items => {
         if (item.REC_ID === items) {
           item.C3_601650474946 = this.state.date;
-          item.C3_604408361317 = "Y";
+          item.C3_604408361317 = 'Y';
           Reldata.push(item);
         }
       });
     });
     try {
       res = await http({
-        baseURL: "https://finisar.realsun.me:9092/"
+        baseURL: 'https://finisar.realsun.me:9092/'
       }).modifyRecords({
         resid: 603303655900,
         data: Reldata,
@@ -42,7 +42,7 @@ class TableDataScheduling extends React.Component {
       });
       if (res.Error === 0) {
         this.tableDataRef.handleRefresh();
-        message.success("操作成功！");
+        message.success('操作成功！');
       } else {
         message.error(res.message);
       }
@@ -64,25 +64,23 @@ class TableDataScheduling extends React.Component {
         selectedRowKeys: selectedRowKeys
       });
     } else {
-      message.error("请先勾选记录！");
+      message.error('请先勾选记录！');
     }
   };
   render() {
     return (
-      <div
-        className="table-data-wrap"
-        style={{ height: "100vh" }}
-      >
+      <div className="table-data-wrap" style={{ height: '100vh' }}>
         <Tabs
           defaultActiveKey="1"
-          style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+          style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
         >
           <TabPane
             tab="排班导入"
             key="1"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: '100%', height: '100%' }}
           >
             <TableDataWrap
+              hasTabs={true}
               refTargetComponentName="TableData"
               wrappedComponentRef={element => (this.tableDataRef = element)}
               // {...this.props}
@@ -130,6 +128,7 @@ class TableDataScheduling extends React.Component {
               // refTargetComponentName="TableData"
               // wrappedComponentRef={element => (this.tableDataRef = element)}
               // {...this.props}
+              hasTabs={true}
               resid="527162576853"
               dblinkname="EHR"
               getcolumninfo="1"
@@ -151,6 +150,7 @@ class TableDataScheduling extends React.Component {
           </TabPane>
           <TabPane tab="排班超标记录" key="3">
             <TableDataWrap
+              hasTabs={true}
               refTargetComponentName="TableData"
               dblinkname="EHR"
               wrappedComponentRef={element => (this.tableDataRef = element)}

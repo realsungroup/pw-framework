@@ -33,7 +33,7 @@ export const defaultProps = {
   hasResizeableBox: true,
   width: '100%',
   height: '100%',
-  hasZoomInOut: false,
+  hasZoomInOut: true,
   defaultPagination: {
     current: 1,
     pageSize: 10,
