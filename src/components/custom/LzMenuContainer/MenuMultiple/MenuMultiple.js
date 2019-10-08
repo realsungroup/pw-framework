@@ -309,8 +309,12 @@ export default class MenuMultiple extends React.Component {
 
   handleCompleteFieldsChoose = () => {
     const { selectedKeys } = this.state;
+    // const newSelectedKeys = selectedKeys.filter(
+    //   key => key.indexOf('C3_') !== -1
+    // );
+    //对选择的字段不进行筛选
     const newSelectedKeys = selectedKeys.filter(
-      key => key.indexOf('C3_') !== -1
+      key => 1==1
     );
 
     if (!selectedKeys.length) {
@@ -422,7 +426,13 @@ export default class MenuMultiple extends React.Component {
             defaultScaleStatus="max"
             onClose={() => this.setState({ chartVisible: false })}
           >
-            {((formTitle === '实验室检查')||(formTitle === 'CD-评分')) ? (
+            <LabExaminationChart
+                data={recordList}
+                fields={fields}
+                dateField={innerFieldName}
+              />
+            
+            {/* {((1==1)) ? (
               <LabExaminationChart
                 data={recordList}
                 fields={fields}
@@ -441,7 +451,7 @@ export default class MenuMultiple extends React.Component {
                 recordHeightField={'C3_586880026948'}
                 recordWeightField={'C3_586880035091'}
               />
-            )}
+            )} */}
           </LzModal>
         )}
 
