@@ -113,7 +113,7 @@ class WaitingApproval extends React.Component {
           hasRowModify={false}
           hasRowSelection={true}
           recordFormUseAbsolute={true}
-          actionBarWidth={200}
+          actionBarWidth={300}
           formProps={{ width: 700 }}
           dblinkname="ehr"
           actionBarExtra={this.actionBarExtra}

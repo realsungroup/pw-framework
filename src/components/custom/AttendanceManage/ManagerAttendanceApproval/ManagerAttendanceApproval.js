@@ -160,7 +160,8 @@ class ManagerAttendanceApproval extends React.Component {
                 hasModify: false,
                 hasBeBtns: false,
                 actionBarWidth: 100,
-                baseURL: this.baseURL
+                baseURL: this.baseURL,
+                downloadBaseURL: this.attendanceDownloadURL
               }
             }
           ]}
