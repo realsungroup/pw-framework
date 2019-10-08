@@ -13,37 +13,24 @@ function fun_date(num) {
      var time2 = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
     return time2;
     }
-
-function getPreMonth(date) {
-            var arr = date.split('-');
-            var year = arr[0]; //获取当前日期的年份
-            var month = arr[1]; //获取当前日期的月份
-            var day = arr[2]; //获取当前日期的日
-            var days = new Date(year, month, 0);
-            days = days.getDate(); //获取当前日期中月的天数
-            var year2 = year;
-            var month2 = parseInt(month) - 1;
-            if (month2 == 0) {
-                year2 = parseInt(year2) - 1;
-                month2 = 12;
+    function unique(arr){
+            for(var i=0; i<arr.length; i++){
+                for(var j=i+1; j<arr.length; j++){
+                    if(arr[i].personID==arr[j].personID){         //第一个等同于第二个，splice方法删除第二个
+                        arr.splice(j,1);
+                        j--;
+                    }
+                }
             }
-            var day2 = day;
-            var days2 = new Date(year2, month2, 0);
-            days2 = days2.getDate();
-            if (day2 > days2) {
-                day2 = days2;
-            }
-            if (month2 < 10) {
-                month2 = '0' + month2;
-            }
-            var t2 = year2 + '-' + month2 + '-' + day2;
-            return t2;
-        }
+    return arr;
+    }
 
  class CyberMoney extends  Component{
    constructor(props){
     super(props);
     this.state ={
+      tFin:[],
+      tFinal:[],
       loading:false,
       timeScale:'year',
       shopStatus:false,
@@ -80,7 +67,8 @@ function getPreMonth(date) {
     };
    }
    switchTime=(v)=>{
-     this.setState({timeScale:v});
+     this.setState({timeScale:v,tFin:[]});
+     this.getMember(v);
    }
    enterShop=()=>{
      if(this.state.shopStatus==true){
@@ -92,40 +80,48 @@ function getPreMonth(date) {
    componentDidMount(){
      this.getUserData();
      this.getHistory();
-     this.getMember();
+     this.getMember('year');
    }
    // 623682682020
    // 623683986122
    getMemberDetail = async(str,id) =>{
+     this.setState({teamData:[],teamScale:0});
+
      let res = await http().getTable({ resid: 623682682020,
        cmswhere:`REC_DATE > '${str}'`&&`personID=${id}`
      });
      var arr=this.state.teamData;
+     // res获取的是人员信息详情
      try {
        this.setState({
-         loading:false
+         loading:true
        });
+       // 如果有人员详情数据
        if(res.data.length>0){
          var l=0;
+         // 当计数器小于数据长度时
          while(l<res.data.length){
            var n=0;
            var bol=false;
+           // 第一次直接将结果推进数组
            if(arr.length==0){
+
              arr.push({
                name:res.data[l].person,
                status:res.data[l].turnover,
                personID:res.data[l].personID,
              });
-             this.setState({teamScale:arr.teamData[n].status});
+
 
            }else{
+             // 第二次开始如果计数器2小于数组长度
              while(n<arr.length){
+               // 如果计数1的人员id=计数2的人员id
                if(res.data[l].personID==this.state.teamData[n].personID){
+
                  if(res.data[l].dealSymbol=='增加'){
-                   arr.teamData[n].status+=res.data[l].turnover;
-                   if(arr.teamData[n].status>this.state.teamScale){
-                     this.setState({teamScale:arr.teamData[n].status});
-                   }
+                   arr[n].status= Number(arr[n].status)+Number(res.data[l].turnover);
+
                  }
                  bol=true;
                }
@@ -135,9 +131,7 @@ function getPreMonth(date) {
                    status:res.data[l].turnover,
                    personID:res.data[l].personID,
                  });
-                 if(res.data[l].turnover>this.state.teamScale){
-                   this.setState({teamScale:arr.teamData[n].status});
-                 }
+
                }
                n++;
              }
@@ -146,48 +140,99 @@ function getPreMonth(date) {
 
            l++;
          }
-
        }
-       console.log('xiangq',arr)
+       // this.setState({teamData:arr})
+       // 去重
+       var comp=unique(this.state.teamData);
+
+      var t=this.state.tFinal;
+      t.push(comp[0])
+        this.setState({teamData:comp,tFinal:t});
      } catch (err) {
        this.setState({loading:false});
-
        Modal.error({
-         title: '提示失败',
+         title: '提示失败2',
          content: err.message
        });
      }
-   }
-   getMember = async()=>{
-     this.setState({loading:true});
-     var myDate = new Date();
-     var str=myDate;
-     str = moment().format('YYYY-MM-DD HH:mm:ss')
+     if(this.state.toSearch<this.state.team.data.length-1){
+       // console.log(this.state.toSearch,this.state.team.data)
+       var num=(this.state.toSearch)+1;
+       this.setState({toSearch:num})
 
-     if(this.state.timeScale=='week'){
-       str=fun_date(-7)+' 00:00:00'
+       this.getMemberDetail(str,this.state.team.data[this.state.toSearch].personID);
+     }else{
 
-     }else if(this.state.timeScale=='month'){
-       str=str.substr(0,10);
-       str=getPreMonth(str);
-       str+=' 00:00:00'
+       var nn=0;
+       var array=this.state.tFinal
+       while(nn<array.length){
+         if(!array[nn]){
+           array.splice(nn,1);
+           nn--;
+         }
+         nn++;
+       }
+       nn=0;
+       while(nn<array.length){
+         if(!array[nn].name){
+           array[nn].name=array[nn].personID
+         }
+         if(!array[nn].status){
+           array[nn].status=0;
+         }
+         if(nn==0){
+           this.setState({teamScale:array[nn].status})
+         }else{
+           if(array[nn].status>this.state.teamScale){
+             this.setState({teamScale:array[nn].status})
+           }
+         }
+         nn++;
+       }
+       // 排序
+       array.sort(function(a,b){
+     	return  b.status - a.status;
+     })
+     array=unique(array);
 
-     }else if(this.state.timeScale=='year'){
-       str=fun_date(-365)+' 00:00:00'
+       this.setState({tFin:array,loading:false})
      }
+   }
+   getMember = async(time)=>{
+     this.setState({loading:true});
+     var str='';
+       var myDate = new Date();
+       str=myDate;
+       str = moment().format('YYYY-MM-DD HH:mm:ss')
 
+       if(time=='week'){
+         str=str.substr(0,10);
+
+         str=fun_date(-7)+' 00:00:00'
+
+       }else if(time=='month'){
+         str=str.substr(0,10);
+
+         str=fun_date(-30)+' 00:00:00'
+       }else if(time=='year'){
+         str=str.substr(0,10);
+
+         str=fun_date(-365)+' 00:00:00'
+       }
+
+
+     console.log(str)
      let res = await http().getTable({ resid: 623683986122,cmswhere:`REC_DATE > '${str}'`});
 
      try {
        this.setState({
-         loading:false
+         loading:false,
+         toSearch:0,
+         team:res,
        });
-       console.log('jichengbiajo',res);
-       var n=0
-       while(n<res.data.length){
-         this.getMemberDetail(str,res.data[n].personID)
-         n++;
-       }
+
+         this.getMemberDetail(str,res.data[this.state.toSearch].personID);
+
      } catch (err) {
        this.setState({loading:false});
 
@@ -221,7 +266,6 @@ function getPreMonth(date) {
      let res = await http().getTable({ resid: 623068847241});
      try {
 
-       console.log(res);
        var arr=[];
        var n=0;
        while (n<res.data.length){
@@ -289,7 +333,7 @@ function getPreMonth(date) {
 
           </div>
           <ul>
-          {this.state.teamData.map((item, index) => {
+          {this.state.tFin.map((item, index) => {
              return   <li><span><b>{item.name}</b> {item.status}</span><bar><filter style={{width:(item.status/this.state.teamScale*100)+'%'}}></filter></bar>
                </li>
            })}
