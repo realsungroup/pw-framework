@@ -1759,3 +1759,7 @@ window[623529591025] = {
   name: 'CyberMoney',
   title: '积分系统'
 };
+window[623607754429] = {
+  name: 'ProjectBonus',
+  title: '项目积分'
+};

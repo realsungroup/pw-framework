@@ -5,6 +5,10 @@
   position:fixed;
   top:0;
   left:0;
+  -webkit-user-select:none;
+   -moz-user-select:none;
+   -ms-user-select:none;
+   user-select:none;
 }
 .CyberMoney{
       background: #fff;
@@ -60,18 +64,20 @@
       transition: .3s;
       opacity: 0.9;
     }
-    .user img{
+    .user .avatar{
       border-radius: 50%;
       width:5.5556vw;
       height:5.5556vw;
-
+      background-image: url(img/avatar-def.png);
+      background-size: cover;
       top:50%;
       margin-top: -2.7778vw;
       margin-left:2.2222vw;
+      box-shadow: 0px 0px 8px rgba(0,0,0,0.4) inset;
     }
     .user p,.user span{
       color:#fff;
-      left:8.2vw;
+      left:8.4vw;
     }
     .user p{
       top:2.7778vw;
@@ -131,26 +137,27 @@
       cursor: default;
     }
     .CyberMoney .shop_cls p{
-      color:#333;
+      color:#666;
     }
     .CyberMoney .shop_cls rect{
       background-image: url(img/shopping_line.svg);
+      opacity: 0.6;
     }
     .shop_cls:hover{
       opacity: 1;
     }
     .history h4{
-      font-size:1.1111vw;
+      font-size:16px;
       color:#fff;
       font-weight: bold;
-      margin-top:1.1111vw;
-      margin-bottom: 2.0556vw;
+      margin-top:24px;
+      margin-bottom: 24px;
       margin-left: 1.6667vw;
     }
     .history ul{
       padding:0;
       list-style: none;
-      margin-top:2.0556vw;
+      margin-top:24px;
       width:92.37%;
       margin-left:6.63%;
       height:calc(90.1351vh - 6.25vw);
@@ -176,7 +183,7 @@
         border-radius: 10px;
         background-color: rgba(255,255,255,0.25);
         &:hover{
-          background-color: rgba(255,255,255,0.4);
+          background-color: rgba(255,255,255,0.25);
 
         }
     }
@@ -193,9 +200,9 @@
       width:95%;
       height:auto;
       background:rgba(255,255,255,0.15);
-      border-radius:0.5556vw;
+      border-radius:8px;
       overflow: hidden;
-      margin-bottom: 1.1111vw;
+      margin-bottom: 16px;
       transition: .3s;
     }
     .history li:hover{
@@ -205,10 +212,10 @@
 
     }
     .history li p{
-      font-size: 1.1111vw;
+      font-size: 16px;
       color:#fff;
-      margin-top:1.1111vw;
-      margin-left:1.1111vw;
+      margin-top:16px;
+      margin-left:16px;
 
 
     }
@@ -227,18 +234,18 @@
     }
     .history li oval{
       position: absolute;
-      right:1.1111vw;
-      margin-top:-2.05556vw;
-      width:3.8889vw;
-      height:3.8889vw;
+      right:16px;
+      margin-top:-40px;
+      width:80px;
+      height:80px;
       background:rgba(255,255,255,0.1);
       border:1px solid rgba(255,255,255,0.4);
     }
     .history li oval p{
-      line-height:4.4444vw;
-      width:3.8889vw;
+      line-height:88px;
+      width:80px;
       text-align: center;
-      font-size: 1.6667vw;
+      font-size: 32px;
       font-family:DINCondensed-Bold,DINCondensed;
       margin:0;
     }
@@ -250,35 +257,31 @@
         box-shadow: none;
         border-radius:0;
         border-bottom:1px solid #eee;
-        height:4.4444vw;
+        height:56px;
         padding:0 5%;
         overflow: hidden;
         .current{
-          background:linear-gradient(90deg,#FF5F6D,#FFC371);
-          color:#fff;
-          border-radius:8px;
-          &:hover{
-            color:#fff;
-          }
+          color:#FF5F6D;
+
         }
         button{
           background: none;
           border:none;
           outline:none;
           float:right;
-          font-size: 1.1111vw;
-          line-height: 2.2222vw;
-          margin-top: 1.1111vw;
+          font-size: 16px;
+          line-height: 24px;
+          margin-top: 16px;
           cursor:pointer;
-          width:8%;
+          width:24px;
           &:hover{
             color:#FF5F6D;
           }
         }
         h4{
           float:left;
-          line-height:4.4444vw;
-          font-size: 1.1111vw;
+          line-height:56px;
+          font-size: 16px;
           font-weight: bold;
         }
       }
@@ -292,13 +295,13 @@
         margin-left:5%;
         width:94%;
         li{
-          margin-top:1.6667vw;
+          margin-top:24px;
           width:95%;
               span{
                   display:inline-block;
                   width:16%;
-                  line-height:1.6667vw;
-                  font-size: 1.1111vw;
+                  line-height:24px;
+                  font-size: 16px;
                   color:#FF5F6D;
                   b{
                     color:#333;
@@ -311,14 +314,14 @@
                 width:84%;
 
                 background: rgba(255,95,109,0.1);
-                height:0.8333vw;
+                height:8px;
                 border-radius: 999px;
 
                 overflow: hidden;
                   filter{
                     display:block;
                     transition: .3s;
-                    height:0.8333vw;
+                    height:8px;
                     background: linear-gradient(90deg,#FF5F6D,#FFC371);
                     border-radius: 999px;
 

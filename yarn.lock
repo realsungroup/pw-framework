@@ -8063,7 +8063,7 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-lz-components-and-utils@1.6.6:
+lz-components-and-utils@^1.6.6:
   version "1.6.6"
   resolved "https://registry.npm.taobao.org/lz-components-and-utils/download/lz-components-and-utils-1.6.6.tgz#cc147d7464f4559f1430b416842c21da1c4db2cb"
   integrity sha1-zBR9dGT0VZ8UMLQWhCwh2hxNsss=
