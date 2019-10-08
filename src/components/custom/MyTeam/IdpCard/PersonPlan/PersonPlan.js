@@ -820,6 +820,9 @@ class PersonPlan extends React.Component {
     this.props.goBack();
   };
   onSubmit = async () => {
+
+    this.onSaveAbility();
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     if (this.state.checkType === 'oneself') {
@@ -833,7 +836,7 @@ class PersonPlan extends React.Component {
         data: [personInfo]
       });
       if (res.Error === 0) {
-        message.success(res.message);
+        // message.success(res.message);
         this.props.goBack();
       }
     } catch (error) {
@@ -841,6 +844,9 @@ class PersonPlan extends React.Component {
     }
   };
   onSubmitMid = async () => {
+
+    this.onSaveAbility();
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.yearMidSubmit = 'Y';
@@ -851,7 +857,7 @@ class PersonPlan extends React.Component {
         data: [personInfo]
       });
       if (res.Error === 0) {
-        message.success(res.message);
+        // message.success(res.message);
         this.props.goBack();
       }
     } catch (error) {
@@ -859,6 +865,8 @@ class PersonPlan extends React.Component {
     }
   };
   onSubmitTail = async () => {
+    this.onSaveAbility();
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.yearTailSubmit = 'Y';
@@ -869,7 +877,7 @@ class PersonPlan extends React.Component {
         data: [personInfo]
       });
       if (res.Error === 0) {
-        message.success(res.message);
+        // message.success(res.message);
         this.props.goBack();
       }
     } catch (error) {
@@ -1017,7 +1025,7 @@ class PersonPlan extends React.Component {
         isEditOrAdd: 'true'
       });
       if (res.Error === 0) {
-        message.success(res.message);
+        // message.success(res.message);
       }
     } catch (error) {
       message.error(error.message);

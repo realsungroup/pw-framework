@@ -79,7 +79,10 @@ class ComprehensiveQuery extends React.Component {
     const { isExpand, currentTab } = this.state;
     return (
       <div id="comprehensive-query">
-        <main style={{ left: isExpand ? 240 : 4 }} className="main-content">
+        <main
+          style={{ left: isExpand ? 260 : 24, zIndex: 99 }}
+          className="main-content"
+        >
           <div
             className="comprehensive-query_goback-btn"
             onClick={this.props.goBack}

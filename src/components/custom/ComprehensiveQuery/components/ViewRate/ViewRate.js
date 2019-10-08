@@ -67,7 +67,7 @@ class ViewRate extends React.Component {
   renderSelect = () => {
     return (
       <Select
-        style={{ width: 120, margin: '8px' }}
+        style={{ width: 120, margin: '8px 8px 8px 0' }}
         placeholder="选择财年"
         value={this.state.selectYear}
         onSelect={selectValue => {
