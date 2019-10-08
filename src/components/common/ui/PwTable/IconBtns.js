@@ -78,24 +78,24 @@ const IconBtns = React.memo(
             style={{ fontSize: iconSizeMap[size] }}
           />
         )}
-        {/* {hasZoomInOut && zoomStatus === 0 && ( */}
-        <IconWithTooltip
-          className="pw-table__header-icon"
-          tip="放大"
-          iconClass="icon-scale-max"
-          onClick={onZoomIn}
-          style={{ fontSize: iconSizeMap[size] }}
-        />
-        {/* )} */}
-        {/* {hasZoomInOut && zoomStatus === 1 && ( */}
-        <IconWithTooltip
-          className="pw-table__header-icon"
-          tip="缩小"
-          iconClass="icon-scale-normal"
-          onClick={onZoomOut}
-          style={{ fontSize: iconSizeMap[size] }}
-        />
-        {/* )} */}
+        {hasZoomInOut && zoomStatus === 0 && (
+          <IconWithTooltip
+            className="pw-table__header-icon"
+            tip="放大"
+            iconClass="icon-scale-max"
+            onClick={onZoomIn}
+            style={{ fontSize: iconSizeMap[size] }}
+          />
+        )}
+        {hasZoomInOut && zoomStatus === 1 && (
+          <IconWithTooltip
+            className="pw-table__header-icon"
+            tip="缩小"
+            iconClass="icon-scale-normal"
+            onClick={onZoomOut}
+            style={{ fontSize: iconSizeMap[size] }}
+          />
+        )}
       </React.Fragment>
     );
   }

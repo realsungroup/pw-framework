@@ -1649,6 +1649,7 @@ class TableData extends React.Component {
     return (
       <PwTable
         title={title}
+        hasZoomInOut={hasZoomInOut}
         editingKey={editingKey}
         components={components}
         pagination={pagination}

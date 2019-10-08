@@ -157,8 +157,20 @@ class PwTable extends React.Component {
     const hasHeader = hasIconBtns || title;
 
     const { locale } = this.props.intl;
+    const { zoomStatus } = this.state;
+    let zoomOutStyle = {};
+    if (zoomStatus === 1) {
+      zoomOutStyle = {
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top: 0,
+        zIndex: 999
+      };
+    }
     return (
-      <div className="pw-table">
+      <div className="pw-table" style={zoomOutStyle}>
         {hasHeader && (
           <div className="pw-table__header">
             <div
