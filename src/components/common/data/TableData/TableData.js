@@ -83,7 +83,8 @@ class TableData extends React.Component {
       editingKey: null, // 正在进行行内编辑的记录 REC_ID
       width,
       height,
-      gridProps: []
+      gridProps: [],
+      zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
     };
   }
 
@@ -250,7 +251,8 @@ class TableData extends React.Component {
     // ResizableBox 接收的 with 和 height 属性类型为 number
     // 所以，当 width 和 height 用的字符串类型时（百分比），需要转换一下
     if (this.tableDataRef) {
-      const parent = this.tableDataRef.parentNode;
+      // const parent = this.tableDataRef.parentNode;
+      const parent = this.tableDataRef;
       this.boxW =
         typeof width === 'number'
           ? width
@@ -278,7 +280,6 @@ class TableData extends React.Component {
         this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
       );
     }
-
     this.setState({ scrollXY, rowSelection: newRowSelection });
   };
 
@@ -402,7 +403,6 @@ class TableData extends React.Component {
       secondParams.hasBeSort = false;
       dataSource = [];
     }
-    console.log(res.ResourceData.AnalysisConfig);
     if (Array.isArray(res.ResourceData.AnalysisConfig)) {
       let config = [...res.ResourceData.AnalysisConfig];
       config = config.map(item => {
@@ -1222,11 +1222,13 @@ class TableData extends React.Component {
   };
 
   handleZoomIn = () => {
-    this.props.hasResizeableBox || this.props.zoomIn();
+    // this.props.hasResizeableBox || this.props.zoomIn();
+    this.setState({ zoomStatus: 1 }, this.handleResize);
   };
 
   handleZoomOut = () => {
-    this.props.hasResizeableBox || this.props.zoomOut();
+    // this.props.hasResizeableBox || this.props.zoomOut();
+    this.setState({ zoomStatus: 0 }, this.handleResize);
   };
 
   _cmsWhere = '';
@@ -1641,7 +1643,8 @@ class TableData extends React.Component {
       components,
       editingKey,
       gridProps,
-      isShowGrid
+      isShowGrid,
+      zoomStatus
     } = this.state;
     const newColumns = this.getNewColumns(columns);
 
@@ -1650,6 +1653,7 @@ class TableData extends React.Component {
       <PwTable
         title={title}
         hasZoomInOut={hasZoomInOut}
+        zoomStatus={zoomStatus}
         editingKey={editingKey}
         components={components}
         pagination={pagination}
@@ -1704,10 +1708,23 @@ class TableData extends React.Component {
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, zoomStatus } = this.state;
+    let zoomOutStyle = {};
+    if (zoomStatus === 1) {
+      zoomOutStyle = {
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top: 0,
+        zIndex: 999,
+        height: '100%'
+      };
+    }
     return (
       <div
         className="table-data"
+        style={zoomOutStyle}
         ref={element => (this.tableDataRef = element)}
       >
         <Spin spinning={loading}>{this.renderPwTable()}</Spin>
