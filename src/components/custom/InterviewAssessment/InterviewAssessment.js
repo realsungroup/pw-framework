@@ -337,6 +337,208 @@ handleChangeS=(value,obj)=>{
         C3_622921647557:res.data[0].C3_622921647557
 
       })
+
+      console.log(res)
+      if(res.data[0].edBackground){
+        document.getElementById(res.data[0].edBackground).defaultChecked=true;
+
+      }
+      if(res.data[0].edBackground){
+        document.getElementById(res.data[0].edBackground).defaultChecked=true;
+
+      }
+      if(res.data[0].wkExp){
+        document.getElementById(res.data[0].wkExp).defaultChecked=true;
+
+      }
+      if(res.data[0].languageSkill){
+        document.getElementById(res.data[0].languageSkill).defaultChecked=true;
+
+      }
+      if(res.data[0].tecSkills){
+        document.getElementById('vTS'+res.data[0].tecSkills).defaultChecked=true;
+        document.getElementById('vTS'+(5+Number(res.data[0].tecSkills))).defaultChecked=true;
+        document.getElementById('vTS'+(10+Number(res.data[0].tecSkills))).defaultChecked=true;
+        document.getElementById('vTS'+(15+Number(res.data[0].tecSkills))).defaultChecked=true;
+        document.getElementById('vTS'+(20+Number(res.data[0].tecSkills))).defaultChecked=true;
+        document.getElementById('vTS'+(25+Number(res.data[0].tecSkills))).defaultChecked=true;
+        document.getElementById('vTS'+(30+Number(res.data[0].tecSkills))).defaultChecked=true;
+
+      }
+      if(res.data[0].executiveAbility){
+        document.getElementById('vEA'+res.data[0].executiveAbility).defaultChecked=true;
+
+      }
+      if(res.data[0].tecExchange){
+        document.getElementById('vTE'+res.data[0].tecExchange).defaultChecked=true;
+        document.getElementById('vTE'+(5+Number(res.data[0].tecExchange))).defaultChecked=true;
+        document.getElementById('vTE'+(10+Number(res.data[0].tecExchange))).defaultChecked=true;
+
+      }
+      if(res.data[0].actionOriented){
+        document.getElementById('vAO'+res.data[0].actionOriented).defaultChecked=true;
+        document.getElementById('vAO'+(5+Number(res.data[0].actionOriented))).defaultChecked=true;
+        document.getElementById('vAO'+(10+Number(res.data[0].actionOriented))).defaultChecked=true;
+
+      }
+      if(res.data[0].problemSloving){
+        document.getElementById('vPS'+res.data[0].problemSloving).defaultChecked=true;
+        document.getElementById('vPS'+(5+Number(res.data[0].problemSloving))).defaultChecked=true;
+        document.getElementById('vPS'+(10+Number(res.data[0].problemSloving))).defaultChecked=true;
+
+      }
+      if(res.data[0].selfDevelopment){
+        document.getElementById('vSd'+res.data[0].selfDevelopment).defaultChecked=true;
+        document.getElementById('vSd'+(5+Number(res.data[0].selfDevelopment))).defaultChecked=true;
+
+      }
+      if(res.data[0].learnOnfly){
+        document.getElementById('vLF'+res.data[0].learnOnfly).defaultChecked=true;
+        document.getElementById('vLF'+(5+Number(res.data[0].learnOnfly))).defaultChecked=true;
+
+      }
+      if(res.data[0].tecOutLook){
+        document.getElementById('vTO'+res.data[0].tecOutLook).defaultChecked=true;
+        document.getElementById('vTO'+(5+Number(res.data[0].tecOutLook))).defaultChecked=true;
+
+      }
+      if(res.data[0].tecDecomposition){
+        document.getElementById('vTD'+res.data[0].tecDecomposition).defaultChecked=true;
+
+      }
+      if(res.data[0].creativity){
+        document.getElementById('vCr'+res.data[0].creativity).defaultChecked=true;
+
+      }
+      if(res.data[0].standingAlone){
+        document.getElementById('vSA'+res.data[0].standingAlone).defaultChecked=true;
+
+      }
+      if(res.data[0].prioritySetting){
+        document.getElementById('vPrA'+res.data[0].prioritySetting).defaultChecked=true;
+
+      }
+      if(res.data[0].tecConstruct){
+        document.getElementById('vTC'+res.data[0].tecConstruct).defaultChecked=true;
+
+      }
+      if(res.data[0].dealWithAug){
+        document.getElementById('vDwA'+res.data[0].dealWithAug).defaultChecked=true;
+
+      }
+      if(res.data[0].innovationMange){
+        document.getElementById('vIM'+res.data[0].innovationMange).defaultChecked=true;
+
+      }
+      if(res.data[0].strategicAgility){
+        document.getElementById('vStrA'+res.data[0].strategicAgility).defaultChecked=true;
+
+      }
+      if(res.data[0].direcOhters){
+        document.getElementById('vDO'+res.data[0].direcOhters).defaultChecked=true;
+
+      }
+      if(res.data[0].developOthers){
+        document.getElementById('vDevO'+res.data[0].developOthers).defaultChecked=true;
+
+      }
+      if(res.data[0].planning){
+        document.getElementById('vPlan'+res.data[0].planning).defaultChecked=true;
+
+      }
+      if(res.data[0].confrontDirReports){
+        document.getElementById('vCDR'+res.data[0].confrontDirReports).defaultChecked=true;
+
+      }
+      if(res.data[0].prioritySetting){
+        document.getElementById('vPriS'+res.data[0].prioritySetting).defaultChecked=true;
+
+      }
+      if(res.data[0].managerAndMeasure){
+        document.getElementById('vMMW'+res.data[0].managerAndMeasure).defaultChecked=true;
+
+      }
+      if(res.data[0].buildEffictive){
+        document.getElementById('vBET'+res.data[0].buildEffictive).defaultChecked=true;
+
+      }
+      if(res.data[0].processManagement){
+        document.getElementById('vPM'+res.data[0].processManagement).defaultChecked=true;
+
+      }
+      if(res.data[0].mottivateingOthers){
+        document.getElementById('vMoOt'+res.data[0].mottivateingOthers).defaultChecked=true;
+
+      }
+      if(res.data[0].conflictManagement){
+        document.getElementById("vCM"+res.data[0].conflictManagement).defaultChecked=true;
+
+      }
+      if(res.data[0].decisionQuality){
+        document.getElementById('vDQ'+res.data[0].decisionQuality).defaultChecked=true;
+
+      }
+      if(res.data[0].presentationSkills){
+        document.getElementById('vPreSk'+res.data[0].presentationSkills).defaultChecked=true;
+
+      }
+      if(res.data[0].problemSloving){
+        document.getElementById('vProSol'+res.data[0].problemSloving).defaultChecked=true;
+
+      }
+      if(res.data[0].peerRelation){
+        document.getElementById('vPeRe'+res.data[0].peerRelation).defaultChecked=true;
+
+      }
+      if(res.data[0].actionOriented){
+        document.getElementById('vAcOr'+res.data[0].actionOriented).defaultChecked=true;
+
+      }
+      if(res.data[0].creativity){
+        document.getElementById('vcrea'+res.data[0].creativity).defaultChecked=true;
+
+      }
+      if(res.data[0].presentationSkills){
+        document.getElementById('vPresentSkill'+res.data[0].presentationSkills).defaultChecked=true;
+
+      }
+      if(res.data[0].problemSloving){
+        document.getElementById('vProblemSol'+res.data[0].problemSloving).defaultChecked=true;
+
+      }
+      if(res.data[0].peerRelation){
+        document.getElementById('vPeerRel'+res.data[0].peerRelation).defaultChecked=true;
+
+      }
+      if(res.data[0].personlearning){
+        document.getElementById('vPersonaLe'+res.data[0].personlearning).defaultChecked=true;
+
+      }
+      if(res.data[0].intergintyTrust){
+        document.getElementById('vIT'+res.data[0].intergintyTrust).defaultChecked=true;
+
+      }
+      if(res.data[0].learning){
+        document.getElementById('vLA'+res.data[0].learning).defaultChecked=true;
+
+      }
+      if(res.data[0].customerFocus){
+        document.getElementById('vCF'+res.data[0].customerFocus).defaultChecked=true;
+
+      }
+      if(res.data[0].driveResults){
+        document.getElementById('vDR'+res.data[0].driveResults).defaultChecked=true;
+
+      }
+      if(res.data[0].groupDecision){
+        document.getElementById(res.data[0].groupDecision).defaultChecked=true;
+
+      }
+      if(res.data[0].SRI){
+        document.getElementById(res.data[0].SRI).defaultChecked=true;
+
+      }
+
         this.setState({
           showMail:false,
           showConBtn:false,
@@ -427,6 +629,9 @@ handleChangeS=(value,obj)=>{
       }else if(this.state.C3_622921647557=='未送邮（复试）'){
         nxtStep='未提交（复试）'
       }
+      if(this.state.round2=='Y'){
+          nxtStep='未提交（复试）'
+      }
       let res;
       try {
         res = await http().modifyRecords({
@@ -435,7 +640,9 @@ handleChangeS=(value,obj)=>{
           data:[{
              REC_ID:this.props.record.REC_ID,
              C3_622921647557:nxtStep,
-             interviewer:this.state.postID
+             interviewer:this.state.postID,
+             accessCategority:this.state.chara,
+             isSecondRound:this.state.round2
            }]
          })
          Modal.success({
@@ -659,7 +866,7 @@ handleChangeS=(value,obj)=>{
     return (
       <div className='IA'>
       <Spin spinning={this.state.loading}>
-        <div className='chooseClass'>
+        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} >
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
             T1 T2 T3 T4
           </rect>
@@ -688,7 +895,7 @@ handleChangeS=(value,obj)=>{
             应届生
           </rect>
         </div>
-        <div className='chooseClass chooseRound'>
+        <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden'}>
           <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}}>
             不显示复试内容
           </rect>
