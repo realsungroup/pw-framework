@@ -267,10 +267,9 @@ class FormData extends React.Component {
     };
 
     const storeWay = operation === 'add' ? 'fe' : 'be';
-
     return (
       <TabPane tab={tab} key={index}>
-        <div style={{}}>
+        <div style={{ height: subTable.FrmHeight }}>
           <TableData
             wrappedComponentRef={element =>
               (this[`tableDataRef${index}`] = element)
@@ -419,7 +418,6 @@ class FormData extends React.Component {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
-            console.log(item);
             return (
               <span
                 style={{
