@@ -131,7 +131,6 @@ class EmployeeCourses extends React.Component {
   getCourses = async () => {
     let res,
       { currentYear } = this.state;
-      console.log(currentYear)
     try {
       res = await http().getRecordAndSubTables({
         resid: resid,
@@ -244,9 +243,10 @@ class EmployeeCourses extends React.Component {
 
   getApprovalRecords = async () => {
     try {
+      const { selectedCourse } = this.state;
       const res = await http().getTable({
         resid: REVIEW_RECOR_RESID,
-        cmswhere: `C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `
+        cmswhere: `C3_615657103208 = ${selectedCourse.CourseArrangeDetailID} `
       });
       let approvalRecords = res.data.map(item => {
         let result = '';
@@ -266,6 +266,23 @@ class EmployeeCourses extends React.Component {
           time: item.C3_615657104984,
           result
         };
+      });
+      let last_result = '';
+      if (selectedCourse.C3_623173774889) {
+        if (selectedCourse.C3_623173774889 === 'Y') {
+          last_result = '通过';
+        }
+        if (selectedCourse.C3_623173774889 === 'N') {
+          last_result = '拒绝';
+        }
+      } else {
+        last_result = '审核中';
+      }
+      approvalRecords.push({
+        name: '韩曌',
+        employeeID: '38029',
+        time: selectedCourse.passTime,
+        result: last_result
       });
       this.setState({
         approvalRecords
@@ -1084,7 +1101,7 @@ class EmployeeCourses extends React.Component {
                       <div>
                         <span>签到</span>
                         <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615392983685}
+                          {selectedCourse.signInTime}
                         </span>
                       </div>
                     </Timeline.Item>
