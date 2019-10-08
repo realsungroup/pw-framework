@@ -80,7 +80,7 @@ class ComprehensiveQuery extends React.Component {
     return (
       <div id="comprehensive-query">
         <main
-          style={{ left: isExpand ? 240 : 4, zIndex: 99 }}
+          style={{ left: isExpand ? 260 : 24, zIndex: 99 }}
           className="main-content"
         >
           <div
