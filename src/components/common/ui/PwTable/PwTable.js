@@ -169,6 +169,7 @@ class PwTable extends React.Component {
         zIndex: 999
       };
     }
+    const hasStatisticalAnalysis = gridProps.length ? true : false;
     return (
       <div className="pw-table" style={zoomOutStyle}>
         {hasHeader && (
@@ -189,6 +190,7 @@ class PwTable extends React.Component {
                   onRefresh={this.handleRefresh}
                   hasAdvSearch={hasAdvSearch}
                   onAdvSearch={this.handleAdvSearch}
+                  hasStatisticalAnalysis={hasStatisticalAnalysis}
                   onStatisticalAnalysis={this.handleStatisticalAnalysis}
                   hasZoomInOut={hasZoomInOut}
                   onZoomIn={this.handleZoomIn}
