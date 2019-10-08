@@ -69,7 +69,20 @@ class ReviewRequisition extends React.Component {
               recordFormContainerProps: {
                 placement: 'bottom',
                 height: 600
-              }
+              },
+              customRowBtns: [
+                (record, btnSize) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.handleDownMaterial(record.Filepath);
+                      }}
+                    >
+                      下载查阅
+                    </Button>
+                  );
+                }
+              ]
             }
           ]}
         />
