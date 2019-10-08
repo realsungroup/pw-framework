@@ -52,12 +52,10 @@ class PwTable extends React.Component {
   };
 
   handleZoomIn = () => {
-    this.setState({ zoomStatus: 1 });
     this.props.onZoomIn && this.props.onZoomIn();
   };
 
   handleZoomOut = () => {
-    this.setState({ zoomStatus: 0 });
     this.props.onZoomOut && this.props.onZoomOut();
   };
 
@@ -157,21 +155,10 @@ class PwTable extends React.Component {
     const hasHeader = hasIconBtns || title;
 
     const { locale } = this.props.intl;
-    const { zoomStatus } = this.state;
-    let zoomOutStyle = {};
-    if (zoomStatus === 1) {
-      zoomOutStyle = {
-        position: 'fixed',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0,
-        zIndex: 999
-      };
-    }
+
     const hasStatisticalAnalysis = gridProps.length ? true : false;
     return (
-      <div className="pw-table" style={zoomOutStyle}>
+      <div className="pw-table">
         {hasHeader && (
           <div className="pw-table__header">
             <div
@@ -196,7 +183,7 @@ class PwTable extends React.Component {
                   onZoomIn={this.handleZoomIn}
                   onZoomOut={this.handleZoomOut}
                   size={size}
-                  zoomStatus={this.state.zoomStatus}
+                  zoomStatus={this.props.zoomStatus}
                 />
                 {headerExtra && (
                   <React.Fragment>
@@ -215,7 +202,7 @@ class PwTable extends React.Component {
         )}
 
         {!isShowGrid ? (
-          <div>
+          <>
             {hasActionBar && (
               <div
                 className={`pw-table__action-bar pw-table__action-bar--${size}`}
@@ -292,7 +279,7 @@ class PwTable extends React.Component {
             />
 
             {this.renderPagination()}
-          </div>
+          </>
         ) : (
           <div style={{ height: 'calc(100% - 28px)', width: '100%' }}>
             {gridProps.length ? (
