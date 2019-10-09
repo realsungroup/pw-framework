@@ -37,6 +37,7 @@ const customDot = (dot, { status, index }) => (
     {dot}
   </Popover>
 );
+
 const emptyAbility = [
   {
     name: '类别/Category:',
@@ -1544,17 +1545,14 @@ class PersonPlan extends React.Component {
           >
             <Step
               title="初次填写"
-              description="初次填写"
               style={{ color: '#fff' }}
             />
             <Step
               title="年中回顾"
-              description="年中回顾"
               style={{ color: '#fff' }}
             />
             <Step
               title="年末回顾"
-              description="年末回顾"
               style={{ color: '#fff' }}
             />
           </Steps>
