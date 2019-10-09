@@ -23,7 +23,7 @@ class PhysicalExamination extends React.Component {
 
   };
 
- 
+
   uploadFile = (file, url, mode) => {
   		return new Promise((resolve, reject) => {
   		let fd = new FormData();
@@ -123,7 +123,7 @@ class PhysicalExamination extends React.Component {
 		    title: '提交成功',
 		    content: ''
 		  });
-	 	  
+
 	 	} catch (error) {
 			Modal.error({
 			  title: '提示',
@@ -131,27 +131,27 @@ class PhysicalExamination extends React.Component {
 			});
 	 	  console.log(error);
 	 	}
-	   } 
-	  
+	   }
+
   componentDidMount(){
     this.getData();
-	
+
 
   }
   imgUp(e){
 	  this.setState({imgfile:e});
-	  
+
 	  let files = e.target.files || e.dataTransfer.files;
-	  
+
 	  if (!files.length) return;
 	  let type = files[0].type; //文件的类型，判断是否是图片
 	  let size = files[0].size; //文件的大小，判断图片的大小
 	  // if (this.imgCropperData.accept.indexOf(type) == -1) {
-	  
+
 	  // alert("请选择我们支持的图片格式！");
-	  
+
 	  // return false;
-	  
+
 	  // }
 	  if (size > 5242880) {
 	  alert("请选择5M以内的图片！");
@@ -160,13 +160,13 @@ class PhysicalExamination extends React.Component {
 	  this.setState({loading:true})
 	  this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[1]}`,"cloud").then((result) =>{
 	      this.setState({loading:false,imgUrl:result})
-		
+
 	  }, (err) => {
 	      //图片上传异常！
 	      this.setState({loading:false})
-	  
 
-	  })   
+
+	  })
   }
   render() {
     return (
@@ -176,7 +176,7 @@ class PhysicalExamination extends React.Component {
           <Button onClick={this.onPrinting}>打印</Button>
           <Button onClick={this.subData} type='primary'>提交</Button>
 		  <div className='file ant-btn' style={{marginTop:'12px',float:'right',marginRight:'16px'}}>
-		  <input id="ss" name="ss" type="file" onChange={v=>{this.imgUp(v)}} accept='image' /> 
+		  <input id="ss" name="ss" type="file" onChange={v=>{this.imgUp(v)}} accept='image' />
 			点击替换图片
 		  </div>
 
@@ -190,7 +190,7 @@ class PhysicalExamination extends React.Component {
             <input style={{textAlign:'center',fontSize:'24px',width:'auto',fontWeight:'bold',border:'none'}} onChange={v=>{this.handlechange("hosName",v)}} value={this.state.hosName}/>
             </h3>
 			<div style={{width:'100%',textAlign:'center'}}>,
-			 
+
             <img src={this.state.imgUrl?this.state.imgUrl:'http://iph.href.lu/200x200?"点击上传图片"'} style={{cursor:'pointer',background:'#dcdcdc',minwidth:'50px',filter:'grayscale(100%)',height:'364px',marginBottom:'16px',marginTop:'8px'}}/>
             </div>
 			<p style={{margin:0,fontSize:'16px',width:'100%',padding:'24px',boxSizing:'border-box'}}>请您提前打电话到医院预约体检日期，报个人信息和医院说明是菲尼萨新员工入职体检。体检费用由个人进行垫付，请医院开具发票，在入职后进行报销。体检报告无需自取，体检后2~3天医院会直接给公司。<br/><br/><b>注：早晨空腹体检</b></p>

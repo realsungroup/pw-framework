@@ -35,7 +35,7 @@ class OfferLetter extends React.Component {
         month: '',
         day: '',
         hour: '08:00',
-        bgcorp: '',
+        bgCorp: '',
         contactsOne: '',
         contactsPositionOne: '',
         officeNo: '',
@@ -53,67 +53,160 @@ class OfferLetter extends React.Component {
         HROfficeNo: '',
         HRPhone: ''
       },
-      isShow: true
+      isShow: true,
+      isSave:false,
+      loading:false
     };
   }
   componentDidMount = () => {
-    this.getTableData();
+    var peopleData=this.props.personDetail;
+    this.getTableData(peopleData);
+    let data = this.state.data;
+
+    this.setState({data: {
+      ...data,
+      ID: peopleData
+    }});
   };
 
-  getTableData = async () => {
+  componentWillReceiveProps = (nextProps) => {
+    // this.setState({
+    //   data: {
+    //     candidate: '',
+    //     position: '',
+    //     salary: '',
+    //     level: '',
+    //     manager: '',
+    //     details: '',
+    //     signature: '',
+    //     date: '',
+    //     year: '',
+    //     month: '',
+    //     day: '',
+    //     hour: '',
+    //     bgCorp: '',
+    //     contactsOne: '',
+    //     contactsPositionOne: '',
+    //     officeNo: '',
+    //     contactsOnePhone: '',
+    //     contactsTwo: '',
+    //     contactsPositionTwo: '',
+    //     contactsTwoOfficeNo: '',
+    //     contactsTwoPhone: '',
+    //     contactsThree: '',
+    //     contactsPositionThree: '',
+    //     contactsThreeOfficeNo: '',
+    //     contactsThreePhone: '',
+    //     englishName: '',
+    //     HRName: '',
+    //     HROfficeNo: '',
+    //     HRPhone: ''
+    //   }
+    // });
+    console.log(nextProps.personDetail)
+    let data = this.state.data;
+
+    if( typeof nextProps.personDetail !== "undefined" ){
+      this.setState({data: {
+        ...data,
+        ID: nextProps.personDetail
+      }});
+        this.getTableData(nextProps.personDetail);
+    }
+    // let ID = ''
+
+  }
+
+  getTableData = async (id) => {
+    this.setState({loading:true})
     try {
       let res = await http().getTable({
-        resid: 621422585590
+        resid: 621422585590,
+        cmswhere: `ID=${id}`
       });
-      console.log('res', res.data);
+      console.log('res', res);
+      if(res.data.length>0){
+        this.setState({isSave:true,});
+        var obj=res.data[0]
+        this.setState({data:obj});
+        console.log(this.state.data)
+      }
+      this.setState({loading:false});
+
     } catch (error) {
       message.error(error.message);
+      this.setState({loading:false});
+
     }
   };
   onSaveData = async () => {
     let { data } = this.state;
-    try {
-      const res = await http().addRecords({
-        resid: 621422585590,
-        data: [data]
-      });
-      message.success('保存成功');
-      this.setState({
-        data: {
-          candidate: '',
-          position: '',
-          salary: '',
-          level: '',
-          manager: '',
-          details: '',
-          signature: '',
-          date: '',
-          year: '',
-          month: '',
-          day: '',
-          hour: '',
-          bgcorp: '',
-          contactsOne: '',
-          contactsPositionOne: '',
-          officeNo: '',
-          contactsOnePhone: '',
-          contactsTwo: '',
-          contactsPositionTwo: '',
-          contactsTwoOfficeNo: '',
-          contactsTwoPhone: '',
-          contactsThree: '',
-          contactsPositionThree: '',
-          contactsThreeOfficeNo: '',
-          contactsThreePhone: '',
-          englishName: '',
-          HRName: '',
-          HROfficeNo: '',
-          HRPhone: ''
-        }
-      });
-    } catch (error) {
-      message.error(error.message);
+    this.setState({loading:true});
+
+    if(this.state.isSave==false){
+      try {
+        const res = await http().addRecords({
+          resid: 621422585590,
+          data: [data]
+        });
+        message.success('保存成功');
+
+        this.setState({loading:false});
+
+      } catch (error) {
+        message.error(error.message);
+        this.setState({loading:false});
+
+      }
+    }else{
+      try {
+        const res = await http().modifyRecords({
+          resid: 621422585590,
+          data: [data]
+        });
+        message.success('保存成功');
+        this.setState({
+          data: {
+            candidate: '',
+            position: '',
+            salary: '',
+            level: '',
+            manager: '',
+            details: '',
+            signature: '',
+            date: '',
+            year: '',
+            month: '',
+            day: '',
+            hour: '',
+            bgCorp: '',
+            contactsOne: '',
+            contactsPositionOne: '',
+            officeNo: '',
+            contactsOnePhone: '',
+            contactsTwo: '',
+            contactsPositionTwo: '',
+            contactsTwoOfficeNo: '',
+            contactsTwoPhone: '',
+            contactsThree: '',
+            contactsPositionThree: '',
+            contactsThreeOfficeNo: '',
+            contactsThreePhone: '',
+            englishName: '',
+            HRName: '',
+            HROfficeNo: '',
+            HRPhone: ''
+          }
+        });
+        this.setState({loading:false});
+
+      } catch (error) {
+        message.error(error.message);
+        this.setState({loading:false});
+
+      }
     }
+
   };
 
   candidateChange = value => {
@@ -245,7 +338,7 @@ class OfferLetter extends React.Component {
     this.setState({
       data: {
         ...data,
-        bgcorp: value
+        bgCorp: value
       }
     });
   };
@@ -435,6 +528,7 @@ class OfferLetter extends React.Component {
   render() {
     return (
       <div className="container" style={{ paddingBottom: '80px' }}>
+      <Spin spinning={this.state.loading}>
         <div id="content" ref={p => (this.printer = p)}>
           <div className="offer-content">
             <div style={{ textAlign: 'center' }}>
@@ -464,6 +558,7 @@ class OfferLetter extends React.Component {
                       textAlign: 'center',
                       fontWeight: 'bold'
                     }}
+                    value={this.state.data.candidate}
                     onChange={e => {
                       this.candidateChange(e.target.value);
                     }}
@@ -490,6 +585,7 @@ class OfferLetter extends React.Component {
                       onChange={e => {
                         this.jobChange(e.target.value);
                       }}
+                      value={this.state.data.position}
                     />
                   ) : (
                     <span>{this.state.data.position}</span>
@@ -518,6 +614,7 @@ class OfferLetter extends React.Component {
                           textAlign: 'center',
                           fontWeight: 'bold'
                         }}
+                        value={this.state.data.salary}
                         onChange={e => {
                           this.salaryChange(e.target.value);
                         }}
@@ -529,7 +626,7 @@ class OfferLetter extends React.Component {
                 </strong>
                 (before tax, 12months pay), paid by direct deposit.
               </li>
-              <li>
+              <li className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'hidden':''}>
                 <strong>Sign-on RSUs:</strong> Finisar and II-VI Incorporated
                 are working together to become one Company. If your start date
                 occurs before the acquisition date, subject to the approval of
@@ -582,6 +679,7 @@ class OfferLetter extends React.Component {
                           textAlign: 'center',
                           fontWeight: 'bold'
                         }}
+                        value={this.state.data.level}
                         onChange={e => {
                           this.levelChange(e.target.value);
                         }}
@@ -604,6 +702,7 @@ class OfferLetter extends React.Component {
                           textAlign: 'center',
                           fontWeight: 'bold'
                         }}
+                        value={this.state.data.manager}
                         onChange={e => {
                           this.ManagerChange(e.target.value);
                         }}
@@ -666,6 +765,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.details}
                       onChange={e => {
                         this.detailsChange(e.target.value);
                       }}
@@ -691,6 +791,7 @@ class OfferLetter extends React.Component {
                           textAlign: 'center',
                           fontWeight: 'bold'
                         }}
+                        value={this.state.data.signature}
                         onChange={e => {
                           this.signChange(e.target.value);
                         }}
@@ -710,6 +811,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.date}
                       onChange={e => {
                         this.dateChange(e.target.value);
                       }}
@@ -722,6 +824,7 @@ class OfferLetter extends React.Component {
                 Please sign this job offer and resend to us within 5 days after
                 you receive it. If not, the offer letter will become invalid.
               </p>
+              <div style={{height:'336px',width:'100%'}}className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'':'hidden'}></div>
             </p>
             <br />
             {/* <div className="logos"></div> */}
@@ -796,6 +899,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.year}
                       onChange={e => {
                         this.yearChange(e.target.value);
                       }}
@@ -816,6 +920,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.month}
                       onChange={e => {
                         this.monthChange(e.target.value);
                       }}
@@ -836,6 +941,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.day}
                       onChange={e => {
                         this.dayChange(e.target.value);
                       }}
@@ -856,7 +962,7 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
-                      value="08:00"
+                      value={this.state.data.hour}
                       onChange={e => {
                         this.hourChange(e.target.value);
                       }}
@@ -907,6 +1013,7 @@ class OfferLetter extends React.Component {
                       <Input
                         size="small"
                         style={{ width: '240px', textAlign: 'center' }}
+                        value={this.state.data.bgCorp}
                         onChange={e => {
                           this.bgCorpChange(e.target.value);
                         }}
@@ -926,6 +1033,7 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsOne}
                           onChange={e => {
                             this.contactsOneChange(e.target.value);
                           }}
@@ -942,6 +1050,7 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsPositionOne}
                           onChange={e => {
                             this.contactsPositionOneChange(e.target.value);
                           }}
@@ -958,6 +1067,7 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.officeNo}
                           onChange={e => {
                             this.officeOneChange(e.target.value);
                           }}
@@ -974,6 +1084,7 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsOnePhone}
                           onChange={e => {
                             this.phoneOneChange(e.target.value);
                           }}
@@ -992,6 +1103,7 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsTwo}
                           onChange={e => {
                             this.nameTwoChange(e.target.value);
                           }}
@@ -1008,6 +1120,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsPositionTwo}
+
                           onChange={e => {
                             this.positionTwoChange(e.target.value);
                           }}
@@ -1024,6 +1138,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsTwoOfficeNo}
+
                           onChange={e => {
                             this.officeTwoChange(e.target.value);
                           }}
@@ -1040,6 +1156,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsTwoPhone}
+
                           onChange={e => {
                             this.phoneTwoChange(e.target.value);
                           }}
@@ -1058,6 +1176,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsThree}
+
                           onChange={e => {
                             this.nameThreeChange(e.target.value);
                           }}
@@ -1074,6 +1194,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsPositionThree}
+
                           onChange={e => {
                             this.positionThreeChange(e.target.value);
                           }}
@@ -1090,6 +1212,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsThreeOfficeNo}
+
                           onChange={e => {
                             this.officeThreeChange(e.target.value);
                           }}
@@ -1106,6 +1230,8 @@ class OfferLetter extends React.Component {
                             textAlign: 'center',
                             fontWeight: 'bold'
                           }}
+                          value={this.state.data.contactsThreePhone}
+
                           onChange={e => {
                             this.phoneThreeChange(e.target.value);
                           }}
@@ -1130,6 +1256,8 @@ class OfferLetter extends React.Component {
                           textAlign: 'center',
                           fontWeight: 'bold'
                         }}
+                        value={this.state.data.englishNameChange}
+
                         onChange={e => {
                           this.englishNameChange(e.target.value);
                         }}
@@ -1156,6 +1284,8 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.HRName}
+
                       onChange={e => {
                         this.hrNameChange(e.target.value);
                       }}
@@ -1176,6 +1306,8 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.HROfficeNo}
+
                       onChange={e => {
                         this.hrofficeChange(e.target.value);
                       }}
@@ -1196,6 +1328,8 @@ class OfferLetter extends React.Component {
                         textAlign: 'center',
                         fontWeight: 'bold'
                       }}
+                      value={this.state.data.HRPhone}
+
                       onChange={e => {
                         this.hrphoneChange(e.target.value);
                       }}
@@ -1239,6 +1373,7 @@ class OfferLetter extends React.Component {
             打印
           </Button>
         </div>
+        </Spin>
       </div>
     );
   }

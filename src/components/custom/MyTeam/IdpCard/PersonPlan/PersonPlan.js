@@ -13,7 +13,7 @@ import './PersonPlan.less';
 import http from 'Util20/api';
 import SquareCard from './SquareCard';
 
-const Step = Steps.Step;
+const { Step } = Steps;
 const personID = '618488751596'; //发展人员表
 const abilityID = '617726097875'; //能力测评表ID
 const planID = '617726587425'; //发展行动计划表ID
@@ -37,6 +37,7 @@ const customDot = (dot, { status, index }) => (
     {dot}
   </Popover>
 );
+
 const emptyAbility = [
   {
     name: '类别/Category:',
@@ -885,6 +886,7 @@ class PersonPlan extends React.Component {
     }
   };
   onAffirm = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.isAffirm = 'Y';
@@ -903,6 +905,7 @@ class PersonPlan extends React.Component {
   };
   //确认年中回顾
   onAffirmMid = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.midManageApply = 'Y';
@@ -921,6 +924,7 @@ class PersonPlan extends React.Component {
   };
   //确认年末回顾
   onAffirmTail = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.tailManageApply = 'Y';
@@ -1541,17 +1545,14 @@ class PersonPlan extends React.Component {
           >
             <Step
               title="初次填写"
-              description="初次填写"
               style={{ color: '#fff' }}
             />
             <Step
               title="年中回顾"
-              description="年中回顾"
               style={{ color: '#fff' }}
             />
             <Step
               title="年末回顾"
-              description="年末回顾"
               style={{ color: '#fff' }}
             />
           </Steps>
