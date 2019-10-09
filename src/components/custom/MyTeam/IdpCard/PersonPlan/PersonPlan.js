@@ -37,6 +37,7 @@ const customDot = (dot, { status, index }) => (
     {dot}
   </Popover>
 );
+
 const emptyAbility = [
   {
     name: '类别/Category:',
@@ -885,6 +886,7 @@ class PersonPlan extends React.Component {
     }
   };
   onAffirm = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.isAffirm = 'Y';
@@ -903,6 +905,7 @@ class PersonPlan extends React.Component {
   };
   //确认年中回顾
   onAffirmMid = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.midManageApply = 'Y';
@@ -921,6 +924,7 @@ class PersonPlan extends React.Component {
   };
   //确认年末回顾
   onAffirmTail = async () => {
+    this.onSavePlans();
     let res;
     let personInfo = this.state.personInfo;
     personInfo.tailManageApply = 'Y';
@@ -1541,17 +1545,14 @@ class PersonPlan extends React.Component {
           >
             <Step
               title="初次填写"
-              description="初次填写"
               style={{ color: '#fff' }}
             />
             <Step
               title="年中回顾"
-              description="年中回顾"
               style={{ color: '#fff' }}
             />
             <Step
               title="年末回顾"
-              description="年末回顾"
               style={{ color: '#fff' }}
             />
           </Steps>
