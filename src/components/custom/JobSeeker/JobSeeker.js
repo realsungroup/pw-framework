@@ -312,6 +312,10 @@ class JobSeeker extends Component {
             title: '提示',
             content: '提交成功'
           });
+          var time=setTimeout(function(){
+            window.location.reload();
+
+          },1000)
         } catch (err) {
           console.error(err.message);
           Modal.error({
@@ -856,7 +860,7 @@ class JobSeeker extends Component {
                   rules: [
                     {
                       required: true,
-                      message: '输入国籍'
+                      message: '输入推荐人'
                     }
                   ]
                 })(
