@@ -13,7 +13,7 @@ import './PersonPlan.less';
 import http from 'Util20/api';
 import SquareCard from './SquareCard';
 
-const Step = Steps.Step;
+const { Step } = Steps;
 const personID = '618488751596'; //发展人员表
 const abilityID = '617726097875'; //能力测评表ID
 const planID = '617726587425'; //发展行动计划表ID
