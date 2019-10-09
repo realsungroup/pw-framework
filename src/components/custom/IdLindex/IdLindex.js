@@ -183,9 +183,9 @@ class IdLindex extends Component {
         resid: resid,
         cmswhere: `ID=${id}`
       });
+      console.log(res)
       this.setState({ currentPersonInfo: res.data[0] });
       this.setState({loading:false});
-      console.log('人员详细信息',res.data)
 
 
     } catch (err) {
@@ -363,9 +363,9 @@ class IdLindex extends Component {
         );
         case '工作邀请函':
           return(
-            <div>
-            <OfferLetter></OfferLetter>
-            
+            <div className='offerLetter'>
+            <OfferLetter personDetail={this.state.currentPersonId}></OfferLetter>
+
             </div>
           )
     }
