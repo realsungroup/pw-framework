@@ -89,6 +89,12 @@ class TableDataScheduling extends React.Component {
               getcolumninfo="1"
               pageSize="10"
               page="1"
+              defaultPagination={{
+                current: 1,
+                pageSize: 40,
+                showSizeChanger: true,
+                showQuickJumper: true
+              }}
               size="small"
               hasRowSelection={false}
               hasAdd={true}
@@ -98,8 +104,8 @@ class TableDataScheduling extends React.Component {
               hasRowView={false}
               hasRowDelete={true}
               hasModify={false}
-              subtractH={240}
-              height={500}
+              subtractH={180}
+              // height={500}
               actionBarFixed={true}
               // hasZoomInOut={true}
               importConfig={{
