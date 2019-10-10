@@ -27,7 +27,8 @@ const IconBtns = React.memo(
     onZoomOut,
     size,
     onStatisticalAnalysis,
-    hasStatisticalAnalysis
+    hasStatisticalAnalysis,
+    isShowGrid
   }) => {
     return (
       <React.Fragment>
@@ -35,12 +36,12 @@ const IconBtns = React.memo(
           <Tooltip
             className="pw-table__header-icon"
             placement="top"
-            title="统计分析"
+            title={isShowGrid ? '表格数据' : '统计分析'}
             onClick={onStatisticalAnalysis}
           >
             <Icon
-              type="bar-chart"
-              style={{ fontSize: iconSizeMap[size], color: 'green' }}
+              type={isShowGrid ? 'table' : 'bar-chart'}
+              style={{ fontSize: iconSizeMap[size] }}
             />
           </Tooltip>
         )}

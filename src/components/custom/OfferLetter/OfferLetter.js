@@ -626,7 +626,7 @@ class OfferLetter extends React.Component {
                 </strong>
                 (before tax, 12months pay), paid by direct deposit.
               </li>
-              <li>
+              <li className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'hidden':''}>
                 <strong>Sign-on RSUs:</strong> Finisar and II-VI Incorporated
                 are working together to become one Company. If your start date
                 occurs before the acquisition date, subject to the approval of
@@ -824,6 +824,7 @@ class OfferLetter extends React.Component {
                 Please sign this job offer and resend to us within 5 days after
                 you receive it. If not, the offer letter will become invalid.
               </p>
+              <div style={{height:'336px',width:'100%'}}className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'':'hidden'}></div>
             </p>
             <br />
             {/* <div className="logos"></div> */}

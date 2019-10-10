@@ -90,6 +90,44 @@ class Applayinformation extends Component {
     };
 
   }
+  componentDidMount(){
+    var usrChara = localStorage.getItem('userInfo');
+    usrChara=JSON.parse(usrChara)
+    usrChara=usrChara.UserInfo.GroupList;
+    var arr=[];
+    var n=0;
+    var bol=false;
+    var str='';
+    while(n<usrChara.length){
+      if(usrChara.slice(n, n+1)=="\'"){
+
+        if(bol==true){
+          bol=false;
+          arr.push(str);
+          str='';
+        }else{
+          bol=true;
+        }
+      }
+      if(bol==true){
+        str+=usrChara.slice(n+1, n+2)
+      }
+      n++;
+    }
+// 判别hr角色
+var hrCode='623876215000';
+    // var hrCode='demo';
+    n=0;
+    this.setState({userChara:'others'});
+
+    while(n<arr.length){
+      var j=hrCode+"\'"
+      if(j==arr[n]){
+        this.setState({userChara:'HR'});
+      }
+      n++;
+    }
+  }
 
   componentWillReceiveProps = (nextProps) => {
     if( typeof nextProps.personDetail !== "undefined" ){
@@ -1365,7 +1403,7 @@ class Applayinformation extends Component {
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
             <Form.Item style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
-              <Button type="primary" onClick={this.handleSave}>保存</Button>
+              <Button type="primary" style={this.state.userChara=='HR'?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印
               </Button>
