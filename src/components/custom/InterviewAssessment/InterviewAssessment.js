@@ -226,7 +226,7 @@ handleChangeS=(value,obj)=>{
       n++;
     }
 // 判别hr角色
-var hrCode='623086556807';
+var hrCode='623876215000';
     // var hrCode='demo';
     n=0;
     this.setState({userChara:'others'});

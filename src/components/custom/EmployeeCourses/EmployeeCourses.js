@@ -1083,7 +1083,7 @@ class EmployeeCourses extends React.Component {
                       <div>
                         <span>报名</span>
                         <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615392983685}
+                          {selectedCourse.C3_623960665038}
                         </span>
                       </div>
                     </Timeline.Item>

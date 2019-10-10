@@ -77,6 +77,7 @@ class PersonList extends React.Component {
       };
       taskList.push(plans);
     });
+
     this.setState({ isShowProgress: true, taskList});
   };
   //结束时调用的回调函数
@@ -85,6 +86,7 @@ class PersonList extends React.Component {
       isShowProgress: false,
       visible: false 
     });
+    this.tableDataRef.handleRefresh();
   };
 
   onEmployeeWrite = async (dataSource, selectKey) => {

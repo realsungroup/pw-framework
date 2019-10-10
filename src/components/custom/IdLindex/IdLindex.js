@@ -70,6 +70,42 @@ class IdLindex extends Component {
   }
   componentDidMount = () => {
     this.getPersonList();
+    var usrChara = localStorage.getItem('userInfo');
+    usrChara=JSON.parse(usrChara)
+    usrChara=usrChara.UserInfo.GroupList;
+    var arr=[];
+    var n=0;
+    var bol=false;
+    var str='';
+    while(n<usrChara.length){
+      if(usrChara.slice(n, n+1)=="\'"){
+
+        if(bol==true){
+          bol=false;
+          arr.push(str);
+          str='';
+        }else{
+          bol=true;
+        }
+      }
+      if(bol==true){
+        str+=usrChara.slice(n+1, n+2)
+      }
+      n++;
+    }
+// 判别hr角色
+var hrCode='623876215000';
+    // var hrCode='demo';
+    n=0;
+    this.setState({userChara:'others'});
+
+    while(n<arr.length){
+      var j=hrCode+"\'"
+      if(j==arr[n]){
+        this.setState({userChara:'HR'});
+      }
+      n++;
+    }
     // 清楚缓存
     http().clearCache();
   };
@@ -409,10 +445,10 @@ class IdLindex extends Component {
               <Menu.Item style={{ width: '25%' }} key="面试评估表">
                 面试评估表
               </Menu.Item>
-              <Menu.Item style={{ width: '25%' }} key="背景调查表">
+              <Menu.Item style={this.state.userChara=='HR'?{ width: '25%' }:{display:'none'}} key="背景调查表">
                 背景调查表
               </Menu.Item>
-              <Menu.Item style={{ width: '25%' }} key="工作邀请函">
+              <Menu.Item style={this.state.userChara=='HR'?{ width: '25%' }:{display:'none'}} key="工作邀请函" >
                 工作邀请函
               </Menu.Item>
             </Menu>
