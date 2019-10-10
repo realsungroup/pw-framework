@@ -1,7 +1,8 @@
 import React from 'react';
 import './ManagerAttendanceApproval.less';
 import TableData from '../../../common/data/TableData';
-import { Button, Popconfirm, message, notification } from 'antd';
+import { Button, Popconfirm, message, Modal } from 'antd';
+import WorkOvertimeChart from './WorkOvertimeChart';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 
@@ -10,6 +11,9 @@ import { getItem } from 'Util20/util';
  */
 
 class ManagerAttendanceApproval extends React.Component {
+  state = {
+    modalVisible: false
+  };
   constructor(props) {
     super(props);
     this.UserCode = JSON.parse(getItem('userInfo')).UserCode;
@@ -21,6 +25,12 @@ class ManagerAttendanceApproval extends React.Component {
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
+        <Button
+          type="primary"
+          onClick={() => this.setState({ modalVisible: true })}
+        >
+          下属加班汇总
+        </Button>
         <Popconfirm
           title="确认批准吗？"
           onConfirm={() => {
@@ -40,7 +50,6 @@ class ManagerAttendanceApproval extends React.Component {
         >
           <Button type="primary">批准</Button>
         </Popconfirm>
-
         <Popconfirm
           title="确认拒绝吗？"
           onConfirm={() => {
@@ -112,6 +121,7 @@ class ManagerAttendanceApproval extends React.Component {
   };
 
   render() {
+    const { modalVisible } = this.state;
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
@@ -131,6 +141,9 @@ class ManagerAttendanceApproval extends React.Component {
           hasBeBtns={true}
           formProps={{ width: 1000 }}
           recordFormUseAbsolute={true}
+          hideBebtns={{
+            MenuRecordCustEdit3: false
+          }}
           baseURL={this.baseURL}
           downloadBaseURL={this.attendanceDownloadURL}
           customRowBtns={[
@@ -169,6 +182,16 @@ class ManagerAttendanceApproval extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
         />
+        <Modal
+          visible={modalVisible}
+          onOk={() => this.setState({ modalVisible: false })}
+          onCancel={() => this.setState({ modalVisible: false })}
+          width="90%"
+          centered
+          footer={null}
+        >
+          <WorkOvertimeChart />
+        </Modal>
       </div>
     );
   }

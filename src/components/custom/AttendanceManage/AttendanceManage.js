@@ -311,25 +311,27 @@ class AttendanceManage extends React.Component {
             onCancel={() => this.setState({ approvalRecordVisible: false })}
             onOk={() => this.setState({ approvalRecordVisible: false })}
           >
-            <TableData
-              key="revocation-application-form"
-              resid="449441441589"
-              subtractH={100}
-              hasAdvSearch={false}
-              hasAdd={false}
-              hasRowView={true}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={true}
-              actionBarWidth={100}
-              dblinkname="ehr"
-              height="60vh"
-              cmswhere={`C3_446915623989 = '${selectRecord.C3_446915623989 ||
-                selectRecord.C3_449011109791}'`}
-            />
+            <div style={{ height: '70vh' }}>
+              <TableData
+                key="revocation-application-form"
+                resid="449441441589"
+                subtractH={100}
+                hasAdvSearch={false}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={true}
+                actionBarWidth={100}
+                dblinkname="ehr"
+                height="60vh"
+                cmswhere={`C3_446915623989 = '${selectRecord.C3_446915623989 ||
+                  selectRecord.C3_449011109791}'`}
+              />
+            </div>
           </Modal>
         </div>
       </Spin>

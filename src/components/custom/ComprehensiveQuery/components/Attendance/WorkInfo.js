@@ -57,7 +57,7 @@ class WorkInfo extends React.Component {
     return (
       <Select
         placeholder="月份"
-        style={{ width: 120, marginBottom: 16 }}
+        style={{ width: 120, marginBottom: 8 }}
         value={this.state.selectMonth}
         onSelect={selectValue => {
           this.setState({ selectMonth: selectValue });
@@ -126,7 +126,7 @@ class WorkInfo extends React.Component {
     const { person } = this.props;
     return (
       <div className="WorkInfoQuery">
-        <div className="Home">
+        <div className="" style={{ height: '100%' }}>
           <nav className="performance-query_nav">
             <span
               className={`performance-query_nav_item ${currentNav ===
@@ -145,7 +145,7 @@ class WorkInfo extends React.Component {
           </nav>
           {this.renderSelect()}
           <Skeleton loading={!person.C3_305737857578 || !selectMonth}>
-            <div>
+            <div style={{ height: 'calc(100% - 89px)' }}>
               {currentNav === 'monthDetail' && (
                 <TableData
                   resid="460481857607"
@@ -186,7 +186,7 @@ class WorkInfo extends React.Component {
               {currentNav === 'dayDetail' && (
                 <TableData
                   resid="623959817782"
-                  subtractH={220}
+                  subtractH={200}
                   hasAdvSearch={false}
                   hasAdd={false}
                   hasRowView={false}
