@@ -15,7 +15,7 @@ import './PwTable.less';
 import 'react-resizable/css/styles.css';
 import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
-import BIGrid from 'lz-components-and-utils/lib/BIGrid';
+import { BIGrid } from 'lz-components-and-utils/lib/index';
 
 const Search = Input.Search;
 
@@ -183,6 +183,7 @@ class PwTable extends React.Component {
                   onZoomIn={this.handleZoomIn}
                   onZoomOut={this.handleZoomOut}
                   size={size}
+                  isShowGrid={isShowGrid}
                   zoomStatus={this.props.zoomStatus}
                 />
                 {headerExtra && (
@@ -282,10 +283,8 @@ class PwTable extends React.Component {
           </>
         ) : (
           <div style={{ height: 'calc(100% - 28px)', width: '100%' }}>
-            {gridProps.length ? (
+            {gridProps.length && (
               <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
-            ) : (
-              <div>暂无配置</div>
             )}
           </div>
         )}

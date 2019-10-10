@@ -106,7 +106,7 @@ class WaitingApproval extends React.Component {
           hasAdvSearch={false}
           hasAdd={false}
           hasRowView={true}
-          hasRowDelete={true}
+          hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
           hasModify={false}

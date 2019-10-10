@@ -7,6 +7,7 @@ import { getItem } from 'Util20/util';
 
 const { Option } = Select;
 const modalWrapperStyle = { height: '80vh' };
+const activeClasssName = 'performance-query_nav_item__active';
 
 class WorkInfo extends React.Component {
   state = {
@@ -15,7 +16,8 @@ class WorkInfo extends React.Component {
     userCode: '',
     dailyDetailVisible: false,
     yearDetailVisible: false,
-    selectRecord: {}
+    selectRecord: {},
+    currentNav: 'monthDetail'
   };
 
   constructor(props) {
@@ -105,54 +107,104 @@ class WorkInfo extends React.Component {
     }
   };
 
+  handleNavChange = key => {
+    return () => {
+      this.setState({
+        currentNav: key
+      });
+    };
+  };
+
   render() {
     const {
       selectMonth,
       dailyDetailVisible,
       yearDetailVisible,
-      selectRecord
+      selectRecord,
+      currentNav
     } = this.state;
     const { person } = this.props;
     return (
       <div className="WorkInfoQuery">
         <div className="Home">
-          <div className="buttonLine">{this.renderSelect()}</div>
+          <nav className="performance-query_nav">
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'monthDetail' && activeClasssName}`}
+              onClick={this.handleNavChange('monthDetail')}
+            >
+              月报明细
+            </span>
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'dayDetail' && activeClasssName}`}
+              onClick={this.handleNavChange('dayDetail')}
+            >
+              日报明细
+            </span>
+          </nav>
+          {this.renderSelect()}
           <Skeleton loading={!person.C3_305737857578 || !selectMonth}>
-            <TableData
-              resid="460481857607"
-              subtractH={220}
-              hasAdvSearch={false}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasBeBtns={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              actionBarWidth={200}
-              cparm1={person.C3_305737857578 || this.UserCode}
-              cparm2={selectMonth}
-              baseURL={this.baseURL}
-              downloadBaseURL={this.attendanceDownloadURL}
-              customRowBtns={[
-                (record, btnSize) => {
-                  return (
-                    <Button onClick={this.openModal('daily', record)}>
-                      日报明细
-                    </Button>
-                  );
-                },
-                (record, btnSize) => {
-                  return (
-                    <Button onClick={this.openModal('year', record)}>
-                      年假明细
-                    </Button>
-                  );
-                }
-              ]}
-            />
+            <div>
+              {currentNav === 'monthDetail' && (
+                <TableData
+                  resid="460481857607"
+                  subtractH={220}
+                  hasAdvSearch={false}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  actionBarWidth={200}
+                  cparm1={person.C3_305737857578 || this.UserCode}
+                  cparm2={selectMonth}
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.attendanceDownloadURL}
+                  customRowBtns={[
+                    (record, btnSize) => {
+                      return (
+                        <Button onClick={this.openModal('daily', record)}>
+                          日报明细
+                        </Button>
+                      );
+                    },
+                    (record, btnSize) => {
+                      return (
+                        <Button onClick={this.openModal('year', record)}>
+                          年假明细
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              )}
+              {currentNav === 'dayDetail' && (
+                <TableData
+                  resid="623959817782"
+                  subtractH={220}
+                  hasAdvSearch={false}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  actionBarWidth={200}
+                  cparm1={person.C3_305737857578 || this.UserCode}
+                  cparm2={selectMonth}
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.attendanceDownloadURL}
+                />
+              )}
+            </div>
           </Skeleton>
         </div>
         <Modal
