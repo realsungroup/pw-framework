@@ -18,7 +18,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import './EmployeeApplyCourse.less';
 
 const { Option } = Select;
-const CourseDetailResid = '615054661547';
+const CourseDetailResid = '613959487818';
 const CourseArrangeResid = '613959525708';
 const form = props => {
   const {

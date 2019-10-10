@@ -38,7 +38,7 @@ const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
 const resid9 = '619808533610';
- // const resid10 = '622983009643'; //入职培训管理表
+// const resid10 = '622983009643'; //入职培训管理表
 
 const internalCourse = '616155060405'; //内训课程表
 const tutorshipResid = '619281130628'; //辅导员表
@@ -306,13 +306,15 @@ class ProbationForms extends React.Component {
   getOrientationTraining = async () => {
     try {
       let res = await http().getTable({
-        resid: resid3
+        resid: resid3,
+        // cmswhere:`menberId ='${memberId}'`
       });
-      this.setState({ orientationTraining: res.data });
+      this.setState({ orientationTraining: res.data}) 
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
+
   };
   //获取评估周期
   getCircle = async () => {

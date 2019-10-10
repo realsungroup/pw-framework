@@ -26,16 +26,16 @@ class ExternalTraining extends React.Component {
       case 1:
         page = <ETnoticeMain key={1} id={1} />;
         break;
+      // case 2:
+      //   page = <ReviewRequisition />;
+      //   break;
       case 2:
-        page = <ReviewRequisition />;
-        break;
-      case 3:
         page = <ETnoticeMain key={2} id={2} />;
         break;
-      case 4:
+      case 3:
         page = <ViewActions />;
         break;
-      case 5:
+      case 4:
         page = <FeedbackReview />;
         break;
       default:
@@ -70,8 +70,16 @@ class ExternalTraining extends React.Component {
                 this.setState({ current: 1 });
               }}
             />
-            <Step
+            {/* <Step
               title="申请单审核"
+              description=""
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ current: 2 });
+              }}
+            /> */}
+            <Step
+              title="上课通知"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
@@ -79,7 +87,7 @@ class ExternalTraining extends React.Component {
               }}
             />
             <Step
-              title="上课通知"
+              title="查看行动计划"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
@@ -87,19 +95,11 @@ class ExternalTraining extends React.Component {
               }}
             />
             <Step
-              title="查看行动计划"
-              description=""
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                this.setState({ current: 4 });
-              }}
-            />
-            <Step
               title="心得审核"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                this.setState({ current: 5 });
+                this.setState({ current: 4 });
               }}
             />
           </Steps>
