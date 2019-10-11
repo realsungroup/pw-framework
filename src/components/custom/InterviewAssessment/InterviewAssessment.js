@@ -255,7 +255,6 @@ var hrCode='623876215000';
 
       this.setState({
         progress:'未送邮（初试）',
-        name:res.data[0].CandidateName,
         eduBack:res.data[0].edBackground,
         eduOther:res.data[0].eduOther,//缺
         level:res.data[0].leveleInterviewee,
@@ -599,7 +598,7 @@ var hrCode='623876215000';
         resid: 613149356409,
         cmswhere: `id=${id}`
       });
-      this.setState({position:res.data[0].appPosition});
+      this.setState({position:res.data[0].appPosition,name:res.data[0].ChName});
       this.setState({loading:false});
       console.log('详细信息2',res.data)
 
