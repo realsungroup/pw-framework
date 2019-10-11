@@ -404,4 +404,12 @@ http.createApi('runBySql', {
   url: '/api/Resource/RunBySql'
 });
 
+/**
+ * 根据数据源名称和执行sql语句获取单个值
+ */
+http.createApi('getRecordsByProcedure', {
+  method: 'get',
+  url: '/api/200/table/RetrieveProcedure'
+});
+
 export default http;

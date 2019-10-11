@@ -234,14 +234,14 @@ export const withHttpGetBeBtns = WrappedComponent => {
     componentWillUnmount = () => {
       this.p1 && this.p1.cancel();
     };
-    handleHttpGetBeBtns = async (resid, baseURL, dblinkname) => {
+    handleHttpGetBeBtns = async (resid, baseURL, dblinkname, hideBebtns) => {
       const httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
 
       this.p1 = makeCancelable(
-        http(httpParams).getBeBtns({ resid, dblinkname })
+        http(httpParams).getBeBtns({ resid, dblinkname, ...hideBebtns })
       );
       let res;
       try {

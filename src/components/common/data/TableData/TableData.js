@@ -549,11 +549,11 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const { httpGetBeBtns, baseURL, dblinkname } = this.props;
+    const { httpGetBeBtns, baseURL, dblinkname, hideBebtns = {} } = this.props;
     const id = this._id;
     let btns = {};
     try {
-      btns = await httpGetBeBtns(id, baseURL, dblinkname);
+      btns = await httpGetBeBtns(id, baseURL, dblinkname, hideBebtns);
     } catch (err) {
       return console.error(err);
     }
