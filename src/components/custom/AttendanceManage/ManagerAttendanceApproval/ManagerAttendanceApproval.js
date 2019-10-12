@@ -186,7 +186,7 @@ class ManagerAttendanceApproval extends React.Component {
           visible={modalVisible}
           onOk={() => this.setState({ modalVisible: false })}
           onCancel={() => this.setState({ modalVisible: false })}
-          width="90%"
+          width="100%"
           centered
           footer={null}
         >

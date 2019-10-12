@@ -1,10 +1,10 @@
 import React from 'react';
 import echarts from 'echarts';
 import http from 'Util20/api';
-import { message, Select, Table } from 'antd';
+import { message, Select, Table, Drawer, Button } from 'antd';
 import { getItem } from 'Util20/util';
+import { Resizable } from 'react-resizable';
 import './ManagerAttendanceApproval.less';
-import { Button } from 'antd';
 
 const { Option } = Select;
 const colors = ['#5793f3', '#d14a61', '#675bba'];
@@ -36,6 +36,25 @@ const downloadFile = (columns = [], data = []) => {
   link.click();
   document.body.removeChild(link);
 };
+const ResizeableTitle = props => {
+  const { onResize, width, ...restProps } = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable
+      width={width}
+      height={0}
+      onResize={onResize}
+      draggableOpts={{ enableUserSelectHack: false }}
+    >
+      <th {...restProps} />
+    </Resizable>
+  );
+};
+
 class WorkOvertimeChart extends React.Component {
   state = {
     selectedMonth: '',
@@ -48,7 +67,13 @@ class WorkOvertimeChart extends React.Component {
     tableColumns: [],
     dataSource: [],
     isShowTable: false,
-    loading: false
+    loading: false,
+    selectedPersonid: 0
+  };
+  components = {
+    header: {
+      cell: ResizeableTitle
+    }
   };
   constructor(props) {
     super(props);
@@ -129,11 +154,29 @@ class WorkOvertimeChart extends React.Component {
       ]
     });
     this._echarts.on('click', params => {
-      this.setState({ isShowTable: true });
+      this.setState({ isShowTable: true, selectedPersonid: params.data.id });
       this.getDetailData(params.data.id, this.state.selectedMonth);
     });
     await this.getYearMonths();
     await this.getData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedMonth, selectedPersonid, isShowTable } = this.state;
+    if (
+      selectedMonth &&
+      isShowTable &&
+      prevState.selectedMonth !== selectedMonth
+    ) {
+      if (selectedPersonid) {
+        this.getDetailData(
+          this.state.selectedPersonid,
+          this.state.selectedMonth
+        );
+      } else {
+        this.getDetailData(this.UserCode, selectedMonth);
+      }
+    }
   }
 
   getData = async () => {
@@ -215,7 +258,7 @@ class WorkOvertimeChart extends React.Component {
         procedure: 'GetS3OTListByLeaderMonth'
       });
       const columns = res.cmscolumninfo.map(item => {
-        return { title: item.text, dataIndex: item.text };
+        return { title: item.text, dataIndex: item.text, width: 100 };
       });
       const dataSource = res.data.map(item => {
         return { ...item, key: item['工号'] };
@@ -231,10 +274,23 @@ class WorkOvertimeChart extends React.Component {
       this.setState({ loading: false });
     }
   };
+
   onStatisticalDataClick = () => {
-    this.setState({ isShowTable: true });
+    this.setState({ isShowTable: true, selectedPersonid: 0 });
     this.getDetailData(this.UserCode, this.state.selectedMonth);
   };
+
+  handleResize = index => (e, { size }) => {
+    this.setState(({ tableColumns }) => {
+      const nextColumns = [...tableColumns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width
+      };
+      return { tableColumns: nextColumns };
+    });
+  };
+
   render() {
     const {
       selectedMonth,
@@ -244,6 +300,13 @@ class WorkOvertimeChart extends React.Component {
       tableColumns,
       dataSource
     } = this.state;
+    const columns = this.state.tableColumns.map((col, index) => ({
+      ...col,
+      onHeaderCell: column => ({
+        width: column.width,
+        onResize: this.handleResize(index)
+      })
+    }));
     return (
       <div className="manager-subordinates">
         <Select
@@ -274,7 +337,7 @@ class WorkOvertimeChart extends React.Component {
             </Option>
           ))}
         </Select>
-        <div>
+        <div style={{ display: isShowTable ? 'none' : '' }}>
           <table className="manager-subordinates-statistical-table">
             <thead>
               <th>Headcount</th>
@@ -297,36 +360,42 @@ class WorkOvertimeChart extends React.Component {
           </table>
         </div>
         <div style={{ display: !isShowTable ? 'none' : '' }}>
-          <div style={{ eight: 800 }}>
+          <div className="work-over-time-table">
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                marginBottom: 8
+                margin: '8px 0'
               }}
             >
-              <Button onClick={() => this.setState({ isShowTable: false })}>
+              <Button
+                onClick={() =>
+                  this.setState({ isShowTable: false, selectedPersonid: 0 })
+                }
+              >
                 返回
               </Button>
+              {/* <Button>动态表格</Button> */}
               <Button
                 onClick={() => {
                   downloadFile(tableColumns, dataSource);
                 }}
                 type="primary"
+                icon="download"
               >
                 下载
               </Button>
             </div>
 
             <Table
-              columns={tableColumns}
+              columns={columns}
               rowKey={record => record['工号']}
               dataSource={dataSource}
               bordered
-              style={{ eight: 800 }}
               // pagination={this.state.pagination}
               loading={this.state.loading}
-              onChange={this.handleTableChange}
+              components={this.components}
+              // onChange={this.handleTableChange}
             />
           </div>
         </div>
@@ -337,7 +406,8 @@ class WorkOvertimeChart extends React.Component {
             width: '100%',
             display: isShowTable ? 'none' : ''
           }}
-        ></div>
+        />
+        <Drawer></Drawer>
       </div>
     );
   }
