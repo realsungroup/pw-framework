@@ -1708,7 +1708,7 @@ class TableData extends React.Component {
   };
 
   render() {
-    const { loading, zoomStatus } = this.state;
+    const { loading, zoomStatus, width, height } = this.state;
     let zoomOutStyle = {};
     if (zoomStatus === 1) {
       zoomOutStyle = {
@@ -1724,7 +1724,7 @@ class TableData extends React.Component {
     return (
       <div
         className="table-data"
-        style={zoomOutStyle}
+        style={zoomOutStyle.position ? zoomOutStyle : { width, height }}
         ref={element => (this.tableDataRef = element)}
       >
         <Spin spinning={loading}>{this.renderPwTable()}</Spin>
