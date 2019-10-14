@@ -144,6 +144,7 @@ subConfirm = () => {
   });
 }
 handleChangeS=(value,obj)=>{
+  console.log(this.state.postID)
   this.setState({
       value,
       data:[],
@@ -164,10 +165,10 @@ handleChangeS=(value,obj)=>{
           resid: 623153143463,
           key:value
         });
-
+        console.log(res)
         const data =res.data.map(data => ({
                   text: `${data.C3_421886426562}`,
-                  value: data.REC_ID,
+                  value: data.C3_305737857578,
                 }));
 
                   this.setState({ data, fetching: false });
@@ -598,7 +599,7 @@ var hrCode='623876215000';
         resid: 613149356409,
         cmswhere: `id=${id}`
       });
-      this.setState({position:res.data[0].appPosition,name:res.data[0].ChName});
+      this.setState({position:res.data[0].appPosition,name:res.data[0].hName});
       this.setState({loading:false});
       console.log('详细信息2',res.data)
 
