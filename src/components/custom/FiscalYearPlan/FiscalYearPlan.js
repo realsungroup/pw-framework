@@ -144,7 +144,6 @@ class FiscalYearPlan extends React.Component {
         message.error(error.message)
       });
   };
-
   refreshSelectedPlan = async () => {
     if (!this.state.selectedPlan) {
       return;
@@ -361,6 +360,9 @@ class FiscalYearPlan extends React.Component {
         break;
       case 3:
         page = (
+          <div style={{height: '90vh'}}>
+
+          
           <TableData
             resid={611165813996}
             key="611165813996"
@@ -373,8 +375,8 @@ class FiscalYearPlan extends React.Component {
             hasModify={false}
             actionBarFixed={true}
             hasRowModify={false}
-            height='90vh'
-            subtractH={240}
+            // height='90vh'
+            subtractH={200}
             recordFormType="drawer"
             recordFormContainerProps={{
               placement: 'bottom',
@@ -390,9 +392,10 @@ class FiscalYearPlan extends React.Component {
                   hasRowDelete: false,
                   hasRowModify: false,
                   hasDelete: false,
-                  subtractH: 190,
+                  subtractH: 200,
                   height: 500,
-                  hasRowView: false
+                  hasRowView: false,
+                  subtractH:200
                 }
               },
               {
@@ -405,12 +408,13 @@ class FiscalYearPlan extends React.Component {
                   hasRowModify: false,
                   hasDelete: false,
                   subtractH: 190,
-                  height: 500,
+                  // height: 700,
                   hasRowView: false
                 }
               }
             ]}
           />
+          </div>
         );
         break;
       default:
