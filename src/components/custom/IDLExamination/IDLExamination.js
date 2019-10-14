@@ -41,7 +41,7 @@ class IDLExamination extends React.Component {
         <div id="content" ref={p => (this.printer = p)}>
 
           <div style={{ textAlign: 'center' }}>
-            <h2 className="header">Job Application From / 工作申请表</h2>
+            <h2 className="header">Job Application Form / 工作申请表</h2>
           </div>
           <div style={{ float: 'left', fontWeight: 'bold' }}>
             Personal Information 个人资料
@@ -364,7 +364,7 @@ class IDLExamination extends React.Component {
                 </th>
                 <th colspan="2" style={{ width: '190px' }}>
                   <div style={{ float: 'left', marginLeft: '5px' }}>
-                    <p>relationship</p>
+                    <p>Relationship</p>
                     <p>关系:</p>
                   </div>
                   <div
