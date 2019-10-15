@@ -86,6 +86,7 @@ class TotalStatical extends Component {
       });
     } catch (err) {
       console.error(err.message);
+      return message.error(err.message)
     }
     this.setState({
       queryQuestions: QuestionsData.data
@@ -284,6 +285,7 @@ class TotalStatical extends Component {
   // 渲染单选和多选的表格
   renderCommonChart = () => {
     const { data } = this.state;
+    console.log(data)
     if (0 >= data.length) {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     } else {

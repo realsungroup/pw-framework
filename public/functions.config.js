@@ -1220,7 +1220,7 @@ window[611339874157] = {
         resid: 614686575134,
         TabsTitle: '待提交',
         recordFormFormWidth: '90%',
-        columnsWidth: { 财年: 50 },
+        columnsWidth: { 财年: 150 },
         hasBeBtns: true,
         hasModify: false,
         hasDelete: false,

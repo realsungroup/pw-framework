@@ -19,7 +19,8 @@ class DefinePlan extends React.Component {
 
   render() {
     return (
-      <Collapse defaultActiveKey={['1']}>
+      <Collapse defaultActiveKey={['1','2']}
+      >
         <Panel
           header={
             <div
