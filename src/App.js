@@ -162,7 +162,7 @@ class App extends Component {
     }
 
     // 'DESKTOP' or 'WORKBENCH'
-    let desktopStyle;
+    let desktopStyle = 'DESKTOP';
     try {
       desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
       if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
