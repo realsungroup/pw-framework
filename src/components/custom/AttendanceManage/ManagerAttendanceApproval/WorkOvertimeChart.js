@@ -1,9 +1,10 @@
 import React from 'react';
 import echarts from 'echarts';
 import http from 'Util20/api';
-import { message, Select, Table, Drawer, Button } from 'antd';
+import { message, Select, Table, Drawer, Button, Icon, Tooltip } from 'antd';
 import { getItem } from 'Util20/util';
 import { Resizable } from 'react-resizable';
+import { BIGrid } from 'lz-components-and-utils/lib/index';
 import './ManagerAttendanceApproval.less';
 
 const { Option } = Select;
@@ -67,6 +68,8 @@ class WorkOvertimeChart extends React.Component {
     tableColumns: [],
     dataSource: [],
     isShowTable: false,
+    isShowAggird: false,
+    employeeId: 0,
     loading: false,
     selectedPersonid: 0
   };
@@ -173,8 +176,6 @@ class WorkOvertimeChart extends React.Component {
           this.state.selectedPersonid,
           this.state.selectedMonth
         );
-      } else {
-        this.getDetailData(this.UserCode, selectedMonth);
       }
     }
   }
@@ -276,7 +277,7 @@ class WorkOvertimeChart extends React.Component {
   };
 
   onStatisticalDataClick = () => {
-    this.setState({ isShowTable: true, selectedPersonid: 0 });
+    this.setState({ isShowTable: true, selectedPersonid: this.UserCode });
     this.getDetailData(this.UserCode, this.state.selectedMonth);
   };
 
@@ -296,9 +297,11 @@ class WorkOvertimeChart extends React.Component {
       selectedMonth,
       statisticalData,
       isShowTable,
+      isShowAggird,
       months,
       tableColumns,
-      dataSource
+      dataSource,
+      selectedPersonid
     } = this.state;
     const columns = this.state.tableColumns.map((col, index) => ({
       ...col,
@@ -361,42 +364,70 @@ class WorkOvertimeChart extends React.Component {
         </div>
         <div style={{ display: !isShowTable ? 'none' : '' }}>
           <div className="work-over-time-table">
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                margin: '8px 0'
-              }}
-            >
+            <div className="header__icon-buttons">
               <Button
                 onClick={() =>
-                  this.setState({ isShowTable: false, selectedPersonid: 0 })
+                  this.setState({
+                    isShowTable: false,
+                    isShowAggird: false,
+                    selectedPersonid: this.UserCode
+                  })
                 }
               >
                 返回
               </Button>
-              {/* <Button>动态表格</Button> */}
-              <Button
-                onClick={() => {
-                  downloadFile(tableColumns, dataSource);
-                }}
-                type="primary"
-                icon="download"
-              >
-                下载
-              </Button>
+              <div>
+                <Tooltip title={isShowAggird ? '普通表格' : '动态表格'}>
+                  <Icon
+                    type="table"
+                    className="header__icon-buttons_icon"
+                    onClick={() => {
+                      this.setState({ isShowAggird: !isShowAggird });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="下载">
+                  <Icon
+                    type="download"
+                    className="header__icon-buttons_icon"
+                    onClick={() => {
+                      downloadFile(tableColumns, dataSource);
+                    }}
+                  />
+                </Tooltip>
+              </div>
             </div>
 
-            <Table
-              columns={columns}
-              rowKey={record => record['工号']}
-              dataSource={dataSource}
-              bordered
-              // pagination={this.state.pagination}
-              loading={this.state.loading}
-              components={this.components}
-              // onChange={this.handleTableChange}
-            />
+            {!isShowAggird && (
+              <Table
+                columns={columns}
+                rowKey={record => record['工号']}
+                dataSource={dataSource}
+                bordered
+                // pagination={this.state.pagination}
+                loading={this.state.loading}
+                components={this.components}
+                // onChange={this.handleTableChange}
+              />
+            )}
+            {isShowAggird && (
+              <BIGrid
+                height={600}
+                gridProps={[
+                  {
+                    resid: '624039666618',
+                    baseURL: 'http://10.108.2.66:1001/',
+                    dataSource: 'procedure',
+                    procedureParams: {
+                      paranames: '@leaderygno,@yearmonth',
+                      paratypes: 'string,string',
+                      paravalues: `${selectedPersonid},${selectedMonth}`,
+                      procedure: 'GetS3OTListByLeaderMonth'
+                    }
+                  }
+                ]}
+              />
+            )}
           </div>
         </div>
         <div

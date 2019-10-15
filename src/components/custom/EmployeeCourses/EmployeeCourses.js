@@ -14,7 +14,8 @@ import {
   Upload,
   Icon,
   Empty,
-  Table
+  Table,
+  Tooltip
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -636,10 +637,27 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  likeCourse = async (data, index) => {
+    try {
+      let res = await http().modifyRecords({
+        resid,
+        data: [data]
+      });
+      let myCourses = [...this.state.myCourses];
+      myCourses[index].isLike = res.data[0].isLike;
+      this.setState({
+        myCourses: myCourses
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  };
+
   renderCoursesList = () => {
     let { myCourses } = this.state;
     return myCourses.length ? (
-      myCourses.map(item => (
+      myCourses.map((item, index) => (
         <Card
           extra={<Radio checked={item.checked} />}
           title={`${item.courseType} / ${item.C3_613941384592}`}
@@ -694,6 +712,28 @@ class EmployeeCourses extends React.Component {
               >
                 课程详情
               </Button>
+              {item.isLike !== 'Y' && (
+                <Popconfirm
+                  title="确认点赞吗？"
+                  onConfirm={() => {
+                    this.likeCourse(
+                      { REC_ID: item.REC_ID, isLike: 'Y' },
+                      index
+                    );
+                  }}
+                >
+                  <Icon type="like" style={{ fontSize: 20, marginLeft: 8 }} />
+                </Popconfirm>
+              )}
+              {item.isLike === 'Y' && (
+                <Tooltip title="已点赞课程">
+                  <Icon
+                    type="like"
+                    style={{ fontSize: 20, marginLeft: 8 }}
+                    theme="twoTone"
+                  />
+                </Tooltip>
+              )}
             </div>
           </div>
         </Card>
