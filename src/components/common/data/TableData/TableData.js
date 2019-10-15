@@ -100,19 +100,20 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillReceiveProps = async nextProps => {
-    if (
-      this.props.resid !== nextProps.resid ||
-      this.props.subresid !== nextProps.subresid ||
-      this.props.dataMode !== nextProps.dataMode ||
-      this.props.hostrecid !== nextProps.hostrecid
-    ) {
-      this.setState({ loading: true });
-      this.initVariables(nextProps);
-      await this.getData(nextProps);
-      this.setState({ loading: false });
-    }
-  };
+  // componentWillReceiveProps = async nextProps => {
+  //   if (
+  //     this.props.resid !== nextProps.resid ||
+  //     this.props.subresid !== nextProps.subresid ||
+  //     this.props.dataMode !== nextProps.dataMode ||
+  //     this.props.hostrecid !== nextProps.hostrecid
+  //   ) {
+  //     this.setState({ loading: true });
+
+  //     this.initVariables(nextProps);
+  //     await this.getData(nextProps);
+  //     this.setState({ loading: false });
+  //   }
+  // };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -130,7 +131,11 @@ class TableData extends React.Component {
       this.props.cparm4 !== prevProps.cparm4 ||
       this.props.cparm5 !== prevProps.cparm5 ||
       this.props.cparm6 !== prevProps.cparm6 ||
-      this.props.cmsWhere !== prevProps.cmsWhere
+      this.props.cmsWhere !== prevProps.cmsWhere ||
+      this.props.resid !== prevProps.resid ||
+      this.props.subresid !== prevProps.subresid ||
+      this.props.dataMode !== prevProps.dataMode ||
+      this.props.hostrecid !== prevProps.hostrecid
     ) {
       this.setState({ loading: true });
       await this.getData();
@@ -305,7 +310,8 @@ class TableData extends React.Component {
       cparm3,
       cparm4,
       cparm5,
-      cparm6
+      cparm6,
+      lngMtsID
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -338,7 +344,8 @@ class TableData extends React.Component {
             cparm3,
             cparm4,
             cparm5,
-            cparm6
+            cparm6,
+            lngMtsID
           };
           this.p3 = makeCancelable(http(httpParams).getTable(params));
           res = await this.p3.promise;
@@ -363,7 +370,8 @@ class TableData extends React.Component {
             cparm3,
             cparm4,
             cparm5,
-            cparm6
+            cparm6,
+            lngMtsID
           };
           this.p3 = makeCancelable(http(httpParams).getSubTable(params));
           res = await this.p3.promise;
