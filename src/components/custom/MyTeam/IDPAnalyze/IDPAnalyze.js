@@ -25,9 +25,8 @@ class IDPAnalyze extends React.Component {
         height={'100%'}
         gridProps={[
           {
-            resid: '624039666618',
-            baseURL: 'http://10.108.2.66:1001/',
-
+            resid: '624564627997',
+            baseURL: window.pwConfig[process.env.NODE_ENV].baseURL,
           }
         ]}
       />
