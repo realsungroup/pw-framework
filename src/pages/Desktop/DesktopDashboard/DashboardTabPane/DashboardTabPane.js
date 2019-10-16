@@ -131,6 +131,7 @@ export default class DashboardTabPane extends React.PureComponent {
           onSearch={this.handleSearch}
           rows={this.state.rows}
           mode="view"
+          baseURL={window.pwConfig[process.env.NODE_ENV].biBaseURL}
           showSearchBar={true}
         />
       );

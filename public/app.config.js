@@ -6,7 +6,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://10.108.2.66:1000',
+    baseURL: 'http://10.108.2.66:1001/',
     fileDownloadUrl: 'http://pwhr1.realsun.me/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
@@ -15,9 +15,8 @@ window.pwConfig = {
         title: '基本信息', // 标题：必选
         enTitle: 'Basic Info',
         resid: 1300, // resid：必选
-        formName: 'default',// 窗体名称：可选；不设置时默认为 'default'
-        dbLinkName:'EHR'
-      
+        formName: 'default', // 窗体名称：可选；不设置时默认为 'default'
+        dbLinkName: 'EHR'
       }
     ],
 
