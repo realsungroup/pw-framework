@@ -200,6 +200,7 @@ class PersonList extends React.Component {
           hasDelete={false}
           hasRowModify={false}
           actionBarFixed={true}
+          hasAdvSearch={true}
           height="100%"
           cmswhere={
             this.props.role === 'HR'

@@ -947,9 +947,11 @@ class PersonPlan extends React.Component {
     if(type === 'mid'){
     personInfo.midManageApply = 'N';
     personInfo.yearMidSubmit = '';
+    personInfo.midYearReturnEmail = 'N';
     }else{
     personInfo.tailManageApply = 'N';
     personInfo.yearTailSubmit = '';
+    personInfo.tailYearReturnEmail = 'N';
     }
     let res;
     try {
