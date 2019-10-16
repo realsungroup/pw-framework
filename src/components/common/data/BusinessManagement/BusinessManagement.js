@@ -50,9 +50,9 @@ class BusinessManagement extends React.Component {
     this.setState({ loading: true });
     const { rootId, dblinkname } = this.props;
     const params = { dblinkname };
-    if (rootId) {
-      params.rootid = rootId;
-    }
+    // if (rootId) {
+    params.rootid = rootId;
+    // }
     this.p1 = makeCancelable(http().getUserFunctionTree(params));
     let res;
     try {
@@ -102,7 +102,14 @@ class BusinessManagement extends React.Component {
         <SubMenu
           key={menuItem.RES_ID}
           title={
-            <span>
+            <span
+              onClick={e => {
+                if (menuItem.RES_TABLETYPE) {
+                  e.stopPropagation();
+                  this.handleSelectedMenuItem(menuItem);
+                }
+              }}
+            >
               <i className={`iconfont ${menuItem.RES_ICONNAME}`} />
               {/* <Icon type="folder" /> */}
               <span>{menuItem.RES_NAME}</span>
@@ -275,15 +282,17 @@ class BusinessManagement extends React.Component {
                 {!collapsed && getIntlVal(intl.locale, enTitle, title)}
               </div>
               <div className="business-management__menu-search">
-                <Input.Search
-                  onSearch={this.handleSearch}
-                  className="business-management__input-search"
-                  enterButton={false}
-                />
+                {!collapsed && (
+                  <Input.Search
+                    onSearch={this.handleSearch}
+                    className="business-management__input-search"
+                    enterButton={false}
+                  />
+                )}
               </div>
 
               <Menu
-                mode="horizontal"
+                // mode="horizontal"
                 theme="dark"
                 mode="inline"
                 openKeys={openKeys}

@@ -10,7 +10,7 @@ class App extends Component {
     return (
       <TemplateWrap>
         <BusinessManagement
-          rootId={308175022132}
+          rootId={0}
           title="标题党"
           enTitle="biaotidang"
           dblinkname="me"

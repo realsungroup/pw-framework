@@ -6,11 +6,12 @@ import { TableData } from 'Common/loadableCommon';
 export default class Reminder extends React.Component {
   constructor(props) {
     super(props);
-    const { resid, title, count } = this.resolveQueryString();
+    const { resid, title, count, lngMtsID } = this.resolveQueryString();
     this.state = {
       resid: parseInt(resid, 10), // 某个提醒的表的 resid
       title, // 提醒的标题
-      count // 提醒的数量
+      count, // 提醒的数量
+      lngMtsID
     };
   }
 
@@ -22,7 +23,7 @@ export default class Reminder extends React.Component {
   };
 
   render() {
-    const { resid } = this.state;
+    const { resid, lngMtsID } = this.state;
 
     return (
       <div className="reminder">
@@ -33,6 +34,8 @@ export default class Reminder extends React.Component {
           hasResizeableBox
           hasAdd={false}
           hasModify={false}
+          hasBeBtns={true}
+          lngMtsID={lngMtsID}
         />
       </div>
     );
