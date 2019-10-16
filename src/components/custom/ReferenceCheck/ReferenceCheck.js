@@ -128,7 +128,7 @@ class ReferenceCheck extends React.Component {
         cmswhere: `REC_ID=${id}`
       });
       this.setState({
-        chara:this.state.chara.referenceCategory,
+        chara:res.data[0].referenceCategory,
         date:res.data[0].checkDateHr,
         candiName:res.data[0].CandidateName,
         coName:res.data[0].comNameHr,

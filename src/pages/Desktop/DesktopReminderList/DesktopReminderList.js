@@ -42,9 +42,7 @@ export default class DesktopReminderList extends React.Component {
   };
 
   handleItemClick = itemData => {
-    const url = `/reminder?resid=${itemData.REMINDER_RESID}&title=${
-      itemData.REMINDER_TITLE
-    }&count=${itemData.REMINDER_TASKNUM}`;
+    const url = `/reminder?resid=${itemData.REMINDER_RESID}&title=${itemData.REMINDER_TITLE}&count=${itemData.REMINDER_TASKNUM}&lngMtsID=${itemData.REMINDER_MTSID}`;
 
     const { onItemClick } = this.props;
     onItemClick && onItemClick(url, itemData.REMINDER_TITLE);
