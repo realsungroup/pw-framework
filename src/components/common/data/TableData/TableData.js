@@ -1,6 +1,6 @@
 import React from 'react';
 import PwTable from '../../ui/PwTable';
-import { message, Button, Spin, Modal } from 'antd';
+import { message, Button, Spin, Modal, Icon, Input } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
 import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
@@ -149,6 +149,70 @@ class TableData extends React.Component {
 
   handleResize = () => {
     this.getScrollXY();
+  };
+
+  getColumnSearchProps = (dataIndex, name) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${name}`}
+          value={selectedKeys[0]}
+          onChange={e =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => this.handleColumnSearch(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleColumnSearch(selectedKeys, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          查询
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          重置
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text => text
+  });
+
+  handleColumnSearch = (selectedKeys, confirm) => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
   };
 
   getDataSource = () => {
@@ -311,7 +375,8 @@ class TableData extends React.Component {
       cparm4,
       cparm5,
       cparm6,
-      lngMtsID
+      lngMtsID,
+      isFrontEndPagination
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -333,8 +398,8 @@ class TableData extends React.Component {
             key,
             cmswhere: mergedCmsWhere,
             cmscolumns,
-            pageindex: page - 1,
-            pagesize: pageSize,
+            pageindex: isFrontEndPagination ? 0 : page - 1,
+            pagesize: isFrontEndPagination ? 0 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -1348,7 +1413,16 @@ class TableData extends React.Component {
     if (this.hasActionBar()) {
       newColumns = newColumns.concat([this.getActionBar()]);
     }
-
+    newColumns = newColumns.map(item => {
+      if (item.dataIndex === '操作') {
+        return item;
+      } else {
+        return {
+          ...item,
+          ...this.getColumnSearchProps(item.dataIndex, item.title)
+        };
+      }
+    });
     return newColumns;
   };
 

@@ -80,6 +80,7 @@ class PersonInfo extends React.Component {
             <TableData
               key="1"
               resid="446576761435"
+              isFrontEndPagination={true}
               subtractH={200}
               hasAdvSearch={false}
               hasAdd={false}
