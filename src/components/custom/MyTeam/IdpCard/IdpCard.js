@@ -368,10 +368,11 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span>发起年末回顾</span>
+                <span style={{ cursor:'pointer'}}>发起年末回顾</span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
               <span
+                style={{ cursor:'pointer'}}
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -514,6 +515,7 @@ class IdpCard extends React.Component {
                       this.onAdd();
                     }}
                     style={{
+                      
                       marginLeft: historyPlan.length > 0 ? '0' : '176px'
                     }}
                   >
@@ -535,7 +537,7 @@ class IdpCard extends React.Component {
                     >
                       添加新的发展计划
                     </span>
-                    <span style={{ color: '#999' }}>Add a new compentecy</span>
+                    <span style={{ display:'block',textAlign:'center',width:'100%',color: '#999' }}>Add a new compentecy</span>
                   </Card>
                 ) : null}
                 {this.renderHistory()}
