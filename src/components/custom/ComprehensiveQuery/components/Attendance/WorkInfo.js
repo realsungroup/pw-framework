@@ -150,7 +150,8 @@ class WorkInfo extends React.Component {
                 <TableData
                   resid="460481857607"
                   subtractH={220}
-                  hasAdvSearch={false}
+                  tableComponent="ag-grid"
+                  hasAdvSearch={true}
                   hasAdd={false}
                   hasRowView={false}
                   hasRowDelete={false}
@@ -160,6 +161,7 @@ class WorkInfo extends React.Component {
                   hasBeBtns={false}
                   hasRowModify={false}
                   hasRowSelection={false}
+                  // rowSelectionAg="single"
                   actionBarWidth={200}
                   cparm1={person.C3_305737857578 || this.UserCode}
                   cparm2={selectMonth}
