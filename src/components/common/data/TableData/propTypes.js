@@ -70,7 +70,8 @@ export const defaultProps = {
     mode: 'be',
     saveState: 'editoradd',
     containerType: 'drawer'
-  }
+  },
+  isFrontEndPagination: false
 };
 
 export const propTypes = {
@@ -650,5 +651,11 @@ export const propTypes = {
    * 数据库链接名称（当你想要用其他数据库时使用）
    * 默认：-
    */
-  dblinkname: PropTypes.string
+  dblinkname: PropTypes.string,
+
+  /*
+   * 是否使用前端分页
+   * 默认: false
+   */
+  isFrontEndPagination: PropTypes.bool
 };

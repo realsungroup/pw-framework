@@ -416,7 +416,7 @@ class WorkOvertimeChart extends React.Component {
                 gridProps={[
                   {
                     resid: '624039666618',
-                    baseURL: 'http://10.108.2.66:1001/',
+                    baseURL: window.pwConfig[process.env.NODE_ENV.baseURL],
                     dataSource: 'procedure',
                     procedureParams: {
                       paranames: '@leaderygno,@yearmonth',
