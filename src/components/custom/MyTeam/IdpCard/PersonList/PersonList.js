@@ -222,6 +222,7 @@ class PersonList extends React.Component {
                   onClick={() => {
                     this.props.onLookPerson(record);
                   }}
+                  style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
                 >
                   修改
                 </Button>

@@ -1358,13 +1358,13 @@ class OfferLetter extends React.Component {
           >
             保存
           </Button>
-          <Button
+          {/* <Button
             type="primary"
             style={{ marginLeft: '5px' }}
             onClick={this.onDownload}
           >
             下载
-          </Button>
+          </Button> */}
           <Button
             type="primary"
             style={{ marginLeft: '5px' }}

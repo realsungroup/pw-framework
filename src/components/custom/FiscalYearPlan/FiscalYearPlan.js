@@ -361,8 +361,6 @@ class FiscalYearPlan extends React.Component {
       case 3:
         page = (
           <div style={{height: '90vh'}}>
-
-          
           <TableData
             resid={611165813996}
             key="611165813996"
