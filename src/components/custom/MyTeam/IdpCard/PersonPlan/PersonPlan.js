@@ -1114,7 +1114,7 @@ class PersonPlan extends React.Component {
               <span style={{ fontSize: '16px', color: '#000' }}>
                 能力测评 - 选出目前及未来需要发展的3-6项能力
                 <span className="personPlan-contain-info-word">
-                  Competency Assesment - Chhose 3~6 compentecies meet
+                  Competency Assessment - Choose 3~6 compentecies meet
                   development at present and in the future.
                 </span>
               </span>
@@ -1200,7 +1200,7 @@ class PersonPlan extends React.Component {
             <br />
             <span>
               Please choose maxi. 3 priority competencies to develop which refer
-              to the assesment
+              to the assessment
             </span>
           </div>
           <div className="personPlan-contain-plan-check">
@@ -1583,7 +1583,7 @@ class PersonPlan extends React.Component {
               <span style={{ fontSize: '16px', color: '#000' }}>
                 个人信息{' '}
                 <span className="personPlan-contain-info-word">
-                  Personal Infomation
+                  Personal Information
                 </span>
               </span>
             }
@@ -1712,7 +1712,7 @@ class PersonPlan extends React.Component {
                   className="personPlan-contain-bottom-leftbtn"
                   type="danger"
                 >
-                  退回
+                  退回年中回顾
                 </Button>
               </Popconfirm>:null}
 
@@ -1731,7 +1731,7 @@ class PersonPlan extends React.Component {
                   className="personPlan-contain-bottom-leftbtn"
                   type="danger"
                 >
-                  退回年末
+                  退回年末回顾
                 </Button>
               </Popconfirm>:null}
             {this.state.checkType !== 'oneself' &&
