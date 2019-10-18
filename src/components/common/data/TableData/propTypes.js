@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 /**
- * 可使用的实例方法参照：./README.md
+ * 可使用的实例方法参照：./README.md 带Ag后缀的属性仅在tableComponent='ag-grid'时生效
  */
 
 export const defaultProps = {
@@ -71,7 +71,8 @@ export const defaultProps = {
     saveState: 'editoradd',
     containerType: 'drawer'
   },
-  isFrontEndPagination: false
+  tableComponent: 'antdTable',
+  rowSelectionAg: 'multiple'
 };
 
 export const propTypes = {
@@ -623,6 +624,13 @@ export const propTypes = {
   actionBarExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
   /**
+   * action bar 区域额外的内容
+   * 默认：-
+   * 可选：jsx 或 (gridApi) => {}； 可通过gridApi.getSelectedRows()获取选中的数据数组
+   */
+  actionBarExtraAg: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+
+  /**
    * header 区域额外的内容
    * 默认：-
    * 可选：jsx 或 (tableData: []) => {}
@@ -654,8 +662,14 @@ export const propTypes = {
   dblinkname: PropTypes.string,
 
   /*
-   * 是否使用前端分页
-   * 默认: false
+   * 使用的组件: antdTable | ag-grid
+   * 默认: antdTable
    */
-  isFrontEndPagination: PropTypes.bool
+  tableComponent: PropTypes.string,
+
+  /*
+   * 单选还是多选，multiple | single
+   * 默认: multiple
+   */
+  rowSelectionAg: PropTypes.string
 };

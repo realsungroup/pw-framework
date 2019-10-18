@@ -272,6 +272,7 @@ class IdpCard extends React.Component {
       case 'HR':
         return (
           <span
+          style={{cursor:'pointer'}}
             onClick={() => {
               this.onCheckTeam(item);
             }}
@@ -282,6 +283,8 @@ class IdpCard extends React.Component {
       case 'Employee':
         return (
           <span
+          style={{cursor:'pointer'}}
+
             onClick={() => {
               this.onLookPerson(item, 'oneself');
             }}
@@ -293,6 +296,8 @@ class IdpCard extends React.Component {
       default:
         return (
           <span
+          style={{cursor:'pointer'}}
+
             onClick={() => {
               this.onCheckTeam(item);
             }}
@@ -346,11 +351,16 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span>发起年中回顾 </span>
+                <span
+                style={{cursor:'pointer'}}
+
+                >发起年中回顾 </span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
 
               <span
+              style={{cursor:'pointer'}}
+
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -418,6 +428,8 @@ class IdpCard extends React.Component {
     } else if (this.props.role === 'Employee') {
       return (
         <span
+        style={{cursor:'pointer'}}
+
           onClick={() => {
             this.onLookPerson(this.state.currentPlan, 'oneself');
           }}
@@ -428,6 +440,8 @@ class IdpCard extends React.Component {
     } else {
       return (
         <span
+        style={{cursor:'pointer'}}
+
           onClick={() => {
             this.onCheckTeam(this.state.currentPlan);
           }}
@@ -515,7 +529,7 @@ class IdpCard extends React.Component {
                       this.onAdd();
                     }}
                     style={{
-                      
+
                       marginLeft: historyPlan.length > 0 ? '0' : '176px'
                     }}
                   >

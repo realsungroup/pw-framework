@@ -1485,17 +1485,17 @@ after@0.8.2:
   resolved "https://registry.npm.taobao.org/after/download/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
-ag-grid-community@^21.2.0:
+ag-grid-community@^21.2.0, ag-grid-community@^21.2.2:
   version "21.2.2"
   resolved "https://registry.npm.taobao.org/ag-grid-community/download/ag-grid-community-21.2.2.tgz#a5696a303fa04d03d26e4c9e09e114d308ff4ad4"
   integrity sha1-pWlqMD+gTQPSbkyeCeEU0wj/StQ=
 
-ag-grid-enterprise@^21.2.1:
+ag-grid-enterprise@^21.2.1, ag-grid-enterprise@^21.2.2:
   version "21.2.2"
   resolved "https://registry.npm.taobao.org/ag-grid-enterprise/download/ag-grid-enterprise-21.2.2.tgz#9e32b6cee5a13e644c9b174f245c96ff63b7b37b"
   integrity sha1-njK2zuWhPmRMmxdPJFyW/2O3s3s=
 
-ag-grid-react@^21.2.0:
+ag-grid-react@^21.2.0, ag-grid-react@^21.2.2:
   version "21.2.2"
   resolved "https://registry.npm.taobao.org/ag-grid-react/download/ag-grid-react-21.2.2.tgz#55f19eb3bb14a3beddd642adb0bb03da1249ae59"
   integrity sha1-VfGes7sUo77d1kKtsLsD2hJJrlk=

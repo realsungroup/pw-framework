@@ -1,5 +1,6 @@
 import React from 'react';
 import PwTable from '../../ui/PwTable';
+import PwAggird from '../../ui/PwAggrid';
 import { message, Button, Spin, Modal, Icon, Input } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
@@ -84,6 +85,7 @@ class TableData extends React.Component {
       width,
       height,
       gridProps: [],
+      originalColumn: [],
       zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
     };
   }
@@ -149,70 +151,6 @@ class TableData extends React.Component {
 
   handleResize = () => {
     this.getScrollXY();
-  };
-
-  getColumnSearchProps = (dataIndex, name) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${name}`}
-          value={selectedKeys[0]}
-          onChange={e =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => this.handleColumnSearch(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleColumnSearch(selectedKeys, confirm)}
-          icon="search"
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          查询
-        </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          重置
-        </Button>
-      </div>
-    ),
-    filterIcon: filtered => (
-      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select());
-      }
-    },
-    render: text => text
-  });
-
-  handleColumnSearch = (selectedKeys, confirm) => {
-    confirm();
-    this.setState({ searchText: selectedKeys[0] });
-  };
-
-  handleReset = clearFilters => {
-    clearFilters();
-    this.setState({ searchText: '' });
   };
 
   getDataSource = () => {
@@ -376,7 +314,7 @@ class TableData extends React.Component {
       cparm5,
       cparm6,
       lngMtsID,
-      isFrontEndPagination
+      tableComponent
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -398,8 +336,8 @@ class TableData extends React.Component {
             key,
             cmswhere: mergedCmsWhere,
             cmscolumns,
-            pageindex: isFrontEndPagination ? 0 : page - 1,
-            pagesize: isFrontEndPagination ? 0 : pageSize,
+            pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
+            pagesize: tableComponent === 'ag-grid' ? 0 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -424,8 +362,8 @@ class TableData extends React.Component {
             key,
             cmswhere: mergedCmsWhere,
             cmscolumns,
-            pageindex: page - 1,
-            pagesize: pageSize,
+            pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
+            pagesize: tableComponent === 'ag-grid' ? 0 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -499,7 +437,7 @@ class TableData extends React.Component {
       cmscolumns,
       hasRowEdit
     );
-
+    this.setState({ originalColumn: res.cmscolumninfo });
     const state = {
       columns,
       dataSource,
@@ -1413,16 +1351,6 @@ class TableData extends React.Component {
     if (this.hasActionBar()) {
       newColumns = newColumns.concat([this.getActionBar()]);
     }
-    newColumns = newColumns.map(item => {
-      if (item.dataIndex === '操作') {
-        return item;
-      } else {
-        return {
-          ...item,
-          ...this.getColumnSearchProps(item.dataIndex, item.title)
-        };
-      }
-    });
     return newColumns;
   };
 
@@ -1713,7 +1641,9 @@ class TableData extends React.Component {
       importConfig,
       bordered,
       actionBarExtra,
-      headerExtra
+      actionBarExtraAg,
+      headerExtra,
+      rowSelectionAg
     } = this.props;
 
     const {
@@ -1726,11 +1656,80 @@ class TableData extends React.Component {
       editingKey,
       gridProps,
       isShowGrid,
-      zoomStatus
+      zoomStatus,
+      originalColumn
     } = this.state;
     const newColumns = this.getNewColumns(columns);
 
-    const { addText, enAddText, modifyText, enModifyText } = this.props;
+    const {
+      addText,
+      enAddText,
+      modifyText,
+      enModifyText,
+      tableComponent
+    } = this.props;
+    if (tableComponent === 'ag-grid') {
+      return (
+        <PwAggird
+          title={title}
+          originalColumn={originalColumn}
+          hasZoomInOut={hasZoomInOut}
+          zoomStatus={zoomStatus}
+          editingKey={editingKey}
+          components={components}
+          pagination={pagination}
+          dataSource={dataSource}
+          // columns={newColumns}
+          bordered
+          rowKey={'REC_ID'}
+          scroll={scrollXY}
+          hasAdd={hasAdd && this._hasAdd}
+          hasModify={hasModify && this._hasModify}
+          hasDelete={hasDelete && this._hasDelete}
+          onAdd={this.handleAdd}
+          onModify={this.handleModify}
+          onDelete={this.handleDelete}
+          onSearch={this.handleSearch}
+          onImport={this.handleImport}
+          onDownload={this.handleDownload}
+          onSearchChange={this.onSearchChange}
+          onChange={this.handleTableChange}
+          renderOtherBtns={this.renderBeBtns}
+          rowSelection={rowSelection}
+          onRow={this.handleOnRow}
+          onRefresh={this.handleRefresh}
+          size={size}
+          hasImport={importConfig && this._hasImport}
+          hasDownload={hasDownload && this._hasDownload}
+          hasRefresh={hasRefresh && this._hasRefresh}
+          onAdvSearch={this.handleAdvSearch}
+          onStatisticalAnalysis={this.handleStatisticalAnalysis}
+          hasAdvSearch={hasAdvSearch && this._hasAdvSearch}
+          hasSearch={hasSearch && this._hasSearch}
+          // hasZoomInOut={hasZoomInOut}
+          onZoomIn={this.handleZoomIn}
+          onZoomOut={this.handleZoomOut}
+          bordered={bordered}
+          addText={addText}
+          enAddText={enAddText}
+          modifyText={modifyText}
+          enModifyText={enModifyText}
+          actionBarExtra={actionBarExtra}
+          actionBarExtraAg={actionBarExtraAg}
+          actionBarExtraParams={{
+            dataSource,
+            selectedRowKeys:
+              (rowSelection && rowSelection.selectedRowKeys) || [],
+            data: this._dealedRecordFormData,
+            recordFormData: this._recordFormData
+          }}
+          headerExtra={headerExtra}
+          isShowGrid={isShowGrid}
+          gridProps={gridProps}
+          rowSelectionAg={rowSelectionAg}
+        />
+      );
+    }
     return (
       <PwTable
         title={title}

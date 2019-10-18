@@ -1,6 +1,6 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, message } from 'antd';
+import { Card, Row, Col, Select, message,Checkbox } from 'antd';
 import http from 'Util20/api';
 import debounce from 'lodash/debounce';
 
@@ -10,13 +10,20 @@ const { Option } = Select;
 class EmployeeInformation extends React.Component {
   state = {
     data: [],
-    fetching: false
+    data2:[],
+    fetching: false,
+    recoMentor:false,
+    semi:'',
+    semiId:''
   };
   constructor(props) {
     super(props);
     this.fetchUser = debounce(this.fetchUser, 800);
   }
-
+  // 是否自定义辅导员
+  toReco=(v)=>{
+    this.setState({recoMentor:v.target.checked})
+  }
   //根据工号搜索辅导员
   fetchUser = async value => {
     this.setState({ data: [], fetching: true });
@@ -41,8 +48,36 @@ class EmployeeInformation extends React.Component {
     }
   };
 
+  fectchSemi= async value => {
+    this.setState({ data2: [], fetching: true });
+    try {
+      const res = await http().getTable({
+        resid: '609599795438',
+        cmswhere: `C3_227192472953 = '${value}'`
+      });
+      console.log(res)
+      const data2 = res.data.map(user => ({
+        label: `${user.C3_227192484125}`,
+        key: user.C3_227192472953
+      }));
+
+      this.setState({
+        data2: data2
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    } finally {
+      this.setState({ fetching: false });
+    }
+  };
+
   handleChange = value => {
     this.props.setTutorship({ name: value.label, userMemberId: value.key });
+  };
+  handleChange2 = value => {
+    var semi={label:value.label,key:value.key}
+    this.setState({semi:semi})
   };
   render() {
     const { employeeInformation, roleName, editable } = this.props;
@@ -109,8 +144,12 @@ class EmployeeInformation extends React.Component {
               {employeeInformation.regStatus}
             </Col>
             <Col span={8}>
+
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
+
+                <div>
+                {(this.state.recoMentor==false)?(
                 <Select
                   style={{ width: 150 }}
                   placeholder="请输入辅导员工号"
@@ -125,10 +164,30 @@ class EmployeeInformation extends React.Component {
                   {data.map(d => (
                     <Option key={d.key}>{d.label}</Option>
                   ))}
-                </Select>
+                </Select>):''
+              }
+                <Checkbox value={this.state.recoMentor} style={{marginTop:'8px',marginBottom:'8px'}}onChange={v=>{this.toReco(v)}}>我要填写自定义推荐人<br/>I want to recommend another who will become my mentor.</Checkbox>
+                {(this.state.recoMentor==false)?'':(<Select
+                  style={{ width: 150 }}
+                  placeholder="请输入员工工号"
+                  showSearch
+                  filterOption={false}
+                  onSearch={this.fectchSemi}
+                  onChange={this.handleChange2}
+                  labelInValue
+                  value={this.state.semi}
+                  loading={fetching}
+                >
+                  {this.state.data2.map(d => (
+                    <Option key={d.key}>{d.label}</Option>
+                  ))}
+                </Select>)}
+                </div>
+
               ) : (
                 employeeInformation.instructor
               )}
+
             </Col>
           </Row>
         </Card>
