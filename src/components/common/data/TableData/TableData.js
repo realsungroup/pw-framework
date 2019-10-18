@@ -1153,6 +1153,20 @@ class TableData extends React.Component {
     }
   };
 
+  handlePasteEnd = async data => {
+    try {
+      await http().modifyRecords({
+        resid: this.props.resid,
+        data
+      });
+      return true;
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+      return false;
+    }
+  };
+
   handleOnRow = record => {
     return {
       onClick: () => {
@@ -1679,6 +1693,7 @@ class TableData extends React.Component {
           components={components}
           pagination={pagination}
           dataSource={dataSource}
+          onPasteEnd={this.handlePasteEnd}
           // columns={newColumns}
           bordered
           rowKey={'REC_ID'}
