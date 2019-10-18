@@ -1,6 +1,6 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, message } from 'antd';
+import { Card, Row, Col, Select, message,Checkbox } from 'antd';
 import http from 'Util20/api';
 import debounce from 'lodash/debounce';
 
@@ -10,7 +10,8 @@ const { Option } = Select;
 class EmployeeInformation extends React.Component {
   state = {
     data: [],
-    fetching: false
+    data2:[],
+    fetching: false,
   };
   constructor(props) {
     super(props);
@@ -41,16 +42,65 @@ class EmployeeInformation extends React.Component {
     }
   };
 
-  handleChange = value => {
-    this.props.setTutorship({ name: value.label, userMemberId: value.key });
+  fectchSemi= async value => {
+    this.setState({ data2: [], fetching: true });
+    try {
+      const res = await http().getTable({
+        resid: '609599795438',
+        cmswhere: `C3_227192472953 = '${value}'`
+      });
+      console.log(res)
+      const data2 = res.data.map(user => ({
+        label: `${user.C3_227192484125}`,
+        key: user.C3_305737857578
+      }));
+
+      this.setState({
+        data2: data2
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    } finally {
+      this.setState({ fetching: false });
+    }
   };
+
+  handleChange = value => {
+
+    this.props.setTutorship({ name: value.label, userMemberId: value.key });
+
+
+  };
+  handleChange2 = value => {
+
+    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key });
+
+  };
+
+  // 是否自定义辅导员
+  toReco=(v)=>{
+    if(v.target.checked==false){
+      this.props.setTutorship({ name: null, userMemberId:null},true);
+    }else{
+      this.props.setTutorshipSemi({ name: null, userMemberId: null},true);
+    }
+    this.props.isSemi(v.target.checked);
+  }
+
   render() {
+
     const { employeeInformation, roleName, editable } = this.props;
     let value = {
       label: employeeInformation.instructor,
       key: employeeInformation.instructorID
     };
+    let valueSemi = {
+      label: employeeInformation.instructorDirectorName,
+      key: employeeInformation.instructorDirectorID
+    };
     let { fetching, data } = this.state;
+    console.log(employeeInformation)
     return (
       <div id="employee-imformation" className="probation-form">
         <Card
@@ -109,8 +159,12 @@ class EmployeeInformation extends React.Component {
               {employeeInformation.regStatus}
             </Col>
             <Col span={8}>
+
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
+
+                <div>
+                {(employeeInformation.isSemi==false)?(
                 <Select
                   style={{ width: 150 }}
                   placeholder="请输入辅导员工号"
@@ -120,15 +174,37 @@ class EmployeeInformation extends React.Component {
                   onChange={this.handleChange}
                   labelInValue
                   value={value}
+                  key={0}
                   loading={fetching}
                 >
                   {data.map(d => (
                     <Option key={d.key}>{d.label}</Option>
                   ))}
-                </Select>
+                </Select>):null
+              }
+                <Checkbox value={employeeInformation.isSemi} style={{marginTop:'8px',marginBottom:'8px'}}onChange={v=>{this.toReco(v)}}>我要填写自定义推荐人<br/>I want to recommend another who will become my mentor.</Checkbox>
+                {(employeeInformation.isSemi==false)?null:(<Select
+                  style={{ width: 150 }}
+                  placeholder="请输入员工工号"
+                  showSearch
+                  filterOption={false}
+                  onSearch={this.fectchSemi}
+                  onChange={this.handleChange2}
+                  labelInValue
+                  key={1}
+                  value={valueSemi}
+                  loading={fetching}
+                >
+                  {this.state.data2.map(d => (
+                    <Option key={d.key}>{d.label}</Option>
+                  ))}
+                </Select>)}
+                </div>
+
               ) : (
                 employeeInformation.instructor
               )}
+
             </Col>
           </Row>
         </Card>

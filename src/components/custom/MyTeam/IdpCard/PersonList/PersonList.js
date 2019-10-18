@@ -24,7 +24,8 @@ class PersonList extends React.Component {
     persons: [],
     loading: false,
     isShowProgress: false,
-    taskList: []
+    taskList: [],
+    status:'',//整个财年计划的状态
   };
   constructor(props) {
     super(props);
@@ -84,7 +85,7 @@ class PersonList extends React.Component {
   onFinishedPlanProgress = () => {
     this.setState({
       isShowProgress: false,
-      visible: false 
+      visible: false
     });
     this.tableDataRef.handleRefresh();
   };
@@ -180,7 +181,8 @@ class PersonList extends React.Component {
     }
   };
   componentDidMount = async () => {
-    console.log('props', this.props.record);
+    console.log('status', this.props.record.status);
+    this.setState({status:this.props.record.status})
   };
   render() {
     const { visible, loading, isShowProgress, taskList } = this.state;
@@ -194,11 +196,12 @@ class PersonList extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           hasAdd={false}
-          hasRowView={false}
           hasModify={false}
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={false}
+          hasRowView={this.state.status=='已完成'?true:false}
+          hasRowDelete={false}
           actionBarFixed={true}
           hasAdvSearch={true}
           height="100%"
@@ -213,10 +216,13 @@ class PersonList extends React.Component {
           customRowBtns={[
             (record, btnSize) => {
               return (
+                this.state.status=='已完成'?'':
                 <Button
+                  style={{height: '24px',padding: '0 7px',fontSize: '14px'}}
                   onClick={() => {
                     this.props.onLookPerson(record);
                   }}
+                  style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
                 >
                   修改
                 </Button>

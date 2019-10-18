@@ -362,6 +362,23 @@ class QueryTable extends Component {
                 }}
               />
             </TabPane>
+            <TabPane tab="问卷试题详细" key="3">
+              <TableData
+                resid={608838682402}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                actionBarFixed={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                width={'98%'}
+                height={400}
+                subtractH={190}
+                cmswhere={`query_id='${this.state.sendListId}'`}
+                
+              />
+            </TabPane>
           </Tabs>
         </Modal>
       </div>
