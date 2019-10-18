@@ -85,7 +85,7 @@ class ProbationForms extends React.Component {
     addInternalCourseVisible: false,
     modifyInternalCourseVisible: false,
     modifyOnJobTrainingVisible: false,
-    modifyProbationObjectiveVisible: false
+    modifyProbationObjectiveVisible: false,
   };
   async componentDidMount() {
     this.setState({ loading: true });
@@ -127,85 +127,106 @@ class ProbationForms extends React.Component {
   };
   // 点击保存
   handleSubmit = async () => {
-    try {
-      let subdata = [];
-      this.setState({ loading: true });
-      let {
-        employeeInformation,
-        probationObjectives,
-        orientationTraining,
-        internalTraining,
-        onTheJobTraining,
-        mentorshipRecord
-      } = this.state;
-      let index = 1;
-      probationObjectives.forEach(item => {
-        subdata.push({
-          resid: resid2,
-          maindata: {
-            ...item,
-            _state: 'editoradd',
-            _id: index++
-          },
-          subData: item[resid9].map(i => {
-            return {
-              resid: resid9,
-              maindata: {
-                ...i,
-                _state: 'editoradd',
-                _id: index++
-              }
-            };
-          })
-        });
+    console.log(this.state.employeeInformation.isSemi)
+    if(this.state.employeeInformation.isSemi==false){
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorDirectorID: '',
+          instructorDirectorName: ''
+        }
       });
-      orientationTraining.forEach(item => {
-        subdata.push({
-          resid: resid3,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
-        });
+    }else{
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorID: '',
+          instructor: ''
+        }
       });
-      internalTraining.forEach(item => {
-        subdata.push({
-          resid: resid4,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
-        });
-      });
-      onTheJobTraining.forEach(item => {
-        subdata.push({
-          resid: resid5,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
-        });
-      });
-      mentorshipRecord.forEach(item => {
-        subdata.push({
-          resid: resid6,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
-        });
-      });
-      await http().saveRecordAndSubTables({
-        data: [
-          {
-            resid: resid1,
-            maindata: {
-              ...employeeInformation,
-              _state: 'modified',
-              _id: 1
-            },
-            subdata
-          }
-        ]
-      });
-      this.setState({ loading: false });
-      if (this.props.roleName !== '员工') {
-        this.props.setIsShowTable(true);
-      }
-      message.success('提交成功');
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-      this.setState({ loading: false });
     }
+    console.log(this.state.employeeInformation.instructorDirectorID,this.state.employeeInformation.instructorDirectorName)
+    console.log(this.state.employeeInformation.instructorID,this.state.employeeInformation.instructor)
+
+    // try {
+    //   let subdata = [];
+    //   this.setState({ loading: true });
+    //   let {
+    //     employeeInformation,
+    //     probationObjectives,
+    //     orientationTraining,
+    //     internalTraining,
+    //     onTheJobTraining,
+    //     mentorshipRecord
+    //   } = this.state;
+    //   let index = 1;
+    //   probationObjectives.forEach(item => {
+    //     subdata.push({
+    //       resid: resid2,
+    //       maindata: {
+    //         ...item,
+    //         _state: 'editoradd',
+    //         _id: index++
+    //       },
+    //       subData: item[resid9].map(i => {
+    //         return {
+    //           resid: resid9,
+    //           maindata: {
+    //             ...i,
+    //             _state: 'editoradd',
+    //             _id: index++
+    //           }
+    //         };
+    //       })
+    //     });
+    //   });
+    //   orientationTraining.forEach(item => {
+    //     subdata.push({
+    //       resid: resid3,
+    //       maindata: { ...item, _state: 'editoradd', _id: index++ }
+    //     });
+    //   });
+    //   internalTraining.forEach(item => {
+    //     subdata.push({
+    //       resid: resid4,
+    //       maindata: { ...item, _state: 'editoradd', _id: index++ }
+    //     });
+    //   });
+    //   onTheJobTraining.forEach(item => {
+    //     subdata.push({
+    //       resid: resid5,
+    //       maindata: { ...item, _state: 'editoradd', _id: index++ }
+    //     });
+    //   });
+    //   mentorshipRecord.forEach(item => {
+    //     subdata.push({
+    //       resid: resid6,
+    //       maindata: { ...item, _state: 'editoradd', _id: index++ }
+    //     });
+    //   });
+    //   await http().saveRecordAndSubTables({
+    //     data: [
+    //       {
+    //         resid: resid1,
+    //         maindata: {
+    //           ...employeeInformation,
+    //           _state: 'modified',
+    //           _id: 1
+    //         },
+    //         subdata
+    //       }
+    //     ]
+    //   });
+    //   this.setState({ loading: false });
+    //   if (this.props.roleName !== '员工') {
+    //     this.props.setIsShowTable(true);
+    //   }
+    //   message.success('提交成功');
+    // } catch (error) {
+    //   message.error(error.message);
+    //   console.log(error);
+    //   this.setState({ loading: false });
+    // }
   };
   getAuth = async () => {
     let { viewableTable } = this.state;
@@ -282,6 +303,15 @@ class ProbationForms extends React.Component {
             internal: SubResource[viewableTable.internalResid]
           }
         });
+        if(!data.instructorDirectorName){
+          this.setState({
+            employeeInformation: {
+              ...this.state.employeeInformation,
+              isSemi:false
+            }
+          });
+        }
+
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -309,7 +339,7 @@ class ProbationForms extends React.Component {
         resid: resid3,
         // cmswhere:`menberId ='${memberId}'`
       });
-      this.setState({ orientationTraining: res.data}) 
+      this.setState({ orientationTraining: res.data})
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -487,16 +517,39 @@ class ProbationForms extends React.Component {
   };
 
   //分配辅导员
-  setTutorship = ({ name, userMemberId }) => {
+  setTutorship = ({ name, userMemberId },bol) => {
+
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
         instructorID: userMemberId,
-        instructor: name
+        instructor: name,
+        instructorDirectorName:undefined,
+        instructorDirectorID:undefined
       }
     });
   };
 
+  setTutorshipSemi = ({ name, userMemberId },bol) => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        instructorDirectorID: userMemberId,
+        instructorDirectorName: name,
+        instructorID: undefined,
+        instructor: undefined,
+      }
+    });
+  };
+
+  isSemi=(v)=>{
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        isSemi:v
+      }
+    });
+  }
   //添加内训课程
   addInternalCourse = async () => {
     try {
@@ -754,6 +807,8 @@ class ProbationForms extends React.Component {
                 employeeInformation={employeeInformation}
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
+                setTutorshipSemi={this.setTutorshipSemi}
+                isSemi={this.isSemi}
                 roleName={roleName}
                 editable={editable}
               />
