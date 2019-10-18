@@ -29,6 +29,7 @@ class IDPAnalyze extends React.Component {
             baseURL: window.pwConfig[process.env.NODE_ENV].baseURL,
           }
         ]}
+        
       />
 
       </div>
