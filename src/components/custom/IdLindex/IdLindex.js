@@ -312,6 +312,7 @@ var hrCode='623876215000';
               key={613152706922}
               {...assementForm}
               hasAdd={false}
+              hasRowDelete= {true}
               hasRowModify={false}
               style ={{height:"100%"}}
               // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
@@ -336,9 +337,9 @@ var hrCode='623876215000';
                           this.setState({showAssessment:true, selectedRecord:record});
 
                         }}
-                        style={{marginTop:'8px'}}
+                        style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
                       >
-                        Modify
+                        修改
                       </Button>
 
                     </div>
@@ -378,9 +379,9 @@ var hrCode='623876215000';
                             // this.getFormData(record);
 
                           }}
-                          style={{marginTop:'8px'}}
+                          style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
                         >
-                          Modify
+                          修改
                         </Button>
 
                       </div>
