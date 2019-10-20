@@ -74,12 +74,19 @@ class EmployeeInformation extends React.Component {
   };
   handleChange2 = value => {
 
-    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key });
-
+    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key});
   };
+  ck=()=>{
+    if(this.props.employeeInformation.isSemi==true){
+      this.props.isSemi(false);
+    }else{
+      this.props.isSemi(true);
 
+    }
+  }
   // 是否自定义辅导员
   toReco=(v)=>{
+    console.log(v)
     if(v.target.checked==false){
       this.props.setTutorship({ name: null, userMemberId:null},true);
     }else{
@@ -97,10 +104,16 @@ class EmployeeInformation extends React.Component {
     };
     let valueSemi = {
       label: employeeInformation.instructorDirectorName,
-      key: employeeInformation.instructorDirectorID
+      key: employeeInformation.instructorDirectorId
     };
+    // if(employeeInformation.instructorDirectorId){
+    //   if(this.refs.semiStatus){
+    //       this.refs.semiStatus.defaultChecked=true;
+    //       // employeeInformation.isSemi=true
+    //       console.log(employeeInformation.isSemi)
+    //   }
+    // }
     let { fetching, data } = this.state;
-    console.log(employeeInformation)
     return (
       <div id="employee-imformation" className="probation-form">
         <Card
@@ -182,7 +195,8 @@ class EmployeeInformation extends React.Component {
                   ))}
                 </Select>):null
               }
-                <Checkbox value={employeeInformation.isSemi} style={{marginTop:'8px',marginBottom:'8px'}}onChange={v=>{this.toReco(v)}}>我要填写自定义推荐人<br/>I want to recommend another who will become my mentor.</Checkbox>
+                <div className="clearfix"></div>
+                <input defaultChecked={employeeInformation.isSemi} type="checkbox" ref="semiStatus" value={employeeInformation.isSemi} style={{marginTop:'8px',marginBottom:'8px',marginRight:'8px'}} onClick={this.ck} onChange={v=>{this.toReco(v)}}/><span>我没有找到想要的辅导员，我想申请其他人成为辅导员。<br/>I can't find the mentor ,ansd I want to recommend another who will become a mentor.</span>
                 {(employeeInformation.isSemi==false)?null:(<Select
                   style={{ width: 150 }}
                   placeholder="请输入员工工号"

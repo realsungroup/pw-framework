@@ -134,14 +134,324 @@ showConfirmMail = () => {
     onCancel() {},
   });
 }
-subConfirm = () => {
+// 无需复试直接通过
+endStream =()=>{
   confirm({
-    title: '确认提交表格吗?',
+    title: '确认此人不用复试吗?',
     onOk:() => {
-        this.subData();
+        this.warp();
     },
     onCancel() {},
   });
+}
+warp=async()=>{
+  try {
+    let res = await http().modifyRecords({
+      resid: 613152706922,
+      cmswhere: `REC_ID=${this.props.record.REC_ID}`,
+      data:[{
+         REC_ID:this.props.record.REC_ID,
+         C3_622921647557:'已完成',
+      }]
+    });
+
+    this.setState({loading:false});
+
+    Modal.success({
+      title: '提交成功',
+      content: '',
+      onOk() {
+        window.location.reload();
+      }
+    });
+
+
+  } catch (err) {
+    Modal.error({
+      title: '提示',
+      content: err.message
+    });
+    this.setState({loading:false});
+
+  }
+
+}
+subConfirm = () => {
+  // 验证
+  var bol=true;
+  if(!this.state.level){
+     bol=false;
+  }
+  if(!this.state.hiringManger){
+     bol=false;
+  }
+  if(!this.state.interviewer){
+     bol=false;
+  }
+  if(!this.state.graFrom){
+     bol=false;
+  }
+
+  if(!this.state.eduBack){
+     bol=false;
+  }
+  if(!this.state.workExp){
+     bol=false;
+  }
+  if(!this.state.lanSki){
+     bol=false;
+  }
+  if(!this.state.wkExp){
+     bol=false;
+  }
+  if(!this.state.vIT){
+     bol=false;
+  }
+  if(!this.state.wkExp){
+     bol=false;
+  }
+  if(!this.state.vLA){
+     bol=false;
+  }
+  if(!this.state.vCF){
+     bol=false;
+  }
+  if(!this.state.vDR){
+     bol=false;
+  }
+  if(!this.state.groupInter){
+     bol=false;
+  }
+  if(!this.state.p4r){
+     bol=false;
+  }
+  if(!this.state.vDR){
+     bol=false;
+  }
+  if(!this.state.GHB){
+     bol=false;
+  }
+  if(!this.state.date){
+     bol=false;
+  }
+
+  // 复试
+  if(this.state.round2=='Y'){
+    if(!this.state.SRI){
+       bol=false;
+    }
+    if(!this.state.date2){
+       bol=false;
+    }
+  }
+
+  if(this.state.chara=='T1/T2/T3/T4'){
+    if(this.state.vTS){
+      bol=false;
+    }
+    if(this.state.vEA){
+      bol=false;
+    }
+    if(this.state.vTE){
+      bol=false;
+    }
+    if(this.state.vAO){
+      bol=false;
+    }
+    if(this.state.vPS){
+      bol=false;
+    }
+    if(this.state.vSd){
+      bol=false;
+    }
+    if(this.state.vLF){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='T5'){
+    if(this.state.vTS2){
+      bol=false;
+    }
+    if(this.state.vTO){
+      bol=false;
+    }
+    if(this.state.vTD){
+      bol=false;
+    }
+    if(this.state.vTE2){
+      bol=false;
+    }
+    if(this.state.vCr){
+      bol=false;
+    }
+    if(this.state.vSA){
+      bol=false;
+    }
+    if(this.state.vPrA){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='T6'){
+    if(this.state.vTS3){
+      bol=false;
+    }
+    if(this.state.vTO2){
+      bol=false;
+    }
+    if(this.state.vTC){
+      bol=false;
+    }
+    if(this.state.vTE3){
+      bol=false;
+    }
+    if(this.state.vDwA){
+      bol=false;
+    }
+    if(this.state.vIM){
+      bol=false;
+    }
+    if(this.state.vStrA){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='S5/S6/Sr.Specialist'){
+    if(this.state.vTS4){
+      bol=false;
+    }
+    if(this.state.vAO2){
+      bol=false;
+    }
+    if(this.state.vPS2){
+      bol=false;
+    }
+    if(this.state.vSd2){
+      bol=false;
+    }
+    if(this.state.vLF2){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'){
+    if(this.state.vTS5){
+      bol=false;
+    }
+    if(this.state.vAO3){
+      bol=false;
+    }
+    if(this.state.vPS3){
+      bol=false;
+    }
+    if(this.state.vDO){
+      bol=false;
+    }
+    if(this.state.vCDR){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='S9/T5/ManagerII'){
+    if(this.state.vTS6){
+      bol=false;
+    }
+    if(this.state.vDevO){
+      bol=false;
+    }
+    if(this.state.vPlan){
+      bol=false;
+    }
+    if(this.state.vOrg){
+      bol=false;
+    }
+    if(this.state.vPriS){
+      bol=false;
+    }
+    if(this.state.vMMW){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='S10/T6/Sr.Manager'){
+    if(this.state.vTS7){
+      bol=false;
+    }
+    if(this.state.vBET){
+      bol=false;
+    }
+    if(this.state.vPM){
+      bol=false;
+    }
+    if(this.state.vMoOt){
+      bol=false;
+    }
+    if(this.state.vCM){
+      bol=false;
+    }
+    if(this.state.vDQ){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='Technician'){
+    if(this.state.vTS8){
+      bol=false;
+    }
+    if(this.state.vPreSk){
+      bol=false;
+    }
+    if(this.state.vProSol){
+      bol=false;
+    }
+    if(this.state.vPeRe){
+      bol=false;
+    }
+    if(this.state.vAcOr){
+      bol=false;
+    }
+  }
+
+  if(this.state.chara=='应届生'){
+    if(this.state.vTS9){
+      bol=false;
+    }
+    if(this.state.vcrea){
+      bol=false;
+    }
+    if(this.state.vPresentSkill){
+      bol=false;
+    }
+    if(this.state.vProblemSol){
+      bol=false;
+    }
+    if(this.state.vPeerRel){
+      bol=false;
+    }
+    if(this.state.vPersonaLe){
+      bol=false;
+    }
+  }
+
+  if(bol==true){
+    confirm({
+      title: '确认提交表格吗?',
+      onOk:() => {
+          this.subData();
+      },
+      onCancel() {},
+    });
+  }else{
+    confirm({
+      title: '您还有信息没有填完！',
+      onOk(){
+      },
+      onCancel() {},
+    });
+  }
+
+
 }
 handleChangeS=(value,obj)=>{
   console.log(this.state.postID)
@@ -542,14 +852,19 @@ var hrCode='623876215000';
         this.setState({
           showMail:false,
           showConBtn:false,
-          showSub:false
+          showSub:false,
+          showWarp:false
         })
       if(!this.state.C3_622921647557){
         this.setState({C3_622921647557:'未送邮（初试）'})
       }
       if((this.state.C3_622921647557=='未送邮（初试）')||(this.state.C3_622921647557=='未送邮（复试）')){
         if(this.state.userChara=='HR'){
-          this.setState({showMail:true})
+          this.setState({showMail:true});
+        }
+        if(this.state.C3_622921647557=='未送邮（复试）'){
+          this.setState({showWarp:true});
+
         }
       }
       if((this.state.C3_622921647557=='待确认（初试）')||(this.state.C3_622921647557=='待确认（复试）')){
@@ -599,7 +914,7 @@ var hrCode='623876215000';
         resid: 613149356409,
         cmswhere: `id=${id}`
       });
-      this.setState({position:res.data[0].appPosition,name:res.data[0].hName});
+      this.setState({position:res.data[0].appPosition,name:res.data[0].ChName});
       this.setState({loading:false});
       console.log('详细信息2',res.data)
 
@@ -615,6 +930,9 @@ var hrCode='623876215000';
   };
   componentDidUpdate(prevProps, prevState, snapshot){
     // if(prevProps.record.)
+    // if(this.props.data.length>0){
+    //   this.setState({name:this.props.data[0].ChName,position:this.props.data[0].appPosition})
+    // }
     if(this.props.record.REC_ID !== prevProps.record.REC_ID ){
       this.getInfo(613152706922,this.props.record.REC_ID,this.props.record.ID);
 
@@ -868,7 +1186,7 @@ var hrCode='623876215000';
       <Spin spinning={this.state.loading}>
         <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} >
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
-            T1 T2 T3 T4
+            T1
           </rect>
           <rect className={this.state.chara=='T5'?'current':''} onClick={e => {this.changeChara('T5');}}>
             T5
@@ -877,30 +1195,30 @@ var hrCode='623876215000';
             T6
           </rect >
           <rect className={this.state.chara=='S5/S6/Sr.Specialist'?'current':''} onClick={e => {this.changeChara('S5/S6/Sr.Specialist');}}>
-            S5 S6 Sr. Specialist
+            S5
           </rect>
           <rect className={this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'?'current':''} onClick={e => {this.changeChara('S6/Supervisor/S7/S8/T4/ManagerI');}}>
-            S6 Supervisor S7 S8 T4 ManagerI
+            S6
           </rect>
           <rect className={this.state.chara=='S9/T5/ManagerII'?'current':''} onClick={e => {this.changeChara('S9/T5/ManagerII');}}>
-            S9 T5 Manager II
+            S9
           </rect>
           <rect className={this.state.chara=='S10/T6/Sr.Manager'?'current':''} onClick={e => {this.changeChara('S10/T6/Sr.Manager');}}>
-            S10 T6 Sr.Manager
+            S10
           </rect>
           <rect className={this.state.chara=='Technician'?'current':''} onClick={e => {this.changeChara('Technician');}}>
             Technician
           </rect>
           <rect className={this.state.chara=='应届生'?'current':''} onClick={e => {this.changeChara('应届生');}}>
-            应届生
+            graduate
           </rect>
         </div>
         <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden'}>
           <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}}>
-            不显示复试内容
+            Hide Retest
           </rect>
           <rect className={this.state.round2=='Y'?'current':''} onClick={e => {this.changeRound('Y');}}>
-            显示复试内容
+            Show Retest
           </rect>
         </div>
         <div className={this.state.showMail?'chooseClass choosePeople':'chooseClass choosePeople hidden'}>
@@ -929,6 +1247,7 @@ var hrCode='623876215000';
           <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>确认</Button>
           <Button onClick={this.onPrinting}>打印</Button>
           <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>退回表格</Button>
+          <Button type='danger' className={this.state.showWarp==true?'':'hidden'} onClick={this.endStream}>无需复试直接录用</Button>
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
 
@@ -949,21 +1268,21 @@ var hrCode='623876215000';
                 <span>Position</span>
               </li>
               <li>
-                <b style={{width:'40px'}}>级别</b>
+                <b style={{width:'40px'}} className={this.state.level?'':'warning'}>级别</b>
                 <input type='text'className='fillText' style={{width:'136px'}}value={this.state.level} onChange={v=>{this.handlechange("level",v)}}/>
 
-                <span>Name of Interviewee</span>
+                <span className={this.state.level?'':'warning'}>Name of Interviewee</span>
               </li>
               <li>
-              <b style={{width:'88px'}}>岗位招聘经理</b>
+              <b style={{width:'88px'}} className={this.state.hiringManger?'':'warning'}>岗位招聘经理</b>
               <input type='text'className='fillText' style={{width:'104px'}}value={this.state.hiringManger} onChange={v=>{this.handlechange("hiringManger",v)}}/>
-              <span>Hiring Manger</span>
+              <span className={this.state.hiringManger?'':'warning'}>Hiring Manger</span>
 
               </li>
             </ul>
             <rect>
               <cell>
-                <b>面试官/Intervieweer</b>
+                <b className={this.state.interviewer?'':'warning'}>面试官/Intervieweer</b>
               </cell>
               <cell style={{padding:0}}>
                 <textarea style={{paddingTop:'8px',paddingLeft:'8px'}} value={this.state.interviewer} onChange={v=>{this.handlechange("interviewer",v)}}></textarea>
@@ -971,7 +1290,7 @@ var hrCode='623876215000';
             </rect>
             <rect>
               <cell className='byline'>
-                <b>教育背景/<br/>Education Background</b>
+                <b className={this.state.eduBack&&this.state.graFrom?'':'warning'}>教育背景/<br/>Education Background</b>
               </cell>
               <cell>
                 <input type='radio' value='bachelor' name='eb' checked={this.state.eduBack=='bachelor'?'checked':''} onChange={v=>{this.handlechange("eduBack",v,'bachelor')}} id='bachelor'/><label for='bachelor'>Bachelor 本科</label>
@@ -986,7 +1305,7 @@ var hrCode='623876215000';
             </rect>
             <rect>
               <cell className='byline'>
-                <b>工作经验/<br/>Work Experience</b>
+                <b className={this.state.workExp&&this.state.wkExp?'':'warning'}>工作经验/<br/>Work Experience</b>
               </cell>
               <cell>
                 <input type='number'min='0'className='fillText' value={this.state.workExp} onChange={v=>{this.handlechange("workExp",v)}}/><b>Years 年</b>
@@ -1002,7 +1321,7 @@ var hrCode='623876215000';
             </rect>
             <rect>
               <cell>
-                <b>英语技能/<br/>Language Skills</b>
+                <b className={this.state.lanSki?'':'warning'}>英语技能/<br/>Language Skills</b>
               </cell>
               <cell className='uniline'>
                 <input type='radio' name='ls' id='basic' value='basic' checked={this.state.lanSki=='basic'?'checked':''} onChange={v=>{this.handlechange("lanSki",v,'basic')}}/><label for='basic'>Basic</label>
@@ -1027,14 +1346,14 @@ var hrCode='623876215000';
         <div className={this.state.chara=='T1/T2/T3/T4'?'':'hidden'} ref='T1'>
             <rect className='alter1'>
               <cell>
-                <b>
+                <b >
                   技术胜任力<br/>Technical Competency
                 </b>
               </cell>
               <cell>
-                <b>专业技术/Technical Skills</b>
-                <b>执行力/Executive Ability</b>
-                <b>技术交流/Technical Exchange</b>
+                <b className={this.state.vTS?'':'warning'}>专业技术/Technical Skills</b>
+                <b className={this.state.vEA?'':'warning'}>执行力/Executive Ability</b>
+                <b className={this.state.vTE?'':'warning'}>技术交流/Technical Exchange</b>
               </cell>
               <cell>
                 <b>
@@ -1079,10 +1398,10 @@ var hrCode='623876215000';
                 </b>
               </cell>
               <cell>
-                <b>以行动为导向/Action Oriented</b>
-                <b>解决问题/Problem Solving</b>
-                <b>自我发展/Self-development</b>
-                <b>及时学习/Learning on the Fly</b>
+                <b className={this.state.vAO?'':'warning'}>以行动为导向/Action Oriented</b>
+                <b className={this.state.vPS?'':'warning'}>解决问题/Problem Solving</b>
+                <b className={this.state.vSd?'':'warning'}>自我发展/Self-development</b>
+                <b className={this.state.vLF?'':'warning'}>及时学习/Learning on the Fly</b>
               </cell>
               <cell>
                 <b>
@@ -1141,10 +1460,10 @@ var hrCode='623876215000';
                 </b>
               </cell>
               <cell>
-                <b>专业技术/Technical Skills</b>
-                <b>技术全局观/Technical Outlook</b>
-                <b>技术分解/Technical Decomposition</b>
-                <b>技术交流/Technical Exchange</b>
+                <b className={this.state.vTS2?'':'warning'}>专业技术/Technical Skills</b>
+                <b className={this.state.vTO?'':'warning'}>技术全局观/Technical Outlook</b>
+                <b className={this.state.vTD?'':'warning'}>技术分解/Technical Decomposition</b>
+                <b className={this.state.vTE2?'':'warning'}>技术交流/Technical Exchange</b>
               </cell>
               <cell>
                 <b>
@@ -1200,9 +1519,9 @@ var hrCode='623876215000';
                 </b>
               </cell>
               <cell>
-                <b>创造力/Creativity</b>
-                <b>独当一面/Standing Alone</b>
-                <b>确定轻重缓急/Priority Setting</b>
+                <b className={this.state.vCr?'':'warning'}>创造力/Creativity</b>
+                <b className={this.state.vSA?'':'warning'}>独当一面/Standing Alone</b>
+                <b className={this.state.vPrA?'':'warning'}>确定轻重缓急/Priority Setting</b>
               </cell>
               <cell>
                 <b>
@@ -1249,10 +1568,10 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
-                  <b>技术全局观/Technical Outlook</b>
-                  <b>技术构建/Technical Construction</b>
-                  <b>技术交流/Technical Exchange</b>
+                  <b className={this.state.vTS3?'':'warning'}>专业技术/Technical Skills</b>
+                  <b className={this.state.vTO2?'':'warning'}>技术全局观/Technical Outlook</b>
+                  <b className={this.state.vTC?'':'warning'}>技术构建/Technical Construction</b>
+                  <b className={this.state.vTE3?'':'warning'}>技术交流/Technical Exchange</b>
                 </cell>
                 <cell>
                   <b>
@@ -1308,9 +1627,9 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>应对不明朗局面/Dealing with Ambiguity</b>
-                  <b>创新管理/Innovation Management</b>
-                  <b>策略的敏锐性/Strategic Agility</b>
+                  <b className={this.state.vDwA?'':'warning'}>应对不明朗局面/Dealing with Ambiguity</b>
+                  <b className={this.state.vIM?'':'warning'}>创新管理/Innovation Management</b>
+                  <b className={this.state.vStrA?'':'warning'}>策略的敏锐性/Strategic Agility</b>
                 </cell>
                 <cell>
                   <b>
@@ -1358,7 +1677,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS4?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1382,10 +1701,10 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>以行动为导向/Action Oriented</b>
-                  <b>解决问题/Problem Solving</b>
-                  <b>自我发展/Self-development</b>
-                  <b>及时学习/Learning on the Fly</b>
+                  <b className={this.state.vAO2?'':'warning'}>以行动为导向/Action Oriented</b>
+                  <b className={this.state.vPS2?'':'warning'}>解决问题/Problem Solving</b>
+                  <b className={this.state.vSd2?'':'warning'}>自我发展/Self-development</b>
+                  <b className={this.state.vLF2?'':'warning'}>及时学习/Learning on the Fly</b>
                 </cell>
                 <cell>
                   <b>
@@ -1444,7 +1763,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS5?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1468,10 +1787,10 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>以行动为导向/Action Oriented</b>
-                  <b>解决问题/Problem Solving</b>
-                  <b>指导/Direct Others</b>
-                  <b>勇于面对下属/Confront Direct Reports</b>
+                  <b className={this.state.vAO3?'':'warning'}>以行动为导向/Action Oriented</b>
+                  <b className={this.state.vPS3?'':'warning'}>解决问题/Problem Solving</b>
+                  <b className={this.state.vDO?'':'warning'}>指导/Direct Others</b>
+                  <b className={this.state.vCDR?'':'warning'}>勇于面对下属/Confront Direct Reports</b>
                 </cell>
                 <cell>
                   <b>
@@ -1531,7 +1850,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS6?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1555,11 +1874,11 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>培养下属和其他人员/Develop Others</b>
-                  <b>制定计划/Planning</b>
-                  <b>组织能力/Organization</b>
-                  <b>确定轻重缓急/Priority Setting</b>
-                  <b>管理与衡量工作/Manager and Measure Work</b>
+                  <b className={this.state.vDevO?'':'warning'}>培养下属和其他人员/Develop Others</b>
+                  <b className={this.state.vPlan?'':'warning'}>制定计划/Planning</b>
+                  <b className={this.state.vOrg?'':'warning'}>组织能力/Organization</b>
+                  <b className={this.state.vPriS?'':'warning'}>确定轻重缓急/Priority Setting</b>
+                  <b className={this.state.vMMW?'':'warning'}>管理与衡量工作/Manager and Measure Work</b>
                 </cell>
                 <cell>
                 <b>
@@ -1629,7 +1948,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS7?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1653,11 +1972,11 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>组建高效团队/Build Effective Teams</b>
-                  <b>流程管理/Process Management</b>
-                  <b>激励他人/Mottivating Others</b>
-                  <b>冲突管理/Conflict Management</b>
-                  <b>决策质量/Decision Quality</b>
+                  <b className={this.state.vBET?'':'warning'}>组建高效团队/Build Effective Teams</b>
+                  <b className={this.state.vPM?'':'warning'}>流程管理/Process Management</b>
+                  <b className={this.state.vMoOt?'':'warning'}>激励他人/Mottivating Others</b>
+                  <b className={this.state.vCM?'':'warning'}>冲突管理/Conflict Management</b>
+                  <b className={this.state.vDQ?'':'warning'}>决策质量/Decision Quality</b>
                 </cell>
                 <cell>
                 <b>
@@ -1727,7 +2046,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS8?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1751,10 +2070,10 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>表达技能/Presentation Skills</b>
-                  <b>解决问题/Problem Solving</b>
-                  <b>同事关系/Peer Relationship</b>
-                  <b>以行动为导向/Action Oriented</b>
+                  <b className={this.state.vPreSk?'':'warning'}>表达技能/Presentation Skills</b>
+                  <b className={this.state.vProSol?'':'warning'}>解决问题/Problem Solving</b>
+                  <b className={this.state.vPeRe?'':'warning'}>同事关系/Peer Relationship</b>
+                  <b className={this.state.vAcOr?'':'warning'}>以行动为导向/Action Oriented</b>
                 </cell>
                 <cell>
                 <b>
@@ -1813,7 +2132,7 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>专业技术/Technical Skills</b>
+                  <b className={this.state.vTS9?'':'warning'}>专业技术/Technical Skills</b>
                 </cell>
                 <cell>
                   <b>
@@ -1837,11 +2156,11 @@ var hrCode='623876215000';
                   </b>
                 </cell>
                 <cell>
-                  <b>创造力/Creativity</b>
-                  <b>沟通能力/Presentation Skills</b>
-                  <b>分析解决问题/Problem Solving</b>
-                  <b>团队合作/Peer Relationship</b>
-                  <b>学习能力/Personal Learning</b>
+                  <b className={this.state.vcrea?'':'warning'}>创造力/Creativity</b>
+                  <b className={this.state.vPresentSkill?'':'warning'}>沟通能力/Presentation Skills</b>
+                  <b className={this.state.vProblemSol?'':'warning'}>分析解决问题/Problem Solving</b>
+                  <b className={this.state.vPeerRel?'':'warning'}>团队合作/Peer Relationship</b>
+                  <b className={this.state.vPersonaLe?'':'warning'}>学习能力/Personal Learning</b>
                 </cell>
                 <cell>
                 <b>
@@ -1910,10 +2229,10 @@ var hrCode='623876215000';
                 </b>
               </cell>
               <cell>
-                <b>诚信为本/Integrity and Trust</b>
-                <b>善于学习/Learning Agility</b>
-                <b>客户导向/Customer Focus</b>
-                <b>追求成效/Drive for Results</b>
+                <b className={this.state.vIT?'':'warning'}>诚信为本/Integrity and Trust</b>
+                <b className={this.state.vLA?'':'warning'} >善于学习/Learning Agility</b>
+                <b className={this.state.vCF?'':'warning'}>客户导向/Customer Focus</b>
+                <b className={this.state.vDR?'':'warning'}>追求成效/Drive for Results</b>
               </cell>
               <cell>
                 <b>
@@ -1969,7 +2288,7 @@ var hrCode='623876215000';
               </rect>
               <rect>
                 <cell className='alter5'>
-                  <b>
+                  <b className={this.state.groupInter?'':'warning'}>
                     小组面试评估<br/>Group Interview Comments
                   </b>
                 </cell>
@@ -1980,8 +2299,8 @@ var hrCode='623876215000';
               </rect>
               <rect>
                 <cell>
-                  <b>
-                    建议复试项<br/>Propose foe Retrial
+                  <b className={this.state.p4r?'':'warning'}>
+                    建议复试项<br/>Propose for Retrial
                   </b>
                 </cell>
                 <cell>
@@ -1991,7 +2310,7 @@ var hrCode='623876215000';
               </rect>
               <rect style={{borderBottom:'1px solid #000'}}>
                 <cell className='alter3'>
-                  <b>小组面试结论<br/>Group Hiring Decision</b>
+                  <b className={this.state.GHB?'':'warning'}>小组面试结论<br/>Group Hiring Decision</b>
                 </cell>
                 <cell>
                 <input type='radio' name='GHB' id='hire' value='hire' checked={this.state.GHB=='hire'?'checked':''} onChange={v=>{this.handlechange("GHB",v,'hire')}}/><label for='hire'>Hire 聘用</label>
@@ -2003,7 +2322,7 @@ var hrCode='623876215000';
                 <br/>
                 <b>签名/Signature:</b>
                 <input type='text'className='fillText alterFill'/>
-                <b>日期/Date:</b>
+                <b className={this.state.date?'':'warning'}>日期/Date:</b>
                 <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date} onChange={v=>{this.handlechange("date",v)}}/>
                 </cell>
               </rect>
@@ -2013,18 +2332,18 @@ var hrCode='623876215000';
                 </rect>
                 <rect>
                   <cell className='alter4'>
-                    <b>复试评语<br/>Second Round Interview</b>
+                    <b >复试评语<br/>Second Round Interview</b>
                   </cell>
                   <cell>
                     <textarea value={this.state.secRound} onChange={v=>{this.handlechange("secRound",v)}}></textarea>
-                    <b>Hiring Decision：</b>
+                    <b className={this.state.SRI?'':'warning'}>Hiring Decision：</b>
                     <input type='radio' name='SRI' id='hire2' value='hire2' checked={this.state.SRI=='hire2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'hire2')}}/><label for='hire2'>Hire 聘用</label>
                     <input type='radio' name='SRI' id='reject2' value='reject2' checked={this.state.SRI=='reject2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'reject2')}}/><label for='reject2'>Reject 淘汰</label>
                     <input type='radio' name='SRI' id='backup2' value='backup2' checked={this.state.SRI=='backup2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'backup2')}}/><label for='backup2'>Backup 保留</label>
                     <br/>
                     <b style={{marginRight:'24px'}}>面试官/Interviewer:</b><input type='text'className='fillText' style={{width:'136px'}}value={this.state.interviewer2} onChange={v=>{this.handlechange("interviewer2",v)}}/>
 
-                    <b>日期/Date:</b>
+                    <b className={this.state.date2?'':'warning'}>日期/Date:</b>
                     <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date2} onChange={v=>{this.handlechange("date2",v)}}/>
 
                   </cell>
