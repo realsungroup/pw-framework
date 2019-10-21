@@ -46,6 +46,8 @@ const authResid = '619703562233';
 
 class ProbationForms extends React.Component {
   state = {
+    flagHitBack:false,
+    flagAlreadyHit:0,
     employeeInformation: {}, //个人信息
     probationObjectives: [], //工作目标
     orientationTraining: [], //入职培训
@@ -85,7 +87,7 @@ class ProbationForms extends React.Component {
     addInternalCourseVisible: false,
     modifyInternalCourseVisible: false,
     modifyOnJobTrainingVisible: false,
-    modifyProbationObjectiveVisible: false
+    modifyProbationObjectiveVisible: false,
   };
   async componentDidMount() {
     this.setState({ loading: true });
@@ -125,9 +127,95 @@ class ProbationForms extends React.Component {
       this.setState({ loading: false });
     }
   };
-  // 点击保存
-  handleSubmit = async () => {
+
+  // 同意辅导员申请
+    agreeApply=async()=>{
+      this.setState({ loading: true });
+      try {
+        let res = await http().modifyRecords({
+          resid: resid1,
+          data:[{
+            REC_ID: this.state.employeeInformation.REC_ID,
+            instructorIsPass:'Y'
+
+          }]
+        });
+        this.setState({ loading: false ,flagAlreadyHit:1});
+        var memID=this.state.employeeInformation.instructorDirectorId;
+        var dept;
+        var userID;
+        var userMemberId;
+        var toAdd;
+        var name;
+        let res2 = await http().getTable({
+          resid:'609599795438',
+          cmswhere: `C3_305737857578 = '${memID}'`
+        });
+        dept=res2.data[0].C3_422840479020||res2.data[0].C3_422840472843||res2.data[0].C3_422840463535||res2.data[0].C3_422840460773;
+        userID=res2.data[0].C3_227192472953;
+        userMemberId=res2.data[0].C3_305737857578;
+        name=res2.data[0].C3_227192484125;
+        toAdd=[{
+          dept:dept,
+          userID:userID,
+          userMemberId:userMemberId,
+          name:name,
+        }]
+
+        let res3 = await http().getTable({
+          resid:'619281130628',
+          cmswhere:`userMemberId = '${memID}'`
+        })
+        if(res3.data.length==0){
+          let res4 = await http().addRecords({
+            resid:'619281130628',
+            data:toAdd
+          })
+        }
+
+        // 辅导员表ID619281130628
+
+        // 辅导员工号C3_227192472953
+
+        // 辅导员人员编号C3_305737857578
+
+        // 辅导员部门C3_422840479020
+
+        //辅导员姓名C3_227192484125
+        message.success('成功同意辅导员');
+
+      } catch (error) {
+        this.setState({ loading: false });
+        message.error(error.message);
+        console.log(error);
+
+      }
+    }
+  // 不同意辅导员申请
+  disagreeApply=async()=>{
+    this.setState({ loading: true });
     try {
+      let res = await http().modifyRecords({
+        resid: resid1,
+        data:[{REC_ID: this.state.employeeInformation.REC_ID,instructorIsPass:'N'}]
+      });
+      this.setState({ loading: false ,flagAlreadyHit:2});
+      message.success('成功驳回辅导员');
+
+    } catch (error) {
+      this.setState({ loading: false });
+      message.error(error.message);
+      console.log(error);
+
+    }
+  }
+  // 点击保存
+  handleSubmit = async (chara) => {
+    // console.log(this.state.employeeInformation.instructorDirectorId,this.state.employeeInformation.instructorDirectorName)
+    // console.log(this.state.employeeInformation.instructorID,this.state.employeeInformation.instructor)
+
+    try {
+
       let subdata = [];
       this.setState({ loading: true });
       let {
@@ -200,6 +288,20 @@ class ProbationForms extends React.Component {
       if (this.props.roleName !== '员工') {
         this.props.setIsShowTable(true);
       }
+      await http().modifyRecords({
+        resid: resid1,
+        data:[{REC_ID: this.state.employeeInformation.REC_ID,instructorIsPass:''}]
+      });
+      if(chara=="主管"){
+        this.setState({
+          employeeInformation: {
+            ...this.state.employeeInformation,
+            instructorIsPass:'0',
+          },
+          flagAlreadyHit:0
+
+        });
+      }
       message.success('提交成功');
     } catch (error) {
       message.error(error.message);
@@ -267,6 +369,8 @@ class ProbationForms extends React.Component {
       });
       const SubResource = res.SubResource;
       const data = res.data[0];
+      console.log(res)
+
       data &&
         this.setState({
           employeeInformation: data,
@@ -282,6 +386,31 @@ class ProbationForms extends React.Component {
             internal: SubResource[viewableTable.internalResid]
           }
         });
+        if(data.instructorDirectorName){
+          this.setState({
+            employeeInformation: {
+              ...this.state.employeeInformation,
+              isSemi:true,
+            },
+            flagHitBack:true
+          });
+        }else{
+          this.setState({
+            employeeInformation: {
+              ...this.state.employeeInformation,
+              isSemi:false,
+            }
+          });
+        }
+        if(data.instructorIsPass=='Y'){
+          this.setState({flagAlreadyHit:1});
+        }else if(data.instructorIsPass=='N'){
+          this.setState({flagAlreadyHit:2});
+        }else{
+          this.setState({flagAlreadyHit:0});
+
+        }
+
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -309,7 +438,7 @@ class ProbationForms extends React.Component {
         resid: resid3,
         // cmswhere:`menberId ='${memberId}'`
       });
-      this.setState({ orientationTraining: res.data}) 
+      this.setState({ orientationTraining: res.data})
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -487,16 +616,39 @@ class ProbationForms extends React.Component {
   };
 
   //分配辅导员
-  setTutorship = ({ name, userMemberId }) => {
+  setTutorship = ({ name, userMemberId },bol) => {
+
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
         instructorID: userMemberId,
-        instructor: name
+        instructor: name,
+        instructorDirectorName:undefined,
+        instructorDirectorId:undefined
       }
     });
   };
 
+  setTutorshipSemi = ({ name, userMemberId },bol) => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        instructorDirectorId: userMemberId,
+        instructorDirectorName: name,
+        instructorID: undefined,
+        instructor: undefined,
+      }
+    });
+  };
+
+  isSemi=(v)=>{
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        isSemi:v
+      }
+    });
+  }
   //添加内训课程
   addInternalCourse = async () => {
     try {
@@ -754,6 +906,8 @@ class ProbationForms extends React.Component {
                 employeeInformation={employeeInformation}
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
+                setTutorshipSemi={this.setTutorshipSemi}
+                isSemi={this.isSemi}
                 roleName={roleName}
                 editable={editable}
               />
@@ -837,13 +991,20 @@ class ProbationForms extends React.Component {
               <footer className="probation-forms_footer">
                 {(roleName === 'HR' ||
                   employeeInformation.regStatus === '待转正') && (
+                  <div>
                   <Button
                     type="primary"
                     style={{ marginRight: 16 }}
-                    onClick={this.handleSubmit}
+                    onClick={()=>{this.handleSubmit(roleName)}}
                   >
                     保存
                   </Button>
+                  {(roleName==='HR')&&(this.state.flagHitBack==true)&&(this.state.flagAlreadyHit==0)?(<span><Button style={{marginRight:'8px'}} onClick={this.agreeApply}>同意自定义辅导员</Button><Button onClick={this.disagreeApply} type='danger'>
+                    驳回自定义辅导员
+                  </Button>
+                  </span>):''}
+                  {<span style={{color:'red'}}>{this.state.flagAlreadyHit==2?'该记录的自定义辅导员申请已经驳回':''}</span>}
+                  </div>
                 )}
                 {roleName === '员工' &&
                   employeeInformation.regStatus === '待转正' && (

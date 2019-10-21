@@ -152,7 +152,7 @@ var hrCode='623876215000';
     try {
       res = await http().addRecords({
         resid: resid,
-        data:[{ID:id,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
+        data:[{ID:id,candidateName:this.state.curName,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
       });
       openNotification();
       this.tableDataRef.handleRefresh();
@@ -312,7 +312,7 @@ var hrCode='623876215000';
               key={613152706922}
               {...assementForm}
               hasAdd={false}
-              hasRowDelete= {true}
+              hasRowDelete= {this.state.userChara=='HR'?true:false}
               hasRowModify={false}
               style ={{height:"100%"}}
               // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}

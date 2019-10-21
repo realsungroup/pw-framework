@@ -219,23 +219,38 @@
     }
   }
 }
+.chooseClass:hover{
+  rect{
+    display: block;
+    margin-bottom:8px;
+
+  }
+}
 .chooseClass{
-  width:160px;
-  box-shadow:0 0 8px rgba(0,0,0,0.2);
-  overflow:hidden;
   background-color: #fff;
   position:fixed;
   top:72px;
-  left:0;
+  left:8px;
   .current{
     background-color: #1890FF;
     color:#fff;
-  }
-  rect{
+    box-shadow:0 0 8px #1890FF;
     display: block;
-    float:left;
-    width:160px;
+  }
+
+  rect{
+    display: none;
+    width:56px;
+    height:56px;
     padding:8px;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    box-shadow:0 0 8px rgba(0,0,0,0.2);
+    transition: .3s;
+
+    border-radius:50%;
+    text-align: center;
+    line-height:40px;
     cursor: pointer;
     text-align: center;
     -webkit-user-select:none;
@@ -243,14 +258,31 @@
     -ms-user-select:none;
     user-select:none;
   }
+  rect:hover{
+    background-color: #1890FF;
+    color:#fff;
+    opacity: 0.8;
+    box-shadow:0 0 8px #1890FF;
+    width:auto;
+    border-radius: 0;
+  }
 }
 .chooseRound{
+  left:72px;
+  top:72px;
+  rect{
+    text-overflow:ellipsis;
 
-  top:458px;
+  }
 }
 .choosePeople{
   left:auto;
   right:0;
+  width:152px;
+  box-shadow:0 0 8px rgba(0,0,0,0.2);
+  rect{
+    display: block;
+  }
 }
 // .ant-select-selection__rendered{
 //   width:104px;
@@ -276,4 +308,7 @@
 }
 .choosePeople{
   background: #fff;
+}
+.warning{
+  color:#f5222d!important;
 }

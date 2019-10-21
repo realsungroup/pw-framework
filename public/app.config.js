@@ -17,7 +17,7 @@ window.pwConfig = {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
 
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:1001/' //综合查询
     },
 
     // 个人中心配置

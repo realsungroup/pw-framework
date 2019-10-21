@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Input, Pagination } from 'antd';
+import { Table, Button, Input, Pagination, message } from 'antd';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -47,7 +47,8 @@ class PwAggrid extends React.Component {
         checkboxSelection: isFirstColumn,
         headerCheckboxSelection: isFirstColumn
       },
-      columnDefs: []
+      columnDefs: [],
+      hasPasteData: false
     };
   }
 
@@ -146,6 +147,37 @@ class PwAggrid extends React.Component {
       return aggridColumn;
     });
   });
+
+  _modifiedDataByPaste = new Map();
+
+  onCellValueChanged = params => {
+    const { data, newValue, rowIndex, colDef } = params;
+    const oldObj = this._modifiedDataByPaste.get(rowIndex);
+    this._modifiedDataByPaste.set(rowIndex, {
+      ...oldObj,
+      REC_ID: data.REC_ID,
+      [colDef.field]: newValue
+    });
+  };
+  onPasteStart = params => {};
+
+  onPasteEnd = params => {
+    this.setState({ hasPasteData: true });
+  };
+
+  onSavePasteButtonClick = async () => {
+    const data = Array.from(this._modifiedDataByPaste.values());
+    this.setState({ hasPasteData: false });
+    return console.log(data);
+    let res = await this.props.onPasteEnd(data);
+    if (res) {
+      message.success('保存成功');
+      this.setState({ hasPasteData: false });
+    } else {
+      message.success('保存失败');
+    }
+  };
+
   render() {
     const {
       size,
@@ -181,7 +213,7 @@ class PwAggrid extends React.Component {
       ...restProps
     } = this.props;
 
-    let { columnDefs, defaultColDef } = this.state;
+    let { columnDefs, defaultColDef, hasPasteData } = this.state;
 
     const hasActionBar =
       hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
@@ -196,16 +228,16 @@ class PwAggrid extends React.Component {
     columnDefs = this.getcolumnDefs(columnDefs, this.props.originalColumn);
 
     return (
-      <div className="pw-table">
+      <div className="pw-ag-grid">
         {hasHeader && (
-          <div className="pw-table__header">
+          <div className="pw-ag-grid__header">
             <div
-              className={`pw-table__header-title pw-table__header-title--${size}`}
+              className={`pw-ag-grid__header-title pw-ag-grid__header-title--${size}`}
             >
               {title}
             </div>
             {hasIconBtns && (
-              <div className="pw-table__header-icon-wrap">
+              <div className="pw-ag-grid__header-icon-wrap">
                 <IconBtns
                   hasDownload={hasDownload}
                   hasImport={hasImport}
@@ -224,7 +256,7 @@ class PwAggrid extends React.Component {
                   isShowGrid={isShowGrid}
                   zoomStatus={this.props.zoomStatus}
                 />
-                {headerExtra && (
+                {/* {headerExtra && (
                   <React.Fragment>
                     {(function() {
                       if (typeof headerExtra === 'function') {
@@ -234,94 +266,101 @@ class PwAggrid extends React.Component {
                       }
                     })()}
                   </React.Fragment>
-                )}
+                )} */}
               </div>
             )}
           </div>
         )}
 
-        {!isShowGrid ? (
-          <>
-            {hasActionBar && (
-              <div
-                className={`pw-table__action-bar pw-table__action-bar--${size}`}
-              >
-                <div className="pw-table__action-btns">
-                  <Input
-                    type="text"
-                    onInput={this.onQuickFilterChanged}
-                    id="quickFilter"
-                    width={120}
-                    placeholder="quick filter..."
-                  />
-                  {renderOtherBtns && renderOtherBtns()}
-                  {hasAdd && (
-                    <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
-                      {/* 添加 */}
-                      {getIntlVal(intl.locale, enAddText, addText)}
-                    </Button>
-                  )}
-                  {hasModify && (
-                    <Button size={btnSizeMap[size]} onClick={this.handleModify}>
-                      {/* 修改 */}
-                      {getIntlVal(intl.locale, enModifyText, modifyText)}
-                    </Button>
-                  )}
-                  {hasDelete && (
-                    <ButtonWithConfirm
-                      popConfirmProps={{
-                        onConfirm: this.handleDelete,
-                        title: getIntlVal(
-                          locale,
-                          'Are you sure to delete?',
-                          '您确定要删除吗？'
-                        )
-                      }}
-                      buttonProps={{
-                        size: btnSizeMap[size],
-                        type: 'danger'
-                      }}
-                    >
-                      <FM id="common.delete" defaultMessage="删除" />
-                    </ButtonWithConfirm>
-                  )}
-                </div>
-
-                {actionBarExtraAg && this.gridApi && (
-                  <div className="pw-table__action-bar-extra">
-                    {typeof actionBarExtraAg === 'function'
-                      ? actionBarExtraAg(this.gridApi)
-                      : actionBarExtraAg}
-                  </div>
-                )}
-              </div>
-            )}
-            <div
-              style={{ height: 'calc(100% - 65px)', width: '100%' }}
-              className="ag-theme-balham"
-            >
-              <AgGridReact
-                columnDefs={columnDefs}
-                defaultColDef={defaultColDef}
-                rowData={dataSource}
-                pagination={true}
-                paginationPageSize={100}
-                floatingFilter={true}
-                rowSelection={rowSelectionAg}
-                rowMultiSelectWithClick={true} //是否
-                onGridReady={this.onGridReady}
-                enableRangeSelection={true} //是否启用范围选择
-                suppressRowClickSelection={true}
-              ></AgGridReact>
+        {hasActionBar && (
+          <div
+            className={`pw-ag-grid__action-bar pw-ag-grid__action-bar--${size}`}
+          >
+            <div className="pw-ag-grid__action-btns">
+              <Input
+                type="text"
+                onInput={this.onQuickFilterChanged}
+                id="quickFilter"
+                width={120}
+                placeholder="全局筛选"
+              />
+              {/* {hasPasteData && ( */}
+              <>
+                <Button
+                  onClick={() => {
+                    console.log(this.gridApi.getModel());
+                  }}
+                >
+                  还原
+                </Button>
+                <Button type="primary" onClick={this.onSavePasteButtonClick}>
+                  保存
+                </Button>
+              </>
+              {/* )} */}
+              {renderOtherBtns && renderOtherBtns()}
+              {hasAdd && (
+                <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
+                  {/* 添加 */}
+                  {getIntlVal(intl.locale, enAddText, addText)}
+                </Button>
+              )}
+              {hasModify && (
+                <Button size={btnSizeMap[size]} onClick={this.handleModify}>
+                  {/* 修改 */}
+                  {getIntlVal(intl.locale, enModifyText, modifyText)}
+                </Button>
+              )}
+              {hasDelete && (
+                <ButtonWithConfirm
+                  popConfirmProps={{
+                    onConfirm: this.handleDelete,
+                    title: getIntlVal(
+                      locale,
+                      'Are you sure to delete?',
+                      '您确定要删除吗？'
+                    )
+                  }}
+                  buttonProps={{
+                    size: btnSizeMap[size],
+                    type: 'danger'
+                  }}
+                >
+                  <FM id="common.delete" defaultMessage="删除" />
+                </ButtonWithConfirm>
+              )}
             </div>
-          </>
-        ) : (
-          <div style={{ height: 'calc(100% - 28px)', width: '100%' }}>
-            {gridProps.length && (
-              <BIGrid gridProps={gridProps} language="zhCN" height={'100%'} />
+
+            {actionBarExtraAg && this.gridApi && (
+              <div className="pw-ag-grid__action-bar-extra">
+                {typeof actionBarExtraAg === 'function'
+                  ? actionBarExtraAg(this.gridApi)
+                  : actionBarExtraAg}
+              </div>
             )}
           </div>
         )}
+        <div
+          style={{ height: 'calc(100% - 65px)', width: '100%' }}
+          className="ag-theme-balham"
+        >
+          <AgGridReact
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            rowData={dataSource}
+            pagination={true}
+            paginationPageSize={100}
+            floatingFilter={true}
+            rowSelection={rowSelectionAg}
+            rowMultiSelectWithClick={true} //是否
+            onGridReady={this.onGridReady}
+            enableRangeSelection={true} //是否启用范围选择
+            suppressRowClickSelection={true}
+            onCellValueChanged={this.onCellValueChanged}
+            onPasteStart={this.onPasteStart}
+            onPasteEnd={this.onPasteEnd}
+          ></AgGridReact>
+        </div>
       </div>
     );
   }

@@ -12,18 +12,12 @@ class EmployeeInformation extends React.Component {
     data: [],
     data2:[],
     fetching: false,
-    recoMentor:false,
-    semi:'',
-    semiId:''
   };
   constructor(props) {
     super(props);
     this.fetchUser = debounce(this.fetchUser, 800);
   }
-  // 是否自定义辅导员
-  toReco=(v)=>{
-    this.setState({recoMentor:v.target.checked})
-  }
+
   //根据工号搜索辅导员
   fetchUser = async value => {
     this.setState({ data: [], fetching: true });
@@ -58,7 +52,7 @@ class EmployeeInformation extends React.Component {
       console.log(res)
       const data2 = res.data.map(user => ({
         label: `${user.C3_227192484125}`,
-        key: user.C3_227192472953
+        key: user.C3_305737857578
       }));
 
       this.setState({
@@ -73,18 +67,52 @@ class EmployeeInformation extends React.Component {
   };
 
   handleChange = value => {
+
     this.props.setTutorship({ name: value.label, userMemberId: value.key });
+
+
   };
   handleChange2 = value => {
-    var semi={label:value.label,key:value.key}
-    this.setState({semi:semi})
+
+    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key});
   };
+  ck=()=>{
+    if(this.props.employeeInformation.isSemi==true){
+      this.props.isSemi(false);
+    }else{
+      this.props.isSemi(true);
+
+    }
+  }
+  // 是否自定义辅导员
+  toReco=(v)=>{
+    console.log(v)
+    if(v.target.checked==false){
+      this.props.setTutorship({ name: null, userMemberId:null},true);
+    }else{
+      this.props.setTutorshipSemi({ name: null, userMemberId: null},true);
+    }
+    this.props.isSemi(v.target.checked);
+  }
+
   render() {
+
     const { employeeInformation, roleName, editable } = this.props;
     let value = {
       label: employeeInformation.instructor,
       key: employeeInformation.instructorID
     };
+    let valueSemi = {
+      label: employeeInformation.instructorDirectorName,
+      key: employeeInformation.instructorDirectorId
+    };
+    // if(employeeInformation.instructorDirectorId){
+    //   if(this.refs.semiStatus){
+    //       this.refs.semiStatus.defaultChecked=true;
+    //       // employeeInformation.isSemi=true
+    //       console.log(employeeInformation.isSemi)
+    //   }
+    // }
     let { fetching, data } = this.state;
     return (
       <div id="employee-imformation" className="probation-form">
@@ -149,7 +177,7 @@ class EmployeeInformation extends React.Component {
               {(roleName === '主管' || roleName === 'HR') && editable ? (
 
                 <div>
-                {(this.state.recoMentor==false)?(
+                {(employeeInformation.isSemi==false)?(
                 <Select
                   style={{ width: 150 }}
                   placeholder="请输入辅导员工号"
@@ -159,15 +187,17 @@ class EmployeeInformation extends React.Component {
                   onChange={this.handleChange}
                   labelInValue
                   value={value}
+                  key={0}
                   loading={fetching}
                 >
                   {data.map(d => (
                     <Option key={d.key}>{d.label}</Option>
                   ))}
-                </Select>):''
+                </Select>):null
               }
-                <Checkbox value={this.state.recoMentor} style={{marginTop:'8px',marginBottom:'8px'}}onChange={v=>{this.toReco(v)}}>我要填写自定义推荐人<br/>I want to recommend another who will become my mentor.</Checkbox>
-                {(this.state.recoMentor==false)?'':(<Select
+                <div className="clearfix"></div>
+                <input defaultChecked={employeeInformation.isSemi} type="checkbox" ref="semiStatus" value={employeeInformation.isSemi} style={{marginTop:'8px',marginBottom:'8px',marginRight:'8px'}} onClick={this.ck} onChange={v=>{this.toReco(v)}}/><span>我没有找到想要的辅导员，我想申请其他人成为辅导员。<br/>I can't find the mentor ,ansd I want to recommend another who will become a mentor.</span>
+                {(employeeInformation.isSemi==false)?null:(<Select
                   style={{ width: 150 }}
                   placeholder="请输入员工工号"
                   showSearch
@@ -175,7 +205,8 @@ class EmployeeInformation extends React.Component {
                   onSearch={this.fectchSemi}
                   onChange={this.handleChange2}
                   labelInValue
-                  value={this.state.semi}
+                  key={1}
+                  value={valueSemi}
                   loading={fetching}
                 >
                   {this.state.data2.map(d => (
