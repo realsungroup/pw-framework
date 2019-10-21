@@ -1123,31 +1123,9 @@ window[611054119826] = {
 
 //课程维护
 window[611085896611] = {
-  name: 'TableData',
+  name: 'CourseMaintain',
   title: '课程维护',
-  props: {
-    resid: 610308370365,
-    recordFormFormWidth: '90%',
-    hasBeBtns: false,
-    hasModify: false,
-    hasDelete: false,
-    hasAdd: true,
-    hasRowDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    subtractH: 220,
-    // height:600,
-    recordFormType: 'drawer',
-    importConfig: {
-      mode: 'fe',
-      saveState: 'added',
-      containerType: 'drawer'
-    },
-    recordFormContainerProps: {
-      // placement: 'bottom',
-      // height: 600
-    }
-  }
+  
 };
 
 //创建总计划

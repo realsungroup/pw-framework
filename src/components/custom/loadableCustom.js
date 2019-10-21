@@ -524,3 +524,10 @@ export const ProjectBonus = Loadable({
     return minLoading;
   }
 });
+//培训系统-课程维护
+export const CourseMaintain = Loadable({
+  loader: () => import('./CourseMaintain'),
+  loading() {
+    return minLoading;
+  }
+});
