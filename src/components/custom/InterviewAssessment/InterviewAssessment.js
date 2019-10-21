@@ -117,31 +117,37 @@ class InterviewAssessment extends React.Component {
 
 showConfirm = () => {
   confirm({
-    title: '确认退回这个表格吗?',
+    title: 'Are you sure to return this form?',
     onOk:() => {
       this.fightBack();
     },
     onCancel() {},
+    okText:'OK',
+    cancelText:'Nope'
   });
 }
 
 showConfirmMail = () => {
   confirm({
-    title: '确认发送邮件吗?',
+    title: 'Are you sure to send a mail ?',
     onOk:() => {
       return this.sendMail();
     },
     onCancel() {},
+    okText:'OK',
+    cancelText:'Nope'
   });
 }
 // 无需复试直接通过
 endStream =()=>{
   confirm({
-    title: '确认此人不用复试吗?',
+    title: 'Are you sure that THIS PERSON NEED NOT ATTENDING A REEXAMINE?',
     onOk:() => {
         this.warp();
     },
     onCancel() {},
+    okText:'OK',
+    cancelText:'Nope'
   });
 }
 warp=async()=>{
@@ -158,18 +164,20 @@ warp=async()=>{
     this.setState({loading:false});
 
     Modal.success({
-      title: '提交成功',
+      title: 'Done!',
       content: '',
       onOk() {
         window.location.reload();
-      }
+      },
+      okText:'OK'
     });
 
 
   } catch (err) {
     Modal.error({
-      title: '提示',
-      content: err.message
+      title: 'Alert!',
+      content: err.message,
+      okText:'OK'
     });
     this.setState({loading:false});
 
@@ -179,60 +187,92 @@ warp=async()=>{
 subConfirm = () => {
   // 验证
   var bol=true;
+  var str='';
   if(!this.state.level){
      bol=false;
+     str+='level';
   }
   if(!this.state.hiringManger){
      bol=false;
+     str+='hiringManger';
+
   }
   if(!this.state.interviewer){
      bol=false;
+     str+='interviewer';
+
   }
   if(!this.state.graFrom){
      bol=false;
+     str+='graFrom';
+
   }
 
   if(!this.state.eduBack){
      bol=false;
+     str+='eduBack';
+
   }
   if(!this.state.workExp){
      bol=false;
+     str+='workExp';
+
   }
   if(!this.state.lanSki){
      bol=false;
+     str+='lanSki';
+
   }
   if(!this.state.wkExp){
      bol=false;
+     str+='wkExp';
+
   }
   if(!this.state.vIT){
      bol=false;
-  }
-  if(!this.state.wkExp){
-     bol=false;
+     str+='vIT';
+
+
   }
   if(!this.state.vLA){
      bol=false;
+     str+='vLA';
+
   }
   if(!this.state.vCF){
      bol=false;
+     str+='vCF';
+
   }
   if(!this.state.vDR){
      bol=false;
+     str+='vDR';
+
   }
   if(!this.state.groupInter){
      bol=false;
+     str+='groupInter';
+
   }
   if(!this.state.p4r){
      bol=false;
+     str+='p4r';
+
   }
   if(!this.state.vDR){
      bol=false;
+     str+='vDR';
+
   }
   if(!this.state.GHB){
      bol=false;
+     str+='GHB';
+
   }
   if(!this.state.date){
      bol=false;
+     str+='date';
+
   }
 
   // 复试
@@ -246,208 +286,212 @@ subConfirm = () => {
   }
 
   if(this.state.chara=='T1/T2/T3/T4'){
-    if(this.state.vTS){
+    if(!this.state.vTS){
       bol=false;
     }
-    if(this.state.vEA){
+    if(!this.state.vEA){
       bol=false;
     }
-    if(this.state.vTE){
+    if(!this.state.vTE){
       bol=false;
     }
-    if(this.state.vAO){
+    if(!this.state.vAO){
       bol=false;
     }
-    if(this.state.vPS){
+    if(!this.state.vPS){
       bol=false;
     }
-    if(this.state.vSd){
+    if(!this.state.vSd){
       bol=false;
     }
-    if(this.state.vLF){
+    if(!this.state.vLF){
       bol=false;
     }
   }
 
   if(this.state.chara=='T5'){
-    if(this.state.vTS2){
+    if(!this.state.vTS2){
       bol=false;
     }
-    if(this.state.vTO){
+    if(!this.state.vTO){
       bol=false;
     }
-    if(this.state.vTD){
+    if(!this.state.vTD){
       bol=false;
     }
-    if(this.state.vTE2){
+    if(!this.state.vTE2){
       bol=false;
     }
-    if(this.state.vCr){
+    if(!this.state.vCr){
       bol=false;
     }
-    if(this.state.vSA){
+    if(!this.state.vSA){
       bol=false;
     }
-    if(this.state.vPrA){
+    if(!this.state.vPrA){
       bol=false;
     }
   }
 
   if(this.state.chara=='T6'){
-    if(this.state.vTS3){
+    if(!this.state.vTS3){
       bol=false;
     }
-    if(this.state.vTO2){
+    if(!this.state.vTO2){
       bol=false;
     }
-    if(this.state.vTC){
+    if(!this.state.vTC){
       bol=false;
     }
-    if(this.state.vTE3){
+    if(!this.state.vTE3){
       bol=false;
     }
-    if(this.state.vDwA){
+    if(!this.state.vDwA){
       bol=false;
     }
-    if(this.state.vIM){
+    if(!this.state.vIM){
       bol=false;
     }
-    if(this.state.vStrA){
+    if(!this.state.vStrA){
       bol=false;
     }
   }
 
   if(this.state.chara=='S5/S6/Sr.Specialist'){
-    if(this.state.vTS4){
+    if(!this.state.vTS4){
       bol=false;
     }
-    if(this.state.vAO2){
+    if(!this.state.vAO2){
       bol=false;
     }
-    if(this.state.vPS2){
+    if(!this.state.vPS2){
       bol=false;
     }
-    if(this.state.vSd2){
+    if(!this.state.vSd2){
       bol=false;
     }
-    if(this.state.vLF2){
+    if(!this.state.vLF2){
       bol=false;
     }
   }
 
   if(this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'){
-    if(this.state.vTS5){
+    if(!this.state.vTS5){
       bol=false;
     }
-    if(this.state.vAO3){
+    if(!this.state.vAO3){
       bol=false;
     }
-    if(this.state.vPS3){
+    if(!this.state.vPS3){
       bol=false;
     }
-    if(this.state.vDO){
+    if(!this.state.vDO){
       bol=false;
     }
-    if(this.state.vCDR){
+    if(!this.state.vCDR){
       bol=false;
     }
   }
 
   if(this.state.chara=='S9/T5/ManagerII'){
-    if(this.state.vTS6){
+    if(!this.state.vTS6){
       bol=false;
     }
-    if(this.state.vDevO){
+    if(!this.state.vDevO){
       bol=false;
     }
-    if(this.state.vPlan){
+    if(!this.state.vPlan){
       bol=false;
     }
-    if(this.state.vOrg){
+    if(!this.state.vOrg){
       bol=false;
     }
-    if(this.state.vPriS){
+    if(!this.state.vPriS){
       bol=false;
     }
-    if(this.state.vMMW){
+    if(!this.state.vMMW){
       bol=false;
     }
   }
 
   if(this.state.chara=='S10/T6/Sr.Manager'){
-    if(this.state.vTS7){
+    if(!this.state.vTS7){
       bol=false;
     }
-    if(this.state.vBET){
+    if(!this.state.vBET){
       bol=false;
     }
-    if(this.state.vPM){
+    if(!this.state.vPM){
       bol=false;
     }
-    if(this.state.vMoOt){
+    if(!this.state.vMoOt){
       bol=false;
     }
-    if(this.state.vCM){
+    if(!this.state.vCM){
       bol=false;
     }
-    if(this.state.vDQ){
+    if(!this.state.vDQ){
       bol=false;
     }
   }
 
   if(this.state.chara=='Technician'){
-    if(this.state.vTS8){
+    if(!this.state.vTS8){
       bol=false;
     }
-    if(this.state.vPreSk){
+    if(!this.state.vPreSk){
       bol=false;
     }
-    if(this.state.vProSol){
+    if(!this.state.vProSol){
       bol=false;
     }
-    if(this.state.vPeRe){
+    if(!this.state.vPeRe){
       bol=false;
     }
-    if(this.state.vAcOr){
+    if(!this.state.vAcOr){
       bol=false;
     }
   }
 
   if(this.state.chara=='应届生'){
-    if(this.state.vTS9){
+    if(!this.state.vTS9){
       bol=false;
     }
-    if(this.state.vcrea){
+    if(!this.state.vcrea){
       bol=false;
     }
-    if(this.state.vPresentSkill){
+    if(!this.state.vPresentSkill){
       bol=false;
     }
-    if(this.state.vProblemSol){
+    if(!this.state.vProblemSol){
       bol=false;
     }
-    if(this.state.vPeerRel){
+    if(!this.state.vPeerRel){
       bol=false;
     }
-    if(this.state.vPersonaLe){
+    if(!this.state.vPersonaLe){
       bol=false;
     }
   }
 
   if(bol==true){
     confirm({
-      title: '确认提交表格吗?',
+      title: 'Are you sure to submit?',
       onOk:() => {
           this.subData();
       },
       onCancel() {},
+      okText:'OK',
+      cancelText:'Nope'
     });
   }else{
     confirm({
-      title: '您还有信息没有填完！',
+      title: 'You still have something to fill in!'+this.state.chara,
       onOk(){
       },
       onCancel() {},
+      okText:'OK',
+      cancelText:'Nope'
     });
   }
 
@@ -484,8 +528,9 @@ handleChangeS=(value,obj)=>{
                   this.setState({ data, fetching: false });
       }catch (err) {
         Modal.error({
-          title: '提示',
-          content: err.message
+          title: 'Alert!',
+          content: err.message,
+          okText:'OK'
         });
         this.setState({fetching:false});
 
@@ -885,7 +930,6 @@ var hrCode='623876215000';
         })
       }
 
-      console.log('详细信息',res.data)
       if(!this.state.round2){
         this.setState({round2:'N'})
       }
@@ -898,8 +942,9 @@ var hrCode='623876215000';
 
     } catch (err) {
       Modal.error({
-        title: '提示',
-        content: err.message
+        title: 'Alert!',
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -916,13 +961,13 @@ var hrCode='623876215000';
       });
       this.setState({position:res.data[0].appPosition,name:res.data[0].ChName});
       this.setState({loading:false});
-      console.log('详细信息2',res.data)
 
 
     } catch (err) {
       Modal.error({
-        title: '提示',
-        content: err.message
+        title: 'Alert!',
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -964,25 +1009,28 @@ var hrCode='623876215000';
            }]
          })
          Modal.success({
-           title: '邮件发送成功',
+           title: 'Done!',
            content: '',
            onOk() {
              window.location.reload();
-           }
+           },
+           okText:'OK'
          });
 
     }catch (err) {
         Modal.error({
-          title: '提示',
-          content: err.message
+          title: 'Alert!',
+          content: err.message,
+          okText:'OK'
         });
         this.setState({loading:false});
 
       }
     }else{
       Modal.error({
-        title: '提示',
-        content: '您还未选择收件人！'
+        title: 'Alert!',
+        content: 'Please choose an addressee first!',
+        okText:'OK'
       });
     }
 
@@ -1007,17 +1055,19 @@ var hrCode='623876215000';
          }]
        })
        Modal.success({
-         title: '退回成功',
+         title: 'Done!',
          content: '',
          onOk() {
            window.location.reload();
-         }
+         },
+         okText:'OK'
        });
 
   }catch (err) {
       Modal.error({
-        title: '提示',
-        content: err.message
+        title: 'Alert!',
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -1043,17 +1093,19 @@ var hrCode='623876215000';
          }]
        })
        Modal.success({
-         title: '确认成功',
+         title: 'Done!',
          content: '',
          onOk() {
            window.location.reload();
-         }
+         },
+         okText:'OK'
        });
 
   }catch (err) {
       Modal.error({
-        title: '提示',
-        content: err.message
+        title: 'Alert!',
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -1140,18 +1192,20 @@ var hrCode='623876215000';
       this.setState({loading:false});
 
       Modal.success({
-        title: '提交成功',
+        title: 'Done!',
         content: '',
         onOk() {
           window.location.reload();
-        }
+        },
+        okText:'OK'
       });
 
 
     } catch (err) {
       Modal.error({
-        title: '提示',
-        content: err.message
+        title: 'Alert!',
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -1227,7 +1281,7 @@ var hrCode='623876215000';
             showSearch
 
       value={this.state.postName}
-      placeholder="请选择收件人"
+      placeholder="Interviewee"
       notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
       filterOption={false}
       onSearch={this.handleSearch}
@@ -1239,15 +1293,15 @@ var hrCode='623876215000';
                       <Option key={d.value}>{d.text}</Option>
                     ))}
             </Select>
-            <Button type='primary' onClick={this.showConfirmMail}>发送提醒邮件</Button>
+            <Button type='primary' onClick={this.showConfirmMail}>Remind & Mail</Button>
           </div>
         </div>
         <div className='buttonLine'>
-          <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':'hidden'}>提交</Button>
-          <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>确认</Button>
-          <Button onClick={this.onPrinting}>打印</Button>
-          <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>退回表格</Button>
-          <Button type='danger' className={this.state.showWarp==true?'':'hidden'} onClick={this.endStream}>无需复试直接录用</Button>
+          <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':'hidden'}>Submit</Button>
+          <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>I Agree</Button>
+          <Button onClick={this.onPrinting}>Print</Button>
+          <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>Return the Form</Button>
+          <Button type='danger' className={this.state.showWarp==true?'':'hidden'} onClick={this.endStream}>Employment without Reexamine</Button>
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
 
@@ -2326,7 +2380,7 @@ var hrCode='623876215000';
                 <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date} onChange={v=>{this.handlechange("date",v)}}/>
                 </cell>
               </rect>
-              <div className={this.state.round2=='Y'?'':'hidden'}  style={{borderBottom:'1px solid #000'}}>
+              <div className={this.state.round2=='Y'?'':'hidden'}  style={{marginBottom:'80px',borderBottom:'1px solid #000'}}>
                 <rect className='wholeLine'>
                   <h4>复试评价记录 Retrial Comments</h4>
                 </rect>

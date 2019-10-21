@@ -324,7 +324,7 @@ var hrCode='623876215000';
               //   return <Button>添加面试官</Button>
               // }}
               actionBarExtra={(this.state.userChara=='HR')?(records => (
-                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}}>新建</Button>
+                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}}>Add a new record</Button>
 
               )):''}
               customRowBtns={[
@@ -339,7 +339,7 @@ var hrCode='623876215000';
                         }}
                         style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
                       >
-                        修改
+                        Modify
                       </Button>
 
                     </div>

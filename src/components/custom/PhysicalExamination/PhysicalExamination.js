@@ -7,10 +7,17 @@ import {
   Icon,
   Modal,
   Spin,
-  Upload
+  Upload,
+  Select,
 } from 'antd';
+import debounce from 'lodash/debounce';
+const { Option } = Select;
+
 class PhysicalExamination extends React.Component {
   state = {
+    loca:'WX',
+    fetching:false,
+    data:[],
     hosName:'',
 	imgUrl:'',
     address:'',
@@ -19,11 +26,107 @@ class PhysicalExamination extends React.Component {
     traffic:'',
     traffic2:'',
     traffic3:'',
-	loading:false
+	loading:false,
 
   };
+  constructor(){
+    super();
+    this.handleSearch = debounce(this.handleSearch, 800);
+
+  }
+  handleChangeS=(value,obj)=>{
+
+    this.setState({
+        value,
+        data:[],
+        postName:obj.props.children,
+        postID:value,
+        fetching: false,
+      });
+      this.getPersonalInfo(613149356409,value);
 
 
+  }
+  seLoca=()=>{
+    if(this.state.loca=='SH'){
+      this.setState({loca:'WX'})
+    }else{
+      this.setState({loca:'SH'})
+    }
+  }
+  // 获取当前人员人员详细信息
+  getPersonalInfo = async (resid,id) => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: resid,
+        cmswhere: `ID=${id}`
+      });
+      console.log(res)
+      this.setState({ mailAddress: res.data[0].Email });
+      this.setState({loading:false});
+
+
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+
+    }
+  };
+  handleSearch = async (value) => {
+    if (value) {
+
+      this.setState({fetching:true});
+
+      let res;
+      try {
+        res = await http().getTable({
+          resid: 613152690063,
+          key:value
+        });
+
+        const data =res.data.map(data => ({
+                  text: `${data.ChName}`,
+                  value: data.ID,
+                }));
+
+                  this.setState({ data, fetching: false });
+      }catch (err) {
+        Modal.error({
+          title: 'Alert!',
+          content: err.message,
+          okText:'OK'
+        });
+        this.setState({fetching:false});
+
+      }
+
+
+      // fetch(value, data => this.setState({ data }));
+    } else {
+      this.setState({ data: [] });
+    }
+  };
+  sendVerifyMail = () => {
+         var reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
+         var email = this.state.mailAddress
+         if(!email){
+         Modal.error({
+           title: '提示',
+           content: '邮箱不能为空',
+         });
+      }else if(!reg.test(email)){
+        Modal.error({
+          title: '提示',
+          content: '邮箱格式不正确',
+        });
+      }else{
+
+      }
+  }
   uploadFile = (file, url, mode) => {
   		return new Promise((resolve, reject) => {
   		let fd = new FormData();
@@ -91,6 +194,11 @@ class PhysicalExamination extends React.Component {
 			  traffic:res.data[0].traffic,
 			  traffic2:res.data[0].traffic2,
 			  traffic3:res.data[0].traffic3,
+        cost:res.data[0].cost,
+        costFemale:res.data[0].costFemale,
+        subscribeTel:res.data[0].subscribeTel,
+        examinationCost:res.data[0].examinationCost,
+        contactName:res.data[0].contactName,
 			  REC_ID:res.data[0].REC_ID
 		  })
 		  this.setState({loading:false});
@@ -116,7 +224,13 @@ class PhysicalExamination extends React.Component {
 			 tel2:this.state.phone2,
 			 traffic:this.state.traffic,
 			traffic2:this.state.traffic2,
-			traffic3:this.state.traffic3,}]
+			traffic3:this.state.traffic3,
+      cost:this.state.cost,
+      costFemale:this.state.costFemale,
+      subscribeTel:this.state.subscribeTel,
+      examinationCost:this.state.examinationCost,
+      contactName:this.state.contactName,
+    }]
 	 	  });
 		  this.setState({loading:false});
 		  Modal.success({
@@ -182,12 +296,59 @@ class PhysicalExamination extends React.Component {
 
 		</div>
         <div class='wrap'>
+          <div className='controlPad'>
+          <Select
+          showSearch
+
+    value={this.state.postName}
+    placeholder="搜索选择求职者"
+    notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
+    filterOption={false}
+    onSearch={this.handleSearch}
+    onChange={this.handleChangeS}
+    style={{ width:'100%',maxHeight:'88px',overflow:'auto'}}
+
+          >
+          {this.state.data.map(d => (
+                    <Option key={d.value}>{d.text}</Option>
+                  ))}
+          </Select>
+          <input className="mailAddress" onChange={v=>{this.handlechange("mailAddress",v)}} value={this.state.mailAddress} placeholder="选择求职者自动填写邮箱"/>
+          <rect className={this.state.loca=="SH"?'':'cur'} onClick={this.seLoca}>无锡文件</rect>
+          <rect className={this.state.loca=="WX"?'':'cur'} onClick={this.seLoca}>上海文件</rect>
+          <div className="clearfix" style={{marginBottom:'16px'}}></div>
+          <Button type='primary' onClick={this.sendVerifyMail}>发送邮件</Button>
+
+          </div>
           <div id='toPrint'>
 
+
+          <div className={this.state.loca=="SH"?'':'hidden'}>
           <rect style={{display:'block',width:'100%',height:'1020px'}}>
-            <h4 style={{fontSize:'20px'}}>无锡本地体检</h4>
+            <h4 style={{fontSize:'24px',width:'100%',textAlign:'center',marginBottom:'24px'}}>菲尼萨（上海）体检注意事项</h4>
+            <p style={{fontSize:'16px',textIndent:'2rem'}}>1.已居住在上海的员工必须到美年健康做标准体检（菲尼萨团体体检为
+            <input style={{fontSize:'16px',marginLeft:'8px',width:'64px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("cost",v)}} value={this.state.cost}/>
+            元/男或者
+            <input style={{fontSize:'16px',marginLeft:'8px',width:'64px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("costFemale",v)}} value={this.state.costFemale}/>
+            元/女套餐） ，体检预约电话:
+            <input style={{fontSize:'16px',marginLeft:'8px',width:'120px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("subscribeTel",v)}} value={this.state.subscribeTel}/>
+            ；如有最近三个月以内三甲医院的体检报告，可直接携带该报告入职，无需另外再做入职体检；
+            </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'16px'}}>2.如本人不在上海，可在当地三甲医院做常规入职体检，费用在
+            <input style={{fontSize:'16px',marginLeft:'8px',width:'64px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("examinationCost",v)}} value={this.state.examinationCost}/>
+            元左右；体检医院需为公立医院，地级市需在三级甲等医院体检，县级市可在地区内其他公立医院体检。
+            </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'16px'}}>3.体检费用由个人先行垫付，开具个人抬头发票，入职后将发票交给HR
+            <input style={{fontSize:'16px',marginLeft:'8px',width:'120px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("contactName",v)}} value={this.state.contactName}/>
+            ，在试用期后进行报销。
+            </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'16px'}}>注：早晨空腹体检
+            </p>
+          </rect>
+          </div>
+
+          <div className={this.state.loca=="WX"?'':'hidden'}>
+          <rect style={{display:'block',width:'100%',height:'1020px'}}>
+            <h4 style={{fontSize:'24px'}}>选项一：无锡本地体检</h4>
             <h3 style={{fontSize:'24px',textAlign:'center',marginBottom:'24px'}}>
-            <input style={{textAlign:'center',fontSize:'24px',width:'auto',fontWeight:'bold',border:'none'}} onChange={v=>{this.handlechange("hosName",v)}} value={this.state.hosName}/>
+            <input style={{textAlign:'center',fontSize:'24px',width:'auto',fontWeight:'normal',border:'none'}} onChange={v=>{this.handlechange("hosName",v)}} value={this.state.hosName}/>
             </h3>
 			<div style={{width:'100%',textAlign:'center'}}>,
 
@@ -216,7 +377,7 @@ class PhysicalExamination extends React.Component {
 
           </rect>
           <rect style={{display:'block',width:'100%'}}>
-            <h4 style={{fontSize:'20px'}}>异地体检</h4>
+            <h4 style={{fontSize:'24px'}}>选项二：异地体检</h4>
             <p style={{margin:0,fontSize:'16px',width:'100%',padding:'24px',boxSizing:'border-box'}}>如您居住在外地，请您到当地公办三级甲等医院办理入职体检。体检费用由个人进行垫付，请医院开具发票，在入职后进行报销。体检报告需要有医生的体检总结建议和医院公章。拿到体检报告请邮件回复并上传体检信息。<br/><br/><b>注：早晨空腹体检</b></p>
             <h3 style={{fontSize:'16px',marginBottom:'24px'}}>检查项列表如下图:</h3>
             <table border="1" style={{width:'100%'}}>
@@ -360,6 +521,7 @@ class PhysicalExamination extends React.Component {
 
           </rect>
           </div>
+        </div>
         </div>
 		</Spin>
       </div>
