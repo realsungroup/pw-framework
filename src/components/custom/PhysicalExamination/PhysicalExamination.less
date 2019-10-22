@@ -65,7 +65,7 @@
     margin-right:8px;
 
   }
-  rect:nth-child(4){
+  rect:nth-child(5){
     margin: 0;
   }
   rect:hover{
@@ -101,4 +101,30 @@
 
 .hidden{
   display: none;
+}
+.overlay{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  z-index:9999;
+  background-color: rgba(0,0,0,0.75);
+  rect{
+    display: block;
+    width:100vw;
+    height:100vh;
+    position: absolute;
+    z-index:1;
+    left:0;
+    right:0;
+  }
+}
+.overlay>div{
+position:absolute;
+left:50%;
+top:50%;
+width:1200px;
+height:80vh;
+margin-top: -40vh;
+margin-left: -600px;
+z-index:2;
 }

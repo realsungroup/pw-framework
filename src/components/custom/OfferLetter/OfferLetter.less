@@ -88,3 +88,74 @@ u{
   border-bottom:1px solid grey!important;
 
 }
+.input:focus{
+  outline:none!important;
+}
+.buttonLine{
+  left:-100px;
+}
+.location{
+  position:fixed;
+  top:80px;
+  left:180px;
+  z-index:9999;
+  list-style: none;
+  li{
+    width:48px;
+    height:48px;
+    cursor:pointer;
+    border-radius:50%;
+    border:1px solid #d9d9d9;
+    line-height: 46px;
+    font-size: 16px;
+    text-align: center;
+    transition: .3s;
+
+  }
+  li:hover{
+    background-color: #1890ff;
+    color:#fff;
+    border-color:#1890ff;
+    opacity: 0.8;
+  }
+  .cur{
+    background-color: #1890ff;
+    color:#fff;
+    border-color:#1890ff;
+  }
+}
+.location:hover li{
+  display: block;
+  margin-bottom:8px;
+}
+.hidden{
+  display:none;
+}
+.overlay{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  z-index:9999;
+  top:0;
+  left:0;
+  background-color: rgba(0,0,0,0.75);
+  rect{
+    display: block;
+    width:100vw;
+    height:100vh;
+    position: absolute;
+    z-index:1;
+    left:0;
+    right:0;
+  }
+}
+.overlay>div{
+position:absolute;
+left:50%;
+top:50%;
+width:1200px;
+height:80vh;
+margin-top: -40vh;
+margin-left: -600px;
+z-index:2;
+}

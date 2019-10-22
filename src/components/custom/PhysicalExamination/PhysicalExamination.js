@@ -11,10 +11,18 @@ import {
   Select,
 } from 'antd';
 import debounce from 'lodash/debounce';
-const { Option } = Select;
+import TableData from '../../common/data/TableData';
 
+const { Option } = Select;
+function crtTimeFtt(val, row) {
+ if (val != null) {
+   var date = new Date(val);
+   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  }
+}
 class PhysicalExamination extends React.Component {
   state = {
+    overlay:false,
     loca:'WX',
     fetching:false,
     data:[],
@@ -110,7 +118,7 @@ class PhysicalExamination extends React.Component {
       this.setState({ data: [] });
     }
   };
-  sendVerifyMail = () => {
+  sendVerifyMail = async() => {
          var reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
          var email = this.state.mailAddress
          if(!email){
@@ -125,6 +133,52 @@ class PhysicalExamination extends React.Component {
         });
       }else{
 
+        let res;
+        this.setState({  fetching: true });
+        var myDate=new Date();
+        myDate=crtTimeFtt(myDate);
+        try {
+          res = await http().addRecords({
+            resid: 623152957838,
+            data:[{
+              addTime:myDate,
+      				REC_ID:this.state.REC_ID,
+      			  isSendEmail:'Y',
+              email:this.state.mailAddress,
+              Name:this.state.postName,
+              location:this.state.loca,hospital:this.state.hosName,
+       			 picUrl:this.state.imgUrl,
+       			 address:this.state.address,
+       			 tel:this.state.phone1,
+       			 tel2:this.state.phone2,
+       			 traffic:this.state.traffic,
+       			traffic2:this.state.traffic2,
+       			traffic3:this.state.traffic3,
+             cost:this.state.cost,
+             costFemale:this.state.costFemale,
+             subscribeTel:this.state.subscribeTel,
+             examinationCost:this.state.examinationCost,
+             contactName:this.state.contactName,
+          }]
+          });
+          Modal.success({
+            title: '已发送邮件',
+            content: '',
+            onOk() {
+              window.location.reload();
+            },
+          });
+
+          this.setState({  fetching: false });
+        }catch (err) {
+          Modal.error({
+            title: 'Alert!',
+            content: err.message,
+            okText:'OK'
+          });
+          this.setState({fetching:false});
+
+        }
       }
   }
   uploadFile = (file, url, mode) => {
@@ -177,6 +231,16 @@ class PhysicalExamination extends React.Component {
         }
 
     }
+showOver=()=>{
+
+  if(this.state.overlay==true){
+    this.setState({overlay:false})
+
+  }else{
+    this.setState({overlay:true})
+
+  }
+}
 	getData = async(ID) =>{
 		this.setState({loading:true});
 		let res;
@@ -186,20 +250,20 @@ class PhysicalExamination extends React.Component {
 		  });
 		  console.log('体检',res);
 		  this.setState({
-			  hosName:res.data[0].hospital,
-			  imgUrl:res.data[0].picUrl,
-			  address:res.data[0].address,
-			  phone1:res.data[0].tel,
-			  phone2:res.data[0].tel2,
-			  traffic:res.data[0].traffic,
-			  traffic2:res.data[0].traffic2,
-			  traffic3:res.data[0].traffic3,
-        cost:res.data[0].cost,
-        costFemale:res.data[0].costFemale,
-        subscribeTel:res.data[0].subscribeTel,
-        examinationCost:res.data[0].examinationCost,
-        contactName:res.data[0].contactName,
-			  REC_ID:res.data[0].REC_ID
+			  hosName:res.data[(res.data.length)-1].hospital,
+			  imgUrl:res.data[(res.data.length)-1].picUrl,
+			  address:res.data[(res.data.length)-1].address,
+			  phone1:res.data[(res.data.length)-1].tel,
+			  phone2:res.data[(res.data.length)-1].tel2,
+			  traffic:res.data[(res.data.length)-1].traffic,
+			  traffic2:res.data[(res.data.length)-1].traffic2,
+			  traffic3:res.data[(res.data.length)-1].traffic3,
+        cost:res.data[(res.data.length)-1].cost,
+        costFemale:res.data[(res.data.length)-1].costFemale,
+        subscribeTel:res.data[(res.data.length)-1].subscribeTel,
+        examinationCost:res.data[(res.data.length)-1].examinationCost,
+        contactName:res.data[(res.data.length)-1].contactName,
+			  REC_ID:res.data[(res.data.length)-1].REC_ID
 		  })
 		  this.setState({loading:false});
 		} catch (error) {
@@ -282,10 +346,27 @@ class PhysicalExamination extends React.Component {
 
 	  })
   }
+
   render() {
     return (
       <div className='PE'>
 	  <Spin spinning={this.state.loading}>
+        <div className={this.state.overlay?'overlay':'hidden'} >
+          <rect onClick={this.showOver}></rect>
+          <div>
+        <TableData
+          resid= {623152957838}
+          hasRowView={false}
+          hasAdd={false}
+          hasRowSelection={false}
+          hasRowDelete= {false}
+          hasRowModify={false}
+          hasModify={false}
+          hasDelete={false}
+          style ={{height:"100%"}}
+        />
+          </div>
+        </div>
         <div className='buttonLine'>
           <Button onClick={this.onPrinting}>打印</Button>
           <Button onClick={this.subData} type='primary'>提交</Button>
@@ -297,6 +378,7 @@ class PhysicalExamination extends React.Component {
 		</div>
         <div class='wrap'>
           <div className='controlPad'>
+          <Icon type="clock-circle" onClick={this.showOver} style={{fontSize:'16px',margin:'0px 0px 16px'}}/>
           <Select
           showSearch
 
@@ -339,8 +421,61 @@ class PhysicalExamination extends React.Component {
             </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'16px'}}>3.体检费用由个人先行垫付，开具个人抬头发票，入职后将发票交给HR
             <input style={{fontSize:'16px',marginLeft:'8px',width:'120px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("contactName",v)}} value={this.state.contactName}/>
             ，在试用期后进行报销。
-            </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'16px'}}>注：早晨空腹体检
+            </p><p style={{fontSize:'16px',textIndent:'2rem',marginTop:'40px'}}>注：早晨空腹体检
             </p>
+
+            <p style={{fontSize:'16px',marginBottom:'8px',marginTop:'8px'}}>以下体检项目供参考：</p>
+            <table border="1" style={{width:'100%'}}>
+              <tr>
+                <th colspan="4" style={{width:'100%',textAlign:'center',lineHeight:'24px',fontSize:'16px'}}>体检项目</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">一般检查</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>身高、体重、体重指数（BMI） 血压（BP）、脉搏（P）</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">内科</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>心、肺听诊，腹部触诊</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">外科</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>浅表淋巴结，甲状腺、乳房、脊柱、四肢、外生殖器、前列腺、肛肠指检、皮肤等</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} rowspan="2" colspan="2">眼科</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>视力</th>
+              </tr>
+              <tr>  <th style={{textAlign:'center',width:'80%',padding:'8px'}}>外眼、眼底</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">耳鼻喉科</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>外耳道、鼓膜、鼻腔、鼻中隔、扁桃体、咽部</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">心电图</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>十二导心电图</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">血常规18项</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>检查白细胞、红细胞、血小板等</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">肝功能</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>丙氨酸氨基转氨酶（ALT）</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">肾功能2项</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>尿素氮、肌酐</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">尿常规12项</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>颜色、比重、酸碱度、尿糖、尿蛋白、尿胆素、尿胆原、胆红素、隐血、亚硝酸盐、尿沉渣检查</th>
+              </tr>
+              <tr>
+                <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">全数字X光检查<br/>（DR）</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>胸部正位检查</th>
+              </tr>
+            </table>
           </rect>
           </div>
 
@@ -385,7 +520,7 @@ class PhysicalExamination extends React.Component {
                 <th colspan="6" style={{textAlign:'center',lineHeight:'24px',fontSize:'16px'}}>菲尼萨光电通讯科技（无锡）有限公司入职体检项目</th>
               </tr>
               <tr>
-                <th style={{textAlign:'center',width:'40%'}} colspan="2">体检项目</th>
+                <th style={{textAlign:'center',width:'8'}} colspan="2">体检项目</th>
                 <th style={{textAlign:'center',width:'36%'}}>临床意义</th>
                 <th style={{textAlign:'center',width:'8%'}}>男性</th>
                 <th style={{textAlign:'center',width:'8%'}}>女未婚</th>

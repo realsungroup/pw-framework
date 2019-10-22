@@ -224,7 +224,8 @@ class ReferenceCheck extends React.Component {
 
           <ul className='charaChange'>
             <li id='selHR' className={this.state.chara=='HR'?'current':''} onClick={() => this.changeChara('HR')}>HR</li>
-            <li id='selSup' className={this.state.chara=='HR'?'':'current'} onClick={() => this.changeChara('supervisor')}>主管</li>
+            <li id='selSup' className={this.state.chara=='supervisor'?'current':''} onClick={() => this.changeChara('supervisor')}>主管</li>
+            <li id='selCol' className={this.state.chara=='colleague'?'current':''} onClick={() => this.changeChara('colleague')}>同事</li>
           </ul>
 
         </div>
@@ -327,7 +328,7 @@ class ReferenceCheck extends React.Component {
               </li>
             </ul>
 
-            <ul style={{listStyle:'none'}} className={this.state.chara=='HR'?'hidden':''} ref='supervisor'>
+            <ul style={{listStyle:'none'}} className={this.state.chara=='supervisor'?'':'hidden'} ref='supervisor'>
               <li>
                 <label style={{marginBottom:'16px'}}>1.How long have you known/supervised the candidate?</label>
                 <textarea value={this.state.q1} onChange={v=>{this.handlechange("q1",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
@@ -435,6 +436,116 @@ class ReferenceCheck extends React.Component {
                 <textarea value={this.state.q14} onChange={v=>{this.handlechange("q14",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
               </li>
             </ul>
+
+
+                        <ul style={{listStyle:'none'}} className={this.state.chara=='colleague'?'':'hidden'} ref='supervisor'>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>1.How long have you known/supervised the candidate?</label>
+                            <textarea value={this.state.q1} onChange={v=>{this.handlechange("q1",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>2.What was his/her position and main job responsibilities?</label>
+                            <textarea value={this.state.q2} onChange={v=>{this.handlechange("q2",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>3.What kind of important project has he/she done?</label>
+                            <textarea value={this.state.q3} onChange={v=>{this.handlechange("q3",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>4.Can you comment on his/her performance? How would you consider his/her attitude towards his/her work?</label>
+                            <textarea value={this.state.q4} onChange={v=>{this.handlechange("q4",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>5.Can you confirm his/her employment dates?</label>
+                            <textarea value={this.state.q5} onChange={v=>{this.handlechange("q5",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>6.What do you consider his/her strengths were?</label>
+                            <textarea value={this.state.q6} onChange={v=>{this.handlechange("q6",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>7.Would you consider that there were any areas that needed improvement?</label>
+                            <textarea value={this.state.q7} onChange={v=>{this.handlechange("q7",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>8.How well did he/she get along with: </label>
+                            <ul style={{marginTop:'16px',marginBottom:'16px'}}>
+                              <li style={{marginTop:'8px'}}>
+                                <span style={{marginRight:'16px'}}>Management</span>
+                                <input type='radio' name='Management2' id='mana5' value='Good' checked={this.state.Management2=='Good'?'checked':''} onChange={v=>{this.handlechange("Management2",v,'mana5')}}/><label for='mana5' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                                <input type='radio' name='Management2' id='mana6' value='Fair' checked={this.state.Management2=='Fair'?'checked':''} onChange={v=>{this.handlechange("Management2",v,'mana6')}}/><label for='mana6' style={{marginLeft:'8px',marginRight:'16px'}}>Fair</label>
+                                <input type='radio' name='Management2' id='mana7' value='Poor' checked={this.state.Management2=='Poor'?'checked':''} onChange={v=>{this.handlechange("Management2",v,'mana7')}}/><label for='mana7' style={{marginLeft:'8px',marginRight:'16px'}}>Poor</label>
+
+                              </li>
+                              <li style={{marginTop:'8px'}}>
+                                <span style={{marginRight:'16px'}}>Direct Manager </span>
+                                <input type='radio' name='directManager' id='DM1' value='Good' checked={this.state.directManager=='Good'?'checked':''} onChange={v=>{this.handlechange("directManager",v,'DM1')}}/><label for='DM1' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                                <input type='radio' name='directManager' id='DM2' value='Fair' checked={this.state.directManager=='Fair'?'checked':''} onChange={v=>{this.handlechange("directManager",v,'DM2')}}/><label for='DM2' style={{marginLeft:'8px',marginRight:'16px'}}>Fair</label>
+                                <input type='radio' name='directManager' id='DM3' value='Poor' checked={this.state.directManager=='Poor'?'checked':''} onChange={v=>{this.handlechange("directManager",v,'DM3')}}/><label for='DM3' style={{marginLeft:'8px',marginRight:'16px'}}>Poor</label>
+
+                              </li>
+                              <li style={{marginTop:'8px'}}>
+                                <span style={{marginRight:'16px'}}>Coworkers</span>
+                                <input type='radio' name='coworkers' id='CW1' value='Good' checked={this.state.coworkers=='Good'?'checked':''} onChange={v=>{this.handlechange("coworkers",v,'CW1')}}/><label for='CW1' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                                <input type='radio' name='coworkers' id='CW2' value='Fair' checked={this.state.coworkers=='Fair'?'checked':''} onChange={v=>{this.handlechange("coworkers",v,'CW2')}}/><label for='CW2' style={{marginLeft:'8px',marginRight:'16px'}}>Fair</label>
+                                <input type='radio' name='coworkers' id='CW3' value='Poor' checked={this.state.coworkers=='Poor'?'checked':''} onChange={v=>{this.handlechange("coworkers",v,'CW3')}}/><label for='CW3' style={{marginLeft:'8px',marginRight:'16px'}}>Poor</label>
+
+                              </li>
+                              <li style={{marginTop:'8px'}}>
+                                <span style={{marginRight:'16px'}}>Clients/Customers</span>
+                                <input type='radio' name='Client2' id='CT5' value='Good' checked={this.state.Client2=='Good'?'checked':''} onChange={v=>{this.handlechange("Client2",v,'CT5')}}/><label for='CT5' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                                <input type='radio' name='Client2' id='CT6' value='Fair' checked={this.state.Client2=='Fair'?'checked':''} onChange={v=>{this.handlechange("Client2",v,'CT6')}}/><label for='CT6' style={{marginLeft:'8px',marginRight:'16px'}}>Fair</label>
+                                <input type='radio' name='Client2' id='CT7' value='Poor' checked={this.state.Client2=='Poor'?'checked':''} onChange={v=>{this.handlechange("Client2",v,'CT7')}}/><label for='CT7' style={{marginLeft:'8px',marginRight:'16px'}}>Poor</label>
+
+                              </li>
+
+
+                            </ul>
+                          </li>
+
+                          <li>
+                            <label style={{marginBottom:'16px'}}>9.Would you describe this person as being people oriented or result oriented?</label>
+                            <textarea value={this.state.q9} onChange={v=>{this.handlechange("q9",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+
+                          <li>
+                            <label style={{marginBottom:'8px'}}>10.Can you comment on his/her written and oral communication skills?</label>
+                            <div style={{width:'100%',height:'8px'}}></div>
+                            <input style={{marginLeft:'24px'}} type='radio' name='skillWO' id='CT1' value='VeryGood' checked={this.state.skillWO=='VeryGood'?'checked':''} onChange={v=>{this.handlechange("skillWO",v,'CT1')}}/><label for='CT1' style={{marginLeft:'8px',marginRight:'16px'}}>Very Good </label>
+                            <input type='radio' name='skillWO' id='SWO2' value='Good' checked={this.state.skillWO=='Good'?'checked':''} onChange={v=>{this.handlechange("skillWO",v,'SWO2')}}/><label for='SWO2' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                            <input type='radio' name='skillWO' id='SWO3' value='Average' checked={this.state.skillWO=='Average'?'checked':''} onChange={v=>{this.handlechange("skillWO",v,'SWO3')}}/><label for='SWO3' style={{marginLeft:'8px',marginRight:'16px'}}>Average</label>
+                            <input type='radio' name='skillWO' id='SWO4' value='NotGood' checked={this.state.skillWO=='NotGood'?'checked':''} onChange={v=>{this.handlechange("skillWO",v,'SWO4')}}/><label for='SWO4' style={{marginLeft:'8px',marginRight:'16px'}}>Not Good</label>
+                            <input type='radio' name='skillWO' id='SWO5' value='Bad' checked={this.state.skillWO=='Bad'?'checked':''} onChange={v=>{this.handlechange("skillWO",v,'SWO5')}}/><label for='SWO5' style={{marginLeft:'8px',marginRight:'16px'}}>Bad</label>
+                            <div style={{width:'100%',height:'8px'}}></div>
+                            <label style={{marginLeft:'24px',marginBottom:'8px'}}>Reasons:</label>
+                            <textarea value={this.state.q10} onChange={v=>{this.handlechange("q10",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+
+                          <li>
+                            <label style={{marginBottom:'8px'}}>11.Can you comment on his/her time management skills?</label>
+                            <div style={{width:'100%',height:'8px'}}></div>
+                            <input style={{marginLeft:'24px'}} type='radio' name='skillTM' id='STM1' value='VeryGood' checked={this.state.skillTM=='VeryGood'?'checked':''} onChange={v=>{this.handlechange("skillTM",v,'STM1')}}/><label for='STM1' style={{marginLeft:'8px',marginRight:'16px'}}>Very Good </label>
+                            <input type='radio' name='skillTM' id='STM2' value='Good' checked={this.state.skillTM=='Good'?'checked':''} onChange={v=>{this.handlechange("skillTM",v,'STM2')}}/><label for='STM2' style={{marginLeft:'8px',marginRight:'16px'}}>Good</label>
+                            <input type='radio' name='skillTM' id='STM3' value='Average' checked={this.state.skillTM=='Average'?'checked':''} onChange={v=>{this.handlechange("skillTM",v,'STM3')}}/><label for='STM3' style={{marginLeft:'8px',marginRight:'16px'}}>Average</label>
+                            <input type='radio' name='skillTM' id='STM4' value='NotGood' checked={this.state.skillTM=='NotGood'?'checked':''} onChange={v=>{this.handlechange("skillTM",v,'STM4')}}/><label for='STM4' style={{marginLeft:'8px',marginRight:'16px'}}>Not Good</label>
+                            <input type='radio' name='skillTM' id='STM5' value='Bad' checked={this.state.skillTM=='Bad'?'checked':''} onChange={v=>{this.handlechange("skillTM",v,'STM5')}}/><label for='STM5' style={{marginLeft:'8px',marginRight:'16px'}}>Bad</label>
+                            <div style={{width:'100%',height:'8px'}}></div>
+                            <label style={{marginLeft:'24px',marginBottom:'8px'}}>Reasons:</label>
+                            <textarea value={this.state.q11} onChange={v=>{this.handlechange("q11",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>12.What kind of work environment and position do you think best suits this person?</label>
+                            <textarea value={this.state.q12} onChange={v=>{this.handlechange("q12",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>13.Do you know why he/she left your company?</label>
+                            <textarea value={this.state.q13} onChange={v=>{this.handlechange("q13",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                          <li>
+                            <label style={{marginBottom:'16px'}}>14.Do you think that this person be eligible for a re-hire with your company?</label>
+                            <textarea value={this.state.q14} onChange={v=>{this.handlechange("q14",v)}} style={{resize:'none',width:'100%',height:'104px',outline:'none',textIndent:'1rem',border:'none'}}></textarea>
+                          </li>
+                        </ul>
           </div>
         </div>
         </Spin>
