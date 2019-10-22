@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Input, Pagination, message } from 'antd';
+import { Table, Button, Input, Pagination, message, Popconfirm } from 'antd';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -8,6 +8,7 @@ import ButtonWithConfirm from '../ButtonWithConfirm';
 import memoize from 'memoize-one';
 import { propTypes, defaultProps } from './propTypes';
 import { getRang } from './util';
+import { clone } from '../../../../util20/util';
 import IconBtns from './IconBtns';
 import {
   btnSizeMap,
@@ -19,9 +20,8 @@ import './PwAggrid.less';
 import 'react-resizable/css/styles.css';
 import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
-import { BIGrid } from 'lz-components-and-utils/lib/index';
-
-const Search = Input.Search;
+import moment from 'moment';
+import http from 'Util20/api';
 
 const isFirstColumn = params => {
   var displayedColumns = params.columnApi.getAllDisplayedColumns();
@@ -39,7 +39,6 @@ class PwAggrid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoomStatus: 0, // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
       defaultColDef: {
         filter: true,
         sortable: true,
@@ -48,8 +47,20 @@ class PwAggrid extends React.Component {
         headerCheckboxSelection: isFirstColumn
       },
       columnDefs: [],
-      hasPasteData: false
+      hasModifiedData: false,
+      isEditing: false, //是否正在编辑
+      saveBtnLoading: false,
+      deleteBtnLoading: false
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.dataSource.length && this.props.dataSource.length) {
+      const start_time = moment();
+      this._clonedData = clone(this.props.dataSource);
+      const end_time = moment();
+      console.log(end_time.diff(start_time));
+    }
   }
 
   handleImport = () => {
@@ -80,10 +91,6 @@ class PwAggrid extends React.Component {
     this.props.onStatisticalAnalysis && this.props.onStatisticalAnalysis();
   };
 
-  handleAdd = () => {
-    this.props.onAdd && this.props.onAdd();
-  };
-
   handleModify = () => {
     this.props.onModify && this.props.onModify();
   };
@@ -100,30 +107,89 @@ class PwAggrid extends React.Component {
     this.props.onSearch && this.props.onSearch(value, e);
   };
 
+  handleAddRecord = async records => {
+    try {
+      await http().addRecords({
+        resid: this.props.resid,
+        data: records
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
+  handleSaveRecords = async records => {
+    try {
+      await http().modifyRecords({
+        resid: this.props.resid,
+        data: records
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
+  handleDeleteRecords = async () => {
+    this.setState({ deleteBtnLoading: true });
+    let selectedData = this.gridApi.getSelectedRows();
+    this.gridApi.updateRowData({
+      remove: selectedData
+    });
+    const hasRec_idRecords = selectedData.filter(item => item.REC_ID > 0);
+    const noRec_idRecords = selectedData.filter(item => item.REC_ID < 0);
+    noRec_idRecords.forEach(item => {
+      this._addData.delete(item.REC_ID);
+    });
+    if (this._addData.size === 0) {
+      this.setState({
+        hasModifiedData: false
+      });
+    }
+    if (hasRec_idRecords.length) {
+      try {
+        await http().removeRecords({
+          resid: this.props.resid,
+          data: hasRec_idRecords
+        });
+      } catch (error) {
+        message.error(error.message);
+        console.error(error);
+      }
+    }
+    this.setState({ deleteBtnLoading: false });
+  };
+
   onGridReady = params => {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+    params.api.sizeColumnsToFit();
   };
 
   onQuickFilterChanged = () => {
     this.gridApi.setQuickFilter(document.getElementById('quickFilter').value);
   };
 
-  getcolumnDefs = memoize((columnDefs, columns) => {
-    return columns.map(column => {
+  getcolumnDefs = memoize((columns, columnDefs) => {
+    return columns.map((column, index) => {
       const _column = column[column.id];
       let aggridColumn = {
         headerName: _column.ColDispName,
         field: _column.ColName,
         sortable: true,
         filter: _column.filter,
-        editable: true,
+        // editable: _column.editable ,
+        editable: index < 4 ? true : false,
+        filterParams: {},
+        cellStyle: function(params) {
+          // console.log(params);
+        },
         valueSetter: params => {
-          // console.log(params.data[_column.ColName]);
+          // console.log(params);
           if (params.oldValue === params.newValue) {
             return false;
           }
-          let data = { ...params.data, [_column.ColName]: params.newValue };
           params.data[_column.ColName] = params.newValue;
           return true;
         }
@@ -148,35 +214,87 @@ class PwAggrid extends React.Component {
     });
   });
 
-  _modifiedDataByPaste = new Map();
+  _modifiedData = new Map();
 
   onCellValueChanged = params => {
     const { data, newValue, rowIndex, colDef } = params;
-    const oldObj = this._modifiedDataByPaste.get(rowIndex);
-    this._modifiedDataByPaste.set(rowIndex, {
+    const oldObj = this._modifiedData.get(rowIndex);
+    this._modifiedData.set(rowIndex, {
       ...oldObj,
       REC_ID: data.REC_ID,
-      [colDef.field]: newValue
+      [colDef.field]: newValue,
+      rowIndex
     });
-  };
-  onPasteStart = params => {};
-
-  onPasteEnd = params => {
-    this.setState({ hasPasteData: true });
-  };
-
-  onSavePasteButtonClick = async () => {
-    const data = Array.from(this._modifiedDataByPaste.values());
-    this.setState({ hasPasteData: false });
-    return console.log(data);
-    let res = await this.props.onPasteEnd(data);
-    if (res) {
-      message.success('保存成功');
-      this.setState({ hasPasteData: false });
-    } else {
-      message.success('保存失败');
+    if (!this.state.hasModifiedData) {
+      this.setState({ hasModifiedData: true });
     }
   };
+
+  onPasteStart = params => {};
+
+  onPasteEnd = params => {};
+
+  handleSaveButtonClick = async () => {
+    this.setState({ saveBtnLoading: true });
+    const data = Array.from(this._modifiedData.values());
+    const addData = Array.from(this._addData.values());
+    // console.log(data, this._addData);
+    if (addData.length) {
+      await this.handleAddRecord(addData);
+    }
+    if (data.length) {
+      await this.handleSaveRecords(data);
+    }
+    message.success('保存成功');
+    this.setState({ hasModifiedData: false, saveBtnLoading: false });
+    this._addData = new Map();
+    this._modifiedData = new Map();
+  };
+
+  handleRowEditingStarted = params => {
+    this.setState({ isEditing: true, hasModifiedData: true });
+  };
+
+  handleRowEditingStopped = params => {
+    console.log('stop', params);
+    this.setState({ isEditing: false });
+    const { data } = params;
+    if (data.isNew) {
+      this._addData.set(data.REC_ID, data);
+    }
+    // else {
+    //   const index = this._modifiedData.findIndex(
+    //     item => item.REC_ID === data.REC_ID
+    //   );
+    //   this._modifiedData[index] = data;
+    // }
+  };
+
+  handleAddRecord = columnDefs => () => {
+    const firstEditable = columnDefs.find(item => item.editable);
+    let data = {
+      REC_ID: -(this._addData.size + 1),
+      isNew: true
+    };
+    this._addData.set(data.REC_ID, data);
+    this.gridApi.updateRowData({
+      add: [data],
+      addIndex: 0
+    });
+    this.gridApi.startEditingCell({
+      rowIndex: 0,
+      colKey: firstEditable.field
+    });
+  };
+
+  getRowStyle = params => {
+    // console.log(params);
+    if (params.data.isNew) {
+      return { background: '#ffccc7' };
+    }
+  };
+
+  _addData = new Map();
 
   render() {
     const {
@@ -213,7 +331,13 @@ class PwAggrid extends React.Component {
       ...restProps
     } = this.props;
 
-    let { columnDefs, defaultColDef, hasPasteData } = this.state;
+    let {
+      defaultColDef,
+      hasModifiedData,
+      isEditing,
+      saveBtnLoading,
+      deleteBtnLoading
+    } = this.state;
 
     const hasActionBar =
       hasAdd || hasModify || hasDelete || renderOtherBtns || hasSearch;
@@ -225,7 +349,10 @@ class PwAggrid extends React.Component {
     const { locale } = this.props.intl;
 
     const hasStatisticalAnalysis = gridProps.length ? true : false;
-    columnDefs = this.getcolumnDefs(columnDefs, this.props.originalColumn);
+    const columnDefs = this.getcolumnDefs(
+      this.props.originalColumn,
+      this.state.columnDefs
+    );
 
     return (
       <div className="pw-ag-grid">
@@ -284,20 +411,45 @@ class PwAggrid extends React.Component {
                 width={120}
                 placeholder="全局筛选"
               />
-              {/* {hasPasteData && ( */}
-              <>
-                <Button
-                  onClick={() => {
-                    console.log(this.gridApi.getModel());
-                  }}
+              <Button onClick={this.handleAddRecord(columnDefs)}>添加</Button>
+              {isEditing && (
+                <Popconfirm
+                  title="确认取消？"
+                  onConfirm={() => this.gridApi.stopEditing(true)}
                 >
-                  还原
-                </Button>
-                <Button type="primary" onClick={this.onSavePasteButtonClick}>
-                  保存
-                </Button>
-              </>
-              {/* )} */}
+                  <Button type="danger">取消</Button>
+                </Popconfirm>
+              )}
+
+              {!isEditing && (
+                <Popconfirm
+                  title="确认删除？"
+                  onConfirm={this.handleDeleteRecords}
+                >
+                  <Button loading={deleteBtnLoading} type="danger">
+                    删除
+                  </Button>
+                </Popconfirm>
+              )}
+              {hasModifiedData && (
+                <>
+                  {/* <Button
+                    onClick={() => {
+                      console.log(this.gridApi.getModel());
+                      console.log(this._clonedData);
+                    }}
+                  >
+                    还原
+                  </Button> */}
+                  <Button
+                    type="primary"
+                    loading={saveBtnLoading}
+                    onClick={this.handleSaveButtonClick}
+                  >
+                    保存
+                  </Button>
+                </>
+              )}
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
@@ -359,6 +511,12 @@ class PwAggrid extends React.Component {
             onCellValueChanged={this.onCellValueChanged}
             onPasteStart={this.onPasteStart}
             onPasteEnd={this.onPasteEnd}
+            getRowNodeId={data => data.REC_ID}
+            animateRows={true}
+            editType="fullRow"
+            onRowEditingStopped={this.handleRowEditingStopped}
+            onRowEditingStarted={this.handleRowEditingStarted}
+            getRowStyle={this.getRowStyle}
           ></AgGridReact>
         </div>
       </div>

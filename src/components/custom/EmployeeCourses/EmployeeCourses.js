@@ -696,11 +696,11 @@ class EmployeeCourses extends React.Component {
                   width: 14,
                   height: 14,
                   borderRadius: '50%',
-                  backgroundColor: '#2470e8',
+                  backgroundColor: item.C3_623173774889 === 'Y' ? '#5bc039': '#2470e8',
                   marginRight: 6
                 }}
               />
-              {item.C3_613961012148}
+              {item.C3_623173774889 === 'Y' ? '已完成' : '未完成'}
             </div>
             <div>
               <Button
