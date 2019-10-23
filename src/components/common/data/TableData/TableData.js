@@ -1657,7 +1657,8 @@ class TableData extends React.Component {
       actionBarExtra,
       actionBarExtraAg,
       headerExtra,
-      rowSelectionAg
+      rowSelectionAg,
+      sideBarAg
     } = this.props;
 
     const {
@@ -1695,6 +1696,7 @@ class TableData extends React.Component {
           dataSource={dataSource}
           onPasteEnd={this.handlePasteEnd}
           scroll={scrollXY}
+          sideBarAg={sideBarAg}
           hasAdd={hasAdd && this._hasAdd}
           hasModify={hasModify && this._hasModify}
           hasDelete={hasDelete && this._hasDelete}
