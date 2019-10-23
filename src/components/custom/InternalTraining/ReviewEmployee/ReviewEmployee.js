@@ -14,6 +14,7 @@ import {
   Icon
 } from 'antd';
 import SelectEmployeeToNotice from './SelectEmployeeToNotice';
+import SelectEmployeeToAdd from './SelectEmployeeToAdd';
 import http from 'Util20/api';
 import NoticeProgress from '../../CreatePlan/PlanProgress';
 
@@ -33,7 +34,8 @@ class ReviewEmployee extends React.Component {
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
-    isShowModal: false
+    isShowModal: false,
+    addEmployeesVisible: false
   };
   componentDidMount() {
     this.getCourseArrangements();
@@ -171,6 +173,48 @@ class ReviewEmployee extends React.Component {
     }
   };
 
+  addEmployees = async employees => {
+    try {
+      await http().addRecords({
+        resid: ReviewEmployeeResid,
+        data: employees.map(item => {
+          return {
+            CourseArrangeID: this.props.courseArrangement.CourseArrangeID,
+            C3_613941384832: item.C3_305737857578
+          };
+        }),
+        isEditOrAdd: true
+      });
+      await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: [{ REC_ID: this.props.courseArrangement.REC_ID }]
+      });
+      this.tableDataRef.handleRefresh();
+      this.setState({ addEmployeesVisible: false });
+      message.success('添加成功');
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  };
+
+  deleteRecord = async record => {
+    try {
+      await http().removeRecords({
+        resid: ReviewEmployeeResid,
+        data: [{ REC_ID: record.REC_ID }]
+      });
+      this.tableDataRef.handleRefresh();
+      await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: [{ REC_ID: this.props.courseArrangement.REC_ID }]
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
   //确认人员名单 截止报名
   comfirmList = () => {
     try {
@@ -263,7 +307,6 @@ class ReviewEmployee extends React.Component {
   //公开课
   renderPublic() {
     let actionBarExtra = null;
-    console.log(this.props.courseArrangement.isStopApply);
     if (this.props.courseArrangement.isStopApply === 'Y') {
       actionBarExtra = (
         <div className="review_employee-table_action_bar_extra">
@@ -280,12 +323,18 @@ class ReviewEmployee extends React.Component {
         </div>
       );
     } else {
-      console.log(2);
       actionBarExtra = record => (
         <div className="review_employee-table_action_bar_extra">
           {this.renderCourseName()}
 
           <div className="review_employee-table_action_bar_extra-buttons">
+            <Button
+              onClick={() => {
+                this.setState({ addEmployeesVisible: true });
+              }}
+            >
+              添加人员
+            </Button>
             <Button
               onClick={() => {
                 if (record.selectedRowKeys.length) {
@@ -307,13 +356,14 @@ class ReviewEmployee extends React.Component {
             >
               通知报名
             </Button>
-            <Button
-              onClick={() => {
+            <Popconfirm
+              title="通知全部报名"
+              onConfirm={() => {
                 this.setState({ isShowModal: true }, this.handleNotice);
               }}
             >
-              通知全部报名
-            </Button>
+              <Button>通知全部报名</Button>
+            </Popconfirm>
             <Popconfirm
               title="报名截止？"
               onConfirm={() => {
@@ -335,7 +385,24 @@ class ReviewEmployee extends React.Component {
         hasBeBtns={true}
         hasAdd={false}
         hasRowView={false}
-        hasRowDelete={true}
+        customRowBtns={[
+          (record, btnSize) => {
+            return (
+              <Popconfirm
+                title="您确认删除吗？"
+                onConfirm={() => {
+                  this.deleteRecord(record);
+                }}
+              >
+                <Button type="danger" style={{ fontSize: btnSize }}>
+                  删除
+                </Button>
+              </Popconfirm>
+            );
+          }
+        ]}
+        hasRowDelete={false}
+        actionBarWidth={100}
         hasRowEdit={false}
         hasDelete={false}
         hasModify={false}
@@ -422,6 +489,16 @@ class ReviewEmployee extends React.Component {
           destroyOnClose
         >
           <SelectEmployeeToNotice onNotice={this.noticeEmployee} />
+        </Modal>
+        <Modal
+          title="添加人员"
+          visible={this.state.addEmployeesVisible}
+          width="80%"
+          onCancel={this.closeModals}
+          footer={null}
+          destroyOnClose
+        >
+          <SelectEmployeeToAdd onAdd={this.addEmployees} />
         </Modal>
         <Modal
           title="选择课程安排"

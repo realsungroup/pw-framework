@@ -337,7 +337,7 @@ class TableData extends React.Component {
             cmswhere: mergedCmsWhere,
             cmscolumns,
             pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
-            pagesize: tableComponent === 'ag-grid' ? 0 : pageSize,
+            pagesize: tableComponent === 'ag-grid' ? 100 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -363,7 +363,7 @@ class TableData extends React.Component {
             cmswhere: mergedCmsWhere,
             cmscolumns,
             pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
-            pagesize: tableComponent === 'ag-grid' ? 0 : pageSize,
+            pagesize: tableComponent === 'ag-grid' ? 100 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -1657,7 +1657,8 @@ class TableData extends React.Component {
       actionBarExtra,
       actionBarExtraAg,
       headerExtra,
-      rowSelectionAg
+      rowSelectionAg,
+      sideBarAg
     } = this.props;
 
     const {
@@ -1694,10 +1695,8 @@ class TableData extends React.Component {
           pagination={pagination}
           dataSource={dataSource}
           onPasteEnd={this.handlePasteEnd}
-          // columns={newColumns}
-          bordered
-          rowKey={'REC_ID'}
           scroll={scrollXY}
+          sideBarAg={sideBarAg}
           hasAdd={hasAdd && this._hasAdd}
           hasModify={hasModify && this._hasModify}
           hasDelete={hasDelete && this._hasDelete}
@@ -1721,7 +1720,6 @@ class TableData extends React.Component {
           onStatisticalAnalysis={this.handleStatisticalAnalysis}
           hasAdvSearch={hasAdvSearch && this._hasAdvSearch}
           hasSearch={hasSearch && this._hasSearch}
-          // hasZoomInOut={hasZoomInOut}
           onZoomIn={this.handleZoomIn}
           onZoomOut={this.handleZoomOut}
           bordered={bordered}
@@ -1742,6 +1740,8 @@ class TableData extends React.Component {
           isShowGrid={isShowGrid}
           gridProps={gridProps}
           rowSelectionAg={rowSelectionAg}
+          resid={this.props.resid}
+          baseURL={this.props.baseURL}
         />
       );
     }

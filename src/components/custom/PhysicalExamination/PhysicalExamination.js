@@ -407,7 +407,7 @@ showOver=()=>{
 
           <div className={this.state.loca=="SH"?'':'hidden'}>
           <rect style={{display:'block',width:'100%',height:'1020px'}}>
-            <h4 style={{fontSize:'24px',width:'100%',textAlign:'center',marginBottom:'24px'}}>菲尼萨（上海）体检注意事项</h4>
+            <h4 style={{fontSize:'20px',width:'100%',textAlign:'center',marginBottom:'24px'}}>菲尼萨（上海）体检注意事项</h4>
             <p style={{fontSize:'16px',textIndent:'2rem'}}>1.已居住在上海的员工必须到美年健康做标准体检（菲尼萨团体体检为
             <input style={{fontSize:'16px',marginLeft:'8px',width:'64px',border:'none',borderBottom:'1px solid #333'}} onChange={v=>{this.handlechange("cost",v)}} value={this.state.cost}/>
             元/男或者
@@ -431,49 +431,49 @@ showOver=()=>{
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">一般检查</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>身高、体重、体重指数（BMI） 血压（BP）、脉搏（P）</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">身高、体重、体重指数（BMI） 血压（BP）、脉搏（P）</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">内科</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>心、肺听诊，腹部触诊</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">心、肺听诊，腹部触诊</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">外科</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>浅表淋巴结，甲状腺、乳房、脊柱、四肢、外生殖器、前列腺、肛肠指检、皮肤等</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">浅表淋巴结，甲状腺、乳房、脊柱、四肢、外生殖器、前列腺、肛肠指检、皮肤等</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} rowspan="2" colspan="2">眼科</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>视力</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">视力</th>
               </tr>
-              <tr>  <th style={{textAlign:'center',width:'80%',padding:'8px'}}>外眼、眼底</th>
+              <tr>  <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">外眼、眼底</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">耳鼻喉科</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>外耳道、鼓膜、鼻腔、鼻中隔、扁桃体、咽部</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">外耳道、鼓膜、鼻腔、鼻中隔、扁桃体、咽部</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">心电图</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>十二导心电图</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">十二导心电图</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">血常规18项</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>检查白细胞、红细胞、血小板等</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">检查白细胞、红细胞、血小板等</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">肝功能</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>丙氨酸氨基转氨酶（ALT）</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">丙氨酸氨基转氨酶（ALT）</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">肾功能2项</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>尿素氮、肌酐</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">尿素氮、肌酐</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">尿常规12项</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>颜色、比重、酸碱度、尿糖、尿蛋白、尿胆素、尿胆原、胆红素、隐血、亚硝酸盐、尿沉渣检查</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">颜色、比重、酸碱度、尿糖、尿蛋白、尿胆素、尿胆原、胆红素、隐血、亚硝酸盐、尿沉渣检查</th>
               </tr>
               <tr>
                 <th style={{textAlign:'center',width:'20%',padding:'8px'}} colspan="2">全数字X光检查<br/>（DR）</th>
-                <th style={{textAlign:'center',width:'80%',padding:'8px'}}>胸部正位检查</th>
+                <th style={{textAlign:'center',width:'80%',padding:'8px'}} colspan="2">胸部正位检查</th>
               </tr>
             </table>
           </rect>
@@ -482,8 +482,8 @@ showOver=()=>{
           <div className={this.state.loca=="WX"?'':'hidden'}>
           <rect style={{display:'block',width:'100%',height:'1020px'}}>
             <h4 style={{fontSize:'24px'}}>选项一：无锡本地体检</h4>
-            <h3 style={{fontSize:'24px',textAlign:'center',marginBottom:'24px'}}>
-            <input style={{textAlign:'center',fontSize:'24px',width:'auto',fontWeight:'normal',border:'none'}} onChange={v=>{this.handlechange("hosName",v)}} value={this.state.hosName}/>
+            <h3 style={{fontSize:'20px',textAlign:'center',marginBottom:'24px'}}>
+            <input style={{textAlign:'center',fontSize:'20px',width:'auto',fontWeight:'normal',border:'none'}} onChange={v=>{this.handlechange("hosName",v)}} value={this.state.hosName}/>
             </h3>
 			<div style={{width:'100%',textAlign:'center'}}>,
 

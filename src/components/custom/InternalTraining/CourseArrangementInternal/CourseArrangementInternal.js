@@ -12,7 +12,9 @@ import {
   Radio,
   Form,
   Select,
-  Tag
+  Tag,
+  Switch,
+  Spin
 } from 'antd';
 import moment from 'moment';
 import './CourseArrangementInternal.less';
@@ -56,6 +58,7 @@ const formItemLayout = {
 
 class CourseArrangementInternal extends React.Component {
   state = {
+    loading:false,
     mode: 'card', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
     courseArrangements: [], //内训课程安排
     internalCourses: [], //内训课程
@@ -80,7 +83,8 @@ class CourseArrangementInternal extends React.Component {
       location: ''
       // price: undefined,
       // classHour: undefined,
-    }
+    },
+    employeeListVisible: false
   };
 
   async componentDidMount() {
@@ -132,6 +136,7 @@ class CourseArrangementInternal extends React.Component {
         };
       });
       this.setState({ courseArrangements, courses, calendarEvents });
+
     } else {
       message.error(res.message);
     }
@@ -164,6 +169,39 @@ class CourseArrangementInternal extends React.Component {
       return;
     }
   };
+
+  // 自动拆分课程的开关
+  autoSp=async(v,item,key)=>{
+    this.setState({loading:true})
+    var rec_id=this.state.courseArrangements[key].REC_ID;
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data:[{
+          REC_ID:rec_id,
+          isDivisionCourse:v
+        }]
+      });
+
+      this.setState({loading:false});
+      if(v==true){
+        message.success('已开启自动拆分课程');
+
+      }else{
+        message.success('已关闭自动拆分课程');
+
+      }
+
+
+    }catch(error){
+
+      this.setState({loading:false});
+      message.error(error.message);
+
+    }
+  }
+
   //搜索内训课程
 
   searchInternalCourses = async () => {
@@ -387,11 +425,15 @@ class CourseArrangementInternal extends React.Component {
           </header>
           {this.state.mode === 'card' && (
             <div className="arranging_courses-course_list">
+
               {courseArrangements.length ? (
-                courseArrangements.map(item => (
+                courseArrangements.map((item,key) => (
+
                   <Card
                     title={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div>
+
+
                         <span>{item.CourseName}</span>
                         <span
                           className="arranging_courses-course_list-course_type"
@@ -403,6 +445,11 @@ class CourseArrangementInternal extends React.Component {
                         >
                           {item.C3_616254048241}
                         </span>
+                        <Spin  className='spinoimg' spinning={this.state.loading}>
+
+                        <Switch defaultChecked={item.isDivisionCourse=="True"?true:false} style={{float:'right'}} onChange={v=>{this.autoSp(v,item,key)}}/>
+                        <span style={{fontWeight:"normal",float:'right',marginRight:'8px'}}>是否自动拆课</span>
+                        </Spin>
                       </div>
                     }
                     className="arranging_courses_item"
@@ -511,8 +558,11 @@ class CourseArrangementInternal extends React.Component {
                         地点:{item.CourseLocation}
                       </div>
                       <div className="content_item">季度：{item.quarter}</div>
+
+
                     </div>
                   </Card>
+
                 ))
               ) : (
                 <List
@@ -525,7 +575,7 @@ class CourseArrangementInternal extends React.Component {
           {this.state.mode === 'table' && (
             <div style={{ width: '100%', flex: 1 }}>
               <TableData
-                resid="616073391736"
+                resid="615549231946"
                 subtractH={220}
                 hasRowView={true}
                 hasAdd={false}
@@ -535,6 +585,23 @@ class CourseArrangementInternal extends React.Component {
                 hasRowDelete={false}
                 actionBarWidth={150}
                 hasRowModify={false}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={() =>
+                          this.setState({
+                            selectedCourse: record,
+                            employeeListVisible: true
+                          })
+                        }
+                        size={btnSize}
+                      >
+                        学员列表
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
           )}
@@ -839,7 +906,6 @@ class CourseArrangementInternal extends React.Component {
                     <Select
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
-                        console.log(e);
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
@@ -976,6 +1042,29 @@ class CourseArrangementInternal extends React.Component {
                 }}
               />
             )}
+          </div>
+        </Modal>
+        <Modal
+          visible={this.state.employeeListVisible}
+          footer={null}
+          width="90%"
+          onCancel={() => this.setState({ employeeListVisible: false })}
+          destroyOnClose
+        >
+          <div style={{ height: 700 }}>
+            <TableData
+              resid="615983369834"
+              subtractH={220}
+              hasRowView={true}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowSelection={false}
+              hasRowDelete={false}
+              actionBarWidth={100}
+              hasRowModify={false}
+              cmswhere={`CourseArrangeID = '${this.state.selectedCourse.CourseArrangeID}'`}
+            />
           </div>
         </Modal>
       </div>
