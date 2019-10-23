@@ -13,6 +13,8 @@ import {
   Form,
   Select
 } from 'antd';
+import { BIGrid } from 'lz-components-and-utils/lib/index';
+
 import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
 import http from 'Util20/api';
@@ -65,7 +67,7 @@ class ArrangingCourses extends React.Component {
     searchPeriod: ['', ''], //搜索时间段
     selectedRecentPeriod: 'all', //下拉选项的值
     rangePickerValue: [null, null], // 日期选择器的值
-    mode: 'card' // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
+    mode: 'table' // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
   };
 
   componentDidMount = async () => {
@@ -303,7 +305,7 @@ class ArrangingCourses extends React.Component {
                     this.setState({ mode: 'card' });
                   }}
                 />
-                {/* <Icon
+                { <Icon
                   type="table"
                   style={mode === 'table' ? activeStyle : unactiveStyle}
                   key="card"
@@ -312,7 +314,7 @@ class ArrangingCourses extends React.Component {
                   onClick={() => {
                     this.setState({ mode: 'table' });
                   }}
-                /> */}
+                /> }
                 <Icon
                   key="calendar"
                   type="calendar"
@@ -458,13 +460,17 @@ class ArrangingCourses extends React.Component {
             </div>
           )}
           {this.state.mode === 'table' && (
-            <div style={{ width: '100%', flex: 1 }}>
+
+
+            <div style={{ width: '100%', flex: 1 ,height:'100%'}} className='arc_ag'>
               <TableData
                 resid="613959487818"
                 subtractH={220}
                 hasRowView={false}
                 hasModify={false}
                 hasDelete={false}
+                hasAdd={true}
+                tableComponent='ag-grid'
                 hasRowSelection={true}
               />
             </div>
@@ -876,7 +882,7 @@ class ArrangingCourses extends React.Component {
 
               <Form.Item label="讲师">
                 {getFieldDecorator('Teacher', {
-                  
+
                 })(<Input />)}
               </Form.Item>
 
