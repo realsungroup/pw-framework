@@ -122,8 +122,8 @@ showConfirm = () => {
       this.fightBack();
     },
     onCancel() {},
-    okText:'OK',
-    cancelText:'Nope'
+    okText:'YES',
+    cancelText:'NO'
   });
 }
 
@@ -134,8 +134,8 @@ showConfirmMail = () => {
       return this.sendMail();
     },
     onCancel() {},
-    okText:'OK',
-    cancelText:'Nope'
+    okText:'YES',
+    cancelText:'NO'
   });
 }
 // 无需复试直接通过
@@ -146,8 +146,8 @@ endStream =()=>{
         this.warp();
     },
     onCancel() {},
-    okText:'OK',
-    cancelText:'Nope'
+    okText:'YES',
+    cancelText:'NO'
   });
 }
 warp=async()=>{
@@ -169,7 +169,7 @@ warp=async()=>{
       onOk() {
         window.location.reload();
       },
-      okText:'OK'
+      okText:'YES'
     });
 
 
@@ -177,7 +177,7 @@ warp=async()=>{
     Modal.error({
       title: 'Alert!',
       content: err.message,
-      okText:'OK'
+      okText:'YES'
     });
     this.setState({loading:false});
 
@@ -252,11 +252,6 @@ subConfirm = () => {
   if(!this.state.groupInter){
      bol=false;
      str+='groupInter';
-
-  }
-  if(!this.state.p4r){
-     bol=false;
-     str+='p4r';
 
   }
   if(!this.state.vDR){
@@ -481,8 +476,8 @@ subConfirm = () => {
           this.subData();
       },
       onCancel() {},
-      okText:'OK',
-      cancelText:'Nope'
+      okText:'YES',
+      cancelText:'NO'
     });
   }else{
     confirm({
@@ -490,8 +485,8 @@ subConfirm = () => {
       onOk(){
       },
       onCancel() {},
-      okText:'OK',
-      cancelText:'Nope'
+      okText:'YES',
+      cancelText:'NO'
     });
   }
 
@@ -530,7 +525,7 @@ handleChangeS=(value,obj)=>{
         Modal.error({
           title: 'Alert!',
           content: err.message,
-          okText:'OK'
+          okText:'YES'
         });
         this.setState({fetching:false});
 
@@ -598,6 +593,7 @@ var hrCode='623876215000';
     // 623153143463
     // this.getF();
 }
+
 
   getInfo = async (resid,id,id2) => {
     this.setState({loading:true});
@@ -898,7 +894,8 @@ var hrCode='623876215000';
           showMail:false,
           showConBtn:false,
           showSub:false,
-          showWarp:false
+          showWarp:false,
+          showPrint:false
         })
       if(!this.state.C3_622921647557){
         this.setState({C3_622921647557:'未送邮（初试）'})
@@ -909,7 +906,9 @@ var hrCode='623876215000';
         }
         if(this.state.C3_622921647557=='未送邮（复试）'){
           this.setState({showWarp:true});
-
+          if(this.state.userChara=='HR'){
+            this.setState({showPrint:true})
+          }
         }
       }
       if((this.state.C3_622921647557=='待确认（初试）')||(this.state.C3_622921647557=='待确认（复试）')){
@@ -926,7 +925,8 @@ var hrCode='623876215000';
         this.setState({
           showMail:false,
           showConBtn:false,
-          showSub:false
+          showSub:false,
+          showPrint:true
         })
       }
 
@@ -944,7 +944,7 @@ var hrCode='623876215000';
       Modal.error({
         title: 'Alert!',
         content: err.message,
-        okText:'OK'
+        okText:'YES'
       });
       this.setState({loading:false});
 
@@ -967,7 +967,7 @@ var hrCode='623876215000';
       Modal.error({
         title: 'Alert!',
         content: err.message,
-        okText:'OK'
+        okText:'YES'
       });
       this.setState({loading:false});
 
@@ -1014,14 +1014,14 @@ var hrCode='623876215000';
            onOk() {
              window.location.reload();
            },
-           okText:'OK'
+           okText:'YES'
          });
 
     }catch (err) {
         Modal.error({
           title: 'Alert!',
           content: err.message,
-          okText:'OK'
+          okText:'YES'
         });
         this.setState({loading:false});
 
@@ -1030,7 +1030,7 @@ var hrCode='623876215000';
       Modal.error({
         title: 'Alert!',
         content: 'Please choose an addressee first!',
-        okText:'OK'
+        okText:'YES'
       });
     }
 
@@ -1060,14 +1060,14 @@ var hrCode='623876215000';
          onOk() {
            window.location.reload();
          },
-         okText:'OK'
+         okText:'YES'
        });
 
   }catch (err) {
       Modal.error({
         title: 'Alert!',
         content: err.message,
-        okText:'OK'
+        okText:'YES'
       });
       this.setState({loading:false});
 
@@ -1098,14 +1098,14 @@ var hrCode='623876215000';
          onOk() {
            window.location.reload();
          },
-         okText:'OK'
+         okText:'YES'
        });
 
   }catch (err) {
       Modal.error({
         title: 'Alert!',
         content: err.message,
-        okText:'OK'
+        okText:'YES'
       });
       this.setState({loading:false});
 
@@ -1197,7 +1197,7 @@ var hrCode='623876215000';
         onOk() {
           window.location.reload();
         },
-        okText:'OK'
+        okText:'YES'
       });
 
 
@@ -1205,7 +1205,7 @@ var hrCode='623876215000';
       Modal.error({
         title: 'Alert!',
         content: err.message,
-        okText:'OK'
+        okText:'YES'
       });
       this.setState({loading:false});
 
@@ -1240,7 +1240,7 @@ var hrCode='623876215000';
       <Spin spinning={this.state.loading}>
         <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} >
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
-            T1
+            T1~4
           </rect>
           <rect className={this.state.chara=='T5'?'current':''} onClick={e => {this.changeChara('T5');}}>
             T5
@@ -1249,22 +1249,22 @@ var hrCode='623876215000';
             T6
           </rect >
           <rect className={this.state.chara=='S5/S6/Sr.Specialist'?'current':''} onClick={e => {this.changeChara('S5/S6/Sr.Specialist');}}>
-            S5
+            S5 / S6 Sr.Specialist
           </rect>
           <rect className={this.state.chara=='S6/Supervisor/S7/S8/T4/ManagerI'?'current':''} onClick={e => {this.changeChara('S6/Supervisor/S7/S8/T4/ManagerI');}}>
-            S6
+            S6 Supervisor/S7~8/T4/MangerI
           </rect>
           <rect className={this.state.chara=='S9/T5/ManagerII'?'current':''} onClick={e => {this.changeChara('S9/T5/ManagerII');}}>
-            S9
+            S9/T5/ManagerII
           </rect>
           <rect className={this.state.chara=='S10/T6/Sr.Manager'?'current':''} onClick={e => {this.changeChara('S10/T6/Sr.Manager');}}>
-            S10
+            S10/T6/Sr.Manager
           </rect>
           <rect className={this.state.chara=='Technician'?'current':''} onClick={e => {this.changeChara('Technician');}}>
-            Technician
+            S3
           </rect>
           <rect className={this.state.chara=='应届生'?'current':''} onClick={e => {this.changeChara('应届生');}}>
-            graduate
+            S4
           </rect>
         </div>
         <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden'}>
@@ -1298,10 +1298,11 @@ var hrCode='623876215000';
         </div>
         <div className='buttonLine'>
           <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':'hidden'}>Submit</Button>
-          <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>I Agree</Button>
-          <Button onClick={this.onPrinting}>Print</Button>
-          <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>Return the Form</Button>
-          <Button type='danger' className={this.state.showWarp==true?'':'hidden'} onClick={this.endStream}>Employment without Reexamine</Button>
+          <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>Approve</Button>
+          <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>Return</Button>
+          <Button type='danger' className={this.state.showWarp==true?'':'hidden'} onClick={this.endStream}>Complete</Button>
+          <Button className={this.state.showPrint==true?'':'hidden'} onClick={this.onPrinting}>Print</Button>
+
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
 
@@ -2353,7 +2354,7 @@ var hrCode='623876215000';
               </rect>
               <rect>
                 <cell>
-                  <b className={this.state.p4r?'':'warning'}>
+                  <b>
                     建议复试项<br/>Propose for Retrial
                   </b>
                 </cell>

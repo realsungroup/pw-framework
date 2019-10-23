@@ -2290,10 +2290,10 @@ class OfferLetter extends React.Component {
         </div>
         <ul className='location'>
           <li className={this.state.data.location=="SH"?'hidden':'cur'} onClick={()=>{this.locaSele('WX')}}>
-            无锡
+            WX
           </li>
           <li className={this.state.data.location=="SH"?'cur':'hidden'} onClick={()=>{this.locaSele('SH')}}>
-            上海
+            SH
           </li>
         </ul>
         <div className={this.state.overlay?'overlay':'hidden'} >
