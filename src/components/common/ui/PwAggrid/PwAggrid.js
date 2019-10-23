@@ -50,12 +50,17 @@ class PwAggrid extends React.Component {
       hasModifiedData: false,
       isEditing: false, //是否正在编辑
       saveBtnLoading: false,
-      deleteBtnLoading: false
+      deleteBtnLoading: false,
+      rowClassRules: {
+        'pw-ag-grid-new-row': function(params) {
+          return params.data ? params.data.isNew === true : null;
+        }
+      }
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.dataSource.length && this.props.dataSource.length) {
+    if (prevProps.dataSource !== this.props.dataSource) {
       const start_time = moment();
       this._clonedData = clone(this.props.dataSource);
       const end_time = moment();
@@ -107,15 +112,21 @@ class PwAggrid extends React.Component {
     this.props.onSearch && this.props.onSearch(value, e);
   };
 
-  handleAddRecord = async records => {
+  handleAddRecords = async records => {
+    const data = records.map(item => {
+      return {
+        ...item,
+        REC_ID: undefined
+      };
+    });
     try {
       await http().addRecords({
         resid: this.props.resid,
-        data: records
+        data: data
       });
     } catch (error) {
-      message.error(error.message);
-      console.error(error);
+      // message.error(error.message);
+      console.log(error);
     }
   };
 
@@ -142,7 +153,7 @@ class PwAggrid extends React.Component {
     noRec_idRecords.forEach(item => {
       this._addData.delete(item.REC_ID);
     });
-    if (this._addData.size === 0) {
+    if (this._addData.size === 0 && this._modifiedData.size === 0) {
       this.setState({
         hasModifiedData: false
       });
@@ -179,21 +190,38 @@ class PwAggrid extends React.Component {
         field: _column.ColName,
         sortable: true,
         filter: _column.filter,
-        // editable: _column.editable ,
-        editable: index < 4 ? true : false,
+        editable: _column.editable,
         filterParams: {},
         cellStyle: function(params) {
           // console.log(params);
+          if (params.colDef.editable) {
+            return { background: '#ddebe1' };
+          }
         },
         valueSetter: params => {
-          // console.log(params);
-          if (params.oldValue === params.newValue) {
+          if (params.oldValue == params.newValue) {
             return false;
           }
           params.data[_column.ColName] = params.newValue;
           return true;
         }
       };
+      if (
+        _column.ValueOptions.length ||
+        _column.DisplayOptions.length ||
+        _column.ListOfColOptions.length
+      ) {
+        // aggridColumn.cellEditor = 'agRichSelectCellEditor';
+        aggridColumn.cellEditor = 'agSelectCellEditor';
+        if (_column.ListOfColOptions.length) {
+          console.log(_column.ListOfColOptions);
+          aggridColumn.cellEditorParams = {
+            values: _column.ListOfColOptions.map(item => item.valueColValue)
+          };
+        } else {
+          aggridColumn.cellEditorParams = { values: _column.ValueOptions };
+        }
+      }
       if (!aggridColumn.filter) {
         switch (_column.ColType) {
           case 4:
@@ -210,21 +238,39 @@ class PwAggrid extends React.Component {
             break;
         }
       }
+      if (aggridColumn.editable) {
+        this._editableCol.push(aggridColumn.field);
+      } else {
+        this._cantEditCol.push(aggridColumn.field);
+      }
       return aggridColumn;
     });
   });
-
+  _editableCol = [];
+  _cantEditCol = [];
   _modifiedData = new Map();
 
   onCellValueChanged = params => {
     const { data, newValue, rowIndex, colDef } = params;
-    const oldObj = this._modifiedData.get(rowIndex);
-    this._modifiedData.set(rowIndex, {
-      ...oldObj,
-      REC_ID: data.REC_ID,
-      [colDef.field]: newValue,
-      rowIndex
-    });
+    let oldObj = {};
+    if (data.isNew) {
+      oldObj = this._addData.get(data.REC_ID);
+      this._addData.set(data.REC_ID, {
+        ...oldObj,
+        REC_ID: data.REC_ID,
+        [colDef.field]: newValue,
+        rowIndex
+      });
+    } else {
+      oldObj = this._modifiedData.get(data.REC_ID);
+      this._modifiedData.set(data.REC_ID, {
+        ...oldObj,
+        REC_ID: data.REC_ID,
+        [colDef.field]: newValue,
+        rowIndex
+      });
+    }
+
     if (!this.state.hasModifiedData) {
       this.setState({ hasModifiedData: true });
     }
@@ -238,40 +284,43 @@ class PwAggrid extends React.Component {
     this.setState({ saveBtnLoading: true });
     const data = Array.from(this._modifiedData.values());
     const addData = Array.from(this._addData.values());
-    // console.log(data, this._addData);
+    console.log(data, addData);
     if (addData.length) {
-      await this.handleAddRecord(addData);
+      await this.handleAddRecords(addData);
+      console.log(addData.map(item => ({ ...item, isNew: false })));
+      this.gridApi.updateRowData({
+        update: addData.map(item => ({ ...item, isNew: false }))
+      });
     }
     if (data.length) {
       await this.handleSaveRecords(data);
     }
     message.success('保存成功');
+
     this.setState({ hasModifiedData: false, saveBtnLoading: false });
-    this._addData = new Map();
-    this._modifiedData = new Map();
+    this._addData.clear();
+    this._modifiedData.clear();
   };
 
   handleRowEditingStarted = params => {
-    this.setState({ isEditing: true, hasModifiedData: true });
+    this.setState({ isEditing: true });
+    // 隐藏不可编辑的列
+    this.gridColumnApi.setColumnsVisible(this._cantEditCol, false);
   };
 
   handleRowEditingStopped = params => {
-    console.log('stop', params);
     this.setState({ isEditing: false });
+    // 显示不可编辑的列
+    this.gridColumnApi.setColumnsVisible(this._cantEditCol, true);
     const { data } = params;
     if (data.isNew) {
       this._addData.set(data.REC_ID, data);
     }
-    // else {
-    //   const index = this._modifiedData.findIndex(
-    //     item => item.REC_ID === data.REC_ID
-    //   );
-    //   this._modifiedData[index] = data;
-    // }
   };
 
   handleAddRecord = columnDefs => () => {
     const firstEditable = columnDefs.find(item => item.editable);
+
     let data = {
       REC_ID: -(this._addData.size + 1),
       isNew: true
@@ -281,17 +330,13 @@ class PwAggrid extends React.Component {
       add: [data],
       addIndex: 0
     });
+    if (!firstEditable) {
+      return;
+    }
     this.gridApi.startEditingCell({
       rowIndex: 0,
       colKey: firstEditable.field
     });
-  };
-
-  getRowStyle = params => {
-    // console.log(params);
-    if (params.data.isNew) {
-      return { background: '#ffccc7' };
-    }
   };
 
   _addData = new Map();
@@ -353,7 +398,6 @@ class PwAggrid extends React.Component {
       this.props.originalColumn,
       this.state.columnDefs
     );
-
     return (
       <div className="pw-ag-grid">
         {hasHeader && (
@@ -431,16 +475,8 @@ class PwAggrid extends React.Component {
                   </Button>
                 </Popconfirm>
               )}
-              {hasModifiedData && (
+              {hasModifiedData && !isEditing && (
                 <>
-                  {/* <Button
-                    onClick={() => {
-                      console.log(this.gridApi.getModel());
-                      console.log(this._clonedData);
-                    }}
-                  >
-                    还原
-                  </Button> */}
                   <Button
                     type="primary"
                     loading={saveBtnLoading}
@@ -512,11 +548,12 @@ class PwAggrid extends React.Component {
             onPasteStart={this.onPasteStart}
             onPasteEnd={this.onPasteEnd}
             getRowNodeId={data => data.REC_ID}
-            animateRows={true}
+            // animateRows={true}
             editType="fullRow"
             onRowEditingStopped={this.handleRowEditingStopped}
             onRowEditingStarted={this.handleRowEditingStarted}
-            getRowStyle={this.getRowStyle}
+            rowClassRules={this.state.rowClassRules}
+            sideBar={this.props.sideBarAg}
           ></AgGridReact>
         </div>
       </div>
