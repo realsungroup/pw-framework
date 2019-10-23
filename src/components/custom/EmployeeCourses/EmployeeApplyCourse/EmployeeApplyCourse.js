@@ -69,7 +69,7 @@ const form = props => {
       <Form.Item label="当前财年">
         {getFieldDecorator('currentYear', {
           rules: [{ required: true, message: '请输入当前财年' }]
-        })(<Input placeholder="请输入当前财年，例如：FY2020"  />)}
+        })(<Input placeholder="请输入当前财年，例如：FY2020" />)}
       </Form.Item>
       <Form.Item label="开始上课日期">
         {getFieldDecorator('beginClassTime', {
@@ -89,12 +89,12 @@ const form = props => {
       <Form.Item label="培训类别">
         {getFieldDecorator('TranningType', {
           rules: [{ required: true, message: '请选择培训类别' }]
-        })(<Select defaultValue ="外训" placeholder="请选择培训类别"
-        >
-          <Option value ="内训">内训</Option>
-          <Option value ="外训">外训</Option>
+        })(
+          <Select defaultValue="外训" placeholder="请选择培训类别">
+            <Option value="内训">内训</Option>
+            <Option value="外训">外训</Option>
           </Select>
-          )}
+        )}
       </Form.Item>
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
@@ -133,7 +133,7 @@ class EmployeeApplyCourse extends React.Component {
     isSelectedCourse: false,
     selectedCourse: {},
     searchKey: '',
-    courseArrangeID:''
+    courseArrangeID: ''
   };
 
   componentDidMount() {
@@ -169,11 +169,10 @@ class EmployeeApplyCourse extends React.Component {
     }
   };
 
-
-  submitCourse = async course =>{
+  submitCourse = async course => {
     // this.submitSelfDefineCourse(course);
     this.submitCentrolList(course);
-  }
+  };
   //明细表添加记录
   submitSelfDefineCourse = async course => {
     try {
@@ -188,10 +187,10 @@ class EmployeeApplyCourse extends React.Component {
             C3_613941386325: course.TranningLocation,
             courseIntroduction: course.courseIntroduction,
             courseType: course.TranningType,
-            trainingClub:course.TrainingOrganization,
-            CourseArrangeID:course.CourseArrangeID,
-            C3_613941384328:course.currentYear,
-            C3_613956470258:"Y",
+            trainingClub: course.TrainingOrganization,
+            CourseArrangeID: course.CourseArrangeID,
+            C3_613941384328: course.currentYear,
+            C3_613956470258: 'Y'
             // C3_613941386081:classTime
           }
         ]
@@ -219,19 +218,21 @@ class EmployeeApplyCourse extends React.Component {
             CourseLocation: course.TranningLocation,
             courseInformation: course.courseIntroduction,
             classType: course.TranningType,
-            organization:course.TrainingOrganization,
-            isCustom:"Y",
-            FisYear:course.currentYear,
+            organization: course.TrainingOrganization,
+            isCustom: 'Y',
+            FisYear: course.currentYear
           }
         ]
       });
       const data = res.data[0];
-      this.setState({ 
+      this.setState({
         applyByUnexistCourseVisible: false
-       });
-      this.submitSelfDefineCourse({...course, CourseArrangeID:data.CourseArrangeID})
+      });
+      this.submitSelfDefineCourse({
+        ...course,
+        CourseArrangeID: data.CourseArrangeID
+      });
       message.success(res.message);
-      
     } catch (error) {
       console.error(error.message);
       message.error(error.message);
@@ -249,14 +250,16 @@ class EmployeeApplyCourse extends React.Component {
             CourseName: selectedCourse.C3_609845305680,
             courseInformation: selectedCourse.C3_609845305618,
             classType: selectedCourse.C3_612436740323,
-            FisYear:selectedCourse.C3_609845305743,
+            FisYear: selectedCourse.C3_609845305743
           }
         ]
       });
       const data = res.data[0];
-      this.setState({ applyByUnexistCourseVisible: false,
-        courseArrangeID:data.CourseArrangeID });
-      this.submitApply()
+      this.setState({
+        applyByUnexistCourseVisible: false,
+        courseArrangeID: data.CourseArrangeID
+      });
+      this.submitApply();
       message.success(res.message);
     } catch (error) {
       console.error(error.message);
@@ -268,7 +271,7 @@ class EmployeeApplyCourse extends React.Component {
   submitApply = async () => {
     let { selectedCourse } = this.state;
     let { courseArrangeID } = this.state;
-    console.log("selectedCourse",selectedCourse)
+    console.log('selectedCourse', selectedCourse);
     try {
       let res = await http().addRecords({
         resid: CourseDetailResid,
@@ -276,8 +279,6 @@ class EmployeeApplyCourse extends React.Component {
           {
             C3_614182469763: selectedCourse.C3_609845305868,
             CourseArrangeID: courseArrangeID
-            
-
           }
         ]
       });
@@ -326,14 +327,8 @@ class EmployeeApplyCourse extends React.Component {
               }}
             >
               选课申请
-            </Button>,
-            <Button
-              onClick={() => {
-                this.setState({ applyByUnexistCourseVisible: true });
-              }}
-            >
-              自定义课程申请
             </Button>
+
             // <Button>资格证书申请</Button>
           ]}
         />
@@ -449,6 +444,14 @@ class EmployeeApplyCourse extends React.Component {
                         this.setState({ searchKey: key }, this.searchCourses)
                       }
                     />
+                    <Button
+                      style={{ marginLeft: 8 }}
+                      onClick={() => {
+                        this.setState({ applyByUnexistCourseVisible: true });
+                      }}
+                    >
+                      自定义课程申请
+                    </Button>
                   </header>
                 }
                 renderItem={item => {
@@ -481,6 +484,7 @@ class EmployeeApplyCourse extends React.Component {
           width="50%"
           onCancel={this.closeModal}
           footer={null}
+          centered
         >
           <SelfDefineCourseForm
             closeModal={this.closeModal}

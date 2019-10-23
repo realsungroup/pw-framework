@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
  */
 
 export const defaultProps = {
-  size: 'small',
+  size: 'middle',
   dataMode: 'main',
   storeWay: 'be',
   hasAdd: true,

@@ -81,7 +81,8 @@ class CourseArrangementInternal extends React.Component {
       location: ''
       // price: undefined,
       // classHour: undefined,
-    }
+    },
+    employeeListVisible: false
   };
 
   async componentDidMount() {
@@ -534,7 +535,7 @@ class CourseArrangementInternal extends React.Component {
           {this.state.mode === 'table' && (
             <div style={{ width: '100%', flex: 1 }}>
               <TableData
-                resid="616073391736"
+                resid="615549231946"
                 subtractH={220}
                 hasRowView={true}
                 hasAdd={false}
@@ -544,6 +545,23 @@ class CourseArrangementInternal extends React.Component {
                 hasRowDelete={false}
                 actionBarWidth={150}
                 hasRowModify={false}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={() =>
+                          this.setState({
+                            selectedCourse: record,
+                            employeeListVisible: true
+                          })
+                        }
+                        size={btnSize}
+                      >
+                        学员列表
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
           )}
@@ -848,7 +866,6 @@ class CourseArrangementInternal extends React.Component {
                     <Select
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
-                        console.log(e);
                         this.setState({
                           inputCourseArrangement: {
                             ...inputCourseArrangement,
@@ -985,6 +1002,29 @@ class CourseArrangementInternal extends React.Component {
                 }}
               />
             )}
+          </div>
+        </Modal>
+        <Modal
+          visible={this.state.employeeListVisible}
+          footer={null}
+          width="90%"
+          onCancel={() => this.setState({ employeeListVisible: false })}
+          destroyOnClose
+        >
+          <div style={{ height: 700 }}>
+            <TableData
+              resid="615983369834"
+              subtractH={220}
+              hasRowView={true}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowSelection={false}
+              hasRowDelete={false}
+              actionBarWidth={100}
+              hasRowModify={false}
+              cmswhere={`CourseArrangeID = '${this.state.selectedCourse.CourseArrangeID}'`}
+            />
           </div>
         </Modal>
       </div>
