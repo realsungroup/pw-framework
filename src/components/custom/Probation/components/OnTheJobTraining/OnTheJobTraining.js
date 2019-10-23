@@ -11,7 +11,8 @@ const OnTheJobTraining = props => {
     setAddOnJobTrainingVisible,
     onTheJobTraining,
     inviteConfirm,
-    editable
+    editable,
+    roleName
   } = props;
   return (
     <div id="on-the-job-training" className="probation-form">
@@ -53,36 +54,36 @@ const OnTheJobTraining = props => {
             dataIndex="operation"
             fixed="right"
             width={160}
-            render={(text, record) =>
-              auth.hasDelete &&
-              auth.hasModify &&
-              editable && (
-                <div>
-                  <a
-                    href="javascript:;"
-                    onClick={() => openModifyOnJobTrainingModal(record)}
-                  >
-                    修改
-                  </a>
-                  &nbsp;|&nbsp;
-                  <Popconfirm
-                    title="确认删除吗?"
-                    onConfirm={() => deleteOnJobTraining(record.REC_ID)}
-                  >
-                    <a href="javascript:;">删除</a>
-                  </Popconfirm>
-                  &nbsp;|&nbsp;
-                  <Popconfirm
-                    title="确认邀请吗?"
-                    onConfirm={() =>
-                      inviteConfirm({ ...record, isNoticeTrainer: 'Y' })
-                    }
-                  >
-                    <a href="javascript:;">邀请确认</a>
-                  </Popconfirm>
-                </div>
-              )
-            }
+            render={(text, record) => (
+              <div>
+                {auth.hasDelete && auth.hasModify && editable && (
+                  <>
+                    <a
+                      href="javascript:;"
+                      onClick={() => openModifyOnJobTrainingModal(record)}
+                    >
+                      修改
+                    </a>
+                    &nbsp;|&nbsp;
+                    <Popconfirm
+                      title="确认删除吗?"
+                      onConfirm={() => deleteOnJobTraining(record.REC_ID)}
+                    >
+                      <a href="javascript:;">删除</a>
+                    </Popconfirm>
+                    &nbsp;|&nbsp;
+                  </>
+                )}
+                {roleName === '员工'||roleName === 'HR'||roleName === '主管'?<Popconfirm
+                  title="确认邀请吗?"
+                  onConfirm={() =>
+                    inviteConfirm({ ...record, isNoticeTrainer: 'Y' })
+                  }
+                >
+                  <a href="javascript:;">邀请确认</a>
+                </Popconfirm>:null}
+              </div>
+            )}
           />
         </Table>
       </Card>
