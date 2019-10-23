@@ -531,3 +531,12 @@ export const CourseMaintain = Loadable({
     return minLoading;
   }
 });
+
+export const TrainingOrganization = Loadable({
+  loader: () => import('./TrainingOrganization'),
+  loading() {
+    return minLoading;
+  }
+});
+
+
