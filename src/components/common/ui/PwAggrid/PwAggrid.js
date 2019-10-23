@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Input, Pagination, message, Popconfirm } from 'antd';
+import { Button, Input, message, Popconfirm } from 'antd';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -22,6 +22,30 @@ import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import moment from 'moment';
 import http from 'Util20/api';
+
+function getDatePicker() {
+  function Datepicker() {}
+  Datepicker.prototype.init = function(params) {
+    this.eInput = document.createElement('input');
+    this.eInput.value = params.value;
+    window.$(this.eInput).datepicker({ dateFormat: 'dd/mm/yy' });
+  };
+  Datepicker.prototype.getGui = function() {
+    return this.eInput;
+  };
+  Datepicker.prototype.afterGuiAttached = function() {
+    this.eInput.focus();
+    this.eInput.select();
+  };
+  Datepicker.prototype.getValue = function() {
+    return this.eInput.value;
+  };
+  Datepicker.prototype.destroy = function() {};
+  Datepicker.prototype.isPopup = function() {
+    return false;
+  };
+  return Datepicker;
+}
 
 const isFirstColumn = params => {
   var displayedColumns = params.columnApi.getAllDisplayedColumns();
@@ -47,10 +71,11 @@ class PwAggrid extends React.Component {
         headerCheckboxSelection: isFirstColumn
       },
       columnDefs: [],
-      hasModifiedData: false,
+      hasModifiedData: false, // 是否有修改了的数据
       isEditing: false, //是否正在编辑
-      saveBtnLoading: false,
-      deleteBtnLoading: false,
+      saveBtnLoading: false, //保存按钮loading状态
+      deleteBtnLoading: false, //删除按钮loading状态
+      // components: { datePicker: getDatePicker() },
       rowClassRules: {
         'pw-ag-grid-new-row': function(params) {
           return params.data ? params.data.isNew === true : null;
@@ -120,12 +145,18 @@ class PwAggrid extends React.Component {
       };
     });
     try {
-      await http().addRecords({
+      const res = await http().addRecords({
         resid: this.props.resid,
         data: data
       });
+      this.gridApi.updateRowData({
+        add: res.data,
+        addIndex: 0,
+        remove: this._addData
+      });
+      this._addData.clear();
     } catch (error) {
-      // message.error(error.message);
+      message.error(error.message);
       console.log(error);
     }
   };
@@ -201,12 +232,7 @@ class PwAggrid extends React.Component {
         chartDataType: _column.chartType,
         aggFunc: _column.aggFunc,
         rowGroup: _column.rowGroup,
-        cellStyle: function(params) {
-          // console.log(params);
-          if (params.colDef.editable) {
-            return { background: '#ddebe1' };
-          }
-        },
+        cellStyle: function(params) {},
         valueSetter: params => {
           if (params.oldValue == params.newValue) {
             return false;
@@ -223,14 +249,19 @@ class PwAggrid extends React.Component {
         // aggridColumn.cellEditor = 'agRichSelectCellEditor';
         aggridColumn.cellEditor = 'agSelectCellEditor';
         if (_column.ListOfColOptions.length) {
-          console.log(_column.ListOfColOptions);
           aggridColumn.cellEditorParams = {
-            values: _column.ListOfColOptions.map(item => item.valueColValue)
+            values:
+              _column.ColType === 1
+                ? _column.ListOfColOptions.map(item => item.displayColValue)
+                : _column.ListOfColOptions.map(item => item.valueColValue)
           };
         } else {
           aggridColumn.cellEditorParams = { values: _column.ValueOptions };
         }
       }
+      // if (_column.ColType === 4) {
+      //   aggridColumn.cellEditor = 'datePicker';
+      // }
       if (!aggridColumn.filter) {
         switch (_column.ColType) {
           case 4:
@@ -297,7 +328,6 @@ class PwAggrid extends React.Component {
     console.log(data, addData);
     if (addData.length) {
       await this.handleAddRecords(addData);
-      console.log(addData.map(item => ({ ...item, isNew: false })));
       this.gridApi.updateRowData({
         update: addData.map(item => ({ ...item, isNew: false }))
       });
@@ -305,14 +335,13 @@ class PwAggrid extends React.Component {
     if (data.length) {
       await this.handleSaveRecords(data);
     }
-    message.success('保存成功');
+    // message.success('保存成功');
     if (this._modifiedData.size === 0 && this._addData.size === 0) {
       this.setState({
         hasModifiedData: false
       });
     }
     this.setState({ saveBtnLoading: false });
-    this._addData.clear();
   };
 
   handleRowEditingStarted = params => {
@@ -565,6 +594,7 @@ class PwAggrid extends React.Component {
             onRowEditingStarted={this.handleRowEditingStarted}
             rowClassRules={this.state.rowClassRules}
             sideBar={this.props.sideBarAg}
+            components={this.state.components}
           ></AgGridReact>
         </div>
       </div>
