@@ -12,7 +12,8 @@ import {
   Radio,
   Form,
   Select,
-  Tag
+  Tag,
+  Switch
 } from 'antd';
 import moment from 'moment';
 import './CourseArrangementInternal.less';
@@ -165,6 +166,12 @@ class CourseArrangementInternal extends React.Component {
       return;
     }
   };
+
+  // 自动拆分课程的开关
+  autoSp=async()=>{
+
+  }
+
   //搜索内训课程
 
   searchInternalCourses = async () => {
@@ -392,7 +399,7 @@ class CourseArrangementInternal extends React.Component {
                 courseArrangements.map(item => (
                   <Card
                     title={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div >
                         <span>{item.CourseName}</span>
                         <span
                           className="arranging_courses-course_list-course_type"
@@ -404,6 +411,8 @@ class CourseArrangementInternal extends React.Component {
                         >
                           {item.C3_616254048241}
                         </span>
+                        <Switch style={{float:'right'}} onChange={this.autoSp}/>
+                        <span style={{fontWeight:"normal",float:'right',marginRight:'8px'}}>是否自动拆课</span>
                       </div>
                     }
                     className="arranging_courses_item"
