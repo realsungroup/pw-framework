@@ -224,8 +224,8 @@ class ReferenceCheck extends React.Component {
 
           <ul className='charaChange'>
             <li id='selHR' className={this.state.chara=='HR'?'current':''} onClick={() => this.changeChara('HR')}>HR</li>
-            <li id='selSup' className={this.state.chara=='supervisor'?'current':''} onClick={() => this.changeChara('supervisor')}>主管</li>
-            <li id='selCol' className={this.state.chara=='colleague'?'current':''} onClick={() => this.changeChara('colleague')}>同事</li>
+            <li id='selSup' className={this.state.chara=='supervisor'?'current':''} onClick={() => this.changeChara('supervisor')}>Supervisor</li>
+            <li id='selCol' className={this.state.chara=='colleague'?'current':''} onClick={() => this.changeChara('colleague')}>Colleague</li>
           </ul>
 
         </div>

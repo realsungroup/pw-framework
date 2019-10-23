@@ -217,6 +217,46 @@ class ArrangingCourses extends React.Component {
       this.searchCourseArrangment
     );
   };
+// 发邮件通知培训机构
+onHandleMessage = async (dataSource, selectedRowKeys) => {
+  this.setState({loading:true})
+  if (selectedRowKeys.length) {
+    const data = dataSource;
+    const Reldata = [];
+    data.map(item => {
+      selectedRowKeys.map(items => {
+        if (item.REC_ID === items) {
+          item.isNoticeTrainingOrgan = 'Y';
+          Reldata.push(item);
+        }
+      });
+    });
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: Reldata,
+        isEditoRAdd: false
+      });
+
+      if (res.Error === 0) {
+        this.tableDataRef.handleRefresh();
+        message.success('操作成功！');
+        this.setState({loading:false})
+
+      } else {
+        this.setState({loading:false})
+        message.error(res.message);
+      }
+    } catch (error) {
+      this.setState({loading:false})
+      message.error(error.message);
+    }
+  } else {
+    this.setState({loading:false})
+    message.error('请勾选记录！');
+  }
+};
 
   //判断是否为清空操作
   onRangeSearchChange = (value, dateString) => {
@@ -290,6 +330,9 @@ class ArrangingCourses extends React.Component {
                 style={{ marginRight: 8 }}
               >
                 添加课程安排
+              </Button>
+              <Button style={{marginRight:8}} onClick={()=>{this.setState({isShowSendMail:true})}}>
+                邀请培训机构开课
               </Button>
               <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
                 显示模式:
@@ -469,7 +512,7 @@ class ArrangingCourses extends React.Component {
                 hasRowView={false}
                 hasModify={false}
                 hasDelete={false}
-                hasAdd={true}
+                hasAdd={false}
                 tableComponent='ag-grid'
                 hasRowSelection={true}
               />
@@ -824,6 +867,7 @@ class ArrangingCourses extends React.Component {
             }}
             visible={this.state.isShowAddCourseArrangment}
           >
+
             <Form {...formItemLayout}>
               <Form.Item label="课程">
                 {getFieldDecorator('CourseID', {
@@ -918,6 +962,53 @@ class ArrangingCourses extends React.Component {
             </Form>
           </Modal>
         ) : null}
+        {
+          this.state.isShowSendMail==true?(
+            <Modal
+                title="请选择想要开的课程"
+                onCancel={() =>
+                  this.setState({
+                    isShowSendMail: false,
+                  })
+                }
+                destroyOnClose={true}
+                footer={null}
+                visible={this.state.isShowSendMail}
+                width={'80%'}
+            >
+            <TableData
+              resid={courseArrangmentResid}
+              height={450}
+              subtractH={240}
+              hasRowView={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasRowSelection={true}
+              hasAdd={false}
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData"
+              actionBarExtra={({
+                dataSource: dataSource,
+                selectedRowKeys: selectedRowKeys
+              }) => {
+                return (
+                  <Popconfirm
+                    title="确认发送邮件"
+                    onConfirm={() => {
+                      this.onHandleMessage(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    <Button>发送通知邮件</Button>
+                  </Popconfirm>
+                );
+              }}
+            ></TableData>
+
+            </Modal>
+          ):null
+        }
       </div>
     );
   }
