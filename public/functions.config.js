@@ -1667,6 +1667,10 @@ window[619175063394] = {
   name: 'HRProbation',
   title: '试用期管理'
 };
+window[625082884132] = {
+  name: 'TrainingOrganization',
+  title: '培训机构课程维护'
+};
 //我的试用期————员工
 window[619175111028] = {
   name: 'EmployeeProbation',
