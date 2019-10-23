@@ -132,10 +132,14 @@ class PwAggrid extends React.Component {
 
   handleSaveRecords = async records => {
     try {
-      await http().modifyRecords({
+      const res = await http().modifyRecords({
         resid: this.props.resid,
         data: records
       });
+      this.gridApi.updateRowData({
+        update: res.data
+      });
+      this._modifiedData.clear();
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -192,6 +196,11 @@ class PwAggrid extends React.Component {
         filter: _column.filter,
         editable: _column.editable,
         filterParams: {},
+        enableRowGroup: _column.enableRowGroup,
+        enableValue: _column.enableValue,
+        chartDataType: _column.chartType,
+        aggFunc: _column.aggFunc,
+        rowGroup: _column.rowGroup,
         cellStyle: function(params) {
           // console.log(params);
           if (params.colDef.editable) {
@@ -249,6 +258,7 @@ class PwAggrid extends React.Component {
   _editableCol = [];
   _cantEditCol = [];
   _modifiedData = new Map();
+  _addData = new Map();
 
   onCellValueChanged = params => {
     const { data, newValue, rowIndex, colDef } = params;
@@ -296,22 +306,25 @@ class PwAggrid extends React.Component {
       await this.handleSaveRecords(data);
     }
     message.success('保存成功');
-
-    this.setState({ hasModifiedData: false, saveBtnLoading: false });
+    if (this._modifiedData.size === 0 && this._addData.size === 0) {
+      this.setState({
+        hasModifiedData: false
+      });
+    }
+    this.setState({ saveBtnLoading: false });
     this._addData.clear();
-    this._modifiedData.clear();
   };
 
   handleRowEditingStarted = params => {
     this.setState({ isEditing: true });
     // 隐藏不可编辑的列
-    this.gridColumnApi.setColumnsVisible(this._cantEditCol, false);
+    // this.gridColumnApi.setColumnsVisible(this._cantEditCol, false);
   };
 
   handleRowEditingStopped = params => {
     this.setState({ isEditing: false });
     // 显示不可编辑的列
-    this.gridColumnApi.setColumnsVisible(this._cantEditCol, true);
+    // this.gridColumnApi.setColumnsVisible(this._cantEditCol, true);
     const { data } = params;
     if (data.isNew) {
       this._addData.set(data.REC_ID, data);
@@ -338,8 +351,6 @@ class PwAggrid extends React.Component {
       colKey: firstEditable.field
     });
   };
-
-  _addData = new Map();
 
   render() {
     const {
