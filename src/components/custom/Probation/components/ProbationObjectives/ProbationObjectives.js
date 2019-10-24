@@ -1,6 +1,14 @@
 import React from 'react';
 import './ProbationObjectives.less';
-import { Card, Input, Icon, InputNumber, Popconfirm, Button } from 'antd';
+import {
+  Card,
+  Input,
+  Icon,
+  InputNumber,
+  Popconfirm,
+  Button,
+  message
+} from 'antd';
 
 const { TextArea } = Input;
 const resid1 = '619808533610';
@@ -38,9 +46,12 @@ const ProbationObjectives = props => {
                 <Button
                   type="primary"
                   className="probation-objectives_fill-stage_fill-area_action__addbtn"
-                  onClick={props.addObjective}
+                  onClick={() => {
+                    props.addObjective();
+                    message.success('已添加，不要忘记点下方保存哦');
+                  }}
                 >
-                  添加
+                  添加工作目标
                 </Button>
                 <Button
                   type="primary"
@@ -131,7 +142,7 @@ const ProbationObjectives = props => {
                           <span>评分/Mark</span>
                           <InputNumber
                             min={0}
-                            max={10}
+                            max={5}
                             value={i.score}
                             disabled={!hasOperation}
                             onChange={v => {

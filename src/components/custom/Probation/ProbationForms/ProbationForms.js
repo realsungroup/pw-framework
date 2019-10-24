@@ -33,21 +33,21 @@ const { confirm } = Modal;
 const resid1 = '619694861346'; //新员工个人信息表
 const resid2 = '618591416723'; //工作目标表
 const resid3 = '618591427140'; //入职培训表
-const resid4 = '619640552055'; //内训课程上课记录表
+const resid4 = '618591437750'; //内训课程上课记录表
 const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
 const resid9 = '619808533610';
 // const resid10 = '622983009643'; //入职培训管理表
 
-const internalCourse = '616155060405'; //内训课程表
+const internalCourse = '625082518213'; //内训课程表
 const tutorshipResid = '619281130628'; //辅导员表
 const authResid = '619703562233';
 
 class ProbationForms extends React.Component {
   state = {
-    flagHitBack:false,
-    flagAlreadyHit:0,
+    flagHitBack: false,
+    flagAlreadyHit: 0,
     employeeInformation: {}, //个人信息
     probationObjectives: [], //工作目标
     orientationTraining: [], //入职培训
@@ -87,19 +87,21 @@ class ProbationForms extends React.Component {
     addInternalCourseVisible: false,
     modifyInternalCourseVisible: false,
     modifyOnJobTrainingVisible: false,
-    modifyProbationObjectiveVisible: false,
+    modifyProbationObjectiveVisible: false
   };
   async componentDidMount() {
     this.setState({ loading: true });
     let memberId;
+    let employedId;
     if (this.props.roleName === '员工') {
       memberId = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
     } else {
       memberId = this.props.memberId;
+      employedId = this.props.employedId;
     }
     await this.getAuth();
-    await this.getRecords(memberId);
     await this.getCircle();
+    await this.getRecords(memberId, employedId);
     this.getInternalCourses();
     // this.getTutorships();
     this.setState({ loading: false });
@@ -129,93 +131,100 @@ class ProbationForms extends React.Component {
   };
 
   // 同意辅导员申请
-    agreeApply=async()=>{
-      this.setState({ loading: true });
-      try {
-        let res = await http().modifyRecords({
-          resid: resid1,
-          data:[{
-            REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass:'Y'
-
-          }]
-        });
-        this.setState({ loading: false ,flagAlreadyHit:1});
-        var memID=this.state.employeeInformation.instructorDirectorId;
-        var dept;
-        var userID;
-        var userMemberId;
-        var toAdd;
-        var name;
-        let res2 = await http().getTable({
-          resid:'609599795438',
-          cmswhere: `C3_305737857578 = '${memID}'`
-        });
-        dept=res2.data[0].C3_422840479020||res2.data[0].C3_422840472843||res2.data[0].C3_422840463535||res2.data[0].C3_422840460773;
-        userID=res2.data[0].C3_227192472953;
-        userMemberId=res2.data[0].C3_305737857578;
-        name=res2.data[0].C3_227192484125;
-        toAdd=[{
-          dept:dept,
-          userID:userID,
-          userMemberId:userMemberId,
-          name:name,
-        }]
-
-        let res3 = await http().getTable({
-          resid:'619281130628',
-          cmswhere:`userMemberId = '${memID}'`
-        })
-        if(res3.data.length==0){
-          let res4 = await http().addRecords({
-            resid:'619281130628',
-            data:toAdd
-          })
-        }
-
-        // 辅导员表ID619281130628
-
-        // 辅导员工号C3_227192472953
-
-        // 辅导员人员编号C3_305737857578
-
-        // 辅导员部门C3_422840479020
-
-        //辅导员姓名C3_227192484125
-        message.success('成功同意辅导员');
-
-      } catch (error) {
-        this.setState({ loading: false });
-        message.error(error.message);
-        console.log(error);
-
-      }
-    }
-  // 不同意辅导员申请
-  disagreeApply=async()=>{
+  agreeApply = async () => {
     this.setState({ loading: true });
     try {
       let res = await http().modifyRecords({
         resid: resid1,
-        data:[{REC_ID: this.state.employeeInformation.REC_ID,instructorIsPass:'N'}]
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID,
+            instructorIsPass: 'Y'
+          }
+        ]
       });
-      this.setState({ loading: false ,flagAlreadyHit:2});
-      message.success('成功驳回辅导员');
+      this.setState({ loading: false, flagAlreadyHit: 1 });
+      var memID = this.state.employeeInformation.instructorDirectorId;
+      var dept;
+      var userID;
+      var userMemberId;
+      var toAdd;
+      var name;
+      let res2 = await http().getTable({
+        resid: '609599795438',
+        cmswhere: `C3_305737857578 = '${memID}'`
+      });
+      dept =
+        res2.data[0].C3_422840479020 ||
+        res2.data[0].C3_422840472843 ||
+        res2.data[0].C3_422840463535 ||
+        res2.data[0].C3_422840460773;
+      userID = res2.data[0].C3_227192472953;
+      userMemberId = res2.data[0].C3_305737857578;
+      name = res2.data[0].C3_227192484125;
+      toAdd = [
+        {
+          dept: dept,
+          userID: userID,
+          userMemberId: userMemberId,
+          name: name
+        }
+      ];
 
+      let res3 = await http().getTable({
+        resid: '619281130628',
+        cmswhere: `userMemberId = '${memID}'`
+      });
+      if (res3.data.length == 0) {
+        let res4 = await http().addRecords({
+          resid: '619281130628',
+          data: toAdd
+        });
+      }
+
+      // 辅导员表ID619281130628
+
+      // 辅导员工号C3_227192472953
+
+      // 辅导员人员编号C3_305737857578
+
+      // 辅导员部门C3_422840479020
+
+      //辅导员姓名C3_227192484125
+      message.success('成功同意辅导员');
     } catch (error) {
       this.setState({ loading: false });
       message.error(error.message);
       console.log(error);
-
     }
-  }
+  };
+  // 不同意辅导员申请
+  disagreeApply = async () => {
+    this.setState({ loading: true });
+    try {
+      let res = await http().modifyRecords({
+        resid: resid1,
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID,
+            instructorIsPass: 'N'
+          }
+        ]
+      });
+      this.setState({ loading: false, flagAlreadyHit: 2 });
+      message.success('成功驳回辅导员');
+    } catch (error) {
+      this.setState({ loading: false });
+      message.error(error.message);
+      console.log(error);
+    }
+  };
   // 点击保存
-  handleSubmit = async (chara) => {
+  handleSubmit = async chara => {
     // console.log(this.state.employeeInformation.instructorDirectorId,this.state.employeeInformation.instructorDirectorName)
     // console.log(this.state.employeeInformation.instructorID,this.state.employeeInformation.instructor)
 
     try {
-
       let subdata = [];
       this.setState({ loading: true });
       let {
@@ -290,16 +299,20 @@ class ProbationForms extends React.Component {
       }
       await http().modifyRecords({
         resid: resid1,
-        data:[{REC_ID: this.state.employeeInformation.REC_ID,instructorIsPass:''}]
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID,
+            instructorIsPass: ''
+          }
+        ]
       });
-      if(chara=="主管"){
+      if (chara == '主管') {
         this.setState({
           employeeInformation: {
             ...this.state.employeeInformation,
-            instructorIsPass:'0',
+            instructorIsPass: '0'
           },
-          flagAlreadyHit:0
-
+          flagAlreadyHit: 0
         });
       }
       message.success('提交成功');
@@ -350,7 +363,7 @@ class ProbationForms extends React.Component {
     }
   };
   //获取主子表记录
-  getRecords = async memberId => {
+  getRecords = async (memberId, employedId) => {
     try {
       const { viewableTable } = this.state;
       let subresid = '';
@@ -368,13 +381,36 @@ class ProbationForms extends React.Component {
         getsubresource: 1
       });
       const SubResource = res.SubResource;
-      const data = res.data[0];
-      console.log(res)
+      let data = {};
+      if (memberId === '0') {
+        data = res.data.find(item => item.C3_625051545181 === employedId);
+      } else {
+        data = res.data[0];
+      }
+      if (!data) {
+        return console.error('无数据');
+      }
+      let probationObjectives = data[viewableTable.objectiveResid];
+      if (probationObjectives.length < 3) {
+        let count = 3 - probationObjectives.length;
+        const memberId = data.memberId;
+        const assessmentCycle = this.state.assessmentCycle;
+        for (let i = 0; i < count; i++) {
+          let subData = [];
+          assessmentCycle.forEach(item => {
+            subData.push({
+              period: item,
+              memberId
+            });
+          });
+          probationObjectives.push({ [resid9]: subData });
+        }
+      }
 
       data &&
         this.setState({
           employeeInformation: data,
-          probationObjectives: data[viewableTable.objectiveResid],
+          probationObjectives: probationObjectives,
           // orientationTraining: data[viewableTable.orientationResid],
           internalTraining: data[viewableTable.internalResid],
           onTheJobTraining: data[viewableTable.onJobResid],
@@ -386,31 +422,29 @@ class ProbationForms extends React.Component {
             internal: SubResource[viewableTable.internalResid]
           }
         });
-        if(data.instructorDirectorName){
-          this.setState({
-            employeeInformation: {
-              ...this.state.employeeInformation,
-              isSemi:true,
-            },
-            flagHitBack:true
-          });
-        }else{
-          this.setState({
-            employeeInformation: {
-              ...this.state.employeeInformation,
-              isSemi:false,
-            }
-          });
-        }
-        if(data.instructorIsPass=='Y'){
-          this.setState({flagAlreadyHit:1});
-        }else if(data.instructorIsPass=='N'){
-          this.setState({flagAlreadyHit:2});
-        }else{
-          this.setState({flagAlreadyHit:0});
-
-        }
-
+      if (data.instructorDirectorName) {
+        this.setState({
+          employeeInformation: {
+            ...this.state.employeeInformation,
+            isSemi: true
+          },
+          flagHitBack: true
+        });
+      } else {
+        this.setState({
+          employeeInformation: {
+            ...this.state.employeeInformation,
+            isSemi: false
+          }
+        });
+      }
+      if (data.instructorIsPass == 'Y') {
+        this.setState({ flagAlreadyHit: 1 });
+      } else if (data.instructorIsPass == 'N') {
+        this.setState({ flagAlreadyHit: 2 });
+      } else {
+        this.setState({ flagAlreadyHit: 0 });
+      }
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -430,20 +464,18 @@ class ProbationForms extends React.Component {
     }
   };
 
-
   //获取入职培训表数据
   getOrientationTraining = async () => {
     try {
       let res = await http().getTable({
-        resid: resid3,
+        resid: resid3
         // cmswhere:`menberId ='${memberId}'`
       });
-      this.setState({ orientationTraining: res.data})
+      this.setState({ orientationTraining: res.data });
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
-
   };
   //获取评估周期
   getCircle = async () => {
@@ -457,18 +489,6 @@ class ProbationForms extends React.Component {
       console.log(error);
     }
   };
-  //获取辅导员
-  // getTutorships = async () => {
-  //   try {
-  //     const res = await http().getTable({
-  //       resid: tutorshipResid
-  //     });
-  //     this.setState({ tutorships: res.data });
-  //   } catch (error) {
-  //     message.error(error.message);
-  //     console.log(error);
-  //   }
-  // };
 
   //根据工号搜索培训师
   fetchUser = async value => {
@@ -510,7 +530,6 @@ class ProbationForms extends React.Component {
       { [resid9]: subData }
     ];
     this.setState({ probationObjectives, addProbationObjective: {} });
-    message.success('已添加，不要忘记点下方保存哦');
   };
   //删除目标
   removeObjective = index => {
@@ -616,56 +635,61 @@ class ProbationForms extends React.Component {
   };
 
   //分配辅导员
-  setTutorship = ({ name, userMemberId },bol) => {
-
+  setTutorship = ({ name, userMemberId }, bol) => {
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
         instructorID: userMemberId,
         instructor: name,
-        instructorDirectorName:undefined,
-        instructorDirectorId:undefined
+        instructorDirectorName: undefined,
+        instructorDirectorId: undefined
       }
     });
   };
 
-  setTutorshipSemi = ({ name, userMemberId },bol) => {
+  setTutorshipSemi = ({ name, userMemberId }, bol) => {
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
         instructorDirectorId: userMemberId,
         instructorDirectorName: name,
         instructorID: undefined,
-        instructor: undefined,
+        instructor: undefined
       }
     });
   };
 
-  isSemi=(v)=>{
+  isSemi = v => {
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
-        isSemi:v
+        isSemi: v
       }
     });
-  }
+  };
   //添加内训课程
   addInternalCourse = async () => {
     try {
-      let res = await http().addRecords({
-        resid: resid4,
-        data: [
-          {
-            C3_614182469763: this.state.addInternalCourseData.courseId,
-            C3_613941384832: this.state.employeeInformation.memberId,
-            C3_615393041304: this.state.addInternalCourseData.trainDate,
-            C3_613941386081: this.state.addInternalCourseData.teacher
-          }
-        ]
-      });
+      let internalTraining = {
+        C3_614182469763: this.state.addInternalCourseData.courseId,
+        C3_613941384832: this.state.employeeInformation.memberId,
+        C3_613941386081: this.state.addInternalCourseData.teacher
+      };
+      return console.log(internalTraining);
+      // let res = await http().addRecords({
+      //   resid: resid4,
+      //   data: [
+      //     {
+      //       C3_614182469763: this.state.addInternalCourseData.courseId,
+      //       C3_613941384832: this.state.employeeInformation.memberId,
+      //       C3_615393041304: this.state.addInternalCourseData.trainDate,
+      //       C3_613941386081: this.state.addInternalCourseData.teacher
+      //     }
+      //   ]
+      // });
       this.setAddInternalCourseVisible(false);
       this.setState({
-        internalTraining: [...this.state.internalTraining, res.data[0]],
+        internalTraining: [...this.state.internalTraining, internalTraining],
         addInternalCourseData: {}
       });
       message.success('添加成功');
@@ -926,8 +950,7 @@ class ProbationForms extends React.Component {
               <OrientationTraining
                 orientationTraining={this.state.orientationTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
-                )
-              }
+                )}
                 roleName={roleName}
                 editable={editable}
               />
@@ -992,18 +1015,39 @@ class ProbationForms extends React.Component {
                 {(roleName === 'HR' ||
                   employeeInformation.regStatus === '待转正') && (
                   <div>
-                  <Button
-                    type="primary"
-                    style={{ marginRight: 16 }}
-                    onClick={()=>{this.handleSubmit(roleName)}}
-                  >
-                    保存
-                  </Button>
-                  {(roleName==='HR')&&(this.state.flagHitBack==true)&&(this.state.flagAlreadyHit==0)?(<span><Button style={{marginRight:'8px'}} onClick={this.agreeApply}>同意自定义辅导员</Button><Button onClick={this.disagreeApply} type='danger'>
-                    驳回自定义辅导员
-                  </Button>
-                  </span>):''}
-                  {<span style={{color:'red'}}>{this.state.flagAlreadyHit==2?'该记录的自定义辅导员申请已经驳回':''}</span>}
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 16 }}
+                      onClick={() => {
+                        this.handleSubmit(roleName);
+                      }}
+                    >
+                      保存
+                    </Button>
+                    {roleName === 'HR' &&
+                    this.state.flagHitBack == true &&
+                    this.state.flagAlreadyHit == 0 ? (
+                      <span>
+                        <Button
+                          style={{ marginRight: '8px' }}
+                          onClick={this.agreeApply}
+                        >
+                          同意自定义辅导员
+                        </Button>
+                        <Button onClick={this.disagreeApply} type="danger">
+                          驳回自定义辅导员
+                        </Button>
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                    {
+                      <span style={{ color: 'red' }}>
+                        {this.state.flagAlreadyHit == 2
+                          ? '该记录的自定义辅导员申请已经驳回'
+                          : ''}
+                      </span>
+                    }
                   </div>
                 )}
                 {roleName === '员工' &&
@@ -1078,7 +1122,8 @@ class ProbationForms extends React.Component {
                         addInternalCourseData: {
                           ...this.state.addInternalCourseData,
                           courseId: item.C3_609845305868,
-                          teacher: item.C3_610390419677
+                          teacher: item.C3_610390419677,
+                          courseName: item.C3_609845305690
                         }
                       });
                     }}
@@ -1095,7 +1140,7 @@ class ProbationForms extends React.Component {
             </Col>
             <Col span={12}>{this.state.addInternalCourseData.teacher}</Col>
           </Row>
-          <Row className="probation-forms_modal_inputrow">
+          {/* <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
               培训日期:
             </Col>
@@ -1112,7 +1157,7 @@ class ProbationForms extends React.Component {
                 }}
               />
             </Col>
-          </Row>
+          </Row> */}
         </Modal>
         <Modal
           title="修改内训课程"
@@ -1169,7 +1214,7 @@ class ProbationForms extends React.Component {
               {this.state.modifyInternalCourseData.C3_613941386081}
             </Col>
           </Row>
-          <Row className="probation-forms_modal_inputrow">
+          {/* <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
               培训日期:
             </Col>
@@ -1193,7 +1238,7 @@ class ProbationForms extends React.Component {
                 }}
               />
             </Col>
-          </Row>
+          </Row> */}
         </Modal>
         <Modal
           title="添加在岗培训课程"
@@ -1251,7 +1296,7 @@ class ProbationForms extends React.Component {
             </Col>
           </Row>
 
-          <Row className="probation-forms_modal_inputrow">
+          {/* <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
               培训日期:
             </Col>
@@ -1268,7 +1313,7 @@ class ProbationForms extends React.Component {
                 }}
               />
             </Col>
-          </Row>
+          </Row> */}
         </Modal>
         <Modal
           title="修改在岗培训课程"
@@ -1330,7 +1375,7 @@ class ProbationForms extends React.Component {
               </Select>
             </Col>
           </Row>
-          <Row className="probation-forms_modal_inputrow">
+          {/* <Row className="probation-forms_modal_inputrow">
             <Col span={4} offset={4}>
               培训日期:
             </Col>
@@ -1352,7 +1397,7 @@ class ProbationForms extends React.Component {
                 }}
               />
             </Col>
-          </Row>
+          </Row> */}
         </Modal>
         <Modal
           title="历史修改记录"

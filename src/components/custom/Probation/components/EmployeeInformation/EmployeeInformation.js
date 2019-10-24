@@ -1,6 +1,6 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, message,Checkbox } from 'antd';
+import { Card, Row, Col, Select, message, Checkbox } from 'antd';
 import http from 'Util20/api';
 import debounce from 'lodash/debounce';
 
@@ -10,8 +10,8 @@ const { Option } = Select;
 class EmployeeInformation extends React.Component {
   state = {
     data: [],
-    data2:[],
-    fetching: false,
+    data2: [],
+    fetching: false
   };
   constructor(props) {
     super(props);
@@ -42,14 +42,14 @@ class EmployeeInformation extends React.Component {
     }
   };
 
-  fectchSemi= async value => {
+  fectchSemi = async value => {
     this.setState({ data2: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '609599795438',
         cmswhere: `C3_227192472953 = '${value}'`
       });
-      console.log(res)
+      console.log(res);
       const data2 = res.data.map(user => ({
         label: `${user.C3_227192484125}`,
         key: user.C3_305737857578
@@ -67,52 +67,43 @@ class EmployeeInformation extends React.Component {
   };
 
   handleChange = value => {
-
     this.props.setTutorship({ name: value.label, userMemberId: value.key });
-
-
   };
   handleChange2 = value => {
-
-    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key});
+    this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key });
   };
-  ck=()=>{
-    if(this.props.employeeInformation.isSemi==true){
+  ck = () => {
+    if (this.props.employeeInformation.isSemi == true) {
       this.props.isSemi(false);
-    }else{
+    } else {
       this.props.isSemi(true);
-
     }
-  }
+  };
   // 是否自定义辅导员
-  toReco=(v)=>{
-    console.log(v)
-    if(v.target.checked==false){
-      this.props.setTutorship({ name: null, userMemberId:null},true);
-    }else{
-      this.props.setTutorshipSemi({ name: null, userMemberId: null},true);
+  toReco = v => {
+    console.log(v);
+    if (v.target.checked == false) {
+      this.props.setTutorship({ name: null, userMemberId: null }, true);
+    } else {
+      this.props.setTutorshipSemi({ name: null, userMemberId: null }, true);
     }
     this.props.isSemi(v.target.checked);
-  }
+  };
 
   render() {
-
     const { employeeInformation, roleName, editable } = this.props;
-    let value = {
-      label: employeeInformation.instructor,
-      key: employeeInformation.instructorID
-    };
-    let valueSemi = {
-      label: employeeInformation.instructorDirectorName,
-      key: employeeInformation.instructorDirectorId
-    };
-    // if(employeeInformation.instructorDirectorId){
-    //   if(this.refs.semiStatus){
-    //       this.refs.semiStatus.defaultChecked=true;
-    //       // employeeInformation.isSemi=true
-    //       console.log(employeeInformation.isSemi)
-    //   }
-    // }
+    let value = employeeInformation.instructor
+      ? {
+          label: employeeInformation.instructor,
+          key: employeeInformation.instructorID
+        }
+      : undefined;
+    let valueSemi = employeeInformation.instructorDirectorId
+      ? {
+          label: employeeInformation.instructorDirectorName,
+          key: employeeInformation.instructorDirectorId
+        }
+      : undefined;
     let { fetching, data } = this.state;
     return (
       <div id="employee-imformation" className="probation-form">
@@ -128,6 +119,11 @@ class EmployeeInformation extends React.Component {
             <Col span={8}>
               <span className="employee-imformation_lable">姓名/Name:</span>
               {employeeInformation.userName}
+              {/* <Select placeholder="12312313" style={{ width: 100 }}>
+                <Option key="1" value={1}>
+                  1
+                </Option>
+              </Select> */}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">
@@ -172,53 +168,70 @@ class EmployeeInformation extends React.Component {
               {employeeInformation.regStatus}
             </Col>
             <Col span={8}>
-
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
-
                 <div>
-                {(employeeInformation.isSemi==false)?(
-                <Select
-                  style={{ width: 150 }}
-                  placeholder="请输入辅导员工号"
-                  showSearch
-                  filterOption={false}
-                  onSearch={this.fetchUser}
-                  onChange={this.handleChange}
-                  labelInValue
-                  value={value}
-                  key={0}
-                  loading={fetching}
-                >
-                  {data.map(d => (
-                    <Option key={d.key}>{d.label}</Option>
-                  ))}
-                </Select>):null
-              }
-                <div className="clearfix"></div>
-                <input defaultChecked={employeeInformation.isSemi} type="checkbox" ref="semiStatus" value={employeeInformation.isSemi} style={{marginTop:'8px',marginBottom:'8px',marginRight:'8px'}} onClick={this.ck} onChange={v=>{this.toReco(v)}}/><span>我没有找到想要的辅导员，我想申请其他人成为辅导员。<br/>I can't find the mentor ,ansd I want to recommend another who will become a mentor.</span>
-                {(employeeInformation.isSemi==false)?null:(<Select
-                  style={{ width: 150 }}
-                  placeholder="请输入员工工号"
-                  showSearch
-                  filterOption={false}
-                  onSearch={this.fectchSemi}
-                  onChange={this.handleChange2}
-                  labelInValue
-                  key={1}
-                  value={valueSemi}
-                  loading={fetching}
-                >
-                  {this.state.data2.map(d => (
-                    <Option key={d.key}>{d.label}</Option>
-                  ))}
-                </Select>)}
+                  {employeeInformation.isSemi == false ? (
+                    <Select
+                      showSearch
+                      style={{ width: 150 }}
+                      placeholder="请输入辅导员工号"
+                      filterOption={false}
+                      onSearch={this.fetchUser}
+                      onChange={this.handleChange}
+                      labelInValue
+                      value={value}
+                      key={0}
+                      loading={fetching}
+                    >
+                      {data.map(d => (
+                        <Option key={d.key}>{d.label}</Option>
+                      ))}
+                    </Select>
+                  ) : null}
+                  <div className="clearfix"></div>
+                  <input
+                    defaultChecked={employeeInformation.isSemi}
+                    type="checkbox"
+                    ref="semiStatus"
+                    value={employeeInformation.isSemi}
+                    style={{
+                      marginTop: '8px',
+                      marginBottom: '8px',
+                      marginRight: '8px'
+                    }}
+                    onClick={this.ck}
+                    onChange={v => {
+                      this.toReco(v);
+                    }}
+                  />
+                  <span>
+                    我没有找到想要的辅导员，我想申请其他人成为辅导员。
+                    <br />I can't find the mentor ,ansd I want to recommend
+                    another who will become a mentor.
+                  </span>
+                  {employeeInformation.isSemi == false ? null : (
+                    <Select
+                      style={{ width: 150 }}
+                      placeholder="请输入员工工号"
+                      showSearch
+                      filterOption={false}
+                      onSearch={this.fectchSemi}
+                      onChange={this.handleChange2}
+                      labelInValue
+                      key={1}
+                      value={valueSemi}
+                      loading={fetching}
+                    >
+                      {this.state.data2.map(d => (
+                        <Option key={d.key}>{d.label}</Option>
+                      ))}
+                    </Select>
+                  )}
                 </div>
-
               ) : (
                 employeeInformation.instructor
               )}
-
             </Col>
           </Row>
         </Card>
