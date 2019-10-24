@@ -22,30 +22,7 @@ import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import moment from 'moment';
 import http from 'Util20/api';
-
-function getDatePicker() {
-  function Datepicker() {}
-  Datepicker.prototype.init = function(params) {
-    this.eInput = document.createElement('input');
-    this.eInput.value = params.value;
-    window.$(this.eInput).datepicker({ dateFormat: 'dd/mm/yy' });
-  };
-  Datepicker.prototype.getGui = function() {
-    return this.eInput;
-  };
-  Datepicker.prototype.afterGuiAttached = function() {
-    this.eInput.focus();
-    this.eInput.select();
-  };
-  Datepicker.prototype.getValue = function() {
-    return this.eInput.value;
-  };
-  Datepicker.prototype.destroy = function() {};
-  Datepicker.prototype.isPopup = function() {
-    return false;
-  };
-  return Datepicker;
-}
+import DatePickerEditor from './components/DatePickerEditor';
 
 const isFirstColumn = params => {
   var displayedColumns = params.columnApi.getAllDisplayedColumns();
@@ -75,11 +52,13 @@ class PwAggrid extends React.Component {
       isEditing: false, //是否正在编辑
       saveBtnLoading: false, //保存按钮loading状态
       deleteBtnLoading: false, //删除按钮loading状态
-      // components: { datePicker: getDatePicker() },
       rowClassRules: {
         'pw-ag-grid-new-row': function(params) {
           return params.data ? params.data.isNew === true : null;
         }
+      },
+      frameworkComponents: {
+        datePicker: DatePickerEditor
       }
     };
   }
@@ -103,6 +82,12 @@ class PwAggrid extends React.Component {
 
   handleRefresh = () => {
     this.props.onRefresh && this.props.onRefresh();
+    this.gridApi.updateRowData({
+      remove: this._addData
+    });
+    this.setState({ hasModifiedData: false });
+    this._addData.clear();
+    this._modifiedData.clear();
   };
 
   handleAdvSearch = () => {
@@ -178,8 +163,11 @@ class PwAggrid extends React.Component {
   };
 
   handleDeleteRecords = async () => {
-    this.setState({ deleteBtnLoading: true });
     let selectedData = this.gridApi.getSelectedRows();
+    if (!selectedData.length) {
+      return message.info('请先选择数据');
+    }
+    this.setState({ deleteBtnLoading: true });
     this.gridApi.updateRowData({
       remove: selectedData
     });
@@ -232,6 +220,7 @@ class PwAggrid extends React.Component {
         chartDataType: _column.chartType,
         aggFunc: _column.aggFunc,
         rowGroup: _column.rowGroup,
+        // autoHeight: true,
         cellStyle: function(params) {},
         valueSetter: params => {
           if (params.oldValue == params.newValue) {
@@ -259,9 +248,9 @@ class PwAggrid extends React.Component {
           aggridColumn.cellEditorParams = { values: _column.ValueOptions };
         }
       }
-      // if (_column.ColType === 4) {
-      //   aggridColumn.cellEditor = 'datePicker';
-      // }
+      if (_column.ColType === 4) {
+        aggridColumn.cellEditor = 'datePicker';
+      }
       if (!aggridColumn.filter) {
         switch (_column.ColType) {
           case 4:
@@ -346,6 +335,8 @@ class PwAggrid extends React.Component {
 
   handleRowEditingStarted = params => {
     this.setState({ isEditing: true });
+    // console.log(params);
+    // params.node.setRowHeight(80);
     // 隐藏不可编辑的列
     // this.gridColumnApi.setColumnsVisible(this._cantEditCol, false);
   };
@@ -595,6 +586,7 @@ class PwAggrid extends React.Component {
             rowClassRules={this.state.rowClassRules}
             sideBar={this.props.sideBarAg}
             components={this.state.components}
+            frameworkComponents={this.state.frameworkComponents}
           ></AgGridReact>
         </div>
       </div>
