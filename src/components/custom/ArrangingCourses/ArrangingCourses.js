@@ -514,6 +514,7 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
                 hasDelete={false}
                 hasAdd={false}
                 tableComponent='ag-grid'
+                sideBarAg={true}
                 hasRowSelection={true}
               />
             </div>

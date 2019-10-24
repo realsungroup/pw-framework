@@ -105,7 +105,7 @@ class ProbationForms extends React.Component {
     this.getInternalCourses();
     // this.getTutorships();
     this.setState({ loading: false });
-    this.getOrientationTraining();
+    this.getOrientationTraining(memberId);
   }
 
   //申请转正
@@ -465,11 +465,11 @@ class ProbationForms extends React.Component {
   };
 
   //获取入职培训表数据
-  getOrientationTraining = async () => {
+  getOrientationTraining = async memberId => {
     try {
       let res = await http().getTable({
-        resid: resid3
-        // cmswhere:`menberId ='${memberId}'`
+        resid: resid3,
+        cmswhere: `menberId = '${memberId}'`
       });
       this.setState({ orientationTraining: res.data });
     } catch (error) {
