@@ -23,12 +23,12 @@ class CourseMaintain extends React.Component {
             TabsTitle: '总课程',
             OutHeight: '80vh',
             recordFormFormWidth: '90%',
-            hasBeBtns: false,
+            hasBeBtns: true,
             hasModify: false,
             hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasAdd: true,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             hasRowSelection:true,
             subtractH: 220,
@@ -49,18 +49,18 @@ class CourseMaintain extends React.Component {
             hasBeBtns: true,
             hasModify: false,
             hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasAdd: true,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
             formProps: {
-              height: 550
+              height: 700
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {
-              placement: 'bottom',
-              height: 600
+              placement: 'right',
+              height: 700
             }
           },
           {
@@ -71,18 +71,40 @@ class CourseMaintain extends React.Component {
             hasBeBtns: true,
             hasModify: false,
             hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasAdd: true,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
+            formProps: {
+              height: 700
+            },
+            recordFormType: 'drawer',
+            recordFormContainerProps: {
+              placement: 'right',
+              height: 700
+            }
+          },
+          {
+            resid: 625146057740,
+            TabsTitle: '培训机构信息',
+            OutHeight: '80vh',
+            recordFormFormWidth: '90%',
+            hasBeBtns: true,
+            hasModify: false,
+            hasDelete: false,
+            hasAdd: true,
+            hasRowDelete: true,
+            hasRowModify: true,
+            hasRowView: false,
+            subtractH: 180,
             formProps: {
               height: 550
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {
-              placement: 'bottom',
-              height: 600
+              placement: 'right',
+              height: 550
             }
           }
         ]}
