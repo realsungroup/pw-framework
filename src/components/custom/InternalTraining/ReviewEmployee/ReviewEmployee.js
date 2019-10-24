@@ -298,6 +298,7 @@ class ReviewEmployee extends React.Component {
   closeModals = () => {
     this.setState({
       noticeModalVisible: false,
+      addEmployeesVisible:false,
       selectCourseArrangementVisible: false,
       targetCourseArrangement: '',
       selectedEmployees: []
@@ -333,7 +334,7 @@ class ReviewEmployee extends React.Component {
                 this.setState({ addEmployeesVisible: true });
               }}
             >
-              添加人员
+              添加上课人员
             </Button>
             <Button
               onClick={() => {
