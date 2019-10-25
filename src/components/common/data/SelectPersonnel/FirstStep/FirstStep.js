@@ -640,7 +640,7 @@ export default class FirstStep extends React.Component {
               const workbook = XLSX.read(data, { type: 'array' });
               message.success('选择文件成功');
               // 只读取 sheet1 中的 excel 数据
-              ctx._sheet1 = workbook.Sheets.Sheet1;
+              ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
               ctx.setState({ isSelectFile: true });
             };
             reader.readAsArrayBuffer(file);
@@ -726,9 +726,9 @@ export default class FirstStep extends React.Component {
     const cName = this.props.personPrimaryKeyField;
     values.forEach((value, index) => {
       if (index !== values.length - 1) {
-        where += `${cName} = '${value}' or `;
+        where += `${cName} = '${value.toString().trim()}' or `;
       } else {
-        where += `${cName} = '${value}'`;
+        where += `${cName} = '${value.toString().trim()}'`;
       }
     });
     return where;
@@ -738,7 +738,6 @@ export default class FirstStep extends React.Component {
     const { excelColName } = this.state;
     const { subResid, dblinkname } = this.props;
     const sheet1 = this._sheet1;
-
     if (!sheet1) {
       return message.error('请选择文件');
     }
