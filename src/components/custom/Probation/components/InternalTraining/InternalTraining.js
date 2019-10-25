@@ -3,7 +3,18 @@ import './InternalTraining.less';
 import { Card, Table, Button, Popconfirm } from 'antd';
 
 const { Column } = Table;
-const InternalTraining = props => {
+function areEqual(prevProps, nextProps) {
+  /*
+  如果把 nextProps 传入 render 方法的返回结果与
+  将 prevProps 传入 render 方法的返回结果一致则返回 true，
+  否则返回 false
+  */
+  return (
+    JSON.stringify(prevProps.internalTraining) ===
+    JSON.stringify(nextProps.internalTraining)
+  );
+}
+const InternalTraining = React.memo(props => {
   return (
     <div id="internal-training" className="probation-form">
       <Card
@@ -39,15 +50,11 @@ const InternalTraining = props => {
           <Column title="序号/No" dataIndex="no" key="no" width={100} />
           <Column
             title="课程/Courses"
-            dataIndex="C3_613941384592"
+            dataIndex="course"
             key="course"
             width={300}
           />
-          <Column
-            title="培训师/Trainer"
-            dataIndex="C3_613941386081"
-            key="trainer"
-          />
+          <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
           <Column
             title="培训日期/Date"
             dataIndex="C3_615393041304"
@@ -73,7 +80,7 @@ const InternalTraining = props => {
                     <Popconfirm
                       title="确认删除吗?"
                       onConfirm={() => {
-                        props.deleteInternalCourse(record.REC_ID);
+                        props.deleteInternalCourse(record.REC_ID, record.no);
                       }}
                     >
                       <a href="javascript:;">删除</a>
@@ -88,6 +95,6 @@ const InternalTraining = props => {
       </Card>
     </div>
   );
-};
+}, areEqual);
 
 export default InternalTraining;

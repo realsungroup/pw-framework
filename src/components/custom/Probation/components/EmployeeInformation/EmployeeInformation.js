@@ -1,7 +1,8 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, message, Checkbox } from 'antd';
+import { Card, Row, Col, Select, message } from 'antd';
 import http from 'Util20/api';
+import moment from 'moment';
 import debounce from 'lodash/debounce';
 
 const { Option } = Select;
@@ -119,11 +120,6 @@ class EmployeeInformation extends React.Component {
             <Col span={8}>
               <span className="employee-imformation_lable">姓名/Name:</span>
               {employeeInformation.userName}
-              {/* <Select placeholder="12312313" style={{ width: 100 }}>
-                <Option key="1" value={1}>
-                  1
-                </Option>
-              </Select> */}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">
@@ -135,7 +131,7 @@ class EmployeeInformation extends React.Component {
               <span className="employee-imformation_lable">
                 入职日期/Join Date:
               </span>
-              {employeeInformation.joinCompanyDate}
+              {moment(employeeInformation.joinCompanyDate).format('YYYY-MM-DD')}
             </Col>
           </Row>
           <Row style={{ paddingBottom: 26 }}>
@@ -168,6 +164,12 @@ class EmployeeInformation extends React.Component {
               {employeeInformation.regStatus}
             </Col>
             <Col span={8}>
+              <span className="employee-imformation_lable">转正日期/Date:</span>
+              {moment(employeeInformation.endTime).format('YYYY-MM-DD')}
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
                 <div>
@@ -190,6 +192,24 @@ class EmployeeInformation extends React.Component {
                     </Select>
                   ) : null}
                   <div className="clearfix"></div>
+                  {employeeInformation.isSemi == false ? null : (
+                    <Select
+                      style={{ width: 150, display: 'block' }}
+                      placeholder="请输入员工工号"
+                      showSearch
+                      filterOption={false}
+                      onSearch={this.fectchSemi}
+                      onChange={this.handleChange2}
+                      labelInValue
+                      key={1}
+                      value={valueSemi}
+                      loading={fetching}
+                    >
+                      {this.state.data2.map(d => (
+                        <Option key={d.key}>{d.label}</Option>
+                      ))}
+                    </Select>
+                  )}
                   <input
                     defaultChecked={employeeInformation.isSemi}
                     type="checkbox"
@@ -210,24 +230,6 @@ class EmployeeInformation extends React.Component {
                     <br />I can't find the mentor ,ansd I want to recommend
                     another who will become a mentor.
                   </span>
-                  {employeeInformation.isSemi == false ? null : (
-                    <Select
-                      style={{ width: 150 }}
-                      placeholder="请输入员工工号"
-                      showSearch
-                      filterOption={false}
-                      onSearch={this.fectchSemi}
-                      onChange={this.handleChange2}
-                      labelInValue
-                      key={1}
-                      value={valueSemi}
-                      loading={fetching}
-                    >
-                      {this.state.data2.map(d => (
-                        <Option key={d.key}>{d.label}</Option>
-                      ))}
-                    </Select>
-                  )}
                 </div>
               ) : (
                 employeeInformation.instructor
