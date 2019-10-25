@@ -11,7 +11,8 @@ import {
   Select,
   Modal,
   Spin,
-  message
+  message,
+  Switch
 } from 'antd';
 import TableData from '../../common/data/TableData';
 
@@ -518,6 +519,25 @@ class OfferLetter extends React.Component {
       }
     });
   };
+  hasStockChange = value => {
+    let data = this.state.data;
+	if(data.isHasStock=='Y'){
+		this.setState({
+		  data: {
+		    ...data,
+		    isHasStock: 'N'
+		  }
+		});
+	}else{
+		this.setState({
+		  data: {
+		    ...data,
+		    isHasStock: 'Y'
+		  }
+		});
+	}
+    
+  };
   hrphoneChange = value => {
     let data = this.state.data;
     console.log(value);
@@ -731,7 +751,7 @@ class OfferLetter extends React.Component {
               </strong>
               (before tax, 12months pay), paid by direct deposit.
             </li>
-            <li className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'hidden':''}>
+            <li className={(this.state.data.isHasStock=='Y')?'':'hidden'}>
               <strong>Sign-on RSUs:</strong>: Finisar and II-VI Incorporated are merging effective September 25, 2019.  Therefore, you will be issued a combination of II-VI Stock Options and RSUs with a value of $
               {this.state.isShow ? (
                 <Input
@@ -925,7 +945,7 @@ class OfferLetter extends React.Component {
               Please sign this job offer and resend to us within 5 days after
               you receive it. If not, the offer letter will become invalid.
             </p>
-            <div style={{height:'306px',width:'100%'}}className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'':'hidden'}></div>
+            <div style={{height:'306px',width:'100%'}}className={(this.state.data.isHasStock=='Y')?'':'hidden'}></div>
           </p>
           <br />
           {/* <div className="logos"></div> */}
@@ -1545,7 +1565,7 @@ class OfferLetter extends React.Component {
                 </strong>
                 (before tax, 12months pay), paid by direct deposit.
               </li>
-              <li className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'hidden':''}>
+              <li className={(this.state.data.isHasStock=='Y')?'':'hidden'}>
                 <strong>Sign-on RSUs:</strong> Finisar and II-VI Incorporated are working together to become one Company. If your start date occurs before the acquisition date, subject to the approval of Finisar’s Board of Directors, you will be issued a value of $
                 {this.state.isShow ? (
                   <Input
@@ -1729,7 +1749,7 @@ class OfferLetter extends React.Component {
               <p>
                 Please sign this job offer and resend to us within 5 days after you receive it. If not, the offer letter will become invalid.
               </p>
-              <div style={{height:'336px',width:'100%'}}className={((this.state.data.level=='S3')||(this.state.data.level=='S4')||(this.state.data.level=='S5'))?'':'hidden'}></div>
+              <div style={{height:'336px',width:'100%'}}className={(this.state.data.isHasStock=='Y')?'':'hidden'}></div>
             </p>
             <br />
             {/* <div className="logos"></div> */}
@@ -2254,12 +2274,15 @@ class OfferLetter extends React.Component {
           </div>
         </div>
         <div style={{ marginLeft: '200px' }} className='buttonLine'>
+		<div className='right'>
+		<Switch checked={this.state.data.isHasStock=='Y'?true:false} onChange={this.hasStockChange}/><p>在offer里显示股份信息</p>
+		</div>
         <Button
           type="primary"
           style={{ marginRight: '5px' }}
           onClick={this.onSendMail}
         >
-          发送邮件
+          保存并发送邮件
         </Button>
           <Button
             style={{ marginLeft: '5px' }}

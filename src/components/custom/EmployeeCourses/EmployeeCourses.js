@@ -978,7 +978,7 @@ class EmployeeCourses extends React.Component {
                                   });
                                 }}
                               >
-                                填写申请单
+                                提交申请
                               </span>
                             ) : null}
                           </div>

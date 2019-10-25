@@ -201,7 +201,19 @@ class SubordinateCourses extends React.Component {
       message.error(error.message);
     }
   };
-
+  handleReturn= async =>{
+    console.log()
+    // let res; //课程反馈
+    // try {
+    //   res = await http().getTable({
+    //     resid: 478367996508,
+    //     cmswhere: `C3_478368118696 =${courseArrangmentDetailToSearch.CourseArrangeDetailID}`
+    //   });
+    // } catch (err) {
+    //   console.log(err.message);
+    //   message.error(err.message);
+    // }
+  }
   handleOk = () => {
     this.setState({
       courseDetailVisible: false,
@@ -552,6 +564,7 @@ class SubordinateCourses extends React.Component {
           hasAdd={false}
           // hasRowSelection={true}
           customRowBtns={[
+
             record => {
               return (
                 <Button
@@ -758,8 +771,7 @@ class SubordinateCourses extends React.Component {
               <Row>
                 <Col span={2}>序号</Col>
                 <Col span={8}>具体行动</Col>
-                <Col span={5}>开始时间</Col>
-                <Col span={5}>结束时间</Col>
+                
                 <Col span={4}>进度</Col>
               </Row>
               {this.state.planView.map((item, index) => {
@@ -767,18 +779,7 @@ class SubordinateCourses extends React.Component {
                   <Row key={index}>
                     <Col span={2}>{index + 1}</Col>
                     <Col span={8}>{item.actions}</Col>
-                    <Col span={5}>
-                      <DatePicker
-                        value={moment(`${item.startTime}`, dateFormat)}
-                        disabled
-                      />
-                    </Col>
-                    <Col span={5}>
-                      <DatePicker
-                        value={moment(`${item.endTime}`, dateFormat)}
-                        disabled
-                      />
-                    </Col>
+                   
                     <Col span={4}>
                       <InputNumber value={item.progress} disabled />
                     </Col>
@@ -787,6 +788,7 @@ class SubordinateCourses extends React.Component {
               })}
             </Card>
           )}
+          <Button style={{position:'absolute',bottom:'16px'}} onClick={this.handleReturn}>退回这个课程反馈</Button>
         </Drawer>
         <Drawer
           width={'60%'}

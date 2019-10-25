@@ -93,6 +93,7 @@ u{
 }
 .buttonLine{
   left:-100px;
+  width:calc(100% - 200px);
 }
 .location{
   position:fixed;
@@ -158,4 +159,22 @@ height:80vh;
 margin-top: -40vh;
 margin-left: -600px;
 z-index:2;
+}
+.buttonLine{
+	.right{
+		float:right;
+		overflow: hidden;
+		*{
+			float:left;
+			
+		}
+		p{
+			line-height:55px;
+			margin-right:24px;
+		}
+		button{
+			margin-top:17px;
+			margin-right:16px;
+		}
+	}
 }
