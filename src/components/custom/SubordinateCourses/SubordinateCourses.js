@@ -771,8 +771,7 @@ class SubordinateCourses extends React.Component {
               <Row>
                 <Col span={2}>序号</Col>
                 <Col span={8}>具体行动</Col>
-                <Col span={5}>开始时间</Col>
-                <Col span={5}>结束时间</Col>
+                
                 <Col span={4}>进度</Col>
               </Row>
               {this.state.planView.map((item, index) => {
@@ -780,18 +779,7 @@ class SubordinateCourses extends React.Component {
                   <Row key={index}>
                     <Col span={2}>{index + 1}</Col>
                     <Col span={8}>{item.actions}</Col>
-                    <Col span={5}>
-                      <DatePicker
-                        value={moment(`${item.startTime}`, dateFormat)}
-                        disabled
-                      />
-                    </Col>
-                    <Col span={5}>
-                      <DatePicker
-                        value={moment(`${item.endTime}`, dateFormat)}
-                        disabled
-                      />
-                    </Col>
+                   
                     <Col span={4}>
                       <InputNumber value={item.progress} disabled />
                     </Col>

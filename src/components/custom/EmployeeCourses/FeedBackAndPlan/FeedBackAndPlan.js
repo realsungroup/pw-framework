@@ -350,27 +350,7 @@ class FeedBackAndPlan extends Component {
                     }}
                   />
                 </Col>
-                <Col span={4}>
-                  <DatePicker
-                    onChange={(date, dateString) => {
-                      this.handlestartTimeChange(date, dateString, index);
-                    }}
-                  />
-                </Col>
-                <Col span={4}>
-                  <DatePicker
-                    onChange={(date, dateString) => {
-                      this.handleendTimeChange(date, dateString, index);
-                    }}
-                  />
-                </Col>
-                <Col span={3}>
-                  <InputNumber
-                    onChange={value => {
-                      this.handleProgressChange(value, index);
-                    }}
-                  />
-                </Col>
+                
                 <Col span={3}>
                   <Button
                     onClick={() => {
@@ -635,15 +615,23 @@ class FeedBackAndPlan extends Component {
         {this.props.onCourseType === '内训' ? null : (
           <Card title="行动计划" style={{ marginTop: 10 }}>
             <Row>
+				<div>
+					<ul style={{width:'100%',border:'1px solid #000',padding:'8px',lineHeight:'24px',listStyle:'none'}}>
+						<li>
+							列出培训中学习到到3个知识点
+						</li>
+						<li>
+							
+						</li>
+					</ul>
+				</div>
+			
               <Col span={2}>序号</Col>
               <Col span={8}>
                 <Tooltip title="运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。">
                   具体行为
                 </Tooltip>
               </Col>
-              <Col span={4}>开始时间</Col>
-              <Col span={4}>结束时间</Col>
-              <Col span={3}>进度</Col>
               {this.props.mode === 'view' ? null : <Col span={3}>操作</Col>}
             </Row>
             {this.renderViewOrModify()}
