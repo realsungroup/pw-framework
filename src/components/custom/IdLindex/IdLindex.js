@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { List, Avatar, Modal, Button, Input, Menu, Icon ,Spin,notification} from 'antd';
+import { Select,List, Avatar, Modal, Button, Input, Menu, Icon ,Spin,notification} from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
@@ -24,7 +24,7 @@ const openNotification = () => {
     },
   });
 };
-
+const { Option } = Select;
 
 // 右侧导航栏列表的清单
 const MenuList = [
@@ -69,43 +69,8 @@ class IdLindex extends Component {
     super(props);
   }
   componentDidMount = () => {
-    this.getPersonList();
-    var usrChara = localStorage.getItem('userInfo');
-    usrChara=JSON.parse(usrChara)
-    usrChara=usrChara.UserInfo.GroupList;
-    var arr=[];
-    var n=0;
-    var bol=false;
-    var str='';
-    while(n<usrChara.length){
-      if(usrChara.slice(n, n+1)=="\'"){
-
-        if(bol==true){
-          bol=false;
-          arr.push(str);
-          str='';
-        }else{
-          bol=true;
-        }
-      }
-      if(bol==true){
-        str+=usrChara.slice(n+1, n+2)
-      }
-      n++;
-    }
-// 判别hr角色
-var hrCode='623876215000';
-    // var hrCode='demo';
-    n=0;
-    this.setState({userChara:'others'});
-
-    while(n<arr.length){
-      var j=hrCode+"\'"
-      if(j==arr[n]){
-        this.setState({userChara:'HR'});
-      }
-      n++;
-    }
+    
+	this.getPersonList();
     // 清楚缓存
     http().clearCache();
   };
@@ -131,6 +96,7 @@ var hrCode='623876215000';
       item.isSelected = false;
     });
     item.isSelected = true;
+
     // 并获取该人的详细信息
     this.setState({ personList: tempPersonList, currentPersonId: item.ID,curName:item.ChName });
     //
@@ -143,6 +109,11 @@ var hrCode='623876215000';
     }
 
 
+  };
+  // 人员筛选器
+  filtMem=async(v)=>{
+	  this.setState({filter:v});
+	  this.getPersonList();
   };
   // 添加面试评估表与背景调查表记录
   addRec = async (resid,key) => {
@@ -184,32 +155,110 @@ var hrCode='623876215000';
     }
   };
   // 获取人员列表
-  getPersonList = async key => {
+  getPersonList = async (key) => {
+	  this.setState({loading:true})
+	  var usrChara = localStorage.getItem('userInfo');
+	      usrChara=JSON.parse(usrChara)
+	      usrChara=usrChara.UserInfo.GroupList;
+	      var arr=[];
+	      var n=0;
+	      var bol=false;
+	      var str='';
+	      while(n<usrChara.length){
+	        if(usrChara.slice(n, n+1)=="\'"){
+	  
+	          if(bol==true){
+	            bol=false;
+	            arr.push(str);
+	            str='';
+	          }else{
+	            bol=true;
+	          }
+	        }
+	        if(bol==true){
+	          str+=usrChara.slice(n+1, n+2)
+	        }
+	        n++;
+	      }
+	  // 判别hr角色
+	  var hrCode='623876215000';
+	      // var hrCode='demo';
+	      n=0;
+	      this.setState({userChara:'others'});
+	  var bol=false;
+	      while(n<arr.length){
+	        var j=hrCode+"\'"
+	        if(j==arr[n]){
+	          this.setState({userChara:'HR'});
+			  bol=true;
+	        }
+	        n++;
+	      }
+	  let postID;
+	  if(bol==true){
+		  postID='613152690063'
+	  }else{
+		  postID='625315169261'
+	  }
     let res;
-    try {
-      res = await http().getTable({
-        resid: 613152690063,
-        key: key
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    if (0 < res.total) {
-      res.data.map(item => {
-        return (item.isSelected = false);
-      });
-      res.data[0].isSelected = true;
-      // console.log(res.data);
-      this.getPersonalInfo(613149356409,res.data[0].ID);
-      this.setState({
-        personList: res.data,
-        currentPersonId: res.data[0].ID,
-        curName:res.data[0].ChName
-
-      });
-    } else {
-      console.log('获取人员列表失败');
-    }
+	if(this.state.filter){
+		console.log('有筛选',this.state.filter)
+		try {
+		  res = await http().getTable({
+		    resid: postID,
+		    key: key,
+			cmswhere: `cStatus = '${this.state.filter}'`
+		  });
+		  if (0 < res.total) {
+		    res.data.map(item => {
+		      return (item.isSelected = false);
+		    });
+		    res.data[0].isSelected = true;
+		    // console.log(res.data);
+		    this.getPersonalInfo(613149356409,res.data[0].ID);
+		    this.setState({
+		      personList: res.data,
+		      currentPersonId: res.data[0].ID,
+		      curName:res.data[0].ChName,
+		  	loading:false
+		    });
+		  } else {
+		  	this.setState({loading:false})
+		    console.log('获取人员列表失败');
+		  }
+		} catch (err) {
+		  console.log(err);
+		}
+	}else{
+		console.log('没有筛选',this.state.filter)
+		try {
+		  res = await http().getTable({
+		    resid: postID,
+		    key: key,
+		  });
+		  if (0 < res.total) {
+		    res.data.map(item => {
+		      return (item.isSelected = false);
+		    });
+		    res.data[0].isSelected = true;
+		    // console.log(res.data);
+		    this.getPersonalInfo(613149356409,res.data[0].ID);
+		    this.setState({
+		      personList: res.data,
+		      currentPersonId: res.data[0].ID,
+		      curName:res.data[0].ChName,
+		  	loading:false
+		    });
+		  } else {
+		  	this.setState({loading:false})
+		    console.log('获取人员列表失败');
+		  }
+		} catch (err) {
+		  console.log(err);
+		}
+	}
+    
+    
   };
   // 获取当前人员人员详细信息
   getPersonalInfo = async (resid,id) => {
@@ -225,10 +274,7 @@ var hrCode='623876215000';
 
 
     } catch (err) {
-      Modal.error({
-        title: '提示',
-        content: err.message
-      });
+      
       this.setState({loading:false});
 
     }
@@ -307,9 +353,10 @@ var hrCode='623876215000';
           <InterviewAssessment record={selectedRecord} clsAss={this.clsAss} data={currentPersonInfo}>
           </InterviewAssessment>
           </div>
-
+			
             <TableData
-              key={613152706922}
+			resid={this.state.userChara=='HR'?613152706922:624364641591}
+              // key={this.state.userChara=='HR'?613152706922:624364641591}
               {...assementForm}
               hasAdd={false}
               hasRowDelete= {this.state.userChara=='HR'?true:false}
@@ -401,7 +448,7 @@ var hrCode='623876215000';
         case '工作邀请函':
           return(
             <div className='offerLetter'>
-            <OfferLetter personDetail={this.state.currentPersonId}></OfferLetter>
+            <OfferLetter personDetail={this.state.currentPersonId} ></OfferLetter>
 
             </div>
           )
@@ -458,6 +505,14 @@ var hrCode='623876215000';
         <div className="idlindex__content">
           <div className="idlindex__content-person">
             {/* 面试候选人名单 */}
+			<Select defaultValue="全部" onChange={v=>{this.filtMem(v)}} style={{ width: 'calc(100% - 10px)',marginBottom:'16px'}} value={this.state.filter}>
+			      <Option value="">全部</Option>
+			      <Option value="待评估面试">待评估面试</Option>
+			      <Option value="待背景调查">待背景调查</Option>
+			      <Option value="待发送offer">待发送offer</Option>
+			      <Option value="未通过">未通过</Option>
+			      <Option value="通过">通过</Option>
+			    </Select>
             <List
               itemLayout="horizontal"
               dataSource={personList}

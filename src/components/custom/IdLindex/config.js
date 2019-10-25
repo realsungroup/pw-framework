@@ -5,7 +5,7 @@ import { modRecord } from 'Util/api';
 
 // 面试评估表
 export const assementForm = {
-  resid: 613152706922,
+
   // height: 600,
   subtractH: 210,
   hasModify: false,

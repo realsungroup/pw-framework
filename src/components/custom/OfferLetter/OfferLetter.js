@@ -109,7 +109,7 @@ class OfferLetter extends React.Component {
     //     HRPhone: ''
     //   }
     // });
-    console.log(nextProps.personDetail)
+
     let data = this.state.data;
 
     if( typeof nextProps.personDetail !== "undefined" ){
@@ -117,7 +117,8 @@ class OfferLetter extends React.Component {
         ...data,
         ID: nextProps.personDetail
       }});
-        this.getTableData(nextProps.personDetail);
+	  this.getTableData(nextProps.personDetail);
+	  // this.getPersonalInfo(613149356409,nextProps.personDetail);
     }
     // let ID = ''
 
@@ -130,15 +131,13 @@ class OfferLetter extends React.Component {
         resid: 621422585590,
         cmswhere: `ID=${id}`
       });
-      console.log('res', res);
       if(res.data.length>0){
         this.setState({isSave:true,});
         var obj=res.data[0]
         this.setState({data:obj});
-        console.log(this.state.data)
-      }
-      this.setState({loading:false});
 
+      }
+	this.getPersonalInfo(613149356409,id);
     } catch (error) {
       message.error(error.message);
       this.setState({loading:false});
@@ -570,6 +569,34 @@ class OfferLetter extends React.Component {
     this.setState({overlay:false});
 
   }
+  // 获取当前人员人员详细信息
+  getPersonalInfo = async (resid,id) => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: resid,
+        cmswhere: `ID=${id}`
+      });
+
+	  let data = this.state.data;
+	  if(res.data[0].Email){
+		  this.setState({
+		    data: {
+		      ...data,
+		      emailaddress: res.data[0].Email
+		    }
+		  });
+	  }
+	  this.setState({loading:false});
+    } catch (err) {
+      Modal.error({
+        title: '提示',
+        content: err.message
+      });
+      this.setState({loading:false});
+  
+    }
+  };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
     window.document.body.innerHTML = this.printer.innerHTML;
@@ -579,7 +606,7 @@ class OfferLetter extends React.Component {
   };
 
   onSendMail=async()=>{
-
+	console.log()
     let { data } = this.state;
     data.isSendEmail="Y";
     var myDate=new Date();
@@ -2275,7 +2302,7 @@ class OfferLetter extends React.Component {
         </div>
         <div style={{ marginLeft: '200px' }} className='buttonLine'>
 		<div className='right'>
-		<Switch checked={this.state.data.isHasStock=='Y'?true:false} onChange={this.hasStockChange}/><p>在offer里显示股份信息</p>
+		<Switch checked={this.state.data.isHasStock=='Y'?true:false} onChange={this.hasStockChange}/><p>在offer里显示股权信息</p>
 		</div>
         <Button
           type="primary"
@@ -2319,6 +2346,9 @@ class OfferLetter extends React.Component {
             SH
           </li>
         </ul>
+		<div className='mailAddress'>
+			收件人邮箱:{this.state.data.emailaddress}
+		</div>
         <div className={this.state.overlay?'overlay':'hidden'} >
           <rect onClick={this.clzHis}></rect>
           <div>
