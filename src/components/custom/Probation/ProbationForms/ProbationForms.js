@@ -667,142 +667,105 @@ class ProbationForms extends React.Component {
       }
     });
   };
-  //添加内训课程
-  addInternalCourse = async () => {
-    try {
-      let internalTraining = {
-        C3_614182469763: this.state.addInternalCourseData.courseId,
-        C3_613941384832: this.state.employeeInformation.memberId,
-        C3_613941386081: this.state.addInternalCourseData.teacher
-      };
-      return console.log(internalTraining);
-      // let res = await http().addRecords({
-      //   resid: resid4,
-      //   data: [
-      //     {
-      //       C3_614182469763: this.state.addInternalCourseData.courseId,
-      //       C3_613941384832: this.state.employeeInformation.memberId,
-      //       C3_615393041304: this.state.addInternalCourseData.trainDate,
-      //       C3_613941386081: this.state.addInternalCourseData.teacher
-      //     }
-      //   ]
-      // });
-      this.setAddInternalCourseVisible(false);
-      this.setState({
-        internalTraining: [...this.state.internalTraining, internalTraining],
-        addInternalCourseData: {}
-      });
-      message.success('添加成功');
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
-  };
+
   //添加在岗培训课程
   addOnJobTraining = async () => {
+    let data = {
+      ...this.state.addOnJobTrainingData,
+      memberId: this.state.employeeInformation.memberId
+    };
+    this.setAddOnJobTrainingVisible(false);
+    this.setState({
+      onTheJobTraining: [...this.state.onTheJobTraining, data],
+      addOnJobTrainingData: {}
+    });
+  };
+
+  //修改在岗培训
+  modifyOnJobTraining = async () => {
+    const { onTheJobTraining } = this.state;
+    const data = { ...this.state.modifyOnJobTrainingData };
+    onTheJobTraining[data.no - 1] = data;
+    this.setState({
+      onTheJobTraining,
+      modifyOnJobTrainingVisible: false
+    });
+  };
+
+  //删除在岗培训
+  deleteOnJobTraining = async (REC_ID, no) => {
     try {
-      let res = await http().addRecords({
-        resid: resid5,
-        data: [
-          {
-            ...this.state.addOnJobTrainingData,
-            memberId: this.state.employeeInformation.memberId
-          }
-        ]
-      });
-      this.setAddOnJobTrainingVisible(false);
+      let onTheJobTraining = [...this.state.onTheJobTraining];
+      if (REC_ID) {
+        http().removeRecords({
+          resid: resid5,
+          data: [{ REC_ID }]
+        });
+        onTheJobTraining = onTheJobTraining.filter(item => {
+          return item.REC_ID !== REC_ID;
+        });
+      } else {
+        onTheJobTraining.splice(no - 1, 1);
+      }
+      message.success('已删除');
       this.setState({
-        onTheJobTraining: [...this.state.onTheJobTraining, res.data[0]],
-        addOnJobTrainingData: {}
+        onTheJobTraining
       });
-      message.success('添加成功');
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
   };
 
+  //添加内训课程
+  addInternalCourse = async () => {
+    let internalTraining = {
+      courseId: this.state.addInternalCourseData.courseId,
+      trainer: this.state.addInternalCourseData.teacher,
+      course: this.state.addInternalCourseData.courseName
+    };
+    this.setAddInternalCourseVisible(false);
+    this.setState({
+      internalTraining: [...this.state.internalTraining, internalTraining],
+      addInternalCourseData: {}
+    });
+  };
+
   //删除内训课程
-  deleteInternalCourse = async REC_ID => {
+  deleteInternalCourse = async (REC_ID, no) => {
+    let internalTraining = [...this.state.internalTraining];
     try {
-      http().removeRecords({
-        resid: resid4,
-        data: [{ REC_ID }]
-      });
-      const internalTraining = this.state.internalTraining.filter(item => {
-        return item.REC_ID !== REC_ID;
-      });
+      if (REC_ID) {
+        http().removeRecords({
+          resid: resid4,
+          data: [{ REC_ID }]
+        });
+        internalTraining = internalTraining.filter(item => {
+          return item.REC_ID !== REC_ID;
+        });
+      } else {
+        internalTraining.splice(no - 1, 1);
+      }
+
       this.setState({
         internalTraining
       });
-      message.success('删除成功');
+      message.success('已删除');
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
   };
-  //删除在岗培训
-  deleteOnJobTraining = async REC_ID => {
-    try {
-      http().removeRecords({
-        resid: resid5,
-        data: [{ REC_ID }]
-      });
-      const onTheJobTraining = this.state.onTheJobTraining.filter(item => {
-        return item.REC_ID !== REC_ID;
-      });
-      this.setState({
-        onTheJobTraining
-      });
-      message.success('删除成功');
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
-  };
+
   //修改内训课程
   modifyInternalCourse = async () => {
-    try {
-      let res = await http().modifyRecords({
-        resid: resid4,
-        data: [{ ...this.state.modifyInternalCourseData }]
-      });
-      const { internalTraining } = this.state;
-      const index = internalTraining.findIndex(item => {
-        return item.REC_ID === res.data[0].REC_ID;
-      });
-      internalTraining[index] = res.data[0];
-      this.setState({
-        internalTraining,
-        modifyInternalCourseVisible: false
-      });
-      message.success('修改成功');
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
-  };
-  //修改在岗培训
-  modifyOnJobTraining = async () => {
-    try {
-      let res = await http().modifyRecords({
-        resid: resid5,
-        data: [{ ...this.state.modifyOnJobTrainingData }]
-      });
-      const { onTheJobTraining } = this.state;
-      const index = onTheJobTraining.findIndex(item => {
-        return item.REC_ID === res.data[0].REC_ID;
-      });
-      onTheJobTraining[index] = res.data[0];
-      this.setState({
-        onTheJobTraining,
-        modifyOnJobTrainingVisible: false
-      });
-      message.success('修改成功');
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
+    const { internalTraining } = this.state;
+    const data = { ...this.state.modifyInternalCourseData };
+    internalTraining[data.no - 1] = data;
+    this.setState({
+      internalTraining,
+      modifyInternalCourseVisible: false
+    });
   };
 
   //控制添加在岗培训显示模态窗状态
@@ -894,6 +857,9 @@ class ProbationForms extends React.Component {
 
   //邀请培训师确认
   inviteConfirm = async data => {
+    if (!data.REC_ID) {
+      return message.info('请先保存');
+    }
     this.setState({ loading: true });
     try {
       await http().modifyRecords({
@@ -991,6 +957,7 @@ class ProbationForms extends React.Component {
               />
               <IndividualSummary
                 summary={employeeInformation.smmary}
+                endTime={employeeInformation.endTime}
                 summaryChange={this.summaryChange}
                 roleName={roleName}
                 editable={editable}
@@ -1123,7 +1090,7 @@ class ProbationForms extends React.Component {
                           ...this.state.addInternalCourseData,
                           courseId: item.C3_609845305868,
                           teacher: item.C3_610390419677,
-                          courseName: item.C3_609845305690
+                          courseName: item.C3_609845305680
                         }
                       });
                     }}
@@ -1140,24 +1107,6 @@ class ProbationForms extends React.Component {
             </Col>
             <Col span={12}>{this.state.addInternalCourseData.teacher}</Col>
           </Row>
-          {/* <Row className="probation-forms_modal_inputrow">
-            <Col span={4} offset={4}>
-              培训日期:
-            </Col>
-            <Col span={12}>
-              <DatePicker
-                showTime
-                onChange={val => {
-                  this.setState({
-                    addInternalCourseData: {
-                      ...this.state.addInternalCourseData,
-                      trainDate: val && val.format('YYYY-MM-DD HH:mm:ss')
-                    }
-                  });
-                }}
-              />
-            </Col>
-          </Row> */}
         </Modal>
         <Modal
           title="修改内训课程"
@@ -1180,7 +1129,7 @@ class ProbationForms extends React.Component {
                 placeholder="请选择课程"
                 optionFilterProp="children"
                 onSearch={val => {}}
-                value={this.state.modifyInternalCourseData.C3_614182469763}
+                value={this.state.modifyInternalCourseData.course}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -1195,7 +1144,9 @@ class ProbationForms extends React.Component {
                       this.setState({
                         modifyInternalCourseData: {
                           ...this.state.modifyInternalCourseData,
-                          C3_614182469763: item.C3_609845305868
+                          course: item.C3_609845305680,
+                          trainer: item.C3_610390419677,
+                          courseId: item.C3_609845305868
                         }
                       });
                     }}
@@ -1210,35 +1161,8 @@ class ProbationForms extends React.Component {
             <Col span={4} offset={4}>
               培训师:
             </Col>
-            <Col span={12}>
-              {this.state.modifyInternalCourseData.C3_613941386081}
-            </Col>
+            <Col span={12}>{this.state.modifyInternalCourseData.trainer}</Col>
           </Row>
-          {/* <Row className="probation-forms_modal_inputrow">
-            <Col span={4} offset={4}>
-              培训日期:
-            </Col>
-            <Col span={12}>
-              <DatePicker
-                showTime
-                value={
-                  this.state.modifyInternalCourseData.C3_615393041304
-                    ? moment(
-                        this.state.modifyInternalCourseData.C3_615393041304
-                      )
-                    : undefined
-                }
-                onChange={val => {
-                  this.setState({
-                    modifyInternalCourseData: {
-                      ...this.state.modifyInternalCourseData,
-                      C3_615393041304: val && val.format('YYYY-MM-DD HH:mm:ss')
-                    }
-                  });
-                }}
-              />
-            </Col>
-          </Row> */}
         </Modal>
         <Modal
           title="添加在岗培训课程"
@@ -1295,25 +1219,6 @@ class ProbationForms extends React.Component {
               </Select>
             </Col>
           </Row>
-
-          {/* <Row className="probation-forms_modal_inputrow">
-            <Col span={4} offset={4}>
-              培训日期:
-            </Col>
-            <Col span={12}>
-              <DatePicker
-                showTime
-                onChange={val => {
-                  this.setState({
-                    addOnJobTrainingData: {
-                      ...this.state.addOnJobTrainingData,
-                      trainDate: val && val.format('YYYY-MM-DD HH:mm:ss')
-                    }
-                  });
-                }}
-              />
-            </Col>
-          </Row> */}
         </Modal>
         <Modal
           title="修改在岗培训课程"
