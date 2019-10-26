@@ -1402,7 +1402,7 @@ var hrCode='623876215000';
               <div className = "applay__informnation-signPerson" > 申请人签名/Signature of Applicant </div>
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
-            <Form.Item style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
+            <Form.Item className={this.state.ID?'':'hidden'} style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
               <Button type="primary" style={this.state.userChara=='HR'?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印

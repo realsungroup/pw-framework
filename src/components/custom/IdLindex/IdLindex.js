@@ -75,6 +75,7 @@ class IdLindex extends Component {
     http().clearCache();
   };
   state = {
+	showAdd:true,
     showRef:false,
     loading:true,
     personList: [], //人员列表
@@ -112,8 +113,7 @@ class IdLindex extends Component {
   };
   // 人员筛选器
   filtMem=async(v)=>{
-	  this.setState({filter:v});
-	  this.getPersonList();
+	  this.getPersonList(null,v);
   };
   // 添加面试评估表与背景调查表记录
   addRec = async (resid,key) => {
@@ -155,8 +155,13 @@ class IdLindex extends Component {
     }
   };
   // 获取人员列表
-  getPersonList = async (key) => {
+  getPersonList = async (key,filter) => {
 	  this.setState({loading:true})
+	  this.setState({ currentPersonInfo: '' });
+	  this.setState({
+	    personList: '',
+	    currentPersonId: null,
+	    curName:''});
 	  var usrChara = localStorage.getItem('userInfo');
 	      usrChara=JSON.parse(usrChara)
 	      usrChara=usrChara.UserInfo.GroupList;
@@ -201,14 +206,21 @@ class IdLindex extends Component {
 		  postID='625315169261'
 	  }
     let res;
-	if(this.state.filter){
-		console.log('有筛选',this.state.filter)
+	
+	if(filter){
+		console.log('有筛选',filter)
 		try {
 		  res = await http().getTable({
 		    resid: postID,
 		    key: key,
-			cmswhere: `cStatus = '${this.state.filter}'`
+			cmswhere: `cStatus = '${filter}'`
 		  });
+		  console.log('筛选',res)
+		  if(res.data.length>0){
+			  this.setState({showAdd:true});
+		  }else{
+			  this.setState({showAdd:false});
+		  }
 		  if (0 < res.total) {
 		    res.data.map(item => {
 		      return (item.isSelected = false);
@@ -222,20 +234,28 @@ class IdLindex extends Component {
 		      curName:res.data[0].ChName,
 		  	loading:false
 		    });
+			console.log(this.state.currentPersonId)
 		  } else {
-		  	this.setState({loading:false})
+		  	this.setState({loading:false});
+			
 		    console.log('获取人员列表失败');
 		  }
 		} catch (err) {
+			this.setState({loading:false});
 		  console.log(err);
 		}
 	}else{
-		console.log('没有筛选',this.state.filter)
+		console.log('没有筛选',filter)
 		try {
 		  res = await http().getTable({
 		    resid: postID,
 		    key: key,
 		  });
+		  if(res.data.length>0){
+		  			  this.setState({showAdd:true});
+		  }else{
+		  			  this.setState({showAdd:false});
+		  }
 		  if (0 < res.total) {
 		    res.data.map(item => {
 		      return (item.isSelected = false);
@@ -254,6 +274,7 @@ class IdLindex extends Component {
 		    console.log('获取人员列表失败');
 		  }
 		} catch (err) {
+			this.setState({loading:false});
 		  console.log(err);
 		}
 	}
@@ -370,8 +391,8 @@ class IdLindex extends Component {
               // actionBarExtra={( dataSource, selectedRowKeys, data, recordFormData)=>{
               //   return <Button>添加面试官</Button>
               // }}
-              actionBarExtra={(this.state.userChara=='HR')?(records => (
-                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}}>Add a new record</Button>
+              actionBarExtra={(this.state.userChara=='HR'&&this.state.showAdd==true)?(records => (
+                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}} >Add a new record</Button>
 
               )):''}
               customRowBtns={[
@@ -435,9 +456,9 @@ class IdLindex extends Component {
                     );
                   }
                 ]}
-                actionBarExtra={records => (
+                actionBarExtra={this.state.showAdd==true?(records => (
                     <Button type='primary' onClick={v => {this.addRec(613152614705)}}>新建</Button>
-                )}
+                )):''}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 // cmswhere = {`CandidateId = ${this.state.currentPersonId}`}
@@ -505,7 +526,7 @@ class IdLindex extends Component {
         <div className="idlindex__content">
           <div className="idlindex__content-person">
             {/* 面试候选人名单 */}
-			<Select defaultValue="全部" onChange={v=>{this.filtMem(v)}} style={{ width: 'calc(100% - 10px)',marginBottom:'16px'}} value={this.state.filter}>
+			<Select defaultValue="全部" onChange={v=>{this.filtMem(v)}} style={{ width: 'calc(100% - 10px)',marginBottom:'16px'}} >
 			      <Option value="">全部</Option>
 			      <Option value="待评估面试">待评估面试</Option>
 			      <Option value="待背景调查">待背景调查</Option>

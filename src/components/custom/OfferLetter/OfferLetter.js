@@ -109,17 +109,20 @@ class OfferLetter extends React.Component {
     //     HRPhone: ''
     //   }
     // });
-
+	this.setState({data:''})
     let data = this.state.data;
-
-    if( typeof nextProps.personDetail !== "undefined" ){
-      this.setState({data: {
-        ...data,
-        ID: nextProps.personDetail
-      }});
-	  this.getTableData(nextProps.personDetail);
-	  // this.getPersonalInfo(613149356409,nextProps.personDetail);
-    }
+	if(nextProps.personDetail){
+		if( typeof nextProps.personDetail !== "undefined" ){
+		  this.setState({data: {
+		    ...data,
+		    ID: nextProps.personDetail
+		  }});
+		  this.getTableData(nextProps.personDetail);
+		  // this.getPersonalInfo(613149356409,nextProps.personDetail);
+		}
+	}else{
+	}
+    
     // let ID = ''
 
   }
@@ -2300,7 +2303,7 @@ class OfferLetter extends React.Component {
 
           </div>
         </div>
-        <div style={{ marginLeft: '200px' }} className='buttonLine'>
+        <div style={{ marginLeft: '200px' }} className={this.state.data?'buttonLine':'hidden'}>
 		<div className='right'>
 		<Switch checked={this.state.data.isHasStock=='Y'?true:false} onChange={this.hasStockChange}/><p>在offer里显示股权信息</p>
 		</div>
