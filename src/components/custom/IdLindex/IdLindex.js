@@ -199,6 +199,13 @@ class IdLindex extends Component {
 	        }
 	        n++;
 	      }
+		  // 判别是不是平板用户
+		let usrCode = localStorage.getItem('userInfo');
+		    usrCode=JSON.parse(usrCode)
+		    usrCode=usrCode.UserInfo.UserCode;
+			if(usrCode=='IDLUser'){
+				this.setState({userChara:'IDLUser'});
+			}
 	  let postID;
 	  if(bol==true){
 		  postID='613152690063'
@@ -511,7 +518,7 @@ class IdLindex extends Component {
               <Menu.Item style={{ width: '25%' }} key="工作申请表">
                 工作申请表
               </Menu.Item>
-              <Menu.Item style={{ width: '25%' }} key="面试评估表">
+              <Menu.Item style={ this.state.userChara=='IDLUser'?{width: '25%' }:{display:'none'}} key="面试评估表">
                 面试评估表
               </Menu.Item>
               <Menu.Item style={this.state.userChara=='HR'?{ width: '25%' }:{display:'none'}} key="背景调查表">

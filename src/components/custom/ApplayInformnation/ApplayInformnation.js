@@ -127,6 +127,13 @@ var hrCode='623876215000';
       }
       n++;
     }
+	// 判别是不是平板用户
+	let usrCode = localStorage.getItem('userInfo');
+	    usrCode=JSON.parse(usrCode)
+	    usrCode=usrCode.UserInfo.UserCode;
+		if(usrCode=='IDLUser'){
+			this.setState({userChara:'IDLUser'});
+		}
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -135,7 +142,8 @@ var hrCode='623876215000';
         currentInfo: nextProps.personDetail,
         ChName:nextProps.personDetail.ChName,
         ID:nextProps.personDetail.ID,
-        REC_ID:nextProps.personDetail.REC_ID
+        REC_ID:nextProps.personDetail.REC_ID,
+		
       }, () => {
         this.searchEdu(this.state.ID);
       });
@@ -180,6 +188,35 @@ var hrCode='623876215000';
     document.body.innerHTML = oldstr; //恢复原来的页面
     return false;
   };
+  // 退回重填
+  reFill = async()=>{
+	  this.setState({ loading: true });
+	  let res;
+	  try {
+	    res = http().modifyRecords({
+	      resid: 613149356409, //工作申请表 业务数据
+	      data: [
+	  
+	        {REC_ID:this.state.REC_ID,isReturn:'Y'}]
+	    })
+	    Modal.success({
+	      title: '提示',
+	      content: '退回成功',
+	      onOk: () => {
+	        window.location.reload();
+	  
+	      }
+	    });
+	    this.setState({ loading: false });}catch (err) {
+        console.error(err.message);
+        this.setState({ loading: false });
+
+        Modal.error({
+          title: '退回失败',
+          content: err.message
+        });
+      }
+  }
   handleSave=()=>{
     this.props.form.validateFields((err,values)=>{
       this.setState({ loading: true });
@@ -189,7 +226,7 @@ var hrCode='623876215000';
           resid: 613149356409, //工作申请表 业务数据
           data: [
 
-            {...values,REC_ID:this.state.REC_ID,}]
+            {...values,REC_ID:this.state.REC_ID,isReturn:'N'}]
         })
         Modal.success({
           title: '提示',
@@ -1402,12 +1439,16 @@ var hrCode='623876215000';
               <div className = "applay__informnation-signPerson" > 申请人签名/Signature of Applicant </div>
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
+			<div className={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn!='N')?'hidden':''}>
             <Form.Item className={this.state.ID?'':'hidden'} style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
               <Button type="primary" style={this.state.userChara=='HR'?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印
               </Button>
+			  {((this.state.userChara=='HR')&&(this.state.currentInfo.isReturn=='Y'))?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
+			  
             </Form.Item>
+			</div>
           </div>
         </Form>
       </div>
