@@ -128,12 +128,16 @@ var hrCode='623876215000';
       n++;
     }
 	// 判别是不是平板用户
-	let usrCode = localStorage.getItem('userInfo');
-	    usrCode=JSON.parse(usrCode)
-	    usrCode=usrCode.UserInfo.UserCode;
-		if(usrCode=='IDLUser'){
-			this.setState({userChara:'IDLUser'});
-		}
+	let usrCode = '623876173360'
+  n=0;
+
+  while(n<arr.length){
+    var j=usrCode+"\'"
+    if(j==arr[n]){
+      this.setState({userChara:'IDLUser'});
+    }
+    n++;
+  }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -1439,16 +1443,19 @@ var hrCode='623876215000';
               <div className = "applay__informnation-signPerson" > 申请人签名/Signature of Applicant </div>
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
-			<div className={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn!='N')?'hidden':''}>
+			
             <Form.Item className={this.state.ID?'':'hidden'} style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
               <Button type="primary" style={this.state.userChara=='HR'?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
+              <Button type="primary" style={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn=='Y')?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
+              <div className={this.state.userChara=='HR'?'':'hidden'}>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印
               </Button>
-			  {((this.state.userChara=='HR')&&(this.state.currentInfo.isReturn=='Y'))?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
-			  
+              
+			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
+              </div>
             </Form.Item>
-			</div>
+			
           </div>
         </Form>
       </div>

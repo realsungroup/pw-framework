@@ -43,18 +43,20 @@ class PhysicalExamination extends React.Component {
 
   }
   handleChangeS=(value,obj)=>{
-
+    console.log(obj)
     this.setState({
         value,
         data:[],
         postName:obj.props.children,
-        postID:value,
+        candidateID:value,
+
         fetching: false,
       });
       this.getPersonalInfo(613149356409,value);
 
 
   }
+
   seLoca=()=>{
     if(this.state.loca=='SH'){
       this.setState({loca:'WX'})
@@ -90,15 +92,17 @@ class PhysicalExamination extends React.Component {
       this.setState({fetching:true});
 
       let res;
+      let isPsd='待通过'
       try {
         res = await http().getTable({
           resid: 613152690063,
-          key:value
+          key:value,
+          cmswhere:`isPass='${isPsd}'`
         });
-
         const data =res.data.map(data => ({
                   text: `${data.ChName}`,
                   value: data.ID,
+                  
                 }));
 
                   this.setState({ data, fetching: false });
@@ -143,7 +147,8 @@ class PhysicalExamination extends React.Component {
             data:[{
               addTime:myDate,
       				REC_ID:this.state.REC_ID,
-      			  isSendEmail:'Y',
+              isSendEmail:'Y',
+              candidateID:this.state.candidateID,
               email:this.state.mailAddress,
               Name:this.state.postName,
               location:this.state.loca,hospital:this.state.hosName,
@@ -231,6 +236,8 @@ class PhysicalExamination extends React.Component {
         }
 
     }
+
+
 showOver=()=>{
 
   if(this.state.overlay==true){
@@ -383,7 +390,7 @@ showOver=()=>{
           showSearch
 
     value={this.state.postName}
-    placeholder="搜索选择求职者"
+    placeholder="搜索求职者姓名"
     notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
     filterOption={false}
     onSearch={this.handleSearch}

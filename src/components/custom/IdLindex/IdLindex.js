@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './IdLindex.less';
-import { Select,List, Avatar, Modal, Button, Input, Menu, Icon ,Spin,notification} from 'antd';
+import { Select,List, Avatar, Modal, Button, Input, Menu, Icon ,Spin,notification,Tooltip,Popconfirm,Radio} from 'antd';
 import http from '../../../util20/api';
 import MoveTo from 'moveto';
 import ApplayInformnation from '../ApplayInformnation'; //中间申请表的内容
@@ -25,6 +25,7 @@ const openNotification = () => {
   });
 };
 const { Option } = Select;
+const { confirm } = Modal;
 
 // 右侧导航栏列表的清单
 const MenuList = [
@@ -73,6 +74,41 @@ class IdLindex extends Component {
 	this.getPersonList();
     // 清楚缓存
     http().clearCache();
+
+    var usrChara = localStorage.getItem('userInfo');
+    usrChara=JSON.parse(usrChara)
+    usrChara=usrChara.UserInfo.GroupList;
+    var arr=[];
+    var n=0;
+    var bol=false;
+    var str='';
+    while(n<usrChara.length){
+      if(usrChara.slice(n, n+1)=="\'"){
+
+        if(bol==true){
+          bol=false;
+          arr.push(str);
+          str='';
+        }else{
+          bol=true;
+        }
+      }
+      if(bol==true){
+        str+=usrChara.slice(n+1, n+2)
+      }
+      n++;
+    }
+		// 判别是不是平板用户
+	let usrCode = '623876173360'
+  n=0;
+
+  while(n<arr.length){
+    var j=usrCode+"\'"
+    if(j==arr[n]){
+      this.setState({userChara:'IDLUser'});
+    }
+    n++;
+  }
   };
   state = {
 	showAdd:true,
@@ -111,9 +147,12 @@ class IdLindex extends Component {
 
 
   };
+ 
   // 人员筛选器
   filtMem=async(v)=>{
-	  this.getPersonList(null,v);
+    
+      this.getPersonList(null,v);
+
   };
   // 添加面试评估表与背景调查表记录
   addRec = async (resid,key) => {
@@ -143,7 +182,101 @@ class IdLindex extends Component {
       return;
     }
   };
+   // 查找data中的REC_ID
+   findRec=(id)=>{
+    var arr =this.state.personList;
+    console.log(arr)
+    var n=0;
+    while (n<arr.length){
+      if(arr[n].ID==id){
+        return arr[n].REC_ID;
+      }
+      n++;
+    }
+  }
+  // 通过审批流
+  onPaStream = async(id,rec)=>{
+    var rec_id=this.findRec(id);
+    confirm({
+      title: '求职者可以入职?',
+      onOk:() =>
+        this.passStr(id,rec_id)
+          
+      ,
+      onCancel() {},
+    });
+
+  }
+  passStr=async(id,rec)=>{
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152690063,
+        cmswhere: `ID = '${id}'`,
+        data:[{
+          isPass:'已通过',
+          cStatus:'已通过',
+          REC_ID:rec
+        }]
+      });
+      this.getPersonList();
+      this.setState({loading:false});
+      Modal.success({
+        title: '提交成功！',
+      });
+      
+    } catch (err) {
+      this.setState({loading:false});
+      console.log(err);
+      Modal.error({
+        title: '提交失败！',
+        content:err
+      })
+    }
+  
+  }
+  onFail = async(id,rec)=>{
+    var rec_id=this.findRec(id);
+
+    confirm({
+      title: '求职者无法入职?',
+      onOk:() =>
+        this.failStr(id,rec_id)
+          
+      ,
+      onCancel() {},
+    });
+
+  }
   // 监听Tabs页的变化
+  failStr=async(id,rec)=>{
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 613152690063,
+        cmswhere: `ID = '${id}'`,
+        data:[{
+          isPass:'未通过',
+          cStatus:'未通过',
+          REC_ID:rec
+
+        }]
+      });
+      this.getPersonList();
+      this.setState({loading:false});
+      Modal.success({
+        title: '提交成功！',
+      });
+      
+    } catch (err) {
+      this.setState({loading:false});
+      console.log(err);
+      Modal.error({
+        title: '提交失败！',
+        content:err
+      })
+    }
+  }
   handleClick = activeKey => {
     // console.log(activeKey);
     this.setState({
@@ -155,7 +288,7 @@ class IdLindex extends Component {
     }
   };
   // 获取人员列表
-  getPersonList = async (key,filter) => {
+  getPersonList = async (key,filter,bol) => {
 	  this.setState({loading:true})
 	  this.setState({ currentPersonInfo: '' });
 	  this.setState({
@@ -199,13 +332,7 @@ class IdLindex extends Component {
 	        }
 	        n++;
 	      }
-		  // 判别是不是平板用户
-		let usrCode = localStorage.getItem('userInfo');
-		    usrCode=JSON.parse(usrCode)
-		    usrCode=usrCode.UserInfo.UserCode;
-			if(usrCode=='IDLUser'){
-				this.setState({userChara:'IDLUser'});
-			}
+		
 	  let postID;
 	  if(bol==true){
 		  postID='613152690063'
@@ -234,13 +361,22 @@ class IdLindex extends Component {
 		    });
 		    res.data[0].isSelected = true;
 		    // console.log(res.data);
-		    this.getPersonalInfo(613149356409,res.data[0].ID);
+        this.getPersonalInfo(613149356409,res.data[0].ID);
+        // var arr=res.data;
+        // var n=0;
+        // while(n<arr.length){
+        //   if(arr[n].isPass='未通过'||'已通过'){
+        //     arr.splice(n,1)
+        //   }
+        //   n++;
+        // }
 		    this.setState({
 		      personList: res.data,
 		      currentPersonId: res.data[0].ID,
-		      curName:res.data[0].ChName,
+          curName:res.data[0].ChName,
+          
 		  	loading:false
-		    });
+        });
 			console.log(this.state.currentPersonId)
 		  } else {
 		  	this.setState({loading:false});
@@ -271,11 +407,11 @@ class IdLindex extends Component {
 		    // console.log(res.data);
 		    this.getPersonalInfo(613149356409,res.data[0].ID);
 		    this.setState({
-		      personList: res.data,
+          personList: res.data,
 		      currentPersonId: res.data[0].ID,
 		      curName:res.data[0].ChName,
 		  	loading:false
-		    });
+        });    
 		  } else {
 		  	this.setState({loading:false})
 		    console.log('获取人员列表失败');
@@ -285,9 +421,55 @@ class IdLindex extends Component {
 		  console.log(err);
 		}
 	}
-    
-    
+    // 排序
+    this.setState({orgList:this.state.personList})
+
+      this.orderList('default');
+
   };
+  
+  // 排序人员列表
+  orderList=(v)=>{
+      if(v=='default'){
+  
+        var arr=this.state.personList;
+        var arr2=[];
+        var n=0;
+        while(n<arr.length){
+          if((arr[n].isPass=='待通过')||(!arr[n].isPass)){
+            arr2.push(arr[n]);
+            arr.splice(n,1)
+          }
+          n++;
+        }
+        n=0;
+        while(n<arr.length){
+          
+          arr2.push(arr[n]);
+          
+          n++;
+        }
+        this.setState({personList:arr2});
+      }else if(v=='time'){
+        this.setState({personList:this.state.orgList});
+  
+      }
+      n=0;
+      while(n<arr2.length){
+        arr2[n].isSelected=false;
+        n++;
+      }
+      arr2[0].isSelected=true;
+
+      this.getPersonalInfo(613149356409,arr2[0].ID);
+		    this.setState({
+		      currentPersonId: arr2[0].ID,
+		      curName:arr2[0].ChName,
+		  	loading:false
+        });   
+    }
+    
+    
   // 获取当前人员人员详细信息
   getPersonalInfo = async (resid,id) => {
     let res;
@@ -297,14 +479,10 @@ class IdLindex extends Component {
         cmswhere: `ID=${id}`
       });
       console.log(res)
-      this.setState({ currentPersonInfo: res.data[0] });
+      this.setState({currentPersonInfo: res.data[0] });
       this.setState({loading:false});
-
-
     } catch (err) {
-      
       this.setState({loading:false});
-
     }
   };
   //获取formData数据
@@ -359,6 +537,47 @@ class IdLindex extends Component {
   handleSearchClick = value => {
     //  console.log(value);
     this.getPersonList(value);
+  };
+  handleSearchClickID = async value => {
+    //  console.log(value);
+    if(!value){
+      Modal.error({
+        title: '请输入身份证号！',
+      });
+    }else{
+    let res;
+    try {
+		  res = await http().getTable({
+		    resid: 613152690063,
+		    cmswhere: `IDCardNumber=${value}`,
+		  });
+		  if(res.data.length>0){
+		  			  this.setState({showAdd:true});
+		  }else{
+		  			  this.setState({showAdd:false});
+		  }
+		  if (0 < res.total) {
+		    res.data.map(item => {
+		      return (item.isSelected = false);
+		    });
+		    res.data[0].isSelected = true;
+		    // console.log(res.data);
+		    this.getPersonalInfo(613149356409,res.data[0].ID);
+		    this.setState({
+		      personList: res.data,
+		      currentPersonId: res.data[0].ID,
+		      curName:res.data[0].ChName,
+		  	loading:false
+		    });
+		  } else {
+		  	this.setState({loading:false})
+		    console.log('获取人员列表失败');
+		  }
+		} catch (err) {
+			this.setState({loading:false});
+		  console.log(err);
+    }
+  }
   };
   renderContent = () => {
     let { activeKey, currentPersonInfo, selectedRecord } = this.state;
@@ -502,10 +721,13 @@ class IdLindex extends Component {
 
         <div className="idlindex__header">
           <div className="idlindex__header-search">
-            <Input.Search
+            {this.state.userChara!='IDLUser'?(<Input.Search
               placeholder="请输入关键词进行搜索"
               onSearch={value => this.handleSearchClick(value)}
-            />
+            />):(<Input.Search
+              placeholder="请输入身份证号码进行搜索"
+              onSearch={value => this.handleSearchClickID(value)}
+            />)}
           </div>
           <div className="idlindex__header-nav">
             <Menu
@@ -518,7 +740,7 @@ class IdLindex extends Component {
               <Menu.Item style={{ width: '25%' }} key="工作申请表">
                 工作申请表
               </Menu.Item>
-              <Menu.Item style={ this.state.userChara=='IDLUser'?{width: '25%' }:{display:'none'}} key="面试评估表">
+              <Menu.Item style={ this.state.userChara!='IDLUser'?{width: '25%' }:{display:'none'}} key="面试评估表">
                 面试评估表
               </Menu.Item>
               <Menu.Item style={this.state.userChara=='HR'?{ width: '25%' }:{display:'none'}} key="背景调查表">
@@ -533,30 +755,62 @@ class IdLindex extends Component {
         <div className="idlindex__content">
           <div className="idlindex__content-person">
             {/* 面试候选人名单 */}
-			<Select defaultValue="全部" onChange={v=>{this.filtMem(v)}} style={{ width: 'calc(100% - 10px)',marginBottom:'16px'}} >
+            {this.state.userChara=='IDLUser'?'':(<Select defaultValue="全部" onChange={v=>{this.filtMem(v)}} style={{ width: 'calc(100% - 10px)',marginBottom:'16px'}} >
 			      <Option value="">全部</Option>
-			      <Option value="待评估面试">待评估面试</Option>
+			      <Option value="待面试评估">待评估面试</Option>
 			      <Option value="待背景调查">待背景调查</Option>
 			      <Option value="待发送offer">待发送offer</Option>
 			      <Option value="未通过">未通过</Option>
-			      <Option value="通过">通过</Option>
-			    </Select>
+			      <Option value="已通过">已通过</Option>
+			    </Select>)}
+          <div>
+      {/* <Radio.Group defaultValue="default" buttonStyle="solid" style={{marginBottom:'8px'}}>
+        <Radio.Button value="default" onClick={()=>{this.orderList('default',true)}}>待办优先</Radio.Button>
+        <Radio.Button value="time" onClick={()=>{this.orderList('time',true)}}>最近优先</Radio.Button>
+      </Radio.Group> */}
+    </div>
             <List
               itemLayout="horizontal"
               dataSource={personList}
               renderItem={item => (
                 <List.Item
                   className={this.getSelectClass(item.isSelected)}
-                  onClick={() => {
-                    this.handlePersonOnClick(item);
-                  }}
+                  
                 >
+                  <div style={{position:'relative',cursor:'pointer',zIndex:1,width:'100%'}} onClick={() => {
+                    this.handlePersonOnClick(item);
+                  }}>
                   <List.Item.Meta
-                    avatar={<Avatar icon="user" />}
+                    
                     title={item.ChName}
                     description={item.appPosition}
                   />
-                  <div style={{ padding: '0 10px' }}>{item.Sex}</div>
+                  </div>
+                  {(item.isPass=='待通过'||(!item.isPass))?(<Popconfirm placement="right" title={'该人员的招聘通过了么'} okText="已通过" cancelText="未通过"trigger="hover"
+                  onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
+                  onCancel={()=>{this.onFail(item.ID)}}
+                  >
+                  <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
+                    
+                  <Icon type="question-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#ffa940'}}/>
+                  </div>
+                  </Popconfirm>):null}
+                  {item.isPass=='未通过'?(<Tooltip placement="right" title={'该人员未通过本次招聘'}trigger="hover"
+                  
+                  >
+                  <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
+                    
+                  <Icon type="close-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#ff4d4f'}}/>
+                  </div>
+                  </Tooltip>):null}
+                  {item.isPass=='已通过'?(<Tooltip placement="right" title={'该人员已通过本次招聘'}trigger="hover"
+                  
+                  >
+                  <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
+                    
+                  <Icon type="check-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#73d13d'}}/>
+                  </div>
+                  </Tooltip>):null}
                 </List.Item>
               )}
             />

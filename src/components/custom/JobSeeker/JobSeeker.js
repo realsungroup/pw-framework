@@ -164,11 +164,13 @@ class JobSeeker extends Component {
   };
 
   confirmAppalyTotal = () => {
+
     this.confirmAppaly(); //提交工作申请表信息
     this.confirmEdu(); //提交教育经历信息
     this.confirmWork(); //提交工作经历方法
     this.confirmFam(); // 提交家庭主要成员方法
     this.confirmTrain(); //提交专业培训方法
+
   };
 
   // 提交教育经历方法
@@ -179,7 +181,7 @@ class JobSeeker extends Component {
         resid: eduResid,
         data: this.state.educationBackground
       });
-      message.success(res.message);
+
     } catch (error) {
       message.error(error.message);
     }
@@ -227,19 +229,20 @@ class JobSeeker extends Component {
   // 确认提交申请
   confirmAppaly = () => {
     this.props.form.validateFields((err, values) => {
-      console.log(values);
-      var strHuKou;
-      var instr=values.PlaceOfHuKou[0];
-      var instr2=values.PlaceOfHuKou[1];
-      var instr3=values.PlaceOfHuKou[2];
-      strHuKou=cityData[86][instr]+cityData[instr][instr2]+cityData[instr2][instr3];
-      console.log(strHuKou)
+      console.log(err,values);
       if (
         !err
         // err==err
       ) {
         this.setState({ loading: true });
         console.log('date',values.Eddate1[0].format('YYYY-MM-DD'));
+        if(values){
+          var strHuKou;
+          var instr=values.PlaceOfHuKou[0];
+          var instr2=values.PlaceOfHuKou[1];
+          var instr3=values.PlaceOfHuKou[2];
+          strHuKou=cityData[86][instr]+cityData[instr][instr2]+cityData[instr2][instr3];
+        }
         let res;
         try {
           res = http().addRecords({
@@ -310,12 +313,13 @@ class JobSeeker extends Component {
           this.setState({ loading: false });
           Modal.success({
             title: '提示',
-            content: '提交成功'
-          });
-          var time=setTimeout(function(){
-            window.location.reload();
+            content: '提交成功',
+            onOk:()=>{
+              window.location.reload();
 
-          },1000)
+            }
+          });
+         
         } catch (err) {
           console.error(err.message);
           Modal.error({
@@ -334,13 +338,18 @@ class JobSeeker extends Component {
   // 提交的值
   handleClick = e => {
     // e.preventDefault();
-    Modal.confirm({
-      title: '确认要提交吗?',
-      content: '请您最后再次确认一遍再提交',
-      onOk: () => {
-        this.confirmAppalyTotal();
-      }
-    });
+    var bol=true;
+    
+    if(bol==true){
+      Modal.confirm({
+        title: '确认要提交吗?',
+        content: '请您最后再次确认一遍再提交',
+        onOk: () => {
+          this.confirmAppalyTotal();
+        }
+      });
+    }
+    
   };
   // 移动
   hanleMoveTo = id => {
@@ -698,7 +707,7 @@ class JobSeeker extends Component {
                   rules: [
                     {
                       required: true,
-                      message: 'Please input your E-mail!'
+                      message: '请输入申请职位的名称'
                     }
                   ]
                 })(<Input />)}
@@ -711,7 +720,7 @@ class JobSeeker extends Component {
                   rules: [
                     {
                       required: true,
-                      message: 'Please input your E-mail!'
+                      message: '请输入身份证号!'
                     }
                   ]
                 })(<Input />)}
@@ -1008,6 +1017,7 @@ class JobSeeker extends Component {
                     </Form.Item>
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
+                        style={index>0?{}:{display:'none'}}
                         type="primary"
                         icon="delete"
                         onClick={() => {
@@ -1142,6 +1152,8 @@ class JobSeeker extends Component {
                     </Form.Item>
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
+                        style={index>0?{}:{display:'none'}}
+
                         type="primary"
                         icon="delete"
                         onClick={() => {
@@ -1277,6 +1289,8 @@ class JobSeeker extends Component {
                     {index + 1 > 1 ? (
                       <div className="job-seeker__informnation-boundry__delete">
                         <Button
+                        style={index>0?{}:{display:'none'}}
+
                           type="primary"
                           icon="delete"
                           onClick={() => {
@@ -1417,6 +1431,8 @@ class JobSeeker extends Component {
 
                     <div className="job-seeker__informnation-boundry__delete">
                       <Button
+                        style={index>0?{}:{display:'none'}}
+
                         type="primary"
                         icon="delete"
                         onClick={() => {
