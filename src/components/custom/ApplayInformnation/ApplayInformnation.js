@@ -223,6 +223,7 @@ var hrCode='623876215000';
   }
   handleSave=()=>{
     this.props.form.validateFields((err,values)=>{
+      console.log(values)
       this.setState({ loading: true });
       let res;
       try {
@@ -549,7 +550,7 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
-
+            <div className={currentInfo.EdStartTime2?'':'hidden'}>
             <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdStartTime2', {
                 initialValue: currentInfo.EdStartTime2
@@ -590,6 +591,9 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            </div>
+            <div className={currentInfo.EdStartTime3?'':'hidden'}>
+
             <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdStartTime3', {
                 initialValue: currentInfo.EdStartTime3
@@ -630,6 +634,9 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            </div>
+            <div className={currentInfo.EdStartTime4?'':'hidden'}>
+
             <Form.Item label="开始日期（年/月）/StartTime(Year/Month)" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('EdStartTime4', {
                 initialValue: currentInfo.EdStartTime4
@@ -669,6 +676,7 @@ var hrCode='623876215000';
                 initialValue: currentInfo.EdReferenceTel4
               })(<Input />)}
             </Form.Item>
+            </div>
           </div>
           <h3 className="applay__information-title" id="工作经验">
             Working History (Please start with latest one)/工作经历(请从最近职位开始填写)
@@ -730,6 +738,8 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            <div className={currentInfo.WorkStartTime2?'':'hidden'}>
+
             <Form.Item
               label="开始时间(年/月)/StartTime(Year/Month)  "
               {...formItemLayout2}
@@ -786,6 +796,9 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            </div>
+            <div className={currentInfo.WorkStartTime3?'':'hidden'}>
+
             <Form.Item
               label="开始时间(年/月)/StartTime(Year/Month)  "
               {...formItemLayout2}
@@ -842,6 +855,9 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            </div>
+            <div className={currentInfo.WorkStartTime4?'':'hidden'}>
+
             <Form.Item
               label="开始时间(年/月)/StartTime(Year/Month)  "
               {...formItemLayout2}
@@ -897,6 +913,7 @@ var hrCode='623876215000';
                 initialValue: currentInfo.WorkReferenceTel4
               })(<Input />)}
             </Form.Item>
+            </div>
           </div>
           <h3 className="applay__information-title" id="家庭成员关系">
             Family Members and Mainly Social Relationship 家庭成员及主要社会关系
@@ -956,6 +973,7 @@ var hrCode='623876215000';
             </Form.Item>
 
             <hr/>
+            <div className={currentInfo.FamName2?'':'hidden'}>
 
             <Form.Item label="姓名/Name" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamName2', {
@@ -1006,7 +1024,7 @@ var hrCode='623876215000';
                 ]
               })(<Input />)}
             </Form.Item>
-
+              </div>
           </div>
           <h3 className="applay__information-title" id="专业培训" >
             Professional Qualification/Training 专业资格/培训
@@ -1051,6 +1069,8 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            <div className={currentInfo.TrainingDate2?'':'hidden'}>
+            
             <Form.Item label="日期/Date/Period " {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingDate2', {
                 initialValue: currentInfo.TrainingDate2
@@ -1090,6 +1110,10 @@ var hrCode='623876215000';
               })(<Input />)}
             </Form.Item>
             <hr/>
+            
+            </div>
+            <div className={currentInfo.TrainingDate3?'':'hidden'}>
+
             <Form.Item label="日期/Date/Period " {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('TrainingDate3', {
                 initialValue: currentInfo.TrainingDate3
@@ -1128,6 +1152,7 @@ var hrCode='623876215000';
                 initialValue: currentInfo.TrainingRefTel3
               })(<Input />)}
             </Form.Item>
+            </div>
           </div>
           <h3 className="applay__information-title" id="相关技能">
           Related Qualification / Skill (If any) 相关技能
@@ -1320,9 +1345,7 @@ var hrCode='623876215000';
             className="applay__information-content"
           >
             {getFieldDecorator('KnowColleageStatus', {
-              initialValue: [
-                currentInfo.KnowColleageStatus
-              ]
+              initialValue: currentInfo.KnowColleageStatus
             })(<TextArea />)}
           </Form.Item>
           <Form.Item
@@ -1447,12 +1470,12 @@ var hrCode='623876215000';
             <Form.Item className={this.state.ID?'':'hidden'} style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'100%',height:'40px'}}>
               <Button type="primary" style={this.state.userChara=='HR'?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <Button type="primary" style={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn=='Y')?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
-              <div className={this.state.userChara=='HR'?'':'hidden'}>
+              <div className={this.state.userChara=='HR'?'':'hidden'} style={{display:'inline-block'}}>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
                 确认打印
               </Button>
               
-			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
+			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' className={this.state.userChara=='HR'?'':'hidden'}style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
               </div>
             </Form.Item>
 			

@@ -57,7 +57,8 @@ class OfferLetter extends React.Component {
         HROfficeNo: '',
         HRPhone: '',
         stock:'',
-        location:'WX'
+        location:'WX',
+        isHasStock:'N'
       },
       isShow: true,
       isSave:false,
@@ -109,8 +110,8 @@ class OfferLetter extends React.Component {
     //     HRPhone: ''
     //   }
     // });
-	this.setState({data:''})
     let data = this.state.data;
+    console.log(nextProps.personDetail)
 	if(nextProps.personDetail){
 		if( typeof nextProps.personDetail !== "undefined" ){
 		  this.setState({data: {
@@ -121,6 +122,7 @@ class OfferLetter extends React.Component {
 		  // this.getPersonalInfo(613149356409,nextProps.personDetail);
 		}
 	}else{
+    
 	}
     
     // let ID = ''
@@ -129,12 +131,50 @@ class OfferLetter extends React.Component {
 
   getTableData = async (id) => {
     this.setState({loading:true})
+    this.setState({data:{
+      ID:id,
+      candidate: '',
+      position: '',
+      salary: '',
+      level: '',
+      manager: '',
+      details: '',
+      signature: '',
+      date: '',
+      year: '',
+      month: '',
+      day: '',
+      hour: '08:00',
+      bgCorp: '',
+      contactsOne: '',
+      contactsPositionOne: '',
+      officeNo: '',
+      contactsOnePhone: '',
+      contactsTwo: '',
+      contactsPositionTwo: '',
+      contactsTwoOfficeNo: '',
+      contactsTwoPhone: '',
+      contactsThree: '',
+      contactsPositionThree: '',
+      contactsThreeOfficeNo: '',
+      contactsThreePhone: '',
+      englishName: '',
+      HRName: '',
+      HROfficeNo: '',
+      HRPhone: '',
+      stock:'',
+      location:'WX',
+      isHasStock:'N'
+    },isSave:false,isShow:true});
+
     try {
       let res = await http().getTable({
         resid: 621422585590,
         cmswhere: `ID=${id}`
       });
+      console.log(res)
       if(res.data.length>0){
+        console.log('jinlaile')
         this.setState({isSave:true,});
         var obj=res.data[0]
         this.setState({data:obj});

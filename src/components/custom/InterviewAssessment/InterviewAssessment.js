@@ -26,6 +26,7 @@ class InterviewAssessment extends React.Component {
         level:'',
         hiringManger:'',
         interviewer:'',
+        interviewName:'',
         interviewer2:'',
         chara:'T1/T2/T3/T4',
         eduOther:'',
@@ -197,9 +198,9 @@ subConfirm = () => {
      str+='hiringManger';
 
   }
-  if(!this.state.interviewer){
+  if(!this.state.interviewName){
      bol=false;
-     str+='interviewer';
+     str+='interviewName';
 
   }
   if(!this.state.graFrom){
@@ -679,6 +680,7 @@ var hrCode='623876215000';
         secRound:res.data[0].secondRound,
         SRI:res.data[0].SRI,//缺
         interviewer:res.data[0].interviewer,
+        interviewName:res.data[0].interviewName,
         interviewer2:res.data[0].secondRoundInterviewer,
         round2:res.data[0].isSecondRound,
         isBack:res.data[0].isBack,
@@ -984,13 +986,18 @@ var hrCode='623876215000';
     }
   }
   sendMail = async (id) =>{
+    let toPost;
+    let toPost2;
     if(this.state.postID){
       this.setState({loading:true});
       var nxtStep;
       if(this.state.C3_622921647557=='未送邮（初试）'){
         nxtStep='未提交（初试）'
+        toPost=this.state.postID;
+
       }else if(this.state.C3_622921647557=='未送邮（复试）'){
         nxtStep='未提交（复试）'
+        toPost2=this.state.postID;
       }
       if(this.state.round2=='Y'){
           nxtStep='未提交（复试）'
@@ -1003,9 +1010,10 @@ var hrCode='623876215000';
           data:[{
              REC_ID:this.props.record.REC_ID,
              C3_622921647557:nxtStep,
-             interviewer:this.state.postID,
+             interviewer:toPost,
              accessCategority:this.state.chara,
-             isSecondRound:this.state.round2
+             isSecondRound:this.state.round2,
+             secondRoundInterviewer:toPost2
            }]
          })
          Modal.success({
@@ -1052,6 +1060,7 @@ var hrCode='623876215000';
         data:[{
            REC_ID:this.props.record.REC_ID,
            C3_622921647557:nxtStep,
+           isBack:'Y'
          }]
        })
        Modal.success({
@@ -1114,7 +1123,7 @@ var hrCode='623876215000';
 
   subData = async (id) => {
     this.setState({loading:true});
-    console.log(this.props.record.REC_ID);
+    console.log(this.state.C3_622921647557);
     var nxtStep;
     if(this.state.C3_622921647557=='未提交（初试）'){
       nxtStep='待确认（初试）'
@@ -1122,11 +1131,121 @@ var hrCode='623876215000';
       nxtStep='待确认（复试）'
     }
     let res;
+    let vTS;
+    let vAO;
+    let vPS;
+    if(this.state.vTS){
+      vTS=this.state.vTS
+    }else if(this.state.vTS2){
+      vTS=this.state.vTS2
+    }else if(this.state.vTS3){
+      vTS=this.state.vTS3
+    }else if(this.state.vTS4){
+      vTS=this.state.vTS4
+    }else if(this.state.vTS5){
+      vTS=this.state.vTS5
+    }else if(this.state.vTS6){
+      vTS=this.state.vTS6
+    }else if(this.state.vTS7){
+      vTS=this.state.vTS7
+    }else if(this.state.vTS8){
+      vTS=this.state.vTS8
+    }else if(this.state.vTS9){
+      vTS=this.state.vTS9
+    }
+
+    if(this.state.vAO){
+      vAO=this.state.vAO
+    }else if(this.state.vAO2){
+      vAO=this.state.vAO2
+    }else if(this.state.vAO3){
+      vAO=this.state.vAO3
+    }else if(this.state.vAcOr){
+      vAO=this.state.vAcOr
+    }
+    
+    if(this.state.vPS){
+      vPS=this.state.vPS
+    }else if(this.state.vPS2){
+      vPS=this.state.vPS2
+
+    }else if(this.state.vPS3){
+      vPS=this.state.vPS3
+
+    }else if(this.state.vProSol){
+      vPS=this.state.vProSol
+
+    }else if(this.state.vProblemSol){
+      vPS=this.state.vProblemSol
+
+    }
+    let vTE;
+    if(this.state.vTE){
+      vTE=this.state.vTE
+
+    }else if(this.state.vTE2){
+      vTE=this.state.vTE2
+
+    }else if(this.state.vTE3){
+      vTE=this.state.vTE3
+
+    }
+
+    let vTO;
+    if(this.state.vTO){
+      vTO=this.state.vTO
+
+    }else if(this.state.vTO2){
+      vTO=this.state.vTO2
+
+    }
+    let vSd;
+    if(this.state.vSd){
+      vSd=this.state.vSd
+
+    }else if(this.state.vSd2){
+      vSd=this.state.vSd2
+
+    }
+    let vLF;
+    if(this.state.vLF){
+      vLF=this.state.vLF
+
+    }else if(this.state.vLF2){
+      vLF=this.state.vLF2
+
+    }
+    let vPR;
+    if(this.state.vPeRe){
+      vPR=this.state.vPeRe
+
+    }else if(this.state.vPeerRel){
+      vPR=this.state.vPeerRel
+
+    }
+    let vCr;
+    if(this.state.vCr){
+      vCr=this.state.vCr
+
+    }else if(this.state.vcrea){
+      vCr=this.state.vcrea
+
+    }
+
+    let vPreS;
+    if(this.state.vPreSk){
+      vPreS=this.state.vPreSk
+
+    }else if(this.state.vPresentSkill){
+      vPreS=this.state.vPresentSkill
+
+    }
     try {
       res = await http().modifyRecords({
         resid: 613152706922,
         cmswhere: `REC_ID=${this.props.record.REC_ID}`,
         data:[{
+          isBack:'N',
            REC_ID:this.props.record.REC_ID,
            C3_622921647557:nxtStep,
            CandidateName:this.state.name,
@@ -1139,14 +1258,14 @@ var hrCode='623876215000';
            wkExp:this.state.wkExp,//缺
            wkOther:this.state.wkOther,//缺
            languageSkill:this.state.lanSki,
-           tecSkills:this.state.vTS,
+           tecSkills:vTS,
            executiveAbility:this.state.vEA,
-           tecExchange:this.state.vTE,
-           actionOriented:this.state.vAO,
-           problemSloving:this.state.vPS,
-           selfDevelopment:this.state.vSd,
-           learnOnfly:this.state.vLF,
-           tecOutLook:this.state.vTO,
+           tecExchange:vTE,
+           actionOriented:vAO,
+           problemSloving:vPS,
+           selfDevelopment:vSd,
+           learnOnfly:vLF,
+           tecOutLook:vTO,
            tecDecomposition:this.state.vTD,
            creativity:this.state.vCr,
            standingAlone:this.state.vSA,
@@ -1166,9 +1285,9 @@ var hrCode='623876215000';
            mottivateingOthers:this.state.vMoOt,
            conflictManagement:this.state.vCM,
            decisionQuality:this.state.vDQ,
-           presentationSkills:this.state.vPreSk,
-           peerRelation:this.state.vPeRe,
-           creativity:this.state.vcrea,
+           presentationSkills:vPreS,
+           peerRelation:vPR,
+           creativity:vCr,
            personlearning:this.state.vPersonaLe,//缺
            intergintyTrust:this.state.vIT,
            learning:this.state.vLA,
@@ -1180,6 +1299,7 @@ var hrCode='623876215000';
            secondRound:this.state.secRound,
            SRI:this.state.SRI,//缺
            interviewer:this.state.interviewer,
+           interviewName:this.state.interviewName,
            secondRoundInterviewer:this.state.interviewer2,
            isSecondRound:this.state.round2,
            isBack:this.state.isBack,
@@ -1337,10 +1457,10 @@ var hrCode='623876215000';
             </ul>
             <rect>
               <cell>
-                <b className={this.state.interviewer?'':'warning'}>面试官/Intervieweer</b>
+                <b className={this.state.interviewName?'':'warning'}>面试官/Interviewer</b>
               </cell>
               <cell style={{padding:0}}>
-                <textarea style={{paddingTop:'8px',paddingLeft:'8px'}} value={this.state.interviewer} onChange={v=>{this.handlechange("interviewer",v)}}></textarea>
+                <textarea style={{paddingTop:'8px',paddingLeft:'8px'}} value={this.state.interviewName} onChange={v=>{this.handlechange("interviewName",v)}}></textarea>
               </cell>
             </rect>
             <rect>

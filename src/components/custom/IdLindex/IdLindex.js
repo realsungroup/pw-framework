@@ -459,14 +459,17 @@ class IdLindex extends Component {
         arr2[n].isSelected=false;
         n++;
       }
-      arr2[0].isSelected=true;
-
-      this.getPersonalInfo(613149356409,arr2[0].ID);
+      if(arr2[0]){
+        arr2[0].isSelected=true;
+        this.getPersonalInfo(613149356409,arr2[0].ID);
 		    this.setState({
 		      currentPersonId: arr2[0].ID,
 		      curName:arr2[0].ChName,
 		  	loading:false
-        });   
+        });  
+      }
+
+      
     }
     
     
@@ -786,6 +789,7 @@ class IdLindex extends Component {
                     description={item.appPosition}
                   />
                   </div>
+                  <div className={this.state.userChara=='HR'?'':'hidden'}>
                   {(item.isPass=='待通过'||(!item.isPass))?(<Popconfirm placement="right" title={'该人员的招聘通过了么'} okText="已通过" cancelText="未通过"trigger="hover"
                   onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
                   onCancel={()=>{this.onFail(item.ID)}}
@@ -795,6 +799,7 @@ class IdLindex extends Component {
                   <Icon type="question-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#ffa940'}}/>
                   </div>
                   </Popconfirm>):null}
+                  </div>
                   {item.isPass=='未通过'?(<Tooltip placement="right" title={'该人员未通过本次招聘'}trigger="hover"
                   
                   >
