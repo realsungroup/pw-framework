@@ -9,13 +9,13 @@ import {
   Drawer,
   Rate,
   message,
-  DatePicker,
-  InputNumber,
   Divider,
   Empty,
   Tabs,
   Select,
-  Input
+  Input,
+  Tooltip,
+  Popconfirm
 } from 'antd';
 import moment from 'moment';
 import Calendar from 'ic-components/lib/Calendar';
@@ -24,9 +24,7 @@ import './SubordinateCourses.less';
 import { TableData } from '../../common/loadableCommon';
 import CourseInfo from '../EmployeeCourses/CourseInfo';
 import http from 'Util20/api';
-import { log } from 'util';
 
-const dateFormat = 'YYYY-MM-DD';
 const TIPS_RESID = '614964195659'; //心得表id
 const CourseArrangementDetailRESID = '616518104225';
 const { TabPane } = Tabs;
@@ -67,7 +65,9 @@ class SubordinateCourses extends React.Component {
       rate3: null,
       rate4: null
     },
-    tips: {}
+    tips: {},
+    knowledge: [],
+    plans: []
   };
 
   getEmployeePersonalCourses = async () => {
@@ -100,21 +100,25 @@ class SubordinateCourses extends React.Component {
       message.error(error.message);
     }
   };
-  //获取反馈与行动计划
+
+  // 获取反馈和行动计划
   getFeebackAndRate = async () => {
     const { rate, rateOut, courseArrangmentDetailToSearch } = this.state;
     let res; //课程反馈
     try {
       res = await http().getTable({
         resid: 478367996508,
-        cmswhere: `C3_478368118696 =${courseArrangmentDetailToSearch.CourseArrangeDetailID}`
+        cmswhere: `C3_478368118696 = ${courseArrangmentDetailToSearch.CourseArrangeDetailID}`
       });
     } catch (err) {
       console.log(err.message);
       message.error(err.message);
     }
     if (res.data.length > 0) {
-      if (res.data[0].C3_615639406401 === '外训') {
+      if (
+        courseArrangmentDetailToSearch.courseType === '外训' ||
+        courseArrangmentDetailToSearch.courseType === '外聘内训'
+      ) {
         const tempRateOut = { ...rateOut };
         tempRateOut.rate1 = res.data[0].C3_478370015482; //机构服务满意度
         tempRateOut.rate2 = res.data[0].C3_478370045169; //讲师满意度
@@ -123,39 +127,70 @@ class SubordinateCourses extends React.Component {
         this.setState({
           rateOut: tempRateOut
         });
-        // console.log('后端返回的外训评分', this.state.rateOut);
       } else {
         const tempRate = { ...rate };
-        tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
-        tempRate.rate2 = res.data[0].C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
-        tempRate.rate3 = res.data[0].C3_615640043869; //所学的内容对实际工作有很大帮助
-        tempRate.rate4 = res.data[0].C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-        tempRate.rate5 = res.data[0].C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-        tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
-        tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
-        tempRate.rate8 = res.data[0].C3_615640235456; //时间控制合理使我感到舒适
-        tempRate.advantange = res.data[0].C3_622216706104;
-        tempRate.shortcomming = res.data[0].C3_622216725340;
+        const data = res.data[0];
+        tempRate.rate1 = data.C3_615639978971; //讲师备课充分
+        tempRate.rate2 = data.C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
+        tempRate.rate3 = data.C3_615640043869; //所学的内容对实际工作有很大帮助
+        tempRate.rate4 = data.C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
+        tempRate.rate5 = data.C3_615640157603; //讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+        tempRate.rate6 = data.C3_615640180269; //我能够积极参与到课堂中去
+        tempRate.rate7 = data.C3_615640206802; //我的提问能够得到讲师认真,满意的答复
+        tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适
+        const otherAdvice = {
+          shortcommings: data.C3_622216725340,
+          advantages: data.C3_622216706104
+        };
         this.setState({
-          rate: tempRate
+          rate: { ...tempRate, ...otherAdvice }
         });
-        console.log('后盾返回的内训评分', res.data[0]);
       }
-    }
-    if (courseArrangmentDetailToSearch.courseType !== '内训') {
-      let res2; //行动计划
-      try {
-        res2 = await http().getTable({
-          resid: 615571557694,
-          cmswhere: `courseArrange =${courseArrangmentDetailToSearch.CourseArrangeDetailID}`
-        });
-      } catch (err) {
-        message.error(err.message);
-        console.log(err);
-      }
-      console.log('后端返回的行动计划', res2);
+    } else {
       this.setState({
-        planView: res2.data
+        // 内训评分
+        rate: {
+          rate1: null,
+          rate2: null,
+          rate3: null,
+          rate4: null,
+          rate5: null,
+          rate6: null,
+          rate7: null,
+          rate8: null,
+          advantange: '',
+          shortcomming: ''
+        },
+        //外训评分
+        rateOut: {
+          rate1: null,
+          rate2: null,
+          rate3: null,
+          rate4: null
+        }
+      });
+    }
+    let res2; //行动计划
+    try {
+      res2 = await http().getTable({
+        resid: 615571557694,
+        cmswhere: `courseArrange = ${courseArrangmentDetailToSearch.CourseArrangeDetailID}`
+      });
+    } catch (err) {
+      message.error(err.message);
+      console.log(err);
+    }
+    if (res2.data.length) {
+      let knowledge = res2.data[0].knowledge1.split(';');
+      let plans = res2.data[0].action1.split(';');
+      this.setState({
+        knowledge,
+        plans
+      });
+    } else {
+      this.setState({
+        knowledge: [],
+        plans: []
       });
     }
   };
@@ -201,8 +236,8 @@ class SubordinateCourses extends React.Component {
       message.error(error.message);
     }
   };
-  handleReturn= async =>{
-    console.log()
+  handleReturn = async => {
+    console.log();
     // let res; //课程反馈
     // try {
     //   res = await http().getTable({
@@ -213,7 +248,7 @@ class SubordinateCourses extends React.Component {
     //   console.log(err.message);
     //   message.error(err.message);
     // }
-  }
+  };
   handleOk = () => {
     this.setState({
       courseDetailVisible: false,
@@ -549,7 +584,9 @@ class SubordinateCourses extends React.Component {
       tips,
       courseArrangmentDetailToSearch,
       summaryVisible,
-      courseDetailVisible
+      courseDetailVisible,
+      plans,
+      knowledge
     } = this.state;
     return (
       <div className="cataner">
@@ -564,7 +601,6 @@ class SubordinateCourses extends React.Component {
           hasAdd={false}
           // hasRowSelection={true}
           customRowBtns={[
-
             record => {
               return (
                 <Button
@@ -664,6 +700,8 @@ class SubordinateCourses extends React.Component {
           closable={false}
           visible={this.state.feedbackDrawerVisible}
           onClose={this.handleColseDrawers}
+          destroyOnClose
+          // destroyOnClose={true}
         >
           {this.state.courseArrangmentDetailToSearch.courseType === '内训' ? (
             <Card>
@@ -725,7 +763,6 @@ class SubordinateCourses extends React.Component {
                   </Col>
                 </Row>
               </Card>
-
               <div>
                 <div>
                   <h3>我很有收获的内容</h3>
@@ -767,28 +804,54 @@ class SubordinateCourses extends React.Component {
           )}
           {this.state.courseArrangmentDetailToSearch.courseType ===
           '内训' ? null : (
-            <Card title="行动计划" style={{ marginTop: 10 }}>
+            <>
               <Row>
-                <Col span={2}>序号</Col>
-                <Col span={8}>具体行动</Col>
-                
-                <Col span={4}>进度</Col>
+                <div>
+                  <ul className="feedbackList">
+                    <li key="tip">列出培训中学习到的3个知识点</li>
+                    {knowledge.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <rect>{index + 1}</rect>
+                          <p>{item}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </Row>
-              {this.state.planView.map((item, index) => {
-                return (
-                  <Row key={index}>
-                    <Col span={2}>{index + 1}</Col>
-                    <Col span={8}>{item.actions}</Col>
-                   
-                    <Col span={4}>
-                      <InputNumber value={item.progress} disabled />
-                    </Col>
-                  </Row>
-                );
-              })}
-            </Card>
+              <Row>
+                <div>
+                  <ul className="feedbackList">
+                    <li key="tip">
+                      行动计划
+                      <br />
+                      (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
+                      )
+                    </li>
+                    <li className="alter2" key="tip1">
+                      <rect>序号</rect>
+                      <p>具体行为</p>
+                    </li>
+                    {plans.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <rect>{index + 1}</rect>
+                          <p>{item}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Row>
+            </>
           )}
-          <Button style={{position:'absolute',bottom:'16px'}} onClick={this.handleReturn}>退回这个课程反馈</Button>
+          <Button
+            style={{ position: 'absolute', bottom: '16px' }}
+            onClick={this.handleReturn}
+          >
+            退回这个课程反馈
+          </Button>
         </Drawer>
         <Drawer
           width={'60%'}

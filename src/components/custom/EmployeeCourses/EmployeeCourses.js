@@ -90,38 +90,33 @@ class EmployeeCourses extends React.Component {
     searchKey: '', //搜索的关键字
     // 内训
     rate: {
-      rate1: 0,
-      rate2: 0,
-      rate3: 0,
-      rate4: 0,
-      rate5: 0,
-      rate6: 0,
-      rate7: 0,
-      rate8: 0
+      rate1: 5,
+      rate2: 5,
+      rate3: 5,
+      rate4: 5,
+      rate5: 5,
+      rate6: 5,
+      rate7: 5,
+      rate8: 5
     },
     // 外训
     rateOut: {
-      rate1: 0,
-      rate2: 0,
-      rate3: 0,
-      rate4: 0
+      rate1: 5,
+      rate2: 5,
+      rate3: 5,
+      rate4: 5
     },
     internalTrainingOtherAdvice: {
       advantages: '',
       shortcommings: ''
     },
-    planWrite: [
-      {
-        actions: '',
-        startTime: '2016-01-01',
-        endTime: '2016-01-01',
-        progress: 0
-      }
-    ],
+    knowledge: [''],
+    plans: [''],
     fileList: [],
     isfirst: true, //是否首次加载组件
     loadings: {
-      submitTipLoading: false
+      submitTipLoading: false,
+      submitPlanBtnLoading: false
     }
   };
   componentDidMount = async () => {
@@ -304,12 +299,10 @@ class EmployeeCourses extends React.Component {
       });
     }
   };
-  // 拿到子组件填写的行动计划数据
-  setPlanWrite = planWrite => {
-    this.setState({
-      planWrite
-    });
-  };
+
+  setKnowledge = knowledge => this.setState({ knowledge });
+
+  setPlans = plans => this.setState({ plans });
 
   setOtherAdvice = advice => {
     this.setState({
@@ -664,6 +657,7 @@ class EmployeeCourses extends React.Component {
           style={{ marginBottom: '12px', cursor: 'pointer' }}
           key={item.REC_ID}
           bodyStyle={{ padding: 8 }}
+          headStyle={{ padding: 4 }}
           onClick={this.handleSelectCourse.bind(this, item)}
         >
           <div className="emploee_courses-main-course_content">
@@ -696,7 +690,8 @@ class EmployeeCourses extends React.Component {
                   width: 14,
                   height: 14,
                   borderRadius: '50%',
-                  backgroundColor: item.C3_623173774889 === 'Y' ? '#5bc039': '#2470e8',
+                  backgroundColor:
+                    item.C3_623173774889 === 'Y' ? '#5bc039' : '#2470e8',
                   marginRight: 6
                 }}
               />
@@ -777,15 +772,53 @@ class EmployeeCourses extends React.Component {
   submitRate = async () => {
     const {
       rateOut,
-      planWrite,
+      knowledge,
+      plans,
       selectedCourse,
       rate,
       internalTrainingOtherAdvice
     } = this.state;
+    this.setState({
+      loadings: {
+        ...this.state.loadings,
+        submitPlanBtnLoading: true
+      }
+    });
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
     ) {
+      let str1 = '';
+      for (let index = 0; index < knowledge.length; index++) {
+        if (knowledge[index].trim()) {
+          knowledge[index] = knowledge[index].replace(';', '');
+          if (index + 1 !== knowledge.length) {
+            str1 += knowledge[index] + ';';
+          } else {
+            str1 += knowledge[index];
+          }
+        } else {
+          return message.info(`第${index + 1}项知识点不能为空`);
+        }
+      }
+      let str2 = '';
+      for (let index = 0; index < plans.length; index++) {
+        if (plans[index].trim()) {
+          plans[index] = plans[index].replace(';', '');
+          if (index + 1 !== plans.length) {
+            str2 += plans[index] + ';';
+          } else {
+            str2 += plans[index];
+          }
+        } else {
+          return message.info(`第${index + 1}项行动计划不能为空`);
+        }
+      }
+      let data = {
+        courseArrange: this.state.selectedCourse.CourseArrangeDetailID,
+        knowledge1: str1,
+        action1: str2
+      };
       let res; //反馈
       try {
         res = await http().addRecords({
@@ -805,16 +838,11 @@ class EmployeeCourses extends React.Component {
         message.error(err.message);
         console.log(err);
       }
-      console.log(res);
       let res2; //行动计划
-      planWrite.forEach(item => {
-        item.courseArrange = this.state.selectedCourse.CourseArrangeDetailID;
-      });
-      console.log(planWrite);
       try {
         res2 = await http().addRecords({
           resid: 615571557694,
-          data: planWrite
+          data: [data]
         });
         message.success(res2.message);
         this.setState({ feebackVisible: false, feedbackModalMode: 'view' });
@@ -826,7 +854,6 @@ class EmployeeCourses extends React.Component {
     } else {
       //内训只提交反馈数据
       let res;
-
       try {
         if (
           internalTrainingOtherAdvice.advantages.trim() &&
@@ -863,6 +890,12 @@ class EmployeeCourses extends React.Component {
         console.log(error);
       }
     }
+    this.setState({
+      loadings: {
+        ...this.state.loadings,
+        submitPlanBtnLoading: false
+      }
+    });
   };
 
   //设置附加费用
@@ -1337,6 +1370,7 @@ class EmployeeCourses extends React.Component {
                     onClick={() => {
                       this.submitRate();
                     }}
+                    loading={this.state.loadings.submitPlanBtnLoading}
                   >
                     确定提交
                   </Button>
@@ -1362,7 +1396,8 @@ class EmployeeCourses extends React.Component {
               this.state.selectedCourse &&
               this.state.selectedCourse.CourseArrangeDetailID
             }
-            onSetPlanWrite={this.setPlanWrite}
+            setPlans={this.setPlans}
+            setKnowledge={this.setKnowledge}
             mode={this.state.feedbackModalMode}
             onCourseType={
               this.state.selectedCourse && this.state.selectedCourse.courseType

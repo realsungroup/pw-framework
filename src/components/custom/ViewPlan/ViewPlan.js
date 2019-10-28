@@ -1,8 +1,8 @@
 import React from 'react';
-import { Spin, Steps, message } from 'antd';
+import { Spin, Steps } from 'antd';
 import ReviewApplicationForm from './ReviewApplicationForm';
 import ViewFeedBack from './ViewFeedBack';
-import ViewTips from './ViewTips'
+import ViewTips from './ViewTips';
 import './ViewPlan.less';
 
 const { Step } = Steps;
@@ -13,16 +13,16 @@ class ViewPlan extends React.Component {
   };
   render() {
     let { current } = this.state;
-		let page = null;
-		switch (current) {
+    let page = null;
+    switch (current) {
       case 0:
-        page = <ReviewApplicationForm/>
+        page = <ReviewApplicationForm />;
         break;
       case 1:
-        page = <ViewFeedBack/>
+        page = <ViewFeedBack />;
         break;
       case 2:
-        page = <ViewTips/>;
+        page = <ViewTips />;
         break;
       default:
         page = null;

@@ -597,12 +597,14 @@ class ProbationForms extends React.Component {
   confirmMentor = async index => {
     try {
       const mentorshipRecord = [...this.state.mentorshipRecord];
+      console.log(this.state.employeeInformation.instructorID);
       await http().modifyRecords({
         resid: resid6,
         data: [
           {
-            ...mentorshipRecord[index],
-            isConfirm: 'Y'
+            REC_ID: mentorshipRecord[index].REC_ID,
+            isConfirm: 'Y',
+            editorId: this.state.employeeInformation.instructorID
           }
         ]
       });

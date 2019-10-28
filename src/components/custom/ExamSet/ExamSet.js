@@ -753,7 +753,7 @@ class ExamSet extends Component {
             <img className="Exam-set__pic__img" src={item.C3_610564959242} />
           </div>
         )}
-        <RadioGroup key={item.question_id}>
+        <RadioGroup key={item.question_id} style={{ width: '100%' }}>
           {item.subdata.map((option, index) => {
             return (
               <div key={index} className="Exam-set__single__radio">

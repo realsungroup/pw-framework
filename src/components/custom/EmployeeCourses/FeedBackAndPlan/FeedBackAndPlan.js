@@ -5,13 +5,13 @@ import {
   Row,
   Col,
   Rate,
-  InputNumber,
-  DatePicker,
   Input,
   Button,
   Tooltip,
   Form,
-  Icon
+  Icon,
+  message,
+  Popconfirm
 } from 'antd';
 import moment from 'moment';
 import http from 'Util20/api';
@@ -22,24 +22,16 @@ class FeedBackAndPlan extends Component {
     super(props);
     this.state = {
       planView: [],
-      planWrite: [
-        {
-          actions: '',
-          startTime: ' ',
-          endTime: ' ',
-          progress: 0
-        }
-      ],
       // 内训评分
       rate: {
-        rate1: null,
-        rate2: null,
-        rate3: null,
-        rate4: null,
-        rate5: null,
-        rate6: null,
-        rate7: null,
-        rate8: null
+        rate1: 5,
+        rate2: 5,
+        rate3: 5,
+        rate4: 5,
+        rate5: 5,
+        rate6: 5,
+        rate7: 5,
+        rate8: 5
       },
       otherAdvice: {
         advantages: '',
@@ -47,11 +39,13 @@ class FeedBackAndPlan extends Component {
       },
       //外训评分
       rateOut: {
-        rate1: null,
-        rate2: null,
-        rate3: null,
-        rate4: null
-      }
+        rate1: 5,
+        rate2: 5,
+        rate3: 5,
+        rate4: 5
+      },
+      knowledge: [''],
+      plans: ['']
     };
   }
   componentDidMount() {
@@ -72,7 +66,10 @@ class FeedBackAndPlan extends Component {
       console.log(err.message);
     }
     if (res.data.length > 0) {
-      if (res.data[0].C3_615639406401 === '外训') {
+      if (
+        this.props.onCourseType === '外训' ||
+        this.props.onCourseType === '外聘内训'
+      ) {
         const tempRateOut = { ...rateOut };
         tempRateOut.rate1 = res.data[0].C3_478370015482; //机构服务满意度
         tempRateOut.rate2 = res.data[0].C3_478370045169; //讲师满意度
@@ -88,7 +85,7 @@ class FeedBackAndPlan extends Component {
         tempRate.rate2 = data.C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
         tempRate.rate3 = data.C3_615640043869; //所学的内容对实际工作有很大帮助
         tempRate.rate4 = data.C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-        tempRate.rate5 = data.C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
+        tempRate.rate5 = data.C3_615640157603; //讲师能够引入实际案例和例证,讲解透彻,激发学员思考
         tempRate.rate6 = data.C3_615640180269; //我能够积极参与到课堂中去
         tempRate.rate7 = data.C3_615640206802; //我的提问能够得到讲师认真,满意的答复
         tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适
@@ -106,14 +103,24 @@ class FeedBackAndPlan extends Component {
     try {
       res2 = await http().getTable({
         resid: 615571557694,
-        cmswhere: `courseArrange =${this.props.onCourseDetailID}`
+        cmswhere: `courseArrange = ${this.props.onCourseDetailID}`
       });
     } catch (err) {
       console.log(err);
     }
-    this.setState({
-      planView: res2.data
-    });
+    if (res2.data.length) {
+      let knowledge = res2.data[0].knowledge1.split(';');
+      let plans = res2.data[0].action1.split(';');
+      this.setState({
+        knowledge,
+        plans
+      });
+    } else {
+      this.setState({
+        knowledge: [],
+        plans: []
+      });
+    }
   };
   // 内训评分反馈
   rate1Change = value => {
@@ -213,170 +220,76 @@ class FeedBackAndPlan extends Component {
     });
     this.props.onSubmit(tempRate);
   };
-  // 添加计划明细和进度
-  addPlanwrite = () => {
-    const obj = {
-      actions: '',
-      startTime: '',
-      endTime: '',
-      progress: ''
-    };
-    const tempPlanWrite = [...this.state.planWrite];
-    tempPlanWrite.push(obj);
-    this.setState({
-      planWrite: tempPlanWrite
-    });
-    this.props.onSetPlanWrite(tempPlanWrite);
-  };
-  // 删除计划
-  removePlanWrite = index => {
-    const temPlanWrite = [...this.state.planWrite];
-    temPlanWrite.splice(index, 1);
-    this.setState({
-      planWrite: temPlanWrite
-    });
-    this.props.onSetPlanWrite(temPlanWrite);
-  };
-  // 监听输入行动的变化
-  handlePlanChange = (value, index) => {
-    const temPlanWrite = [...this.state.planWrite];
-    temPlanWrite[index].actions = value;
-    this.setState({
-      planWrite: temPlanWrite
-    });
-    this.props.onSetPlanWrite(temPlanWrite);
-  };
-  // 监听开始日期的变化
-  handlestartTimeChange = (date, dataString, index) => {
-    const temPlanWrite = [...this.state.planWrite];
-    console.log(temPlanWrite, index);
-    temPlanWrite[index].startTime = dataString;
-    this.setState({
-      planWrite: temPlanWrite
-    });
-    this.props.onSetPlanWrite(temPlanWrite);
-  };
-  // 监听结束日期的变化
-  handleendTimeChange = (data, dataString, index) => {
-    const temPlanWrite = [...this.state.planWrite];
-    temPlanWrite[index].endTime = dataString;
-    this.setState({
-      planWrite: temPlanWrite
-    });
-    this.props.onSetPlanWrite(temPlanWrite);
-  };
-  // handleProgressChange  填写时进度变化
-  handleProgressChange = (value, index) => {
-    const temPlanWrite = [...this.state.planWrite];
-    temPlanWrite[index].progress = value;
-    this.setState({
-      planWrite: temPlanWrite
-    });
-    this.props.onSetPlanWrite(temPlanWrite);
-  };
-  // handleNumberChange 查看时进度变化
-  handleNumberChange = async (value, index, item) => {
-    const planView = [...this.state.planView];
-    console.log(index, planView);
-    planView[index].progress = value;
-    this.setState({
-      planView: planView
-    });
-    // 向后端发请求
-    // console.log('item',item);
-    // console.log('现在',this.state.planWrite);
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid: 615571557694,
-        data: [
-          {
-            REC_ID: item.REC_ID,
-            progress: this.state.planView[index].progress
-          }
-        ]
-      });
-    } catch (err) {
-      console.log(err.message);
+
+  //添加知识点
+  handleAddKnowledge = () => {
+    let knowledge = [...this.state.knowledge];
+    if (knowledge.length > 2) {
+      return message.info('不能多于3个');
     }
-    this.getFeebackAndRate();
+    knowledge.push('');
+    this.setState({
+      knowledge
+    });
   };
-  renderViewOrModify = () => {
-    // console.log(this.props.mode);
-    if (this.props.mode === 'view') {
-      return (
-        <React.Fragment>
-          {this.state.planView.map((item, index) => {
-            return (
-              <Row key={index}>
-                <Col span={2}>{index + 1}</Col>
-                <Col span={8}>{item.actions}</Col>
-                <Col span={4}>
-                  <DatePicker
-                    value={moment(`${item.startTime}`, dateFormat)}
-                    disabled
-                  />
-                </Col>
-                <Col span={4}>
-                  <DatePicker
-                    value={moment(`${item.endTime}`, dateFormat)}
-                    disabled
-                  />
-                </Col>
-                <Col span={2}>
-                  <InputNumber
-                    value={item.progress}
-                    onChange={value => {
-                      this.handleNumberChange(value, index, item);
-                    }}
-                  />
-                </Col>
-              </Row>
-            );
-          })}
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          {this.state.planWrite.map((item, index) => {
-            return (
-              <Row key={index}>
-                <Col span={2}>{index + 1}</Col>
-                <Col span={8}>
-                  <Input
-                    placeholder = '运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。'
-                    onChange={e => {
-                      this.handlePlanChange(e.target.value, index);
-                    }}
-                  />
-                </Col>
-                
-                <Col span={3}>
-                  <Button
-                    onClick={() => {
-                      this.addPlanwrite();
-                    }}
-                  >
-                    增加
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      this.removePlanWrite(index);
-                    }}
-                  >
-                    删除
-                  </Button>
-                </Col>
-              </Row>
-            );
-          })}
-        </React.Fragment>
-      );
+
+  handleKnowledgeChange = index => e => {
+    const { knowledge } = this.state;
+    knowledge[index] = e.target.value;
+    this.props.setKnowledge(knowledge);
+    this.setState({
+      knowledge
+    });
+  };
+
+  // 删除知识点
+  handleDeleteKnowledge = index => () => {
+    let knowledge = [...this.state.knowledge];
+    if (knowledge.length === 1) {
+      return message.info('不能少于1个');
     }
+    knowledge.splice(index, 1);
+    this.setState({
+      knowledge
+    });
   };
+
+  //添加行动计划
+  handleAddPlan = () => {
+    let plans = [...this.state.plans];
+    if (plans.length > 2) {
+      return message.info('不能多于3个');
+    }
+    plans.push('');
+    this.setState({
+      plans
+    });
+  };
+
+  handlePlanChange = index => e => {
+    const { plans } = this.state;
+    plans[index] = e.target.value;
+    this.props.setPlans(plans);
+    this.setState({
+      plans
+    });
+  };
+
+  // 删除行动计划
+  handleDeletePlan = index => () => {
+    let plans = [...this.state.plans];
+    if (plans.length <= 1) {
+      return message.info('不能少于1个');
+    }
+    plans.splice(index, 1);
+    this.setState({
+      plans
+    });
+  };
+
   render() {
     const required = !(this.props.mode === 'view');
+    const { plans, knowledge } = this.state;
     return (
       <div>
         {this.props.onCourseType === '内训' ? (
@@ -470,6 +383,7 @@ class FeedBackAndPlan extends Component {
                     <Rate value={this.state.rate.rate6} disabled />
                   ) : (
                     <Rate
+                      value={this.state.rate.rate6}
                       onChange={value => {
                         this.rate6Change(value);
                       }}
@@ -484,6 +398,7 @@ class FeedBackAndPlan extends Component {
                     <Rate value={this.state.rate.rate7} disabled />
                   ) : (
                     <Rate
+                      value={this.state.rate.rate7}
                       onChange={value => {
                         this.rate7Change(value);
                       }}
@@ -561,6 +476,7 @@ class FeedBackAndPlan extends Component {
                   <Rate value={this.state.rateOut.rate1} disabled />
                 ) : (
                   <Rate
+                    value={this.state.rateOut.rate1}
                     onChange={value => {
                       this.rateOut1Change(value);
                     }}
@@ -575,6 +491,7 @@ class FeedBackAndPlan extends Component {
                   <Rate value={this.state.rateOut.rate2} disabled />
                 ) : (
                   <Rate
+                    value={this.state.rateOut.rate2}
                     onChange={value => {
                       this.rateOut2Change(value);
                     }}
@@ -604,6 +521,7 @@ class FeedBackAndPlan extends Component {
                   <Rate value={this.state.rateOut.rate4} disabled />
                 ) : (
                   <Rate
+                    value={this.state.rateOut.rate4}
                     onChange={value => {
                       this.rateOut4Change(value);
                     }}
@@ -614,61 +532,109 @@ class FeedBackAndPlan extends Component {
           </Card>
         )}
         {this.props.onCourseType === '内训' ? null : (
-          <Card title="行动计划" style={{ marginTop: 10 }}>
+          <>
             <Row>
-				<div>
-					<ul className='feedbackList'>
-						<li>
-							列出培训中学习到的3个知识点
-							{this.props.mode === 'view' ? null : <Icon  style={{fontSize:'20px'}} type="plus-circle" />}
-						</li>
-						<li>
-							<rect>1</rect>
-							{this.props.mode === 'view' ? <p>这里是填完的知识点</p> :<input type='text' placeholder='请填入你所学到的知识点'/>}
-							
-							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
-						</li>
-						<li>
-							<rect>2</rect>
-							{this.props.mode === 'view' ? <p>这里是填完的知识点</p> :<input type='text' placeholder='请填入你所学到的知识点'/>}
-							
-							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
-						</li>
-					</ul>
-				</div>
-			
-              
+              <div>
+                <ul className="feedbackList">
+                  <li key="tip">
+                    列出培训中学习到的3个知识点
+                    {this.props.mode === 'view' ? null : (
+                      <Tooltip title="添加一项">
+                        <Icon
+                          style={{ fontSize: '20px' }}
+                          type="plus-circle"
+                          onClick={this.handleAddKnowledge}
+                        />
+                      </Tooltip>
+                    )}
+                  </li>
+                  {knowledge.map((item, index) => {
+                    return (
+                      <li key={index}>
+                        <rect>{index + 1}</rect>
+                        {this.props.mode === 'view' ? (
+                          <p>{item}</p>
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder="请填入你所学到的知识点"
+                            onChange={this.handleKnowledgeChange(index)}
+                            value={item}
+                          />
+                        )}
+
+                        {this.props.mode === 'view' ? null : (
+                          <Popconfirm
+                            onConfirm={this.handleDeleteKnowledge(index)}
+                            title="确认删除吗？"
+                          >
+                            <Icon
+                              style={{ fontSize: '20px' }}
+                              type="close-circle"
+                            />
+                          </Popconfirm>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </Row>
-			<Row>
-				<div>
-					<ul className='feedbackList'>
-						<li>
-							行动计划<br/>(运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。	)
-						</li>
-						<li className='alter2'>
-							<rect>序号</rect>
-							<p>具体行为</p>
-							{this.props.mode === 'view' ? null : <Icon  style={{fontSize:'20px'}} type="plus-circle" />}
-						</li>
-						<li>
-							<rect>1</rect>
-							{this.props.mode === 'view' ? <p>这里是填完的具体行为</p> :<input type='text' placeholder='请填入你所学到的具体行为'/>}
-							
-							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
-						</li>
-						<li>
-							<rect>2</rect>
-							{this.props.mode === 'view' ? <p>这里是填完的具体行为</p> :<input type='text' placeholder='请填入你所学到的具体行为'/>}
-							
-							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
-						</li>
-					</ul>
-				</div>
-			
-			  
-			</Row>
-            {/**this.renderViewOrModify()**/}
-          </Card>
+            <Row>
+              <div>
+                <ul className="feedbackList">
+                  <li key="tip">
+                    行动计划
+                    <br />
+                    (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
+                    )
+                  </li>
+                  <li className="alter2" key="tip1">
+                    <rect>序号</rect>
+                    <p>具体行为</p>
+                    {this.props.mode === 'view' ? null : (
+                      <Tooltip title="添加一项">
+                        <Icon
+                          style={{ fontSize: '20px' }}
+                          type="plus-circle"
+                          onClick={this.handleAddPlan}
+                        />
+                      </Tooltip>
+                    )}
+                  </li>
+                  {plans.map((item, index) => {
+                    return (
+                      <li key={index}>
+                        <rect>{index + 1}</rect>
+                        {this.props.mode === 'view' ? (
+                          <p>{item}</p>
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder="请填入你所学到的具体行为"
+                            value={item}
+                            onChange={this.handlePlanChange(index)}
+                          />
+                        )}
+
+                        {this.props.mode === 'view' ? null : (
+                          <Popconfirm
+                            title="确认删除吗？"
+                            onConfirm={this.handleDeletePlan(index)}
+                          >
+                            <Icon
+                              style={{ fontSize: '20px' }}
+                              type="close-circle"
+                            />
+                          </Popconfirm>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Row>
+          </>
         )}
       </div>
     );

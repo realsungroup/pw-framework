@@ -217,46 +217,59 @@ class ArrangingCourses extends React.Component {
       this.searchCourseArrangment
     );
   };
-// 发邮件通知培训机构
-onHandleMessage = async (dataSource, selectedRowKeys) => {
-  this.setState({loading:true})
-  if (selectedRowKeys.length) {
-    const data = dataSource;
-    const Reldata = [];
-    data.map(item => {
-      selectedRowKeys.map(items => {
-        if (item.REC_ID === items) {
-          item.isNoticeTrainingOrgan = 'Y';
-          Reldata.push(item);
+  // 发邮件通知培训机构
+  onHandleMessage = async (dataSource, selectedRowKeys) => {
+    this.setState({ loading: true });
+    if (selectedRowKeys.length) {
+      const data = dataSource;
+      const Reldata = [];
+      data.map(item => {
+        selectedRowKeys.map(items => {
+          if (item.REC_ID === items) {
+            item.isNoticeTrainingOrgan = 'Y';
+            Reldata.push(item);
+          }
+        });
+      });
+      let res;
+      try {
+        res = await http().modifyRecords({
+          resid: courseArrangmentResid,
+          data: Reldata,
+          isEditoRAdd: false
+        });
+
+        if (res.Error === 0) {
+          this.tableDataRef.handleRefresh();
+          message.success('操作成功！');
+          this.setState({ loading: false });
+        } else {
+          this.setState({ loading: false });
+          message.error(res.message);
         }
-      });
-    });
-    let res;
-    try {
-      res = await http().modifyRecords({
-        resid: courseArrangmentResid,
-        data: Reldata,
-        isEditoRAdd: false
-      });
-
-      if (res.Error === 0) {
-        this.tableDataRef.handleRefresh();
-        message.success('操作成功！');
-        this.setState({loading:false})
-
-      } else {
-        this.setState({loading:false})
-        message.error(res.message);
+      } catch (error) {
+        this.setState({ loading: false });
+        message.error(error.message);
       }
-    } catch (error) {
-      this.setState({loading:false})
-      message.error(error.message);
+    } else {
+      this.setState({ loading: false });
+      message.error('请勾选记录！');
     }
-  } else {
-    this.setState({loading:false})
-    message.error('请勾选记录！');
-  }
-};
+  };
+
+  giveUp = async (resid, recordId) => {
+    try {
+      const res = await http().modifyRecords({
+        resid: resid,
+        data: [{ REC_ID: recordId, isGiveUp: 'Y' }]
+      });
+      message.success('已放弃');
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
 
   //判断是否为清空操作
   onRangeSearchChange = (value, dateString) => {
@@ -331,7 +344,12 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
               >
                 添加课程安排
               </Button>
-              <Button style={{marginRight:8}} onClick={()=>{this.setState({isShowSendMail:true})}}>
+              <Button
+                style={{ marginRight: 8 }}
+                onClick={() => {
+                  this.setState({ isShowSendMail: true });
+                }}
+              >
                 邀请培训机构开课
               </Button>
               <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
@@ -348,16 +366,18 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
                     this.setState({ mode: 'card' });
                   }}
                 />
-                { <Icon
-                  type="table"
-                  style={mode === 'table' ? activeStyle : unactiveStyle}
-                  key="card"
-                  // theme={mode === 'table' ? 'filled' : null}
-                  title="表格模式"
-                  onClick={() => {
-                    this.setState({ mode: 'table' });
-                  }}
-                /> }
+                {
+                  <Icon
+                    type="table"
+                    style={mode === 'table' ? activeStyle : unactiveStyle}
+                    key="card"
+                    // theme={mode === 'table' ? 'filled' : null}
+                    title="表格模式"
+                    onClick={() => {
+                      this.setState({ mode: 'table' });
+                    }}
+                  />
+                }
                 <Icon
                   key="calendar"
                   type="calendar"
@@ -503,9 +523,10 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
             </div>
           )}
           {this.state.mode === 'table' && (
-
-
-            <div style={{ width: '100%', flex: 1 ,height:'100%'}} className='arc_ag'>
+            <div
+              style={{ width: '100%', flex: 1, height: '100%' }}
+              className="arc_ag"
+            >
               <TableData
                 resid="613959487818"
                 subtractH={220}
@@ -513,7 +534,7 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
-                tableComponent='ag-grid'
+                tableComponent="ag-grid"
                 sideBarAg={true}
                 hasRowSelection={true}
               />
@@ -715,7 +736,22 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
             hasRowView={false}
             hasModify={false}
             hasDelete={false}
+            hasRowDelete={false}
             hasRowSelection={true}
+            customRowBtns={[
+              (record, btnSize) => {
+                return (
+                  <Popconfirm
+                    title="确认放弃吗？"
+                    onConfirm={() => {
+                      this.giveUp(courseDetailId, record.REC_ID);
+                    }}
+                  >
+                    <Button type="danger">放弃</Button>
+                  </Popconfirm>
+                );
+              }
+            ]}
             cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
             actionBarExtra={records => (
               <Button
@@ -868,7 +904,6 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
             }}
             visible={this.state.isShowAddCourseArrangment}
           >
-
             <Form {...formItemLayout}>
               <Form.Item label="课程">
                 {getFieldDecorator('CourseID', {
@@ -926,9 +961,7 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
               </Form.Item>
 
               <Form.Item label="讲师">
-                {getFieldDecorator('Teacher', {
-
-                })(<Input />)}
+                {getFieldDecorator('Teacher', {})(<Input />)}
               </Form.Item>
 
               <Form.Item label="地点">
@@ -963,20 +996,19 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
             </Form>
           </Modal>
         ) : null}
-        {
-          this.state.isShowSendMail==true?(
-            <Modal
-                title="请选择想要开的课程"
-                onCancel={() =>
-                  this.setState({
-                    isShowSendMail: false,
-                  })
-                }
-                destroyOnClose={true}
-                footer={null}
-                visible={this.state.isShowSendMail}
-                width={'80%'}
-            >
+        {this.state.isShowSendMail == true ? (
+          <Modal
+            title="请选择想要开的课程"
+            onCancel={() =>
+              this.setState({
+                isShowSendMail: false
+              })
+            }
+            destroyOnClose={true}
+            footer={null}
+            visible={this.state.isShowSendMail}
+            width={'80%'}
+          >
             <TableData
               resid={courseArrangmentResid}
               height={450}
@@ -1006,10 +1038,8 @@ onHandleMessage = async (dataSource, selectedRowKeys) => {
                 );
               }}
             ></TableData>
-
-            </Modal>
-          ):null
-        }
+          </Modal>
+        ) : null}
       </div>
     );
   }
