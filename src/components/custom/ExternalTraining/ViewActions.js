@@ -263,8 +263,55 @@ class ViewActions extends React.Component {
             </Card>
           )}
           {this.props.onCourseType === '内训' ? null : (
+		  
+		  
             <Card title="行动计划" style={{ marginTop: 10 }}>
-              <Row>
+			<Row>
+				<div>
+					<ul className='feedbackList'>
+						<li>
+							列出培训中学习到的3个知识点
+						</li>
+						<li>
+							<rect>1</rect>
+							<p>这里是填完的知识点</p>
+							
+						</li>
+						<li>
+							<rect>2</rect>
+							<p>这里是填完的知识点</p> 
+							
+						</li>
+					</ul>
+				</div>
+			
+			  
+			</Row>
+			<Row>
+				<div>
+					<ul className='feedbackList'>
+						<li>
+							行动计划<br/>(运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。	)
+						</li>
+						<li className='alter2'>
+							<rect>序号</rect>
+							<p>具体行为</p>
+							
+						</li>
+						<li>
+							<rect>1</rect><p>这里是填完的具体行为</p> 
+							
+						</li>
+						<li>
+							<rect>2</rect><p>这里是填完的具体行为</p> 
+
+						</li>
+					</ul>
+				</div>
+			
+			  
+			</Row>
+              {/**<Row>
                 <Col span={2}>序号</Col>
                 <Col span={8}>具体行动</Col>
                 
@@ -281,7 +328,7 @@ class ViewActions extends React.Component {
                     </Col>
                   </Row>
                 );
-              })}
+              })}**/}
             </Card>
           )}
         </Modal>

@@ -10,7 +10,8 @@ import {
   Input,
   Button,
   Tooltip,
-  Form
+  Form,
+  Icon
 } from 'antd';
 import moment from 'moment';
 import http from 'Util20/api';
@@ -616,25 +617,57 @@ class FeedBackAndPlan extends Component {
           <Card title="行动计划" style={{ marginTop: 10 }}>
             <Row>
 				<div>
-					<ul style={{width:'100%',border:'1px solid #000',padding:'8px',lineHeight:'24px',listStyle:'none'}}>
+					<ul className='feedbackList'>
 						<li>
-							列出培训中学习到到3个知识点
+							列出培训中学习到的3个知识点
+							{this.props.mode === 'view' ? null : <Icon  style={{fontSize:'20px'}} type="plus-circle" />}
 						</li>
 						<li>
+							<rect>1</rect>
+							{this.props.mode === 'view' ? <p>这里是填完的知识点</p> :<input type='text' placeholder='请填入你所学到的知识点'/>}
 							
+							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
+						</li>
+						<li>
+							<rect>2</rect>
+							{this.props.mode === 'view' ? <p>这里是填完的知识点</p> :<input type='text' placeholder='请填入你所学到的知识点'/>}
+							
+							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
 						</li>
 					</ul>
 				</div>
 			
-              <Col span={2}>序号</Col>
-              <Col span={8}>
-                <Tooltip title="运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。">
-                  具体行为
-                </Tooltip>
-              </Col>
-              {this.props.mode === 'view' ? null : <Col span={3}>操作</Col>}
+              
             </Row>
-            {this.renderViewOrModify()}
+			<Row>
+				<div>
+					<ul className='feedbackList'>
+						<li>
+							行动计划<br/>(运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。	)
+						</li>
+						<li className='alter2'>
+							<rect>序号</rect>
+							<p>具体行为</p>
+							{this.props.mode === 'view' ? null : <Icon  style={{fontSize:'20px'}} type="plus-circle" />}
+						</li>
+						<li>
+							<rect>1</rect>
+							{this.props.mode === 'view' ? <p>这里是填完的具体行为</p> :<input type='text' placeholder='请填入你所学到的具体行为'/>}
+							
+							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
+						</li>
+						<li>
+							<rect>2</rect>
+							{this.props.mode === 'view' ? <p>这里是填完的具体行为</p> :<input type='text' placeholder='请填入你所学到的具体行为'/>}
+							
+							{this.props.mode === 'view' ? null : <Icon style={{fontSize:'20px'}} type="close-circle" />}
+						</li>
+					</ul>
+				</div>
+			
+			  
+			</Row>
+            {/**this.renderViewOrModify()**/}
           </Card>
         )}
       </div>
