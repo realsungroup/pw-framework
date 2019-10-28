@@ -996,8 +996,19 @@ var hrCode='623876215000';
         toPost=this.state.postID;
 
       }else if(this.state.C3_622921647557=='未送邮（复试）'){
+        // 复试验证
+
+        if(this.state.round2=='N'){
+          Modal.error({
+            title:"Please choose Show Retest first!"
+          });
+      this.setState({loading:false});
+
+          return false;
+        }
         nxtStep='未提交（复试）'
         toPost2=this.state.postID;
+        
       }
       if(this.state.round2=='Y'){
           nxtStep='未提交（复试）'
