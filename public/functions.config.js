@@ -4,7 +4,7 @@ window[588425594397] = {
   name: 'PatientInfo',
   props: {
     tableDataProps: {
-      resid: 621017579152,
+      resid: 624640053934,
       subtractH: 100,
       actionBarFixed: false,
       height: 500,

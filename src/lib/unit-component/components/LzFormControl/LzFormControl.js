@@ -199,14 +199,42 @@ export default class LzFormControl extends React.Component {
     const onChange = this.props.onChange;
     onChange && onChange(changedValue);
   };
+//"{"uid":-1,"name":"2.png","status":"done","url":"http://ivf.dybhealth.com:9000/rispweb/upfiles/2625565372969.png"};
+//file;{"uid":-2,"name":"1.png","status":"done","url":"http://ivf.dybhealth.com:9000/rispweb/upfiles/1625565390457.png"}"
 
+ fileStrToArr2=str=>{
+  let ret;
+  if (!str) {
+    ret = [];
+  } else {
+
+    ret = str.split(",");
+    try {
+      ret = ret.map((item,index) =>{  return {"uid":index,"name":"1.png","status":"done","url":item}} );
+      
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+    
+  }
+  return ret;
+ };
   fileStrToArr = str => {
     let ret;
     if (!str) {
       ret = [];
     } else {
+
       ret = str.split(FILESEPARATOR);
-      ret = ret.map(item => JSON.parse(item));
+      try {
+        ret = ret.map(item => JSON.parse(item));
+        
+      } catch (error) {
+        
+        return this.fileStrToArr2(str);
+      }
+      
     }
     return ret;
   };

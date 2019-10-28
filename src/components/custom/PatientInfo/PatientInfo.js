@@ -166,7 +166,7 @@ class PatientInfo extends React.Component {
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
-              resid={621017579152}
+              resid={624640053934}
               userInfoFields={[
                 { label: '姓名', innerFieldName: 'C3_617809531835' },
                 { label: '住院号', innerFieldName: 'C3_617809584020' },
