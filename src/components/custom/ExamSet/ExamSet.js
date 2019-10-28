@@ -19,6 +19,10 @@ import { cloneDeep } from 'lodash';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
+
+const SingleRadioStyle = {
+  whiteSpace: 'normal'
+};
 const uploadFile = (file, url) => {
   return new Promise((resolve, reject) => {
     let fd = new FormData();
@@ -757,7 +761,7 @@ class ExamSet extends Component {
           {item.subdata.map((option, index) => {
             return (
               <div key={index} className="Exam-set__single__radio">
-                <Radio value={option.value}>
+                <Radio style={SingleRadioStyle} value={option.value}>
                   <span className="Exam-set__single__label">
                     {String.fromCharCode(index + 65)}.
                   </span>
