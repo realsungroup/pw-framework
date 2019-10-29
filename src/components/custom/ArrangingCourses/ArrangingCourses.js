@@ -83,7 +83,7 @@ class ArrangingCourses extends React.Component {
     try {
       res = await http().getTable({
         resid: courseArrangmentResid,
-        cmswhere: "organization = '外训'"
+        cmswhere: "organization != '内训'"
       });
     } catch (error) {
       message.error(error.message);

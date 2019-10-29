@@ -388,7 +388,11 @@ class ProbationForms extends React.Component {
         data = res.data[0];
       }
       if (!data) {
-        return console.error('无数据');
+        return Modal.info({
+          title: '提示',
+          content: '没有试用期信息。',
+          onOk: () => {}
+        });
       }
       let probationObjectives = data[viewableTable.objectiveResid];
       if (probationObjectives.length < 3) {

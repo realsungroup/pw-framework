@@ -160,8 +160,20 @@ class Login extends React.Component {
       }
       const { from } = this.props.location.state || { from: { pathname: '/' } };
 
+      await this.getTablesConfigure();
+
       window.location.href = from.pathname + from.search || '';
     });
+  };
+
+  getTablesConfigure = async () => {
+    try {
+      const configure = window.pwConfig[process.env.NODE_ENV].tablesConfig;
+      const res = await http().getResourcesData(configure);
+      setItem('tablesConfigure', JSON.stringify(res.data));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   loginModeChange = () => {
@@ -237,8 +249,14 @@ class Login extends React.Component {
                     required: true,
                     message: (
                       <FM
-                        id={loginMode=== 'normal'?'Login.DomainUserNameTip':'Login.userNameTip'}
-                        defaultMessage={loginMode === 'normal'?'请输入工号':'请输入用户名'}
+                        id={
+                          loginMode === 'normal'
+                            ? 'Login.DomainUserNameTip'
+                            : 'Login.userNameTip'
+                        }
+                        defaultMessage={
+                          loginMode === 'normal' ? '请输入工号' : '请输入用户名'
+                        }
                       />
                     )
                   }
@@ -248,7 +266,11 @@ class Login extends React.Component {
                   prefix={
                     <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder={loginMode === 'normal' ? intl.messages['Login.DomainUsernamePlaceholder'] :intl.messages['Login.UsernamePlaceholder'] }
+                  placeholder={
+                    loginMode === 'normal'
+                      ? intl.messages['Login.DomainUsernamePlaceholder']
+                      : intl.messages['Login.UsernamePlaceholder']
+                  }
                   addonAfter={this.renderAddonAfterNode()}
                 />
               )}

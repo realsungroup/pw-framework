@@ -23,9 +23,9 @@ class ExaminationQRCode extends React.Component {
     this.setState({
       value: `${testBatchId}+${moment().unix()}`
     });
-    this.timer = setTimeout(() => {
-      this.setUnix(seconds);
-    }, seconds * 1000);
+    // this.timer = setTimeout(() => {
+    //   this.setUnix(seconds);
+    // }, seconds * 1000);
   };
 
   getCheckInId = async () => {
@@ -67,7 +67,7 @@ class ExaminationQRCode extends React.Component {
           type="primary"
           style={{ marginBottom: 12 }}
           onClick={() => {
-            this.timer = null;
+            // this.timer = null;
             this.getCheckInId();
             message.success('已刷新');
           }}

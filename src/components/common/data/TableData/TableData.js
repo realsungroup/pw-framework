@@ -21,7 +21,7 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
 // import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal, getItem } from 'Util20/util';
 import { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
@@ -67,6 +67,16 @@ class TableData extends React.Component {
       this.rowSelectionChange,
       true
     );
+    
+    this._showAGgrid = false;
+    try {
+      this._showAGgrid = JSON.parse(getItem('tablesConfigure'))[
+        this.props.resid
+      ].showAGgrid;
+    } catch (error) {
+      // console.error(error)
+    }
+
     this.state = {
       loading: false,
       key: '', // 模糊查询关键词
@@ -336,8 +346,10 @@ class TableData extends React.Component {
             key,
             cmswhere: mergedCmsWhere,
             cmscolumns,
-            pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
-            pagesize: tableComponent === 'ag-grid' ? 100 : pageSize,
+            pageindex:
+              this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
+            pagesize:
+              this._showAGgrid || tableComponent === 'ag-grid' ? 100 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -362,8 +374,10 @@ class TableData extends React.Component {
             key,
             cmswhere: mergedCmsWhere,
             cmscolumns,
-            pageindex: tableComponent === 'ag-grid' ? 0 : page - 1,
-            pagesize: tableComponent === 'ag-grid' ? 100 : pageSize,
+            pageindex:
+              this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
+            pagesize:
+              this._showAGgrid || tableComponent === 'ag-grid' ? 100 : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -1683,7 +1697,7 @@ class TableData extends React.Component {
       enModifyText,
       tableComponent
     } = this.props;
-    if (tableComponent === 'ag-grid') {
+    if (this._showAGgrid || tableComponent === 'ag-grid') {
       return (
         <PwAggird
           title={title}

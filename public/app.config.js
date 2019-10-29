@@ -20,6 +20,18 @@ window.pwConfig = {
       comprehensiveQueryBaseURL: 'http://10.108.2.66:1001/' //综合查询
     },
 
+    // 需前端缓存配置的资源
+    tablesConfig: [
+      {
+        dblinkname: '',
+        resids: '1300,621366399676'
+      },
+      {
+        dblinkname: 'ehr',
+        resids: '429373729010,460481857607'
+      }
+    ],
+
     // 个人中心配置
     personCenterResIds: [
       {
@@ -135,6 +147,19 @@ window.pwConfig = {
 
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
     },
+
+    // 需前端缓存配置的资源
+    tablesConfig: [
+      {
+        dblinkname: '',
+        resids: '1300,621366399676'
+      },
+      {
+        dblinkname: 'ehr',
+        resids: '429373729010,460481857607'
+      }
+    ],
+
     // 个人中心配置
     personCenterResIds: [
       {

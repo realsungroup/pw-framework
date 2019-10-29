@@ -301,9 +301,7 @@ class Desktop extends React.Component {
       const resid = app.ResID || app.resid;
       const url =
         item.app.fnmoduleUrl ||
-        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${
-          app.title
-        }`;
+        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
       const children = (
         <iframe src={url} frameBorder="0" className="desktop__iframe" />
       );
@@ -525,9 +523,7 @@ class Desktop extends React.Component {
     // 已经存在于桌面，则直接打开窗口
     if (isExistDesktop) {
       const resid = parseInt(app.ResID || app.resid, 10);
-      const url = `/fnmodule?resid=${resid}&recid=${
-        app.REC_ID
-      }&type=${typeName}&title=${app.title}`;
+      const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
       const appName = app.title;
       const { activeApps } = this.state;
       activeApps.forEach(activeApp => {
@@ -774,11 +770,22 @@ class Desktop extends React.Component {
   handleClearCache = async () => {
     try {
       await http().clearCache();
+      await this.getTablesConfigure();
     } catch (err) {
       console.error(err);
       return message.error(err.message);
     }
     message.success('清除缓存成功');
+  };
+
+  getTablesConfigure = async () => {
+    try {
+      const configure = window.pwConfig[process.env.NODE_ENV].tablesConfig;
+      const res = await http().getResourcesData(configure);
+      setItem('tablesConfigure', JSON.stringify(res.data));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   handleSelectColor = color => {
@@ -973,9 +980,7 @@ class Desktop extends React.Component {
     const app = desktopApp;
     // 打开窗口
     const resid = parseInt(app.ResID || app.resid, 10);
-    const url = `/fnmodule?resid=${resid}&recid=${
-      app.REC_ID
-    }&type=${typeName}&title=${app.title}`;
+    const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
     const appName = app.title;
     const { activeApps } = this.state;
     activeApps.forEach(activeApp => {
@@ -1206,9 +1211,7 @@ class Desktop extends React.Component {
     // 背景样式
     const desktopStyle = {};
     if (selectedBg.bgMode === 'image') {
-      desktopStyle.background = `url(${
-        selectedBg.value
-      }) center center / cover no-repeat`;
+      desktopStyle.background = `url(${selectedBg.value}) center center / cover no-repeat`;
     } else {
       desktopStyle.background = selectedBg.value;
     }

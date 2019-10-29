@@ -405,11 +405,19 @@ http.createApi('runBySql', {
 });
 
 /**
- * 根据数据源名称和执行sql语句获取单个值
+ * 根据存储过程取数据
  */
 http.createApi('getRecordsByProcedure', {
   method: 'get',
   url: '/api/200/table/RetrieveProcedure'
+});
+
+/**
+ * 获取所有资源配置数据
+ */
+http.createApi('getResourcesData', {
+  method: 'post',
+  url: '/api/Resource/GetAllResourcesData'
 });
 
 export default http;

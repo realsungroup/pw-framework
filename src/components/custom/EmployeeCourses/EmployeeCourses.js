@@ -988,82 +988,82 @@ class EmployeeCourses extends React.Component {
                         </span>
                       </div>
                     </Timeline.Item>
-                    {selectedCourse.courseType === '外训' && (
-                      <>
-                        <Timeline.Item
-                          color={this.getColor(selectedCourse.C3_613956470258)}
-                        >
-                          <div>
-                            <span>计划审批</span>
-                            <span style={{ paddingLeft: 12 }}>
-                              {selectedCourse.C3_615394023182}
+                    {/* {selectedCourse.courseType === '外训' && ( */}
+                    <>
+                      <Timeline.Item
+                        color={this.getColor(selectedCourse.C3_613956470258)}
+                      >
+                        <div>
+                          <span>计划审批</span>
+                          <span style={{ paddingLeft: 12 }}>
+                            {selectedCourse.C3_615394023182}
+                          </span>
+                        </div>
+                        <div>
+                          {selectedCourse.C3_613956470258 === 'Y' &&
+                          selectedCourse.C3_615377523072 === 'ing' ? (
+                            <span
+                              className="timeline_action"
+                              onClick={() => {
+                                this.setState({
+                                  applyVisible: true,
+                                  applyModalMode: 'modify'
+                                });
+                              }}
+                            >
+                              提交申请
                             </span>
-                          </div>
-                          <div>
-                            {selectedCourse.C3_613956470258 === 'Y' &&
-                            selectedCourse.C3_615377523072 === 'ing' ? (
-                              <span
-                                className="timeline_action"
-                                onClick={() => {
-                                  this.setState({
-                                    applyVisible: true,
-                                    applyModalMode: 'modify'
-                                  });
-                                }}
-                              >
-                                提交申请
-                              </span>
-                            ) : null}
-                          </div>
-                        </Timeline.Item>
-                        <Timeline.Item
-                          color={this.getColor(selectedCourse.C3_615377523072)}
-                        >
-                          <div>
-                            <span>申请单提交</span>
-                            <span style={{ paddingLeft: 12 }}>
-                              {selectedCourse.C3_615377538264}
-                            </span>
-                          </div>
-                          {selectedCourse.C3_615377523072 === 'Y' ? (
-                            <div>
-                              <span
-                                className="timeline_action"
-                                onClick={() => {
-                                  this.getApprovalRecords();
-                                  this.setState({
-                                    applyVisible: true,
-                                    isfirst: false
-                                  });
-                                }}
-                              >
-                                查看申请单
-                              </span>
-                              <span
-                                className="timeline_action"
-                                onClick={() => {
-                                  this.setState({
-                                    ReviewRecordModalVisible: true
-                                  });
-                                }}
-                              >
-                                查看审批记录
-                              </span>
-                            </div>
                           ) : null}
-                        </Timeline.Item>
-                        <Timeline.Item
-                          color={this.getColor(selectedCourse.C3_613961474297)}
-                        >
+                        </div>
+                      </Timeline.Item>
+                      <Timeline.Item
+                        color={this.getColor(selectedCourse.C3_615377523072)}
+                      >
+                        <div>
+                          <span>申请单提交</span>
+                          <span style={{ paddingLeft: 12 }}>
+                            {selectedCourse.C3_615377538264}
+                          </span>
+                        </div>
+                        {selectedCourse.C3_615377523072 === 'Y' ? (
                           <div>
-                            <span>申请单审批</span>
-                            <span style={{ paddingLeft: 12 }}>
-                              {selectedCourse.C3_615377747279}
+                            <span
+                              className="timeline_action"
+                              onClick={() => {
+                                this.getApprovalRecords();
+                                this.setState({
+                                  applyVisible: true,
+                                  isfirst: false
+                                });
+                              }}
+                            >
+                              查看申请单
+                            </span>
+                            <span
+                              className="timeline_action"
+                              onClick={() => {
+                                this.setState({
+                                  ReviewRecordModalVisible: true
+                                });
+                              }}
+                            >
+                              查看审批记录
                             </span>
                           </div>
-                        </Timeline.Item>
-                      </>
-                    )}
+                        ) : null}
+                      </Timeline.Item>
+                      <Timeline.Item
+                        color={this.getColor(selectedCourse.C3_613961474297)}
+                      >
+                        <div>
+                          <span>申请单审批</span>
+                          <span style={{ paddingLeft: 12 }}>
+                            {selectedCourse.C3_615377747279}
+                          </span>
+                        </div>
+                      </Timeline.Item>
+                    </>
+                    {/* )} */}
                     <Timeline.Item color={startColor}>
                       <div>
                         <span>上课开始</span>
@@ -1129,29 +1129,31 @@ class EmployeeCourses extends React.Component {
                         ) : null}
                       </div>
                     </Timeline.Item>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isSubmitFeel)}
-                    >
-                      <div>
-                        <span>心得体会(分享记录)</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.submitFeelTime}
-                        </span>
-                      </div>
-                      <div>
-                        {selectedCourse.isSubmitFeel === 'Y' ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() => {
-                              this.setState({ tipsModalMode: 'view' });
-                              this.getTip();
-                            }}
-                          >
-                            查看心得体会(分享记录)
+                    {selectedCourse.courseType === '外训' && (
+                      <Timeline.Item
+                        color={this.getColor(selectedCourse.isSubmitFeel)}
+                      >
+                        <div>
+                          <span>心得体会(分享记录)</span>
+                          <span style={{ paddingLeft: 12 }}>
+                            {selectedCourse.submitFeelTime}
                           </span>
-                        ) : null}
-                      </div>
-                    </Timeline.Item>
+                        </div>
+                        <div>
+                          {selectedCourse.isSubmitFeel === 'Y' ? (
+                            <span
+                              className="timeline_action"
+                              onClick={() => {
+                                this.setState({ tipsModalMode: 'view' });
+                                this.getTip();
+                              }}
+                            >
+                              查看心得体会(分享记录)
+                            </span>
+                          ) : null}
+                        </div>
+                      </Timeline.Item>
+                    )}
                   </Timeline>
                 ) : null}
                 {selectedCourse &&
@@ -1294,9 +1296,15 @@ class EmployeeCourses extends React.Component {
                   >
                     <Button type="primary">提交</Button>
                   </Popconfirm>,
-                  <Button type="danger" onClick={this.isAbandon}>
-                    放弃
-                  </Button>
+                  <Popconfirm
+                    title="确定要放弃吗？"
+                    icon={
+                      <Icon type="question-circle-o" style={{ color: 'red' }} />
+                    }
+                    onConfirm={this.isAbandon}
+                  >
+                    <Button type="danger">放弃</Button>
+                  </Popconfirm>
                 ]
               : [
                   <Button
@@ -1433,19 +1441,19 @@ class EmployeeCourses extends React.Component {
               hasRowModify={false}
               height="70vh"
               cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              actionBarExtra={() => {
-                return (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      window.print();
-                      // window.location.reload();
-                    }}
-                  >
-                    打印
-                  </Button>
-                );
-              }}
+              // actionBarExtra={() => {
+              //   return (
+              //     <Button
+              //       type="primary"
+              //       onClick={() => {
+              //         window.print();
+              //         // window.location.reload();
+              //       }}
+              //     >
+              //       打印
+              //     </Button>
+              //   );
+              // }}
             />
           ) : null}
         </Modal>
