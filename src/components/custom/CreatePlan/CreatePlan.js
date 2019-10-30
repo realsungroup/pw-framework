@@ -10,7 +10,8 @@ import {
   Select,
   Modal,
   Input,
-  Spin
+  Spin,
+  Tabs
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
@@ -18,7 +19,7 @@ import { TableData } from '../../common/loadableCommon';
 import './CreatePlan.less';
 const Option = Select.Option;
 const Search = Input.Search;
-
+const TabPane = Tabs.TabPane;
 class CreatePlan extends React.Component {
   constructor(props) {
     super(props);
@@ -492,6 +493,7 @@ class CreatePlan extends React.Component {
                       style={{ cursor: 'pointer' }}
                       onClick={this.onClick.bind(this, i)}
                       key={item.REC_ID}
+					  className='memberCard'
                     >
                       <div
                         style={{
@@ -612,7 +614,51 @@ class CreatePlan extends React.Component {
                             </span>
                           </div>
                         </div>
+						
                       </div>
+					    <div
+						  className='hoverEle'
+					    >
+					      <span
+					        style={{ fontSize: '16px', fontWeight: 'bold' }}
+					        onClick={e => {
+					          this.setState({
+					            showTab: true,
+					            tabsKey: '1',
+					            listNo: item.C3_609622254861
+					          });
+					          e.stopPropagation();
+					        }}
+					      >
+					        历年绩效
+					      </span>
+					      <span
+					        style={{ fontSize: '16px', fontWeight: 'bold' }}
+					        onClick={e => {
+					          this.setState({
+					            showTab: true,
+					            tabsKey: '2',
+					            listNo: item.C3_609622254861
+					          });
+					          e.stopPropagation();
+					        }}
+					      >
+					        历史计划
+					      </span>
+					      <span
+					        style={{ fontSize: '16px', fontWeight: 'bold' }}
+					        onClick={e => {
+					          this.setState({
+					            showTab: true,
+					            tabsKey: '3',
+					            listNo: item.C3_609622254861
+					          });
+					          e.stopPropagation();
+					        }}
+					      >
+					        员工个人发展
+					      </span>
+					    </div>
                     </List.Item>
                   )}
                 />
@@ -848,6 +894,59 @@ class CreatePlan extends React.Component {
             hasRowView={false}
           />
         </Modal>
+		<Modal
+		  destroyOnClose={true}
+		  width={'80%'}
+		  visible={this.state.showTab}
+		  onOk={() => this.setState({ showTab: false })}
+		  onCancel={() => this.setState({ showTab: false })}
+		  centered
+		  style={{ top: 50 }}
+		>
+		  <Tabs defaultActiveKey={this.state.tabsKey}>
+		    <TabPane tab="历年绩效" key="1">
+		      <TableData
+		        resid={420130498195}
+		        recordFormFormWidth={'90%'}
+		        hasBeBtns={false}
+		        cmswhere={`C3_420148203323 = '${this.state.listNo}'`}
+		        hasModify={false}
+		        hasDelete={false}
+		        hasAdd={false}
+		        hasRowDelete={false}
+		        hasRowModify={false}
+		        hasRowView={false}
+		        height={450}
+		        subtractH={200}
+		      />
+		    </TabPane>
+		    <TabPane tab="历史计划" key="2">
+		      <TableData
+		        resid={611315248461}
+		        cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
+		        recordFormFormWidth={'90%'}
+		        hasBeBtns={false}
+		        hasModify={false}
+		        hasDelete={false}
+		        hasAdd={false}
+		        hasRowDelete={false}
+		        hasRowModify={false}
+		        hasRowView={false}
+		        height={450}
+		        subtractH={200}
+		      />
+		    </TabPane>
+		    <TabPane tab="员工个人发展" key="3">
+		      <TableData
+		      resid={624564627997}
+		      // dataMode="main"
+		      // subtractH={190}
+		      // height={520}
+		      // hasBeBtns
+		      />
+		    </TabPane>
+		  </Tabs>
+		</Modal>
       </div>
     );
   }

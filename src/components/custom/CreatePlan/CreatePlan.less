@@ -62,3 +62,21 @@
 .hidden{
 	display:none;
 }
+.memberCard .hoverEle{
+	padding-left:24px;
+	transform: rotateX(90deg);
+	transition: .3s;
+	border-left:2px solid #e8e8e8;
+	span{
+		display: block;
+		margin-top: 8px;
+		margin-bottom:8px;
+		text-align:left;
+	}
+	span:hover{
+		color:#1890FF;
+	}
+}
+.memberCard:hover .hoverEle{
+	transform: rotateX(0deg);
+}
