@@ -9,7 +9,8 @@ import {
   List,
   Select,
   Modal,
-  Input
+  Input,
+  Spin
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
@@ -82,7 +83,7 @@ class CreatePlan extends React.Component {
     let pageIndex = this.state.pageIndex;
     let pageSize = this.state.pageSize;
     let key = this.state.key;
-    this.setState({ loading: true });
+    this.setState({ loading2: true });
     try {
       let res = await http().getTable({
         resid: this.props.resid,
@@ -162,6 +163,7 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key) {
+	  this.setState({loading2:true});
     let { selectedCourse } = this.state;
     let cmswhere = `C3_609845305743 = '${this.state.totalData.C3_609615869581}' `;
     //如果选择了人员级别，则加上级别的条件语句
@@ -205,12 +207,16 @@ class CreatePlan extends React.Component {
             e.check = false;
           }
         });
+		
         this.setState({ subData });
+		this.setState({loading2:false});
       } else {
+		  this.setState({loading2:false});
         message.error(res.message);
       }
     } catch (err) {
       console.log().error(err);
+	  this.setState({loading2:false});
       return message.error(err.message);
     }
   }
@@ -236,6 +242,7 @@ class CreatePlan extends React.Component {
     let res;
     try {
       res = await http().getTable({ resid: this.props.kclbResid });
+	  console.info('res',res)
       if (res.error === 0) {
         let kclbData = res.data;
         this.setState({ kclbData });
@@ -637,84 +644,73 @@ class CreatePlan extends React.Component {
                 保存
               </Button>
             </div>
+			<Spin spinning={this.state.loading2}>
             <List
               size="large"
               header={
                 <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
+				  className='creatFilter'
                 >
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue="All"
-                    onChange={e => {
-                      if (e === 'Rec') {
-                        //如果未选择员工级别，课程数据则为空
-                        if (this.state.selectedLevel === '') {
-                          message.error('未选择级别，无法推荐课程');
-                          return this.setState({ kcState: e, subData: [] });
-                        }
-                        this.setState({ kcState: e }, () => this.getSubData());
-                      } else {
-                        this.setState(
-                          {
-                            //selectedLevel: '',
-                            kcState: 'All'
-                          },
-                          () => this.getSubData()
-                        );
-                      }
-                    }}
-                  >
-                    <Option value="All">全部课程</Option>
-                    <Option value="Rec">推荐课程</Option>
-                  </Select>
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue=""
-                    onChange={e => {
-                      if (
-                        this.state.kcState === 'Rec' &&
-                        this.state.selectedLevel === ''
-                      ) {
-                        message.error('未选择级别，无法推荐课程');
-                        return this.setState({ subData: [] });
-                      }
-                      this.setState({ xlSelect: e }, () => this.getSubData());
-                    }}
-                  >
-                    <Option value="">全部系列</Option>
-                    {kcxlData.map((item, i) => (
-                      <Option value={item.C3_460380572730} key={i}>
-                        {item.C3_460380572730}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue=""
-                    onChange={e => {
-                      if (
-                        this.state.kcState === 'Rec' &&
-                        this.state.selectedLevel === ''
-                      ) {
-                        message.error('未选择级别，无法推荐课程');
-                        return this.setState({ subData: [] });
-                      }
-                      this.setState({ lbSelect: e }, () => this.getSubData());
-                    }}
-                  >
-                    <Option value="">全部类别</Option>
-                    {kclbData.map((item, i) => (
-                      <Option value={item.C3_460380239253} key={i}>
-                        {item.C3_460380239253}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Search
-                    placeholder="搜索"
-                    onSearch={value => this.getSubData(value)}
-                    style={{ width: 200 }}
-                  />
+                 <ul>
+					<li className={this.state.lbSelect==''?'current':''} onClick={()=>{this.setState({ lbSelect: '' }, () => this.getSubData())}}>全部系列</li>
+					<li className={this.state.lbSelect=='管理与发展'?'current':''} onClick={()=>{this.setState({ lbSelect: '管理与发展',xlSelect:'' }, () => this.getSubData())}}>管理与发展</li>
+					<li className={this.state.lbSelect=='专业技能'?'current':''} onClick={()=>{this.setState({ lbSelect: '专业技能',xlSelect:'' }, () => this.getSubData())}}>专业技能</li>
+					<li className={this.state.lbSelect=='职业技能'?'current':''} onClick={()=>{this.setState({ lbSelect: '职业技能',xlSelect:'' }, () => this.getSubData())}}>职业技能</li>
+				 </ul>
+				 <div className='clearfix'></div>
+				 <ul className='filter2'>
+				 <li className={this.state.lbSelect==''?'':'hidden'}>
+				 	<ol>
+						<li className={this.state.xlSelect==''?'cur':''} onClick={()=>{this.setState({ xlSelect: '' }, () => this.getSubData())}}>全部</li>
+						<li className={this.state.xlSelect=='团队管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '团队管理' }, () => this.getSubData())}}>团队管理</li>
+						<li className={this.state.xlSelect=='自我发展'?'cur':''} onClick={()=>{this.setState({ xlSelect: '自我发展' }, () => this.getSubData())}}>自我发展</li>
+					
+						<li className={this.state.xlSelect=='研发设计与管理工具'?'cur':''} onClick={()=>{this.setState({ xlSelect: '研发设计与管理工具' }, () => this.getSubData())}}>研发设计与管理工具</li>
+				 		<li className={this.state.xlSelect=='工程技术类'?'cur':''} onClick={()=>{this.setState({ xlSelect: '工程技术类' }, () => this.getSubData())}}>工程技术类</li>
+				 		<li className={this.state.xlSelect=='生产制造'?'cur':''} onClick={()=>{this.setState({ xlSelect: '生产制造管理' }, () => this.getSubData())}}>生产制造管理</li>
+				 		<li className={this.state.xlSelect=='质量管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '质量管理' }, () => this.getSubData())}}>质量管理</li>
+				 		<li className={this.state.xlSelect=='人力资源与行政管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '人力资源与行政管理' }, () => this.getSubData())}}>人力资源与行政管理</li>
+				 		<li className={this.state.xlSelect=='财务'?'cur':''} onClick={()=>{this.setState({ xlSelect: '财务' }, () => this.getSubData())}}>财务</li>
+				 	
+						<li className={this.state.xlSelect=='项目管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '项目管理' }, () => this.getSubData())}}>项目管理</li>
+						<li className={this.state.xlSelect=='英语提高'?'cur':''} onClick={()=>{this.setState({ xlSelect: '英语提高' }, () => this.getSubData())}}>英语提高</li>
+						<li className={this.state.xlSelect=='软件学习'?'cur':''} onClick={()=>{this.setState({ xlSelect: '软件学习' }, () => this.getSubData())}}>软件学习</li>
+						<li className={this.state.xlSelect=='体系类'?'cur':''} onClick={()=>{this.setState({ xlSelect: '体系类' }, () => this.getSubData())}}>体系类</li>
+					
+					</ol>
+				 </li>
+
+					<li className={this.state.lbSelect=='专业技能'?'':'hidden'}>
+						<ol>
+							<li className={this.state.xlSelect==''?'cur':''} onClick={()=>{this.setState({ xlSelect: '' }, () => this.getSubData())}}>全部</li>
+							<li className={this.state.xlSelect=='研发设计与管理工具'?'cur':''} onClick={()=>{this.setState({ xlSelect: '研发设计与管理工具' }, () => this.getSubData())}}>研发设计与管理工具</li>
+							<li className={this.state.xlSelect=='工程技术类'?'cur':''} onClick={()=>{this.setState({ xlSelect: '工程技术类' }, () => this.getSubData())}}>工程技术类</li>
+							<li className={this.state.xlSelect=='生产制造'?'cur':''} onClick={()=>{this.setState({ xlSelect: '生产制造管理' }, () => this.getSubData())}}>生产制造管理</li>
+							<li className={this.state.xlSelect=='质量管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '质量管理' }, () => this.getSubData())}}>质量管理</li>
+							<li className={this.state.xlSelect=='人力资源与行政管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '人力资源与行政管理' }, () => this.getSubData())}}>人力资源与行政管理</li>
+							<li className={this.state.xlSelect=='财务'?'cur':''} onClick={()=>{this.setState({ xlSelect: '财务' }, () => this.getSubData())}}>财务</li>
+						</ol>
+					</li>
+					
+					<li className={this.state.lbSelect=='管理与发展'?'':'hidden'}>
+						<ol>
+							<li className={this.state.xlSelect==''?'cur':''} onClick={()=>{this.setState({ xlSelect: '' }, () => this.getSubData())}}>全部</li>
+							<li className={this.state.xlSelect=='团队管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '团队管理' }, () => this.getSubData())}}>团队管理</li>
+							<li className={this.state.xlSelect=='自我发展'?'cur':''} onClick={()=>{this.setState({ xlSelect: '自我发展' }, () => this.getSubData())}}>自我发展</li>
+						</ol>
+					</li>
+					
+					<li className={this.state.lbSelect=='职业技能'?'':'hidden'}>
+						<ol>
+							<li className={this.state.xlSelect==''?'cur':''} onClick={()=>{this.setState({ xlSelect: '' }, () => this.getSubData())}}>全部</li>
+							<li className={this.state.xlSelect=='项目管理'?'cur':''} onClick={()=>{this.setState({ xlSelect: '项目管理' }, () => this.getSubData())}}>项目管理</li>
+							<li className={this.state.xlSelect=='英语提高'?'cur':''} onClick={()=>{this.setState({ xlSelect: '英语提高' }, () => this.getSubData())}}>英语提高</li>
+							<li className={this.state.xlSelect=='软件学习'?'cur':''} onClick={()=>{this.setState({ xlSelect: '软件学习' }, () => this.getSubData())}}>软件学习</li>
+							<li className={this.state.xlSelect=='体系类'?'cur':''} onClick={()=>{this.setState({ xlSelect: '体系类' }, () => this.getSubData())}}>体系类</li>
+						</ol>
+					</li>
+				 </ul>
+                  
                 </div>
               }
               bordered
@@ -815,6 +811,7 @@ class CreatePlan extends React.Component {
                 </List.Item>
               )}
             />
+			</Spin>
           </div>
         </div>
 
