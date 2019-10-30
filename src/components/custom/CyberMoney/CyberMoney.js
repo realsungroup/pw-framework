@@ -107,9 +107,13 @@ class CyberMoney extends Component {
         resid: '623683986122',
       });
       console.log('res',res)
-     var personNum=res.data[0].personID;
-      this.setState({team:res.data[0].person})
-      this.getHistory(personNum);
+      var personNum
+      if(res.data.length>0){
+        personNum=res.data[0].personID;
+        this.setState({team:res.data[0].person})
+        this.getHistory(personNum);
+      }
+     
       try {
         let res2 = await http().getTable({
           // resid: '623683986122',
