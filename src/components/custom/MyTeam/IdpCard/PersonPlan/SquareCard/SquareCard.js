@@ -129,25 +129,28 @@ class SquareCard extends React.Component {
                                       <div style={{ padding: '16px' }}>
                                         <h4>擅长</h4>
                                         <ul>
-                                          {aDeptArr&&aDeptArr.map(item => {
-                                            return <li>{item}</li>;
-                                          })}
+                                          {aDeptArr &&
+                                            aDeptArr.map(item => {
+                                              return <li>{item}</li>;
+                                            })}
                                         </ul>
                                       </div>
                                       <div style={{ padding: '16px' }}>
                                         <h4>不擅长</h4>
                                         <ul>
-                                          {notAdeptArr&&notAdeptArr.map(item => {
-                                            return <li>{item}</li>;
-                                          })}
+                                          {notAdeptArr &&
+                                            notAdeptArr.map(item => {
+                                              return <li>{item}</li>;
+                                            })}
                                         </ul>
                                       </div>
                                       <div style={{ padding: '16px' }}>
                                         <h4>过度使用</h4>
                                         <ul>
-                                          {overUseArr&&overUseArr.map(item => {
-                                            return <li>{item}</li>;
-                                          })}
+                                          {overUseArr &&
+                                            overUseArr.map(item => {
+                                              return <li>{item}</li>;
+                                            })}
                                         </ul>
                                       </div>
                                     </div>
@@ -231,8 +234,8 @@ class SquareCard extends React.Component {
                 );
                 data = (
                   <span
-                    className="squarecard-contain-title word-color"
-                    style={{ width: '100%', marginTop: '10px' }}
+                    className="squarecard-contain-title word-color action-plan "
+                    style={{ marginTop: '10px' }}
                   >
                     {item.value}
                   </span>

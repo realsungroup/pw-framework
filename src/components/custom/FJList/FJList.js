@@ -11,9 +11,10 @@ import {
   Modal,
   Input,
   Popconfirm,
-  Tabs
+  Tabs,
+  Skeleton
 } from 'antd';
-import http from '../../../util20/api';
+import http from 'Util20/api';
 import InfiniteScroll from 'react-infinite-scroller';
 import './FJList.less';
 
@@ -59,7 +60,7 @@ class FJList extends React.Component {
     this.planid = this.props.planid;
     this.year = this.props.year;
     await this.totalData();
-    this.getData(0, true);
+    // this.getData(0, true);
     this.getLevel();
     this.getKcxl();
     this.getKclb();
@@ -479,11 +480,8 @@ class FJList extends React.Component {
     let kcxlData = this.state.kcxlData;
     let kclbData = this.state.kclbData;
     return (
-      <div
-        style={{ display: 'flex', flexDirection: 'row', background: '#fff' }}
-        className="fj-list"
-      >
-        <div style={{ width: '50%', padding: '16px 28px' }}>
+      <div className="fj-list">
+        <div>
           <div
             style={{
               display: 'flex',
@@ -518,14 +516,14 @@ class FJList extends React.Component {
               }}
             >
               <span style={{ fontSize: '14px' }}>
-                人数:{' '}
+                人数:
                 <span className="fjlist-header-number">
                   {totalData.C3_609615996253}
                 </span>
               </span>
 
               <span style={{ fontSize: '14px' }}>
-                总费用:{' '}
+                总费用:
                 <span className="fjlist-header-number">
                   {totalData.C3_609616051191}
                 </span>
@@ -541,21 +539,41 @@ class FJList extends React.Component {
               }}
             >
               <span style={{ fontSize: '14px' }}>
-                总预算:{' '}
+                总预算:
                 <span className="fjlist-header-number">
                   {totalData.C3_609616030566}
                 </span>
               </span>
               <span style={{ fontSize: '14px' }}>
-                人均预算:{' '}
+                人均预算:
                 <span className="fjlist-header-number">
                   {totalData.C3_611074040082}
                 </span>
               </span>
             </div>
           </div>
-          <div style={{ height: 'calc(100vh - 170px)', overflow: 'auto' }}>
-            <InfiniteScroll
+          <div style={{ height: 'calc(100% - 60px)' }}>
+            <Skeleton loading={!totalData.C3_609616006519}>
+              <TableData
+                resid={this.props.resid}
+                tableComponent="ag-grid"
+                rowSelectionAg="single"
+                sideBarAg={true}
+                hasAdvSearch={false}
+                hasAdd={true}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                // cmswhere={` C3_613828994025 = '${totalData.C3_609616006519}'`}
+              />
+            </Skeleton>
+
+            {/* <InfiniteScroll
               initialLoad={false}
               pageStart={0}
               loadMore={this.getData.bind(this)}
@@ -580,7 +598,6 @@ class FJList extends React.Component {
                     />
                   </div>
                 }
-                // footer={<div>Footer</div>}
                 bordered
                 dataSource={this.state.data}
                 renderItem={(item, i) => (
@@ -715,15 +732,6 @@ class FJList extends React.Component {
                           </div>
                         </div>
                         <div style={{ display: 'flex', flex: 1 }}>
-                          {/* <Popover placement="topLeft"
-                                                onClick={(e)=>e.stopPropagation()}
-                                                content={<div style={{display:"flex",flexDirection: 'column'}}>
-                                                                  <Button><Icon type = "file" style={{fontSize:"18px"}}/>历年绩效</Button>
-                                                                  <Button><Icon type = "smile" style={{fontSize:"18px"}}/>员工发展</Button>
-                                                                  <Button><Icon type = "swap" style={{fontSize:"18px"}}/>历史计划</Button>
-                                                                </div>} trigger="click" >
-                                                <Icon type = "right-circle" style={{fontSize:"18px"}}/>
-                                              </Popover> */}
                           <Icon
                             type="right-circle"
                             rotate={item.check ? 270 : 0}
@@ -800,10 +808,10 @@ class FJList extends React.Component {
                   </List.Item>
                 )}
               />
-            </InfiniteScroll>
+            </InfiniteScroll> */}
           </div>
         </div>
-        <div style={{ width: '50%', padding: '16px 28px' }}>
+        {/* <div style={{ width: '50%', padding: '16px 28px' }}>
           <div
             style={{
               display: 'flex',
@@ -855,15 +863,7 @@ class FJList extends React.Component {
                   自定义课程
                 </Button>
               </div>
-              {/* <span style={{fontSize:"14px"}}>
-                课程数:10
-              </span>
-              <span style={{fontSize:"14px"}}>
-                个人预算:10
-              </span>
-              <span style={{fontSize:"14px"}}>
-                个人费用:10
-              </span> */}
+             
             </div>
           </div>
 
@@ -1015,98 +1015,369 @@ class FJList extends React.Component {
               dataSource={subData}
             />
           )}
+        </div> */}
 
-          <Modal
-            title="计划详情"
-            width={'80%'}
-            destroyOnClose={true}
-            visible={this.state.showHistory}
-            onOk={() => this.setState({ showHistory: false })}
-            onCancel={() => this.setState({ showHistory: false })}
-          >
-            <TableData
-              height={450}
-              resid={611315248461}
-              cmswhere={`C3_609616805633 = '${this.planid}'`}
-              recordFormFormWidth={'90%'}
-              hasBeBtns={false}
-              subtractH={240}
-              hasModify={false}
-              hasDelete={false}
-              hasAdd={false}
-              hasRowDelete={false}
-              hasRowModify={false}
-              hasRowView={false}
-            />
-          </Modal>
-          <Modal
-            title="课程大纲"
-            destroyOnClose={true}
-            visible={this.state.showOutline}
-            onOk={() => this.setState({ showOutline: false })}
-            onCancel={() => this.setState({ showOutline: false })}
+        <Modal
+          title="计划详情"
+          width={'80%'}
+          destroyOnClose={true}
+          visible={this.state.showHistory}
+          onOk={() => this.setState({ showHistory: false })}
+          onCancel={() => this.setState({ showHistory: false })}
+        >
+          <TableData
+            height={450}
+            resid={611315248461}
+            cmswhere={`C3_609616805633 = '${this.planid}'`}
+            recordFormFormWidth={'90%'}
+            hasBeBtns={false}
+            subtractH={240}
+            hasModify={false}
+            hasDelete={false}
+            hasAdd={false}
+            hasRowDelete={false}
+            hasRowModify={false}
+            hasRowView={false}
           />
-          <Modal
-            destroyOnClose={true}
-            width={'80%'}
-            visible={this.state.showTab}
-            onOk={() => this.setState({ showTab: false })}
-            onCancel={() => this.setState({ showTab: false })}
-            centered
-            style={{ top: 50 }}
+        </Modal>
+        <Modal
+          title="课程大纲"
+          destroyOnClose={true}
+          visible={this.state.showOutline}
+          onOk={() => this.setState({ showOutline: false })}
+          onCancel={() => this.setState({ showOutline: false })}
+        />
+        <Modal
+          destroyOnClose={true}
+          width={'80%'}
+          visible={this.state.showTab}
+          onOk={() => this.setState({ showTab: false })}
+          onCancel={() => this.setState({ showTab: false })}
+          centered
+          style={{ top: 50 }}
+        >
+          <Tabs defaultActiveKey={this.state.tabsKey}>
+            <TabPane tab="历年绩效" key="1">
+              <TableData
+                resid={420130498195}
+                recordFormFormWidth={'90%'}
+                hasBeBtns={false}
+                cmswhere={`C3_420148203323 = '${this.state.listNo}'`}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasRowView={false}
+                height={450}
+                subtractH={200}
+              />
+            </TabPane>
+            <TabPane tab="历史计划" key="2">
+              <TableData
+                resid={611315248461}
+                cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
+                recordFormFormWidth={'90%'}
+                hasBeBtns={false}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasRowView={false}
+                height={450}
+                subtractH={200}
+              />
+            </TabPane>
+            <TabPane tab="员工个人发展" key="3">
+              <TableData
+              // resid={resid}
+              // dataMode="main"
+              // subtractH={190}
+              // height={520}
+              // hasBeBtns
+              />
+            </TabPane>
+          </Tabs>
+        </Modal>
+        <Modal
+          title="添加课程"
+          width="60%"
+          destroyOnClose={true}
+          visible={this.state.visibleAdd}
+          onOk={this.addCourse.bind(this)}
+          onCancel={() => this.setState({ visibleAdd: false })}
+        >
+          <List
+            size="large"
+            header={
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Select
+                  style={{ width: '100px' }}
+                  defaultValue="Rec"
+                  onChange={e => {
+                    if (e == 'Rec') {
+                      this.setState(
+                        {
+                          levelSelect: this.state.lkState,
+                          kcState: e,
+                          addData: {}
+                        },
+                        () => this.getSubbData()
+                      );
+                    } else {
+                      this.setState(
+                        {
+                          levelSelect: '',
+                          kcState: 'All',
+                          addData: {}
+                        },
+                        () => this.getSubbData()
+                      );
+                    }
+                  }}
+                >
+                  <Option value="All">全部课程</Option>
+                  <Option value="Rec">推荐课程</Option>
+                </Select>
+                <Select
+                  style={{ width: '100px' }}
+                  defaultValue=""
+                  onChange={e => {
+                    console.log(e);
+                    this.setState({ xlSelect: e, addData: {} }, () =>
+                      this.getSubbData()
+                    );
+                  }}
+                >
+                  <Option value="">全部系列</Option>
+                  {kcxlData.map((item, i) => (
+                    <Option value={item.C3_460380572730} key={i}>
+                      {item.C3_460380572730}
+                    </Option>
+                  ))}
+                </Select>
+                <Select
+                  style={{ width: '100px' }}
+                  defaultValue=""
+                  onChange={e => {
+                    this.setState({ lbSelect: e, addData: {} }, () =>
+                      this.getSubbData()
+                    );
+                  }}
+                >
+                  <Option value="">全部类别</Option>
+                  {kclbData.map((item, i) => (
+                    <Option value={item.C3_460380239253} key={i}>
+                      {item.C3_460380239253}
+                    </Option>
+                  ))}
+                </Select>
+                <Search
+                  placeholder="搜索"
+                  onSearch={value => {
+                    this.setState(
+                      {
+                        addData: {}
+                      },
+                      () => this.getSubbData(value)
+                    );
+                  }}
+                  style={{ width: 200 }}
+                />
+              </div>
+            }
+            bordered
+            style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
+            dataSource={this.state.subbData}
+            renderItem={(item, i) => (
+              <List.Item
+                style={{ cursor: 'pointer' }}
+                onClick={this.onClickCustom.bind(this, i)}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ display: 'flex', flex: 1 }}>
+                    <Radio checked={item.check} />
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flex: 10,
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexWrap: 'wrap',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginBottom: '16px'
+                      }}
+                    >
+                      <div style={{ width: '50%' }}>
+                        <span>
+                          课程名称:{' '}
+                          {item.C3_609845305680 == null
+                            ? '无'
+                            : item.C3_609845305680}
+                        </span>
+                      </div>
+                      <div style={{ width: '50%' }}>
+                        <span>
+                          讲师:{' '}
+                          {item.C3_610390419677 == null
+                            ? '无'
+                            : item.C3_610390419677}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flex: 1,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          width: '50%'
+                        }}
+                      >
+                        {/* <div
+                            style={{
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
+                            }}
+                          /> */}
+                        <span>
+                          培训地:{' '}
+                          {item.C3_610390410802 == null
+                            ? '无'
+                            : item.C3_610390410802}
+                        </span>
+                      </div>
+                      <div style={{ width: '50%' }}>
+                        <span>
+                          课程费用:{' '}
+                          {item.C3_609845305931 == null
+                            ? '无'
+                            : item.C3_609845305931}
+                        </span>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', flex: 1 }}>
+                      {item.showDetail && (
+                        <span>
+                          简介:{' '}
+                          {item.C3_609845305618 == null
+                            ? '无'
+                            : item.C3_609845305618}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flex: 1,
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <a target="_blank" href={item.C3_609845463949}>
+                      <Icon type="fund" style={{ fontSize: '22px' }} />
+                    </a>
+                    <div
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        border: '2px solid #0B92E2',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                      onClick={e => {
+                        e.stopPropagation();
+                        subbData[i].showDetail = !subbData[i].showDetail;
+                        this.setState({ subbData });
+                      }}
+                    >
+                      <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
+                    </div>
+                  </div>
+                </div>
+              </List.Item>
+            )}
+          />
+        </Modal>
+        <Modal
+          title="添加自定义课程"
+          destroyOnClose={true}
+          visible={this.state.visibleCustom}
+          onOk={this.addCustom.bind(this)}
+          onCancel={() => this.setState({ visibleCustom: false })}
+        >
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
           >
-            <Tabs defaultActiveKey={this.state.tabsKey}>
-              <TabPane tab="历年绩效" key="1">
-                <TableData
-                  resid={420130498195}
-                  recordFormFormWidth={'90%'}
-                  hasBeBtns={false}
-                  cmswhere={`C3_420148203323 = '${this.state.listNo}'`}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasAdd={false}
-                  hasRowDelete={false}
-                  hasRowModify={false}
-                  hasRowView={false}
-                  height={450}
-                  subtractH={200}
-                />
-              </TabPane>
-              <TabPane tab="历史计划" key="2">
-                <TableData
-                  resid={611315248461}
-                  cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
-                  recordFormFormWidth={'90%'}
-                  hasBeBtns={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasAdd={false}
-                  hasRowDelete={false}
-                  hasRowModify={false}
-                  hasRowView={false}
-                  height={450}
-                  subtractH={200}
-                />
-              </TabPane>
-              <TabPane tab="员工个人发展" key="3">
-                <TableData
-                // resid={resid}
-                // dataMode="main"
-                // subtractH={190}
-                // height={520}
-                // hasBeBtns
-                />
-              </TabPane>
-            </Tabs>
-          </Modal>
-          <Modal
-            title="添加课程"
-            width="60%"
-            destroyOnClose={true}
-            visible={this.state.visibleAdd}
-            onOk={this.addCourse.bind(this)}
-            onCancel={() => this.setState({ visibleAdd: false })}
+            <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+              <span
+                style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
+              >
+                课程名称:
+              </span>
+            </div>
+            <div style={{ flex: 3 }}>
+              <Input
+                onChange={e => {
+                  let addCustom = this.state.addCustom;
+                  addCustom.C3_609616868478 = e.target.value;
+                  this.setState({ addCustom });
+                }}
+              />
+            </div>
+          </div>
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
           >
+            <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+              <span
+                style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
+              >
+                费用:
+              </span>
+            </div>
+            <div style={{ flex: 3 }}>
+              <Input
+                type="number"
+                onChange={e => {
+                  console.log(e.target.value);
+                  console.log(this.state.addCustom);
+                  let addCustom = this.state.addCustom;
+                  addCustom.C3_609616906353 = e.target.value;
+                  this.setState({ addCustom });
+                }}
+              />
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          title="修改课程"
+          width={this.state.cnspmxb.C3_611406136484 == 'Y' ? '520px' : '60%'}
+          destroyOnClose={true}
+          visible={this.state.visibleEdit}
+          onOk={this.editCourse.bind(this)}
+          onCancel={() => this.setState({ visibleEdit: false })}
+        >
+          {this.state.cnspmxb.C3_611406136484 != 'Y' ? (
             <List
               size="large"
               header={
@@ -1119,19 +1390,14 @@ class FJList extends React.Component {
                     onChange={e => {
                       if (e == 'Rec') {
                         this.setState(
-                          {
-                            levelSelect: this.state.lkState,
-                            kcState: e,
-                            addData: {}
-                          },
+                          { levelSelect: this.state.lkState, kcState: e },
                           () => this.getSubbData()
                         );
                       } else {
                         this.setState(
                           {
                             levelSelect: '',
-                            kcState: 'All',
-                            addData: {}
+                            kcState: 'All'
                           },
                           () => this.getSubbData()
                         );
@@ -1145,15 +1411,12 @@ class FJList extends React.Component {
                     style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
-                      console.log(e);
-                      this.setState({ xlSelect: e, addData: {} }, () =>
-                        this.getSubbData()
-                      );
+                      this.setState({ xlSelect: e }, () => this.getSubbData());
                     }}
                   >
                     <Option value="">全部系列</Option>
                     {kcxlData.map((item, i) => (
-                      <Option value={item.C3_460380572730} key={i}>
+                      <Option value={item.C3_460380578456} key={i}>
                         {item.C3_460380572730}
                       </Option>
                     ))}
@@ -1162,28 +1425,19 @@ class FJList extends React.Component {
                     style={{ width: '100px' }}
                     defaultValue=""
                     onChange={e => {
-                      this.setState({ lbSelect: e, addData: {} }, () =>
-                        this.getSubbData()
-                      );
+                      this.setState({ lbSelect: e }, () => this.getSubbData());
                     }}
                   >
                     <Option value="">全部类别</Option>
                     {kclbData.map((item, i) => (
-                      <Option value={item.C3_460380239253} key={i}>
+                      <Option value={item.C3_460380249034} key={i}>
                         {item.C3_460380239253}
                       </Option>
                     ))}
                   </Select>
                   <Search
                     placeholder="搜索"
-                    onSearch={value => {
-                      this.setState(
-                        {
-                          addData: {}
-                        },
-                        () => this.getSubbData(value)
-                      );
-                    }}
+                    onSearch={value => this.getSubbData(value)}
                     style={{ width: 200 }}
                   />
                 </div>
@@ -1194,7 +1448,7 @@ class FJList extends React.Component {
               renderItem={(item, i) => (
                 <List.Item
                   style={{ cursor: 'pointer' }}
-                  onClick={this.onClickCustom.bind(this, i)}
+                  onClick={this.onEditCustom.bind(this, i)}
                 >
                   <div
                     style={{
@@ -1250,14 +1504,14 @@ class FJList extends React.Component {
                           }}
                         >
                           {/* <div
-                            style={{
-                              width: '10px',
-                              height: '10px',
-                              borderRadius: '50%',
-                              background: '#4a90e2',
-                              marginRight: '16px'
-                            }}
-                          /> */}
+                              style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: '#4a90e2',
+                                marginRight: '16px'
+                              }}
+                            /> */}
                           <span>
                             培训地:{' '}
                             {item.C3_610390410802 == null
@@ -1284,6 +1538,14 @@ class FJList extends React.Component {
                           </span>
                         )}
                       </div>
+                      {/* <div style={{ display: 'flex', flex: 1 }}>
+                          {item.showDetail?<span>
+                            简介:{' '}
+                            {item.C3_609845305618 == null
+                              ? '无'
+                              : item.C3_609845305618}
+                          </span>:<span style={{ height:"21px" }}>{' '}</span>}
+                        </div> */}
                     </div>
                     <div
                       style={{
@@ -1318,354 +1580,82 @@ class FJList extends React.Component {
                 </List.Item>
               )}
             />
-          </Modal>
-          <Modal
-            title="添加自定义课程"
-            destroyOnClose={true}
-            visible={this.state.visibleCustom}
-            onOk={this.addCustom.bind(this)}
-            onCancel={() => this.setState({ visibleCustom: false })}
-          >
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-                <span
-                  style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
-                >
-                  课程名称:
-                </span>
-              </div>
-              <div style={{ flex: 3 }}>
-                <Input
-                  onChange={e => {
-                    let addCustom = this.state.addCustom;
-                    addCustom.C3_609616868478 = e.target.value;
-                    this.setState({ addCustom });
-                  }}
-                />
-              </div>
-            </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-                <span
-                  style={{ flex: 1, textAlign: 'right', paddingRight: '16px' }}
-                >
-                  费用:
-                </span>
-              </div>
-              <div style={{ flex: 3 }}>
-                <Input
-                  type="number"
-                  onChange={e => {
-                    console.log(e.target.value);
-                    console.log(this.state.addCustom);
-                    let addCustom = this.state.addCustom;
-                    addCustom.C3_609616906353 = e.target.value;
-                    this.setState({ addCustom });
-                  }}
-                />
-              </div>
-            </div>
-          </Modal>
-          <Modal
-            title="修改课程"
-            width={this.state.cnspmxb.C3_611406136484 == 'Y' ? '520px' : '60%'}
-            destroyOnClose={true}
-            visible={this.state.visibleEdit}
-            onOk={this.editCourse.bind(this)}
-            onCancel={() => this.setState({ visibleEdit: false })}
-          >
-            {this.state.cnspmxb.C3_611406136484 != 'Y' ? (
-              <List
-                size="large"
-                header={
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
+          ) : (
+            <div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: '10px'
+                }}
+              >
+                <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+                  <span
+                    style={{
+                      flex: 1,
+                      textAlign: 'right',
+                      paddingRight: '16px'
+                    }}
                   >
-                    <Select
-                      style={{ width: '100px' }}
-                      defaultValue="Rec"
-                      onChange={e => {
-                        if (e == 'Rec') {
-                          this.setState(
-                            { levelSelect: this.state.lkState, kcState: e },
-                            () => this.getSubbData()
-                          );
-                        } else {
-                          this.setState(
-                            {
-                              levelSelect: '',
-                              kcState: 'All'
-                            },
-                            () => this.getSubbData()
-                          );
-                        }
-                      }}
-                    >
-                      <Option value="All">全部课程</Option>
-                      <Option value="Rec">推荐课程</Option>
-                    </Select>
-                    <Select
-                      style={{ width: '100px' }}
-                      defaultValue=""
-                      onChange={e => {
-                        this.setState({ xlSelect: e }, () =>
-                          this.getSubbData()
-                        );
-                      }}
-                    >
-                      <Option value="">全部系列</Option>
-                      {kcxlData.map((item, i) => (
-                        <Option value={item.C3_460380578456} key={i}>
-                          {item.C3_460380572730}
-                        </Option>
-                      ))}
-                    </Select>
-                    <Select
-                      style={{ width: '100px' }}
-                      defaultValue=""
-                      onChange={e => {
-                        this.setState({ lbSelect: e }, () =>
-                          this.getSubbData()
-                        );
-                      }}
-                    >
-                      <Option value="">全部类别</Option>
-                      {kclbData.map((item, i) => (
-                        <Option value={item.C3_460380249034} key={i}>
-                          {item.C3_460380239253}
-                        </Option>
-                      ))}
-                    </Select>
-                    <Search
-                      placeholder="搜索"
-                      onSearch={value => this.getSubbData(value)}
-                      style={{ width: 200 }}
-                    />
-                  </div>
-                }
-                bordered
-                style={{ height: 'calc(100vh - 350px)', overflowY: 'scroll' }}
-                dataSource={this.state.subbData}
-                renderItem={(item, i) => (
-                  <List.Item
-                    style={{ cursor: 'pointer' }}
-                    onClick={this.onEditCustom.bind(this, i)}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <div style={{ display: 'flex', flex: 1 }}>
-                        <Radio checked={item.check} />
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flex: 10,
-                          flexDirection: 'column'
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flex: 1,
-                            flexWrap: 'wrap',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: '16px'
-                          }}
-                        >
-                          <div style={{ width: '50%' }}>
-                            <span>
-                              课程名称:{' '}
-                              {item.C3_609845305680 == null
-                                ? '无'
-                                : item.C3_609845305680}
-                            </span>
-                          </div>
-                          <div style={{ width: '50%' }}>
-                            <span>
-                              讲师:{' '}
-                              {item.C3_610390419677 == null
-                                ? '无'
-                                : item.C3_610390419677}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              flex: 1,
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              width: '50%'
-                            }}
-                          >
-                            {/* <div
-                              style={{
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                background: '#4a90e2',
-                                marginRight: '16px'
-                              }}
-                            /> */}
-                            <span>
-                              培训地:{' '}
-                              {item.C3_610390410802 == null
-                                ? '无'
-                                : item.C3_610390410802}
-                            </span>
-                          </div>
-                          <div style={{ width: '50%' }}>
-                            <span>
-                              课程费用:{' '}
-                              {item.C3_609845305931 == null
-                                ? '无'
-                                : item.C3_609845305931}
-                            </span>
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
-                          {item.showDetail && (
-                            <span>
-                              简介:{' '}
-                              {item.C3_609845305618 == null
-                                ? '无'
-                                : item.C3_609845305618}
-                            </span>
-                          )}
-                        </div>
-                        {/* <div style={{ display: 'flex', flex: 1 }}>
-                          {item.showDetail?<span>
-                            简介:{' '}
-                            {item.C3_609845305618 == null
-                              ? '无'
-                              : item.C3_609845305618}
-                          </span>:<span style={{ height:"21px" }}>{' '}</span>}
-                        </div> */}
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flex: 1,
-                          flexDirection: 'column'
-                        }}
-                      >
-                        <a target="_blank" href={item.C3_609845463949}>
-                          <Icon type="fund" style={{ fontSize: '22px' }} />
-                        </a>
-                        <div
-                          style={{
-                            width: '20px',
-                            height: '20px',
-                            border: '2px solid #0B92E2',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                          onClick={e => {
-                            e.stopPropagation();
-                            subbData[i].showDetail = !subbData[i].showDetail;
-                            this.setState({ subbData });
-                          }}
-                        >
-                          <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
-                        </div>
-                      </div>
-                    </div>
-                  </List.Item>
-                )}
-              />
-            ) : (
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    margin: '10px'
-                  }}
-                >
-                  <div
-                    style={{ display: 'flex', flex: 1, alignItems: 'center' }}
-                  >
-                    <span
-                      style={{
-                        flex: 1,
-                        textAlign: 'right',
-                        paddingRight: '16px'
-                      }}
-                    >
-                      课程名称:
-                    </span>
-                  </div>
-                  <div style={{ flex: 3 }}>
-                    <Input
-                      defaultValue={this.state.cnspmxb.C3_609616868478}
-                      onChange={e => {
-                        let cnspmxb = JSON.parse(
-                          JSON.stringify(this.state.cnspmxb)
-                        );
-                        cnspmxb.C3_609616868478 = e.target.value;
-                        this.setState({ cnspmxb });
-                      }}
-                    />
-                  </div>
+                    课程名称:
+                  </span>
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    margin: '10px'
-                  }}
-                >
-                  <div
-                    style={{ display: 'flex', flex: 1, alignItems: 'center' }}
-                  >
-                    <span
-                      style={{
-                        flex: 1,
-                        textAlign: 'right',
-                        paddingRight: '16px'
-                      }}
-                    >
-                      费用:
-                    </span>
-                  </div>
-                  <div style={{ flex: 3 }}>
-                    <Input
-                      defaultValue={this.state.cnspmxb.C3_609616906353}
-                      type="number"
-                      onChange={e => {
-                        let cnspmxb = JSON.parse(
-                          JSON.stringify(this.state.cnspmxb)
-                        );
-                        cnspmxb.C3_609616906353 = e.target.value;
-                        this.setState({ cnspmxb });
-                      }}
-                    />
-                  </div>
+                <div style={{ flex: 3 }}>
+                  <Input
+                    defaultValue={this.state.cnspmxb.C3_609616868478}
+                    onChange={e => {
+                      let cnspmxb = JSON.parse(
+                        JSON.stringify(this.state.cnspmxb)
+                      );
+                      cnspmxb.C3_609616868478 = e.target.value;
+                      this.setState({ cnspmxb });
+                    }}
+                  />
                 </div>
               </div>
-            )}
-          </Modal>
-          <Modal
-            title="创建计划"
-            width="80%"
-            destroyOnClose={true}
-            visible={this.state.showPlanModal}
-            onOk={() => this.setState({ showPlanModal: false })}
-            onCancel={() => this.setState({ showPlanModal: false })}
-          />
-        </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: '10px'
+                }}
+              >
+                <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+                  <span
+                    style={{
+                      flex: 1,
+                      textAlign: 'right',
+                      paddingRight: '16px'
+                    }}
+                  >
+                    费用:
+                  </span>
+                </div>
+                <div style={{ flex: 3 }}>
+                  <Input
+                    defaultValue={this.state.cnspmxb.C3_609616906353}
+                    type="number"
+                    onChange={e => {
+                      let cnspmxb = JSON.parse(
+                        JSON.stringify(this.state.cnspmxb)
+                      );
+                      cnspmxb.C3_609616906353 = e.target.value;
+                      this.setState({ cnspmxb });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </Modal>
+        <Modal
+          title="创建计划"
+          width="80%"
+          destroyOnClose={true}
+          visible={this.state.showPlanModal}
+          onOk={() => this.setState({ showPlanModal: false })}
+          onCancel={() => this.setState({ showPlanModal: false })}
+        />
       </div>
     );
   }

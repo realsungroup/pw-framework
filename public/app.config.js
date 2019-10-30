@@ -10,14 +10,14 @@ window.pwConfig = {
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
-    fileDownloadUrl: 'http://10.108.2.66/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
 
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:1001/' //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
     },
 
     // 需前端缓存配置的资源

@@ -31,7 +31,7 @@ class FiscalYearPlan extends React.Component {
     selectModel: 'single'
   };
   async componentDidMount() {
-    this.setState({loading:true})
+    this.setState({ loading: true });
     let createableGroups = this.props.CreateableGroups; //可创建财年计划id组
     let userinfo = JSON.parse(getItem('userInfo')).UserInfo;
     let grouplist = userinfo.GroupList.replace('(', '')
@@ -54,8 +54,8 @@ class FiscalYearPlan extends React.Component {
           isEditOrAdd: true // 添加记录的状态是否为 'editoradd'；默认为 false，即状态为 'added'
         });
       } catch (error) {
-        message.error(error.message)
-        console.log(error.message)
+        message.error(error.message);
+        console.log(error.message);
       }
     }
     let res;
@@ -66,18 +66,18 @@ class FiscalYearPlan extends React.Component {
       });
       let plans = res.data;
       let selectedPlan;
-      if(plans.length>0){
+      if (plans.length > 0) {
         plans[0].check = true;
         selectedPlan = plans[0];
-      }else{
-        selectedPlan= null
+      } else {
+        selectedPlan = null;
       }
       this.setState({ plans, selectedPlan });
     } catch (error) {
       console.log(error.message);
-      message.error(error.message)
-     }
-    this.setState({loading:false})
+      message.error(error.message);
+    }
+    this.setState({ loading: false });
   }
   handleGetSelectedPlan = async () => {
     let res;
@@ -92,11 +92,11 @@ class FiscalYearPlan extends React.Component {
     if (res.error == 0) {
       this.setState({
         selectedPlan: res.data[0]
-      })
+      });
     } else {
       return console.log(res.message);
     }
-  }
+  };
   onChange = current => {
     this.setState({ current });
   };
@@ -139,26 +139,27 @@ class FiscalYearPlan extends React.Component {
         } else {
           message.error(res.message);
         }
-      }).catch(error=>{
-        console.log(error)
-        message.error(error.message)
+      })
+      .catch(error => {
+        console.log(error);
+        message.error(error.message);
       });
   };
   refreshSelectedPlan = async () => {
     if (!this.state.selectedPlan) {
       return;
     }
-    this.setState({loading:true})
+    this.setState({ loading: true });
     let res,
       REC_ID = this.state.selectedPlan.REC_ID;
-    
+
     try {
       res = await http().getTable({
         resid: '609883172764', //财年计划主表
         cmswhere: `REC_ID = '${REC_ID}'`
       });
       let plan = res.data[0];
-      plan.check =true;
+      plan.check = true;
       let plans = [...this.state.plans];
       let index = plans.findIndex(item => {
         return item.check;
@@ -166,9 +167,9 @@ class FiscalYearPlan extends React.Component {
       plans[index] = plan;
       this.setState({ plans, selectedPlan: plan });
     } catch (error) {
-      message.error(error.message)
+      message.error(error.message);
     }
-    this.setState({loading:false})
+    this.setState({ loading: false });
   };
   render() {
     const { loading, current, selectedPlan } = this.state;
@@ -331,21 +332,21 @@ class FiscalYearPlan extends React.Component {
                 levelId="449335746776" //
                 kcxlResid="610708527386" //课程系列
                 kclbResid="610708543449" //课程类别
-                resid="610307713776" //人员名单
+                resid="625763872231" //人员名单
               />
             ) : (
-                <CreatePlan
-                  planid={selectedPlan.C3_609616660273}
-                  year={selectedPlan.C3_609615869581}
-                  totalResid="609883172764" //财年明细-待提交
-                  resid="610307713776"
-                  subResid="610308370365"
-                  levelId="449335746776"
-                  kcbResid="611315248461"
-                  kcxlResid="610708527386"
-                  kclbResid="610708543449"
-                />
-              )}
+              <CreatePlan
+                planid={selectedPlan.C3_609616660273}
+                year={selectedPlan.C3_609615869581}
+                totalResid="609883172764" //财年明细-待提交
+                resid="610307713776"
+                subResid="610308370365"
+                levelId="449335746776"
+                kcbResid="611315248461"
+                kcxlResid="610708527386"
+                kclbResid="610708543449"
+              />
+            )}
           </div>
         );
         break;
@@ -360,58 +361,57 @@ class FiscalYearPlan extends React.Component {
         break;
       case 3:
         page = (
-          <div style={{height: '90vh'}}>
-          <TableData
-            resid={611165813996}
-            key="611165813996"
-            hasBeBtns={true}
-            hasAdd={false}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowEdit={false}
-            hasDelete={false}
-            hasModify={false}
-            actionBarFixed={true}
-            hasRowModify={false}
-            // height='90vh'
-            subtractH={200}
-            recordFormType="drawer"
-            recordFormContainerProps={{
-              placement: 'bottom',
-              height: '100vh'
-            }}
-            subTableArrProps={[
-              {
-                subTableName: '审批记录',
-                subResid: 611144001666,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 200,
-                  height: 500,
-                  hasRowView: false,
-                  subtractH:200
+          <div style={{ height: 'calc(100vh - 62px' }}>
+            <TableData
+              resid={611165813996}
+              key="611165813996"
+              hasBeBtns={true}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              actionBarFixed={true}
+              hasRowModify={false}
+              // height='90vh'
+              subtractH={200}
+              recordFormType="drawer"
+              recordFormContainerProps={{
+                placement: 'bottom',
+                height: '100vh'
+              }}
+              subTableArrProps={[
+                {
+                  subTableName: '审批记录',
+                  subResid: 611144001666,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 200,
+                    height: 500,
+                    hasRowView: false
+                  }
+                },
+                {
+                  subTableName: '计划详情',
+                  subResid: 611315248461,
+                  tableProps: {
+                    hasAdd: false,
+                    hasModify: false,
+                    hasRowDelete: false,
+                    hasRowModify: false,
+                    hasDelete: false,
+                    subtractH: 200,
+                    height: 500,
+                    hasRowView: false
+                  }
                 }
-              },
-              {
-                subTableName: '计划详情',
-                subResid: 611315248461,
-                tableProps: {
-                  hasAdd: false,
-                  hasModify: false,
-                  hasRowDelete: false,
-                  hasRowModify: false,
-                  hasDelete: false,
-                  subtractH: 190,
-                  // height: 700,
-                  hasRowView: false
-                }
-              }
-            ]}
-          />
+              ]}
+            />
           </div>
         );
         break;

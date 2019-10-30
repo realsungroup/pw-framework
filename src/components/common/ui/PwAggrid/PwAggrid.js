@@ -72,6 +72,10 @@ class PwAggrid extends React.Component {
     }
   }
 
+  handleAdd = () => {
+    this.props.onAdd && this.props.onAdd();
+  };
+
   handleImport = () => {
     this.props.onImport && this.props.onImport();
   };
@@ -220,6 +224,7 @@ class PwAggrid extends React.Component {
         chartDataType: _column.chartType,
         aggFunc: _column.aggFunc,
         rowGroup: _column.rowGroup,
+        // hide: true,
         // autoHeight: true,
         cellStyle: function(params) {},
         valueSetter: params => {
@@ -257,10 +262,10 @@ class PwAggrid extends React.Component {
           case 8:
             aggridColumn.filter = 'agDateColumnFilter';
             break;
-          case 1:
-          case 5:
-            aggridColumn.filter = 'agTextColumnFilter';
-            break;
+          // case 1:
+          // case 5:
+          //   aggridColumn.filter = 'agTextColumnFilter';
+          //   break;
 
           default:
             aggridColumn.filter = 'agNumberColumnFilter';
@@ -346,7 +351,7 @@ class PwAggrid extends React.Component {
     // 显示不可编辑的列
     // this.gridColumnApi.setColumnsVisible(this._cantEditCol, true);
     const { data } = params;
-    if (data.isNew) {
+    if (data && data.isNew) {
       this._addData.set(data.REC_ID, data);
     }
   };
@@ -506,7 +511,7 @@ class PwAggrid extends React.Component {
                   </Button>
                 </Popconfirm>
               )}
-              {hasModifiedData && !isEditing && (
+              {/* {hasModifiedData && !isEditing && (
                 <>
                   <Button
                     type="primary"
@@ -516,7 +521,7 @@ class PwAggrid extends React.Component {
                     保存
                   </Button>
                 </>
-              )}
+              )} */}
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
@@ -587,6 +592,8 @@ class PwAggrid extends React.Component {
             sideBar={this.props.sideBarAg}
             components={this.state.components}
             frameworkComponents={this.state.frameworkComponents}
+            groupMultiAutoColumn={true}
+            rememberGroupStateWhenNewData={true}
           ></AgGridReact>
         </div>
       </div>

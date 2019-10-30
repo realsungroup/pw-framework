@@ -22,6 +22,8 @@ class LzBackendBtn extends React.PureComponent {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
 
+  state = { loading: false };
+
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
   };
@@ -60,6 +62,7 @@ class LzBackendBtn extends React.PureComponent {
     if (baseURL) {
       httpParams.baseURL = baseURL;
     }
+
     // 点击后端按钮，请求后台
     if (Type === 1 || Type === 5) {
       let res,
@@ -72,7 +75,7 @@ class LzBackendBtn extends React.PureComponent {
           ? (recids += record.REC_ID)
           : (recids += record.REC_ID + ',');
       });
-
+      this.setState({ loading: true });
       this.p1 = makeCancelable(
         http(httpParams).dealButton({
           resid,
@@ -131,7 +134,7 @@ class LzBackendBtn extends React.PureComponent {
           recordFormDisplayMode === 'classify'
         );
       }
-
+      this.setState({ loading: true });
       onConfirm &&
         onConfirm(
           backendBtnType,
@@ -142,6 +145,7 @@ class LzBackendBtn extends React.PureComponent {
           formData
         );
     }
+    this.setState({ loading: false });
   };
 
   render() {
@@ -161,7 +165,11 @@ class LzBackendBtn extends React.PureComponent {
           okText="确定"
           cancelText="取消"
         >
-          <Button style={style} size={btnSizeMap[size]}>
+          <Button
+            style={style}
+            loading={this.state.loading}
+            size={btnSizeMap[size]}
+          >
             {btnInfo.Name1}
           </Button>
         </Popconfirm>

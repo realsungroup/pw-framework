@@ -52,44 +52,45 @@ class SquareCard extends React.Component {
                 break;
               case 'select':
                 titleData = (
-                  <span className="squarecard-contain-title">{item.name}</span>   
+                  <span className="squarecard-contain-title">{item.name}</span>
                 );
                 data = (
                   <React.Fragment>
-                  <Select
-                    className="word-color"
-                    key={item.key}
-                    defaultValue={item.value}
-                    style={{ width: '40%' }}
-                    onChange={this.props.onChangeSelect.bind(this, index)}
-                    // dropdownRender={menu => (
-                    //   <div>
-                    //     {menu}
-                    //     <Divider style={{ margin: '4px 0' }} />
-                    //     {/* <Popconfirm
-                    //       title={
-                    //       <input value={this.state.val}  onChange={this.onChange.bind(this,index)}></input>}
-                    //       okText="Yes"
-                    //       cancelText="No"
-                    //       onConfirm={() => {
-                    //         this.onConfirm(index)
-                    //       } }
-                    //     > */}
-                    //       <div
-                    //         style={{ padding: '8px', cursor: 'pointer' }}
-                    //         // onClick={this.addType}
-                    //       >
-                    //         <Icon type="plus" /> 添加项目
-                    //       </div>
-                    //     </Popconfirm>
-                    //   </div>
-                    // )}
-                  >
-                    {item.options.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
-                  <span>描述</span></React.Fragment>
+                    <Select
+                      className="word-color"
+                      key={item.key}
+                      defaultValue={item.value}
+                      style={{ width: '40%' }}
+                      onChange={this.props.onChangeSelect.bind(this, index)}
+                      // dropdownRender={menu => (
+                      //   <div>
+                      //     {menu}
+                      //     <Divider style={{ margin: '4px 0' }} />
+                      //     {/* <Popconfirm
+                      //       title={
+                      //       <input value={this.state.val}  onChange={this.onChange.bind(this,index)}></input>}
+                      //       okText="Yes"
+                      //       cancelText="No"
+                      //       onConfirm={() => {
+                      //         this.onConfirm(index)
+                      //       } }
+                      //     > */}
+                      //       <div
+                      //         style={{ padding: '8px', cursor: 'pointer' }}
+                      //         // onClick={this.addType}
+                      //       >
+                      //         <Icon type="plus" /> 添加项目
+                      //       </div>
+                      //     </Popconfirm>
+                      //   </div>
+                      // )}
+                    >
+                      {item.options.map(item => {
+                        return <Option value={item}>{item}</Option>;
+                      })}
+                    </Select>
+                    <span>描述</span>
+                  </React.Fragment>
                 );
                 break;
               case 'textArea':
@@ -150,7 +151,7 @@ class SquareCard extends React.Component {
                 data = (
                   <span
                     className="squarecard-contain-title word-color"
-                    style={{ width: '100%', marginTop: '10px' }}
+                    style={{ marginTop: '10px' }}
                   >
                     {item.value}
                   </span>

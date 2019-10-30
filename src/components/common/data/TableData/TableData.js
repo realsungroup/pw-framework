@@ -67,7 +67,7 @@ class TableData extends React.Component {
       this.rowSelectionChange,
       true
     );
-    
+
     this._showAGgrid = false;
     try {
       this._showAGgrid = JSON.parse(getItem('tablesConfigure'))[
