@@ -175,12 +175,19 @@ class CourseArrangementInternal extends React.Component {
     this.setState({loading:true})
     var rec_id=this.state.courseArrangements[key].REC_ID;
     let res;
+    let val;
+    
+    if(v==true){
+      val='Y'
+    }else{
+      val='N'
+    }
     try {
       res = await http().modifyRecords({
         resid: courseArrangmentResid,
         data:[{
           REC_ID:rec_id,
-          isDivisionCourse:v
+          isDivisionCourse:val
         }]
       });
 
@@ -447,7 +454,7 @@ class CourseArrangementInternal extends React.Component {
                         </span>
                         <Spin  className='spinoimg' spinning={this.state.loading}>
 
-                        <Switch defaultChecked={item.isDivisionCourse=="True"?true:false} style={{float:'right'}} onChange={v=>{this.autoSp(v,item,key)}}/>
+                        <Switch defaultChecked={item.isDivisionCourse=="Y"?true:false} style={{float:'right'}} onChange={v=>{this.autoSp(v,item,key)}}/>
                         <span style={{fontWeight:"normal",float:'right',marginRight:'8px'}}>是否自动拆课</span>
                         </Spin>
                       </div>

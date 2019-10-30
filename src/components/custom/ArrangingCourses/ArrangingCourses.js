@@ -26,6 +26,7 @@ const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
+const OutCourseId = '624970414826';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -67,7 +68,8 @@ class ArrangingCourses extends React.Component {
     searchPeriod: ['', ''], //搜索时间段
     selectedRecentPeriod: 'all', //下拉选项的值
     rangePickerValue: [null, null], // 日期选择器的值
-    mode: 'table' // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
+    mode: 'table', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
+    courseList: []
   };
 
   componentDidMount = async () => {
@@ -75,6 +77,7 @@ class ArrangingCourses extends React.Component {
     await this.getCourseArrangment();
     // await this.getCourses();
     this.props.onHandleLoading(false);
+    this.getOutCourse(OutCourseId);
   };
 
   //获取课程安排
@@ -89,6 +92,7 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
       return console.log(error);
     }
+    console.log(res.data)
     if (res.error === 0) {
       let courseArrangment = res.data;
       //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
@@ -116,6 +120,22 @@ class ArrangingCourses extends React.Component {
     } else {
       message.error(res.message);
     }
+  };
+
+  getOutCourse = async OutCourseId => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: OutCourseId
+      });
+    } catch (error) {
+      message.error(error.message);
+      return console.log(error);
+    }
+    console.log(res);
+    this.setState({
+      courseList: res.data
+    });
   };
   //搜索课程安排
   searchCourseArrangment = async key => {
@@ -554,7 +574,7 @@ class ArrangingCourses extends React.Component {
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
-                  console.log(values);
+                  console.log("values",values);
                   let { selectedCourseArrangment } = this.state;
                   let courseArrangment = {
                     ...selectedCourseArrangment,
@@ -568,7 +588,8 @@ class ArrangingCourses extends React.Component {
                     classType: values.classType,
                     actualCost: parseFloat(values.actualCost),
                     quarter: values.quarter,
-                    Teacher: values.modifyTeacher
+                    Teacher: values.modifyTeacher,
+                    isArrangeSelf:values.isArrangeSelf
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -700,6 +721,20 @@ class ArrangingCourses extends React.Component {
                     </Option>
                     <Option value="外聘内训" key="外聘内训">
                       外聘内训
+                    </Option>
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item label="是否手动安排课程">
+                {getFieldDecorator('isArrangeSelf', {
+                  initialValue: this.state.selectedCourseArrangment.isArrangeSelf
+                })(
+                  <Select >
+                    <Option value="Y" key="Y">
+                      Y
+                    </Option>
+                    <Option value="N" key="N">
+                      N
                     </Option>
                   </Select>
                 )}
@@ -927,9 +962,12 @@ class ArrangingCourses extends React.Component {
                       );
                     }}
                   >
-                    {this.state.courses.map(item => (
-                      <Option key={item.CourseID} value={item.CourseID}>
-                        {item.CourseName}
+                    {this.state.courseList.map(item => (
+                      <Option
+                        key={item.C3_609845305868}
+                        value={item.C3_609845305868}
+                      >
+                        {item.C3_609845305680}
                       </Option>
                     ))}
                   </Select>
@@ -989,6 +1027,18 @@ class ArrangingCourses extends React.Component {
                     </Option>
                     <Option value="外聘内训" key="外聘内训">
                       外聘内训
+                    </Option>
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item label="是否手动安排课程">
+                {getFieldDecorator('isArrangeSelf', {})(
+                  <Select placeholder="Y">
+                    <Option value="Y" key="Y">
+                      Y
+                    </Option>
+                    <Option value="N" key="N">
+                      N
                     </Option>
                   </Select>
                 )}
