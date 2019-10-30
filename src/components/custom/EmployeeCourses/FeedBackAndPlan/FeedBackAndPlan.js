@@ -24,14 +24,14 @@ class FeedBackAndPlan extends Component {
       planView: [],
       // 内训评分
       rate: {
-        rate1: 5,
-        rate2: 5,
-        rate3: 5,
-        rate4: 5,
-        rate5: 5,
-        rate6: 5,
-        rate7: 5,
-        rate8: 5
+        rate1: 0,
+        rate2: 0,
+        rate3: 0,
+        rate4: 0,
+        rate5: 0,
+        rate6: 0,
+        rate7: 0,
+        rate8: 0
       },
       otherAdvice: {
         advantages: '',
@@ -39,10 +39,10 @@ class FeedBackAndPlan extends Component {
       },
       //外训评分
       rateOut: {
-        rate1: 5,
-        rate2: 5,
-        rate3: 5,
-        rate4: 5
+        rate1: 0,
+        rate2: 0,
+        rate3: 0,
+        rate4: 0
       },
       knowledge: [''],
       plans: ['']

@@ -778,12 +778,7 @@ class EmployeeCourses extends React.Component {
       rate,
       internalTrainingOtherAdvice
     } = this.state;
-    this.setState({
-      loadings: {
-        ...this.state.loadings,
-        submitPlanBtnLoading: true
-      }
-    });
+    
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -814,6 +809,12 @@ class EmployeeCourses extends React.Component {
           return message.info(`第${index + 1}项行动计划不能为空`);
         }
       }
+      this.setState({
+        loadings: {
+          ...this.state.loadings,
+          submitPlanBtnLoading: true
+        }
+      });
       let data = {
         courseArrange: this.state.selectedCourse.CourseArrangeDetailID,
         knowledge1: str1,
