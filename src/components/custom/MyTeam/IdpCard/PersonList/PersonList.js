@@ -302,8 +302,7 @@ class PersonList extends React.Component {
       selectedTags,
       inputVisible,
       inputValue,
-      tags,
-      isShowGroupSelect
+      tags
     } = this.state;
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
@@ -378,20 +377,20 @@ class PersonList extends React.Component {
                   ''
                 ) : (
                   <Button
-                    style={{
-                      height: '24px',
-                      padding: '0 7px',
-                      fontSize: '14px'
-                    }}
+                    // style={{
+                    //   height: '24px',
+                    //   padding: '0 7px',
+                    //   fontSize: '14px'
+                    // }}
                     onClick={() => {
                       this.props.onLookPerson(record);
                     }}
-                    style={{
-                      marginTop: '8px',
-                      fontSize: '14px',
-                      height: '24px',
-                      padding: '0 7px'
-                    }}
+                    // style={{
+                    //   marginTop: '8px',
+                    //   fontSize: '14px',
+                    //   height: '24px',
+                    //   padding: '0 7px'
+                    // }}
                   >
                     修改
                   </Button>
