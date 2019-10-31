@@ -94,7 +94,7 @@ const MentorshipRecord = props => {
                   )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
-                  {(roleName === '辅导员' || roleName === 'HR') &&
+                  {(roleName === '辅导员' || roleName === 'HR') &&(item.REC_ID)&&
                     item.isConfirm !== 'Y' && (
                       <Button
                         type="primary"

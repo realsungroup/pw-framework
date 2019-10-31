@@ -131,7 +131,7 @@ class EmployeeInformation extends React.Component {
               <span className="employee-imformation_lable">
                 入职日期/Join Date:
               </span>
-              {moment(employeeInformation.joinCompanyDate).format('YYYY-MM-DD')}
+              {employeeInformation.joinCompanyDate?moment(employeeInformation.joinCompanyDate).format('YYYY-MM-DD'):'UNKNOWN'}
             </Col>
           </Row>
           <Row style={{ paddingBottom: 26 }}>
@@ -165,7 +165,7 @@ class EmployeeInformation extends React.Component {
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">转正日期/Date:</span>
-              {moment(employeeInformation.endTime).format('YYYY-MM-DD')}
+              {employeeInformation.endTime?moment(employeeInformation.endTime).format('YYYY-MM-DD'):'UNKNOWN'}
             </Col>
           </Row>
           <Row>
