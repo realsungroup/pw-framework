@@ -1,6 +1,27 @@
-.personlist-contain{
+.personlist-contain {
   width: 100%;
+  & > header {
+    height: 50px;
+    background-color: white;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    .ant-tag {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .ant-tag .anticon-close {
+      font-size: 16px;
+    }
+    .ant-tag.checked-tag {
+      background-color: #2593fc;
+      color: white;
+    }
+    .ant-tag.checked-tag .anticon-close {
+      color: white;
+    }
+  }
+  &_tabledata_wraper {
+    height: calc(100% - 50px);
+  }
 }
-// .ant-table-fixed-right{
-//   width:120px!important;
-// }

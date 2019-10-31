@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Button, Modal, Spin } from 'antd';
+import { message, Button, Modal, Spin, Tag, Input, Icon, Select } from 'antd';
 import './PersonList.less';
 import http from 'Util20/api';
 import TableData from '../../../../common/data/TableData';
@@ -12,6 +12,8 @@ import PlanProgress from '../../../CreatePlan/PlanProgress';
  */
 
 const personID = '618488751596'; //下属发展人员表ID
+const groupID = '625831852694'; //分组表ID
+const { Option } = Select;
 class PersonList extends React.Component {
   state = {
     mode: 'inline',
@@ -25,11 +27,35 @@ class PersonList extends React.Component {
     loading: false,
     isShowProgress: false,
     taskList: [],
-    status: '' //整个财年计划的状态
+    status: '', //整个财年计划的状态
+    selectedTags: [],
+    inputVisible: false,
+    inputValue: '',
+    tags: [],
+    selectedGroupValue: '',
+    isShowGroupSelect: false
   };
-  constructor(props) {
-    super(props);
-  }
+
+  componentDidMount = async () => {
+    console.log('status', this.props.record.status);
+    this.getTags();
+    this.setState({ status: this.props.record.status });
+  };
+
+  getTags = async () => {
+    try {
+      let res = await http().getTable({
+        resid: groupID,
+        cmswhere: `projectId = ${this.props.record.projectId}`
+      });
+      this.setState({
+        tags: res.data
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
   onNoticeEmployee = async (dataSource, selectKey) => {
     if (!selectKey.length > 0) {
       return message.error('请选择一条记录');
@@ -79,7 +105,38 @@ class PersonList extends React.Component {
       taskList.push(plans);
     });
 
-    this.setState({ isShowProgress: true, taskList });
+    this.setState({ isShowProgress: false, taskList });
+    Modal.confirm({
+      title: '请选择分组',
+      content: (
+        <div>
+          <Select
+            placeholder="请选择一个分组"
+            style={{ width: 200 }}
+            onChange={v => this.setState({ selectedGroupValue: v })}
+          >
+            {this.state.tags.map(item => {
+              return (
+                <Option key={item.groupName} value={item.groupName}>
+                  {item.groupName}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
+      ),
+      onOk: () => {
+        this.setState({
+          isShowProgress: true,
+          taskList: taskList.map(item => ({
+            ...item,
+            groupName: this.state.selectedGroupValue
+          }))
+        });
+      },
+      onCancel() {}
+    });
+    // this.setState({ isShowGroupSelect: true });
   };
   //结束时调用的回调函数
   onFinishedPlanProgress = () => {
@@ -180,86 +237,199 @@ class PersonList extends React.Component {
       message.error(error.message);
     }
   };
-  componentDidMount = async () => {
-    console.log('status', this.props.record.status);
-    this.setState({ status: this.props.record.status });
+  handleChange(tag, checked) {
+    const { selectedTag } = this.state;
+    const nextSelectedTags = checked
+      ? [...selectedTag, tag]
+      : selectedTag.filter(t => t !== tag);
+    console.log('You are interested in: ', nextSelectedTags);
+    this.setState({ selectedTag: nextSelectedTags });
+  }
+
+  showInput = () => {
+    this.setState({ inputVisible: true }, () => this.input.focus());
+  };
+
+  handleInputChange = e => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  handleInputConfirm = async () => {
+    const { inputValue } = this.state;
+    let { tags } = this.state;
+    if (inputValue && !tags.find(tag => tag.groupName === inputValue)) {
+      try {
+        let res = await http().addRecords({
+          resid: groupID,
+          data: [
+            { groupName: inputValue, projectId: this.props.record.projectId }
+          ]
+        });
+        tags = [...tags, res.data[0]];
+      } catch (error) {
+        console.error(error);
+        message.error(error.message);
+      }
+    }
+    this.setState({
+      tags,
+      inputVisible: false,
+      inputValue: ''
+    });
+  };
+  // className="checked-tag"
+
+  saveInputRef = input => (this.input = input);
+
+  handleTagClick = tag => () => {
+    let { selectedTags } = this.state;
+    let isSelected = selectedTags.find(
+      selectedTag => selectedTag.REC_ID === tag.REC_ID
+    );
+    if (isSelected) {
+      selectedTags = selectedTags.filter(item => item.REC_ID !== tag.REC_ID);
+    } else {
+      selectedTags = [...selectedTags, tag];
+    }
+    this.setState({ selectedTags });
   };
   render() {
-    const { visible, loading, isShowProgress, taskList } = this.state;
+    const {
+      visible,
+      loading,
+      isShowProgress,
+      taskList,
+      selectedTags,
+      inputVisible,
+      inputValue,
+      tags,
+      isShowGroupSelect
+    } = this.state;
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
-        <TableData
-          resid={personID}
-          subtractH={220}
-          hasBeBtns={false}
-          hasRowSelection={true}
-          wrappedComponentRef={element => (this.tableDataRef = element)}
-          refTargetComponentName="TableData"
-          hasAdd={false}
-          hasModify={false}
-          hasRowDelete={true}
-          hasDelete={false}
-          hasRowModify={false}
-          hasRowView={this.state.status == '已完成' ? true : false}
-          hasRowDelete={false}
-          actionBarFixed={true}
-          hasAdvSearch={true}
-          height="100%"
-          cmswhere={
-            this.props.role === 'HR'
-              ? `projectId = '${this.props.record &&
-                  this.props.record.projectId}'`
-              : `projectId = '${this.props.record &&
-                  this.props.record.projectId}' and directorId = '${this.props
-                  .record && this.props.record.memberId}' `
-          }
-          customRowBtns={[
-            (record, btnSize) => {
-              return this.state.status == '已完成' ? (
-                ''
-              ) : (
-                <Button
-                  style={{ height: '24px', padding: '0 7px', fontSize: '14px' }}
-                  onClick={() => {
-                    this.props.onLookPerson(record);
-                  }}
-                  style={{
-                    marginTop: '8px',
-                    fontSize: '14px',
-                    height: '24px',
-                    padding: '0 7px'
-                  }}
-                >
-                  修改
-                </Button>
-              );
-            }
-          ]}
-          actionBarExtra={({ dataSource, selectedRowKeys, data }) => {
+        <header>
+          <h5 style={{ marginRight: 8, marginBottom: 0, display: 'inline' }}>
+            所属分组:
+          </h5>
+          {tags.map(tag => {
+            const isSelected = selectedTags.find(
+              item => item.REC_ID === tag.REC_ID
+            );
             return (
-              <React.Fragment>
-                <Button
-                  onClick={() => {
-                    this.onAddEmployee();
-                  }}
-                >
-                  添加员工
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.onEmployeeWrite(dataSource, selectedRowKeys);
-                  }}
-                >
-                  提醒员工
-                </Button>
-                <Button
-                  onClick={() => {
-                    this.onEmployeeWrite(dataSource, selectedRowKeys);
-                  }}
-                >
-                  开启员工填写
-                </Button>
-                {/* {this.props.role === 'HR' ? (
+              <Tag
+                key={tag.REC_ID}
+                className={isSelected ? 'checked-tag' : ''}
+                onClick={this.handleTagClick(tag)}
+                closable
+              >
+                {tag.groupName}
+              </Tag>
+            );
+          })}
+          {inputVisible && (
+            <Input
+              ref={this.saveInputRef}
+              type="text"
+              size="small"
+              style={{ width: 78 }}
+              value={inputValue}
+              onChange={this.handleInputChange}
+              onBlur={this.handleInputConfirm}
+              onPressEnter={this.handleInputConfirm}
+            />
+          )}
+          {!inputVisible && (
+            <Tag
+              onClick={this.showInput}
+              style={{ background: '#fff', borderStyle: 'dashed' }}
+            >
+              <Icon type="plus" /> 添加新分组
+            </Tag>
+          )}
+        </header>
+        <div className="personlist-contain_tabledata_wraper">
+          <TableData
+            resid={personID}
+            subtractH={220}
+            hasBeBtns={false}
+            hasRowSelection={true}
+            wrappedComponentRef={element => (this.tableDataRef = element)}
+            refTargetComponentName="TableData"
+            hasAdd={false}
+            hasModify={false}
+            hasRowDelete={true}
+            hasDelete={false}
+            hasRowModify={false}
+            hasRowView={this.state.status == '已完成' ? true : false}
+            actionBarFixed={true}
+            hasAdvSearch={true}
+            height="100%"
+            cmswhere={
+              this.props.role === 'HR'
+                ? `projectId = '${this.props.record &&
+                    this.props.record.projectId}'`
+                : `projectId = '${this.props.record &&
+                    this.props.record.projectId}' and directorId = '${this.props
+                    .record && this.props.record.memberId}' `
+            }
+            customRowBtns={[
+              (record, btnSize) => {
+                return this.state.status == '已完成' ? (
+                  ''
+                ) : (
+                  <Button
+                    style={{
+                      height: '24px',
+                      padding: '0 7px',
+                      fontSize: '14px'
+                    }}
+                    onClick={() => {
+                      this.props.onLookPerson(record);
+                    }}
+                    style={{
+                      marginTop: '8px',
+                      fontSize: '14px',
+                      height: '24px',
+                      padding: '0 7px'
+                    }}
+                  >
+                    修改
+                  </Button>
+                );
+              }
+            ]}
+            actionBarExtra={({ dataSource, selectedRowKeys, data }) => {
+              return (
+                <React.Fragment>
+                  <Button
+                    onClick={() => {
+                      this.onAddEmployee();
+                    }}
+                  >
+                    添加员工
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.onEmployeeWrite(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    提醒员工
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.onEmployeeWrite(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    开启员工填写
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      // this.onEmployeeWrite(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    开启全部员工填写
+                  </Button>
+                  {/* {this.props.role === 'HR' ? (
                   <Button
                     onClick={() => {
                       this.onMangerWrite(dataSource, selectedRowKeys);
@@ -268,17 +438,18 @@ class PersonList extends React.Component {
                     开启主管填写
                   </Button>
                 ) : null} */}
-                <Button
-                  onClick={() => {
-                    this.onCloseWrite(dataSource, selectedRowKeys);
-                  }}
-                >
-                  关闭员工填写
-                </Button>
-              </React.Fragment>
-            );
-          }}
-        />
+                  <Button
+                    onClick={() => {
+                      this.onCloseWrite(dataSource, selectedRowKeys);
+                    }}
+                  >
+                    关闭员工填写
+                  </Button>
+                </React.Fragment>
+              );
+            }}
+          />
+        </div>
         <Modal
           title="选择人员"
           width="90%"

@@ -380,6 +380,9 @@ class PersonPlan extends React.Component {
         this.setState({ SquareCardArr });
         break;
       case 'plans':
+        if (!SquareCardArr.length) {
+          return message.info('请先添加至少一项能力测评');
+        }
         plans.map(item => {
           item.key = this.state.plans.length + 1;
         });
