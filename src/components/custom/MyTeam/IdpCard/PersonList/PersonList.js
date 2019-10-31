@@ -198,10 +198,9 @@ class PersonList extends React.Component {
           hasAdd={false}
           hasModify={false}
           hasRowDelete={true}
-          hasDelete={false}
+          hasDelete={true}
           hasRowModify={false}
           hasRowView={this.state.status=='已完成'?true:false}
-          hasRowDelete={false}
           actionBarFixed={true}
           hasAdvSearch={true}
           height="100%"
@@ -218,11 +217,11 @@ class PersonList extends React.Component {
               return (
                 this.state.status=='已完成'?'':
                 <Button
-                  style={{height: '24px',padding: '0 7px',fontSize: '14px'}}
+
                   onClick={() => {
                     this.props.onLookPerson(record);
                   }}
-                  style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
+                  style={{marginTop:'8px',fontSize:'14px'}}
                 >
                   修改
                 </Button>
