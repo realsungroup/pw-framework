@@ -25,7 +25,7 @@ class PersonList extends React.Component {
     loading: false,
     isShowProgress: false,
     taskList: [],
-    status:'',//整个财年计划的状态
+    status: '' //整个财年计划的状态
   };
   constructor(props) {
     super(props);
@@ -79,7 +79,7 @@ class PersonList extends React.Component {
       taskList.push(plans);
     });
 
-    this.setState({ isShowProgress: true, taskList});
+    this.setState({ isShowProgress: true, taskList });
   };
   //结束时调用的回调函数
   onFinishedPlanProgress = () => {
@@ -182,7 +182,7 @@ class PersonList extends React.Component {
   };
   componentDidMount = async () => {
     console.log('status', this.props.record.status);
-    this.setState({status:this.props.record.status})
+    this.setState({ status: this.props.record.status });
   };
   render() {
     const { visible, loading, isShowProgress, taskList } = this.state;
@@ -200,7 +200,7 @@ class PersonList extends React.Component {
           hasRowDelete={true}
           hasDelete={true}
           hasRowModify={false}
-          hasRowView={this.state.status=='已完成'?true:false}
+          hasRowView={this.state.status == '已完成' ? true : false}
           actionBarFixed={true}
           hasAdvSearch={true}
           height="100%"
@@ -214,14 +214,20 @@ class PersonList extends React.Component {
           }
           customRowBtns={[
             (record, btnSize) => {
-              return (
-                this.state.status=='已完成'?'':
+              return this.state.status == '已完成' ? (
+                ''
+              ) : (
                 <Button
-
+                  style={{ height: '24px', padding: '0 7px', fontSize: '14px' }}
                   onClick={() => {
                     this.props.onLookPerson(record);
                   }}
-                  style={{marginTop:'8px',fontSize:'14px'}}
+                  style={{
+                    marginTop: '8px',
+                    fontSize: '14px',
+                    height: '24px',
+                    padding: '0 7px'
+                  }}
                 >
                   修改
                 </Button>
@@ -282,7 +288,7 @@ class PersonList extends React.Component {
           destroyOnClose
           footer={false}
         >
-          <div className="fisrtStepSelected">
+          <div className="fisrtStepSelected" style={{ height: '70vh' }}>
             {loading && (
               <div className="person-list__spin">
                 <Spin />

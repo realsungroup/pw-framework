@@ -1,7 +1,16 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import SelectPersonFirstP from '../SelectPersonFirstP';
-import { Button, Popconfirm, message, Spin, Progress, Modal, notification, Icon } from 'antd';
+import {
+  Button,
+  Popconfirm,
+  message,
+  Spin,
+  Progress,
+  Modal,
+  notification,
+  Icon
+} from 'antd';
 import http from 'Util20/api';
 import './CreateTotalPlan.less';
 
@@ -20,7 +29,7 @@ class CreateTotalPlan extends React.Component {
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
-    isShowModal: false,
+    isShowModal: false
   };
   async componentDidMount() {
     // let res;
@@ -77,34 +86,38 @@ class CreateTotalPlan extends React.Component {
     // 当前任务已完成
     if (res.IsComplete) {
       //修改当前财年的是否生成人员名单字段
-      const resid = 611077132065
-      const data = [{
-        REC_ID: this.state.record.REC_ID,
-        C3_613679305930: "Y"
-      }]
-      http().modifyRecords({
-        resid,
-        data
-      }).then(res => {
-        if(res.Error === 0){
-          notification.open({
-            message: '通知',
-            description:
-              '当前财年计划人员名单已生成完毕，请注意查看！',
-            icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-            duration: null
-          });
-          this.setState({
-            curIndex: this.state.totalIndex,
-            isTaskComplete: true
-          });
-          this.tableDataRef.handleRefresh();
-        }else{
-          message.error(res.message)
+      const resid = 611077132065;
+      const data = [
+        {
+          REC_ID: this.state.record.REC_ID,
+          C3_613679305930: 'Y'
         }
-      }).catch(error => {
-        message.error(error.message)
-      })
+      ];
+      http()
+        .modifyRecords({
+          resid,
+          data
+        })
+        .then(res => {
+          if (res.Error === 0) {
+            notification.open({
+              message: '通知',
+              description: '当前财年计划人员名单已生成完毕，请注意查看！',
+              icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+              duration: null
+            });
+            this.setState({
+              curIndex: this.state.totalIndex,
+              isTaskComplete: true
+            });
+            this.tableDataRef.handleRefresh();
+          } else {
+            message.error(res.message);
+          }
+        })
+        .catch(error => {
+          message.error(error.message);
+        });
       // 当前任务未完成
     } else {
       this.setState({
@@ -123,7 +136,7 @@ class CreateTotalPlan extends React.Component {
     const { totalIndex, curIndex } = this.state;
     let percent = 0;
     if (this.state.isTaskComplete) {
-      percent = 100
+      percent = 100;
     } else if (totalIndex) {
       percent = Math.floor((curIndex / totalIndex) * 100);
     }
@@ -137,11 +150,11 @@ class CreateTotalPlan extends React.Component {
     );
   };
 
-  handleClick = async (record) => {
+  handleClick = async record => {
     this.setState({
       record: record
-    })
-    let id = record.C3_613838452660==='WX' ? WX_id : SH_id ;
+    });
+    let id = record.C3_613838452660 === 'WX' ? WX_id : SH_id;
     let res;
     try {
       res = await http().runAutoImport({
@@ -150,10 +163,14 @@ class CreateTotalPlan extends React.Component {
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
-      message.error('正在生成人员名单，请耐心等候');
+      if (err.message === '有正在运行的任务，请稍后') {
+        message.error('正在生成人员名单，请耐心等候');
+      }
     }
     this.setState({ isShowModal: true });
-    this.getTaskInfo();
+    if (!this.timer) {
+      this.getTaskInfo();
+    }
     //this.tableDataRef.handleRefresh();
   };
 
@@ -181,12 +198,12 @@ class CreateTotalPlan extends React.Component {
     message.success('操作成功');
     this.tableDataRef.handleRefresh();
   };
-  selectPeopleSendEmail = (record) => {
+  selectPeopleSendEmail = record => {
     this.setState({
       visible: true,
       record: record
-    })
-  }
+    });
+  };
 
   renderActionBarExtra = ({ dataSource, selectedRowKeys }) => {
     // console.log(dataSource)
@@ -210,7 +227,7 @@ class CreateTotalPlan extends React.Component {
   };
 
   handleCancel = (e = false) => {
-    console.log(e)
+    console.log(e);
     this.setState({
       visible: false,
       modalDestroyState: e
@@ -231,41 +248,54 @@ class CreateTotalPlan extends React.Component {
             customRowBtns={[
               (record, btnSize) => {
                 if (record.C3_613679305930) {
-                  return null
+                  return null;
                 } else {
-                  return <Button size={btnSize}
-                    onClick={() => {
-                      this.handleClick(record)
-                    }}
-                  >生成人员名单</Button>;
+                  return (
+                    <Button
+                      size={btnSize}
+                      onClick={() => {
+                        this.handleClick(record);
+                      }}
+                    >
+                      生成人员名单
+                    </Button>
+                  );
                 }
               },
               (record, btnSize) => {
                 if (!record.C3_613679305930) {
-                  return null
+                  return null;
                 } else {
-                  return <Button size={btnSize}
-                    onClick={() => {
-                      console.log('selectPeopleSendEmail-record', record)
-                      this.selectPeopleSendEmail(record)
-                    }}
-                  >发送通知</Button>;
+                  return (
+                    <Button
+                      size={btnSize}
+                      onClick={() => {
+                        console.log('selectPeopleSendEmail-record', record);
+                        this.selectPeopleSendEmail(record);
+                      }}
+                    >
+                      发送通知
+                    </Button>
+                  );
                 }
-              },
+              }
             ]}
           />
           <Modal
             title="生成人员名单"
             visible={this.state.isShowModal}
-            okText="完成"
-            cancelText="关闭"
             closable={false}
-            onOk={() => {
-              this.setState({ isShowModal: false });
-            }}
-            onCancel={() => {
-              this.setState({ isShowModal: false });
-            }}
+            footer={[
+              <Button onClick={() => this.setState({ isShowModal: false })}>
+                关闭
+              </Button>
+            ]}
+            // onOk={() => {
+            //   this.setState({ isShowModal: false });
+            // }}
+            // onCancel={() => {
+            //   this.setState({ isShowModal: false });
+            // }}
           >
             {this.renderTaskProgress()}
           </Modal>
@@ -278,7 +308,10 @@ class CreateTotalPlan extends React.Component {
           destroyOnClose={this.state.modalDestroyState}
           okButtonProps={{ disabled: true }}
         >
-          <SelectPersonFirstP record={this.state.record} handleCancel={(e) => this.handleCancel(e)} />
+          <SelectPersonFirstP
+            record={this.state.record}
+            handleCancel={e => this.handleCancel(e)}
+          />
         </Modal>
       </Spin>
     );

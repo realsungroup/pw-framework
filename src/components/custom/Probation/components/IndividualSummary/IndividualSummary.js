@@ -30,10 +30,10 @@ const IndividualSummary = React.memo(props => {
         />
       </Card>
       {(roleName === 'HR' || roleName === '员工') && (
-        <p className="new-employee-tip">
-          请新员工在
+        <p className="new-em'ployee-tip" style={{marginLeft:'24px'}}>
+          请新员工在&nbsp;
           <strong className="new-employee-tip_highlight__words">
-            {time.year()}年{time.month() + 1}月{time.date()}日
+            {time.year()?time.year():'- - - -'}年{time.month()?(time.month() + 1):'- -'}月{time.date()?time.date():'- -'}日
           </strong>
           前完成上述若干项，人力资源部将综合部门考核意见，对新员工试用期考核结果进行公布
         </p>

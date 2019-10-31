@@ -152,6 +152,7 @@ class WorkInfo extends React.Component {
                   subtractH={220}
                   // tableComponent="ag-grid"
                   // rowSelectionAg="single"
+                  sideBarAg={true}
                   hasAdvSearch={true}
                   hasAdd={false}
                   hasRowView={false}

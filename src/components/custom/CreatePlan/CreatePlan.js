@@ -9,7 +9,9 @@ import {
   List,
   Select,
   Modal,
-  Input
+  Input,
+  Spin,
+  Tabs
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
@@ -17,7 +19,7 @@ import { TableData } from '../../common/loadableCommon';
 import './CreatePlan.less';
 const Option = Select.Option;
 const Search = Input.Search;
-
+const TabPane = Tabs.TabPane;
 class CreatePlan extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +48,9 @@ class CreatePlan extends React.Component {
       key: '', //模糊查询关键字
       showHistory: false, //计划详情模态框状态
       isShowProgress: false,
-      taskList: []
+      taskList: [],
+      indeterminate: false,
+      isAllChecked: false
     };
   }
 
@@ -60,7 +64,7 @@ class CreatePlan extends React.Component {
     this.getLevel();
     this.getKcxl();
     this.getKclb();
-    this.setState({ loading: false });
+    // this.setState({ loading: false });
   }
   totalData = async () => {
     let cmswhere = `C3_609616660273= '${this.planid}'`;
@@ -99,12 +103,12 @@ class CreatePlan extends React.Component {
           resData.forEach(e => {
             e.check = false;
           });
-          if(pageIndex === 0){
-            data= resData
-          }else{
+          if (pageIndex === 0) {
+            data = resData;
+          } else {
             data = data.concat(resData);
           }
-          let hasMore=true;
+          let hasMore = true;
           if (this.state.oldData.length === this.state.totalAmount) {
             hasMore = false;
           }
@@ -114,8 +118,6 @@ class CreatePlan extends React.Component {
             oldData: data,
             pageIndex: ++this.state.pageIndex
           });
-        } else {
-          this.setState({ hasMore: false });
         }
       } else {
         message.error(res.message);
@@ -125,6 +127,7 @@ class CreatePlan extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
+    this.setState({ loading: false });
   }
 
   //获取员工级别列表
@@ -162,6 +165,7 @@ class CreatePlan extends React.Component {
 
   //获取课程表
   async getSubData(key) {
+    this.setState({ loading2: true });
     let { selectedCourse } = this.state;
     let cmswhere = `C3_609845305743 = '${this.state.totalData.C3_609615869581}' `;
     //如果选择了人员级别，则加上级别的条件语句
@@ -185,13 +189,13 @@ class CreatePlan extends React.Component {
     if (this.state.kcState === 'Rec' && cmswhere === '') {
       return this.setState({ subData: [] });
     }
-
-    let res = await http().getTable({
-      resid: this.props.subResid,
-      key,
-      cmswhere
-    });
     try {
+      let res = await http().getTable({
+        resid: this.props.subResid,
+        key,
+        cmswhere
+      });
+
       if (res.error === 0) {
         let subData = res.data;
         subData.forEach(e => {
@@ -205,12 +209,15 @@ class CreatePlan extends React.Component {
             e.check = false;
           }
         });
-        this.setState({ subData });
+
+        this.setState({ subData, loading2: false });
       } else {
+        this.setState({ loading2: false });
         message.error(res.message);
       }
     } catch (err) {
       console.log().error(err);
+      this.setState({ loading2: false });
       return message.error(err.message);
     }
   }
@@ -236,6 +243,7 @@ class CreatePlan extends React.Component {
     let res;
     try {
       res = await http().getTable({ resid: this.props.kclbResid });
+      console.info('res', res);
       if (res.error === 0) {
         let kclbData = res.data;
         this.setState({ kclbData });
@@ -261,15 +269,47 @@ class CreatePlan extends React.Component {
       selectedEmployee = [...selectedEmployee, data[i]];
     }
     data[i].check = !data[i].check;
-    this.setState(
-      {
-        data,
-        selectedEmployee,
-        selectedLevel: data[i].C3_609622292033
-      },
-      () => this.getSubData()
-    );
+    let indeterminate = false;
+    let isAllChecked = false;
+    if (selectedEmployee.length && selectedEmployee.length !== data.length) {
+      indeterminate = true;
+    } else if (selectedEmployee.length === data.length) {
+      isAllChecked = true;
+    }
+    this.setState({
+      data,
+      selectedEmployee,
+      indeterminate,
+      isAllChecked,
+      selectedLevel: data[i].C3_609622292033
+    });
   }
+
+  // 全选checkbox onChange事件
+  onCheckAll = e => {
+    let { data } = this.state;
+    if (e.target.checked) {
+      data = data.map(item => {
+        return { ...item, check: true };
+      });
+      this.setState({
+        data,
+        selectedEmployee: data,
+        indeterminate: false,
+        isAllChecked: true
+      });
+    } else {
+      data = data.map(item => {
+        return { ...item, check: false };
+      });
+      this.setState({
+        data,
+        selectedEmployee: [],
+        indeterminate: false,
+        isAllChecked: false
+      });
+    }
+  };
 
   //选择课程
   onClickCustom(i) {
@@ -341,7 +381,7 @@ class CreatePlan extends React.Component {
     let levelData = this.state.levelData;
     let kcxlData = this.state.kcxlData;
     let kclbData = this.state.kclbData;
-    let { totalData, taskList } = this.state;
+    let { totalData, taskList, indeterminate, isAllChecked } = this.state;
     return (
       <div style={{ padding: '16px', background: '#fff' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -380,14 +420,14 @@ class CreatePlan extends React.Component {
                 }}
               >
                 <span style={{ fontSize: '14px' }}>
-                  人数:{' '}
+                  人数:
                   <span className="create_plan-header-number">
                     {totalData.C3_609615996253}
                   </span>
                 </span>
 
                 <span style={{ fontSize: '14px' }}>
-                  总费用:{' '}
+                  总费用:
                   <span className="create_plan-header-number">
                     {totalData.C3_609616051191}
                   </span>
@@ -403,13 +443,13 @@ class CreatePlan extends React.Component {
                 }}
               >
                 <span style={{ fontSize: '14px' }}>
-                  总预算:{' '}
+                  总预算:
                   <span className="create_plan-header-number">
                     {totalData.C3_609616030566}
                   </span>
                 </span>
                 <span style={{ fontSize: '14px' }}>
-                  人均预算:{' '}
+                  人均预算:
                   <span className="create_plan-header-number">
                     {totalData.C3_611074040082}
                   </span>
@@ -417,199 +457,247 @@ class CreatePlan extends React.Component {
               </div>
             </div>
             <div style={{ height: 'calc(100vh - 150px)', overflow: 'auto' }}>
-              <InfiniteScroll
+              {/* <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
                 loadMore={this.getData.bind(this)}
                 hasMore={this.state.hasMore}
                 useWindow={false}
-              >
-                <List
-                  size="large"
-                  loading={this.state.loading}
-                  header={
+              > */}
+              <List
+                size="small"
+                loading={this.state.loading}
+                header={
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <Checkbox
+                      indeterminate={indeterminate}
+                      onChange={this.onCheckAll}
+                      checked={isAllChecked}
+                    >
+                      全选
+                    </Checkbox>
+                    <Select
+                      style={{ width: '100px' }}
+                      defaultValue="All"
+                      onChange={e => {
+                        let data = [],
+                          level,
+                          oldData = this.state.oldData;
+                        if (e === 'All') {
+                          data = oldData;
+                          level = '';
+                        } else {
+                          level = e;
+                          oldData.forEach(ele => {
+                            ele.check = false;
+                            if (ele.C3_609622292033 === e) {
+                              data.push(ele);
+                            }
+                          });
+                        }
+                        this.setState({ data, selectedLevel: level }, () => {
+                          this.getSubData();
+                        });
+                      }}
+                    >
+                      <Option value="All">全部级别</Option>
+                      {levelData.map((item, i) => (
+                        <Option value={item.C3_587136281870} key={i}>
+                          {item.C3_587136281870}
+                        </Option>
+                      ))}
+                    </Select>
+                    <Search
+                      placeholder="搜索"
+                      onSearch={value => {
+                        this.setState(
+                          { key: value, data: [], pageIndex: 0 },
+                          () => this.getData()
+                        );
+                      }}
+                      style={{ width: 200 }}
+                    />
+                  </div>
+                }
+                bordered
+                dataSource={this.state.data}
+                renderItem={(item, i) => (
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.onClick.bind(this, i)}
+                    key={item.REC_ID}
+                    className="memberCard"
+                  >
                     <div
                       style={{
                         display: 'flex',
-                        justifyContent: 'space-between'
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center'
                       }}
                     >
-                      <Select
-                        style={{ width: '100px' }}
-                        defaultValue="All"
-                        onChange={e => {
-                          let data = [],
-                            level,
-                            oldData = this.state.oldData;
-                          if (e === 'All') {
-                            data = oldData;
-                            level = '';
-                          } else {
-                            level = e;
-                            oldData.forEach(ele => {
-                              ele.check = false;
-                              if (ele.C3_609622292033 === e) {
-                                data.push(ele);
-                              }
-                            });
-                          }
-                          this.setState({ data, selectedLevel: level }, () => {
-                            this.getSubData();
-                          });
-                        }}
-                      >
-                        <Option value="All">全部级别</Option>
-                        {levelData.map((item, i) => (
-                          <Option value={item.C3_587136281870} key={i}>
-                            {item.C3_587136281870}
-                          </Option>
-                        ))}
-                      </Select>
-                      <Search
-                        placeholder="搜索"
-                        onSearch={value => {
-                          this.setState(
-                            { key: value, data: [], pageIndex: 0 },
-                            () => this.getData()
-                          );
-                        }}
-                        style={{ width: 200 }}
-                      />
-                    </div>
-                  }
-                  // footer={<div>Footer</div>}
-                  bordered
-                  dataSource={this.state.data}
-                  renderItem={(item, i) => (
-                    <List.Item
-                      style={{ cursor: 'pointer' }}
-                      onClick={this.onClick.bind(this, i)}
-                      key={item.REC_ID}
-                    >
+                      <div style={{ display: 'flex', flex: 1 }}>
+                        <Checkbox checked={item.check} />
+                      </div>
+                      <div style={{ display: 'flex', flex: 2 }}>
+                        <Icon type="user" style={{ fontSize: '24px' }} />
+                      </div>
                       <div
                         style={{
                           display: 'flex',
-                          flex: 1,
-                          flexDirection: 'row',
-                          alignItems: 'center'
+                          flex: 4,
+                          flexDirection: 'column'
                         }}
                       >
-                        <div style={{ display: 'flex', flex: 1 }}>
-                          <Checkbox checked={item.check} />
+                        <div>
+                          <span>
+                            {item.C3_611666091289 == null
+                              ? '无'
+                              : item.C3_611666091289}
+                          </span>
                         </div>
-                        <div style={{ display: 'flex', flex: 2 }}>
-                          <Icon type="user" style={{ fontSize: '24px' }} />
+                        <div>
+                          <span>
+                            {item.C3_609622263470 == null
+                              ? '无'
+                              : item.C3_609622263470}
+                          </span>
                         </div>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flex: 4,
-                            flexDirection: 'column'
-                          }}
-                        >
-                          <div>
-                            <span>
-                              {item.C3_611666091289 == null
-                                ? '无'
-                                : item.C3_611666091289}
-                            </span>
-                          </div>
-                          <div>
-                            <span>
-                              {item.C3_609622263470 == null
-                                ? '无'
-                                : item.C3_609622263470}
-                            </span>
-                          </div>
-                          <div>
-                            <span>
-                              课程数：
-                              {item.C3_611409498941 == null
-                                ? '无'
-                                : item.C3_611409498941}
-                            </span>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flex: 4,
-                            flexDirection: 'column'
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                background: '#4a90e2',
-                                marginRight: '16px'
-                              }}
-                            />
-                            <span>
-                              {item.C3_609622277252 == null
-                                ? '无'
-                                : item.C3_609622277252}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                background: '#4a90e2',
-                                marginRight: '16px'
-                              }}
-                            />
-                            <span>
-                              {item.C3_609622292033 == null
-                                ? '无'
-                                : item.C3_609622292033}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                background: '#4a90e2',
-                                marginRight: '16px'
-                              }}
-                            />
-                            <span>
-                              总费用：
-                              {item.C3_611409509831 == null
-                                ? '无'
-                                : item.C3_611409509831}
-                            </span>
-                          </div>
+                        <div>
+                          <span>
+                            课程数：
+                            {item.C3_611409498941 == null
+                              ? '无'
+                              : item.C3_611409498941}
+                          </span>
                         </div>
                       </div>
-                    </List.Item>
-                  )}
-                />
-              </InfiniteScroll>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flex: 4,
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
+                            }}
+                          />
+                          <span>
+                            {item.C3_609622277252 == null
+                              ? '无'
+                              : item.C3_609622277252}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
+                            }}
+                          />
+                          <span>
+                            {item.C3_609622292033 == null
+                              ? '无'
+                              : item.C3_609622292033}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                              background: '#4a90e2',
+                              marginRight: '16px'
+                            }}
+                          />
+                          <span>
+                            总费用：
+                            {item.C3_611409509831 == null
+                              ? '无'
+                              : item.C3_611409509831}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="hoverEle">
+                      <span
+                        style={{ fontSize: '16px', fontWeight: 'bold' }}
+                        onClick={e => {
+                          this.setState({
+                            showTab: true,
+                            tabsKey: '1',
+                            listNo: item.C3_609622254861
+                          });
+                          e.stopPropagation();
+                        }}
+                      >
+                        历年绩效
+                      </span>
+                      <span
+                        style={{ fontSize: '16px', fontWeight: 'bold' }}
+                        onClick={e => {
+                          this.setState({
+                            showTab: true,
+                            tabsKey: '2',
+                            listNo: item.C3_609622254861
+                          });
+                          e.stopPropagation();
+                        }}
+                      >
+                        历史计划
+                      </span>
+                      <span
+                        style={{ fontSize: '16px', fontWeight: 'bold' }}
+                        onClick={e => {
+                          this.setState({
+                            showTab: true,
+                            tabsKey: '3',
+                            listNo: item.C3_609622254861
+                          });
+                          e.stopPropagation();
+                        }}
+                      >
+                        员工个人发展
+                      </span>
+                    </div>
+                  </List.Item>
+                )}
+              />
+              {/* </InfiniteScroll> */}
             </div>
           </div>
           <div style={{ width: '50%', padding: '10px 28px' }}>
@@ -637,184 +725,539 @@ class CreatePlan extends React.Component {
                 保存
               </Button>
             </div>
-            <List
-              size="large"
-              header={
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue="All"
-                    onChange={e => {
-                      if (e === 'Rec') {
-                        //如果未选择员工级别，课程数据则为空
-                        if (this.state.selectedLevel === '') {
-                          message.error('未选择级别，无法推荐课程');
-                          return this.setState({ kcState: e, subData: [] });
-                        }
-                        this.setState({ kcState: e }, () => this.getSubData());
-                      } else {
-                        this.setState(
-                          {
-                            //selectedLevel: '',
-                            kcState: 'All'
-                          },
-                          () => this.getSubData()
-                        );
-                      }
-                    }}
-                  >
-                    <Option value="All">全部课程</Option>
-                    <Option value="Rec">推荐课程</Option>
-                  </Select>
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue=""
-                    onChange={e => {
-                      if (
-                        this.state.kcState === 'Rec' &&
-                        this.state.selectedLevel === ''
-                      ) {
-                        message.error('未选择级别，无法推荐课程');
-                        return this.setState({ subData: [] });
-                      }
-                      this.setState({ xlSelect: e }, () => this.getSubData());
-                    }}
-                  >
-                    <Option value="">全部系列</Option>
-                    {kcxlData.map((item, i) => (
-                      <Option value={item.C3_460380572730} key={i}>
-                        {item.C3_460380572730}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Select
-                    style={{ width: '100px' }}
-                    defaultValue=""
-                    onChange={e => {
-                      if (
-                        this.state.kcState === 'Rec' &&
-                        this.state.selectedLevel === ''
-                      ) {
-                        message.error('未选择级别，无法推荐课程');
-                        return this.setState({ subData: [] });
-                      }
-                      this.setState({ lbSelect: e }, () => this.getSubData());
-                    }}
-                  >
-                    <Option value="">全部类别</Option>
-                    {kclbData.map((item, i) => (
-                      <Option value={item.C3_460380239253} key={i}>
-                        {item.C3_460380239253}
-                      </Option>
-                    ))}
-                  </Select>
-                  <Search
-                    placeholder="搜索"
-                    onSearch={value => this.getSubData(value)}
-                    style={{ width: 200 }}
-                  />
-                </div>
-              }
-              bordered
-              style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}
-              dataSource={this.state.subData}
-              renderItem={(item, i) => (
-                <List.Item
-                  style={{ cursor: 'pointer' }}
-                  onClick={this.onClickCustom.bind(this, i)}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flex: 1,
-                      flexDirection: 'row',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ display: 'flex', flex: 1 }}>
-                      <Checkbox checked={item.check} />
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flex: 10,
-                        flexDirection: 'column'
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flex: 1,
-                          flexWrap: 'wrap',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: '16px'
+            <Spin spinning={this.state.loading2}>
+              <List
+                size="large"
+                header={
+                  <div className="creatFilter">
+                    <ul>
+                      <li
+                        className={this.state.lbSelect == '' ? 'current' : ''}
+                        onClick={() => {
+                          this.setState({ lbSelect: '' }, () =>
+                            this.getSubData()
+                          );
                         }}
                       >
-                        <div style={{ width: '100%', marginBottom: 4 }}>
-                          <span>
-                            课程名称:{' '}
-                            {item.C3_609845305680 == null
-                              ? '无'
-                              : item.C3_609845305680}
-                          </span>
-                        </div>
-                        <div style={{ width: '100%' }}>
-                          <span>
-                            课程费用:{' '}
-                            {item.C3_609845305931 == null
-                              ? '无'
-                              : item.C3_609845305931}
-                          </span>
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', flex: 1 }}>
-                        {item.showDetail ? null : (
-                          <span>
-                            简介:{' '}
-                            {item.C3_609845305618 == null
-                              ? '无'
-                              : item.C3_609845305618}
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                        全部系列
+                      </li>
+                      <li
+                        className={
+                          this.state.lbSelect == '管理与发展' ? 'current' : ''
+                        }
+                        onClick={() => {
+                          this.setState(
+                            { lbSelect: '管理与发展', xlSelect: '' },
+                            () => this.getSubData()
+                          );
+                        }}
+                      >
+                        管理与发展
+                      </li>
+                      <li
+                        className={
+                          this.state.lbSelect == '专业技能' ? 'current' : ''
+                        }
+                        onClick={() => {
+                          this.setState(
+                            { lbSelect: '专业技能', xlSelect: '' },
+                            () => this.getSubData()
+                          );
+                        }}
+                      >
+                        专业技能
+                      </li>
+                      <li
+                        className={
+                          this.state.lbSelect == '职业技能' ? 'current' : ''
+                        }
+                        onClick={() => {
+                          this.setState(
+                            { lbSelect: '职业技能', xlSelect: '' },
+                            () => this.getSubData()
+                          );
+                        }}
+                      >
+                        职业技能
+                      </li>
+                    </ul>
+                    <div className="clearfix"></div>
+                    <ul className="filter2">
+                      <li className={this.state.lbSelect == '' ? '' : 'hidden'}>
+                        <ol>
+                          <li
+                            className={this.state.xlSelect == '' ? 'cur' : ''}
+                            onClick={() => {
+                              this.setState({ xlSelect: '' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            全部
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '团队管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '团队管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            团队管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '自我发展' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '自我发展' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            自我发展
+                          </li>
+
+                          <li
+                            className={
+                              this.state.xlSelect == '研发设计与管理工具'
+                                ? 'cur'
+                                : ''
+                            }
+                            onClick={() => {
+                              this.setState(
+                                { xlSelect: '研发设计与管理工具' },
+                                () => this.getSubData()
+                              );
+                            }}
+                          >
+                            研发设计与管理工具
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '工程技术类' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '工程技术类' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            工程技术类
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '生产制造' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '生产制造管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            生产制造管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '质量管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '质量管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            质量管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '人力资源与行政管理'
+                                ? 'cur'
+                                : ''
+                            }
+                            onClick={() => {
+                              this.setState(
+                                { xlSelect: '人力资源与行政管理' },
+                                () => this.getSubData()
+                              );
+                            }}
+                          >
+                            人力资源与行政管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '财务' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '财务' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            财务
+                          </li>
+
+                          <li
+                            className={
+                              this.state.xlSelect == '项目管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '项目管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            项目管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '英语提高' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '英语提高' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            英语提高
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '软件学习' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '软件学习' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            软件学习
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '体系类' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '体系类' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            体系类
+                          </li>
+                        </ol>
+                      </li>
+
+                      <li
+                        className={
+                          this.state.lbSelect == '专业技能' ? '' : 'hidden'
+                        }
+                      >
+                        <ol>
+                          <li
+                            className={this.state.xlSelect == '' ? 'cur' : ''}
+                            onClick={() => {
+                              this.setState({ xlSelect: '' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            全部
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '研发设计与管理工具'
+                                ? 'cur'
+                                : ''
+                            }
+                            onClick={() => {
+                              this.setState(
+                                { xlSelect: '研发设计与管理工具' },
+                                () => this.getSubData()
+                              );
+                            }}
+                          >
+                            研发设计与管理工具
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '工程技术类' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '工程技术类' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            工程技术类
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '生产制造' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '生产制造管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            生产制造管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '质量管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '质量管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            质量管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '人力资源与行政管理'
+                                ? 'cur'
+                                : ''
+                            }
+                            onClick={() => {
+                              this.setState(
+                                { xlSelect: '人力资源与行政管理' },
+                                () => this.getSubData()
+                              );
+                            }}
+                          >
+                            人力资源与行政管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '财务' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '财务' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            财务
+                          </li>
+                        </ol>
+                      </li>
+
+                      <li
+                        className={
+                          this.state.lbSelect == '管理与发展' ? '' : 'hidden'
+                        }
+                      >
+                        <ol>
+                          <li
+                            className={this.state.xlSelect == '' ? 'cur' : ''}
+                            onClick={() => {
+                              this.setState({ xlSelect: '' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            全部
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '团队管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '团队管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            团队管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '自我发展' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '自我发展' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            自我发展
+                          </li>
+                        </ol>
+                      </li>
+
+                      <li
+                        className={
+                          this.state.lbSelect == '职业技能' ? '' : 'hidden'
+                        }
+                      >
+                        <ol>
+                          <li
+                            className={this.state.xlSelect == '' ? 'cur' : ''}
+                            onClick={() => {
+                              this.setState({ xlSelect: '' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            全部
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '项目管理' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '项目管理' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            项目管理
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '英语提高' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '英语提高' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            英语提高
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '软件学习' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '软件学习' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            软件学习
+                          </li>
+                          <li
+                            className={
+                              this.state.xlSelect == '体系类' ? 'cur' : ''
+                            }
+                            onClick={() => {
+                              this.setState({ xlSelect: '体系类' }, () =>
+                                this.getSubData()
+                              );
+                            }}
+                          >
+                            体系类
+                          </li>
+                        </ol>
+                      </li>
+                    </ul>
+                  </div>
+                }
+                bordered
+                style={{ height: 'calc(100vh - 170px)', overflowY: 'scroll' }}
+                dataSource={this.state.subData}
+                renderItem={(item, i) => (
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.onClickCustom.bind(this, i)}
+                  >
                     <div
                       style={{
                         display: 'flex',
                         flex: 1,
-                        flexDirection: 'column'
+                        flexDirection: 'row',
+                        alignItems: 'center'
                       }}
                     >
-                      <a target="_blank" href={item.C3_609845463949}>
-                        <Icon type="fund" style={{ fontSize: '22px' }} />
-                      </a>
+                      <div style={{ display: 'flex', flex: 1 }}>
+                        <Checkbox checked={item.check} />
+                      </div>
                       <div
                         style={{
-                          width: '20px',
-                          height: '20px',
-                          border: '2px solid #0B92E2',
-                          borderRadius: '50%',
                           display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
-                        onClick={e => {
-                          e.stopPropagation();
-                          let subData = this.state.subData;
-                          subData[i].showDetail = !subData[i].showDetail;
-                          this.setState({ subData });
+                          flex: 10,
+                          flexDirection: 'column'
                         }}
                       >
-                        <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
+                        <div
+                          style={{
+                            display: 'flex',
+                            flex: 1,
+                            flexWrap: 'wrap',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: '16px'
+                          }}
+                        >
+                          <div style={{ width: '100%', marginBottom: 4 }}>
+                            <span>
+                              课程名称:{' '}
+                              {item.C3_609845305680 == null
+                                ? '无'
+                                : item.C3_609845305680}
+                            </span>
+                          </div>
+                          <div style={{ width: '100%' }}>
+                            <span>
+                              课程费用:{' '}
+                              {item.C3_609845305931 == null
+                                ? '无'
+                                : item.C3_609845305931}
+                            </span>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', flex: 1 }}>
+                          {item.showDetail ? null : (
+                            <span>
+                              简介:{' '}
+                              {item.C3_609845305618 == null
+                                ? '无'
+                                : item.C3_609845305618}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flex: 1,
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <a target="_blank" href={item.C3_609845463949}>
+                          <Icon type="fund" style={{ fontSize: '22px' }} />
+                        </a>
+                        <div
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            border: '2px solid #0B92E2',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                          onClick={e => {
+                            e.stopPropagation();
+                            let subData = this.state.subData;
+                            subData[i].showDetail = !subData[i].showDetail;
+                            this.setState({ subData });
+                          }}
+                        >
+                          <Icon type="ellipsis" style={{ color: '#0B92E2' }} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </List.Item>
-              )}
-            />
+                  </List.Item>
+                )}
+              />
+            </Spin>
           </div>
         </div>
 
@@ -850,6 +1293,59 @@ class CreatePlan extends React.Component {
             hasRowModify={false}
             hasRowView={false}
           />
+        </Modal>
+        <Modal
+          destroyOnClose={true}
+          width={'80%'}
+          visible={this.state.showTab}
+          onOk={() => this.setState({ showTab: false })}
+          onCancel={() => this.setState({ showTab: false })}
+          centered
+          style={{ top: 50 }}
+        >
+          <Tabs defaultActiveKey={this.state.tabsKey}>
+            <TabPane tab="历年绩效" key="1">
+              <TableData
+                resid={420130498195}
+                recordFormFormWidth={'90%'}
+                hasBeBtns={false}
+                cmswhere={`C3_420148203323 = '${this.state.listNo}'`}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasRowView={false}
+                height={450}
+                subtractH={200}
+              />
+            </TabPane>
+            <TabPane tab="历史计划" key="2">
+              <TableData
+                resid={611315248461}
+                cmswhere={`C3_609616893275 = '${this.state.listNo}'`}
+                recordFormFormWidth={'90%'}
+                hasBeBtns={false}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasRowView={false}
+                height={450}
+                subtractH={200}
+              />
+            </TabPane>
+            <TabPane tab="员工个人发展" key="3">
+              <TableData
+                resid={624564627997}
+                // dataMode="main"
+                // subtractH={190}
+                // height={520}
+                // hasBeBtns
+              />
+            </TabPane>
+          </Tabs>
         </Modal>
       </div>
     );

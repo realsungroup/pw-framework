@@ -1203,14 +1203,14 @@ class PersonPlan extends React.Component {
               to the assessment
             </span>
           </div>
-          <div className="personPlan-contain-plan-check">
+          {/* <div className="personPlan-contain-plan-check">
             <Checkbox.Group
               options={this.state.plainOptions}
               value={[...this.state.checked]}
               onChange={this.onChangeCheckBox}
               disabled={this.judgeRender()}
             />
-          </div>
+          </div> */}
           <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
             {this.state.plans &&
               this.state.plans.map((SquareCardArr, index) => {
