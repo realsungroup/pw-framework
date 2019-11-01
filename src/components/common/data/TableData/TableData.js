@@ -143,7 +143,7 @@ class TableData extends React.Component {
       this.props.cparm4 !== prevProps.cparm4 ||
       this.props.cparm5 !== prevProps.cparm5 ||
       this.props.cparm6 !== prevProps.cparm6 ||
-      this.props.cmsWhere !== prevProps.cmsWhere ||
+      this.props.cmswhere !== prevProps.cmswhere ||
       this.props.resid !== prevProps.resid ||
       this.props.subresid !== prevProps.subresid ||
       this.props.dataMode !== prevProps.dataMode ||
