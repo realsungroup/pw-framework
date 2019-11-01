@@ -1124,8 +1124,7 @@ window[611054119826] = {
 //课程维护
 window[611085896611] = {
   name: 'CourseMaintain',
-  title: '课程维护',
-  
+  title: '课程维护'
 };
 
 //创建总计划
@@ -1744,4 +1743,12 @@ window[623529591025] = {
 window[623607754429] = {
   name: 'ProjectBonus',
   title: '项目积分'
+};
+window[625853399155] = {
+  name: 'TranningDetail',
+  title: '内外训明细'
+};
+window[625853614245] = {
+  name: 'TranningDetailApproval',
+  title: '内外训明细审批'
 };

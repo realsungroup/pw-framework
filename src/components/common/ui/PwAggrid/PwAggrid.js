@@ -491,7 +491,7 @@ class PwAggrid extends React.Component {
                 width={120}
                 placeholder="全局筛选"
               />
-              <Button onClick={this.handleAddRecord(columnDefs)}>添加</Button>
+              {/* <Button onClick={this.handleAddRecord(columnDefs)}>添加</Button> */}
               {isEditing && (
                 <Popconfirm
                   title="确认取消？"
@@ -511,7 +511,7 @@ class PwAggrid extends React.Component {
                   </Button>
                 </Popconfirm>
               )}
-              {/* {hasModifiedData && !isEditing && (
+              {hasModifiedData && !isEditing && (
                 <>
                   <Button
                     type="primary"
@@ -521,7 +521,7 @@ class PwAggrid extends React.Component {
                     保存
                   </Button>
                 </>
-              )} */}
+              )}
               {renderOtherBtns && renderOtherBtns()}
               {hasAdd && (
                 <Button size={btnSizeMap[size]} onClick={this.handleAdd}>

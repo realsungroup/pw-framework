@@ -539,4 +539,15 @@ export const TrainingOrganization = Loadable({
   }
 });
 
-
+export const TranningDetail = Loadable({
+  loader: () => import('./TranningDetail'),
+  loading() {
+    return minLoading;
+  }
+});
+export const TranningDetailApproval = Loadable({
+  loader: () => import('./TranningDetailApproval'),
+  loading() {
+    return minLoading;
+  }
+});

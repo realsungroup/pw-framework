@@ -32,8 +32,7 @@ class PersonList extends React.Component {
     inputVisible: false,
     inputValue: '',
     tags: [],
-    selectedGroupValue: '',
-    isShowGroupSelect: false
+    selectedGroupValue: ''
   };
 
   componentDidMount = async () => {
@@ -107,7 +106,7 @@ class PersonList extends React.Component {
 
     this.setState({ isShowProgress: false, taskList });
     Modal.confirm({
-      title: '请选择分组',
+      title: '选择分组',
       content: (
         <div>
           <Select
@@ -136,13 +135,13 @@ class PersonList extends React.Component {
       },
       onCancel() {}
     });
-    // this.setState({ isShowGroupSelect: true });
   };
   //结束时调用的回调函数
   onFinishedPlanProgress = () => {
     this.setState({
       isShowProgress: false,
-      visible: false
+      visible: false,
+      selectedGroupValue: ''
     });
     this.tableDataRef.handleRefresh();
   };
@@ -293,6 +292,37 @@ class PersonList extends React.Component {
     }
     this.setState({ selectedTags });
   };
+
+  handleCloseTag = tagid => e => {
+    e.stopPropagation();
+    Modal.confirm({
+      title: '您确定要删除该分组吗？',
+      onCancel: () => {
+        console.log('cancel');
+      },
+      onOk: () => {
+        console.log('ok');
+        this.deleteTag(tagid);
+      }
+    });
+  };
+
+  // 删除分组
+  deleteTag = async tagid => {
+    try {
+      await http().removeRecords({
+        resid: groupID,
+        data: [{ REC_ID: tagid }]
+      });
+      this.setState({
+        tags: this.state.tags.filter(item => item.REC_ID !== tagid)
+      });
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+  };
+
   render() {
     const {
       visible,
@@ -304,6 +334,12 @@ class PersonList extends React.Component {
       inputValue,
       tags
     } = this.state;
+    const inCmswhere = selectedTags.length
+      ? ` and groupName in (${selectedTags
+          .map(item => item.groupName)
+          .toString()})`
+      : '';
+    // console.log(inCmswhere);
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
         <header>
@@ -319,8 +355,8 @@ class PersonList extends React.Component {
                 key={tag.REC_ID}
                 className={isSelected ? 'checked-tag' : ''}
                 onClick={this.handleTagClick(tag)}
-                closable
               >
+                <Icon type="close" onClick={this.handleCloseTag(tag.REC_ID)} />
                 {tag.groupName}
               </Tag>
             );
@@ -377,11 +413,6 @@ class PersonList extends React.Component {
                   ''
                 ) : (
                   <Button
-                    // style={{
-                    //   height: '24px',
-                    //   padding: '0 7px',
-                    //   fontSize: '14px'
-                    // }}
                     onClick={() => {
                       this.props.onLookPerson(record);
                     }}
