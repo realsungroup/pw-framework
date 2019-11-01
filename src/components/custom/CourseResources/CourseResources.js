@@ -101,10 +101,10 @@ class CourseResources extends Component {
         );
         if(isApplied&&record.classType === '内训'){
           return ( <Popconfirm
-            title="确认取消报名？"
+            title="是否撤回报名申请？"
             onConfirm={this.handleCancelAppply.bind(this, record)}
           >
-            <Button type="danger">取消报名</Button>
+            <Button type="danger">撤回报名申请</Button>
           </Popconfirm>)
         }else if(record.lastPlaces === 0 && record.places){
           return (
@@ -114,9 +114,9 @@ class CourseResources extends Component {
           return (
             <Popconfirm
             onConfirm={this.handleConfirm.bind(this, record)}
-            title="请确认报名"
+            title="是否提交报名申请"
           >
-            <Button>报名</Button>
+            <Button>提交报名申请</Button>
           </Popconfirm>
           )
         }else if(record.isStopApply === 'Y' && record.classType === '内训'){

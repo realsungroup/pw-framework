@@ -85,7 +85,7 @@ class CreateTotalPlan extends React.Component {
     }
     // 当前任务已完成
     if (res.IsComplete) {
-      //修改当前财年的是否生成人员名单字段
+      //修改当前财年的是否初始化字段
       const resid = 611077132065;
       const data = [
         {
@@ -164,7 +164,7 @@ class CreateTotalPlan extends React.Component {
       this.setState({ loading: false });
       console.error(err);
       if (err.message === '有正在运行的任务，请稍后') {
-        message.error('正在生成人员名单，请耐心等候');
+        message.error('正在初始化，请耐心等候');
       }
     }
     this.setState({ isShowModal: true });
@@ -257,7 +257,7 @@ class CreateTotalPlan extends React.Component {
                         this.handleClick(record);
                       }}
                     >
-                      生成人员名单
+                      初始化
                     </Button>
                   );
                 }
@@ -282,7 +282,7 @@ class CreateTotalPlan extends React.Component {
             ]}
           />
           <Modal
-            title="生成人员名单"
+            title="初始化"
             visible={this.state.isShowModal}
             closable={false}
             footer={[
