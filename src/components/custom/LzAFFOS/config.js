@@ -58,11 +58,13 @@ export const inApplication = {
     placement: 'bottom',
     height: 600
   },
+  addText: '请填写访客基本信息',
   subTableArrProps: [
     {
       subTableName: '访客信息',
       subResid: 606066688508,
       tableProps: {
+        addText: '添加访客身份信息',
         hasAdd: true,
         hasModify: false,
         hasDelete: false,

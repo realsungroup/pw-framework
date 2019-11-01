@@ -80,11 +80,11 @@ export default class LzAFFOS extends React.Component {
               C3_605703930741: record.C3_605703930741, //访客类型
               C3_605703980025: record.C3_605703980025, //有效开始日期
               C3_605703992046: record.C3_605703992046, //有效结束日期
-              C3_614883990443:record.C3_614883990443, //一级审批人工号
-              C3_614884004893:record.C3_614884004893,//一级审批人
-              C3_614884015488:record.C3_614884015488, //二级审批人工号
-              C3_614884016188:record.C3_614884016188, //二级审批人
-              C3_615638304913:'Y',
+              C3_614883990443: record.C3_614883990443, //一级审批人工号
+              C3_614884004893: record.C3_614884004893, //一级审批人
+              C3_614884015488: record.C3_614884015488, //二级审批人工号
+              C3_614884016188: record.C3_614884016188, //二级审批人
+              C3_615638304913: 'Y',
               _state: 'added',
               _id: 1
             },
@@ -125,12 +125,12 @@ export default class LzAFFOS extends React.Component {
           onChange={this.handleTabsChange}
         >
           <TabPane tab="申请中" key="申请中">
-            <div style={{ height: 'calc(100vh - 220px)' }}>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...inApplication}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
-                formProps={{ saveText: '提交',height:500 }}
+                formProps={{ saveText: '提交', height: 500 }}
               />
             </div>
           </TabPane>
