@@ -114,6 +114,7 @@ class FormData extends React.Component {
             const res = await this.p1.promise;
             console.log({ res });
           } catch (err) {
+            message.error(err.message);
             return console.error(err);
           }
 
@@ -199,6 +200,7 @@ class FormData extends React.Component {
           const res = await this.p1.promise;
           console.log({ res });
         } catch (err) {
+          message.error(err.message);
           return console.error(err);
         }
       }
