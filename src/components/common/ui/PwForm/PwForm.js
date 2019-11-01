@@ -147,7 +147,8 @@ class PwForm extends React.Component {
       className,
       enSaveText,
       enCancelText,
-      enEditText
+      enEditText,
+      saveNeedConfirm
     } = this.props;
     const { intl } = this.props;
     return (
@@ -167,6 +168,7 @@ class PwForm extends React.Component {
           saveText={getIntlVal(intl.locale, enSaveText, saveText)}
           cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
           editText={getIntlVal(intl.locale, enEditText, editText)}
+          saveNeedConfirm={saveNeedConfirm}
         />
       </div>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import './PwFormFooter.less';
 const Fragment = React.Fragment;
 
@@ -15,7 +15,8 @@ const PwFormFooter = React.memo(
     form,
     saveText,
     cancelText,
-    editText
+    editText,
+    saveNeedConfirm
   }) => {
     return (
       <div className="pw-form__footer">
@@ -23,16 +24,26 @@ const PwFormFooter = React.memo(
           if (mode === 'edit') {
             return (
               <Fragment>
-                {hasSave && (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      onSave && onSave(form);
-                    }}
-                  >
-                    {saveText}
-                  </Button>
-                )}
+                {hasSave &&
+                  (saveNeedConfirm ? (
+                    <Popconfirm
+                      title={`确定要${saveText}吗`}
+                      onConfirm={() => {
+                        onSave && onSave(form);
+                      }}
+                    >
+                      <Button type="primary">{saveText}</Button>
+                    </Popconfirm>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        onSave && onSave(form);
+                      }}
+                    >
+                      {saveText}
+                    </Button>
+                  ))}
                 {hasCancel && (
                   <Button onClick={() => onCancel && onCancel(form)}>
                     {cancelText}
