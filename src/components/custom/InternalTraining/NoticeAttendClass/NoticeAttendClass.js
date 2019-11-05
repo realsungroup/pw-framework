@@ -588,11 +588,8 @@ class NoticeAttendClass extends React.Component {
                         className="notice_attend_class_item"
                         key={item.REC_ID}
                         hoverable
-                        actions={[<span className='noticed'
-						>
-
-                              已通知
-                            </span>,
+                        actions={[
+                          <span className="noticed">已通知</span>,
                           <span
                             onClick={() => {
                               this.setState({
@@ -658,6 +655,7 @@ class NoticeAttendClass extends React.Component {
                     hasRowView={false}
                     subtractH={240}
                     height="100%"
+                    tableComponent="ag-grid"
                   ></TableData>
                 </div>
               )}
