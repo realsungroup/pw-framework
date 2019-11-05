@@ -26,7 +26,7 @@ const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
-const OutCourseId = '624970414826';
+const OutCourseId = '624970414826';//外训课程表ID
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -121,7 +121,7 @@ class ArrangingCourses extends React.Component {
       message.error(res.message);
     }
   };
-
+  //获取外训课程清单
   getOutCourse = async OutCourseId => {
     let res;
     try {

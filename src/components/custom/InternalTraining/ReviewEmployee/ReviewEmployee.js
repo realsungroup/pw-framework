@@ -11,7 +11,8 @@ import {
   Radio,
   Progress,
   notification,
-  Icon
+  Icon,
+  Tooltip
 } from 'antd';
 import SelectEmployeeToNotice from './SelectEmployeeToNotice';
 import SelectEmployeeToAdd from './SelectEmployeeToAdd';
@@ -329,13 +330,16 @@ class ReviewEmployee extends React.Component {
           {this.renderCourseName()}
 
           <div className="review_employee-table_action_bar_extra-buttons">
-            <Button
+            <Tooltip placement="bottomLeft" title="不发送通知邮件直接将员工加入通知上课的列表">
+			<Button
               onClick={() => {
                 this.setState({ addEmployeesVisible: true });
               }}
             >
               添加上课人员
             </Button>
+			</Tooltip>
+			<Tooltip placement="bottomLeft" title="将一堂课里的人员移动到另一堂课">
             <Button
               onClick={() => {
                 if (record.selectedRowKeys.length) {
@@ -350,28 +354,35 @@ class ReviewEmployee extends React.Component {
             >
               移动人员
             </Button>
+			</Tooltip>
+			
+			<Tooltip placement="bottomLeft" title="选择指定员工通知他们报名">
             <Button
+			  type='primary'
               onClick={() => {
                 this.setState({ noticeModalVisible: true });
               }}
             >
-              通知报名
+              通知特定人员报名
             </Button>
+			</Tooltip>
             <Popconfirm
-              title="通知全部报名"
+              title="通知全部人员报名"
               onConfirm={() => {
                 this.setState({ isShowModal: true }, this.handleNotice);
               }}
-            >
-              <Button>通知全部报名</Button>
+            ><Tooltip placement="bottomLeft" title="点击后全体员工将收到这门课的报名通知">
+    
+              <Button type='primary'>通知全部人员报名</Button>
+			  </Tooltip>
             </Popconfirm>
             <Popconfirm
               title="报名截止？"
               onConfirm={() => {
                 this.comfirmList();
               }}
-            >
-              <Button>报名截止</Button>
+            ><Tooltip placement="bottomLeft" title="点击后员工无法再报名">
+              <Button type='danger'>报名截止</Button>			  </Tooltip>
             </Popconfirm>
           </div>
         </div>

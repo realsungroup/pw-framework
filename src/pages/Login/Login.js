@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Button, Input, Form, Icon, Radio } from 'antd';
+import { message, Button, Input, Form, Icon, Radio,Modal ,Checkbox} from 'antd';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail } from 'Util/api';
@@ -199,6 +199,9 @@ class Login extends React.Component {
     }
   };
 
+ resetPSW = (v) =>{
+	 this.setState({showReset:v});
+ }
   render() {
     const { redirectToReferrer, loginMode, language, loading } = this.state;
     // 进入登录页的源路由
@@ -294,6 +297,7 @@ class Login extends React.Component {
                 />
               )}
             </Form.Item>
+			<a style={{marginBottom:'8px',display:'block'}} onClick={()=>{this.resetPSW(true)}}>修改密码</a>
             <Form.Item>
               <Button
                 block
@@ -308,6 +312,20 @@ class Login extends React.Component {
           </Form>
           <div className="login__copyright">Copyright © 2008 ~ 2018 </div>
         </div>
+		<Modal
+		  title="修改密码"
+		  visible={this.state.showReset}
+		  onCancel={() => this.resetPSW(false)}
+		  destroyOnClose
+		  width={'20vw'}
+		>
+			<p style={{marginBottom:'8px'}}>用户名</p><Input type='text' placeholder='请输入用户名' style={{marginBottom:'8px'}} value={this.state.userNameLogin} onChange={v=>{this.setState({userNameLogin:v.target.value})}}/>
+			<Checkbox value={this.state.fresh} onChange={(v)=>{this.setState({fresh:v.target.checked})}} style={{marginBottom:'8px',float:'right'}}>我是第一次登录</Checkbox>
+			{(this.state.fresh==true)?null:(<div><p style={{marginBottom:'8px',float:'left',clearfix:'right'}}>旧密码</p><Input.Password placeholder='请输入旧密码' value={this.state.PSWOld} onChange={v=>{this.setState({PSWOld:v.target.value})}} style={{marginBottom:'8px'}}/></div>)}
+			<p style={{marginBottom:'8px'}}>新密码</p><Input.Password placeholder='请输入新密码' style={{marginBottom:'8px'}} value={this.state.PSWNew} onChange={v=>{this.setState({PSWNew:v.target.value})}}/>
+			<p style={{marginBottom:'8px'}}>再次输入新密码</p><Input.Password placeholder='请再次输入新密码' value={this.state.PSWNewEcho} onChange={v=>{this.setState({PSWNewEcho:v.target.value})}} style={{marginBottom:'8px'}}/>
+			<span style={{color:'red'}}>{this.state.PSWNewEcho!=this.state.PSWNew?'两次输入的新密码不一致':null}</span>
+		</Modal>
       </div>
     );
   }

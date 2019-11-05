@@ -99,6 +99,7 @@ class ProbationForms extends React.Component {
       memberId = this.props.memberId;
       employedId = this.props.employedId;
     }
+	this.setState({memIDOrg:memberId})
     await this.getAuth();
     await this.getCircle();
     await this.getRecords(memberId, employedId);
@@ -800,7 +801,11 @@ class ProbationForms extends React.Component {
     this.setState({
       addInternalCourseVisible: visible
     });
-
+// 控制显示内训详情模态窗状态
+	setInterDetailVis = visible =>
+	  this.setState({
+	    interDetailVis: visible
+	  });
   openModifyInternalCourseModal = data => {
     this.setState({
       modifyInternalCourseVisible: true,
@@ -927,6 +932,7 @@ class ProbationForms extends React.Component {
                 editable={editable}
               />
               <InternalTraining
+			  setInterDetailVis={this.setInterDetailVis}
                 setAddInternalCourseVisible={this.setAddInternalCourseVisible}
                 internalTraining={this.state.internalTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
@@ -1059,6 +1065,27 @@ class ProbationForms extends React.Component {
               </footer>
             )}
         </div>
+		<Modal
+		  title="内训课程详细"
+		  visible={this.state.interDetailVis}
+		  onCancel={() => this.setInterDetailVis(false)}
+		  footer={null}
+		  destroyOnClose
+		  width={'calc(80vw + 48px)'}
+		>
+		<TableData
+			resid={626260756738}
+			cmswhere = {`C3_613941384832 = ${this.state.memIDOrg}`}
+			width={'80vw'}
+			hasRowDelete={false}
+			hasRowModify={false}
+			hasRowSelection={false}
+			hasDelete={false}
+			hasModify={false}
+			hasAdd={false}
+			height={'60vh'}
+		/>
+		</Modal>
         <Modal
           title="添加内训课程"
           visible={this.state.addInternalCourseVisible}
