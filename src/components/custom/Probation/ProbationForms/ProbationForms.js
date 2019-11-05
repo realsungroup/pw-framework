@@ -984,9 +984,9 @@ class ProbationForms extends React.Component {
           {!loading &&
             (roleName === 'HR' ||
               employeeInformation.regStatus !== '已转正') && (
-              <footer className="probation-forms_footer">
+              <footer className="probation-forms_footer" style={roleName === '辅导员'?{display:'none'}:{}}>
                 {(roleName === 'HR' ||
-                  employeeInformation.regStatus === '待转正') && (
+                  employeeInformation.regStatus === '待转正'  ) && (
                   <div>
                     <Button
                       type="primary"

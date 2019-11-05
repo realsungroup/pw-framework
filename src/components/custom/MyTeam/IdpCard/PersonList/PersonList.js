@@ -276,7 +276,6 @@ class PersonList extends React.Component {
       inputValue: ''
     });
   };
-  // className="checked-tag"
 
   saveInputRef = input => (this.input = input);
 
@@ -336,10 +335,9 @@ class PersonList extends React.Component {
     } = this.state;
     const inCmswhere = selectedTags.length
       ? ` and groupName in (${selectedTags
-          .map(item => item.groupName)
+          .map(item => `'${item.groupName}'`)
           .toString()})`
       : '';
-    // console.log(inCmswhere);
     return (
       <div className="personlist-contain" style={{ height: '100%' }}>
         <header>
@@ -402,10 +400,10 @@ class PersonList extends React.Component {
             cmswhere={
               this.props.role === 'HR'
                 ? `projectId = '${this.props.record &&
-                    this.props.record.projectId}'`
+                    this.props.record.projectId}' ${inCmswhere}`
                 : `projectId = '${this.props.record &&
                     this.props.record.projectId}' and directorId = '${this.props
-                    .record && this.props.record.memberId}' `
+                    .record && this.props.record.memberId}' ${inCmswhere}`
             }
             customRowBtns={[
               (record, btnSize) => {

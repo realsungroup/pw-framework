@@ -588,22 +588,11 @@ class NoticeAttendClass extends React.Component {
                         className="notice_attend_class_item"
                         key={item.REC_ID}
                         hoverable
-                        actions={[
-                          <Popconfirm
-                            title="确认通知？"
-                            onConfirm={this.onMessage.bind(this, item)}
-                            icon={
-                              <Icon
-                                type="question-circle-o"
-                                style={{ color: 'red' }}
-                              />
-                            }
-                          >
-                            <span>
-                              <Icon type="message" />
-                              通知
-                            </span>
-                          </Popconfirm>,
+                        actions={[<span className='noticed'
+						>
+
+                              已通知
+                            </span>,
                           <span
                             onClick={() => {
                               this.setState({
