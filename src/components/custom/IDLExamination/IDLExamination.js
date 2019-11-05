@@ -48,7 +48,7 @@ class IDLExamination extends React.Component {
           </div>
           <div style={{ clear: 'both', marginBottom: '10px',width:'100%' }}>
             <table border="1" className='baseInfo' style={{width:'100%'}}>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th style={{width:'311px'}} >
                   <div style={{ float: 'left', marginLeft: '5px'}}>
                     <p>Position for Applied</p>
@@ -110,7 +110,7 @@ class IDLExamination extends React.Component {
                   </div>
                 </th>
               </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th>
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Number of ID Card</p>
@@ -172,7 +172,7 @@ class IDLExamination extends React.Component {
                   </div>
                 </th>
               </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th>
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Date of Birth ( year/month/day )</p>
@@ -235,7 +235,7 @@ class IDLExamination extends React.Component {
                   </div>
                 </th>
               </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th>
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Place of Hukou Registered (Province/City)</p>
@@ -297,7 +297,7 @@ class IDLExamination extends React.Component {
                   </div>
                 </th>
               </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th colSpan="2">
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Current Correspondence Address</p>
@@ -331,7 +331,7 @@ class IDLExamination extends React.Component {
                 </th>
                 {/* <th style = {{borderLeft:"none"}}></th> */}
               </tr>
-              <tr style={{ fontSize: '10px', height: '35px' }}>
+              <tr style={{ fontSize: '12px', height: '35px' }}>
                 <th>
                   <div style={{ float: 'left', marginLeft: '5px' }}>
                     <p>Recommended by Finisar employee or not? </p>
@@ -380,130 +380,130 @@ class IDLExamination extends React.Component {
               </tr>
             </table>
           </div>
-          <p style={{ float: 'left', fontWeight: 'bold' }}>
+          <p style={{ float: 'left', fontWeight: 'bold',marginTop:'10px' }}>
             Education Background (Please start from latest education to middle
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
           <div style={{ clear: 'both', marginBottom: '10px' ,width:'100%'}}>
             <dl >
               <dd >
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Period(Year/Month)<p>年限（年/月）</p></div>
                   <div>From由</div>
                   <div>To至</div>
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Name of School/Colleges/Universities</div><div>学校/学院/大学</div>
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Major</div><div>专业</div>
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Degree</div><div>学位</div>
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Reference</div><div>证明人</div>
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Telephone</div><div>电话</div>
                 </div>
               </dd>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdStartTime1}<br/>{this.props.data.EdEndTime1}
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdSchool1}
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdMajor1}
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdDegree1}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReference1}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReferenceTel1}
                 </div>
               </dt>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdStartTime2}<br/>{this.props.data.EdEndTime2}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdSchool2}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdMajor2}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdDegree2}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReference2}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReferenceTel2}
 
                 </div>
               </dt>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdStartTime3}<br/>{this.props.data.EdEndTime3}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdSchool3}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdMajor3}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdDegree3}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReference3}
 
                 </div>
-                <div className='innerRect'>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                 {this.props.data.EdReferenceTel3}
 
                 </div>
               </dt>
               <dt>
-              <div className='innerRect' style={{fontSize:'12px'}}>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdStartTime4}<br/>{this.props.data.EdEndTime4}
 
               </div>
-              <div className='innerRect'>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdSchool4}
 
               </div>
-              <div className='innerRect'>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdMajor4}
 
               </div>
-              <div className='innerRect'>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdDegree4}
 
               </div>
-              <div className='innerRect'>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdReference4}
 
               </div>
-              <div className='innerRect'>
+              <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdReferenceTel4}
 
               </div>
@@ -511,126 +511,126 @@ class IDLExamination extends React.Component {
             </dl>
           </div>
 
-         <p style={{ float: 'left', fontWeight: 'bold' }}>
+         <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'10px'}}>
           Working History (Please start with latest one)
           工作经验（请从最近职位开始填写）
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
         <dl>
           <dd>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Post Period<p>任职年限</p></div>
               <div>From由</div>
               <div>To至</div>
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Name of Company&Type</div><div>公司名称及类型</div>
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Position</div><div>职位</div>
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Reason For Leaving</div><div>离职原因</div>
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Reference</div><div>证明人</div>
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Telephone</div><div>电话</div>
             </div>
           </dd>
           <dt>
-            <div className='innerRect'style={{fontSize:'12px'}}>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}style={{fontSize:'12px'}}>
             {this.props.data.WorkStartTime1}<br/>{this.props.data.WorkEndTime1}
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
             {this.props.data.WorkComName1}
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
             {this.props.data.WorkRank1}
 
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
             {this.props.data.ReasonForLeave1}
 
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
             {this.props.data.WorkReference1}
 
             </div>
-            <div className='innerRect'>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
             {this.props.data.WorkReferenceTel1}
 
             </div>
           </dt>
           <dt>
-          <div className='innerRect' style={{fontSize:'12px'}}>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkStartTime2}<br/>{this.props.data.WorkEndTime2}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkComName2}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkRank2}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.ReasonForLeave2}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReference2}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReferenceTel2}
 
           </div>
           </dt>
           <dt>
-          <div className='innerRect' style={{fontSize:'12px'}}>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkStartTime3}<br/>{this.props.data.WorkEndTime3}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkComName3}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkRank3}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.ReasonForLeave3}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReference3}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReferenceTel3}
 
           </div>
           </dt>
           <dt>
-          <div className='innerRect' style={{fontSize:'12px'}}>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkStartTime4}<br/>{this.props.data.WorkEndTime4}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkComName4}
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkRank4}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.ReasonForLeave4}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReference4}
 
           </div>
-          <div className='innerRect'>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkReferenceTel4}
 
           </div>
@@ -638,12 +638,12 @@ class IDLExamination extends React.Component {
         </dl>
         </div>
 
-        <p style={{ float: 'left', fontWeight: 'bold' }}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'10px'}}>
           Professional Qualification / Training 专业资格 / 培训
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
           <table border="1">
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th style={{ width: '137px', padding: '0px' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
                   <p>Date/Period</p>
@@ -681,7 +681,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
@@ -690,7 +690,7 @@ class IDLExamination extends React.Component {
                   borderTop: 'none'
                 }}
               >
-              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px'}}>
+              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px',whiteSpace:'normal'}}>
                 <p>  {this.props.data.TrainingDate1}</p>
               </div>
 
@@ -722,7 +722,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
@@ -761,7 +761,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
             <th
               style={{
                 width: '68px',
@@ -800,7 +800,7 @@ class IDLExamination extends React.Component {
               </div>
             </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
@@ -841,12 +841,12 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold' }}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'10px'}}>
           Family Members and Mainly Social Relationship 家庭成员及主要社会关系
         </p>
         <div style={{ clear: 'both', marginBottom: '20px' }}>
           <table border="1">
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th style={{ width: '90px', padding: '0px' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
                   <p>Name</p>
@@ -884,7 +884,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
@@ -922,7 +922,7 @@ class IDLExamination extends React.Component {
                 </div>
               </th>
             </tr>
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
@@ -965,12 +965,12 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '10px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'48px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'60px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
           <table border="1">
-            <tr style={{ fontSize: '10px', height: '35px' }}>
+            <tr style={{ fontSize: '12px', height: '35px' }}>
               <th style={{ width: '842px', padding: '0px' }} colspan="6">
                 <div
                   style={{
@@ -1059,7 +1059,7 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left' }}>
+        <div style={{ textAlign: 'left',marginTop:'10px' }}>
           <p style={{ fontWeight: 'bold' }}>Other Information 其他资料</p>
           <p style={{ fontWeight: 'bold' }}>
             Please answer the following questions. 请回答下列问题
@@ -1196,7 +1196,7 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left' }}>
+        <div style={{ textAlign: 'left' ,marginTop:'10px'}}>
           <p style={{ fontWeight: 'bold' }}>Self Appraisement自我评价：</p>
         </div>
         <div style={{ marginBottom: '20px' }}>
@@ -1217,7 +1217,7 @@ class IDLExamination extends React.Component {
           </table>
         </div>
         <div style={{ float: 'left', marginBottom: 20 }}>
-          <p style={{ fontWeight: 'bold', float: 'left' }}>
+          <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'10px'}}>
             Commitments / 本人承诺:
           </p>
           <br />

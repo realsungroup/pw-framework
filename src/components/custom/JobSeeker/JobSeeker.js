@@ -663,7 +663,7 @@ class JobSeeker extends Component {
         <div className="job-seeker">
           <div className="job-seeker__nav">
             <Menu
-              style={{ width: 265, minHeight: 60 }}
+              style={{ width: 160, minHeight: 60 }}
               defaultSelectedKeys={['个人资料']}
             >
               {MenuList.map((menuItem, index) => {

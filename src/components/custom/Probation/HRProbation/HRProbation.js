@@ -151,10 +151,10 @@ class HRProbation extends React.Component {
             item.isDirectorFill = 'Y';
           } else if (selectValue === '员工填写') {
             item.isEmployeeFill = 'Y';
-          } else if (selectValue === '辅导员填写') {
+          } else if (selectValue === '提醒辅导员确认') {
             item.isCounselorFill = 'Y';
-          } else if (selectValue === '员工确认辅导') {
-            item.isStaffConfirm = 'Y';
+          } else if (selectValue === '提醒员工填写辅导记录') {
+            item.C3_625868630630 = 'Y';
           }
           data.push(item);
         }
@@ -301,19 +301,19 @@ class HRProbation extends React.Component {
           </Button>
           <Button
             onClick={RegularApply => {
-              this.showConfirm(record, '辅导员填写');
+              this.showConfirm(record, '提醒辅导员确认');
             }}
             type="primary"
           >
-            提醒辅导员填写
+            提醒辅导员确认
           </Button>
           <Button
             onClick={RegularApply => {
-              this.showConfirm(record, '员工确认辅导');
+              this.showConfirm(record, '提醒员工填写辅导记录');
             }}
             type="primary"
           >
-            提醒员工确认辅导
+            提醒员工填写辅导记录
           </Button>
         </div>
       </div>
