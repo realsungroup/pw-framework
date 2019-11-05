@@ -380,7 +380,7 @@ class PersonPlan extends React.Component {
         this.setState({ SquareCardArr });
         break;
       case 'plans':
-        if (!SquareCardArr.length) {
+        if (!this.state.plainOptions.length) {
           return message.info('请先添加至少一项能力测评');
         }
         plans.map(item => {
@@ -819,12 +819,39 @@ class PersonPlan extends React.Component {
     return JSON.parse(JSON.stringify(obj));
   };
   onSave = async () => {
+    try {
+      this.state.SquareCardArr.forEach(SquareCard => {
+        SquareCard.forEach(item => {
+          if (item.name === '能力测评编号' || item.name === '是否优先发展') {
+            return;
+          }
+          if (!item.value.trim()) {
+            throw new Error('请将能力测评内容填写完整');
+          }
+        });
+      });
+    } catch (error) {
+      return message.info(error.message);
+    }
+    try {
+      this.state.plans.forEach(plan => {
+        plan.forEach(item => {
+          if (item.name === '发展行动计划编号') {
+            return;
+          }
+          if (!item.value.trim()) {
+            throw new Error('请将职业能力发展计划内容填写完整');
+          }
+        });
+      });
+    } catch (error) {
+      return message.info(error.message);
+    }
     this.onSaveAbility();
     this.onSavePlans();
     this.props.goBack();
   };
   onSubmit = async () => {
-
     this.onSaveAbility();
     this.onSavePlans();
     let res;
@@ -848,7 +875,6 @@ class PersonPlan extends React.Component {
     }
   };
   onSubmitMid = async () => {
-
     this.onSaveAbility();
     this.onSavePlans();
     let res;
@@ -945,16 +971,16 @@ class PersonPlan extends React.Component {
     }
   };
   //退回操作
-  onReject = async(type) => {
+  onReject = async type => {
     let personInfo = this.state.personInfo;
-    if(type === 'mid'){
-    personInfo.midManageApply = 'N';
-    personInfo.yearMidSubmit = '';
-    personInfo.midYearReturnEmail = 'N';
-    }else{
-    personInfo.tailManageApply = 'N';
-    personInfo.yearTailSubmit = '';
-    personInfo.tailYearReturnEmail = 'N';
+    if (type === 'mid') {
+      personInfo.midManageApply = 'N';
+      personInfo.yearMidSubmit = '';
+      personInfo.midYearReturnEmail = 'N';
+    } else {
+      personInfo.tailManageApply = 'N';
+      personInfo.yearTailSubmit = '';
+      personInfo.tailYearReturnEmail = 'N';
     }
     let res;
     try {
@@ -1548,18 +1574,9 @@ class PersonPlan extends React.Component {
             }
             progressDot={customDot}
           >
-            <Step
-              title="初次填写"
-              style={{ color: '#fff' }}
-            />
-            <Step
-              title="年中回顾"
-              style={{ color: '#fff' }}
-            />
-            <Step
-              title="年末回顾"
-              style={{ color: '#fff' }}
-            />
+            <Step title="初次填写" style={{ color: '#fff' }} />
+            <Step title="年中回顾" style={{ color: '#fff' }} />
+            <Step title="年末回顾" style={{ color: '#fff' }} />
           </Steps>
         </div>
         <div className="personPlan-contain">
@@ -1687,7 +1704,8 @@ class PersonPlan extends React.Component {
 
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearMidSubmit === 'Y' &&
-            this.state.personInfo.midManageApply !== 'Y' &&  this.state.personInfo.midManageApply !== 'N'  ? (
+            this.state.personInfo.midManageApply !== 'Y' &&
+            this.state.personInfo.midManageApply !== 'N' ? (
               <Popconfirm
                 title="你要确认吗"
                 onConfirm={this.onAffirmMid}
@@ -1698,12 +1716,13 @@ class PersonPlan extends React.Component {
                   确认年中回顾
                 </Button>
               </Popconfirm>
-            ) : null
-            }
+            ) : null}
 
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearMidSubmit === 'Y' &&
-            this.state.personInfo.midManageApply !== 'Y' &&  this.state.personInfo.midManageApply !== 'N' ?<Popconfirm
+            this.state.personInfo.midManageApply !== 'Y' &&
+            this.state.personInfo.midManageApply !== 'N' ? (
+              <Popconfirm
                 title="你确定要退回吗"
                 onConfirm={() => {
                   this.onReject('mid');
@@ -1717,12 +1736,14 @@ class PersonPlan extends React.Component {
                 >
                   退回年中回顾
                 </Button>
-              </Popconfirm>:null}
+              </Popconfirm>
+            ) : null}
 
-
-              {this.state.checkType !== 'oneself' &&
+            {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearTailSubmit === 'Y' &&
-             this.state.personInfo.tailManageApply !== 'Y' && this.state.personInfo.tailManageApply !== 'N' ?<Popconfirm
+            this.state.personInfo.tailManageApply !== 'Y' &&
+            this.state.personInfo.tailManageApply !== 'N' ? (
+              <Popconfirm
                 title="你确定要退回吗"
                 onConfirm={() => {
                   this.onReject('tail');
@@ -1736,10 +1757,12 @@ class PersonPlan extends React.Component {
                 >
                   退回年末回顾
                 </Button>
-              </Popconfirm>:null}
+              </Popconfirm>
+            ) : null}
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearTailSubmit === 'Y' &&
-            this.state.personInfo.tailManageApply !== 'Y' && this.state.personInfo.tailManageApply !== 'N'  ? (
+            this.state.personInfo.tailManageApply !== 'Y' &&
+            this.state.personInfo.tailManageApply !== 'N' ? (
               <Popconfirm
                 title="你要确认吗"
                 onConfirm={this.onAffirmTail}
@@ -1750,7 +1773,7 @@ class PersonPlan extends React.Component {
                   确认年末回顾
                 </Button>
               </Popconfirm>
-            ) :null}
+            ) : null}
 
             {this.renderSubmitBtn()}
           </div>
