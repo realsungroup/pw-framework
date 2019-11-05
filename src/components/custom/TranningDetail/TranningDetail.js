@@ -9,13 +9,16 @@ import {
   Button,
   Divider,
   Icon,
-  Tooltip
+  Tooltip,
+  Popconfirm
 } from 'antd';
 import http from 'Util20/api';
+import { getItem } from 'Util20/util';
+
 import debounce from 'lodash/debounce';
 
-// 625854136036
 const resid = '625854136036';
+const approvalresid = '626179362313';
 const { Option } = Select;
 const YEAR_RESID = '420161931474'; //财年表id
 const { TextArea } = Input;
@@ -28,11 +31,14 @@ class TranningDetail extends React.Component {
     remindData: {
       additionalWords: '',
       selectedApprovaler: {}
-    }
+    },
+    approvalRecord: undefined,
+    sendButtonLoading: false
   };
   constructor(props) {
     super(props);
     this.fetchUser = debounce(this.fetchUser, 800);
+    this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
   }
 
   componentDidMount() {
@@ -53,13 +59,45 @@ class TranningDetail extends React.Component {
         currentYear,
         selectedYear: currentYear.C3_420161949106
       });
+      this.getAppoval(currentYear.C3_420161949106);
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
   };
 
-  //根据工号搜索辅导员
+  getAppoval = async year => {
+    try {
+      const res = await http().getTable({
+        resid: approvalresid,
+        cmswhere: `year = '${year}'`
+      });
+      const data = res.data[0];
+      this.setState({
+        approvalRecord: data
+      });
+      if (data) {
+        this.setState({
+          remindData: {
+            additionalWords: data.triggerRemark,
+            selectedApprovaler: { key: data.personId, label: data.personName }
+          }
+        });
+      } else {
+        this.setState({
+          remindData: {
+            additionalWords: '',
+            selectedApprovaler: {}
+          }
+        });
+      }
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
+
+  //根据工号搜索审批人
   fetchUser = async value => {
     this.setState({ userData: [], fetching: true });
     try {
@@ -69,7 +107,7 @@ class TranningDetail extends React.Component {
       });
       const userData = res.data.map(user => ({
         label: `${user.C3_227192484125}`,
-        key: user.C3_227192472953
+        key: user.C3_305737857578
       }));
 
       this.setState({
@@ -99,15 +137,59 @@ class TranningDetail extends React.Component {
       }
     });
 
-  sendEmail = () => {
-    console.log(this.state.remindData);
-    const { remindData } = this.state;
+  sendEmail = async () => {
+    const { remindData, selectedYear } = this.state;
     if (!remindData.selectedApprovaler.key) {
       return message.info('请选择审批人');
     }
+    this.setState({
+      sendButtonLoading: true
+    });
+    try {
+      const res = await http().addRecords({
+        resid: approvalresid,
+        data: [
+          {
+            year: selectedYear,
+            personId: remindData.selectedApprovaler.key,
+            triggerRemark: remindData.additionalWords,
+            C3_626201868402: this.UserCode,
+            isSendEmail: 'Y'
+          }
+        ]
+      });
+      this.setState({
+        approvalRecord: res.data[0],
+        remindData: {
+          additionalWords: res.data[0].triggerRemark,
+          selectedApprovaler: {
+            key: res.data[0].personId,
+            label: res.data[0].personName
+          }
+        }
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+    this.setState({
+      sendButtonLoading: false
+    });
   };
+
+  handleYearChange = v =>
+    this.setState({ selectedYear: v }, () => this.getAppoval(v));
+
   render() {
-    const { years, selectedYear, userData, fetching } = this.state;
+    const {
+      years,
+      selectedYear,
+      userData,
+      fetching,
+      approvalRecord,
+      remindData,
+      sendButtonLoading
+    } = this.state;
 
     return (
       <div className="tranning-detail">
@@ -133,12 +215,17 @@ class TranningDetail extends React.Component {
             hasBeBtns={false}
             hasRowModify={false}
             hasRowSelection={false}
+            cmswhere={`C3_613941384328 = '${selectedYear}'`}
           />
         </div>
         <sider className="tranning-detail_sider">
           <div>
             <Form.Item label="请选择财年：" required>
-              <Select style={{ width: '100%' }} value={selectedYear}>
+              <Select
+                style={{ width: '100%' }}
+                value={selectedYear}
+                onChange={this.handleYearChange}
+              >
                 {years.map(item => (
                   <Option key={item.REC_ID} value={item.C3_420161949106}>
                     {item.C3_420161949106}
@@ -155,7 +242,8 @@ class TranningDetail extends React.Component {
                 onSearch={this.fetchUser}
                 onChange={this.handleApprovalerChange}
                 labelInValue
-                // value={value}
+                value={remindData.selectedApprovaler}
+                disabled={approvalRecord}
                 loading={fetching}
               >
                 {userData.map(d => (
@@ -164,29 +252,57 @@ class TranningDetail extends React.Component {
               </Select>
             </Form.Item>
             <Form.Item label="附语：">
-              <TextArea rows={6} onChange={this.handleAdditionalWords} />
+              <TextArea
+                rows={6}
+                onChange={this.handleAdditionalWords}
+                value={remindData.additionalWords}
+                disabled={approvalRecord}
+              />
             </Form.Item>
-            <Button type="primary" onClick={this.sendEmail}>
-              发送邮件提醒审批
-            </Button>
+
+            {approvalRecord ? (
+              <Button
+                type="primary"
+                disabled={approvalRecord}
+                loading={sendButtonLoading}
+              >
+                发送邮件提醒审批
+              </Button>
+            ) : (
+              <Popconfirm title="确认提交吗？" onConfirm={this.sendEmail}>
+                <Button
+                  type="primary"
+                  disabled={approvalRecord}
+                  loading={sendButtonLoading}
+                >
+                  发送邮件提醒审批
+                </Button>
+              </Popconfirm>
+            )}
+
             <Divider />
-            <div className="tranning-detail_sider_approval">
-              <div className="tranning-detail_sider_approval_item">
-                <span>
-                  <b>审批结果:</b>
-                </span>
+            {approvalRecord && (
+              <div className="tranning-detail_sider_approval">
+                <div className="tranning-detail_sider_approval_item">
+                  <span>
+                    <b>审批结果:</b>
+                  </span>
+                  {approvalRecord.isApprove}
+                </div>
+                <div className="tranning-detail_sider_approval_item">
+                  <span>
+                    <b>审批时间:</b>
+                  </span>
+                  {approvalRecord.approveTime}
+                </div>
+                <div className="tranning-detail_sider_approval_item">
+                  <span>
+                    <b>审批附语:</b>
+                  </span>
+                  <p>{approvalRecord.remark}</p>
+                </div>
               </div>
-              <div className="tranning-detail_sider_approval_item">
-                <span>
-                  <b>审批时间:</b>
-                </span>
-              </div>
-              <div className="tranning-detail_sider_approval_item">
-                <span>
-                  <b>审批附语:</b>
-                </span>
-              </div>
-            </div>
+            )}
           </div>
         </sider>
       </div>
