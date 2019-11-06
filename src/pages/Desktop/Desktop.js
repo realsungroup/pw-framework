@@ -205,6 +205,7 @@ class Desktop extends React.Component {
         let temp = folders.some(folder =>
           folder.apps.some(app => {
             if (app.title === qsObj.title) {
+              app.fnmoduleUrl = `fnmodule${this.props.history.location.search}`;
               appArr.push({ app, typeName: folder.typeName });
               return true;
             }
