@@ -26,7 +26,7 @@ import http from 'Util20/api';
 import { TableData } from '../../common/loadableCommon';
 import Calendar from 'ic-components/lib/Calendar';
 import 'ic-components/lib/Calendar/style/index.less';
-
+import qs from 'qs';
 import CourseDetail from './CourseDetail';
 import CourseApply from './CourseApply';
 import FeedBackAndPlan from './FeedBackAndPlan/FeedBackAndPlan';
@@ -168,8 +168,19 @@ class EmployeeCourses extends React.Component {
       });
       let myCourses = res.data;
       if (myCourses.length > 0) {
-        myCourses[0].checked = true;
-        let selectedCourse = { ...myCourses[0] };
+        const qsObj = qs.parse(window.location.search.substring(1));
+        const { targetID } = qsObj;
+        let target = myCourses.find(
+          item => item.REC_ID.toString() === targetID
+        );
+        let selectedCourse = {};
+        if (target) {
+          target.checked = true;
+          selectedCourse = {...target}
+        } else {
+          myCourses[0].checked = true;
+          selectedCourse = { ...myCourses[0] };
+        }
         let importantIndex = 0;
         let calendarEvents = myCourses.map(item => {
           return {
@@ -614,25 +625,6 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  getColor(key) {
-    let color = '#aaa';
-    switch (key) {
-      case 'Y':
-        color = 'green';
-        break;
-      case 'N':
-        color = '#aaa';
-        break;
-      case 'ing':
-        color = 'blue';
-        break;
-      default:
-        color = '#aaa';
-        break;
-    }
-    return color;
-  }
-
   //关闭心得模态窗
   onCloseTipModal = () =>
     this.setState({
@@ -906,7 +898,6 @@ class EmployeeCourses extends React.Component {
                   <Icon
                     type="like"
                     className="course-like"
-                    style={{ fontSize: 20, marginLeft: 8 }}
                   />
                 </Popconfirm>
               )}
@@ -914,8 +905,8 @@ class EmployeeCourses extends React.Component {
                 <Tooltip title="已点赞课程">
                   <Icon
                     type="like"
-                    style={{ fontSize: 20, marginLeft: 8 }}
-                    theme="twoTone"
+                    theme="filled"
+                    className="course-like"
                   />
                 </Tooltip>
               )}

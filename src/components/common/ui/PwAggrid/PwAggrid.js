@@ -262,10 +262,12 @@ class PwAggrid extends React.Component {
           case 8:
             aggridColumn.filter = 'agDateColumnFilter';
             break;
-          // case 1:
-          // case 5:
-          //   aggridColumn.filter = 'agTextColumnFilter';
-          //   break;
+          case 1:
+          case 5:
+            // aggridColumn.filter = 'agTextColumnFilter';
+            aggridColumn.filter = true;
+
+            break;
 
           default:
             aggridColumn.filter = 'agNumberColumnFilter';
@@ -501,7 +503,7 @@ class PwAggrid extends React.Component {
                 </Popconfirm>
               )}
 
-              {!isEditing && (
+              {hasDelete && !isEditing && (
                 <Popconfirm
                   title="确认删除？"
                   onConfirm={this.handleDeleteRecords}
@@ -535,7 +537,7 @@ class PwAggrid extends React.Component {
                   {getIntlVal(intl.locale, enModifyText, modifyText)}
                 </Button>
               )}
-              {hasDelete && (
+              {/* {hasDelete && (
                 <ButtonWithConfirm
                   popConfirmProps={{
                     onConfirm: this.handleDelete,
@@ -552,7 +554,7 @@ class PwAggrid extends React.Component {
                 >
                   <FM id="common.delete" defaultMessage="删除" />
                 </ButtonWithConfirm>
-              )}
+              )} */}
             </div>
 
             {actionBarExtraAg && this.gridApi && (

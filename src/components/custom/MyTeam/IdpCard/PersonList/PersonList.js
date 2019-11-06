@@ -1,5 +1,16 @@
 import React from 'react';
-import { message, Button, Modal, Spin, Tag, Input, Icon, Select } from 'antd';
+import {
+  message,
+  Button,
+  Modal,
+  Spin,
+  Tag,
+  Input,
+  Icon,
+  Select,
+  notification,
+  Popconfirm
+} from 'antd';
 import './PersonList.less';
 import http from 'Util20/api';
 import TableData from '../../../../common/data/TableData';
@@ -13,6 +24,8 @@ import PlanProgress from '../../../CreatePlan/PlanProgress';
 
 const personID = '618488751596'; //下属发展人员表ID
 const groupID = '625831852694'; //分组表ID
+const hrMangerID = '617725533684'; //发展计划总表
+
 const { Option } = Select;
 class PersonList extends React.Component {
   state = {
@@ -36,9 +49,34 @@ class PersonList extends React.Component {
   };
 
   componentDidMount = async () => {
-    console.log('status', this.props.record.status);
+    // console.log('status', this.props.record);
     this.getTags();
+    if (this.props.role === 'Manger') {
+      this.getEmployee();
+    }
     this.setState({ status: this.props.record.status });
+  };
+
+  getEmployee = async () => {
+    try {
+      let res = await http().getTable({
+        resid: '626379111634'
+      });
+      this._employee = [...res.data];
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
+  openNotification = success => {
+    const args = {
+      message: '通知',
+      description: '已通知全部人员',
+      icon: <Icon type="smile" style={{ color: '#108ee9', fontSize: 24 }} />,
+      duration: 0
+    };
+    notification.open(args);
   };
 
   getTags = async () => {
@@ -322,6 +360,50 @@ class PersonList extends React.Component {
     }
   };
 
+  noticeAllEmployee = async () => {
+    try {
+      const res = await http().modifyRecords({
+        resid: hrMangerID,
+        data: [{ ...this.props.record, employWrite: 'Y' }]
+      });
+      this.openNotification(res.data[0].C3_626373935087 === 'Y');
+    } catch (error) {
+      console.error(error);
+      notification.open({
+        message: '出错',
+        description: error.message,
+        duration: 0
+      });
+    }
+  };
+  noticeEmployee = async () => {
+    try {
+      await http().modifyRecords({
+        resid: '626379111634',
+        data: this._employee.map(item => {
+          return {
+            REC_ID: item.REC_ID,
+            sEmployeeWrite: 'Y'
+          };
+        })
+      });
+      const args = {
+        message: '通知',
+        description: '已通知全体下属',
+        icon: <Icon type="smile" style={{ color: '#108ee9', fontSize: 24 }} />,
+        duration: 0
+      };
+      notification.open(args);
+    } catch (error) {
+      console.error(error);
+      notification.open({
+        message: '出错',
+        description: error.message,
+        duration: 0
+      });
+    }
+  };
+
   render() {
     const {
       visible,
@@ -450,13 +532,7 @@ class PersonList extends React.Component {
                   >
                     开启员工填写
                   </Button>
-                  <Button
-                    onClick={() => {
-                      // this.onEmployeeWrite(dataSource, selectedRowKeys);
-                    }}
-                  >
-                    开启全部员工填写
-                  </Button>
+
                   {/* {this.props.role === 'HR' ? (
                   <Button
                     onClick={() => {
@@ -473,6 +549,22 @@ class PersonList extends React.Component {
                   >
                     关闭员工填写
                   </Button>
+                  {this.props.role === 'HR' && (
+                    <Popconfirm
+                      title="确定开启全部员工填写？"
+                      onConfirm={this.noticeAllEmployee}
+                    >
+                      <Button>开启全部员工填写</Button>
+                    </Popconfirm>
+                  )}
+                  {this.props.role === 'Manger' && (
+                    <Popconfirm
+                      title="确定开启全体下属填写？"
+                      onConfirm={this.noticeEmployee}
+                    >
+                      <Button>开启全体下属填写</Button>
+                    </Popconfirm>
+                  )}
                 </React.Fragment>
               );
             }}

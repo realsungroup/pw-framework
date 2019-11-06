@@ -210,7 +210,7 @@ class TranningDetail extends React.Component {
             hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}
-            hasDelete={false}
+            hasDelete={true}
             hasModify={false}
             hasBeBtns={false}
             hasRowModify={false}
