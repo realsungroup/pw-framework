@@ -299,7 +299,7 @@ class ReviewEmployee extends React.Component {
   closeModals = () => {
     this.setState({
       noticeModalVisible: false,
-      addEmployeesVisible:false,
+      addEmployeesVisible: false,
       selectCourseArrangementVisible: false,
       targetCourseArrangement: '',
       selectedEmployees: []
@@ -330,59 +330,70 @@ class ReviewEmployee extends React.Component {
           {this.renderCourseName()}
 
           <div className="review_employee-table_action_bar_extra-buttons">
-            <Tooltip placement="bottomLeft" title="不发送通知邮件直接将员工加入通知上课的列表">
-			<Button
-              onClick={() => {
-                this.setState({ addEmployeesVisible: true });
-              }}
+            <Tooltip
+              placement="bottomLeft"
+              title="不发送通知邮件直接将员工加入通知上课的列表"
             >
-              添加上课人员
-            </Button>
-			</Tooltip>
-			<Tooltip placement="bottomLeft" title="将一堂课里的人员移动到另一堂课">
-            <Button
-              onClick={() => {
-                if (record.selectedRowKeys.length) {
-                  this.onMoveEmployees(record);
-                } else {
-                  this.setState({
-                    selectCourseArrangementVisible: false
-                  });
-                  message.error('请选择至少一条记录');
-                }
-              }}
+              <Button
+                onClick={() => {
+                  this.setState({ addEmployeesVisible: true });
+                }}
+              >
+                添加上课人员
+              </Button>
+            </Tooltip>
+            <Tooltip
+              placement="bottomLeft"
+              title="将一堂课里的人员移动到另一堂课"
             >
-              移动人员
-            </Button>
-			</Tooltip>
-			
-			<Tooltip placement="bottomLeft" title="选择指定员工通知他们报名">
-            <Button
-			  type='primary'
-              onClick={() => {
-                this.setState({ noticeModalVisible: true });
-              }}
-            >
-              通知特定人员报名
-            </Button>
-			</Tooltip>
+              <Button
+                onClick={() => {
+                  if (record.selectedRowKeys.length) {
+                    this.onMoveEmployees(record);
+                  } else {
+                    this.setState({
+                      selectCourseArrangementVisible: false
+                    });
+                    message.error('请选择至少一条记录');
+                  }
+                }}
+              >
+                移动人员
+              </Button>
+            </Tooltip>
+
+            <Tooltip placement="bottomLeft" title="选择指定员工通知他们报名">
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.setState({ noticeModalVisible: true });
+                }}
+              >
+                通知特定人员报名
+              </Button>
+            </Tooltip>
             <Popconfirm
               title="通知全部人员报名"
               onConfirm={() => {
                 this.setState({ isShowModal: true }, this.handleNotice);
               }}
-            ><Tooltip placement="bottomLeft" title="点击后全体员工将收到这门课的报名通知">
-    
-              <Button type='primary'>通知全部人员报名</Button>
-			  </Tooltip>
+            >
+              <Tooltip
+                placement="bottomLeft"
+                title="点击后全体员工将收到这门课的报名通知"
+              >
+                <Button type="primary">通知全部人员报名</Button>
+              </Tooltip>
             </Popconfirm>
             <Popconfirm
               title="报名截止？"
               onConfirm={() => {
                 this.comfirmList();
               }}
-            ><Tooltip placement="bottomLeft" title="点击后员工无法再报名">
-              <Button type='danger'>报名截止</Button>			  </Tooltip>
+            >
+              <Tooltip placement="bottomLeft" title="点击后员工无法再报名">
+                <Button type="danger">报名截止</Button>{' '}
+              </Tooltip>
             </Popconfirm>
           </div>
         </div>
