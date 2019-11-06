@@ -22,7 +22,7 @@ const Search = Input.Search;
 /**
  * PwTable
  */
-@pureRender
+// @pureRender
 class PwTable extends React.Component {
   static propTypes = propTypes;
 

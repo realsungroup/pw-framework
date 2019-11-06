@@ -15,7 +15,9 @@ import {
   Icon,
   Empty,
   Table,
-  Tooltip
+  Tooltip,
+  Steps,
+  Popover
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -33,11 +35,19 @@ import EmployeeApplyCourse from './EmployeeApplyCourse';
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Search } = Input;
+const { Step } = Steps;
 const resid = '615378031605'; //课程明细表id
 const TIPS_RESID = '614964195659'; //心得表id
 const YEAR_RESID = '420161931474'; //财年表id
 const REVIEW_RECOR_RESID = '615663201836'; // 申请单审批记录表id  C3_615657103208 课程安排明细编号
-const TABBARSTYLE = { display: 'flex', justifyContent: 'space-around' };
+const TABBARSTYLE = {
+  display: 'flex',
+  justifyContent: 'space-around'
+};
+const CardIconStyle = {
+  fontSize: 16,
+  paddingLeft: 8
+};
 
 const columns = [
   {
@@ -62,10 +72,21 @@ const columns = [
   }
 ];
 
+const customDot = (dot, { status, index }) => (
+  <Popover
+    content={
+      <span>
+        step {index} status: {status}
+      </span>
+    }
+  >
+    {dot}
+  </Popover>
+);
 class EmployeeCourses extends React.Component {
   state = {
     myCourses: [], //我的课程
-    selectedCourse: null, //选中的课程
+    selectedCourse: {}, //选中的课程
     approvalRecords: [], //申请单审批记录
     calendarEvents: [], //日历事件
     wid: '80%',
@@ -116,7 +137,8 @@ class EmployeeCourses extends React.Component {
     isfirst: true, //是否首次加载组件
     loadings: {
       submitTipLoading: false,
-      submitPlanBtnLoading: false
+      submitPlanBtnLoading: false,
+      submitApplyBtnLoading: false
     }
   };
   componentDidMount = async () => {
@@ -135,7 +157,6 @@ class EmployeeCourses extends React.Component {
         getsubresource: 1
       });
       let myCourses = res.data;
-      console.log(myCourses);
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
         let selectedCourse = { ...myCourses[0] };
@@ -322,83 +343,7 @@ class EmployeeCourses extends React.Component {
     let selectedCourse = { ...item };
     this.setState({ myCourses, selectedCourse });
   };
-  renderHeader = () => (
-    <header className="emploee_courses-header">
-      <div style={{ flex: 1 }}>
-        <Select
-          className="emploee_courses-header-selector"
-          value={this.state.selectedYear}
-          onChange={e => {
-            this.setState(
-              {
-                selectedYear: e
-              },
-              this.searchMyCourse
-            );
-          }}
-        >
-          {this.state.years.map(item => (
-            <Option key={item.REC_ID} value={item.C3_420161949106}>
-              {item.C3_420161949106}
-            </Option>
-          ))}
-        </Select>
-        <Select
-          defaultValue="all"
-          className="emploee_courses-header-selector"
-          value={this.state.selcetedCourseType}
-          onChange={e => {
-            this.setState(
-              {
-                selcetedCourseType: e
-              },
-              this.searchMyCourse
-            );
-          }}
-        >
-          <Option value="all">内训/外训</Option>
-          <Option value="外训">外训</Option>
-          <Option value="内训">内训</Option>
-        </Select>
 
-        <Search
-          className="emploee_courses-header-search"
-          placeholder="请输入"
-          onSearch={value =>
-            this.setState({ searchKey: value }, this.searchMyCourse)
-          }
-          enterButton
-          allowClear
-        />
-      </div>
-      <div className="emploee_courses-header-status_description">
-        <div className="emploee_courses-header-status_description-item">
-          <span
-            style={{
-              backgroundColor: '#57c22d'
-            }}
-          />
-          已完成
-        </div>
-        <div className="emploee_courses-header-status_description-item">
-          <span
-            style={{
-              backgroundColor: '#2593fc'
-            }}
-          />
-          进行中
-        </div>
-        <div className="emploee_courses-header-status_description-item">
-          <span
-            style={{
-              backgroundColor: '#aaa'
-            }}
-          />
-          待完成
-        </div>
-      </div>
-    </header>
-  );
   handleDetailClick = () => {
     this.setState({
       visible: true
@@ -473,6 +418,12 @@ class EmployeeCourses extends React.Component {
     let res,
       record = { ...this.state.selectedCourse },
       extraCharge = this.state.extraCost;
+    this.setState({
+      loadings: {
+        ...this.state.loadings,
+        submitApplyBtnLoading: true
+      }
+    });
     try {
       res = await http().modifyRecords({
         resid: resid,
@@ -495,6 +446,12 @@ class EmployeeCourses extends React.Component {
       console.log(error);
       message.error(error.message);
     }
+    this.setState({
+      loadings: {
+        ...this.state.loadings,
+        submitApplyBtnLoading: false
+      }
+    });
   };
 
   //打开填写心得模态窗
@@ -647,97 +604,6 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  renderCoursesList = () => {
-    let { myCourses } = this.state;
-    return myCourses.length ? (
-      myCourses.map((item, index) => (
-        <Card
-          extra={<Radio checked={item.checked} />}
-          title={`${item.courseType} / ${item.C3_613941384592}`}
-          style={{ marginBottom: '12px', cursor: 'pointer' }}
-          key={item.REC_ID}
-          bodyStyle={{ padding: 8 }}
-          headStyle={{ padding: 4 }}
-          onClick={this.handleSelectCourse.bind(this, item)}
-        >
-          <div className="emploee_courses-main-course_content">
-            <div className="course_item">
-              讲师:
-              <span style={{ paddingLeft: 12 }}>{item.C3_613941386081}</span>
-            </div>
-            {/* <div className="course_item">
-            人数:
-            <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
-          </div> */}
-            <div className="course_item">
-              地点:
-              <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
-            </div>
-            <div className="course_item">
-              开始时间:
-              <span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
-            </div>
-            <div className="course_item">
-              结束时间:
-              <span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
-            </div>
-          </div>
-          <Divider style={{ margin: '12px 0' }} />
-          <div className="emploee_courses-main-course_footer">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  backgroundColor:
-                    item.C3_623173774889 === 'Y' ? '#5bc039' : '#2470e8',
-                  marginRight: 6
-                }}
-              />
-              {item.C3_623173774889 === 'Y' ? '已完成' : '未完成'}
-            </div>
-            <div>
-              <Button
-                type="link"
-                icon="info-circle"
-                onClick={() => {
-                  this.handleDetailClick();
-                }}
-              >
-                课程详情
-              </Button>
-              {item.isLike !== 'Y' && (
-                <Popconfirm
-                  title="确认点赞吗？"
-                  onConfirm={() => {
-                    this.likeCourse(
-                      { REC_ID: item.REC_ID, isLike: 'Y' },
-                      index
-                    );
-                  }}
-                >
-                  <Icon type="like" style={{ fontSize: 20, marginLeft: 8 }} />
-                </Popconfirm>
-              )}
-              {item.isLike === 'Y' && (
-                <Tooltip title="已点赞课程">
-                  <Icon
-                    type="like"
-                    style={{ fontSize: 20, marginLeft: 8 }}
-                    theme="twoTone"
-                  />
-                </Tooltip>
-              )}
-            </div>
-          </div>
-        </Card>
-      ))
-    ) : (
-      <Empty style={{ marginTop: '100px' }}></Empty>
-    );
-  };
-
   getColor(key) {
     let color = '#aaa';
     switch (key) {
@@ -778,7 +644,7 @@ class EmployeeCourses extends React.Component {
       rate,
       internalTrainingOtherAdvice
     } = this.state;
-    
+
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -923,322 +789,378 @@ class EmployeeCourses extends React.Component {
       message.error(error.message);
     }
   };
+
+  renderHeader = () => (
+    <header className="emploee-courses_courses-manage-header">
+      <Select
+        className="emploee-courses_courses-manage-header-selector"
+        value={this.state.selectedYear}
+        onChange={e => {
+          this.setState(
+            {
+              selectedYear: e
+            },
+            this.searchMyCourse
+          );
+        }}
+      >
+        {this.state.years.map(item => (
+          <Option key={item.REC_ID} value={item.C3_420161949106}>
+            {item.C3_420161949106}
+          </Option>
+        ))}
+      </Select>
+      <Select
+        defaultValue="all"
+        className="emploee-courses_courses-manage-header-selector"
+        value={this.state.selcetedCourseType}
+        onChange={e => {
+          this.setState(
+            {
+              selcetedCourseType: e
+            },
+            this.searchMyCourse
+          );
+        }}
+      >
+        <Option value="all">内训/外训</Option>
+        <Option value="外训">外训</Option>
+        <Option value="内训">内训</Option>
+      </Select>
+
+      <Search
+        className="emploee-courses_courses-manage-header-search"
+        placeholder="请输入"
+        onSearch={value =>
+          this.setState({ searchKey: value }, this.searchMyCourse)
+        }
+        enterButton
+        allowClear
+      />
+    </header>
+  );
+
+  renderCoursesList = () => {
+    let { myCourses } = this.state;
+    return myCourses.length ? (
+      myCourses.map((item, index) => (
+        <Card
+          // extra={<Radio checked={item.checked} />}
+          extra={
+            <Icon
+              type="info-circle"
+              style={CardIconStyle}
+              onClick={() => {
+                this.handleDetailClick();
+              }}
+            />
+          }
+          title={`${item.courseType} / ${item.C3_613941384592}`}
+          className={`course-list_course-card ${item.checked ? 'checked' : ''}`}
+          key={item.REC_ID}
+          bodyStyle={{ padding: 16 }}
+          headStyle={{ padding: '0 16px' }}
+          bordered={false}
+          onClick={this.handleSelectCourse.bind(this, item)}
+        >
+          <div className="emploee-courses_courses-manage_course-list_course-content">
+            <div className="emploee-courses_courses-manage_course-list_course-content_items">
+              <div className="course_item">
+                讲师:
+                <span style={{ paddingLeft: 12 }}>{item.C3_613941386081}</span>
+              </div>
+              <div className="course_item">
+                地点:
+                <span style={{ paddingLeft: 12 }}>{item.C3_613941386325}</span>
+              </div>
+              <div className="course_item">
+                开始时间:
+                <span style={{ paddingLeft: 12 }}>{item.C3_615393041304}</span>
+              </div>
+              <div className="course_item">
+                结束时间:
+                <span style={{ paddingLeft: 12 }}>{item.C3_615393093633}</span>
+              </div>
+            </div>
+            <div>
+              {item.isLike !== 'Y' && (
+                <Popconfirm
+                  title="确认点赞吗？"
+                  onConfirm={() => {
+                    this.likeCourse(
+                      { REC_ID: item.REC_ID, isLike: 'Y' },
+                      index
+                    );
+                  }}
+                >
+                  <Icon
+                    type="like"
+                    className="course-like"
+                    style={{ fontSize: 20, marginLeft: 8 }}
+                  />
+                </Popconfirm>
+              )}
+              {item.isLike === 'Y' && (
+                <Tooltip title="已点赞课程">
+                  <Icon
+                    type="like"
+                    style={{ fontSize: 20, marginLeft: 8 }}
+                    theme="twoTone"
+                  />
+                </Tooltip>
+              )}
+            </div>
+          </div>
+
+          {/* <div className="emploee_courses-main-course_footer">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: '50%',
+                  backgroundColor:
+                    item.C3_623173774889 === 'Y' ? '#5bc039' : '#2470e8',
+                  marginRight: 6
+                }}
+              />
+              {item.C3_623173774889 === 'Y' ? '已完成' : '未完成'}
+            </div>
+          </div> */}
+        </Card>
+      ))
+    ) : (
+      <Empty style={{ marginTop: '100px' }}></Empty>
+    );
+  };
   render() {
-    let selectedCourse = { ...this.state.selectedCourse },
-      startColor = '#aaa',
-      endColor = '#aaa';
-    let now = moment();
-    //开始时间
-    if (
+    const { selectedCourse } = this.state;
+    const { courseType } = selectedCourse;
+    const now = moment();
+    const isAfterStart =
       selectedCourse.C3_615393041304 &&
-      now.isAfter(selectedCourse.C3_615393041304)
-    ) {
-      startColor = 'green';
-    }
-    //结束时间
-    if (
+      now.isAfter(moment(selectedCourse.C3_615393041304));
+
+    const isAfterEnd =
       selectedCourse.C3_615393093633 &&
-      now.isAfter(selectedCourse.C3_615393093633)
-    ) {
-      endColor = 'green';
-    }
+      now.isAfter(moment(selectedCourse.C3_615393093633));
     return (
-      <div className="emploee_courses">
+      <div className="emploee-courses">
         <Tabs defaultActiveKey="MyCourses" tabBarStyle={TABBARSTYLE}>
           <TabPane tab="课程申请" key="applyCourse">
             <EmployeeApplyCourse />
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
-            {this.renderHeader()}
-            <main className="emploee_courses-main">
-              <div
-                style={{
-                  flex: 1,
-                  marginRight: '12px',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <div style={{ overflow: 'scroll', flex: 1 }}>
-                  {this.renderCoursesList()}
-                </div>
-                <footer style={{ flex: 0 }}>
-                  <p>
-                    共
-                    <span style={{ color: '#2593fc', fontSize: 24 }}>
-                      {this.state.myCourses.length}
-                    </span>
-                    条记录
-                  </p>
-                </footer>
-                {/* <Pagination defaultCurrent={1} total={50} /> */}
-              </div>
-              {/* 右侧TimeLine */}
-              <div style={{ width: '30%', padding: '0 12px' }}>
-                {selectedCourse &&
-                selectedCourse.courseType &&
-                selectedCourse.courseType !== '内训' ? (
-                  <Timeline>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isSubmitPlan)}
-                    >
-                      <div>
-                        <span> 计划提交</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615392983685}
-                        </span>
-                      </div>
-                    </Timeline.Item>
-                    {/* {selectedCourse.courseType === '外训' && ( */}
-                    <>
-                      <Timeline.Item
-                        color={this.getColor(selectedCourse.C3_613956470258)}
-                      >
-                        <div>
-                          <span>计划审批</span>
-                          <span style={{ paddingLeft: 12 }}>
-                            {selectedCourse.C3_615394023182}
-                          </span>
-                        </div>
-                        <div>
-                          {selectedCourse.C3_613956470258 === 'Y' &&
-                          selectedCourse.C3_615377523072 === 'ing' ? (
-                            <span
-                              className="timeline_action"
-                              onClick={() => {
-                                this.setState({
-                                  applyVisible: true,
-                                  applyModalMode: 'modify'
-                                });
-                              }}
-                            >
-                              提交申请
-                            </span>
-                          ) : null}
-                        </div>
-                      </Timeline.Item>
-                      <Timeline.Item
-                        color={this.getColor(selectedCourse.C3_615377523072)}
-                      >
-                        <div>
-                          <span>申请单提交</span>
-                          <span style={{ paddingLeft: 12 }}>
-                            {selectedCourse.C3_615377538264}
-                          </span>
-                        </div>
-                        {selectedCourse.C3_615377523072 === 'Y' ? (
-                          <div>
-                            <span
-                              className="timeline_action"
-                              onClick={() => {
-                                this.getApprovalRecords();
-                                this.setState({
-                                  applyVisible: true,
-                                  isfirst: false
-                                });
-                              }}
-                            >
-                              查看申请单
-                            </span>
-                            <span
-                              className="timeline_action"
-                              onClick={() => {
-                                this.setState({
-                                  ReviewRecordModalVisible: true
-                                });
-                              }}
-                            >
-                              查看审批记录
-                            </span>
-                          </div>
-                        ) : null}
-                      </Timeline.Item>
-                      <Timeline.Item
-                        color={this.getColor(selectedCourse.C3_613961474297)}
-                      >
-                        <div>
-                          <span>申请单审批</span>
-                          <span style={{ paddingLeft: 12 }}>
-                            {selectedCourse.C3_615377747279}
-                          </span>
-                        </div>
-                      </Timeline.Item>
-                    </>
-                    {/* )} */}
-                    <Timeline.Item color={startColor}>
-                      <div>
-                        <span>上课开始</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615393041304}
-                        </span>
-                      </div>
-                    </Timeline.Item>
-                    <Timeline.Item color={endColor}>
-                      <div>
-                        <span>上课结束</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615393093633}
-                        </span>
-                      </div>
-                      <div>
-                        {/* 课程反馈与行动计划 是否为进行中 */}
-                        {selectedCourse.C3_615377473913 === 'ing' &&
-                        now.isAfter(selectedCourse.C3_615393093633) ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() =>
-                              this.setState({
-                                feebackVisible: true,
-                                feedbackModalMode: 'modify'
-                              })
-                            }
-                          >
-                            填写课程行动计划
-                          </span>
-                        ) : null}
-                      </div>
-                    </Timeline.Item>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.C3_615377473913)}
-                    >
-                      <div>
-                        <span>课程行动计划</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615377481222}
-                        </span>
-                      </div>
-                      <div>
-                        {selectedCourse.C3_615377473913 === 'Y' &&
-                        now.isAfter(selectedCourse.C3_615393093633) ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() =>
-                              this.setState({ feebackVisible: true })
-                            }
-                          >
-                            查看课程行动计划
-                          </span>
-                        ) : null}
-                        {selectedCourse.isSubmitFeel === 'ing' &&
-                        selectedCourse.courseType === '外训' ? (
-                          <span
-                            className="timeline_action"
-                            onClick={this.openWriteTip}
-                          >
-                            填写心得体会(分享记录)
-                          </span>
-                        ) : null}
-                      </div>
-                    </Timeline.Item>
-                    {selectedCourse.courseType === '外训' && (
-                      <Timeline.Item
-                        color={this.getColor(selectedCourse.isSubmitFeel)}
-                      >
-                        <div>
-                          <span>心得体会(分享记录)</span>
-                          <span style={{ paddingLeft: 12 }}>
-                            {selectedCourse.submitFeelTime}
-                          </span>
-                        </div>
-                        <div>
-                          {selectedCourse.isSubmitFeel === 'Y' ? (
-                            <span
-                              className="timeline_action"
-                              onClick={() => {
-                                this.setState({ tipsModalMode: 'view' });
-                                this.getTip();
-                              }}
-                            >
-                              查看心得体会(分享记录)
-                            </span>
-                          ) : null}
-                        </div>
-                      </Timeline.Item>
+            <div className="emploee-courses_courses-manage">
+              <div className="emploee-courses_courses-manage_buttons">
+                {courseType !== '内训' && (
+                  <>
+                    {/* 填写按钮 */}
+                    {selectedCourse.C3_613956470258 === 'Y' &&
+                      selectedCourse.C3_615377523072 !== 'Y' && (
+                        <button
+                          onClick={() => {
+                            this.setState({
+                              applyVisible: true,
+                              applyModalMode: 'modify'
+                            });
+                          }}
+                        >
+                          提交申请
+                        </button>
+                      )}
+                    {selectedCourse.C3_613961474297 === 'Y' &&
+                      selectedCourse.C3_615377473913 === 'ing' &&
+                      isAfterEnd && (
+                        <button
+                          onClick={() =>
+                            this.setState({
+                              feebackVisible: true,
+                              feedbackModalMode: 'modify'
+                            })
+                          }
+                        >
+                          填写课程行动计划
+                        </button>
+                      )}
+                    {courseType === '外训' &&
+                      selectedCourse.C3_615377473913 === 'Y' &&
+                      selectedCourse.isSubmitFeel === 'ing' && (
+                        <button onClick={this.openWriteTip}>
+                          填写心得体会(分享记录)
+                        </button>
+                      )}
+                    {courseType === '内训' &&
+                      selectedCourse.isInnerFeedBack === 'ing' && (
+                        <button
+                          onClick={() =>
+                            this.setState({ feebackVisible: true })
+                          }
+                        >
+                          填写课程反馈
+                        </button>
+                      )}
+                    {/* 查看按钮 */}
+                    {selectedCourse.C3_615377523072 === 'Y' && (
+                      <>
+                        <button
+                          onClick={() => {
+                            this.getApprovalRecords();
+                            this.setState({
+                              applyVisible: true,
+                              isfirst: false
+                            });
+                          }}
+                        >
+                          查看申请单
+                        </button>
+                        <button
+                          onClick={() => {
+                            this.setState({
+                              ReviewRecordModalVisible: true
+                            });
+                          }}
+                        >
+                          查看审批记录
+                        </button>
+                      </>
                     )}
-                  </Timeline>
-                ) : null}
-                {selectedCourse &&
-                selectedCourse.courseType &&
-                selectedCourse.courseType === '内训' ? (
-                  <Timeline>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isApply)}
+                    {selectedCourse.C3_615377473913 === 'Y' && (
+                      <button
+                        onClick={() => this.setState({ feebackVisible: true })}
+                      >
+                        查看课程行动计划
+                      </button>
+                    )}
+                    {courseType === '外训' &&
+                      selectedCourse.isSubmitFeel === 'Y' && (
+                        <button
+                          onClick={() => {
+                            this.setState({ tipsModalMode: 'view' });
+                            this.getTip();
+                          }}
+                        >
+                          查看心得体会(分享记录)
+                        </button>
+                      )}
+                  </>
+                )}
+                {courseType === '内训' &&
+                  selectedCourse.isInnerFeedBack === 'Y' && (
+                    <button
+                      onClick={() => this.setState({ feebackVisible: true })}
                     >
-                      <div>
-                        <span>报名</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_623960665038}
-                        </span>
-                      </div>
-                    </Timeline.Item>
-                    <Timeline.Item color={startColor}>
-                      <div>
-                        <span>上课开始</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615393041304}
-                        </span>
-                      </div>
-                    </Timeline.Item>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isSignIn)}
-                    >
-                      <div>
-                        <span>签到</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.signInTime}
-                        </span>
-                      </div>
-                    </Timeline.Item>
-                    <Timeline.Item color={endColor}>
-                      <div>
-                        <span>上课结束</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615393093633}
-                        </span>
-                      </div>
-                      <div></div>
-                    </Timeline.Item>
-                    <Timeline.Item
-                      color={this.getColor(selectedCourse.isInnerFeedBack)}
-                    >
-                      <div>
-                        <span>课程反馈</span>
-                        <span style={{ paddingLeft: 12 }}>
-                          {selectedCourse.C3_615377481222}
-                        </span>
-                      </div>
-                      <div>
-                        {/* 课程反馈与行动计划 是否为进行中 */}
-                        {selectedCourse.isInnerFeedBack === 'ing' &&
-                        now.isAfter(selectedCourse.C3_615393093633) ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() => {
-                              this.setState({
-                                feebackVisible: true,
-                                feedbackModalMode: 'modify'
-                              });
-                            }}
-                          >
-                            填写课程反馈
-                          </span>
-                        ) : null}
-                        {selectedCourse.isInnerFeedBack === 'Y' ? (
-                          <span
-                            className="timeline_action"
-                            onClick={() =>
-                              this.setState({ feebackVisible: true })
-                            }
-                          >
-                            查看课程反馈
-                          </span>
-                        ) : null}
-                      </div>
-                    </Timeline.Item>
-                  </Timeline>
-                ) : null}
+                      查看课程反馈
+                    </button>
+                  )}
               </div>
-            </main>
+              <div className="emploee-courses_courses-manage_course-steps">
+                {courseType !== '内训' && (
+                  <Steps progressDot={customDot}>
+                    <Step
+                      title="计划提交"
+                      status={
+                        selectedCourse.C3_615392983685 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615392983685}
+                    />
+                    <Step
+                      title="计划审批"
+                      status={
+                        selectedCourse.C3_615394023182 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615394023182}
+                    />
+                    <Step
+                      title="申请单提交"
+                      status={
+                        selectedCourse.C3_615377538264 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615377538264}
+                    />
+                    <Step
+                      title="申请单审批"
+                      status={
+                        selectedCourse.C3_615377747279 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615377747279}
+                    />
+                    <Step
+                      title="上课开始"
+                      status={isAfterStart ? 'finish' : 'wait'}
+                      description={selectedCourse.C3_615393041304}
+                    />
+                    <Step
+                      title="上课结束"
+                      status={isAfterEnd ? 'finish' : 'wait'}
+                      description={selectedCourse.C3_615393093633}
+                    />
+                    <Step
+                      title="课程行动计划"
+                      status={
+                        selectedCourse.C3_615377481222 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615377481222}
+                    />
+                    {courseType === '外训' && (
+                      <Step
+                        title="心得体会(分享记录)"
+                        status={
+                          selectedCourse.submitFeelTime ? 'finish' : 'wait'
+                        }
+                        description={selectedCourse.submitFeelTime}
+                      />
+                    )}
+                  </Steps>
+                )}
+                {courseType === '内训' && (
+                  <Steps progressDot={customDot}>
+                    <Step
+                      title="报名"
+                      status={
+                        selectedCourse.C3_623960665038 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_623960665038}
+                    />
+                    <Step
+                      title="上课开始"
+                      status={isAfterStart ? 'finish' : 'wait'}
+                      description={selectedCourse.C3_615393041304}
+                    />
+                    <Step
+                      title="签到"
+                      status={selectedCourse.signInTime ? 'finish' : 'wait'}
+                      description={selectedCourse.signInTime}
+                    />
+                    <Step
+                      title="上课结束"
+                      status={isAfterEnd ? 'finish' : 'wait'}
+                      description={selectedCourse.C3_615393093633}
+                    />
+                    <Step
+                      title="课程反馈"
+                      status={
+                        selectedCourse.C3_615377481222 ? 'finish' : 'wait'
+                      }
+                      description={selectedCourse.C3_615377481222}
+                    />
+                  </Steps>
+                )}
+              </div>
+              {this.renderHeader()}
+              <div className="emploee-courses_courses-manage_course-list">
+                  {this.renderCoursesList()}
+              </div>
+              <footer>
+                <p>
+                  共
+                  <span style={{ color: '#2593fc', fontSize: 24 }}>
+                    {this.state.myCourses.length}
+                  </span>
+                  条记录
+                </p>
+              </footer>
+            </div>
           </TabPane>
           <TabPane tab="课程日历" key="CoursesCalendar" forceRender>
             <div style={{ height: '100%' }}>
@@ -1295,7 +1217,12 @@ class EmployeeCourses extends React.Component {
                     cancelText="取消"
                     onConfirm={this.submitApply}
                   >
-                    <Button type="primary">提交</Button>
+                    <Button
+                      type="primary"
+                      loading={this.state.loadings.submitApplyBtnLoading}
+                    >
+                      提交
+                    </Button>
                   </Popconfirm>,
                   <Popconfirm
                     title="确定要放弃吗？"
@@ -1442,19 +1369,6 @@ class EmployeeCourses extends React.Component {
               hasRowModify={false}
               height="70vh"
               cmswhere={`C3_615657103208 = ${this.state.selectedCourse.CourseArrangeDetailID} `}
-              // actionBarExtra={() => {
-              //   return (
-              //     <Button
-              //       type="primary"
-              //       onClick={() => {
-              //         window.print();
-              //         // window.location.reload();
-              //       }}
-              //     >
-              //       打印
-              //     </Button>
-              //   );
-              // }}
             />
           ) : null}
         </Modal>
@@ -1469,7 +1383,6 @@ class EmployeeCourses extends React.Component {
             this.state.tipsModalMode === 'modify'
               ? [
                   <Button onClick={this.onCloseTipModal}>关闭</Button>,
-                  // <Button onClick={this.onSaveTip}>保存</Button>,
                   <Button
                     type="primary"
                     onClick={this.submitTip}

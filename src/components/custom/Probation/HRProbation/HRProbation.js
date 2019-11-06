@@ -1,12 +1,23 @@
 import React from 'react';
 import './HRProbation.less';
 import TableData from '../../../common/data/TableData';
-import { Button, message, Menu, Icon, Modal, Spin, Popconfirm } from 'antd';
+import {
+  Button,
+  message,
+  Menu,
+  Icon,
+  Modal,
+  Spin,
+  Popconfirm,
+  Select
+} from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
 
 const { confirm } = Modal;
+const { Option } = Select;
 const resid = '619609481002';
+const status = ['全部', '待转正', '转正中', '已转正'];
 class HRProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
@@ -16,7 +27,8 @@ class HRProbation extends React.Component {
     theme: 'light',
     selectKey: '1',
     spinning: false,
-    collapsed: false
+    collapsed: false,
+    selectedStatus: '全部'
   };
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -37,6 +49,10 @@ class HRProbation extends React.Component {
   };
   renderContent = () => {
     let selectKey = this.state.selectKey;
+    const cmswhere =
+      this.state.selectedStatus === '全部'
+        ? ''
+        : `regStatus = '${this.state.selectedStatus}'`;
     switch (selectKey) {
       case '1':
         return (
@@ -58,6 +74,7 @@ class HRProbation extends React.Component {
                   actionBarWidth={100}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
+                  cmswhere={cmswhere}
                   customRowBtns={[
                     record => (
                       <Button
@@ -68,7 +85,9 @@ class HRProbation extends React.Component {
                       </Button>
                     )
                   ]}
-                  actionBarExtra={this.actionBarExtra}
+                  actionBarExtra={this.actionBarExtra(
+                    this.state.selectedStatus
+                  )}
                 />
               </div>
             ) : (
@@ -262,10 +281,25 @@ class HRProbation extends React.Component {
     }
   };
 
-  actionBarExtra = record => {
+  handleSelectedStatus = v => this.setState({ selectedStatus: v });
+
+  actionBarExtra = _status => record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <div className="hr-probation_table-action-bar-extra_buttons">
+          <Select
+            style={{ width: 120 }}
+            value={_status}
+            onChange={this.handleSelectedStatus}
+          >
+            {status.map(item => {
+              return (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              );
+            })}
+          </Select>
           <Popconfirm
             title="确认退回申请？"
             onConfirm={() => {
