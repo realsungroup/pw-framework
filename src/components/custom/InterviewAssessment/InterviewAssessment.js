@@ -1369,7 +1369,7 @@ var hrCode='623876215000';
     return (
       <div className='IA'>
       <Spin spinning={this.state.loading}>
-        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} >
+        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} style={{maxHeight:'80vh',overflow:'auto'}}>
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
             T1~4
           </rect>
