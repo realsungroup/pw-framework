@@ -690,7 +690,7 @@ class IDLExamination extends React.Component {
                   borderTop: 'none'
                 }}
               >
-              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px',whiteSpace:'normal'}}>
+              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px',wordBreak:'normal'}}>
                 <p>  {this.props.data.TrainingDate1}</p>
               </div>
 
