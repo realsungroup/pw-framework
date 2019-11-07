@@ -419,5 +419,20 @@ http.createApi('getResourcesData', {
   method: 'post',
   url: '/api/Resource/GetAllResourcesData'
 });
+/**
+ * 更改密码传参数
+ */
+http.createApi('getResetPassword', {
+  method: 'post',
+  url: '/api/user/ResetPassword'
+});
+/**
+ * 发送验证码
+ */
+http.createApi('forgetPassword', {
+  method: 'get',
+  url: '/api/Account/ForgetPass'
+});
 
 export default http;
+

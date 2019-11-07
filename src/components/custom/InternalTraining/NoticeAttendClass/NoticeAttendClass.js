@@ -270,6 +270,17 @@ class NoticeAttendClass extends React.Component {
   };
 
   saveClassNotice = async () => {
+	// this.state.CourseArrangeID
+	// let res;
+	// try{
+	// 	res = await http().getTable({
+	// 		resid:616168186243,
+	// 	})
+		
+	// }catch(e){
+	// 	message.error(e.message);
+	// }
+	
     this.setState({
       isShowNotice: false
     });
@@ -418,14 +429,13 @@ class NoticeAttendClass extends React.Component {
                           // >
                           //   <Icon type="team" />
                           //   查看人员
-                          // </span><span
+                          // </span><span>
                           <span
                             onClick={() => {
                               this.setState({
                                 CourseArrange: item,
-                                isShowNotice: true
+                                isShowNotice: true,
                               });
-                              console.log(this.state.isShowNotice);
                             }}
                           >
                             <Icon type="message" />
@@ -588,11 +598,8 @@ class NoticeAttendClass extends React.Component {
                         className="notice_attend_class_item"
                         key={item.REC_ID}
                         hoverable
-                        actions={[<span className='noticed'
-						>
-
-                              已通知
-                            </span>,
+                        actions={[
+                          <span className="noticed">已通知</span>,
                           <span
                             onClick={() => {
                               this.setState({
@@ -658,6 +665,7 @@ class NoticeAttendClass extends React.Component {
                     hasRowView={false}
                     subtractH={240}
                     height="100%"
+                    tableComponent="ag-grid"
                   ></TableData>
                 </div>
               )}
@@ -905,6 +913,10 @@ class NoticeAttendClass extends React.Component {
             destroyOnClose
             onOk={this.saveClassNotice}
             title="编辑上课须知"
+			footer={this.state.CourseArrange.isFull?null:<span><Button onClick={() =>
+              this.setState({
+                isShowNotice: false
+              })}>取消</Button><Button type='primary' onClick={this.saveClassNotice}>发送提醒上课通知</Button></span>}
           >
             <Form.Item label="上课须知" colon cla>
               <TextArea
@@ -912,6 +924,7 @@ class NoticeAttendClass extends React.Component {
                 value={this.state.classNotice}
               />
             </Form.Item>
+			{this.state.CourseArrange.isFull?<span style={{color:'red'}}>课程已满请移动人员或删除人员</span>:null}
           </Modal>
         ) : null}
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './InternalTraining.less';
-import { Card, Table, Button, Popconfirm } from 'antd';
+import { Card, Table, Button, Popconfirm} from 'antd';
 
 const { Column } = Table;
 function areEqual(prevProps, nextProps) {
@@ -22,7 +22,12 @@ const InternalTraining = React.memo(props => {
           <React.Fragment>
             <span className="card_title_name__zh">内训课程</span>
             <span className="card_title_name__en">Internal Training</span>
-          </React.Fragment>
+			<Button style={{float:'right'}}
+			onClick={() => {
+                props.setInterDetailVis(true);
+              }}
+			>查看详情</Button>
+		  </React.Fragment>
         }
         extra={
           props.auth.hasAdd &&

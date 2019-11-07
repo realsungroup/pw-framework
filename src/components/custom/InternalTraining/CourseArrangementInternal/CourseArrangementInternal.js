@@ -454,8 +454,8 @@ class CourseArrangementInternal extends React.Component {
                         </span>
                         <Spin  className='spinoimg' spinning={this.state.loading}>
 
-                        <Switch defaultChecked={item.isDivisionCourse=="Y"?true:false} style={{float:'right'}} onChange={v=>{this.autoSp(v,item,key)}}/>
-                        <span style={{fontWeight:"normal",float:'right',marginRight:'8px'}}>是否自动拆课</span>
+                        <Switch defaultChecked={item.isDivisionCourse=="Y"?true:false} style={{float:'right',display:'none'}} onChange={v=>{this.autoSp(v,item,key)}}/>
+                        <span style={{fontWeight:"normal",float:'right',marginRight:'8px',display:'none'}}>是否自动拆课</span>
                         </Spin>
                       </div>
                     }
