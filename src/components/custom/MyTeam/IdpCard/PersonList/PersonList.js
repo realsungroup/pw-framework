@@ -473,7 +473,7 @@ class PersonList extends React.Component {
             hasAdd={false}
             hasModify={false}
             hasRowDelete={true}
-            hasDelete={false}
+            hasDelete={true}
             hasRowModify={false}
             hasRowView={this.state.status == '已完成' ? true : false}
             actionBarFixed={true}
