@@ -551,3 +551,9 @@ export const TranningDetailApproval = Loadable({
     return minLoading;
   }
 });
+export const SearchForEmployee = Loadable({
+  loader: () => import('./SearchForEmployee'),
+  loading() {
+    return minLoading;
+  }
+});

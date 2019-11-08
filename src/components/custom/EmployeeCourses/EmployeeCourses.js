@@ -141,6 +141,16 @@ class EmployeeCourses extends React.Component {
       submitApplyBtnLoading: false
     }
   };
+  // 课程卡片位置调整
+  performCard=()=>{
+	  var l=this.state.myCourses.length;
+	  var w=Number(window.innerWidth);
+	  console.log('l')
+	  if((l==0)||((l*376)<w)){
+		  console.log('jinle')
+		  this.setState({windowShow:{justifyContent:'center'}})
+	  }
+  }
   componentDidMount = async () => {
     await this.getYears();
     this.getCourses();
@@ -192,6 +202,7 @@ class EmployeeCourses extends React.Component {
         });
         this.setState({ myCourses, selectedCourse, calendarEvents });
       }
+	  this.performCard()
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -464,7 +475,6 @@ class EmployeeCourses extends React.Component {
       }
     });
   };
-
   //打开填写心得模态窗
   openWriteTip = async () => {
     this.setState({
@@ -943,7 +953,7 @@ class EmployeeCourses extends React.Component {
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             <div className="emploee-courses_courses-manage">
-              <div className="emploee-courses_courses-manage_buttons">
+              <div className={this.state.myCourses.length>0?"emploee-courses_courses-manage_buttons":'hidden'}>
                 {courseType !== '内训' && (
                   <>
                     {/* 填写按钮 */}
@@ -1045,7 +1055,7 @@ class EmployeeCourses extends React.Component {
                     </button>
                   )}
               </div>
-              <div className="emploee-courses_courses-manage_course-steps">
+              <div className={this.state.myCourses.length>0?"emploee-courses_courses-manage_course-steps":'hidden'}>
                 {courseType !== '内训' && (
                   <Steps progressDot={customDot}>
                     <Step
@@ -1139,8 +1149,8 @@ class EmployeeCourses extends React.Component {
                 )}
               </div>
               {this.renderHeader()}
-              <div className="emploee-courses_courses-manage_course-list">
-                {this.renderCoursesList()}
+              <div className="emploee-courses_courses-manage_course-list" style={this.state.windowShow}>
+                  {this.renderCoursesList()}
               </div>
               <footer>
                 <p>

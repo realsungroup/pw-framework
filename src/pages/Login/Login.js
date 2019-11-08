@@ -214,7 +214,8 @@ mailResPSW = async() =>{
 		try{
 			res=http().forgetPassword({
 				badgeno:this.state.userNameLogin,
-				enterprisecode:parseInt(100000*Math.random()^(Math.random()))
+        enterprisecode:parseInt(100000*Math.random()^(Math.random())),
+        sendEmail:'Y'
 			})
 			
 			this.setState({loading:false,isSend:true});
@@ -398,14 +399,14 @@ subResPSW = async() =>{
 		  visible={this.state.showForget}
 		  onCancel={() => this.forgetPSW(false)}
 		  destroyOnClose
-		  width={'20vw'}
+		  width={'800px'}
 		  
 		  onOk={()=>this.subResPSW()}
 		>
 			<p style={{marginBottom:'8px'}}>员工ID</p><Input type='text' placeholder='请输入员工ID' style={{marginBottom:'8px'}} value={this.state.userNameLogin} onChange={v=>{this.setState({userNameLogin:v.target.value})}}/>
 			<p style={{marginBottom:'8px'}}>新密码</p><Input.Password placeholder='请输入新密码' style={{marginBottom:'8px'}} value={this.state.PSWNew} onChange={v=>{this.setState({PSWNew:v.target.value})}}/>
 			<p style={{marginBottom:'8px'}}>再次输入新密码</p><Input.Password placeholder='请再次输入新密码' value={this.state.PSWNewEcho} onChange={v=>{this.setState({PSWNewEcho:v.target.value})}} style={{marginBottom:'8px'}}/>
-			<p style={{marginBottom:'8px'}}>请输入验证码</p><Input type='text' style={{width:'60%'}}placeholder='请输入邮件中的验证码' value={this.state.OTP} onChange={v=>{this.setState({OTP:v.target.value})}}/><Button disabled={this.state.isSend} style={{marginLeft:'5%',verticalAlign:'top',width:'35%'}} onClick={this.mailResPSW}>{this.state.isSend?('等待'+this.state.timer+'秒'):'发送验证邮件'}</Button>
+			<p style={{marginBottom:'8px'}}>请输入验证码</p><Input type='text' style={{width:'calc(100% - 136px)'}}placeholder='请输入邮件中的验证码' value={this.state.OTP} onChange={v=>{this.setState({OTP:v.target.value})}}/><Button type='normal' disabled={this.state.isSend} style={{marginLeft:'16px',verticalAlign:'top',width:'120px'}} onClick={this.mailResPSW}>{this.state.isSend?('等待'+this.state.timer+'秒'):'发送验证邮件'}</Button>
 			<span style={{marginTop:'8px',color:'red'}}>{this.state.PSWNewEcho!=this.state.PSWNew?'两次输入的新密码不一致':null}</span>
 		</Modal>
       </div>

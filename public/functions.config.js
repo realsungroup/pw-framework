@@ -1752,3 +1752,7 @@ window[625853614245] = {
   name: 'TranningDetailApproval',
   title: '内外训明细审批'
 };
+window[626452876459] = {
+  name: 'SearchForEmployee',
+  title: '求职者查询'
+};

@@ -552,7 +552,7 @@ class IdLindex extends Component {
     try {
 		  res = await http().getTable({
 		    resid: 613152690063,
-		    cmswhere: `IDCardNumber=${value}`,
+		    cmswhere: `IDCardNumber='${value}'`,
 		  });
 		  if(res.data.length>0){
 		  			  this.setState({showAdd:true});
@@ -634,7 +634,7 @@ class IdLindex extends Component {
                           this.setState({showAssessment:true, selectedRecord:record});
 
                         }}
-                        style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
+                        style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                       >
                         Modify
                       </Button>
@@ -676,7 +676,7 @@ class IdLindex extends Component {
                             // this.getFormData(record);
 
                           }}
-                          style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
+                          style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                         >
                           修改
                         </Button>
