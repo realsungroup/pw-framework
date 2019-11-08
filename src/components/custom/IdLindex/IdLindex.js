@@ -676,7 +676,7 @@ class IdLindex extends Component {
                             // this.getFormData(record);
 
                           }}
-                          style={{marginTop:'8px',fontSize:'14px',height:'24px',padding:'0 7px'}}
+                          style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                         >
                           修改
                         </Button>
