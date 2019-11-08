@@ -349,7 +349,7 @@ class PersonList extends React.Component {
     try {
       await http().removeRecords({
         resid: groupID,
-        data: [{ REC_ID: tagid }]
+        data: [{ REC_ID: tagid ,isDelete:'Y'}]
       });
       this.setState({
         tags: this.state.tags.filter(item => item.REC_ID !== tagid)
@@ -473,7 +473,7 @@ class PersonList extends React.Component {
             hasAdd={false}
             hasModify={false}
             hasRowDelete={true}
-            hasDelete={false}
+            hasDelete={true}
             hasRowModify={false}
             hasRowView={this.state.status == '已完成' ? true : false}
             actionBarFixed={true}

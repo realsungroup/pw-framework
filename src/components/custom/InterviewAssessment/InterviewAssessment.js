@@ -28,6 +28,7 @@ class InterviewAssessment extends React.Component {
         interviewer:'',
         interviewName:'',
         interviewer2:'',
+		secondRoundInterviewerName:'',
         chara:'T1/T2/T3/T4',
         eduOther:'',
         graFrom:'',
@@ -682,6 +683,7 @@ var hrCode='623876215000';
         interviewer:res.data[0].interviewer,
         interviewName:res.data[0].interviewName,
         interviewer2:res.data[0].secondRoundInterviewer,
+		secondRoundInterviewerName:res.data[0].secondRoundInterviewerName,
         round2:res.data[0].isSecondRound,
         isBack:res.data[0].isBack,
         date:res.data[0].date,//缺
@@ -1312,6 +1314,7 @@ var hrCode='623876215000';
            interviewer:this.state.interviewer,
            interviewName:this.state.interviewName,
            secondRoundInterviewer:this.state.interviewer2,
+		   secondRoundInterviewerName:this.state.secondRoundInterviewerName,
            isSecondRound:this.state.round2,
            isBack:this.state.isBack,
            date:this.state.date,//缺
@@ -1369,7 +1372,7 @@ var hrCode='623876215000';
     return (
       <div className='IA'>
       <Spin spinning={this.state.loading}>
-        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} style={{maxHeight:'80vh',overflow:'auto'}}>
+        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} style={{maxHeight:'70vh',padding:'8px',overflow:'auto'}}>
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
             T1~4
           </rect>
@@ -1398,7 +1401,7 @@ var hrCode='623876215000';
             S4
           </rect>
         </div>
-        <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden'}>
+        <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden' }style={{marginLeft:'8px',padding:'8px'}}>
           <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}}>
             Hide Retest
           </rect>
@@ -1450,7 +1453,7 @@ var hrCode='623876215000';
                 <span>Name of Interviewee</span>
               </li>
               <li>
-                <b>应聘职位</b><p> {this.state.position}</p>
+                <b>应聘职位</b><p style={{height:'21px'}}> {this.state.position}</p>
                 <span>Position</span>
               </li>
               <li>
@@ -1573,7 +1576,7 @@ var hrCode='623876215000';
 
                   <input type='radio' name='vTE' id='vTE4' value='4' checked={this.state.vTE=='4'?'checked':''} onChange={v=>{this.handlechange("vTE",v,'vTE4')}}/><label for='vTE4'>4</label>
 
-                  <input type='radio' name='vTE' id='vTE5' value='5' checked={this.state.vTE=='5'?'checked':''} onChange={v=>{this.handlechange("vEA",v,'vTE5')}}/><label for='vTE5'>5</label>
+                  <input type='radio' name='vTE' id='vTE5' value='5' checked={this.state.vTE=='5'?'checked':''} onChange={v=>{this.handlechange("vTE",v,'vTE5')}}/><label for='vTE5'>5</label>
                 </b>
               </cell>
             </rect>
@@ -2527,7 +2530,7 @@ var hrCode='623876215000';
                     <input type='radio' name='SRI' id='reject2' value='reject2' checked={this.state.SRI=='reject2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'reject2')}}/><label for='reject2'>Reject 淘汰</label>
                     <input type='radio' name='SRI' id='backup2' value='backup2' checked={this.state.SRI=='backup2'?'checked':''} onChange={v=>{this.handlechange("SRI",v,'backup2')}}/><label for='backup2'>Backup 保留</label>
                     <br/>
-                    <b style={{marginRight:'24px'}}>面试官/Interviewer:</b><input type='text'className='fillText' style={{width:'136px'}}value={this.state.interviewer2} onChange={v=>{this.handlechange("interviewer2",v)}}/>
+                    <b style={{marginRight:'24px'}}>面试官/Interviewer:</b><input type='text'className='fillText' style={{width:'136px'}}value={this.state.secondRoundInterviewerName} onChange={v=>{this.handlechange("secondRoundInterviewerName",v)}}/>
 
                     <b className={this.state.date2?'':'warning'}>日期/Date:</b>
                     <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date2} onChange={v=>{this.handlechange("date2",v)}}/>
