@@ -5,11 +5,30 @@ import http from 'Util20/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
-import { async } from 'q';
+
 const isChrome = () => {
   const userAgent = navigator.userAgent.toLowerCase();
   return userAgent.indexOf('chrome') !== -1;
 };
+const dataURIToBlob = (dataURI, fileName, callback) => {
+  var binStr = atob(dataURI.split(',')[1]),
+    len = binStr.length,
+    arr = new Uint8Array(len);
+
+  for (var i = 0; i < len; i++) {
+    arr[i] = binStr.charCodeAt(i);
+  }
+
+  callback(new Blob([arr]), fileName + '.png');
+};
+
+const callback = function(blob, fileName) {
+  var a = document.createElement('a');
+  a.setAttribute('download', fileName);
+  a.href = URL.createObjectURL(blob);
+  a.click();
+};
+
 class TotalStatical extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +37,7 @@ class TotalStatical extends Component {
       queryQuestions: [],
       answerData: [],
       queryQuestionsGroup: [],
-      data: [],
-      
+      data: []
     };
   }
   componentDidMount = () => {
@@ -86,7 +104,7 @@ class TotalStatical extends Component {
       });
     } catch (err) {
       console.error(err.message);
-      return message.error(err.message)
+      return message.error(err.message);
     }
     this.setState({
       queryQuestions: QuestionsData.data
@@ -223,10 +241,11 @@ class TotalStatical extends Component {
     }
     html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
-        const imgDataURL = canvas.toDataURL('image/png');
+        const imgDataURL = canvas.toDataURL('image/png', 1.0);
         if (isChrome()) {
+          // download(imgDataURL, queryName);
           console.log('谷歌');
-          download(imgDataURL, queryName);
+          dataURIToBlob(imgDataURL, queryName, callback);
         } else {
           console.log('其他');
           window.open(imgDataURL);
@@ -235,23 +254,43 @@ class TotalStatical extends Component {
     );
   };
 
-  // 导出pdf文件
+  // 导出pdf文件
   hanldeExportPdf = () => {
     const dom = document.querySelector('.total-statical__main');
     const { queryName } = this.state;
-
-    domtoimage
-      .toPng(dom)
-      .then(function(imgDataURL) {
-        const pdf = new jsPDF('p', 'px');
-        pdf.addImage(imgDataURL, 'PNG', 0, 0);
-        pdf.save(queryName + '.pdf');
-      })
-      .catch(function(error) {
-        console.error('oops, something went wrong!', error);
-      });
+    html2canvas(dom).then(canvas => {
+      let contentWidth = canvas.width;
+      let contentHeight = canvas.height;
+      //一页pdf显示html页面生成的canvas高度;
+      let pageHeight = (contentWidth / 592.28) * 841.89;
+      //未生成pdf的html页面高度
+      let leftHeight = contentHeight;
+      //页面偏移
+      let position = 0;
+      //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+      let imgWidth = 595.28;
+      let imgHeight = (592.28 / contentWidth) * contentHeight;
+      let imgData = canvas.toDataURL('image/jpeg', 1.0);
+      let doc = new jsPDF('', 'pt', 'a4');
+      //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+      //当内容未超过pdf一页显示的范围，无需分页
+      if (leftHeight < pageHeight) {
+        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+      } else {
+        while (leftHeight > 0) {
+          doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          leftHeight -= pageHeight;
+          position -= 841.89;
+          //避免添加空白页
+          if (leftHeight > 0) {
+            doc.addPage();
+          }
+        }
+      }
+      // doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+      doc.save(queryName + '.pdf');
+    });
   };
-
   //渲染问答题的数据
   renderAnswerChart = () => {
     const { answerData } = this.state;
@@ -264,7 +303,7 @@ class TotalStatical extends Component {
           <div className="total-statical__chart-wrap" key={item.question_id}>
             <h4 className="total-statical__chart-wrap__question-topic">
               <br />
-              <span>{this.state.data.length + index+1}.</span>
+              <span>{this.state.data.length + index + 1}.</span>
               {item.question_topic}
             </h4>
             <ul className="total-statical__ubox">
@@ -285,7 +324,6 @@ class TotalStatical extends Component {
   // 渲染单选和多选的表格
   renderCommonChart = () => {
     const { data } = this.state;
-    console.log(data)
     if (0 >= data.length) {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     } else {
@@ -293,7 +331,7 @@ class TotalStatical extends Component {
         return (
           <div className="total-statical__chart-wrap" key={item.title}>
             <h4 className="total-statical__chart-wrap__question-topic">
-              <span>{index+1}.</span>
+              <span>{index + 1}.</span>
               {item.title}
             </h4>
             <Table
@@ -325,8 +363,12 @@ class TotalStatical extends Component {
               size="small"
               type="primary"
               onClick={this.handleExportImgBtnClick}
+              style={{marginRight:8}}
             >
               导出 PNG
+            </Button>
+            <Button size="small" type="primary" onClick={this.hanldeExportPdf}>
+              导出 PDF
             </Button>
           </div>
         </div>
