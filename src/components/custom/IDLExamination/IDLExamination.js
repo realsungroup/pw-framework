@@ -1221,6 +1221,7 @@ class IDLExamination extends React.Component {
             Commitments / 本人承诺:
           </p>
           <br />
+          <br />
           <p style={{ textAlign: 'left' }}>
             1)&nbsp;&nbsp;All information given are true and accurate,
             otherwise I’m willing to be punished even dismissed. /

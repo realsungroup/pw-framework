@@ -518,13 +518,13 @@ class PersonList extends React.Component {
                   >
                     添加员工
                   </Button>
-                  <Button
+                  {/* <Button
                     onClick={() => {
                       this.onEmployeeWrite(dataSource, selectedRowKeys);
                     }}
                   >
                     提醒员工
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={() => {
                       this.onEmployeeWrite(dataSource, selectedRowKeys);

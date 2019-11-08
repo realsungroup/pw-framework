@@ -1,74 +1,82 @@
-.job-seeker {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  &__nav {
-    background-color: #fff;
-    border-right: 1px solid #d9d9d9;
-    .ant-menu {
-      border-right: none;
+.idlindex {
+  display:flex;
+  flex-direction: column;
+  height:100vh;
+  &__header {
+    padding:5px;
+    margin:5px 0;
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+    &-search{
+      margin-right:5px;
+    }
+    &-nav{
+      flex:1;
+      width:100%;
     }
   }
+  &__content{
+    display: flex;
+    padding:10px;
+    background: #fff;
+    // overflow: scroll;
+    border-top:1px solid #ccc;
+    &-person{
+      width:189px;
+      margin-right:5px;
+      height:100vh;
 
-  &__informnation {
-    padding: 10px;
-    // flex: 1;
-    width: 100%;
-    height: 99.9vh;
-    overflow: auto;
-    background-color: #fff;
-    &-title {
-      text-align: center;
-      margin-top: 16px;
-      margin-bottom: 24px;
-    }
-    &-boundry {
-      border: 1px solid #e8e8e8;
-      padding:8px;
-      margin-bottom:3px;
-      position:relative;
-      &__delete{
-        position:absolute;
-        right:8px;
-        top:8px;
+      flex-shrink: 0;
+      border-right: 1px solid #ccc;
+      overflow: scroll;
+      &__active{
+        *{
+          color: #fff!important;
+
+        }
+        background:#1890ff;
       }
     }
-    // .ant-form-item-label{
-    //   text-align: left;
-    // }
+    &-form{
+     flex:1;
+     width: calc(100% - 200px);
+     overflow: hidden;
+     display: flex;
+     justify-content: space-between;
+     &__info-nav{
+       width:267px;
+       flex-grow: 0;
+     }
+    }
   }
 }
-.job-seeker__informnation .ant-form-item-required{
-  white-space: normal!important;
+.ant-table-row ant-table-row-level > td{
+
+    display: flex;
+
 }
-@media (min-width: 0px) and (max-width: 1024px) and (orientation: landscape) {
-
-  //平板
-  .ant-col-10,.ant-col-8,.ant-col-14,.ant-col-16{
-    width:100%!important;
-    background: #fff;
-
+.hidden{
+  display: none;
+}
+.ant-list-item-meta{
+  margin-left:8px;
+}
+.ant-empty-image img{
+  margin:0!important;
+  width:auto!important;
+}
+.offerLetter{
+  width:100%;
+  height:100vh;
+  overflow: scroll;
+  *{
+    text-align: left;
   }
-  .job-seeker__nav{
-    height:100vh;
-  }
-  .job-seeker__nav ul{
-    width:160px!important;
-  }
-  .job-seeker__informnation{
-    width:calc(100% - 160px);
-    left:160px;
-    overflow: auto;
-    position:fixed;
-
-  }
-  p{
-    white-space:normal!important;
-    height:auto!important;
-
-  }
-  .half{
-    width:100%!important;
+  .header{
+    *{
+      text-align: center;
+      
+    }
   }
 }
