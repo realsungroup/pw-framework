@@ -349,7 +349,7 @@ class PersonList extends React.Component {
     try {
       await http().removeRecords({
         resid: groupID,
-        data: [{ REC_ID: tagid }]
+        data: [{ REC_ID: tagid ,isDelete:'Y'}]
       });
       this.setState({
         tags: this.state.tags.filter(item => item.REC_ID !== tagid)
