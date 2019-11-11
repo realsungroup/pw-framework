@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
@@ -23,7 +24,8 @@ class PatientInfo extends React.Component {
       record: {},
       navListResidField: '',
       cdLen: {},
-      ucLen: {}
+      ucLen: {},
+      qtLen: {}
     };
   }
 
@@ -41,7 +43,13 @@ class PatientInfo extends React.Component {
         cmswhere: `C3_600539035945 = 'CD'`
       })
     );
-    const pArr = [this.p1.promise, this.p2.promise];
+    this.p3 = makeCancelable(
+      http().getTable({
+        resid,
+        cmswhere: `C3_600539035945 = '其他'`
+      })
+    );
+    const pArr = [this.p1.promise, this.p2.promise,this.p3.promise];//
 
     let res;
     try {
@@ -52,12 +60,14 @@ class PatientInfo extends React.Component {
     }
     const ucLen = res[0].total;
     const cdLen = res[1].total;
-    this.setState({ ucLen, cdLen });
+    const qtLen = res[2].total;
+    this.setState({ ucLen, cdLen,qtLen });
   };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();//
   };
 
   handleInputCaseClick = record => {
@@ -128,11 +138,12 @@ class PatientInfo extends React.Component {
   };
 
   renderActionBarExtra = () => {
-    const { cdLen, ucLen } = this.state;
+    const { cdLen, ucLen,qtLen } = this.state;
     return (
       <div>
         <span style={{ margin: '0 4px' }}>CD：{cdLen}</span>
         <span style={{ margin: '0 4px' }}>UC：{ucLen}</span>
+        <span style={{ margin: '0 4px' }}>其他：{qtLen}</span>
       </div>
     );
   };
@@ -144,11 +155,12 @@ class PatientInfo extends React.Component {
       record,
       navListResidField,
       ucLen,
-      cdLen
+      cdLen,
+      qtLen
     } = this.state;
     return (
       <div className="patient-info">
-        {typeof ucLen === 'number' && typeof cdLen === 'number' && (
+        {typeof ucLen === 'number' && typeof cdLen === 'number' && typeof qtLen ==='number' &&(
           <TableData
             {...tableDataProps}
             customRowBtns={this.customRowBtns}
@@ -166,7 +178,7 @@ class PatientInfo extends React.Component {
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
-              resid={586639160406}
+              resid={626547652750}
               userInfoFields={[
                 { label: '姓名', innerFieldName: 'C3_586890765790' },
                 { label: '住院号', innerFieldName: 'C3_586890758859' },
