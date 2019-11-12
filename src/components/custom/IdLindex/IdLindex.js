@@ -790,7 +790,7 @@ class IdLindex extends Component {
                   />
                   </div>
                   <div className={this.state.userChara=='HR'?'':'hidden'}>
-                  {(item.isPass=='待通过'||(!item.isPass))?(<Popconfirm placement="right" title={'该人员的招聘通过了么'} okText="已通过" cancelText="未通过"trigger="hover"
+                  {(item.isPass=='待通过'||(!item.isPass))?(<Popconfirm placement="right" title={'是否通过面试'} okText="通过" cancelText="未通过"trigger="hover"
                   onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
                   onCancel={()=>{this.onFail(item.ID)}}
                   >

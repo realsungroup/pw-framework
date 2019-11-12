@@ -142,6 +142,8 @@ const withAdvDicTable = WrappedComponent => {
               size="small"
               width={800}
               height={500}
+              subtractH={170}
+              actionBarWidth={100}
             />
           </Modal>
         </Fragment>

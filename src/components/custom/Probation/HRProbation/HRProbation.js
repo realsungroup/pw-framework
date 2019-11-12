@@ -171,9 +171,9 @@ class HRProbation extends React.Component {
           } else if (selectValue === '员工填写') {
             item.isEmployeeFill = 'Y';
           } else if (selectValue === '提醒辅导员确认') {
-            item.isCounselorFill = 'Y';
+            item.C3_62586860630 = 'Y';
           } else if (selectValue === '提醒员工填写辅导记录') {
-            item.C3_625868630630 = 'Y';
+            item.noticeEmpFillInstrRecord = 'Y';
           }
           data.push(item);
         }

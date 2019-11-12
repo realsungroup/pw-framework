@@ -6092,10 +6092,10 @@ html2canvas@1.0.0-alpha.12:
   dependencies:
     css-line-break "1.0.1"
 
-html2canvas@^1.0.0-alpha.12:
-  version "1.0.0-rc.3"
-  resolved "https://registry.npm.taobao.org/html2canvas/download/html2canvas-1.0.0-rc.3.tgz#1de88b073f6bcaa6954ca1edfb46da13b258b038"
-  integrity sha1-HeiLBz9ryqaVTKHt+0baE7JYsDg=
+html2canvas@^1.0.0-rc.5:
+  version "1.0.0-rc.5"
+  resolved "https://registry.npm.taobao.org/html2canvas/download/html2canvas-1.0.0-rc.5.tgz?cache=0&sync_timestamp=1569594892729&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhtml2canvas%2Fdownload%2Fhtml2canvas-1.0.0-rc.5.tgz#4ee3cac9f6e20a0fa0c2f35a6f99c960ae7ec4c1"
+  integrity sha1-TuPKyfbiCg+gwvNab5nJYK5+xME=
   dependencies:
     css-line-break "1.1.1"
 

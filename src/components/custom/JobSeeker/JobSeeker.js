@@ -330,7 +330,7 @@ class JobSeeker extends Component {
       } else {
         return Modal.warning({
           title: '提示',
-          content: '请确认所有必填项都填写完毕,您还有一些必填项没有填写'
+          content: '请将个人信息填写完毕后再提交'
         });
       }
     });
@@ -342,8 +342,8 @@ class JobSeeker extends Component {
     
     if(bol==true){
       Modal.confirm({
-        title: '确认要提交吗?',
-        content: '请您最后再次确认一遍再提交',
+        title: '是否确认提交?',
+        content: '',
         onOk: () => {
           this.confirmAppalyTotal();
         }
@@ -842,11 +842,17 @@ class JobSeeker extends Component {
                 {getFieldDecorator('BloodType', {
                   rules: [
                     {
-                      required: true,
-                      message: '血型必须要填'
                     }
                   ]
-                })(<Input />)}
+                })(
+                    <Select>
+                      <Option value="A">A</Option>
+                      <Option value="B">B</Option>
+                      <Option value="AB">AB</Option>
+                      <Option value="O">O</Option>
+                      <Option value="其它">其它</Option>
+                    </Select>
+               )}
               </Form.Item>
               <Form.Item
                 label="现通讯地址/Current Correspond Address"
@@ -971,8 +977,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`EdDegree${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写学位'
                           }
                         ]
                       })(
@@ -986,8 +990,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`EdReference${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写证明人'
                           }
                         ]
                       })(
@@ -1004,8 +1006,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`EdReferenceTel${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写证明人电话'
                           }
                         ]
                       })(
@@ -1056,8 +1056,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`WorkDate${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写年限'
                           }
                         ]
                       })(
@@ -1073,8 +1071,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`WorkComName${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写公司名称&类型'
                           }
                         ]
                       })(
@@ -1088,8 +1084,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`WorkRank${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写职位'
                           }
                         ]
                       })(
@@ -1106,8 +1100,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`ReasonForLeave${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写离职原因'
                           }
                         ]
                       })(
@@ -1121,8 +1113,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`WorkReference${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写证明人'
                           }
                         ]
                       })(
@@ -1139,8 +1129,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`WorkReferenceTel${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写证明人电话'
                           }
                         ]
                       })(
@@ -1241,8 +1229,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`FamPosition${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写职务'
                           }
                         ]
                       })(
@@ -1259,8 +1245,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`FamComAndAdd${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写公司名称&地址'
                           }
                         ]
                       })(
@@ -1274,8 +1258,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`FamTel${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写电话'
                           }
                         ]
                       })(
@@ -1327,8 +1309,8 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`TrainingD${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写日期'
+                            // required: true,
+                            // message: '请填写日期'
                           }
                         ]
                       })(
@@ -1344,8 +1326,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`TrainingInstitute${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写培训机构'
                           }
                         ]
                       })(
@@ -1363,8 +1343,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`TrainingCourese${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写培训课程'
                           }
                         ]
                       })(
@@ -1384,8 +1362,6 @@ class JobSeeker extends Component {
                       {getFieldDecorator(`TrainingQualification${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message: '请填写专业资格'
                           }
                         ]
                       })(
@@ -1402,8 +1378,6 @@ class JobSeeker extends Component {
                     {getFieldDecorator(`TrainingReference${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message:"请填写证明人"
                           }
                         ]
                       }
@@ -1417,8 +1391,6 @@ class JobSeeker extends Component {
                     {getFieldDecorator(`TrainingRefTel${index+1}`, {
                         rules: [
                           {
-                            required: true,
-                            message:"请填写电话"
                           }
                         ]
                       }
@@ -1463,8 +1435,6 @@ class JobSeeker extends Component {
                 {getFieldDecorator('Language', {
                         rules: [
                           {
-                            required: true,
-                            message:"请填写相关技能"
                           }
                         ]
                       }
@@ -1623,8 +1593,6 @@ class JobSeeker extends Component {
                 {getFieldDecorator('SoftList', {
                     rules: [
                       {
-                        required: true,
-                        message:"请填写常用软件能力"
                       }
                     ]
                   }
@@ -1634,8 +1602,6 @@ class JobSeeker extends Component {
                 {getFieldDecorator('OtherSkills',{
                     rules: [
                       {
-                        required: true,
-                        message:"请填写其他技能"
                       }
                     ]
                   }
@@ -1648,8 +1614,8 @@ class JobSeeker extends Component {
                 {getFieldDecorator('Height',{
                         rules: [
                           {
-                            required: true,
-                            message:"请填写身高"
+                          //   required: true,
+                          //   message:"请填写身高"
                           }
                         ]
                       }
@@ -1659,8 +1625,8 @@ class JobSeeker extends Component {
                 {getFieldDecorator('Weight',{
                     rules: [
                       {
-                        required: true,
-                        message:"请填写体重"
+                        // required: true,
+                        // message:"请填写体重"
                       }
                     ]
                   }
@@ -1670,8 +1636,8 @@ class JobSeeker extends Component {
                 {getFieldDecorator('EyeSight', {
                         rules: [
                           {
-                            required: true,
-                            message:"请填写视力左"
+                            // required: true,
+                            // message:"请填写视力左"
                           }
                         ]
                       }
@@ -1681,8 +1647,8 @@ class JobSeeker extends Component {
                 {getFieldDecorator('EyeSightR', {
                     rules: [
                       {
-                        required: true,
-                        message:"请填写视力右"
+                        // required: true,
+                        // message:"请填写视力右"
                       }
                     ]
                   })(<Input />)}
