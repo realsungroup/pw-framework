@@ -450,8 +450,7 @@ var hrCode='623876215000';
                 initialValue: currentInfo.BloodType,
                 rules: [
                   {
-                    required: true,
-                    message: '血型必须要填'
+                  
                   }
                 ]
               })(<Input />)}
