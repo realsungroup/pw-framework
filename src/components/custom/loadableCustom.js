@@ -557,3 +557,17 @@ export const SearchForEmployee = Loadable({
     return minLoading;
   }
 });
+
+export const RelievePerson = Loadable({
+  loader: () => import('./RelievePerson'),
+  loading() {
+    return minLoading;
+  }
+});
+export const StatisticAnalysisJC = Loadable({
+  loader: () => import('./StatisticAnalysisJC'),
+  loading() {
+    return minLoading;
+  }
+});
+
