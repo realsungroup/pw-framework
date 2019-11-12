@@ -206,7 +206,7 @@ class TranningDetail extends React.Component {
             tableComponent="ag-grid"
             sideBarAg={true}
             hasAdvSearch={true}
-            hasAdd={false}
+            hasAdd={true}
             hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}

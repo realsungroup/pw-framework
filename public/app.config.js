@@ -28,7 +28,7 @@ window.pwConfig = {
       },
       {
         dblinkname: 'ehr',
-        resids: '429373729010,460481857607'
+        resids: '429373729010'
       }
     ],
 
