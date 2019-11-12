@@ -17,7 +17,8 @@ import {
   Table,
   Tooltip,
   Steps,
-  Popover
+  Popover,
+  Pagination
 } from 'antd';
 import moment from 'moment';
 import './EmployeeCourses.less';
@@ -85,6 +86,9 @@ const customDot = (dot, { status, index }) => (
 );
 class EmployeeCourses extends React.Component {
   state = {
+    currentPage:1,//当前页码
+    CoursesOrg: [], //分页判断的原始数据
+    pageSize: 3, //分页大小
     myCourses: [], //我的课程
     selectedCourse: {}, //选中的课程
     approvalRecords: [], //申请单审批记录
@@ -142,15 +146,15 @@ class EmployeeCourses extends React.Component {
     }
   };
   // 课程卡片位置调整
-  performCard=()=>{
-	  var l=this.state.myCourses.length;
-	  var w=Number(window.innerWidth);
-	  console.log('l')
-	  if((l==0)||((l*376)<w)){
-		  console.log('jinle')
-		  this.setState({windowShow:{justifyContent:'center'}})
-	  }
-  }
+  performCard = () => {
+    var l = this.state.myCourses.length;
+    var w = Number(window.innerWidth);
+    console.log('l');
+    if (l == 0 || l * 376 < w) {
+      console.log('jinle');
+      this.setState({ windowShow: { justifyContent: 'center' } });
+    }
+  };
   componentDidMount = async () => {
     await this.getYears();
     this.getCourses();
@@ -176,7 +180,7 @@ class EmployeeCourses extends React.Component {
         let selectedCourse = {};
         if (target) {
           target.checked = true;
-          selectedCourse = {...target}
+          selectedCourse = { ...target };
         } else {
           myCourses[0].checked = true;
           selectedCourse = { ...myCourses[0] };
@@ -201,8 +205,18 @@ class EmployeeCourses extends React.Component {
           };
         });
         this.setState({ myCourses, selectedCourse, calendarEvents });
+        this.setState({ CoursesOrg: this.state.myCourses });
+        var urlID;
+        // 获取邮件传来的ID
+        if(urlID){
+          this.onPageChange(1,3,urlID);
+
+        }else{
+          this.onPageChange(1,3);
+
+        }
       }
-	  this.performCard()
+      this.performCard();
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -359,11 +373,16 @@ class EmployeeCourses extends React.Component {
     myCourses.forEach(course => {
       course.checked = false;
     });
+    let CoursesOrg = [...this.state.CoursesOrg];
+    CoursesOrg.forEach(course => {
+      course.checked = false;
+    });
+
     myCourses.find(course => {
       return course.REC_ID === item.REC_ID;
     }).checked = true;
     let selectedCourse = { ...item };
-    this.setState({ myCourses, selectedCourse });
+    this.setState({ myCourses, selectedCourse, CoursesOrg });
   };
 
   handleDetailClick = () => {
@@ -766,7 +785,39 @@ class EmployeeCourses extends React.Component {
       }
     });
   };
+  // 页码变化
+  onPageChange = (v,s,REC_ID) => {
+    var org = this.state.CoursesOrg;
+    var res;
+    if(REC_ID){
+      // 遍历找出选中项
+      var n=0;
+      var r=0;
+      while(n<org.length){
+        if(org[n].REC_ID==REC_ID){
+          this.setState({selectedCourse:org[n]});
+          r=n;
+        }
+        n++;
+      }
+      r=Math.ceil((r+1)/s);
+      var res = org.slice(s * (r - 1), s * r);
+      this.setState({ myCourses: res,currentPage:r})
 
+
+    }else{
+      res = org.slice(s * (v - 1), s * v);
+      this.setState({ myCourses: res, selectedCourse: res[0],currentPage:v });
+    }
+    
+    console.log('org',org)
+    
+  };
+  // 每页显示多少变化
+  onScaleChange = (v, s) => {
+    this.setState({ pageSize: s });
+    this.onPageChange(v, s);
+  };
   //设置附加费用
   setExtraCost = extraCost => {
     this.setState({ extraCost: parseFloat(extraCost) });
@@ -843,7 +894,7 @@ class EmployeeCourses extends React.Component {
   );
 
   renderCoursesList = () => {
-    let { myCourses } = this.state;
+    let { myCourses, selectedCourse } = this.state;
     return myCourses.length ? (
       myCourses.map((item, index) => (
         <Card
@@ -858,7 +909,9 @@ class EmployeeCourses extends React.Component {
             />
           }
           title={`${item.courseType} / ${item.C3_613941384592}`}
-          className={`course-list_course-card ${item.checked ? 'checked' : ''}`}
+          className={`course-list_course-card ${
+            item.REC_ID === selectedCourse.REC_ID ? 'checked' : ''
+          }`}
           key={item.REC_ID}
           bodyStyle={{ padding: 16 }}
           headStyle={{ padding: '0 16px' }}
@@ -895,19 +948,14 @@ class EmployeeCourses extends React.Component {
                     );
                   }}
                 >
-                  <Icon
-                    type="like"
-                    className="course-like"
-                  />
+                  <Icon type="like" className="course-like" />
+                  <p className="likeText">赞一下</p>
                 </Popconfirm>
               )}
               {item.isLike === 'Y' && (
                 <Tooltip title="已点赞课程">
-                  <Icon
-                    type="like"
-                    theme="filled"
-                    className="course-like"
-                  />
+                  <Icon type="like" theme="filled" className="course-like" />
+                  <p className="likeText">已点赞</p>
                 </Tooltip>
               )}
             </div>
@@ -953,7 +1001,13 @@ class EmployeeCourses extends React.Component {
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             <div className="emploee-courses_courses-manage">
-              <div className={this.state.myCourses.length>0?"emploee-courses_courses-manage_buttons":'hidden'}>
+              <div
+                className={
+                  this.state.myCourses.length > 0
+                    ? 'emploee-courses_courses-manage_buttons'
+                    : 'hidden'
+                }
+              >
                 {courseType !== '内训' && (
                   <>
                     {/* 填写按钮 */}
@@ -1055,7 +1109,13 @@ class EmployeeCourses extends React.Component {
                     </button>
                   )}
               </div>
-              <div className={this.state.myCourses.length>0?"emploee-courses_courses-manage_course-steps":'hidden'}>
+              <div
+                className={
+                  this.state.myCourses.length > 0
+                    ? 'emploee-courses_courses-manage_course-steps'
+                    : 'hidden'
+                }
+              >
                 {courseType !== '内训' && (
                   <Steps progressDot={customDot}>
                     <Step
@@ -1149,17 +1209,36 @@ class EmployeeCourses extends React.Component {
                 )}
               </div>
               {this.renderHeader()}
-              <div className="emploee-courses_courses-manage_course-list" style={this.state.windowShow}>
-                  {this.renderCoursesList()}
+              <div
+                className="emploee-courses_courses-manage_course-list"
+                style={this.state.windowShow}
+              >
+                {this.renderCoursesList()}
               </div>
               <footer>
-                <p>
+                <p style={{ float: 'left' }}>
                   共
                   <span style={{ color: '#2593fc', fontSize: 24 }}>
-                    {this.state.myCourses.length}
+                    {this.state.CoursesOrg.length}
                   </span>
                   条记录
                 </p>
+                <Pagination
+                  size="small"
+                  onShowSizeChange={(v, s) => {
+                    this.onScaleChange(v, s);
+                  }}
+                  current={this.state.currentPage}
+                  pageSize={this.state.pageSize}
+                  onChange={(v, s) => {
+                    this.onPageChange(v, s);
+                  }}
+                  total={this.state.CoursesOrg.length}
+                  pageSizeOptions={['1', '2', '3', '4']}
+                  showSizeChanger
+                  showQuickJumper
+                  style={{ float: 'left', margin: '8px 0 0 16px' }}
+                />
               </footer>
             </div>
           </TabPane>
