@@ -1757,3 +1757,7 @@ window[626452876459] = {
   name: 'SearchForEmployee',
   title: '求职者查询'
 };
+window[626954797692] = {
+  name: 'PostAndPersonnel',
+  title: '岗位与人事'
+};
