@@ -1054,10 +1054,10 @@ class JobSeeker extends Component {
                       {...formItemLayout2}
                     >
                       {getFieldDecorator(`WorkDate${index+1}`, {
-                        rules: [
-                          {
-                          }
-                        ]
+                        // rules: [
+                        //   {
+                        //   }
+                        // ]
                       })(
                         <RangePicker
                           onChange={this.handelworkPeriod.bind(this, index)}
@@ -1307,12 +1307,12 @@ class JobSeeker extends Component {
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="日期/Date/Period " {...formItemLayout2}>
                       {getFieldDecorator(`TrainingD${index+1}`, {
-                        rules: [
-                          {
-                            // required: true,
-                            // message: '请填写日期'
-                          }
-                        ]
+                        // rules: [
+                        //   {
+                        //     required: true,
+                        //     message: '请填写日期'
+                        //   }
+                        // ]
                       })(
                         <RangePicker
                           onChange={this.handelTrainPeriod.bind(this, index)}

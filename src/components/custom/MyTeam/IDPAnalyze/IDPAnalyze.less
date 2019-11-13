@@ -30,3 +30,42 @@
 		}
 	}
 }
+.normal-bigrid{
+	transition: .3s;
+
+	border-top:1px solid #bbb;
+	width:calc(100vw - 215px);
+	height:calc(100vh - 90px);
+	position: relative;;
+	background: #fff;
+	i{
+		font-size:24px;
+		position:absolute;
+		right:24px;
+		z-index:9999;
+		top:8px;
+	}
+}
+.enlarged-bigrid{
+	width:100%;
+	height:100vh;
+	position:fixed;
+	z-index:99999;
+	left: 0;
+	top: 0;
+	transition: .3s;
+	background: #fff;
+	i{
+		font-size:24px;
+		z-index:9999;
+		position:absolute;
+		right:24px;
+		top: 8px;
+	}
+}
+.normal-bigrid .ant-tabs-tabpane > div:nth-child(2){
+	height:calc(100vh - 130px)!important;
+}
+.enlarged-bigrid .ant-tabs-tabpane > div:nth-child(2){
+	height:calc(100vh - 40px)!important;
+}
