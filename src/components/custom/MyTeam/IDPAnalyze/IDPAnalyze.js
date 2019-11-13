@@ -1,10 +1,11 @@
 import React from 'react';
+
 import './IDPAnalyze.less';
 import http from 'Util20/api';
 import EchartsOfReact from 'echarts-of-react';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
 
-import { Tabs ,message} from 'antd';
+import { Tabs ,message,Icon} from 'antd';
 const { TabPane } = Tabs;
 const hrMangerID = '617725533684'; //发展计划总表
 
@@ -60,6 +61,8 @@ class IDPAnalyze extends React.Component {
 	  )})}
 	  </ul>
       </div>
+			<div className={this.state.windowEnlarge?'enlarged-bigrid':'normal-bigrid'}>
+			{this.state.windowEnlarge?<Icon type="fullscreen-exit" onClick={()=>this.setState({windowEnlarge:false})}/>:<Icon type="fullscreen" onClick={()=>this.setState({windowEnlarge:true})}/>}
 	  <BIGrid
         height={'100%'}
         gridProps={[
@@ -71,7 +74,7 @@ class IDPAnalyze extends React.Component {
         ]}
         
       />
-
+			</div>
       </div>
     );
   }

@@ -206,7 +206,7 @@ class EmployeeCourses extends React.Component {
         });
         this.setState({ myCourses, selectedCourse, calendarEvents });
         this.setState({ CoursesOrg: this.state.myCourses });
-        var urlID;
+        var urlID=targetID;
         // 获取邮件传来的ID
         if(urlID){
           this.onPageChange(1,3,urlID);

@@ -8,12 +8,14 @@
     #nodes {
       width: 100%;
       height: 50%;
-      position: relative;
+      // position: relative;
       background: rgba(240, 242, 245, 1);
     }
-    .dotted rect {
-      // stroke-dasharray: 3;
-      stroke: blue;
+    .selected > rect {
+      stroke: #1890ff;
+    }
+    .deleted > rect {
+      stroke-dasharray: 4 4;
     }
     &_employee_info {
       border: 1px solid rgba(232, 232, 232, 1);

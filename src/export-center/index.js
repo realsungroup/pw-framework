@@ -124,6 +124,6 @@ export { TrainingOrganization } from '../components/custom/loadableCustom';
 export { TranningDetail } from '../components/custom/loadableCustom';
 export { TranningDetailApproval } from '../components/custom/loadableCustom';
 export { SearchForEmployee } from '../components/custom/loadableCustom';
+export { PostAndPersonnel } from '../components/custom/loadableCustom';
 export { RelievePerson } from '../components/custom/loadableCustom';
 export { StatisticAnalysisJC } from '../components/custom/loadableCustom';
-
