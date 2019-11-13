@@ -74,6 +74,14 @@ class StatisticAnalysisJC extends React.Component {
             hasDownloadExcel = {true}
             hasDelete = {false}
             hasModify ={false}
+            hasAdvSearch={true}
+            advSearch = {
+              {
+                searchComponent:'both',
+                containerType:'drawer',
+                formName:'default3i',
+            }
+            }
             customRowBtns={[
               record => {
                 return (
@@ -89,8 +97,7 @@ class StatisticAnalysisJC extends React.Component {
                 );
               }
             ]}
-            
-          />
+          /> 
         </div>
       </Spin>
     );
