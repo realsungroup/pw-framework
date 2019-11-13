@@ -5,7 +5,7 @@ import LzTable from '../../../lib/unit-component/LzTable/';
 import http from 'Util20/api';
 
 /**
- * 管理员确认
+ * 奖惩-统计分析
  */
 const { TextArea } = Input;
 class StatisticAnalysisJC extends React.Component {

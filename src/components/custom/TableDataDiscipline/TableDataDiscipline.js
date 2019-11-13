@@ -8,6 +8,7 @@ class TableDataDiscipline extends React.Component {
     readOnly: true
   };
  
+  //奖惩-查看个人违纪
   
 
   handleOk = () => {

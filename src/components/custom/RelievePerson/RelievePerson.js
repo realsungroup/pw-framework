@@ -2,11 +2,11 @@ import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import { Button, Popconfirm, message, Spin, Modal, Input } from 'antd';
 import http from 'Util20/api';
+// import TableData from '../../common/data/TableData'
 
 /**
- * 管理员确认
+ * 奖惩-符合解除人员
  */
-const { TextArea } = Input;
 class RelievePerson extends React.Component {
   state = {
     loading: false,
@@ -52,8 +52,6 @@ class RelievePerson extends React.Component {
       window.open(obj.url);
     }
   };
-  
-
 
   render() {
     const { loading } = this.state;
@@ -61,20 +59,31 @@ class RelievePerson extends React.Component {
       <Spin spinning={loading}>
         <div style={{ height: '100vh' }}>
           <TableData
-            // {...this.props}
-            resid = '614709186509'
+            {...this.props}
+            resid="614709186509"
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
-            hasRowModify = {false}
-            hasRowDelete = {false}
-            // height = {600}
-            subtractH = {220}
+            hasRowModify={false}
+            hasRowDelete={false}
+            subtractH={220}
+            hasAdvSearch={true}
+            advSearch = {
+              {
+                searchComponent:'both',
+                containerType:'drawer',
+                formName:'default'
+
+
+            }
+            }
             customRowBtns={[
               record => {
                 return (
                   <Button
                     onClick={() => {
-                      this.handleDownMaterial(record.C3_590515131157||record.C3_590516276367);
+                      this.handleDownMaterial(
+                        record.C3_590515131157 || record.C3_590516276367
+                      );
                     }}
                   >
                     下载查阅
