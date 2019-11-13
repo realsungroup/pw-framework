@@ -557,3 +557,9 @@ export const SearchForEmployee = Loadable({
     return minLoading;
   }
 });
+export const PostAndPersonnel = Loadable({
+  loader: () => import('./PostAndPersonnel'),
+  loading() {
+    return minLoading;
+  }
+});
