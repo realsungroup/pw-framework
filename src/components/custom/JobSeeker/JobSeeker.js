@@ -591,9 +591,8 @@ class JobSeeker extends Component {
   };
 
   //家庭成员信息 出生日期
-  handelFamDateofBirth = (index, e) => {
-    this.state.family[index].DateofBirth = e.target.value;
-    this.setState({});
+  handelFamDateofBirth = (date, dateString) => {
+    console.log(date, dateString);
   };
 
   //家庭成员信息 职务
@@ -1216,13 +1215,13 @@ class JobSeeker extends Component {
                             message: '请填写出生年月'
                           }
                         ]
-                      })(
-                        <Input
-                        type='date'
+                      })(<DatePicker onChange={this.handelFamDateofBirth.bind(this, index)} />
+                        // <Input
+                        // type='date'
 
-                          value={item.DateofBirth}
-                          onChange={this.handelFamDateofBirth.bind(this, index)}
-                        />
+                        //   value={item.DateofBirth}
+                        //   onChange={this.handelFamDateofBirth.bind(this, index)}
+                        // />
                       )}
                     </Form.Item>
                     <Form.Item label="职务/Position" {...formItemLayout2}>

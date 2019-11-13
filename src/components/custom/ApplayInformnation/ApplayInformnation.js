@@ -942,7 +942,7 @@ var hrCode='623876215000';
             </Form.Item>
             <Form.Item label="出生年月/Date of Birth" {...formItemLayout2} className="applay__information-content">
               {getFieldDecorator('FamBirthDate1', {
-                initialValue: currentInfo.FamBirthDate1
+                initialValue: moment(currentInfo.FamBirthDate1).format("YYYY-MM-DD")
               })(<Input />)}
             </Form.Item>
             <Form.Item label="职务/Position" {...formItemLayout2} className="applay__information-content">
