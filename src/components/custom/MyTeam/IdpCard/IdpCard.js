@@ -400,10 +400,11 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span>结束</span>
+                <span style={{cursor:'pointer'}}>结束</span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
               <span
+                style={{cursor:'pointer'}}
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -498,8 +499,74 @@ class IdpCard extends React.Component {
                       float: 'right'
                     }}
                   ></div>
-                  <div style={{ marginTop: '160px' }}>
-                    <Steps
+                  <div style={{ marginTop: '152px' }} className='planStatus'>
+                    <div className={currentPlan && currentPlan.status === '初次填写'?'cur':null}>
+                      <p>初次填写</p>
+                      {currentPlan && currentPlan.status === '初次填写'?
+                      <wrap>
+                        <Icon type="exclamation-circle" />
+                        <span>进行中</span>
+                      </wrap>
+                      : <wrap>
+                        <Icon type="check-circle" />
+                      <span>已完成</span>
+                    </wrap>}
+                    </div>
+                    <div className={currentPlan && currentPlan.status === '年中回顾'?'cur':null}>
+                      <p>年中回顾</p>
+                      {currentPlan && currentPlan.status === '初次填写'?
+                      <wrap>
+                        <Icon type="clock-circle" />
+                        <span>未开始</span>
+                      </wrap>
+                      : null}
+                      {currentPlan && currentPlan.status === '年中回顾'?
+                      <wrap>
+                        <Icon type="exclamation-circle" />
+                        <span>进行中</span>
+                      </wrap>
+                      : null}
+                       {currentPlan && currentPlan.status === '年末回顾'?
+                      <wrap>
+                        <Icon type="check-circle" />
+                        <span>已完成</span>
+                      </wrap>
+                      : null}
+                      {currentPlan && currentPlan.status === '已完成'?
+                      <wrap>
+                        <Icon type="check-circle" />
+                        <span>已完成</span>
+                      </wrap>
+                      : null}
+                    </div>
+                    <div className={currentPlan && currentPlan.status === '年末回顾'?'cur':null}>
+                      <p>年末回顾</p>
+                      {currentPlan && currentPlan.status === '初次填写'?
+                      <wrap>
+                        <Icon type="clock-circle" />
+                        <span>未开始</span>
+                      </wrap>
+                      : null}
+                      {currentPlan && currentPlan.status === '年中回顾'?
+                      <wrap>
+                         <Icon type="clock-circle" />
+                        <span>未开始</span>
+                      </wrap>
+                      : null}
+                       {currentPlan && currentPlan.status === '年末回顾'?
+                      <wrap>
+                       <Icon type="exclamation-circle" />
+                        <span>进行中</span>
+                      </wrap>
+                      : null}
+                      {currentPlan && currentPlan.status === '已完成'?
+                      <wrap>
+                        <Icon type="check-circle" />
+                        <span>已完成</span>
+                      </wrap>
+                      : null}
+                    </div>
+                    {/* <Steps
                       current={
                         currentPlan && currentPlan.status === '初次填写'
                           ? 0
@@ -512,7 +579,7 @@ class IdpCard extends React.Component {
                       <Step description="初次填写" style={{ color: '#fff' }} />
                       <Step description="年中回顾" style={{ color: '#fff' }} />
                       <Step description="年末回顾" style={{ color: '#fff' }} />
-                    </Steps>
+                    </Steps> */}
                   </div>
                 </Card>
               ) : null}
@@ -633,7 +700,8 @@ class IdpCard extends React.Component {
       <div
         className="idp-contain"
         style={{
-          height: currentPage !== 2 ? 'calc(100% - 64px)' : '100%',
+          height: currentPage !== 2? 'calc(100% - 64px)' : '100%',
+          height:(this.props.role === 'HR')?'100%':null,
           width: '100%'
         }}
       >
