@@ -1673,8 +1673,8 @@ class PersonPlan extends React.Component {
           </Card>
           {this.renderCard()}
         </div>
-        <div className="personPlan-contain-bottom">
-          <div className="personPlan-contain-bottom-btns">
+        <div className="personPlan-contain-bottom" style={this.props.role === 'HR'?{display:'none'}:{}}>
+          <div className="personPlan-contain-bottom-btns" >
             {this.renderSaveBtn()}
             {this.state.checkType === 'oneself' &&
             this.state.personInfo.isMangerSubmit === 'Y' &&

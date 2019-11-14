@@ -588,10 +588,6 @@ class FeedBackAndPlan extends Component {
                     <br />
                     (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
                     )
-                  </li>
-                  <li className="alter2" key="tip1">
-                    <rect>序号</rect>
-                    <p>具体行为</p>
                     {this.props.mode === 'view' ? null : (
                       <Tooltip title="添加一项">
                         <Icon
@@ -602,6 +598,11 @@ class FeedBackAndPlan extends Component {
                       </Tooltip>
                     )}
                   </li>
+                  {/* <li className="alter2" key="tip1">
+                    <rect>序号</rect>
+                    <p>具体行为</p>
+                    
+                  </li> */}
                   {plans.map((item, index) => {
                     return (
                       <li key={index}>
