@@ -15,6 +15,7 @@ import {
   Row,
   Table
 } from 'antd';
+import moment from 'moment';
 import logo from '../../../assets/logo.png';
 // const { getFieldDecorator } = this.props.form;
 
@@ -903,7 +904,7 @@ class IDLExamination extends React.Component {
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamBirthDate1}</p>
+                  <p>{this.props.data.FamBirthDate1?moment(this.props.data.FamBirthDate1).format("YYYY-MM-DD"):null}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
@@ -941,7 +942,7 @@ class IDLExamination extends React.Component {
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamBirthDate2}</p>
+                  <p>{this.props.data.FamBirthDate2?moment(this.props.data.FamBirthDate2).format("YYYY-MM-DD"):null}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
