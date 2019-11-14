@@ -153,7 +153,12 @@ class PostAndPersonnel extends React.Component {
             </Menu.Item>
           </Menu>
         </div>
-        <div className="post-personnel_content__wrapper">
+        <div
+          className={classnames({
+            'post-personnel_content__wrapper': true,
+            collapsed: collapsed
+          })}
+        >
           {this.renderContent()}
         </div>
       </div>
