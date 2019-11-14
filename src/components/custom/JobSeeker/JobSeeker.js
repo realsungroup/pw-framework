@@ -591,9 +591,8 @@ class JobSeeker extends Component {
   };
 
   //家庭成员信息 出生日期
-  handelFamDateofBirth = (index, e) => {
-    this.state.family[index].DateofBirth = e.target.value;
-    this.setState({});
+  handelFamDateofBirth = (date, dateString) => {
+    console.log(date, dateString);
   };
 
   //家庭成员信息 职务
@@ -1054,10 +1053,10 @@ class JobSeeker extends Component {
                       {...formItemLayout2}
                     >
                       {getFieldDecorator(`WorkDate${index+1}`, {
-                        rules: [
-                          {
-                          }
-                        ]
+                        // rules: [
+                        //   {
+                        //   }
+                        // ]
                       })(
                         <RangePicker
                           onChange={this.handelworkPeriod.bind(this, index)}
@@ -1216,13 +1215,13 @@ class JobSeeker extends Component {
                             message: '请填写出生年月'
                           }
                         ]
-                      })(
-                        <Input
-                        type='date'
+                      })(<DatePicker onChange={this.handelFamDateofBirth.bind(this, index)} />
+                        // <Input
+                        // type='date'
 
-                          value={item.DateofBirth}
-                          onChange={this.handelFamDateofBirth.bind(this, index)}
-                        />
+                        //   value={item.DateofBirth}
+                        //   onChange={this.handelFamDateofBirth.bind(this, index)}
+                        // />
                       )}
                     </Form.Item>
                     <Form.Item label="职务/Position" {...formItemLayout2}>
@@ -1307,12 +1306,12 @@ class JobSeeker extends Component {
                   <div className="job-seeker__informnation-boundry">
                     <Form.Item label="日期/Date/Period " {...formItemLayout2}>
                       {getFieldDecorator(`TrainingD${index+1}`, {
-                        rules: [
-                          {
-                            // required: true,
-                            // message: '请填写日期'
-                          }
-                        ]
+                        // rules: [
+                        //   {
+                        //     required: true,
+                        //     message: '请填写日期'
+                        //   }
+                        // ]
                       })(
                         <RangePicker
                           onChange={this.handelTrainPeriod.bind(this, index)}

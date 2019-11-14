@@ -5,7 +5,7 @@ import LzTable from '../../../lib/unit-component/LzTable/';
 import http from 'Util20/api';
 
 /**
- * 管理员确认
+ * 奖惩-统计分析
  */
 const { TextArea } = Input;
 class StatisticAnalysisJC extends React.Component {
@@ -74,6 +74,14 @@ class StatisticAnalysisJC extends React.Component {
             hasDownloadExcel = {true}
             hasDelete = {false}
             hasModify ={false}
+            hasAdvSearch={true}
+            advSearch = {
+              {
+                searchComponent:'both',
+                containerType:'drawer',
+                formName:'default3i',
+            }
+            }
             customRowBtns={[
               record => {
                 return (
@@ -89,8 +97,7 @@ class StatisticAnalysisJC extends React.Component {
                 );
               }
             ]}
-            
-          />
+          /> 
         </div>
       </Spin>
     );
