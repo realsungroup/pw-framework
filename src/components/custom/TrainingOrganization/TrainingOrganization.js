@@ -1,6 +1,6 @@
 import React from 'react';
 import './TrainingOrganization.less';
-// import TabsTableData from '../TabsTableData';
+import TabsTableData from '../TabsTableData';
 import TableData from '../../common/data/TableData';
 // import { Modal, Button, message, Tabs, Popconfirm } from 'antd';
 // import http from '../../../../util20/api';
@@ -15,22 +15,66 @@ class TrainingOrganization extends React.Component {
   
   render() {
     return (
-      <TableData
-              resid="625156286269"
-              subtractH={200}
-              hasAdvSearch={false}
-              hasAdd={true}
-              hasRowView={true}
-              hasRowDelete={true}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={true}
-              hasRowSelection={true}
-              actionBarWidth={100}
-              // dblinkname="ehr"
-              height={'600px'}
-            />
+      // <TableData
+      //         resid="625156286269"
+      //         subtractH={200}
+      //         hasAdvSearch={false}
+      //         hasAdd={true}
+      //         hasRowView={true}
+      //         hasRowDelete={true}
+      //         hasRowEdit={false}
+      //         hasDelete={false}
+      //         hasModify={false}
+      //         hasRowModify={true}
+      //         hasRowSelection={true}
+      //         actionBarWidth={100}
+      //         // dblinkname="ehr"
+      //         height={'600px'}
+      //       />
+      <TabsTableData
+        arr={[
+          {
+            wrappedComponentRef:(element => this.tableDataRef = element),
+            refTargetComponentName:"TableData",
+            resid: 625156286269,
+            TabsTitle: '填写课程信息',
+            // title:'填写课程信息',
+            OutHeight: '80vh',
+            recordFormFormWidth: '90%',
+            hasBeBtns: false,
+            hasModify: false,
+            hasDelete: false,
+            hasAdd: false,
+            hasRowDelete: false,
+            hasRowModify: true,
+            hasRowView: false,
+            hasRowSelection:false,
+            subtractH: 220,
+            recordFormType: 'modal',
+            formProps: {
+              height: 650
+            },
+          },
+          {
+            resid: 627065901638,
+            TabsTitle: '上传课程附件',
+            OutHeight: '80vh',
+            recordFormFormWidth: '90%',
+            hasBeBtns: false,
+            hasModify: false,
+            hasDelete: false,
+            hasAdd: false,
+            hasRowDelete: false,
+            hasRowModify: true,
+            hasRowView: false,
+            subtractH: 220,
+            recordFormType: 'modal',
+            formProps: {
+              height: 880
+            },
+          }
+        ]}
+      />
     );
   }
 }
