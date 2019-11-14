@@ -630,7 +630,9 @@ class OfferLetter extends React.Component {
     } catch (err) {
       Modal.error({
         title: '提示',
-        content: err.message
+        content: err.message,
+        okText:'OK'
+
       });
       this.setState({ loading: false });
     }

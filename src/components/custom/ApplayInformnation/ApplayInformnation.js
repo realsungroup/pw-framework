@@ -205,7 +205,8 @@ var hrCode='623876215000';
 	    })
 	    Modal.success({
 	      title: '提示',
-	      content: '退回成功',
+        content: '退回成功',
+        okText:'OK',
 	      onOk: () => {
 	        window.location.reload();
 	  
@@ -217,6 +218,7 @@ var hrCode='623876215000';
 
         Modal.error({
           title: '退回失败',
+          okText:'OK',
           content: err.message
         });
       }
@@ -236,6 +238,7 @@ var hrCode='623876215000';
         Modal.success({
           title: '提示',
           content: '保存成功',
+          okText:'OK',
           onOk: () => {
             window.location.reload();
 
@@ -249,6 +252,7 @@ var hrCode='623876215000';
 
         Modal.error({
           title: '保存失败',
+          okText:'OK',
           content: err.message
         });
       }

@@ -106,13 +106,15 @@ class ReferenceCheck extends React.Component {
         content: '',
         onOk() {
           window.location.reload();
-        }
+        },
+        okText:'OK'
       });
 
     } catch (err) {
       Modal.error({
         title: '提示',
-        content: err.message
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -173,7 +175,8 @@ class ReferenceCheck extends React.Component {
     } catch (err) {
       Modal.error({
         title: '提示',
-        content: err.message
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 

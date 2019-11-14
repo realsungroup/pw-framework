@@ -11,9 +11,11 @@ import {
   List,
   Radio,
   Form,
-  Select
+  Select,
+  Spin
 } from 'antd';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
+import debounce from 'lodash/debounce';
 
 import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
@@ -51,6 +53,7 @@ const unactiveStyle = {
 };
 
 class ArrangingCourses extends React.Component {
+  
   state = {
     loading: false,
     courseArrangment: [], //课程安排
@@ -69,9 +72,14 @@ class ArrangingCourses extends React.Component {
     selectedRecentPeriod: 'all', //下拉选项的值
     rangePickerValue: [null, null], // 日期选择器的值
     mode: 'table', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
-    courseList: []
+    courseList: [],
+    dataSearch:[]
   };
+  constructor(){
+    super();
+    this.handleSearch = debounce(this.handleSearch, 800);
 
+  }
   componentDidMount = async () => {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
@@ -187,6 +195,103 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
     }
   };
+  // 添加记录
+  addMem = async()=>{
+    if(this.state.toAddID){
+      this.setState({fetching:true})
+      var courseID=this.state.courseAddId;
+      var memberID=this.state.toAddID;
+      let res;
+      // let res2
+      // try {
+      //   res2 = await http().getTable({
+      //     resid: courseDetailId,
+      //   });
+      //   console.log('res2',res2)
+      //   this.setState({ showAddMem:false,fetching: false });
+      //   message.success('人员添加成功！')
+      // }catch (err) {
+      //   Modal.error({
+      //     title: 'Alert!',
+      //     content: err.message,
+      //     okText:'OK'
+      //   });
+      //   this.setState({fetching:false});
+  
+      // }
+      try {
+        res = await http().addRecords({
+          resid: courseDetailId,
+          data:[{
+            CourseArrangeID:courseID,
+            C3_613941384832:memberID,
+          }]
+          
+        });
+        this.setState({ toAddID:null,showAddMem:false,fetching: false });
+        this.tableDataRef.handleRefresh();
+        message.success('人员添加成功！')
+      }catch (err) {
+        Modal.error({
+          title: 'Alert!',
+          content: err.message,
+          okText:'OK'
+        });
+        this.setState({fetching:false});
+  
+      }
+    }else{
+      message.error('请搜索并选择人员！')
+    }
+    
+  }
+  // 搜索员工
+  handleSearch = async (value) => {
+    if (value) {
+
+      this.setState({fetching:true});
+
+      let res;
+      try {
+        res = await http().getTable({
+          resid: 610307713776,
+          key:value,
+        });
+        console.log(res)
+        const dataSearch =res.data.map(data => ({
+                  text: `${data.C3_609622263470}`,
+                  value: data.C3_609622254861,
+                }));
+
+                  this.setState({ dataSearch:dataSearch, fetching: false });
+      }catch (err) {
+        Modal.error({
+          title: 'Alert!',
+          content: err.message,
+          okText:'OK'
+        });
+        this.setState({fetching:false});
+
+      }
+
+
+      // fetch(value, data => this.setState({ data }));
+    } else {
+      this.setState({ dataSearch: [] });
+    }
+  };
+// 搜索后选择
+  handleChangeS=(value,obj)=>{
+    console.log(obj)
+    this.setState({
+        value,
+        postName:obj.props.children,
+        dataSearch:[],
+        toAddID:value,
+        fetching: false,
+      });
+  }
+
   //删除课程安排
   deleteCourseArrangment = async arrangment => {
     let { courseArrangment } = this.state;
@@ -498,10 +603,11 @@ class ArrangingCourses extends React.Component {
                         </span>
                       </Popconfirm>,
                       <span
-                        onClick={() => {
+                        onClick={(a) => {
                           this.setState({
                             isShowLearnerInfo: true,
-                            selectedCourseArrangment: item
+                            selectedCourseArrangment: item,
+                            courseAddId:item.REC_ID
                           });
                         }}
                       >
@@ -771,6 +877,7 @@ class ArrangingCourses extends React.Component {
             hasRowView={false}
             hasModify={false}
             hasDelete={false}
+            hasAdd={false}
             hasRowDelete={false}
             hasRowSelection={true}
             customRowBtns={[
@@ -789,6 +896,40 @@ class ArrangingCourses extends React.Component {
             ]}
             cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
             actionBarExtra={records => (
+              <div>
+              <Button onClick={this.state.showAddMem?()=>{this.setState({showAddMem:false})}:()=>{this.setState({showAddMem:true})}}>添加人员</Button>
+              
+              <Modal visible={this.state.showAddMem?true:false}
+               width="80%"
+               title="添加人员"
+               centered={true}
+               destroyOnClose
+               confirmLoading={this.state.fetching}
+               onCancel={() =>
+                this.setState({
+                  showAddMem: false,
+                })
+                
+              }
+              onOk={this.addMem}
+               >
+                <Select
+          showSearch
+
+    value={this.state.postName}
+    placeholder="搜索员工姓名"
+    notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
+    filterOption={false}
+    onSearch={this.handleSearch}
+    onChange={this.handleChangeS}
+    style={{ width:'100%',maxHeight:'88px',overflow:'auto'}}
+
+          >
+          {this.state.dataSearch.map(d => (
+                    <Option key={d.value}>{d.text}</Option>
+                  ))}
+          </Select>
+              </Modal>
               <Button
                 onClick={() => {
                   if (!records.selectedRowKeys.length) {
@@ -823,6 +964,7 @@ class ArrangingCourses extends React.Component {
               >
                 移动人员至
               </Button>
+              </div>
             )}
           ></TableData>
         </Modal>

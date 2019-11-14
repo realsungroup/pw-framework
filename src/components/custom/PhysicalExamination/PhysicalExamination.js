@@ -80,7 +80,8 @@ class PhysicalExamination extends React.Component {
     } catch (err) {
       Modal.error({
         title: '提示',
-        content: err.message
+        content: err.message,
+        okText:'OK'
       });
       this.setState({loading:false});
 
@@ -129,11 +130,13 @@ class PhysicalExamination extends React.Component {
          Modal.error({
            title: '提示',
            content: '邮箱不能为空',
+           okText:'OK'
          });
       }else if(!reg.test(email)){
         Modal.error({
           title: '提示',
           content: '邮箱格式不正确',
+          okText:'OK'
         });
       }else{
 
@@ -169,6 +172,7 @@ class PhysicalExamination extends React.Component {
           Modal.success({
             title: '已发送邮件',
             content: '',
+            okText:'OK',
             onOk() {
               window.location.reload();
             },
@@ -306,13 +310,15 @@ showOver=()=>{
 		  this.setState({loading:false});
 		  Modal.success({
 		    title: '提交成功',
-		    content: ''
+        content: '',
+        okText:'OK'
 		  });
 
 	 	} catch (error) {
 			Modal.error({
 			  title: '提示',
-			  content: error.message
+        content: error.message,
+        okText:'OK'
 			});
 	 	  console.log(error);
 	 	}

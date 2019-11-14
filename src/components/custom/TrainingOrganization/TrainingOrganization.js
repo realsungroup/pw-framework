@@ -21,7 +21,7 @@ class TrainingOrganization extends React.Component {
               hasAdvSearch={false}
               hasAdd={true}
               hasRowView={true}
-              hasRowDelete={true}
+              hasRowDelete={false}
               hasRowEdit={false}
               hasDelete={false}
               hasModify={false}

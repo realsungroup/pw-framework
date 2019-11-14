@@ -178,6 +178,54 @@ class ETNoticed extends React.Component {
   handleCurrentCoursePeopleAllApply(e) {
     this.props.currentCoursePeopleAllApply(e);
   }
+openDown=(item)=>{
+  console.log('item',item)
+  Modal.info({
+    title:'查看上课通知邮件的附件',
+    content:(
+      <div>
+      {item.courseAccessory?<a href={item.courseAccessory} target='_blank' style={{display:'block',margin:'8px 0'}}>附件1</a>:null}
+      {item.hotelStrategy?<a href={item.hotelStrategy} target='_blank' style={{display:'block',margin:'8px 0'}}>附件2</a>:null}
+      {item.otherFile1?<a href={item.otherFile1} target='_blank' style={{display:'block',margin:'8px 0'}}>附件3</a>:null}
+      {item.otherFile2?<a href={item.otherFile2} target='_blank' style={{display:'block',margin:'8px 0'}}>附件4</a>:null}
+      </div>
+      
+    ),
+    okText:'关闭'
+  })
+}
+  // 提醒培训机构上传附件
+  alertUpload=async(v,a)=>{
+    let res;
+    try{
+      res = http().modifyRecords({
+        resid: 613959525708,
+        data: [{
+          REC_ID:v.REC_ID,
+          noticeTrainingSubmit:'Y'
+        }]
+      });
+      console.log(res)
+    }catch(e){
+      message.error(e)
+    }
+    console.log(v)
+  }
+// 开课通知二次提醒
+  alertTwice=(item,bol)=>{
+    if(bol){
+      this.handleCurrentCoursePeopleAllApply(item);
+
+    }else{
+      Modal.confirm({
+        title:'提醒确认',
+        content:'培训机构还未上传附件，确认通知学员上课么？',
+        onOk:()=>this.handleCurrentCoursePeopleAllApply(item)
+
+      })
+    }
+
+  }
   render() {
     return (
       <Spin spinning={this.props.infor.loading} style={{ height: '70vh' }}>
@@ -201,21 +249,45 @@ class ETNoticed extends React.Component {
                         : item.CourseName
                     }
                     extra={
-                      this.props.isNotice ? null : (
-                        <Popconfirm
-                          title="是否立即开始通知?"
+                      <div>
+                        {item.C3_627068359533=='Y'?(<Icon type="download" onClick={()=>{this.openDown(item)}} style={{marginRight:'8px',fontSize:'20px',cursor:'pointer'}}/>):null}
+                        
+                        {
+                          item.noticeTrainingSubmit?null:(
+                            <Popconfirm
+                            trigger='hover'
+                          title="是否提醒培训机构上传开课通知附件?"
+                          style={{cursor:'pointer'}}
                           onConfirm={() => {
-                            // this.getCurrentCourseIsApply(item, i)
-                            this.handleCurrentCoursePeopleAllApply(item);
+                            this.alertUpload(item);
                           }}
                         >
                           <Icon
+                            type="alert"
+                            theme="outlined"
+                            style={{ fontSize: 20  ,marginRight:'8px',cursor:'pointer'}}
+                          />
+                          </Popconfirm>)
+                        }
+                         
+                      {this.props.isNotice ? null : (
+                        <Popconfirm
+                          title="是否立即开始通知?"
+                          trigger='hover'
+                          style={{cursor:'pointer'}}
+                          onConfirm={() => {
+                            this.alertTwice(item,item.C3_627068359533?true:false);
+                          }}
+                        >
+                          
+                          <Icon
                             type="bell"
                             theme="outlined"
-                            style={{ fontSize: 20 }}
+                            style={{ fontSize: 20,cursor:'pointer'}}
                           />
                         </Popconfirm>
-                      )
+                      )}
+                      </div>
                     }
                     key={i}
                   >
