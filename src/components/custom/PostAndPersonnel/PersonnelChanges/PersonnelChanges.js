@@ -13,7 +13,8 @@ const { Meta } = Card;
 
 class PersonnelChanges extends React.Component {
   state = {
-    target: 'post'
+    target: ''
+    // target: 'post'
   };
   setTab = tabKey => () => this.setState({ target: tabKey });
 
@@ -66,9 +67,7 @@ class PersonnelChanges extends React.Component {
 
   render() {
     const { target } = this.state;
-    return (
-      <div>{target ? <Container tabKey={target} /> : this.renderCards()}</div>
-    );
+    return target ? <Container tabKey={target} /> : this.renderCards();
   }
 }
 
