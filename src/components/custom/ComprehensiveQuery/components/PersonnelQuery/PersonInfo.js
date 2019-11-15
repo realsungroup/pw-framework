@@ -90,9 +90,9 @@ class PersonInfo extends React.Component {
               hasDelete={false}
               hasModify={false}
               hasBeBtns={true}
-              hasRowModify={false}
+              hasRowModify={true}
               hasRowSelection={false}
-              actionBarWidth={300}
+              actionBarWidth={400}
               cparm1={id}
               formProps={{ width: 1000 }}
               baseURL={this.baseURL}
