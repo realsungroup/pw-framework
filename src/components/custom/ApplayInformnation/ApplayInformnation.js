@@ -1475,7 +1475,7 @@ var hrCode='623876215000';
               <Button type="primary" style={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn=='Y')?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <div className={this.state.userChara=='HR'?'':'hidden'} style={{display:'inline-block'}}>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
-                确认打印
+                预览打印
               </Button>
               
 			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' className={this.state.userChara=='HR'?'':'hidden'}style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
