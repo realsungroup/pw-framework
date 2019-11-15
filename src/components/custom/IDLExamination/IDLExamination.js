@@ -26,6 +26,29 @@ class IDLExamination extends React.Component {
 
     };
   }
+  componentWillReceiveProps=(nextProps)=>{
+    if(nextProps.data.TrainingDate1){
+      var trainingDate1Front=nextProps.data.TrainingDate1;
+      trainingDate1Front=trainingDate1Front.slice(0,10);
+      var trainingDate1Behind=nextProps.data.TrainingDate1;
+      trainingDate1Behind=trainingDate1Behind.slice(11,22);
+      this.setState({trainingDate1Front:trainingDate1Front,trainingDate1Behind:trainingDate1Behind});
+    }
+    if(nextProps.data.TrainingDate2){
+      var trainingDate2Front=nextProps.data.TrainingDate2;
+      trainingDate2Front=trainingDate2Front.slice(0,10);
+      var trainingDate2Behind=nextProps.data.TrainingDate2;
+      trainingDate2Behind=trainingDate2Behind.slice(11,22);
+      this.setState({trainingDate2Front:trainingDate2Front,trainingDate2Behind:trainingDate2Behind});
+    }
+    if(nextProps.data.TrainingDate3){
+      var trainingDate3Front=nextProps.data.TrainingDate3;
+      trainingDate3Front=trainingDate3Front.slice(0,10);
+      var trainingDate3Behind=nextProps.data.TrainingDate3;
+      trainingDate3Behind=trainingDate3Behind.slice(11,22);
+      this.setState({trainingDate3Front:trainingDate3Front,trainingDate3Behind:trainingDate3Behind});
+    }
+  }
   componentDidMount = () => {
   };
 
@@ -59,7 +82,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '10px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                   {this.props.data.appPosition}
@@ -70,11 +94,12 @@ class IDLExamination extends React.Component {
                     <p>Name in China</p>
                     <p>中文姓名:</p>
                   </div>
-                  <div
+                  <div 
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.ChName}
@@ -89,7 +114,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.EnName}
@@ -104,7 +130,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '20px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Sex}
@@ -121,7 +148,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '10px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.IDCardNumber}
@@ -136,7 +164,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Nationality}
@@ -151,7 +180,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Nation}
@@ -166,7 +196,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '20px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Party}
@@ -183,7 +214,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '10px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     <p style={{width:"78px",whiteSpace:'nowrap',overflow:'hidden'}}>{this.props.data.BirthDate}</p>
@@ -199,7 +231,8 @@ class IDLExamination extends React.Component {
                       marginTop: '7px',
                       marginLeft: '15px',
                       float: 'right'
-                      ,width:'90px'
+                      ,width:'90px',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.BirthPlace}
@@ -214,7 +247,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.NativePlace}
@@ -229,7 +263,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '20px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.BloodType}
@@ -246,7 +281,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '20px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.PlaceOfHuKou}
@@ -261,7 +297,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Tel}
@@ -276,7 +313,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.MaritalStatus}
@@ -291,7 +329,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '20px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.ChildIf}
@@ -308,7 +347,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '20px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.CurrentAddress}
@@ -324,7 +364,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Email}
@@ -342,7 +383,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '10px',
                       marginLeft: '20x',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Recommender?'是':'否'}
@@ -357,7 +399,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.Recommender}
@@ -372,7 +415,8 @@ class IDLExamination extends React.Component {
                     style={{
                       marginTop: '7px',
                       marginLeft: '15px',
-                      float: 'right'
+                      float: 'right',
+                      fontWeight:'normal'
                     }}
                   >
                     {this.props.data.RecomenderRelation}
@@ -381,7 +425,7 @@ class IDLExamination extends React.Component {
               </tr>
             </table>
           </div>
-          <p style={{ float: 'left', fontWeight: 'bold'}}>
+          <p style={{ float: 'left', fontWeight: 'bold',marginTop:'32px'}}>
             Education Background (Please start from latest education to middle
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
@@ -410,109 +454,109 @@ class IDLExamination extends React.Component {
                 </div>
               </dd>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
                 {this.props.data.EdStartTime1}<br/>{this.props.data.EdEndTime1}
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdSchool1}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdSchool1}</p>
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdMajor1}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdMajor1}</p>
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdDegree1}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdDegree1}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReference1}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdReference1}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReferenceTel1}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdReferenceTel1}</p>
                 </div>
               </dt>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
                 {this.props.data.EdStartTime2}<br/>{this.props.data.EdEndTime2}
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdSchool2}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdSchool2}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p> {this.props.data.EdMajor2}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdMajor2}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdDegree2}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdDegree2}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReference2}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdReference2}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReferenceTel2}</p>
+                <p style={{fontWeight:'normal'}} >{this.props.data.EdReferenceTel2}</p>
 
                 </div>
               </dt>
               <dt>
-                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+                <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
                 {this.props.data.EdStartTime3}<br/>{this.props.data.EdEndTime3}
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdSchool3}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdSchool3}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdMajor3}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdMajor3}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdDegree3}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdDegree3}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReference3}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdReference3}</p>
 
                 </div>
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-                <p>{this.props.data.EdReferenceTel3}</p>
+                <p style={{fontWeight:'normal'}}>{this.props.data.EdReferenceTel3}</p>
 
                 </div>
               </dt>
-              <dt>
+              {/* <dt>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               {this.props.data.EdStartTime4}<br/>{this.props.data.EdEndTime4}
 
               </div>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-              <p>{this.props.data.EdSchool4}</p>
+              <p style={{fontWeight:'normal'}}>{this.props.data.EdSchool4}</p>
 
               </div>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-              <p>{this.props.data.EdMajor4}</p>
+              <p style={{fontWeight:'normal'}}>{this.props.data.EdMajor4}</p>
 
               </div>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-              <p>{this.props.data.EdDegree4}</p>
+              <p style={{fontWeight:'normal'}}>{this.props.data.EdDegree4}</p>
 
               </div>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-              <p>{this.props.data.EdReference4}</p>
+              <p style={{fontWeight:'normal'}}>{this.props.data.EdReference4}</p>
 
               </div>
               <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-              <p>{this.props.data.EdReferenceTel4}</p>
+              <p style={{fontWeight:'normal'}}>{this.props.data.EdReferenceTel4}</p>
 
               </div>
-              </dt>
+              </dt> */}
             </dl>
           </div>
 
-         <p style={{ float: 'left', fontWeight: 'bold' }}>
+         <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
           Working History (Please start with latest one)
           工作经验（请从最近职位开始填写）
         </p>
@@ -541,144 +585,144 @@ class IDLExamination extends React.Component {
             </div>
           </dd>
           <dt>
-            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+            <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
             {this.props.data.WorkStartTime1}<br/>{this.props.data.WorkEndTime1}
             </div>
             <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-            <p>{this.props.data.WorkComName1}</p>
+            <p style={{fontWeight:'normal'}}>{this.props.data.WorkComName1}</p>
             </div>
             <div className='innerRect' style={{width:'120px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-            <p>{this.props.data.WorkRank1}</p>
+            <p style={{fontWeight:'normal'}}>{this.props.data.WorkRank1}</p>
 
             </div>
             <div className='innerRect' style={{width:'200px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-            <p>{this.props.data.ReasonForLeave1}</p>
+            <p style={{fontWeight:'normal'}}>{this.props.data.ReasonForLeave1}</p>
 
             </div>
             <div className='innerRect' style={{width:'70px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-            <p>{this.props.data.WorkReference1}</p>
+            <p style={{fontWeight:'normal'}}>{this.props.data.WorkReference1}</p>
 
             </div>
             <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-            <p>{this.props.data.WorkReferenceTel1}</p>
+            <p style={{fontWeight:'normal'}}>{this.props.data.WorkReferenceTel1}</p>
 
             </div>
           </dt>
           <dt>
-          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
           {this.props.data.WorkStartTime2}<br/>{this.props.data.WorkEndTime2}
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkComName2}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkComName2}</p>
           </div>
           <div className='innerRect' style={{width:'120px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkRank2}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkRank2}</p>
 
           </div>
           <div className='innerRect' style={{width:'200px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.ReasonForLeave2}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.ReasonForLeave2}</p>
 
           </div>
           <div className='innerRect' style={{width:'70px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkReference2}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkReference2}</p>
 
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkReferenceTel2}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkReferenceTel2}</p>
 
           </div>
           </dt>
           <dt>
-          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
+          <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',fontWeight:'normal'}}>
           {this.props.data.WorkStartTime3}<br/>{this.props.data.WorkEndTime3}
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkComName3}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkComName3}</p>
           </div>
           <div className='innerRect' style={{width:'120px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkRank3}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkRank3}</p>
 
           </div>
           <div className='innerRect' style={{width:'200px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.ReasonForLeave3}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.ReasonForLeave3}</p>
 
           </div>
           <div className='innerRect' style={{width:'70px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p>{this.props.data.WorkReference3}</p>
+          <p style={{fontWeight:'normal'}}>{this.props.data.WorkReference3}</p>
 
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.WorkReferenceTel3}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.WorkReferenceTel3}</p>
 
           </div>
           </dt>
-          <dt>
+          {/* <dt>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
           {this.props.data.WorkStartTime4}<br/>{this.props.data.WorkEndTime4}
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.WorkComName4}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.WorkComName4}</p>
           </div>
           <div className='innerRect' style={{width:'120px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.WorkRank4}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.WorkRank4}</p>
 
           </div>
           <div className='innerRect' style={{width:'200px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.ReasonForLeave4}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.ReasonForLeave4}</p>
 
           </div>
           <div className='innerRect' style={{width:'70px',fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.WorkReference4}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.WorkReference4}</p>
 
           </div>
           <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px',display:'flex',alignItems:'center'}}>
-          <p> {this.props.data.WorkReferenceTel4}</p>
+          <p style={{fontWeight:'normal'}}> {this.props.data.WorkReferenceTel4}</p>
 
           </div>
-          </dt>
+          </dt> */}
         </dl>
         </div>
 
-        <p style={{ float: 'left', fontWeight: 'bold' }}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
           Professional Qualification / Training 专业资格 / 培训
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
           <table border="1">
             <tr style={{ fontSize: '12px', height: '35px' }}>
               <th style={{ width: '137px', padding: '0px' }}>
-                <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Date/Period</p>
-                  <p>日期</p>
+                <div style={{ float: 'middle', marginLeft: '5px'}}>
+                  <p style={{textAlign:'center'}}>Date/Period</p>
+                  <p style={{textAlign:'center'}}>日期</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Name of Training Institute</p>
-                  <p>培训机构</p>
+                  <p style={{textAlign:'center'}}>Name of Training Institute</p>
+                  <p style={{textAlign:'center'}}>培训机构</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Training Courses</p>
-                  <p>培训课程</p>
+                  <p style={{textAlign:'center'}}>Training Courses</p>
+                  <p style={{textAlign:'center'}}>培训课程</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Professional Qualification</p>
-                  <p>专业资格</p>
+                  <p style={{textAlign:'center'}}>Professional Qualification</p>
+                  <p style={{textAlign:'center'}}>专业资格</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Reference</p>
-                  <p>证明人</p>
+                  <p style={{textAlign:'center'}}>Reference</p>
+                  <p style={{textAlign:'center'}}>证明人</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Telephone</p>
-                  <p>电话</p>
+                  <p style={{textAlign:'center'}}>Telephone</p>
+                  <p style={{textAlign:'center'}}>电话</p>
                 </div>
               </th>
             </tr>
@@ -691,35 +735,37 @@ class IDLExamination extends React.Component {
                   borderTop: 'none'
                 }}
               >
-              <div style={{ float: 'middle', marginLeft: '5px' ,fontSize:'12px',wordBreak:'normal'}}>
-                <p>  {this.props.data.TrainingDate1}</p>
+              <div style={{ float: 'middle' ,fontSize:'12px',wordBreak:'normal',textAlign:'center',fontWeight:'normal'}}>
+              {this.state.trainingDate1Front}
+              <br/>
+              {this.state.trainingDate1Behind}
               </div>
 
               </th>
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingInstitute1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingInstitute1}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px'}}>
-                  <p>{this.props.data.TrainingCourese1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingCourese1}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingQualification1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingQualification1}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingReference1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingReference1}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingRefTel1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingRefTel1}</p>
                 </div>
               </th>
             </tr>
@@ -730,35 +776,37 @@ class IDLExamination extends React.Component {
                   borderLeft: 'none',
                   borderBottom: '1px solid #000',
                   fontSize:'12px',
-                  borderTop: 'none'
+                  borderTop: 'none',fontWeight:'normal',textAlign:'center'
                 }}
               >
-                {this.props.data.TrainingDate2}
+                {this.state.trainingDate2Front}
+              <br/>
+              {this.state.trainingDate2Behind}
               </th>
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingInstitute2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingInstitute2}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingCourese2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingCourese2}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingQualification2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingQualification2}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingReference2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingReference2}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingRefTel2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingRefTel2}</p>
                 </div>
               </th>
             </tr>
@@ -769,46 +817,49 @@ class IDLExamination extends React.Component {
                 borderLeft: 'none',
                 borderBottom: '1px solid #000',
                 fontSize:'12px',
-                borderTop: 'none'
+                borderTop: 'none',fontWeight:'normal',textAlign:'center'
               }}
             >
-              {this.props.data.TrainingDate3}
+             {this.state.trainingDate3Front}
+              <br/>
+              {this.state.trainingDate3Behind}
             </th>
 
             <th style={{ width: '190px', clear: 'both' }}>
               <div style={{ float: 'middle', marginLeft: '5px' }}>
-                <p>{this.props.data.TrainingInstitute3}</p>
+                <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingInstitute3}</p>
               </div>
             </th>
             <th style={{ width: '190px', clear: 'both' }}>
               <div style={{ float: 'middle', marginLeft: '5px' }}>
-                <p>{this.props.data.TrainingCourese3}</p>
+                <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingCourese3}</p>
               </div>
             </th>
             <th style={{ width: '100px', clear: 'both' }}>
               <div style={{ float: 'middle', marginLeft: '5px' }}>
-                <p>{this.props.data.TrainingQualification3}</p>
+                <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingQualification3}</p>
               </div>
             </th>
             <th style={{ width: '100px', clear: 'both' }}>
               <div style={{ float: 'middle', marginLeft: '5px' }}>
-                <p>{this.props.data.TrainingReference3}</p>
+                <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingReference3}</p>
               </div>
             </th>
             <th style={{ width: '122px', clear: 'both' }}>
               <div style={{ float: 'middle', marginLeft: '5px' }}>
-                <p>{this.props.data.TrainingRefTel3}</p>
+                <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.TrainingRefTel3}</p>
               </div>
             </th>
             </tr>
-            <tr style={{ fontSize: '12px', height: '35px' }}>
+            {/* <tr style={{ fontSize: '12px', height: '35px' }}>
               <th
                 style={{
                   width: '68px',
                   borderLeft: 'none',
                   borderBottom: 'none',
                   borderTop: 'none',
-                  fontSize:'12px'
+                  fontSize:'12px',
+                  fontWeight:'normal'
                 }}
               >
                 {this.props.data.TrainingDate4}
@@ -816,33 +867,33 @@ class IDLExamination extends React.Component {
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingInstitute4}</p>
+                  <p style={{fontWeight:'normal'}}>{this.props.data.TrainingInstitute4}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingCourese4}</p>
+                  <p style={{fontWeight:'normal'}}>{this.props.data.TrainingCourese4}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingQualification4}</p>
+                  <p style={{fontWeight:'normal'}}>{this.props.data.TrainingQualification4}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingReference4}</p>
+                  <p style={{fontWeight:'normal'}}>{this.props.data.TrainingReference4}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.TrainingRefTel4}</p>
+                  <p style={{fontWeight:'normal'}}>{this.props.data.TrainingRefTel4}</p>
                 </div>
               </th>
-            </tr>
+            </tr> */}
           </table>
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold' }}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
           Family Members and Mainly Social Relationship 家庭成员及主要社会关系
         </p>
         <div style={{ clear: 'both', marginBottom: '20px' }}>
@@ -850,38 +901,38 @@ class IDLExamination extends React.Component {
             <tr style={{ fontSize: '12px', height: '35px' }}>
               <th style={{ width: '90px', padding: '0px' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Name</p>
-                  <p>姓名</p>
+                  <p style={{textAlign:'center'}}>Name</p>
+                  <p style={{textAlign:'center'}}>姓名</p>
                 </div>
               </th>
               <th style={{ width: '90px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Relationship</p>
-                  <p>关系</p>
+                  <p style={{textAlign:'center'}}>Relationship</p>
+                  <p style={{textAlign:'center'}}>关系</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Date of Birth</p>
-                  <p>出生年月</p>
+                  <p style={{textAlign:'center'}}>Date of Birth</p>
+                  <p style={{textAlign:'center'}}>出生年月</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Position</p>
-                  <p>职务</p>
+                  <p style={{textAlign:'center'}}>Position</p>
+                  <p style={{textAlign:'center'}}>职务</p>
                 </div>
               </th>
               <th style={{ width: '250px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Name of Company & Address</p>
-                  <p>公司名称及地址</p>
+                  <p style={{textAlign:'center'}}>Name of Company & Address</p>
+                  <p style={{textAlign:'center'}}>公司名称及地址</p>
                 </div>
               </th>
               <th style={{ width: '120px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>Telephone</p>
-                  <p>电话</p>
+                  <p style={{textAlign:'center'}}>Telephone</p>
+                  <p style={{textAlign:'center'}}>电话</p>
                 </div>
               </th>
             </tr>
@@ -891,7 +942,8 @@ class IDLExamination extends React.Component {
                   width: '68px',
                   borderLeft: 'none',
                   borderBottom: '1px solid #000',
-                  borderTop: 'none'
+                  borderTop: 'none',
+                  fontWeight:'normal',textAlign:'center'
                 }}
               >
                 {this.props.data.FamName1}
@@ -899,27 +951,27 @@ class IDLExamination extends React.Component {
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamRelation1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamRelation1}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamBirthDate1?moment(this.props.data.FamBirthDate1).format("YYYY-MM-DD"):null}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamBirthDate1?moment(this.props.data.FamBirthDate1).format("YYYY-MM-DD"):null}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamPosition1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamPosition1}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamComAndAdd1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamComAndAdd1}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamTel1}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamTel1}</p>
                 </div>
               </th>
             </tr>
@@ -929,7 +981,7 @@ class IDLExamination extends React.Component {
                   width: '68px',
                   borderLeft: 'none',
                   borderBottom: 'none',
-                  borderTop: 'none'
+                  borderTop: 'none',textAlign:'center',fontWeight:'normal'
                 }}
               >
                 {this.props.data.FamName2}
@@ -937,27 +989,27 @@ class IDLExamination extends React.Component {
 
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamRelation2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamRelation2}</p>
                 </div>
               </th>
               <th style={{ width: '190px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamBirthDate2?moment(this.props.data.FamBirthDate2).format("YYYY-MM-DD"):null}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamBirthDate2?moment(this.props.data.FamBirthDate2).format("YYYY-MM-DD"):null}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamPosition2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamPosition2}</p>
                 </div>
               </th>
               <th style={{ width: '100px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamComAndAdd2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamComAndAdd2}</p>
                 </div>
               </th>
               <th style={{ width: '122px', clear: 'both' }}>
                 <div style={{ float: 'middle', marginLeft: '5px' }}>
-                  <p>{this.props.data.FamTel2}</p>
+                  <p style={{fontWeight:'normal',textAlign:'center'}}>{this.props.data.FamTel2}</p>
                 </div>
               </th>
             </tr>
@@ -989,41 +1041,41 @@ class IDLExamination extends React.Component {
               </th>
             </tr>
             <tr>
-              <td colspan="1" style={{ float: 'left', border: 'none' ,fontWeight:'bold',lineHeight:'45px'}}>
+              <td colspan="1" style={{ float: 'left', border: 'none' ,fontWeight:'bold',lineHeight:'45px',fontSize:'0.8rem',textAlign:'center'}}>
                 {this.props.data.Language}
               </td>
-              <td style={{ width: '140px' ,fontWeight:'bold'}}>
+              <td style={{ width: '140px' ,fontWeight:'bold',fontSize:'0.8rem',textAlign:'center'}}>
                   {this.props.data.EnCET}
               </td>
               <th style={{ width: '140px', textAlign: 'left' }}>
                 <p style={{ float: 'left', marginLeft: 5 }}>Writing</p>
                 <br />
-                <p style={{ float: 'left', marginLeft: 5 }}>写作</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'left', marginLeft: 5,fontSize:'0.8rem'}}>写作</p>
+                <p style={{ float: 'right', marginTop: '-10px',fontSize:'0.8rem',fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.Writing}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
-                <p style={{ float: 'left', marginLeft: 5 }}>Reading</p>
+                <p style={{ float: 'left', marginLeft: 5}}>Reading</p>
                 <br />
-                <p style={{ float: 'left', marginLeft: 5 }}>阅读</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'left', marginLeft: 5 ,fontSize:'0.8rem'}}>阅读</p>
+                <p style={{ float: 'right', marginTop: '-10px' ,fontSize:'0.8rem',fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.Reading}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
                 <p style={{ float: 'left', marginLeft: 5 }}>Speaking</p>
                 <br />
-                <p style={{ float: 'left', marginLeft: 5 }}>口语</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'left', marginLeft: 5 ,fontSize:'0.8rem'}}>口语</p>
+                <p style={{ float: 'right', marginTop: '-10px' ,fontSize:'0.8rem',fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.Speaking}
                 </p>
               </th>
               <th style={{ width: '150px', textAlign: 'left' }}>
                 <p style={{ float: 'left', marginLeft: 5 }}>Listening</p>
                 <br />
-                <p style={{ float: 'left', marginLeft: 5 }}>听力</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'left', marginLeft: 5 ,fontSize:'0.8rem'}}>听力</p>
+                <p style={{ float: 'right', marginTop: '-10px' ,fontSize:'0.8rem',fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.Listening}
                 </p>
               </th>
@@ -1033,7 +1085,7 @@ class IDLExamination extends React.Component {
                 <span style={{ float: 'left', padding: '3px 0 3px 0' ,marginLeft:'8px',fontWeight:'bold'}}>
                   Computer Skill 计算机技能：
                 </span>
-                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'bold'}}>
+                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'normal'}}>
                   {this.props.data.ComputerSkills}
                 </span>
               </td>
@@ -1043,7 +1095,7 @@ class IDLExamination extends React.Component {
                 <p style={{ float: 'left' ,marginLeft:'8px',fontWeight:'bold'}}>List Name of Software Used</p>
                 <br />
                 <p style={{ float: 'left',marginLeft:'8px',fontWeight:'bold' }}>列出常用软件</p>
-                <p style={{ float: 'right', marginTop: '-10px' ,fontWeight:'bold',marginRight:'8px'}}>
+                <p style={{ float: 'right', marginTop: '-10px' ,fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.SoftList}
                 </p>
               </td>
@@ -1053,14 +1105,14 @@ class IDLExamination extends React.Component {
                 <span style={{ float: 'left', padding: '3px 0 3px 0' ,marginLeft:'8px',fontWeight:'bold'}}>
                   Other Skill(If any)其他技能：
                 </span>
-                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'bold'}}>
+                <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'normal'}}>
                   {this.props.data.OtherSkills}
                 </span>
               </td>
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left',marginTop:'10px' }}>
+        <div style={{ textAlign: 'left',marginTop:'32px' }}>
           <p style={{ fontWeight: 'bold' }}>Other Information 其他资料</p>
           <p style={{ fontWeight: 'bold' }}>
             Please answer the following questions. 请回答下列问题
@@ -1073,7 +1125,7 @@ class IDLExamination extends React.Component {
                 <p style={{ float: 'left', marginLeft: 5 }}>Weight</p>
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>体重</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'right', marginTop: '-10px' ,marginRight:'8px',fontWeight:'normal'}}>
                   {this.props.data.Weight}KG
                 </p>
               </th>
@@ -1081,7 +1133,7 @@ class IDLExamination extends React.Component {
                 <p style={{ float: 'left', marginLeft: 5 }}>Height</p>
                 <br />
                 <p style={{ float: 'left', marginLeft: 5 }}>身高</p>
-                <p style={{ float: 'right', marginTop: '-10px' }}>
+                <p style={{ float: 'right', marginTop: '-10px' ,marginRight:'8px',fontWeight:'normal'}}>
                   {this.props.data.Height}CM
                 </p>
               </th>
@@ -1103,7 +1155,7 @@ class IDLExamination extends React.Component {
                   <p style={{ float: 'left', marginLeft: 5 }}>Left</p>
                   <br />
                   <p style={{ float: 'left', marginLeft: 5 }}>左</p>
-                  <p style={{ float: 'right', marginTop: '-10px' }}>
+                  <p style={{ float: 'right', marginTop: '-10px' ,marginRight:'8px',fontWeight:'normal'}}>
                     {this.props.data.EyeSight}
                   </p>
                 </div>
@@ -1120,7 +1172,7 @@ class IDLExamination extends React.Component {
                   <p style={{ float: 'left', marginLeft: 5 }}>Right</p>
                   <br />
                   <p style={{ float: 'left', marginLeft: 5 }}>右</p>
-                  <p style={{ float: 'right', marginTop: '-10px' }}>
+                  <p style={{ float: 'right', marginTop: '-10px' ,marginRight:'8px',fontWeight:'normal'}}>
                     {this.props.data.EyeSightR}
                   </p>
                 </div>
@@ -1167,7 +1219,7 @@ class IDLExamination extends React.Component {
                 </p>
                 {this.props.data.KnowColleageStatus ? (
                   <p style={{ textAlign: 'left', padding:'8px'}}>
-                    {this.props.data.KnowColleageStatus?'是':'否'}{this.props.data.KnowColleageStatus}
+                    {this.props.data.KnowColleageStatus}
                   </p>
                 ) : (
                   <div>
@@ -1197,7 +1249,7 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left' ,marginTop:'10px'}}>
+        <div style={{ textAlign: 'left' ,marginTop:'32px'}}>
           <p style={{ fontWeight: 'bold' }}>Self Appraisement自我评价：</p>
         </div>
         <div style={{ marginBottom: '20px' }}>
@@ -1218,7 +1270,7 @@ class IDLExamination extends React.Component {
           </table>
         </div>
         <div style={{ float: 'left', marginBottom: 20 }}>
-          <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'10px'}}>
+          <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'32px'}}>
             Commitments / 本人承诺:
           </p>
           <br />
