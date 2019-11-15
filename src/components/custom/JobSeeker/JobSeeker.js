@@ -314,6 +314,7 @@ class JobSeeker extends Component {
           Modal.success({
             title: '提示',
             content: '提交成功',
+            okText:'OK',
             onOk:()=>{
               window.location.reload();
 
@@ -324,13 +325,15 @@ class JobSeeker extends Component {
           console.error(err.message);
           Modal.error({
             title: '提示失败',
-            content: err.message
+            content: err.message,
+            okText:'OK'
           });
         }
       } else {
         return Modal.warning({
           title: '提示',
-          content: '请将个人信息填写完毕后再提交'
+          content: '请将个人信息填写完毕后再提交',
+          okText:'OK'
         });
       }
     });
@@ -344,6 +347,7 @@ class JobSeeker extends Component {
       Modal.confirm({
         title: '是否确认提交?',
         content: '',
+        okText:'OK',
         onOk: () => {
           this.confirmAppalyTotal();
         }

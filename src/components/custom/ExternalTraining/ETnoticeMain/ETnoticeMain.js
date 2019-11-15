@@ -316,6 +316,7 @@ class ETnoticeMain extends React.Component {
                             currentCourseIsApply={this.onCurrentCourseIsApply}
                             currentCoursePeopleAllApply={this.onCurrentCoursePeopleAllApply}
                             isNotice={0}
+                            
                         />
                     </TabPane>
                     <TabPane

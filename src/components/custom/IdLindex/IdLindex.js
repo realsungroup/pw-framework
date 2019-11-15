@@ -223,6 +223,7 @@ class IdLindex extends Component {
       this.setState({loading:false});
       Modal.success({
         title: '提交成功！',
+        okText:'OK'
       });
       
     } catch (err) {
@@ -230,7 +231,9 @@ class IdLindex extends Component {
       console.log(err);
       Modal.error({
         title: '提交失败！',
-        content:err
+        content:err,
+        okText:'OK'
+
       })
     }
   
@@ -266,6 +269,8 @@ class IdLindex extends Component {
       this.setState({loading:false});
       Modal.success({
         title: '提交成功！',
+        okText:'OK'
+
       });
       
     } catch (err) {
@@ -273,7 +278,9 @@ class IdLindex extends Component {
       console.log(err);
       Modal.error({
         title: '提交失败！',
-        content:err
+        content:err,
+        okText:'OK'
+
       })
     }
   }
@@ -546,6 +553,8 @@ class IdLindex extends Component {
     if(!value){
       Modal.error({
         title: '请输入身份证号！',
+        okText:'OK'
+
       });
     }else{
     let res;
