@@ -54,16 +54,25 @@ class IDLExamination extends React.Component {
 
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
-    window.document.body.innerHTML = this.printer.innerHTML;
-    window.print();
+
+     var footstr = "</body>";
+     var newstr = document.getElementById('content').innerHTML;
+      var style="<style media='print'>	@page {	size: auto; margin: 5mm;	}</style>";
+     var headstr = "<html><head><title></title>"+style+"</head><body>";
+     document.body.innerHTML = headstr + newstr + footstr;
+     window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
+
+    // window.document.body.innerHTML = this.printer.innerHTML;
+    // window.print();
+    // window.document.body.innerHTML = bodyHtml;
+    // window.location.reload();
   };
   render() {
     return (
       <div className="container">
         <div id="content" ref={p => (this.printer = p)}>
-
           <div style={{ textAlign: 'center' }}>
             <h2 className="header">Job Application Form / 工作申请表</h2>
           </div>
