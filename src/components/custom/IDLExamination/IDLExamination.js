@@ -1305,7 +1305,7 @@ class IDLExamination extends React.Component {
             onClick={this.onPrinting}
             style={{ marginLeft: '300px' }}
           >
-            预览打印
+            确认打印
           </Button>
         </div>
       </div>
