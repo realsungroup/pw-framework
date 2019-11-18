@@ -3,31 +3,6 @@ import { Radio, Button, Icon, Input, Spin, Modal } from 'antd';
 import './CyberMoney.less';
 import moment from 'moment';
 import http from '../../../util20/api';
-function fun_date(num) {
-  var date1 = new Date();
-  //今天时间
-  var time1 =
-    date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
-  var date2 = new Date(date1);
-  date2.setDate(date1.getDate() + num);
-  //num是正数表示之后的时间，num负数表示之前的时间，0表示今天
-  var time2 =
-    date2.getFullYear() + '-' + (date2.getMonth() + 1) + '-' + date2.getDate();
-  return time2;
-}
-function unique(arr) {
-  for (var i = 0; i < arr.length; i++) {
-    for (var j = i + 1; j < arr.length; j++) {
-      if (arr[i].personID == arr[j].personID) {
-        //第一个等同于第二个，splice方法删除第二个
-        arr.splice(j, 1);
-        j--;
-      }
-    }
-  }
-  return arr;
-}
-
 class CyberMoney extends Component {
   constructor(props) {
     super(props);
@@ -85,21 +60,22 @@ class CyberMoney extends Component {
     this.setState({ loading: true });
     var str = '';
     var myDate = new Date();
-    str = myDate;
-    str = moment().format('YYYY-MM-DD HH:mm:ss');
-
+    // str = moment().format('YYYY-MM-DD HH:mm:ss');
+    var monthId='627146126123';
+    var weekId='627146164354';
+    var yearId='627146204474';
+    var residTo;
     if (time == 'week') {
-      str = str.substr(0, 10);
+      residTo = weekId;
+      myDate=myDate.getWeeksNum
 
-      str = fun_date(-7) + ' 00:00:00';
     } else if (time == 'month') {
-      str = str.substr(0, 10);
+      residTo = monthId;
 
-      str = fun_date(-30) + ' 00:00:00';
+
     } else if (time == 'year') {
-      str = str.substr(0, 10);
+      residTo = yearId;
 
-      str = fun_date(-365) + ' 00:00:00';
     }
     var person='';
     try {
@@ -113,67 +89,19 @@ class CyberMoney extends Component {
         this.setState({team:res.data[0].person})
         this.getHistory(personNum);
       }
-     
+    
       try {
         let res2 = await http().getTable({
-          // resid: '623683986122',
-          resid: '623682682020',
-          cmswhere: `REC_DATE > '${str}' AND C3_623681435599 = '${personNum}'`
+          resid:residTo,
+          data:[{
+            rec_year:personNum,
+            C3_623681435599:personNum,
+          }]
         });
-
-    // let res = await http().getTable({
-    //   resid: 624553204658,
-    //   // cmswhere: `REC_DATE > '${str}'`
-    // });
-
-    // try {
-        var n=0;
-        var memberArr=[];
-        var moneyArr=[];
-        while(n<res2.data.length){
-          if(memberArr.length==0){
-            memberArr.push(res2.data[n].person)
-          }
-          var c=0;
-          while(c<memberArr.length){
-            if(res2.data[n].person!=memberArr[c]){
-                memberArr.push(res2.data[n].person)
-            }
-            c++;
-          }
-          
-          n++;
-        }
-
-        n=0;
-        c=0;
-        while(n<memberArr.length){
-          moneyArr.push(0);
-          n++;
-        }
-        n=0;
-        while(n<res2.data.length){
-          c=0;
-          while(c<memberArr.length){
-            if(res2.data[n].person==memberArr[c]){
-              moneyArr[c]+=Number(res2.data[n].turnover);
-            }
-            c++;
-          }
-          n++;
-        }
-        n=0;
-        var dataM=[];
-        while(n<moneyArr.length){
-          dataM.push({name:memberArr[n],status:moneyArr[n]})
-          n++;
-        }
-        console.log('res2',res2)
 
       this.setState({
         loading: false,
         toSearch: 0,
-        tFin:dataM
       });
       console.log('res',res)
       // this.getMemberDetail(str, res.data[this.state.toSearch].personID);

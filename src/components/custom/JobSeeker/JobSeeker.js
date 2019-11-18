@@ -536,7 +536,7 @@ class JobSeeker extends Component {
           <div className='division'></div>
           <div className='PreviewTitle'>Education Background 教育经历</div>
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>1</div>
+          <div className='countNum'>1</div>
           <div>
         <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS1} ~ {eduDateE1}</span>
           </div>
@@ -560,7 +560,7 @@ class JobSeeker extends Component {
           
           {eduLength>1?(
             <p style={{width:'100%',overflow:'hidden'}}>
-              <div>2</div>
+              <div className='countNum'>2</div>
               <div>
         <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS2} ~ {eduDateE2}</span>
           </div>
@@ -584,7 +584,7 @@ class JobSeeker extends Component {
 
             {eduLength>2?(
             <p style={{width:'100%',overflow:'hidden'}}>
-              <div>3</div>
+              <div className='countNum'>3</div>
               <div>
         <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS3} ~ {eduDateE3}</span>
           </div>
@@ -609,7 +609,7 @@ class JobSeeker extends Component {
           <div className='PreviewTitle'>Working History 工作经历</div>
           {wkLength>0?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>1</div>
+          <div className='countNum'>1</div>
           <div>
         <span>任职年限/Post period：</span><span>{wkDateS1} ~ {wkDateE1}</span>
           </div>
@@ -631,7 +631,7 @@ class JobSeeker extends Component {
           </p>):null}
           {wkLength>1?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>2</div>
+          <div className='countNum'>2</div>
           <div>
         <span>任职年限/Post period：</span><span>{wkDateS2} ~ {wkDateE2}</span>
           </div>
@@ -653,7 +653,7 @@ class JobSeeker extends Component {
           </p>):null}
           {wkLength>2?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>3</div>
+          <div className='countNum'>3</div>
           <div>
         <span>任职年限/Post period：</span><span>{wkDateS3} ~ {wkDateE3}</span>
           </div>
@@ -679,7 +679,7 @@ class JobSeeker extends Component {
                 家庭成员及主要社会关系</div>
                 {FamLength>0?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>1</div>
+          <div className='countNum'>1</div>
           <div>
         <span>姓名/Name：</span><span>{obj.FamName1}</span>
           </div>
@@ -701,7 +701,7 @@ class JobSeeker extends Component {
           </p>):null}
           {FamLength>1?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>2</div>
+          <div className='countNum'>2</div>
           <div>
         <span>姓名/Name：</span><span>{obj.FamName2}</span>
           </div>
@@ -727,7 +727,7 @@ class JobSeeker extends Component {
             专业资格/培训</div>
                 {Tralength>0?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>1</div>
+          <div className='countNum'>1</div>
           <div>
         <span>日期/Date/Period：</span><span>{TrainingDS1} ~ {TrainingDE1}</span>
           </div>
@@ -749,7 +749,7 @@ class JobSeeker extends Component {
           </p>):null}
           {Tralength>1?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>2</div>
+          <div className='countNum'>2</div>
           <div>
         <span>日期/Date/Period：</span><span>{TrainingDS2} ~ {TrainingDE2}</span>
           </div>
@@ -771,7 +771,7 @@ class JobSeeker extends Component {
           </p>):null}
           {Tralength>2?(
           <p style={{width:'100%',overflow:'hidden'}}>
-          <div>3</div>
+          <div className='countNum'>3</div>
           <div>
         <span>日期/Date/Period：</span><span>{TrainingDS3} ~ {TrainingDE3}</span>
           </div>
