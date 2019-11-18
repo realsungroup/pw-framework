@@ -1,5 +1,7 @@
 import React from 'react';
 import PwForm from '../../ui/PwForm';
+import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
+
 import { message, Tabs } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
@@ -9,6 +11,7 @@ import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
+
 const { Fragment } = React;
 const TabPane = Tabs.TabPane;
 
@@ -353,7 +356,7 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     const { resid } = info;
-    let { containerControlArr, labelControllArr } = data;
+    let { containerControlArr } = data;
     const containerHeight =
       containerControlArr &&
       containerControlArr.length &&
@@ -362,7 +365,7 @@ class FormData extends React.Component {
       containerControlArr &&
       containerControlArr.length &&
       containerControlArr[0].FrmWidth;
-    return !useAbsolute || mode !== 'view' ? (
+    return !useAbsolute ? (
       <div className="form-data">
         {!!data.length && (
           <div
@@ -387,59 +390,23 @@ class FormData extends React.Component {
         {hasSubTables && this.renderSubTables()}
       </div>
     ) : (
-      <div
-        style={{
-          height: containerHeight,
-          width: containerWidth,
-          position: 'relative'
-        }}
-      >
-        {!!labelControllArr &&
-          labelControllArr.map(item => {
-            const { customStyle } = item;
-            return (
-              <label
-                style={{
-                  fontWeight: item.FrmFontBold * 500,
-                  position: 'absolute',
-                  top: (customStyle.top / containerHeight) * 100 + '%',
-                  left: (customStyle.left / containerWidth) * 100 + '%',
-                  width: (customStyle.width / containerWidth) * 100 + '%',
-                  height: (customStyle.height / containerHeight) * 100 + '%',
-                  textAlign: customStyle.textAlign,
-                  fontSize: customStyle.fontSize,
-                  color: item.FrmForeColor,
-                  fontFamily: item.FrmFontName,
-                  overflow: 'visible'
-                }}
-              >
-                {`${item.FrmText}`}
-              </label>
-            );
-          })}
-        {!!data.length &&
-          data.map(item => {
-            const { customStyle } = item.controlData;
-            return (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: (customStyle.top / containerHeight) * 100 + '%',
-                  left: (customStyle.left / containerWidth) * 100 + '%',
-                  width: (customStyle.width / containerWidth) * 100 + '%',
-                  height: (customStyle.height / containerHeight) * 100 + '%',
-                  fontSize: customStyle.fontSize,
-                  overflow: 'auto'
-                  // lineHeight: 2,
-                }}
-              >
-                {item.initialValue}
-              </span>
-            );
-          })}
+      <>
+        <AbsoluteForm
+          data={data}
+          record={record}
+          {...formProps}
+          mode={mode}
+          {...otherProps}
+          onSave={this.handleSave}
+          onCancel={this.props.onCancel}
+          operation={operation}
+          beforeSaveFields={beforeSaveFields}
+          resid={resid}
+          dblinkname={dblinkname}
+        />
         {hasSubTables &&
           this.renderSubTablesAbsolute(containerHeight, containerWidth)}
-      </div>
+      </>
     );
   }
 }
