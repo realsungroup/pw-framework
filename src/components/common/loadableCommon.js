@@ -30,3 +30,10 @@ export const OrgChartData = Loadable({
     return minLoading;
   }
 });
+
+export const BatchTask = Loadable({
+  loader: () => import('./data/BatchTask'),
+  loading() {
+    return minLoading;
+  }
+});
