@@ -121,7 +121,7 @@ class PostChanges extends React.Component {
             <div className="change-dates_item">
               <b>今日日期：</b>2019-09-10
             </div>
-            <Button onClick={() => this.batchTask.startTask()}>开始</Button>
+            {/* <Button onClick={() => this.batchTask.startTask()}>开始</Button> */}
             <div className="change-dates">
               <div className="change-dates_item">
                 <b>当前变动日期：</b>2019-09-11
