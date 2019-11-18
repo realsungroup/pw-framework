@@ -90,7 +90,7 @@ class PersonInfo extends React.Component {
               hasDelete={false}
               hasModify={false}
               hasBeBtns={true}
-              hasRowModify={true}
+              hasRowModify={false}
               hasRowSelection={false}
               actionBarWidth={400}
               cparm1={id}
@@ -125,6 +125,7 @@ class PersonInfo extends React.Component {
                     hasRowModify: false,
                     hasRowView: true,
                     hasBeBtns: false,
+                    actionBarWidth: 100,
                     baseURL: this.baseURL,
                     height: 300,
                     downloadBaseURL: this.attendanceDownloadURL

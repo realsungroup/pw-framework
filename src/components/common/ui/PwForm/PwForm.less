@@ -10,6 +10,10 @@
 }
 .absolute-form {
   position: relative;
+  .has-error .ant-form-explain {
+    position: absolute;
+    z-index: 1;
+  }
   .required::before {
     display: inline-block;
     margin-right: 0px;

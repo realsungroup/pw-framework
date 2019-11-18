@@ -77,10 +77,15 @@ class AbsoluteForm extends React.PureComponent {
         {!!labelControllArr &&
           labelControllArr.map(item => {
             const { customStyle } = item;
+            const controlData = data.find(i => {
+              return i.controlData.ColName === item.FrmColNameForCtrl;
+            });
             return (
               <label
                 class={classNames({
-                  required: item.ColIsNoNull || item.FrmIsNoNull
+                  required:
+                    controlData.controlData.ColIsNoNull ||
+                    controlData.controlData.FrmIsNoNull
                 })}
                 style={{
                   fontWeight: item.FrmFontBold * 500,
