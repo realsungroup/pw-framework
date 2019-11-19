@@ -15,10 +15,33 @@ import {
   Row,
   Table
 } from 'antd';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import moment from 'moment';
 import logo from '../../../assets/logo.png';
 // const { getFieldDecorator } = this.props.form;
+const isChrome = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.indexOf('chrome') !== -1;
+};
+const dataURIToBlob = (dataURI, fileName, callback) => {
+  var binStr = atob(dataURI.split(',')[1]),
+    len = binStr.length,
+    arr = new Uint8Array(len);
 
+  for (var i = 0; i < len; i++) {
+    arr[i] = binStr.charCodeAt(i);
+  }
+
+  callback(new Blob([arr]), fileName + '.png');
+};
+
+const callback = function(blob, fileName) {
+  var a = document.createElement('a');
+  a.setAttribute('download', fileName);
+  a.href = URL.createObjectURL(blob);
+  a.click();
+};
 class IDLExamination extends React.Component {
   constructor() {
     super();
@@ -51,23 +74,88 @@ class IDLExamination extends React.Component {
   }
   componentDidMount = () => {
   };
+   // 导出图片的功能
+   handleExportImgBtnClick = () => {
+    const { queryName } = this.state;
+    // 下载图片
+    function download(src, name) {
+      if (!src) return;
+      const a = document.createElement('a');
+      a.setAttribute('download', name);
+      a.href = src;
+      a.click();
+    }
+    html2canvas(document.querySelector('#content')).then(
+      canvas => {
+        const imgDataURL = canvas.toDataURL('image/png', 1.0);
+        if (isChrome()) {
+          // download(imgDataURL, queryName);
+          console.log('谷歌');
+          dataURIToBlob(imgDataURL, queryName, callback);
+        } else {
+          console.log('其他');
+          window.open(imgDataURL);
+        }
+      }
+    );
+  };
 
+ // 导出pdf文件
+ hanldeExportPdf = () => {
+  const dom = document.handleExportImgBtnClick('#content');
+  const { queryName } = this.state;
+  html2canvas(dom).then(canvas => {
+    let contentWidth = canvas.width;
+    let contentHeight = canvas.height;
+    //一页pdf显示html页面生成的canvas高度;
+    let pageHeight = (contentWidth / 592.28) * 841.89;
+    //未生成pdf的html页面高度
+    let leftHeight = contentHeight;
+    //页面偏移
+    let position = 0;
+    //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+    let imgWidth = 550;
+    let imgHeight = (550 / contentWidth) * contentHeight;
+    let imgData = canvas.toDataURL('image/jpeg', 1.0);
+    let doc = new jsPDF('', 'pt', 'a4');
+    //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+    //当内容未超过pdf一页显示的范围，无需分页
+    if (leftHeight < pageHeight) {
+      doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+    } else {
+      while (leftHeight > 0) {
+        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        leftHeight -= pageHeight;
+        position -= 841.89;
+        //避免添加空白页
+        if (leftHeight > 0) {
+          doc.addPage();
+        }
+      }
+    }
+    // doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    doc.save(queryName + '.pdf');
+  });
+};
   onPrinting = () => {
+    this.handleExportImgBtnClick()
+    // this.hanldeExportPdf()
     const bodyHtml = window.document.body.innerHTML;
 
-     var footstr = "</body>";
-     var newstr = document.getElementById('content').innerHTML;
-      var style="<style media='print'>	@page {	size: auto; margin: 5mm;	}</style>";
-     var headstr = "<html><head><title></title>"+style+"</head><body>";
-     document.body.innerHTML = headstr + newstr + footstr;
-     window.print();
-    window.document.body.innerHTML = bodyHtml;
-    window.location.reload();
-
-    // window.document.body.innerHTML = this.printer.innerHTML;
-    // window.print();
+    //  var footstr = "</body>";
+    //  var newstr = document.getElementById('content').innerHTML;
+    //  var style;
+    //   // var style="<style media='print'>	@page {	size: auto; margin: 5mm;	}</style>";
+    //  var headstr = "<html><head><title></title>"+style+"</head><body>";
+    //  document.body.innerHTML = headstr + newstr + footstr;
+    //  window.print();
     // window.document.body.innerHTML = bodyHtml;
     // window.location.reload();
+
+    window.document.body.innerHTML = this.printer.innerHTML;
+    window.print();
+    window.document.body.innerHTML = bodyHtml;
+    window.location.reload();
   };
   render() {
     return (
