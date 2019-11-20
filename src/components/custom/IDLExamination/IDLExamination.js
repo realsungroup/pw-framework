@@ -522,7 +522,7 @@ class IDLExamination extends React.Component {
               </tr>
             </table>
           </div>
-          <p style={{ float: 'left', fontWeight: 'bold',marginTop:'32px'}}>
+          <p style={{ float: 'left', fontWeight: 'bold',marginTop:'24px'}}>
             Education Background (Please start from latest education to middle
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
@@ -653,7 +653,7 @@ class IDLExamination extends React.Component {
             </dl>
           </div>
 
-         <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
+         <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'24px'}}>
           Working History (Please start with latest one)
           工作经验（请从最近职位开始填写）
         </p>
@@ -780,7 +780,7 @@ class IDLExamination extends React.Component {
         </dl>
         </div>
 
-        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'24px'}}>
           Professional Qualification / Training 专业资格 / 培训
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -990,7 +990,7 @@ class IDLExamination extends React.Component {
             </tr> */}
           </table>
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'32px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold' ,marginTop:'24px'}}>
           Family Members and Mainly Social Relationship 家庭成员及主要社会关系
         </p>
         <div style={{ clear: 'both', marginBottom: '20px' }}>
@@ -1115,7 +1115,7 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '10px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'60px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'68px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -1209,7 +1209,7 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left',marginTop:'32px' }}>
+        <div style={{ textAlign: 'left',marginTop:'24px' }}>
           <p style={{ fontWeight: 'bold' }}>Other Information 其他资料</p>
           <p style={{ fontWeight: 'bold' }}>
             Please answer the following questions. 请回答下列问题
@@ -1346,7 +1346,7 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ textAlign: 'left' ,marginTop:'32px'}}>
+        <div style={{ textAlign: 'left' ,marginTop:'24px'}}>
           <p style={{ fontWeight: 'bold' }}>Self Appraisement自我评价：</p>
         </div>
         <div style={{ marginBottom: '20px' }}>
@@ -1367,7 +1367,7 @@ class IDLExamination extends React.Component {
           </table>
         </div>
         <div style={{ float: 'left', marginBottom: 20 }}>
-          <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'32px'}}>
+          <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'24px'}}>
             Commitments / 本人承诺:
           </p>
           <br />
