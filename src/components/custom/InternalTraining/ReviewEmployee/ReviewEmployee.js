@@ -407,7 +407,7 @@ class ReviewEmployee extends React.Component {
         subtractH={240}
         hasBeBtns={true}
         hasAdd={false}
-        hasRowView={false}
+        hasRowView={true}
         customRowBtns={[
           (record, btnSize) => {
             return (
