@@ -2246,7 +2246,7 @@ class JobSeeker extends Component {
                         message:"请填写身体状况"
                       }
                     ]
-                  })(<TextArea />)}
+                  })(<TextArea placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <Form.Item
                 colon={false}
@@ -2276,7 +2276,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasCriminal === '是' ? <Input /> : ''}
+                    {this.state.hasCriminal === '是' ? <Input placeholder='最多填写50字' maxLength={50}/> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -2302,7 +2302,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasLostTrust === '是' ? <Input /> : ''}
+                    {this.state.hasLostTrust === '是' ? <Input placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -2334,7 +2334,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasUnemployee === '是' ? <TextArea /> : ''}
+                    {this.state.hasUnemployee === '是' ? <TextArea placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -2367,7 +2367,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.knowColleaguage === '是' ? <TextArea /> : ''}
+                    {this.state.knowColleaguage === '是' ? <TextArea placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -2421,7 +2421,7 @@ class JobSeeker extends Component {
                       <Radio value="否">否</Radio>
                     </RadioGroup>
                     {this.state.competitionAgreement === '是' ? (
-                      <TextArea />
+                      <TextArea placeholder='最多填写50字' maxLength={50} />
                     ) : (
                       ''
                     )}
@@ -2432,13 +2432,13 @@ class JobSeeker extends Component {
                 label="办离职需要多长时间/How long do
                    you carry out demission?"
               >
-                {getFieldDecorator('HowLong', {})(<Input />)}
+                {getFieldDecorator('HowLong', {})(<Input placeholder='最多填写50字' maxLength={50} />)}
               </Form.Item>
               <Form.Item label="如被录用何时上班/When would be available for you?">
-                {getFieldDecorator('WhenOn', {})(<Input />)}
+                {getFieldDecorator('WhenOn', {})(<Input  placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <Form.Item label="自我评价/Self Appraisement">
-                {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
+                {getFieldDecorator('SelfAccessment', {})(<TextArea  placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <div>
                 <h3>Commitments/本人承诺</h3>

@@ -12,10 +12,12 @@ import {
   Radio,
   Form,
   Select,
-  Spin
+  Spin,
+  Upload
 } from 'antd';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
 import debounce from 'lodash/debounce';
+import { uploadFile } from '../../../util/api';
 
 import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
@@ -73,13 +75,15 @@ class ArrangingCourses extends React.Component {
     rangePickerValue: [null, null], // 日期选择器的值
     mode: 'table', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
     courseList: [],
-    dataSearch:[]
+    dataSearch:[],
+    fileList: [],
   };
   constructor(){
     super();
     this.handleSearch = debounce(this.handleSearch, 800);
 
   }
+  
   componentDidMount = async () => {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
@@ -87,7 +91,18 @@ class ArrangingCourses extends React.Component {
     this.props.onHandleLoading(false);
     this.getOutCourse(OutCourseId);
   };
-
+  // 上传文件
+  handleFileChange = info => {
+    console.log(info);
+    let { file, fileList } = info;
+    // if (file.status === 'removed') {
+    //   this.setState({
+    //     fileList: fileList.filter(item => item.uid !== file.uid)
+    //   });
+    // } else {
+    this.setState({ fileList });
+    // }
+  };
   //获取课程安排
   getCourseArrangment = async () => {
     let res;
@@ -381,6 +396,24 @@ class ArrangingCourses extends React.Component {
       message.error('请勾选记录！');
     }
   };
+// 初始化fileList
+resetFileList = (v) =>{
+  console.log('v',v)
+  if(v.CourseOutline){
+    var arr=[{
+        url:v.CourseOutline,
+        status:'done',
+        name:'附件',
+        uid:1
+      }]
+
+    this.setState({fileList:arr})
+
+  }else{
+    this.setState({fileList:[]})
+
+  }
+}
 
   giveUp = async (resid, recordId) => {
     try {
@@ -580,8 +613,9 @@ class ArrangingCourses extends React.Component {
                         onClick={() =>
                           this.setState({
                             isShowModifyModal: true,
-                            selectedCourseArrangment: item
-                          })
+                            selectedCourseArrangment: item,
+                            // fileList:{url:item.CourseOutline,status:'done',name:'附件',uid:1}
+                          },()=>{this.resetFileList(item)})
                         }
                       >
                         <Icon type="edit" />
@@ -695,7 +729,8 @@ class ArrangingCourses extends React.Component {
                     actualCost: parseFloat(values.actualCost),
                     quarter: values.quarter,
                     Teacher: values.modifyTeacher,
-                    isArrangeSelf:values.isArrangeSelf
+                    isArrangeSelf:values.isArrangeSelf,
+                    CourseOutline:this.state.fileList[0].url
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -844,6 +879,29 @@ class ArrangingCourses extends React.Component {
                     </Option>
                   </Select>
                 )}
+              </Form.Item>
+              <Form.Item label="课程大纲">
+                <Upload
+                  onChange={this.handleFileChange}
+                  fileList={this.state.fileList}
+                  customRequest={async file => {
+                    const res = await uploadFile(file.file);
+                    let { fileList } = this.state;
+                    fileList[fileList.length - 1] = {
+                      name: file.file.name,
+                      url: res,
+                      status: 'done',
+                      uid: -fileList.length
+                    };
+                    this.setState({
+                      fileList
+                    });
+                  }}
+                >
+                  <Button>
+                    <Icon type="upload" /> 上传心得文件
+                  </Button>
+                </Upload>
               </Form.Item>
             </Form>
           </Modal>
@@ -1069,6 +1127,8 @@ class ArrangingCourses extends React.Component {
                   courseArrangment.actualCost = parseFloat(
                     courseArrangment.actualCost
                   );
+                  courseArrangment.CourseOutline=this.state.fileList[0].url
+
                   this.addCourseArrangment(courseArrangment);
                   this.setState({
                     isShowAddCourseArrangment: false,
@@ -1184,6 +1244,29 @@ class ArrangingCourses extends React.Component {
                     </Option>
                   </Select>
                 )}
+              </Form.Item>
+              <Form.Item label="课程大纲">
+                <Upload
+                  onChange={this.handleFileChange}
+                  fileList={this.state.fileList}
+                  customRequest={async file => {
+                    const res = await uploadFile(file.file);
+                    let { fileList } = this.state;
+                    fileList[fileList.length - 1] = {
+                      name: file.file.name,
+                      url: res,
+                      status: 'done',
+                      uid: -fileList.length
+                    };
+                    this.setState({
+                      fileList
+                    });
+                  }}
+                >
+                  <Button>
+                    <Icon type="upload" /> 上传心得文件
+                  </Button>
+                </Upload>
               </Form.Item>
             </Form>
           </Modal>

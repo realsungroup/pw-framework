@@ -96,6 +96,7 @@ class ProbationForms extends React.Component {
     if (this.props.roleName === '员工') {
       memberId = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
     } else {
+
       memberId = this.props.memberId;
       employedId = this.props.employedId;
     }
@@ -140,7 +141,7 @@ class ProbationForms extends React.Component {
         data: [
           {
             REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: 'Y'
+            instructorIsPass: 'Y',
           }
         ]
       });
@@ -365,6 +366,7 @@ class ProbationForms extends React.Component {
   };
   //获取主子表记录
   getRecords = async (memberId, employedId) => {
+    console.log(memberId,employedId)
     try {
       const { viewableTable } = this.state;
       let subresid = '';
@@ -374,13 +376,28 @@ class ProbationForms extends React.Component {
         }
       });
       subresid += resid9;
-      const res = await http().getRecordAndSubTables({
-        resid: resid1,
-        // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
-        subresid,
-        cmswhere: `memberId = '${memberId}'`,
-        getsubresource: 1
-      });
+      let res;
+      if(memberId!='0'){
+      console.log('进来1')
+        res = await http().getRecordAndSubTables({
+          resid: resid1,
+          // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
+          subresid,
+          cmswhere: `memberId = '${memberId}'`,
+          getsubresource: 1
+        });
+      }else{
+        console.log('进来2')
+
+        res = await http().getRecordAndSubTables({
+          resid: resid1,
+          // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
+          subresid,
+          cmswhere: `C3_625051545181 = '${employedId}'`,
+          getsubresource: 1
+        });
+      }
+      console.log('res',res)
       const SubResource = res.SubResource;
       let data = {};
       if (memberId === '0') {
