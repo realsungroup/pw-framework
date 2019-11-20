@@ -442,7 +442,7 @@ class IDLExamination extends React.Component {
                   </div>
                   <div
                     style={{
-                      marginTop: '20px',
+                      marginTop: '7px',
                       marginLeft: '20x',
                       float: 'right',
                       fontWeight:'normal'
@@ -1115,7 +1115,7 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '10px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'68px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'24px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -1191,16 +1191,16 @@ class IDLExamination extends React.Component {
               <td style={{ width: 842 }} colspan="6">
                 <p style={{ float: 'left' ,marginLeft:'8px',fontWeight:'bold'}}>List Name of Software Used</p>
                 <br />
-                <p style={{ float: 'left',marginLeft:'8px',fontWeight:'bold' }}>列出常用软件</p>
-                <p style={{ float: 'right', marginTop: '-10px' ,fontWeight:'normal',marginRight:'8px'}}>
+                <span style={{ float: 'left',marginLeft:'8px',fontWeight:'bold' }}>列出常用软件</span>
+                <span style={{ float: 'right' ,fontWeight:'normal',marginRight:'8px'}}>
                   {this.props.data.SoftList}
-                </p>
+                </span>
               </td>
             </tr>
             <tr style={{}}>
               <td style={{ width: 842 }} colspan="6">
                 <span style={{ float: 'left', padding: '3px 0 3px 0' ,marginLeft:'8px',fontWeight:'bold'}}>
-                  Other Skill(If any)其他技能：
+                  Other Skill(If any) 其他技能：
                 </span>
                 <span style={{ float: 'right', padding: '3px 0 3px 0' ,marginRight:'8px',fontWeight:'normal'}}>
                   {this.props.data.OtherSkills}
@@ -1354,7 +1354,7 @@ class IDLExamination extends React.Component {
             <tr>
               <td colspan="6" style={{ width: 842 }}>
                 {this.props.data.SelfAccessment ? (
-                  <p style={{padding:'8px'}}>{this.props.data.SelfAccessment}</p>
+                  <p style={{padding:'8px',minHeight:'80px',textAlign:'left',}}>{this.props.data.SelfAccessment}</p>
                 ) : (
                   <div>
                     <br />
@@ -1366,13 +1366,13 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ float: 'left', marginBottom: 20 }}>
+        <div style={{ float: 'left', marginBottom: 100 }}>
           <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'24px'}}>
             Commitments / 本人承诺:
           </p>
           <br />
           <br />
-          <p style={{ textAlign: 'left' }}>
+          <p style={{ float: 'left',textAlign:'left' }}>
             1)&nbsp;&nbsp;All information given are true and accurate,
             otherwise I’m willing to be punished even dismissed. /
             所有填表内容真实、准确，如有虚假愿意接受处分包括辞退。
@@ -1382,7 +1382,7 @@ class IDLExamination extends React.Component {
             本人同意公司进行背景调查。
           </p>
         </div>
-        <div style ={{clear:"both",marginBottom:20}}>
+        <div style ={{clear:"both"}}>
           <p className = "signPerson">Signature of Applicant/申请人签名<b></b></p>
           <p className = "signDate">Date/日期<b></b></p>
         </div>
