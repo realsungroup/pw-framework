@@ -3,6 +3,7 @@ import { Menu, Icon, Badge } from 'antd';
 import classnames from 'classnames';
 import './PostAndPersonnel.less';
 import PersonnelChanges from './PersonnelChanges';
+import PostArchitecture from './PostArchitecture';
 
 const { SubMenu } = Menu;
 const styles = {
@@ -36,6 +37,9 @@ class PostAndPersonnel extends React.Component {
     switch (selectKey) {
       case 'personnel-changes':
         page = <PersonnelChanges />;
+        break;
+      case 'post-architecture':
+        page = <PostArchitecture />;
         break;
       default:
         break;
@@ -131,7 +135,7 @@ class PostAndPersonnel extends React.Component {
                 <Badge count={0} />
               </Menu.Item>
             </SubMenu>
-            <Menu.Item>
+            <Menu.Item key="post-architecture">
               <Icon type="appstore" />
               <span>岗位架构管理</span>
             </Menu.Item>

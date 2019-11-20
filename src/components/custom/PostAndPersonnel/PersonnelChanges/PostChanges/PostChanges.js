@@ -106,7 +106,7 @@ class PostChanges extends React.Component {
   render() {
     return (
       <div className="personnel-changes_tabpane" id="post-changes">
-        {/* <BatchTask
+        <BatchTask
           ref={element => {
             this.batchTask = element;
           }}
@@ -115,13 +115,13 @@ class PostChanges extends React.Component {
           keycolumn="C3_424712901404"
           keyparm="idstr"
           batchsize={500}
-        /> */}
+        />
         <div className="post-changes_subordinates">
           <header>
             <div className="change-dates_item">
               <b>今日日期：</b>2019-09-10
             </div>
-            {/* <Button onClick={() => this.batchTask.startTask()}>开始</Button> */}
+            <Button onClick={() => this.batchTask.startTask()}>开始</Button>
             <div className="change-dates">
               <div className="change-dates_item">
                 <b>当前变动日期：</b>2019-09-11
