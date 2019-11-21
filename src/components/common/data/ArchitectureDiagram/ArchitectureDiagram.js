@@ -1,5 +1,14 @@
 import React from 'react';
-import { Icon, Breadcrumb, Alert, message, Modal, Spin } from 'antd';
+import {
+  Icon,
+  Breadcrumb,
+  Alert,
+  message,
+  Modal,
+  Spin,
+  Timeline,
+  Drawer
+} from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
@@ -16,7 +25,7 @@ OrgChart.templates.architectureDiagramTemplate = Object.assign(
   OrgChart.templates.ula
 );
 OrgChart.templates.architectureDiagramTemplate.node =
-  '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
+  '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.architectureDiagramTemplate.image = '';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
   '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="51" text-anchor="middle">{val}</text>';
@@ -27,41 +36,37 @@ class ArchitectureDiagram extends React.Component {
   state = {
     selectedNode: {},
     addBroVisible: false,
-    addSubVisible: false,
-    loading: false
+    loading: false,
+    viewHistoryDetailVisible: false,
+    historyData: []
   };
   async componentDidMount() {
-    this.getFormData();
     this.initializeOrgchart();
+    await this.getRootNodes();
     let data = await this.getData();
-    this.chart.load([
-      ...data,
-      {
-        id: 12345,
-        C3_227192484125: '兰发华',
-        C3_417990929305: '老大',
-        tags: []
-      }
-    ]);
+    this.chart.load(data);
   }
   componentWillUnmount() {
     this.p1 && this.p1.cancel();
+    this.p2 && this.p2.cancel();
+    this.p3 && this.p3.cancel();
   }
 
   /**
    *  初始化orgchart
-   * @param data 初始化数据
+   * @param {array} data 初始化数据
    * @returns void
    */
 
-  initializeOrgchart = data => {
+  initializeOrgchart = () => {
+    const { displayFileds } = this.props;
     this.chart = new OrgChart(
       document.getElementById('architecture-diagram_orgchart'),
       {
         template: 'architectureDiagramTemplate',
         nodeBinding: {
-          field_0: 'C3_227192484125',
-          field_1: 'C3_417990929305'
+          field_0: displayFileds[0],
+          field_1: displayFileds[1]
         },
         layout: OrgChart.mixed,
         toolbar: {
@@ -75,16 +80,24 @@ class ArchitectureDiagram extends React.Component {
           if (node.tags && node.tags.includes('selected')) {
             return false;
           }
-          this.setState({ selectedNode: node });
-          let nodes = [...sender.config.nodes];
-          nodes = nodes.filter(item => node.id !== item.id);
-          nodes.forEach(item => {
-            let index = item.tags.findIndex(item => item === 'selected');
-            if (index > -1) {
-              item.tags.splice(index, 1);
-              sender.update(item);
-            }
+          this.setState({ selectedNode: node }, this.getHistory);
+          const nodes = [...sender.config.nodes]; //所有节点
+          let _selectedNode = nodes.find(node => {
+            return node.tags.includes('selected');
           });
+          // if (_selectedNode) {
+          //   sender.removeNodeTag(_selectedNode.id, 'selected');
+          //   sender.updateNode(_selectedNode);
+          // }
+          if (_selectedNode) {
+            let index = _selectedNode.tags.findIndex(
+              item => item === 'selected'
+            );
+            if (index > -1) {
+              _selectedNode.tags.splice(index, 1);
+              sender.update(_selectedNode);
+            }
+          }
           let selectedNode = { ...node, tags: [...node.tags, 'selected'] };
           sender.update(selectedNode);
           sender.draw();
@@ -97,53 +110,114 @@ class ArchitectureDiagram extends React.Component {
         scaleInitial: 1,
         scaleMin: 0.3,
         mouseScroolBehaviour: OrgChart.action.zoom
-        // nodes: [
-        //   ...data,
-        //   {
-        //     id: 12345,
-        //     C3_227192484125: '兰发华',
-        //     C3_417990929305: '老大',
-        //     tags: []
-        //   }
-        // ]
       }
     );
   };
 
+  _rootIds = [];
+  /**
+   * 获取根节点
+   */
+  getRootNodes = async () => {
+    const { baseURL, rootResid, dblinkname, idField } = this.props;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    this.p2 = makeCancelable(
+      http(httpParams).getTable({ resid: rootResid, dblinkname })
+    );
+    let res;
+    try {
+      res = await this.p2.promise;
+    } catch (error) {
+      console.error(error);
+      return message.error(error.message);
+    }
+    this._rootIds = res.data.map(item => item[idField]);
+  };
+
   _cmscolumninfo = [];
+  _nodes = [];
+  /**
+   * 获取节点数据
+   */
   getData = async () => {
-    const { resid, baseURL, historyResid } = this.props;
+    const { resid, baseURL, idField, pidField, level, dblinkname } = this.props;
+    const options = {
+      resid,
+      ColumnOfID: idField,
+      ColumnOfPID: pidField,
+      ProductIDs: this._rootIds.join(','),
+      Levels: level,
+      cmswhere: this._cmswhere,
+      dblinkname
+    };
     try {
       let httpParams = {};
       // 使用传入的 baseURL
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(
-        http(httpParams).getRecordAndSubTables({
-          resid,
-          subresid: historyResid,
-          getcolumninfo: 1 // 需要这个参数为 1，才能获取到字段信息
-        })
-      );
+      this.p1 = makeCancelable(http(httpParams).getNodesData(options));
       let res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
-      return res.data.map(item => {
+      let nodes = res.nodes.map(item => {
         return {
           ...item,
-          id: item.C3_305737857578,
-          pid: item.C3_417993417686,
+          id: item[idField],
+          pid: item[pidField],
           tags: []
         };
       });
+      this._nodes = nodes;
+      return nodes;
     } catch (error) {
       console.error(error);
       return [];
     }
   };
 
+  /**
+   * 获取历史数据
+   */
+  getHistory = async () => {
+    const { resid, baseURL, dblinkname, historyResid } = this.props;
+    const { selectedNode } = this.state;
+    // getTableByHostRecord
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    this.p3 = makeCancelable(
+      http(httpParams).getTableByHostRecord({
+        resid,
+        subresid: historyResid,
+        hostrecid: selectedNode.REC_ID,
+        dblinkname
+      })
+    );
+    try {
+      const res = await this.p3.promise;
+      this.setState({ historyData: res.data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   handleAdd = level => () => {
-    console.log(level);
+    const { pidField, idField } = this.props;
+    const { selectedNode } = this.state;
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
+    if (level === 'sub') {
+      this.getFormData({ [pidField]: selectedNode[idField] });
+    } else if (level === 'bro') {
+      this.getFormData({ [pidField]: selectedNode[pidField] });
+    }
     this.setState({ addBroVisible: true });
   };
 
@@ -159,15 +233,31 @@ class ArchitectureDiagram extends React.Component {
       }
       res = await http(httpParams).getFormData({
         resid: resid,
-        formName: 'add1'
+        formName: 'default'
       });
       const formData = dealControlArr(res.data.columns);
-      this._dataProp = getDataProp(formData, {}, true, false, false);
+      this._dataProp = getDataProp(formData, record, true, false, false);
     } catch (err) {
       console.log(err);
       return message.error(err.message);
     }
     this.setState({ loading: false });
+  };
+
+  closeBroModal = () => this.setState({ addBroVisible: false });
+
+  viewHistoryDetail = () => this.setState({ viewHistoryDetailVisible: true });
+  closeHistoryDetail = () => this.setState({ viewHistoryDetailVisible: false });
+
+  afterSave = (operation, formData, record, form) => {
+    const { pidField, idField } = this.props;
+    this.closeBroModal();
+    this.chart.addNode({
+      ...record,
+      id: record[idField],
+      pid: record[pidField],
+      tags: []
+    });
   };
 
   renderHeader = () => {
@@ -206,12 +296,14 @@ class ArchitectureDiagram extends React.Component {
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
+          <div
+            className="architecture-diagram_header_icon-button"
+            onClick={this.handleAdd('sub')}
+          >
             <img
               src={add1}
               className="architecture-diagram_header_icon-button__icon"
               alt=""
-              onClick={this.handleAdd('sub')}
             />
             添加子级
           </div>
@@ -249,8 +341,13 @@ class ArchitectureDiagram extends React.Component {
   };
 
   render() {
-    const { selectedNode, addBroVisible, addSubVisible, loading } = this.state;
-    const { historyResid } = this.props;
+    const {
+      selectedNode,
+      addBroVisible,
+      historyData,
+      viewHistoryDetailVisible
+    } = this.state;
+    const { remarkField } = this.props;
     return (
       <div className="architecture-diagram">
         {this.renderHeader()}
@@ -268,7 +365,7 @@ class ArchitectureDiagram extends React.Component {
               <div className="architecture-diagram_main_sider_title">
                 详细情况
               </div>
-              {selectedNode.C3_305737857578 ? (
+              {selectedNode.REC_ID ? (
                 <div className="architecture-diagram_main_item-detail_list">
                   {this._cmscolumninfo.map(item => {
                     return (
@@ -293,21 +390,27 @@ class ArchitectureDiagram extends React.Component {
                 历史情况
               </div>
               <div className="architecture-diagram_change-hsitory_list">
-                {selectedNode.C3_305737857578 ? (
-                  selectedNode[historyResid].map(item => {
-                    return (
-                      <div className="architecture-diagram_change-hsitory">
-                        <p className="architecture-diagram_change-hsitory_item">
-                          <label>时间：</label>
-                          <span>{item.C3_470524257391}</span>
-                        </p>
-                        <p className="architecture-diagram_change-hsitory_item">
-                          <label>备注：</label>
-                          <span>sdfsdfsdfsasadsafffffffffffff</span>
-                        </p>
-                      </div>
-                    );
-                  })
+                {selectedNode.REC_ID ? (
+                  historyData.length ? (
+                    <Timeline>
+                      {historyData.map(item => (
+                        <Timeline.Item>
+                          {item[remarkField]}
+                          <a
+                            href="javascript::"
+                            className="architecture-diagram_change-hsitory_list__view-button"
+                            onClick={this.viewHistoryDetail}
+                          >
+                            查看
+                          </a>
+                        </Timeline.Item>
+                      ))}
+                    </Timeline>
+                  ) : (
+                    <div className="architecture-diagram_unselect-tip">
+                      <Alert message="无历史记录" type="info" showIcon />
+                    </div>
+                  )
                 ) : (
                   <div className="architecture-diagram_unselect-tip">
                     <Alert
@@ -323,22 +426,27 @@ class ArchitectureDiagram extends React.Component {
         </div>
         <Modal
           visible={addBroVisible}
-          title="添加同级"
-          width="90%"
-          onCancel={() => this.setState({ addBroVisible: false })}
+          title="添加节点"
+          width={800}
+          footer={null}
+          onCancel={this.closeBroModal}
         >
           <FormData
             info={{ dataMode: 'main', resid: this.props.resid }}
-            operation="view"
+            operation="add"
             data={this._dataProp}
-            record={{}}
-            useAbsolute={true}
-            formProps={{ width: 1000 }}
+            // record={}
+            // useAbsolute={true}
+            // formProps={{ width: 500 }}
+            onCancel={this.closeBroModal}
+            onSuccess={this.afterSave}
+            baseURL={this.props.baseURL}
           />
         </Modal>
-        <Modal visible={addSubVisible} title="添加子级">
-          <FormData />
-        </Modal>
+        <Drawer
+          visible={viewHistoryDetailVisible}
+          onClose={this.closeHistoryDetail}
+        ></Drawer>
       </div>
     );
   }

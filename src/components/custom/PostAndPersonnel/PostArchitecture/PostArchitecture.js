@@ -13,8 +13,14 @@ class PostArchitecture extends React.Component {
         <div className="post-architecture_title">企业架构</div>
         <div className="post-architecture_diagram-container">
           <ArchitectureDiagram
-            resid="627492761872"
-            historyResid="627492790130"
+            resid="627649390227"
+            historyResid="627649406457"
+            rootResid="627649574324"
+            idField="id"
+            pidField="directorId"
+            level={3}
+            remarkField="C3_627679142400"
+            displayFileds={['name', 'userId']}
             baseURL="http://10.108.2.66:9091/"
           />
         </div>
