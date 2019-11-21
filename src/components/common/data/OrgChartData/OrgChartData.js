@@ -185,16 +185,13 @@ class OrgChartData extends React.Component {
     const parentNode = this.orgChartDataReef.parentNode.parentNode.parentNode;
     const width = parentNode.clientWidth;
     const height = parentNode.clientHeight;
-
-    console.log({ width, height });
-
     const targetNode = document.querySelector('#' + chartId);
-
-    const svgNode = targetNode.querySelector('svg');
-
     targetNode.style = `width: ${width}px; height: ${height}px`;
-    svgNode.setAttribute('with', width);
-    svgNode.setAttribute('height', height);
+    setTimeout(() => {
+      const svgNode = targetNode.querySelector('svg');
+      svgNode.setAttribute('with', width);
+      svgNode.setAttribute('height', height);
+    }, 1000);
   };
 
   // 获取根节点 id -> 获取节点数据 + 获取窗体数据
@@ -430,7 +427,14 @@ class OrgChartData extends React.Component {
   };
 
   getOrgChartOptions = (nodes, tags) => {
-    const { lazyLoading, showFields, intl, isCanOperation,collapse,expand } = this.props;
+    const {
+      lazyLoading,
+      showFields,
+      intl,
+      isCanOperation,
+      collapse,
+      expand
+    } = this.props;
     const { locale } = intl;
     const { enableDragDrop, template, orientation, padding } = this.state;
 
@@ -463,9 +467,7 @@ class OrgChartData extends React.Component {
 
       nodeBinding: showFields,
       expand,
-     
 
-     
       // 高性能
       lazyLoading,
       // showXScroll: BALKANGraph.scroll.visible,
@@ -523,12 +525,8 @@ class OrgChartData extends React.Component {
     const newParentNode = this._nodes.find(
       node => node.id === parseInt(newNode.pid, 10)
     );
-    const zhTip = `您确定要将 ${newNode[keyField]} 拖拽到 ${
-      newParentNode[keyField]
-    } 下面吗？`;
-    const enTip = `Are you sure you want to drag ${newNode[keyField]} under ${
-      newParentNode[keyField]
-    }`;
+    const zhTip = `您确定要将 ${newNode[keyField]} 拖拽到 ${newParentNode[keyField]} 下面吗？`;
+    const enTip = `Are you sure you want to drag ${newNode[keyField]} under ${newParentNode[keyField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: getIntlVal(intl.locale, enTip, zhTip),

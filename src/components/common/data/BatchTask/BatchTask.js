@@ -2,6 +2,7 @@ import React from 'react';
 import './BatchTask.less';
 import { Modal, Progress, message, Icon, Tooltip } from 'antd';
 import http from 'Util20/api';
+import { defaultProps, propTypes } from './propTypes';
 
 const IconStyle = {
   fontSize: 24
@@ -10,6 +11,8 @@ const IconStyle = {
  *  批处理任务，用于大数据量
  */
 class BatchTask extends React.Component {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
   state = {
     visible: false,
     completedCount: 0, // 当前数量
@@ -33,7 +36,6 @@ class BatchTask extends React.Component {
   componentDidMount() {}
   componentWillUnmount() {
     this.timer = null;
-    this.getTaskInfo = null;
   }
   startTask = () => {
     this.setState({ visible: true });

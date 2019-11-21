@@ -37,3 +37,10 @@ export const BatchTask = Loadable({
     return minLoading;
   }
 });
+
+export const ArchitectureDiagram = Loadable({
+  loader: () => import('./data/ArchitectureDiagram'),
+  loading() {
+    return minLoading;
+  }
+});
