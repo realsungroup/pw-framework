@@ -18,7 +18,7 @@ class PostArchitecture extends React.Component {
             rootResid="627649574324"
             idField="id"
             pidField="directorId"
-            level={3}
+            level={7}
             remarkField="C3_627679142400"
             displayFileds={['name', 'userId']}
             baseURL="http://10.108.2.66:9091/"

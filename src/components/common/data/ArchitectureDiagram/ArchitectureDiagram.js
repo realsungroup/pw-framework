@@ -18,6 +18,7 @@ import FormData from '../FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
 
+const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
 OrgChart.templates.architectureDiagramTemplate = Object.assign(
@@ -34,11 +35,15 @@ OrgChart.templates.architectureDiagramTemplate.field_1 =
 
 class ArchitectureDiagram extends React.Component {
   state = {
-    selectedNode: {},
+    selectedNode: {}, // 选中项
     addBroVisible: false,
     loading: false,
     viewHistoryDetailVisible: false,
-    historyData: []
+    historyData: [], // 选中项的历史记录
+    operation: 'add', // FormData用到的prop
+    record: {}, // FormData用到的prop
+    breadcrumb: [], //面包屑数据
+    currentLevel: this.props.level //当前层级
   };
   async componentDidMount() {
     this.initializeOrgchart();
@@ -50,6 +55,7 @@ class ArchitectureDiagram extends React.Component {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
+    this.p4 && this.p4.cancel();
   }
 
   /**
@@ -68,43 +74,28 @@ class ArchitectureDiagram extends React.Component {
           field_0: displayFileds[0],
           field_1: displayFileds[1]
         },
-        layout: OrgChart.mixed,
+        // layout: OrgChart.mixed,
         toolbar: {
           layout: true,
           zoom: true,
           fit: true
           // expandAll: false
         },
+        nodeMenu: {
+          call: {
+            text: '设为顶层',
+            icon: '<img/>',
+            onClick: this.setRootNode
+          }
+        },
+
         enableSearch: true,
         onClick: (sender, node) => {
-          if (node.tags && node.tags.includes('selected')) {
-            return false;
-          }
-          this.setState({ selectedNode: node }, this.getHistory);
-          const nodes = [...sender.config.nodes]; //所有节点
-          let _selectedNode = nodes.find(node => {
-            return node.tags.includes('selected');
-          });
-          // if (_selectedNode) {
-          //   sender.removeNodeTag(_selectedNode.id, 'selected');
-          //   sender.updateNode(_selectedNode);
-          // }
-          if (_selectedNode) {
-            let index = _selectedNode.tags.findIndex(
-              item => item === 'selected'
-            );
-            if (index > -1) {
-              _selectedNode.tags.splice(index, 1);
-              sender.update(_selectedNode);
-            }
-          }
-          let selectedNode = { ...node, tags: [...node.tags, 'selected'] };
-          sender.update(selectedNode);
-          sender.draw();
+          this.handleNodeClick(sender, node);
           return false;
         },
         tags: {
-          selected: 'selected',
+          selected: selected,
           deleted: 'deleted'
         },
         scaleInitial: 1,
@@ -113,8 +104,8 @@ class ArchitectureDiagram extends React.Component {
       }
     );
   };
-
-  _rootIds = [];
+  _topRootIds = []; //最顶层节点id
+  _rootIds = []; //当前跟节点id
   /**
    * 获取根节点
    */
@@ -135,11 +126,11 @@ class ArchitectureDiagram extends React.Component {
       console.error(error);
       return message.error(error.message);
     }
-    this._rootIds = res.data.map(item => item[idField]);
+    this._topRootIds = this._rootIds = res.data.map(item => item[idField]);
   };
 
-  _cmscolumninfo = [];
-  _nodes = [];
+  _cmscolumninfo = []; // 主表的列定义
+  _nodes = []; // 当前所有节点数据
   /**
    * 获取节点数据
    */
@@ -185,7 +176,7 @@ class ArchitectureDiagram extends React.Component {
   getHistory = async () => {
     const { resid, baseURL, dblinkname, historyResid } = this.props;
     const { selectedNode } = this.state;
-    // getTableByHostRecord
+    this.p3 && this.p3.cancel();
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
@@ -207,20 +198,89 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  /**
+   * 计算面包屑数据
+   */
+  getBreadcrumb = (selectedNode, breadcrumb = []) => {
+    if (selectedNode.pid) {
+      let fooNode = this._nodes.find(item => {
+        return item.id === selectedNode.pid;
+      });
+      if (fooNode) {
+        breadcrumb.unshift(selectedNode);
+        this.getBreadcrumb(fooNode, breadcrumb);
+      }
+    } else {
+      breadcrumb.unshift(selectedNode);
+    }
+  };
+
+  /**
+   * 添加节点
+   */
   handleAdd = level => () => {
     const { pidField, idField } = this.props;
     const { selectedNode } = this.state;
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
+    let record = {};
     if (level === 'sub') {
-      this.getFormData({ [pidField]: selectedNode[idField] });
+      record[pidField] = selectedNode[idField];
+      this.getFormData(record);
     } else if (level === 'bro') {
-      this.getFormData({ [pidField]: selectedNode[pidField] });
+      record[pidField] = selectedNode[pidField];
+      this.getFormData(record);
     }
-    this.setState({ addBroVisible: true });
+    this.setState({ addBroVisible: true, operation: 'add', record });
   };
 
+  /**
+   * 修改节点
+   */
+  handleModify = () => {
+    const { selectedNode } = this.state;
+    this.getFormData({ ...selectedNode });
+    this.setState({
+      addBroVisible: true,
+      operation: 'modify',
+      record: { ...selectedNode }
+    });
+  };
+
+  /**
+   * 点击节点
+   */
+  handleNodeClick = (chart, node) => {
+    if (!chart.get(node.id)) {
+      this.setRootNode(node.id);
+    }
+    if (node.tags && node.tags.includes(selected)) {
+      return;
+    }
+    console.log(chart);
+    this.setState({ selectedNode: node }, this.getHistory);
+    let findNodes = chart.find(selected);
+    if (findNodes.length) {
+      findNodes.forEach(item => {
+        chart.removeNodeTag(item.id, selected);
+      });
+    }
+    chart.addNodeTag(node.id, selected);
+    chart.draw();
+    let breadcrumb = [];
+    this.getBreadcrumb(node, breadcrumb);
+    this.setState({ breadcrumb });
+    chart.center(node.id, {
+      rippleId: node.id,
+      vertical: true,
+      horizontal: true
+    });
+  };
+
+  /**
+   * 获取主表窗体数据
+   */
   getFormData = async record => {
     let res;
     try {
@@ -244,20 +304,113 @@ class ArchitectureDiagram extends React.Component {
     this.setState({ loading: false });
   };
 
-  closeBroModal = () => this.setState({ addBroVisible: false });
+  /**
+   * 获取历史表窗体数据
+   */
+  getHistoryFormData = async record => {
+    let res;
+    try {
+      const { historyResid, baseURL } = this.props;
+      this.setState({ loading: true });
+      let httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      res = await http(httpParams).getFormData({
+        resid: historyResid,
+        formName: 'default'
+      });
+      const formData = dealControlArr(res.data.columns);
+      this._historyDataProp = getDataProp(formData, record, true, false, false);
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+  };
 
-  viewHistoryDetail = () => this.setState({ viewHistoryDetailVisible: true });
+  /**
+   * 设置某个节点为根节点
+   */
+  setRootNode = nodeId => {
+    const node =
+      this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
+    let nodes = [node];
+    this.calcSubNodes([node], nodes, this._nodes);
+    this.chart.load(nodes);
+  };
+
+  calcSubNodes = (calcNode, subNodes, allNodes) => {
+    //仍有要计算子节点的数据
+    if (calcNode.length) {
+      let filterNodes = allNodes.filter(item => {
+        return calcNode.some(i => i.id === item.pid);
+      });
+      subNodes.push(...filterNodes);
+      this.calcSubNodes(filterNodes, subNodes, allNodes);
+    }
+  };
+
+  closeBroModal = () => this.setState({ addBroVisible: false });
+  viewHistoryDetail = () => {
+    this.setState({ viewHistoryDetailVisible: true });
+    this.getHistoryFormData();
+  };
   closeHistoryDetail = () => this.setState({ viewHistoryDetailVisible: false });
 
+  /**
+   * 保存成功后的回调函数
+   */
   afterSave = (operation, formData, record, form) => {
     const { pidField, idField } = this.props;
     this.closeBroModal();
-    this.chart.addNode({
-      ...record,
-      id: record[idField],
-      pid: record[pidField],
-      tags: []
-    });
+    if (operation === 'add') {
+      this.chart.addNode({
+        ...record,
+        id: record[idField],
+        pid: record[pidField],
+        tags: []
+      });
+    } else if (operation === 'modify') {
+      let node = {
+        ...record,
+        id: record[idField],
+        pid: record[pidField],
+        tags: [selected]
+      };
+      this.setState({ selectedNode: node });
+      this.chart.updateNode(node);
+    }
+  };
+
+  loadNextLevel = async () => {
+    const { resid, idField, pidField, baseURL, dblinkname } = this.props;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    const options = {
+      resid,
+      Levels: 1,
+      ColumnOfID: idField,
+      ColumnOfPID: pidField,
+      ProductIDs: this._rootIds.join(','),
+      cmswhere: this._cmswhere,
+      dblinkname
+    };
+    this.p4 = makeCancelable(http(httpParams).getNodesData(options));
+    let res;
+    try {
+      res = await this.p4.promise;
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+    if (!res.nodes) {
+      return message.info('没有更多数据');
+    }
   };
 
   renderHeader = () => {
@@ -318,6 +471,16 @@ class ArchitectureDiagram extends React.Component {
             />
             添加同级
           </div>
+          <div
+            className="architecture-diagram_header_icon-button"
+            onClick={this.handleModify}
+          >
+            <Icon
+              type="edit"
+              className="architecture-diagram_header_icon-button__icon"
+            />
+            修改
+          </div>
           <div className="architecture-diagram_header_icon-button delete-button">
             <Icon
               type="delete"
@@ -336,7 +499,33 @@ class ArchitectureDiagram extends React.Component {
             自定义卡片
           </div>
         </div>
+        <div className="architecture-diagram_header_icon-button-group">
+          <div className="architecture-diagram_header_icon-button">
+            加载下一层
+          </div>
+        </div>
       </header>
+    );
+  };
+
+  renderBreadcrumb = () => {
+    const { breadcrumb } = this.state;
+    const { displayFileds } = this.props;
+    return (
+      <Breadcrumb separator=">">
+        {breadcrumb.map(item => {
+          return (
+            <Breadcrumb.Item
+              onClick={() => {
+                this.handleNodeClick(this.chart, item);
+              }}
+              key={item.id}
+            >
+              {item[displayFileds[0]]}
+            </Breadcrumb.Item>
+          );
+        })}
+      </Breadcrumb>
     );
   };
 
@@ -345,7 +534,9 @@ class ArchitectureDiagram extends React.Component {
       selectedNode,
       addBroVisible,
       historyData,
-      viewHistoryDetailVisible
+      viewHistoryDetailVisible,
+      operation,
+      record
     } = this.state;
     const { remarkField } = this.props;
     return (
@@ -353,10 +544,7 @@ class ArchitectureDiagram extends React.Component {
         {this.renderHeader()}
         <div className="architecture-diagram_breadcrumb">
           当前位置：
-          <Breadcrumb separator=">">
-            <Breadcrumb.Item>菲尼撒（无锡）</Breadcrumb.Item>
-            <Breadcrumb.Item>产品部</Breadcrumb.Item>
-          </Breadcrumb>
+          {this.renderBreadcrumb()}
         </div>
         <div className="architecture-diagram_main-container">
           <div id="architecture-diagram_orgchart"></div>
@@ -430,12 +618,13 @@ class ArchitectureDiagram extends React.Component {
           width={800}
           footer={null}
           onCancel={this.closeBroModal}
+          destroyOnClose
         >
           <FormData
             info={{ dataMode: 'main', resid: this.props.resid }}
-            operation="add"
+            operation={operation}
             data={this._dataProp}
-            // record={}
+            record={record}
             // useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeBroModal}
@@ -446,7 +635,19 @@ class ArchitectureDiagram extends React.Component {
         <Drawer
           visible={viewHistoryDetailVisible}
           onClose={this.closeHistoryDetail}
-        ></Drawer>
+          destroyOnClose
+          width={800}
+        >
+          <FormData
+            info={{ dataMode: 'main', resid: this.props.historyResid }}
+            operation="view"
+            data={this._historyDataProp}
+            // record={}
+            useAbsolute={true}
+            // formProps={{ width: 500 }}
+            baseURL={this.props.baseURL}
+          />
+        </Drawer>
       </div>
     );
   }
