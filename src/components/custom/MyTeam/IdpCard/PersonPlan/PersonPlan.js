@@ -1187,6 +1187,7 @@ class PersonPlan extends React.Component {
                 onClick={() => {
                   this.onAdd('ability');
                 }}
+                hidden={this.state.SquareCardArr.length>5}
               >
                 <Icon
                   type="plus"
@@ -1223,6 +1224,7 @@ class PersonPlan extends React.Component {
               </span>
             </React.Fragment>
           }
+          
           className="personPlan-contain-info"
           bordered={true}
         >
@@ -1274,6 +1276,7 @@ class PersonPlan extends React.Component {
             {this.judgeRender() ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
+                hidden={this.state.plans.length>2}
                 onClick={() => {
                   this.onAdd('plans');
                 }}

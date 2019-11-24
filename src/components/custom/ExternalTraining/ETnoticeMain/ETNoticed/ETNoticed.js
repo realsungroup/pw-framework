@@ -205,6 +205,8 @@ openDown=(item)=>{
           noticeTrainingSubmit:'Y'
         }]
       });
+      message.success('提醒成功')
+      this.props.getCourseArrangment();
       console.log(res)
     }catch(e){
       message.error(e)

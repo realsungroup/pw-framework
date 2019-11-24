@@ -306,7 +306,7 @@ class HRProbation extends React.Component {
               this.handleApply(record);
             }}
           >
-            <Button type="danger">退回申请</Button>
+            <Button type="danger">退回转正申请</Button>
           </Popconfirm>
           <Popconfirm
             title="确认同意转正？"
@@ -314,7 +314,7 @@ class HRProbation extends React.Component {
               this.hadleApproval(record);
             }}
           >
-            <Button type="primary">同意转正</Button>
+            <Button type="primary">同意转正申请</Button>
           </Popconfirm>
 
           <Button

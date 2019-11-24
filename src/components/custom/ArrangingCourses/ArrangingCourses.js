@@ -18,7 +18,7 @@ import {
 import { BIGrid } from 'lz-components-and-utils/lib/index';
 import debounce from 'lodash/debounce';
 import { uploadFile } from '../../../util/api';
-
+import SelectEmployeeToAdd from './SelectEmployeeToAdd';
 import { TableData } from '../../common/loadableCommon';
 import './ArrangingCourses.less';
 import http from 'Util20/api';
@@ -91,6 +91,33 @@ class ArrangingCourses extends React.Component {
     this.props.onHandleLoading(false);
     this.getOutCourse(OutCourseId);
   };
+// 添加人员
+  addEmployees = async employees => {
+  
+    try {
+      await http().addRecords({
+        resid: courseDetailId,
+        data: employees.map(item => {
+          return {
+            CourseArrangeID: this.state.courseAddId,
+            C3_613941384832: item.C3_305737857578
+          };
+        }),
+        isEditOrAdd: true
+      });
+      // await http().modifyRecords({
+      //   resid: courseDetailId,
+      //   data: [{ REC_ID: this.state.courseAddId }]
+      // });
+      this.tableDataRef.handleRefresh();
+      this.setState({ showAddMem: false });
+      message.success('添加成功');
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  };
+
   // 上传文件
   handleFileChange = info => {
     console.log(info);
@@ -217,23 +244,6 @@ class ArrangingCourses extends React.Component {
       var courseID=this.state.courseAddId;
       var memberID=this.state.toAddID;
       let res;
-      // let res2
-      // try {
-      //   res2 = await http().getTable({
-      //     resid: courseDetailId,
-      //   });
-      //   console.log('res2',res2)
-      //   this.setState({ showAddMem:false,fetching: false });
-      //   message.success('人员添加成功！')
-      // }catch (err) {
-      //   Modal.error({
-      //     title: 'Alert!',
-      //     content: err.message,
-      //     okText:'OK'
-      //   });
-      //   this.setState({fetching:false});
-  
-      // }
       try {
         res = await http().addRecords({
           resid: courseDetailId,
@@ -899,7 +909,7 @@ resetFileList = (v) =>{
                   }}
                 >
                   <Button>
-                    <Icon type="upload" /> 上传心得文件
+                    <Icon type="upload" /> 上传课程大纲
                   </Button>
                 </Upload>
               </Form.Item>
@@ -969,24 +979,9 @@ resetFileList = (v) =>{
                 })
                 
               }
-              onOk={this.addMem}
+              footer={null}
                >
-                <Select
-          showSearch
-
-    value={this.state.postName}
-    placeholder="搜索员工姓名"
-    notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
-    filterOption={false}
-    onSearch={this.handleSearch}
-    onChange={this.handleChangeS}
-    style={{ width:'100%',maxHeight:'88px',overflow:'auto'}}
-
-          >
-          {this.state.dataSearch.map(d => (
-                    <Option key={d.value}>{d.text}</Option>
-                  ))}
-          </Select>
+                <SelectEmployeeToAdd onAdd={this.addEmployees} />
               </Modal>
               <Button
                 onClick={() => {
@@ -1264,7 +1259,7 @@ resetFileList = (v) =>{
                   }}
                 >
                   <Button>
-                    <Icon type="upload" /> 上传心得文件
+                    <Icon type="upload" /> 上传课程大纲
                   </Button>
                 </Upload>
               </Form.Item>

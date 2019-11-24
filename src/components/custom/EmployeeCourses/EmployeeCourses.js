@@ -149,9 +149,7 @@ class EmployeeCourses extends React.Component {
   performCard = () => {
     var l = this.state.myCourses.length;
     var w = Number(window.innerWidth);
-    console.log('l');
     if (l == 0 || l * 376 < w) {
-      console.log('jinle');
       this.setState({ windowShow: { justifyContent: 'center' } });
     }
   };
@@ -173,9 +171,9 @@ class EmployeeCourses extends React.Component {
       let myCourses = res.data;
       if (myCourses.length > 0) {
         const qsObj = qs.parse(window.location.search.substring(1));
-        const { targetID } = qsObj;
+        const { targetId } = qsObj;
         let target = myCourses.find(
-          item => item.REC_ID.toString() === targetID
+          item => item.REC_ID.toString() === targetId
         );
         let selectedCourse = {};
         if (target) {
@@ -206,7 +204,8 @@ class EmployeeCourses extends React.Component {
         });
         this.setState({ myCourses, selectedCourse, calendarEvents });
         this.setState({ CoursesOrg: this.state.myCourses });
-        var urlID=targetID;
+        var urlID=qsObj.targetId;
+        console.log('rec_id',qsObj.targetId)
         // 获取邮件传来的ID
         if(urlID){
           this.onPageChange(1,3,urlID);
@@ -787,6 +786,7 @@ class EmployeeCourses extends React.Component {
   };
   // 页码变化
   onPageChange = (v,s,REC_ID) => {
+   
     var org = this.state.CoursesOrg;
     var res;
     if(REC_ID){
