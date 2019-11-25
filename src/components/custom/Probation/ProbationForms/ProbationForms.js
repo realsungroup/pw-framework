@@ -1047,15 +1047,23 @@ class ProbationForms extends React.Component {
                   </div>
                 )}
                 {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' && (
+                  employeeInformation.regStatus === '待转正' &&  employeeInformation.C3_622649502021!='Y' && (
+
                     <Popconfirm
                       title="确认提交转正申请？"
                       onConfirm={this.positiveApply}
+                     
                     >
                       <Button type="primary" style={{ marginRight: 16 }}>
                         申请转正
                       </Button>
                     </Popconfirm>
+
+                  )}
+                  {roleName === '员工' &&
+                  employeeInformation.regStatus === '待转正' && employeeInformation.C3_622649502021=='Y'&& (
+                  <span style={{color:'red'}}>转正申请已经提交</span>
+
                   )}
                 {employeeInformation.regStatus === '转正中' &&
                   ((roleName === '主管' &&
