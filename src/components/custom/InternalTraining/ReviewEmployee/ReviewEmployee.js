@@ -246,14 +246,17 @@ class ReviewEmployee extends React.Component {
       item._id = index;
       item._state = 'editoradd';
     });
-    
+
     this.setState({ taskList: employees, isShowMoveProgress: true });
   };
 
-  onMoveFinished = async() => {
+  onMoveFinished = async () => {
     await http().modifyRecords({
       resid: courseArrangmentResid,
-      data: [{ REC_ID: this.props.courseArrangement.REC_ID },{REC_ID: this.state.targetCourseArrangement}]
+      data: [
+        { REC_ID: this.props.courseArrangement.REC_ID },
+        { REC_ID: this.state.targetCourseArrangement }
+      ]
     });
     this.setState(
       {
@@ -579,9 +582,7 @@ class ReviewEmployee extends React.Component {
                   resid: ReviewEmployeeResid,
                   data: JSON.stringify(taskList)
                 }}
-                title="添加人员列表"
-                // showFields={['C3_609622263470', 'C3_609845305680']}
-                // width='50%'
+                title="移动人员列表"
               />
             ) : null}
           </List>
