@@ -57,7 +57,6 @@ class FormData extends React.Component {
       dblinkname,
       baseURL
     } = this.props;
-    console.log(this.props);
     const { hasSubTables } = this.state;
     const { dataMode, resid, subresid, hostrecid } = info;
     const id = getResid(dataMode, resid, subresid);
@@ -69,6 +68,7 @@ class FormData extends React.Component {
       if (err) {
         return message.error('表单数据有误');
       }
+      let res;
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
 
@@ -114,7 +114,7 @@ class FormData extends React.Component {
             http(httpParams).saveRecordAndSubTables({ data, dblinkname })
           );
           try {
-            const res = await this.p1.promise;
+            res = await this.p1.promise;
             console.log({ res });
           } catch (err) {
             message.error(err.message);
@@ -134,7 +134,7 @@ class FormData extends React.Component {
           }
           this.p1 = makeCancelable(http(httpParams).addRecords(params));
           try {
-            await this.p1.promise;
+            res = await this.p1.promise;
           } catch (err) {
             console.error(err);
             return message.error(err.message);
@@ -153,7 +153,7 @@ class FormData extends React.Component {
           }
           this.p1 = makeCancelable(http(httpParams).modifyRecords(params));
           try {
-            await this.p1.promise;
+            res = await this.p1.promise;
           } catch (err) {
             console.error(err);
             return message.error(err.message);
@@ -200,16 +200,16 @@ class FormData extends React.Component {
           http(httpParams).saveRecordAndSubTables({ data, dblinkname })
         );
         try {
-          const res = await this.p1.promise;
+          res = await this.p1.promise;
           console.log({ res });
         } catch (err) {
           message.error(err.message);
           return console.error(err);
         }
       }
-
+      let savedRecord = res.data[0]; //保存成功后的数据
       this.props.onSuccess &&
-        this.props.onSuccess(operation, formData, record, form);
+        this.props.onSuccess(operation, formData, savedRecord, form);
     });
   };
 

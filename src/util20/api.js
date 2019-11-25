@@ -458,4 +458,12 @@ http.createApi('terminateBatch', {
   url: '/api/Resource/TerminateImportByBatchTaskId'
 });
 
+/**
+ * 获取附表数据
+ */
+http.createApi('getTableByHostRecord', {
+  method: 'get',
+  url: '/api/100/table/RetrieveRelTableByHostRecord'
+});
+
 export default http;
