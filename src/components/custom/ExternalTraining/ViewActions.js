@@ -39,7 +39,9 @@ class ViewActions extends React.Component {
       rate2: null,
       rate3: null,
       rate4: null
-    }
+    },
+    knowledge: [''],
+    plans: ['']
   };
 
   //获取反馈与行动计划
@@ -65,7 +67,6 @@ class ViewActions extends React.Component {
         this.setState({
           rateOut: tempRateOut
         });
-        // console.log('后端返回的外训评分', this.state.rateOut);
       } else {
         const tempRate = { ...rate };
         tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
@@ -79,7 +80,6 @@ class ViewActions extends React.Component {
         this.setState({
           rate: tempRate
         });
-        console.log('后盾返回的内训评分', tempRate);
       }
     }
     if (selectedCourseArrangmentDetail.courseType !== '内训') {
@@ -93,10 +93,21 @@ class ViewActions extends React.Component {
         message.error(err.message);
         console.log(err);
       }
-      console.log('后端返回的行动计划', res2);
-      this.setState({
-        planView: res2.data
-      });
+      if (res.data.length > 0) {
+        let knowledge = res2.data[0].knowledge1.split(';');
+        let plans = res2.data[0].action1.split(';');
+        this.setState({
+          planView: res2.data,
+          knowledge,
+          plans
+        });
+      } else {
+        this.setState({
+          planView: [],
+          knowledge: [],
+          plans: []
+        });
+      }
     }
   };
 
@@ -106,6 +117,8 @@ class ViewActions extends React.Component {
       viewActionsVisible: false,
       selectedCourseArrangmentDetail: {},
       planView: [],
+      knowledge: [],
+      plans: [],
       // 内训评分
       rate: {
         rate1: null,
@@ -263,72 +276,42 @@ class ViewActions extends React.Component {
             </Card>
           )}
           {this.props.onCourseType === '内训' ? null : (
-		  
-		  
             <Card title="行动计划" style={{ marginTop: 10 }}>
-			<Row>
-				<div>
-					<ul className='feedbackList'>
-						<li>
-							列出培训中学习到的3个知识点
-						</li>
-						<li>
-							<rect>1</rect>
-							<p>这里是填完的知识点</p>
-							
-						</li>
-						<li>
-							<rect>2</rect>
-							<p>这里是填完的知识点</p> 
-							
-						</li>
-					</ul>
-				</div>
-			
-			  
-			</Row>
-			<Row>
-				<div>
-					<ul className='feedbackList'>
-						<li>
-							行动计划<br/>(运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。	)
-						</li>
-						{/* <li className='alter2'>
-							<rect>序号</rect>
-							<p>具体行为</p>
-							
-						</li> */}
-						<li>
-							<rect>1</rect><p>这里是填完的具体行为</p> 
-							
-						</li>
-						<li>
-							<rect>2</rect><p>这里是填完的具体行为</p> 
-
-						</li>
-					</ul>
-				</div>
-			
-			  
-			</Row>
-              {/**<Row>
-                <Col span={2}>序号</Col>
-                <Col span={8}>具体行动</Col>
-                
-                <Col span={4}>进度</Col>
+              <Row>
+                <div>
+                  <ul className="feedbackList">
+                    <li>列出培训中学习到的3个知识点</li>
+                    {this.state.knowledge.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <rect>{index + 1}</rect>
+                          <p>{item}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </Row>
-              {this.state.planView.map((item, index) => {
-                return (
-                  <Row key={index}>
-                    <Col span={2}>{index + 1}</Col>
-                    <Col span={8}>{item.actions}</Col>
-                    
-                    <Col span={4}>
-                      <InputNumber value={item.progress} disabled />
-                    </Col>
-                  </Row>
-                );
-              })}**/}
+              <Row>
+                <div>
+                  <ul className="feedbackList">
+                    <li>
+                      行动计划
+                      <br />
+                      (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
+                      )
+                    </li>
+                    {this.state.plans.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <rect>{index + 1}</rect>
+                          <p>{item}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Row>
             </Card>
           )}
         </Modal>
