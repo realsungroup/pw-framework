@@ -1761,3 +1761,7 @@ window[626954797692] = {
   name: 'PostAndPersonnel',
   title: '岗位与人事'
 };
+window[627590812010] = {
+  name: 'DLPrint',
+  title: 'DL打印'
+};
