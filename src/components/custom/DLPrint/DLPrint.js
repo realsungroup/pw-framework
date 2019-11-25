@@ -28,9 +28,9 @@ class DLPrint extends React.Component {
           <div id='toPrint'>
             <h3>基本信息</h3>
             <div className='sm-wrap'>
-              <div style={{height:'100px',width:'33%',float:'left',backgroundImage:'url(https://www.baidu.com/img/bd_logo1.png)',backgroundSize:'cover',backgroundPosition:'0 0'}}>
+              <div style={{height:'100px',width:'33%',float:'left',backgroundImage:'url(https://www.baidu.com/img/bd_logo1.png)',backgroundSize:'100% 100%',backgroundPosition:'center'}}>
               </div>
-              <div style={{height:'100px',width:'65%',float:'right',backgroundImage:'url(https://www.baidu.com/img/bd_logo1.png)'}}>
+              <div style={{height:'100px',width:'65%',float:'right',backgroundImage:'url(https://www.baidu.com/img/bd_logo1.png)',backgroundSize:'100% 100%',backgroundPosition:'center'}}>
               </div>
             </div>
             <div className='sm-wrap'>
@@ -47,10 +47,11 @@ class DLPrint extends React.Component {
           </div>
         </div>
         <TableData
-          resid={607189025758}
+          resid={628007834561}
           hasModify={false}
           hasDelete={false}
           hasAdd={false}
+          baseURL = 'http://kingofdinner.realsun.me:1201/'
           subtractH={190}
           hasRowDelete={false}
           hasRowModify={false}
@@ -59,8 +60,8 @@ class DLPrint extends React.Component {
             (record, btnSize) => {
               return (
                 <Button
-                  onClick={(v) => {
-                    this.showHidden(v);
+                  onClick={() => {
+                    this.showHidden(record);
                   }}
                 >
                   预览打印
