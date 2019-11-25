@@ -246,10 +246,15 @@ class ReviewEmployee extends React.Component {
       item._id = index;
       item._state = 'editoradd';
     });
+    
     this.setState({ taskList: employees, isShowMoveProgress: true });
   };
 
-  onMoveFinished = () => {
+  onMoveFinished = async() => {
+    await http().modifyRecords({
+      resid: courseArrangmentResid,
+      data: [{ REC_ID: this.props.courseArrangement.REC_ID },{REC_ID: this.state.targetCourseArrangement}]
+    });
     this.setState(
       {
         selectCourseArrangementVisible: false,

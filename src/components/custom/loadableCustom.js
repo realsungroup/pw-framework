@@ -578,3 +578,9 @@ export const StatisticAnalysisJC = Loadable({
     return minLoading;
   }
 });
+export const DLPrint = Loadable({
+  loader: () => import('./DLPrint'),
+  loading() {
+    return minLoading;
+  }
+});
