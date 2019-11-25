@@ -717,7 +717,8 @@ resetFileList = (v) =>{
             onCancel={() =>
               this.setState({
                 isShowModifyModal: false,
-                selectedCourseArrangment: {}
+                selectedCourseArrangment: {},
+                fileList:[]
               })
             }
             destroyOnClose
@@ -726,6 +727,10 @@ resetFileList = (v) =>{
                 if (!err) {
                   console.log("values",values);
                   let { selectedCourseArrangment } = this.state;
+                  var fileUrl=null;
+                  if(this.state.fileList[0]){
+                      fileUrl=this.state.fileList[0].url
+                  }
                   let courseArrangment = {
                     ...selectedCourseArrangment,
                     StartDatetime: values.modifyStartDatetime.format(
@@ -740,12 +745,13 @@ resetFileList = (v) =>{
                     quarter: values.quarter,
                     Teacher: values.modifyTeacher,
                     isArrangeSelf:values.isArrangeSelf,
-                    CourseOutline:this.state.fileList[0].url
+                    CourseOutline:fileUrl
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
                     isShowModifyModal: false,
-                    selectedCourseArrangment: {}
+                    selectedCourseArrangment: {},
+                    fileList:[]
                   });
                 } else {
                   console.log(err);
@@ -1109,7 +1115,8 @@ resetFileList = (v) =>{
             onCancel={() =>
               this.setState({
                 isShowAddCourseArrangment: false,
-                selectedCourseArrangment: {}
+                selectedCourseArrangment: {},
+                fileList:[]
               })
             }
             destroyOnClose={true}
@@ -1122,12 +1129,15 @@ resetFileList = (v) =>{
                   courseArrangment.actualCost = parseFloat(
                     courseArrangment.actualCost
                   );
-                  courseArrangment.CourseOutline=this.state.fileList[0].url
+                  if(this.state.fileList[0]){
+                    courseArrangment.CourseOutline=this.state.fileList[0].url
+                  }
 
                   this.addCourseArrangment(courseArrangment);
                   this.setState({
                     isShowAddCourseArrangment: false,
-                    selectedCourseArrangment: {}
+                    selectedCourseArrangment: {},
+                    fileList:[]
                   });
                 } else {
                   console.log(err);
