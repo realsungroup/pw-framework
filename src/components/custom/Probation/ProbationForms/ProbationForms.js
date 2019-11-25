@@ -38,6 +38,7 @@ const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
 const resid9 = '619808533610';
+const memberSemiId = 'C3_625051545181';//录用编号
 // const resid10 = '622983009643'; //入职培训管理表
 
 const internalCourse = '625082518213'; //内训课程表
@@ -124,6 +125,12 @@ class ProbationForms extends React.Component {
         ]
       });
       message.success('转正申请成功');
+      this.setState({
+        employeeInformation:{
+          ...this.state.employeeInformation,
+          C3_622649502021:'Y'
+        }
+      })
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -238,11 +245,14 @@ class ProbationForms extends React.Component {
         mentorshipRecord
       } = this.state;
       let index = 1;
+      const _memberSemiId = employeeInformation[memberSemiId];
+      console.log(_memberSemiId)
       probationObjectives.forEach(item => {
         subdata.push({
           resid: resid2,
           maindata: {
             ...item,
+            [memberSemiId]:_memberSemiId,
             _state: 'editoradd',
             _id: index++
           },
@@ -251,6 +261,7 @@ class ProbationForms extends React.Component {
               resid: resid9,
               maindata: {
                 ...i,
+                [memberSemiId]:_memberSemiId,
                 _state: 'editoradd',
                 _id: index++
               }
@@ -261,27 +272,28 @@ class ProbationForms extends React.Component {
       orientationTraining.forEach(item => {
         subdata.push({
           resid: resid3,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item, _state: 'editoradd',[memberSemiId]:_memberSemiId, _id: index++ }
         });
       });
       internalTraining.forEach(item => {
         subdata.push({
           resid: resid4,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
       onTheJobTraining.forEach(item => {
         subdata.push({
           resid: resid5,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
       mentorshipRecord.forEach(item => {
         subdata.push({
           resid: resid6,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
+      console.info('sb',subdata)
       await http().saveRecordAndSubTables({
         data: [
           {
@@ -412,7 +424,7 @@ class ProbationForms extends React.Component {
           onOk: () => {}
         });
       }
-      let probationObjectives = data[viewableTable.objectiveResid];
+      let probationObjectives = data[viewableTable.objectiveResid].filter(item => item.C3_625051545181 === employedId);
       if (probationObjectives.length < 3) {
         let count = 3 - probationObjectives.length;
         const memberId = data.memberId;
@@ -428,15 +440,15 @@ class ProbationForms extends React.Component {
           probationObjectives.push({ [resid9]: subData });
         }
       }
-
+      console.log('data',data[viewableTable.internalResid])
       data &&
         this.setState({
           employeeInformation: data,
           probationObjectives: probationObjectives,
           // orientationTraining: data[viewableTable.orientationResid],
-          internalTraining: data[viewableTable.internalResid],
-          onTheJobTraining: data[viewableTable.onJobResid],
-          mentorshipRecord: data[viewableTable.mentorRecordResid],
+          internalTraining: data[viewableTable.internalResid].filter(item => item.C3_625051545181 === employedId),
+          onTheJobTraining: data[viewableTable.onJobResid].filter(item => item.C3_625051545181 === employedId),
+          mentorshipRecord: data[viewableTable.mentorRecordResid].filter(item => item.C3_625051545181 === employedId),
           tableAuth: {
             onJob: SubResource[viewableTable.onJobResid],
             mentorRecord: SubResource[viewableTable.mentorRecordResid],
@@ -1009,7 +1021,7 @@ class ProbationForms extends React.Component {
               employeeInformation.regStatus !== '已转正') && (
               <footer className="probation-forms_footer" style={roleName === '辅导员'?{display:'none'}:{}}>
                 {(roleName === 'HR' ||
-                  employeeInformation.regStatus === '待转正'  ) && (
+                  employeeInformation.regStatus === '待转正'  ) && employeeInformation.C3_622649502021!='Y' &&(
                   <div>
                     <Button
                       type="primary"

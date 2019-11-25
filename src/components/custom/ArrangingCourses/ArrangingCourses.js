@@ -105,10 +105,10 @@ class ArrangingCourses extends React.Component {
         }),
         isEditOrAdd: true
       });
-      // await http().modifyRecords({
-      //   resid: courseDetailId,
-      //   data: [{ REC_ID: this.state.courseAddId }]
-      // });
+      await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: [{ REC_ID: this.state.courseAddId }]
+      });
       this.tableDataRef.handleRefresh();
       this.setState({ showAddMem: false });
       message.success('添加成功');
@@ -358,14 +358,19 @@ class ArrangingCourses extends React.Component {
     }
   };
   //移动人员
-  moveLearner = async data => {
+  moveLearner = async (data,selectedTargetCourseArrangment) => {
     let res;
+    console.log('data',data)
     try {
       res = await http().modifyRecords({
         resid: courseDetailId,
         data
       });
       message.success(res.message);
+      await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: [{ REC_ID: this.state.courseAddId },{REC_ID:selectedTargetCourseArrangment}]
+      });
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
@@ -1098,7 +1103,7 @@ resetFileList = (v) =>{
               item.CourseArrangeID = selectedTargetCourseArrangment;
             });
             console.log(selectedTargetCourseArrangment);
-            await this.moveLearner(selectedMoveLearners);
+            await this.moveLearner(selectedMoveLearners,selectedTargetCourseArrangment);
             this.setState({
               isShowMoveLearner: false,
               selectedMoveLearners: [],

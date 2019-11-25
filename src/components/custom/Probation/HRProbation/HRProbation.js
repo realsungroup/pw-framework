@@ -227,7 +227,9 @@ class HRProbation extends React.Component {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
           data.push({
             REC_ID: item.REC_ID,
-            C3_622649568463: 'N'
+            C3_622649568463: 'N',
+            C3_622649502021:'N',
+            isNoticeHrEmail:null
           });
         }
       });
