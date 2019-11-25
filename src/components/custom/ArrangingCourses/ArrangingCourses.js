@@ -156,7 +156,25 @@ class ArrangingCourses extends React.Component {
       // courses = courses.map(item => {
       //   return JSON.parse(item);
       // });
-
+      let importantIndex = 0;
+      let calendarEvents = courseArrangment.map(item => {
+        return {
+          occur_id: item.REC_ID,
+          category_color: `rgb(${parseInt(
+            Math.random() * 255 + 0,
+            10
+          )}, ${parseInt(Math.random() * 255 + 0, 10)}, ${parseInt(
+            Math.random() * 255 + 0,
+            10
+          )})`,
+          event_hostheadurl: 'http://placekitten.com/32/32', //事件前面的图片
+          event_title: item.CourseName,
+          occur_begin: moment(item.StartDatetime).format(), // 事件发生时间
+          occur_end: moment(item.EndDatetime).format(), // 事件发生结束时间
+          event_important: ++importantIndex,
+          category_name: item.CourseName
+        };
+      });
       //去重方法2 ：使用 Array的 filter + findIndex 实现
       let courses = courseArrangment
         .map(item => ({
@@ -166,7 +184,7 @@ class ArrangingCourses extends React.Component {
         .filter((item, index, self) => {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
-      this.setState({ courseArrangment, courses });
+      this.setState({ courseArrangment, courses,calendarEvents });
     } else {
       message.error(res.message);
     }
@@ -689,7 +707,7 @@ resetFileList = (v) =>{
           )}
           {this.state.mode === 'calendar' && (
             <div style={{ height: '100%' }}>
-              <CalendarMode />
+              <CalendarMode events={this.state.calendarEvents} />
             </div>
           )}
           {this.state.mode === 'table' && (

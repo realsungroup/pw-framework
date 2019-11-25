@@ -154,7 +154,8 @@ class TranningDetail extends React.Component {
             personId: remindData.selectedApprovaler.key,
             triggerRemark: remindData.additionalWords,
             C3_626201868402: this.UserCode,
-            isSendEmail: 'Y'
+            isSendEmail: 'Y',
+            isApprove:null
           }
         ]
       });
@@ -243,7 +244,7 @@ class TranningDetail extends React.Component {
                 onChange={this.handleApprovalerChange}
                 labelInValue
                 value={remindData.selectedApprovaler}
-                disabled={approvalRecord}
+                disabled={approvalRecord&&approvalRecord.isApprove!='N'}
                 loading={fetching}
               >
                 {userData.map(d => (
@@ -256,14 +257,14 @@ class TranningDetail extends React.Component {
                 rows={6}
                 onChange={this.handleAdditionalWords}
                 value={remindData.additionalWords}
-                disabled={approvalRecord}
+                disabled={approvalRecord&&approvalRecord.isApprove!='N'}
               />
             </Form.Item>
 
-            {approvalRecord ? (
+            {approvalRecord&&approvalRecord.isApprove!='N' ? (
               <Button
                 type="primary"
-                disabled={approvalRecord}
+                disabled={approvalRecord&&approvalRecord.isApprove!='N'}
                 loading={sendButtonLoading}
               >
                 发送邮件提醒审批
@@ -272,7 +273,7 @@ class TranningDetail extends React.Component {
               <Popconfirm title="确认提交吗？" onConfirm={this.sendEmail}>
                 <Button
                   type="primary"
-                  disabled={approvalRecord}
+                  disabled={approvalRecord&&approvalRecord.isApprove!='N'}
                   loading={sendButtonLoading}
                 >
                   发送邮件提醒审批
