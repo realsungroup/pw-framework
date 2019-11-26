@@ -24,13 +24,14 @@ import './ArrangingCourses.less';
 import http from 'Util20/api';
 import moment from 'moment';
 import CalendarMode from './CalendarMode';
+import PlanProgress from '../CreatePlan/PlanProgress';
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
-const OutCourseId = '624970414826';//外训课程表ID
+const OutCourseId = '624970414826'; //外训课程表ID
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -55,7 +56,6 @@ const unactiveStyle = {
 };
 
 class ArrangingCourses extends React.Component {
-  
   state = {
     loading: false,
     courseArrangment: [], //课程安排
@@ -75,15 +75,16 @@ class ArrangingCourses extends React.Component {
     rangePickerValue: [null, null], // 日期选择器的值
     mode: 'table', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
     courseList: [],
-    dataSearch:[],
+    dataSearch: [],
     fileList: [],
+    isShowProgress: false, // 是否显示进度模态窗
+    isShowMoveProgress: false
   };
-  constructor(){
+  constructor() {
     super();
     this.handleSearch = debounce(this.handleSearch, 800);
-
   }
-  
+
   componentDidMount = async () => {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
@@ -91,31 +92,18 @@ class ArrangingCourses extends React.Component {
     this.props.onHandleLoading(false);
     this.getOutCourse(OutCourseId);
   };
-// 添加人员
+  // 添加人员
   addEmployees = async employees => {
-  
-    try {
-      await http().addRecords({
-        resid: courseDetailId,
-        data: employees.map(item => {
-          return {
-            CourseArrangeID: this.state.courseAddId,
-            C3_613941384832: item.C3_305737857578
-          };
-        }),
-        isEditOrAdd: true
-      });
-      await http().modifyRecords({
-        resid: courseArrangmentResid,
-        data: [{ REC_ID: this.state.courseAddId }]
-      });
-      this.tableDataRef.handleRefresh();
-      this.setState({ showAddMem: false });
-      message.success('添加成功');
-    } catch (error) {
-      console.log(error.message);
-      message.error(error.message);
-    }
+    let index_id = 0;
+    let taskList = employees.map(item => {
+      return {
+        CourseArrangeID: this.state.courseAddId,
+        C3_613941384832: item.C3_305737857578,
+        _id: ++index_id,
+        _state: 'editoradd'
+      };
+    });
+    this.setState({ taskList, isShowProgress: true });
   };
 
   // 上传文件
@@ -142,7 +130,7 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
       return console.log(error);
     }
-    console.log(res.data)
+    console.log(res.data);
     if (res.error === 0) {
       let courseArrangment = res.data;
       //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
@@ -184,7 +172,7 @@ class ArrangingCourses extends React.Component {
         .filter((item, index, self) => {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
-      this.setState({ courseArrangment, courses,calendarEvents });
+      this.setState({ courseArrangment, courses, calendarEvents });
     } else {
       message.error(res.message);
     }
@@ -256,84 +244,80 @@ class ArrangingCourses extends React.Component {
     }
   };
   // 添加记录
-  addMem = async()=>{
-    if(this.state.toAddID){
-      this.setState({fetching:true})
-      var courseID=this.state.courseAddId;
-      var memberID=this.state.toAddID;
+  addMem = async () => {
+    if (this.state.toAddID) {
+      this.setState({ fetching: true });
+      var courseID = this.state.courseAddId;
+      var memberID = this.state.toAddID;
       let res;
       try {
         res = await http().addRecords({
           resid: courseDetailId,
-          data:[{
-            CourseArrangeID:courseID,
-            C3_613941384832:memberID,
-          }]
-          
+          data: [
+            {
+              CourseArrangeID: courseID,
+              C3_613941384832: memberID
+            }
+          ]
         });
-        this.setState({ toAddID:null,showAddMem:false,fetching: false });
+        this.setState({ toAddID: null, showAddMem: false, fetching: false });
         this.tableDataRef.handleRefresh();
-        message.success('人员添加成功！')
-      }catch (err) {
+        message.success('人员添加成功！');
+      } catch (err) {
         Modal.error({
           title: 'Alert!',
           content: err.message,
-          okText:'OK'
+          okText: 'OK'
         });
-        this.setState({fetching:false});
-  
+        this.setState({ fetching: false });
       }
-    }else{
-      message.error('请搜索并选择人员！')
+    } else {
+      message.error('请搜索并选择人员！');
     }
-    
-  }
+  };
   // 搜索员工
-  handleSearch = async (value) => {
+  handleSearch = async value => {
     if (value) {
-
-      this.setState({fetching:true});
+      this.setState({ fetching: true });
 
       let res;
       try {
         res = await http().getTable({
           resid: 610307713776,
-          key:value,
+          key: value
         });
-        console.log(res)
-        const dataSearch =res.data.map(data => ({
-                  text: `${data.C3_609622263470}`,
-                  value: data.C3_609622254861,
-                }));
+        console.log(res);
+        const dataSearch = res.data.map(data => ({
+          text: `${data.C3_609622263470}`,
+          value: data.C3_609622254861
+        }));
 
-                  this.setState({ dataSearch:dataSearch, fetching: false });
-      }catch (err) {
+        this.setState({ dataSearch: dataSearch, fetching: false });
+      } catch (err) {
         Modal.error({
           title: 'Alert!',
           content: err.message,
-          okText:'OK'
+          okText: 'OK'
         });
-        this.setState({fetching:false});
-
+        this.setState({ fetching: false });
       }
-
 
       // fetch(value, data => this.setState({ data }));
     } else {
       this.setState({ dataSearch: [] });
     }
   };
-// 搜索后选择
-  handleChangeS=(value,obj)=>{
-    console.log(obj)
+  // 搜索后选择
+  handleChangeS = (value, obj) => {
+    console.log(obj);
     this.setState({
-        value,
-        postName:obj.props.children,
-        dataSearch:[],
-        toAddID:value,
-        fetching: false,
-      });
-  }
+      value,
+      postName: obj.props.children,
+      dataSearch: [],
+      toAddID: value,
+      fetching: false
+    });
+  };
 
   //删除课程安排
   deleteCourseArrangment = async arrangment => {
@@ -358,23 +342,18 @@ class ArrangingCourses extends React.Component {
     }
   };
   //移动人员
-  moveLearner = async (data,selectedTargetCourseArrangment) => {
-    let res;
-    console.log('data',data)
-    try {
-      res = await http().modifyRecords({
-        resid: courseDetailId,
-        data
-      });
-      message.success(res.message);
-      await http().modifyRecords({
-        resid: courseArrangmentResid,
-        data: [{ REC_ID: this.state.courseAddId },{REC_ID:selectedTargetCourseArrangment}]
-      });
-      this.tableDataRef.handleRefresh();
-    } catch (error) {
-      message.error(error.message);
-    }
+  moveLearner = async () => {
+    let { selectedTargetCourseArrangment, selectedMoveLearners } = this.state;
+    selectedMoveLearners.forEach((item, index) => {
+      item.CourseArrangeID = selectedTargetCourseArrangment;
+      item._id = index;
+      item._state = 'editoradd';
+    });
+    this.setState({
+      taskList: selectedMoveLearners,
+      isShowMoveProgress: true
+    });
+   
   };
 
   //设置确认选择的时间段
@@ -429,24 +408,24 @@ class ArrangingCourses extends React.Component {
       message.error('请勾选记录！');
     }
   };
-// 初始化fileList
-resetFileList = (v) =>{
-  console.log('v',v)
-  if(v.CourseOutline){
-    var arr=[{
-        url:v.CourseOutline,
-        status:'done',
-        name:'附件',
-        uid:1
-      }]
+  // 初始化fileList
+  resetFileList = v => {
+    console.log('v', v);
+    if (v.CourseOutline) {
+      var arr = [
+        {
+          url: v.CourseOutline,
+          status: 'done',
+          name: '附件',
+          uid: 1
+        }
+      ];
 
-    this.setState({fileList:arr})
-
-  }else{
-    this.setState({fileList:[]})
-
-  }
-}
+      this.setState({ fileList: arr });
+    } else {
+      this.setState({ fileList: [] });
+    }
+  };
 
   giveUp = async (resid, recordId) => {
     try {
@@ -460,6 +439,43 @@ resetFileList = (v) =>{
       message.error(error.message);
       console.error(error);
     }
+  };
+
+  //结束时调用的回调函数
+  onFinishedPlanProgress = async () => {
+    await http().modifyRecords({
+      resid: courseArrangmentResid,
+      data: [{ REC_ID: this.state.courseAddId }]
+    });
+    this.setState({
+      isShowProgress: false,
+      showAddMem: false
+    });
+    this.tableDataRef.handleRefresh();
+  };
+
+  onMoveFinished = async () => {
+    try {
+      await http().modifyRecords({
+        resid: courseArrangmentResid,
+        data: [
+          { REC_ID: this.state.courseAddId },
+          { REC_ID: this.state.selectedTargetCourseArrangment }
+        ]
+      });
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+     this.setState(
+       {
+         isShowMoveLearner: false,
+         selectedMoveLearners: [],
+         selectedTargetCourseArrangment: '',
+         isShowMoveProgress: false
+       },
+       this.tableDataRef.handleRefresh
+     );
   };
 
   //判断是否为清空操作
@@ -519,7 +535,14 @@ resetFileList = (v) =>{
     this.setState({ searchPeriod }, this.searchCourseArrangment);
   };
   render() {
-    let { courseArrangment, selectedCourseArrangment, mode } = this.state;
+    let {
+      courseArrangment,
+      selectedCourseArrangment,
+      mode,
+      isShowProgress,
+      isShowMoveProgress,
+      taskList
+    } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
       <div className="external-training">
@@ -644,11 +667,16 @@ resetFileList = (v) =>{
                     actions={[
                       <span
                         onClick={() =>
-                          this.setState({
-                            isShowModifyModal: true,
-                            selectedCourseArrangment: item,
-                            // fileList:{url:item.CourseOutline,status:'done',name:'附件',uid:1}
-                          },()=>{this.resetFileList(item)})
+                          this.setState(
+                            {
+                              isShowModifyModal: true,
+                              selectedCourseArrangment: item
+                              // fileList:{url:item.CourseOutline,status:'done',name:'附件',uid:1}
+                            },
+                            () => {
+                              this.resetFileList(item);
+                            }
+                          )
                         }
                       >
                         <Icon type="edit" />
@@ -670,11 +698,11 @@ resetFileList = (v) =>{
                         </span>
                       </Popconfirm>,
                       <span
-                        onClick={(a) => {
+                        onClick={a => {
                           this.setState({
                             isShowLearnerInfo: true,
                             selectedCourseArrangment: item,
-                            courseAddId:item.REC_ID
+                            courseAddId: item.REC_ID
                           });
                         }}
                       >
@@ -741,18 +769,18 @@ resetFileList = (v) =>{
               this.setState({
                 isShowModifyModal: false,
                 selectedCourseArrangment: {},
-                fileList:[]
+                fileList: []
               })
             }
             destroyOnClose
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
-                  console.log("values",values);
+                  console.log('values', values);
                   let { selectedCourseArrangment } = this.state;
-                  var fileUrl=null;
-                  if(this.state.fileList[0]){
-                      fileUrl=this.state.fileList[0].url
+                  var fileUrl = null;
+                  if (this.state.fileList[0]) {
+                    fileUrl = this.state.fileList[0].url;
                   }
                   let courseArrangment = {
                     ...selectedCourseArrangment,
@@ -767,14 +795,14 @@ resetFileList = (v) =>{
                     actualCost: parseFloat(values.actualCost),
                     quarter: values.quarter,
                     Teacher: values.modifyTeacher,
-                    isArrangeSelf:values.isArrangeSelf,
-                    CourseOutline:fileUrl
+                    isArrangeSelf: values.isArrangeSelf,
+                    CourseOutline: fileUrl
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
                     isShowModifyModal: false,
                     selectedCourseArrangment: {},
-                    fileList:[]
+                    fileList: []
                   });
                 } else {
                   console.log(err);
@@ -907,9 +935,10 @@ resetFileList = (v) =>{
               </Form.Item>
               <Form.Item label="是否手动安排课程">
                 {getFieldDecorator('isArrangeSelf', {
-                  initialValue: this.state.selectedCourseArrangment.isArrangeSelf
+                  initialValue: this.state.selectedCourseArrangment
+                    .isArrangeSelf
                 })(
-                  <Select >
+                  <Select>
                     <Option value="Y" key="Y">
                       Y
                     </Option>
@@ -994,58 +1023,85 @@ resetFileList = (v) =>{
             cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
             actionBarExtra={records => (
               <div>
-              <Button onClick={this.state.showAddMem?()=>{this.setState({showAddMem:false})}:()=>{this.setState({showAddMem:true})}}>添加人员</Button>
-              
-              <Modal visible={this.state.showAddMem?true:false}
-               width="80%"
-               title="添加人员"
-               centered={true}
-               destroyOnClose
-               confirmLoading={this.state.fetching}
-               onCancel={() =>
-                this.setState({
-                  showAddMem: false,
-                })
-                
-              }
-              footer={null}
-               >
-                <SelectEmployeeToAdd onAdd={this.addEmployees} />
-              </Modal>
-              <Button
-                onClick={() => {
-                  if (!records.selectedRowKeys.length) {
-                    return message.error('请选择一条记录');
+                <Button
+                  onClick={
+                    this.state.showAddMem
+                      ? () => {
+                          this.setState({ showAddMem: false });
+                        }
+                      : () => {
+                          this.setState({ showAddMem: true });
+                        }
                   }
-                  let {
-                    courseArrangment,
-                    selectedCourseArrangment
-                  } = this.state;
-                  let targetCourseArrangment = courseArrangment.filter(item => {
-                    return (
-                      item.CourseID === selectedCourseArrangment.CourseID &&
-                      item.REC_ID !== selectedCourseArrangment.REC_ID
-                    );
-                  });
-                  let keys = records.selectedRowKeys;
-                  let selectedMoveLearners = [];
-                  keys.forEach(item => {
-                    let learner = records.dataSource.find(i => {
-                      return i.REC_ID === item;
-                    });
-                    if (learner) {
-                      selectedMoveLearners.push(learner);
+                >
+                  添加人员
+                </Button>
+
+                <Modal
+                  visible={this.state.showAddMem ? true : false}
+                  width="80%"
+                  title="添加人员"
+                  centered={true}
+                  destroyOnClose
+                  confirmLoading={this.state.fetching}
+                  onCancel={() =>
+                    this.setState({
+                      showAddMem: false
+                    })
+                  }
+                  footer={null}
+                >
+                  <SelectEmployeeToAdd onAdd={this.addEmployees} />
+                  {isShowProgress ? (
+                    <PlanProgress
+                      onFinished={this.onFinishedPlanProgress}
+                      struct="100"
+                      options={{
+                        resid: courseDetailId,
+                        data: JSON.stringify(taskList)
+                      }}
+                      title="添加人员列表"
+                      // showFields={['C3_609622263470', 'C3_609845305680']}
+                      // width='50%'
+                    />
+                  ) : null}
+                </Modal>
+                <Button
+                  onClick={() => {
+                    if (!records.selectedRowKeys.length) {
+                      return message.error('请选择一条记录');
                     }
-                  });
-                  this.setState({
-                    isShowMoveLearner: true,
-                    targetCourseArrangment,
-                    selectedMoveLearners
-                  });
-                }}
-              >
-                移动人员至
-              </Button>
+                    let {
+                      courseArrangment,
+                      selectedCourseArrangment
+                    } = this.state;
+                    let targetCourseArrangment = courseArrangment.filter(
+                      item => {
+                        return (
+                          item.CourseID === selectedCourseArrangment.CourseID &&
+                          item.REC_ID !== selectedCourseArrangment.REC_ID
+                        );
+                      }
+                    );
+                    let keys = records.selectedRowKeys;
+                    let selectedMoveLearners = [];
+                    keys.forEach(item => {
+                      let learner = records.dataSource.find(i => {
+                        return i.REC_ID === item;
+                      });
+                      if (learner) {
+                        selectedMoveLearners.push(learner);
+                      }
+                    });
+                    this.setState({
+                      isShowMoveLearner: true,
+                      targetCourseArrangment,
+                      selectedMoveLearners
+                    });
+                  }}
+                >
+                  移动人员至
+                </Button>
               </div>
             )}
           ></TableData>
@@ -1079,7 +1135,7 @@ resetFileList = (v) =>{
             hasDelete={false}
             hasRowSelection={true}
             cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
-          ></TableData>
+          />
         </Modal>
         <Modal
           title="移动人员"
@@ -1094,22 +1150,7 @@ resetFileList = (v) =>{
           }
           destroyOnClose
           width="80%"
-          onOk={async () => {
-            let {
-              selectedTargetCourseArrangment,
-              selectedMoveLearners
-            } = this.state;
-            selectedMoveLearners.forEach(item => {
-              item.CourseArrangeID = selectedTargetCourseArrangment;
-            });
-            console.log(selectedTargetCourseArrangment);
-            await this.moveLearner(selectedMoveLearners,selectedTargetCourseArrangment);
-            this.setState({
-              isShowMoveLearner: false,
-              selectedMoveLearners: [],
-              selectedTargetCourseArrangment: ''
-            });
-          }}
+          onOk={this.moveLearner}
         >
           <Radio.Group style={{ width: '100%' }}>
             <List
@@ -1131,6 +1172,17 @@ resetFileList = (v) =>{
               )}
             ></List>
           </Radio.Group>
+          {isShowMoveProgress ? (
+            <PlanProgress
+              onFinished={this.onMoveFinished}
+              struct="100"
+              options={{
+                resid: courseDetailId,
+                data: JSON.stringify(taskList)
+              }}
+              title="移动人员"
+            />
+          ) : null}
         </Modal>
         {this.state.isShowAddCourseArrangment ? (
           <Modal
@@ -1139,7 +1191,7 @@ resetFileList = (v) =>{
               this.setState({
                 isShowAddCourseArrangment: false,
                 selectedCourseArrangment: {},
-                fileList:[]
+                fileList: []
               })
             }
             destroyOnClose={true}
@@ -1152,15 +1204,15 @@ resetFileList = (v) =>{
                   courseArrangment.actualCost = parseFloat(
                     courseArrangment.actualCost
                   );
-                  if(this.state.fileList[0]){
-                    courseArrangment.CourseOutline=this.state.fileList[0].url
+                  if (this.state.fileList[0]) {
+                    courseArrangment.CourseOutline = this.state.fileList[0].url;
                   }
 
                   this.addCourseArrangment(courseArrangment);
                   this.setState({
                     isShowAddCourseArrangment: false,
                     selectedCourseArrangment: {},
-                    fileList:[]
+                    fileList: []
                   });
                 } else {
                   console.log(err);
