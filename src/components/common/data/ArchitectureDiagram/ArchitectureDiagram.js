@@ -7,7 +7,9 @@ import {
   Modal,
   Spin,
   Timeline,
-  Drawer
+  Drawer,
+  Switch,
+  Select
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -21,6 +23,7 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
 import TableData from '../TableData';
+import classNames from 'classnames';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -41,6 +44,7 @@ class ArchitectureDiagram extends React.Component {
   state = {
     selectedNode: {}, // 选中项
     addBroVisible: false,
+    selfDefineVisible: false,
     loading: false,
     viewHistoryDetailVisible: false,
     historyData: [], // 选中项的历史记录
@@ -386,11 +390,19 @@ class ArchitectureDiagram extends React.Component {
   };
 
   closeBroModal = () => this.setState({ addBroVisible: false });
+
   viewHistoryDetail = () => {
     this.setState({ viewHistoryDetailVisible: true });
     this.getHistoryFormData();
   };
+
   closeHistoryDetail = () => this.setState({ viewHistoryDetailVisible: false });
+
+  handleModeChange = mode => () => this.setState({ mode });
+
+  handleSelfDefine = () => this.setState({ selfDefineVisible: true });
+
+  closeSelfDefineModal = () => this.setState({ selfDefineVisible: false });
 
   /**
    * 保存成功后的回调函数
@@ -470,6 +482,7 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderHeader = () => {
+    const { mode } = this.state;
     return (
       <header className="architecture-diagram_header">
         <div className="architecture-diagram_header_icon-button-group">
@@ -489,14 +502,28 @@ class ArchitectureDiagram extends React.Component {
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button architecture-diagram_header_icon-button__selected ">
+          <div
+            className={classNames({
+              'architecture-diagram_header_icon-button': true,
+              'architecture-diagram_header_icon-button__selected':
+                mode === 'chart'
+            })}
+            onClick={this.handleModeChange('chart')}
+          >
             <Icon
               type="apartment"
               className="architecture-diagram_header_icon-button__icon"
             />
             图形化
           </div>
-          <div className="architecture-diagram_header_icon-button">
+          <div
+            className={classNames({
+              'architecture-diagram_header_icon-button': true,
+              'architecture-diagram_header_icon-button__selected':
+                mode === 'table'
+            })}
+            onClick={this.handleModeChange('table')}
+          >
             <Icon
               type="table"
               className="architecture-diagram_header_icon-button__icon"
@@ -546,7 +573,10 @@ class ArchitectureDiagram extends React.Component {
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
+          <div
+            className="architecture-diagram_header_icon-button"
+            onClick={this.handleSelfDefine}
+          >
             <img
               src={selfDefine}
               className="architecture-diagram_header_icon-button__icon"
@@ -597,9 +627,10 @@ class ArchitectureDiagram extends React.Component {
       operation,
       record,
       loading,
-      mode
+      mode,
+      selfDefineVisible
     } = this.state;
-    const { remarkField } = this.props;
+    const { remarkField, resid, baseURL } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -608,7 +639,12 @@ class ArchitectureDiagram extends React.Component {
             当前位置：
             {this.renderBreadcrumb()}
           </div>
-          <div className="architecture-diagram_main-container">
+          <div
+            className={classNames({
+              'architecture-diagram_main-container': true,
+              hidden: mode === 'table'
+            })}
+          >
             <div id="architecture-diagram_orgchart"></div>
             <div className="architecture-diagram_main_sider">
               <div className="architecture-diagram_main_item-detail">
@@ -674,28 +710,33 @@ class ArchitectureDiagram extends React.Component {
               </div>
             </div>
           </div>
+          <div
+            className={classNames({
+              'architecture-diagram_tabledata__container': true,
+              hidden: mode === 'chart'
+            })}
+          >
+            <TableData
+              resid={resid}
+              subtractH={220}
+              tableComponent="ag-grid"
+              rowSelectionAg="single"
+              sideBarAg={true}
+              hasAdvSearch={true}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasBeBtns={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              baseURL={baseURL}
+            />
+          </div>
         </Spin>
-        {mode === 'table' && (
-          <TableData
-            resid="460481857607"
-            subtractH={220}
-            tableComponent="ag-grid"
-            rowSelectionAg="single"
-            sideBarAg={true}
-            hasAdvSearch={true}
-            hasAdd={false}
-            hasRowView={false}
-            hasRowDelete={false}
-            hasRowEdit={false}
-            hasDelete={false}
-            hasModify={false}
-            hasBeBtns={false}
-            hasRowModify={false}
-            hasRowSelection={false}
-            baseURL={this.baseURL}
-            downloadBaseURL={this.attendanceDownloadURL}
-          />
-        )}
+
         <Modal
           visible={addBroVisible}
           title="添加节点"
@@ -715,6 +756,45 @@ class ArchitectureDiagram extends React.Component {
             onSuccess={this.afterSave}
             baseURL={this.props.baseURL}
           />
+        </Modal>
+        <Modal
+          visible={selfDefineVisible}
+          title="自定义卡片"
+          width={500}
+          footer={null}
+          onCancel={this.closeSelfDefineModal}
+          destroyOnClose
+        >
+          {/* <div>
+            主要字段
+            <Select
+              onChange={() => {
+                console.log(this.chart);
+                let nodeBinding = this.chart.config.nodeBinding;
+                nodeBinding.field_0 = 'userId';
+                this.chart.draw();
+              }}
+            >
+              {this._cmscolumninfo.map(item => {
+                <Select.Option value={item.id}>{item.text}</Select.Option>;
+              })}
+            </Select>
+          </div>
+          <div>
+            次要字段
+            <Select
+              onChange={() => {
+                console.log(this.chart);
+                let nodeBinding = this.chart.config.nodeBinding;
+                nodeBinding.field_0 = 'userId';
+                this.chart.draw();
+              }}
+            >
+              {this._cmscolumninfo.map(item => {
+                <Select.Option value={item.id}>{item.text}</Select.Option>;
+              })}
+            </Select>
+          </div> */}
         </Modal>
         <Drawer
           visible={viewHistoryDetailVisible}
