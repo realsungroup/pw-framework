@@ -17,6 +17,10 @@ import http, { makeCancelable } from 'Util20/api';
 import FormData from '../FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
+import { clone, getIntlVal } from 'Util20/util';
+import TableData from '../TableData';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -43,7 +47,8 @@ class ArchitectureDiagram extends React.Component {
     operation: 'add', // FormData用到的prop
     record: {}, // FormData用到的prop
     breadcrumb: [], //面包屑数据
-    currentLevel: this.props.level //当前层级
+    currentLevel: this.props.level, //当前层级
+    mode: 'chart' //显示模式：图->chart; 表-> table
   };
   async componentDidMount() {
     this.initializeOrgchart();
@@ -63,7 +68,6 @@ class ArchitectureDiagram extends React.Component {
    * @param {array} data 初始化数据
    * @returns void
    */
-
   initializeOrgchart = () => {
     const { displayFileds } = this.props;
     this.chart = new OrgChart(
@@ -71,10 +75,12 @@ class ArchitectureDiagram extends React.Component {
       {
         template: 'architectureDiagramTemplate',
         nodeBinding: {
-          field_0: displayFileds[0],
-          field_1: displayFileds[1]
+          field_0: displayFileds.firstField,
+          field_1: displayFileds.secondaryField,
+          img_0: displayFileds.imgField
         },
         // layout: OrgChart.mixed,
+        enableDragDrop: true,
         toolbar: {
           layout: true,
           zoom: true,
@@ -94,6 +100,8 @@ class ArchitectureDiagram extends React.Component {
           this.handleNodeClick(sender, node);
           return false;
         },
+        // 更新节点（拖拽）
+        onUpdate: this.handleDragNode,
         tags: {
           selected: selected,
           deleted: 'deleted'
@@ -104,6 +112,25 @@ class ArchitectureDiagram extends React.Component {
       }
     );
   };
+  handleDragNode = (sender, oldNode, newNode) => {
+    const { displayFileds, intl } = this.props;
+    const newParentNode = this.chart.get(newNode.pid);
+    const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
+      newParentNode[displayFileds.firstField]
+    } 下面吗？`;
+    const enTip = `Are you sure you want to drag ${
+      newNode[displayFileds.firstField]
+    } under ${newParentNode[displayFileds.firstField]}`;
+    Modal.confirm({
+      title: getIntlVal(intl.locale, 'Prompt', '提示'),
+      content: getIntlVal(intl.locale, enTip, zhTip),
+      onOk: () => {
+        this.chart.updateNode(newNode);
+      }
+    });
+    return false;
+  };
+
   _topRootIds = []; //最顶层节点id
   _rootIds = []; //当前跟节点id
   /**
@@ -135,16 +162,19 @@ class ArchitectureDiagram extends React.Component {
    * 获取节点数据
    */
   getData = async () => {
-    const { resid, baseURL, idField, pidField, level, dblinkname } = this.props;
+    const { resid, baseURL, idField, pidField, dblinkname } = this.props;
+    const { currentLevel } = this.state;
     const options = {
       resid,
       ColumnOfID: idField,
       ColumnOfPID: pidField,
       ProductIDs: this._rootIds.join(','),
-      Levels: level,
+      Levels: currentLevel,
       cmswhere: this._cmswhere,
       dblinkname
     };
+    this.setState({ loading: true });
+
     try {
       let httpParams = {};
       // 使用传入的 baseURL
@@ -159,13 +189,16 @@ class ArchitectureDiagram extends React.Component {
           ...item,
           id: item[idField],
           pid: item[pidField],
+          img: '//balkangraph.com/js/img/empty-img-white.svg',
           tags: []
         };
       });
       this._nodes = nodes;
+      this.setState({ loading: false });
       return nodes;
     } catch (error) {
       console.error(error);
+      this.setState({ loading: false });
       return [];
     }
   };
@@ -384,6 +417,9 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  /**
+   * 加载下一层级的数据
+   */
   loadNextLevel = async () => {
     const { resid, idField, pidField, baseURL, dblinkname } = this.props;
     let httpParams = {};
@@ -391,16 +427,24 @@ class ArchitectureDiagram extends React.Component {
     if (baseURL) {
       httpParams.baseURL = baseURL;
     }
+    const nodes = this.chart.nodes;
+    const keys = Object.keys(nodes);
+    const ids = keys.filter(key => {
+      return !nodes[key].childrenIds.length;
+    });
     const options = {
       resid,
       Levels: 1,
       ColumnOfID: idField,
       ColumnOfPID: pidField,
-      ProductIDs: this._rootIds.join(','),
+      MoveDirection: 1,
+      MoveLevels: 1,
+      ProductIDs: ids.join(','),
       cmswhere: this._cmswhere,
       dblinkname
     };
-    this.p4 = makeCancelable(http(httpParams).getNodesData(options));
+    this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
+    this.setState({ loading: true });
     let res;
     try {
       res = await this.p4.promise;
@@ -408,9 +452,21 @@ class ArchitectureDiagram extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    if (!res.nodes) {
+    if (!res.nodes || !res.nodes.length) {
+      this.setState({ loading: false });
       return message.info('没有更多数据');
     }
+    this.setState({ currentLevel: this.state.currentLevel + 1 });
+    res.nodes.forEach(node => {
+      this.chart.add({
+        ...node,
+        id: node[idField],
+        pid: node[pidField],
+        tags: []
+      });
+    });
+    this.setState({ loading: false });
+    this.chart.draw();
   };
 
   renderHeader = () => {
@@ -433,7 +489,7 @@ class ArchitectureDiagram extends React.Component {
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
+          <div className="architecture-diagram_header_icon-button architecture-diagram_header_icon-button__selected ">
             <Icon
               type="apartment"
               className="architecture-diagram_header_icon-button__icon"
@@ -499,7 +555,10 @@ class ArchitectureDiagram extends React.Component {
             自定义卡片
           </div>
         </div>
-        <div className="architecture-diagram_header_icon-button-group">
+        <div
+          className="architecture-diagram_header_icon-button-group"
+          onClick={this.loadNextLevel}
+        >
           <div className="architecture-diagram_header_icon-button">
             加载下一层
           </div>
@@ -521,7 +580,7 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {item[displayFileds[0]]}
+              {item[displayFileds.firstField]}
             </Breadcrumb.Item>
           );
         })}
@@ -536,82 +595,107 @@ class ArchitectureDiagram extends React.Component {
       historyData,
       viewHistoryDetailVisible,
       operation,
-      record
+      record,
+      loading,
+      mode
     } = this.state;
     const { remarkField } = this.props;
     return (
       <div className="architecture-diagram">
-        {this.renderHeader()}
-        <div className="architecture-diagram_breadcrumb">
-          当前位置：
-          {this.renderBreadcrumb()}
-        </div>
-        <div className="architecture-diagram_main-container">
-          <div id="architecture-diagram_orgchart"></div>
-          <div className="architecture-diagram_main_sider">
-            <div className="architecture-diagram_main_item-detail">
-              <div className="architecture-diagram_main_sider_title">
-                详细情况
-              </div>
-              {selectedNode.REC_ID ? (
-                <div className="architecture-diagram_main_item-detail_list">
-                  {this._cmscolumninfo.map(item => {
-                    return (
-                      <p
-                        key={item.id}
-                        className="architecture-diagram_main_item-detail_list_item"
-                      >
-                        <label>{item.text}：</label>
-                        <span>{selectedNode[item.id]}</span>
-                      </p>
-                    );
-                  })}
+        <Spin spinning={loading}>
+          {this.renderHeader()}
+          <div className="architecture-diagram_breadcrumb">
+            当前位置：
+            {this.renderBreadcrumb()}
+          </div>
+          <div className="architecture-diagram_main-container">
+            <div id="architecture-diagram_orgchart"></div>
+            <div className="architecture-diagram_main_sider">
+              <div className="architecture-diagram_main_item-detail">
+                <div className="architecture-diagram_main_sider_title">
+                  详细情况
                 </div>
-              ) : (
-                <div className="architecture-diagram_unselect-tip">
-                  <Alert message="您尚未选中任何卡片！" type="info" showIcon />
-                </div>
-              )}
-            </div>
-            <div className="architecture-diagram_main_item-history">
-              <div className="architecture-diagram_main_sider_title">
-                历史情况
-              </div>
-              <div className="architecture-diagram_change-hsitory_list">
                 {selectedNode.REC_ID ? (
-                  historyData.length ? (
-                    <Timeline>
-                      {historyData.map(item => (
-                        <Timeline.Item>
-                          {item[remarkField]}
-                          <a
-                            href="javascript::"
-                            className="architecture-diagram_change-hsitory_list__view-button"
-                            onClick={this.viewHistoryDetail}
-                          >
-                            查看
-                          </a>
-                        </Timeline.Item>
-                      ))}
-                    </Timeline>
-                  ) : (
-                    <div className="architecture-diagram_unselect-tip">
-                      <Alert message="无历史记录" type="info" showIcon />
-                    </div>
-                  )
+                  <div className="architecture-diagram_main_item-detail_list">
+                    {this._cmscolumninfo.map(item => {
+                      return (
+                        <p
+                          key={item.id}
+                          className="architecture-diagram_main_item-detail_list_item"
+                        >
+                          <label>{item.text}：</label>
+                          <span>{selectedNode[item.id]}</span>
+                        </p>
+                      );
+                    })}
+                  </div>
                 ) : (
                   <div className="architecture-diagram_unselect-tip">
-                    <Alert
-                      message="您尚未选中任何卡片！"
-                      type="info"
-                      showIcon
-                    />
+                    <Alert message="尚未选中任何卡片！" type="info" showIcon />
                   </div>
                 )}
               </div>
+              <div className="architecture-diagram_main_item-history">
+                <div className="architecture-diagram_main_sider_title">
+                  历史情况
+                </div>
+                <div className="architecture-diagram_change-hsitory_list">
+                  {selectedNode.REC_ID ? (
+                    historyData.length ? (
+                      <Timeline>
+                        {historyData.map(item => (
+                          <Timeline.Item>
+                            {item[remarkField]}
+                            <a
+                              href="javascript::"
+                              className="architecture-diagram_change-hsitory_list__view-button"
+                              onClick={this.viewHistoryDetail}
+                            >
+                              查看
+                            </a>
+                          </Timeline.Item>
+                        ))}
+                      </Timeline>
+                    ) : (
+                      <div className="architecture-diagram_unselect-tip">
+                        <Alert message="无历史记录" type="info" showIcon />
+                      </div>
+                    )
+                  ) : (
+                    <div className="architecture-diagram_unselect-tip">
+                      <Alert
+                        message="尚未选中任何卡片！"
+                        type="info"
+                        showIcon
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </Spin>
+        {mode === 'table' && (
+          <TableData
+            resid="460481857607"
+            subtractH={220}
+            tableComponent="ag-grid"
+            rowSelectionAg="single"
+            sideBarAg={true}
+            hasAdvSearch={true}
+            hasAdd={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasRowEdit={false}
+            hasDelete={false}
+            hasModify={false}
+            hasBeBtns={false}
+            hasRowModify={false}
+            hasRowSelection={false}
+            baseURL={this.baseURL}
+            downloadBaseURL={this.attendanceDownloadURL}
+          />
+        )}
         <Modal
           visible={addBroVisible}
           title="添加节点"
@@ -652,5 +736,6 @@ class ArchitectureDiagram extends React.Component {
     );
   }
 }
+const composedHoc = compose(injectIntl);
 
-export default ArchitectureDiagram;
+export default composedHoc(ArchitectureDiagram);
