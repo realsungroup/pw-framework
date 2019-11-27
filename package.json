@@ -88,6 +88,7 @@
     "object-values": "^2.0.0",
     "omit.js": "^1.0.2",
     "optimize-css-assets-webpack-plugin": "5.0.1",
+    "pdfmake": "^0.1.62",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
