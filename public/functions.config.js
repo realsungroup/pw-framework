@@ -166,14 +166,22 @@ window[590765309983] = {
           values: [null]
         },
         {
-          btnName: '撤销',
-          innerFieldNames: [
-            'C3_590512213622',
-            'C3_591373760332',
-            'C3_605619907534'
-          ],
-          values: ['Y', null, 'Y']
+          btnName: '预览打印',
+          innerFieldNames: ['C3_591373760332'],
+          values: ['Y']
         },
+        // {
+        //   //提交后这个按钮隐藏
+        //   btnName: '撤销',
+        //   innerFieldNames: [
+        //     // 'C3_590512213622',
+        //     // 'C3_591373760332',
+        //     // 'C3_605619907534'
+        //     'C3_591373760332'
+        //   ],
+        //   values:['Y']
+        //   // values: ['Y', null, 'Y']
+        // },
         {
           btnName: '修改',
           innerFieldNames: ['C3_591373760332'],
@@ -181,7 +189,8 @@ window[590765309983] = {
         },
         {
           btnName: '删除',
-          innerFieldNames: ['noDelete'],
+          // innerFieldNames: ['noDelete'],
+          innerFieldNames:['C3_591373760332'],
           // innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
           values: ['Y']
         }

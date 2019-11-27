@@ -17,7 +17,9 @@ window.pwConfig = {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
 
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      dlEmployBaseURL:'http://kingofdinner.realsun.me:1201/',//DL招聘-DL管理员
+      dlEmployDownloadURL:'http://kingofdinner.realsun.me:1200/'//DL招聘-DL管理员下载URl
     },
 
     // 需前端缓存配置的资源
@@ -146,7 +148,9 @@ window.pwConfig = {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
 
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/' //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      dlEmployBaseURL:'http://kingofdinner.realsun.me:1201/',//DL招聘-DL管理员
+      dlEmployDownloadURL:'http://kingofdinner.realsun.me:1200/'//DL招聘-DL管理员下载URl
     },
 
     // 需前端缓存配置的资源

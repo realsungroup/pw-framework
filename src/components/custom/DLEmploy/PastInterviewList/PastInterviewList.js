@@ -6,6 +6,10 @@ import http from '../../../../util20/api';
 class PastInterviewList extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     SquareCardArr: [],
@@ -54,7 +58,8 @@ class PastInterviewList extends React.Component {
           {
             wrappedComponentRef:(element => this.tableDataRef = element),
             refTargetComponentName:"TableData",
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL:this.dlEmployDownloadURL,
             resid: 618666297012,
             TabsTitle: '未通知录用人员',
             OutHeight: '80vh',
@@ -64,13 +69,13 @@ class PastInterviewList extends React.Component {
             hasDelete: false,
             hasAdd: false,
             hasRowDelete: false,
+            hasRowSelection:true,
             hasRowModify: false,
             hasRowView: true,
-            hasRowSelection:true,
-            subtractH: 220,
+            subtractH: 240,
             recordFormType: 'drawer',
             formProps: {
-              height: 550
+              height: 650
             },
             actionBarExtra:({
               dataSource: dataSource,
@@ -88,12 +93,13 @@ class PastInterviewList extends React.Component {
               );
             },
             recordFormContainerProps: {
-              placement: 'bottom',
-              height: 600
+              placement: 'right',
+              height: 700
             }
           },
           {
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL:this.dlEmployDownloadURL,
             resid: 618666595021,
             TabsTitle: '已通知录用人员',
             OutHeight: '80vh',
@@ -107,12 +113,12 @@ class PastInterviewList extends React.Component {
             hasRowView: true,
             subtractH: 220,
             formProps: {
-              height: 550
+              height: 650
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {
-              placement: 'bottom',
-              height: 600
+              placement: 'right',
+              height: 700
             }
           }
         ]}

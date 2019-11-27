@@ -4,6 +4,10 @@ import TabsTableData from '../../TabsTableData';
 class UploadMedical extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     SquareCardArr: [],
@@ -14,12 +18,12 @@ class UploadMedical extends React.Component {
       <TabsTableData
         arr={[
           {
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666652590,
             TabsTitle: '上传体检报告',
             OutHeight: '80vh',
             recordFormFormWidth: '90%',
-            
             hasBeBtns: false,
             hasModify: false,
             hasDelete: true,
@@ -45,7 +49,8 @@ class UploadMedical extends React.Component {
             },
           },
           {
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL:this.dlEmployDownloadURL,
             resid: 618666816692,
             TabsTitle: '体检未通过人员',
             OutHeight: '80vh',
