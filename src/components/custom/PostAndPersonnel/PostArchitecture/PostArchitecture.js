@@ -25,6 +25,15 @@ class PostArchitecture extends React.Component {
               secondaryField: 'userId',
               imgField: 'img'
             }}
+            groupConfig={[
+              {
+                ResourceOfTag: '628082603616',
+                SourceColumnOfGroupName: 'groupname',
+                SourceColumnOfTagName: 'tagname',
+                ColumnOfTagName: 'tagname',
+                IsGroupTag: true
+              }
+            ]}
             baseURL="http://10.108.2.66:9091/"
           />
         </div>
