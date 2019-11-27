@@ -6,6 +6,10 @@ import http from '../../../../util20/api';
 class ReportPeople extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     SquareCardArr: [],
@@ -55,7 +59,8 @@ class ReportPeople extends React.Component {
           {
             wrappedComponentRef:(element => this.tableDataRef = element),
             refTargetComponentName:"TableData",
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666744677,
             TabsTitle: '未通知报道人员',
             OutHeight: '80vh',
@@ -68,7 +73,7 @@ class ReportPeople extends React.Component {
             hasRowModify: false,
             hasRowView: true,
             hasRowSelection:true,
-            subtractH: 220,
+            subtractH: 240,
             recordFormType: 'drawer',
             formProps: {
               height: 550
@@ -94,7 +99,8 @@ class ReportPeople extends React.Component {
             }, 
           },
           {
-            baseURL:'http://kingofdinner.realsun.me:1201/',
+            baseURL:this.baseURL,
+            downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666763917,
             TabsTitle: '已通知报道人员',
             OutHeight: '80vh',

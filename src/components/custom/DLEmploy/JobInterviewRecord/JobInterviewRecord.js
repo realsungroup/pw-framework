@@ -5,6 +5,10 @@ import { Icon, LocaleProvider, Button, message } from 'antd';
 class JobInterviewRecord extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     SquareCardArr: [],
@@ -13,7 +17,7 @@ class JobInterviewRecord extends React.Component {
   render() {
     return (
       <TableData
-        baseURL = 'http://kingofdinner.realsun.me:1201/'
+        baseURL = {this.baseURL}
         resid={617311643033}
         subtractH={520}
         hasBeBtns={true}
@@ -25,6 +29,7 @@ class JobInterviewRecord extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
+        downloadBaseURL = {this.dlEmployDownloadURL}
       >
       </TableData>
     );

@@ -166,9 +166,9 @@ class HRProbation extends React.Component {
       let data = [];
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
-          if (selectValue === '主管填写') {
-            item.isDirectorFill = 'Y';
-          } else if (selectValue === '员工填写') {
+          if (selectValue === '提醒主管填写') {
+            item.isMailed = 'Y';
+          } else if (selectValue === '提醒员工填写') {
             item.isEmployeeFill = 'Y';
           } else if (selectValue === '提醒辅导员确认') {
             item.C3_62586860630 = 'Y';

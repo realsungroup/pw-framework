@@ -9,6 +9,10 @@ const { Option } = Select;
 class LaborCorSelect extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     personList: [], //需要分配的记录
@@ -94,11 +98,11 @@ class LaborCorSelect extends React.Component {
     return (
       <div style={{width:'100'+'%',height:'100'+'%'}}>
         <TableData
-          baseURL="http://kingofdinner.realsun.me:1201/"
+          baseURL={this.baseURL}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           resid={620816140260}
-          subtractH={220}
+          subtractH={240}
           hasBeBtns={false}
           hasRowSelection={true}
           hasAdd={true}
@@ -107,6 +111,7 @@ class LaborCorSelect extends React.Component {
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={true}
+          downloadBaseURL={this.dlEmployDownloadURL}
           height="100%"
           actionBarExtra={records => (
             <Button
