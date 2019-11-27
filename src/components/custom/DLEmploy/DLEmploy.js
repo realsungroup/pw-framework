@@ -102,31 +102,31 @@ class DLEmploy extends React.Component {
           >
             <Menu.Item key="1">
               <Icon type="mail" />
-              <span> 职位面试安排表</span>
+              <span> 面试安排</span>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="calendar" />
-              <span> 招聘职务管理 </span>
+              <span> 职务管理 </span>
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="calendar" />
-              <span> 求职人员清单 </span>
+              <span> 求职清单 </span>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="calendar" />
-              <span> 面试通过人员 </span>
+              <span> 录用清单 </span>
             </Menu.Item>
             <Menu.Item key="5">
               <Icon type="calendar" />
-              <span> 上传体检报告</span>
+              <span> 体检报告 </span>
             </Menu.Item>
             <Menu.Item key="6">
               <Icon type="calendar" />
-              <span> 报道人员</span>
+              <span> 报到清单 </span>
             </Menu.Item>
             <Menu.Item key="7">
               <Icon type="calendar" />
-              <span> 劳务公司分配</span>
+              <span> 人员分配 </span>
             </Menu.Item>
           </Menu>
         </div>
