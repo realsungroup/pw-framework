@@ -35,7 +35,7 @@ function getUploadUrl(uploadConfig, srctype, dblinkname) {
   const { mode, bucketname, url } = uploadConfig;
   // 云对象存储
   if (mode === 'cloud') {
-    let newUrl = `${url}api/AliyunOss/PutOneImageObject?bucketname=${encodeURIComponent(
+    let newUrl = `${url}api/AliyunOss/PutFilesObject?bucketname=${encodeURIComponent(
       bucketname
     )}&srctype=${encodeURIComponent(srctype)}`;
     if (dblinkname) {
