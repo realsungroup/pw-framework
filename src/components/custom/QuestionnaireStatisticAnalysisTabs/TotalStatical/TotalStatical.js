@@ -5,6 +5,9 @@ import http from 'Util20/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts;
 
 const isChrome = () => {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -255,42 +258,141 @@ class TotalStatical extends Component {
   };
 
   // 导出pdf文件
+  // hanldeExportPdf = () => {
+  //   const dom = document.querySelector('.total-statical__main');
+  //   const { queryName } = this.state;
+  //   html2canvas(dom).then(canvas => {
+  //     let contentWidth = canvas.width;
+  //     let contentHeight = canvas.height;
+  //     //一页pdf显示html页面生成的canvas高度;
+  //     let pageHeight = (contentWidth / 592.28) * 841.89;
+  //     //未生成pdf的html页面高度
+  //     let leftHeight = contentHeight;
+  //     //页面偏移
+  //     let position = 0;
+  //     //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+  //     let imgWidth = 595.28;
+  //     let imgHeight = (592.28 / contentWidth) * contentHeight;
+  //     let imgData = canvas.toDataURL('image/jpeg', 1.0);
+  //     let doc = new jsPDF('', 'pt', 'a4');
+  //     //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+  //     //当内容未超过pdf一页显示的范围，无需分页
+  //     if (leftHeight < pageHeight) {
+  //       doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+  //     } else {
+  //       while (leftHeight > 0) {
+  //         doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+  //         leftHeight -= pageHeight;
+  //         position -= 841.89;
+  //         //避免添加空白页
+  //         if (leftHeight > 0) {
+  //           doc.addPage();
+  //         }
+  //       }
+  //     }
+  //     // doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+  //     doc.save(queryName + '.pdf');
+  //   });
+  // };
+
   hanldeExportPdf = () => {
-    const dom = document.querySelector('.total-statical__main');
-    const { queryName } = this.state;
-    html2canvas(dom).then(canvas => {
-      let contentWidth = canvas.width;
-      let contentHeight = canvas.height;
-      //一页pdf显示html页面生成的canvas高度;
-      let pageHeight = (contentWidth / 592.28) * 841.89;
-      //未生成pdf的html页面高度
-      let leftHeight = contentHeight;
-      //页面偏移
-      let position = 0;
-      //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
-      let imgWidth = 595.28;
-      let imgHeight = (592.28 / contentWidth) * contentHeight;
-      let imgData = canvas.toDataURL('image/jpeg', 1.0);
-      let doc = new jsPDF('', 'pt', 'a4');
-      //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
-      //当内容未超过pdf一页显示的范围，无需分页
-      if (leftHeight < pageHeight) {
-        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-      } else {
-        while (leftHeight > 0) {
-          doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-          leftHeight -= pageHeight;
-          position -= 841.89;
-          //避免添加空白页
-          if (leftHeight > 0) {
-            doc.addPage();
-          }
+    const { data, answerData, queryName } = this.state;
+    const title = {
+      text: queryName,
+      style: 'header',
+      alignment: 'center',
+      bold: true,
+      fontSize: 20
+    };
+    let index = 0;
+    // 单选 多选
+    let tables = [];
+    data.forEach(item => {
+      tables.push({
+        text: `${++index}.${item.title}`,
+        style: 'header'
+      });
+      const list = item.table.dataSource.map(i => {
+        let percent;
+        if (i.optionContent === '本题有效填写人次') {
+          percent = null;
+        } else {
+          percent = ((i.amount / i.total).toFixed(2) * 100).toFixed(2) + '%';
         }
-      }
-      // doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-      doc.save(queryName + '.pdf');
+        return [
+          { text: i.optionContent, style: 'tableRow' },
+          { text: i.amount, style: 'tableRow' },
+          percent
+        ];
+      });
+      tables.push({
+        style: 'tableExample',
+        table: {
+          widths: ['*', 'auto', 'auto'],
+          body: [
+            [
+              { text: '选项', style: 'tableHeader' },
+              { text: '小计', style: 'tableHeader', noWrap: true },
+              { text: '比例', style: 'tableHeader', noWrap: true }
+            ],
+            ...list
+          ]
+        }
+      });
     });
+    //问答
+    let answers = [];
+    answerData.forEach(item => {
+      answers.push({
+        text: `${++index}.${item.question_topic}`,
+        style: 'header'
+      });
+      const list = item.answers.map(i => {
+        return [{ text: i, style: 'tableRow' }];
+      });
+      answers.push({
+        style: 'tableExample',
+        table: {
+          widths: ['*'],
+          body: list
+        }
+      });
+    });
+    let dd = {
+      content: [title, ...tables, ...answers],
+      styles: {
+        header: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 20, 0, 0],
+          color: 'black'
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 14,
+          color: 'black'
+        },
+        tableRow: {}
+      },
+      defaultStyle: {
+        font: 'simsun'
+      }
+    };
+    pdfMake.fonts = {
+      simsun: {
+        normal: 'simsun.ttf',
+        bold: 'simsun.ttf',
+        italics: 'simsun.ttf',
+        bolditalics: 'simsun.ttf'
+      }
+    };
+    pdfMake.createPdf(dd).download(queryName + '.pdf');
+    // pdfMake.createPdf(dd).open();
   };
+
   //渲染问答题的数据
   renderAnswerChart = () => {
     const { answerData } = this.state;
@@ -363,7 +465,7 @@ class TotalStatical extends Component {
               size="small"
               type="primary"
               onClick={this.handleExportImgBtnClick}
-              style={{marginRight:8}}
+              style={{ marginRight: 8 }}
             >
               导出 PNG
             </Button>
