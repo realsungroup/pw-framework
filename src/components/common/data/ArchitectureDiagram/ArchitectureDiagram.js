@@ -9,7 +9,8 @@ import {
   Timeline,
   Drawer,
   Switch,
-  Select
+  Select,
+  Form
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -24,6 +25,7 @@ import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
 import TableData from '../TableData';
 import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -52,12 +54,15 @@ class ArchitectureDiagram extends React.Component {
     record: {}, // FormData用到的prop
     breadcrumb: [], //面包屑数据
     currentLevel: this.props.level, //当前层级
-    mode: 'chart' //显示模式：图->chart; 表-> table
+    mode: 'chart', //显示模式：图->chart; 表-> table
+    isGrouping: false,
+    firstField: this.props.displayFileds.firstField,
+    secondaryField: this.props.displayFileds.secondaryField
   };
   async componentDidMount() {
-    this.initializeOrgchart();
     await this.getRootNodes();
     let data = await this.getData();
+    this.initializeOrgchart();
     this.chart.load(data);
   }
   componentWillUnmount() {
@@ -101,14 +106,16 @@ class ArchitectureDiagram extends React.Component {
 
         enableSearch: true,
         onClick: (sender, node) => {
+          if (!node) {
+            return false;
+          }
           this.handleNodeClick(sender, node);
           return false;
         },
         // 更新节点（拖拽）
         onUpdate: this.handleDragNode,
         tags: {
-          selected: selected,
-          deleted: 'deleted'
+          selected
         },
         scaleInitial: 1,
         scaleMin: 0.3,
@@ -129,7 +136,7 @@ class ArchitectureDiagram extends React.Component {
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: getIntlVal(intl.locale, enTip, zhTip),
       onOk: () => {
-        this.chart.updateNode(newNode);
+        this.updateNode(newNode);
       }
     });
     return false;
@@ -166,7 +173,14 @@ class ArchitectureDiagram extends React.Component {
    * 获取节点数据
    */
   getData = async () => {
-    const { resid, baseURL, idField, pidField, dblinkname } = this.props;
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      dblinkname,
+      groupConfig
+    } = this.props;
     const { currentLevel } = this.state;
     const options = {
       resid,
@@ -175,10 +189,10 @@ class ArchitectureDiagram extends React.Component {
       ProductIDs: this._rootIds.join(','),
       Levels: currentLevel,
       cmswhere: this._cmswhere,
-      dblinkname
+      dblinkname,
+      tags: groupConfig
     };
     this.setState({ loading: true });
-
     try {
       let httpParams = {};
       // 使用传入的 baseURL
@@ -188,13 +202,13 @@ class ArchitectureDiagram extends React.Component {
       this.p1 = makeCancelable(http(httpParams).getNodesData(options));
       let res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
+      this._tags = res.tags;
       let nodes = res.nodes.map(item => {
         return {
           ...item,
           id: item[idField],
-          pid: item[pidField],
-          img: '//balkangraph.com/js/img/empty-img-white.svg',
-          tags: []
+          pid: item[pidField]
+          // img: '//balkangraph.com/js/img/empty-img-white.svg'
         };
       });
       this._nodes = nodes;
@@ -277,6 +291,9 @@ class ArchitectureDiagram extends React.Component {
    */
   handleModify = () => {
     const { selectedNode } = this.state;
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
     this.getFormData({ ...selectedNode });
     this.setState({
       addBroVisible: true,
@@ -295,7 +312,6 @@ class ArchitectureDiagram extends React.Component {
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
-    console.log(chart);
     this.setState({ selectedNode: node }, this.getHistory);
     let findNodes = chart.find(selected);
     if (findNodes.length) {
@@ -402,7 +418,52 @@ class ArchitectureDiagram extends React.Component {
 
   handleSelfDefine = () => this.setState({ selfDefineVisible: true });
 
+  handleGroupChange = checked => {
+    if (isEmpty(this._tags)) {
+      message.info('无分组配置');
+      this.setState({ isGrouping: false });
+      return false;
+    }
+    if (checked) {
+      this.chart.config.tags = {
+        selected,
+        ...this._tags
+      };
+    } else {
+      this.chart.config.tags = { selected };
+    }
+    this.setState({ isGrouping: checked });
+    this.chart.draw();
+  };
+
   closeSelfDefineModal = () => this.setState({ selfDefineVisible: false });
+
+  updateNode = async newNode => {
+    this.setState({ loading: true });
+    const { resid, idField, pidField, dblinkname, baseURL } = this.props;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    let res;
+    this.p5 = makeCancelable(
+      http(httpParams).modifyRecords({
+        resid,
+        data: [{ REC_ID: newNode.REC_ID, [pidField]: newNode.pid }],
+        dblinkname
+      })
+    );
+    try {
+      res = await this.p5.promise;
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+    this.chart.updateNode(newNode);
+  };
 
   /**
    * 保存成功后的回调函数
@@ -415,14 +476,17 @@ class ArchitectureDiagram extends React.Component {
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: []
+        tags: record.tags ? record.tags : []
       });
     } else if (operation === 'modify') {
+      const oldTags = this.chart.get(record[idField]).tags;
       let node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: [selected]
+        tags: record.tags
+          ? [...record.tags, ...oldTags, selected]
+          : [...oldTags, selected]
       };
       this.setState({ selectedNode: node });
       this.chart.updateNode(node);
@@ -433,13 +497,24 @@ class ArchitectureDiagram extends React.Component {
    * 加载下一层级的数据
    */
   loadNextLevel = async () => {
-    const { resid, idField, pidField, baseURL, dblinkname } = this.props;
+    if (this.state.isGrouping) {
+      return message.info('请先取消分组');
+    }
+    const {
+      resid,
+      idField,
+      pidField,
+      baseURL,
+      dblinkname,
+      groupConfig
+    } = this.props;
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
       httpParams.baseURL = baseURL;
     }
     const nodes = this.chart.nodes;
+    console.log(nodes);
     const keys = Object.keys(nodes);
     const ids = keys.filter(key => {
       return !nodes[key].childrenIds.length;
@@ -453,7 +528,8 @@ class ArchitectureDiagram extends React.Component {
       MoveLevels: 1,
       ProductIDs: ids.join(','),
       cmswhere: this._cmswhere,
-      dblinkname
+      dblinkname,
+      tags: groupConfig
     };
     this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
     this.setState({ loading: true });
@@ -473,8 +549,7 @@ class ArchitectureDiagram extends React.Component {
       this.chart.add({
         ...node,
         id: node[idField],
-        pid: node[pidField],
-        tags: []
+        pid: node[pidField]
       });
     });
     this.setState({ loading: false });
@@ -482,10 +557,10 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderHeader = () => {
-    const { mode } = this.state;
+    const { mode, isGrouping } = this.state;
     return (
       <header className="architecture-diagram_header">
-        <div className="architecture-diagram_header_icon-button-group">
+        {/* <div className="architecture-diagram_header_icon-button-group">
           <div className="architecture-diagram_header_icon-button">
             <Icon
               type="redo"
@@ -499,6 +574,12 @@ class ArchitectureDiagram extends React.Component {
               className="architecture-diagram_header_icon-button__icon"
             />
             保存
+          </div>
+        </div> */}
+        <div className="architecture-diagram_header_icon-button-group">
+          <div className="architecture-diagram_header_icon-button">
+            分组
+            <Switch checked={isGrouping} onChange={this.handleGroupChange} />
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
@@ -757,45 +838,63 @@ class ArchitectureDiagram extends React.Component {
             baseURL={this.props.baseURL}
           />
         </Modal>
-        <Modal
+        <Drawer
           visible={selfDefineVisible}
           title="自定义卡片"
-          width={500}
-          footer={null}
+          width={400}
           onCancel={this.closeSelfDefineModal}
+          onOk={() => {}}
+          onClose={this.closeSelfDefineModal}
           destroyOnClose
         >
-          {/* <div>
-            主要字段
-            <Select
-              onChange={() => {
-                console.log(this.chart);
-                let nodeBinding = this.chart.config.nodeBinding;
-                nodeBinding.field_0 = 'userId';
-                this.chart.draw();
-              }}
-            >
-              {this._cmscolumninfo.map(item => {
-                <Select.Option value={item.id}>{item.text}</Select.Option>;
-              })}
-            </Select>
-          </div>
-          <div>
-            次要字段
-            <Select
-              onChange={() => {
-                console.log(this.chart);
-                let nodeBinding = this.chart.config.nodeBinding;
-                nodeBinding.field_0 = 'userId';
-                this.chart.draw();
-              }}
-            >
-              {this._cmscolumninfo.map(item => {
-                <Select.Option value={item.id}>{item.text}</Select.Option>;
-              })}
-            </Select>
-          </div> */}
-        </Modal>
+          <Form
+            labelCol={{
+              xs: { span: 24 },
+              sm: { span: 8 }
+            }}
+            wrapperCol={{
+              xs: { span: 24 },
+              sm: { span: 16 }
+            }}
+          >
+            <Form.Item label="主要字段">
+              <Select
+                // style={{ width: 120 }}
+                defaultValue={this.state.firstField}
+                onChange={v => {
+                  let nodeBinding = this.chart.config.nodeBinding;
+                  nodeBinding.field_0 = v;
+                  this.chart.draw();
+                  this.setState({ firstField: v });
+                }}
+              >
+                {this._cmscolumninfo.map(item => {
+                  return (
+                    <Select.Option value={item.id}>{item.text}</Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item label="次要字段">
+              <Select
+                // style={{ width: 120 }}
+                defaultValue={this.state.secondaryField}
+                onChange={v => {
+                  let nodeBinding = this.chart.config.nodeBinding;
+                  nodeBinding.field_1 = v;
+                  this.chart.draw();
+                  this.setState({ secondaryField: v });
+                }}
+              >
+                {this._cmscolumninfo.map(item => {
+                  return (
+                    <Select.Option value={item.id}>{item.text}</Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Form>
+        </Drawer>
         <Drawer
           visible={viewHistoryDetailVisible}
           onClose={this.closeHistoryDetail}
