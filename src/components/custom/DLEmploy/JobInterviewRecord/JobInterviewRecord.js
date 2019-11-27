@@ -30,6 +30,12 @@ class JobInterviewRecord extends React.Component {
         hasRowModify={true}
         height="100%"
         downloadBaseURL = {this.dlEmployDownloadURL}
+        columnsWidth={{
+          '面试时间':100,
+          '职位名称':80,
+          '当天可预约额度':90,
+          '已预约额度':75,
+        }}
       >
       </TableData>
     );

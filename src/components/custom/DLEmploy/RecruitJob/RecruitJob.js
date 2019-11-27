@@ -29,6 +29,14 @@ class RecruitJob extends React.Component {
         hasRowModify={true}
         height="100%"
         downloadBaseURL = {this.dlEmployDownloadURL}
+        columnsWidth={{
+          '招聘人数':110,
+          '职位名称':110,
+          '薪资范围':110,
+          '职位要求':200,
+          '职务标签':200,
+          '是否启用':110
+        }}
       ></TableData>
     );
   }
