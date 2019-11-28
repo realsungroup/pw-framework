@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Modal, Input, message, Spin, Menu, Icon, Avatar } from 'antd';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { Modal, Input, message, Spin, Menu, Icon, Avatar } from "antd";
 
-import './LzMenuContainer.less';
-import { LzTable } from '../../../loadableComponents';
-import MenuMultiple from './MenuMultiple';
-import { getMainTableData } from 'Util/api';
-import LzRowCols from 'UnitComponent/components/LzRowCols';
+import "./LzMenuContainer.less";
+import { LzTable } from "../../../loadableComponents";
+import MenuMultiple from "./MenuMultiple";
+import { getMainTableData } from "Util/api";
+import LzRowCols from "UnitComponent/components/LzRowCols";
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -21,7 +21,7 @@ export default class LzMenuContainer extends React.Component {
      * 可选：'single' 单张子表 | 'multiple' 多张子表
      * 默认：'single'
      */
-    mode: PropTypes.oneOf(['single', 'multiple']).isRequired,
+    mode: PropTypes.oneOf(["single", "multiple"]).isRequired,
 
     /**
      * 主表 id
@@ -125,13 +125,13 @@ export default class LzMenuContainer extends React.Component {
     // }
   };
   static defaultProps = {
-    mode: 'single',
+    mode: "single",
     userInfoFields: [],
-    noDataTip: '暂无数据，请选择员工',
-    searchText: '请选择员工',
-    avatarFieldName: '',
+    noDataTip: "暂无数据，请选择员工",
+    searchText: "请选择员工",
+    avatarFieldName: "",
     hasFieldsLabel: true,
-    userFieldsViewConfig: { mode: 'block' }
+    userFieldsViewConfig: { mode: "block" }
   };
   constructor(props) {
     super(props);
@@ -139,14 +139,14 @@ export default class LzMenuContainer extends React.Component {
     const { resid } = props;
     this.state = {
       avatar:
-        'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1804819840,2974605393&fm=27&gp=0.jpg',
-      name: '张楠楠',
-      position: '市场部经理',
-      menuStatus: 'expand', // 菜单栏的装填：'expand' 展开 | 'shrink' 收缩
+        "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1804819840,2974605393&fm=27&gp=0.jpg",
+      name: "张楠楠",
+      position: "市场部经理",
+      menuStatus: "expand", // 菜单栏的装填：'expand' 展开 | 'shrink' 收缩
       selectedIndex: -1,
       record, // 搜索工号得到的记录
       modalVisible: false,
-      searchValue: '', // 搜索值：工号
+      searchValue: "", // 搜索值：工号
       searchLoading: false,
       selectedKeys: [],
       resid: 0, // 主表 id
@@ -180,7 +180,7 @@ export default class LzMenuContainer extends React.Component {
       // 有记录时
 
       // 显示默认的视图
-      if (mode === 'single') {
+      if (mode === "single") {
         const { defaultComponetProps } = this.props;
         const { record } = this.state;
         const props = {
@@ -208,7 +208,7 @@ export default class LzMenuContainer extends React.Component {
   };
 
   getFormTitle = (menuList, resid) => {
-    let formTitle = '';
+    let formTitle = "";
     menuList.some(menu => {
       if (menu.subMenuList) {
         const flag = menu.subMenuList.some(subMenu => {
@@ -239,19 +239,19 @@ export default class LzMenuContainer extends React.Component {
   getPlaceholder = () => {
     const { searchFields } = this.props;
     if (!searchFields) {
-      return '';
+      return "";
     }
-    let text = '请输入';
+    let text = "请输入";
     let textArr = [];
     searchFields.forEach(field => textArr.push(field.text));
-    text += ` ${textArr.join('/')}`;
+    text += ` ${textArr.join("/")}`;
     return text;
   };
 
   getCmswhere = () => {
     const { searchValue } = this.state;
     const { searchFields } = this.props;
-    let where = '';
+    let where = "";
     searchFields.forEach((searchField, index) => {
       where +=
         index === searchFields.length - 1
@@ -275,9 +275,9 @@ export default class LzMenuContainer extends React.Component {
     }
     if (!res.data.length) {
       this.setState({ searchLoading: false });
-      return message.error('没有该员工');
+      return message.error("没有该员工");
     }
-    message.success('搜索成功');
+    message.success("搜索成功");
     const record = res.data[0];
     this.setState({
       modalVisible: false,
@@ -300,7 +300,7 @@ export default class LzMenuContainer extends React.Component {
   switchMenuItem = async ({ item, key, selectedKeys }) => {
     const { record } = this.state;
     if (!record) {
-      return message.error('请选择员工');
+      return message.error("请选择员工");
     }
     const { resid } = this.props;
     const hostrecid = record.REC_ID;
@@ -316,8 +316,8 @@ export default class LzMenuContainer extends React.Component {
   // 渲染导航列表
   renderNavList = () => {
     const { mode } = this.props;
-    if (mode === 'single') {
-    } else if (mode === 'multiple') {
+    if (mode === "single") {
+    } else if (mode === "multiple") {
       const { menuList } = this.props;
       const { selectedKeys } = this.state;
       return (
@@ -382,7 +382,7 @@ export default class LzMenuContainer extends React.Component {
     userInfoFields.forEach(userInfoField => {
       let text = record[userInfoField.innerFieldName];
       if (hasFieldsLabel) {
-        text = userInfoField.label + '：' + text;
+        text = userInfoField.label + "：" + text;
       }
       arr.push({
         label: userInfoField.label,
@@ -397,7 +397,7 @@ export default class LzMenuContainer extends React.Component {
   renderUserFields = () => {
     const { record } = this.state;
     const { searchText } = this.props;
-    console.log('this.props.record:', this.props.record);
+    // console.log('this.props.record:', this.props.record);
     // 没有选取人员时
     if (!record) {
       return (
@@ -418,7 +418,7 @@ export default class LzMenuContainer extends React.Component {
       hasFieldsLabel
     );
     let colCount = 1;
-    if (mode === 'inline') {
+    if (mode === "inline") {
       colCount = userFieldsViewConfig.colCount || 1;
     }
     return (
@@ -434,23 +434,23 @@ export default class LzMenuContainer extends React.Component {
               <div className="user-info-item">
                 {hasFieldsLabel && (
                   <div
-                    className={classNames('label', {
-                      'haslabel-block': hasFieldsLabel && mode === 'block',
-                      'haslabel-inline': hasFieldsLabel && mode === 'inline',
+                    className={classNames("label", {
+                      "haslabel-block": hasFieldsLabel && mode === "block",
+                      "haslabel-inline": hasFieldsLabel && mode === "inline",
 
-                      'nolabel-inline': !hasFieldsLabel && mode === 'inline'
+                      "nolabel-inline": !hasFieldsLabel && mode === "inline"
                     })}
                   >
-                    {data.label + '：'}
+                    {data.label + "："}
                   </div>
                 )}
                 <div
-                  className={classNames('item-value', {
-                    'haslabel-block': hasFieldsLabel && mode === 'block',
-                    'haslabel-inline': hasFieldsLabel && mode === 'inline',
+                  className={classNames("item-value", {
+                    "haslabel-block": hasFieldsLabel && mode === "block",
+                    "haslabel-inline": hasFieldsLabel && mode === "inline",
 
-                    'nolabel-block': !hasFieldsLabel && mode === 'block',
-                    'nolabel-inline': !hasFieldsLabel && mode === 'inline'
+                    "nolabel-block": !hasFieldsLabel && mode === "block",
+                    "nolabel-inline": !hasFieldsLabel && mode === "inline"
                   })}
                 >
                   {record[data.innerFieldName]}
@@ -470,9 +470,9 @@ export default class LzMenuContainer extends React.Component {
       <div className="lz-menu-container">
         {/* menu */}
         <div
-          className={classNames('menu', {
-            expand: menuStatus === 'expand',
-            shrink: menuStatus === 'shrink'
+          className={classNames("menu", {
+            expand: menuStatus === "expand",
+            shrink: menuStatus === "shrink"
           })}
         >
           <div className="user-info">
@@ -489,21 +489,21 @@ export default class LzMenuContainer extends React.Component {
             className="iconfont icon-expand-v"
             onClick={() =>
               this.changeMenuStatus(
-                menuStatus === 'expand' ? 'shrink' : 'expand'
+                menuStatus === "expand" ? "shrink" : "expand"
               )
             }
             onMouseEnter={() =>
               this.setState({
-                menuStatus: 'expand'
+                menuStatus: "expand"
               })
             }
           />
         </div>
         {/* container */}
         <div
-          className={classNames('lz-menu-container-container', {
-            expand: menuStatus === 'expand',
-            shrink: menuStatus === 'shrink'
+          className={classNames("lz-menu-container-container", {
+            expand: menuStatus === "expand",
+            shrink: menuStatus === "shrink"
           })}
         >
           {this.renderContent()}

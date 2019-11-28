@@ -1,27 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { message, Button, Timeline, Modal, Tree } from 'antd';
-import './MenuMultiple.less';
-import LzFormWithFooter from 'UnitComponent/components/LzFormWithFooter';
-import { getFormData, getSubTableData } from 'Util/api';
-import dealControlArr from 'Util/controls';
-import LzFormModalContainer from 'UnitComponent/components/LzFormModalContainer';
-import LzAdvSearch from 'UnitComponent/LzTable/LzAdvSearch';
-import HeightWeightChart from './HeightWeightChart';
-import LabExaminationChart from './LabExaminationChart';
-import { LzModal } from '../../loadableCustom';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { message, Button, Timeline, Modal, Tree } from "antd";
+import "./MenuMultiple.less";
+import LzFormWithFooter from "UnitComponent/components/LzFormWithFooter";
+import { getFormData, getSubTableData } from "Util/api";
+import dealControlArr from "Util/controls";
+import LzFormModalContainer from "UnitComponent/components/LzFormModalContainer";
+import LzForm from "UnitComponent/components/LzForm";
+import LzAdvSearch from "UnitComponent/LzTable/LzAdvSearch";
+import HeightWeightChart from "./HeightWeightChart";
+import LabExaminationChart from "./LabExaminationChart";
+import { LzModal } from "../../loadableCustom";
 const { TreeNode } = Tree;
 
 // 含有 “生长发育评估” 的表才有身高、体重按钮
 const hasHeightWeightChartBtn = formTitle => {
-  return formTitle.indexOf('生长发育评估') !== -1;
+  return formTitle.indexOf("生长发育评估") !== -1;
 };
 
 // 实验室检查表才有选择字段按钮
 const hasChooseFieldBtn = formTitle => {
   //,CD-评分
-  return formTitle.indexOf('实验室检查') !== -1 ||formTitle.indexOf('CD-评分') !== -1 ;
+  return (
+    formTitle.indexOf("实验室检查") !== -1 ||
+    formTitle.indexOf("CD-评分") !== -1
+  );
 };
 
 const assortFields = controlArr => {
@@ -57,6 +61,27 @@ const getCanChooseFields = canOpControlArr => {
   const arr = assortFields(canOpControlArr);
   return arr;
 };
+
+const FormWithValue = React.memo(props => {
+  const { record, formFormData, displayMod, viewStatus, formLayout } = props;
+  let _formdata = {
+    ...formFormData
+  };
+
+  console.log(_formdata.canOpControlArr);
+  _formdata.canOpControlArr = _formdata.canOpControlArr.filter(item => {
+    return record[item.innerFieldName];
+  });
+  return (
+    <LzForm
+      displayMod={displayMod}
+      viewStatus={viewStatus}
+      formLayout={formLayout}
+      record={record}
+      formFormData={_formdata}
+    />
+  );
+});
 /**
  * MenuMultiple
  */
@@ -100,7 +125,7 @@ export default class MenuMultiple extends React.Component {
     advSearchConfig: PropTypes.object
   };
   static defaultProps = {
-    formTitle: ''
+    formTitle: ""
   };
   constructor(props) {
     super(props);
@@ -112,13 +137,14 @@ export default class MenuMultiple extends React.Component {
         canOpControlArr: [],
         containerControlArr: []
       },
-      operation: 'check',
-      viewStatus: 'view',
+      alreadyModalVisible: false,
+      operation: "check",
+      viewStatus: "view",
       recordList: [],
-      innerFieldName: '',
+      innerFieldName: "",
       modalVisible: false,
       advSearchVisible: false, // 高级搜索是否显示
-      chartType: '身高', // 图表类型
+      chartType: "身高", // 图表类型
       chartVisible: false,
       chooseFieldModalVisible: false, // 选择字段的模态窗是否显示
       fields: [], // 已选择的需要在实验室检查中显示的字段
@@ -135,7 +161,7 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList();
   };
 
-  getRecordList = async (selectedRecord, wheres = '') => {
+  getRecordList = async (selectedRecord, wheres = "") => {
     const { resid, subresid, hostrecid } = this.props;
     let res;
     try {
@@ -159,8 +185,8 @@ export default class MenuMultiple extends React.Component {
     }
     let res;
     const pArr = [
-      getFormData(subresid, 'default'),
-      getFormData(subresid, 'title-choose')
+      getFormData(subresid, "default"),
+      getFormData(subresid, "title-choose")
     ];
     try {
       res = await Promise.all(pArr);
@@ -186,7 +212,7 @@ export default class MenuMultiple extends React.Component {
   };
 
   saveCb = () => {
-    message.success('保存成功');
+    message.success("保存成功");
     this.getRecordList(this.state.selectedRecord);
   };
 
@@ -198,7 +224,7 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList(this.state.selectedRecord, wheres);
   };
 
-  handleOpenChart = (chartType = '身高') => {
+  handleOpenChart = (chartType = "身高") => {
     this.setState({ chartType, chartVisible: true });
   };
 
@@ -215,18 +241,18 @@ export default class MenuMultiple extends React.Component {
 
         {hasHeightWeightChartBtn(formTitle) && (
           <Button
-            style={{ margin: '0 4px' }}
+            style={{ margin: "0 4px" }}
             type="primary"
-            onClick={() => this.handleOpenChart('身高')}
+            onClick={() => this.handleOpenChart("身高")}
           >
             身高曲线图
           </Button>
         )}
         {hasHeightWeightChartBtn(formTitle) && (
           <Button
-            style={{ margin: '0 4px' }}
+            style={{ margin: "0 4px" }}
             type="primary"
-            onClick={() => this.handleOpenChart('体重')}
+            onClick={() => this.handleOpenChart("体重")}
           >
             体重曲线图
           </Button>
@@ -234,7 +260,7 @@ export default class MenuMultiple extends React.Component {
 
         {hasChooseFieldBtn(formTitle) && (
           <Button
-            style={{ margin: '0 4px' }}
+            style={{ margin: "0 4px" }}
             type="primary"
             onClick={() => this.handleOpenChooseFieldModal()}
           >
@@ -243,7 +269,17 @@ export default class MenuMultiple extends React.Component {
         )}
 
         <Button
-          style={{ margin: '0 4px' }}
+          style={{ margin: "0 4px" }}
+          type="primary"
+          onClick={() => {
+            this.setState({ alreadyModalVisible: true });
+          }}
+        >
+          查看已填
+        </Button>
+
+        <Button
+          style={{ margin: "0 4px" }}
           type="primary"
           onClick={this.handleAddClick}
         >
@@ -254,12 +290,12 @@ export default class MenuMultiple extends React.Component {
     const { resid, subresid, hostrecid } = this.props;
     const props = {
       displayMod,
-      dataMode: 'sub',
+      dataMode: "sub",
       header,
       key: selectedRecord && selectedRecord.REC_ID,
       record: selectedRecord,
       formFormData,
-      operation: 'mod',
+      operation: "mod",
       cancelBtn: true,
       resid,
       subresid,
@@ -280,7 +316,7 @@ export default class MenuMultiple extends React.Component {
   };
 
   addRecordCb = () => {
-    message.success('添加成功');
+    message.success("添加成功");
     this.setState({ modalVisible: false });
     this.getRecordList(this.state.selectedRecord);
   };
@@ -288,6 +324,7 @@ export default class MenuMultiple extends React.Component {
   closeAdvSearch = () => {
     this.setState({ advSearchVisible: false });
   };
+  closeAlreadyModal = () => this.setState({ alreadyModalVisible: false });
 
   renderTreeNodes = data =>
     data.map(item => {
@@ -310,11 +347,11 @@ export default class MenuMultiple extends React.Component {
   handleCompleteFieldsChoose = () => {
     const { selectedKeys } = this.state;
     const newSelectedKeys = selectedKeys.filter(
-      key => key.indexOf('C3_') !== -1
+      key => key.indexOf("C3_") !== -1
     );
 
     if (!selectedKeys.length) {
-      return message.error('您未选择字段');
+      return message.error("您未选择字段");
     }
 
     const fields = [];
@@ -349,7 +386,8 @@ export default class MenuMultiple extends React.Component {
       fields,
       chooseFieldModalVisible,
       treeData,
-      selectedKeys
+      selectedKeys,
+      alreadyModalVisible
     } = this.state;
     const {
       resid,
@@ -360,18 +398,17 @@ export default class MenuMultiple extends React.Component {
       formTitle
     } = this.props;
     const modalProps = {
-      dataMode: 'sub',
-      operation: 'add',
+      dataMode: "sub",
+      operation: "add",
       resid,
       subresid,
       hostrecid,
       onCancel: this.cancelAddRecord,
       onConfirm: this.addRecordCb,
       formFormData,
-      displayMod: 'classify',
+      displayMod: "classify",
       modalWidth: 1000
     };
-
     return (
       <div className="menu-multiple">
         <div className="form-wrap">
@@ -397,7 +434,7 @@ export default class MenuMultiple extends React.Component {
           {recordList.map(record => (
             <Timeline.Item
               key={record.REC_ID}
-              className={classNames('record-item', {
+              className={classNames("record-item", {
                 selected: selectedRecord.REC_ID === record.REC_ID
               })}
               onClick={() => this.switchRecord(record)}
@@ -422,7 +459,7 @@ export default class MenuMultiple extends React.Component {
             defaultScaleStatus="max"
             onClose={() => this.setState({ chartVisible: false })}
           >
-            {((formTitle === '实验室检查')||(formTitle === 'CD-评分')) ? (
+            {formTitle === "实验室检查" || formTitle === "CD-评分" ? (
               <LabExaminationChart
                 data={recordList}
                 fields={fields}
@@ -434,16 +471,32 @@ export default class MenuMultiple extends React.Component {
                 chartType={chartType}
                 userData={recordList}
                 recordMonthField={
-                  record.C3_589053299408 === '男'
-                    ? 'C3_603833255097'
-                    : 'C3_603833299862'
+                  record.C3_589053299408 === "男"
+                    ? "C3_603833255097"
+                    : "C3_603833299862"
                 }
-                recordHeightField={'C3_586880026948'}
-                recordWeightField={'C3_586880035091'}
+                recordHeightField={"C3_586880026948"}
+                recordWeightField={"C3_586880035091"}
               />
             )}
           </LzModal>
         )}
+
+        <Modal
+          title="已填内容"
+          visible={alreadyModalVisible}
+          onCancel={this.closeAlreadyModal}
+          onOk={this.closeAlreadyModal}
+          width={800}
+        >
+          <FormWithValue
+            displayMod="default"
+            viewStatus="view"
+            formLayout="default"
+            record={selectedRecord}
+            formFormData={formFormData}
+          />
+        </Modal>
 
         <Modal
           title="选择字段"
