@@ -79,6 +79,7 @@ class PersonInfo extends React.Component {
           <Skeleton loading={!id}>
             <TableData
               key="1"
+              size="small"
               resid="446576761435"
               isFrontEndPagination={true}
               subtractH={200}

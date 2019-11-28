@@ -18,8 +18,9 @@ class TargetTarget extends React.Component {
         <div className="table-data-wrapper">
           <TableData
             key="target-target"
+            size="small"
             resid="462402075404"
-            subtractH={200}
+            subtractH={180}
             hasAdvSearch={false}
             hasAdd={false}
             hasRowView={true}

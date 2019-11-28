@@ -149,11 +149,12 @@ class WorkInfo extends React.Component {
               {currentNav === 'monthDetail' && (
                 <TableData
                   resid="460481857607"
-                  subtractH={220}
+                  subtractH={180}
                   // tableComponent="ag-grid"
                   // rowSelectionAg="single"
-                  sideBarAg={true}
-                  hasAdvSearch={true}
+                  // sideBarAg={true}
+                  size="small"
+                  hasAdvSearch={false}
                   hasAdd={false}
                   hasRowView={false}
                   hasRowDelete={false}
@@ -168,17 +169,28 @@ class WorkInfo extends React.Component {
                   cparm2={selectMonth}
                   baseURL={this.baseURL}
                   downloadBaseURL={this.attendanceDownloadURL}
+                  columnsWidth={{
+                    平日及超出工时加班调整: 300,
+                    上海公出和出差无锡天数: 300,
+                    无锡公出和出差上海天数: 300
+                  }}
                   customRowBtns={[
                     (record, btnSize) => {
                       return (
-                        <Button onClick={this.openModal('daily', record)}>
+                        <Button
+                          size="small"
+                          onClick={this.openModal('daily', record)}
+                        >
                           日报明细
                         </Button>
                       );
                     },
                     (record, btnSize) => {
                       return (
-                        <Button onClick={this.openModal('year', record)}>
+                        <Button
+                          size="small"
+                          onClick={this.openModal('year', record)}
+                        >
                           年假明细
                         </Button>
                       );
@@ -189,7 +201,8 @@ class WorkInfo extends React.Component {
               {currentNav === 'dayDetail' && (
                 <TableData
                   resid="623959817782"
-                  subtractH={200}
+                  size="small"
+                  subtractH={180}
                   hasAdvSearch={false}
                   hasAdd={false}
                   hasRowView={false}

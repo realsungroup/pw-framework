@@ -19,7 +19,8 @@ class TargetHistory extends React.Component {
           <TableData
             key="target-history"
             resid="462586715318"
-            subtractH={200}
+            size="small"
+            subtractH={180}
             hasAdvSearch={false}
             hasAdd={false}
             hasRowView={true}
