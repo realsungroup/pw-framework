@@ -44,9 +44,9 @@ class IDPAnalyze extends React.Component {
   }
   handleClick=async(v)=>{
 	  console.log(v)
-	  var val;
-	  val=v||'FY2020'
-	  this.setState({cur:val})
+	  // var val;
+	  // val=v||'FY2020'
+	  this.setState({cur:v})
   }
   render() {
     const { selectedPersonid, selectedMonth} = this.state;
@@ -55,6 +55,7 @@ class IDPAnalyze extends React.Component {
 	  <div className='fy'>
 	  <span>财年:</span>
 	  <ul>
+			<li className={this.state.cur==null?'current':''} onClick={()=>{this.handleClick(null)}}>全部</li>
 	  {this.state.data.map((item) => {
 	    return (
 	  <li className={this.state.cur==item?'current':''} onClick={()=>{this.handleClick(item)}}>{item}</li>
@@ -69,7 +70,7 @@ class IDPAnalyze extends React.Component {
           {
             resid: '626529247444',
             baseURL: window.pwConfig[process.env.NODE_ENV].baseURL,
-			cmswhere:`财年='${this.state.cur}'`
+						cmswhere:this.state.cur?(`财年='${this.state.cur}'`):null
           }
         ]}
         

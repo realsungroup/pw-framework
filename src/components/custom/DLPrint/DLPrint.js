@@ -114,7 +114,7 @@ const columns = [
       title: '起止年月',
       dataIndex: 'time',
       key: 'time',
-      width:'30%',
+      width:'20%',
       render: (text, record) =>{
         return( <p style={{width:'100%',wordBreak:'break-all',whiteSpace:'normal'}}>{text}</p>)
        }
@@ -164,7 +164,17 @@ const columns = [
       render: (text, record) =>{
         return( <p style={{width:'100%',wordBreak:'break-all',whiteSpace:'normal'}}>{text}</p>)
        }
-    }]
+      },
+       {
+        title: '离职类别',
+        dataIndex: 'quitType',
+        key: 'quitType',
+        width:'14%',
+        render: (text, record) =>{
+          return( <p style={{width:'100%',wordBreak:'break-all',whiteSpace:'normal'}}>{text}</p>)
+         }
+    }
+  ]
 class DLPrint extends React.Component {
   constructor(props) {
     super(props);
@@ -235,7 +245,8 @@ this.setState({emergency:emergency})
         job:res.data[n].job,
         supervisor:res.data[n].boss,
         supervisorJob:res.data[n].bossJob,
-        leaveReason:res.data[n].quitReason
+        leaveReason:res.data[n].quitReason,
+        quitType:res.data[n].quitType,
        })
        n++;
      }
@@ -497,7 +508,7 @@ this.setState({emergency:emergency})
             <Table style={{marginTop:'16px',marginBottom:'16px',pageBreakBefore: 'auto'}} columns={columnsEdu} dataSource={this.state.EduInfo} size={'small'} bordered pagination={false}/>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
             <hr/>
-            <h3>工作经历 <i style={{float:'right'}}>{data.hasJob}</i></h3>
+            <h3>工作经历 <span style={{float:'right'}}>劳动关系现状：{data.hasJob}</span></h3>
             <Table style={{marginTop:'16px',marginBottom:'16px',pageBreakBefore: 'auto'}} columns={columnsWk} dataSource={this.state.WkInfo} size={'small'} bordered pagination={false}/>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
             <hr/>
