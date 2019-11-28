@@ -9,6 +9,10 @@ const { Option } = Select;
 class JobPeopleList extends React.Component {
   constructor(props) {
     super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
+    this.dlEmployDownloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployDownloadURL;
   }
   state = {
     SquareCardArr: [],
@@ -20,7 +24,7 @@ class JobPeopleList extends React.Component {
   render() {
     return (
       <TableData
-        baseURL = 'http://kingofdinner.realsun.me:1201/'
+        baseURL = {this.baseURL}
         resid={618666208275}
         subtractH={220}
         hasBeBtns={false}
@@ -32,7 +36,35 @@ class JobPeopleList extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-
+        downloadBaseURL={this.dlEmployDownloadURL}
+        columnsWidth={{
+          '面试时间':180,
+          '姓名':90,
+          '年龄':90,
+          '申请职位':115,
+          '申请时间':130,
+          '考试结果':115,
+          '面试结果':115,
+          '状态':90,
+          '签到':90,
+          '开始面试操作':180,
+          '结束面试':115,
+          '考试批次':130,
+          '面试通知发送':160,
+          '劳务公司':115,
+          '面试官':115,
+          '面试官账号':130,
+          '体检结果':115,
+          '发送体检通知':160,
+          '发送报到通知':160,
+          '是否入职':115,
+          '是否离职':115,
+          '预约已过期':130,
+          '开始考试时间':180,
+          '身份证号':200,
+          '考试分数':115,
+          '结束考试时间':180
+        }}
       ></TableData>
     );
   }

@@ -472,6 +472,9 @@ class PersonPlan extends React.Component {
                 items.authority = 'check';
               } else if (items.name === '胜任力/Competency:') {
                 items.value = ability[index].competence;
+                items.options = this.state.abilityArr
+                  .filter(i => i.type === item[0].value)
+                  .map(i => i.ability);
                 items.authority = 'check';
               } else if (items.name === '目标/Target:') {
                 items.value = ability[index].target;
@@ -499,10 +502,17 @@ class PersonPlan extends React.Component {
           });
         } else {
           SquareCardArr.forEach((item, index) => {
+            // console.log('item',item)
             item.forEach(items => {
               if (items.name === '类别/Category:') {
                 items.value = ability[index].categocry;
               } else if (items.name === '胜任力/Competency:') {
+                items.options = this.state.abilityArr
+                  .filter(i => i.type === item[0].value)
+                  .map(i => {
+                    // console.log(i);
+                    return i.ability;
+                  });
                 items.value = ability[index].competence;
               } else if (items.name === '目标/Target:') {
                 items.value = ability[index].target;
@@ -977,12 +987,12 @@ class PersonPlan extends React.Component {
       personInfo.midManageApply = 'N';
       personInfo.yearMidSubmit = '';
       personInfo.midYearReturnEmail = 'N';
-      personInfo.noticeMidYearEmail = 'N'
+      personInfo.noticeMidYearEmail = 'N';
     } else {
       personInfo.tailManageApply = 'N';
       personInfo.yearTailSubmit = '';
       personInfo.tailYearReturnEmail = 'N';
-      personInfo.noticeTailSubmit = 'N'
+      personInfo.noticeTailSubmit = 'N';
     }
     let res;
     try {
@@ -1108,10 +1118,10 @@ class PersonPlan extends React.Component {
     this.setState({
       isUpdateAuth
     });
+    await this.getAbilitys();
     await this.getAbilityEvaluation(record, isUpdateAuth);
     await this.getDevelopmentAction(record, isUpdateAuth);
     await this.getTypes();
-    await this.getAbilitys();
     await this.getDevelopmentMeasures();
     emptyAbility.forEach(item => {
       if (item.name === '发展总计划ID') {
@@ -1187,7 +1197,7 @@ class PersonPlan extends React.Component {
                 onClick={() => {
                   this.onAdd('ability');
                 }}
-                hidden={this.state.SquareCardArr.length>5}
+                hidden={this.state.SquareCardArr.length > 5}
               >
                 <Icon
                   type="plus"
@@ -1224,7 +1234,6 @@ class PersonPlan extends React.Component {
               </span>
             </React.Fragment>
           }
-          
           className="personPlan-contain-info"
           bordered={true}
         >
@@ -1276,7 +1285,7 @@ class PersonPlan extends React.Component {
             {this.judgeRender() ? null : (
               <Card
                 className="personPlan-contain-smallcards-card"
-                hidden={this.state.plans.length>2}
+                hidden={this.state.plans.length > 2}
                 onClick={() => {
                   this.onAdd('plans');
                 }}
@@ -1676,8 +1685,11 @@ class PersonPlan extends React.Component {
           </Card>
           {this.renderCard()}
         </div>
-        <div className="personPlan-contain-bottom" style={this.props.role === 'HR'?{display:'none'}:{}}>
-          <div className="personPlan-contain-bottom-btns" >
+        <div
+          className="personPlan-contain-bottom"
+          style={this.props.role === 'HR' ? { display: 'none' } : {}}
+        >
+          <div className="personPlan-contain-bottom-btns">
             {this.renderSaveBtn()}
             {this.state.checkType === 'oneself' &&
             this.state.personInfo.isMangerSubmit === 'Y' &&
