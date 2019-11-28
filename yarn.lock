@@ -8386,10 +8386,10 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-lz-components-and-utils@^1.6.10:
-  version "1.6.10"
-  resolved "https://registry.npm.taobao.org/lz-components-and-utils/download/lz-components-and-utils-1.6.10.tgz?cache=0&sync_timestamp=1571034491460&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flz-components-and-utils%2Fdownload%2Flz-components-and-utils-1.6.10.tgz#e81821d02320a91ae58a7dec64690378065b072f"
-  integrity sha1-6Bgh0CMgqRrlin3sZGkDeAZbBy8=
+lz-components-and-utils@^1.6.11:
+  version "1.6.11"
+  resolved "https://registry.npm.taobao.org/lz-components-and-utils/download/lz-components-and-utils-1.6.11.tgz#c93ce8b7b152d0fdd6df8d49a7d0fcd992054e32"
+  integrity sha1-yTzot7FS0P3W341Jp9D82ZIFTjI=
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.4.0"
     "@babel/polyfill" "^7.4.3"
