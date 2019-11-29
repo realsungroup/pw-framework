@@ -1,19 +1,19 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
-import { Button, Popconfirm, message, Spin } from 'antd';
-import LzForm from '../LzForm';
-import { dealFormData } from 'Util/controls';
+import { Button, Popconfirm, message, Spin } from "antd";
+import LzForm from "../LzForm";
+import { dealFormData } from "Util/controls";
 import {
   addRecord,
   addSubRecord,
   modRecord,
   delRow,
   saveMultipleRecord
-} from '../../../util/api';
-import LzTabs from '../../LzTabs';
-import cloneDeep from 'lodash.clonedeep';
-import './LzFormWithFooter.less';
+} from "../../../util/api";
+import LzTabs from "../../LzTabs";
+import cloneDeep from "lodash.clonedeep";
+import "./LzFormWithFooter.less";
 
 /**
  * 带有与后台交互（保存、删除）功能（按钮在 footer 中）的 LzForm 组件
@@ -24,7 +24,7 @@ export default class LzFormWithFooter extends React.Component {
      * 数据模式
      * 可选：'main' 主表的记录 | 'sub' 子表的记录
      */
-    dataMode: PropTypes.oneOf(['main', 'sub']).isRequired,
+    dataMode: PropTypes.oneOf(["main", "sub"]).isRequired,
 
     /**
      * 主表 id
@@ -64,13 +64,13 @@ export default class LzFormWithFooter extends React.Component {
      * 可选：'view' 查看状态 | 'edit' 编辑状态
      * 默认：'view'
      */
-    viewStatus: PropTypes.oneOf(['view', 'edit']),
+    viewStatus: PropTypes.oneOf(["view", "edit"]),
 
     /**
      * 操作
      * 可选：'add' 添加操作 | 'mod' 修改操作
      */
-    operation: PropTypes.oneOf(['add', 'mod']).isRequired,
+    operation: PropTypes.oneOf(["add", "mod"]).isRequired,
 
     /**
      * 点击保存按钮成功的回调函数
@@ -94,7 +94,7 @@ export default class LzFormWithFooter extends React.Component {
   static defaultProps = {
     editBtn: true,
     delBtn: true,
-    viewStatus: 'view',
+    viewStatus: "view",
     saveCb: () => {},
     cancelCb: () => {}
   };
@@ -129,10 +129,10 @@ export default class LzFormWithFooter extends React.Component {
         dealFormData(formData.maindata);
         formData.maindata.REC_ID = record.REC_ID;
         formData.maindata._id = 1;
-        if (opType === 'add') {
-          formData.maindata._state = 'added';
-        } else if (opType === 'mod') {
-          formData.maindata._state = 'modified';
+        if (opType === "add") {
+          formData.maindata._state = "added";
+        } else if (opType === "mod") {
+          formData.maindata._state = "modified";
         }
       } else {
         hasErr = true;
@@ -196,7 +196,7 @@ export default class LzFormWithFooter extends React.Component {
   };
 
   handleEditClick = () => {
-    this.setState({ viewStatus: 'edit' });
+    this.setState({ viewStatus: "edit" });
   };
 
   handleSaveClick = () => {
@@ -211,16 +211,16 @@ export default class LzFormWithFooter extends React.Component {
     } = this.props;
     this.setState({ loading: true });
     let id;
-    if (dataMode === 'main') {
+    if (dataMode === "main") {
       id = resid;
-    } else if (dataMode === 'sub') {
+    } else if (dataMode === "sub") {
       id = subresid;
     }
     switch (operation) {
       // 添加
-      case 'add': {
+      case "add": {
         if (this.props.formFormData.subTableArr.length) {
-          this.saveRecordAndSubTable('add');
+          this.saveRecordAndSubTable("add");
         } else {
           // 无子表时，只保存记录
           const { validateFieldsAndScroll } = this.form;
@@ -230,9 +230,9 @@ export default class LzFormWithFooter extends React.Component {
               dealFormData(formData);
               let res;
               try {
-                if (dataMode === 'main') {
+                if (dataMode === "main") {
                   res = await addRecord(resid, formData);
-                } else if (dataMode === 'sub') {
+                } else if (dataMode === "sub") {
                   res = await addSubRecord(
                     resid,
                     hostrecid,
@@ -254,11 +254,11 @@ export default class LzFormWithFooter extends React.Component {
         break;
       }
       // 修改
-      case 'mod': {
+      case "mod": {
         // 有子表时，同时修改记录和子表数据
         // https://github.com/realsungroup/ReactOfPowerWorks/blob/f6947aef8266006b180ba7e9074068087dde3b61/src/lib/unit-component/components/LzForm/LzForm.js
         if (this.props.formFormData.subTableArr.length) {
-          this.saveRecordAndSubTable('mod');
+          this.saveRecordAndSubTable("mod");
         } else {
           // 无子表时，只修改记录
           const { validateFieldsAndScroll } = this.form;
@@ -275,7 +275,7 @@ export default class LzFormWithFooter extends React.Component {
                 return message.error(err.message);
               }
               this.props.saveCb(operation, record);
-              this.setState({ viewStatus: 'view', loading: false });
+              this.setState({ viewStatus: "view", loading: false });
               saveCallback && saveCallback();
             }
           });
@@ -286,16 +286,16 @@ export default class LzFormWithFooter extends React.Component {
 
   handleCancelClick = () => {
     this.form.resetFields();
-    this.setState({ viewStatus: 'view' });
+    this.setState({ viewStatus: "view" });
     this.props.cancelCb && this.props.cancelCb();
   };
 
   handleDeleteClick = async () => {
     const { dataMode, resid, subresid, record } = this.props;
     let id;
-    if (dataMode === 'main') {
+    if (dataMode === "main") {
       id = resid;
-    } else if (dataMode === 'sub') {
+    } else if (dataMode === "sub") {
       id = subresid;
     }
     if (!id) {
@@ -307,7 +307,7 @@ export default class LzFormWithFooter extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    message.success('删除成功');
+    message.success("删除成功");
     this.props.delCb();
   };
 
@@ -317,10 +317,10 @@ export default class LzFormWithFooter extends React.Component {
     this.record = record;
     const { editBtn, delBtn, cancelBtn } = this.props;
     const { viewStatus } = this.state;
-    const hasEditBtn = editBtn && viewStatus === 'view';
-    const hasSaveBtn = editBtn && viewStatus === 'edit';
-    const hasDelBtn = delBtn && viewStatus === 'view';
-    const hasCancelBtn = cancelBtn && viewStatus === 'edit';
+    const hasEditBtn = editBtn && viewStatus === "view";
+    const hasSaveBtn = editBtn && viewStatus === "edit";
+    const hasDelBtn = delBtn && viewStatus === "view";
+    const hasCancelBtn = cancelBtn && viewStatus === "edit";
     const hasFooter = hasEditBtn || hasSaveBtn || hasDelBtn || hasCancelBtn;
     if (!hasFooter) {
       return null;

@@ -1,17 +1,17 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 
-import { Form, Spin, message, Collapse, Row, Col } from 'antd';
-import { getRecord, getResource } from '../../../util/api';
-import LzTabs from '../../LzTabs';
-import PropTypes from 'prop-types';
-import { clone, getItem } from '../../../util/util';
-import './LzForm.less';
-import cloneDeep from 'lodash.clonedeep';
-import classNames from 'classnames';
-import BarModeContainer from './BarModeContainer';
-import LzFormItem from '../LzFormItem';
-import LzRowCols from '../LzRowCols';
-import { beforeSaveAdd, beforeSaveMod } from 'Util/api';
+import { Form, Spin, message, Collapse, Row, Col, Badge } from "antd";
+import { getRecord, getResource } from "../../../util/api";
+import LzTabs from "../../LzTabs";
+import PropTypes from "prop-types";
+import { clone, getItem } from "../../../util/util";
+import "./LzForm.less";
+import cloneDeep from "lodash.clonedeep";
+import classNames from "classnames";
+import BarModeContainer from "./BarModeContainer";
+import LzFormItem from "../LzFormItem";
+import LzRowCols from "../LzRowCols";
+import { beforeSaveAdd, beforeSaveMod } from "Util/api";
 
 const Panel = Collapse.Panel;
 
@@ -32,7 +32,7 @@ class LzForm extends React.Component {
      * 可选：'view' 查看状态 | 'edit' 编辑状态
      * 默认：'view'
      */
-    viewStatus: PropTypes.oneOf(['view', 'edit']),
+    viewStatus: PropTypes.oneOf(["view", "edit"]),
 
     /**
      * bar 模式配置
@@ -155,8 +155,8 @@ class LzForm extends React.Component {
   };
 
   static defaultProps = {
-    displayMod: 'default',
-    formLayout: 'default',
+    displayMod: "default",
+    formLayout: "default",
     colCount: 1,
     bodyStyle: {},
     formFormData: {
@@ -165,7 +165,7 @@ class LzForm extends React.Component {
       canOpControlArr: [],
       containerControlArr: []
     },
-    viewStatus: 'view',
+    viewStatus: "view",
     isGetFormDefaultValues: false
   };
   constructor(props) {
@@ -193,9 +193,9 @@ class LzForm extends React.Component {
       isSpin: true,
       confirmText: {
         // confirm 类型按钮的文案
-        add: '添加',
-        mod: '保存',
-        check: '确定'
+        add: "添加",
+        mod: "保存",
+        check: "确定"
       },
       record, // 记录数据
       formData: {}, // 表单数据
@@ -209,7 +209,7 @@ class LzForm extends React.Component {
     const { resid, record } = this.props;
     if (!formTabsSubTableProps) {
       return message.error(
-        '请在 LzTable 组件中添加表单中子表的配置 formTabsSubTableProps'
+        "请在 LzTable 组件中添加表单中子表的配置 formTabsSubTableProps"
       );
     }
     const lzTabsProps = formTabsSubTableProps.filter(item => {
@@ -219,7 +219,7 @@ class LzForm extends React.Component {
         )
       ) {
         const props = item.componentInfo.props;
-        props.dataMode = 'sub';
+        props.dataMode = "sub";
         props.resid = resid;
         props.hostrecid = record.REC_ID;
         props.operation = this.props.operation;
@@ -241,7 +241,7 @@ class LzForm extends React.Component {
       associatedFields
     } = this.props;
     // 添加记录时，取默认值
-    if (saveFormMode === 'add' && isGetFormDefaultValues) {
+    if (saveFormMode === "add" && isGetFormDefaultValues) {
       this.getFormDefaultValues();
     }
 
@@ -255,9 +255,9 @@ class LzForm extends React.Component {
     const { formLayout, displayMod, barMode, formFormData } = nextProps;
     let renderControlArr,
       subTableArr = formFormData.subTableArr;
-    if (formLayout === 'custom') {
+    if (formLayout === "custom") {
       renderControlArr = formFormData.allControlArr;
-    } else if (formLayout === 'default') {
+    } else if (formLayout === "default") {
       renderControlArr = formFormData.canOpControlArr;
     }
     let barControlArr = [];
@@ -265,9 +265,9 @@ class LzForm extends React.Component {
       barControlArr = renderControlArr.splice(0, barMode.count);
     }
 
-    if (displayMod === 'default') {
+    if (displayMod === "default") {
       // renderControlArr = this.dealControlArr(renderControlArr);
-    } else if (displayMod === 'classify') {
+    } else if (displayMod === "classify") {
       // 后台要分类
       renderControlArr = this.assortFields(renderControlArr);
     }
@@ -297,12 +297,12 @@ class LzForm extends React.Component {
     const { operation, resid, record, hostrecid } = this.props;
     // record 记录没有传过来，且传过来的 operation 为 'mod' 或 'check'，则自己去请求记录的数据
     if (
-      typeof record === 'undefined' &&
-      (operation === 'mod' || operation === 'check')
+      typeof record === "undefined" &&
+      (operation === "mod" || operation === "check")
     ) {
       // this.setState({ isSpin: false });
       this.getRecord(resid, hostrecid);
-    } else if (operation === 'mod' || operation === 'check') {
+    } else if (operation === "mod" || operation === "check") {
       // record 传进来了，且传过来的 operation 为 'mod' 或 'check'
       // --
       this.setState({ record: clone(record) }, () => {
@@ -327,7 +327,7 @@ class LzForm extends React.Component {
       barControlArr,
       tabPanes,
       isSpin: false,
-      activeKeys: renderControlArr.map((item, index) => index + '')
+      activeKeys: []
     });
   };
 
@@ -349,9 +349,9 @@ class LzForm extends React.Component {
     const { formLayout, displayMod, barMode } = this.props;
     let renderControlArr,
       subTableArr = formFormData.subTableArr;
-    if (formLayout === 'custom') {
+    if (formLayout === "custom") {
       renderControlArr = formFormData.allControlArr;
-    } else if (formLayout === 'default') {
+    } else if (formLayout === "default") {
       renderControlArr = formFormData.canOpControlArr;
     }
     let barControlArr = [];
@@ -359,9 +359,9 @@ class LzForm extends React.Component {
       barControlArr = renderControlArr.splice(0, barMode.count);
     }
 
-    if (displayMod === 'default') {
+    if (displayMod === "default") {
       // renderControlArr = this.dealControlArr(renderControlArr);
-    } else if (displayMod === 'classify') {
+    } else if (displayMod === "classify") {
       // 后台要分类
       renderControlArr = this.assortFields(renderControlArr);
     }
@@ -421,7 +421,7 @@ class LzForm extends React.Component {
     // 取出所有窗体设计数据
     let formsData, name;
 
-    formsData = JSON.parse(getItem('formsData'));
+    formsData = JSON.parse(getItem("formsData"));
     const formFormData = formsData.formFormData;
     return formFormData;
   };
@@ -454,10 +454,10 @@ class LzForm extends React.Component {
       props.hostrecid = this.state.record.REC_ID;
       props.operation = operation;
       props.resid = resid;
-      props.dataMode = 'sub';
+      props.dataMode = "sub";
 
       // “查看” LzForm 时，子表的默认配置
-      if (operation === 'check') {
+      if (operation === "check") {
         props.startColumnAdd = undefined;
         props.btnsVisible = {
           add: false,
@@ -471,9 +471,9 @@ class LzForm extends React.Component {
         // props.rowSelection = null;
       }
       // “修改” | “添加” LzForm 时，子表的默认配置
-      if (operation === 'mod' || operation === 'add') {
+      if (operation === "mod" || operation === "add") {
         props.startColumnAdd = props.startColumnAdd || {
-          mode: 'multiple',
+          mode: "multiple",
           width: 200
         };
         props.btnsVisible = props.btnsVisible || {
@@ -486,14 +486,14 @@ class LzForm extends React.Component {
           del: false
         };
         props.editableRow = {
-          mode: 'multiple'
+          mode: "multiple"
         };
       }
 
       tabPanes.push({
         tabName: tabNames[index],
         componentInfo: {
-          name: 'LzTable',
+          name: "LzTable",
           props
         }
       });
@@ -517,7 +517,7 @@ class LzForm extends React.Component {
       return [];
     }
     resArr.forEach(res => {
-      tabNames.push(res.data.ResName || '无表名');
+      tabNames.push(res.data.ResName || "无表名");
     });
     return tabNames;
   };
@@ -560,7 +560,7 @@ class LzForm extends React.Component {
         [value.innerFieldName]: value.value
       });
     });
-    message.success('选择成功');
+    message.success("选择成功");
     // 调用后端计算公式
     this.callCF(this.props.cFFillFormInnerFieldNames, values);
   };
@@ -576,15 +576,15 @@ class LzForm extends React.Component {
     ) {
       return;
     }
-    console.log('callCF');
+    console.log("callCF");
     const { form, saveFormMode, displayMod, resid, subresid } = this.props;
     const { record } = this.state;
     const formData = form.getFieldsValue();
-    const id = displayMod === 'main' ? resid : subresid;
+    const id = displayMod === "main" ? resid : subresid;
     // 调用 api 使用后端计算公式算出记录
     let res;
     try {
-      if (saveFormMode === 'add') {
+      if (saveFormMode === "add") {
         res = await beforeSaveAdd(id, formData);
       } else {
         res = await beforeSaveMod(id, {
@@ -617,13 +617,13 @@ class LzForm extends React.Component {
     const { formLayout } = this.props,
       { containerControlArr } = this.state;
     let containerStyle;
-    if (formLayout === 'custom') {
+    if (formLayout === "custom") {
       containerStyle =
         containerControlArr &&
         containerControlArr[0] &&
         containerControlArr[0].customStyle;
     }
-    if (containerStyle && formLayout === 'custom') {
+    if (containerStyle && formLayout === "custom") {
       const { width, height } = containerStyle;
       return { width, height };
     }
@@ -646,7 +646,7 @@ class LzForm extends React.Component {
     // 后台返回的 record 中含有非字段的属性，若不进行筛选，则会：https://github.com/ant-design/ant-design/issues/8880
     // 原因：https://github.com/ant-design/ant-design/issues/8880#issuecomment-390880930）
     // 解决办法：对后台返回的字段进行筛选，筛选出表单中显示的字段
-    if (this.props.displayMod === 'classify') {
+    if (this.props.displayMod === "classify") {
       arr = [];
       this.state.renderControlArr.forEach(item =>
         arr.push(...item.renderControlArr)
@@ -740,27 +740,43 @@ class LzForm extends React.Component {
     return (
       <Collapse activeKey={activeKeys} onChange={this.collapseChange}>
         {!!renderControlArr.length &&
-          renderControlArr.map((item, index) => (
-            <Panel header={item.title} key={index + ''}>
-              <LzRowCols
-                renderData={item.renderControlArr}
-                colCount={colCount}
-                keyName="ColDispName"
+          renderControlArr.map((item, index) => {
+            const hasValue = item.renderControlArr.some(
+              i => record[i.innerFieldName]
+            );
+            return (
+              <Panel
+                header={
+                  hasValue ? (
+                    <Badge dot>
+                      <span>{item.title}</span>
+                    </Badge>
+                  ) : (
+                    item.title
+                  )
+                }
+                key={index + ""}
               >
-                {data => {
-                  return (
-                    <LzFormItem
-                      controlData={data}
-                      {...LzFormItemProps}
-                      advDicTableProps={advDicTableProps}
-                      resid={resid}
-                      callCFCb={this.setFormValues}
-                    />
-                  );
-                }}
-              </LzRowCols>
-            </Panel>
-          ))}
+                <LzRowCols
+                  renderData={item.renderControlArr}
+                  colCount={colCount}
+                  keyName="ColDispName"
+                >
+                  {data => {
+                    return (
+                      <LzFormItem
+                        controlData={data}
+                        {...LzFormItemProps}
+                        advDicTableProps={advDicTableProps}
+                        resid={resid}
+                        callCFCb={this.setFormValues}
+                      />
+                    );
+                  }}
+                </LzRowCols>
+              </Panel>
+            );
+          })}
       </Collapse>
     );
     // return (
@@ -785,10 +801,10 @@ class LzForm extends React.Component {
     const { displayMod } = this.props;
 
     switch (displayMod) {
-      case 'default': {
+      case "default": {
         return this.renderDefaultMode();
       }
-      case 'classify': {
+      case "classify": {
         return this.renderClassifyMode();
       }
     }
@@ -859,9 +875,9 @@ class LzForm extends React.Component {
             {/* lzForm 中的表单 */}
             <div
               className={classNames({
-                'lz-form-body__form': !hasSubTalbe,
-                'lz-form-body__left-form': hasSubTalbe,
-                'lz-form-body__left-form--none':
+                "lz-form-body__form": !hasSubTalbe,
+                "lz-form-body__left-form": hasSubTalbe,
+                "lz-form-body__left-form--none":
                   !renderControlArr.length && hasSubTalbe
               })}
               style={this.getContainerStyle()}
@@ -888,8 +904,8 @@ class LzForm extends React.Component {
             {/* lzForm 中的子表 */}
             {hasSubTalbe && (
               <div
-                className={classNames('lz-form__subtable-wrap', {
-                  'lz-form__subtable-wrap--full':
+                className={classNames("lz-form__subtable-wrap", {
+                  "lz-form__subtable-wrap--full":
                     !renderControlArr.length && hasSubTalbe
                 })}
               >
