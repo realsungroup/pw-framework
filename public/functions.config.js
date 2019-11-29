@@ -1774,3 +1774,7 @@ window[627590812010] = {
   name: 'DLPrint',
   title: 'DL打印'
 };
+window[628250933331] = {
+  name: 'IDPTrack',
+  title: '个人能力发展轨迹'
+};

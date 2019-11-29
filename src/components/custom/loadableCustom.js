@@ -584,3 +584,9 @@ export const DLPrint = Loadable({
     return minLoading;
   }
 });
+export const IDPTrack = Loadable({
+  loader: () => import('./IDPTrack'),
+  loading() {
+    return minLoading;
+  }
+});
