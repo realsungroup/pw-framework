@@ -26,6 +26,7 @@ import { clone, getIntlVal } from 'Util20/util';
 import TableData from '../TableData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import { defaultProps, propTypes } from './propTypes';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -43,6 +44,9 @@ OrgChart.templates.architectureDiagramTemplate.field_1 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="76" text-anchor="middle">{val}</text>';
 
 class ArchitectureDiagram extends React.Component {
+  static defaultProps = defaultProps;
+  static propTypes = propTypes;
+
   state = {
     selectedNode: {}, // 选中项
     addBroVisible: false,
