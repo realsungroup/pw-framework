@@ -86,7 +86,7 @@ const customDot = (dot, { status, index }) => (
 );
 class EmployeeCourses extends React.Component {
   state = {
-    currentPage:1,//当前页码
+    currentPage: 1, //当前页码
     CoursesOrg: [], //分页判断的原始数据
     pageSize: 3, //分页大小
     myCourses: [], //我的课程
@@ -204,15 +204,13 @@ class EmployeeCourses extends React.Component {
         });
         this.setState({ myCourses, selectedCourse, calendarEvents });
         this.setState({ CoursesOrg: this.state.myCourses });
-        var urlID=qsObj.targetId;
-        console.log('rec_id',qsObj.targetId)
+        var urlID = qsObj.targetId;
+        console.log('rec_id', qsObj.targetId);
         // 获取邮件传来的ID
-        if(urlID){
-          this.onPageChange(1,3,urlID);
-
-        }else{
-          this.onPageChange(1,3);
-
+        if (urlID) {
+          this.onPageChange(1, 3, urlID);
+        } else {
+          this.onPageChange(1, 3);
         }
       }
       this.performCard();
@@ -785,33 +783,29 @@ class EmployeeCourses extends React.Component {
     });
   };
   // 页码变化
-  onPageChange = (v,s,REC_ID) => {
-   
+  onPageChange = (v, s, REC_ID) => {
     var org = this.state.CoursesOrg;
     var res;
-    if(REC_ID){
+    if (REC_ID) {
       // 遍历找出选中项
-      var n=0;
-      var r=0;
-      while(n<org.length){
-        if(org[n].REC_ID==REC_ID){
-          this.setState({selectedCourse:org[n]});
-          r=n;
+      var n = 0;
+      var r = 0;
+      while (n < org.length) {
+        if (org[n].REC_ID == REC_ID) {
+          this.setState({ selectedCourse: org[n] });
+          r = n;
         }
         n++;
       }
-      r=Math.ceil((r+1)/s);
+      r = Math.ceil((r + 1) / s);
       var res = org.slice(s * (r - 1), s * r);
-      this.setState({ myCourses: res,currentPage:r})
-
-
-    }else{
+      this.setState({ myCourses: res, currentPage: r });
+    } else {
       res = org.slice(s * (v - 1), s * v);
-      this.setState({ myCourses: res, selectedCourse: res[0],currentPage:v });
+      this.setState({ myCourses: res, selectedCourse: res[0], currentPage: v });
     }
-    
-    console.log('org',org)
-    
+
+    console.log('org', org);
   };
   // 每页显示多少变化
   onScaleChange = (v, s) => {
@@ -1045,16 +1039,7 @@ class EmployeeCourses extends React.Component {
                           填写心得体会(分享记录)
                         </button>
                       )}
-                    {courseType === '内训' &&
-                      selectedCourse.isInnerFeedBack === 'ing' && (
-                        <button
-                          onClick={() =>
-                            this.setState({ feebackVisible: true })
-                          }
-                        >
-                          填写课程反馈
-                        </button>
-                      )}
+
                     {/* 查看按钮 */}
                     {selectedCourse.C3_615377523072 === 'Y' && (
                       <>
@@ -1100,6 +1085,19 @@ class EmployeeCourses extends React.Component {
                       )}
                   </>
                 )}
+                {courseType === '内训' &&
+                  selectedCourse.isInnerFeedBack === 'ing' && (
+                    <button
+                      onClick={() =>
+                        this.setState({
+                          feebackVisible: true,
+                          feedbackModalMode: 'modify'
+                        })
+                      }
+                    >
+                      填写课程反馈
+                    </button>
+                  )}
                 {courseType === '内训' &&
                   selectedCourse.isInnerFeedBack === 'Y' && (
                     <button
