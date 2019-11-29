@@ -19,7 +19,8 @@ class ViewTarget extends React.Component {
           <TableData
             key="view-target"
             resid="462622744495"
-            subtractH={200}
+            size="small"
+            subtractH={180}
             hasAdvSearch={false}
             hasAdd={false}
             hasRowView={true}

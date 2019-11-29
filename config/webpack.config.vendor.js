@@ -50,7 +50,8 @@ module.exports = {
       'redux',
       'swiper',
       'xlsx',
-      'wolfy87-eventemitter'
+      'wolfy87-eventemitter',
+      'pdfmake'
     ]
   },
   output: {
