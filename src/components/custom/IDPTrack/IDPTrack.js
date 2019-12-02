@@ -16,6 +16,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading:false,
       visible:false,
       name:'???',
       data:[{
@@ -42,6 +43,7 @@ class IDPTrack extends Component {
   
   }
   getData = async(id) =>{
+    this.setState({loading:true});
     let res;
     var score;
     try{
@@ -71,6 +73,8 @@ class IDPTrack extends Component {
      }
      score=arr2;
     }catch(e){
+      this.setState({loading:false});
+
      console.log(e);
     }
     console.log(score);
@@ -128,6 +132,8 @@ class IDPTrack extends Component {
      
        this.renderColor();
     }catch(e){
+      this.setState({loading:false});
+
       console.log(e);
     }
   }
@@ -192,52 +198,55 @@ class IDPTrack extends Component {
         }
         n++;
       }
- // 指定图表的配置项和数据
-        var option = {
-    title: {
-        text: item.year+'年能力指标统计图'
-    },
-    toolbox: {
-        show : true,
-        right:32,
-        feature : {
-            mark : {show: true},
-            restore : {show: true},
-            saveAsImage : {show: true}
+      // 没有三个指标的场合配置条形图
+ // 有三个以上指标的场合配置雷达图
+        var option={};
+          option = {
+            title: {
+                text: item.year+'年能力指标统计图'
+            },
+            toolbox: {
+                show : true,
+                right:32,
+                feature : {
+                    mark : {show: true},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            tooltip: {},
+            legend: {
+                data: ['能力值'],
+                left:0,
+                top:32,
+            },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#fff',
+                        backgroundColor: '#1890ff',
+                        borderRadius: 3,
+                        padding: [8, 8]
+                   }
+                },
+                indicator: indi
+            },
+            series: [{
+                name: '能力值',
+                type: 'radar',
+                color:'#1890ff',
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data : [
+                    {
+                        value : arr,
+                        name : '能力值'
+                    }
+                ]
+            }]
+        };
         }
-    },
-    tooltip: {},
-    legend: {
-        data: ['能力值'],
-        left:0,
-        top:32,
-    },
-    radar: {
-        // shape: 'circle',
-        name: {
-            textStyle: {
-                color: '#fff',
-                backgroundColor: '#1890ff',
-                borderRadius: 3,
-                padding: [8, 8]
-           }
-        },
-        indicator: indi
-    },
-    series: [{
-        name: '能力值',
-        type: 'radar',
-        color:'#1890ff',
-        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-        data : [
-            {
-                value : arr,
-                name : '能力值'
-            }
-        ]
-    }]
-};
-    }
+        
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
   }
@@ -253,7 +262,7 @@ class IDPTrack extends Component {
       }
       n++;
     }
-    this.setState({data:obj});
+    this.setState({data:obj,loading:false});
   }
   renderBar=()=>{
      var n = this.state.data.length;
@@ -272,6 +281,7 @@ class IDPTrack extends Component {
   render() {
     return (
       <div className="wrap">
+         <Spin style={{width:'100%',height:'100%',position:'fixed'}} spinning={this.state.loading}>
        <div style={this.state.visible?{transform:'scaleY(1)',top:'0vh'}:{transform:'scaleY(0)',top:'-50vh'}} className='pop'>
       <div className='popClz' onClick={()=>this.setState({visible:false})}>
        </div>
@@ -284,7 +294,7 @@ class IDPTrack extends Component {
          {/* <Icon type="bars"  style={{fontSize:'4vh',float:'right',marginRight:'3.89vw',lineHeight:'11vh',color:'#fff',cursor:'pointer'}}/> */}
        </header>
        <content>
-       
+      
        
         <div>
         
@@ -310,9 +320,11 @@ class IDPTrack extends Component {
                </div>
               ))}
         </div>
+        
        </content>
        <footer>
        </footer>
+       </Spin>
       </div>
     );
   }

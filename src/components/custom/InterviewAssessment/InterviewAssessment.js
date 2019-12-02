@@ -1002,7 +1002,8 @@ var hrCode='623876215000';
 
         if(this.state.round2=='N'){
           Modal.error({
-            title:"Please choose Show Retest first!"
+            title:"Please choose Show Retest first!",
+            okText:'OK'
           });
       this.setState({loading:false});
 

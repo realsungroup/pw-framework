@@ -1678,6 +1678,8 @@ class JobSeeker extends Component {
                       })(
                         <Input
                           value={item.Reason}
+                          placeholder='最多填写20字'
+                          maxLength='20'
                           onChange={this.handelReason.bind(this, index)}
                         />
                       )}
