@@ -534,7 +534,7 @@ class ReviewEmployee extends React.Component {
               onFinished={this.onFinishedPlanProgress}
               struct="100"
               options={{
-                resid: courseArrangmentResid,
+                resid: ReviewEmployeeResid,
                 data: JSON.stringify(taskList)
               }}
               title="添加人员列表"

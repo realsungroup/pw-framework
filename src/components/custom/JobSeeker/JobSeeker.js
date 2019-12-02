@@ -445,7 +445,7 @@ class JobSeeker extends Component {
     
     if(bol==true){
       Modal.confirm({
-        title: '请最后确认一遍！',
+        title: '请确认信息填写完整',
         width:'90vw',
         content: (
         <div className='confirmTwice'>
