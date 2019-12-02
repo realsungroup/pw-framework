@@ -488,6 +488,7 @@ export default class MenuMultiple extends React.Component {
           onCancel={this.closeAlreadyModal}
           onOk={this.closeAlreadyModal}
           width={800}
+          destroyOnClose
         >
           <FormWithValue
             displayMod="default"
