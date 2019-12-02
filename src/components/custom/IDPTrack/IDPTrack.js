@@ -16,6 +16,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dataCourse:[{}],
       loading:false,
       visible:false,
       name:'???',
@@ -39,6 +40,7 @@ class IDPTrack extends Component {
       id=id.UserInfo.EMP_USERCODE;
       console.log('个人',id);
     }
+    this.setState({personID:id});
    this.getData(id);
   
   }
@@ -264,6 +266,28 @@ class IDPTrack extends Component {
     }
     this.setState({data:obj,loading:false});
   }
+  renderCourse=async(item)=>{
+    this.setState({showCourse:true});
+    var year=item.year;
+    // 财年C3_613941384328
+    var id = this.state.personID;
+      //人员 C3_613941384832
+
+      //已完成 C3_626260901454
+    try{
+      let res = await http().getTable({
+        resid: 613940032707,
+        cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}' and C3_626260901454 = 'Y'`
+      });
+      this.setState({dataCourse:res.data});
+      // 渲染图表
+      // var myChart = echarts.init(document.getElementById('chart2'));
+
+      console.log(res)
+    }catch(e){
+      console.log(e);
+    }
+  }
   renderBar=()=>{
      var n = this.state.data.length;
      n=n/6;
@@ -282,6 +306,14 @@ class IDPTrack extends Component {
     return (
       <div className="wrap">
          <Spin style={{width:'100%',height:'100%',position:'fixed'}} spinning={this.state.loading}>
+      <div style={this.state.showCourse?{transform:'scaleY(1)',top:'0vh'}:{transform:'scaleY(0)',top:'-50vh'}}  className='courseWrap pop'>
+      <div className='popClz' onClick={()=>this.setState({showCourse:false})}>
+       </div>
+       <div id='chart2' className={this.state.showCourse?'show':null}>
+       </div>
+      </div>
+
+
        <div style={this.state.visible?{transform:'scaleY(1)',top:'0vh'}:{transform:'scaleY(0)',top:'-50vh'}} className='pop'>
       <div className='popClz' onClick={()=>this.setState({visible:false})}>
        </div>
@@ -305,7 +337,10 @@ class IDPTrack extends Component {
                 <h4 onClick={()=>{this.showChart(item)}} style={{background:item.color}}>{item.year.substring(2,6)}</h4>
                 </Tooltip>
                 <div >
-                 <oval style={{background:item.color}} onClick={()=>{this.showChart(item)}}></oval>
+                <div className='ovalLine' onClick={()=>{this.renderCourse(item)}}>
+                 <oval style={{background:item.color}} ></oval>
+                 <a style={{color:item.color}}>查看课程</a>
+                 </div>
                  <p style={{fontSize:'1rem',fontWeight:'bold'}}>能力提升：</p>
                  <div className='cardWrap' style={{clear:'both'}}>
                  {item.abi.map(abi=>(

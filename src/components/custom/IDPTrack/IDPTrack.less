@@ -10,6 +10,7 @@
     height:100vh;
     }
   }
+  
   header{
   height:10vh;
   width:100vw;
@@ -30,6 +31,7 @@
     position:relative;
     overflow-x:hidden;
     overflow-y:auto;
+    
     .barGroup{
       top:0;
       left:0;
@@ -62,6 +64,17 @@
         z-index:2;
         margin-left:calc(3.89vw - 0.28vw);
         margin-bottom:20vh;
+        .ovalLine{
+          cursor: pointer;
+          &:hover{
+            opacity: .8;
+          }
+          overflow: hidden;
+          a{
+            float:left;
+            margin-left: 8px;
+          }
+        }
         .score{
           height:7vh;
           padding:0;
@@ -120,10 +133,7 @@
             overflow:auto;
             height:calc(20.05vh - 1.11vw);
           }
-          oval:hover{
-            opacity:0.8;
-
-          }
+          
           oval{
             transition:.3s;
             cursor:pointer;
@@ -131,6 +141,7 @@
             border-radius:50%;
             width:1.11vw;
             height:1.11vw;
+            float: left;
             margin-bottom:1.04vh;
           }
         }
@@ -193,4 +204,16 @@
    50%{transform:scale(1)}
    75%{transform:scale(1.05)}
    100%{transform:scale(1)}
+}
+#chart2{
+  width:80vw;
+  height:80vh;
+  background:#fff;
+  top:10vh;
+  left:10vw;
+  border-radius:8px;
+  box-shadow:0px 0px 8px 0px rgba(255,255,255,0.4);
+  padding:24px;
+  opacity:0;
+  
 }

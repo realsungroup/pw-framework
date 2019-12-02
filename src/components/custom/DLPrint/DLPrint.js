@@ -598,27 +598,27 @@ this.setState({emergency:emergency})
            <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
            <hr/>
             <h3>1.请描述一下你上一份工作的工作时间及薪资福利情况。</h3>
-              <p>{discription[5].C3_618313028667}</p>
+              <p>{discription.length>0?discription[5].C3_618313028667:null}</p>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
 
             <h3>2.请描述一下你理想中的工作。</h3>
-            <p>{discription[4].C3_618313028667}</p>
+            <p>{discription.length>0?discription[4].C3_618313028667:null}</p>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
 
             <h3>3.请描述一下你对新工作的期望和要求。</h3>
-            <p>{discription[3].C3_618313028667}</p>
+            <p>{discription.length>0?discription[3].C3_618313028667:null}</p>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
 
             <h3>4.工作环境、薪资福利、个人发展、工作地点，请根据那你的重视程度，由高到低进行排序。</h3>
-            <p>{discription[2].C3_618313028667}</p>
+            <p>{discription.length>0?discription[2].C3_618313028667:null}</p>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
 
             <h3>5.你了解的菲尼萨是一家什么样的公司？</h3>
-            <p>{discription[1].C3_618313028667}</p>
+            <p>{discription.length>0?discription[1].C3_618313028667:null}</p>
             <div className='clearfix' style={{clear:'both',marginBottom: '32px'}}></div>
 
             <h3>6.你计划在菲尼萨公司工作多久？未来什么原因会促使你从菲尼萨公司离职？</h3>
-            <p>{discription[0].C3_618313028667}</p>
+            <p>{discription.length>0?discription[0].C3_618313028667:null}</p>
             </div>
           </div>
           </Spin>
