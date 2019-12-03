@@ -961,7 +961,7 @@ class ProbationForms extends React.Component {
                 editable={editable}
               />
               <InternalTraining
-			  setInterDetailVis={this.setInterDetailVis}
+			          setInterDetailVis={this.setInterDetailVis}
                 setAddInternalCourseVisible={this.setAddInternalCourseVisible}
                 internalTraining={this.state.internalTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
@@ -1116,7 +1116,8 @@ class ProbationForms extends React.Component {
 			width={'80vw'}
 			hasRowDelete={false}
 			hasRowModify={false}
-			hasRowSelection={false}
+      hasRowSelection={false}
+      hasRowView = {false}
 			hasDelete={false}
 			hasModify={false}
 			hasAdd={false}

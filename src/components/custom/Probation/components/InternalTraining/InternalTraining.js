@@ -15,6 +15,7 @@ function areEqual(prevProps, nextProps) {
   );
 }
 const InternalTraining = React.memo(props => {
+  console.log("le",props)
   return (
     <div id="internal-training" className="probation-form">
       <Card
@@ -31,7 +32,9 @@ const InternalTraining = React.memo(props => {
         }
         extra={
           props.auth.hasAdd &&
-          props.editable && (
+          props.editable && 
+          // props.roleName === '主管'&&
+          (
             <Button
               onClick={() => {
                 props.setAddInternalCourseVisible(true);

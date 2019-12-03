@@ -645,7 +645,7 @@ class IdLindex extends Component {
                         }}
                         style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                       >
-                        Modify
+                        修改
                       </Button>
 
                     </div>
@@ -805,7 +805,7 @@ class IdLindex extends Component {
                   >
                   <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
-                  <Icon type="question-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#ffa940'}}/>
+                  <Icon type="exclamation-circle"theme='filled'style={{fontSize:'18px',marginTop:'3px',marginLeft:'3px',color:'#1B9CFC'}}/>
                   </div>
                   </Popconfirm>):null}
                   </div>
@@ -814,7 +814,7 @@ class IdLindex extends Component {
                   >
                   <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
-                  <Icon type="close-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#ff4d4f'}}/>
+                  <Icon type="close-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
                   </Tooltip>):null}
                   {item.isPass=='已通过'?(<Tooltip placement="right" title={'该人员已通过本次招聘'}trigger="hover"
@@ -822,7 +822,7 @@ class IdLindex extends Component {
                   >
                   <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
-                  <Icon type="check-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#73d13d'}}/>
+                  <Icon type="check-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
                   </Tooltip>):null}
                 </List.Item>
