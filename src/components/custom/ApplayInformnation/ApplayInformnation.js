@@ -1342,7 +1342,7 @@ var hrCode='623876215000';
               <p style={{ height: 25 }}>
                 是否认识本公司的员工？
                 <br />
-                Do you know any employee of Finisar Shanghai Inc.?
+                Do you know any employee of Finisar Inc.?
               </p>
             }
             className="applay__information-content"

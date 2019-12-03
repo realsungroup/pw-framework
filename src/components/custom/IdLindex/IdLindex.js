@@ -645,7 +645,7 @@ class IdLindex extends Component {
                         }}
                         style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                       >
-                        修改
+                        编辑
                       </Button>
 
                     </div>
