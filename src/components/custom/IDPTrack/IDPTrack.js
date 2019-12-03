@@ -267,7 +267,8 @@ class IDPTrack extends Component {
     this.setState({data:obj,loading:false});
   }
   renderCourse=async(item)=>{
-    this.setState({showCourse:true});
+    this.setState({loading:true});
+
     var year=item.year;
     // 财年C3_613941384328
     var id = this.state.personID;
@@ -279,10 +280,67 @@ class IDPTrack extends Component {
         resid: 613940032707,
         cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}' and C3_626260901454 = 'Y'`
       });
-      this.setState({dataCourse:res.data});
-      // 渲染图表
-      // var myChart = echarts.init(document.getElementById('chart2'));
+      this.setState({loading:false,showCourse:true});
 
+      var data=[[]];
+      var n=0;
+      var arr=[];
+      while(n<res.data.length){
+        arr.push(res.data[n].REC_MONTH,res.data[n].C3_613941385843,res.data[n].C3_613941384592)
+        n++;
+      }
+      data[0].push(arr)
+      // 渲染图表
+      console.log(data)
+      var myChart = echarts.init(document.getElementById('chart2'));
+      var option = {
+        backgroundColor:'#ffffff',
+        title: {
+            text: year+'财年课程培训图示'
+        },
+        xAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
+        },
+        yAxis: {
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            scale: true
+        },
+        series: [{
+            name: year,
+            data: data[0],
+            type: 'scatter',
+            symbolSize: function (data) {
+                return data[1];
+            },
+            label: {
+                emphasis: {
+                    show: true,
+                    formatter: function (param) {
+                        return ( param.data[2] +"\n"+'课时：'+param.data[1] );
+                    },
+                    position: 'top'
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#1890ff'
+                }
+            }
+        }]
+    };
+
+
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
       console.log(res)
     }catch(e){
       console.log(e);
