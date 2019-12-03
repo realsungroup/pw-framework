@@ -652,17 +652,9 @@ class ArrangingCourses extends React.Component {
                     className="arranging_courses_item"
                     key={item.REC_ID}
                     extra={
-                      <Icon
-                        type="bell"
-                        onClick={() => {
-                          this.setState({
-                            isShowBells: true,
-                            selectedCourseArrangment: item
-                          });
-                        }}
-                        theme={item.isNotice ? 'twoTone' : ''}
-                        style={{ fontSize: 20 }}
-                      ></Icon>
+                      <div>
+                        点赞数：
+                      </div>
                     }
                     actions={[
                       <span
