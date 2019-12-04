@@ -411,9 +411,11 @@ class ProbationForms extends React.Component {
       }
       console.log('res',res)
       const SubResource = res.SubResource;
+      var toFid=employedId||res.data[0].C3_625051545181
+
       let data = {};
       if (memberId === '0') {
-        data = res.data.find(item => item.C3_625051545181 === employedId);
+        data = res.data.find(item => item.C3_625051545181 === toFid);
       } else {
         data = res.data[0];
       }
@@ -424,7 +426,7 @@ class ProbationForms extends React.Component {
           onOk: () => {}
         });
       }
-      let probationObjectives = data[viewableTable.objectiveResid].filter(item => item.C3_625051545181 === employedId);
+      let probationObjectives = data[viewableTable.objectiveResid].filter(item => item.C3_625051545181 === toFid);
       if (probationObjectives.length < 3) {
         let count = 3 - probationObjectives.length;
         const memberId = data.memberId;
@@ -440,15 +442,19 @@ class ProbationForms extends React.Component {
           probationObjectives.push({ [resid9]: subData });
         }
       }
-      console.log('data',data[viewableTable.internalResid])
+      // console.log('employedId',data[viewableTable.internalResid])
       data &&
         this.setState({
           employeeInformation: data,
           probationObjectives: probationObjectives,
           // orientationTraining: data[viewableTable.orientationResid],
-          internalTraining: data[viewableTable.internalResid].filter(item => item.C3_625051545181 === employedId),
-          onTheJobTraining: data[viewableTable.onJobResid].filter(item => item.C3_625051545181 === employedId),
-          mentorshipRecord: data[viewableTable.mentorRecordResid].filter(item => item.C3_625051545181 === employedId),
+          internalTraining: data[viewableTable.internalResid].filter(item => item.C3_625051545181 === toFid),
+          onTheJobTraining: data[viewableTable.onJobResid].filter(item => item.C3_625051545181 === toFid),
+          // mentorshipRecord: data[619713102137].filter(item => item.C3_625051545181 === employedId),
+          // mentorshipRecord: data[619713119181].filter(item => item.C3_625051545181 === employedId),
+          
+          
+          mentorshipRecord: data[viewableTable.mentorRecordResid].filter(item => item.C3_625051545181 === toFid),
           tableAuth: {
             onJob: SubResource[viewableTable.onJobResid],
             mentorRecord: SubResource[viewableTable.mentorRecordResid],

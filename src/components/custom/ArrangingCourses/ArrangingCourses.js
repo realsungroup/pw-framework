@@ -653,7 +653,7 @@ class ArrangingCourses extends React.Component {
                     key={item.REC_ID}
                     extra={
                       <div>
-                        点赞数：
+                        <Icon style={{color:'#faad14'}}type="like" theme="filled" />点赞数：{item.countLike}
                       </div>
                     }
                     actions={[

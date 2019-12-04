@@ -31,11 +31,12 @@ const InternalTraining = React.memo(props => {
 		  </React.Fragment>
         }
         extra={
-          props.auth.hasAdd &&
-          props.editable && 
-          // props.roleName === '主管'&&
+          // props.auth.hasAdd &&
+          // props.editable && 
+          props.roleName === ('主管'||'HR')&&
           (
             <Button
+            style={{marginLeft:8}}
               onClick={() => {
                 props.setAddInternalCourseVisible(true);
               }}

@@ -462,6 +462,11 @@ class CourseArrangementInternal extends React.Component {
                     className="arranging_courses_item"
                     key={item.REC_ID}
                     hoverable
+                    extra={
+                      <div>
+                        <Icon style={{color:'#faad14'}}type="like" theme="filled" />点赞数：{item.countLike}
+                      </div>
+                    }
                     actions={
                       item.innerArrangeType === '2'
                         ? [
