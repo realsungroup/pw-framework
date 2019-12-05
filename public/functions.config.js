@@ -1778,3 +1778,53 @@ window[628679481942] = {
   name: 'StatisticalReportForms',
   title: '数据统计报表'
 };
+window[628250933331] = {
+  name: 'IDPTrack',
+  title: '个人能力发展轨迹'
+};
+
+window[628868376923] = {
+  name: 'VisitorApplyVIP',
+  title: 'VIP访客业务'
+};
+
+window[628885904481] = {
+  name: 'TableData', // 组件名称，
+  title: 'VIP前台查阅', // 功能模块名称
+  props: {
+    resid: 628862737920,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: false,
+    formProps: {
+      height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[628886558788] = {
+  name: 'TableData', // 组件名称，
+  title: '统计管理', // 功能模块名称
+  props: {
+    resid: 628886508023,
+    actionBarWidth: 100,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    formProps: {
+      height: 500
+    },
+    subtractH: 240
+  }
+};

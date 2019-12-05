@@ -1,0 +1,220 @@
+.wrap{
+  width:100vw;
+  height:100vh;
+  background:#fff;
+  .ant-spin-nested-loading{
+    width:100vw;
+    height:100vh;
+    .ant-spin-container{
+      width:100vw;
+    height:100vh;
+    }
+  }
+  
+  header{
+  height:10vh;
+  width:100vw;
+  background:#1890FF;
+   h3{
+     display:inline-block;
+     margin-left:3.89vw;
+     font-size:4vh;
+     line-height:10vh;
+     color:#fff;
+   }
+
+  }
+  content{
+    width:100%;
+    height:84vh;
+    display:block;
+    position:relative;
+    overflow-x:hidden;
+    overflow-y:auto;
+    
+    .barGroup{
+      top:0;
+      left:0;
+      padding:0;
+      margin:0;
+      position:absolute;
+      z-index:1;
+      width:100%;
+      height:100%;
+      margin-top:calc(56px - 1.04vh);
+      bar{
+        display:block;
+        width:100vw;
+        height:2.08vh;
+        margin-bottom:calc(104px - 1.04vh + 3.125vh + 2.08vh + 29.17vh + 26.16vh);
+        background-image:linear-gradient(90deg,rgba(255,200,0,1) 0%,rgba(255,131,22,1) 20%,rgba(255,63,105,1) 40%,rgba(107,54,201,1) 60%,rgba(2,179,218,1) 80%,rgba(0,183,121,1) 100%);
+      }
+    }
+    
+    &>div{
+      width:100%;
+      position:absolute;
+      top:0;
+      margin-top:2.5vh;
+      &>div{
+        
+        float:left;
+        padding:8px;
+        position:relative;
+        z-index:2;
+        margin-left:calc(3.89vw - 0.28vw);
+        margin-bottom:20vh;
+        .ovalLine{
+          cursor: pointer;
+          &:hover{
+            opacity: .8;
+          }
+          overflow: hidden;
+          a{
+            float:left;
+            margin-left: 8px;
+          }
+        }
+        .score{
+          height:7vh;
+          padding:0;
+          overflow: auto;
+          border-radius:0 0 8px 8px;
+          p{
+            color:#1890ff;
+            font-size:1rem;
+            cursor:default;
+            line-height:calc(7vh - 2px);
+            margin:0;
+            text-align:center;
+
+          }
+        }
+        h4:hover{
+          position:relative;
+          animation:jump 0.6s 1;
+        }
+        h4{
+          display:block;
+          cursor:pointer;
+
+          width:104px;
+          height:104px;
+          box-shadow:0px 4px 8px 0px rgba(0,0,0,0.4);
+          border:4px solid rgba(255,255,255,1);
+          border-radius:50%;
+          margin-bottom:3.125vh;
+          font-size:32px;
+          color:rgba(255,255,255,1);
+          line-height:104px;
+          text-align:center;
+        }
+        &>div{
+          padding:2.08vh 1.11vw;
+          width:11.11vw;
+          height:29.17vh;
+          background:rgba(255,255,255,1);
+          box-shadow:0px 4px 8px 0px rgba(0,0,0,0.4);
+          border-radius:8px 8px 0 0;
+          border:1px solid rgba(220,220,220,1);
+          span{
+            display:block;
+            width:100%;
+            font-size:1rem;
+            cursor:default;
+            margin-bottom:1.04vh;
+          }
+          span:last-child{
+            margin-bottom:0vh;
+  
+          }
+          .cardWrap{
+            width:100%;
+            overflow:auto;
+            height:calc(20.05vh - 1.11vw);
+          }
+          
+          oval{
+            transition:.3s;
+            cursor:pointer;
+            display:block;
+            border-radius:50%;
+            width:1.11vw;
+            height:1.11vw;
+            float: left;
+            margin-bottom:1.04vh;
+          }
+        }
+      }
+    }
+    
+  }
+  footer{
+  height:6vh;
+  width:100vw;
+  background:#1890FF;
+  position:absolute;
+  bottom:0;
+  z-index:3;
+
+  }
+}
+.pop{
+  position:fixed!important;
+  z-index:999;
+  width:100vw;
+  height:100vh;
+  top:0;
+  left:0;
+  transition:.3s;
+  background:rgba(0,0,0,0.6);
+  .popClz{
+    cursor:pointer;
+    width:100vw;
+    height:100vh;
+    position:absolute;
+    top:0;
+    left:0;
+  }
+  #chart{
+    width:80vw;
+    height:80vh;
+    background:#fff;
+    top:10vh;
+    left:10vw;
+    border-radius:8px;
+    box-shadow:0px 0px 8px 0px rgba(255,255,255,0.4);
+    padding:24px;
+    opacity:0;
+    
+  }
+}
+.show{
+  opacity:1!important;
+  animation:show 0.6s 1;
+}
+@keyframes show{
+   0%{opacity:0}
+   50%{opacity:0}
+   100%{opacity:1}
+}
+@keyframes jump{
+  0%{transform:scale(1)}
+   25%{transform:scale(1.2)}
+   50%{transform:scale(1)}
+   75%{transform:scale(1.05)}
+   100%{transform:scale(1)}
+}
+#chart2{
+  width:80vw;
+  height:80vh;
+  background:#fff;
+  top:10vh;
+  left:10vw;
+  border-radius:8px;
+  box-shadow:0px 0px 8px 0px rgba(255,255,255,0.4);
+  padding:24px;
+  opacity:0;
+  position: absolute;
+  
+}

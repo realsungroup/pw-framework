@@ -1112,10 +1112,10 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ clear: 'both', marginBottom: '10px' }}>
+        <div style={{ clear: 'both', marginBottom: '20px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'24px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'66px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -1309,7 +1309,7 @@ class IDLExamination extends React.Component {
             <tr style={{ width: 842 }}>
               <td colspan="6">
                 <p style={{ textAlign: 'left', marginLeft: 5 }}>
-                  Do you know any employee of Finisar Shanghai Inc.? If yes,
+                  Do you know any employee of Finisar Inc.? If yes,
                   please give his/her name and relationship.
                   <br />
                   是否认识本公司的员工？如是，请详细指出姓名及与其关系。
@@ -1370,16 +1370,15 @@ class IDLExamination extends React.Component {
           <p style={{ fontWeight: 'bold', float: 'left' ,marginTop:'24px'}}>
             Commitments / 本人承诺:
           </p>
-          <br />
-          <br />
+          <div style={{clear:'both'}}></div>
           <p style={{ float: 'left',textAlign:'left' }}>
             1)&nbsp;&nbsp;All information given are true and accurate,
             otherwise I’m willing to be punished even dismissed. /
-            所有填表内容真实、准确，如有虚假愿意接受处分包括辞退。
+            <br/>&nbsp;&nbsp;所有填表内容真实、准确，如有虚假愿意接受处分包括辞退。
           </p>
-          <p style={{ float: 'left' }}>
+          <p style={{ float: 'left',textAlign:'left'  }}>
             2)&nbsp;&nbsp;I agree with further background check. /
-            本人同意公司进行背景调查。
+            <br/>&nbsp;&nbsp;本人同意公司进行背景调查。
           </p>
         </div>
         <div style ={{clear:"both"}}>

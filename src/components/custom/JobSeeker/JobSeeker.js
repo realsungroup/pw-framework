@@ -445,7 +445,7 @@ class JobSeeker extends Component {
     
     if(bol==true){
       Modal.confirm({
-        title: '请最后确认一遍！',
+        title: '请确认信息填写完整',
         width:'90vw',
         content: (
         <div className='confirmTwice'>
@@ -878,7 +878,7 @@ class JobSeeker extends Component {
           </div>
 
           <div>
-          <span>Do you know any employee of Finisar Shanghai Inc.? If yes,
+          <span>Do you know any employee of Finisar Inc.? If yes,
                     please give his/her name and relationship.<br/>是否认识本公司的员工？如是，请详细指出姓名及与其关系。</span>
                     <br/>
                     <span>{obj.KnowColleageStatus}</span>
@@ -1650,6 +1650,8 @@ class JobSeeker extends Component {
                         <Input
                           value={item.CompanyName}
                           onChange={this.handelCompanyName.bind(this, index)}
+                          placeholder='最多填写20字'
+                          maxLength='20'
                         />
                       )}
                     </Form.Item>
@@ -1678,6 +1680,8 @@ class JobSeeker extends Component {
                       })(
                         <Input
                           value={item.Reason}
+                          placeholder='最多填写20字'
+                          maxLength='20'
                           onChange={this.handelReason.bind(this, index)}
                         />
                       )}
@@ -2342,7 +2346,7 @@ class JobSeeker extends Component {
                 colon={false}
                 label={
                   <p style={{ height: 30 }}>
-                    Do you know any employee of Finisar Shanghai Inc.? If yes,
+                    Do you know any employee of Finisar Inc.? If yes,
                     please give his/her name and relationship.
                     <br />
                     是否认识本公司的员工？如是，请详细指出姓名及与其关系。

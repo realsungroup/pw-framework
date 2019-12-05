@@ -425,18 +425,18 @@ class TreeRel extends React.Component {
               {this.renderTreeNodes(this.state.treeData)}
             </Tree>
             <div className="iconbar">
-              <div
+              {/* <div
                 onClick={this.onSetBack}
                 className={this.state.showBack ? '' : 'hidden'}
               >
                 <Icon type="arrow-up" />
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <Icon type="box-plot" />
-              </div>
-              <div ref="setRoot" onClick={this.onSetRoot}>
+              </div> */}
+              {/* <div ref="setRoot" onClick={this.onSetRoot}>
                 <Icon type="folder-open" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div

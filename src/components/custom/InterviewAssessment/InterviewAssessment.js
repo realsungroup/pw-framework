@@ -920,7 +920,7 @@ var hrCode='623876215000';
           this.setState({showConBtn:true})
         }
       }
-      if((this.state.C3_622921647557=='未提交（初试）')||(this.state.C3_622921647557=='未提交（复试）')){
+      if((this.state.C3_622921647557=='未审批（初试）')||(this.state.C3_622921647557=='未审批（复试）')){
         if(this.state.userChara!='HR'){
           this.setState({showSub:true})
         }
@@ -994,7 +994,7 @@ var hrCode='623876215000';
       this.setState({loading:true});
       var nxtStep;
       if(this.state.C3_622921647557=='未送邮（初试）'){
-        nxtStep='未提交（初试）'
+        nxtStep='未审批（初试）'
         toPost=this.state.postID;
 
       }else if(this.state.C3_622921647557=='未送邮（复试）'){
@@ -1002,18 +1002,19 @@ var hrCode='623876215000';
 
         if(this.state.round2=='N'){
           Modal.error({
-            title:"Please choose Show Retest first!"
+            title:"Please choose Show Retest first!",
+            okText:'OK'
           });
       this.setState({loading:false});
 
           return false;
         }
-        nxtStep='未提交（复试）'
+        nxtStep='未审批（复试）'
         toPost2=this.state.postID;
         
       }
       if(this.state.round2=='Y'){
-          nxtStep='未提交（复试）'
+          nxtStep='未审批（复试）'
       }
       let res;
       try {
@@ -1061,9 +1062,9 @@ var hrCode='623876215000';
     this.setState({loading:true});
     var nxtStep;
     if(this.state.C3_622921647557=='待确认（初试）'){
-      nxtStep='未提交（初试）'
+      nxtStep='未审批（初试）'
     }else if(this.state.C3_622921647557=='待确认（复试）'){
-      nxtStep='未提交（复试）'
+      nxtStep='未审批（复试）'
     }
     let res;
     try {
@@ -1138,7 +1139,7 @@ var hrCode='623876215000';
     this.setState({loading:true});
     console.log(this.state.C3_622921647557);
     var nxtStep;
-    if(this.state.C3_622921647557=='未提交（初试）'){
+    if(this.state.C3_622921647557=='未审批（初试）'){
       nxtStep='待确认（初试）'
     }else{
       nxtStep='待确认（复试）'

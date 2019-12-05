@@ -406,6 +406,7 @@ class ReviewEmployee extends React.Component {
       );
     }
     return (
+      <div className = 'outerCardPersonDetail'>
       <TableData
         resid={ReviewEmployeeResid}
         wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -433,7 +434,7 @@ class ReviewEmployee extends React.Component {
         hasRowDelete={false}
         actionBarWidth={100}
         hasRowEdit={false}
-        hasDelete={false}
+        hasDelete={true}
         hasModify={false}
         actionBarFixed={true}
         hasRowModify={false}
@@ -442,51 +443,82 @@ class ReviewEmployee extends React.Component {
         key="public"
         actionBarExtra={actionBarExtra}
       />
+      </div>
     );
   }
 
   //计划课
   renderInplan() {
     return (
-      <TableData
-        resid={ReviewEmployeeResid}
-        wrappedComponentRef={element => (this.tableDataRef = element)}
-        refTargetComponentName="TableData"
-        subtractH={240}
-        hasBeBtns={true}
-        hasAdd={false}
-        hasRowView={false}
-        hasRowDelete={true}
-        hasRowEdit={false}
-        hasDelete={false}
-        hasModify={false}
-        actionBarFixed={true}
-        hasRowModify={false}
-        hasRowSelection={true}
-        cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
-        key="inplan"
-        actionBarExtra={record => {
-          return (
-            <div className="review_employee-table_action_bar_extra">
-              {this.renderCourseName()}
-              <div className="review_employee-table_action_bar_extra-buttons">
-                <Button
-                  onClick={() => {
-                    if (record.selectedRowKeys.length) {
-                      this.onMoveEmployees(record);
-                    } else {
-                      this.setState({ selectCourseArrangementVisible: false });
-                      message.error('请选择至少一条记录');
-                    }
-                  }}
-                >
-                  移动人员
-                </Button>
+      <div className = 'innerCardPersonDetail'>
+        <TableData
+          resid={ReviewEmployeeResid}
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          subtractH={220}
+          hasBeBtns={true}
+          hasAdd={false}
+          hasRowView={false}
+          hasRowDelete={true}
+          hasRowEdit={false}
+          hasDelete={true}
+          hasModify={false}
+          actionBarFixed={true}
+          hasRowModify={false}
+          hasRowSelection={true}
+          cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
+          key="inplan"
+          actionBarExtra={record => {
+            return (
+              <div className="review_employee-table_action_bar_extra">
+                {this.renderCourseName()}
+                <div className="review_employee-table_action_bar_extra-buttons">
+                  <Button
+                    onClick={() => {
+                      if (record.selectedRowKeys.length) {
+                        this.onMoveEmployees(record);
+                      } else {
+                        this.setState({
+                          selectCourseArrangementVisible: false
+                        });
+                        message.error('请选择至少一条记录');
+                      }
+                    }}
+                  >
+                    移动人员
+                  </Button>
+                  <Tooltip
+                    placement="bottomLeft"
+                    title="选择指定员工通知他们报名"
+                  >
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.setState({ noticeModalVisible: true });
+                      }}
+                    >
+                      通知特定人员报名
+                    </Button>
+                  </Tooltip>
+                  <Popconfirm
+                    title="通知全部人员报名"
+                    onConfirm={() => {
+                      this.setState({ isShowModal: true }, this.handleNotice);
+                    }}
+                  >
+                    <Tooltip
+                      placement="bottomLeft"
+                      title="点击后全体员工将收到这门课的报名通知"
+                    >
+                      <Button type="primary">通知全部人员报名</Button>
+                    </Tooltip>
+                  </Popconfirm>
+                </div>
               </div>
-            </div>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      </div>
     );
   }
 
@@ -534,7 +566,7 @@ class ReviewEmployee extends React.Component {
               onFinished={this.onFinishedPlanProgress}
               struct="100"
               options={{
-                resid: courseArrangmentResid,
+                resid: ReviewEmployeeResid,
                 data: JSON.stringify(taskList)
               }}
               title="添加人员列表"

@@ -958,6 +958,7 @@ class OfferLetter extends React.Component {
                   </li>
                 </ul>
               </ul>
+              <br />
               <p style={{ paddingBottom: '5px' }}>
                 Sincerely,
                 <br />
@@ -966,6 +967,7 @@ class OfferLetter extends React.Component {
                 <br />
                 <br />
                 HR VP
+                <br />
                 <br />
               </p>
               <h3>Accept Job Offer</h3>
@@ -1541,6 +1543,7 @@ class OfferLetter extends React.Component {
                 </strong>
                 。
               </p>
+              <br />
               <div style={{ marginTop: '40px' }}>
                 <h2>
                   Warmly welcome to be a member of Finisar Wuxi!
@@ -1779,7 +1782,7 @@ class OfferLetter extends React.Component {
                 </li>
                 <ul>
                   <p>
-                    Standard, Finisar Shanghai, Inc. provided benefits for
+                    Standard, Finisar  Inc. provided benefits for
                     salaried-exempt employees, including the following.
                   </p>
                   <li>
@@ -1826,7 +1829,7 @@ class OfferLetter extends React.Component {
                     )}
                   </u>
                 </strong>
-                &nbsp; at Finisar Shanghai, Incorporated. I have reviewed and
+                &nbsp; at Finisar , Incorporated. I have reviewed and
                 agree the following hiring and on-board conditions.
                 <br />
                 <br />
@@ -2385,6 +2388,7 @@ class OfferLetter extends React.Component {
                 </strong>
                 。
               </p>
+              <br />
               <div style={{ marginTop: '40px' }}>
                 <h2>
                   Warmly welcome to be a member of Finisar Shanghai!
