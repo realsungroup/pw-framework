@@ -824,7 +824,7 @@ class ArchitectureDiagram extends React.Component {
 
         <Modal
           visible={addBroVisible}
-          title="添加节点"
+          title={operation === 'modify' ? '修改' : '添加'}
           width={800}
           footer={null}
           onCancel={this.closeBroModal}

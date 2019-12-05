@@ -584,3 +584,10 @@ export const DLPrint = Loadable({
     return minLoading;
   }
 });
+
+export const StatisticalReportForms = Loadable({
+  loader: () => import('./StatisticalReportForms'),
+  loading() {
+    return minLoading;
+  }
+});
