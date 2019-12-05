@@ -604,7 +604,7 @@ class ProbationForms extends React.Component {
 
   //添加辅导记录
   addMentor = () => {
-    const mentorshipRecord = [...this.state.mentorshipRecord, {}];
+    const mentorshipRecord = [...this.state.mentorshipRecord, {isSendInstructEmail:'Y'}];
     this.setState({ mentorshipRecord });
   };
 
@@ -628,7 +628,7 @@ class ProbationForms extends React.Component {
 
   //修改辅导记录
   modifyMentor = (index, mentor) => {
-    const mentorshipRecord = [...this.state.mentorshipRecord];
+    const mentorshipRecord = [...this.state.mentorshipRecord,];
     mentorshipRecord[index] = mentor;
     this.setState({ mentorshipRecord });
   };
