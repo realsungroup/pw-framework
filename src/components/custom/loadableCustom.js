@@ -590,3 +590,10 @@ export const IDPTrack = Loadable({
     return minLoading;
   }
 });
+
+export const VisitorApplyVIP = Loadable({
+  loader: () => import('./VisitorApplyVIP'),
+  loading() {
+    return minLoading;
+  }
+});
