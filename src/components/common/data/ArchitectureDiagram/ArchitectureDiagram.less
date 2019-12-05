@@ -1,0 +1,124 @@
+.architecture-diagram {
+  width: 100%;
+  height: 100%;
+  & > .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
+    & > .ant-spin-container {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &_header {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+    padding: 0 24px;
+    height: 32px;
+    &_icon-button-group {
+      display: flex;
+      height: 100%;
+      border-right: 1px solid #ebebeb;
+    }
+    &_icon-button {
+      width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &&__selected {
+        color: #1890ff;
+      }
+      &.delete-button {
+        color: #f5222d;
+      }
+      &__icon {
+        font-size: 18px;
+        margin-right: 8px;
+      }
+    }
+  }
+  &_breadcrumb {
+    height: 32px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+  }
+  #architecture-diagram_orgchart {
+    background: #f0f2f5;
+    height: 100%;
+  }
+  .selected > rect {
+    fill: #1890ff;
+  }
+  .selected > text {
+    fill: #ffffff;
+  }
+
+  &_main-container {
+    height: calc(100% - 64px);
+    min-height: 600px;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-template-rows: 100%;
+    &.hidden{
+      display: none;
+    }
+    .architecture-diagram_main_sider {
+      .architecture-diagram_main_sider_title {
+        height: 28px;
+        background: rgba(24, 144, 255, 1);
+        line-height: 28px;
+        color: #ffffff;
+        padding-left: 12px;
+      }
+      .architecture-diagram_main_item-detail {
+        min-height: 200px;
+        &_list {
+          height: 200px;
+          overflow: auto;
+          padding: 10px;
+          &_item {
+            margin: 0;
+            span {
+              color: #999999;
+            }
+          }
+        }
+        .architecture-diagram_unselect-tip {
+          padding: 12px;
+        }
+      }
+      .architecture-diagram_main_item-history {
+        min-height: 300px;
+        .architecture-diagram_change-hsitory_list {
+          height: 300px;
+          overflow: auto;
+          padding: 10px;
+          &__view-button {
+            margin-left: 8px;
+          }
+          .architecture-diagram_change-hsitory {
+            border-bottom: 1px solid #e7e7e7;
+            padding: 8px 0;
+            word-break: break-all;
+            &_item {
+              margin: 0;
+              span {
+                color: #999999;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .architecture-diagram_tabledata__container{
+    height: calc(100% - 64px);
+    min-height: 600px;
+    &.hidden{
+      display: none;
+    }
+  }
+}

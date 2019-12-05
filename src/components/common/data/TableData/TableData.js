@@ -349,7 +349,9 @@ class TableData extends React.Component {
             pageindex:
               this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
             pagesize:
-              this._showAGgrid || tableComponent === 'ag-grid' ? 100 : pageSize,
+              this._showAGgrid || tableComponent === 'ag-grid'
+                ? null
+                : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息
@@ -377,7 +379,9 @@ class TableData extends React.Component {
             pageindex:
               this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
             pagesize:
-              this._showAGgrid || tableComponent === 'ag-grid' ? 100 : pageSize,
+              this._showAGgrid || tableComponent === 'ag-grid'
+                ? null
+                : pageSize,
             sortOrder,
             sortField,
             getcolumninfo: 1, // 需要这个参数为 1，才能获取到字段信息

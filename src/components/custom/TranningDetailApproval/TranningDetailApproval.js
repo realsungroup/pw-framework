@@ -82,15 +82,18 @@ class TranningDetailApproval extends React.Component {
       this.setState({
         approvalRecord: res.data[0]
       });
+     
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
     if (_isApprove) {
+      message.success('已同意')
       this.setState({
         approveButtonLoading: false
       });
     } else {
+      message.success('已拒绝')
       this.setState({
         rejectButtonLoading: false
       });
@@ -159,12 +162,13 @@ class TranningDetailApproval extends React.Component {
                   type="primary"
                   style={{ marginRight: 8 }}
                   loading={approveButtonLoading}
+                  disabled={approvalRecord.isApprove}
                 >
                   同意
                 </Button>
               </Popconfirm>
               <Popconfirm title="确认拒绝吗？" onConfirm={this.approval('N')}>
-                <Button type="danger" loading={rejectButtonLoading}>
+                <Button type="danger" loading={rejectButtonLoading} disabled={approvalRecord.isApprove}>
                   拒绝
                 </Button>
               </Popconfirm>

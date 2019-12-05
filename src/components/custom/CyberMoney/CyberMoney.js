@@ -3,31 +3,42 @@ import { Radio, Button, Icon, Input, Spin, Modal } from 'antd';
 import './CyberMoney.less';
 import moment from 'moment';
 import http from '../../../util20/api';
-function fun_date(num) {
-  var date1 = new Date();
-  //今天时间
-  var time1 =
-    date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
-  var date2 = new Date(date1);
-  date2.setDate(date1.getDate() + num);
-  //num是正数表示之后的时间，num负数表示之前的时间，0表示今天
-  var time2 =
-    date2.getFullYear() + '-' + (date2.getMonth() + 1) + '-' + date2.getDate();
-  return time2;
-}
-function unique(arr) {
-  for (var i = 0; i < arr.length; i++) {
-    for (var j = i + 1; j < arr.length; j++) {
-      if (arr[i].personID == arr[j].personID) {
-        //第一个等同于第二个，splice方法删除第二个
-        arr.splice(j, 1);
-        j--;
-      }
-    }
+function compare(total){
+  return function(a,b){
+      var value1 = a[total];
+      var value2 = b[total];
+      return value2 - value1;
   }
-  return arr;
 }
+Date.prototype.getWeek = function (dowOffset) {
+  /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+      var nYear;
+      var nday;
 
+      dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 0; //default dowOffset to zero
+      var newYear = new Date(this.getFullYear(),0,1);
+      var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+      day = (day >= 0 ? day : day + 7);
+      var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+      (this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+      var weeknum;
+      //if the year starts before the middle of a week
+      if(day < 4) {
+          weeknum = Math.floor((daynum+day-1)/7) + 1;
+          if(weeknum > 52) {
+              nYear = new Date(this.getFullYear() + 1,0,1);
+              nday = nYear.getDay() - dowOffset;
+              nday = nday >= 0 ? nday : nday + 7;
+              /*if the next year starts before the middle of
+                the week, it is week #1 of that year*/
+              weeknum = nday < 4 ? 1 : 53;
+          }
+      }
+      else {
+          weeknum = Math.floor((daynum+day-1)/7);
+      }
+      return weeknum;
+  };
 class CyberMoney extends Component {
   constructor(props) {
     super(props);
@@ -78,122 +89,158 @@ class CyberMoney extends Component {
   // 计程表
   // 623682682020
   componentDidMount() {
-   
-    this.getMember('year');
+   this.getRecent()
+    // 获取人员编号
+    
   }
-  getMember = async time => {
-    this.setState({ loading: true });
-    var str = '';
-    var myDate = new Date();
-    str = myDate;
-    str = moment().format('YYYY-MM-DD HH:mm:ss');
-
-    if (time == 'week') {
-      str = str.substr(0, 10);
-
-      str = fun_date(-7) + ' 00:00:00';
-    } else if (time == 'month') {
-      str = str.substr(0, 10);
-
-      str = fun_date(-30) + ' 00:00:00';
-    } else if (time == 'year') {
-      str = str.substr(0, 10);
-
-      str = fun_date(-365) + ' 00:00:00';
-    }
-    var person='';
+  getRecent = async() =>{
+    var currentID=localStorage.getItem('userInfo');
+    currentID=JSON.parse(currentID);
+    currentID=currentID.UserInfo.EMP_USERCODE;
+    this.setState({currentID:currentID});
+      this.getMember('year',currentID);
+      this.getHistory(currentID);
+  }
+  // 渲染下属
+  renderFollower=(arr)=>{
+    var n=0;
+    var tFin=[];
+    var obj={};
+    var teamScale=0;
+      while(n<arr.length){
+        obj={name:arr[n].person,status:arr[n].total};
+        if(arr[n].total>teamScale){
+          teamScale=arr[n].total;
+        }
+        tFin.push(obj);
+        n++;
+      }
+      tFin=tFin.sort(compare('status'));
+      console.log(tFin)
+    this.setState({
+      loading: false,
+      toSearch: 0,
+      tFin:tFin,
+      teamScale:teamScale
+    });
+  }
+  // 没有记录的时候查询下属
+  getFollower = async (currentID)=>{
+    var tFin=[];
+    var obj={};
     try {
       let res = await http().getTable({
-        resid: '623683986122',
+        resid:623683986122,
+        cmswhere:`directorNum='${currentID}'`
       });
-      console.log('res',res)
-      var personNum
-      if(res.data.length>0){
-        personNum=res.data[0].personID;
-        this.setState({team:res.data[0].person})
-        this.getHistory(personNum);
+
+      var n=0;
+      while(n<res.data.length){
+        obj={name:res.data[n].person,status:0};
+        tFin.push(obj)
+        n++;
       }
-     
-      try {
-        let res2 = await http().getTable({
-          // resid: '623683986122',
-          resid: '623682682020',
-          cmswhere: `REC_DATE > '${str}' AND C3_623681435599 = '${personNum}'`
-        });
-
-    // let res = await http().getTable({
-    //   resid: 624553204658,
-    //   // cmswhere: `REC_DATE > '${str}'`
-    // });
-
-    // try {
-        var n=0;
-        var memberArr=[];
-        var moneyArr=[];
-        while(n<res2.data.length){
-          if(memberArr.length==0){
-            memberArr.push(res2.data[n].person)
-          }
-          var c=0;
-          while(c<memberArr.length){
-            if(res2.data[n].person!=memberArr[c]){
-                memberArr.push(res2.data[n].person)
-            }
-            c++;
-          }
-          
-          n++;
-        }
-
-        n=0;
-        c=0;
-        while(n<memberArr.length){
-          moneyArr.push(0);
-          n++;
-        }
-        n=0;
-        while(n<res2.data.length){
-          c=0;
-          while(c<memberArr.length){
-            if(res2.data[n].person==memberArr[c]){
-              moneyArr[c]+=Number(res2.data[n].turnover);
-            }
-            c++;
-          }
-          n++;
-        }
-        n=0;
-        var dataM=[];
-        while(n<moneyArr.length){
-          dataM.push({name:memberArr[n],status:moneyArr[n]})
-          n++;
-        }
-        console.log('res2',res2)
-
       this.setState({
         loading: false,
         toSearch: 0,
-        tFin:dataM
+        tFin:tFin,
+        teamScale:1
       });
       console.log('res',res)
-      // this.getMemberDetail(str, res.data[this.state.toSearch].personID);
-    } catch (err) {
-      this.setState({ loading: false });
+    } catch (error) {
+      console.log(error)
+    }
+  } 
 
-      Modal.error({
-        title: '提示失败',
-        content: err.message
-      });
+  getMember = async (time,id) => {
+    this.setState({ loading: true });
+    var currentID=this.state.currentID;
+    var str = '';
+    var myDate = new Date();
+    // str = moment().format('YYYY-MM-DD HH:mm:ss');
+    var monthId='627146126123';
+    var weekId='627146164354';
+    var yearId='627146204474';
+    var residTo;
+    if (time == 'week') {
+      residTo = weekId;
+      myDate=myDate.getWeek(myDate);
+      console.log('week',myDate)
+        try {
+            let res2 = await http().getTable({
+              resid:residTo,
+              cmswhere:`C3_623681435599='${currentID}' and rec_week = '${myDate}'`,
+            });
+            if(res2.data){
+              this.renderFollower(res2.data);
+            }else{
+              this.getFollower(currentID);
+            }
+          console.log('res2',res2)
+          // this.getMemberDetail(str, res.data[this.state.toSearch].personID);
+        } catch (err) {
+          this.setState({ loading: false });
+
+          Modal.error({
+            title: '提示失败',
+            content: err.message
+          });
+        }
+    } else if (time == 'month') {
+      residTo = monthId;
+      myDate = myDate.getMonth()+1;
+        try {
+          let res2 = await http().getTable({
+            resid:residTo,
+            cmswhere:`C3_623681435599='${currentID}' and rec_month = '${myDate}'`,
+            
+          });
+
+          if(res2.data){
+            this.renderFollower(res2.data);
+          }else{
+            this.getFollower(currentID);
+          }
+       
+        console.log('res2',res2)
+        // this.getMemberDetail(str, res.data[this.state.toSearch].personID);
+      } catch (err) {
+        this.setState({ loading: false });
+
+        Modal.error({
+          title: '提示失败',
+          content: err.message
+        });
+      }
+    } else if (time == 'year') {
+      residTo = yearId;
+      myDate = myDate.getFullYear();
+      if(id){
+        currentID=id
+      }
+        try {
+          let res2 = await http().getTable({
+            resid:residTo,
+            cmswhere:`C3_623681435599='${currentID}' and rec_year = '${myDate}'`,
+            
+          });
+          if(res2.data){
+            this.renderFollower(res2.data);
+          }else{
+            this.getFollower(currentID);
+          }
+
+        // this.getMemberDetail(str, res.data[this.state.toSearch].personID);
+      } catch (err) {
+        this.setState({ loading: false });
+
+        Modal.error({
+          title: '提示失败',
+          content: err.message
+        });
+      }
     }
     
-  } catch (err) {
-    this.setState({ loading: false });
-
-    Modal.error({
-      title: '提示失败',
-      content: err.message
-    });
-  }
 
      
   };
@@ -209,13 +256,13 @@ class CyberMoney extends Component {
           varAbsolute: res.data[n].turnover || '',
           total: res.data[n].NowBalance || '???',
           case: res.data[n].dealName || '未能获取到交易记录',
-          dealSymbol: res.data[n].dealSymbol == '增加' ? '+' : ''
+          dealSymbol: res.data[n].dealSymbol == '增加' ? '+' : '',
+          person:res.data[n].person
         });
         n++;
       }
       this.setState({ loading: false, history: arr ,yesterdayVar:res.data[0].turnover,total:Number(res.data[0].beforeBalance)+Number(res.data[0].turnover),symbol:res.data[0].dealSymbol});
 
-      console.log('人员',res)
     } catch (err) {
       this.setState({ loading: false });
 
@@ -232,10 +279,10 @@ class CyberMoney extends Component {
           <div className="CyberMoney">
             <div className="user">
               <div className="avatar"></div>
-              <p>{this.state.team}</p>
-              <span>最近{this.state.symbol} {Math.abs( Number(this.state.yesterdayVar))}</span>
+              <p>{this.state.history[0].person}</p>
+              <span>最近{this.state.history[0].dealSymbol=='+'?'增加':'减少'} {Math.abs( Number(this.state.history[0].varAbsolute))}</span>
               <oval>
-                <p>{this.state.total}</p>
+                <p>{this.state.history[0].total}</p>
               </oval>
             </div>
             <div
@@ -305,7 +352,7 @@ class CyberMoney extends Component {
                   return (
                     <li>
                       <span>
-                        <b>{item.name}</b> {item.status}
+                        <b>{item.name?item.name:'- - -'}</b> {item.status?item.status:0}
                       </span>
                       <bar>
                         <filter

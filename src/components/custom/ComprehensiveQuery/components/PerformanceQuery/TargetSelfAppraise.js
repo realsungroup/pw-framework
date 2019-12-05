@@ -26,7 +26,8 @@ class TargetSelfAppraise extends React.Component {
           <TableData
             key={key}
             resid={resid}
-            subtractH={200}
+            size="small"
+            subtractH={180}
             hasAdvSearch={false}
             hasAdd={false}
             hasRowView={true}

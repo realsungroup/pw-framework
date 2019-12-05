@@ -1342,7 +1342,7 @@ var hrCode='623876215000';
               <p style={{ height: 25 }}>
                 是否认识本公司的员工？
                 <br />
-                Do you know any employee of Finisar Shanghai Inc.?
+                Do you know any employee of Finisar Inc.?
               </p>
             }
             className="applay__information-content"
@@ -1460,9 +1460,13 @@ var hrCode='623876215000';
           </Form.Item>
           <div>
               <h3>Commitments/本人承诺</h3>
-              <p style={{padding:5,textAlign:'left'}}>1) All informantion given are true and accurate ,otherwise I'm willing to be punished even dismissed.<br/>  所有填表内容真实、准确,如有虚假愿意接受处分包括辞退</p>
-              <p>2) I agree with further background check.<br/>
-              本人同意公司进行背景调查</p>
+              <p style={{padding:5,textAlign:'left'}}>1) All informantion given are true and accurate ,otherwise I'm willing to be punished even dismissed.<br/>  
+              <div style = {{textIndent:'1em'}}>所有填表内容真实、准确,如有虚假愿意接受处分包括辞退</div>
+              </p>
+              <p style={{padding:5,textAlign:'left'}}>2) I agree with further background check.
+                <br/>
+                <div style = {{textIndent:'1em'}}>本人同意公司进行背景调查</div>
+                </p>
           </div>
           <div style={{ textAlign: 'center' }}>
             <div style = {{width:"100%",height:"40px"}}>
@@ -1475,7 +1479,7 @@ var hrCode='623876215000';
               <Button type="primary" style={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn=='Y')?{}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <div className={this.state.userChara=='HR'?'':'hidden'} style={{display:'inline-block'}}>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
-                确认打印
+                预览打印
               </Button>
               
 			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' className={this.state.userChara=='HR'?'':'hidden'}style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}

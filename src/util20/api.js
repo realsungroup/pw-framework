@@ -434,5 +434,36 @@ http.createApi('forgetPassword', {
   url: '/api/Account/ForgetPass'
 });
 
-export default http;
+/**
+ * 开始批处理任务
+ */
+http.createApi('batchImport', {
+  method: 'post',
+  url: '/api/Resource/BatchRunImportBySource'
+});
 
+/**
+ * 获取批处理任务进度
+ */
+http.createApi('getBatchInfo', {
+  method: 'get',
+  url: '/api/Resource//GetAutoImportStatusByBatchTaskId'
+});
+
+/**
+ * 停止批处理任务
+ */
+http.createApi('terminateBatch', {
+  method: 'get',
+  url: '/api/Resource/TerminateImportByBatchTaskId'
+});
+
+/**
+ * 获取附表数据
+ */
+http.createApi('getTableByHostRecord', {
+  method: 'get',
+  url: '/api/100/table/RetrieveRelTableByHostRecord'
+});
+
+export default http;

@@ -251,7 +251,9 @@ class CreateTotalPlan extends React.Component {
                   return null;
                 } else {
                   return (
+                    <div style={{marginTop:'8px'}}>
                     <Button
+                      type="primary"
                       size={btnSize}
                       onClick={() => {
                         this.handleClick(record);
@@ -259,6 +261,7 @@ class CreateTotalPlan extends React.Component {
                     >
                       初始化
                     </Button>
+                    </div>
                   );
                 }
               },
@@ -267,7 +270,9 @@ class CreateTotalPlan extends React.Component {
                   return null;
                 } else {
                   return (
+                    <div style={{marginTop:'8px'}}>
                     <Button
+                    type="primary"
                       size={btnSize}
                       onClick={() => {
                         console.log('selectPeopleSendEmail-record', record);
@@ -276,6 +281,7 @@ class CreateTotalPlan extends React.Component {
                     >
                       发送通知
                     </Button>
+                    </div>
                   );
                 }
               }

@@ -100,6 +100,7 @@ class TutorshipProbation extends React.Component {
         ) : (
           <ProbationForms
             memberId={this.state.selectedRecord.memberId}
+            employedId={this.state.selectedRecord.C3_625051545181}
             goBack={this.goBack}
             roleName="辅导员"
             setIsShowTable={this.setIsShowTable}

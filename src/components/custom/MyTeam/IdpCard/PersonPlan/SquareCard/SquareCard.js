@@ -46,7 +46,7 @@ class SquareCard extends React.Component {
     return (
       this.props.SquareCardArr &&
       this.props.SquareCardArr.map((item, index) => {
-        console.log('detailOptions', item);
+        // console.log('detailOptions', item);
         if (item.type !== 'none') {
           let data;
           let titleData;
@@ -56,7 +56,7 @@ class SquareCard extends React.Component {
                 titleData = (
                   <span className="squarecard-contain-title">{item.name}</span>
                 );
-                console.log('item.value', item.value);
+                // console.log('item.value', item.value);
                 data = item.value ? (
                   <Select
                     className="word-color"

@@ -1,5 +1,7 @@
 import React from 'react';
 import PwForm from '../../ui/PwForm';
+import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
+
 import { message, Tabs } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
@@ -9,6 +11,7 @@ import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
+
 const { Fragment } = React;
 const TabPane = Tabs.TabPane;
 
@@ -54,7 +57,6 @@ class FormData extends React.Component {
       dblinkname,
       baseURL
     } = this.props;
-    console.log(this.props);
     const { hasSubTables } = this.state;
     const { dataMode, resid, subresid, hostrecid } = info;
     const id = getResid(dataMode, resid, subresid);
@@ -66,6 +68,7 @@ class FormData extends React.Component {
       if (err) {
         return message.error('表单数据有误');
       }
+      let res;
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
 
@@ -111,7 +114,7 @@ class FormData extends React.Component {
             http(httpParams).saveRecordAndSubTables({ data, dblinkname })
           );
           try {
-            const res = await this.p1.promise;
+            res = await this.p1.promise;
             console.log({ res });
           } catch (err) {
             message.error(err.message);
@@ -131,7 +134,7 @@ class FormData extends React.Component {
           }
           this.p1 = makeCancelable(http(httpParams).addRecords(params));
           try {
-            await this.p1.promise;
+            res = await this.p1.promise;
           } catch (err) {
             console.error(err);
             return message.error(err.message);
@@ -150,7 +153,7 @@ class FormData extends React.Component {
           }
           this.p1 = makeCancelable(http(httpParams).modifyRecords(params));
           try {
-            await this.p1.promise;
+            res = await this.p1.promise;
           } catch (err) {
             console.error(err);
             return message.error(err.message);
@@ -197,16 +200,16 @@ class FormData extends React.Component {
           http(httpParams).saveRecordAndSubTables({ data, dblinkname })
         );
         try {
-          const res = await this.p1.promise;
+          res = await this.p1.promise;
           console.log({ res });
         } catch (err) {
           message.error(err.message);
           return console.error(err);
         }
       }
-
+      let savedRecord = res.data[0]; //保存成功后的数据
       this.props.onSuccess &&
-        this.props.onSuccess(operation, formData, record, form);
+        this.props.onSuccess(operation, formData, savedRecord, form);
     });
   };
 
@@ -353,7 +356,7 @@ class FormData extends React.Component {
       otherProps.hasCancel = false;
     }
     const { resid } = info;
-    let { containerControlArr, labelControllArr } = data;
+    let { containerControlArr } = data;
     const containerHeight =
       containerControlArr &&
       containerControlArr.length &&
@@ -362,7 +365,7 @@ class FormData extends React.Component {
       containerControlArr &&
       containerControlArr.length &&
       containerControlArr[0].FrmWidth;
-    return !useAbsolute || mode !== 'view' ? (
+    return !useAbsolute ? (
       <div className="form-data">
         {!!data.length && (
           <div
@@ -387,59 +390,23 @@ class FormData extends React.Component {
         {hasSubTables && this.renderSubTables()}
       </div>
     ) : (
-      <div
-        style={{
-          height: containerHeight,
-          width: containerWidth,
-          position: 'relative'
-        }}
-      >
-        {!!labelControllArr &&
-          labelControllArr.map(item => {
-            const { customStyle } = item;
-            return (
-              <label
-                style={{
-                  fontWeight: item.FrmFontBold * 500,
-                  position: 'absolute',
-                  top: (customStyle.top / containerHeight) * 100 + '%',
-                  left: (customStyle.left / containerWidth) * 100 + '%',
-                  width: (customStyle.width / containerWidth) * 100 + '%',
-                  height: (customStyle.height / containerHeight) * 100 + '%',
-                  textAlign: customStyle.textAlign,
-                  fontSize: customStyle.fontSize,
-                  color: item.FrmForeColor,
-                  fontFamily: item.FrmFontName,
-                  overflow: 'visible'
-                }}
-              >
-                {`${item.FrmText}`}
-              </label>
-            );
-          })}
-        {!!data.length &&
-          data.map(item => {
-            const { customStyle } = item.controlData;
-            return (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: (customStyle.top / containerHeight) * 100 + '%',
-                  left: (customStyle.left / containerWidth) * 100 + '%',
-                  width: (customStyle.width / containerWidth) * 100 + '%',
-                  height: (customStyle.height / containerHeight) * 100 + '%',
-                  fontSize: customStyle.fontSize,
-                  overflow: 'auto'
-                  // lineHeight: 2,
-                }}
-              >
-                {item.initialValue}
-              </span>
-            );
-          })}
+      <>
+        <AbsoluteForm
+          data={data}
+          record={record}
+          {...formProps}
+          mode={mode}
+          {...otherProps}
+          onSave={this.handleSave}
+          onCancel={this.props.onCancel}
+          operation={operation}
+          beforeSaveFields={beforeSaveFields}
+          resid={resid}
+          dblinkname={dblinkname}
+        />
         {hasSubTables &&
           this.renderSubTablesAbsolute(containerHeight, containerWidth)}
-      </div>
+      </>
     );
   }
 }

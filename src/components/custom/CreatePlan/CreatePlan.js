@@ -1339,6 +1339,9 @@ class CreatePlan extends React.Component {
             <TabPane tab="员工个人发展" key="3">
               <TableData
                 resid={624564627997}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
                 // dataMode="main"
                 // subtractH={190}
                 // height={520}

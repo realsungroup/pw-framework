@@ -50,9 +50,11 @@ class ETnoticeMain extends React.Component {
         let res;
         let normalData = {
             resid: courseArrangmentResid,
+            cmswhere:`organization!='内训'`
         }
         try {
             res = await http().getTable(normalData);
+            console.log('课程',res)
         } catch (error) {
             return console.log(error);
         }
@@ -313,6 +315,7 @@ class ETnoticeMain extends React.Component {
                         key='0'>
                         <ETNoticed
                             infor={this.state}
+                            getCourseArrangment={this.getCourseArrangment}
                             currentCourseIsApply={this.onCurrentCourseIsApply}
                             currentCoursePeopleAllApply={this.onCurrentCoursePeopleAllApply}
                             isNotice={0}

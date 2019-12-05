@@ -166,9 +166,9 @@ class HRProbation extends React.Component {
       let data = [];
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
-          if (selectValue === '主管填写') {
-            item.isDirectorFill = 'Y';
-          } else if (selectValue === '员工填写') {
+          if (selectValue === '提醒主管填写') {
+            item.isMailed = 'Y';
+          } else if (selectValue === '提醒员工填写') {
             item.isEmployeeFill = 'Y';
           } else if (selectValue === '提醒辅导员确认') {
             item.C3_62586860630 = 'Y';
@@ -227,7 +227,9 @@ class HRProbation extends React.Component {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
           data.push({
             REC_ID: item.REC_ID,
-            C3_622649568463: 'N'
+            C3_622649568463: 'N',
+            C3_622649502021:'N',
+            isNoticeHrEmail:null
           });
         }
       });
@@ -306,7 +308,7 @@ class HRProbation extends React.Component {
               this.handleApply(record);
             }}
           >
-            <Button type="danger">退回申请</Button>
+            <Button type="danger">退回转正申请</Button>
           </Popconfirm>
           <Popconfirm
             title="确认同意转正？"
@@ -314,7 +316,7 @@ class HRProbation extends React.Component {
               this.hadleApproval(record);
             }}
           >
-            <Button type="primary">同意转正</Button>
+            <Button type="primary">同意转正申请</Button>
           </Popconfirm>
 
           <Button

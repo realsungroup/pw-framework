@@ -14,6 +14,8 @@ import {
   message,
   Cascader
 } from 'antd';
+import moment from 'moment';
+
 import MoveTo from 'moveto'; //引入moveto这个库
 import http from 'Util20/api';
 // import ApplyInformantion from '../ApplayInformnation';
@@ -297,6 +299,12 @@ class JobSeeker extends Component {
                 WorkEndTime3: values.WorkDate3
                   ? values.WorkDate3[1].format('YYYY-MM-DD')
                   : null,
+                  // FamBirthDate1: values.FamBirthDate1
+                  // ? values.FamBirthDate1.format('YYYY-MM-DD')
+                  // : null,
+                  // FamBirthDate2: values.FamBirthDate2
+                  // ? values.FamBirthDate2.format('YYYY-MM-DD')
+                  // : null,
                 TrainingDate1: values.TrainingD1
                   ? values.TrainingD1[0].format('YYYY-MM-DD')+'-'+values.TrainingD1[1].format('YYYY-MM-DD')
                   : null,
@@ -338,15 +346,577 @@ class JobSeeker extends Component {
       }
     });
   };
-  // 提交的值
+  
+  // 二次确认
   handleClick = e => {
+    var obj;
+    var strHuKou;
+    var birthDate;
+    var eduDateS1;
+    var eduDateE1;
+    var eduDateS2;
+    var eduDateE2;
+    var eduDateS3;
+    var eduDateE3;
+    var wkDateS1;
+    var wkDateE1;
+    var wkDateS2;
+    var wkDateE2;
+    var wkDateS3;
+    var wkDateE3;
+    var FamBirthD1;
+    var FamBirthD2;
+    var TrainingDS1;
+    var TrainingDE1;
+    var TrainingDS2;
+    var TrainingDE2;
+    var TrainingDS3;
+    var TrainingDE3;
+    var eduLength=this.state.educationBackground.length;
+    var wkLength=this.state.workExperise.length;
+    var FamLength = this.state.family.length;
+    var Tralength = this.state.training.length;
+    this.props.form.validateFields((err,val) => {
+      if (!err) {
+        console.info('success');
+      }
+      obj=val;
+      // 计算户口所在地
+      if(obj.PlaceOfHuKou){
+        var instr=obj.PlaceOfHuKou[0];
+        var instr2=obj.PlaceOfHuKou[1];
+        var instr3=obj.PlaceOfHuKou[2];
+        strHuKou=cityData[86][instr]+cityData[instr][instr2]+cityData[instr2][instr3];
+      }
+      // 计算求职者出生日期
+      if(obj.BirthDate){
+        birthDate=moment(obj.BirthDate).format("YYYY-MM-DD")
+      }
+      // 计算教育时间
+      if(obj.Eddate1){
+        eduDateS1=moment(obj.Eddate1[0]).format("YYYY-MM-DD")
+        eduDateE1=moment(obj.Eddate1[1]).format("YYYY-MM-DD")
+      }
+      if(obj.Eddate2){
+        eduDateS2=moment(obj.Eddate2[0]).format("YYYY-MM-DD")
+        eduDateE2=moment(obj.Eddate2[1]).format("YYYY-MM-DD")
+      }
+      if(obj.Eddate3){
+        eduDateS3=moment(obj.Eddate3[0]).format("YYYY-MM-DD")
+        eduDateE3=moment(obj.Eddate3[1]).format("YYYY-MM-DD")
+      }
+      // 计算工作经历时间
+      if(obj.WorkDate1){
+        wkDateS1=moment(obj.WorkDate1[0]).format("YYYY-MM-DD")
+        wkDateE1=moment(obj.WorkDate1[1]).format("YYYY-MM-DD")
+      }
+      if(obj.WorkDate2){
+        wkDateS2=moment(obj.WorkDate2[0]).format("YYYY-MM-DD")
+        wkDateE2=moment(obj.WorkDate2[1]).format("YYYY-MM-DD")
+      }
+      if(obj.WorkDate3){
+        wkDateS3=moment(obj.WorkDate3[0]).format("YYYY-MM-DD")
+        wkDateE3=moment(obj.WorkDate3[1]).format("YYYY-MM-DD")
+      }
+      //计算家庭成员出生日期
+      if(obj.FamBirthDate1){
+        FamBirthD1=moment(obj.FamBirthDate1).format("YYYY-MM-DD")
+      }
+      if(obj.FamBirthDate2){
+        FamBirthD2=moment(obj.FamBirthDate2).format("YYYY-MM-DD")
+      }
+      //计算培训日期
+      if(obj.TrainingD1){
+        TrainingDS1=moment(obj.TrainingD1[0]).format("YYYY-MM-DD")
+        TrainingDE1=moment(obj.TrainingD1[1]).format("YYYY-MM-DD")
+      }
+      if(obj.TrainingD2){
+        TrainingDS2=moment(obj.TrainingD2[0]).format("YYYY-MM-DD")
+        TrainingDE2=moment(obj.TrainingD2[1]).format("YYYY-MM-DD")
+      }
+      if(obj.TrainingD3){
+        TrainingDS3=moment(obj.TrainingD3[0]).format("YYYY-MM-DD")
+        TrainingDE3=moment(obj.TrainingD3[1]).format("YYYY-MM-DD")
+      }
+    });
     // e.preventDefault();
+    console.log(obj)
     var bol=true;
     
     if(bol==true){
       Modal.confirm({
-        title: '是否确认提交?',
-        content: '',
+        title: '请确认信息填写完整',
+        width:'90vw',
+        content: (
+        <div className='confirmTwice'>
+          <div>
+          <span>中文姓名/Chinese Name：</span><span>{obj.ChName}</span>
+          </div>
+
+          <div>
+          <span>英文姓名/Name in English：</span><span>{obj.EnName}</span>
+          </div>
+
+          <div>
+          <span>申请职位名称/Position for Applied：</span><span>{obj.appPosition}</span>
+          </div>
+
+          <div>
+          <span>身份证号码/Number of ID Card：</span><span>{obj.IDCardNumber}</span>
+          </div>
+
+          <div>
+          <span>性别/Gender：</span><span>{obj.Sex}</span>
+          </div>
+
+          <div>
+          <span>手机/MP：</span><span>{obj.Tel}</span>
+          </div>
+
+          <div>
+          <span>个人邮箱/E-mail：</span><span>{obj.Email}</span>
+          </div>
+
+          <div>
+          <span>国籍/Nationality：</span><span>{obj.Nationality}</span>
+          </div>
+
+          <div>
+          <span>籍贯/NativePlace：</span><span>{obj.NativePlace}</span>
+          </div>
+
+          <div>
+          <span>民族/Nationality：</span><span>{obj.Nation}</span>
+          </div>
+
+          <div>
+          <span>政治面貌/Party Affiliation：</span><span>{obj.Party}</span>
+          </div>
+
+          <div>
+          <span>出生日期/Date Of Birth：</span><span>{birthDate}</span>
+          </div>
+
+          <div>
+          <span>出生地点/Place of Birth：</span><span>{obj.BirthPlace}</span>
+          </div>
+
+          <div>
+          <span>户口所在地/Place Of HuKou Registered(Province/City)：</span><span>{strHuKou}</span>
+          </div>
+
+          <div>
+          <span>血型/Blood Type：</span><span>{obj.BloodType}</span>
+          </div>
+
+          <div>
+          <span>现通讯地址/Current Correspond Address：</span><span>{obj.CurrentAddress}</span>
+          </div>
+
+          <div>
+          <span>有无推荐人/If have recommender：</span><span>{obj.IfRecommendByF}</span>
+          </div>
+
+          <div>
+          <span>推荐人姓名/Recommended by：</span><span>{obj.Recommender}</span>
+          </div>
+
+          <div>
+          <span>和推荐人关系/Relationship：</span><span>{obj.RecomenderRelation}</span>
+          </div>
+
+          <div>
+          <span>婚姻状况(选填)/Marital Status(Optional)：</span><span>{obj.MaritalStatus}</span>
+          </div>
+
+          <div>
+          <span>有无子女(选填)/Children,of any(Optional)：</span><span>{obj.ChildIf}</span>
+          </div>
+
+          <div className='division'></div>
+          <div className='PreviewTitle'>Education Background 教育经历</div>
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>1</div>
+          <div>
+        <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS1} ~ {eduDateE1}</span>
+          </div>
+          <div>
+            <span>学校名称/Name of School：</span><span>{obj.EdSchool1}</span>
+          </div>
+          <div>
+            <span>专业名称/Major：</span><span>{obj.EdMajor1}</span>
+          </div>
+          <div>
+            <span>学位/Degree：</span><span>{obj.EdDegree1}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.EdReference1}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.EdReferenceTel1}</span>
+          </div>
+          </p>
+
+          
+          {eduLength>1?(
+            <p style={{width:'100%',overflow:'hidden'}}>
+              <div className='countNum'>2</div>
+              <div>
+        <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS2} ~ {eduDateE2}</span>
+          </div>
+          <div>
+            <span>学校名称/Name of School：</span><span>{obj.EdSchool2}</span>
+          </div>
+          <div>
+            <span>专业名称/Major：</span><span>{obj.EdMajor2}</span>
+          </div>
+          <div>
+            <span>学位/Degree：</span><span>{obj.EdDegree2}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.EdReference2}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.EdReferenceTel2}</span>
+          </div>
+            </p>
+          ):null}
+
+            {eduLength>2?(
+            <p style={{width:'100%',overflow:'hidden'}}>
+              <div className='countNum'>3</div>
+              <div>
+        <span>年限（年/月）/Period(Year/Month)：</span><span>{eduDateS3} ~ {eduDateE3}</span>
+          </div>
+          <div>
+            <span>学校名称/Name of School：</span><span>{obj.EdSchool3}</span>
+          </div>
+          <div>
+            <span>专业名称/Major：</span><span>{obj.EdMajor3}</span>
+          </div>
+          <div>
+            <span>学位/Degree：</span><span>{obj.EdDegree3}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.EdReference3}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.EdReferenceTel3}</span>
+          </div>
+            </p>
+          ):null}
+          <div className='division'></div>
+          <div className='PreviewTitle'>Working History 工作经历</div>
+          {wkLength>0?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>1</div>
+          <div>
+        <span>任职年限/Post period：</span><span>{wkDateS1} ~ {wkDateE1}</span>
+          </div>
+          <div>
+            <span>公司名称&类型/Name of Company & Type：</span><span>{obj.WorkComName1}</span>
+          </div>
+          <div>
+            <span>职位/Position：</span><span>{obj.WorkRank1}</span>
+          </div>
+          <div>
+            <span>离职原因/Reason For Leaving：</span><span>{obj.ReasonForLeave1}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.WorkReference1}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.WorkReferenceTel1}</span>
+          </div>
+          </p>):null}
+          {wkLength>1?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>2</div>
+          <div>
+        <span>任职年限/Post period：</span><span>{wkDateS2} ~ {wkDateE2}</span>
+          </div>
+          <div>
+            <span>公司名称&类型/Name of Company & Type：</span><span>{obj.WorkComName2}</span>
+          </div>
+          <div>
+            <span>职位/Position：</span><span>{obj.WorkRank2}</span>
+          </div>
+          <div>
+            <span>离职原因/Reason For Leaving：</span><span>{obj.ReasonForLeave2}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.WorkReference2}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.WorkReferenceTel2}</span>
+          </div>
+          </p>):null}
+          {wkLength>2?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>3</div>
+          <div>
+        <span>任职年限/Post period：</span><span>{wkDateS3} ~ {wkDateE3}</span>
+          </div>
+          <div>
+            <span>公司名称&类型/Name of Company & Type：</span><span>{obj.WorkComName3}</span>
+          </div>
+          <div>
+            <span>职位/Position：</span><span>{obj.WorkRank3}</span>
+          </div>
+          <div>
+            <span>离职原因/Reason For Leaving：</span><span>{obj.ReasonForLeave3}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.WorkReference3}</span>
+          </div>
+          <div>
+            <span>证明人电话/Telephone：</span><span>{obj.WorkReferenceTel3}</span>
+          </div>
+          </p>):null}
+          <div className='division'></div>
+          <div className='PreviewTitle'> Family Members and Mainly Social Relationship
+          <br/>
+                家庭成员及主要社会关系</div>
+                {FamLength>0?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>1</div>
+          <div>
+        <span>姓名/Name：</span><span>{obj.FamName1}</span>
+          </div>
+          <div>
+            <span>关系/Relationship：</span><span>{obj.FamRelation1}</span>
+          </div>
+          <div>
+            <span>出生年月/Date of Birth：</span><span>{FamBirthD1}</span>
+          </div>
+          <div>
+            <span>职务/Position：</span><span>{obj.FamPosition1}</span>
+          </div>
+          <div>
+            <span>公司名称&地址/Name of Company&Address：</span><span>{obj.FamComAndAdd1}</span>
+          </div>
+          <div>
+            <span>电话/Telephone：</span><span>{obj.FamTel1}</span>
+          </div>
+          </p>):null}
+          {FamLength>1?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>2</div>
+          <div>
+        <span>姓名/Name：</span><span>{obj.FamName2}</span>
+          </div>
+          <div>
+            <span>关系/Relationship：</span><span>{obj.FamRelation2}</span>
+          </div>
+          <div>
+            <span>出生年月/Date of Birth：</span><span>{FamBirthD2}</span>
+          </div>
+          <div>
+            <span>职务/Position：</span><span>{obj.FamPosition2}</span>
+          </div>
+          <div>
+            <span>公司名称&地址/Name of Company&Address：</span><span>{obj.FamComAndAdd2}</span>
+          </div>
+          <div>
+            <span>电话/Telephone：</span><span>{obj.FamTel2}</span>
+          </div>
+          </p>):null}
+          <div className='division'></div>
+          <div className='PreviewTitle'> Professional Qualification/Training 
+          <br/>
+            专业资格/培训</div>
+                {Tralength>0?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>1</div>
+          <div>
+        <span>日期/Date/Period：</span><span>{TrainingDS1} ~ {TrainingDE1}</span>
+          </div>
+          <div>
+            <span>培训机构/Name of Training Institute：</span><span>{obj.TrainingInstitute1}</span>
+          </div>
+          <div>
+            <span>培训课程/Training Courses：</span><span>{obj.TrainingCourese1}</span>
+          </div>
+          <div>
+            <span>专业资格/Pofessional Qualification：</span><span>{obj.TrainingQualification1}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.TrainingReference1}</span>
+          </div>
+          <div>
+            <span>电话/Telephone：</span><span>{obj.TrainingRefTel1}</span>
+          </div>
+          </p>):null}
+          {Tralength>1?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>2</div>
+          <div>
+        <span>日期/Date/Period：</span><span>{TrainingDS2} ~ {TrainingDE2}</span>
+          </div>
+          <div>
+            <span>培训机构/Name of Training Institute：</span><span>{obj.TrainingInstitute2}</span>
+          </div>
+          <div>
+            <span>培训课程/Training Courses：</span><span>{obj.TrainingCourese2}</span>
+          </div>
+          <div>
+            <span>专业资格/Pofessional Qualification：</span><span>{obj.TrainingQualification2}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.TrainingReference2}</span>
+          </div>
+          <div>
+            <span>电话/Telephone：</span><span>{obj.TrainingRefTel2}</span>
+          </div>
+          </p>):null}
+          {Tralength>2?(
+          <p style={{width:'100%',overflow:'hidden'}}>
+          <div className='countNum'>3</div>
+          <div>
+        <span>日期/Date/Period：</span><span>{TrainingDS3} ~ {TrainingDE3}</span>
+          </div>
+          <div>
+            <span>培训机构/Name of Training Institute：</span><span>{obj.TrainingInstitute3}</span>
+          </div>
+          <div>
+            <span>培训课程/Training Courses：</span><span>{obj.TrainingCourese3}</span>
+          </div>
+          <div>
+            <span>专业资格/Pofessional Qualification：</span><span>{obj.TrainingQualification3}</span>
+          </div>
+          <div>
+            <span>证明人/Reference：</span><span>{obj.TrainingReference3}</span>
+          </div>
+          <div>
+            <span>电话/Telephone：</span><span>{obj.TrainingRefTel3}</span>
+          </div>
+          </p>):null}
+          <div className='division'></div>
+          <div className='PreviewTitle'> Related Qualification/Skill (If any) 
+          <br/>
+          相关技能</div>
+          <div>
+          <span>常用外语/Common Language：</span><span>{obj.Language}</span>
+          </div>
+
+          <div>
+          <span>外语等级/Level：</span><span>{obj.EnCET}</span>
+          </div>
+
+          <div>
+          <span>写作/Writing：</span><span>{obj.Writing}</span>
+          </div>
+
+          <div>
+          <span>阅读/Reading：</span><span>{obj.Reading}</span>
+          </div>
+
+          <div>
+          <span>口语/Speaking：</span><span>{obj.Speaking}</span>
+          </div>
+
+          <div>
+          <span>听力/Listening：</span><span>{obj.Listening}</span>
+          </div>
+
+          <div>
+          <span>计算机技能/Computer Skill：</span><span>{obj.ComputerSkills}</span>
+          </div>
+          
+          <div>
+          <span>列出常用软件/List Name of Software Used：</span><span>{obj.SoftList}</span>
+          </div>
+
+          <div>
+          <span>其他技能/Other Skill(If any)：</span><span>{obj.OtherSkills}</span>
+          </div>
+          
+          <div>
+          <span>身高(CM)/Height：</span><span>{obj.Height}</span>
+          </div>
+        
+          <div>
+          <span>体重(KG)/Weight：</span><span>{obj.Weight}</span>
+          </div>
+
+          <div>
+          <span>视力左/Eye Left sight：</span><span>{obj.EyeSight}</span>
+          </div>
+
+          <div>
+          <span>视力右/Eye Right sight：</span><span>{obj.EyeSightR}</span>
+          </div>
+
+          <div className='division'></div>
+
+          <div>
+          <span>Have you ever been suffering from any severe disease? What
+                    are your current health? Are you sick for contagion, or
+                    chronic etc. now?<br/>是否得过严重的疾病？目前身体状况如何？是否患有传染病，慢性病等</span>
+                    <br/>
+                    <span>{obj.DiseaseStatus}</span>
+          </div>
+
+          <div>
+          <span>Do you have criminal history or discredit history? If yes,
+                    please give the details.<br/>是否有犯罪记录,如有请作详细的说明</span>
+                    <br/>
+                    <span>{obj.Criminal}</span>
+          </div>
+
+          <div>
+          <span>是否有过失信记录等行为,如有请作详细的说明</span>
+                    <br/>
+                    <span>{obj.TrustStatus}</span>
+          </div>
+
+          <div>
+          <span>Do you have any unemployed period of more than 4 months? If
+                    yes, please give the details.<br/>是否有过4个月以上的失业经历？如有，请详细说明。</span>
+                    <br/>
+                    <span>{obj.UnemployedStatus}</span>
+          </div>
+
+          <div>
+          <span>Do you know any employee of Finisar Inc.? If yes,
+                    please give his/her name and relationship.<br/>是否认识本公司的员工？如是，请详细指出姓名及与其关系。</span>
+                    <br/>
+                    <span>{obj.KnowColleageStatus}</span>
+          </div>
+
+          <div>
+          <span>Do you have any unexpired contract or service agreement with
+                    your present employer?<br/>与现任雇主的合同或服务协议是否到期？</span>
+                    <br/>
+                    <span>{obj.OtherAgreement}</span>
+          </div>
+
+          <div>
+          <span>Do you have ever signed non-competition agreement or
+                    confidentiality agreement? Please explain when does the
+                    contract or agreement at term?<br/>是否签署过竞业限制协议或保密协议？请说明何时到期及是否需赔款？</span>
+                    <br/>
+                    <span>{obj.CompetitionAgreement}</span>
+          </div>
+
+          <div>
+          <span>办离职需要多长时间/How long do you carry out demission?</span>
+          <br/><span>{obj.HowLong}</span>
+          </div>
+
+          <div>
+          <span>如被录用何时上班/When would be available for you?</span>
+          <br/><span>{obj.WhenOn}</span>
+          </div>
+
+          <div>
+          <span>自我评价/Self Appraisement</span>
+          <br/>
+           <span>{obj.SelfAccessment}</span>
+          </div>
+
+        </div>
+        ),
         okText:'OK',
         onOk: () => {
           this.confirmAppalyTotal();
@@ -1080,6 +1650,8 @@ class JobSeeker extends Component {
                         <Input
                           value={item.CompanyName}
                           onChange={this.handelCompanyName.bind(this, index)}
+                          placeholder='最多填写20字'
+                          maxLength='20'
                         />
                       )}
                     </Form.Item>
@@ -1108,6 +1680,8 @@ class JobSeeker extends Component {
                       })(
                         <Input
                           value={item.Reason}
+                          placeholder='最多填写20字'
+                          maxLength='20'
                           onChange={this.handelReason.bind(this, index)}
                         />
                       )}
@@ -1676,7 +2250,7 @@ class JobSeeker extends Component {
                         message:"请填写身体状况"
                       }
                     ]
-                  })(<TextArea />)}
+                  })(<TextArea placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <Form.Item
                 colon={false}
@@ -1706,7 +2280,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasCriminal === '是' ? <Input /> : ''}
+                    {this.state.hasCriminal === '是' ? <Input placeholder='最多填写50字' maxLength={50}/> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1732,7 +2306,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasLostTrust === '是' ? <Input /> : ''}
+                    {this.state.hasLostTrust === '是' ? <Input placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1741,7 +2315,7 @@ class JobSeeker extends Component {
                 label={
                   <p style={{ height: 30 }}>
                     Do you have any unemployed period of more than 4 months? If
-                    yes, please give the details..
+                    yes, please give the details.
                     <br />
                     是否有过4个月以上的失业经历？如有，请详细说明。
                   </p>
@@ -1764,7 +2338,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.hasUnemployee === '是' ? <TextArea /> : ''}
+                    {this.state.hasUnemployee === '是' ? <TextArea placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1772,7 +2346,7 @@ class JobSeeker extends Component {
                 colon={false}
                 label={
                   <p style={{ height: 30 }}>
-                    Do you know any employee of Finisar Shanghai Inc.? If yes,
+                    Do you know any employee of Finisar Inc.? If yes,
                     please give his/her name and relationship.
                     <br />
                     是否认识本公司的员工？如是，请详细指出姓名及与其关系。
@@ -1797,7 +2371,7 @@ class JobSeeker extends Component {
                       <Radio value="是">是</Radio>
                       <Radio value="否">否</Radio>
                     </RadioGroup>
-                    {this.state.knowColleaguage === '是' ? <TextArea /> : ''}
+                    {this.state.knowColleaguage === '是' ? <TextArea placeholder='最多填写50字' maxLength={50} /> : ''}
                   </div>
                 )}
               </Form.Item>
@@ -1851,7 +2425,7 @@ class JobSeeker extends Component {
                       <Radio value="否">否</Radio>
                     </RadioGroup>
                     {this.state.competitionAgreement === '是' ? (
-                      <TextArea />
+                      <TextArea placeholder='最多填写50字' maxLength={50} />
                     ) : (
                       ''
                     )}
@@ -1862,13 +2436,13 @@ class JobSeeker extends Component {
                 label="办离职需要多长时间/How long do
                    you carry out demission?"
               >
-                {getFieldDecorator('HowLong', {})(<Input />)}
+                {getFieldDecorator('HowLong', {})(<Input placeholder='最多填写50字' maxLength={50} />)}
               </Form.Item>
               <Form.Item label="如被录用何时上班/When would be available for you?">
-                {getFieldDecorator('WhenOn', {})(<Input />)}
+                {getFieldDecorator('WhenOn', {})(<Input  placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <Form.Item label="自我评价/Self Appraisement">
-                {getFieldDecorator('SelfAccessment', {})(<TextArea />)}
+                {getFieldDecorator('SelfAccessment', {})(<TextArea  placeholder='最多填写50字' maxLength={50}/>)}
               </Form.Item>
               <div>
                 <h3>Commitments/本人承诺</h3>

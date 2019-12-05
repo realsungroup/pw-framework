@@ -127,3 +127,6 @@ export { SearchForEmployee } from '../components/custom/loadableCustom';
 export { PostAndPersonnel } from '../components/custom/loadableCustom';
 export { RelievePerson } from '../components/custom/loadableCustom';
 export { StatisticAnalysisJC } from '../components/custom/loadableCustom';
+export { DLPrint } from '../components/custom/loadableCustom';
+export { IDPTrack } from '../components/custom/loadableCustom';
+

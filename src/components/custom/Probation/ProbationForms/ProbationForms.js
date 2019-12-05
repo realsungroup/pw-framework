@@ -38,6 +38,7 @@ const resid5 = '618591446269'; //在岗培训表
 const resid6 = '618591459355'; //辅导记录表
 const resid8 = '619268906732'; //评估周期
 const resid9 = '619808533610';
+const memberSemiId = 'C3_625051545181';//录用编号
 // const resid10 = '622983009643'; //入职培训管理表
 
 const internalCourse = '625082518213'; //内训课程表
@@ -96,6 +97,7 @@ class ProbationForms extends React.Component {
     if (this.props.roleName === '员工') {
       memberId = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
     } else {
+
       memberId = this.props.memberId;
       employedId = this.props.employedId;
     }
@@ -123,6 +125,12 @@ class ProbationForms extends React.Component {
         ]
       });
       message.success('转正申请成功');
+      this.setState({
+        employeeInformation:{
+          ...this.state.employeeInformation,
+          C3_622649502021:'Y'
+        }
+      })
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -140,7 +148,7 @@ class ProbationForms extends React.Component {
         data: [
           {
             REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: 'Y'
+            instructorIsPass: 'Y',
           }
         ]
       });
@@ -237,11 +245,14 @@ class ProbationForms extends React.Component {
         mentorshipRecord
       } = this.state;
       let index = 1;
+      const _memberSemiId = employeeInformation[memberSemiId];
+      console.log(_memberSemiId)
       probationObjectives.forEach(item => {
         subdata.push({
           resid: resid2,
           maindata: {
             ...item,
+            [memberSemiId]:_memberSemiId,
             _state: 'editoradd',
             _id: index++
           },
@@ -250,6 +261,7 @@ class ProbationForms extends React.Component {
               resid: resid9,
               maindata: {
                 ...i,
+                [memberSemiId]:_memberSemiId,
                 _state: 'editoradd',
                 _id: index++
               }
@@ -260,27 +272,28 @@ class ProbationForms extends React.Component {
       orientationTraining.forEach(item => {
         subdata.push({
           resid: resid3,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item, _state: 'editoradd',[memberSemiId]:_memberSemiId, _id: index++ }
         });
       });
       internalTraining.forEach(item => {
         subdata.push({
           resid: resid4,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
       onTheJobTraining.forEach(item => {
         subdata.push({
           resid: resid5,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
       mentorshipRecord.forEach(item => {
         subdata.push({
           resid: resid6,
-          maindata: { ...item, _state: 'editoradd', _id: index++ }
+          maindata: { ...item,[memberSemiId]:_memberSemiId, _state: 'editoradd', _id: index++ }
         });
       });
+      console.info('sb',subdata)
       await http().saveRecordAndSubTables({
         data: [
           {
@@ -365,6 +378,7 @@ class ProbationForms extends React.Component {
   };
   //获取主子表记录
   getRecords = async (memberId, employedId) => {
+    console.log(memberId,employedId)
     try {
       const { viewableTable } = this.state;
       let subresid = '';
@@ -374,17 +388,34 @@ class ProbationForms extends React.Component {
         }
       });
       subresid += resid9;
-      const res = await http().getRecordAndSubTables({
-        resid: resid1,
-        // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
-        subresid,
-        cmswhere: `memberId = '${memberId}'`,
-        getsubresource: 1
-      });
+      let res;
+      if(memberId!='0'){
+      console.log('进来1')
+        res = await http().getRecordAndSubTables({
+          resid: resid1,
+          // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
+          subresid,
+          cmswhere: `memberId = '${memberId}'`,
+          getsubresource: 1
+        });
+      }else{
+        console.log('进来2')
+
+        res = await http().getRecordAndSubTables({
+          resid: resid1,
+          // subresid: `${resid2},${resid3},${resid4},${resid5},${resid6},`,
+          subresid,
+          cmswhere: `C3_625051545181 = '${employedId}'`,
+          getsubresource: 1
+        });
+      }
+      console.log('res',res)
       const SubResource = res.SubResource;
+      var toFid=employedId||res.data[0].C3_625051545181
+
       let data = {};
       if (memberId === '0') {
-        data = res.data.find(item => item.C3_625051545181 === employedId);
+        data = res.data.find(item => item.C3_625051545181 === toFid);
       } else {
         data = res.data[0];
       }
@@ -395,7 +426,7 @@ class ProbationForms extends React.Component {
           onOk: () => {}
         });
       }
-      let probationObjectives = data[viewableTable.objectiveResid];
+      let probationObjectives = data[viewableTable.objectiveResid].filter(item => item.C3_625051545181 === toFid);
       if (probationObjectives.length < 3) {
         let count = 3 - probationObjectives.length;
         const memberId = data.memberId;
@@ -411,15 +442,19 @@ class ProbationForms extends React.Component {
           probationObjectives.push({ [resid9]: subData });
         }
       }
-
+      // console.log('employedId',data[viewableTable.internalResid])
       data &&
         this.setState({
           employeeInformation: data,
           probationObjectives: probationObjectives,
           // orientationTraining: data[viewableTable.orientationResid],
-          internalTraining: data[viewableTable.internalResid],
-          onTheJobTraining: data[viewableTable.onJobResid],
-          mentorshipRecord: data[viewableTable.mentorRecordResid],
+          internalTraining: data[viewableTable.internalResid].filter(item => item.C3_625051545181 === toFid),
+          onTheJobTraining: data[viewableTable.onJobResid].filter(item => item.C3_625051545181 === toFid),
+          // mentorshipRecord: data[619713102137].filter(item => item.C3_625051545181 === employedId),
+          // mentorshipRecord: data[619713119181].filter(item => item.C3_625051545181 === employedId),
+          
+          
+          mentorshipRecord: data[viewableTable.mentorRecordResid].filter(item => item.C3_625051545181 === toFid),
           tableAuth: {
             onJob: SubResource[viewableTable.onJobResid],
             mentorRecord: SubResource[viewableTable.mentorRecordResid],
@@ -569,7 +604,7 @@ class ProbationForms extends React.Component {
 
   //添加辅导记录
   addMentor = () => {
-    const mentorshipRecord = [...this.state.mentorshipRecord, {}];
+    const mentorshipRecord = [...this.state.mentorshipRecord, {isSendInstructEmail:'Y'}];
     this.setState({ mentorshipRecord });
   };
 
@@ -593,7 +628,7 @@ class ProbationForms extends React.Component {
 
   //修改辅导记录
   modifyMentor = (index, mentor) => {
-    const mentorshipRecord = [...this.state.mentorshipRecord];
+    const mentorshipRecord = [...this.state.mentorshipRecord,];
     mentorshipRecord[index] = mentor;
     this.setState({ mentorshipRecord });
   };
@@ -932,7 +967,7 @@ class ProbationForms extends React.Component {
                 editable={editable}
               />
               <InternalTraining
-			  setInterDetailVis={this.setInterDetailVis}
+			          setInterDetailVis={this.setInterDetailVis}
                 setAddInternalCourseVisible={this.setAddInternalCourseVisible}
                 internalTraining={this.state.internalTraining.map(
                   (item, index) => ({ ...item, no: index + 1 })
@@ -992,7 +1027,7 @@ class ProbationForms extends React.Component {
               employeeInformation.regStatus !== '已转正') && (
               <footer className="probation-forms_footer" style={roleName === '辅导员'?{display:'none'}:{}}>
                 {(roleName === 'HR' ||
-                  employeeInformation.regStatus === '待转正'  ) && (
+                  employeeInformation.regStatus === '待转正'  ) && employeeInformation.C3_622649502021!='Y' &&(
                   <div>
                     <Button
                       type="primary"
@@ -1030,15 +1065,23 @@ class ProbationForms extends React.Component {
                   </div>
                 )}
                 {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' && (
+                  employeeInformation.regStatus === '待转正' &&  employeeInformation.C3_622649502021!='Y' && (
+
                     <Popconfirm
                       title="确认提交转正申请？"
                       onConfirm={this.positiveApply}
+                     
                     >
                       <Button type="primary" style={{ marginRight: 16 }}>
                         申请转正
                       </Button>
                     </Popconfirm>
+
+                  )}
+                  {roleName === '员工' &&
+                  employeeInformation.regStatus === '待转正' && employeeInformation.C3_622649502021=='Y'&& (
+                  <span style={{color:'red'}}>转正申请已经提交</span>
+
                   )}
                 {employeeInformation.regStatus === '转正中' &&
                   ((roleName === '主管' &&
@@ -1079,7 +1122,8 @@ class ProbationForms extends React.Component {
 			width={'80vw'}
 			hasRowDelete={false}
 			hasRowModify={false}
-			hasRowSelection={false}
+      hasRowSelection={false}
+      hasRowView = {false}
 			hasDelete={false}
 			hasModify={false}
 			hasAdd={false}

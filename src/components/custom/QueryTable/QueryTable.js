@@ -92,11 +92,11 @@ class QueryTable extends Component {
     let res;
     res = await http()
       .modifyRecords({
-        resid: 609613163948,
+        resid: 611867230563,
         data: data
       })
       .then(res => {
-        message.success(res.message)
+        message.success('提醒邮件发送成功')
         console.log('修改返回结果', res);
       })
       .catch(err => {

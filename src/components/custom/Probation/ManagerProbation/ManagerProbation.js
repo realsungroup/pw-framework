@@ -100,6 +100,8 @@ class EmployeeProbation extends React.Component {
         ) : (
           <ProbationForms
             memberId={this.state.selectedRecord.memberId}
+            employedId={this.state.selectedRecord.C3_625051545181}
+
             goBack={this.goBack}
             roleName="经理"
             setIsShowTable={this.setIsShowTable}

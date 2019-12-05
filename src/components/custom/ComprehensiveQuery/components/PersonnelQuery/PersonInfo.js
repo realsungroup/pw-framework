@@ -79,6 +79,7 @@ class PersonInfo extends React.Component {
           <Skeleton loading={!id}>
             <TableData
               key="1"
+              size="small"
               resid="446576761435"
               isFrontEndPagination={true}
               subtractH={200}
@@ -92,7 +93,7 @@ class PersonInfo extends React.Component {
               hasBeBtns={true}
               hasRowModify={false}
               hasRowSelection={false}
-              actionBarWidth={300}
+              actionBarWidth={400}
               cparm1={id}
               formProps={{ width: 1000 }}
               baseURL={this.baseURL}
@@ -125,6 +126,7 @@ class PersonInfo extends React.Component {
                     hasRowModify: false,
                     hasRowView: true,
                     hasBeBtns: false,
+                    actionBarWidth: 100,
                     baseURL: this.baseURL,
                     height: 300,
                     downloadBaseURL: this.attendanceDownloadURL

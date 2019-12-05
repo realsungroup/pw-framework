@@ -180,6 +180,7 @@ class SubordinateCourses extends React.Component {
       message.error(err.message);
       console.log(err);
     }
+    console.info('res2',res2)
     if (res2.data.length) {
       let knowledge = res2.data[0].knowledge1.split(';');
       let plans = res2.data[0].action1.split(';');

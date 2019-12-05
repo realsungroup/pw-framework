@@ -17,7 +17,7 @@ import {
 import SelectEmployeeToNotice from './SelectEmployeeToNotice';
 import SelectEmployeeToAdd from './SelectEmployeeToAdd';
 import http from 'Util20/api';
-import NoticeProgress from '../../CreatePlan/PlanProgress';
+import PlanProgress from '../../CreatePlan/PlanProgress';
 
 const ReviewEmployeeResid = '616073391736'; // 人员审核表id
 const NoticeResid = '616099620782'; //通知表id
@@ -31,7 +31,7 @@ class ReviewEmployee extends React.Component {
     targetCourseArrangement: '', //选中的课程安排编号
     selectedEmployees: [], //要移动的人员
     isShowProgress: false, // 是否显示进度模态窗
-
+    isShowMoveProgress: false,
     totalIndex: 0, // 任务总进度
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
@@ -175,28 +175,16 @@ class ReviewEmployee extends React.Component {
   };
 
   addEmployees = async employees => {
-    try {
-      await http().addRecords({
-        resid: ReviewEmployeeResid,
-        data: employees.map(item => {
-          return {
-            CourseArrangeID: this.props.courseArrangement.CourseArrangeID,
-            C3_613941384832: item.C3_305737857578
-          };
-        }),
-        isEditOrAdd: true
-      });
-      await http().modifyRecords({
-        resid: courseArrangmentResid,
-        data: [{ REC_ID: this.props.courseArrangement.REC_ID }]
-      });
-      this.tableDataRef.handleRefresh();
-      this.setState({ addEmployeesVisible: false });
-      message.success('添加成功');
-    } catch (error) {
-      console.log(error.message);
-      message.error(error.message);
-    }
+    let index_id = 0;
+    let taskList = employees.map(item => {
+      return {
+        CourseArrangeID: this.props.courseArrangement.CourseArrangeID,
+        C3_613941384832: item.C3_305737857578,
+        _id: ++index_id,
+        _state: 'editoradd'
+      };
+    });
+    this.setState({ taskList, isShowProgress: true });
   };
 
   deleteRecord = async record => {
@@ -253,27 +241,32 @@ class ReviewEmployee extends React.Component {
     if (!targetCourseArrangement) {
       return message.info('请选择课程安排');
     }
-    employees.forEach(item => {
+    employees.forEach((item, index) => {
       item.CourseArrangeID = targetCourseArrangement;
+      item._id = index;
+      item._state = 'editoradd';
     });
-    try {
-      let res = await http().modifyRecords({
-        resid: ReviewEmployeeResid,
-        data: employees
-      });
-      message.success(res.message);
-      this.setState(
-        {
-          selectCourseArrangementVisible: false,
-          targetCourseArrangement: '',
-          selectedEmployees: []
-        },
-        this.tableDataRef.handleRefresh
-      );
-    } catch (error) {
-      message.error(error.message);
-      console.error(error);
-    }
+
+    this.setState({ taskList: employees, isShowMoveProgress: true });
+  };
+
+  onMoveFinished = async () => {
+    await http().modifyRecords({
+      resid: courseArrangmentResid,
+      data: [
+        { REC_ID: this.props.courseArrangement.REC_ID },
+        { REC_ID: this.state.targetCourseArrangement }
+      ]
+    });
+    this.setState(
+      {
+        selectCourseArrangementVisible: false,
+        isShowMoveProgress: false,
+        targetCourseArrangement: '',
+        selectedEmployees: []
+      },
+      this.tableDataRef.handleRefresh
+    );
   };
   renderCourseName() {
     let { courseArrangement } = this.props;
@@ -304,6 +297,19 @@ class ReviewEmployee extends React.Component {
       targetCourseArrangement: '',
       selectedEmployees: []
     });
+  };
+
+  //结束时调用的回调函数
+  onFinishedPlanProgress = async () => {
+    this.setState({
+      isShowProgress: false,
+      addEmployeesVisible: false
+    });
+    await http().modifyRecords({
+      resid: courseArrangmentResid,
+      data: [{ REC_ID: this.props.courseArrangement.REC_ID }]
+    });
+    this.tableDataRef.handleRefresh();
   };
 
   //公开课
@@ -400,6 +406,7 @@ class ReviewEmployee extends React.Component {
       );
     }
     return (
+      <div className = 'outerCardPersonDetail'>
       <TableData
         resid={ReviewEmployeeResid}
         wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -407,7 +414,7 @@ class ReviewEmployee extends React.Component {
         subtractH={240}
         hasBeBtns={true}
         hasAdd={false}
-        hasRowView={false}
+        hasRowView={true}
         customRowBtns={[
           (record, btnSize) => {
             return (
@@ -427,7 +434,7 @@ class ReviewEmployee extends React.Component {
         hasRowDelete={false}
         actionBarWidth={100}
         hasRowEdit={false}
-        hasDelete={false}
+        hasDelete={true}
         hasModify={false}
         actionBarFixed={true}
         hasRowModify={false}
@@ -436,51 +443,82 @@ class ReviewEmployee extends React.Component {
         key="public"
         actionBarExtra={actionBarExtra}
       />
+      </div>
     );
   }
 
   //计划课
   renderInplan() {
     return (
-      <TableData
-        resid={ReviewEmployeeResid}
-        wrappedComponentRef={element => (this.tableDataRef = element)}
-        refTargetComponentName="TableData"
-        subtractH={240}
-        hasBeBtns={true}
-        hasAdd={false}
-        hasRowView={false}
-        hasRowDelete={true}
-        hasRowEdit={false}
-        hasDelete={false}
-        hasModify={false}
-        actionBarFixed={true}
-        hasRowModify={false}
-        hasRowSelection={true}
-        cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
-        key="inplan"
-        actionBarExtra={record => {
-          return (
-            <div className="review_employee-table_action_bar_extra">
-              {this.renderCourseName()}
-              <div className="review_employee-table_action_bar_extra-buttons">
-                <Button
-                  onClick={() => {
-                    if (record.selectedRowKeys.length) {
-                      this.onMoveEmployees(record);
-                    } else {
-                      this.setState({ selectCourseArrangementVisible: false });
-                      message.error('请选择至少一条记录');
-                    }
-                  }}
-                >
-                  移动人员
-                </Button>
+      <div className = 'innerCardPersonDetail'>
+        <TableData
+          resid={ReviewEmployeeResid}
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          subtractH={220}
+          hasBeBtns={true}
+          hasAdd={false}
+          hasRowView={false}
+          hasRowDelete={true}
+          hasRowEdit={false}
+          hasDelete={true}
+          hasModify={false}
+          actionBarFixed={true}
+          hasRowModify={false}
+          hasRowSelection={true}
+          cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
+          key="inplan"
+          actionBarExtra={record => {
+            return (
+              <div className="review_employee-table_action_bar_extra">
+                {this.renderCourseName()}
+                <div className="review_employee-table_action_bar_extra-buttons">
+                  <Button
+                    onClick={() => {
+                      if (record.selectedRowKeys.length) {
+                        this.onMoveEmployees(record);
+                      } else {
+                        this.setState({
+                          selectCourseArrangementVisible: false
+                        });
+                        message.error('请选择至少一条记录');
+                      }
+                    }}
+                  >
+                    移动人员
+                  </Button>
+                  <Tooltip
+                    placement="bottomLeft"
+                    title="选择指定员工通知他们报名"
+                  >
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.setState({ noticeModalVisible: true });
+                      }}
+                    >
+                      通知特定人员报名
+                    </Button>
+                  </Tooltip>
+                  <Popconfirm
+                    title="通知全部人员报名"
+                    onConfirm={() => {
+                      this.setState({ isShowModal: true }, this.handleNotice);
+                    }}
+                  >
+                    <Tooltip
+                      placement="bottomLeft"
+                      title="点击后全体员工将收到这门课的报名通知"
+                    >
+                      <Button type="primary">通知全部人员报名</Button>
+                    </Tooltip>
+                  </Popconfirm>
+                </div>
               </div>
-            </div>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      </div>
     );
   }
 
@@ -499,6 +537,7 @@ class ReviewEmployee extends React.Component {
     if (courseArrangement.innerArrangeType === '1') {
       table = this.renderInplan();
     }
+    const { isShowProgress, taskList, isShowMoveProgress } = this.state;
 
     return (
       <div className="review_employee" style={{ flex: 1 }}>
@@ -522,6 +561,19 @@ class ReviewEmployee extends React.Component {
           destroyOnClose
         >
           <SelectEmployeeToAdd onAdd={this.addEmployees} />
+          {isShowProgress ? (
+            <PlanProgress
+              onFinished={this.onFinishedPlanProgress}
+              struct="100"
+              options={{
+                resid: ReviewEmployeeResid,
+                data: JSON.stringify(taskList)
+              }}
+              title="添加人员列表"
+              // showFields={['C3_609622263470', 'C3_609845305680']}
+              // width='50%'
+            />
+          ) : null}
         </Modal>
         <Modal
           title="选择课程安排"
@@ -554,6 +606,17 @@ class ReviewEmployee extends React.Component {
                 <span>{`${item.StartDatetime} ~ ${item.EndDatetime}`}</span>
               </List.Item>
             ))}
+            {isShowMoveProgress ? (
+              <PlanProgress
+                onFinished={this.onMoveFinished}
+                struct="100"
+                options={{
+                  resid: ReviewEmployeeResid,
+                  data: JSON.stringify(taskList)
+                }}
+                title="移动人员列表"
+              />
+            ) : null}
           </List>
         </Modal>
         <Modal

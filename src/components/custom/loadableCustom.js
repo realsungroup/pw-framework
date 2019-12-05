@@ -578,3 +578,15 @@ export const StatisticAnalysisJC = Loadable({
     return minLoading;
   }
 });
+export const DLPrint = Loadable({
+  loader: () => import('./DLPrint'),
+  loading() {
+    return minLoading;
+  }
+});
+export const IDPTrack = Loadable({
+  loader: () => import('./IDPTrack'),
+  loading() {
+    return minLoading;
+  }
+});

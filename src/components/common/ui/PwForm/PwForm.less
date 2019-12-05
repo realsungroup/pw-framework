@@ -8,3 +8,34 @@
     overflow: auto;
   }
 }
+.absolute-form {
+  position: relative;
+  .has-error .ant-form-explain {
+    position: absolute;
+    z-index: 1;
+  }
+  .required::before {
+    display: inline-block;
+    margin-right: 0px;
+    color: #f5222d;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-input {
+    height: 24px;
+  }
+  .ant-form-item-control {
+    line-height: 24px;
+  }
+  .ant-select-selection--single {
+    height: 24px;
+  }
+  .ant-select-selection__rendered {
+    line-height: 24px;
+  }
+}

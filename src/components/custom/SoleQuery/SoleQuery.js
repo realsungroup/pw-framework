@@ -103,6 +103,7 @@ class SoleQuery extends Component {
     }
     // console.log('获取到是否提交信息', res);
     let hasSubmit = false;
+    console.log(res.data)
     if (res.data[0].hasSubmit === '已提交') {
       hasSubmit = true;
     }
@@ -767,7 +768,7 @@ class SoleQuery extends Component {
       return (
         <Spin spinning={loading}>
           <div className="solequery solequery__has-stop">
-            <p className="stopTips">该问卷已经提交成功了</p>
+            <p className="stopTips">提交成功，感谢您的配合！</p>
           </div>
         </Spin>
       );
@@ -814,7 +815,7 @@ class SoleQuery extends Component {
           >
             <div>
               <p className="thanks">感谢您参与本次问卷调查</p>
-              <p className="thanks">问卷已经提交成功啦~~~</p>
+              <p className="thanks">提交成功，感谢您的配合</p>
               {this.state.isGetgift === 'Y' ? (
                 <p>
                   恭喜你获得精美礼品一份。请输入手机号凭手机号前去人力资源部领取奖品一份

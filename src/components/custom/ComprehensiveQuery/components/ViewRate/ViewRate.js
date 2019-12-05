@@ -94,7 +94,8 @@ class ViewRate extends React.Component {
             <TableData
               key="view-rate-query"
               resid="620406435673"
-              subtractH={220}
+              subtractH={180}
+              size="small"
               hasAdvSearch={true}
               hasAdd={false}
               hasRowView={true}
@@ -109,6 +110,10 @@ class ViewRate extends React.Component {
               cparm2={selectYear.label}
               dblinkname="ehr"
               baseURL={this.baseURL}
+              columnsWidth={{
+                自动邮件提醒目标未提交日期: 300,
+                自动邮件提醒目标未核准日期: 300
+              }}
               downloadBaseURL={this.attendanceDownloadURL}
             />
           </Skeleton>
