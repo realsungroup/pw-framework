@@ -190,7 +190,7 @@ window[590765309983] = {
         {
           btnName: '删除',
           // innerFieldNames: ['noDelete'],
-          innerFieldNames:['C3_591373760332'],
+          innerFieldNames: ['C3_591373760332'],
           // innerFieldNames: ['C3_591373611399', 'C3_605619907534'],
           values: ['Y']
         }
@@ -220,7 +220,7 @@ window[592305842055] = {
   title: '统计分析与录入',
   // 单元组件
   // name: 'LzTable',
-  name: 'StatisticAnalysisJC',
+  name: 'StatisticAnalysisJC'
   // props: {
   //   // 单元组件 props
   //   resid: 590863325025,
@@ -1572,7 +1572,7 @@ window['个人表格'] = {
 //符合解除人员
 window[614706766207] = {
   name: 'RelievePerson',
-  title: '符合解除人员',
+  title: '符合解除人员'
   // props: {
   //   resid: 614709186509,
   //   recordFormFormWidth: '90%',
@@ -1774,7 +1774,57 @@ window[627590812010] = {
   name: 'DLPrint',
   title: 'DL打印'
 };
+window[628679481942] = {
+  name: 'StatisticalReportForms',
+  title: '数据统计报表'
+};
 window[628250933331] = {
   name: 'IDPTrack',
   title: '个人能力发展轨迹'
+};
+
+window[628868376923] = {
+  name: 'VisitorApplyVIP',
+  title: 'VIP访客业务'
+};
+
+window[628885904481] = {
+  name: 'TableData', // 组件名称，
+  title: 'VIP前台查阅', // 功能模块名称
+  props: {
+    resid: 628862737920,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: false,
+    formProps: {
+      height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[628886558788] = {
+  name: 'TableData', // 组件名称，
+  title: '统计管理', // 功能模块名称
+  props: {
+    resid: 628886508023,
+    actionBarWidth: 100,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    formProps: {
+      height: 500
+    },
+    subtractH: 240
+  }
 };

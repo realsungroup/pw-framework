@@ -1,0 +1,54 @@
+.statistical-report-forms {
+  background: #ffffff;
+  min-height: 100vh;
+  .statistical-report-form-3 {
+    &_table {
+      border: 1px solid #999999;
+      display: flex;
+      text-align: center;
+      &__sider {
+        &_header,
+        &_item {
+          padding: 4px 8px;
+          border-right: 1px solid #999999;
+          border-bottom: 1px solid #999999;
+        }
+        &_header {
+          background: #e3ebf6;
+        }
+      }
+      &__main {
+        flex: 1;
+        &_quarter_list {
+          display: flex;
+        }
+        &_quarter {
+          flex: 1;
+          &_item {
+            padding: 4px 8px;
+            border-right: 1px solid #999999;
+            border-bottom: 1px solid #999999;
+            height: 51px;
+          }
+        }
+      }
+      &__header {
+        display: flex;
+        background: #e3ebf6;
+        &_item {
+          flex: 1;
+          padding: 4px 8px;
+          border-right: 1px solid #999999;
+          border-bottom: 1px solid #999999;
+          height: 51px;
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+  }
+}
+#report-form1 {
+  height: 700px;
+}
