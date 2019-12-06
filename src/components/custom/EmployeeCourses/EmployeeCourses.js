@@ -873,6 +873,7 @@ class EmployeeCourses extends React.Component {
         <Option value="all">内训/外训</Option>
         <Option value="外训">外训</Option>
         <Option value="内训">内训</Option>
+        <Option value="内训">外聘内训</Option>
       </Select>
 
       <Search
