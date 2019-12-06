@@ -1788,13 +1788,14 @@ window[628885904481] = {
   name: 'TableData', // 组件名称，
   title: 'VIP前台查阅', // 功能模块名称
   props: {
-    resid: 628862737920,
+    resid: 628946871001,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: true,
+    actionBarWidth:170,
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
@@ -1809,7 +1810,7 @@ window[628886558788] = {
   name: 'TableData', // 组件名称，
   title: '统计管理', // 功能模块名称
   props: {
-    resid: 628886508023,
+    resid: 628946981907,
     actionBarWidth:100,
     hasAdd: false,
     hasBeBtns: true,

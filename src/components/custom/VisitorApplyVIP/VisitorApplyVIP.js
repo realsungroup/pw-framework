@@ -38,7 +38,8 @@ class VisitorApplyVIP extends React.Component {
   };
   onAdd = () => {
     this.setState({
-      addModal: true
+      addModal: true,
+      mode: 'add'
     });
   };
   handleEdit = record => {
@@ -46,11 +47,11 @@ class VisitorApplyVIP extends React.Component {
     for (let i = 0; i < record.countVisitors; i++) {
       peopleList.push({ name: true });
     }
-    console.log('peopleList', peopleList, record.countVisitors);
     this.setState({
       addModal: true,
       record,
-      peopleList
+      peopleList,
+      mode: 'check'
     });
   };
   componentDidMount = () => {
@@ -77,13 +78,13 @@ class VisitorApplyVIP extends React.Component {
   };
   remove = (item, index) => {
     const { peopleList } = this.state;
-    let peopleListNew = []
-    peopleList.forEach((item,indexs)=>{
-        if(index === indexs){
-            item.name ='';
-        }
-        peopleListNew.push(item)
-    })
+    let peopleListNew = [];
+    peopleList.forEach((item, indexs) => {
+      if (index === indexs) {
+        item.name = '';
+      }
+      peopleListNew.push(item);
+    });
     this.setState({
       peopleList: peopleListNew
     });
@@ -97,7 +98,7 @@ class VisitorApplyVIP extends React.Component {
       if (!err) {
         let res;
         let data = {
-          resid: 628862440631, // 主表 id
+          resid: 628946788076, // 主表 id
           maindata: {
             // 添加的主表记录
             _state: 'editoradd',
@@ -106,38 +107,28 @@ class VisitorApplyVIP extends React.Component {
             visitPurpose: values.visitPurpose,
             airportOrstation: values.airportOrstation,
             everydayCar: values.everydayCar,
+            approver: values.approver,
             VIPMeal: values.VIPMeal,
             countVisitors: values.countVisitors,
             TeaBreak: values.TeaBreak,
             C3_612005042895: values.C3_612005042895,
-            _id: 1,
-            REC_ID: record.REC_ID ? record.REC_ID : ''
+            _id: 1
+            // REC_ID: record.REC_ID ? record.REC_ID : ''
           }
         };
         const { peopleList } = this.state;
-        // let subdata = [];
         peopleList.forEach((item, index) => {
-            if(item.name){
-                data.maindata[`Name${index + 1}`] = values[`Name${index + 1}`];
-            }else{
-                data.maindata[`Name${index + 1}`] = '';
-            }
-          //   let obj = {
-          //     resid: '628872584248',
-          //     maindata: {
-          //       _state: 'editoradd',
-          //       C3_605716828937: 1,
-          //       _id: 1
-          //     }
-          //   };
-          //   obj.maindata.C3_605716828937 = values[`name${index}`];
-          //   subdata.push(obj);
+          if (item.name) {
+            data.maindata[`Name${index + 1}`] = values[`Name${index + 1}`];
+          } else {
+            data.maindata[`Name${index + 1}`] = '';
+          }
         });
-        // data.subdata = subdata;
         try {
           res = await http().saveRecordAndSubTables({
             data: [data]
           });
+          message.success('申请成功，请等待审批');
           this.setState({
             addModal: false
           });
@@ -161,30 +152,32 @@ class VisitorApplyVIP extends React.Component {
   };
 
   render() {
-    const { addModal, peopleList, record, options } = this.state;
+    const { addModal, peopleList, record, options, mode } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 }
+        sm: { span: 6 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 }
+        sm: { span: 18 }
       }
     };
     return (
       <React.Fragment>
         <TableData
-          resid="628862440631"
+          resid="628946788076"
           height={640}
           subtractH={220}
-          hasRowView={false}
           hasModify={false}
           hasDelete={false}
           hasAdd={false}
           hasRowModify={false}
-          hasRowSelection={true}
+          hasRowView={false}
+          hasRowDelete={false}
+          hasRowSelection={false}
+          hasBeBtns={true}
           actionBarWidth={170}
           customRowBtns={[
             record => {
@@ -194,7 +187,7 @@ class VisitorApplyVIP extends React.Component {
                     this.handleEdit(record);
                   }}
                 >
-                  修改
+                  查看
                 </Button>
               );
             }
@@ -207,14 +200,43 @@ class VisitorApplyVIP extends React.Component {
           visible={addModal}
           width={600}
           destroyOnClose
+          okText={'申请'}
+          cancelText={'取消'}
           onOk={() => this.handleSave()}
           onCancel={() =>
             this.setState({ addModal: false, peopleList: [], record: {} })
           }
+          footer={
+            mode === 'check' ? null : (
+              <React.Fragment>
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      addModal: false,
+                      peopleList: [],
+                      record: {}
+                    });
+                  }}
+                >
+                  取消
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.handleSave();
+                  }}
+                >
+                  申请
+                </Button>
+              </React.Fragment>
+            )
+          }
           centered
         >
           <Form {...formItemLayout}>
-            <Form.Item label="来访单位" hasFeedback>
+            <Form.Item
+              label="来访单位"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('C3_605703828345', {
                 initialValue: record && record.C3_605703828345,
                 rules: [
@@ -223,10 +245,13 @@ class VisitorApplyVIP extends React.Component {
                     message: '请输入来访单位!'
                   }
                 ]
-              })(<Input />)}
+              })(<Input disabled={mode === 'check' ? true : false} />)}
             </Form.Item>
 
-            <Form.Item label="来访人数" hasFeedback>
+            <Form.Item
+              label="来访人数"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('countVisitors', {
                 initialValue: record && record.countVisitors,
                 rules: [
@@ -235,19 +260,26 @@ class VisitorApplyVIP extends React.Component {
                     message: '请输入来访人数!'
                   }
                 ]
-              })(<Input />)}
+              })(<Input disabled={mode === 'check' ? true : false} />)}
             </Form.Item>
 
-            <Form.Item label="添加来访人员" hasFeedback>
-              <Button
-                type="primary"
-                icon="plus"
-                className="visitorApply_addPeople"
-                onClick={this.handlePushPeople}
+            {mode === 'check' ? (
+              ''
+            ) : (
+              <Form.Item
+                label="添加来访人员"
+                hasFeedback={mode === 'check' ? false : true}
               >
-                添加人员
-              </Button>
-            </Form.Item>
+                <Button
+                  type="primary"
+                  icon="plus"
+                  className="visitorApply_addPeople"
+                  onClick={this.handlePushPeople}
+                >
+                  添加人员
+                </Button>
+              </Form.Item>
+            )}
 
             {peopleList.map((item, index) => {
               if (item.name) {
@@ -255,8 +287,14 @@ class VisitorApplyVIP extends React.Component {
                   <Form.Item label={`人员${index + 1}`} key={index}>
                     {getFieldDecorator(`Name${index + 1}`, {
                       initialValue: record[`Name${index + 1}`]
-                    })(<Input className="visitorApply_input" />)}
+                    })(
+                      <Input
+                        disabled={mode === 'check' ? true : false}
+                        className="visitorApply_input"
+                      />
+                    )}
                     <Button
+                      disabled={mode === 'check' ? true : false}
                       type="danger"
                       onClick={() => {
                         this.remove(item, index);
@@ -271,7 +309,10 @@ class VisitorApplyVIP extends React.Component {
               }
             })}
 
-            <Form.Item label="VIP餐" hasFeedback>
+            <Form.Item
+              label="VIP餐"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('VIPMeal', {
                 initialValue: record && record.VIPMeal,
                 rules: [
@@ -281,14 +322,17 @@ class VisitorApplyVIP extends React.Component {
                   }
                 ]
               })(
-                <Radio.Group>
+                <Radio.Group disabled={mode === 'check' ? true : false}>
                   <Radio value={'0'}>不需要</Radio>
                   <Radio value={'30'}>30元/份</Radio>
                   <Radio value={'50'}>50元/份</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
-            <Form.Item label="来访日期" hasFeedback>
+            <Form.Item
+              label="来访日期"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('visitDate', {
                 initialValue: record && moment(record.visitDate),
                 rules: [
@@ -297,10 +341,13 @@ class VisitorApplyVIP extends React.Component {
                     message: '请输入来访日期!'
                   }
                 ]
-              })(<DatePicker />)}
+              })(<DatePicker disabled={mode === 'check' ? true : false} />)}
             </Form.Item>
 
-            <Form.Item label="来访目的" hasFeedback>
+            <Form.Item
+              label="来访目的"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('visitPurpose', {
                 initialValue: record && record.visitPurpose,
                 rules: [
@@ -309,10 +356,13 @@ class VisitorApplyVIP extends React.Component {
                     message: '请输入来访目的!'
                   }
                 ]
-              })(<Input />)}
+              })(<Input disabled={mode === 'check' ? true : false} />)}
             </Form.Item>
 
-            <Form.Item label="接机/接站" hasFeedback>
+            <Form.Item
+              label="接机/接站"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('airportOrstation', {
                 initialValue: record && record.airportOrstation,
                 rules: [
@@ -322,14 +372,17 @@ class VisitorApplyVIP extends React.Component {
                   }
                 ]
               })(
-                <Radio.Group>
+                <Radio.Group disabled={mode === 'check' ? true : false}>
                   <Radio value={'Y'}>是</Radio>
                   <Radio value={'N'}>否</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
 
-            <Form.Item label="日常用车" hasFeedback>
+            <Form.Item
+              label="日常用车"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('everydayCar', {
                 initialValue: record && record.everydayCar,
                 rules: [
@@ -339,16 +392,19 @@ class VisitorApplyVIP extends React.Component {
                   }
                 ]
               })(
-                <Radio.Group>
+                <Radio.Group disabled={mode === 'check' ? true : false}>
                   <Radio value={'Y'}>是</Radio>
                   <Radio value={'N'}>否</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
 
-            <Form.Item label="审批人" hasFeedback>
-              {getFieldDecorator('C3_612005042895', {
-                initialValue: record && record.C3_612005042895,
+            <Form.Item
+              label="审批人"
+              hasFeedback={mode === 'check' ? false : true}
+            >
+              {getFieldDecorator('approver', {
+                initialValue: record && record.approver,
                 rules: [
                   {
                     required: true,
@@ -356,7 +412,10 @@ class VisitorApplyVIP extends React.Component {
                   }
                 ]
               })(
-                <Select placeholder="请选择审批人">
+                <Select
+                  disabled={mode === 'check' ? true : false}
+                  placeholder="请选择审批人"
+                >
                   {options.length > 0 &&
                     options.map(item => {
                       return (
@@ -369,27 +428,33 @@ class VisitorApplyVIP extends React.Component {
               )}
             </Form.Item>
 
-            <Form.Item label="茶歇" hasFeedback>
+            <Form.Item
+              label="茶歇"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('TeaBreak', {
                 initialValue: record && record.TeaBreak,
                 rules: [
                   {
                     required: true,
-                    message: '请输入茶歇!'
+                    message: '请选择茶歇!'
                   }
                 ]
               })(
-                <Radio.Group>
+                <Radio.Group disabled={mode === 'check' ? true : false}>
                   <Radio value={'Y'}>是</Radio>
                   <Radio value={'N'}>否</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
 
-            <Form.Item label="备注" hasFeedback>
+            <Form.Item
+              label="备注"
+              hasFeedback={mode === 'check' ? false : true}
+            >
               {getFieldDecorator('applyPersonRemark', {
                 initialValue: record && record.applyPersonRemark
-              })(<Input />)}
+              })(<Input.TextArea disabled={mode === 'check' ? true : false} />)}
             </Form.Item>
           </Form>
         </Modal>
