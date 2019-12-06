@@ -28,6 +28,7 @@ class RecruitJob extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
+        actionBarWidth ={150}
         downloadBaseURL = {this.dlEmployDownloadURL}
         columnsWidth={{
           '招聘人数':110,

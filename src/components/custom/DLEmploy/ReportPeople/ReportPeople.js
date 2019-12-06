@@ -74,6 +74,7 @@ class ReportPeople extends React.Component {
             hasRowView: true,
             hasRowSelection:true,
             subtractH: 240,
+            actionBarWidth: 100,
             recordFormType: 'drawer',
             formProps: {
               height: 550
@@ -139,8 +140,9 @@ class ReportPeople extends React.Component {
             hasAdd: true,
             hasRowDelete: false,
             hasRowModify: false,
-            hasRowView: false,
+            hasRowView: true,
             subtractH: 220,
+            actionBarWidth: 200,
             formProps: {
               height: 550
             },

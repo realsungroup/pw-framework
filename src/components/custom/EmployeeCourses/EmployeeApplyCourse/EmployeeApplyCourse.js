@@ -133,11 +133,17 @@ class EmployeeApplyCourse extends React.Component {
     isSelectedCourse: false,
     selectedCourse: {},
     searchKey: '',
-    courseArrangeID: ''
+    courseArrangeID: '',
+    UserCode:''
   };
 
   componentDidMount() {
     this.getCourses();
+    let usercode = localStorage.getItem('userInfo');
+    let usrChara=JSON.parse(usercode)
+    console.log(usrChara)
+    let userCode=usrChara.UserInfo.EMP_USERCODE;
+    this.setState({UserCode:userCode})
   }
 
   //获取课程
@@ -190,7 +196,8 @@ class EmployeeApplyCourse extends React.Component {
             trainingClub: course.TrainingOrganization,
             CourseArrangeID: course.CourseArrangeID,
             C3_613941384328: course.currentYear,
-            C3_613956470258: 'Y'
+            C3_613956470258: 'Y',
+            C3_613941384832:this.state.UserCode,
             // C3_613941386081:classTime
           }
         ]

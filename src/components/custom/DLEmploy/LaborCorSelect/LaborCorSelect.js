@@ -111,6 +111,7 @@ class LaborCorSelect extends React.Component {
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={true}
+          actionBarWidth ={180}
           downloadBaseURL={this.dlEmployDownloadURL}
           height="100%"
           columnsWidth={{

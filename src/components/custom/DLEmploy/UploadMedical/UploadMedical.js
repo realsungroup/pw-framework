@@ -33,6 +33,7 @@ class UploadMedical extends React.Component {
             hasRowView: true,
             hasRowSelection:true,
             subtractH: 220,
+            actionBarWidth: 180,
             hasDownloadExcel:true,
             recordFormType:'drawer',
             formProps: {
@@ -91,6 +92,7 @@ class UploadMedical extends React.Component {
             hasRowModify: false,
             hasRowView: true,
             subtractH: 220,
+            actionBarWidth: 180,
             formProps: {
               height: 550
             },
