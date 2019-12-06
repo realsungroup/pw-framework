@@ -584,8 +584,23 @@ export const DLPrint = Loadable({
     return minLoading;
   }
 });
+
+export const StatisticalReportForms = Loadable({
+  loader: () => import('./StatisticalReportForms'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const IDPTrack = Loadable({
   loader: () => import('./IDPTrack'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const VisitorApplyVIP = Loadable({
+  loader: () => import('./VisitorApplyVIP'),
   loading() {
     return minLoading;
   }

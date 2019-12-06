@@ -116,7 +116,7 @@ class CourseResources extends Component {
             onConfirm={this.handleConfirm.bind(this, record)}
             title="是否提交报名申请"
           >
-            <Button>提交报名申请</Button>
+            <Button>填写问卷并报名</Button>
           </Popconfirm>
           )
         }else if(record.isStopApply === 'Y' && record.classType === '内训'){
