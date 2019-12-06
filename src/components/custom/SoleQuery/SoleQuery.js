@@ -181,13 +181,14 @@ class SoleQuery extends Component {
     // 根据链接前端做出处理，然后拿到文件的ID。去后台获取，这里ID已经固定好
     const quertString = window.location.search;
     const qsObj = qs.parse(quertString.substring(1));
+    
 
     // 获取问卷信息
     const res = await this.getQuery(qsObj.id);
     //  console.log('res',res);
     // 查询用户是否已提交
     const hasSubmit = await this.getUserIsSubmmit(qsObj.id);
-
+  
     if (hasSubmit) {
       // // 获取中奖名单
       // this.getHasPrase(qsObj.id);
@@ -421,7 +422,39 @@ class SoleQuery extends Component {
       </div>
     );
   }
-
+  handleConfirmCourse = async record => {
+    var courseId = window.location.search;
+     courseId = qs.parse(courseId.substring(1));
+     courseId=courseId.courseId;
+     var staffNum=localStorage.getItem('userInfo');
+     staffNum=JSON.parse(staffNum);
+     staffNum=staffNum.UserInfo.EMP_USERCODE;
+    // let usercode = parseInt(this.state.userInfo.EMP_USERCODE);
+    try {
+      await http().addRecords({
+        resid: '615983369834',
+        data: [
+          {
+            CourseArrangeID: courseId,
+            C3_613941384832: staffNum,
+            isApply: 'Y'
+          }
+        ]
+      });
+      if (record.places) {
+        message.success('课程报名成功');
+      } else {
+        message.success('申请报名成功，请等待HR审核');
+      }
+      await this.tableDataRef.handleRefresh();
+      this.setState({
+        appliedCourses: [...this.state.appliedCourses, { ...record }]
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error.message);
+    }
+  };
   // 提交问卷
   submitQuery = async () => {
     const { queryID, hasGift, tel } = this.state;
@@ -499,6 +532,12 @@ class SoleQuery extends Component {
     this.setState({
       taskList: newanswers
     });
+    // 如果有课程参数则报名课程
+
+
+    this.handleConfirmCourse()
+
+
 
     // let res;
     // try {
@@ -643,6 +682,8 @@ class SoleQuery extends Component {
 
   // 输入手机号点击确定
   handleOk = () => {
+    this.handleConfirmCourse()
+
     const { recid, tel, isGetgift } = this.state;
     if (!(isGetgift === 'Y')) {
       //没有获奖
@@ -671,6 +712,7 @@ class SoleQuery extends Component {
           console.error(err);
         });
     }
+    
   };
 
   // 监听电话输入的变化
