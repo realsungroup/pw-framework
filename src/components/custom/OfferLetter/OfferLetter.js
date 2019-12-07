@@ -639,10 +639,24 @@ class OfferLetter extends React.Component {
   };
   onPrinting = () => {
     const bodyHtml = window.document.body.innerHTML;
-    window.document.body.innerHTML = this.printer.innerHTML;
-    window.print();
+
+    var footstr = "</body>";
+     var newstr = document.getElementById('content').innerHTML;
+     var style='<style>p{font-size:15px;}</style>';
+      // var style="<style media='print'>#toPrint .sm-wrap{width:30%;margin-right:5%;height:auto;float:left;}	@page {	size: auto; margin: 0;	}</style><style>#toPrint .sm-wrap{width:30%;margin-right:5%;height:auto;float:left;}#toPrint .sm-wrap:nth-child(4n-1){margin-right:0;}.alter>div{margin:0;}#toPrint .sm-wrap>div{width:100%;height:auto;line-height: 22px;margin-bottom: 17px;}#toPrint .sm-wrap>div:last-child{margin-bottom: 0;}.clearfix{clear:both;margin-bottom: 32px;}.printBtn{position:fixed;top:16px;left:16px;}</style>";
+     var headstr = "<html><head><title></title>"+style+"</head><body>";
+     document.body.innerHTML = headstr + newstr + footstr;
+     window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
+
+
+
+    // const bodyHtml = window.document.body.innerHTML;
+    // window.document.body.innerHTML = this.printer.innerHTML;
+    // window.print();
+    // window.document.body.innerHTML = bodyHtml;
+    // window.location.reload();
   };
 
   onSendMail = async () => {
@@ -717,13 +731,14 @@ class OfferLetter extends React.Component {
     const offerTitle =
       'http://wux-hr03.china.ads.finisar.com/rispweb/upfiles/iivi.png';
     return (
-      <div className="container" style={{ paddingBottom: '80px' }}>
+      <div className="container containerOfferLetter" style={{ paddingBottom: '80px' }}>
         <Spin spinning={this.state.loading}>
           <div
             style={{ marginTop: '48px' }}
             id="content"
             ref={p => (this.printer = p)}
           >
+            
             <div
               className={
                 this.state.data.location == 'WX' || !this.state.data.location
@@ -1036,13 +1051,13 @@ class OfferLetter extends React.Component {
                     </u>
                   </strong>
                 </p>
-                <p style={{ marginBottom: '80px' }}>
+                <p style={{ marginBottom: '60px' }}>
                   Please sign this job offer and resend to us within 5 days
                   after you receive it. If not, the offer letter will become
                   invalid.
                 </p>
                 {this.state.data.isHasStock == 'Y' ?null:(
-                  <div style={{height:'320px',width:'100%'}}>
+                  <div style={{height:'280px',width:'100%'}}>
                   
                   </div>
                 )}
@@ -1879,8 +1894,20 @@ class OfferLetter extends React.Component {
                   after you receive it. If not, the offer letter will become
                   invalid.
                 </p>
+                {this.state.data.isHasStock == 'Y' ?null:(
+                  <div style={{height:'280px',width:'100%'}}>
+                  
+                  </div>
+                )}
                 <div
-                  style={{ height: '336px', width: '100%' }}
+                  style={{
+                    width: '100%',
+                    height: '1px',
+                    borderBottom:'1px solid #971a1e'
+                  }}></div>
+                <p style = {{textAlign:"center",color:"#971a1e",fontSize:'12px'}}>T. 724.352.4455  |  F. 724.352.5284  |  ii-vi.com</p>
+                <div
+                  style={{ height: '1px', width: '100%' }}
                   className={this.state.data.isHasStock == 'Y' ? '' : 'hidden'}
                 ></div>
               </p>
@@ -2399,7 +2426,7 @@ class OfferLetter extends React.Component {
             </div>
           </div>
           <div
-            style={{ marginLeft: '200px' }}
+            style={{ marginLeft: '280px',textAlign:'right' }}
             className={this.state.data ? 'buttonLine' : 'hidden'}
           >
             <div className="right">
