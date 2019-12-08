@@ -1,5 +1,5 @@
 import React from 'react';
-import { message } from 'antd';
+import { message ,Spin} from 'antd';
 import echarts from 'echarts';
 import http from 'Util20/api';
 import './StatisticalReportForms.less';
@@ -93,6 +93,7 @@ class ReportForm1 extends React.Component {
     await this.getData();
   }
   getData = async () => {
+    this.setState({loading:true})
     try {
       let httpParams = {};
 
@@ -163,14 +164,19 @@ class ReportForm1 extends React.Component {
           source: source
         }
       });
+      this.setState({loading:false});
+
     } catch (error) {
       message.error(error.message);
+      this.setState({loading:false});
+
       console.error(error);
     }
   };
 
   render() {
     return <div>
+      <Spin spinning={this.state.loading}>
       <div className='tableWrap'>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
@@ -244,6 +250,7 @@ class ReportForm1 extends React.Component {
           </div>
       </div>
       <div id="report-form2" style={{ height: 400 }}></div>
+      </Spin>
       </div>;
   }
 }

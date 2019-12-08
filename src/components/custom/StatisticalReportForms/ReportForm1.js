@@ -1,5 +1,5 @@
 import React from 'react';
-import { message } from 'antd';
+import { message ,Spin} from 'antd';
 import echarts from 'echarts';
 import http from 'Util20/api';
 import './StatisticalReportForms.less';
@@ -8,6 +8,9 @@ import './StatisticalReportForms.less';
  *
  */
 class ReportForm1 extends React.Component {
+  state={
+    loading:false
+  }
   async componentDidMount() {
     this._echarts = echarts.init(
       document.getElementById('report-form1'),
@@ -70,6 +73,7 @@ class ReportForm1 extends React.Component {
     await this.getData();
   }
   getData = async () => {
+    this.setState({loading:true});
     try {
       let httpParams = {};
       this._echarts.showLoading();
@@ -96,14 +100,18 @@ class ReportForm1 extends React.Component {
           source: source
         }
       });
+      this.setState({loading:false});
+
     } catch (error) {
       message.error(error.message);
       console.error(error);
+      this.setState({loading:false});
+
     }
   };
 
   render() {
-    return <div id="report-form1" style={{}}></div>;
+    return (<Spin spinning={this.state.loading}><div id="report-form1" style={{}}></div></Spin>);
   }
 }
 

@@ -1,24 +1,142 @@
 import React from 'react';
 import http from 'Util20/api';
+import { Spin} from 'antd';
 
 class ReportForm3 extends React.Component {
+  state={
+    data:[{
+      header:'???',
+      avgTrain: 0,
+      courseScore: 0,
+      trainHours: 0,
+      trainTime: 0,
+      internal:{
+        trainTime:0,
+        trainHours:0
+      },
+      external:{
+        trainTime:0,
+        trainHours:0
+      }
+    }]
+  }
   componentDidMount() {
     this.getData();
   }
   getData = async () => {
-    http().getTable({
-      resid: '628788952983'
-    });
-    http().getTable({
-      resid: '628789112577'
-    });
+    this.setState({loading:true});
+    try{
+      let res = await http().getTable({
+        resid: '628788952983'
+      });
+      console.log(res)
+      let res2 = await http().getTable({
+        resid: '628789112577'
+      });
+      console.log(res2)
+      // 1.创建季度数据
+      var arr=[];
+      var n=0;
+      while(n<4){
+        if(res2.data[n]){
+          var avg=res2.data[n].avgTrain||0;
+          var cou=res2.data[n].courseScore||0;
+          var trainH=res2.data[n].trainHours||0;
+          var trainT=res2.data[n].trainTime||0;
+          arr.push({
+            header:res2.data[n].C3_611264173184+res2.data[n].quarter,
+            quarter:res2.data[n].quarter,
+            avgTrain:avg,
+            courseScore:cou,
+            trainHours:trainH,
+            trainTime:trainT,
+            internal:{
+              trainTime:0,
+              trainHours:0},
+            external:{
+              trainTime:0,
+              trainHours:0
+            }
+          })
+        }else{
+          arr.push({
+            header:res2.data[0].C3_611264173184+'Q'+(n+1),
+            quarter:'Q'+(n+1),
+            avgTrain:0,
+            courseScore:0,
+            trainHours:0,
+            trainTime:0,
+            internal:{
+              trainTime:0,
+              trainHours:0
+            },
+            external:{
+              trainTime:0,
+              trainHours:0
+            }
+          })
+        }
+       
+        n++;
+      }
+      // 2.添加内外训详情
+      n=0;
+      var c=0;
+      while(n<res.data.length){
+        c=0;
+        while(c<4){
+          if(res.data[n].quarter==arr[c].quarter){
+            if(res.data[n].courseType2=='内训'){
+              var tT=res.data[n].trainTime||0;
+              var tH=res.data[n].trainHours||0;
+              arr[c].internal={
+                trainTime:tT,
+                trainHours:tH
+              }
+            }else{ 
+              var tT=res.data[n].trainTime||0;
+              var tH=res.data[n].trainHours||0;
+              arr[c].external={
+                trainTime:tT,
+                trainHours:tH
+              }
+            }
+          }
+          c++;
+        }
+        n++;
+      }
+      // 3.计算总和
+      arr.push({
+        header:res2.data[0].C3_611264173184+'YTD',
+        avgTrain:Number(arr[0].avgTrain)+Number(arr[1].avgTrain)+Number(arr[2].avgTrain)+Number(arr[3].avgTrain),
+        courseScore:(Number(arr[0].courseScore)+Number(arr[1].courseScore)+Number(arr[2].courseScore)+Number(arr[3].courseScore))/4,
+        trainHours:Number(arr[0].trainHours)+Number(arr[1].trainHours)+Number(arr[2].trainHours)+Number(arr[3].trainHours),
+        trainTime:Number(arr[0].trainTime)+Number(arr[1].trainTime)+Number(arr[2].trainTime)+Number(arr[3].trainTime),
+        internal:{
+          trainTime:Number(arr[0].internal.trainTime)+Number(arr[1].internal.trainTime)+Number(arr[2].internal.trainTime)+Number(arr[3].internal.trainTime),
+          trainHours:Number(arr[0].internal.trainHours)+Number(arr[1].internal.trainHours)+Number(arr[2].internal.trainHours)+Number(arr[3].internal.trainHours)
+        },
+        external:{
+          trainTime:Number(arr[0].external.trainTime)+Number(arr[1].external.trainTime)+Number(arr[2].external.trainTime)+Number(arr[3].external.trainTime),
+          trainHours:Number(arr[0].external.trainHours)+Number(arr[1].external.trainHours)+Number(arr[2].external.trainHours)+Number(arr[3].external.trainHours)
+        }
+      })
+      this.setState({data:arr,loading:false})
+    }catch(e){
+      console.log(e);
+      this.setState({loading:false});
+
+    }
+    
   };
   render() {
     return (
+      <Spin spinning={this.state.loading}>
       <div className="statistical-report-form-3">
         <div className="statistical-report-form-3_table">
           <div className="statistical-report-form-3_table__sider">
-            <div className="statistical-report-form-3_table__sider_header">
+            <div className="statistical-report-form-3_table__sider_header" style={{lineHeight:'25px'}}>
               Key Figure
               <br />
               (L3 and above)
@@ -45,98 +163,65 @@ class ReportForm3 extends React.Component {
             </div>
           </div>
           <div className="statistical-report-form-3_table__main">
-            <div className="statistical-report-form-3_table__header">
-              <div className="statistical-report-form-3_table__header_item">
-                FY14Q1
-              </div>
-              <div className="statistical-report-form-3_table__header_item">
-                FY14Q2
-              </div>
-              <div className="statistical-report-form-3_table__header_item">
-                FY14Q3
-              </div>
-              <div className="statistical-report-form-3_table__header_item">
-                FY14Q4
-              </div>
-              <div className="statistical-report-form-3_table__header_item">
-                FY14YTD
-              </div>
-            </div>
+            {/* <div className="statistical-report-form-3_table__header">
+              { this.state.data.map((item) => {
+                return(
+                  <>
+                      
+                  </>
+                )
+              })}
+            </div> */}
             <div className="statistical-report-form-3_table__main_quarter_list">
-              <div className="statistical-report-form-3_table__main_quarter">
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  917
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  3891.5
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  6.1
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  4.66/5
-                </div>
-              </div>
-              <div className="statistical-report-form-3_table__main_quarter">
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  917
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  3891.5
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  6.1
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  4.66/5
-                </div>
-              </div>
-              <div className="statistical-report-form-3_table__main_quarter">
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  917
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  3891.5
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  6.1
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  4.66/5
-                </div>
-              </div>
-              <div className="statistical-report-form-3_table__main_quarter">
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  917
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  3891.5
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  6.1
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  4.66/5
-                </div>
-              </div>
-              <div className="statistical-report-form-3_table__main_quarter">
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  917
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  3891.5
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  6.1
-                </div>
-                <div className="statistical-report-form-3_table__main_quarter_item">
-                  4.66/5
-                </div>
-              </div>
+            { this.state.data.map((item) => {
+                return(
+                  <>
+                     <div className="statistical-report-form-3_table__main_quarter">
+                     <div className="statistical-report-form-3_table__header">
+                     <div className="statistical-report-form-3_table__header_item">
+                        {item.header}
+                      </div>
+                      </div>
+                        <div className="statistical-report-form-3_table__main_quarter_item">
+                          <div className='courseRect'>
+                            <div className='internalRect'>
+                              Internal<br/>{item.internal.trainTime?item.internal.trainTime:0}
+                            </div>
+                            <div className='externalRect'>
+                              External<br/>{item.external.trainTime?item.external.trainTime:0}
+                            </div>
+                          </div>
+                          
+                          <div className='courseRect'>{item.trainTime}</div>
+                        </div>
+                        <div className="statistical-report-form-3_table__main_quarter_item">
+                        <div className='courseRect'>
+                            <div className='internalRect'>
+                              Internal<br/>{item.internal.trainHours?item.internal.trainHours:0}
+                            </div>
+                            <div className='externalRect'>
+                              External<br/>{item.external.trainHours?item.external.trainHours:0}
+                            </div>
+                          </div>
+                          <div className='courseRect'>
+                            {item.trainHours?item.trainHours:0}
+                          </div>
+                        </div>
+                        <div className="statistical-report-form-3_table__main_quarter_item">
+                          {item.avgTrain?item.avgTrain:0}
+                        </div>
+                        <div className="statistical-report-form-3_table__main_quarter_item">
+                          {item.courseScore?item.courseScore:0}/5
+                        </div>
+                      </div>
+                  </>
+                )
+              })}
             </div>
           </div>
         </div>
       </div>
+      </Spin>
     );
   }
 }
