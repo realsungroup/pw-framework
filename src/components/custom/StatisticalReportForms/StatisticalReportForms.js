@@ -56,7 +56,7 @@ class StatisticalReportForms extends React.Component {
               <ReportForm1 currentYear={currentYear} />
             </TabPane>
             <TabPane tab="培训历年财年人均变化统计" key="3">
-              <ReportForm2 />
+              <ReportForm2 chara='HR'/>
             </TabPane>
           </Tabs>
         </Spin>

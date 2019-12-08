@@ -8,7 +8,11 @@ import './StatisticalReportForms.less';
  *
  */
 class ReportForm1 extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   state={
+    loading:false,
     data:[
       [
         // {
@@ -90,16 +94,29 @@ class ReportForm1 extends React.Component {
       //   ]
       // }
     });
-    await this.getData();
+    if(this.props.chara=='HR'){
+      await this.getData('628789285884');
+
+    }else if(this.props.chara=='director'){
+      // 主管的场合查下属
+      await this.getData('628789285884');
+
+      // var toSearch=localStorage.getItem('userInfo');
+      // toSearch=JSON.parse(toSearch);
+      // toSearch=toSearch.UserCode;
+    }else if (this.props.chara=='individual'){
+      // 个人查看自己
+      await this.getData('628789285884');
+    }
   }
-  getData = async () => {
+  getData = async (id) => {
     this.setState({loading:true})
     try {
       let httpParams = {};
 
       this._echarts.showLoading();
       const res = await http(httpParams).getTable({
-        resid: '628789285884'
+        resid: id
       });
       // 创建表格数据源
       // 1.添加季度数据
@@ -175,7 +192,7 @@ class ReportForm1 extends React.Component {
   };
 
   render() {
-    return <div>
+    return <div style={{width:'100%',height:'auto',background:'#fff',overflow:'auto'}}>
       <Spin spinning={this.state.loading}>
       <div className='tableWrap'>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
