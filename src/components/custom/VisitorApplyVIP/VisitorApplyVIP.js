@@ -176,7 +176,6 @@ class VisitorApplyVIP extends React.Component {
           hasRowModify={false}
           hasRowView={false}
           hasRowDelete={false}
-          hasRowSelection={false}
           hasBeBtns={true}
           actionBarWidth={170}
           customRowBtns={[
@@ -221,6 +220,7 @@ class VisitorApplyVIP extends React.Component {
                   取消
                 </Button>
                 <Button
+                type='primary'
                   onClick={() => {
                     this.handleSave();
                   }}
@@ -323,11 +323,11 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'0'}>不需要</Radio>
-                  <Radio value={'30'}>30元/份</Radio>
-                  <Radio value={'50'}>50元/份</Radio>
+                  <Radio value={'N'}>不需要</Radio>
+                  <Radio value={'Y'}>需要</Radio>
                 </Radio.Group>
               )}
+              <div>仅限外部审核及重要访客</div>
             </Form.Item>
             <Form.Item
               label="来访日期"
