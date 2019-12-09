@@ -260,7 +260,7 @@ class EmployeeCourses extends React.Component {
         let selectedCourse = { ...myCourses[0] };
         this.setState({ myCourses, selectedCourse });
       } else {
-        this.setState({ myCourses: [], selectedCourse: null });
+        this.setState({ myCourses: [], selectedCourse: {} });
       }
     } catch (error) {
       message.error(error.message);
@@ -979,7 +979,7 @@ class EmployeeCourses extends React.Component {
   };
   render() {
     const { selectedCourse } = this.state;
-    const { courseType } = selectedCourse;
+    const { courseType } = selectedCourse ;
     const now = moment();
     const isAfterStart =
       selectedCourse.C3_615393041304 &&

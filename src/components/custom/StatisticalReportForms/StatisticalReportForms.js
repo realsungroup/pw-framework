@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs, message, Spin } from 'antd';
-import { TableData } from '../../common/loadableCommon';
 import './StatisticalReportForms.less';
 import ReportForm1 from './ReportForm1';
 import ReportForm2 from './ReportForm2';
@@ -56,7 +55,7 @@ class StatisticalReportForms extends React.Component {
               <ReportForm1 currentYear={currentYear} />
             </TabPane>
             <TabPane tab="培训历年财年人均变化统计" key="3">
-              <ReportForm2 chara='HR'/>
+              <ReportForm2 chara="HR" />
             </TabPane>
           </Tabs>
         </Spin>
