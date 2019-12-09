@@ -911,7 +911,8 @@ class LzTable extends React.Component {
       curTaskTitle: '', // 当前正在处理任务的标题
       totalIndex: 0, // 任务总进度
       curIndex: 0, // 当前任务进度
-      isTaskComplete: false // 当前任务是否已完成
+      isTaskComplete: false, // 当前任务是否已完成
+      submitLoading:false //提交按钮的loading
     };
   }
 
@@ -2645,7 +2646,7 @@ class LzTable extends React.Component {
   getFormHeader = (record, rowIndex) => {
     const { formHeaderRecords, btnsVisible, backendBtnsHide } = this.props;
     const { mod, del } = btnsVisible;
-    const { backEndBtnsSingle } = this.state;
+    const { backEndBtnsSingle ,submitLoading} = this.state;
 
     const backEndBtns = filterBackEndBtns(
       backEndBtnsSingle,
@@ -2706,7 +2707,7 @@ class LzTable extends React.Component {
               okText="确定"
               cancelText="取消"
             >
-              <Button size="small" className="operation-btn">
+              <Button size="small" loading={submitLoading} className="operation-btn">
                 提交
               </Button>
             </Popconfirm>
@@ -2718,6 +2719,9 @@ class LzTable extends React.Component {
 
   handleFESubmit = async record => {
     let res;
+    this.setState({
+      submitLoading:true
+    })
     try {
       res = await http().modifyRecords({
         resid: 590863325025,
@@ -2743,8 +2747,14 @@ class LzTable extends React.Component {
         this.refreshTableData();
       }
     } else {
+    this.setState({
+      submitLoading:false
+    })
       message.error('操作失败');
     }
+    this.setState({
+      submitLoading:false
+    })
   };
 
   renderForms = () => {
