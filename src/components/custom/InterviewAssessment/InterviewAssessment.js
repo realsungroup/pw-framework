@@ -1431,7 +1431,7 @@ var hrCode='623876215000';
             <Button type='primary' onClick={this.showConfirmMail}>Remind & Mail</Button>
           </div>
         </div>
-        <div className='buttonLine'>
+        <div className='buttonLine buttonLineW'>
           <Button onClick={this.subConfirm} type='primary' className={this.state.showSub==true?'':'hidden'}>Submit</Button>
           <Button type='primary' onClick={this.hrConfirm} className={this.state.showConBtn==true?'':'hidden'}>Approve</Button>
           <Button type='danger' className={this.state.showConBtn==true?'':'hidden'} onClick={this.showConfirm}>Return</Button>

@@ -181,13 +181,14 @@ class SoleQuery extends Component {
     // 根据链接前端做出处理，然后拿到文件的ID。去后台获取，这里ID已经固定好
     const quertString = window.location.search;
     const qsObj = qs.parse(quertString.substring(1));
+    
 
     // 获取问卷信息
     const res = await this.getQuery(qsObj.id);
     //  console.log('res',res);
     // 查询用户是否已提交
     const hasSubmit = await this.getUserIsSubmmit(qsObj.id);
-
+  
     if (hasSubmit) {
       // // 获取中奖名单
       // this.getHasPrase(qsObj.id);
@@ -207,6 +208,7 @@ class SoleQuery extends Component {
   // 进度条关闭
   handleShowProgress = async () => {
     const { hasGift, queryID } = this.state;
+    var bol=false;
     // 改变提交状态
     try {
       this.setState({ loading: true });
@@ -214,11 +216,39 @@ class SoleQuery extends Component {
         resid: 609613163948,
         data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
       });
+      var courseId = window.location.search;
+     courseId = qs.parse(courseId.substring(1));
+     courseId=courseId.courseId;
+     var staffNum=localStorage.getItem('userInfo');
+     staffNum=JSON.parse(staffNum);
+     staffNum=staffNum.UserInfo.EMP_USERCODE;
+     if(staffNum.length>0){
+      bol=true;
+     }
+      if(bol==true){
+      await http().addRecords({
+        resid: '615983369834',
+        data: [
+          {
+            CourseArrangeID: courseId,
+            C3_613941384832: staffNum,
+            isApply: 'Y'
+          }
+        ]
+      });
+      // window[615375286006] = {
+      //   name: 'CourseResources',
+      //   title: '课程资源'
+      // };
+      window.open(window.location.origin+'?resid=615375286006&recid=615375314499&type=%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83&title=%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90&success=true')
+      window.parent.close();
+    }
     } catch (err) {
       console.error(err);
       this.setState({ loading: false });
       return message.error(err.message);
     }
+    
     this.setState({ loading: false });
     //  判断有无礼品
     if (hasGift === '0') {
@@ -228,6 +258,7 @@ class SoleQuery extends Component {
       });
     }
     // 有礼品时
+    message.success('已经成功报名课程')
     let res;
     try {
       res = await http().addRecords({
@@ -421,7 +452,7 @@ class SoleQuery extends Component {
       </div>
     );
   }
-
+  
   // 提交问卷
   submitQuery = async () => {
     const { queryID, hasGift, tel } = this.state;
@@ -499,6 +530,11 @@ class SoleQuery extends Component {
     this.setState({
       taskList: newanswers
     });
+    // 如果有课程参数则报名课程
+
+
+
+
 
     // let res;
     // try {
@@ -643,17 +679,22 @@ class SoleQuery extends Component {
 
   // 输入手机号点击确定
   handleOk = () => {
+
     const { recid, tel, isGetgift } = this.state;
     if (!(isGetgift === 'Y')) {
       //没有获奖
+
       return this.setState({
         visible: false,
         subStatus: false,
         hasSubmit: true
       });
     } else if (!tel) {
+      
+
       this.handleGiveUpgiftCancel();
     } else {
+
       http()
         .modifyRecords({
           resid: 608911532639,
@@ -671,6 +712,7 @@ class SoleQuery extends Component {
           console.error(err);
         });
     }
+    
   };
 
   // 监听电话输入的变化

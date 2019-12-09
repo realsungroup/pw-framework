@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Radio, Button, Icon, Input, Spin, Modal,Tooltip } from 'antd';
 import './IDPTrack.less';
 import moment from 'moment';
+import ReportForm2 from '../StatisticalReportForms/ReportForm2';
 import echarts from 'echarts';
 import http from '../../../util20/api';
 const backColor=[
@@ -16,6 +17,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showRepo:false,
       dataCourse:[{}],
       loading:false,
       visible:false,
@@ -364,13 +366,21 @@ class IDPTrack extends Component {
     return (
       <div className="wrap">
          <Spin style={{width:'100%',height:'100%',position:'fixed'}} spinning={this.state.loading}>
+         <div className='repo_track' style={this.state.showRepo?{left:0}:{left:'100vw'}}>
+        <div className='clz_track' onClick={()=>{this.setState({showRepo:false})}}>
+          <Icon type="right" style={{lineHeight:'100vh',color:'#fff',width:'24px'}}/>
+        </div>
+        <div style={{width:'calc(100% - 24px)',float:'left'}}>
+        <ReportForm2 chara='individual'/>
+        </div>
+      </div>
       <div style={this.state.showCourse?{transform:'scaleY(1)',top:'0vh'}:{transform:'scaleY(0)',top:'-50vh'}}  className='courseWrap pop'>
       <div className='popClz' onClick={()=>this.setState({showCourse:false})}>
        </div>
        <div id='chart2' className={this.state.showCourse?'show':null}>
        </div>
       </div>
-
+      
 
        <div style={this.state.visible?{transform:'scaleY(1)',top:'0vh'}:{transform:'scaleY(0)',top:'-50vh'}} className='pop'>
       <div className='popClz' onClick={()=>this.setState({visible:false})}>
@@ -379,9 +389,11 @@ class IDPTrack extends Component {
        <div id='chart' className={this.state.visible?'show':null}>
        </div>
        </div>
+       <div style={{zIndex:'10',right:'0',position:'fixed',width:'24px',height:'100vh',background:'#13c2c2',boxShadow:'0px 0px 8px #006d75'}}>
+      </div>
        <header>
   <h3>{this.state.name}的个人能力发展轨迹</h3>
-         {/* <Icon type="bars"  style={{fontSize:'4vh',float:'right',marginRight:'3.89vw',lineHeight:'11vh',color:'#fff',cursor:'pointer'}}/> */}
+        <h4 onClick={()=>{this.setState({showRepo:true})}}><Icon type="left" /> 历年培训统计</h4>
        </header>
        <content>
       

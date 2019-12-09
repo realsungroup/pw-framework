@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
 import FiscalYearPlan from '../FiscalYearPlan/index';
+import ReportForm2 from '../StatisticalReportForms/ReportForm2';
 import SubordinateCoures from '../SubordinateCourses';
 import DirectorProbation from '../Probation/DirectorProbation';
 import { Button, Menu, Icon, Switch } from 'antd';
@@ -41,6 +42,7 @@ class MyTeam extends React.Component {
     let selectKey = this.state.selectKey;
     console.log('selectKey', selectKey);
     switch (selectKey) {
+      
       case '1':
         return (
           <FiscalYearPlan CreateableGroups={['611769739518']}></FiscalYearPlan>
@@ -55,8 +57,8 @@ class MyTeam extends React.Component {
         );
       case '4':
         return <DirectorProbation></DirectorProbation>;
-      default:
-        return '';
+      case '5':
+        return <ReportForm2 chara='director'/>
     }
   };
   onSelect = e => {
@@ -118,16 +120,20 @@ class MyTeam extends React.Component {
               <span> 课程计划</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="calendar" />
+            <Icon type="book" />
               <span> 下属课程 </span>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="calendar" />
+            <Icon type="heat-map" />
               <span> IDP管理 </span>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="calendar" />
               <span> 试用期管理</span>
+            </Menu.Item>
+            <Menu.Item key="5">
+            <Icon type="line-chart" />
+              <span> 培训报告</span>
             </Menu.Item>
           </Menu>
         </div>

@@ -380,10 +380,10 @@ showOver=()=>{
         />
           </div>
         </div>
-        <div className='buttonLine'>
+        <div className='buttonLine' style={{textAlign:'right'}}>
           <Button onClick={this.onPrinting}>打印</Button>
           <Button onClick={this.subData} type='primary'>提交</Button>
-		  <div className={this.state.loca=='WX'?'file ant-btn':'hidden'} style={{marginTop:'12px',float:'right',marginRight:'16px'}}>
+		  <div className={this.state.loca=='WX'?'file ant-btn':'hidden'} style={{marginTop:'12px',float:'right',marginRight:'16px',marginLeft:'8px'}}>
 		  <input id="ss" name="ss" type="file" onChange={v=>{this.imgUp(v)}} accept='image' />
 			点击替换图片
 		  </div>

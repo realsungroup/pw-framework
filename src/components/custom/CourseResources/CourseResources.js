@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import './CourseResources.less';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Popconfirm, message, Alert } from 'antd';
+import { Button, Popconfirm, message, Alert,Spin } from 'antd';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
+import qs from 'qs';
 
 class CourseResources extends Component {
   state = {
     userInfo: JSON.parse(getItem('userInfo')).UserInfo,
-    appliedCourses: []
+    appliedCourses: [],
+    loading:false
   };
 
   componentDidMount = () => {
     this.getAppliedCourses();
+    var success = window.location.search;
+    success = qs.parse(success.substring(1));
+    success=success.success;
+    if(success=='true'){
+      message.success('报名成功！')
+    }
+    
   };
 
   //获取已选课程
@@ -95,7 +104,7 @@ class CourseResources extends Component {
     let { appliedCourses } = this.state;
     let btns = [
       record => {
-        console.log("record.lastPlaces",record.lastPlaces,record.places)
+        // console.log("record.lastPlaces",record.lastPlaces,record.places)
         let isApplied = appliedCourses.find(
           item => item.CourseArrangeID === record.CourseArrangeID
         );
@@ -110,15 +119,84 @@ class CourseResources extends Component {
           return (
             <Alert message="人数已满，无法报名" type="info" showIcon></Alert>
           )
-        }else if(record.isStopApply !== 'Y' && record.classType === '内训' ){
-          return (
-            <Popconfirm
-            onConfirm={this.handleConfirm.bind(this, record)}
-            title="是否提交报名申请"
-          >
-            <Button>提交报名申请</Button>
-          </Popconfirm>
-          )
+        }else if(record.isStopApply !== 'Y' && record.classType === '内训'){
+          if(record.needSheet=='Y'){
+            return (
+              <Button onClick={async()=>{
+                this.setState({loading:true});
+                let res;
+                // 获取工号
+                var staffNum=localStorage.getItem('userInfo');
+
+                staffNum=JSON.parse(staffNum);
+                staffNum=staffNum.UserCode;
+                // 查找历史问卷记录并删除
+                try {
+                  res=await http().getTable({
+                    resid: '609613163948',
+                    cmswhere:`staff_number = '${staffNum}' and query_id = '${record.sheetId}'`
+                    
+                  });
+                  var arr=[];
+                  var  n=0;
+                  while(n<res.data.length){
+                    arr.push({REC_ID:res.data[n].REC_ID})
+                    n++;
+                  }
+                  await http().removeRecords({
+                    resid: '609613163948',
+                    data:arr
+                    
+                  });
+                  console.log(record.CourseArrangeID)
+                  var res2=await http().getTable({
+                    resid: '608838682402',
+                    cmswhere:`query_id = '${record.sheetId}' and person_id = '${staffNum}'`
+                  });
+                  arr=[];
+                  n=0;
+                  while(n<res2.data.length){
+                    arr.push({REC_ID:res2.data[n].REC_ID})
+                    n++;
+                  }
+                  await http().removeRecords({
+                    resid: '608838682402',
+                    data:arr
+                  });
+                  // 添加问卷答题人员 
+                    await http().addRecords({
+                      resid: '609613163948',
+                      data: [{
+                        // 问卷编号
+                        query_id:record.sheetId,
+                        // 人员工号
+                        staff_number:staffNum,
+                        sheetType:'DO_NOT_SEND_MAIL',
+                      }]
+                    });
+                    this.setState({loading:false});  
+                    // 跳转问卷
+                window.open(window.location.origin+'?resid=我的问卷&recid=609335337024&type=前端功能入口&title=我的问卷&id='+record.sheetId+'&courseId='+record.CourseArrangeID)
+                window.parent.close();
+                  
+                  }catch(e){
+                    console.log(e)
+                  }
+                
+                
+              }}>填写问卷并报名</Button>
+            )
+          }else{
+            return (
+              <Popconfirm
+              onConfirm={this.handleConfirm.bind(this, record)}
+              title="是否提交报名申请"
+            >
+              <Button>提交报名申请</Button>
+            </Popconfirm>
+            )
+          }
+          
         }else if(record.isStopApply === 'Y' && record.classType === '内训'){
           return (
             <Alert message="报名已截止" type="info" showIcon></Alert>
@@ -145,6 +223,7 @@ class CourseResources extends Component {
     ];
     return (
       <div className="course_resources">
+        <Spin spinning={this.state.loading}>
         <TableData
           resid="615983242584"
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -160,6 +239,8 @@ class CourseResources extends Component {
           customRowBtns={btns}
           actionBarWidth={150}
         />
+      </Spin>
+
       </div>
     );
   }
