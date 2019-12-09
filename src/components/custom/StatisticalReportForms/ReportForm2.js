@@ -194,7 +194,7 @@ class ReportForm1 extends React.Component {
   render() {
     return <div style={{width:'100%',height:'auto',background:'#fff',overflow:'auto'}}>
       <Spin spinning={this.state.loading}>
-      <div className='tableWrap'>
+      <div className='tableWrap' style={this.props.chara=='individual'?{height:'400px'}:{}}>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
               <p>Key Figure</p>
@@ -205,9 +205,12 @@ class ReportForm1 extends React.Component {
             <dd>
             <p>Training Hours</p>
             </dd>
-            <dd>
-            <p> Training Hours/Person</p>
-            </dd>
+            {
+              this.props.chara=='individual'?null:(<dd>
+              <p> Training Hours/Person</p>
+              </dd>)
+            }
+            
             <dd>
             <p> Satisfaction on Rate</p>
             </dd>
@@ -240,11 +243,16 @@ class ReportForm1 extends React.Component {
                      {item2.trainHours?item2.trainHours:0}
                     </p>
                   </dd> 
-                  <dd>
-                    <p>
-                      {item2.avgTrain?item2.avgTrain:0}
-                    </p>
-                  </dd> 
+                  {
+                    this.props.chara=='individual'?null:(
+                      <dd>
+                        <p>
+                          {item2.avgTrain?item2.avgTrain:0}
+                        </p>
+                      </dd> 
+                    )
+                  }
+                 
                   <dd>
                     <p>
                       {item2.courseScore?item2.courseScore:0}
