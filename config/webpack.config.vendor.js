@@ -26,13 +26,11 @@ module.exports = {
       'lodash.clonedeep',
       'lodash.debounce',
       'lodash.isequal',
-      // 'lz-components-and-utils',
-      // 'lz-request',
       'moment',
       'moveto',
       'nonsupport-ie-react',
       'object-assign',
-      'object-values',
+      // 'object-values' //ie11有问题
       'omit.js',
       'qs',
       'prop-types',
@@ -48,7 +46,7 @@ module.exports = {
       'react-redux',
       'react-resizable',
       'redux',
-      'swiper',
+      // 'swiper' //ie11有问题
       'xlsx',
       'wolfy87-eventemitter',
       'pdfmake'
