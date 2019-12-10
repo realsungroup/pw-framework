@@ -773,6 +773,7 @@ class ArrangingCourses extends React.Component {
                 let endDate = Date.parse(values.modifyEndDatetime);
                 let timer = (endDate - startDate)/86400000;
                 let classTime = (Math.floor(timer)*8)+8;
+                console.log('课时',classTime)
                 if (!err) {
                   console.log('values', values);
                   let { selectedCourseArrangment } = this.state;
@@ -795,7 +796,7 @@ class ArrangingCourses extends React.Component {
                     Teacher: values.modifyTeacher,
                     isArrangeSelf: values.isArrangeSelf,
                     CourseOutline: fileUrl,
-                    classTime:classTime
+                    // classTime:classTime
 
                   };
                   this.modifyCourseArrangment(courseArrangment);
@@ -1197,6 +1198,10 @@ class ArrangingCourses extends React.Component {
             destroyOnClose={true}
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
+                let startDate = Date.parse(values.modifyStartDatetime);
+                let endDate = Date.parse(values.modifyEndDatetime);
+                let timer = (endDate - startDate)/86400000;
+                let classTime = (Math.floor(timer)*8)+8;
                 console.log(values);
                 console.log(parseFloat(values.actualCost));
                 if (!err) {
@@ -1204,6 +1209,7 @@ class ArrangingCourses extends React.Component {
                   courseArrangment.actualCost = parseFloat(
                     courseArrangment.actualCost
                   );
+                  // courseArrangment.classTime = classTime;
                   if (this.state.fileList[0]) {
                     courseArrangment.CourseOutline = this.state.fileList[0].url;
                   }
