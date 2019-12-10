@@ -150,7 +150,7 @@ class EmployeeApplyCourse extends React.Component {
   getCourses = async () => {
     try {
       let res = await http().getTable({
-        resid: '610308370365'
+        resid: '629291566545'
       });
       this.setState({ courses: [...res.data] });
     } catch (error) {

@@ -442,7 +442,7 @@ class SubordinateCourses extends React.Component {
                           ))}
                         {/* 外训才有心得 */}
                         {item.courseType === '外训' &&
-                          (item.isSubmitFeel === 'Y' ? (
+                          (item.isSubmitFeel === 'ing' ? (
                             <Button
                               type="link"
                               onClick={() => {

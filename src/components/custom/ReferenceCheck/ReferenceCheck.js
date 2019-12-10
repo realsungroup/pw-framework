@@ -221,7 +221,7 @@ class ReferenceCheck extends React.Component {
     return (
       <div className='reference'>
         <Spin spinning={this.state.loading}>
-        <div className='buttonLine buttonLineW'>
+        <div className='buttonLine buttonLineW' style={{margin:0}}>
           <Button type='primary' onClick={this.subData}>保存</Button>
           <Button onClick={this.onPrinting}>打印</Button>
 

@@ -161,7 +161,7 @@ class IDLExamination extends React.Component {
     return (
       <div className="container">
         <div id="content" ref={p => (this.printer = p)}>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center',marginBottom:'16px'}}>
             <h2 className="header">Job Application Form / 工作申请表</h2>
           </div>
           <div style={{ float: 'left', fontWeight: 'bold' }}>
@@ -527,7 +527,7 @@ class IDLExamination extends React.Component {
             school) / 教育背景（请从最近教育开始填写至中学）
           </p>
           <div style={{ clear: 'both', marginBottom: '10px' ,width:'100%'}}>
-            <dl >
+            <dl style={{width:842}}>
               <dd >
                 <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
                   <div>Period(Year/Month)<p>年限（年/月）</p></div>
@@ -658,7 +658,7 @@ class IDLExamination extends React.Component {
           工作经验（请从最近职位开始填写）
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
-        <dl>
+        <dl style={{width:842}}>
           <dd>
             <div className='innerRect' style={{fontSize:'12px',textAlign:'center',paddingTop:'2px'}}>
               <div>Post Period<p>任职年限</p></div>
@@ -1112,10 +1112,10 @@ class IDLExamination extends React.Component {
             </tr>
           </table>
         </div>
-        <div style={{ clear: 'both', marginBottom: '20px' }}>
+        <div style={{ clear: 'both', marginBottom: '120px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'66px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
@@ -1374,11 +1374,11 @@ class IDLExamination extends React.Component {
           <p style={{ float: 'left',textAlign:'left' }}>
             1)&nbsp;&nbsp;All information given are true and accurate,
             otherwise I’m willing to be punished even dismissed. /
-            <br/>&nbsp;&nbsp;所有填表内容真实、准确，如有虚假愿意接受处分包括辞退。
+            <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所有填表内容真实、准确，如有虚假愿意接受处分包括辞退。
           </p>
           <p style={{ float: 'left',textAlign:'left'  }}>
             2)&nbsp;&nbsp;I agree with further background check. /
-            <br/>&nbsp;&nbsp;本人同意公司进行背景调查。
+            <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人同意公司进行背景调查。
           </p>
         </div>
         <div style ={{clear:"both"}}>
