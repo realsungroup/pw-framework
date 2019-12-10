@@ -216,6 +216,7 @@ class TranningDetail extends React.Component {
             hasBeBtns={false}
             hasRowModify={false}
             hasRowSelection={false}
+            
             cmswhere={`C3_613941384328 = '${selectedYear}'`}
           />
         </div>

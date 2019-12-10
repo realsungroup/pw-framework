@@ -596,6 +596,7 @@ class PwAggrid extends React.Component {
             frameworkComponents={this.state.frameworkComponents}
             groupMultiAutoColumn={true}
             rememberGroupStateWhenNewData={true}
+            enableCharts={ true }
           ></AgGridReact>
         </div>
       </div>
