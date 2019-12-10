@@ -52,9 +52,14 @@ class ReportForm1 extends React.Component {
       document.getElementById('report-form2'),
       'light'
     );
+    var h = ''
+    if (this.props.chara=='individual'){
+      // 个人查看自己
+      h='培训时数'
+    }
     this._echarts.setOption({
       title: {
-        text: '人均时数',
+        text: h,
         left: 'center',
       },
       legend: { data: [''] },
@@ -99,25 +104,34 @@ class ReportForm1 extends React.Component {
 
     }else if(this.props.chara=='director'){
       // 主管的场合查下属
-      await this.getData('628789285884');
+      await this.getData('629289152048');
 
-      // var toSearch=localStorage.getItem('userInfo');
-      // toSearch=JSON.parse(toSearch);
-      // toSearch=toSearch.UserCode;
+      
     }else if (this.props.chara=='individual'){
       // 个人查看自己
-      await this.getData('628789285884');
+      await this.getData('629289292082');
     }
   }
   getData = async (id) => {
     this.setState({loading:true})
     try {
       let httpParams = {};
+      var toSearch=localStorage.getItem('userInfo');
+      toSearch=JSON.parse(toSearch);
+      toSearch=toSearch.UserInfo.EMP_USERCODE;
 
       this._echarts.showLoading();
-      const res = await http(httpParams).getTable({
-        resid: id
-      });
+      var res 
+      var cms=''
+      if(this.props.chara=='individual'){
+       cms=`C3_613941384832 = '${toSearch}'`
+      }else if (this.props.chara=='director'){
+        cms=`directorId = '${toSearch}'`
+      }
+      res= await http(httpParams).getTable({
+        resid: id,
+        cmswhere:cms
+      })
       // 创建表格数据源
       // 1.添加季度数据
       var arr=[];
@@ -174,7 +188,7 @@ class ReportForm1 extends React.Component {
       this._echarts.hideLoading();
       console.log(res.data);
       let source = res.data.map(item => {
-        return [item.C3_611264173184 + item.quarter, item.trainTime];
+        return [item.C3_611264173184 + item.quarter, item.trainHours];
       });
       this._echarts.setOption({
         dataset: {
