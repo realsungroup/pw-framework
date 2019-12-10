@@ -30,6 +30,8 @@ class SupervisorApprove extends React.Component {
         hasRowDelete={false}
         hasRowModify={false}
         hasBeBtns={true}
+        subtractH={240}
+
       />
       </div>
     </TabPane>
@@ -38,6 +40,8 @@ class SupervisorApprove extends React.Component {
 
     <TableData
         resid={'629316737341'}
+        subtractH={240}
+
         hasModify={false}
         hasAdd={false}
         hasDelete={false}
