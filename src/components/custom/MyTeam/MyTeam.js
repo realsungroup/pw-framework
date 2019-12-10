@@ -4,6 +4,7 @@ import FiscalYearPlan from '../FiscalYearPlan/index';
 import ReportForm2 from '../StatisticalReportForms/ReportForm2';
 import SubordinateCoures from '../SubordinateCourses';
 import DirectorProbation from '../Probation/DirectorProbation';
+import SupervisorApprove from '../SupervisorApprove';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './MyTeam.less';
 import http from 'Util20/api';
@@ -58,7 +59,9 @@ class MyTeam extends React.Component {
       case '4':
         return <DirectorProbation></DirectorProbation>;
       case '5':
-        return <ReportForm2 chara='director'/>
+        return <ReportForm2 chara='director'/>;
+        case '6':
+        return <SupervisorApprove></SupervisorApprove>;
     }
   };
   onSelect = e => {
@@ -107,7 +110,7 @@ class MyTeam extends React.Component {
           </div>
           <Menu
             style={{ height: '100%' }}
-            defaultSelectedKeys={['4']}
+            defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             theme={this.state.theme}
@@ -134,6 +137,10 @@ class MyTeam extends React.Component {
             <Menu.Item key="5">
             <Icon type="line-chart" />
               <span> 培训报告</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+            <Icon type="deployment-unit" />
+              <span> 外训申请单审批</span>
             </Menu.Item>
           </Menu>
         </div>
