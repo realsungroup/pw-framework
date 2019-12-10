@@ -1115,7 +1115,7 @@ class IDLExamination extends React.Component {
         <div style={{ clear: 'both', marginBottom: '20px' }}>
 
         </div>
-        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'66px'}}>
+        <p style={{ float: 'left', fontWeight: 'bold',marginTop:'75px'}}>
           Related Qualification / Skill (If any) 相关技能
         </p>
         <div style={{ clear: 'both', marginBottom: '10px' }}>
