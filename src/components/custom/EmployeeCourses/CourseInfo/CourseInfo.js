@@ -1,18 +1,13 @@
 import React from 'react';
 import './CourseInfo.less';
 import { Card, Col, Row, Input } from 'antd';
-
+import moment from 'moment';
 const rowStyle = {
   marginBottom: 16
 };
 const CourseInfo = function(props) {
   let { course } = props;
   console.log(course)
-  let startDate = Date.parse(course.C3_615393041304);
-  let endDate = Date.parse(course.C3_615393093633);
-  let timer = (endDate - startDate)/86400000;
-  let classTime = Math.round(timer)*8;
-  console.log("classTime",classTime)
   return (
     <Card
       title="课程信息"
@@ -41,17 +36,17 @@ const CourseInfo = function(props) {
         </Col>
         <Col md={12}>
           <span className="course-info_label">开始时间:</span>
-          {course.C3_615393041304}
+          {moment(course.C3_615393041304).format("YYYY-MM-DD")}
         </Col>
       </Row>
       <Row style={rowStyle}>
         <Col md={12}>
           <span className="course-info_label">结束时间:</span>
-          {course.C3_615393093633}
+          {moment(course.C3_615393093633).format("YYYY-MM-DD")}
         </Col>
         <Col md={12}>
           <span className="course-info_label">课时:</span>
-          {classTime}
+          {course.C3_613941385843}
         </Col>
       </Row>
       <Row style={rowStyle}>

@@ -55,6 +55,7 @@ const unactiveStyle = {
   cursor: 'pointer'
 };
 
+
 class ArrangingCourses extends React.Component {
   state = {
     loading: false,
@@ -78,7 +79,8 @@ class ArrangingCourses extends React.Component {
     dataSearch: [],
     fileList: [],
     isShowProgress: false, // 是否显示进度模态窗
-    isShowMoveProgress: false
+    isShowMoveProgress: false,
+    classTime:''
   };
   constructor() {
     super();
@@ -767,6 +769,10 @@ class ArrangingCourses extends React.Component {
             destroyOnClose
             onOk={() => {
               this.props.form.validateFieldsAndScroll((err, values) => {
+                let startDate = Date.parse(values.modifyStartDatetime);
+                let endDate = Date.parse(values.modifyEndDatetime);
+                let timer = (endDate - startDate)/86400000;
+                let classTime = (Math.floor(timer)*8)+8;
                 if (!err) {
                   console.log('values', values);
                   let { selectedCourseArrangment } = this.state;
@@ -788,7 +794,9 @@ class ArrangingCourses extends React.Component {
                     quarter: values.quarter,
                     Teacher: values.modifyTeacher,
                     isArrangeSelf: values.isArrangeSelf,
-                    CourseOutline: fileUrl
+                    CourseOutline: fileUrl,
+                    classTime:classTime
+
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
