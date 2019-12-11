@@ -44,3 +44,10 @@ export const ArchitectureDiagram = Loadable({
     return minLoading;
   }
 });
+
+export const ProcessData = Loadable({
+  loader: () => import('./data/ProcessData'),
+  loading() {
+    return minLoading;
+  }
+});
