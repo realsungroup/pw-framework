@@ -244,6 +244,7 @@ class EmployeeCourses extends React.Component {
     let res;
     try {
       let { selcetedCourseType, selectedYear, searchKey } = this.state;
+      console.log('sy',selectedYear)
       let cmswhere = `C3_613941384328 = '${selectedYear}' `;
       if (selcetedCourseType !== 'all') {
         cmswhere += `AND courseType = '${selcetedCourseType}'`;
@@ -258,7 +259,13 @@ class EmployeeCourses extends React.Component {
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
         let selectedCourse = { ...myCourses[0] };
-        this.setState({ myCourses, selectedCourse });
+        var org=myCourses;
+        this.setState({ CoursesOrg: org });
+
+        var result = org.slice(0, this.state.pageSize);
+        this.setState({ myCourses: result, currentPage: 1,selectedCourse});
+        // this.setState({ myCourses, selectedCourse });
+
       } else {
         this.setState({ myCourses: [], selectedCourse: {} });
       }

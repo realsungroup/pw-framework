@@ -71,6 +71,11 @@ const form = props => {
           rules: [{ required: true, message: '请输入当前财年' }]
         })(<Input placeholder="请输入当前财年，例如：FY2020" />)}
       </Form.Item>
+      <Form.Item label="季度">
+        {getFieldDecorator('quarter', {
+          rules: [{ required: true, message: '请输入季度' }]
+        })(<Input placeholder="请输入季度，例如：Q1" />)}
+      </Form.Item>
       <Form.Item label="开始上课日期">
         {getFieldDecorator('beginClassTime', {
           rules: [{ required: true, message: '请选择上课日期' }]
@@ -227,7 +232,8 @@ class EmployeeApplyCourse extends React.Component {
             classType: course.TranningType,
             organization: course.TrainingOrganization,
             isCustom: 'Y',
-            FisYear: course.currentYear
+            FisYear: course.currentYear,
+            quarter:course.quarter
           }
         ]
       });

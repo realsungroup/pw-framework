@@ -111,9 +111,10 @@ class LaborCorSelect extends React.Component {
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={true}
-          actionBarWidth ={180}
+          actionBarWidth ={200}
           downloadBaseURL={this.dlEmployDownloadURL}
           height="100%"
+          actionBarFixed ={true}
           columnsWidth={{
             '面试时间':180,
             '姓名':90,
@@ -122,25 +123,10 @@ class LaborCorSelect extends React.Component {
             '申请时间':130,
             '考试结果':115,
             '面试结果':115,
-            '状态':90,
             '签到':90,
-            '开始面试操作':180,
-            '结束面试':115,
-            '考试批次':130,
-            '面试通知发送':160,
-            '劳务公司':115,
+            '劳务公司名称':140,
             '面试官':115,
-            '面试官账号':130,
             '体检结果':115,
-            '发送体检通知':160,
-            '发送报到通知':160,
-            '是否入职':115,
-            '是否离职':115,
-            '预约已过期':130,
-            '开始考试时间':180,
-            '身份证号':200,
-            '考试分数':115,
-            '结束考试时间':180
           }}
           actionBarExtra={records => (
             <Button

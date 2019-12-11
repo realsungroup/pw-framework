@@ -177,6 +177,15 @@ class TableDataScheduling extends React.Component {
               subtractH={240}
               height={500}
               actionBarFixed={true}
+              columnsWidth ={{
+                "员工工号":120,
+                "是否超标":120,
+                "连续7天等级":150,
+                "大于84等级":140,
+                "小等于84等级":150,
+                "小等于72等级":150,
+
+              }}
             />
           </TabPane>
           {/* <Modal
