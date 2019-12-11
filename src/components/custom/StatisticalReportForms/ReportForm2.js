@@ -56,6 +56,8 @@ class ReportForm1 extends React.Component {
     if (this.props.chara=='individual'){
       // 个人查看自己
       h='培训时数'
+    }else{
+      h='平均培训时数'
     }
     this._echarts.setOption({
       title: {
@@ -208,7 +210,7 @@ class ReportForm1 extends React.Component {
   render() {
     return <div style={{width:'100%',height:'auto',background:'#fff',overflow:'auto'}}>
       <Spin spinning={this.state.loading}>
-      <div className='tableWrap' style={this.props.chara=='individual'?{height:'400px'}:{}}>
+      <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
               <p>Key Figure</p>
@@ -220,17 +222,19 @@ class ReportForm1 extends React.Component {
             <p>Training Hours</p>
             </dd>
             {
-              this.props.chara=='individual'?null:(<dd>
+                  this.props.chara=='individual'||this.props.chara=='director'?null:(
+            <>
+            <dd>
               <p> Training Hours/Person</p>
-              </dd>)
-            }
-            
+              </dd>
             <dd>
             <p> Satisfaction on Rate</p>
             </dd>
             <dd>
             <p>  External Training Cost</p>
             </dd>
+            </>
+            )}
           </dl>
           <div className='innerWrap' >
             <rect style={{width:this.state.width}}>
@@ -258,7 +262,7 @@ class ReportForm1 extends React.Component {
                     </p>
                   </dd> 
                   {
-                    this.props.chara=='individual'?null:(
+                    this.props.chara=='individual'||this.props.chara=='director'?null:(
                       <dd>
                         <p>
                           {item2.avgTrain?item2.avgTrain:0}
@@ -266,17 +270,23 @@ class ReportForm1 extends React.Component {
                       </dd> 
                     )
                   }
-                 
-                  <dd>
+                {
+                  this.props.chara=='individual'||this.props.chara=='director'?null:(
+<dd>
                     <p>
                       {item2.courseScore?item2.courseScore:0}
                     </p>
                   </dd> 
+                  )
+                }
+                {
+                  this.props.chara=='individual'||this.props.chara=='director'?null:(  
                   <dd>
                     <p>
                       {item2.CourseCos?item2.CourseCos:0}
                     </p>
                   </dd> 
+                  )}
                 </dl>
               );
             })
@@ -288,7 +298,7 @@ class ReportForm1 extends React.Component {
           </rect>
           </div>
       </div>
-      <div id="report-form2" style={{ height: 400 }}></div>
+      <div id="report-form2" style={this.props.chara=='individual'||this.props.chara=='director'?{display:'none'}:{ height: 400 }}></div>
       </Spin>
       </div>;
   }
