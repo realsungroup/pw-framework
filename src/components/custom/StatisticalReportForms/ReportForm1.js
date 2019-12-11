@@ -82,7 +82,6 @@ class ReportForm1 extends React.Component {
         // cmswhere: `C3_613941384328 = '${this.props.currentYear.C3_420161949106}'`
       });
       this._echarts.hideLoading();
-      console.log(res.data);
       let source = [];
       source = res.data.map(item => {
         return [
@@ -93,7 +92,6 @@ class ReportForm1 extends React.Component {
           // 4000
         ];
       });
-      console.log(source);
       this._echarts.setOption({
         dataset: {
           dimensions: ['product', 'Overall Training Cost', 'Average OT(hrs)'],

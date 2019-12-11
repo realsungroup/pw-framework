@@ -1,9 +1,9 @@
 import React from 'react';
 import http from 'Util20/api';
-import { Spin,Select} from 'antd';
+import { Spin,Select,Button} from 'antd';
+import exportJsonExcel from 'js-export-excel';
 
 const { Option } = Select;
-
 
 class ReportForm3 extends React.Component {
   state={
@@ -23,6 +23,66 @@ class ReportForm3 extends React.Component {
         trainHours:0
       }
     }]
+  }
+  
+  exportExcel = async()=>{
+    var _data = this.state.data
+    var sheetHeader = ['Key Figure (L3 and above)'];
+    var sheetData=[
+      {
+        one:'Training Person-time 参加培训人数',
+      },
+      {
+        one:'Training Person-time(Internal) 参加培训人数（内训）'
+      },
+      {
+        one:'Training Person-time(External) 参加培训人数（外训）'
+      },
+      {
+        one:'Training Hours 培训总时数'
+      },
+      {
+        one:'Training Hours(Internal) 培训总时数（内训）'
+      },
+      {
+        one:'Training Hours(External) 培训总时数（外训）'
+      },
+      {
+        one:'Training Hours/Person  人均培训时数'
+      },
+      {
+        one:'Statisfaction Rate 内训满意度'
+      },
+    ]
+    var n=0;
+    while(n<_data.length){
+      sheetHeader.push(_data[n].header);
+      sheetData[0]['a'+n]=_data[n].trainTime;
+      sheetData[1]['a'+n]=_data[n].internal.trainTime;
+      sheetData[2]['a'+n]=_data[n].external.trainTime;
+      sheetData[3]['a'+n]=_data[n].trainTime;
+      sheetData[4]['a'+n]=_data[n].internal.trainHours;
+      sheetData[5]['a'+n]=_data[n].external.trainHours;
+      sheetData[6]['a'+n]=_data[n].avgTrain;
+      sheetData[7]['a'+n]=_data[n].courseScore+'/5';
+
+      n++;
+    }
+    
+    var fileName = this.state.data[0].header.substring(0,6)
+    const option = {
+      fileName : fileName,
+      columnWidths: [20, ''],
+      datas: [
+        {
+          sheetHeader:sheetHeader,
+          sheetName: 'sheet',
+          sheetData:sheetData
+        }
+      ]
+    };
+    const toExcel = new exportJsonExcel(option);
+    toExcel.saveExcel();
   }
   componentDidMount() {
     this.calYeal();
@@ -176,6 +236,7 @@ this.getData(v);
                   <Option value={item}>{item}</Option>
     )})}
     </Select>
+    <Button  onClick={this.exportExcel} style={{marginLeft:'16px'}} type='primary'>导出excel</Button>
       <div className="statistical-report-form-3">
         <div className="statistical-report-form-3_table">
           <div className="statistical-report-form-3_table__sider">
