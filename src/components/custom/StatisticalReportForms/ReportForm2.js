@@ -273,7 +273,7 @@ class ReportForm1 extends React.Component {
         }
      
 
-      <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
+      <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px',marginTop:'calc(40vh - 120px)'}:{}}>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
               <p>Key Figure</p>
