@@ -100,7 +100,7 @@ class CourseArrangementInternal extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 608822905547
+        resid: 629323851797
       });
       this.setState({sheetList:res.data});
     } catch (error) {
@@ -1109,8 +1109,8 @@ class CourseArrangementInternal extends React.Component {
                 {this.state.showSheet==true &&(
                   <div>
                     <TableData
-                      resid="608822905547"
-                      subtractH={220}
+                      resid="629323851797"
+                      subtractH={240}
                       hasRowView={true}
                       hasAdd={false}
                       hasModify={false}
@@ -1120,6 +1120,7 @@ class CourseArrangementInternal extends React.Component {
                       hasRowView={false}
                       actionBarWidth={100}
                       hasRowModify={false}
+                      height={400}
                       customRowBtns={
                         [
                           record => {
