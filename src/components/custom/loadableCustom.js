@@ -605,3 +605,9 @@ export const VisitorApplyVIP = Loadable({
     return minLoading;
   }
 });
+export const DataProcess = Loadable({
+  loader: () => import('./DataProcess'),
+  loading() {
+    return minLoading;
+  }
+});

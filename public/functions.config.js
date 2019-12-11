@@ -1788,6 +1788,11 @@ window[628868376923] = {
   title: 'VIP访客业务'
 };
 
+window[629371964947] = {
+  name: 'DataProcess',
+  title: '数据处理'
+};
+
 window[628885904481] = {
   name: 'TableData', // 组件名称，
   title: 'VIP前台查阅', // 功能模块名称
@@ -1799,7 +1804,7 @@ window[628885904481] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: true,
-    actionBarWidth:170,
+    actionBarWidth: 170,
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
@@ -1814,7 +1819,7 @@ window[628886558788] = {
   title: '统计管理', // 功能模块名称
   props: {
     resid: 628946981907,
-    actionBarWidth:100,
+    actionBarWidth: 100,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1838,7 +1843,7 @@ window[629200936654] = {
   title: '统计管理', // 功能模块名称
   props: {
     resid: 629200875080,
-    actionBarWidth:100,
+    actionBarWidth: 100,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1850,7 +1855,6 @@ window[629200936654] = {
     formProps: {
       height: 500
     },
-    subtractH: 240,
+    subtractH: 240
   }
 };
-
