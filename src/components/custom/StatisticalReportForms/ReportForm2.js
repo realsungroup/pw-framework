@@ -1,8 +1,10 @@
 import React from 'react';
-import { message ,Spin} from 'antd';
+import { message ,Spin,Button} from 'antd';
 import echarts from 'echarts';
 import http from 'Util20/api';
 import './StatisticalReportForms.less';
+import { isNumber } from 'util';
+import exportJsonExcel from 'js-export-excel';
 
 /**
  *
@@ -114,6 +116,59 @@ class ReportForm1 extends React.Component {
       await this.getData('629289292082');
     }
   }
+
+  exportExcel = async()=>{
+    var _data = this.state.data
+    var sheetHeader = ['Key Figure'];
+    var sheetData=[
+      {
+        one:'Training Person-time',
+      },
+      {
+        one:'Training Hours'
+      },
+      {
+        one:'Training Hours/Person'
+      },
+      {
+        one:'Satisfaction on Rate'
+      },
+      {
+        one:'External Training Cost'
+      }
+    ]
+    var n=0;
+    while(n<_data.length){
+      var c=0;
+      while(c<_data[n].length){
+        sheetHeader.push(_data[n][c].quarter);
+        sheetData[0]['a'+n+c]=_data[n][c].trainTime||0;
+        sheetData[1]['a'+n+c]=_data[n][c].trainHours||0;
+        sheetData[2]['a'+n+c]=_data[n][c].avgTrain||0;
+        sheetData[3]['a'+n+c]=_data[n][c].courseScore||0;
+        sheetData[4]['a'+n+c]=_data[n][c].CourseCos||0;
+        c++;
+      }
+      
+      n++;
+    }
+    
+    var fileName = '培训历年财年人均变化统计';
+    const option = {
+      fileName : fileName,
+      columnWidths: [20, ''],
+      datas: [
+        {
+          sheetHeader:sheetHeader,
+          sheetName: 'sheet',
+          sheetData:sheetData
+        }
+      ]
+    };
+    const toExcel = new exportJsonExcel(option);
+    toExcel.saveExcel();
+  }
+
   getData = async (id) => {
     this.setState({loading:true})
     try {
@@ -157,7 +212,6 @@ class ReportForm1 extends React.Component {
         }
         n++;
       }
-      console.log(arr)
       // 2.计算财年数据
       n=0;
       c=0;
@@ -177,7 +231,12 @@ class ReportForm1 extends React.Component {
           arr2.push(numnum)
           c++;
         }
-        arr[n][4].courseScore=((arr2[0]+arr2[1]+arr2[2]+arr2[3])*0.25)+'%'
+        var m=((arr2[0]+arr2[1]+arr2[2]+arr2[3])*0.25);
+        
+        arr[n][4].courseScore=m+'%'
+        if(arr[n][4].courseScore=='NaN%'){
+          arr[n][4].courseScore='0'
+        }
       // 求和第五项
         arr[n][4].CourseCos=Number(arr[n][0].CourseCos)+Number(arr[n][1].CourseCos)+Number(arr[n][2].CourseCos)+Number(arr[n][3].CourseCos)
 
@@ -188,7 +247,6 @@ class ReportForm1 extends React.Component {
       this.setState({width:w,data:arr});
 
       this._echarts.hideLoading();
-      console.log(res.data);
       let source = res.data.map(item => {
         return [item.C3_611264173184 + item.quarter, item.trainHours];
       });
@@ -210,6 +268,11 @@ class ReportForm1 extends React.Component {
   render() {
     return <div style={{width:'100%',height:'auto',background:'#fff',overflow:'auto'}}>
       <Spin spinning={this.state.loading}>
+        {
+          this.props.chara=='HR'?( <Button  onClick={this.exportExcel} style={{marginTop:'16px',marginLeft:'5vw'}} type='primary'>导出excel</Button>):null
+        }
+     
+
       <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
           <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
