@@ -140,7 +140,7 @@ class MyTeam extends React.Component {
             </Menu.Item>
             <Menu.Item key="6">
             <Icon type="deployment-unit" />
-              <span> 外训申请单审批</span>
+              <span>培训申请单审批</span>
             </Menu.Item>
           </Menu>
         </div>
