@@ -1,9 +1,13 @@
 import React from 'react';
 import http from 'Util20/api';
-import { Spin} from 'antd';
+import { Spin,Select} from 'antd';
+
+const { Option } = Select;
+
 
 class ReportForm3 extends React.Component {
   state={
+    date:[],
     data:[{
       header:'???',
       avgTrain: 0,
@@ -21,19 +25,47 @@ class ReportForm3 extends React.Component {
     }]
   }
   componentDidMount() {
-    this.getData();
+    this.calYeal();
   }
-  getData = async () => {
-    this.setState({loading:true});
+  calYeal=async()=>{
+    var myDate = new Date();
+    myDate=myDate.getFullYear();
+    var t=myDate;
+    var n=2012;
+    var arr=[];
+    while(n<myDate){
+      arr.push('FY'+myDate)
+      myDate--;
+    }
+    this.setState({date:arr,curDate:'FY'+t})
+    this.getData('FY'+t);
+
+  }
+  getData = async (cms) => {
+    this.setState({loading:true,data:[{
+      header:'???',
+      avgTrain: 0,
+      courseScore: 0,
+      trainHours: 0,
+      trainTime: 0,
+      internal:{
+        trainTime:0,
+        trainHours:0
+      },
+      external:{
+        trainTime:0,
+        trainHours:0
+      }
+    }]});
     try{
       let res = await http().getTable({
-        resid: '628788952983'
+        resid: '628788952983',
+        cmswhere:`C3_611264173184='${cms}'`
       });
-      console.log(res)
       let res2 = await http().getTable({
-        resid: '628789112577'
+        resid: '628789112577',
+        cmswhere:`C3_611264173184='${cms}'`
       });
-      console.log(res2)
       // 1.创建季度数据
       var arr=[];
       var n=0;
@@ -130,9 +162,20 @@ class ReportForm3 extends React.Component {
     }
     
   };
+  handleChange=async(v)=>{
+this.setState({curDate:v});
+this.getData(v);
+    }
   render() {
     return (
       <Spin spinning={this.state.loading}>
+      
+      <span style={{marginLeft:'16px'}}>财年：</span><Select value={this.state.curDate} style={{ marginLeft:'8px',width: 120 }} onChange={v=>{this.handleChange(v)}}>
+    { this.state.date.map((item) => {
+                return(
+                  <Option value={item}>{item}</Option>
+    )})}
+    </Select>
       <div className="statistical-report-form-3">
         <div className="statistical-report-form-3_table">
           <div className="statistical-report-form-3_table__sider">

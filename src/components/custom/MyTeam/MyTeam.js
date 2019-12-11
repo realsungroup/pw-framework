@@ -4,6 +4,8 @@ import FiscalYearPlan from '../FiscalYearPlan/index';
 import ReportForm2 from '../StatisticalReportForms/ReportForm2';
 import SubordinateCoures from '../SubordinateCourses';
 import DirectorProbation from '../Probation/DirectorProbation';
+import IDPTrack from '../IDPTrack';
+
 import SupervisorApprove from '../SupervisorApprove';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './MyTeam.less';
@@ -32,10 +34,12 @@ class MyTeam extends React.Component {
   };
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var usercode=userInfo.UserInfo.EMP_USERCODE
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
     console.log('desktop', desktop);
     this.setState({
-      desktop
+      desktop,
+      usercode:usercode
     });
   };
   renderContent = () => {
@@ -62,6 +66,40 @@ class MyTeam extends React.Component {
         return <ReportForm2 chara='director'/>;
         case '6':
         return <SupervisorApprove></SupervisorApprove>;
+         case '7':
+        return (
+        <div style={{height:'100vh'}}>
+         <TableData
+          resid={'613847444837'}
+           subtractH={240}
+          hasAdd={false}
+          hasRowView={false}
+          hasModify={false}
+          hasDelete={false}
+          hasRowModify={false}
+          hasRowDelete={false}
+          cmswhere={`C3_611071843800 = '${this.state.usercode}'`}
+          customRowBtns={[
+                (record, btnSize) => {
+                  return (
+
+                    <div>
+                      <Button
+                       onClick={()=>{
+                         this.setState({trackId:record.C3_609622254861,runOut:false})
+                         }}
+                      >
+                       查看个人轨迹
+                      </Button>
+
+                    </div>
+                  );
+                }
+              ]}
+         />
+
+        </div>
+        );
     }
   };
   onSelect = e => {
@@ -69,7 +107,13 @@ class MyTeam extends React.Component {
       selectKey: e.key
     });
   };
-
+ clzTrack=()=>{
+this.setState({runOut:true});
+var t =setTimeout(() => {
+this.setState({trackId:null});
+  
+}, 300);
+ }
   render() {
     const { loading } = this.state;
     return (
@@ -81,6 +125,15 @@ class MyTeam extends React.Component {
             this.state.desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
         }}
       >
+      {this.state.trackId?(
+<div  style={{width:'100vw',height:'100vh',zIndex:'99999',background:'#fff',position:'fixed',top:0,left:0}}>
+<Icon type="close-circle" theme="filled" className='trackClz' style={{position:'absolute',zIndex:999,left:8,top:8,fontSize:'20px'}} onClick={this.clzTrack}/>
+        <div className={this.state.runOut?'runOut':'toShrink'} style={{transform:'scale(0.9)',boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',width:'100vw',height:'100vh',overflow:'hidden'}}>
+         <IDPTrack id={this.state.trackId}></IDPTrack>
+        </div>
+      </div>
+      ):null}
+      
         <div style={{ width: `${this.state.collapsed ? '80px' : '200px'}` }}>
           <div
             style={{
@@ -141,6 +194,10 @@ class MyTeam extends React.Component {
             <Menu.Item key="6">
             <Icon type="deployment-unit" />
               <span>培训申请单审批</span>
+            </Menu.Item>
+            <Menu.Item key="7">
+            <Icon type="rocket" />
+              <span> 下属发展轨迹</span>
             </Menu.Item>
           </Menu>
         </div>
