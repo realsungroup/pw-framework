@@ -1,55 +1,22 @@
 import React from 'react';
-import { List, Skeleton, message } from 'antd';
-import http from 'Util20/api';
-
 import './DataProcess.less';
+import ProcessData from '../../common/data/ProcessData';
 
 class DataProcess extends React.Component {
-  state = {
-    initLoading: false,
-    loading: false,
-    list: []
-  };
-
-  componentDidMount() {
-    this.getData();
-  }
-  getData = () => {
-    try {
-      http().getTable({
-        resid: '629373035772'
-      });
-    } catch (error) {
-      message.error(error.message);
-      console.error(error);
-    }
-  };
   render() {
-    const { initLoading, loading, list } = this.state;
-
     return (
-      <List
-        className="demo-loadmore-list"
-        loading={initLoading}
-        itemLayout="horizontal"
-        dataSource={list}
-        renderItem={item => (
-          <List.Item
-            actions={[
-              <a key="list-loadmore-edit">edit</a>,
-              <a key="list-loadmore-more">more</a>
-            ]}
-          >
-            <Skeleton avatar title={false} loading={item.loading} active>
-              <List.Item.Meta
-                title={<a href="https://ant.design">{item.name.last}</a>}
-                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-              />
-              <div>content</div>
-            </Skeleton>
-          </List.Item>
-        )}
-      />
+      <div className="data-process">
+        <ProcessData
+          resid="629373035772"
+          baseURL="http://10.108.2.66:9091"
+          taskidField="C3_628275595259"
+          titleField="C3_629371875049"
+          descriptionField="C3_629371937304"
+          taskReturnField="C3_627494984765"
+          currentCountText="完成人数"
+          totalCountText="总人数"
+        />
+      </div>
     );
   }
 }
