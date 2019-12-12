@@ -73,7 +73,7 @@ class ProcessData extends React.Component {
           if (!res.IsTerminate) {
             taskList.push(list[index]);
             percentList = {
-              ...this.state.percentList,
+              ...percentList,
               [list[index].REC_ID]: {
                 percent: ((res.index / res.total) * 100).toFixed(2),
                 total: res.total,
@@ -114,12 +114,9 @@ class ProcessData extends React.Component {
           // 该任务已完成
           if (res.index === res.total) {
             taskList.splice(index, 1);
-            console.log(taskList);
-            this.setState({
-              taskList
-            });
           }
           this.setState({
+            taskList,
             percentList: {
               ...this.state.percentList,
               [item.REC_ID]: {
