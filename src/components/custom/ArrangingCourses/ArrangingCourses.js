@@ -455,7 +455,20 @@ class ArrangingCourses extends React.Component {
     });
     this.tableDataRef.handleRefresh();
   };
-
+  alertHRM=async(resid, recordId,r)=>{
+    console.log(r)
+    try {
+      const res = await http().modifyRecords({
+        resid: resid,
+        data: [{ REC_ID: recordId, againNoticeHrmanage: 'Y' }]
+      });
+      message.success('已发送邮件');
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  }
   onMoveFinished = async () => {
     try {
       await http().modifyRecords({
@@ -1010,6 +1023,7 @@ class ArrangingCourses extends React.Component {
             customRowBtns={[
               (record, btnSize) => {
                 return (
+                  <>
                   <Popconfirm
                     title="确认放弃吗？"
                     onConfirm={() => {
@@ -1018,7 +1032,20 @@ class ArrangingCourses extends React.Component {
                   >
                     <Button type="danger">放弃</Button>
                   </Popconfirm>
+                  {record.againNoticeHrmanage!='Y'?(
+                    <Popconfirm
+                   title="确认提醒HR经理人审批申请单？"
+                   onConfirm={() => {
+                     this.alertHRM(courseDetailId, record.REC_ID,record);
+                   }}
+                 >
+                  <Button style={{marginLeft:'4px'}}>提醒HR经理人审批申请单</Button>
+                  </Popconfirm>
+                  ):(<span style={{marginLeft:'4px',color:'red'}}>已提醒HR经理人审批申请单</span>)}
+                   
+                  </>
                 );
+               
               }
             ]}
             cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}

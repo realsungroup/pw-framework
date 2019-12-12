@@ -228,6 +228,10 @@ openDown=(item)=>{
     }
 
   }
+  // 事后提醒
+  alterAfter=async()=>{
+
+  }
   render() {
     return (
       <Spin spinning={this.props.infor.loading} style={{ height: '70vh' }}>
@@ -271,7 +275,7 @@ openDown=(item)=>{
                           />
                           </Popconfirm>)
                         }
-                         
+                        
                       {this.props.isNotice ? null : (
                         <Popconfirm
                           title="是否立即开始通知?"
