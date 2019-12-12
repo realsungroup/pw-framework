@@ -732,7 +732,7 @@ class IdLindex extends Component {
       <Spin spinning={this.state.loading}>
 
         <div className="idlindex__header">
-          <div className="idlindex__header-search">
+          <div className="idlindex__header-search" style={{width:'256px'}}>
             {this.state.userChara!='IDLUser'?(<Input.Search
               placeholder="请输入关键词进行搜索"
               onSearch={value => this.handleSearchClick(value)}
@@ -799,7 +799,8 @@ class IdLindex extends Component {
                   />
                   </div>
                   <div className={this.state.userChara=='HR'?'':'hidden'}>
-                  {(item.isPass=='待通过'||(!item.isPass))?(<Popconfirm placement="right" title={'是否通过面试'} okText="通过" cancelText="未通过"trigger="hover"
+                  {(item.isPass=='待通过'||(!item.isPass))?(
+                  <Popconfirm placement="right" title={'是否通过面试'} okText="通过" cancelText="未通过"trigger="hover"
                   onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
                   onCancel={()=>{this.onFail(item.ID)}}
                   >
@@ -812,17 +813,17 @@ class IdLindex extends Component {
                   {item.isPass=='未通过'?(<Tooltip placement="right" title={'该人员未通过本次招聘'}trigger="hover"
                   
                   >
-                  <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
+                  <div style={{ width:'50px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
-                  <Icon type="close-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
+                  <Icon type="close-circle"theme='filled'style={{fontSize:'18px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
                   </Tooltip>):null}
                   {item.isPass=='已通过'?(<Tooltip placement="right" title={'该人员已通过本次招聘'}trigger="hover"
                   
                   >
-                  <div style={{ width:'40px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
+                  <div style={{ width:'50px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
-                  <Icon type="check-circle"theme='filled'style={{fontSize:'32px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
+                  <Icon type="check-circle"theme='filled'style={{fontSize:'18px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
                   </Tooltip>):null}
                 </List.Item>
