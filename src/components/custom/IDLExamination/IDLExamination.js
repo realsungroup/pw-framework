@@ -1386,7 +1386,8 @@ class IDLExamination extends React.Component {
           <p className = "signDate">Date/日期<b></b></p>
         </div>
         </div>
-        <div>
+        <div style={{width:'100%',height:'32px'}}></div>
+        <div style={{position:'fixed',right:'32px',bottom:'20px'}}>
           <Button
             type="primary"
             onClick={this.onPrinting}

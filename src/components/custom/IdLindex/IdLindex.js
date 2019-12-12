@@ -162,7 +162,7 @@ class IdLindex extends Component {
     try {
       res = await http().addRecords({
         resid: resid,
-        data:[{ID:id,candidateName:this.state.curName,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
+        data:[{ID:id,candidateName:this.state.curName,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'待通知（初试）'}]
       });
       openNotification();
       this.tableDataRef.handleRefresh();
@@ -197,14 +197,18 @@ class IdLindex extends Component {
   // 通过审批流
   onPaStream = async(id,rec)=>{
     var rec_id=this.findRec(id);
-    confirm({
-      title: '求职者可以入职?',
-      onOk:() =>
-        this.passStr(id,rec_id)
+    this.setState({loading:true});
+
+    this.passStr(id,rec_id)
+
+    // confirm({
+    //   title: '求职者可以入职?',
+    //   onOk:() =>
+    //     this.passStr(id,rec_id)
           
-      ,
-      onCancel() {},
-    });
+    //   ,
+    //   onCancel() {},
+    // });
 
   }
   passStr=async(id,rec)=>{
@@ -240,15 +244,16 @@ class IdLindex extends Component {
   }
   onFail = async(id,rec)=>{
     var rec_id=this.findRec(id);
-
-    confirm({
-      title: '求职者无法入职?',
-      onOk:() =>
-        this.failStr(id,rec_id)
+    this.setState({loading:true});
+    this.failStr(id,rec_id);
+    // confirm({
+    //   title: '求职者无法入职?',
+    //   onOk:() =>
+    //     this.failStr(id,rec_id)
           
-      ,
-      onCancel() {},
-    });
+    //   ,
+    //   onCancel() {},
+    // });
 
   }
   // 监听Tabs页的变化
@@ -367,7 +372,6 @@ class IdLindex extends Component {
 		      return (item.isSelected = false);
 		    });
 		    res.data[0].isSelected = true;
-		    // console.log(res.data);
         this.getPersonalInfo(613149356409,res.data[0].ID);
         // var arr=res.data;
         // var n=0;
@@ -411,7 +415,7 @@ class IdLindex extends Component {
 		      return (item.isSelected = false);
 		    });
 		    res.data[0].isSelected = true;
-		    // console.log(res.data);
+		    console.log(res.data);
 		    this.getPersonalInfo(613149356409,res.data[0].ID);
 		    this.setState({
           personList: res.data,
@@ -630,7 +634,7 @@ class IdLindex extends Component {
               //   return <Button>添加面试官</Button>
               // }}
               actionBarExtra={(this.state.userChara=='HR'&&this.state.showAdd==true)?(records => (
-                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}} >Add a new record</Button>
+                <Button type='primary' onClick={v => {this.addRec(613152706922)}} style={{margin:'16px'}} >新增面试评估</Button>
 
               )):''}
               customRowBtns={[
@@ -645,7 +649,7 @@ class IdLindex extends Component {
                         }}
                         style={{marginTop:'8px',fontSize:'14px',padding:'0 13px'}}
                       >
-                        编辑
+                        {record.C3_622921647557=='未审批（初试）'||record.C3_622921647557=='未审批（复试）'||record.C3_622921647557=='已完成'?'查阅':'编辑'}
                       </Button>
 
                     </div>
@@ -795,7 +799,7 @@ class IdLindex extends Component {
                   <List.Item.Meta
                     
                     title={item.ChName}
-                    description={item.appPosition}
+                    description={<div>{item.appPosition}<br/>{item.appDate?(item.appDate).substring(0,16):'申请时间未知'}</div>}
                   />
                   </div>
                   <div className={this.state.userChara=='HR'?'':'hidden'}>
@@ -810,22 +814,24 @@ class IdLindex extends Component {
                   </div>
                   </Popconfirm>):null}
                   </div>
-                  {item.isPass=='未通过'?(<Tooltip placement="right" title={'该人员未通过本次招聘'}trigger="hover"
-                  
+                  {item.isPass=='未通过'?( <Popconfirm placement="right" title={'是否通过面试'} okText="通过" cancelText="未通过"trigger="hover"
+                  onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
+                  onCancel={()=>{this.onFail(item.ID)}}
                   >
                   <div style={{ width:'50px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
                   <Icon type="close-circle"theme='filled'style={{fontSize:'18px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
-                  </Tooltip>):null}
-                  {item.isPass=='已通过'?(<Tooltip placement="right" title={'该人员已通过本次招聘'}trigger="hover"
-                  
+                  </Popconfirm>):null}
+                  {item.isPass=='已通过'?(<Popconfirm placement="right" title={'是否通过面试'} okText="通过" cancelText="未通过"trigger="hover"
+                  onConfirm={()=>{this.onPaStream(item.ID,item.REC_ID)}}
+                  onCancel={()=>{this.onFail(item.ID)}}
                   >
                   <div style={{ width:'50px',height:'40px',borderRadius:'50%',marginRight:'8px',cursor:'pointer' }}>
                     
                   <Icon type="check-circle"theme='filled'style={{fontSize:'18px',marginTop:'3px',marginLeft:'3px',color:'#00a8ff'}}/>
                   </div>
-                  </Tooltip>):null}
+                  </Popconfirm>):null}
                 </List.Item>
               )}
             />
