@@ -162,7 +162,7 @@ class SearchForEmployee extends Component {
     try {
       res = await http().addRecords({
         resid: resid,
-        data:[{ID:id,candidateName:this.state.curName,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'未送邮（初试）'}]
+        data:[{ID:id,candidateName:this.state.curName,CandidateName:this.state.curName,CandidateId:id,C3_622921647557:'待通知（初试）'}]
       });
       openNotification();
       this.tableDataRef.handleRefresh();

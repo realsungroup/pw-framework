@@ -1474,13 +1474,13 @@ var hrCode='623876215000';
               <div className = "applay__informnation-date">日期/Date</div>
             </div>
 			
-            <Form.Item className={this.state.ID?'':'hidden'} style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'calc( 100% - 249px)',paddingRight:'24px',right:0,height:'40px'}}>
-            <div className={this.state.userChara=='HR'?'':'hidden'} style={{marginTop:'-4px',float:'right'}}>
+            <Form.Item  style={{ textAlign: 'center',position:'fixed',bottom:'-17px',background:"#fff",width:'calc( 100% - 249px)',paddingRight:'24px',right:0,height:'40px'}}>
+            <div  style={{marginTop:'-4px',float:'right'}}>
               <Button style={{marginLeft:'8px'}} onClick={this.handleClick}>
-                预览打印
+                预览
               </Button>
               
-			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' className={this.state.userChara=='HR'?'':'hidden'}style={{marginLeft:'8px'}} onClick={this.reFill}>退回重填</Button>)}
+			  {(this.state.currentInfo.isReturn=='Y')?(<span style={{marginLeft:'8px',color:'red'}}>该记录已退回</span>):(<Button type='danger' className={this.state.userChara=='HR'?'':'hidden'}style={{marginLeft:'8px'}} onClick={this.reFill}>退回</Button>)}
               </div>
               <Button type="primary" style={this.state.userChara=='HR'?{float:'right'}:{display:'none'}} onClick={this.handleSave}>保存</Button>
               <Button type="primary" style={(this.state.userChara=='IDLUser')&&(this.state.currentInfo.isReturn=='Y')?{float:'right'}:{display:'none'}} onClick={this.handleSave}>保存</Button>

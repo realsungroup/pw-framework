@@ -131,7 +131,7 @@ showConfirm = () => {
 
 showConfirmMail = () => {
   confirm({
-    title: 'Are you sure to send a mail ?',
+    title: '发送邮件提醒？',
     onOk:() => {
       return this.sendMail();
     },
@@ -473,7 +473,7 @@ subConfirm = () => {
 
   if(bol==true){
     confirm({
-      title: 'Are you sure to submit?',
+      title: '确认提交面试评估结果？',
       onOk:() => {
           this.subData();
       },
@@ -482,13 +482,10 @@ subConfirm = () => {
       cancelText:'NO'
     });
   }else{
-    confirm({
-      title: 'You still have something to fill in!'+this.state.chara,
-      onOk(){
-      },
-      onCancel() {},
-      okText:'YES',
-      cancelText:'NO'
+    Modal.error({
+      title: '请将面试评估信息填写完整!',
+      content: this.state.chara,
+      okText:'OK'
     });
   }
 
@@ -608,7 +605,7 @@ var hrCode='623876215000';
       });
 
       this.setState({
-        progress:'未送邮（初试）',
+        progress:'待通知（初试）',
         eduBack:res.data[0].edBackground,
         eduOther:res.data[0].eduOther,//缺
         level:res.data[0].leveleInterviewee,
@@ -902,13 +899,13 @@ var hrCode='623876215000';
           showPrint:false
         })
       if(!this.state.C3_622921647557){
-        this.setState({C3_622921647557:'未送邮（初试）'})
+        this.setState({C3_622921647557:'待通知（初试）'})
       }
-      if((this.state.C3_622921647557=='未送邮（初试）')||(this.state.C3_622921647557=='未送邮（复试）')){
+      if((this.state.C3_622921647557=='待通知（初试）')||(this.state.C3_622921647557=='待通知（复试）')){
         if(this.state.userChara=='HR'){
           this.setState({showMail:true});
         }
-        if(this.state.C3_622921647557=='未送邮（复试）'){
+        if(this.state.C3_622921647557=='待通知（复试）'){
           this.setState({showWarp:true});
           if(this.state.userChara=='HR'){
             this.setState({showPrint:true})
@@ -993,11 +990,11 @@ var hrCode='623876215000';
     if(this.state.postID){
       this.setState({loading:true});
       var nxtStep;
-      if(this.state.C3_622921647557=='未送邮（初试）'){
+      if(this.state.C3_622921647557=='待通知（初试）'){
         nxtStep='未审批（初试）'
         toPost=this.state.postID;
 
-      }else if(this.state.C3_622921647557=='未送邮（复试）'){
+      }else if(this.state.C3_622921647557=='待通知（复试）'){
         // 复试验证
 
         if(this.state.round2=='N'){
@@ -1101,7 +1098,7 @@ var hrCode='623876215000';
     this.setState({loading:true});
     var nxtStep;
     if(this.state.C3_622921647557=='待确认（初试）'){
-      nxtStep='未送邮（复试）'
+      nxtStep='待通知（复试）'
     }else if(this.state.C3_622921647557=='待确认（复试）'){
       nxtStep='已完成'
     }
@@ -1373,7 +1370,7 @@ var hrCode='623876215000';
     return (
       <div className='IA'>
       <Spin spinning={this.state.loading}>
-        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} style={{maxHeight:'70vh',padding:'8px',overflow:'auto'}}>
+        <div className={this.state.userChara=='HR'?'chooseClass':'hidden'} style={{maxHeight:'70vh',padding:'8px',overflow:'auto',top:'0'}}>
           <rect className={this.state.chara=='T1/T2/T3/T4'?'current':''} onClick={e => {this.changeChara('T1/T2/T3/T4');}}>
             T1~4
           </rect>
@@ -1402,13 +1399,15 @@ var hrCode='623876215000';
             S4
           </rect>
         </div>
-        <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden' }style={{marginLeft:'8px',padding:'8px'}}>
-          <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}}>
+        <div className={this.state.userChara=='HR'?'chooseClass chooseRound':'hidden' }style={{marginLeft:'8px',padding:'8px',left:'calc(100vw - 184px)',top:0,zIndex:'99999',background:'rgba(0,0,0,0)'}}>
+          <div style={{position:'relative'}}>
+          <rect className={this.state.round2=='N'?'current':''} onClick={e => {this.changeRound('N');}} >
             Hide Retest
           </rect>
-          <rect className={this.state.round2=='Y'?'current':''} onClick={e => {this.changeRound('Y');}}>
+          <rect className={this.state.round2=='Y'?'current':''} onClick={e => {this.changeRound('Y');}} >
             Show Retest
           </rect>
+          </div>
         </div>
         <div className={this.state.showMail?'chooseClass choosePeople':'chooseClass choosePeople hidden'}>
           <div className='innerWrap'>
