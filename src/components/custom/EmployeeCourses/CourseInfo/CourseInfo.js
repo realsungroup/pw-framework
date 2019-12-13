@@ -35,19 +35,21 @@ const CourseInfo = function(props) {
           {course.C3_622227141162}
         </Col>
         <Col md={12}>
+          <span className="course-info_label">地点:</span>
+          {course.C3_613941386325}
+        </Col>
+        
+      </Row>
+      <Row style={rowStyle}>
+      <Col md={12}>
           <span className="course-info_label">开始时间:</span>
           {moment(course.C3_615393041304).format("YYYY-MM-DD")}
         </Col>
-      </Row>
-      <Row style={rowStyle}>
         <Col md={12}>
           <span className="course-info_label">结束时间:</span>
           {moment(course.C3_615393093633).format("YYYY-MM-DD")}
         </Col>
-        <Col md={12}>
-          <span className="course-info_label">课时:</span>
-          {course.C3_613941385843}
-        </Col>
+        
       </Row>
       <Row style={rowStyle}>
         {/* <Col md={12}>课程类别:{course.courseType}</Col> */}
@@ -55,9 +57,9 @@ const CourseInfo = function(props) {
           <span className="course-info_label">培训机构:</span>
           {course.trainingClub}
         </Col> */}
-        <Col md={12}>
-          <span className="course-info_label">地点:</span>
-          {course.C3_613941386325}
+       <Col md={12}>
+          <span className="course-info_label">课时:</span>
+          {course.C3_613941385843}
         </Col>
         <Col md={12}>
           <span className="course-info_label">课程简介:</span>

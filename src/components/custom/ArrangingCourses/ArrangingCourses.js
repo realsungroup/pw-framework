@@ -947,7 +947,7 @@ class ArrangingCourses extends React.Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="是否手动安排课程">
+              <Form.Item label="是否为另添加课程">
                 {getFieldDecorator('isArrangeSelf', {
                   initialValue: this.state.selectedCourseArrangment
                     .isArrangeSelf
@@ -1346,7 +1346,7 @@ class ArrangingCourses extends React.Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="是否手动安排课程">
+              <Form.Item label="是否为另添加课程">
                 {getFieldDecorator('isArrangeSelf', {})(
                   <Select placeholder="Y">
                     <Option value="Y" key="Y">

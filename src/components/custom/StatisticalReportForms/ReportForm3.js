@@ -118,14 +118,17 @@ class ReportForm3 extends React.Component {
       }
     }]});
     try{
+      // 分
       let res = await http().getTable({
-        resid: '628788952983',
-        cmswhere:`C3_611264173184='${cms}'`
+        resid: '629548193565',
+        cmswhere:`C3_613941384328='${cms}'`
       });
+      // 总
       let res2 = await http().getTable({
-        resid: '628789112577',
-        cmswhere:`C3_611264173184='${cms}'`
+        resid: '629547851507',
+        cmswhere:`C3_613941384328='${cms}'`
       });
+      // console.log(res2)
       // 1.创建季度数据
       var arr=[];
       var n=0;
@@ -136,7 +139,7 @@ class ReportForm3 extends React.Component {
           var trainH=res2.data[n].trainHours||0;
           var trainT=res2.data[n].trainTime||0;
           arr.push({
-            header:res2.data[n].C3_611264173184+res2.data[n].quarter,
+            header:res2.data[n].C3_613941384328+res2.data[n].quarter,
             quarter:res2.data[n].quarter,
             avgTrain:avg,
             courseScore:cou,
@@ -152,7 +155,7 @@ class ReportForm3 extends React.Component {
           })
         }else{
           arr.push({
-            header:res2.data[0].C3_611264173184+'Q'+(n+1),
+            header:res2.data[0].C3_613941384328+'Q'+(n+1),
             quarter:'Q'+(n+1),
             avgTrain:0,
             courseScore:0,
@@ -200,8 +203,8 @@ class ReportForm3 extends React.Component {
       }
       // 3.计算总和
       arr.push({
-        header:res2.data[0].C3_611264173184+'YTD',
-        avgTrain:Number(arr[0].avgTrain)+Number(arr[1].avgTrain)+Number(arr[2].avgTrain)+Number(arr[3].avgTrain),
+        header:res2.data[0].C3_613941384328+'YTD',
+        avgTrain:(Number(arr[0].avgTrain)+Number(arr[1].avgTrain)+Number(arr[2].avgTrain)+Number(arr[3].avgTrain)).toFixed(2),
         courseScore:(Number(arr[0].courseScore)+Number(arr[1].courseScore)+Number(arr[2].courseScore)+Number(arr[3].courseScore))/4,
         trainHours:Number(arr[0].trainHours)+Number(arr[1].trainHours)+Number(arr[2].trainHours)+Number(arr[3].trainHours),
         trainTime:Number(arr[0].trainTime)+Number(arr[1].trainTime)+Number(arr[2].trainTime)+Number(arr[3].trainTime),
