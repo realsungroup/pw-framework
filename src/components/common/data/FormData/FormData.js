@@ -207,9 +207,14 @@ class FormData extends React.Component {
           return console.error(err);
         }
       }
-      let savedRecord = res.data[0]; //保存成功后的数据
+      let savedRecord = res && res.data[0]; //保存成功后的数据
       this.props.onSuccess &&
-        this.props.onSuccess(operation, formData, savedRecord, form);
+        this.props.onSuccess(
+          operation,
+          formData,
+          savedRecord ? savedRecord : record,
+          form
+        );
     });
   };
 
