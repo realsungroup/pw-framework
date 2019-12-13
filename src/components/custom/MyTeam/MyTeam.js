@@ -193,7 +193,7 @@ this.setState({trackId:null});
             </Menu.Item>
             <Menu.Item key="6">
             <Icon type="deployment-unit" />
-              <span> 外训申请单审批</span>
+              <span>培训申请单审批</span>
             </Menu.Item>
             <Menu.Item key="7">
             <Icon type="rocket" />
