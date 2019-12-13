@@ -611,3 +611,9 @@ export const DataProcess = Loadable({
     return minLoading;
   }
 });
+export const InterviewInvitation = Loadable({
+  loader: () => import('./InterviewInvitation'),
+  loading() {
+    return minLoading;
+  }
+});

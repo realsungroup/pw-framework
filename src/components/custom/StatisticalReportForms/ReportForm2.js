@@ -18,7 +18,7 @@ class ReportForm1 extends React.Component {
     data:[
       [
         // {
-        //   C3_611264173184:'FY2019',
+        //   C3_613941384328:'FY2019',
         //   quarter:'Q1',
         //   avgTrain:2.8,
         //   trainHours:1372,
@@ -26,7 +26,7 @@ class ReportForm1 extends React.Component {
         //   courseScore:'40%',
         //   CourseCos:1835,
         // },{
-        //   C3_611264173184:'FY2019',
+        //   C3_613941384328:'FY2019',
         //   quarter:'Q2',
         //   avgTrain:7.8,
         //   trainHours:2372,
@@ -38,7 +38,7 @@ class ReportForm1 extends React.Component {
         // },{
 
         // },{
-        //   C3_611264173184:'FY2019',
+        //   C3_613941384328:'FY2019',
         //   quarter:'FY2019',
         //   avgTrain:7.8,
         //   trainHours:2372,
@@ -104,16 +104,16 @@ class ReportForm1 extends React.Component {
       // }
     });
     if(this.props.chara=='HR'){
-      await this.getData('628789285884');
+      await this.getData('629551624877');
 
     }else if(this.props.chara=='director'){
       // 主管的场合查下属
-      await this.getData('629289152048');
+      await this.getData('629551746664');
 
       
     }else if (this.props.chara=='individual'){
       // 个人查看自己
-      await this.getData('629289292082');
+      await this.getData('629551713835');
     }
   }
 
@@ -189,6 +189,7 @@ class ReportForm1 extends React.Component {
         resid: id,
         cmswhere:cms
       })
+      console.log(res)
       // 创建表格数据源
       // 1.添加季度数据
       var arr=[];
@@ -198,7 +199,7 @@ class ReportForm1 extends React.Component {
         var bol=false;
         c=0;
         while(c<arr.length){
-          if(res.data[n].C3_611264173184==arr[c][4].C3_611264173184){
+          if(res.data[n].C3_613941384328==arr[c][4].C3_613941384328){
             var num =res.data[n].quarter;
             num=num.substring(1,2);
             num=Number(num)-1;
@@ -208,11 +209,31 @@ class ReportForm1 extends React.Component {
           c++;
         }
         if(bol==false){
-          arr.push([res.data[n],{},{},{},{C3_611264173184:res.data[n].C3_611264173184,quarter:res.data[n].C3_611264173184,className:'alter'}])
+          arr.push([res.data[n],{},{},{},{C3_613941384328:res.data[n].C3_613941384328,quarter:res.data[n].C3_613941384328,className:'alter'}])
         }
         n++;
       }
       // 2.计算财年数据
+      n=0;
+      c=0;
+      while(n<arr.length){
+        while(c<3){
+        if(!arr[n][c].trainTime){
+          arr[n][c].trainTime=0
+        }
+        if(!arr[n][c].trainHours){
+          arr[n][c].trainHours=0
+        }
+        if(!arr[n][c].avgTrain){
+          arr[n][c].avgTrain=0
+        }
+        if(!arr[n][c].CourseCos){
+          arr[n][c].CourseCos=0
+        }
+        c++;
+      }
+        n++;
+      }
       n=0;
       c=0;
       while(n<arr.length){
@@ -222,7 +243,9 @@ class ReportForm1 extends React.Component {
         arr[n][4].trainHours=Number(arr[n][0].trainHours)+Number(arr[n][1].trainHours)+Number(arr[n][2].trainHours)+Number(arr[n][3].trainHours)
       // 求和第三项
         arr[n][4].avgTrain=Number(arr[n][0].avgTrain)+Number(arr[n][1].avgTrain)+Number(arr[n][2].avgTrain)+Number(arr[n][3].avgTrain)
-      // 取平均值第四项
+        
+        arr[n][4].avgTrain=(arr[n][4].avgTrain).toFixed(2)
+        // 取平均值第四项
         var arr2=[];
         while(c<4){
           var numnum=arr[n][c].courseScore||'0%';
@@ -248,7 +271,7 @@ class ReportForm1 extends React.Component {
 
       this._echarts.hideLoading();
       let source = res.data.map(item => {
-        return [item.C3_611264173184 + item.quarter, item.trainHours];
+        return [item.C3_613941384328 + item.quarter, item.avgTrain];
       });
       this._echarts.setOption({
         dataset: {
@@ -311,7 +334,7 @@ class ReportForm1 extends React.Component {
                 <dl className={item2.className}>
                   <dt>
                     <p>
-                      {item2.quarter?item2.quarter:0}
+                      {item2.quarter?item2.quarter:'?'}
                     </p>
                   </dt>
                   <dd>

@@ -1793,6 +1793,11 @@ window[629371964947] = {
   title: '数据处理'
 };
 
+window[629545423118] = {
+  name: 'InterviewInvitation',
+  title: 'IDL面试邀请'
+};
+
 window[628885904481] = {
   name: 'TableData', // 组件名称，
   title: 'VIP前台查阅', // 功能模块名称
