@@ -238,11 +238,32 @@ class ReportForm1 extends React.Component {
       c=0;
       while(n<arr.length){
       // 求和第一项
-        arr[n][4].trainTime=Number(arr[n][0].trainTime)+Number(arr[n][1].trainTime)+Number(arr[n][2].trainTime)+Number(arr[n][3].trainTime)
+        var tT1=arr[n][0].trainTime||0;
+        var tT2=arr[n][1].trainTime||0;
+        var tT3=arr[n][2].trainTime||0;
+        var tT4=arr[n][3].trainTime||0;
+
+        var tH1=arr[n][0].trainHours||0;
+        var tH2=arr[n][1].trainHours||0;
+        var tH3=arr[n][2].trainHours||0;
+        var tH4=arr[n][3].trainHours||0;
+
+        var aT1=arr[n][0].avgTrain||0;
+        var aT2=arr[n][1].avgTrain||0;
+        var aT3=arr[n][2].avgTrain||0;
+        var aT4=arr[n][3].avgTrain||0;
+
+        var cC1=arr[n][0].CourseCos||0;
+        var cC2=arr[n][1].CourseCos||0;
+        var cC3=arr[n][2].CourseCos||0;
+        var cC4=arr[n][3].CourseCos||0;
+
+
+        arr[n][4].trainTime=Number(tT1)+Number(tT2)+Number(tT3)+Number(tT4)
       // 求和第二项
-        arr[n][4].trainHours=Number(arr[n][0].trainHours)+Number(arr[n][1].trainHours)+Number(arr[n][2].trainHours)+Number(arr[n][3].trainHours)
+        arr[n][4].trainHours=Number(tH1)+Number(tH2)+Number(tH3)+Number(tH4)
       // 求和第三项
-        arr[n][4].avgTrain=Number(arr[n][0].avgTrain)+Number(arr[n][1].avgTrain)+Number(arr[n][2].avgTrain)+Number(arr[n][3].avgTrain)
+        arr[n][4].avgTrain=Number(aT1)+Number(aT2)+Number(aT3)+Number(aT4)
         
         arr[n][4].avgTrain=(arr[n][4].avgTrain).toFixed(2)
         // 取平均值第四项
@@ -254,14 +275,18 @@ class ReportForm1 extends React.Component {
           arr2.push(numnum)
           c++;
         }
-        var m=((arr2[0]+arr2[1]+arr2[2]+arr2[3])*0.25);
+        var a1=arr2[0]||0;
+        var a2=arr2[1]||0;
+        var a3=arr2[2]||0;
+        var a4=arr2[3]||0;
+        var m=((a1+a2+a3+a4)*0.25);
         
         arr[n][4].courseScore=m+'%'
         if(arr[n][4].courseScore=='NaN%'){
-          arr[n][4].courseScore='0'
+          arr[n][4].courseScore='0%'
         }
       // 求和第五项
-        arr[n][4].CourseCos=Number(arr[n][0].CourseCos)+Number(arr[n][1].CourseCos)+Number(arr[n][2].CourseCos)+Number(arr[n][3].CourseCos)
+        arr[n][4].CourseCos=Number(cC1)+Number(cC2)+Number(cC3)+Number(cC4)
 
         n++;
       }
