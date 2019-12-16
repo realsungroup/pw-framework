@@ -321,8 +321,8 @@ class ReportForm1 extends React.Component {
         }
      
 
-      <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px',marginTop:'calc(40vh - 120px)'}:{}}>
-          <dl style={{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
+      <div className='tableWrap' style={this.props.chara=='individual'||this.props.chara=='director'?{height:'auto',border:'none',borderTop:'1px solid #dcdcdc',marginTop:'calc(40vh - 120px)'}:{}}>
+          <dl style={this.props.chara=='individual'||this.props.chara=='director'?{borderLeft:'1px solid #dcdcdc',height:'240px',boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}:{boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',position:'relative'}}>
             <dt>
               <p>Key Figure</p>
             </dt>
@@ -356,7 +356,7 @@ class ReportForm1 extends React.Component {
                   {
             item.map((item2) => {
               return (
-                <dl className={item2.className}>
+                <dl className={item2.className} style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
                   <dt>
                     <p>
                       {item2.quarter?item2.quarter:'?'}
