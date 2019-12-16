@@ -8,6 +8,7 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData } from '../components/common/loadableCommon';
+export { BusinessManagement } from '../components/common/loadableCommon';
 export {
   TableDataWrap,
   TableDataInner,

@@ -36,6 +36,11 @@ class BusinessManagement extends React.Component {
       searchValue: '', // 搜索值
       openKeys: [] // 打开的 subMenu key
     };
+    this._httpParams = {};
+    const { baseURL } = this.props;
+    if (baseURL) {
+      this._httpParams = { baseURL };
+    }
   }
 
   componentDidMount = () => {
@@ -53,7 +58,9 @@ class BusinessManagement extends React.Component {
     // if (rootId) {
     params.rootid = rootId;
     // }
-    this.p1 = makeCancelable(http().getUserFunctionTree(params));
+    this.p1 = makeCancelable(
+      http(this._httpParams).getUserFunctionTree(params)
+    );
     let res;
     try {
       res = await this.p1.promise;
@@ -266,7 +273,7 @@ class BusinessManagement extends React.Component {
       collapsed,
       openKeys
     } = this.state;
-    const { intl, enTitle, title, dblinkname } = this.props;
+    const { intl, enTitle, title, dblinkname, baseURL } = this.props;
 
     return (
       <Spin spinning={loading}>
@@ -319,6 +326,7 @@ class BusinessManagement extends React.Component {
                           key={menuItem.RES_ID}
                           resid={menuItem.RES_ID}
                           dblinkname={dblinkname}
+                          baseURL={baseURL}
                         />
                       </TabPane>
                     ))}

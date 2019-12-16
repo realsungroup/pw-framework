@@ -447,7 +447,7 @@ class TableData extends React.Component {
       });
       this.setState({ gridProps: config });
     } else {
-      console.error('该配置未设成数组');
+      // console.error('该配置未设成数组');
     }
     const { columns, components } = getColumns(
       res.cmscolumninfo,
@@ -695,7 +695,6 @@ class TableData extends React.Component {
       downloadFileName,
       downloadFile,
       cmswhere,
-      fileType,
       baseURL,
       downloadBaseURL,
       dblinkname,
@@ -707,8 +706,12 @@ class TableData extends React.Component {
       cparm5 = '',
       cparm6 = ''
     } = this.props;
-    //console.log("handleDownload");
-    //console.log(this.props);
+    let fileType = this.props.fileType;
+    let fileDownloadConfig =
+      window.pwConfig[process.env.NODE_ENV].fileDownloadConfig[this._id];
+    if (fileDownloadConfig && fileDownloadConfig.fileType) {
+      fileType = fileDownloadConfig.fileType;
+    }
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
     // 请求文件下载地址的基地址

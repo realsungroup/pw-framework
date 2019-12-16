@@ -10,6 +10,13 @@ export const TableData = Loadable({
   }
 });
 
+export const BusinessManagement = Loadable({
+  loader: () => import('./data/BusinessManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const SelectPersonnel = Loadable({
   loader: () => import('./data/SelectPersonnel'),
   loading() {

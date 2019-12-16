@@ -1529,11 +1529,25 @@ window['考试图表分析'] = {
   props: {}
 };
 
+// 综合管理
+window['629806026549'] = {
+  name: 'BusinessManagement',
+  title: '综合管理',
+  props: { rootId: 0, dblinkname: '', baseURL: 'http://10.108.2.66:1001' }
+};
+
 // 求职者入口
 window[614079025750] = {
   name: 'JobSeeker',
   title: 'IDL求职者',
   props: {}
+};
+
+// IE考勤数据查询
+window[629807131919] = {
+  name: 'TableData',
+  title: 'IE考勤数据查询',
+  props: { resid: '629462405981', subtractH: '200' }
 };
 
 window[614187065713] = {
