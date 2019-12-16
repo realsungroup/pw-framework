@@ -30,41 +30,29 @@ class JobPeopleList extends React.Component {
         hasBeBtns={false}
         hasRowSelection={false}
         hasAdd={true}
-        hasRowView={false}
+        hasRowView={true}
         hasModify={false}
         hasRowDelete={true}
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-        actionBarWidth ={100}
+        actionBarWidth ={300}
         downloadBaseURL={this.dlEmployDownloadURL}
         columnsWidth={{
           '面试时间':180,
           '姓名':90,
           '年龄':90,
-          '申请职位':115,
+          '申请职位':130,
           '申请时间':130,
-          '考试结果':115,
-          '面试结果':115,
-          '状态':90,
+          '考试结果':130,
+          '面试结果':130,
           '签到':90,
-          '开始面试操作':180,
-          '结束面试':115,
-          '考试批次':130,
-          '面试通知发送':160,
-          '劳务公司':115,
+          '面试官反馈':150,
           '面试官':115,
-          '面试官账号':130,
-          '体检结果':115,
-          '发送体检通知':160,
-          '发送报到通知':160,
-          '是否入职':115,
-          '是否离职':115,
-          '预约已过期':130,
-          '开始考试时间':180,
+          '体检结果':130,
+          '劳务公司名称':160,
           '身份证号':200,
           '考试分数':115,
-          '结束考试时间':180
         }}
       ></TableData>
     );

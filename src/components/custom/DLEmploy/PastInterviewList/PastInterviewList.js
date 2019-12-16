@@ -68,12 +68,12 @@ class PastInterviewList extends React.Component {
             hasModify: false,
             hasDelete: false,
             hasAdd: false,
-            hasRowDelete: false,
+            hasRowDelete: true,
             hasRowSelection:true,
-            hasRowModify: false,
+            hasRowModify: true,
             hasRowView: true,
             subtractH: 240,
-            actionBarWidth: 100,
+            actionBarWidth: 300,
             recordFormType: 'drawer',
             formProps: {
               height: 650
@@ -127,11 +127,11 @@ class PastInterviewList extends React.Component {
             hasModify: false,
             hasDelete: false,
             hasAdd: false,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
-            actionBarWidth: 200,
+            actionBarWidth: 300,
             formProps: {
               height: 650
             },

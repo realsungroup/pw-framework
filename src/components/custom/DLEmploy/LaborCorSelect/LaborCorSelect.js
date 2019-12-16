@@ -106,12 +106,12 @@ class LaborCorSelect extends React.Component {
           hasBeBtns={false}
           hasRowSelection={true}
           hasAdd={true}
-          hasRowView={false}
+          hasRowView={true}
           hasModify={false}
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={true}
-          actionBarWidth ={200}
+          actionBarWidth ={300}
           downloadBaseURL={this.dlEmployDownloadURL}
           height="100%"
           actionBarFixed ={true}
