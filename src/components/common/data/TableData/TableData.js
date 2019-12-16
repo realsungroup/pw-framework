@@ -324,7 +324,8 @@ class TableData extends React.Component {
       cparm5,
       cparm6,
       lngMtsID,
-      tableComponent
+      tableComponent,
+      nullValueNotFetch
     } = this.props;
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
@@ -344,7 +345,8 @@ class TableData extends React.Component {
           const params = {
             resid,
             key,
-            cmswhere: mergedCmsWhere,
+            cmswhere:
+              nullValueNotFetch && !mergedCmsWhere ? '1 = 2' : mergedCmsWhere,
             cmscolumns,
             pageindex:
               this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
@@ -374,7 +376,7 @@ class TableData extends React.Component {
             subresid,
             hostrecid,
             key,
-            cmswhere: mergedCmsWhere,
+            cmswhere:    nullValueNotFetch && !mergedCmsWhere ? '1 = 2' : mergedCmsWhere,
             cmscolumns,
             pageindex:
               this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,

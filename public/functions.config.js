@@ -1547,7 +1547,7 @@ window[614079025750] = {
 window[629807131919] = {
   name: 'TableData',
   title: 'IE考勤数据查询',
-  props: { resid: '629462405981', subtractH: '200' }
+  props: { resid: '629462405981', subtractH: '200' ,nullValueNotFetch:true}
 };
 
 window[614187065713] = {
