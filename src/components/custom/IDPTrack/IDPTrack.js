@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Radio, Button, Icon, Input, Spin, Modal,Tooltip } from 'antd';
+import { Radio, Button, Icon, Input, Spin, Modal,Tooltip,Tabs } from 'antd';
+import { TableData } from '../../common/loadableCommon';
+
 import './IDPTrack.less';
 import moment from 'moment';
 import ReportForm2 from '../StatisticalReportForms/ReportForm2';
 import echarts from 'echarts';
 import http from '../../../util20/api';
+const { TabPane } = Tabs;
+
 const backColor=[
   '#FFC800',
   '#FF8316',
@@ -88,7 +92,7 @@ class IDPTrack extends Component {
         resid: 628284415377,
         cmswhere: `personID = '${id}'`
       });
-      
+      console.log(res)
       this.setState({name:res.data[0].personName})
       var data=res.data;
       var arr=[];
@@ -277,24 +281,32 @@ class IDPTrack extends Component {
       //人员 C3_613941384832
 
       //已完成 C3_626260901454
+
+      this.setState({courseYear:year,courseTarget:id});
+
     try{
       let res = await http().getTable({
         resid: 613940032707,
-        cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}' and C3_626260901454 = 'Y'`
+        cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}'`
       });
-      this.setState({loading:false,showCourse:true});
-
+      
       var data=[[]];
       var n=0;
       var arr=[];
       while(n<res.data.length){
-        arr.push(res.data[n].REC_MONTH,res.data[n].C3_613941385843,res.data[n].C3_613941384592)
+        var keshi=res.data[n].C3_613941385843||0;
+        var signInStartTime=res.data[n].signInStartTime||0;
+        if(signInStartTime!=0){
+          signInStartTime=signInStartTime.substring(5,7);
+          signInStartTime=Number(signInStartTime)
+        }
+        arr.push([signInStartTime,keshi,keshi*3,res.data[n].C3_613941384592])
         n++;
       }
-      data[0].push(arr)
+      data[0]=arr;
+      console.log('arr',data[0])
       // 渲染图表
-      console.log(data)
-      var myChart = echarts.init(document.getElementById('chart2'));
+      var myChart = echarts.init(document.getElementById('chart3'));
       var option = {
         backgroundColor:'#ffffff',
         title: {
@@ -320,13 +332,13 @@ class IDPTrack extends Component {
             data: data[0],
             type: 'scatter',
             symbolSize: function (data) {
-                return data[1];
+                return data[2];
             },
             label: {
                 emphasis: {
                     show: true,
                     formatter: function (param) {
-                        return ( param.data[2] +"\n"+'课时：'+param.data[1] );
+                        return ( param.data[3] +"\n"+'课时：'+param.data[1] );
                     },
                     position: 'top'
                 }
@@ -343,9 +355,13 @@ class IDPTrack extends Component {
 
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+      this.setState({loading:false,showCourse:true});
+
       console.log(res)
     }catch(e){
       console.log(e);
+      this.setState({loading:false,showCourse:true});
+
     }
   }
   renderBar=()=>{
@@ -378,6 +394,33 @@ class IDPTrack extends Component {
       <div className='popClz' onClick={()=>this.setState({showCourse:false})}>
        </div>
        <div id='chart2' className={this.state.showCourse?'show':null}>
+       <Tabs defaultActiveKey="1">
+       <TabPane tab="课程统计图" key="1">
+       <div id='chart3'>
+         
+       </div>
+    </TabPane>
+    <TabPane tab="课程明细" key="2">
+      <div style={{width:'100%',position:'relative'}}>
+    <TableData
+                resid="613940032707"
+                cmswhere={`C3_613941384328 = '${this.state.courseYear}' and C3_613941384832 = '${this.state.courseTarget}'`}
+                subtractH={240}
+                hasRowView={false}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                actionBarWidth={150}
+                hasRowModify={false}
+              />
+    </div>
+
+    </TabPane>
+  </Tabs>
+      
+
        </div>
       </div>
       

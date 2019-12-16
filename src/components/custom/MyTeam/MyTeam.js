@@ -7,7 +7,7 @@ import DirectorProbation from '../Probation/DirectorProbation';
 import IDPTrack from '../IDPTrack';
 
 import SupervisorApprove from '../SupervisorApprove';
-import { Button, Menu, Icon, Switch } from 'antd';
+import { Button, Menu, Icon, Tabs } from 'antd';
 import './MyTeam.less';
 import http from 'Util20/api';
 import IdpCard from './IdpCard';
@@ -15,6 +15,9 @@ import IdpCard from './IdpCard';
 /**
  * 管理员确认
  */
+const { TabPane } = Tabs;
+
+
 const role = 'Manger';
 class MyTeam extends React.Component {
   constructor(props) {
@@ -22,7 +25,7 @@ class MyTeam extends React.Component {
     this.state = {
       mode: 'inline',
       theme: 'light',
-      selectKey: '4',
+      selectKey: '1',
       collapsed: false,
       desktop: null
     };
@@ -52,24 +55,34 @@ class MyTeam extends React.Component {
         return (
           <FiscalYearPlan CreateableGroups={['611769739518']}></FiscalYearPlan>
         );
+      // case '2':
+      //   return <SubordinateCoures></SubordinateCoures>;
       case '2':
-        return <SubordinateCoures></SubordinateCoures>;
-      case '3':
         return (
           <div style={{ width: '100%', height: '100%' }}>
             <IdpCard role={role}></IdpCard>
           </div>
         );
-      case '4':
+      case '3':
         return <DirectorProbation></DirectorProbation>;
-      case '5':
-        return <ReportForm2 chara='director'/>;
-        case '6':
+      // case '4':
+      //   return (<div style={{width:'100vw',height:'100vh',background:'#fff'}}><ReportForm2 chara='director'/></div>);
+        case '4':
         return <SupervisorApprove></SupervisorApprove>;
-         case '7':
+         case '5':
         return (
-        <div style={{height:'100vh'}}>
-         <TableData
+          
+        <div style={{height:'100vh',background:'#fff'}}>
+          <Tabs defaultActiveKey="1">
+    <TabPane tab="课程明细" key="1">
+    <SubordinateCoures></SubordinateCoures>
+    </TabPane>
+    <TabPane tab="培训报告" key="2">
+    <div style={{width:'100%',height:'calc(100vh - 45px)',background:'#fff'}}><ReportForm2 chara='director'/></div>
+    </TabPane>
+    <TabPane tab="发展轨迹" key="3">
+        <div style={{height:'calc(100vh - 45px)'}}>
+    <TableData
           resid={'613847444837'}
            subtractH={240}
           hasAdd={false}
@@ -97,6 +110,10 @@ class MyTeam extends React.Component {
                 }
               ]}
          />
+         </div>
+    </TabPane>
+  </Tabs>
+         
 
         </div>
         );
@@ -126,9 +143,10 @@ this.setState({trackId:null});
         }}
       >
       {this.state.trackId?(
-<div  style={{width:'100vw',height:'100vh',zIndex:'99999',background:'#fff',position:'fixed',top:0,left:0}}>
-<Icon type="close-circle" theme="filled" className='trackClz' style={{position:'absolute',zIndex:999,left:8,top:8,fontSize:'20px'}} onClick={this.clzTrack}/>
-        <div className={this.state.runOut?'runOut':'toShrink'} style={{transform:'scale(0.9)',boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',width:'100vw',height:'100vh',overflow:'hidden'}}>
+<div  style={{width:'100vw',height:'100vh',zIndex:'99999',background:'rgba(0,0,0,0.6)',position:'fixed',top:0,left:0}}>
+  <div style={{bakground:'rgba(0,0,0,0.6)',zIndex:1,width:'100%',height:'100%',top:0,left:0,position:'absolute'}} onClick={this.clzTrack}></div>
+{/* <Icon type="close-circle" theme="filled" className='trackClz' style={{position:'absolute',zIndex:999,left:8,top:8,fontSize:'20px'}} onClick={this.clzTrack}/> */}
+        <div className={this.state.runOut?'runOut':'toShrink'} style={{position:'relative',zIndex:'2',transform:'scale(0.9)',boxShadow:'0px 0px 8px rgba(0,0,0,0.4)',width:'100vw',height:'100vh',overflow:'hidden'}}>
          <IDPTrack id={this.state.trackId}></IDPTrack>
         </div>
       </div>
@@ -175,29 +193,29 @@ this.setState({trackId:null});
               <Icon type="mail" />
               <span> 课程计划</span>
             </Menu.Item>
-            <Menu.Item key="2">
+            {/* <Menu.Item key="2">
             <Icon type="book" />
               <span> 下属课程 </span>
-            </Menu.Item>
-            <Menu.Item key="3">
+            </Menu.Item> */}
+            <Menu.Item key="2">
             <Icon type="heat-map" />
               <span> IDP管理 </span>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="3">
               <Icon type="calendar" />
               <span> 试用期管理</span>
             </Menu.Item>
-            <Menu.Item key="5">
+            {/* <Menu.Item key="4">
             <Icon type="line-chart" />
               <span> 培训报告</span>
-            </Menu.Item>
-            <Menu.Item key="6">
+            </Menu.Item> */}
+            <Menu.Item key="4">
             <Icon type="deployment-unit" />
               <span>培训申请单审批</span>
             </Menu.Item>
-            <Menu.Item key="7">
+            <Menu.Item key="5">
             <Icon type="rocket" />
-              <span> 下属发展轨迹</span>
+              <span> 下属培训记录</span>
             </Menu.Item>
           </Menu>
         </div>
