@@ -89,7 +89,7 @@ class IDPTrack extends Component {
   //  var score=this.getScore(id);
     try{
       res = await http().getTable({
-        resid: 628284415377,
+        resid: 629825195225,
         cmswhere: `personID = '${id}'`
       });
       console.log(res)
@@ -286,7 +286,7 @@ class IDPTrack extends Component {
 
     try{
       let res = await http().getTable({
-        resid: 613940032707,
+        resid: 629824871972,
         cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}'`
       });
       
@@ -403,7 +403,7 @@ class IDPTrack extends Component {
     <TabPane tab="课程明细" key="2">
       <div style={{width:'100%',position:'relative'}}>
     <TableData
-                resid="613940032707"
+                resid="629824871972"
                 cmswhere={`C3_613941384328 = '${this.state.courseYear}' and C3_613941384832 = '${this.state.courseTarget}'`}
                 subtractH={240}
                 hasRowView={false}
