@@ -295,8 +295,20 @@ class Desktop extends React.Component {
    * @params {array} appArr，如：[{ app, typeName }]
    */
   handleOpenWindow = appArr => {
+    const { activeApps } = this.state;
     // app, typeName
     const arr = [];
+    if (
+      appArr.length === 1 &&
+      activeApps.find(app => app.REC_ID === appArr[0].app.REC_ID)
+    ) {
+      const activeApp = activeApps.find(
+        app => app.REC_ID === appArr[0].app.REC_ID
+      );
+      if (activeApp) {
+        return this.handleBottomBarAppTrigger(activeApp);
+      }
+    }
     appArr.forEach(item => {
       const { app, typeName } = item;
       const resid = app.ResID || app.resid;
