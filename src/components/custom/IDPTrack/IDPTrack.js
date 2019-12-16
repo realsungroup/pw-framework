@@ -280,7 +280,7 @@ class IDPTrack extends Component {
     try{
       let res = await http().getTable({
         resid: 613940032707,
-        cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}' and C3_626260901454 = 'Y'`
+        cmswhere: `C3_613941384328 = '${year}' and C3_613941384832 = '${id}'`
       });
       this.setState({loading:false,showCourse:true});
 
