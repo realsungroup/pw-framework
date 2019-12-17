@@ -29,7 +29,9 @@ class InterviewInvitation extends React.Component {
     // 招聘负责人工号
     C3_629488291308:'',
     // 发送邮件通知
-    C3_629488387048:''
+    C3_629488387048:'',
+    // 面试地点
+    C3_629910106446:''
   };
   refreState=()=>{
     this.setState({
@@ -48,7 +50,9 @@ class InterviewInvitation extends React.Component {
     // 招聘负责人工号
     C3_629488291308:'',
     // 发送邮件通知
-    C3_629488387048:''
+    C3_629488387048:'',
+    // 面试地点
+    C3_629910106446:''
     })
   }
 
@@ -113,6 +117,7 @@ class InterviewInvitation extends React.Component {
 
   }
   showModi = async(data)=>{
+    console.log(data)
     this.setState({ visible: true,isAdd:false });
     var t = moment(data.C3_629487983297);
     this.setState({
@@ -131,6 +136,8 @@ class InterviewInvitation extends React.Component {
       C3_629488291308:data.C3_629488291308,
       // 发送邮件通知
       C3_629488387048:data.C3_629488387048,
+      //面试地点
+      C3_629910106446:data.C3_629910106446,
       timeV:t,
       toModi:data.REC_ID
     })
@@ -183,8 +190,22 @@ class InterviewInvitation extends React.Component {
                 onChange={(v)=>{this.setState({C3_629487955668:v.target.value})}}
               />
           <div className="clearfix"> </div>
+          <span>候选人邮箱：</span>
+          <Input
+                style={{ width: 200 }}
+                value={this.state.C3_629488075916}
+                onChange={(v)=>{this.setState({C3_629488075916:v.target.value})}}
+              />
+          <div className="clearfix"> </div>
           <span>面试时间：</span>
             <DatePicker showTime placeholder="请选择时间" value={this.state.timeV} onChange={this.onChange} onOk={this.onOk} />
+          <div className="clearfix"> </div>
+          <span>面试地点：</span>
+          <Input
+                style={{ width: 200 }}
+                value={this.state.C3_629910106446}
+                onChange={(v)=>{this.setState({C3_629910106446:v.target.value})}}
+              />
           <div className="clearfix"> </div>
           <span>联系人：</span>
           <Input
@@ -196,16 +217,8 @@ class InterviewInvitation extends React.Component {
           <span>联系电话：</span>
           <Input
                 style={{ width: 200 }}
-                type='number'
                 value={this.state.C3_629488028156}
                 onChange={(v)=>{this.setState({C3_629488028156:v.target.value})}}
-              />
-          <div className="clearfix"> </div>
-          <span>候选人邮箱：</span>
-          <Input
-                style={{ width: 200 }}
-                value={this.state.C3_629488075916}
-                onChange={(v)=>{this.setState({C3_629488075916:v.target.value})}}
               />
           <div className="clearfix"> </div>
           {/* <span>招聘负责人：</span>
