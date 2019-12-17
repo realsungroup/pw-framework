@@ -67,9 +67,19 @@ const dealApps = apps => {
       arr[arr.length] = {
         apps: [],
         typeName: app.BusinessNode,
+        categoricalApps: new Map(),
         url: app.BusinessIconUrl || folderPng
       };
       index = arr.length - 1;
+    }
+    let categoryapps = arr[index].categoricalApps.get(
+      app.PwCategory || '未分类'
+    );
+    if (categoryapps) {
+      categoryapps.push(app);
+      arr[index].categoricalApps.set(app.PwCategory || '未分类', categoryapps);
+    } else {
+      arr[index].categoricalApps.set(app.PwCategory || '未分类', [app]);
     }
     arr[index].apps.push(app);
   });
@@ -1078,6 +1088,86 @@ class Desktop extends React.Component {
     ));
   };
 
+  renderCategoryApps = folder => {
+    const categories = [...folder.categoricalApps.entries()];
+    return (
+      <div className="desktop__folder--category">
+        {categories.map((category, index) => {
+          return (
+            <div
+              className="desktop__folder-category"
+              style={{ background: index % 2 ? '#FFFFFF' : '#E6F7FF' }}
+            >
+              <div className="desktop__folder-category-title">
+                {category[0]}
+              </div>
+              <div className="desktop__folder-category-apps">
+                {category[1].map(app => {
+                  return (
+                    <div
+                      className="desktop__folder-category-app"
+                      onClick={() =>
+                        this.handleOpenWindow([
+                          { app, typeName: folder.typeName }
+                        ])
+                      }
+                    >
+                      <div className="desktop__folder-category-app-icon">
+                        {app.appIconUrl ? (
+                          <img
+                            src={app.appIconUrl}
+                            alt={app.appIconUrl}
+                            style={{
+                              display: 'inline-block',
+                              height: 32,
+                              width: 'auto'
+                            }}
+                          />
+                        ) : (
+                          <i
+                            className={`iconfont icon-${app.DeskiconCls ||
+                              'wdkq_icon'}`}
+                            style={{ fontSize: 48 }}
+                          />
+                        )}
+                      </div>
+                      <h3 className="desktop__folder-category-app-title">
+                        {app.title}
+                      </h3>
+                      <Icon
+                        type="close"
+                        className="desktop__folder-category-app-remove"
+                        onClick={e => {
+                          e.stopPropagation();
+                          let appData;
+                          this.state.allFolders.some(folder =>
+                            folder.AppLinks.some(appItem => {
+                              if (appItem.title === app.title) {
+                                return (appData = appItem);
+                              }
+                            })
+                          );
+                          if (!appData || !appData.recid) {
+                            return message.info('该功能为必要功能，不能删除');
+                          }
+                          Modal.confirm({
+                            title: '提示',
+                            content: '您确定从桌面删除该模块吗？',
+                            onOk: () => this.handleRemoveDesktopApp(appData)
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   renderFolders = () => {
     const { folders } = this.state;
     return folders.map((folder, index) => {
@@ -1085,10 +1175,10 @@ class Desktop extends React.Component {
         <Popover
           content={
             <div className="desktop__folder-apps">
-              {this.renderApps(folder.apps, folder.typeName)}
+              {/* {this.renderApps(folder.apps, folder.typeName)} */}
+              {this.renderCategoryApps(folder)}
             </div>
           }
-          title={folder.typeName || '未命名'}
           trigger="hover"
           key={folder.typeName + index}
           placement="rightTop"

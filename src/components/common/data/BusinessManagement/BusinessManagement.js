@@ -13,6 +13,14 @@ const TabPane = Tabs.TabPane;
 const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
+const styles = {
+  mainLayout: { minHeight: '100vh' },
+  contentLayout: { height: '100vh', overflow: 'auto' },
+  sider: { width: 256, height: '100vh', overflow: 'auto' },
+  mainContent: { margin: '0 16px' },
+  tabsContainer: { padding: 24, background: '#fff' }
+};
+
 /**
  * 业务管理组件
  */
@@ -273,17 +281,24 @@ class BusinessManagement extends React.Component {
       collapsed,
       openKeys
     } = this.state;
-    const { intl, enTitle, title, dblinkname, baseURL } = this.props;
+    const {
+      intl,
+      enTitle,
+      title,
+      dblinkname,
+      baseURL,
+      downloadBaseURL
+    } = this.props;
 
     return (
       <Spin spinning={loading}>
         <div className="business-management">
-          <Layout style={{ minHeight: '100vh' }}>
+          <Layout style={styles.mainLayout}>
             <Sider
               collapsible
               collapsed={collapsed}
               onCollapse={this.handleCollapse}
-              style={{ width: 256 }}
+              style={styles.sider}
             >
               <div className="business-management__title">
                 {!collapsed && getIntlVal(intl.locale, enTitle, title)}
@@ -308,9 +323,9 @@ class BusinessManagement extends React.Component {
                 {menuTree.map(menuItem => this.renderMenuItem(menuItem))}
               </Menu>
             </Sider>
-            <Layout>
-              <Content style={{ margin: '0 16px' }}>
-                <div style={{ padding: 24, background: '#fff' }}>
+            <Layout style={styles.contentLayout}>
+              <Content style={styles.mainContent}>
+                <div style={styles.tabsContainer}>
                   <Tabs
                     onChange={this.handleTabsChange}
                     activeKey={activeKey}
@@ -327,6 +342,7 @@ class BusinessManagement extends React.Component {
                           resid={menuItem.RES_ID}
                           dblinkname={dblinkname}
                           baseURL={baseURL}
+                          downloadBaseURL={downloadBaseURL}
                         />
                       </TabPane>
                     ))}

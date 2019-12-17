@@ -49,9 +49,7 @@ export default class ReminderList extends React.PureComponent {
                 <Link
                   to={{
                     pathname: '/reminder',
-                    search: `?resid=${item.REMINDER_RESID}&title=${
-                      item.REMINDER_TITLE
-                    }&count=${item.REMINDER_TASKNUM}`
+                    search: `?resid=${item.REMINDER_RESID}&title=${item.REMINDER_TITLE}&count=${item.REMINDER_TASKNUM}&lngMtsID=${item.REMINDER_MTSID}`
                   }}
                 >
                   <List.Item

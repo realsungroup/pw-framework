@@ -40,6 +40,69 @@
       background-color: hsla(0, 0%, 100%, 0.3);
     }
   }
+
+  &__folder--category {
+    display: flex;
+    flex-direction: column;
+  }
+  &__folder-category {
+    display: flex;
+    &-title {
+      border-right: 1px solid #dcdcdc;
+      width: 104px;
+      flex-shrink: 0;
+      line-height: 90px;
+      text-align: center;
+    }
+    &-apps {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &-app {
+      width: 96px;
+      padding: 10px;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+      &-icon {
+        text-align: center;
+      }
+      &-title {
+        text-align: center;
+        margin: 10px 0 0 0;
+        font-family: Microsoft YaHei;
+        width: 100%;
+        font-weight: 400;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &:hover &-remove {
+        display: inline-block !important;
+      }
+    }
+    &-app-remove {
+      display: none !important;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  &__folder-wrap {
+    & > .ant-popover-content {
+      border-left: 8px solid @primary-color;
+      border-right: 8px solid @primary-color;
+      border-radius: 5px;
+      .ant-popover-arrow {
+        border: 4px solid @primary-color !important;
+      }
+      .ant-popover-inner-content {
+        padding: 0;
+      }
+    }
+  }
   &__folder-img {
     display: inline-block;
     width: 50px;
@@ -103,7 +166,6 @@
     text-overflow: ellipsis;
   }
 
-  
   &__loading {
     position: absolute;
     left: 50%;
