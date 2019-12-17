@@ -281,7 +281,14 @@ class BusinessManagement extends React.Component {
       collapsed,
       openKeys
     } = this.state;
-    const { intl, enTitle, title, dblinkname, baseURL } = this.props;
+    const {
+      intl,
+      enTitle,
+      title,
+      dblinkname,
+      baseURL,
+      downloadBaseURL
+    } = this.props;
 
     return (
       <Spin spinning={loading}>
@@ -335,6 +342,7 @@ class BusinessManagement extends React.Component {
                           resid={menuItem.RES_ID}
                           dblinkname={dblinkname}
                           baseURL={baseURL}
+                          downloadBaseURL={downloadBaseURL}
                         />
                       </TabPane>
                     ))}

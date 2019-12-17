@@ -1533,7 +1533,12 @@ window['考试图表分析'] = {
 window['629806026549'] = {
   name: 'BusinessManagement',
   title: '综合管理',
-  props: { rootId: 0, dblinkname: '', baseURL: 'http://10.108.2.66:1001' }
+  props: {
+    rootId: 0,
+    dblinkname: '',
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/'
+  }
 };
 
 // 求职者入口

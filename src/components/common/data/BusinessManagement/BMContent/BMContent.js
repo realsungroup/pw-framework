@@ -72,7 +72,7 @@ class BMContent extends React.Component {
 
   render() {
     const { loading, subTables, selectedRecord } = this.state;
-    const { resid, dblinkname, baseURL } = this.props;
+    const { resid, dblinkname, baseURL, downloadBaseURL } = this.props;
     return (
       <Spin spinning={loading}>
         <div className="bm-content">
@@ -86,6 +86,7 @@ class BMContent extends React.Component {
               hasBeBtns
               baseURL={baseURL}
               dblinkname={dblinkname}
+              downloadBaseURL={downloadBaseURL}
             />
           </div>
           {!!subTables.length && (
@@ -103,6 +104,7 @@ class BMContent extends React.Component {
                         height={520}
                         hasBeBtns
                         baseURL={baseURL}
+                        downloadBaseURL={downloadBaseURL}
                         dblinkname={dblinkname}
                       />
                     ) : (
