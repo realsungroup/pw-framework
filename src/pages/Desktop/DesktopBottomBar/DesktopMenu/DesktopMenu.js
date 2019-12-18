@@ -63,7 +63,10 @@ export default class DesktopMenu extends React.PureComponent {
     });
   };
 
-  handleMouseOut = () => this.setState({ menuVisible: false, openKeys: [] });
+  handleMouseOut = e => {
+    e.stopPropagation();
+    this.setState({ menuVisible: false, openKeys: [] });
+  };
 
   renderMenuItem = data => {
     if (data.isParentNode) {
@@ -152,19 +155,28 @@ export default class DesktopMenu extends React.PureComponent {
           >
             {menus.map(folder => this.renderMenuItem(folder))}
           </Menu> */}
-          <ul className="desktop-menu-list__functions-entry">
+          <ul
+            className="desktop-menu-list__functions-entry"
+            onMouseLeave={() => {
+              this.setState({
+                menuVisible: false,
+                hoverFolder: { categoricalApps: new Map() }
+              });
+            }}
+          >
             {menus.map(folder => {
               return (
                 <li
                   className="functions-entry__li--top-level"
+                  key={folder.title}
                   style={{
                     background:
                       folder.title === hoverFolder.title
                         ? 'rgba(255, 255, 255, 0.1)'
                         : ''
                   }}
-                  onMouseOver={this.handleMouseOver(folder)}
-                  onMouseOut={this.handleMouseOut}
+                  onMouseEnter={this.handleMouseOver(folder)}
+                  onMouseLeave={this.handleMouseOut}
                 >
                   <div className="functions-entry__menuitem--container">
                     <span className="functions-entry__menuitem__title">
@@ -172,7 +184,7 @@ export default class DesktopMenu extends React.PureComponent {
                     </span>
                     <Icon
                       type="caret-right"
-                      onMouseOut={this.stopPropagation}
+                      onMouseLeave={this.stopPropagation}
                       className="functions-entry__menuitem__icon--caret-right"
                     />
                   </div>
@@ -201,7 +213,10 @@ export default class DesktopMenu extends React.PureComponent {
                 <SubMenu title={category[0]} key={category[0]}>
                   {category[1].map(app => {
                     return (
-                      <Menu.Item onClick={() => this.props.onMenuClick(app)}>
+                      <Menu.Item
+                        key={app.title}
+                        onClick={() => this.props.onMenuClick(app)}
+                      >
                         {app.title}
                       </Menu.Item>
                     );
