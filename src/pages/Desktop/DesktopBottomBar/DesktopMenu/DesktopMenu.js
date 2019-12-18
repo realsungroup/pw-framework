@@ -45,7 +45,25 @@ export default class DesktopMenu extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    this.state = {
+      menuVisible: false,
+      hoverFolder: { categoricalApps: new Map() },
+      openKeys: []
+    };
   }
+
+  stopPropagation = e => {
+    e.stopPropagation();
+  };
+
+  handleMouseOver = folder => () => {
+    this.setState({
+      hoverFolder: folder,
+      menuVisible: true
+    });
+  };
+
+  handleMouseOut = () => this.setState({ menuVisible: false, openKeys: [] });
 
   renderMenuItem = data => {
     if (data.isParentNode) {
@@ -83,6 +101,8 @@ export default class DesktopMenu extends React.PureComponent {
       onLockScreen,
       onOpenPersonCenter
     } = this.props;
+    const { hoverFolder, menuVisible, openKeys } = this.state;
+    const categoricalApps = [...hoverFolder.categoricalApps.entries()];
     const child = (
       <div
         className={classNames('desktop-menu', {
@@ -122,14 +142,73 @@ export default class DesktopMenu extends React.PureComponent {
           />
         </div>
         <div className="desktop-menu-list">
-          <Menu
+          {/* <Menu
             theme="theme"
             style={{ width: '100%' }}
             // defaultOpenKeys={allFoldersExpandedKeys}
             // selectedKeys={[this.state.current]}
-            mode="inline"
+            // mode="inline"
+            // mode="vertical"
           >
             {menus.map(folder => this.renderMenuItem(folder))}
+          </Menu> */}
+          <ul className="desktop-menu-list__functions-entry">
+            {menus.map(folder => {
+              return (
+                <li
+                  className="functions-entry__li--top-level"
+                  style={{
+                    background:
+                      folder.title === hoverFolder.title
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : ''
+                  }}
+                  onMouseOver={this.handleMouseOver(folder)}
+                  onMouseOut={this.handleMouseOut}
+                >
+                  <div className="functions-entry__menuitem--container">
+                    <span className="functions-entry__menuitem__title">
+                      {folder.title}
+                    </span>
+                    <Icon
+                      type="caret-right"
+                      onMouseOut={this.stopPropagation}
+                      className="functions-entry__menuitem__icon--caret-right"
+                    />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div
+          className="desktop-menu-list__portal"
+          style={{
+            display: menuVisible || categoricalApps.length ? '' : 'none'
+          }}
+        >
+          <Menu
+            mode="inline"
+            onOpenChange={openKeys => {
+              this.setState({ openKeys });
+            }}
+            openKeys={
+              categoricalApps.length === 1 ? [categoricalApps[0][0]] : openKeys
+            }
+          >
+            {categoricalApps.map(category => {
+              return (
+                <SubMenu title={category[0]} key={category[0]}>
+                  {category[1].map(app => {
+                    return (
+                      <Menu.Item onClick={() => this.props.onMenuClick(app)}>
+                        {app.title}
+                      </Menu.Item>
+                    );
+                  })}
+                </SubMenu>
+              );
+            })}
           </Menu>
         </div>
       </div>

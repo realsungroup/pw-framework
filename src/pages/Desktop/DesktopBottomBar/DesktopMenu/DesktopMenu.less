@@ -48,6 +48,64 @@
     span {
       color: #fff !important;
     }
+    &__functions-entry {
+      width: 100%;
+      list-style: none;
+      .functions-entry__li--top-level {
+        .functions-entry__menuitem--container {
+          height: 40px;
+          display: flex;
+          line-height: 40px;
+          padding-right: 24px;
+          cursor: pointer;
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+        }
+        .functions-entry__menuitem__title {
+          flex: 1;
+        }
+        .functions-entry__menuitem__icon--caret-right {
+          line-height: 40px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .desktop-menu-list__portal {
+    background: @primary-color;
+    width: 180px;
+    height: 370px;
+    position: absolute;
+    left: 321px;
+    padding: 40px 16px 0 16px;
+    overflow: auto;
+    & > ul {
+      border-right: none;
+    }
+    ul {
+      background-color: @primary-color !important;
+      opacity: 0.9 !important;
+    }
+    li {
+      color: #fff !important;
+    }
+    .ant-menu-item-selected {
+      color: #fff !important;
+      background: #1b2736 !important;
+    }
+    .ant-menu-submenu.ant-menu-submenu-inline {
+      .ant-menu-submenu-title {
+        border-top: 1px solid #57aaff;
+        border-bottom: 1px solid #57aaff;
+      }
+    }
+    .ant-menu-submenu-title:hover {
+      color: #fff !important;
+    }
+    .ant-menu-item {
+      padding-left: 24px !important;
+    }
   }
   &-list > ul {
     border-color: #3c434e !important;

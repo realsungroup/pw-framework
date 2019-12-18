@@ -279,6 +279,7 @@ class Desktop extends React.Component {
       item.key = item.resid;
       expandedKeys.push(item.key + '');
       item.isParentNode = true;
+      item.categoricalApps = new Map();
       item.AppLinks.forEach(app => {
         app.title = app.RES_NAME;
         app.key = app.RES_PID + '_' + app.RES_ID;
@@ -293,6 +294,13 @@ class Desktop extends React.Component {
         ) {
           checkedKeys.push(app.key);
           selectedFnList.push(cloneDeep(app));
+        }
+        let categoryapps = item.categoricalApps.get(app.PwCategory || '未分类');
+        if (categoryapps) {
+          categoryapps.push(app);
+          item.categoricalApps.set(app.PwCategory || '未分类', categoryapps);
+        } else {
+          item.categoricalApps.set(app.PwCategory || '未分类', [app]);
         }
       });
     });
@@ -532,6 +540,11 @@ class Desktop extends React.Component {
 
   handleAddToDesktop = appData => {
     const { folders } = this.state;
+    const { activeApps } = this.state;
+    let activeApp = activeApps.find(app => app.REC_ID === appData.recid);
+    if (activeApp) {
+      return this.handleBottomBarAppTrigger(activeApp);
+    }
     let desktopApp, typeName;
     const isExistDesktop = folders.some(folder => {
       return folder.apps.some(app => {
@@ -1092,78 +1105,79 @@ class Desktop extends React.Component {
     const categories = [...folder.categoricalApps.entries()];
     return (
       <div className="desktop__folder--category">
-        {categories.map((category, index) => {
-          return (
-            <div
-              className="desktop__folder-category"
-              style={{ background: index % 2 ? '#FFFFFF' : '#E6F7FF' }}
-            >
-              <div className="desktop__folder-category-title">
-                {category[0]}
-              </div>
-              <div className="desktop__folder-category-apps">
-                {category[1].map(app => {
-                  return (
-                    <div
-                      className="desktop__folder-category-app"
-                      onClick={() =>
-                        this.handleOpenWindow([
-                          { app, typeName: folder.typeName }
-                        ])
-                      }
-                    >
-                      <div className="desktop__folder-category-app-icon">
-                        {app.appIconUrl ? (
-                          <img
-                            src={app.appIconUrl}
-                            alt={app.appIconUrl}
-                            style={{
-                              display: 'inline-block',
-                              height: 32,
-                              width: 'auto'
-                            }}
-                          />
-                        ) : (
-                          <i
-                            className={`iconfont icon-${app.DeskiconCls ||
-                              'wdkq_icon'}`}
-                            style={{ fontSize: 48 }}
-                          />
-                        )}
+        {categories &&
+          categories.map((category, index) => {
+            return (
+              <div
+                className="desktop__folder-category"
+                style={{ background: index % 2 ? '#FFFFFF' : '#E6F7FF' }}
+              >
+                <div className="desktop__folder-category-title">
+                  {category[0]}
+                </div>
+                <div className="desktop__folder-category-apps">
+                  {category[1].map(app => {
+                    return (
+                      <div
+                        className="desktop__folder-category-app"
+                        onClick={() =>
+                          this.handleOpenWindow([
+                            { app, typeName: folder.typeName }
+                          ])
+                        }
+                      >
+                        <div className="desktop__folder-category-app-icon">
+                          {app.appIconUrl ? (
+                            <img
+                              src={app.appIconUrl}
+                              alt={app.appIconUrl}
+                              style={{
+                                display: 'inline-block',
+                                height: 32,
+                                width: 'auto'
+                              }}
+                            />
+                          ) : (
+                            <i
+                              className={`iconfont icon-${app.DeskiconCls ||
+                                'wdkq_icon'}`}
+                              style={{ fontSize: 48 }}
+                            />
+                          )}
+                        </div>
+                        <h3 className="desktop__folder-category-app-title">
+                          {app.title}
+                        </h3>
+                        <Icon
+                          type="close"
+                          className="desktop__folder-category-app-remove"
+                          onClick={e => {
+                            e.stopPropagation();
+                            let appData;
+                            this.state.allFolders.some(folder =>
+                              folder.AppLinks.some(appItem => {
+                                if (appItem.title === app.title) {
+                                  return (appData = appItem);
+                                }
+                              })
+                            );
+                            if (!appData || !appData.recid) {
+                              return message.info('该功能为必要功能，不能删除');
+                            }
+                            Modal.confirm({
+                              title: '提示',
+                              content: '您确定从桌面删除该模块吗？',
+                              onOk: () => this.handleRemoveDesktopApp(appData)
+                            });
+                          }}
+                        />
                       </div>
-                      <h3 className="desktop__folder-category-app-title">
-                        {app.title}
-                      </h3>
-                      <Icon
-                        type="close"
-                        className="desktop__folder-category-app-remove"
-                        onClick={e => {
-                          e.stopPropagation();
-                          let appData;
-                          this.state.allFolders.some(folder =>
-                            folder.AppLinks.some(appItem => {
-                              if (appItem.title === app.title) {
-                                return (appData = appItem);
-                              }
-                            })
-                          );
-                          if (!appData || !appData.recid) {
-                            return message.info('该功能为必要功能，不能删除');
-                          }
-                          Modal.confirm({
-                            title: '提示',
-                            content: '您确定从桌面删除该模块吗？',
-                            onOk: () => this.handleRemoveDesktopApp(appData)
-                          });
-                        }}
-                      />
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     );
   };
