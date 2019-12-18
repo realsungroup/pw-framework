@@ -1,7 +1,7 @@
 import React from 'react';
 import './PastInterviewList.less';
 import TabsTableData from '../../TabsTableData';
-import { Modal, Button, message, Tabs, Popconfirm } from 'antd';
+import { Modal, Button, message, Tabs, Popconfirm, Input, Form } from 'antd';
 import http from '../../../../util20/api';
 class PastInterviewList extends React.Component {
   constructor(props) {
@@ -13,7 +13,13 @@ class PastInterviewList extends React.Component {
   }
   state = {
     SquareCardArr: [],
-    val: null
+    val: null,
+    showModal: false,
+    EDate:'',
+    BDate:'',
+    dataSource:[],
+    selectRowKeys:[]
+
   };
   onHandleMessage = async (dataSource, selectedRowKeys) => {
     // console.log(dataSource,selectedRowKeys)
@@ -23,8 +29,11 @@ class PastInterviewList extends React.Component {
       data.map(item => {
         selectedRowKeys.map(items => {
           if (item.REC_ID === items) {
-            console.log(item)
+            console.log(item);
             item.sendPEMsg = 'Y';
+            item.C3_629981689063 = this.state.EDate;
+            item.C3_629981704421 = this.state.BDate;
+            item.sendRPMsg = 'Y';
             Reldata.push(item);
           }
         });
@@ -32,7 +41,7 @@ class PastInterviewList extends React.Component {
       let res;
       try {
         res = await http({
-          baseURL:'http://kingofdinner.realsun.me:1201/'
+          baseURL: this.baseURL
         }).modifyRecords({
           resid: 618666297012,
           data: Reldata,
@@ -53,114 +62,155 @@ class PastInterviewList extends React.Component {
   };
   render() {
     return (
-      <TabsTableData
-        arr={[
-          {
-            wrappedComponentRef:(element => this.tableDataRef = element),
-            refTargetComponentName:"TableData",
-            baseURL:this.baseURL,
-            downloadBaseURL:this.dlEmployDownloadURL,
-            resid: 618666297012,
-            TabsTitle: '未通知',
-            OutHeight: '80vh',
-            recordFormFormWidth: '90%',
-            hasBeBtns: false,
-            hasModify: false,
-            hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: true,
-            hasRowSelection:true,
-            hasRowModify: true,
-            hasRowView: true,
-            subtractH: 240,
-            actionBarWidth: 300,
-            recordFormType: 'drawer',
-            formProps: {
-              height: 650
+      <div>
+        <TabsTableData
+          arr={[
+            {
+              wrappedComponentRef: element => (this.tableDataRef = element),
+              refTargetComponentName: 'TableData',
+              baseURL: this.baseURL,
+              downloadBaseURL: this.dlEmployDownloadURL,
+              resid: 618666297012,
+              TabsTitle: '未通知',
+              OutHeight: '80vh',
+              recordFormFormWidth: '90%',
+              hasBeBtns: false,
+              hasModify: false,
+              hasDelete: false,
+              hasAdd: false,
+              hasRowDelete: true,
+              hasRowSelection: true,
+              hasRowModify: true,
+              hasRowView: true,
+              subtractH: 240,
+              actionBarWidth: 300,
+              recordFormType: 'drawer',
+              formProps: {
+                height: 650
+              },
+              columnsWidth: {
+                面试时间: 180,
+                姓名: 90,
+                年龄: 90,
+                申请职位: 115,
+                申请时间: 130,
+                考试结果: 115,
+                面试结果: 115,
+                签到: 90,
+                劳务公司: 115,
+                面试官: 115,
+                面试官反馈: 130,
+                体检结果: 115,
+                发送报到通知: 160,
+                预约已过期: 130,
+                身份证号: 200,
+                考试分数: 115
+              },
+              actionBarExtra: ({
+                dataSource: dataSource,
+                selectedRowKeys: selectedRowKeys
+              }) => {
+                return (
+                  <div>
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          showModal: true,
+                          dataSource:dataSource,
+                          selectRowKeys:selectedRowKeys
+                         });
+                      }}
+                    >
+                      录用体检报到通知
+                    </Button>
+                  </div>
+                );
+              },
+              recordFormContainerProps: {
+                placement: 'right',
+                height: 700
+              }
             },
-            columnsWidth:{
-              '面试时间':180,
-              '姓名':90,
-              '年龄':90,
-              '申请职位':115,
-              '申请时间':130,
-              '考试结果':115,
-              '面试结果':115,
-              '签到':90,
-              '劳务公司':115,
-              '面试官':115,
-              '面试官反馈':130,
-              '体检结果':115,
-              '发送报到通知':160,
-              '预约已过期':130,
-              '身份证号':200,
-              '考试分数':115,
-            },
-            actionBarExtra:({
-              dataSource: dataSource,
-              selectedRowKeys: selectedRowKeys
-            }) => {
-              return (
-                <Popconfirm
-                  title="发送录用通知"
-                  onConfirm={() => {
-                    this.onHandleMessage(dataSource, selectedRowKeys);
-                  }}
-                >
-                  <Button>发送体检通知</Button>
-                </Popconfirm>
-              );
-            },
-            recordFormContainerProps: {
-              placement: 'right',
-              height: 700
+            {
+              baseURL: this.baseURL,
+              downloadBaseURL: this.dlEmployDownloadURL,
+              resid: 618666595021,
+              TabsTitle: '已通知',
+              OutHeight: '80vh',
+              recordFormFormWidth: '90%',
+              hasBeBtns: true,
+              hasModify: false,
+              hasDelete: false,
+              hasAdd: false,
+              hasRowDelete: true,
+              hasRowModify: true,
+              hasRowView: true,
+              subtractH: 220,
+              actionBarWidth: 300,
+              formProps: {
+                height: 650
+              },
+              columnsWidth: {
+                面试时间: 180,
+                姓名: 90,
+                年龄: 90,
+                申请职位: 115,
+                申请时间: 130,
+                考试结果: 115,
+                面试结果: 115,
+                签到: 90,
+                劳务公司: 115,
+                面试官: 115,
+                面试官反馈: 130,
+                体检结果: 115,
+                发送报到通知: 160,
+                预约已过期: 130,
+                身份证号: 200,
+                考试分数: 115
+              },
+              recordFormType: 'drawer',
+              recordFormContainerProps: {
+                placement: 'right',
+                height: 700
+              }
             }
-          },
-          {
-            baseURL:this.baseURL,
-            downloadBaseURL:this.dlEmployDownloadURL,
-            resid: 618666595021,
-            TabsTitle: '已通知',
-            OutHeight: '80vh',
-            recordFormFormWidth: '90%',
-            hasBeBtns: true,
-            hasModify: false,
-            hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: true,
-            hasRowModify: true,
-            hasRowView: true,
-            subtractH: 220,
-            actionBarWidth: 300,
-            formProps: {
-              height: 650
-            },
-            columnsWidth:{
-              '面试时间':180,
-              '姓名':90,
-              '年龄':90,
-              '申请职位':115,
-              '申请时间':130,
-              '考试结果':115,
-              '面试结果':115,
-              '签到':90,
-              '劳务公司':115,
-              '面试官':115,
-              '面试官反馈':130,
-              '体检结果':115,
-              '发送报到通知':160,
-              '预约已过期':130,
-              '身份证号':200,
-              '考试分数':115,
-            },
-            recordFormType: 'drawer',
-            recordFormContainerProps: {
-              placement: 'right',
-              height: 700
-            }
-          }
-        ]}
-      />
+          ]}
+        />
+        <Modal
+          title="设定体检日期"
+          width={'50%'}
+          destroyOnClose={true}
+          visible={this.state.showModal}
+          onOk={() => {
+            this.onHandleMessage(this.state.dataSource, this.state.selectRowKeys)
+            this.setState({showModal:false})
+          }}
+          onCancel={() => this.setState({ showModal: false })}
+        >
+          <Form labelCol={{ span: 4 }} wrapperCol={{ span: 15 }}>
+            <Form.Item label="体检日期">
+              <Input size="large" 
+              placeholder = '请输入体检日期'
+              onChange={e => {
+                this.setState({
+                  EDate: e.target.value
+                });
+              }}
+              />
+            </Form.Item>
+            <Form.Item label="报道日期">
+              <Input size="large"
+              placeholder = '请输入报道日期'
+              onChange={e => {
+                this.setState({
+                BDate: e.target.value
+                });
+              }}
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
     );
   }
 }

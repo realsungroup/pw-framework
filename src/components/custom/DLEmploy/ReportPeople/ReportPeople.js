@@ -16,42 +16,42 @@ class ReportPeople extends React.Component {
     val: null
   };
 
-  onHandleMessage = async (dataSource, selectedRowKeys) => {
-    console.log(dataSource,selectedRowKeys)
-    if (selectedRowKeys.length) {
-      const data = dataSource;
-      const Reldata = [];
-      data.map(item => {
-        selectedRowKeys.map(items => {
-          if (item.REC_ID === items) {
-            console.log(item)
-            item.sendRPMsg = 'Y';
-            Reldata.push(item);
-          }
-        });
-      });
-      let res;
-      try {
-        res = await http({
-          baseURL:'http://kingofdinner.realsun.me:1201/'
-        }).modifyRecords({
-          resid: 618666744677,
-          data: Reldata,
-          isEditoRAdd: false
-        });
-        if (res.Error === 0) {
-          this.tableDataRef.handleRefresh();
-          message.success('操作成功！');
-        } else {
-          message.error(res.message);
-        }
-      } catch (error) {
-        message.error(error);
-      }
-    } else {
-      message.error('请勾选记录！');
-    }
-  };
+  // onHandleMessage = async (dataSource, selectedRowKeys) => {
+  //   console.log(dataSource,selectedRowKeys)
+  //   if (selectedRowKeys.length) {
+  //     const data = dataSource;
+  //     const Reldata = [];
+  //     data.map(item => {
+  //       selectedRowKeys.map(items => {
+  //         if (item.REC_ID === items) {
+  //           console.log(item)
+  //           item.sendRPMsg = 'Y';
+  //           Reldata.push(item);
+  //         }
+  //       });
+  //     });
+  //     let res;
+  //     try {
+  //       res = await http({
+  //         baseURL:'http://kingofdinner.realsun.me:1201/'
+  //       }).modifyRecords({
+  //         resid: 618666744677,
+  //         data: Reldata,
+  //         isEditoRAdd: false
+  //       });
+  //       if (res.Error === 0) {
+  //         this.tableDataRef.handleRefresh();
+  //         message.success('操作成功！');
+  //       } else {
+  //         message.error(res.message);
+  //       }
+  //     } catch (error) {
+  //       message.error(error);
+  //     }
+  //   } else {
+  //     message.error('请勾选记录！');
+  //   }
+  // };
   render() {
     return (
       <TabsTableData
@@ -96,21 +96,21 @@ class ReportPeople extends React.Component {
               '身份证号':200,
               '考试分数':130,
             },
-            actionBarExtra:({
-              dataSource: dataSource,
-              selectedRowKeys: selectedRowKeys
-            }) => {
-              return (
-                <Popconfirm
-                  title="发送录用通知"
-                  onConfirm={() => {
-                    this.onHandleMessage(dataSource, selectedRowKeys);
-                  }}
-                >
-                  <Button>发送录用通知</Button>
-                </Popconfirm>
-              );
-            },
+            // actionBarExtra:({
+            //   dataSource: dataSource,
+            //   selectedRowKeys: selectedRowKeys
+            // }) => {
+            //   return (
+            //     <Popconfirm
+            //       title="发送录用通知"
+            //       onConfirm={() => {
+            //         this.onHandleMessage(dataSource, selectedRowKeys);
+            //       }}
+            //     >
+            //       <Button>发送录用通知</Button>
+            //     </Popconfirm>
+            //   );
+            // },
             recordFormContainerProps: {
               placement: 'bottom',
               height: 600
