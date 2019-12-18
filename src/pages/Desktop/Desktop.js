@@ -1096,7 +1096,7 @@ class Desktop extends React.Component {
           return (
             <div
               className="desktop__folder-category"
-              style={{ background: index % 2 ? '#FFFFFF' : '#E6F7FF' }}
+              style={{ background: index % 2 ? '#E6F7FF' : '#FFFFFF' }}
             >
               <div className="desktop__folder-category-title">
                 {category[0]}

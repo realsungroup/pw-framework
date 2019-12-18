@@ -20,7 +20,10 @@ const backColor=[
 class IDPTrack extends Component {
   constructor(props) {
     super(props);
+
+
     this.state = {
+      courseLi:[['','','',]],
       showRepo:false,
       dataCourse:[{}],
       loading:false,
@@ -36,6 +39,7 @@ class IDPTrack extends Component {
     };
   }
   componentDidMount() {
+
     var id;
     if(this.props.id){
       id=this.props.id;
@@ -274,7 +278,7 @@ class IDPTrack extends Component {
   }
   renderCourse=async(item)=>{
     this.setState({loading:true});
-
+    this.setState({resizeMemo:item});
     var year=item.year;
     // 财年C3_613941384328
     var id = this.state.personID;
@@ -307,12 +311,14 @@ class IDPTrack extends Component {
       console.log('arr',data[0])
       // 渲染图表
       var myChart = echarts.init(document.getElementById('chart3'));
+      window.onresize = myChart.resize;
       var option = {
         backgroundColor:'#ffffff',
         title: {
             text: year+'财年课程培训图示'
         },
         xAxis: {
+            name:'月份',
             splitLine: {
                 lineStyle: {
                     type: 'dashed'
@@ -320,6 +326,7 @@ class IDPTrack extends Component {
             }
         },
         yAxis: {
+            name:'课时',
             splitLine: {
                 lineStyle: {
                     type: 'dashed'
@@ -328,6 +335,7 @@ class IDPTrack extends Component {
             scale: true
         },
         series: [{
+          showAllSymbol:true,
             name: year,
             data: data[0],
             type: 'scatter',
@@ -354,8 +362,9 @@ class IDPTrack extends Component {
 
 
       // 使用刚指定的配置项和数据显示图表。
+      myChart.clear();
       myChart.setOption(option);
-      this.setState({loading:false,showCourse:true});
+      this.setState({loading:false,showCourse:true,courseLi:data[0]});
 
       console.log(res)
     }catch(e){
@@ -396,6 +405,15 @@ class IDPTrack extends Component {
        <div id='chart2' className={this.state.showCourse?'show':null}>
        <Tabs defaultActiveKey="1">
        <TabPane tab="课程统计图" key="1">
+        <ul className='courseUl'>
+        {this.state.courseLi.map((item,key) => (
+          <li>
+              {item[3]}<br/>{item[0]}月 - {item[1]}课时
+          </li>
+        ))}
+          
+        </ul>
+      
        <div id='chart3'>
          
        </div>
