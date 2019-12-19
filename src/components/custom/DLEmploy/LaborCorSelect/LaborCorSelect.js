@@ -102,7 +102,7 @@ class LaborCorSelect extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           resid={620816140260}
-          subtractH={240}
+          subtractH={220}
           hasBeBtns={false}
           hasRowSelection={true}
           hasAdd={true}
@@ -111,7 +111,7 @@ class LaborCorSelect extends React.Component {
           hasRowDelete={true}
           hasDelete={false}
           hasRowModify={true}
-          actionBarWidth ={300}
+          actionBarWidth ={220}
           downloadBaseURL={this.dlEmployDownloadURL}
           height="100%"
           actionBarFixed ={true}
@@ -145,6 +145,7 @@ class LaborCorSelect extends React.Component {
                   selectedPersonList
                 });
               }}
+              style = {{height: '24px',padding:'0 7px ',fontSize:'14px'}}
             >
               分配劳务公司
             </Button>

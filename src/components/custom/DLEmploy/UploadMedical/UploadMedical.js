@@ -22,7 +22,7 @@ class UploadMedical extends React.Component {
             downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666652590,
             TabsTitle: '上传体检报告',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: false,
             hasModify: false,
@@ -33,7 +33,7 @@ class UploadMedical extends React.Component {
             hasRowView: true,
             hasRowSelection:true,
             subtractH: 220,
-            actionBarWidth: 300,
+            actionBarWidth: 220,
             hasDownloadExcel:true,
             recordFormType:'drawer',
             formProps: {
@@ -69,7 +69,7 @@ class UploadMedical extends React.Component {
             downloadBaseURL:this.dlEmployDownloadURL,
             resid: 618666816692,
             TabsTitle: '体检未通过人员',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: true,
             hasModify: false,
@@ -79,7 +79,7 @@ class UploadMedical extends React.Component {
             hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
-            actionBarWidth: 300,
+            actionBarWidth: 220,
             formProps: {
               height: 550
             },

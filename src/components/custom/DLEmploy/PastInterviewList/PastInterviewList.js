@@ -72,7 +72,7 @@ class PastInterviewList extends React.Component {
               downloadBaseURL: this.dlEmployDownloadURL,
               resid: 618666297012,
               TabsTitle: '未通知',
-              OutHeight: '80vh',
+              OutHeight: '91vh',
               recordFormFormWidth: '90%',
               hasBeBtns: false,
               hasModify: false,
@@ -82,8 +82,8 @@ class PastInterviewList extends React.Component {
               hasRowSelection: true,
               hasRowModify: true,
               hasRowView: true,
-              subtractH: 240,
-              actionBarWidth: 300,
+              subtractH: 220,
+              actionBarWidth: 220,
               recordFormType: 'drawer',
               formProps: {
                 height: 650
@@ -120,6 +120,7 @@ class PastInterviewList extends React.Component {
                           selectRowKeys:selectedRowKeys
                          });
                       }}
+                      style = {{height: '24px',padding:'0 7px ',fontSize:'14px'}}
                     >
                       录用体检报到通知
                     </Button>
@@ -136,7 +137,7 @@ class PastInterviewList extends React.Component {
               downloadBaseURL: this.dlEmployDownloadURL,
               resid: 618666595021,
               TabsTitle: '已通知',
-              OutHeight: '80vh',
+              OutHeight: '91vh',
               recordFormFormWidth: '90%',
               hasBeBtns: true,
               hasModify: false,
@@ -146,7 +147,7 @@ class PastInterviewList extends React.Component {
               hasRowModify: true,
               hasRowView: true,
               subtractH: 220,
-              actionBarWidth: 300,
+              actionBarWidth: 220,
               formProps: {
                 height: 650
               },

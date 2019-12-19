@@ -36,7 +36,7 @@ class JobPeopleList extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-        actionBarWidth ={300}
+        actionBarWidth ={220}
         downloadBaseURL={this.dlEmployDownloadURL}
         columnsWidth={{
           '面试时间':180,
