@@ -63,7 +63,7 @@ class ReportPeople extends React.Component {
             downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666744677,
             TabsTitle: '未通知',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: false,
             hasModify: false,
@@ -73,8 +73,8 @@ class ReportPeople extends React.Component {
             hasRowModify: true,
             hasRowView: true,
             hasRowSelection:true,
-            subtractH: 240,
-            actionBarWidth: 300,
+            subtractH: 220,
+            actionBarWidth: 220,
             recordFormType: 'drawer',
             formProps: {
               height: 550
@@ -121,7 +121,7 @@ class ReportPeople extends React.Component {
             downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666763917,
             TabsTitle: '已通知',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: true,
             hasModify: false,
@@ -131,7 +131,7 @@ class ReportPeople extends React.Component {
             hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
-            actionBarWidth: 300,
+            actionBarWidth: 220,
             formProps: {
               height: 550
             },
