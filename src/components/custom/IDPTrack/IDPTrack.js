@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Radio,
-  Button,
-  Icon,
-  Input,
-  Spin,
-  Modal,
-  Tooltip,
-  Tabs,
-  message,
-  Popover
-} from 'antd';
+import { Icon, Spin, Tooltip, Tabs, message, Popover } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 
 import './IDPTrack.less';
@@ -33,9 +22,6 @@ const backColor = [
   '#02B3DA',
   '#00B779'
 ];
-
-// 617726097875 能力
-// 617726587425 发展措施
 
 class IDPTrack extends Component {
   constructor(props) {
@@ -491,6 +477,10 @@ class IDPTrack extends Component {
 
   onChooseSkin = skin => () => this.handleChooseSkin(skin);
 
+  handleViewAbility = year => {
+    this.setState({ currentYear: year, abilityVisible: true });
+  };
+
   renderBar = () => {
     var n = this.state.data.length;
     n = n / 6;
@@ -581,6 +571,27 @@ class IDPTrack extends Component {
     );
   };
 
+  renderAbility = () => {
+    return (
+      <div
+        style={
+          this.state.abilityVisible
+            ? { transform: 'scaleY(1)', top: '0vh' }
+            : { transform: 'scaleY(0)', top: '-50vh' }
+        }
+        className="courseWrap pop"
+      >
+        <div
+          className="popClz"
+          onClick={() => this.setState({ abilityVisible: false })}
+        ></div>
+        <div className="IDPTrack__modal--ability">
+          <AbilityIndicator currentYear={this.state.currentYear} />
+        </div>
+      </div>
+    );
+  };
+
   renderStatisticsChart = () => {
     return (
       <div
@@ -605,7 +616,6 @@ class IDPTrack extends Component {
   };
 
   renderTheme = () => {
-    const { abilityVisible, currentYear } = this.state;
     return (
       <>
         <div
@@ -716,18 +726,6 @@ class IDPTrack extends Component {
           </div>
         </content>
         <footer></footer>
-        <Modal
-          visible={abilityVisible}
-          onCancel={() => {
-            this.setState({ currentYear: {}, abilityVisible: false });
-          }}
-          footer={null}
-          width={800}
-        >
-          <div className="IDPTrack__modal--ability">
-            <AbilityIndicator currentYear={currentYear} />
-          </div>
-        </Modal>
       </>
     );
   };
@@ -745,6 +743,7 @@ class IDPTrack extends Component {
             viewReportForm={() => {
               this.setState({ showRepo: true });
             }}
+            onViewAbility={this.handleViewAbility}
             onChooseSkin={this.handleChooseSkin}
           />
         );
@@ -789,8 +788,7 @@ class IDPTrack extends Component {
         >
           {this.renderReportForm()}
           {this.renderCourseModal()}
-          {/* {this.renderStatisticsChart()} */}
-          {/* {this.renderTheme()} */}
+          {this.renderAbility()}
           {theme}
         </Spin>
       </div>

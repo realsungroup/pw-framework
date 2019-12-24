@@ -1,17 +1,11 @@
 import React from 'react';
-import { Icon, Popover, Modal } from 'antd';
-import AbilityIndicator from '../AbilityIndicator';
+import { Icon, Popover } from 'antd';
 import './ThemeSynpho.less';
 
 /**
  * 主题——交响
  */
 class ThemeSynpho extends React.PureComponent {
-  state = {
-    currentYear: {},
-    visible: false
-  };
-
   handleScroll = direction => () => {
     this.cardsRef.scrollTo({
       left: direction
@@ -27,7 +21,6 @@ class ThemeSynpho extends React.PureComponent {
   };
   render() {
     const { name, yearData } = this.props;
-    const { currentYear, visible } = this.state;
     return (
       <div className="IDPTrack-theme1">
         <div className="IDPTrack-theme1__bg">
@@ -169,9 +162,7 @@ class ThemeSynpho extends React.PureComponent {
                       </ul>
                       <div
                         className="IDPTrack-theme1__card__content__footer"
-                        onClick={() => {
-                          this.setState({ currentYear: year, visible: true });
-                        }}
+                        onClick={() => this.props.onViewAbility(year)}
                       >
                         <span>查看能力指标</span>
                         <Icon type="right" />
@@ -192,18 +183,6 @@ class ThemeSynpho extends React.PureComponent {
             </div>
           </div>
         </div>
-        <Modal
-          visible={visible}
-          onCancel={() => {
-            this.setState({ currentYear: {}, visible: false });
-          }}
-          footer={null}
-          width={800}
-        >
-          <div className="IDPTrack__modal--ability">
-            <AbilityIndicator currentYear={currentYear} />
-          </div>
-        </Modal>
       </div>
     );
   }
