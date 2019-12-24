@@ -2,6 +2,7 @@
   width: 100vw;
   height: 100vh;
   background: #fff;
+  overflow: hidden;
   .repo_track {
     transition: 0.3s;
     position: fixed;
@@ -37,30 +38,51 @@
     height: 10vh;
     width: 100vw;
     background: #1890ff;
+    display: flex;
+    .IDPTrack__top__left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      &__icon {
+        margin-left: 24px;
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.2);
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
     h3 {
       display: inline-block;
-      margin-left: 3.89vw;
       font-size: 4vh;
       line-height: 10vh;
       color: #fff;
-      float: left;
+      flex: 1;
+      text-align: center;
+      margin-bottom: 0;
     }
-    h4 {
-      transition: 0.3s;
-      display: inline-block;
-      float: right;
-      border-radius: 12px 0 0 12px;
-      color: #fff;
-      line-height: 6vh;
-      font-size: 2vh;
-      padding-left: 1.5vw;
-      padding-right: calc(0.5vw + 24px);
-      cursor: pointer;
-      background: #13c2c2;
-      z-index: 11;
-      box-shadow: 0px 0px 8px #006d75;
-      &:hover {
-        padding-right: calc(1.5vw + 24px);
+    .IDPTrack__top__right {
+      flex: 1;
+      h4 {
+        transition: 0.3s;
+        display: inline-block;
+        border-radius: 12px 0 0 12px;
+        color: #fff;
+        line-height: 6vh;
+        font-size: 2vh;
+        float: right;
+        padding-left: 1.5vw;
+        padding-right: calc(0.5vw + 24px);
+        cursor: pointer;
+        background: #13c2c2;
+        z-index: 11;
+        box-shadow: 0px 0px 8px #006d75;
+        &:hover {
+          padding-right: calc(1.5vw + 24px);
+        }
       }
     }
   }
@@ -145,7 +167,6 @@
         h4 {
           display: block;
           cursor: pointer;
-
           width: 104px;
           height: 104px;
           box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4);
@@ -371,7 +392,80 @@
 
 .IDPTrack-theme__popovor--skin.ant-popover {
   z-index: 99999;
+  .ant-popover-arrow {
+    display: none;
+  }
   .ant-popover-inner-content {
     padding: 8px;
   }
+}
+
+// 主题选择popover基本样式
+.IDPTrack-theme__popovor--skin {
+  .popover--choose-skin__title {
+    margin-bottom: 16px;
+  }
+  .popover--choose-skin__item {
+    width: 120px;
+    height: 40px;
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 8px;
+    border: 1px solid rgba(232, 232, 232, 1);
+    line-height: 40px;
+    padding: 0 16px;
+    cursor: pointer;
+  }
+  .popover--choose-skin__synpho {
+    background-image: url(./images/synpho.png);
+    color: #ffffff;
+  }
+  .popover--choose-skin__china {
+    background-image: url(./images/china.png);
+  }
+
+  .popover--choose-skin__cyber {
+    background-image: url(./images/cyber.png);
+    color: #ffffff;
+  }
+
+  .popover--choose-skin__vividness {
+    background-image: url(./images/vividness.png);
+  }
+}
+.anticon.anticon-skin {
+  cursor: pointer;
+}
+//cyber主题内选择皮肤popover样式
+.IDPTrack-theme__popovor--skin.IDPTrack-theme__popovor--skin-cyber {
+  .ant-popover-inner {
+    background: rgba(24, 144, 255, 0.4);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.4),
+      0px 0px 8px 0px rgba(24, 144, 255, 1) inset;
+    border: 1px solid rgba(24, 144, 255, 1);
+    .popover--choose-skin__title {
+      color: #ffffff;
+    }
+    .popover--choose-skin__synpho {
+      border: none;
+    }
+    .popover--choose-skin__cyber {
+      border: 1px solid rgba(24, 144, 255, 1);
+    }
+    .popover--choose-skin__china {
+      border: 1px solid rgba(232, 232, 232, 1);
+    }
+    .popover--choose-skin__vividness {
+      border: 1px solid rgba(232, 232, 232, 1);
+    }
+  }
+}
+.IDPTrack__modal--ability {
+  height: 500px;
+  padding: 64px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  overflow: auto;
 }

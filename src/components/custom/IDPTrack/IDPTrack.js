@@ -8,7 +8,8 @@ import {
   Modal,
   Tooltip,
   Tabs,
-  message
+  message,
+  Popover
 } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 
@@ -19,6 +20,8 @@ import http from '../../../util20/api';
 import { getItem } from '../../../util20/util';
 import ThemeSynpho from './ThemeSynpho';
 import ThemeChina from './ThemeChina';
+import ThemeCyber from './ThemeCyber';
+import AbilityIndicator from './AbilityIndicator';
 
 const { TabPane } = Tabs;
 
@@ -38,13 +41,15 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTheme: 'china',
+      currentTheme: 'cyber',
       courseLi: [['', '', '']],
       showRepo: false,
       dataCourse: [{}],
       loading: false,
       visible: false,
       name: '???',
+      abilityVisible: false,
+      currentYear: {},
       data: [
         {
           year: '??????',
@@ -484,6 +489,8 @@ class IDPTrack extends Component {
     });
   };
 
+  onChooseSkin = skin => () => this.handleChooseSkin(skin);
+
   renderBar = () => {
     var n = this.state.data.length;
     n = n / 6;
@@ -598,11 +605,12 @@ class IDPTrack extends Component {
   };
 
   renderTheme = () => {
+    const { abilityVisible, currentYear } = this.state;
     return (
       <>
         <div
           style={{
-            zIndex: '10',
+            zIndex: '12',
             right: '0',
             position: 'fixed',
             width: '24px',
@@ -612,14 +620,56 @@ class IDPTrack extends Component {
           }}
         ></div>
         <header>
+          <div className="IDPTrack__top__left">
+            <Popover
+              placement="rightTop"
+              trigger="hover"
+              overlayClassName="IDPTrack-theme__popovor--skin"
+              content={
+                <div className="IDPTrack-theme__popover--choose-skin">
+                  <div className="popover--choose-skin__title">选择皮肤</div>
+                  <div
+                    className="popover--choose-skin__item popover--choose-skin__synpho"
+                    onClick={this.onChooseSkin('synpho')}
+                  >
+                    交响
+                  </div>
+                  <div
+                    className="popover--choose-skin__item popover--choose-skin__china"
+                    onClick={this.onChooseSkin('china')}
+                  >
+                    陶瓷
+                  </div>
+                  <div
+                    className="popover--choose-skin__item popover--choose-skin__cyber"
+                    onClick={this.onChooseSkin('cyber')}
+                  >
+                    赛博
+                  </div>
+                  <div
+                    className="popover--choose-skin__item popover--choose-skin__vividness"
+                    onClick={this.onChooseSkin('vividness')}
+                  >
+                    绚丽
+                  </div>
+                </div>
+              }
+            >
+              <div className="IDPTrack__top__left__icon">
+                <Icon type="skin" />
+              </div>
+            </Popover>
+          </div>
           <h3>{this.state.name}的个人能力发展轨迹</h3>
-          <h4
-            onClick={() => {
-              this.setState({ showRepo: true });
-            }}
-          >
-            <Icon type="left" /> 历年培训统计
-          </h4>
+          <div className="IDPTrack__top__right">
+            <h4
+              onClick={() => {
+                this.setState({ showRepo: true });
+              }}
+            >
+              <Icon type="left" /> 历年培训统计
+            </h4>
+          </div>
         </header>
         <content>
           <div>
@@ -629,7 +679,10 @@ class IDPTrack extends Component {
                 <Tooltip placement="top" title={'点击查看统计图'}>
                   <h4
                     onClick={() => {
-                      this.showChart(item);
+                      this.setState({
+                        currentYear: item,
+                        abilityVisible: true
+                      });
                     }}
                     style={{ background: item.color }}
                   >
@@ -663,6 +716,18 @@ class IDPTrack extends Component {
           </div>
         </content>
         <footer></footer>
+        <Modal
+          visible={abilityVisible}
+          onCancel={() => {
+            this.setState({ currentYear: {}, abilityVisible: false });
+          }}
+          footer={null}
+          width={800}
+        >
+          <div className="IDPTrack__modal--ability">
+            <AbilityIndicator currentYear={currentYear} />
+          </div>
+        </Modal>
       </>
     );
   };
@@ -687,6 +752,19 @@ class IDPTrack extends Component {
       case 'china':
         theme = (
           <ThemeChina
+            name={name}
+            yearData={data}
+            viewDot={this.renderCourse}
+            viewReportForm={() => {
+              this.setState({ showRepo: true });
+            }}
+            onChooseSkin={this.handleChooseSkin}
+          />
+        );
+        break;
+      case 'cyber':
+        theme = (
+          <ThemeCyber
             name={name}
             yearData={data}
             viewDot={this.renderCourse}

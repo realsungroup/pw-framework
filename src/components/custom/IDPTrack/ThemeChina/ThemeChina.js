@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Popover } from 'antd';
 import moment from 'moment';
+import AbilityIndicator from '../AbilityIndicator';
 import './ThemeChina.less';
 
 class ThemeChina extends React.PureComponent {
@@ -20,16 +21,15 @@ class ThemeChina extends React.PureComponent {
     const { name, yearData } = this.props;
     let currentYear =
       this.state.currentYear || (yearData.length && yearData[0]);
-    console.log(yearData);
     return (
       <div className="IDPTrack-theme--china">
         <div className="IDPTrack-theme--china__top">
           <Popover
             placement="rightTop"
-            trigger="click"
+            trigger="hover"
             overlayClassName="IDPTrack-theme__popovor--skin"
             content={
-              <div className="IDPTrack-theme1__top__left__popover--choose-skin">
+              <div className="IDPTrack-theme__popover--choose-skin">
                 <div className="popover--choose-skin__title">选择皮肤</div>
                 <div
                   className="popover--choose-skin__item popover--choose-skin__synpho"
@@ -164,7 +164,8 @@ class ThemeChina extends React.PureComponent {
               {currentYear.year}的能力指标
             </div>
             <div className="IDPTrack-theme--china__content__right__content">
-              {currentYear &&
+              <AbilityIndicator currentYear={currentYear} />
+              {/* {currentYear &&
                 currentYear.ability &&
                 currentYear.ability.map(item => (
                   <div className="IDPTrack__ability" key={item.REC_ID}>
@@ -180,7 +181,6 @@ class ThemeChina extends React.PureComponent {
                     <div className="IDPTrack__ability__measures">
                       {item.measures ? (
                         item.measures.map(measure => {
-                          console.log(measure.endTime);
                           return (
                             <div
                               key={measure.REC_ID}
@@ -202,7 +202,7 @@ class ThemeChina extends React.PureComponent {
                       )}
                     </div>
                   </div>
-                ))}
+                ))} */}
             </div>
           </div>
         </div>

@@ -8,6 +8,87 @@
     rgba(24, 144, 255, 1) 0%,
     rgba(9, 109, 217, 1) 100%
   );
+  position: relative;
+  &__bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    &__div1 {
+      background: rgba(255, 255, 255, 0.08);
+      transform: rotate(45deg);
+      position: absolute;
+      left: -6.31vw;
+      top: -2.75vh;
+      width: 35.34vh;
+      height: 35.34vh;
+    }
+    &__div2 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 72.64vw;
+      top: 12.6vh;
+      width: 59.63vh;
+      height: 59.63vh;
+    }
+    &__div3 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: -12.81vw;
+      top: 41.05vh;
+      width: 54.6vh;
+      height: 54.6vh;
+    }
+    &__div4 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 24.42vw;
+      top: 25.86vh;
+      width: 25.86vh;
+      height: 25.86vh;
+    }
+    &__div5 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 28.97vw;
+      top: -22.41vh;
+      width: 29.6vh;
+      height: 29.6vh;
+    }
+    &__div6 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 60.75vw;
+      top: 7.06vh;
+      width: 16.38vh;
+      height: 16.38vh;
+    }
+    &__div7 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 46.75vw;
+      top: 68.66vh;
+      width: 35.34vh;
+      height: 35.34vh;
+    }
+    &__div8 {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(45deg);
+      position: absolute;
+      left: 93.69vw;
+      top: 51.55vh;
+      width: 25.86vh;
+      height: 25.86vh;
+    }
+  }
+  &__main {
+    position: relative;
+  }
   &__top {
     display: flex;
     justify-content: space-between;
@@ -32,6 +113,17 @@
       &__main {
         background: rgba(255, 255, 255, 0.25);
         width: 100%;
+        position: relative;
+        &:hover::after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background-color: rgba(255, 255, 255, 0.1);
+        }
         &__title {
           padding-left: 32px;
         }
@@ -48,42 +140,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      &__popover--choose-skin {
-        .popover--choose-skin__title {
-          margin-bottom: 16px;
-        }
-        .popover--choose-skin__item {
-          width: 120px;
-          height: 40px;
-          border-radius: 8px;
-          background-size: cover;
-          background-repeat: no-repeat;
-          margin-bottom: 8px;
-          border: 1px solid rgba(232, 232, 232, 1);
-          line-height: 40px;
-          padding: 0 16px;
-          cursor: pointer;
-        }
-        .popover--choose-skin__synpho {
-          background-image: url(../images/synpho.png);
-          color: #ffffff;
-        }
-        .popover--choose-skin__china {
-          background-image: url(../images/china.png);
-        }
-
-        .popover--choose-skin__cyber {
-          background-image: url(../images/cyber.png);
-          color: #ffffff;
-        }
-
-        .popover--choose-skin__vividness {
-          background-image: url(../images/vividness.png);
-        }
-      }
-      .anticon.anticon-skin {
-        cursor: pointer;
-      }
     }
   }
   &__header {
@@ -161,6 +217,17 @@
         height: 86px;
         padding-top: 16px;
         padding-right: 8px;
+        background-image: radial-gradient(
+          circle at 32px 86px,
+          rgba(255, 195, 76, 0.6) 0%,
+          rgba(255, 195, 76, 0.6) 40%,
+          rgba(81, 171, 255, 1) 40%,
+          rgba(81, 171, 255, 1) 70%,
+          rgba(47, 155, 255, 1) 70%,
+          rgba(47, 155, 255, 1) 100%
+        );
+        background-repeat: no-repeat;
+        // background-size: 72px 72px;
       }
       &__train-times {
         padding-right: 12px;
@@ -222,7 +289,17 @@
           justify-content: space-between;
           align-items: center;
           padding: 0 12px 0 16px;
+          position: relative;
           cursor: pointer;
+          &:hover:before {
+            content: '';
+            display: block;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+          }
         }
       }
       &__footer {
