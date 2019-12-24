@@ -101,15 +101,7 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-      .triangle {
-        height: 0;
-        width: 0;
-        display: inline-block;
-        border-top: 20px solid rgba(255, 255, 255, 0.25);
-        border-right: 20px solid rgba(255, 255, 255, 0.25);
-        border-bottom: 20px solid transparent;
-        border-left: 20px solid transparent;
-      }
+      position: relative;
       &__main {
         background: rgba(255, 255, 255, 0.25);
         width: 100%;
@@ -123,6 +115,22 @@
           height: 100%;
           width: 100%;
           background-color: rgba(255, 255, 255, 0.1);
+        }
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          height: 0;
+          width: 0;
+          border-top: 20px solid rgba(255, 255, 255, 0.25);
+          border-right: 20px solid rgba(255, 255, 255, 0.25);
+          border-bottom: 20px solid transparent;
+          border-left: 20px solid transparent;
+          left: -40px;
+        }
+        &:hover::before {
+          border-top: 20px solid #6db5fc;
+          border-right: 20px solid #6db5fc;
         }
         &__title {
           padding-left: 32px;
@@ -193,23 +201,30 @@
       align-items: flex-end;
       justify-content: center;
       padding-bottom: 56px;
+      cursor: pointer;
     }
     &__cards {
       flex: 1;
       padding-bottom: 32px;
       display: flex;
-      overflow: hidden;
       overflow: auto;
+      &--container {
+        display: flex;
+        position: relative;
+        left: 0;
+      }
     }
-
     .IDPTrack-theme1__card {
-      width: 195px;
+      width: 13.54vw;
       height: 100%;
-      margin-right: 32px;
+      margin-right: 2.22vw;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       color: #ffffff;
+      &:last-child {
+        margin-right: 0;
+      }
       &__header {
         background-color: #2f9bff;
         display: flex;
@@ -217,6 +232,7 @@
         height: 86px;
         padding-top: 16px;
         padding-right: 8px;
+        flex-shrink: 0;
         background-image: radial-gradient(
           circle at 32px 86px,
           rgba(255, 195, 76, 0.6) 0%,
@@ -227,10 +243,10 @@
           rgba(47, 155, 255, 1) 100%
         );
         background-repeat: no-repeat;
-        // background-size: 72px 72px;
       }
       &__train-times {
         padding-right: 12px;
+        flex-shrink: 0;
         height: 32px;
         line-height: 32px;
         display: flex;
@@ -266,13 +282,12 @@
       &__content {
         background-color: #2f9bff;
         margin-top: 4px;
-        flex: 1;
+        // flex: 1;
         box-shadow: 0px 15px 10px -15px rgba(0, 0, 0, 0.2) inset;
         padding: 16px 0px 0;
         display: flex;
         flex-direction: column;
-        height: 26.15vh;
-
+        height: 30.75vh;
         ul {
           flex: 1;
           padding: 0 4px 0 24px;
@@ -312,6 +327,7 @@
         background-color: #2f9bff;
         margin-top: 8px;
         height: 76px;
+        flex-shrink: 0;
       }
     }
   }

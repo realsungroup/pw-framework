@@ -154,18 +154,20 @@ class ThemeCyber extends React.PureComponent {
                                   培训课程：
                                 </h4>
                                 <div className="IDPTrack-theme--cyber__main__years__card__right__courses--list">
-                                  {year.course
-                                    ? year.course.map(item => {
-                                        return (
-                                          <div
-                                            key={item.REC_ID}
-                                            className="IDPTrack-theme--cyber__main__years__card__right__course"
-                                          >
-                                            {item.C3_613941384592}
-                                          </div>
-                                        );
-                                      })
-                                    : '无'}
+                                  <div>
+                                    {year.course
+                                      ? year.course.map(item => {
+                                          return (
+                                            <div
+                                              key={item.REC_ID}
+                                              className="IDPTrack-theme--cyber__main__years__card__right__course"
+                                            >
+                                              {item.C3_613941384592}
+                                            </div>
+                                          );
+                                        })
+                                      : '无'}
+                                  </div>
                                 </div>
                               </div>
                             </div>

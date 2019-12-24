@@ -11,6 +11,17 @@ class ThemeSynpho extends React.PureComponent {
     currentYear: {},
     visible: false
   };
+
+  handleScroll = direction => () => {
+    this.cardsRef.scrollTo({
+      left: direction
+        ? this.cardsRef.scrollLeft - window.innerWidth * 0.1576
+        : this.cardsRef.scrollLeft + window.innerWidth * 0.1576,
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   handleChooseSkin = skin => () => {
     this.props.onChooseSkin && this.props.onChooseSkin(skin);
   };
@@ -73,7 +84,6 @@ class ThemeSynpho extends React.PureComponent {
               className="IDPTrack-theme1__top__right"
               onClick={() => this.props.viewReportForm()}
             >
-              <span className="triangle"></span>
               <span className="IDPTrack-theme1__top__right__main">
                 <span className="IDPTrack-theme1__top__right__main__title">
                   查看历年培训统计
@@ -109,10 +119,16 @@ class ThemeSynpho extends React.PureComponent {
             </div>
           </div>
           <div className="IDPTrack-theme1__content">
-            <div className="IDPTrack-theme1__content__previous">
+            <div
+              className="IDPTrack-theme1__content__previous"
+              onClick={this.handleScroll(true)}
+            >
               <Icon type="left" />
             </div>
-            <div className="IDPTrack-theme1__content__cards">
+            <div
+              className="IDPTrack-theme1__content__cards"
+              ref={e => (this.cardsRef = e)}
+            >
               {yearData.map(year => {
                 return (
                   <div className="IDPTrack-theme1__card">
@@ -168,7 +184,10 @@ class ThemeSynpho extends React.PureComponent {
                 );
               })}
             </div>
-            <div className="IDPTrack-theme1__content__next">
+            <div
+              className="IDPTrack-theme1__content__next"
+              onClick={this.handleScroll(false)}
+            >
               <Icon type="right" />
             </div>
           </div>

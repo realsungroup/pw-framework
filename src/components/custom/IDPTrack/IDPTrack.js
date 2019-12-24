@@ -41,7 +41,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTheme: 'cyber',
+      currentTheme: 'synpho',
       courseLi: [['', '', '']],
       showRepo: false,
       dataCourse: [{}],
