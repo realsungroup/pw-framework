@@ -55,7 +55,7 @@ class ThemeSynpho extends React.PureComponent {
                     >
                       陶瓷
                     </div>
-                    <div
+                    {/* <div
                       className="popover--choose-skin__item popover--choose-skin__cyber"
                       onClick={this.handleChooseSkin('cyber')}
                     >
@@ -66,7 +66,7 @@ class ThemeSynpho extends React.PureComponent {
                       onClick={this.handleChooseSkin('vividness')}
                     >
                       绚丽
-                    </div>
+                    </div> */}
                   </div>
                 }
               >
@@ -105,8 +105,8 @@ class ThemeSynpho extends React.PureComponent {
                   From &nbsp;
                   {yearData.length
                     ? yearData[yearData.length - 1].year
-                    : '????'}
-                  &nbsp; To &nbsp;{yearData.length ? yearData[0].year : '????'}
+                    : 'N/A'}
+                  &nbsp; To &nbsp;{yearData.length ? yearData[0].year : 'N/A'}
                 </div>
               </div>
             </div>
@@ -125,12 +125,23 @@ class ThemeSynpho extends React.PureComponent {
               {yearData.map(year => {
                 return (
                   <div className="IDPTrack-theme1__card">
+                    
                     <div className="IDPTrack-theme1__card__header">
                       {year.score ? (
                         <ul>
-                          {year.score.map(item => {
-                            return <li key={item}>{item}</li>;
+                          {year.score.map((item,index) => {
+                            return (
+                               <Popover
+            placement="right"
+            content={
+              <p>{year.detail[index].detail}</p>
+            }
+            trigger="hover"
+          ><li key={item}>{item}</li>
+                              </Popover>
+                            );
                           })}
+                           
                         </ul>
                       ) : (
                         'N/A'

@@ -43,7 +43,7 @@ class ThemeChina extends React.PureComponent {
                 >
                   陶瓷
                 </div>
-                <div
+                {/* <div
                   className="popover--choose-skin__item popover--choose-skin__cyber"
                   onClick={this.handleChooseSkin('cyber')}
                 >
@@ -54,7 +54,7 @@ class ThemeChina extends React.PureComponent {
                   onClick={this.handleChooseSkin('vividness')}
                 >
                   绚丽
-                </div>
+                </div> */}
               </div>
             }
           >
@@ -113,10 +113,55 @@ class ThemeChina extends React.PureComponent {
               <Icon type="right" />
             </div>
             <div className="IDPTrack-theme--china__content__center__grade-rate">
-              <div className="background-china IDPTrack-theme--china__content__center__title">
-                评级评优
+              <div className="background-china IDPTrack-theme--china__content__center__title packTitle">
+                <div>
+                    
+                </div>
+                <div>
+                  评优
+                </div>
+                <div>
+                  评级
+                </div>
               </div>
-              <div>
+              {currentYear && currentYear.score ? (
+                <div className='packWrap'>
+                
+                      <div className='pack_year'>
+                        {currentYear.detail.map(item =>{
+                          return(
+                          <p>
+                          {item.abi}
+                          </p>
+                          )
+                        })}
+                    </div>
+                    <div className='pack_score'>
+                        {currentYear.score.map(item =>{return(
+                          <p>
+                          {item.substring(3,item.length)}
+                          </p>)
+                        })}
+                    </div>
+                        {currentYear.detail.map(item =>{
+                          return(
+                            <div className='pack_detail'>
+
+                          <p>
+                          {item.detail}
+                          </p>
+                          </div>
+
+                          )
+                        })}
+                    </div>
+                ) : (
+                  <div className="IDPTrack-theme--china__content__center__grade-rate__item">
+                    <p style={{width:'100%',lineHeight:'91px',textAlign:'center'}}>N/A</p>
+                  </div>
+                )}
+              
+              {/* <div>
                 {currentYear && currentYear.score ? (
                   currentYear.score.map(item => {
                     return (
@@ -130,7 +175,7 @@ class ThemeChina extends React.PureComponent {
                     无
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="IDPTrack-theme--china__content__center__train-course">
               <div className="background-china IDPTrack-theme--china__content__center__title">
@@ -154,7 +199,7 @@ class ThemeChina extends React.PureComponent {
                   style={{ paddingLeft: 16 }}
                   className="IDPTrack-theme--china__content__center__train-course__item"
                 >
-                  无
+                  N/A
                 </div>
               )}
             </div>

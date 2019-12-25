@@ -88,7 +88,9 @@ class IDPTrack extends Component {
           arr2.push({
             year: data2[n2].REC_YEAR,
             abi: [data2[n2].C3_431106931302],
-            status: [data2[n2].C3_431102475269]
+            status: [data2[n2].C3_431102475269],
+            detail:data2[n2].C3_431090378241
+
           });
         }
         n2++;
@@ -139,12 +141,14 @@ class IDPTrack extends Component {
           if (year[c].year == str) {
             var x = 0;
             var str2 = [];
-
+            var arr3=[];
             while (x < score[n].abi.length) {
               str2.push(score[n].abi[x] + '-' + score[n].status[x]);
+              arr3.push({abi:score[n].abi[x],detail:score[n].detail})
               x++;
             }
             year[c].score = str2;
+            year[c].detail = arr3;
           }
           c++;
         }
@@ -651,7 +655,7 @@ class IDPTrack extends Component {
                   >
                     陶瓷
                   </div>
-                  <div
+                  {/* <div
                     className="popover--choose-skin__item popover--choose-skin__cyber"
                     onClick={this.onChooseSkin('cyber')}
                   >
@@ -662,7 +666,7 @@ class IDPTrack extends Component {
                     onClick={this.onChooseSkin('vividness')}
                   >
                     绚丽
-                  </div>
+                  </div> */}
                 </div>
               }
             >

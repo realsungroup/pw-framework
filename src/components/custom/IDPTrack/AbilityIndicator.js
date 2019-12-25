@@ -37,7 +37,7 @@ export default function AbilityIndicator(props) {
                 })
               ) : (
                 <div className="IDPTrack__ability__measures__nomeasures">
-                  无
+                  N/A
                 </div>
               )}
             </div>
