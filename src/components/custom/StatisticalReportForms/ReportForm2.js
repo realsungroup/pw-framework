@@ -181,7 +181,13 @@ class ReportForm1 extends React.Component {
       var res 
       var cms=''
       if(this.props.chara=='individual'){
-       cms=`C3_613941384832 = '${toSearch}'`
+        console.log(this.props.named)
+        if(this.props.named){
+          cms=`C3_613941384832 = '${this.props.named}'`
+        }else{
+          cms=`C3_613941384832 = '${toSearch}'`
+
+        }
       }else if (this.props.chara=='director'){
         cms=`directorId = '${toSearch}'`
       }
