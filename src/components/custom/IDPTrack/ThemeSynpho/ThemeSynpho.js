@@ -92,7 +92,7 @@ class ThemeSynpho extends React.PureComponent {
               <div className="IDPTrack-theme1__header__bar IDPTrack-theme1__header__bar--l"></div>
               <div
                 style={{
-                  width: 320,
+                  width: '22.22vw',
                   display: 'flex',
                   justifyContent: 'space-between'
                 }}
