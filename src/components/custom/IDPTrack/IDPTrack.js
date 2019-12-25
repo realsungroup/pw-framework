@@ -513,7 +513,8 @@ class IDPTrack extends Component {
           />
         </div>
         <div style={{ width: 'calc(100% - 24px)', float: 'left' }}>
-          <ReportForm2 chara="individual" />
+        {this.state.showRepo ?( <ReportForm2 chara="individual" named={this.state.personID}/>) :null}
+         
         </div>
       </div>
     );
