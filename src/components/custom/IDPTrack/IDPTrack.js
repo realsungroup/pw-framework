@@ -513,7 +513,8 @@ class IDPTrack extends Component {
           />
         </div>
         <div style={{ width: 'calc(100% - 24px)', float: 'left' }}>
-          <ReportForm2 chara="individual" />
+        {this.state.showRepo ?( <ReportForm2 chara="individual" named={this.state.personID}/>) :null}
+         
         </div>
       </div>
     );
@@ -549,7 +550,7 @@ class IDPTrack extends Component {
               <div id="chart3"></div>
             </TabPane>
             <TabPane tab="课程明细" key="2">
-              <div style={{ width: '100%', position: 'relative' }}>
+              <div style={{ width: '100%', position: 'relative',height:'68vh' }}>
                 <TableData
                   resid="629824871972"
                   cmswhere={`C3_613941384328 = '${this.state.courseYear}' and C3_613941384832 = '${this.state.courseTarget}'`}
@@ -560,7 +561,7 @@ class IDPTrack extends Component {
                   hasDelete={false}
                   hasRowSelection={false}
                   hasRowDelete={false}
-                  actionBarWidth={150}
+                  actionBarWidth={0}
                   hasRowModify={false}
                 />
               </div>
