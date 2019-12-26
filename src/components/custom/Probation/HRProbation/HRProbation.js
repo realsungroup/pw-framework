@@ -76,10 +76,11 @@ class HRProbation extends React.Component {
                   refTargetComponentName="TableData"
                   cmswhere={cmswhere}
                   customRowBtns={[
-                    record => (
+                    (record, btnSize) => (
                       <Button
                         type="primary"
                         onClick={this.onCustomViewBtnClick(record)}
+                        size={btnSize}
                       >
                         查看
                       </Button>
