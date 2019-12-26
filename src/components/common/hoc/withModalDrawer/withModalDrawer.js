@@ -64,7 +64,10 @@ const withModalDrawer = (options = {}) => {
           );
         } else {
           return (
-            <Drawer {...containerProps}>
+            <Drawer
+              {...containerProps}
+              bodyStyle={{ height: containerProps.height - 55 || '100%' }}
+            >
               <ChildComponent {...childProps} />
             </Drawer>
           );

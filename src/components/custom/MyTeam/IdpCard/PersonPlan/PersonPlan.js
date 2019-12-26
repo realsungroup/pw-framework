@@ -1163,6 +1163,7 @@ class PersonPlan extends React.Component {
           }
           className="personPlan-contain-info"
           bordered={true}
+          bodyStyle={{width:'95%'}}
         >
           <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
             {this.state.SquareCardArr.map((SquareCardArr, index) => {
@@ -1594,24 +1595,26 @@ class PersonPlan extends React.Component {
           </Steps>
         </div>
         <div className="personPlan-contain">
-          <span
+          <div
             style={{
               color: 'rgba(0,0,0)',
               fontSize: '26px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              textAlign: 'center'
             }}
           >
             员工职业能力发展计划
-          </span>
-          <span
+          </div>
+          <div
             style={{
               color: '#999',
               fontSize: '20px',
-              marginBottom: '40px'
+              marginBottom: '40px',
+              textAlign: 'center'
             }}
           >
             Individual Development Plan
-          </span>
+          </div>
           <Card
             title={
               <span style={{ fontSize: '16px', color: '#000' }}>
