@@ -33,12 +33,12 @@ class IDPTrack extends Component {
       dataCourse: [{}],
       loading: false,
       visible: false,
-      name: '???',
+      name: 'N/A',
       abilityVisible: false,
       currentYear: {},
       data: [
         {
-          year: '??????',
+          year: '暂无数据',
           abi: ['暂无数据'],
           status: ['暂无数据'],
           score: [],
@@ -106,7 +106,14 @@ class IDPTrack extends Component {
         resid: 629825195225,
         cmswhere: `personID = '${id}'`
       });
-      this.setState({ name: res.data[0].personName });
+
+      if(res.data.length>0){
+        this.setState({ name: res.data[0].personName });
+
+      }else{
+        this.setState({ name: '' });
+
+      }
       var data = res.data;
       var arr = [];
       var year = [];
@@ -124,10 +131,12 @@ class IDPTrack extends Component {
           c++;
         }
         if (bol == false) {
+          
           year.push({
             year: data[n].finicialYear,
             abi: [data[n].competency],
-            status: [data[n].status]
+            status: [data[n].status],
+            level: data[n].level
           });
         }
         n++;
@@ -154,6 +163,7 @@ class IDPTrack extends Component {
         }
         n++;
       }
+
       this.setState({ data: year });
 
       this.renderColor();
@@ -163,6 +173,7 @@ class IDPTrack extends Component {
       console.log(e);
     }
   };
+  
   getScore = async id => {
     var score;
     try {
@@ -362,11 +373,14 @@ class IDPTrack extends Component {
       });
       res.data.forEach(item => {
         const year = data.find(i => i.year === item.C3_613941384328);
-        if (year.course) {
-          year.course.push(item);
-        } else {
-          year.course = [item];
+        if(year){
+          if (year.course) {
+            year.course.push(item);
+          } else {
+            year.course = [item];
+          }
         }
+       
       });
       this.setState({ data: [...data] });
     } catch (error) {
