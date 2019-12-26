@@ -44,7 +44,7 @@ class ThemeCyber extends React.PureComponent {
                     >
                       陶瓷
                     </div>
-                    <div
+                    {/* <div
                       className="popover--choose-skin__item popover--choose-skin__cyber"
                       onClick={this.handleChooseSkin('cyber')}
                     >
@@ -55,7 +55,7 @@ class ThemeCyber extends React.PureComponent {
                       onClick={this.handleChooseSkin('vividness')}
                     >
                       绚丽
-                    </div>
+                    </div> */}
                   </div>
                 }
               >
