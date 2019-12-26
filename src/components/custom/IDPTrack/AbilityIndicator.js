@@ -6,6 +6,7 @@ export default function AbilityIndicator(props) {
   const { currentYear } = props;
   // 没有数据的场合用默认数据代替
   if(!currentYear.ability){
+    console.log(currentYear.level)
     var n=0;
     var arr=[];
     var j=currentYear.level;
@@ -34,7 +35,6 @@ export default function AbilityIndicator(props) {
               <div className="IDPTrack__ability__header__left">
                 <div>{item.categocry}</div>
                 <div>{item.competence}</div>
-                <div>{currentYear.level}</div>
               </div>
               <div className="IDPTrack__ability__header__right">
                 {item.reality}
@@ -65,6 +65,7 @@ export default function AbilityIndicator(props) {
             </div>
           </div>
         ))}
+        {((currentYear&&currentYear.ability)||(arr))?'':("N/A")}
         {
           arr&&arr.map((item,key) =>(
             <div className="IDPTrack__ability" key={key}>
