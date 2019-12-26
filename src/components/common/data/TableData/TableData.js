@@ -376,7 +376,8 @@ class TableData extends React.Component {
             subresid,
             hostrecid,
             key,
-            cmswhere:    nullValueNotFetch && !mergedCmsWhere ? '1 = 2' : mergedCmsWhere,
+            cmswhere:
+              nullValueNotFetch && !mergedCmsWhere ? '1 = 2' : mergedCmsWhere,
             cmscolumns,
             pageindex:
               this._showAGgrid || tableComponent === 'ag-grid' ? 0 : page - 1,
@@ -1009,10 +1010,14 @@ class TableData extends React.Component {
     if (backendBtnType === 'single') {
       newHostRecid = record.REC_ID;
     }
+    const className = 'table-data-form';
     openRecordForm({
       type: recordFormType,
       title,
-      formProps,
+      formProps: {
+        ...formProps,
+        className
+      },
       data: newData,
       operation: newOperation,
       record: newRecord,
