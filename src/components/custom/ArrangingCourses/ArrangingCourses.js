@@ -99,6 +99,7 @@ class ArrangingCourses extends React.Component {
     await this.getCourseArrangment();
     // await this.getCourses();
     this.props.onHandleLoading(false);
+    this.getCalendar()
     this.getOutCourse(OutCourseId);
   };
 
@@ -118,7 +119,41 @@ class ArrangingCourses extends React.Component {
       });
     } catch (error) {
       message.error(error.message);
-      console.log(error);
+      console.error(error);
+    }
+  };
+
+  getCalendar = async () => {
+    try {
+      const res = await http().getTable({
+        resid: courseArrangmentResid,
+        cmswhere: "organization != '内训'"
+      });
+      let importantIndex = 0;
+      const calendarEvents = res.data.map(item => {
+        return {
+          occur_id: item.REC_ID,
+          category_color: `rgb(${parseInt(
+            Math.random() * 255 + 0,
+            10
+          )}, ${parseInt(Math.random() * 255 + 0, 10)}, ${parseInt(
+            Math.random() * 255 + 0,
+            10
+          )})`,
+          event_hostheadurl: 'http://placekitten.com/32/32', //事件前面的图片
+          event_title: item.CourseName,
+          occur_begin: moment(item.StartDatetime).format(), // 事件发生时间
+          occur_end: moment(item.EndDatetime).format(), // 事件发生结束时间
+          event_important: ++importantIndex,
+          category_name: item.CourseName
+        };
+      });
+      this.setState({
+        calendarEvents
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
     }
   };
 
@@ -138,7 +173,6 @@ class ArrangingCourses extends React.Component {
 
   // 上传文件
   handleFileChange = info => {
-    console.log(info);
     let { file, fileList } = info;
     // if (file.status === 'removed') {
     //   this.setState({
@@ -163,7 +197,7 @@ class ArrangingCourses extends React.Component {
     if (isHasPeriod) {
       cmswhere += ` and StartDatetime > '${
         searchPeriod[0]
-      }'  and StartDatetime < '${searchPeriod[1]}'`;
+      }' and StartDatetime < '${searchPeriod[1]}'`;
     }
     if (selectedYear !== 'all') {
       cmswhere += `and FisYear = '${selectedYear}'`;
@@ -178,7 +212,7 @@ class ArrangingCourses extends React.Component {
       });
     } catch (error) {
       message.error(error.message);
-      return console.log(error);
+      return console.error(error);
     }
     if (res.error === 0) {
       let courseArrangment = res.data;
@@ -193,25 +227,7 @@ class ArrangingCourses extends React.Component {
       // courses = courses.map(item => {
       //   return JSON.parse(item);
       // });
-      let importantIndex = 0;
-      let calendarEvents = courseArrangment.map(item => {
-        return {
-          occur_id: item.REC_ID,
-          category_color: `rgb(${parseInt(
-            Math.random() * 255 + 0,
-            10
-          )}, ${parseInt(Math.random() * 255 + 0, 10)}, ${parseInt(
-            Math.random() * 255 + 0,
-            10
-          )})`,
-          event_hostheadurl: 'http://placekitten.com/32/32', //事件前面的图片
-          event_title: item.CourseName,
-          occur_begin: moment(item.StartDatetime).format(), // 事件发生时间
-          occur_end: moment(item.EndDatetime).format(), // 事件发生结束时间
-          event_important: ++importantIndex,
-          category_name: item.CourseName
-        };
-      });
+
       //去重方法2 ：使用 Array的 filter + findIndex 实现
       let courses = courseArrangment
         .map(item => ({
@@ -221,11 +237,9 @@ class ArrangingCourses extends React.Component {
         .filter((item, index, self) => {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
-      console.log(res.data);
       this.setState({
         courseArrangment,
         courses,
-        calendarEvents,
         pagination: { ...pagination, total: res.total }
       });
       if (isSearch) {
@@ -247,9 +261,8 @@ class ArrangingCourses extends React.Component {
       });
     } catch (error) {
       message.error(error.message);
-      return console.log(error);
+      return console.error(error);
     }
-    console.log(res);
     this.setState({
       courseList: res.data
     });
@@ -328,7 +341,6 @@ class ArrangingCourses extends React.Component {
           resid: 610307713776,
           key: value
         });
-        console.log(res);
         const dataSearch = res.data.map(data => ({
           text: `${data.C3_609622263470}`,
           value: data.C3_609622254861
@@ -450,7 +462,6 @@ class ArrangingCourses extends React.Component {
   };
   // 初始化fileList
   resetFileList = v => {
-    console.log('v', v);
     if (v.CourseOutline) {
       var arr = [
         {
@@ -469,7 +480,7 @@ class ArrangingCourses extends React.Component {
 
   giveUp = async (resid, recordId) => {
     try {
-      const res = await http().modifyRecords({
+      await http().modifyRecords({
         resid: resid,
         data: [{ REC_ID: recordId, isGiveUp: 'Y' }]
       });
@@ -494,9 +505,8 @@ class ArrangingCourses extends React.Component {
     this.tableDataRef.handleRefresh();
   };
   alertHRM = async (resid, recordId, r) => {
-    console.log(r);
     try {
-      const res = await http().modifyRecords({
+      await http().modifyRecords({
         resid: resid,
         data: [{ REC_ID: recordId, againNoticeHrmanage: 'Y' }]
       });
@@ -587,8 +597,36 @@ class ArrangingCourses extends React.Component {
     }
     this.setState({ searchPeriod }, this.searchCourseArrangment);
   };
+
+  showTotal = (total, range) => `${range[0]}~${range[1]}，共${total}条数据`;
+  handleYearChange = e =>
+    this.setState(
+      {
+        selectedYear: e
+      },
+      this.searchCourseArrangment
+    );
+  handleRecentPeriodChange = e => {
+    this.setState({
+      selectedRecentPeriod: e,
+      rangePickerValue: [null, null]
+    });
+    this.setPeriodBySelect(e);
+  };
+
+  handleKeySearch = value =>
+    this.setState({ searchKeyword: value }, this.searchCourseArrangment);
+
+  handlePaginationChange = (page, pageSize) =>
+    this.setState(
+      {
+        pagination: { ...this.state.pagination, current: page }
+      },
+      () => this.getCourseArrangment(page)
+    );
+
   render() {
-    let {
+    const {
       courseArrangment,
       selectedCourseArrangment,
       mode,
@@ -597,7 +635,8 @@ class ArrangingCourses extends React.Component {
       taskList,
       pagination,
       years,
-      selectedYear
+      selectedYear,
+      rangePickerValue
     } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
@@ -665,14 +704,7 @@ class ArrangingCourses extends React.Component {
                 className="emploee-courses_courses-manage-header-selector"
                 value={selectedYear}
                 style={selectStyle}
-                onChange={e => {
-                  this.setState(
-                    {
-                      selectedYear: e
-                    },
-                    this.searchCourseArrangment
-                  );
-                }}
+                onChange={this.handleYearChange}
               >
                 <Option key="all" value="all">
                   全部财年
@@ -687,13 +719,7 @@ class ArrangingCourses extends React.Component {
                 defaultValue="all"
                 value={this.state.selectedRecentPeriod}
                 style={selectStyle}
-                onChange={e => {
-                  this.setState({
-                    selectedRecentPeriod: e,
-                    rangePickerValue: [null, null]
-                  });
-                  this.setPeriodBySelect(e);
-                }}
+                onChange={this.handleRecentPeriodChange}
               >
                 <Option value="all">全部</Option>
                 <Option value="week">一周内</Option>
@@ -707,16 +733,11 @@ class ArrangingCourses extends React.Component {
                 placeholder={['开始日期', '结束日期']}
                 onOk={this.onOk}
                 onChange={this.onRangeSearchChange}
-                value={this.state.rangePickerValue}
+                value={rangePickerValue}
               />
               <Search
                 placeholder="输入课程关键字搜索"
-                onSearch={value => {
-                  this.setState(
-                    { searchKeyword: value },
-                    this.searchCourseArrangment
-                  );
-                }}
+                onSearch={this.handleKeySearch}
                 style={{ width: 200, marginLeft: 5 }}
               />
             </div>
@@ -821,12 +842,9 @@ class ArrangingCourses extends React.Component {
               <Pagination
                 className="external-training__arranging-courses__pagination"
                 total={pagination.total}
-                showTotal={(total, range) =>
-                  `${range[0]}~${range[1]}，共${total}条数据`
-                }
-                onChange={(page, pageSize) => {
-                  this.getCourseArrangment(page);
-                }}
+                current={pagination.current}
+                showTotal={this.showTotal}
+                onChange={this.handlePaginationChange}
                 pageSize={50}
               />
             </div>
@@ -872,9 +890,7 @@ class ArrangingCourses extends React.Component {
                 let endDate = Date.parse(values.modifyEndDatetime);
                 let timer = (endDate - startDate) / 86400000;
                 let classTime = Math.floor(timer) * 8 + 8;
-                console.log('课时', classTime);
                 if (!err) {
-                  console.log('values', values);
                   let { selectedCourseArrangment } = this.state;
                   var fileUrl = null;
                   if (this.state.fileList[0]) {
@@ -904,7 +920,7 @@ class ArrangingCourses extends React.Component {
                     fileList: []
                   });
                 } else {
-                  console.log(err);
+                  console.error(err);
                 }
               });
             }}
@@ -1318,8 +1334,6 @@ class ArrangingCourses extends React.Component {
                 let endDate = Date.parse(values.modifyEndDatetime);
                 let timer = (endDate - startDate) / 86400000;
                 let classTime = Math.floor(timer) * 8 + 8;
-                console.log(values);
-                console.log(parseFloat(values.actualCost));
                 if (!err) {
                   let courseArrangment = { ...values };
                   courseArrangment.actualCost = parseFloat(
@@ -1337,7 +1351,7 @@ class ArrangingCourses extends React.Component {
                     fileList: []
                   });
                 } else {
-                  console.log(err);
+                  console.error(err);
                 }
               });
             }}
@@ -1499,10 +1513,7 @@ class ArrangingCourses extends React.Component {
               hasAdd={false}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              actionBarExtra={({
-                dataSource: dataSource,
-                selectedRowKeys: selectedRowKeys
-              }) => {
+              actionBarExtra={({ dataSource, selectedRowKeys }) => {
                 return (
                   <Popconfirm
                     title="确认发送邮件"
