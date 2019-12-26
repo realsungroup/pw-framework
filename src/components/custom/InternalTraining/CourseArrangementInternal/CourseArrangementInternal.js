@@ -929,12 +929,6 @@ class CourseArrangementInternal extends React.Component {
             {this.state.isSelectedCourse ? (
               <Card
                 title={selectedCourse.C3_609845305680}
-                style={{
-                  height: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-                bodyStyle={{ flex: 1 }}
                 actions={[
                   <Button
                     onClick={() => {
