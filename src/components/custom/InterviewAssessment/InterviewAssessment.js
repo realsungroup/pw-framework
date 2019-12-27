@@ -2509,8 +2509,8 @@ var hrCode='623876215000';
                 <input type='radio' name='GHB' id='rec2other' value='rec2other' checked={this.state.GHB=='rec2other'?'checked':''} onChange={v=>{this.handlechange("GHB",v,'rec2other')}}/><label for='rec2other'>Recommend to other position 推荐其他岗位</label>
                 <input type='text'className='fillText' value={this.state.hiOther} onChange={v=>{this.handlechange("hiOther",v)}}/>
                 <br/>
-                <b>签名/Signature:</b>
-                <input type='text'className='fillText alterFill'/>
+                <b className={this.state.signature?'':'warning'}>签名/Signature:</b>
+                <input type='text'className='fillText alterFill' value={this.state.signature} onChange={v=>{this.handlechange("signature",v)}}/>
                 <b className={this.state.date?'':'warning'}>日期/Date:</b>
                 <input  style={{width:'120px'}} type='date'className='fillText' value={this.state.date} onChange={v=>{this.handlechange("date",v)}}/>
                 </cell>

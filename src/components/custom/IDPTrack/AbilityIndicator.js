@@ -5,8 +5,9 @@ import abliLevel from './AbilityLevel.json';
 export default function AbilityIndicator(props) {
   const { currentYear } = props;
   // 没有数据的场合用默认数据代替
+
   if(!currentYear.ability){
-    console.log(currentYear.level)
+   
     var n=0;
     var arr=[];
     var j=currentYear.level;
@@ -15,7 +16,9 @@ export default function AbilityIndicator(props) {
       var bol=false;
       while(c<abliLevel.data[n].chara.length){
         if(j==abliLevel.data[n].chara[c].level){
-          bol=true;
+          if(props.isSupervisor==abliLevel.data[n].chara[c].isSupervisor){
+            bol=true;
+          }
         }
         c++;
       }
@@ -24,6 +27,7 @@ export default function AbilityIndicator(props) {
       }
       n++;
     }
+
    }
   return (
     <>
