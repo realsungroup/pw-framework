@@ -134,3 +134,4 @@ export { IDPTrack } from '../components/custom/loadableCustom';
 export { VisitorApplyVIP } from '../components/custom/loadableCustom';
 export { DataProcess } from '../components/custom/loadableCustom';
 export { InterviewInvitation } from '../components/custom/loadableCustom';
+export { RankGrade } from '../components/custom/loadableCustom';
