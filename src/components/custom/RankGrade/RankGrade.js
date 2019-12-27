@@ -17,13 +17,28 @@ class RankGrade extends Component {
     super(props);
     this.state = {
       loading: false,
-      selVal:'SH.&WX.'
+      selVal:'SH.&WX.',
+      date:[]
     };
   }
 
   componentDidMount() {
+    this.getFY();
   }
+// 计算下拉的财年
+getFY = async() =>{
+  var myDate = new Date();
+  myDate=myDate.getFullYear();
+  var t=myDate;
+  var n=2010;
+  var arr=[];
+  while(n<myDate){
+    arr.push('FY'+myDate)
+    myDate--;
+  }
+  this.setState({date:arr,curDate:'FY'+t})
 
+}
   handleChange=(v)=>{
     this.setState({selVal:v})
   }
@@ -38,6 +53,12 @@ class RankGrade extends Component {
           <Option value='SH.&WX.'>SH.&WX.</Option>
           <Option value="SH.">SH.</Option>
           <Option value="WX.">WX.</Option>
+        </Select>
+        <label style={{marginLeft:'16px'}}>财年：</label><Select value={this.state.curDate} style={{ marginLeft:'8px',width: 120 }} onChange={v=>{this.handleChange(v)}}>
+        { this.state.date.map((item) => {
+                    return(
+                      <Option value={item}>{item}</Option>
+        )})}
         </Select>
         </div>
         <div className='repo'>
@@ -108,9 +129,9 @@ class RankGrade extends Component {
        </header>
        <content className='RGContent'>
         <Tabs defaultActiveKey="1">
-          <TabPane tab="全部" key="1" style={{height:'calc(100vh - 272px)'}}>
+          <TabPane tab="全部" key="1" style={{height:'calc(100vh - 262px)'}}>
             <TableData
-            resid={'613847444837'}
+            resid={'420130498195'}
             actionBarWidth={80}
             subtractH={100}
             hasAdd={false}
@@ -121,9 +142,9 @@ class RankGrade extends Component {
             hasRowDelete={false}
           />
           </TabPane>
-          <TabPane tab="已提交" key="2" style={{height:'calc(100vh - 272px)'}}>
+          <TabPane tab="已提交" key="2" style={{height:'calc(100vh - 262px)'}}>
             <TableData
-            resid={'613847444837'}
+            resid={'420130498195'}
             actionBarWidth={80}
             subtractH={100}
             hasAdd={false}
@@ -134,10 +155,10 @@ class RankGrade extends Component {
             hasRowDelete={false}
           />
           </TabPane>
-          <TabPane tab="上级已审批" key="3" style={{height:'calc(100vh - 272px)'}}>
+          <TabPane tab="上级已审批" key="3" style={{height:'calc(100vh - 262px)'}}>
 
             <TableData
-            resid={'613847444837'}
+            resid={'420130498195'}
             actionBarWidth={80}
             subtractH={100}
             hasAdd={false}
@@ -148,10 +169,10 @@ class RankGrade extends Component {
             hasRowDelete={false}
           />
           </TabPane>
-          <TabPane tab="不参评" key="4" style={{height:'calc(100vh - 272px)'}}>
+          <TabPane tab="不参评" key="4" style={{height:'calc(100vh - 262px)'}}>
 
             <TableData
-            resid={'613847444837'}
+            resid={'420130498195'}
             actionBarWidth={80}
             subtractH={100}
             hasAdd={false}
