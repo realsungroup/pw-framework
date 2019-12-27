@@ -209,7 +209,7 @@ class ThemeChina extends React.PureComponent {
               {currentYear.year}的能力指标
             </div>
             <div className="IDPTrack-theme--china__content__right__content">
-              <AbilityIndicator currentYear={currentYear} />
+              <AbilityIndicator currentYear={currentYear} isSupervisor={this.props.isSupervisor}/>
               {/* {currentYear &&
                 currentYear.ability &&
                 currentYear.ability.map(item => (

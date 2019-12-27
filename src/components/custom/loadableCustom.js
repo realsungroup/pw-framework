@@ -617,3 +617,9 @@ export const InterviewInvitation = Loadable({
     return minLoading;
   }
 });
+export const RankGrade = Loadable({
+  loader: () => import('./RankGrade'),
+  loading() {
+    return minLoading;
+  }
+});

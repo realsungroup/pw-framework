@@ -1811,7 +1811,10 @@ window[628250933331] = {
   name: 'IDPTrack',
   title: '个人能力发展轨迹'
 };
-
+window[630772897523] = {
+  name: 'RankGrade',
+  title: '评级评优'
+};
 window[628868376923] = {
   name: 'VisitorApplyVIP',
   title: 'VIP访客业务'

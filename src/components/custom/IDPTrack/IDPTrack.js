@@ -27,6 +27,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSupervisor:'N',
       currentTheme: 'synpho',
       courseLi: [['', '', '']],
       showRepo: false,
@@ -100,6 +101,8 @@ class IDPTrack extends Component {
       this.setState({ loading: false });
       console.log(e);
     }
+    this.judgeSuper(id);
+
     //  var score=this.getScore(id);
     try {
       res = await http().getTable({
@@ -163,7 +166,6 @@ class IDPTrack extends Component {
         }
         n++;
       }
-
       this.setState({ data: year });
 
       this.renderColor();
@@ -173,7 +175,20 @@ class IDPTrack extends Component {
       console.log(e);
     }
   };
-  
+  judgeSuper = async id =>{
+     // 判断是不是主管
+     try {
+      let res = await http().getTable({
+        resid: 609599795438,
+        cmswhere: `C3_478191359848 = '${id}'`
+      });
+      if(res.data.length>0){
+        this.setState({isSupervisor:'Y'})
+      }
+    }catch(e){
+      console.log(e)
+    }
+  }
   getScore = async id => {
     var score;
     try {
@@ -605,7 +620,7 @@ class IDPTrack extends Component {
           onClick={() => this.setState({ abilityVisible: false })}
         ></div>
         <div className="IDPTrack__modal--ability">
-          <AbilityIndicator currentYear={this.state.currentYear} />
+          <AbilityIndicator currentYear={this.state.currentYear} isSupervisor={this.state.isSupervisor}/>
         </div>
       </div>
     );
@@ -764,6 +779,7 @@ class IDPTrack extends Component {
             }}
             onViewAbility={this.handleViewAbility}
             onChooseSkin={this.handleChooseSkin}
+            isSupervisor={this.state.isSupervisor}
           />
         );
         break;
@@ -777,6 +793,7 @@ class IDPTrack extends Component {
               this.setState({ showRepo: true });
             }}
             onChooseSkin={this.handleChooseSkin}
+            isSupervisor={this.state.isSupervisor}
           />
         );
         break;
