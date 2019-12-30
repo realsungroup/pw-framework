@@ -63,7 +63,7 @@ class ThemeChina extends React.PureComponent {
             </div>
           </Popover>
           <div className="IDPTrack-theme--china__top__center">
-            {name}的个人发展轨迹
+            {name}个人能力发展轨迹
           </div>
           <div
             className="IDPTrack-theme--china__top__right background-china"
