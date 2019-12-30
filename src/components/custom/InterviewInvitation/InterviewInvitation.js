@@ -58,9 +58,8 @@ class InterviewInvitation extends React.Component {
 
   subData = async() =>{
     var email = this.state.C3_629488075916;
-		var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+		var reg = /@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 		if(reg.test(email)){
-     
 		}else{
       message.error("邮箱格式不正确");
       return false;
@@ -85,7 +84,7 @@ class InterviewInvitation extends React.Component {
   }
   modiData=async()=>{
     var email = this.state.C3_629488075916;
-		var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+		var reg = /@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 		if(reg.test(email)){
      
 		}else{
