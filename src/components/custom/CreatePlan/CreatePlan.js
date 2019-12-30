@@ -1172,7 +1172,8 @@ class CreatePlan extends React.Component {
                         display: 'flex',
                         flex: 1,
                         flexDirection: 'row',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        width: '100%'
                       }}
                     >
                       <div style={{ display: 'flex', flex: 1 }}>
@@ -1187,35 +1188,30 @@ class CreatePlan extends React.Component {
                       >
                         <div
                           style={{
-                            display: 'flex',
-                            flex: 1,
-                            flexWrap: 'wrap',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
                             marginBottom: '16px'
                           }}
                         >
-                          <div style={{ width: '100%', marginBottom: 4 }}>
+                          <div style={{ marginBottom: 4 }}>
                             <span>
-                              课程名称:{' '}
+                              课程名称:
                               {item.C3_609845305680 == null
                                 ? '无'
                                 : item.C3_609845305680}
                             </span>
                           </div>
-                          <div style={{ width: '100%' }}>
+                          <div>
                             <span>
-                              课程费用:{' '}
+                              课程费用:
                               {item.C3_609845305931 == null
                                 ? '无'
                                 : item.C3_609845305931}
                             </span>
                           </div>
                         </div>
-                        <div style={{ display: 'flex', flex: 1 }}>
+                        <div>
                           {item.showDetail ? null : (
                             <span>
-                              简介:{' '}
+                              简介:
                               {item.C3_609845305618 == null
                                 ? '无'
                                 : item.C3_609845305618}

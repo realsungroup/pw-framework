@@ -27,18 +27,19 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSupervisor:'N',
       currentTheme: 'synpho',
       courseLi: [['', '', '']],
       showRepo: false,
       dataCourse: [{}],
       loading: false,
       visible: false,
-      name: '???',
+      name: 'N/A',
       abilityVisible: false,
       currentYear: {},
       data: [
         {
-          year: '??????',
+          year: '暂无数据',
           abi: ['暂无数据'],
           status: ['暂无数据'],
           score: [],
@@ -88,7 +89,9 @@ class IDPTrack extends Component {
           arr2.push({
             year: data2[n2].REC_YEAR,
             abi: [data2[n2].C3_431106931302],
-            status: [data2[n2].C3_431102475269]
+            status: [data2[n2].C3_431102475269],
+            detail:data2[n2].C3_431090378241
+
           });
         }
         n2++;
@@ -98,13 +101,22 @@ class IDPTrack extends Component {
       this.setState({ loading: false });
       console.log(e);
     }
+    this.judgeSuper(id);
+
     //  var score=this.getScore(id);
     try {
       res = await http().getTable({
         resid: 629825195225,
         cmswhere: `personID = '${id}'`
       });
-      this.setState({ name: res.data[0].personName });
+
+      if(res.data.length>0){
+        this.setState({ name: res.data[0].personName });
+
+      }else{
+        this.setState({ name: '' });
+
+      }
       var data = res.data;
       var arr = [];
       var year = [];
@@ -122,10 +134,12 @@ class IDPTrack extends Component {
           c++;
         }
         if (bol == false) {
+          
           year.push({
             year: data[n].finicialYear,
             abi: [data[n].competency],
-            status: [data[n].status]
+            status: [data[n].status],
+            level: data[n].level
           });
         }
         n++;
@@ -139,12 +153,14 @@ class IDPTrack extends Component {
           if (year[c].year == str) {
             var x = 0;
             var str2 = [];
-
+            var arr3=[];
             while (x < score[n].abi.length) {
               str2.push(score[n].abi[x] + '-' + score[n].status[x]);
+              arr3.push({abi:score[n].abi[x],detail:score[n].detail})
               x++;
             }
             year[c].score = str2;
+            year[c].detail = arr3;
           }
           c++;
         }
@@ -159,6 +175,20 @@ class IDPTrack extends Component {
       console.log(e);
     }
   };
+  judgeSuper = async id =>{
+     // 判断是不是主管
+     try {
+      let res = await http().getTable({
+        resid: 609599795438,
+        cmswhere: `C3_478191359848 = '${id}'`
+      });
+      if(res.data.length>0){
+        this.setState({isSupervisor:'Y'})
+      }
+    }catch(e){
+      console.log(e)
+    }
+  }
   getScore = async id => {
     var score;
     try {
@@ -358,11 +388,14 @@ class IDPTrack extends Component {
       });
       res.data.forEach(item => {
         const year = data.find(i => i.year === item.C3_613941384328);
-        if (year.course) {
-          year.course.push(item);
-        } else {
-          year.course = [item];
+        if(year){
+          if (year.course) {
+            year.course.push(item);
+          } else {
+            year.course = [item];
+          }
         }
+       
       });
       this.setState({ data: [...data] });
     } catch (error) {
@@ -587,7 +620,7 @@ class IDPTrack extends Component {
           onClick={() => this.setState({ abilityVisible: false })}
         ></div>
         <div className="IDPTrack__modal--ability">
-          <AbilityIndicator currentYear={this.state.currentYear} />
+          <AbilityIndicator currentYear={this.state.currentYear} isSupervisor={this.state.isSupervisor}/>
         </div>
       </div>
     );
@@ -651,7 +684,7 @@ class IDPTrack extends Component {
                   >
                     陶瓷
                   </div>
-                  <div
+                  {/* <div
                     className="popover--choose-skin__item popover--choose-skin__cyber"
                     onClick={this.onChooseSkin('cyber')}
                   >
@@ -662,7 +695,7 @@ class IDPTrack extends Component {
                     onClick={this.onChooseSkin('vividness')}
                   >
                     绚丽
-                  </div>
+                  </div> */}
                 </div>
               }
             >
@@ -746,6 +779,7 @@ class IDPTrack extends Component {
             }}
             onViewAbility={this.handleViewAbility}
             onChooseSkin={this.handleChooseSkin}
+            isSupervisor={this.state.isSupervisor}
           />
         );
         break;
@@ -759,6 +793,7 @@ class IDPTrack extends Component {
               this.setState({ showRepo: true });
             }}
             onChooseSkin={this.handleChooseSkin}
+            isSupervisor={this.state.isSupervisor}
           />
         );
         break;

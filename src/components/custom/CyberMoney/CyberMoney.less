@@ -12,15 +12,15 @@
 }
 .CyberMoney{
       background: #fff;
-      display:grid;
-      grid-template-columns: 33.3333vw 33.3333vw 1rf;
-      grid-template-rows: 11.1111vw ;
-      grid-row-gap: 1.1111vw;
-      grid-column-gap: 1.1111vw;
+      // display:grid;
+      // grid-template-columns: 33.3333vw 33.3333vw 1rf;
+      // grid-template-rows: 11.1111vw ;
+      // grid-row-gap: 1.1111vw;
+      // grid-column-gap: 1.1111vw;
       margin-top:3.243vh;
-      width:89.19vw;
-      height:90.27vh;
-      margin-left:6.486vw;
+      width:96vw;
+      height:93.514vh;
+      margin-left:2vw;
     }
     *{
       transition: .3s;
@@ -29,29 +29,41 @@
       background: #fff;
       box-shadow: 0px 0px 0.5556vw 0px rgba(0,0,0,.2);
       border-radius: 1.1111vw;
+
     }
    .CyberMoney	.history{
       background:linear-gradient(180deg,rgba(26,41,128,1) 0%,rgba(38,208,206,1) 100%);
-        grid-column-start: 3;
-        grid-column-end: 3;
-        grid-row-start: 1;
-        grid-row-end: 3;
+      width:27vw;
+      height: 93.514vh;
+        // grid-column-start: 3;
+        // grid-column-end: 3;
+        // grid-row-start: 1;
+        // grid-row-end: 3;
     }
     .CyberMoney	.team{
-
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 2;
-        grid-row-end: 3;
+      width:67.77vw;
+      margin-top: 2.22vh;
+      height:calc(91.3vh - 11.1111vw);
+      float: left;
+        // grid-column-start: 1;
+        // grid-column-end: 3;
+        // grid-row-start: 2;
+        // grid-row-end: 3;
     }
     .CyberMoney	.user{
+      width:33.3333vw;
+      height: 11.11vw;
       position:relative;
       background-image: url(img/bg.png);
       background-size:cover;
       transition: .3s;
-
+      float:left;
     }
     .CyberMoney .shop{
+      width:33.3333vw;
+      height: 11.11vw;
+      margin-left: 1.1111vw;
+      float:left;
       background-image: url(img/bg2.png);
       background-size:cover;
       cursor: pointer;
@@ -145,6 +157,10 @@
     }
     .shop_cls:hover{
       opacity: 1;
+    }
+    .history{
+      float:right;
+
     }
     .history h4{
       font-size:16px;

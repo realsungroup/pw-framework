@@ -39,6 +39,7 @@ export function withRecordForm(options = {}) {
        * @param {function} params.onSuccess 保存成功后的回调函数：(operation, formData, record, form) => {}；operation 表示什么操作；formData 表示保存的表单数据；record 表示记录；form 自动收集数据的 form 对象
        * @param {function} params.onCancel 取消后的回调函数
        * @param {string} params.dblinkname 数据库链接名称
+       * @param {string} params.baseURL 基地址
        */
       handleOpenRecordForm = ({
         type = 'modal',
