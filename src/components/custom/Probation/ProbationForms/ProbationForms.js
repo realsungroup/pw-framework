@@ -410,7 +410,8 @@ class ProbationForms extends React.Component {
         });
       }
       console.log('res',res)
-      const SubResource = res.SubResource;
+      if(res.data.length>0){
+        const SubResource = res.SubResource;
       var toFid=employedId||res.data[0].C3_625051545181
 
       let data = {};
@@ -485,6 +486,10 @@ class ProbationForms extends React.Component {
       } else {
         this.setState({ flagAlreadyHit: 0 });
       }
+      }else{
+        message.info('没有试用期记录')
+      }
+      
     } catch (error) {
       message.error(error.message);
       console.log(error);
