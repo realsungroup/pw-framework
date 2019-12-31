@@ -322,19 +322,24 @@ class ReportForm1 extends React.Component {
         n++;
       }
       n=0;
+      c=0;
       while(n<arr.length){
         var cC1=arr[n][0].CourseCos||0;
         var cC2=arr[n][1].CourseCos||0;
         var cC3=arr[n][2].CourseCos||0;
         var cC4=arr[n][3].CourseCos||0;
             // 求和第五项
-        arr[n][4].CourseCos=Number(cC1)+Number(cC2)+Number(cC3)+Number(cC4)
+        arr[n][4].CourseCos=Number(cC1)+Number(cC2)+Number(cC3)+Number(cC4);
+        if(!arr[n][0].quarter){c++; }
+        if(!arr[n][1].quarter){c++; }
+        if(!arr[n][2].quarter){c++; }
+        if(!arr[n][3].quarter){c++; }
         n++;
       }
 
+      console.log(arr,c)
 
-
-      var w = arr.length*600;
+      var w = arr.length*600-c*120;
       w=w+'px';
       this.setState({width:w,data:arr});
 
@@ -402,10 +407,14 @@ class ReportForm1 extends React.Component {
                   {
             item.map((item2) => {
               return (
+                <>
+                {item2.quarter?(
                 <dl className={item2.className} style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
+                  
+                  
                   <dt>
                     <p>
-                      {item2.quarter?item2.quarter:'?'}
+                      {item2.quarter?item2.quarter:'N/A'}
                     </p>
                   </dt>
                   <dd>
@@ -429,7 +438,7 @@ class ReportForm1 extends React.Component {
                   }
                 {
                   this.props.chara=='individual'||this.props.chara=='director'?null:(
-<dd>
+                  <dd>
                     <p>
                       {item2.courseScore?item2.courseScore:0}
                     </p>
@@ -445,6 +454,8 @@ class ReportForm1 extends React.Component {
                   </dd> 
                   )}
                 </dl>
+                ):null}
+                </>
               );
             })
           }
