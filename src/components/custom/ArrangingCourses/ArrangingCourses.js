@@ -866,6 +866,7 @@ class ArrangingCourses extends React.Component {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
+                cmswhere={`C3_613941384328 = '${this.state.selectedYear}'`}
                 tableComponent="ag-grid"
                 sideBarAg={true}
                 hasRowSelection={true}
