@@ -1014,10 +1014,13 @@ class TableData extends React.Component {
     openRecordForm({
       type: recordFormType,
       title,
-      formProps: {
-        ...formProps,
-        className
-      },
+      formProps:
+        recordFormType === 'modal'
+          ? {
+              ...formProps,
+              className
+            }
+          : formProps,
       data: newData,
       operation: newOperation,
       record: newRecord,
