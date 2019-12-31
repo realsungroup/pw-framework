@@ -169,6 +169,12 @@ class ReportForm1 extends React.Component {
     toExcel.saveExcel();
   }
 
+  getData2=async()=>{
+    let res = await http().getTable({
+      resid: '628789184275',
+    });
+    console.log('mm',res)
+  }
   getData = async (id) => {
     this.setState({loading:true})
     try {
@@ -259,10 +265,7 @@ class ReportForm1 extends React.Component {
         var aT3=arr[n][2].avgTrain||0;
         var aT4=arr[n][3].avgTrain||0;
 
-        var cC1=arr[n][0].CourseCos||0;
-        var cC2=arr[n][1].CourseCos||0;
-        var cC3=arr[n][2].CourseCos||0;
-        var cC4=arr[n][3].CourseCos||0;
+      
 
 
         arr[n][4].trainTime=Number(tT1)+Number(tT2)+Number(tT3)+Number(tT4)
@@ -274,6 +277,7 @@ class ReportForm1 extends React.Component {
         arr[n][4].avgTrain=(arr[n][4].avgTrain).toFixed(2)
         // 取平均值第四项
         var arr2=[];
+        c=0;
         while(c<4){
           var numnum=arr[n][c].courseScore||'0%';
           numnum=numnum.substring(0,numnum.length-1);
@@ -291,24 +295,65 @@ class ReportForm1 extends React.Component {
         if(arr[n][4].courseScore=='NaN%'){
           arr[n][4].courseScore='0%'
         }
-      // 求和第五项
-        arr[n][4].CourseCos=Number(cC1)+Number(cC2)+Number(cC3)+Number(cC4)
+  
 
         n++;
       }
-      var w = arr.length*600;
+      console.log(arr)
+      let resAnother = await http().getTable({
+        resid: '628789184275',
+      });
+      console.log(resAnother)
+      n=0;
+      while(n<resAnother.data.length){
+        c=0;
+        while(c<arr.length){
+          var d=0;
+          while(d<arr[c].length){
+            if(resAnother.data[n].C3_613941384328==arr[c][d].C3_613941384328){
+              if(resAnother.data[n].quarter==arr[c][d].quarter){
+                arr[c][d].CourseCos=resAnother.data[n].CostOnlyForCourses
+              }
+            }
+            d++;
+          }
+          c++;
+        }
+        n++;
+      }
+      n=0;
+      c=0;
+      while(n<arr.length){
+        var cC1=arr[n][0].CourseCos||0;
+        var cC2=arr[n][1].CourseCos||0;
+        var cC3=arr[n][2].CourseCos||0;
+        var cC4=arr[n][3].CourseCos||0;
+            // 求和第五项
+        arr[n][4].CourseCos=Number(cC1)+Number(cC2)+Number(cC3)+Number(cC4);
+        if(!arr[n][0].quarter){c++; }
+        if(!arr[n][1].quarter){c++; }
+        if(!arr[n][2].quarter){c++; }
+        if(!arr[n][3].quarter){c++; }
+        n++;
+      }
+
+      console.log(arr,c)
+
+      var w = arr.length*600-c*120;
       w=w+'px';
       this.setState({width:w,data:arr});
 
       this._echarts.hideLoading();
       let source = res.data.map(item => {
-        return [item.C3_613941384328 + item.quarter, item.avgTrain];
+        return [item.C3_613941384328 + item.quarter, Number(item.avgTrain).toFixed(2)];
       });
       this._echarts.setOption({
         dataset: {
           source: source
         }
       });
+     
+
       this.setState({loading:false});
 
     } catch (error) {
@@ -362,34 +407,38 @@ class ReportForm1 extends React.Component {
                   {
             item.map((item2) => {
               return (
+                <>
+                {item2.quarter?(
                 <dl className={item2.className} style={this.props.chara=='individual'||this.props.chara=='director'?{height:'240px'}:{}}>
+                  
+                  
                   <dt>
                     <p>
-                      {item2.quarter?item2.quarter:'?'}
+                      {item2.quarter?item2.quarter:'N/A'}
                     </p>
                   </dt>
                   <dd>
                     <p>
-                      {item2.trainTime?item2.trainTime:0}
+                      {item2.trainTime?Number(item2.trainTime).toFixed(2):0}
                     </p>
                   </dd>
                   <dd>
                     <p>
-                     {item2.trainHours?item2.trainHours:0}
+                     {item2.trainHours?Number(item2.trainHours).toFixed(2):0}
                     </p>
                   </dd> 
                   {
                     this.props.chara=='individual'||this.props.chara=='director'?null:(
                       <dd>
                         <p>
-                          {item2.avgTrain?item2.avgTrain:0}
+                          {item2.avgTrain?Number(item2.avgTrain).toFixed(2):0}
                         </p>
                       </dd> 
                     )
                   }
                 {
                   this.props.chara=='individual'||this.props.chara=='director'?null:(
-<dd>
+                  <dd>
                     <p>
                       {item2.courseScore?item2.courseScore:0}
                     </p>
@@ -400,11 +449,13 @@ class ReportForm1 extends React.Component {
                   this.props.chara=='individual'||this.props.chara=='director'?null:(  
                   <dd>
                     <p>
-                      {item2.CourseCos?item2.CourseCos:0}
+                      {item2.CourseCos?Number(item2.CourseCos).toFixed(2):0}
                     </p>
                   </dd> 
                   )}
                 </dl>
+                ):null}
+                </>
               );
             })
           }
