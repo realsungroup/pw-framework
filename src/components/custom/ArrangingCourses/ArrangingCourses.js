@@ -745,19 +745,20 @@ class ArrangingCourses extends React.Component {
           {this.state.mode === 'card' && (
             <div className="external-training_arranging_courses-course_list">
               <div className="external-training_arranging_courses-course_list-wrapper">
-                {courseArrangment.length ? (
+                {courseArrangment.length ? (　  
                   courseArrangment.map(item => (
                     <Card
-                      title={item.CourseName}
+                      title={item.classType=='外聘内训'?'[外聘内训]'+item.CourseName:item.CourseName}
                       className="arranging_courses_item"
                       key={item.REC_ID}
                       extra={
                         <div>
-                          <Icon
+                          {item.classType=='外聘内训'?<span style={{marginRight:'16px'}}>签到数：{item.C3_625242875063=='undefined'?'0':item.C3_625242875063}</span>:null}
+                          {/* <Icon
                             style={{ color: '#faad14' }}
                             type="like"
                             theme="filled"
-                          />
+                          /> */}
                           点赞数：{item.countLike}
                         </div>
                       }
@@ -866,7 +867,7 @@ class ArrangingCourses extends React.Component {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
-                cmswhere={`C3_613941384328 = '${this.state.selectedYear}'`}
+                cmswhere={this.state.selectedYear=='all'?'':`C3_613941384328 = '${this.state.selectedYear}'`}
                 tableComponent="ag-grid"
                 sideBarAg={true}
                 hasRowSelection={true}
