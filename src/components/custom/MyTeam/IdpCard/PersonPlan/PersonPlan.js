@@ -835,7 +835,7 @@ class PersonPlan extends React.Component {
           if (item.name === '能力测评编号' || item.name === '是否优先发展') {
             return;
           }
-          if (!item.value.trim()) {
+          if (!item.value ||!item.value.trim()) {
             throw new Error('请将能力测评内容填写完整');
           }
         });
@@ -848,8 +848,8 @@ class PersonPlan extends React.Component {
         plan.forEach(item => {
           if (item.name === '发展行动计划编号') {
             return;
-          }
-          if (!item.value.trim()) {
+          }       
+          if (!item.value||!item.value.trim()) {
             throw new Error('请将职业能力发展计划内容填写完整');
           }
         });
