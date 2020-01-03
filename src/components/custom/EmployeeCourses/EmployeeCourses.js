@@ -244,7 +244,7 @@ class EmployeeCourses extends React.Component {
     let res;
     try {
       let { selcetedCourseType, selectedYear, searchKey } = this.state;
-      console.log('sy',selectedYear)
+      console.log('sy', selectedYear);
       let cmswhere = `C3_613941384328 = '${selectedYear}' `;
       if (selcetedCourseType !== 'all') {
         cmswhere += `AND courseType = '${selcetedCourseType}'`;
@@ -259,13 +259,12 @@ class EmployeeCourses extends React.Component {
       if (myCourses.length > 0) {
         myCourses[0].checked = true;
         let selectedCourse = { ...myCourses[0] };
-        var org=myCourses;
+        var org = myCourses;
         this.setState({ CoursesOrg: org });
 
         var result = org.slice(0, this.state.pageSize);
-        this.setState({ myCourses: result, currentPage: 1,selectedCourse});
+        this.setState({ myCourses: result, currentPage: 1, selectedCourse });
         // this.setState({ myCourses, selectedCourse });
-
       } else {
         this.setState({ myCourses: [], selectedCourse: {} });
       }
@@ -844,6 +843,15 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  handleCloseFeedBackModal = () => {
+    this.setState({
+      feebackVisible: false,
+      feedbackModalMode: 'view',
+      plans: [''],
+      knowledge: ['']
+    });
+  };
+
   renderHeader = () => (
     <header className="emploee-courses_courses-manage-header">
       <Select
@@ -986,7 +994,7 @@ class EmployeeCourses extends React.Component {
   };
   render() {
     const { selectedCourse } = this.state;
-    const { courseType } = selectedCourse ;
+    const { courseType } = selectedCourse;
     const now = moment();
     const isAfterStart =
       selectedCourse.C3_615393041304 &&
@@ -1372,22 +1380,13 @@ class EmployeeCourses extends React.Component {
           }
           visible={this.state.feebackVisible}
           width={this.state.wid}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          // onOk={this.handleOk}
+          onCancel={this.handleCloseFeedBackModal}
           destroyOnClose
           footer={
             this.state.feedbackModalMode === 'modify'
               ? [
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        feebackVisible: false,
-                        feedbackModalMode: 'view'
-                      });
-                    }}
-                  >
-                    关闭
-                  </Button>,
+                  <Button onClick={this.handleCloseFeedBackModal}>关闭</Button>,
                   <Button
                     onClick={() => {
                       this.submitRate();
@@ -1530,7 +1529,7 @@ class EmployeeCourses extends React.Component {
               {this.state.selcetedTip.Filepath ? (
                 this.state.selcetedTip.Filepath.split(',').map(
                   (item, index) => (
-                    <p>
+                    <p key={item}>
                       <a href={item} target="_blank">
                         附件{index + 1}
                       </a>

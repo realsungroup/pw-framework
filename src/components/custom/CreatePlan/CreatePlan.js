@@ -5,18 +5,19 @@ import {
   Icon,
   Checkbox,
   message,
-  Popover,
   List,
   Select,
   Modal,
   Input,
   Spin,
-  Tabs
+  Tabs,
+  Popconfirm
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
 import { TableData } from '../../common/loadableCommon';
 import './CreatePlan.less';
+import { getItem } from '../../../util20/util';
 const Option = Select.Option;
 const Search = Input.Search;
 const TabPane = Tabs.TabPane;
@@ -50,7 +51,9 @@ class CreatePlan extends React.Component {
       isShowProgress: false,
       taskList: [],
       indeterminate: false,
-      isAllChecked: false
+      isAllChecked: false,
+      userCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE,
+      departments: []
     };
   }
 
@@ -59,6 +62,7 @@ class CreatePlan extends React.Component {
     this.planid = this.props.planid;
     this.setState({ loading: true });
     await this.totalData();
+    this.getDepartment();
     this.getData();
     this.getSubData();
     this.getLevel();
@@ -81,10 +85,21 @@ class CreatePlan extends React.Component {
       return message.error(err.message);
     }
   };
+  getDepartment = async () => {
+    try {
+      const res = await http().getTable({
+        resid: '631365359849',
+        cmswhere: `C3_611264173184 = '${this.state.totalData.C3_609615869581}' and C3_613828994025 = '${this.state.totalData.C3_609616006519}' and C3_611071869988 = '${this.state.userCode}'`
+      });
+      this.setState({ departments: res.data });
+    } catch (error) {
+      console.error(error);
+      return message.error(error.message);
+    }
+  };
   //获取员工列表
   async getData() {
     let pageIndex = this.state.pageIndex;
-    let pageSize = this.state.pageSize;
     let key = this.state.key;
     this.setState({ loading: true });
     try {
@@ -92,7 +107,6 @@ class CreatePlan extends React.Component {
         resid: this.props.resid,
         key,
         pageIndex,
-        pageSize,
         cmswhere: `C3_613828994025 = '${this.state.totalData.C3_609616006519}'`
       });
       this.setState({ loading: false });
@@ -379,9 +393,13 @@ class CreatePlan extends React.Component {
 
   render() {
     let levelData = this.state.levelData;
-    let kcxlData = this.state.kcxlData;
-    let kclbData = this.state.kclbData;
-    let { totalData, taskList, indeterminate, isAllChecked } = this.state;
+    let {
+      totalData,
+      taskList,
+      indeterminate,
+      isAllChecked,
+      departments
+    } = this.state;
     return (
       <div style={{ padding: '16px', background: '#fff' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -457,16 +475,10 @@ class CreatePlan extends React.Component {
               </div>
             </div>
             <div style={{ height: 'calc(100vh - 150px)', overflow: 'auto' }}>
-              {/* <InfiniteScroll
-                initialLoad={false}
-                pageStart={0}
-                loadMore={this.getData.bind(this)}
-                hasMore={this.state.hasMore}
-                useWindow={false}
-              > */}
               <List
                 size="small"
                 loading={this.state.loading}
+                pagination={{ position: 'bottom', size: 100 }}
                 header={
                   <div
                     style={{
@@ -481,47 +493,72 @@ class CreatePlan extends React.Component {
                     >
                       全选
                     </Checkbox>
-                    <Select
-                      style={{ width: '100px' }}
-                      defaultValue="All"
-                      onChange={e => {
-                        let data = [],
-                          level,
-                          oldData = this.state.oldData;
-                        if (e === 'All') {
-                          data = oldData;
-                          level = '';
-                        } else {
-                          level = e;
-                          oldData.forEach(ele => {
-                            ele.check = false;
-                            if (ele.C3_609622292033 === e) {
-                              data.push(ele);
-                            }
+                    <div>
+                      <Select
+                        style={{ width: '100px', marginRight: 8 }}
+                        defaultValue="All"
+                        onChange={e => {
+                          let data = [],
+                            level,
+                            oldData = this.state.oldData;
+                          if (e === 'All') {
+                            data = oldData;
+                            level = '';
+                          } else {
+                            level = e;
+                            oldData.forEach(ele => {
+                              ele.check = false;
+                              if (ele.C3_609622292033 === e) {
+                                data.push(ele);
+                              }
+                            });
+                          }
+                          this.setState({ data, selectedLevel: level }, () => {
+                            this.getSubData();
                           });
-                        }
-                        this.setState({ data, selectedLevel: level }, () => {
-                          this.getSubData();
-                        });
-                      }}
-                    >
-                      <Option value="All">全部级别</Option>
-                      {levelData.map((item, i) => (
-                        <Option value={item.C3_587136281870} key={i}>
-                          {item.C3_587136281870}
-                        </Option>
-                      ))}
-                    </Select>
-                    <Search
-                      placeholder="搜索"
-                      onSearch={value => {
-                        this.setState(
-                          { key: value, data: [], pageIndex: 0 },
-                          () => this.getData()
-                        );
-                      }}
-                      style={{ width: 200 }}
-                    />
+                        }}
+                      >
+                        <Option value="All">全部级别</Option>
+                        {levelData.map((item, i) => (
+                          <Option value={item.C3_587136281870} key={i}>
+                            {item.C3_587136281870}
+                          </Option>
+                        ))}
+                      </Select>
+                      <Select
+                        style={{ width: '140px', marginRight: 8 }}
+                        defaultValue="All"
+                        onChange={key => {
+                          let data = [],
+                            oldData = this.state.oldData;
+                          if (key === 'All') {
+                            data = [...oldData];
+                          } else {
+                            data = oldData.filter(
+                              item => item.C3_609622277252 === key
+                            );
+                          }
+                          this.setState({ data });
+                        }}
+                      >
+                        <Option value="All">全部部门</Option>
+                        {departments.map((item, i) => (
+                          <Option value={item.depart} key={i}>
+                            {item.depart}
+                          </Option>
+                        ))}
+                      </Select>
+                      <Search
+                        placeholder="搜索"
+                        onSearch={value => {
+                          this.setState(
+                            { key: value, data: [], pageIndex: 0 },
+                            () => this.getData()
+                          );
+                        }}
+                        style={{ width: 200 }}
+                      />
+                    </div>
                   </div>
                 }
                 bordered
@@ -710,7 +747,7 @@ class CreatePlan extends React.Component {
             >
               <Button
                 type="default"
-                style={{ marginRight: 6 }}
+                style={{ marginRight: 8 }}
                 onClick={() => {
                   this.setState({ showHistory: true });
                 }}
