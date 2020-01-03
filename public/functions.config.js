@@ -1808,7 +1808,7 @@ window[628885904481] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
@@ -1819,7 +1819,7 @@ window[628886558788] = {
   title: '统计管理', // 功能模块名称
   props: {
     resid: 628946981907,
-    actionBarWidth: 100,
+    actionBarWidth: 200,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1842,8 +1842,8 @@ window[629200936654] = {
   name: 'TableData', // 组件名称，
   title: '统计管理', // 功能模块名称
   props: {
-    resid: 629200875080,
-    actionBarWidth: 100,
+    resid: 631104772748,
+    actionBarWidth: 200,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1853,7 +1853,7 @@ window[629200936654] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
