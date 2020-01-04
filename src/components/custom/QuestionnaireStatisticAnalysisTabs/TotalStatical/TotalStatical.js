@@ -40,7 +40,8 @@ class TotalStatical extends Component {
       queryQuestions: [],
       answerData: [],
       queryQuestionsGroup: [],
-      data: []
+      data: [],
+      loadingBtnID: ''
     };
   }
   componentDidMount = () => {
@@ -208,23 +209,22 @@ class TotalStatical extends Component {
     } catch (err) {
       return message.error(err.message);
     }
-    // console.log('问答题的数据', res.data);
     if (0 <= res.data.length) {
       const answerData = [];
       res.data.forEach(item => {
         const tempAnserdataItem = answerData.find(
           answerDataItem => item.question_id === answerDataItem.question_id
         );
-        // find 找到的话返回该元素，没找到返回-1
+        // find 找到的话返回该元素，
         // 第一次进来是个空的,空的会返回undefined false ,取反  执行if里边的东西。
         if (!tempAnserdataItem) {
           answerData.push({
             question_id: item.question_id,
             question_topic: item.question_topic,
-            answers: [item.write_content]
+            answers: [item]
           });
         } else {
-          tempAnserdataItem.answers.push(item.write_content);
+          tempAnserdataItem.answers.push(item);
         }
       });
       this.setState({ answerData });
@@ -393,9 +393,25 @@ class TotalStatical extends Component {
     // pdfMake.createPdf(dd).open();
   };
 
+  handleAdopt = (answer, outindex, inindex) => async () => {
+    this.setState({ loadingBtnID: answer.REC_ID });
+    const { answerData } = this.state;
+    try {
+      await http().modifyRecords({
+        resid: '608838682402',
+        data: [{ isAdopt: 'Y', REC_ID: answer.REC_ID }]
+      });
+      answerData[outindex].answers[inindex].isAdopt = 'Y';
+      this.setState({ answerData });
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+    this.setState({ loadingBtnID: '' });
+  };
   //渲染问答题的数据
   renderAnswerChart = () => {
-    const { answerData } = this.state;
+    const { answerData, loadingBtnID } = this.state;
     // console.log(answerData);
     if (0 <= answerData) {
       return;
@@ -409,10 +425,21 @@ class TotalStatical extends Component {
               {item.question_topic}
             </h4>
             <ul className="total-statical__ubox">
-              {item.answers.map((answers, index) => {
+              {item.answers.map((answer, _index) => {
+                const isAdopt = answer.isAdopt === 'Y';
                 return (
-                  <li key={index} className="total-statical__ubox__lee">
-                    {answers}
+                  <li key={_index} className="total-statical__ubox__lee">
+                    <span style={{ flex: 1 }}>{answer.write_content}</span>
+                    <span>
+                      <Button
+                        type="primary"
+                        disabled={isAdopt}
+                        onClick={this.handleAdopt(answer, index, _index)}
+                        loading={loadingBtnID === answer.REC_ID}
+                      >
+                        {isAdopt ? '已采纳' : '采纳'}
+                      </Button>
+                    </span>
                   </li>
                 );
               })}

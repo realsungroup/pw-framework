@@ -1,7 +1,7 @@
 .bg{
   width:100vw;
   height:100vh;
-  background: #fff;
+  background: #F0F2F5;
   position:fixed;
   top:0;
   left:0;
@@ -11,51 +11,70 @@
    user-select:none;
 }
 .CyberMoney{
-      background: #fff;
-      display:grid;
-      grid-template-columns: 33.3333vw 33.3333vw 1rf;
-      grid-template-rows: 11.1111vw ;
-      grid-row-gap: 1.1111vw;
-      grid-column-gap: 1.1111vw;
+      // display:grid;
+      // grid-template-columns: 33.3333vw 33.3333vw 1rf;
+      // grid-template-rows: 11.1111vw ;
+      // grid-row-gap: 1.1111vw;
+      // grid-column-gap: 1.1111vw;
       margin-top:3.243vh;
-      width:89.19vw;
-      height:90.27vh;
-      margin-left:6.486vw;
+      width:1200px;
+      height:93.514vh;
+      position: absolute;
+      left: 50%;
+      margin-left:-600px;
     }
     *{
       transition: .3s;
     }
-    .CyberMoney div{
+    .CyberMoney>div{
       background: #fff;
       box-shadow: 0px 0px 0.5556vw 0px rgba(0,0,0,.2);
-      border-radius: 1.1111vw;
+      border-radius: 14px;
+
     }
    .CyberMoney	.history{
-      background:linear-gradient(180deg,rgba(26,41,128,1) 0%,rgba(38,208,206,1) 100%);
-        grid-column-start: 3;
-        grid-column-end: 3;
-        grid-row-start: 1;
-        grid-row-end: 3;
+      // background:linear-gradient(180deg,rgba(26,41,128,1) 0%,rgba(38,208,206,1) 100%);
+      background-color: #971a1e;
+      width:328px;
+      height: 93.514vh;
+      float:right;
+      position: relative;
+        // grid-column-start: 3;
+        // grid-column-end: 3;
+        // grid-row-start: 1;
+        // grid-row-end: 3;
     }
     .CyberMoney	.team{
-
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 2;
-        grid-row-end: 3;
+      width:856px;
+      margin-top: 16px;
+      height:calc(93.514vh - 146px);
+      float: left;
+      
+        // grid-column-start: 1;
+        // grid-column-end: 3;
+        // grid-row-start: 2;
+        // grid-row-end: 3;
     }
     .CyberMoney	.user{
+      width:420px;
+      height: 130px;
       position:relative;
       background-image: url(img/bg.png);
       background-size:cover;
       transition: .3s;
-
+      float:left;
     }
     .CyberMoney .shop{
+      width:420px;
+      height: 130px;
+      float:left;
       background-image: url(img/bg2.png);
       background-size:cover;
       cursor: pointer;
       position:relative;
+    }
+    .shop{
+      margin-left: 16px;
     }
     .user *,.shop *{
       position: absolute;
@@ -66,70 +85,70 @@
     }
     .user .avatar{
       border-radius: 50%;
-      width:5.5556vw;
-      height:5.5556vw;
+      width:88px;
+      height:88px;
       background-image: url(img/avatar-def.png);
       background-size: cover;
       top:50%;
-      margin-top: -2.7778vw;
-      margin-left:2.2222vw;
+      margin-top:-44px;
+      margin-left:32px;
       box-shadow: 0px 0px 8px rgba(0,0,0,0.4) inset;
     }
     .user p,.user span{
       color:#fff;
-      left:8.4vw;
+      left:144px;
     }
     .user p{
-      top:2.7778vw;
-      font-size: 1.6667vw;
+      top:32px;
+      font-size: 24px;
       font-weight: bold;
     }
     .user span{
-      font-size: 1.1111vw;
-      bottom:2.7778vw;
+      font-size: 16px;
+      bottom:32px;
     }
     oval{
       display: block;
-      width:7.2222vw;
-      height:7.2222vw;
-      right:2.2222vw;
+      width:88px;
+      height:88px;
+      right:28px;
       border-radius: 50%;
       top:50%;
-      margin-top:-3.6111vw;
+      margin-top:-44px;
       background:rgba(255,216,223,0.4);
-      box-shadow:0px 0px 1.1111vw 0px rgba(255,255,255,0.16);
+      box-shadow:0px 0px 8px 0px rgba(255,255,255,0.16);
       border:1px solid rgba(255,255,255,0.6);
     }
     .user oval p{
       top:0;
       left:0;
-      width:7.2222vw;
+      width:88px;
       text-align: center;
-      font-size:2.7778vw;
+      font-size:40px;
       font-family:DINCondensed-Bold,DINCondensed;
       font-weight:bold;
       color:rgba(255,255,255,1);
-      line-height:8.2222vw;
+      line-height:100px;
     }
     .shop:hover{
       opacity: 0.9;
     }
     .shop rect{
-      width:2.9167vw;
-      height:2.9167vw;
+      width:40px;
+      height:40px;
       left:50%;
-      margin-left:-1.4583vw;
+      margin-left:-20px;
       background-image: url(img/shopping_white.svg);
       background-size: cover;
-      top:2.3611vw;
+      top:24px;
     }
     .shop p{
       width:100%;
       left:0;
       color:#fff;
       text-align: center;
-      bottom:.6vw;
-      font-size: 1.6667vw;
+      bottom:0;
+      font-size: 20px;
 
     }
     .CyberMoney .shop_cls{
@@ -146,41 +165,56 @@
     .shop_cls:hover{
       opacity: 1;
     }
+    
     .history h4{
       font-size:16px;
       color:#fff;
       font-weight: bold;
       margin-top:24px;
       margin-bottom: 24px;
-      margin-left: 1.6667vw;
+      margin-left: 16px;
+      position: relative;
+      z-index:3;
+      .viewRule{
+        float:right;
+        font-weight: normal;
+        margin-right: 16px;
+        cursor:pointer;
+        box-sizing: border-box;
+        &:hover{
+          border-bottom:1px solid rgba(255,255,255,0.65);
+        }
+      }
     }
     .history ul{
       padding:0;
       list-style: none;
-      margin-top:24px;
-      width:92.37%;
-      margin-left:6.63%;
-      height:calc(90.1351vh - 6.25vw);
+      width:296px;
+      position: absolute;
+      left:50%;
+      margin-left: -148px;
+      height:calc(93.514vh - 112px);
+      margin-top: 16px;
       overflow: auto;
-
+      z-index:2;
     }
     .team ul::-webkit-scrollbar
     {
-        width:0.5556vw;
+        width:10px;
         background-color: rgba(0,0,0,0);
     }
     .history ul::-webkit-scrollbar{
-      width:0.5556vw;
+      width:10px;
       background-color: rgba(0,0,0,0);
     }
     .history ul::-webkit-scrollbar-track{
 
-        border-radius: 10px;
+        border-radius: 5px;
         background-color: rgba(0,0,0,0);
     }
     .history ul::-webkit-scrollbar-thumb{
 
-        border-radius: 10px;
+        border-radius: 5px;
         background-color: rgba(255,255,255,0.25);
         &:hover{
           background-color: rgba(255,255,255,0.25);
@@ -189,7 +223,7 @@
     }
     .team ul::-webkit-scrollbar-thumb{
 
-        border-radius: 10px;
+        border-radius: 5px;
         background-color: rgba(0,0,0,0.1);
         &:hover{
           background-color: rgba(0,0,0,0.25);
@@ -197,13 +231,14 @@
     }
     .history li{
       position: relative;
-      width:95%;
+      width:100%;
       height:auto;
       background:rgba(255,255,255,0.15);
       border-radius:8px;
       overflow: hidden;
       margin-bottom: 16px;
       transition: .3s;
+      padding: 16px;
     }
     .history li:hover{
       background:rgba(255,255,255,0.3);
@@ -212,22 +247,14 @@
 
     }
     .history li p{
-      font-size: 16px;
+      font-size: 14px;
       color:#fff;
-      margin-top:16px;
-      margin-left:16px;
-
-
-    }
-    .history li p:nth-child(2){
-      margin-top:0.5556vw;
-      float:left;
-      margin-bottom:1.1111vw;
+      width:calc(100% - 104px);
+      margin-bottom: 16px;
+      white-space: normal;
     }
     .history li p:nth-child(3){
-      margin-top:0.5556vw;
-      float:left;
-
+      margin-bottom: 0;
     }
     .clearfix{
       clear:both;
@@ -253,15 +280,15 @@
       position:relative;
       overflow: hidden;
 
-      div:first-child{
+      &>div:first-child{
         box-shadow: none;
         border-radius:0;
         border-bottom:1px solid #eee;
-        height:56px;
-        padding:0 5%;
+        height:48px;
+        padding:0 32px;
         overflow: hidden;
         .current{
-          color:#FF5F6D;
+          color:#971a1e;
 
         }
         button{
@@ -275,12 +302,12 @@
           cursor:pointer;
           width:24px;
           &:hover{
-            color:#FF5F6D;
+            color:#971a1e;
           }
         }
         h4{
           float:left;
-          line-height:56px;
+          line-height:48px;
           font-size: 16px;
           font-weight: bold;
         }
@@ -302,7 +329,7 @@
                   width:16%;
                   line-height:24px;
                   font-size: 16px;
-                  color:#FF5F6D;
+                  color:#971a1e;
                   b{
                     color:#333;
                   }
@@ -322,7 +349,7 @@
                     display:block;
                     transition: .3s;
                     height:8px;
-                    background: linear-gradient(90deg,#FF5F6D,#FFC371);
+                    background: #971a1e;
                     border-radius: 999px;
 
                   }
@@ -332,3 +359,36 @@
       }
 
     }
+.bonusRule{
+  
+*{
+  line-height: 2;
+}
+span{
+  font-weight:bold;
+}
+b{
+  color:#971a1e;
+  font-weight: normal;
+}
+hr{
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+}
+.history:after{
+  width: 100%;
+  position: absolute;
+  height:72px;
+  content:'';
+  display: block;
+  background: url(img/bg_cyberhis.png);
+  background-size:100%;
+  background-repeat:no-repeat;
+  z-index:1;
+  top:0;
+  border-radius:14px 14px 0 0;
+  background-position: right;
+  mix-blend-mode: multiply;
+  opacity: .65;
+}

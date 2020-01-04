@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Radio, Button, Icon, Input, Spin, Modal } from 'antd';
+import { Radio, Button, Icon, Input, Spin, Modal,Empty } from 'antd';
+
 import './CyberMoney.less';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -298,8 +299,53 @@ class CyberMoney extends Component {
                   : '积分商城暂未开放'}
               </p>
             </div>
+            <Modal
+          title="积分规则"
+          visible={this.state.showModal}
+          width="400px"
+          footer={null}
+          onOk={() => {
+            this.setState({
+              showModal:false
+            });
+          }}
+          onCancel={() => {
+            this.setState({
+              showModal:false
+            });
+          }}
+          centered
+          destroyOnClose
+        >
+            <div className='bonusRule'>
+              <span>· 完成考试：</span><br/>
+              及格：+5积分<br/>
+              及格至89分：+10积分<br/>
+              90分至94分：+15积分<br/>
+              95分以上：+20积分<br/>
+              <b>注：同一科目存在复数次考试的场合，这一科目的前三次考试成绩中的最高成绩将会被系统当作积分计算的依据。</b>
+              <hr/>
+              <span>· 提交有效问卷：</span>+5积分<hr/>
+
+              <span>· 问卷中的开放式回答被采纳：</span>+10积分<hr/>
+
+              <span>· 完成内训：</span>+5积分<hr/>
+
+              <span>· 完成外训/外聘内训：</span>+10积分<hr/>
+
+              <span>· 给上过的课程点赞：</span>+5积分<br/>
+              <b>注：同一员工只有每月前三次点赞才能增加自己的积分，之后不论点赞多少次积分都不会增加。</b><br/>
+              <hr/>
+
+              <span>· 内部讲师开课：</span>+10积分<hr/>
+
+              <span>· 内部讲师收到点赞：</span>+1积分<hr/>
+
+              <span>· 此外，参加项目也能增加积分。具体数值需要hr部门进行审核。</span>
+            </div>
+        </Modal>
             <div className="history">
-              <h4>我的积分记录</h4>
+              <h4>我的积分记录<span className='viewRule' onClick={()=>this.setState({showModal:true})}><Icon style={{marginRight:'8px'}}type="question-circle" />查看规则</span></h4>
               <ul>
                 {this.state.history.map((item, index) => {
                   return (
@@ -321,7 +367,7 @@ class CyberMoney extends Component {
             </div>
             <div className="team">
               <div>
-                <h4>团队成长记录</h4>
+                <h4>年度团队成长记录</h4>
                 <button
                   className={this.state.timeScale == 'year' ? 'current' : ''}
                   onClick={() => {
@@ -348,7 +394,8 @@ class CyberMoney extends Component {
                 </button>
               </div>
               <ul>
-                {this.state.tFin.map((item, index) => {
+
+                {this.state.tFin.length>0?this.state.tFin.map((item, index) => {
                   return (
                     <li>
                       <span>
@@ -364,7 +411,7 @@ class CyberMoney extends Component {
                       </bar>
                     </li>
                   );
-                })}
+                }):<Empty style={{marginTop:'32px'}}/>}
               </ul>
             </div>
           </div>

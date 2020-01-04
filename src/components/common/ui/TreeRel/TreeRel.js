@@ -75,7 +75,7 @@ class TreeRel extends React.Component {
     this.setState({ selectedKeys: [sel.toString()] });
     this.setState({ showBack: true });
     this.setState({ prevIDAction: prev });
-    this.refs.setRoot.style.top = '-40px';
+    // this.refs.setRoot.style.top = '-40px';
     this.refs.shrink.style.top = '8px';
     try {
       let res = await http().postTreeData({
@@ -123,7 +123,7 @@ class TreeRel extends React.Component {
     }
     this.setState({ ProductIDs: sel });
     this.setState({ selectedKeys: [sel.toString()] });
-    this.refs.setRoot.style.top = '-40px';
+    // this.refs.setRoot.style.top = '-40px';
     this.refs.shrink.style.top = '8px';
     try {
       let res = await http().postTreeData({
@@ -189,7 +189,7 @@ class TreeRel extends React.Component {
     // console.log(e.node.props.selected);
     if (e.node.props.selected == false) {
       this.refs.shrink.style.top = '8px';
-      this.refs.setRoot.style.top = '-40px';
+      // this.refs.setRoot.style.top = '-40px';
     }
   }
   onMouseEnter() {
@@ -363,7 +363,7 @@ class TreeRel extends React.Component {
       // this.setState({ hover: true });
       if (e.node.selectHandle.offsetTop != 8) {
         if (e.node.props.isLeaf != true) {
-          this.refs.setRoot.style.top = e.node.selectHandle.offsetTop + 'px';
+          // this.refs.setRoot.style.top = e.node.selectHandle.offsetTop + 'px';
         } else {
           // this.refs.setRoot.style.top = '-40px';
         }

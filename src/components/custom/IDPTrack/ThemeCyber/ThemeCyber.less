@@ -1,0 +1,349 @@
+.IDPTrack-theme--cyber {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(#000000 0%, #000000 80%, #003355 100%),
+    url(../images/dash.png);
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: url(../images/dash.png);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &__content {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &__top {
+    background: url(../images/IDPTrack_cyber_header_bg.svg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 9.2vh;
+    display: flex;
+    justify-content: space-between;
+    color: #ffffff;
+    padding-top: 1.94vh;
+    z-index: 100;
+    &__left {
+      flex: 1;
+      display: flex;
+      & > div {
+        margin-left: 16px;
+        margin-top: 12px;
+        height: 24px;
+        width: 24px;
+        background: rgba(24, 144, 255, 0.2);
+        box-shadow: 0px 0px 8px 0px rgba(24, 144, 255, 1) inset;
+        border: 1px solid rgba(24, 144, 255, 1);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 14px;
+      }
+    }
+    &__center {
+      font-size: 4.02vh;
+      flex: 1;
+      text-align: center;
+    }
+
+    &__right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      &__button {
+        background: url(../images/IDPTrack_cyber_side_open.svg);
+        background-size:100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 17.78vw;
+        height: 5.75vh;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        &:hover {
+          background: url(../images/IDPTrack_cyber_side_open_hover.svg);
+          background-size:100%;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        & > span {
+          flex: 1;
+          line-height: 5.75vh;
+          text-align: center;
+        }
+        .IDPTrack-theme--cyber__top__right__icon__right {
+          margin-right: 28px;
+        }
+      }
+    }
+  }
+  &__main {
+    height: 90.8vh;
+    display: flex;
+    padding-bottom: 8px;
+    align-items: center;
+    &__content {
+      display: flex;
+      flex: 1;
+      height: 80.46vh;
+      &__bars {
+        display: flex;
+        padding-left: 8px;
+      }
+    }
+    &__ability {
+      width: 50.28vw;
+      background: rgba(47, 155, 255, 0.2);
+      box-shadow: 0px 0px 16px 0px rgba(24, 144, 255, 1) inset;
+      border: 1px solid rgba(24, 144, 255, 1);
+      color: #ffffff;
+      &__title {
+        padding: 24px 32px;
+        font-size: 2.87vh;
+      }
+      &__content {
+        padding: 60px 95px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .IDPTrack__ability__header {
+          background: linear-gradient(
+            90deg,
+            rgba(24, 144, 255, 1) 0%,
+            rgba(24, 144, 255, 0.2) 100%
+          );
+          box-shadow: 0px 0px 16px 0px rgba(24, 144, 255, 1) inset;
+          border-radius: 8px 8px 0px 0px;
+          .IDPTrack__ability__header__right {
+            background: linear-gradient(
+              270deg,
+              rgba(24, 144, 255, 0.12) 30%,
+              rgba(250, 173, 20, 1) 100%
+            );
+          }
+        }
+        .IDPTrack__ability__measures {
+          border: none;
+        }
+        .IDPTrack__ability__measures__item,
+        .IDPTrack__ability__measures__nomeasures {
+          box-shadow: 0 0 12px 0 rgba(24, 144, 255, 1) inset;
+          background: linear-gradient(
+            90deg,
+            rgba(24, 144, 255, 0.6) 0%,
+            rgba(24, 144, 255, 0) 100%,
+            rgba(24, 144, 255, 0.1) 100%
+          );
+          border: 1px solid rgba(24, 144, 255, 1);
+          .ability__measure__name {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    &__years {
+      width: 35.97vw;
+      display: flex;
+      padding-left: 12px;
+      color: #ffffff;
+      position: relative;
+      left: 1.5vw;
+      &__stripe {
+        width: 40px;
+        height: 100%;
+        background: repeating-linear-gradient(
+          20deg,
+          #1890ff,
+          #1890ff 8px,
+          rgba(0, 0, 0, 0) 0,
+          rgba(0, 0, 0, 0) 24px
+        );
+        mask-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1));
+      }
+      &__cards {
+        overflow-y: auto;
+        overflow-x: visible;
+        height: 100%;
+        position: absolute;
+        & > ul {
+          list-style: none;
+          margin: 0;
+          padding-left: 50px;
+        }
+        scrollbar-color: transparent transparent;
+        &::-webkit-scrollbar {
+          height: 0px;
+          width: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background: rgba(24, 144, 255, 0.5);
+          border: 1px solid rgba(24, 144, 255, 1);
+        }
+        &::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+          background: rgba(24, 144, 255, 0.2);
+          border: 1px solid rgba(24, 144, 255, 1);
+        }
+      }
+      &__card {
+        position: relative;
+        left: 0;
+        height: 24.71vh;
+        background: rgba(47, 155, 255, 0.2);
+        margin-bottom: 2.3vh;
+        display: flex;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        &&--checked {
+          position: relative;
+          left: -50px;
+          transition: all 0.5s ease;
+          .IDPTrack-theme--cyber__main__years__card__left {
+            background-color: rgba(24, 144, 255, 0.2);
+          }
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 3.61vw;
+            height: 100%;
+            right: -3.61vw;
+            top: 0;
+            background: linear-gradient(
+              90deg,
+              rgba(24, 144, 255, 0.75) 0%,
+              rgba(24, 144, 255, 0) 100%
+            );
+          }
+        }
+        &__left {
+          width: 8.33vw;
+          padding-top: 32px;
+          text-align: center;
+          box-shadow: 0 0 18px 4px rgba(24, 144, 255, 1) inset;
+        }
+        &__right {
+          flex: 1;
+          width: 24.17vw;
+          padding: 0 24px;
+          box-shadow: 0px 0px 16px 0px rgba(24, 144, 255, 1) inset;
+          &__header {
+            display: flex;
+            padding: 2.3vh 0px 1.72vh;
+            align-items: center;
+            border-bottom: 1px dashed #0050b3;
+            font-size: 2.3vh;
+            margin-bottom: 2.3vh;
+            position: relative;
+            &:hover::before {
+              display: block;
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(255, 255, 255, 0.1);
+            }
+            &__dot {
+              border-radius: 50%;
+              height: 0;
+              width: 0;
+              border: 4px solid rgba(24, 144, 255, 1);
+              margin-right: 16px;
+            }
+            &__train-count {
+              color: #91d5ff;
+              flex: 1;
+              & > span {
+                margin-right: 24px;
+              }
+            }
+          }
+          &__courses {
+            &__title {
+              color: #91d5ff;
+              margin: 0;
+            }
+            &--list {
+              color: #ffffff;
+              overflow: auto;
+              height: 11vh;
+              padding: 0 8px;
+              &::-webkit-scrollbar {
+                height: 0px;
+                width: 10px;
+              }
+              &::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background: rgba(24, 144, 255, 0.5);
+                border: 1px solid rgba(24, 144, 255, 1);
+              }
+              &::-webkit-scrollbar-track {
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                border-radius: 10px;
+                background: rgba(24, 144, 255, 0.2);
+                border: 1px solid rgba(24, 144, 255, 1);
+              }
+            }
+          }
+          &__course {
+            margin-right: 16px;
+            float: left;
+          }
+        }
+        &__year-name {
+          font-size: 3.16vh;
+          font-weight: 400;
+          color: #ffffff;
+        }
+        &__grade {
+          margin-bottom: 1.15vh;
+        }
+      }
+    }
+    &__bars__right {
+      display: flex;
+      height: 100%;
+    }
+    &__bars__left {
+      display: flex;
+      padding: 0 8px 12px;
+      height: 100%;
+    }
+  }
+
+  &__bar {
+    margin-right: 8px;
+  }
+  &__bar--s {
+    width: 4px;
+    background: rgba(24, 144, 255, 0.2);
+  }
+
+  &__bar--m {
+    width: 6px;
+    background: rgba(24, 144, 255, 0.4);
+  }
+
+  &__bar--l {
+    width: 8px;
+    background: rgba(24, 144, 255, 0.6);
+  }
+}

@@ -27,7 +27,7 @@ const PwFormFooter = React.memo(
                 {hasSave &&
                   (saveNeedConfirm ? (
                     <Popconfirm
-                      title={`确定要${saveText}吗`}
+                      title={`确定要提交吗`}
                       onConfirm={() => {
                         onSave && onSave(form);
                       }}

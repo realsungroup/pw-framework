@@ -16,42 +16,42 @@ class ReportPeople extends React.Component {
     val: null
   };
 
-  onHandleMessage = async (dataSource, selectedRowKeys) => {
-    console.log(dataSource,selectedRowKeys)
-    if (selectedRowKeys.length) {
-      const data = dataSource;
-      const Reldata = [];
-      data.map(item => {
-        selectedRowKeys.map(items => {
-          if (item.REC_ID === items) {
-            console.log(item)
-            item.sendRPMsg = 'Y';
-            Reldata.push(item);
-          }
-        });
-      });
-      let res;
-      try {
-        res = await http({
-          baseURL:'http://kingofdinner.realsun.me:1201/'
-        }).modifyRecords({
-          resid: 618666744677,
-          data: Reldata,
-          isEditoRAdd: false
-        });
-        if (res.Error === 0) {
-          this.tableDataRef.handleRefresh();
-          message.success('操作成功！');
-        } else {
-          message.error(res.message);
-        }
-      } catch (error) {
-        message.error(error);
-      }
-    } else {
-      message.error('请勾选记录！');
-    }
-  };
+  // onHandleMessage = async (dataSource, selectedRowKeys) => {
+  //   console.log(dataSource,selectedRowKeys)
+  //   if (selectedRowKeys.length) {
+  //     const data = dataSource;
+  //     const Reldata = [];
+  //     data.map(item => {
+  //       selectedRowKeys.map(items => {
+  //         if (item.REC_ID === items) {
+  //           console.log(item)
+  //           item.sendRPMsg = 'Y';
+  //           Reldata.push(item);
+  //         }
+  //       });
+  //     });
+  //     let res;
+  //     try {
+  //       res = await http({
+  //         baseURL:'http://kingofdinner.realsun.me:1201/'
+  //       }).modifyRecords({
+  //         resid: 618666744677,
+  //         data: Reldata,
+  //         isEditoRAdd: false
+  //       });
+  //       if (res.Error === 0) {
+  //         this.tableDataRef.handleRefresh();
+  //         message.success('操作成功！');
+  //       } else {
+  //         message.error(res.message);
+  //       }
+  //     } catch (error) {
+  //       message.error(error);
+  //     }
+  //   } else {
+  //     message.error('请勾选记录！');
+  //   }
+  // };
   render() {
     return (
       <TabsTableData
@@ -63,65 +63,54 @@ class ReportPeople extends React.Component {
             downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666744677,
             TabsTitle: '未通知',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: false,
             hasModify: false,
             hasDelete: false,
             hasAdd: true,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             hasRowSelection:true,
-            subtractH: 240,
-            actionBarWidth: 100,
+            subtractH: 220,
+            actionBarWidth: 220,
             recordFormType: 'drawer',
             formProps: {
               height: 550
             },
             columnsWidth:{
-              '面试时间':180,
               '姓名':90,
               '年龄':90,
-              '申请职位':115,
+              '申请职位':130,
+              '面试时间':180,
               '申请时间':130,
-              '考试结果':115,
-              '面试结果':115,
-              '状态':90,
+              '考试结果':130,
+              '面试结果':130,
               '签到':90,
-              '开始面试操作':180,
-              '结束面试':115,
-              '考试批次':130,
-              '面试通知发送':160,
-              '劳务公司':115,
-              '面试官':115,
-              '面试官账号':130,
-              '体检结果':115,
-              '发送体检通知':160,
+              '劳务公司名称':160,
+              '面试官':130,
+              '面试官反馈':160,
+              '体检结果':130,
               '发送报到通知':160,
-              '是否入职':115,
-              '是否离职':115,
-              '预约已过期':130,
-              '开始考试时间':180,
               '身份证号':200,
-              '考试分数':115,
-              '结束考试时间':180
+              '考试分数':130,
             },
-            actionBarExtra:({
-              dataSource: dataSource,
-              selectedRowKeys: selectedRowKeys
-            }) => {
-              return (
-                <Popconfirm
-                  title="发送录用通知"
-                  onConfirm={() => {
-                    this.onHandleMessage(dataSource, selectedRowKeys);
-                  }}
-                >
-                  <Button>发送录用通知</Button>
-                </Popconfirm>
-              );
-            },
+            // actionBarExtra:({
+            //   dataSource: dataSource,
+            //   selectedRowKeys: selectedRowKeys
+            // }) => {
+            //   return (
+            //     <Popconfirm
+            //       title="发送录用通知"
+            //       onConfirm={() => {
+            //         this.onHandleMessage(dataSource, selectedRowKeys);
+            //       }}
+            //     >
+            //       <Button>发送录用通知</Button>
+            //     </Popconfirm>
+            //   );
+            // },
             recordFormContainerProps: {
               placement: 'bottom',
               height: 600
@@ -132,47 +121,36 @@ class ReportPeople extends React.Component {
             downloadBaseURL :this.dlEmployDownloadURL,
             resid: 618666763917,
             TabsTitle: '已通知',
-            OutHeight: '80vh',
+            OutHeight: '91vh',
             recordFormFormWidth: '90%',
             hasBeBtns: true,
             hasModify: false,
             hasDelete: false,
             hasAdd: true,
-            hasRowDelete: false,
-            hasRowModify: false,
+            hasRowDelete: true,
+            hasRowModify: true,
             hasRowView: true,
             subtractH: 220,
-            actionBarWidth: 200,
+            actionBarWidth: 220,
             formProps: {
               height: 550
             },
             columnsWidth:{
-              '面试时间':180,
               '姓名':90,
               '年龄':90,
-              '申请职位':115,
+              '申请职位':130,
+              '面试时间':180,
               '申请时间':130,
-              '考试结果':115,
-              '面试结果':115,
-              '状态':90,
+              '考试结果':130,
+              '面试结果':130,
               '签到':90,
-              '开始面试操作':180,
-              '结束面试':115,
-              '考试批次':130,
-              '面试通知发送':160,
-              '劳务公司':115,
-              '面试官':115,
-              '面试官账号':130,
-              '体检结果':115,
-              '发送体检通知':160,
+              '劳务公司名称':130,
+              '面试官':130,
+              '面试官反馈':160,
+              '体检结果':130,
               '发送报到通知':160,
-              '是否入职':115,
-              '是否离职':115,
-              '预约已过期':130,
-              '开始考试时间':180,
               '身份证号':200,
-              '考试分数':115,
-              '结束考试时间':180
+              '考试分数':130,
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {

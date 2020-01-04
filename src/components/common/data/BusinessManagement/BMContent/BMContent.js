@@ -21,6 +21,11 @@ class BMContent extends React.Component {
       subTables: [], // 子表
       selectedRecord: null
     };
+    this._httpParams = {};
+    const { baseURL } = this.props;
+    if (baseURL) {
+      this._httpParams = { baseURL };
+    }
   }
 
   componentDidMount = () => {
@@ -34,7 +39,7 @@ class BMContent extends React.Component {
   getData = async () => {
     const { resid, dblinkname } = this.props;
     this.p1 = makeCancelable(
-      http().getResourceRelation({
+      http(this._httpParams).getResourceRelation({
         resid,
         dblinkname
       })
@@ -67,7 +72,7 @@ class BMContent extends React.Component {
 
   render() {
     const { loading, subTables, selectedRecord } = this.state;
-    const { resid, dblinkname } = this.props;
+    const { resid, dblinkname, baseURL, downloadBaseURL } = this.props;
     return (
       <Spin spinning={loading}>
         <div className="bm-content">
@@ -79,7 +84,9 @@ class BMContent extends React.Component {
               height={520}
               onRowClick={this.handleRowClick}
               hasBeBtns
+              baseURL={baseURL}
               dblinkname={dblinkname}
+              downloadBaseURL={downloadBaseURL}
             />
           </div>
           {!!subTables.length && (
@@ -96,6 +103,8 @@ class BMContent extends React.Component {
                         subtractH={190}
                         height={520}
                         hasBeBtns
+                        baseURL={baseURL}
+                        downloadBaseURL={downloadBaseURL}
                         dblinkname={dblinkname}
                       />
                     ) : (

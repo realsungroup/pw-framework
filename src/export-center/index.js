@@ -8,6 +8,7 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData } from '../components/common/loadableCommon';
+export { BusinessManagement } from '../components/common/loadableCommon';
 export {
   TableDataWrap,
   TableDataInner,
@@ -132,3 +133,5 @@ export { StatisticalReportForms } from '../components/custom/loadableCustom';
 export { IDPTrack } from '../components/custom/loadableCustom';
 export { VisitorApplyVIP } from '../components/custom/loadableCustom';
 export { DataProcess } from '../components/custom/loadableCustom';
+export { InterviewInvitation } from '../components/custom/loadableCustom';
+export { RankGrade } from '../components/custom/loadableCustom';

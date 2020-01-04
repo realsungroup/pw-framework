@@ -875,7 +875,7 @@ window[607459194551] = {
   title: '设计试卷'
 };
 //考试培训
-window[607168385734] = {
+window[611243928651] = {
   name: 'Training',
   title: '考试培训'
 };
@@ -1529,11 +1529,40 @@ window['考试图表分析'] = {
   props: {}
 };
 
+// 综合管理
+window['629806026549'] = {
+  name: 'BusinessManagement',
+  title: '综合管理',
+  props: {
+    rootId: 0,
+    dblinkname: '',
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/'
+  }
+};
+
 // 求职者入口
 window[614079025750] = {
   name: 'JobSeeker',
   title: 'IDL求职者',
   props: {}
+};
+
+// IE考勤数据查询
+window[629807131919] = {
+  name: 'TableData',
+  title: 'IE考勤数据查询',
+  props: {
+    resid: '629462405981',
+    subtractH: '200',
+    hasAdd: false,
+    hasModify: false,
+    hasRowDelete: false,
+    hasRowModify: false,
+    hasDelete: false,
+    hasBeBtns: true,
+    nullValueNotFetch: true
+  }
 };
 
 window[614187065713] = {
@@ -1782,7 +1811,10 @@ window[628250933331] = {
   name: 'IDPTrack',
   title: '个人能力发展轨迹'
 };
-
+window[630772897523] = {
+  name: 'RankGrade',
+  title: '评级评优'
+};
 window[628868376923] = {
   name: 'VisitorApplyVIP',
   title: 'VIP访客业务'
@@ -1791,6 +1823,11 @@ window[628868376923] = {
 window[629371964947] = {
   name: 'DataProcess',
   title: '数据处理'
+};
+
+window[629545423118] = {
+  name: 'InterviewInvitation',
+  title: 'IDL面试邀请'
 };
 
 window[628885904481] = {

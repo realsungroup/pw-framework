@@ -8,7 +8,7 @@ export default class Reminder extends React.Component {
     super(props);
     const { resid, title, count, lngMtsID } = this.resolveQueryString();
     this.state = {
-      resid: parseInt(resid, 10), // 某个提醒的表的 resid
+      resid, // 某个提醒的表的 resid
       title, // 提醒的标题
       count, // 提醒的数量
       lngMtsID
@@ -16,6 +16,17 @@ export default class Reminder extends React.Component {
   }
 
   componentDidMount() {}
+
+  componentDidUpdate() {
+    const { resid: _resid, lngMtsID } = this.resolveQueryString();
+    const { resid } = this.state;
+    if (_resid != resid) {
+      this.setState({
+        resid: _resid,
+        lngMtsID
+      });
+    }
+  }
 
   resolveQueryString = () => {
     const querystring = this.props.location.search.substring(1);
@@ -29,8 +40,10 @@ export default class Reminder extends React.Component {
       <div className="reminder">
         <TableData
           resid={resid}
+          key={resid}
           size="small"
           subtractH={180}
+          height={600}
           hasResizeableBox
           hasAdd={false}
           hasModify={false}

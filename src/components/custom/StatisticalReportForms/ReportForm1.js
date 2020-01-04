@@ -1,14 +1,16 @@
 import React from 'react';
-import { message ,Spin} from 'antd';
+import { message ,Spin,Select} from 'antd';
 import echarts from 'echarts';
 import http from 'Util20/api';
 import './StatisticalReportForms.less';
+const { Option } = Select;
 
 /**
  *
  */
 class ReportForm1 extends React.Component {
   state={
+    date:[],
     loading:false
   }
   async componentDidMount() {
@@ -18,7 +20,8 @@ class ReportForm1 extends React.Component {
     );
     this._echarts.setOption({
       title: {
-        text: '财年培训季度费用统计'
+        text: '财年培训季度费用统计',
+        left:40
       },
       legend: {
         data: ['Overall Training Cost', 'Cost only for Courses']
@@ -70,15 +73,38 @@ class ReportForm1 extends React.Component {
       //   ]
       // }
     });
-    await this.getData();
+    await this.getFY();
+
+    // await this.getData();
   }
-  getData = async () => {
+  handleChange=async(v)=>{
+    this.setState({curDate:v});
+    this.getData(v);
+        }
+  // 计算下拉的财年
+  getFY = async() =>{
+    var myDate = new Date();
+    myDate=myDate.getFullYear();
+    var t=myDate;
+    var n=2010;
+    var arr=[];
+    while(n<myDate){
+      arr.push('FY'+myDate)
+      myDate--;
+    }
+    this.setState({date:arr,curDate:'FY'+t})
+    this.getData('FY'+t);
+
+  }
+  getData = async (cms) => {
     this.setState({loading:true});
     try {
       let httpParams = {};
       this._echarts.showLoading();
       const res = await http(httpParams).getTable({
-        resid: '628789184275'
+        resid: '628789184275',
+        cmswhere:`C3_613941384328='${cms}'`
+
         // cmswhere: `C3_613941384328 = '${this.props.currentYear.C3_420161949106}'`
       });
       this._echarts.hideLoading();
@@ -109,7 +135,24 @@ class ReportForm1 extends React.Component {
   };
 
   render() {
-    return (<Spin spinning={this.state.loading}><div id="report-form1" style={{}}></div></Spin>);
+    return (
+    <Spin spinning={this.state.loading}>
+
+     
+      <div>
+      <span style={{marginLeft:'16px'}}>财年：</span><Select value={this.state.curDate} style={{ marginLeft:'8px',width: 120 }} onChange={v=>{this.handleChange(v)}}>
+    { this.state.date.map((item) => {
+                return(
+                  <Option value={item}>{item}</Option>
+    )})}
+    </Select>
+    <div style={{width:'100%',height:'16px'}}></div>
+
+        <div id="report-form1" style={{}}>
+
+        </div>
+      </div>
+    </Spin>);
   }
 }
 

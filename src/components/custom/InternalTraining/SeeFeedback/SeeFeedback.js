@@ -28,6 +28,7 @@ class SeeFeedback extends React.Component {
     employeeFeedbackVisible: false,
     feedbackOverallVisible: false,
     sendToTrainerLoading: false,
+    adoptBtnLoadingRECID: -1,
     // records: {},
     rate: {
       rate1: null,
@@ -111,18 +112,47 @@ class SeeFeedback extends React.Component {
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
-      console.log(error);
+      console.error(error);
     }
   };
+
+  handleAdopt = feedback => async () => {
+    this.setState({ adoptBtnLoadingRECID: feedback.REC_ID });
+    try {
+      const res = await http().modifyRecords({
+        resid: '',
+        data: [{ ...feedback, isAdopt: 'Y' }]
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+    this.setState({ adoptBtnLoadingRECID: -1 });
+  };
+
   renderFeedbackText = (feedback, type = 'advantage') => {
+    const { adoptBtnLoadingRECID } = this.state;
     return (
       <Row key={feedback.REC_ID}>
         <Col span={2}>{feedback.C3_478368118915}</Col>
-        {type === 'advantage' ? (
-          <Col span={22}>{feedback.C3_622216706104}</Col>
-        ) : (
-          <Col span={22}>{feedback.C3_622216725340}</Col>
-        )}
+        <Col span={16}>
+          {type === 'advantage'
+            ? feedback.C3_622216706104
+            : feedback.C3_622216725340}
+        </Col>
+        <Col span={6}>
+          <Popconfirm
+            onConfirm={this.handleAdopt(feedback)}
+            title="确定采纳吗?"
+          >
+            <Button
+              loading={feedback.REC_ID === adoptBtnLoadingRECID}
+              disabled={feedback.isAdopt === 'Y'}
+            >
+              采纳
+            </Button>
+          </Popconfirm>
+        </Col>
       </Row>
     );
   };
@@ -376,7 +406,7 @@ class SeeFeedback extends React.Component {
             <h1 style={{ textAlign: 'center' }}>
               反馈人数：{selectedCourseFeedbacks.length}
             </h1>
-            <div>
+            <div style={{ marginBottom: '12px' }}>
               <Card type="inner" title="讲师专业水平" className="cardinner">
                 <Row>
                   <Col span={8}>讲师备课充分，对授课内容非常了解</Col>

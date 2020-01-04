@@ -12,10 +12,9 @@ import {
   Radio,
   Form,
   Select,
-  Spin,
-  Upload
+  Upload,
+  Pagination
 } from 'antd';
-import { BIGrid } from 'lz-components-and-utils/lib/index';
 import debounce from 'lodash/debounce';
 import { uploadFile } from '../../../util/api';
 import SelectEmployeeToAdd from './SelectEmployeeToAdd';
@@ -32,6 +31,8 @@ const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
 const OutCourseId = '624970414826'; //外训课程表ID
+const YEAR_RESID = '420161931474'; //财年表id
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -55,6 +56,7 @@ const unactiveStyle = {
   cursor: 'pointer'
 };
 
+const selectStyle = { width: 100, marginRight: 5 };
 
 class ArrangingCourses extends React.Component {
   state = {
@@ -80,7 +82,11 @@ class ArrangingCourses extends React.Component {
     fileList: [],
     isShowProgress: false, // 是否显示进度模态窗
     isShowMoveProgress: false,
-    classTime:''
+    classTime: '',
+    pagination: { total: 0, current: 1 },
+    years: [], //所有财年
+    currentYear: {}, //当前财年
+    selectedYear: '' //选中的财年
   };
   constructor() {
     super();
@@ -89,65 +95,42 @@ class ArrangingCourses extends React.Component {
 
   componentDidMount = async () => {
     this.props.onHandleLoading(true);
+    await this.getYears();
     await this.getCourseArrangment();
     // await this.getCourses();
     this.props.onHandleLoading(false);
+    this.getCalendar()
     this.getOutCourse(OutCourseId);
   };
-  // 添加人员
-  addEmployees = async employees => {
-    let index_id = 0;
-    let taskList = employees.map(item => {
-      return {
-        CourseArrangeID: this.state.courseAddId,
-        C3_613941384832: item.C3_305737857578,
-        _id: ++index_id,
-        _state: 'editoradd'
-      };
-    });
-    this.setState({ taskList, isShowProgress: true });
-  };
 
-  // 上传文件
-  handleFileChange = info => {
-    console.log(info);
-    let { file, fileList } = info;
-    // if (file.status === 'removed') {
-    //   this.setState({
-    //     fileList: fileList.filter(item => item.uid !== file.uid)
-    //   });
-    // } else {
-    this.setState({ fileList });
-    // }
-  };
-  //获取课程安排
-  getCourseArrangment = async () => {
+  //获取财年
+  getYears = async () => {
     let res;
     try {
       res = await http().getTable({
-        resid: courseArrangmentResid,
-        cmswhere: "organization != '内训'"
+        resid: YEAR_RESID
+      });
+      let years = [...res.data];
+      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      this.setState({
+        years,
+        currentYear,
+        selectedYear: currentYear.C3_420161949106
       });
     } catch (error) {
       message.error(error.message);
-      return console.log(error);
+      console.error(error);
     }
-    console.log(res.data);
-    if (res.error === 0) {
-      let courseArrangment = res.data;
-      //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
-      // let courses = courseArrangment.map(item => {
-      //   return JSON.stringify({
-      //     CourseID: item.CourseID,
-      //     CourseName: item.CourseName
-      //   });
-      // });
-      // courses = Array.from(new Set(courses));
-      // courses = courses.map(item => {
-      //   return JSON.parse(item);
-      // });
+  };
+
+  getCalendar = async () => {
+    try {
+      const res = await http().getTable({
+        resid: courseArrangmentResid,
+        cmswhere: "organization != '内训'"
+      });
       let importantIndex = 0;
-      let calendarEvents = courseArrangment.map(item => {
+      const calendarEvents = res.data.map(item => {
         return {
           occur_id: item.REC_ID,
           category_color: `rgb(${parseInt(
@@ -165,6 +148,86 @@ class ArrangingCourses extends React.Component {
           category_name: item.CourseName
         };
       });
+      this.setState({
+        calendarEvents
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
+  // 添加人员
+  addEmployees = async employees => {
+    let index_id = 0;
+    let taskList = employees.map(item => {
+      return {
+        CourseArrangeID: this.state.courseAddId,
+        C3_613941384832: item.C3_305737857578,
+        _id: ++index_id,
+        _state: 'editoradd'
+      };
+    });
+    this.setState({ taskList, isShowProgress: true });
+  };
+
+  // 上传文件
+  handleFileChange = info => {
+    let { file, fileList } = info;
+    // if (file.status === 'removed') {
+    //   this.setState({
+    //     fileList: fileList.filter(item => item.uid !== file.uid)
+    //   });
+    // } else {
+    this.setState({ fileList });
+    // }
+  };
+  //获取课程安排
+  getCourseArrangment = async (pageIndex = 1, isSearch = false) => {
+    let res;
+    const {
+      pagination,
+      searchKeyword,
+      searchPeriod,
+      selectedYear
+    } = this.state;
+    const isHasPeriod = searchPeriod[0] && searchPeriod[1];
+    this.props.onHandleLoading(true);
+    let cmswhere = "organization != '内训'";
+    if (isHasPeriod) {
+      cmswhere += ` and StartDatetime > '${
+        searchPeriod[0]
+      }' and StartDatetime < '${searchPeriod[1]}'`;
+    }
+    if (selectedYear !== 'all') {
+      cmswhere += `and FisYear = '${selectedYear}'`;
+    }
+    try {
+      res = await http().getTable({
+        resid: courseArrangmentResid,
+        pageSize: 50,
+        pageIndex: pageIndex - 1,
+        key: searchKeyword,
+        cmswhere
+      });
+    } catch (error) {
+      message.error(error.message);
+      return console.error(error);
+    }
+    if (res.error === 0) {
+      let courseArrangment = res.data;
+      //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
+      // let courses = courseArrangment.map(item => {
+      //   return JSON.stringify({
+      //     CourseID: item.CourseID,
+      //     CourseName: item.CourseName
+      //   });
+      // });
+      // courses = Array.from(new Set(courses));
+      // courses = courses.map(item => {
+      //   return JSON.parse(item);
+      // });
+
       //去重方法2 ：使用 Array的 filter + findIndex 实现
       let courses = courseArrangment
         .map(item => ({
@@ -174,7 +237,17 @@ class ArrangingCourses extends React.Component {
         .filter((item, index, self) => {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
-      this.setState({ courseArrangment, courses, calendarEvents });
+      this.setState({
+        courseArrangment,
+        courses,
+        pagination: { ...pagination, total: res.total }
+      });
+      if (isSearch) {
+        this.setState({
+          pagination: { ...this.state.pagination, current: 1 }
+        });
+      }
+      this.props.onHandleLoading(false);
     } else {
       message.error(res.message);
     }
@@ -188,35 +261,15 @@ class ArrangingCourses extends React.Component {
       });
     } catch (error) {
       message.error(error.message);
-      return console.log(error);
+      return console.error(error);
     }
-    console.log(res);
     this.setState({
       courseList: res.data
     });
   };
   //搜索课程安排
-  searchCourseArrangment = async key => {
-    let res,
-      { searchPeriod, searchKeyword } = this.state;
-    let isHasPeriod = searchPeriod[0] && searchPeriod[1];
-    try {
-      this.props.onHandleLoading(true);
-      res = await http().getTable({
-        resid: courseArrangmentResid,
-        key: searchKeyword,
-        cmswhere: isHasPeriod
-          ? `StartDatetime > '${searchPeriod[0]}'  and StartDatetime < '${
-              searchPeriod[1]
-            }'`
-          : ''
-      });
-      let courseArrangment = res.data;
-      this.setState({ courseArrangment });
-      this.props.onHandleLoading(false);
-    } catch (error) {
-      this.props.onHandleLoading(false);
-    }
+  searchCourseArrangment = () => {
+    this.getCourseArrangment(1, true);
   };
   //添加课程安排
   addCourseArrangment = async data => {
@@ -288,7 +341,6 @@ class ArrangingCourses extends React.Component {
           resid: 610307713776,
           key: value
         });
-        console.log(res);
         const dataSearch = res.data.map(data => ({
           text: `${data.C3_609622263470}`,
           value: data.C3_609622254861
@@ -311,7 +363,6 @@ class ArrangingCourses extends React.Component {
   };
   // 搜索后选择
   handleChangeS = (value, obj) => {
-    console.log(obj);
     this.setState({
       value,
       postName: obj.props.children,
@@ -355,7 +406,6 @@ class ArrangingCourses extends React.Component {
       taskList: selectedMoveLearners,
       isShowMoveProgress: true
     });
-   
   };
 
   //设置确认选择的时间段
@@ -412,7 +462,6 @@ class ArrangingCourses extends React.Component {
   };
   // 初始化fileList
   resetFileList = v => {
-    console.log('v', v);
     if (v.CourseOutline) {
       var arr = [
         {
@@ -431,7 +480,7 @@ class ArrangingCourses extends React.Component {
 
   giveUp = async (resid, recordId) => {
     try {
-      const res = await http().modifyRecords({
+      await http().modifyRecords({
         resid: resid,
         data: [{ REC_ID: recordId, isGiveUp: 'Y' }]
       });
@@ -455,10 +504,9 @@ class ArrangingCourses extends React.Component {
     });
     this.tableDataRef.handleRefresh();
   };
-  alertHRM=async(resid, recordId,r)=>{
-    console.log(r)
+  alertHRM = async (resid, recordId, r) => {
     try {
-      const res = await http().modifyRecords({
+      await http().modifyRecords({
         resid: resid,
         data: [{ REC_ID: recordId, againNoticeHrmanage: 'Y' }]
       });
@@ -468,7 +516,7 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
       console.error(error);
     }
-  }
+  };
   onMoveFinished = async () => {
     try {
       await http().modifyRecords({
@@ -482,15 +530,15 @@ class ArrangingCourses extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-     this.setState(
-       {
-         isShowMoveLearner: false,
-         selectedMoveLearners: [],
-         selectedTargetCourseArrangment: '',
-         isShowMoveProgress: false
-       },
-       this.tableDataRef.handleRefresh
-     );
+    this.setState(
+      {
+        isShowMoveLearner: false,
+        selectedMoveLearners: [],
+        selectedTargetCourseArrangment: '',
+        isShowMoveProgress: false
+      },
+      this.tableDataRef.handleRefresh
+    );
   };
 
   //判断是否为清空操作
@@ -549,14 +597,46 @@ class ArrangingCourses extends React.Component {
     }
     this.setState({ searchPeriod }, this.searchCourseArrangment);
   };
+
+  showTotal = (total, range) => `${range[0]}~${range[1]}，共${total}条数据`;
+  handleYearChange = e =>
+    this.setState(
+      {
+        selectedYear: e
+      },
+      this.searchCourseArrangment
+    );
+  handleRecentPeriodChange = e => {
+    this.setState({
+      selectedRecentPeriod: e,
+      rangePickerValue: [null, null]
+    });
+    this.setPeriodBySelect(e);
+  };
+
+  handleKeySearch = value =>
+    this.setState({ searchKeyword: value }, this.searchCourseArrangment);
+
+  handlePaginationChange = (page, pageSize) =>
+    this.setState(
+      {
+        pagination: { ...this.state.pagination, current: page }
+      },
+      () => this.getCourseArrangment(page)
+    );
+
   render() {
-    let {
+    const {
       courseArrangment,
       selectedCourseArrangment,
       mode,
       isShowProgress,
       isShowMoveProgress,
-      taskList
+      taskList,
+      pagination,
+      years,
+      selectedYear,
+      rangePickerValue
     } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
@@ -621,16 +701,25 @@ class ArrangingCourses extends React.Component {
             </div>
             <div className="external-training_arranging_courses-header_search">
               <Select
+                className="emploee-courses_courses-manage-header-selector"
+                value={selectedYear}
+                style={selectStyle}
+                onChange={this.handleYearChange}
+              >
+                <Option key="all" value="all">
+                  全部财年
+                </Option>
+                {years.map(item => (
+                  <Option key={item.REC_ID} value={item.C3_420161949106}>
+                    {item.C3_420161949106}
+                  </Option>
+                ))}
+              </Select>
+              <Select
                 defaultValue="all"
                 value={this.state.selectedRecentPeriod}
-                style={{ width: 100, marginRight: 5 }}
-                onChange={e => {
-                  this.setState({
-                    selectedRecentPeriod: e,
-                    rangePickerValue: [null, null]
-                  });
-                  this.setPeriodBySelect(e);
-                }}
+                style={selectStyle}
+                onChange={this.handleRecentPeriodChange}
               >
                 <Option value="all">全部</Option>
                 <Option value="week">一周内</Option>
@@ -644,105 +733,121 @@ class ArrangingCourses extends React.Component {
                 placeholder={['开始日期', '结束日期']}
                 onOk={this.onOk}
                 onChange={this.onRangeSearchChange}
-                value={this.state.rangePickerValue}
+                value={rangePickerValue}
               />
               <Search
                 placeholder="输入课程关键字搜索"
-                onSearch={value => {
-                  this.setState(
-                    { searchKeyword: value },
-                    this.searchCourseArrangment
-                  );
-                }}
+                onSearch={this.handleKeySearch}
                 style={{ width: 200, marginLeft: 5 }}
               />
             </div>
           </header>
           {this.state.mode === 'card' && (
             <div className="external-training_arranging_courses-course_list">
-              {courseArrangment.length ? (
-                courseArrangment.map(item => (
-                  <Card
-                    title={item.CourseName}
-                    className="arranging_courses_item"
-                    key={item.REC_ID}
-                    extra={
-                      <div>
-                        <Icon style={{color:'#faad14'}}type="like" theme="filled" />点赞数：{item.countLike}
-                      </div>
-                    }
-                    actions={[
-                      <span
-                        onClick={() =>
-                          this.setState(
-                            {
-                              isShowModifyModal: true,
-                              selectedCourseArrangment: item
-                              // fileList:{url:item.CourseOutline,status:'done',name:'附件',uid:1}
-                            },
-                            () => {
-                              this.resetFileList(item);
-                            }
-                          )
-                        }
-                      >
-                        <Icon type="edit" />
-                        修改
-                      </span>,
-                      <Popconfirm
-                        title="确认删除？"
-                        onConfirm={this.deleteCourseArrangment.bind(this, item)}
-                        icon={
-                          <Icon
-                            type="question-circle-o"
-                            style={{ color: 'red' }}
-                          />
-                        }
-                      >
-                        <span style={{ color: '#fc4f54' }} type="danger">
-                          <Icon type="delete" />
-                          删除
+              <div className="external-training_arranging_courses-course_list-wrapper">
+                {courseArrangment.length ? (　  
+                  courseArrangment.map(item => (
+                    <Card
+                      title={item.classType=='外聘内训'?'[外聘内训]'+item.CourseName:item.CourseName}
+                      className="arranging_courses_item"
+                      key={item.REC_ID}
+                      extra={
+                        <div>
+                          {item.classType=='外聘内训'?<span style={{marginRight:'16px'}}>签到数：{item.C3_625242875063=='undefined'?'0':item.C3_625242875063}</span>:null}
+                          {/* <Icon
+                            style={{ color: '#faad14' }}
+                            type="like"
+                            theme="filled"
+                          /> */}
+                          点赞数：{item.countLike}
+                        </div>
+                      }
+                      actions={[
+                        <span
+                          onClick={() =>
+                            this.setState(
+                              {
+                                isShowModifyModal: true,
+                                selectedCourseArrangment: item
+                                // fileList:{url:item.CourseOutline,status:'done',name:'附件',uid:1}
+                              },
+                              () => {
+                                this.resetFileList(item);
+                              }
+                            )
+                          }
+                        >
+                          <Icon type="edit" />
+                          修改
+                        </span>,
+                        <Popconfirm
+                          title="确认删除？"
+                          onConfirm={this.deleteCourseArrangment.bind(
+                            this,
+                            item
+                          )}
+                          icon={
+                            <Icon
+                              type="question-circle-o"
+                              style={{ color: 'red' }}
+                            />
+                          }
+                        >
+                          <span style={{ color: '#fc4f54' }} type="danger">
+                            <Icon type="delete" />
+                            删除
+                          </span>
+                        </Popconfirm>,
+                        <span
+                          onClick={a => {
+                            this.setState({
+                              isShowLearnerInfo: true,
+                              selectedCourseArrangment: item,
+                              courseAddId: item.REC_ID
+                            });
+                          }}
+                        >
+                          <Icon type="team" />
+                          学员信息
                         </span>
-                      </Popconfirm>,
-                      <span
-                        onClick={a => {
-                          this.setState({
-                            isShowLearnerInfo: true,
-                            selectedCourseArrangment: item,
-                            courseAddId: item.REC_ID
-                          });
-                        }}
-                      >
-                        <Icon type="team" />
-                        学员信息
-                      </span>
-                    ]}
-                  >
-                    <div className="arranging_courses_item_content">
-                      <div className="content_item">主讲:{item.Teacher}</div>
-                      <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        开始时间：{item.StartDatetime}
+                      ]}
+                    >
+                      <div className="arranging_courses_item_content">
+                        <div className="content_item">主讲:{item.Teacher}</div>
+                        <div className="content_item">
+                          人数:{item.Attendees}
+                        </div>
+                        <div className="content_item">
+                          开始时间：{item.StartDatetime}
+                        </div>
+                        <div className="content_item">
+                          结束时间：{item.EndDatetime}
+                        </div>
+                        <div className="content_item">
+                          地点:{item.CourseLocation}
+                        </div>
+                        <div className="content_item">
+                          实际费用:{`${item.actualCost}元`}
+                        </div>
+                        <div className="content_item">季度:{item.quarter}</div>
                       </div>
-                      <div className="content_item">
-                        结束时间：{item.EndDatetime}
-                      </div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      <div className="content_item">
-                        实际费用:{`${item.actualCost}元`}
-                      </div>
-                      <div className="content_item">季度:{item.quarter}</div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <List
-                  dataSource={courseArrangment}
-                  style={{ width: '100%' }}
-                ></List>
-              )}
+                    </Card>
+                  ))
+                ) : (
+                  <List
+                    dataSource={courseArrangment}
+                    style={{ width: '100%' }}
+                  ></List>
+                )}
+              </div>
+              <Pagination
+                className="external-training__arranging-courses__pagination"
+                total={pagination.total}
+                current={pagination.current}
+                showTotal={this.showTotal}
+                onChange={this.handlePaginationChange}
+                pageSize={50}
+              />
             </div>
           )}
           {this.state.mode === 'calendar' && (
@@ -762,6 +867,7 @@ class ArrangingCourses extends React.Component {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
+                cmswhere={this.state.selectedYear=='all'?'':`C3_613941384328 = '${this.state.selectedYear}'`}
                 tableComponent="ag-grid"
                 sideBarAg={true}
                 hasRowSelection={true}
@@ -784,11 +890,9 @@ class ArrangingCourses extends React.Component {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 let startDate = Date.parse(values.modifyStartDatetime);
                 let endDate = Date.parse(values.modifyEndDatetime);
-                let timer = (endDate - startDate)/86400000;
-                let classTime = (Math.floor(timer)*8)+8;
-                console.log('课时',classTime)
+                let timer = (endDate - startDate) / 86400000;
+                let classTime = Math.floor(timer) * 8 + 8;
                 if (!err) {
-                  console.log('values', values);
                   let { selectedCourseArrangment } = this.state;
                   var fileUrl = null;
                   if (this.state.fileList[0]) {
@@ -808,9 +912,8 @@ class ArrangingCourses extends React.Component {
                     quarter: values.quarter,
                     Teacher: values.modifyTeacher,
                     isArrangeSelf: values.isArrangeSelf,
-                    CourseOutline: fileUrl,
+                    CourseOutline: fileUrl
                     // classTime:classTime
-
                   };
                   this.modifyCourseArrangment(courseArrangment);
                   this.setState({
@@ -819,7 +922,7 @@ class ArrangingCourses extends React.Component {
                     fileList: []
                   });
                 } else {
-                  console.log(err);
+                  console.error(err);
                 }
               });
             }}
@@ -947,7 +1050,7 @@ class ArrangingCourses extends React.Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="是否手动安排课程">
+              <Form.Item label="是否为另添加课程">
                 {getFieldDecorator('isArrangeSelf', {
                   initialValue: this.state.selectedCourseArrangment
                     .isArrangeSelf
@@ -1024,28 +1127,32 @@ class ArrangingCourses extends React.Component {
               (record, btnSize) => {
                 return (
                   <>
-                  <Popconfirm
-                    title="确认放弃吗？"
-                    onConfirm={() => {
-                      this.giveUp(courseDetailId, record.REC_ID);
-                    }}
-                  >
-                    <Button type="danger">放弃</Button>
-                  </Popconfirm>
-                  {record.againNoticeHrmanage!='Y'?(
                     <Popconfirm
-                   title="确认提醒HR经理人审批申请单？"
-                   onConfirm={() => {
-                     this.alertHRM(courseDetailId, record.REC_ID,record);
-                   }}
-                 >
-                  <Button style={{marginLeft:'4px'}}>提醒HR经理人审批申请单</Button>
-                  </Popconfirm>
-                  ):(<span style={{marginLeft:'4px',color:'red'}}>已提醒HR经理人审批申请单</span>)}
-                   
+                      title="确认放弃吗？"
+                      onConfirm={() => {
+                        this.giveUp(courseDetailId, record.REC_ID);
+                      }}
+                    >
+                      <Button type="danger">放弃</Button>
+                    </Popconfirm>
+                    {record.againNoticeHrmanage != 'Y' ? (
+                      <Popconfirm
+                        title="确认提醒HR经理人审批申请单？"
+                        onConfirm={() => {
+                          this.alertHRM(courseDetailId, record.REC_ID, record);
+                        }}
+                      >
+                        <Button style={{ marginLeft: '4px' }}>
+                          提醒HR经理人审批申请单
+                        </Button>
+                      </Popconfirm>
+                    ) : (
+                      <span style={{ marginLeft: '4px', color: 'red' }}>
+                        已提醒HR经理人审批申请单
+                      </span>
+                    )}
                   </>
                 );
-               
               }
             ]}
             cmswhere={`CourseArrangeID = '${selectedCourseArrangment.CourseArrangeID}'`}
@@ -1227,10 +1334,8 @@ class ArrangingCourses extends React.Component {
               this.props.form.validateFieldsAndScroll((err, values) => {
                 let startDate = Date.parse(values.modifyStartDatetime);
                 let endDate = Date.parse(values.modifyEndDatetime);
-                let timer = (endDate - startDate)/86400000;
-                let classTime = (Math.floor(timer)*8)+8;
-                console.log(values);
-                console.log(parseFloat(values.actualCost));
+                let timer = (endDate - startDate) / 86400000;
+                let classTime = Math.floor(timer) * 8 + 8;
                 if (!err) {
                   let courseArrangment = { ...values };
                   courseArrangment.actualCost = parseFloat(
@@ -1248,7 +1353,7 @@ class ArrangingCourses extends React.Component {
                     fileList: []
                   });
                 } else {
-                  console.log(err);
+                  console.error(err);
                 }
               });
             }}
@@ -1346,7 +1451,7 @@ class ArrangingCourses extends React.Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="是否手动安排课程">
+              <Form.Item label="是否为另添加课程">
                 {getFieldDecorator('isArrangeSelf', {})(
                   <Select placeholder="Y">
                     <Option value="Y" key="Y">
@@ -1410,10 +1515,7 @@ class ArrangingCourses extends React.Component {
               hasAdd={false}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              actionBarExtra={({
-                dataSource: dataSource,
-                selectedRowKeys: selectedRowKeys
-              }) => {
+              actionBarExtra={({ dataSource, selectedRowKeys }) => {
                 return (
                   <Popconfirm
                     title="确认发送邮件"

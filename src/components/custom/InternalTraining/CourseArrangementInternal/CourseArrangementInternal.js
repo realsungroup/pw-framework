@@ -490,7 +490,9 @@ class CourseArrangementInternal extends React.Component {
                     hoverable
                     extra={
                       <div>
-                        <Icon style={{color:'#faad14'}}type="like" theme="filled" />点赞数：{item.countLike}
+                        <span style={{marginRight:'16px'}}>签到数：{item.C3_625242875063=='undefined'?'0':item.C3_625242875063}</span>
+                        {/* <Icon style={{color:'#faad14'}}type="like" theme="filled" /> */}
+                        点赞数：{item.countLike}
                       </div>
                     }
                     actions={
@@ -929,12 +931,6 @@ class CourseArrangementInternal extends React.Component {
             {this.state.isSelectedCourse ? (
               <Card
                 title={selectedCourse.C3_609845305680}
-                style={{
-                  height: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-                bodyStyle={{ flex: 1 }}
                 actions={[
                   <Button
                     onClick={() => {

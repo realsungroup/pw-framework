@@ -131,7 +131,11 @@ class EmployeeInformation extends React.Component {
               <span className="employee-imformation_lable">
                 入职日期/Join Date:
               </span>
-              {employeeInformation.joinCompanyDate?moment(employeeInformation.joinCompanyDate).format('YYYY-MM-DD'):'UNKNOWN'}
+              {employeeInformation.joinCompanyDate
+                ? moment(employeeInformation.joinCompanyDate).format(
+                    'YYYY-MM-DD'
+                  )
+                : 'UNKNOWN'}
             </Col>
           </Row>
           <Row style={{ paddingBottom: 26 }}>
@@ -165,7 +169,9 @@ class EmployeeInformation extends React.Component {
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">转正日期/Date:</span>
-              {employeeInformation.endTime?moment(employeeInformation.endTime).format('YYYY-MM-DD'):'UNKNOWN'}
+              {employeeInformation.endTime
+                ? moment(employeeInformation.endTime).format('YYYY-MM-DD')
+                : 'UNKNOWN'}
             </Col>
           </Row>
           <Row>
@@ -227,7 +233,7 @@ class EmployeeInformation extends React.Component {
                   />
                   <span>
                     我没有找到想要的辅导员，我想申请其他人成为辅导员。
-                    <br />I can't find the mentor ,ansd I want to recommend
+                    <br />I can't find the mentor ,and I want to recommend
                     another who will become a mentor.
                   </span>
                 </div>

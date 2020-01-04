@@ -16,6 +16,7 @@ import FJList from '../FJList';
 import CreatePlan from '../CreatePlan';
 import './FiscalYearPlan.less';
 import DefinePlan from '../FiscalYearPlan/DefinePlan';
+import Authorize from './Authorize';
 
 const { Step } = Steps;
 /**
@@ -227,7 +228,6 @@ class FiscalYearPlan extends React.Component {
                         下属人数：{item.C3_609615996253}
                       </div>
                       <div className="plan_infos_item">
-                        {' '}
                         部门：{item.C3_609616487709}
                       </div>
                       <div className="plan_infos_item">
@@ -277,7 +277,7 @@ class FiscalYearPlan extends React.Component {
               >
                 <Radio.Group value={this.state.selectModel}>
                   <Radio.Button
-                    value={'single'}
+                    value="single"
                     onClick={() => {
                       this.setState({ selectModel: 'single' });
                     }}
@@ -285,12 +285,20 @@ class FiscalYearPlan extends React.Component {
                     单人选择
                   </Radio.Button>
                   <Radio.Button
-                    value={'multiple'}
+                    value="multiple"
                     onClick={() => {
                       this.setState({ selectModel: 'multiple' });
                     }}
                   >
                     批量选择
+                  </Radio.Button>
+                  <Radio.Button
+                    value="authorize"
+                    onClick={() => {
+                      this.setState({ selectModel: 'authorize' });
+                    }}
+                  >
+                    计划授权
                   </Radio.Button>
                 </Radio.Group>
               </div>
@@ -322,7 +330,7 @@ class FiscalYearPlan extends React.Component {
                 </Button>
               </div>
             </div>
-            {this.state.selectModel === 'single' ? (
+            {this.state.selectModel === 'single' && (
               <FJList
                 planid={selectedPlan.C3_609616660273}
                 year={selectedPlan.C3_609615869581}
@@ -334,7 +342,8 @@ class FiscalYearPlan extends React.Component {
                 kclbResid="610708543449" //课程类别
                 resid="625763872231" //人员名单
               />
-            ) : (
+            )}
+            {this.state.selectModel === 'multiple' && (
               <CreatePlan
                 planid={selectedPlan.C3_609616660273}
                 year={selectedPlan.C3_609615869581}
@@ -346,6 +355,9 @@ class FiscalYearPlan extends React.Component {
                 kcxlResid="610708527386"
                 kclbResid="610708543449"
               />
+            )}
+            {this.state.selectModel === 'authorize' && (
+              <Authorize plan={selectedPlan} />
             )}
           </div>
         );

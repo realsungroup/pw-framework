@@ -409,8 +409,8 @@ showOver=()=>{
                   ))}
           </Select>
           <input className="mailAddress" onChange={v=>{this.handlechange("mailAddress",v)}} value={this.state.mailAddress} placeholder="选择求职者自动填写邮箱"/>
-          <rect className={this.state.loca=="SH"?'':'cur'} onClick={this.seLoca}>无锡文件</rect>
-          <rect className={this.state.loca=="WX"?'':'cur'} onClick={this.seLoca}>上海文件</rect>
+          <rect className={this.state.loca=="SH"?'':'cur'} onClick={this.seLoca}>无锡</rect>
+          <rect className={this.state.loca=="WX"?'':'cur'} onClick={this.seLoca}>上海</rect>
           <div className="clearfix" style={{marginBottom:'16px'}}></div>
           <Button type='primary' onClick={this.sendVerifyMail}>发送邮件</Button>
 

@@ -6,6 +6,7 @@ import RecruitJob from './RecruitJob';
 import ReportPeople from './ReportPeople';
 import UploadMedical from './UploadMedical';
 import LaborCorSelect from './LaborCorSelect';
+import ExaminationQRCode from '../ExaminationQRCode';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './DLEmploy.less';
 import http from 'Util20/api';
@@ -16,7 +17,7 @@ import http from 'Util20/api';
 const role = 'Manger';
 class DLEmploy extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       mode: 'inline',
       theme: 'light',
@@ -37,12 +38,12 @@ class DLEmploy extends React.Component {
       case '1':
         return <JobInterviewRecord></JobInterviewRecord>;
       case '2':
-        return <RecruitJob></RecruitJob>
+        return <RecruitJob></RecruitJob>;
       case '3':
-        return <JobPeopleList></JobPeopleList>
+        return <JobPeopleList></JobPeopleList>;
       case '4':
         return (
-          <div style={{ width: '100%', height: "100%" }}>
+          <div style={{ width: '100%', height: '100%' }}>
             <PastInterviewList></PastInterviewList>
           </div>
         );
@@ -50,8 +51,10 @@ class DLEmploy extends React.Component {
         return <UploadMedical></UploadMedical>;
       case '6':
         return <ReportPeople></ReportPeople>;
-        case '7':
+      case '7':
         return <LaborCorSelect></LaborCorSelect>;
+      case '8':
+        return <ExaminationQRCode></ExaminationQRCode>;
       default:
         return '';
     }
@@ -98,7 +101,7 @@ class DLEmploy extends React.Component {
             theme={this.state.theme}
             onSelect={this.onSelect}
             inlineCollapsed={this.state.collapsed}
-          // selectedKeys = {this.selectedKeys}
+            // selectedKeys = {this.selectedKeys}
           >
             <Menu.Item key="1">
               <Icon type="mail" />
@@ -128,6 +131,10 @@ class DLEmploy extends React.Component {
               <Icon type="calendar" />
               <span> 人员分配 </span>
             </Menu.Item>
+            <Menu.Item key="8">
+              <Icon type="calendar" />
+              <span> 签到二维码 </span>
+            </Menu.Item>
           </Menu>
         </div>
         <div
@@ -135,12 +142,11 @@ class DLEmploy extends React.Component {
             overflow: 'auto',
             width: `${
               this.state.collapsed ? 'calc(100% - 40px)' : 'calc(100% - 200px)'
-              }`
+            }`
           }}
         >
           {this.renderContent()}
         </div>
-
       </div>
     );
   }

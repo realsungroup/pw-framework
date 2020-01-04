@@ -76,10 +76,11 @@ class HRProbation extends React.Component {
                   refTargetComponentName="TableData"
                   cmswhere={cmswhere}
                   customRowBtns={[
-                    record => (
+                    (record, btnSize) => (
                       <Button
                         type="primary"
                         onClick={this.onCustomViewBtnClick(record)}
+                        size={btnSize}
                       >
                         查看
                       </Button>
@@ -228,8 +229,8 @@ class HRProbation extends React.Component {
           data.push({
             REC_ID: item.REC_ID,
             C3_622649568463: 'N',
-            C3_622649502021:'N',
-            isNoticeHrEmail:null
+            C3_622649502021: 'N',
+            isNoticeHrEmail: null
           });
         }
       });
@@ -382,12 +383,13 @@ class HRProbation extends React.Component {
       >
         <div
           style={{
-            position: 'fixed',
-            left: 0,
-            bottom: 0,
-            top: 0,
+            // position: 'fixed',
+            // left: 0,
+            // bottom: 0,
+            // top: 0,
             width: `${collapsed ? '80px' : '200px'}`,
-            height: '100vh'
+            height: '100vh',
+            maxHeight: '100vh'
           }}
         >
           <div
@@ -446,7 +448,8 @@ class HRProbation extends React.Component {
           style={{
             position: 'relative',
             width: `${collapsed ? 'calc(100% - 100px)' : 'calc(100% - 220px)'}`,
-            left: `${collapsed ? '100px' : '220px'}`
+            left: '20px',
+            overflow: 'auto'
           }}
         >
           <Spin spinning={spinning}>{this.renderContent()}</Spin>

@@ -21,12 +21,21 @@
       }
     }
     &-course_list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      flex: 1;
       overflow: scroll;
-      flex-grow: 1;
-      align-items: flex-start;
+      &-wrapper {
+        height: calc(100% - 40px);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        overflow: scroll;
+        flex-grow: 1;
+        align-items: flex-start;
+      }
+      .external-training__arranging-courses__pagination {
+        padding: 4px;
+        width: 100%;
+      }
       .arranging_courses_item {
         flex-basis: 49%;
         margin-bottom: 12px;
