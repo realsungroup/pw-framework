@@ -1817,7 +1817,7 @@ window[630772897523] = {
 };
 window[628868376923] = {
   name: 'VisitorApplyVIP',
-  title: 'VIP访客业务'
+  title: 'VIP访客申请'
 };
 
 window[629371964947] = {
@@ -1866,7 +1866,7 @@ window[628886558788] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
