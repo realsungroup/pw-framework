@@ -495,18 +495,24 @@ export default class MenuMultiple extends React.Component {
                 })}
               </Tabs>
             ) : (
-              <HeightWeightChart
-                sex={record.C3_589053299408}
-                chartType={chartType}
-                userData={recordList}
-                recordMonthField={
-                  record.C3_589053299408 === "男"
-                    ? "C3_603833255097"
-                    : "C3_603833299862"
-                }
-                recordHeightField={"C3_586880026948"}
-                recordWeightField={"C3_586880035091"}
-              />
+              <LabExaminationChart
+              data={recordList}
+              fields={fields}
+              dateField={innerFieldName}
+            />
+              // <HeightWeightChart
+              //   sex={record.C3_589053299408}
+              //   chartType={chartType}
+              //   userData={recordList}
+              //   recordMonthField={
+              //     record.C3_589053299408 === "男"
+              //       ? "C3_603833255097"
+              //       : "C3_603833299862"
+              //   }
+              //   recordHeightField={"C3_586880026948"}
+              //   recordWeightField={"C3_586880035091"}
+              // />
+              // 
             )}
           </LzModal>
         )}
