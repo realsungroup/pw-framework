@@ -56,8 +56,20 @@ class VisitorApplyVIP extends React.Component {
   };
   componentDidMount = () => {
     this.getApprover();
+    this.info();
   };
 
+   info = ()=> {
+    Modal.info({
+      title: '温馨提示',
+      content: (
+        <div>
+          <p>VIP访客指外部审核人员、政府官员及公司内部VIP</p>
+        </div>
+      ),
+      onOk() {},
+    });
+  }
   getApprover = async () => {
     let res;
     try {
@@ -345,6 +357,21 @@ class VisitorApplyVIP extends React.Component {
             </Form.Item>
 
             <Form.Item
+              label="离开日期"
+              hasFeedback={mode === 'check' ? false : true}
+            >
+              {getFieldDecorator('Enddate', {
+                initialValue: record && moment(record.Enddate),
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入离开日期!'
+                  }
+                ]
+              })(<DatePicker disabled={mode === 'check' ? true : false} />)}
+            </Form.Item>
+
+            <Form.Item
               label="来访目的"
               hasFeedback={mode === 'check' ? false : true}
             >
@@ -373,8 +400,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>是</Radio>
-                  <Radio value={'N'}>否</Radio>
+                  <Radio value={'Y'}>需要</Radio>
+                  <Radio value={'N'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
@@ -393,8 +420,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>是</Radio>
-                  <Radio value={'N'}>否</Radio>
+                  <Radio value={'Y'}>需要</Radio>
+                  <Radio value={'N'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
@@ -442,8 +469,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>是</Radio>
-                  <Radio value={'N'}>否</Radio>
+                  <Radio value={'Y'}>需要</Radio>
+                  <Radio value={'N'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
