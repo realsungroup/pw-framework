@@ -327,7 +327,7 @@ class CyberMoney extends Component {
               <hr/>
               <span>· 提交有效问卷：</span>+5积分<hr/>
 
-              <span>· 课后反馈中的回答被采纳：</span>+10积分<hr/>
+              <span>· 问卷中的开放式回答被采纳：</span>+10积分<hr/>
 
               <span>· 完成内训：</span>+5积分<hr/>
 

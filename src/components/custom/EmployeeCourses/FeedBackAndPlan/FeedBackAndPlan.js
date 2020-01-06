@@ -24,14 +24,14 @@ class FeedBackAndPlan extends Component {
       planView: [],
       // 内训评分
       rate: {
-        rate1: 0,
-        rate2: 0,
-        rate3: 0,
-        rate4: 0,
-        rate5: 0,
-        rate6: 0,
-        rate7: 0,
-        rate8: 0
+        rate1: 5,
+        rate2: 5,
+        rate3: 5,
+        rate4: 5,
+        rate5: 5,
+        rate6: 5,
+        rate7: 5,
+        rate8: 5
       },
       otherAdvice: {
         advantages: '',
@@ -39,10 +39,10 @@ class FeedBackAndPlan extends Component {
       },
       //外训评分
       rateOut: {
-        rate1: 0,
-        rate2: 0,
-        rate3: 0,
-        rate4: 0
+        rate1: 5,
+        rate2: 5,
+        rate3: 5,
+        rate4: 5
       },
       knowledge: [''],
       plans: ['']
@@ -122,99 +122,22 @@ class FeedBackAndPlan extends Component {
       });
     }
   };
-  // 内训评分反馈
-  rate1Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate1 = value;
+
+  handleRateChange = key => value => {
+    const tempRate = {
+      ...this.state.rate
+    };
+    tempRate[key] = value;
     this.setState({
       rate: tempRate
     });
     this.props.onSubmit(tempRate);
   };
-  rate2Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate2 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate3Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate3 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate4Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate4 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate5Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate5 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate6Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate6 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate7Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate7 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rate8Change = value => {
-    const tempRate = { ...this.state.rate };
-    tempRate.rate8 = value;
-    this.setState({
-      rate: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  // 外训评分关键
-  rateOut1Change = value => {
-    const tempRate = { ...this.state.rateOut };
-    tempRate.rate1 = value;
-    this.setState({
-      rateOut: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rateOut2Change = value => {
-    const tempRate = { ...this.state.rateOut };
-    tempRate.rate2 = value;
-    this.setState({
-      rateOut: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rateOut3Change = value => {
-    const tempRate = { ...this.state.rateOut };
-    tempRate.rate3 = value;
-    this.setState({
-      rateOut: tempRate
-    });
-    this.props.onSubmit(tempRate);
-  };
-  rateOut4Change = value => {
-    const tempRate = { ...this.state.rateOut };
-    tempRate.rate4 = value;
+  handleOutRateChange = key => value => {
+    const tempRate = {
+      ...this.state.rateOut
+    };
+    tempRate[key] = value;
     this.setState({
       rateOut: tempRate
     });
@@ -249,6 +172,7 @@ class FeedBackAndPlan extends Component {
       return message.info('不能少于1个');
     }
     knowledge.splice(index, 1);
+    this.props.setKnowledge(knowledge);
     this.setState({
       knowledge
     });
@@ -282,6 +206,7 @@ class FeedBackAndPlan extends Component {
       return message.info('不能少于1个');
     }
     plans.splice(index, 1);
+    this.props.setPlans(plans);
     this.setState({
       plans
     });
@@ -289,7 +214,7 @@ class FeedBackAndPlan extends Component {
 
   render() {
     const required = !(this.props.mode === 'view');
-    const { plans, knowledge } = this.state;
+    const { plans, knowledge, rate } = this.state;
     return (
       <div>
         {this.props.onCourseType === '内训' ? (
@@ -299,13 +224,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate1} disabled />
+                    <Rate value={rate.rate1} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate1}
-                      onChange={value => {
-                        this.rate1Change(value);
-                      }}
+                      value={rate.rate1}
+                      onChange={this.handleRateChange('rate1')}
                     />
                   )}
                 </Col>
@@ -316,12 +239,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>我认为课程主题准确，结构清晰，内容充实</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate2} disabled />
+                    <Rate value={rate.rate2} disabled />
                   ) : (
                     <Rate
-                      onChange={value => {
-                        this.rate2Change(value);
-                      }}
+                      value={rate.rate2}
+                      onChange={this.handleRateChange('rate2')}
                     />
                   )}
                 </Col>
@@ -330,12 +252,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>所学的内容对实际工作有很大帮助</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate3} disabled />
+                    <Rate value={rate.rate3} disabled />
                   ) : (
                     <Rate
-                      onChange={value => {
-                        this.rate3Change(value);
-                      }}
+                      value={rate.rate3}
+                      onChange={this.handleRateChange('rate3')}
                     />
                   )}
                 </Col>
@@ -348,13 +269,11 @@ class FeedBackAndPlan extends Component {
                 </Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate4} disabled />
+                    <Rate value={rate.rate4} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate4}
-                      onChange={value => {
-                        this.rate4Change(value);
-                      }}
+                      value={rate.rate4}
+                      onChange={this.handleRateChange('rate4')}
                     />
                   )}
                 </Col>
@@ -365,13 +284,11 @@ class FeedBackAndPlan extends Component {
                 </Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate5} disabled />
+                    <Rate value={rate.rate5} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate5}
-                      onChange={value => {
-                        this.rate5Change(value);
-                      }}
+                      value={rate.rate5}
+                      onChange={this.handleRateChange('rate5')}
                     />
                   )}
                 </Col>
@@ -380,13 +297,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>我能够积极参与到课堂中去</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate6} disabled />
+                    <Rate value={rate.rate6} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate6}
-                      onChange={value => {
-                        this.rate6Change(value);
-                      }}
+                      value={rate.rate6}
+                      onChange={this.handleRateChange('rate6')}
                     />
                   )}
                 </Col>
@@ -395,13 +310,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>我的提问能够得到讲师认真,满意的答复</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate7} disabled />
+                    <Rate value={rate.rate7} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate7}
-                      onChange={value => {
-                        this.rate7Change(value);
-                      }}
+                      value={rate.rate7}
+                      onChange={this.handleRateChange('rate7')}
                     />
                   )}
                 </Col>
@@ -410,13 +323,11 @@ class FeedBackAndPlan extends Component {
                 <Col span={12}>时间控制合理使我感到舒适</Col>
                 <Col span={12}>
                   {this.props.mode === 'view' ? (
-                    <Rate value={this.state.rate.rate8} disabled />
+                    <Rate value={rate.rate8} disabled />
                   ) : (
                     <Rate
-                      value={this.state.rate.rate8}
-                      onChange={value => {
-                        this.rate8Change(value);
-                      }}
+                      value={rate.rate8}
+                      onChange={this.handleRateChange('rate8')}
                     />
                   )}
                 </Col>
@@ -477,9 +388,7 @@ class FeedBackAndPlan extends Component {
                 ) : (
                   <Rate
                     value={this.state.rateOut.rate1}
-                    onChange={value => {
-                      this.rateOut1Change(value);
-                    }}
+                    onChange={this.handleOutRateChange('rate1')}
                   />
                 )}
               </Col>
@@ -492,9 +401,7 @@ class FeedBackAndPlan extends Component {
                 ) : (
                   <Rate
                     value={this.state.rateOut.rate2}
-                    onChange={value => {
-                      this.rateOut2Change(value);
-                    }}
+                    onChange={this.handleOutRateChange('rate2')}
                   />
                 )}
               </Col>
@@ -507,9 +414,7 @@ class FeedBackAndPlan extends Component {
                 ) : (
                   <Rate
                     value={this.state.rateOut.rate3}
-                    onChange={value => {
-                      this.rateOut3Change(value);
-                    }}
+                    onChange={this.handleOutRateChange('rate3')}
                   />
                 )}
               </Col>
@@ -522,9 +427,7 @@ class FeedBackAndPlan extends Component {
                 ) : (
                   <Rate
                     value={this.state.rateOut.rate4}
-                    onChange={value => {
-                      this.rateOut4Change(value);
-                    }}
+                    onChange={this.handleOutRateChange('rate4')}
                   />
                 )}
               </Col>
