@@ -1895,3 +1895,8 @@ window[629200936654] = {
     subtractH: 240
   }
 };
+
+window[631618595197] = {
+  name:'AttendanceRecord',
+  title:'签到记录导出'
+};
