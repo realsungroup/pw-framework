@@ -23,9 +23,14 @@ class LabExaminationChart extends React.Component {
     /**
      * 日期字段
      */
-    dateField: PropTypes.string.isRequired
+    dateField: PropTypes.string.isRequired,
+
+    /**
+     * echart id
+     */
+    chartid: PropTypes.string
   };
-  static defaultProps = {};
+  static defaultProps = { chartid: "lab-examination-chart" };
   constructor(props) {
     super(props);
 

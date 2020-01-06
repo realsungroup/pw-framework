@@ -69,7 +69,6 @@ const FormWithValue = React.memo(props => {
     ...formFormData
   };
 
-  console.log(_formdata.canOpControlArr);
   _formdata.canOpControlArr = _formdata.canOpControlArr.filter(item => {
     return record[item.innerFieldName];
   });
