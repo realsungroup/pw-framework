@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { message, Button, Timeline, Modal, Tree } from "antd";
+import { message, Button, Timeline, Modal, Tree, Tabs } from "antd";
 import "./MenuMultiple.less";
 import LzFormWithFooter from "UnitComponent/components/LzFormWithFooter";
 import { getFormData, getSubTableData } from "Util/api";
@@ -13,6 +13,7 @@ import HeightWeightChart from "./HeightWeightChart";
 import LabExaminationChart from "./LabExaminationChart";
 import { LzModal } from "../../loadableCustom";
 const { TreeNode } = Tree;
+const { TabPane } = Tabs;
 
 // 含有 “生长发育评估” 的表才有身高、体重按钮
 const hasHeightWeightChartBtn = formTitle => {
@@ -148,6 +149,7 @@ export default class MenuMultiple extends React.Component {
       chartVisible: false,
       chooseFieldModalVisible: false, // 选择字段的模态窗是否显示
       fields: [], // 已选择的需要在实验室检查中显示的字段
+      sortFields: [],
       treeData: [], // 选择字段的树节点数据
       selectedKeys: [] // 已选中的树节点
     };
@@ -354,19 +356,35 @@ export default class MenuMultiple extends React.Component {
       return message.error("您未选择字段");
     }
 
-    const fields = [];
-
-    this._canOpControlArr.forEach(item => {
-      const curItem = newSelectedKeys.some(key => key === item.ColName);
+    // const fields = [];
+    const sortFields = new Map();
+    newSelectedKeys.forEach(item => {
+      const curItem = this._canOpControlArr.find(i => i.ColName === item);
       if (curItem) {
-        fields.push({
-          field: item.ColName,
-          title: item.ColDispName
-        });
+        let mapValue = sortFields.get(curItem.ColResDataSort);
+        if (mapValue) {
+          mapValue.push({
+            field: curItem.ColName,
+            title: curItem.ColDispName
+          });
+        } else {
+          sortFields.set(curItem.ColResDataSort, [
+            { field: curItem.ColName, title: curItem.ColDispName }
+          ]);
+        }
       }
     });
+    // this._canOpControlArr.forEach(item => {
+    //   const curItem = newSelectedKeys.some(key => key === item.ColName);
+    //   if (curItem) {
+    //     fields.push({
+    //       field: item.ColName,
+    //       title: item.ColDispName
+    //     });
+    //   }
+    // });
 
-    this.setState({ chartVisible: true, fields });
+    this.setState({ chartVisible: true, sortFields });
   };
 
   handleNodeCheck = selectedKeys => {
@@ -383,11 +401,12 @@ export default class MenuMultiple extends React.Component {
       advSearchVisible,
       chartVisible,
       chartType,
-      fields,
+      // fields,
       chooseFieldModalVisible,
       treeData,
       selectedKeys,
-      alreadyModalVisible
+      alreadyModalVisible,
+      sortFields
     } = this.state;
     const {
       resid,
@@ -409,6 +428,7 @@ export default class MenuMultiple extends React.Component {
       displayMod: "classify",
       modalWidth: 1000
     };
+    const sortFieldsArray = Array.from(sortFields.entries());
     return (
       <div className="menu-multiple">
         <div className="form-wrap">
@@ -460,11 +480,20 @@ export default class MenuMultiple extends React.Component {
             onClose={() => this.setState({ chartVisible: false })}
           >
             {formTitle === "实验室检查" || formTitle === "CD-评分" ? (
-              <LabExaminationChart
-                data={recordList}
-                fields={fields}
-                dateField={innerFieldName}
-              />
+              <Tabs>
+                {sortFieldsArray.map(item => {
+                  return (
+                    <TabPane tab={item[0]} key={item[0]}>
+                      <LabExaminationChart
+                        data={recordList}
+                        fields={item[1]}
+                        dateField={innerFieldName}
+                        chartid={item[0]}
+                      />
+                    </TabPane>
+                  );
+                })}
+              </Tabs>
             ) : (
               <HeightWeightChart
                 sex={record.C3_589053299408}
