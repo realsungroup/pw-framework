@@ -623,3 +623,9 @@ export const RankGrade = Loadable({
     return minLoading;
   }
 });
+export const AttendanceRecord = Loadable({
+  loader: () => import('./AttendanceRecord'),
+  loading() {
+    return minLoading;
+  }
+});

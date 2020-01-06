@@ -1817,7 +1817,7 @@ window[630772897523] = {
 };
 window[628868376923] = {
   name: 'VisitorApplyVIP',
-  title: 'VIP访客业务'
+  title: 'VIP访客申请'
 };
 
 window[629371964947] = {
@@ -1845,7 +1845,7 @@ window[628885904481] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
@@ -1856,7 +1856,7 @@ window[628886558788] = {
   title: '统计管理', // 功能模块名称
   props: {
     resid: 628946981907,
-    actionBarWidth: 100,
+    actionBarWidth: 200,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1866,7 +1866,7 @@ window[628886558788] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
@@ -1879,8 +1879,8 @@ window[629200936654] = {
   name: 'TableData', // 组件名称，
   title: '统计管理', // 功能模块名称
   props: {
-    resid: 629200875080,
-    actionBarWidth: 100,
+    resid: 631104772748,
+    actionBarWidth: 200,
     hasAdd: false,
     hasBeBtns: true,
     hasModify: false,
@@ -1890,8 +1890,13 @@ window[629200936654] = {
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
-      height: 500
+      // height: 500
     },
     subtractH: 240
   }
+};
+
+window[631618595197] = {
+  name:'AttendanceRecord',
+  title:'签到记录导出'
 };
