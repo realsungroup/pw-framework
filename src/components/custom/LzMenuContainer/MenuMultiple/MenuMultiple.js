@@ -356,7 +356,7 @@ export default class MenuMultiple extends React.Component {
       return message.error("您未选择字段");
     }
 
-    // const fields = [];
+    const fields = [];
     const sortFields = new Map();
     newSelectedKeys.forEach(item => {
       const curItem = this._canOpControlArr.find(i => i.ColName === item);
@@ -374,17 +374,17 @@ export default class MenuMultiple extends React.Component {
         }
       }
     });
-    // this._canOpControlArr.forEach(item => {
-    //   const curItem = newSelectedKeys.some(key => key === item.ColName);
-    //   if (curItem) {
-    //     fields.push({
-    //       field: item.ColName,
-    //       title: item.ColDispName
-    //     });
-    //   }
-    // });
+    this._canOpControlArr.forEach(item => {
+      const curItem = newSelectedKeys.some(key => key === item.ColName);
+      if (curItem) {
+        fields.push({
+          field: item.ColName,
+          title: item.ColDispName
+        });
+      }
+    });
 
-    this.setState({ chartVisible: true, sortFields });
+    this.setState({ chartVisible: true, fields, sortFields });
   };
 
   handleNodeCheck = selectedKeys => {
@@ -401,7 +401,7 @@ export default class MenuMultiple extends React.Component {
       advSearchVisible,
       chartVisible,
       chartType,
-      // fields,
+      fields,
       chooseFieldModalVisible,
       treeData,
       selectedKeys,
@@ -496,10 +496,10 @@ export default class MenuMultiple extends React.Component {
               </Tabs>
             ) : (
               <LabExaminationChart
-              data={recordList}
-              fields={fields}
-              dateField={innerFieldName}
-            />
+                data={recordList}
+                fields={fields}
+                dateField={innerFieldName}
+              />
               // <HeightWeightChart
               //   sex={record.C3_589053299408}
               //   chartType={chartType}
@@ -512,7 +512,7 @@ export default class MenuMultiple extends React.Component {
               //   recordHeightField={"C3_586880026948"}
               //   recordWeightField={"C3_586880035091"}
               // />
-              // 
+              //
             )}
           </LzModal>
         )}
