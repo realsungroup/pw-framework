@@ -11,7 +11,6 @@ class App extends Component {
   render() {
     return       (<TemplateWrap>
       <TimeSelectorClock
-        timeType={'string'}
         onOk={
           (v)=>{console.log('ok',v)}
         }

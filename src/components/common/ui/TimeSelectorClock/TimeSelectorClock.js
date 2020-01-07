@@ -36,16 +36,11 @@ class TimeSelectorClock extends React.Component {
   };
 onOk=()=>{
   var t;
-  if(timeType='string'){
     if(this.state.AorP=='AM'){
       t=this.state.curHour+':'+this.state.curMinute;
     }else{
       t=(12+Number(this.state.curHour))+':'+this.state.curMinute;
     }
-  }
-  if(timeType='date'){
-    
-  }
   retOk(t);
 }
   render() {
