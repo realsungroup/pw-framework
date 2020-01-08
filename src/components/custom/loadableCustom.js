@@ -623,3 +623,21 @@ export const RankGrade = Loadable({
     return minLoading;
   }
 });
+export const DepartmentManager = Loadable({
+  loader: () => import('./DepartmentManager'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OfferApproval = Loadable({
+  loader: () => import('./OfferApproval'),
+  loading() {
+    return minLoading;
+  }
+});
+export const HeadCount = Loadable({
+  loader: () => import('./HeadCount'),
+  loading() {
+    return minLoading;
+  }
+});

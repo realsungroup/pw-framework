@@ -1830,6 +1830,19 @@ window[629545423118] = {
   title: 'IDL面试邀请'
 };
 
+window[631729718446] = {
+  name: 'DepartmentManager',
+  title: '部门管理'
+};
+window[631729844802] = {
+  name: 'OfferApproval',
+  title: 'Offer审批'
+};
+window[631729798279] = {
+  name: 'HeadCount',
+  title: 'HeadCount'
+};
+
 window[628885904481] = {
   name: 'TableData', // 组件名称，
   title: 'VIP前台查阅', // 功能模块名称
