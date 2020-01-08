@@ -138,3 +138,4 @@ export { RankGrade } from '../components/custom/loadableCustom';
 export { DepartmentManager } from '../components/custom/loadableCustom';
 export { OfferApproval } from '../components/custom/loadableCustom';
 export { HeadCount } from '../components/custom/loadableCustom';
+export { AttendanceRecord } from '../components/custom/loadableCustom';

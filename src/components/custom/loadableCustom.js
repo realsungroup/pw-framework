@@ -641,3 +641,9 @@ export const HeadCount = Loadable({
     return minLoading;
   }
 });
+export const AttendanceRecord = Loadable({
+  loader: () => import('./AttendanceRecord'),
+  loading() {
+    return minLoading;
+  }
+});
