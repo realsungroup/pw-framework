@@ -56,11 +56,16 @@ const ResizeableTitle = props => {
   );
 };
 
+/**
+ * 下属加班汇总 e-chart
+ * @author 邓铭
+ */
 class WorkOvertimeChart extends React.Component {
   state = {
-    selectedMonth: '',
-    months: [],
+    selectedMonth: '', //选中的月
+    months: [], //所有月
     statisticalData: {
+      //统计数据
       headcount: 0,
       totalOT: 0,
       averageOT: 0
@@ -180,6 +185,9 @@ class WorkOvertimeChart extends React.Component {
     }
   }
 
+  /**
+   * 获取统计数据
+   */
   getData = async () => {
     try {
       let httpParams = {};
@@ -230,6 +238,9 @@ class WorkOvertimeChart extends React.Component {
     }
   };
 
+  /**
+   * 获取考勤月
+   */
   getYearMonths = async () => {
     try {
       const res = await http().getTable({
@@ -248,6 +259,11 @@ class WorkOvertimeChart extends React.Component {
     }
   };
 
+  /**
+   * 获取下属数据
+   * @param {string} id 人员工号
+   * @param {string} month 选中的考勤月份
+   */
   getDetailData = async (id, month) => {
     try {
       this.setState({ loading: true });
@@ -276,6 +292,9 @@ class WorkOvertimeChart extends React.Component {
     }
   };
 
+  /**
+   * 头部统计数据点击事件
+   */
   onStatisticalDataClick = () => {
     this.setState({ isShowTable: true, selectedPersonid: this.UserCode });
     this.getDetailData(this.UserCode, this.state.selectedMonth);
@@ -341,6 +360,7 @@ class WorkOvertimeChart extends React.Component {
           ))}
         </Select>
         <div style={{ display: isShowTable ? 'none' : '' }}>
+          {/* 头部统计数据 */}
           <table className="manager-subordinates-statistical-table">
             <thead>
               <th>Headcount</th>
@@ -397,20 +417,7 @@ class WorkOvertimeChart extends React.Component {
                 </Tooltip>
               </div>
             </div>
-
-            {!isShowAggird && (
-              <Table
-                columns={columns}
-                rowKey={record => record['工号']}
-                dataSource={dataSource}
-                bordered
-                // pagination={this.state.pagination}
-                loading={this.state.loading}
-                components={this.components}
-                // onChange={this.handleTableChange}
-              />
-            )}
-            {isShowAggird && (
+            {isShowAggird ? (
               <BIGrid
                 height={600}
                 gridProps={[
@@ -426,6 +433,17 @@ class WorkOvertimeChart extends React.Component {
                     }
                   }
                 ]}
+              />
+            ) : (
+              <Table
+                columns={columns}
+                rowKey={record => record['工号']}
+                dataSource={dataSource}
+                bordered
+                // pagination={this.state.pagination}
+                loading={this.state.loading}
+                components={this.components}
+                // onChange={this.handleTableChange}
               />
             )}
           </div>

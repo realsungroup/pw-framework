@@ -120,6 +120,8 @@ class ManagerAttendanceApproval extends React.Component {
     }
   };
 
+  handleCloseModal = () => this.setState({ modalVisible: false });
+
   render() {
     const { modalVisible } = this.state;
     return (
@@ -147,9 +149,10 @@ class ManagerAttendanceApproval extends React.Component {
           baseURL={this.baseURL}
           downloadBaseURL={this.attendanceDownloadURL}
           customRowBtns={[
-            record => {
+            (record, size) => {
               return (
                 <Button
+                  size={size}
                   onClick={() => {
                     this.props.onOpenApprovalRecordModal(record);
                   }}
@@ -184,8 +187,8 @@ class ManagerAttendanceApproval extends React.Component {
         />
         <Modal
           visible={modalVisible}
-          onOk={() => this.setState({ modalVisible: false })}
-          onCancel={() => this.setState({ modalVisible: false })}
+          onOk={this.handleCloseModal}
+          onCancel={this.handleCloseModal}
           width="100%"
           centered
           footer={null}

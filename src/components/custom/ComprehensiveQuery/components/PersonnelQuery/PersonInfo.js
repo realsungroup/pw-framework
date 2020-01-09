@@ -7,7 +7,11 @@ import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
 import './personInfo.less';
 
-// 622576278943
+/**
+ * 人事信息
+ * @author 邓铭
+ */
+
 class PersonInfo extends React.Component {
   constructor(props) {
     super(props);
@@ -74,88 +78,93 @@ class PersonInfo extends React.Component {
       id = person.C3_305737857578;
     }
     return (
-      <div className="personInfoQuery">
-        <div style={{ height: '100%' }}>
-          <Skeleton loading={!id}>
-            <TableData
-              key="1"
-              size="small"
-              resid="446576761435"
-              isFrontEndPagination={true}
-              subtractH={200}
-              hasAdvSearch={false}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasBeBtns={true}
-              hasRowModify={false}
-              hasRowSelection={false}
-              actionBarWidth={400}
-              cparm1={id}
-              formProps={{ width: 1000 }}
-              baseURL={this.baseURL}
-              downloadBaseURL={this.attendanceDownloadURL}
-              recordFormUseAbsolute={true}
-              customRowBtns={[
-                record => {
-                  return (
-                    <Button
-                      onClick={async () => {
-                        this.setState({
-                          personalInfoVisible: true
-                        });
-                        await this.getPersonalInfo(record.C3_305737857578);
-                      }}
-                    >
-                      个人信息详情
-                    </Button>
-                  );
-                }
-              ]}
-              subTableArrProps={[
-                {
-                  subTableName: '合同记录', // 必选（若不选则标签页标题为子表的 resid）
-                  subResid: 446580376907, // 必选
-                  tableProps: {
-                    hasAdvSearch: false,
-                    hasDelete: false,
-                    hasRowDelete: false,
-                    hasRowModify: false,
-                    hasRowView: true,
-                    hasBeBtns: false,
-                    actionBarWidth: 100,
-                    baseURL: this.baseURL,
-                    height: 300,
-                    downloadBaseURL: this.attendanceDownloadURL
+      <div className="performance-query">
+        <div className="personInfoQuery">
+          <div style={{ height: '100%' }}>
+            <Skeleton loading={!id}>
+              <TableData
+                key="1"
+                size="small"
+                resid="446576761435"
+                isFrontEndPagination={true}
+                subtractH={200}
+                hasAdvSearch={false}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={false}
+                actionBarWidth={400}
+                cparm1={id}
+                formProps={{ width: 1000 }}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.attendanceDownloadURL}
+                recordFormUseAbsolute={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        size="small"
+                        onClick={async () => {
+                          this.setState({
+                            personalInfoVisible: true
+                          });
+                          await this.getPersonalInfo(record.C3_305737857578);
+                        }}
+                      >
+                        个人信息详情
+                      </Button>
+                    );
                   }
-                }
-              ]}
-            />
-          </Skeleton>
-        </div>
-        <Modal
-          title="个人信息详情"
-          visible={personalInfoVisible}
-          onOk={() => this.setState({ personalInfoVisible: false })}
-          onCancel={() => this.setState({ personalInfoVisible: false })}
-          destroyOnClose
-          width="70%"
-        >
-          <div>
-            <Spin spinning={loadingPersonInfo}>
-              <FormData
-                info={{ dataMode: 'main', resid: '622576278943' }}
-                operation="view"
-                data={dataProp}
-                record={personInfo}
-                useAbsolute={true}
+                ]}
+                subTableArrProps={[
+                  {
+                    subTableName: '合同记录', // 必选（若不选则标签页标题为子表的 resid）
+                    subResid: 446580376907, // 必选
+                    tableProps: {
+                      hasAdvSearch: false,
+                      hasDelete: false,
+                      hasRowDelete: false,
+                      hasRowModify: false,
+                      hasRowView: true,
+                      hasBeBtns: false,
+                      actionBarWidth: 100,
+                      baseURL: this.baseURL,
+                      height: 300,
+                      downloadBaseURL: this.attendanceDownloadURL
+                    }
+                  }
+                ]}
               />
-            </Spin>
+            </Skeleton>
           </div>
-        </Modal>
+          <Modal
+            title="个人信息详情"
+            visible={personalInfoVisible}
+            onOk={() => this.setState({ personalInfoVisible: false })}
+            onCancel={() => this.setState({ personalInfoVisible: false })}
+            destroyOnClose
+            width="70%"
+          >
+            <div>
+              <Spin spinning={loadingPersonInfo}>
+                <FormData
+                  info={{ dataMode: 'main', resid: '622576278943' }}
+                  operation="view"
+                  data={dataProp}
+                  record={personInfo}
+                  useAbsolute={true}
+                />
+              </Spin>
+            </div>
+          </Modal>
+        </div>
       </div>
     );
   }

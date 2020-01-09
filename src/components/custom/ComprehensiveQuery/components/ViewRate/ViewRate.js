@@ -5,6 +5,9 @@ import http from 'Util20/api';
 import { message, Select, Skeleton } from 'antd';
 
 const { Option } = Select;
+/**
+ * 评级评优查询
+ */
 class ViewRate extends React.Component {
   state = {
     years: [],

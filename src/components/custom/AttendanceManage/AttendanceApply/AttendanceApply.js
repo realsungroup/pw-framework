@@ -9,6 +9,11 @@ import WorkOverTimeApply from '../WorkOvertimeApply';
 
 const { Meta } = Card;
 
+/**
+ * 考勤申请
+ * @author 邓铭
+ */
+
 class AttendanceApply extends React.Component {
   state = {
     current: 0,
@@ -34,6 +39,7 @@ class AttendanceApply extends React.Component {
     let page = null;
     switch (current) {
       case 1:
+        // 加班申请
         page = (
           <CustomForm1
             goBack={this.goBack}
@@ -42,6 +48,7 @@ class AttendanceApply extends React.Component {
         );
         break;
       case 2:
+        // 补刷卡申请表单
         page = (
           <CustomForm2
             goBack={this.goBack}
@@ -50,6 +57,7 @@ class AttendanceApply extends React.Component {
         );
         break;
       case 3:
+        // 加班批量申请
         page = (
           <WorkOverTimeApply
             goBack={this.goBack}

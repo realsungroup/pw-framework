@@ -103,7 +103,10 @@ class EditableCell extends React.Component {
     );
   }
 }
-
+/**
+ * 加班批量申请
+ * @author 邓铭
+ */
 class WorkOvertimeApply extends React.Component {
   constructor(props) {
     super(props);
@@ -490,26 +493,6 @@ class WorkOvertimeApply extends React.Component {
               }}
             />
           </div>
-          {/* <TableData
-          key="work-overtime-apply"
-          resid="489233670834"
-          subtractH={200}
-          hasAdvSearch={false}
-          hasAdd={true}
-          hasRowView={false}
-          hasRowDelete={false}
-          hasBeBtns={true}
-          hasRowEdit={false}
-          hasDelete={false}
-          hasModify={false}
-          hasRowModify={false}
-          hasRowSelection={true}
-          actionBarWidth={100}
-          dblinkname="ehr"
-          actionBarExtra={this.actionBarExtra}
-          wrappedComponentRef={element => (this.tableDataRef = element)}
-          refTargetComponentName="TableData"
-        /> */}
         </div>
       </EditableContext.Provider>
     );
