@@ -43,7 +43,6 @@ class AbsoluteForm extends React.PureComponent {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
-            console.log(item);
             return (
               <span
                 style={{
