@@ -1900,3 +1900,8 @@ window[631618595197] = {
   name:'AttendanceRecord',
   title:'签到记录导出'
 };
+
+window[631968621232] = {
+  name:'PersonInfoManager',
+  title:'个人档案管理'
+};

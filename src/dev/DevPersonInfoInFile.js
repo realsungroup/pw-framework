@@ -7,7 +7,7 @@ import PersonInfoInFile from '../components/custom/PersonInfoInFile';
 
 class App extends Component {
   render() {
-    return <TemplateWrap><PersonInfoInFile></PersonInfoInFile></TemplateWrap>;
+    return <TemplateWrap><PersonInfoInFile edit={false}></PersonInfoInFile></TemplateWrap>;
   }
 }
 

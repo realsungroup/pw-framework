@@ -629,3 +629,9 @@ export const AttendanceRecord = Loadable({
     return minLoading;
   }
 });
+export const PersonInfoManager = Loadable({
+  loader: () => import('./PersonInfoManager'),
+  loading() {
+    return minLoading;
+  }
+});
