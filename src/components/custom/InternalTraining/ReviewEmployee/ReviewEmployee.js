@@ -23,6 +23,11 @@ const ReviewEmployeeResid = '616073391736'; // 人员审核表id
 const NoticeResid = '616099620782'; //通知表id
 const courseArrangmentResid = '615549231946'; //课程安排表id
 const NoticeTaskId = '616153300255'; //通知全部报名任务id
+
+/**
+ * @author 邓铭
+ * @description 选择人员
+ */
 class ReviewEmployee extends React.Component {
   state = {
     noticeModalVisible: false, // 通知人员报名模态窗状态
@@ -47,6 +52,9 @@ class ReviewEmployee extends React.Component {
     this.getTaskInfo = null;
   };
 
+  /**
+   * 通知报名
+   */
   handleNotice = async record => {
     this.setState({
       record: record
@@ -68,6 +76,9 @@ class ReviewEmployee extends React.Component {
     this.getTaskInfo();
   };
 
+  /**
+   * 进度条
+   */
   renderTaskProgress = () => {
     const { totalIndex, curIndex } = this.state;
     let percent = 0;
@@ -86,6 +97,9 @@ class ReviewEmployee extends React.Component {
     );
   };
 
+  /**
+   * 获取进度
+   */
   getTaskInfo = async () => {
     let res;
     try {
@@ -151,7 +165,6 @@ class ReviewEmployee extends React.Component {
 
   // 通知人员报名
   noticeEmployee = async employees => {
-    console.log(employees);
     let res;
     try {
       let employee = employees.map(item => {
@@ -174,6 +187,9 @@ class ReviewEmployee extends React.Component {
     }
   };
 
+  /**
+   * 添加员工
+   */
   addEmployees = async employees => {
     let index_id = 0;
     let taskList = employees.map(item => {
@@ -187,6 +203,9 @@ class ReviewEmployee extends React.Component {
     this.setState({ taskList, isShowProgress: true });
   };
 
+  /**
+   * 删除员工
+   */
   deleteRecord = async record => {
     try {
       await http().removeRecords({
@@ -204,7 +223,9 @@ class ReviewEmployee extends React.Component {
     }
   };
 
-  //确认人员名单 截止报名
+  /**
+   * 确认人员名单 截止报名
+   */
   comfirmList = () => {
     try {
       http().modifyRecords({
@@ -224,6 +245,10 @@ class ReviewEmployee extends React.Component {
       console.log(error.message);
     }
   };
+
+  /**
+   * 打开移动人员模态窗
+   */
   onMoveEmployees = async record => {
     let dataSource = [...record.dataSource];
     let selectedEmployees = record.selectedRowKeys.map(item =>
@@ -234,7 +259,9 @@ class ReviewEmployee extends React.Component {
     this.setState({ selectCourseArrangementVisible: true, selectedEmployees });
   };
 
-  //移动人员
+  /**
+   * 移动人员
+   */
   moveEmployees = async () => {
     let employees = [...this.state.selectedEmployees];
     let { targetCourseArrangement } = this.state;
@@ -250,6 +277,9 @@ class ReviewEmployee extends React.Component {
     this.setState({ taskList: employees, isShowMoveProgress: true });
   };
 
+  /**
+   * 移动人员完成后的回调 修改记录触发计算公式计算人数
+   */
   onMoveFinished = async () => {
     await http().modifyRecords({
       resid: courseArrangmentResid,
@@ -299,7 +329,9 @@ class ReviewEmployee extends React.Component {
     });
   };
 
-  //结束时调用的回调函数
+  /**
+   * 添加人员结束时调用的回调函数
+   */
   onFinishedPlanProgress = async () => {
     this.setState({
       isShowProgress: false,
@@ -312,7 +344,6 @@ class ReviewEmployee extends React.Component {
     this.tableDataRef.handleRefresh();
   };
 
-  //公开课
   renderPublic() {
     let actionBarExtra = null;
     if (this.props.courseArrangement.isStopApply === 'Y') {
@@ -406,43 +437,43 @@ class ReviewEmployee extends React.Component {
       );
     }
     return (
-      <div className = 'outerCardPersonDetail'>
-      <TableData
-        resid={ReviewEmployeeResid}
-        wrappedComponentRef={element => (this.tableDataRef = element)}
-        refTargetComponentName="TableData"
-        subtractH={240}
-        hasBeBtns={true}
-        hasAdd={false}
-        hasRowView={true}
-        customRowBtns={[
-          (record, btnSize) => {
-            return (
-              <Popconfirm
-                title="您确认删除吗？"
-                onConfirm={() => {
-                  this.deleteRecord(record);
-                }}
-              >
-                <Button type="danger" style={{ fontSize: btnSize }}>
-                  删除
-                </Button>
-              </Popconfirm>
-            );
-          }
-        ]}
-        hasRowDelete={false}
-        actionBarWidth={100}
-        hasRowEdit={false}
-        hasDelete={true}
-        hasModify={false}
-        actionBarFixed={true}
-        hasRowModify={false}
-        hasRowSelection={true}
-        cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
-        key="public"
-        actionBarExtra={actionBarExtra}
-      />
+      <div className="outerCardPersonDetail">
+        <TableData
+          resid={ReviewEmployeeResid}
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          subtractH={240}
+          hasBeBtns={true}
+          hasAdd={false}
+          hasRowView={true}
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Popconfirm
+                  title="您确认删除吗？"
+                  onConfirm={() => {
+                    this.deleteRecord(record);
+                  }}
+                >
+                  <Button type="danger" style={{ fontSize: btnSize }}>
+                    删除
+                  </Button>
+                </Popconfirm>
+              );
+            }
+          ]}
+          hasRowDelete={false}
+          actionBarWidth={100}
+          hasRowEdit={false}
+          hasDelete={true}
+          hasModify={false}
+          actionBarFixed={true}
+          hasRowModify={false}
+          hasRowSelection={true}
+          cmswhere={`CourseArrangeID = ${this.props.courseArrangement.CourseArrangeID}`}
+          key="public"
+          actionBarExtra={actionBarExtra}
+        />
       </div>
     );
   }
@@ -450,7 +481,7 @@ class ReviewEmployee extends React.Component {
   //计划课
   renderInplan() {
     return (
-      <div className = 'innerCardPersonDetail'>
+      <div className="innerCardPersonDetail">
         <TableData
           resid={ReviewEmployeeResid}
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -523,28 +554,23 @@ class ReviewEmployee extends React.Component {
   }
 
   render() {
-    let courseArrangement = { ...this.props.courseArrangement };
-    let table = null;
-    if (courseArrangement.innerArrangeType === '2') {
-      table = this.renderPublic();
-    }
-    // if (courseArrangement.innerArrangeType === '必修课') {
-    //   table = this.renderCompulsory();
-    // }
-    // if (courseArrangement.innerArrangeType === '计划课') {
-    //   table = this.renderInplan();
-    // }
-    if (courseArrangement.innerArrangeType === '1') {
-      table = this.renderInplan();
-    }
-    const { isShowProgress, taskList, isShowMoveProgress } = this.state;
-
+    const {
+      isShowProgress,
+      taskList,
+      isShowMoveProgress,
+      noticeModalVisible,
+      addEmployeesVisible,
+      selectCourseArrangementVisible,
+      courseArrangements,
+      targetCourseArrangement,
+      isShowModal
+    } = this.state;
     return (
       <div className="review_employee" style={{ flex: 1 }}>
-        {table}
+        {this.renderPublic()}
         <Modal
           title="通知人员"
-          visible={this.state.noticeModalVisible}
+          visible={noticeModalVisible}
           width="80%"
           onCancel={this.closeModals}
           footer={null}
@@ -554,7 +580,7 @@ class ReviewEmployee extends React.Component {
         </Modal>
         <Modal
           title="添加人员"
-          visible={this.state.addEmployeesVisible}
+          visible={addEmployeesVisible}
           width="80%"
           onCancel={this.closeModals}
           footer={null}
@@ -577,13 +603,13 @@ class ReviewEmployee extends React.Component {
         </Modal>
         <Modal
           title="选择课程安排"
-          visible={this.state.selectCourseArrangementVisible}
+          visible={selectCourseArrangementVisible}
           width="60%"
           onCancel={this.closeModals}
           onOk={this.moveEmployees}
         >
           <List>
-            {this.state.courseArrangements.map(item => (
+            {courseArrangements.map(item => (
               <List.Item
                 key={item.CourseArrangeID}
                 onClick={() => {
@@ -598,9 +624,7 @@ class ReviewEmployee extends React.Component {
                 }}
               >
                 <Radio
-                  checked={
-                    item.CourseArrangeID === this.state.targetCourseArrangement
-                  }
+                  checked={item.CourseArrangeID === targetCourseArrangement}
                 />
                 <span>{item.CourseName}</span>
                 <span>{`${item.StartDatetime} ~ ${item.EndDatetime}`}</span>
@@ -621,7 +645,7 @@ class ReviewEmployee extends React.Component {
         </Modal>
         <Modal
           title="通知全部人员报名"
-          visible={this.state.isShowModal}
+          visible={isShowModal}
           okText="完成"
           cancelText="关闭"
           closable={false}
@@ -644,16 +668,6 @@ class ReviewEmployee extends React.Component {
         >
           {this.renderTaskProgress()}
         </Modal>
-        {/* {this.state.isShowProgress ? (
-          <Progress
-            onFinished={this.handleShowProgress}
-            struct="100"
-            options={{ resid: 611315248461, data: JSON.stringify({}) }}
-            title="通知报名"
-            showFields={['C3_609622263470', 'C3_609845305680']}
-            // width='50%'
-          />
-        ) : null} */}
       </div>
     );
   }

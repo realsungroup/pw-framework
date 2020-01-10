@@ -25,6 +25,9 @@ const InputType = {
 };
 
 const DateTimeFormatter = 'YYYY-MM-DD HH:mm';
+/**
+ * 可编辑行 https://ant.design/components/table-cn/#components-table-demo-edit-row
+ */
 class EditableCell extends React.Component {
   renderCell = ({ getFieldDecorator }) => {
     const {
@@ -213,6 +216,9 @@ class WorkOvertimeApply extends React.Component {
     this.getRecords();
   }
 
+  /**
+   * 获取未提交的申请
+   */
   getRecords = async () => {
     try {
       let res = await http().getTable({
@@ -241,7 +247,15 @@ class WorkOvertimeApply extends React.Component {
       console.log(error);
     }
   };
+
+  /**
+   * 判断记录是否正在编辑
+   */
   isEditing = record => record.key === this.state.editingKey;
+
+  /**
+   * 点击取消按钮
+   */
   cancel = key => {
     const { dataSource } = this.state;
     let data = dataSource.find(item => {
@@ -256,6 +270,11 @@ class WorkOvertimeApply extends React.Component {
       });
     }
   };
+
+  /**
+   * 点击保存按钮
+   *
+   */
   save(form, key) {
     form.validateFields(async (error, row) => {
       if (error) {
@@ -297,6 +316,9 @@ class WorkOvertimeApply extends React.Component {
     });
   }
 
+  /**
+   * 向后端保存数据
+   */
   hadnleSave = async record => {
     try {
       let res;
@@ -324,9 +346,17 @@ class WorkOvertimeApply extends React.Component {
       this.props.setLoading(false);
     }
   };
+
+  /**
+   * 点击编辑按钮
+   */
   edit(key) {
     this.setState({ editingKey: key });
   }
+
+  /**
+   * 删除申请单
+   */
   handleDelete = key => {
     this.props.setLoading(true);
     const dataSource = [...this.state.dataSource];
@@ -347,6 +377,9 @@ class WorkOvertimeApply extends React.Component {
     }
   };
 
+  /**
+   * 添加申请单
+   */
   handleAdd = () => {
     const { count, dataSource, editingKey } = this.state;
     if (editingKey !== '') {
@@ -380,9 +413,13 @@ class WorkOvertimeApply extends React.Component {
     this.setState({ selectedRowKeys });
   };
 
+  /**
+   * 提交
+   * @param {object} data
+   * @returns {void}
+   */
   submit = async data => {
     try {
-      console.log(data);
       this.props.setLoading(true);
       await http().modifyRecords({
         resid: '489233670834',

@@ -8,7 +8,10 @@ import NoticeAttendClass from './NoticeAttendClass';
 import SeeFeedback from './SeeFeedback/SeeFeedback';
 
 const { Step } = Steps;
-
+/**
+ * @description 内训管理
+ * @author 邓铭
+ */
 class InternalTraining extends Component {
   state = {
     loading: false,
@@ -20,8 +23,10 @@ class InternalTraining extends Component {
 
   handleCurrent = current => this.setState({ current });
 
+  /**
+   * 确认人员名单
+   */
   handleConfirmList = () => {
-    console.log('onConfirmListonConfirmList');
     this.setState({
       selectedCourseArrangement: {
         ...this.state.selectedCourseArrangement,
@@ -30,16 +35,21 @@ class InternalTraining extends Component {
     });
   };
 
+  /**
+   * 选中课程安排
+   */
   handleSelectCourseArrangement = selectedCourseArrangement => {
     this.setState({
       selectedCourseArrangement: { ...selectedCourseArrangement }
     });
   };
+
   render() {
     let { current } = this.state;
     let page = null;
     switch (current) {
       case 0:
+        // 步骤1 课程安排
         page = (
           <CourseArrangementInternal
             onHandleLoading={this.handleLoading}
@@ -49,6 +59,7 @@ class InternalTraining extends Component {
         );
         break;
       case 1:
+        // 步骤2 选择人员
         page = (
           <ReviewEmployee
             courseArrangement={this.state.selectedCourseArrangement}
@@ -58,6 +69,7 @@ class InternalTraining extends Component {
 
         break;
       case 2:
+        // 步骤3 通知上课
         page = (
           <NoticeAttendClass
             onHandleLoading={this.handleLoading}
@@ -66,6 +78,7 @@ class InternalTraining extends Component {
         );
         break;
       case 3:
+        // 步骤4 查看反馈
         page = <SeeFeedback />;
         break;
       default:

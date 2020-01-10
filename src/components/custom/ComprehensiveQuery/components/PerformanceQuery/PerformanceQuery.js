@@ -43,6 +43,11 @@ class PerformanceQuery extends React.Component {
       this.getYearsTarget(this.props.person.C3_305737857578);
     }
   }
+
+  /**
+   * 根据人员id获取所有财年目标数据
+   * @param {string|number} id
+   */
   getYearsTarget = async id => {
     try {
       const res = await http().getTable({

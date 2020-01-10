@@ -48,6 +48,10 @@ class SeeFeedback extends React.Component {
       shortcommings: ''
     }
   };
+
+  /**
+   * 获取反馈及评分
+   */
   getFeebackAndRate = async records => {
     const { rate } = this.state;
     let res; //课程反馈
@@ -81,8 +85,10 @@ class SeeFeedback extends React.Component {
       });
     }
   };
-  componentDidMount() {}
 
+  /**
+   * 获取课程所有反馈
+   */
   getFeedbacks = async id => {
     try {
       const res = await http().getTable({
@@ -97,6 +103,10 @@ class SeeFeedback extends React.Component {
       console.log(error);
     }
   };
+
+  /**
+   * 发给培训师
+   */
   sendToTrainer = async data => {
     try {
       this.setState({
@@ -116,22 +126,7 @@ class SeeFeedback extends React.Component {
     }
   };
 
-  handleAdopt = feedback => async () => {
-    this.setState({ adoptBtnLoadingRECID: feedback.REC_ID });
-    try {
-      const res = await http().modifyRecords({
-        resid: '',
-        data: [{ ...feedback, isAdopt: 'Y' }]
-      });
-    } catch (error) {
-      message.error(error.message);
-      console.error(error);
-    }
-    this.setState({ adoptBtnLoadingRECID: -1 });
-  };
-
   renderFeedbackText = (feedback, type = 'advantage') => {
-    const { adoptBtnLoadingRECID } = this.state;
     return (
       <Row key={feedback.REC_ID}>
         <Col span={2}>{feedback.C3_478368118915}</Col>
@@ -139,19 +134,6 @@ class SeeFeedback extends React.Component {
           {type === 'advantage'
             ? feedback.C3_622216706104
             : feedback.C3_622216725340}
-        </Col>
-        <Col span={6}>
-          <Popconfirm
-            onConfirm={this.handleAdopt(feedback)}
-            title="确定采纳吗?"
-          >
-            <Button
-              loading={feedback.REC_ID === adoptBtnLoadingRECID}
-              disabled={feedback.isAdopt === 'Y'}
-            >
-              采纳
-            </Button>
-          </Popconfirm>
         </Col>
       </Row>
     );

@@ -1,21 +1,9 @@
 import React from 'react';
-import {
-  Button,
-  message,
-  Modal,
-  Card,
-  Row,
-  Col,
-  Rate,
-  DatePicker,
-  InputNumber
-} from 'antd';
+import { Button, message, Modal, Card, Row, Col, Rate } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import http from 'Util20/api';
-import moment from 'moment';
 
 const courseDetailId = '615054661547';
-const dateFormat = 'YYYY-MM-DD';
 
 class ViewActions extends React.Component {
   state = {
@@ -47,8 +35,9 @@ class ViewActions extends React.Component {
   //获取反馈与行动计划
   getFeebackAndRate = async () => {
     const { rate, rateOut, selectedCourseArrangmentDetail } = this.state;
-    let res; //课程反馈
+    let res;
     try {
+      //获取课程反馈
       res = await http().getTable({
         resid: 478367996508,
         cmswhere: `C3_478368118696 =${selectedCourseArrangmentDetail.CourseArrangeDetailID}`
@@ -82,36 +71,36 @@ class ViewActions extends React.Component {
         });
       }
     }
-    if (selectedCourseArrangmentDetail.courseType !== '内训') {
-      let res2; //行动计划
-      try {
-        res2 = await http().getTable({
-          resid: 615571557694,
-          cmswhere: `courseArrange =${selectedCourseArrangmentDetail.CourseArrangeDetailID}`
-        });
-      } catch (err) {
-        message.error(err.message);
-        console.log(err);
-      }
-      if (res.data.length > 0) {
-        let knowledge = res2.data[0].knowledge1.split(';');
-        let plans = res2.data[0].action1.split(';');
-        this.setState({
-          planView: res2.data,
-          knowledge,
-          plans
-        });
-      } else {
-        this.setState({
-          planView: [],
-          knowledge: [],
-          plans: []
-        });
-      }
+    let res2; //行动计划
+    try {
+      res2 = await http().getTable({
+        resid: 615571557694,
+        cmswhere: `courseArrange =${selectedCourseArrangmentDetail.CourseArrangeDetailID}`
+      });
+    } catch (err) {
+      message.error(err.message);
+      console.log(err);
+    }
+    if (res.data.length > 0) {
+      let knowledge = res2.data[0].knowledge1.split(';'); //知识点
+      let plans = res2.data[0].action1.split(';'); //行动计划
+      this.setState({
+        planView: res2.data,
+        knowledge,
+        plans
+      });
+    } else {
+      this.setState({
+        planView: [],
+        knowledge: [],
+        plans: []
+      });
     }
   };
 
-  //关闭模态窗
+  /**
+   * 关闭模态窗
+   */
   handleCloseModal = () => {
     this.setState({
       viewActionsVisible: false,
@@ -186,134 +175,69 @@ class ViewActions extends React.Component {
           width="70%"
           destroyOnClose
         >
-          {this.props.onCourseType === '内训' ? (
-            <Card>
-              <Card type="inner" title="讲师专业水平" className="cardinner">
-                <Row>
-                  <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate1} disabled />
-                  </Col>
-                </Row>
-              </Card>
-              <Card type="inner" title="课程内容安排" className="cardinner">
-                <Row>
-                  <Col span={12}>我认为课程主题准确，结构清晰，内容充实</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate2} disabled />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>所学的内容对实际工作有很大帮助</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate3} disabled />
-                  </Col>
-                </Row>
-              </Card>
-              <Card type="inner" title="授课技巧" className="cardinner">
-                <Row>
-                  <Col span={12}>
-                    讲师语言表达能力好,讲解清楚生动,运用肢体语言
-                  </Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate4} disabled />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>
-                    讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-                  </Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate5} disabled />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>我能够积极参与到课堂中去</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate6} disabled />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>我的提问能够得到讲师认真,满意的答复</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate7} disabled />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>时间控制合理使我感到舒适</Col>
-                  <Col span={12}>
-                    <Rate value={this.state.rate.rate8} disabled />
-                  </Col>
-                </Row>
-              </Card>
-            </Card>
-          ) : (
-            <Card type="inner" title="讲师专业水平" className="cardinner">
-              <Row>
-                <Col span={12}>培训机构服务满意度</Col>
-                <Col span={12}>
-                  <Rate value={this.state.rateOut.rate1} disabled />
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>培训讲师满意度</Col>
-                <Col span={12}>
-                  <Rate value={this.state.rateOut.rate2} disabled />
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>培训内容和工作内容关联度</Col>
-                <Col span={12}>
-                  <Rate value={this.state.rateOut.rate3} disabled />
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>是否推荐同事参加该课程</Col>
-                <Col span={12}>
-                  <Rate value={this.state.rateOut.rate4} disabled />
-                </Col>
-              </Row>
-            </Card>
-          )}
-          {this.props.onCourseType === '内训' ? null : (
-            <Card title="行动计划" style={{ marginTop: 10 }}>
-              <Row>
-                <div>
-                  <ul className="feedbackList">
-                    <li>列出培训中学习到的3个知识点</li>
-                    {this.state.knowledge.map((item, index) => {
-                      return (
-                        <li key={index}>
-                          <rect>{index + 1}</rect>
-                          <p>{item}</p>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </Row>
-              <Row>
-                <div>
-                  <ul className="feedbackList">
-                    <li>
-                      行动计划
-                      <br />
-                      (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
-                      )
-                    </li>
-                    {this.state.plans.map((item, index) => {
-                      return (
-                        <li key={index}>
-                          <rect>{index + 1}</rect>
-                          <p>{item}</p>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </Row>
-            </Card>
-          )}
+          <Card type="inner" title="讲师专业水平" className="cardinner">
+            <Row>
+              <Col span={12}>培训机构服务满意度</Col>
+              <Col span={12}>
+                <Rate value={this.state.rateOut.rate1} disabled />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>培训讲师满意度</Col>
+              <Col span={12}>
+                <Rate value={this.state.rateOut.rate2} disabled />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>培训内容和工作内容关联度</Col>
+              <Col span={12}>
+                <Rate value={this.state.rateOut.rate3} disabled />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>是否推荐同事参加该课程</Col>
+              <Col span={12}>
+                <Rate value={this.state.rateOut.rate4} disabled />
+              </Col>
+            </Row>
+          </Card>
+          <Card title="行动计划" style={{ marginTop: 10 }}>
+            <Row>
+              <div>
+                <ul className="feedbackList">
+                  <li>列出培训中学习到的3个知识点</li>
+                  {this.state.knowledge.map((item, index) => {
+                    return (
+                      <li key={index}>
+                        <rect>{index + 1}</rect>
+                        <p>{item}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Row>
+            <Row>
+              <div>
+                <ul className="feedbackList">
+                  <li>
+                    行动计划
+                    <br />
+                    (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
+                    )
+                  </li>
+                  {this.state.plans.map((item, index) => {
+                    return (
+                      <li key={index}>
+                        <rect>{index + 1}</rect>
+                        <p>{item}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Row>
+          </Card>
         </Modal>
       </div>
     );

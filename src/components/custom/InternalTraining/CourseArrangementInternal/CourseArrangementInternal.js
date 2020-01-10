@@ -55,10 +55,13 @@ const formItemLayout = {
     sm: { span: 16 }
   }
 };
-
+/**
+ * @author 邓铭
+ * @description 内训课程安排
+ */
 class CourseArrangementInternal extends React.Component {
   state = {
-    loading:false,
+    loading: false,
     mode: 'card', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
     courseArrangements: [], //内训课程安排
     internalCourses: [], //内训课程
@@ -90,38 +93,45 @@ class CourseArrangementInternal extends React.Component {
   async componentDidMount() {
     this.props.onHandleLoading(true);
     await this.getCourseArrangment();
-    await this.getSheetList(); 
+    await this.getSheetList();
     this.getInternalCourses();
     this.getCourseType();
     this.props.onHandleLoading(false);
   }
-  // 获取答题表
-  getSheetList = async() =>{
+
+  /**
+   * 获取答题表
+   */
+  getSheetList = async () => {
     let res;
     try {
       res = await http().getTable({
         resid: 629323851797
       });
-      this.setState({sheetList:res.data});
+      this.setState({ sheetList: res.data });
     } catch (error) {
       message.error(error.message);
       return console.log(error);
     }
-  }
-  //获取课程安排
+  };
+
+  /**
+   * 获取课程安排
+   */
   getCourseArrangment = async () => {
     let res;
     try {
       res = await http().getTable({
         resid: courseArrangmentResid
       });
-      console.log(res.data)
+      console.log(res.data);
     } catch (error) {
       message.error(error.message);
       return console.log(error);
     }
     if (res.error === 0) {
       let courseArrangements = res.data;
+      //从课程安排中去重获取课程
       let courses = courseArrangements
         .map(item => ({
           CourseID: item.CourseID,
@@ -130,6 +140,7 @@ class CourseArrangementInternal extends React.Component {
         .filter((item, index, self) => {
           return self.findIndex(i => item.CourseID === i.CourseID) === index;
         });
+      // 日历事件
       let importantIndex = 0;
       let calendarEvents = courseArrangements.map(item => {
         return {
@@ -150,13 +161,14 @@ class CourseArrangementInternal extends React.Component {
         };
       });
       this.setState({ courseArrangements, courses, calendarEvents });
-
     } else {
       message.error(res.message);
     }
   };
 
-  //获取内训课程
+  /**
+   * 获取内训课程
+   */
   getInternalCourses = async () => {
     let res;
     try {
@@ -169,6 +181,10 @@ class CourseArrangementInternal extends React.Component {
       return console.log(error);
     }
   };
+
+  /**
+   * 获取课程类型
+   */
   getCourseType = async () => {
     let res;
     try {
@@ -184,47 +200,46 @@ class CourseArrangementInternal extends React.Component {
     }
   };
 
-  // 自动拆分课程的开关
-  autoSp=async(v,item,key)=>{
-    this.setState({loading:true})
-    var rec_id=this.state.courseArrangements[key].REC_ID;
+  /**
+   * 自动拆分课程的开关
+   */
+  autoSp = async (v, item, key) => {
+    this.setState({ loading: true });
+    var rec_id = this.state.courseArrangements[key].REC_ID;
     let res;
     let val;
-    
-    if(v==true){
-      val='Y'
-    }else{
-      val='N'
+
+    if (v == true) {
+      val = 'Y';
+    } else {
+      val = 'N';
     }
     try {
       res = await http().modifyRecords({
         resid: courseArrangmentResid,
-        data:[{
-          REC_ID:rec_id,
-          isDivisionCourse:val
-        }]
+        data: [
+          {
+            REC_ID: rec_id,
+            isDivisionCourse: val
+          }
+        ]
       });
 
-      this.setState({loading:false});
-      if(v==true){
+      this.setState({ loading: false });
+      if (v == true) {
         message.success('已开启自动拆分课程');
-
-      }else{
+      } else {
         message.success('已关闭自动拆分课程');
-
       }
-
-
-    }catch(error){
-
-      this.setState({loading:false});
+    } catch (error) {
+      this.setState({ loading: false });
       message.error(error.message);
-
     }
-  }
+  };
 
-  //搜索内训课程
-
+  /**
+   * 搜索内训课程
+   */
   searchInternalCourses = async () => {
     let res;
     try {
@@ -232,7 +247,6 @@ class CourseArrangementInternal extends React.Component {
         resid: InternalCoursesResid,
         key: this.state.searchCourseKey
       });
-      console.log(res.data);
       this.setState({ internalCourses: res.data });
     } catch (error) {
       message.error(error.message);
@@ -240,10 +254,10 @@ class CourseArrangementInternal extends React.Component {
     }
   };
 
-  //添加课程安排
+  /**
+   * 添加课程安排
+   */
   saveCourseArrangement = async (courseArrangement, CourseID) => {
-    console.log(courseArrangement.courseType);
-
     try {
       let res = await http().addRecords({
         resid: courseArrangmentResid,
@@ -258,8 +272,8 @@ class CourseArrangementInternal extends React.Component {
             places: courseArrangement.places,
             Teacher: courseArrangement.teacher,
             quarter: courseArrangement.quarter,
-            sheetId:this.state.sheetId,
-            needSheet:this.state.showSheet==true?'Y':'N'
+            sheetId: this.state.sheetId,
+            needSheet: this.state.showSheet == true ? 'Y' : 'N'
           }
         ]
       });
@@ -280,17 +294,18 @@ class CourseArrangementInternal extends React.Component {
         },
         courseArrangements
       });
-      this.setState({sheetId:null,showSheet:false});
-
+      this.setState({ sheetId: null, showSheet: false });
     } catch (error) {
-      this.setState({sheetId:null,showSheet:false});
+      this.setState({ sheetId: null, showSheet: false });
 
       message.error(error.message);
       console.log(error.message);
     }
   };
 
-  //删除课程安排
+  /**
+   * 删除课程安排
+   */
   deleteCourseArrangment = async arrangment => {
     let { courseArrangements } = this.state;
     let res;
@@ -311,7 +326,10 @@ class CourseArrangementInternal extends React.Component {
       message.error(error.message);
     }
   };
-  //修改课程安排
+
+  /**
+   * 修改课程安排
+   */
   modifyCourseArrangment = async data => {
     let res;
     try {
@@ -325,7 +343,10 @@ class CourseArrangementInternal extends React.Component {
       message.error(error.message);
     }
   };
-  //搜索课程安排
+
+  /**
+   * 搜索课程安排
+   */
   searchCourseArrangment = async key => {
     let res,
       { searchPeriod, searchKeyword } = this.state;
@@ -348,13 +369,19 @@ class CourseArrangementInternal extends React.Component {
       this.props.onHandleLoading(false);
     }
   };
-  // 添加课程时需要选择问卷
-  showSheetList=(e)=>{
+
+  /**
+   * 添加课程时需要选择问卷
+   */
+  showSheetList = e => {
     this.setState({
-      showSheet:e.target.checked
-    })
-  }
-  //设置确认选择的时间段
+      showSheet: e.target.checked
+    });
+  };
+
+  /**
+   * 设置确认选择的时间段
+   */
   onOk = async value => {
     this.setState(
       {
@@ -368,7 +395,9 @@ class CourseArrangementInternal extends React.Component {
     );
   };
 
-  //判断是否为清空操作
+  /**
+   * 判断是否为清空操作
+   */
   onRangeSearchChange = (value, dateString) => {
     let rangePickerValue = value.length ? value : [null, null];
     this.setState({ rangePickerValue });
@@ -458,15 +487,11 @@ class CourseArrangementInternal extends React.Component {
           </header>
           {this.state.mode === 'card' && (
             <div className="arranging_courses-course_list">
-
               {courseArrangements.length ? (
-                courseArrangements.map((item,key) => (
-
+                courseArrangements.map((item, key) => (
                   <Card
                     title={
                       <div>
-
-
                         <span>{item.CourseName}</span>
                         <span
                           className="arranging_courses-course_list-course_type"
@@ -478,10 +503,29 @@ class CourseArrangementInternal extends React.Component {
                         >
                           {item.C3_616254048241}
                         </span>
-                        <Spin  className='spinoimg' spinning={this.state.loading}>
-
-                        <Switch defaultChecked={item.isDivisionCourse=="Y"?true:false} style={{float:'right',display:'none'}} onChange={v=>{this.autoSp(v,item,key)}}/>
-                        <span style={{fontWeight:"normal",float:'right',marginRight:'8px',display:'none'}}>是否自动拆课</span>
+                        <Spin
+                          className="spinoimg"
+                          spinning={this.state.loading}
+                        >
+                          <Switch
+                            defaultChecked={
+                              item.isDivisionCourse == 'Y' ? true : false
+                            }
+                            style={{ float: 'right', display: 'none' }}
+                            onChange={v => {
+                              this.autoSp(v, item, key);
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontWeight: 'normal',
+                              float: 'right',
+                              marginRight: '8px',
+                              display: 'none'
+                            }}
+                          >
+                            是否自动拆课
+                          </span>
                         </Spin>
                       </div>
                     }
@@ -490,7 +534,12 @@ class CourseArrangementInternal extends React.Component {
                     hoverable
                     extra={
                       <div>
-                        <span style={{marginRight:'16px'}}>签到数：{item.C3_625242875063=='undefined'?'0':item.C3_625242875063}</span>
+                        <span style={{ marginRight: '16px' }}>
+                          签到数：
+                          {item.C3_625242875063 == 'undefined'
+                            ? '0'
+                            : item.C3_625242875063}
+                        </span>
                         {/* <Icon style={{color:'#faad14'}}type="like" theme="filled" /> */}
                         点赞数：{item.countLike}
                       </div>
@@ -499,16 +548,14 @@ class CourseArrangementInternal extends React.Component {
                       item.innerArrangeType === '2'
                         ? [
                             <span
-                              onClick={() =>{
-                                console.log(item)
+                              onClick={() => {
+                                console.log(item);
                                 this.setState({
                                   isShowModifyModal: true,
                                   selectedCourseArrangement: item,
                                   modifiedCourseArrangement: item
-                                })
-                              }
-                            }
-
+                                });
+                              }}
                             >
                               <Icon type="edit" />
                               修改
@@ -589,13 +636,19 @@ class CourseArrangementInternal extends React.Component {
                     }
                   >
                     <div className="arranging_courses_item_content">
-                      <div className='view_sheet'
-                      style={item.needSheet?{}:{display:'none'}}
-                      onClick={()=>{
-                        window.open('fnmodule?resid=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&recid=610653889243&type=%E9%97%AE%E5%8D%B7%E7%B3%BB%E7%BB%9F&title=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&questionnaireRecid='+item.sheetId)
-                      }}
-                      ><Icon type="file-text" /><span>查看问卷</span></div>
-                    
+                      <div
+                        className="view_sheet"
+                        style={item.needSheet ? {} : { display: 'none' }}
+                        onClick={() => {
+                          window.open(
+                            'fnmodule?resid=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&recid=610653889243&type=%E9%97%AE%E5%8D%B7%E7%B3%BB%E7%BB%9F&title=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&questionnaireRecid=' +
+                              item.sheetId
+                          );
+                        }}
+                      >
+                        <Icon type="file-text" />
+                        <span>查看问卷</span>
+                      </div>
 
                       <div className="content_item">主讲:{item.Teacher}</div>
                       <div className="content_item">人数:{item.Attendees}</div>
@@ -609,11 +662,8 @@ class CourseArrangementInternal extends React.Component {
                         地点:{item.CourseLocation}
                       </div>
                       <div className="content_item">季度：{item.quarter}</div>
-
-
                     </div>
                   </Card>
-
                 ))
               ) : (
                 <List
@@ -844,27 +894,37 @@ class CourseArrangementInternal extends React.Component {
                 </Select>
               </Form.Item>
 
-              <Checkbox style={{marginLeft:'80px',marginBottom:'16px'}}id="needSheet" onChange={v => {
-                var val=v.target.checked==true?'Y':'N'
-                    this.setState({
-                      modifiedCourseArrangement: {
-                        ...modifiedCourseArrangement,
-                        needSheet: val
-                      }
-                    });
-                  }}
-                  defaultChecked={modifiedCourseArrangement.needSheet=='Y'?true:false}
-                  value={modifiedCourseArrangement.needSheet=='Y'?true:false}
+              <Checkbox
+                style={{ marginLeft: '80px', marginBottom: '16px' }}
+                id="needSheet"
+                onChange={v => {
+                  var val = v.target.checked == true ? 'Y' : 'N';
+                  this.setState({
+                    modifiedCourseArrangement: {
+                      ...modifiedCourseArrangement,
+                      needSheet: val
+                    }
+                  });
+                }}
+                defaultChecked={
+                  modifiedCourseArrangement.needSheet == 'Y' ? true : false
+                }
+                value={
+                  modifiedCourseArrangement.needSheet == 'Y' ? true : false
+                }
+              >
+                学员需要在报名前填写问卷
+              </Checkbox>
 
-                  >学员需要在报名前填写问卷</Checkbox>
-                  
               <Form.Item label="问卷">
                 <Select
                   id="sheet"
-                  disabled={modifiedCourseArrangement.needSheet=='Y'?false:true}
+                  disabled={
+                    modifiedCourseArrangement.needSheet == 'Y' ? false : true
+                  }
                   placeholder="请选择问卷"
                   onChange={v => {
-                    console.log(v)
+                    console.log(v);
                     this.setState({
                       modifiedCourseArrangement: {
                         ...modifiedCourseArrangement,
@@ -872,24 +932,32 @@ class CourseArrangementInternal extends React.Component {
                       }
                     });
                   }}
-                  value={modifiedCourseArrangement.needSheet=='Y'?modifiedCourseArrangement.sheetId:null}
+                  value={
+                    modifiedCourseArrangement.needSheet == 'Y'
+                      ? modifiedCourseArrangement.sheetId
+                      : null
+                  }
                 >
                   {this.state.sheetList.map(rec => {
                     return (
-                      <Option value={rec.query_id}>
-                        {rec.query_name}
-                      </Option>
+                      <Option value={rec.query_id}>{rec.query_name}</Option>
                     );
                   })}
                 </Select>
               </Form.Item>
               <Form.Item label="问卷ID">
-              <Input
+                <Input
                   id="sheetId"
                   type="text"
-                  placeholder='选择问卷自动填入'
-                  disabled={modifiedCourseArrangement.needSheet=='Y'?false:true}
-                  value={modifiedCourseArrangement.needSheet=='Y'?modifiedCourseArrangement.sheetId:null}
+                  placeholder="选择问卷自动填入"
+                  disabled={
+                    modifiedCourseArrangement.needSheet == 'Y' ? false : true
+                  }
+                  value={
+                    modifiedCourseArrangement.needSheet == 'Y'
+                      ? modifiedCourseArrangement.sheetId
+                      : null
+                  }
                   onChange={e => {
                     this.setState({
                       modifiedCourseArrangement: {
@@ -907,8 +975,8 @@ class CourseArrangementInternal extends React.Component {
           visible={this.state.isShowAddCourseArrangment}
           onCancel={() =>
             this.setState({
-              sheetId:null,
-              showSheet:false,
+              sheetId: null,
+              showSheet: false,
               isShowAddCourseArrangment: false,
               selectedCourseArrangement: {},
               isSelectedCourse: false
@@ -921,7 +989,7 @@ class CourseArrangementInternal extends React.Component {
             })
           }
           width="80%"
-          height='auto'
+          height="auto"
           title="添加课程安排"
           // centered={true}
           destroyOnClose
@@ -935,8 +1003,8 @@ class CourseArrangementInternal extends React.Component {
                   <Button
                     onClick={() => {
                       this.setState({
-                        sheetId:null,
-                        showSheet:false,
+                        sheetId: null,
+                        showSheet: false,
                         isSelectedCourse: false,
                         selectedCourse: {},
                         inputCourseArrangement: {
@@ -958,7 +1026,6 @@ class CourseArrangementInternal extends React.Component {
                     // type="primary"
                     onClick={() => {
                       this.saveCourseArrangement(
-                        
                         this.state.inputCourseArrangement,
                         this.state.selectedCourse.C3_609845305868
                       );
@@ -1097,12 +1164,12 @@ class CourseArrangementInternal extends React.Component {
                   </div>
                 </div>
                 <div className="add_arrangement_input_row"></div>
-                <div style={{marginBottom:8}}>
-                <Checkbox onChange={this.showSheetList}>学员需要在报名前填写问卷</Checkbox>
-                
-                
+                <div style={{ marginBottom: 8 }}>
+                  <Checkbox onChange={this.showSheetList}>
+                    学员需要在报名前填写问卷
+                  </Checkbox>
                 </div>
-                {this.state.showSheet==true &&(
+                {this.state.showSheet == true && (
                   <div>
                     <TableData
                       resid="629323851797"
@@ -1117,31 +1184,48 @@ class CourseArrangementInternal extends React.Component {
                       actionBarWidth={100}
                       hasRowModify={false}
                       height={400}
-                      customRowBtns={
-                        [
-                          record => {
-                            return (
-                              <div>
-                                {this.state.sheetId==record.query_id?(<span style={{marginRight:8,cursor:'default',color:'red'}}>已选择该问卷</span>):(<Button onClick={()=>{
-                                  this.setState({
-                                    sheetId:record.query_id
-                                  })
-                                }} type='primary' style={{marginRight:8}}>
+                      customRowBtns={[
+                        record => {
+                          return (
+                            <div>
+                              {this.state.sheetId == record.query_id ? (
+                                <span
+                                  style={{
+                                    marginRight: 8,
+                                    cursor: 'default',
+                                    color: 'red'
+                                  }}
+                                >
+                                  已选择该问卷
+                                </span>
+                              ) : (
+                                <Button
+                                  onClick={() => {
+                                    this.setState({
+                                      sheetId: record.query_id
+                                    });
+                                  }}
+                                  type="primary"
+                                  style={{ marginRight: 8 }}
+                                >
                                   选择问卷
-                                </Button>)}
-                                
+                                </Button>
+                              )}
+
                               <Button
                                 onClick={() => {
-                                  window.open('fnmodule?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id='+record.query_id)
+                                  window.open(
+                                    'fnmodule?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=' +
+                                      record.query_id
+                                  );
                                 }}
                               >
                                 查看编辑
                               </Button>
-                              </div>
-                            );
-                          }
-                        ]
-                      }
+                            </div>
+                          );
+                        }
+                      ]}
                     />
                   </div>
                 )}

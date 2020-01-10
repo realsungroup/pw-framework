@@ -84,6 +84,11 @@ const customDot = (dot, { status, index }) => (
     {dot}
   </Popover>
 );
+
+/**
+ * 我的课程
+ * @author 邓铭
+ */
 class EmployeeCourses extends React.Component {
   state = {
     currentPage: 1, //当前页码
@@ -113,7 +118,7 @@ class EmployeeCourses extends React.Component {
     selectedYear: '', //下拉选中的财年
     selcetedCourseType: 'all', //下拉选中的课程类型
     searchKey: '', //搜索的关键字
-    // 内训
+    // 内训评分
     rate: {
       rate1: 5,
       rate2: 5,
@@ -124,19 +129,20 @@ class EmployeeCourses extends React.Component {
       rate7: 5,
       rate8: 5
     },
-    // 外训
+    // 外训评分
     rateOut: {
       rate1: 5,
       rate2: 5,
       rate3: 5,
       rate4: 5
     },
+    //员工对课程的建议（评价）
     internalTrainingOtherAdvice: {
-      advantages: '',
-      shortcommings: ''
+      advantages: '', //有收获的内容
+      shortcommings: '' //课程缺点
     },
-    knowledge: [''],
-    plans: [''],
+    knowledge: [''], //课程学到的知识点
+    plans: [''], //课程行动计划
     fileList: [],
     isfirst: true, //是否首次加载组件
     loadings: {
@@ -145,7 +151,15 @@ class EmployeeCourses extends React.Component {
       submitApplyBtnLoading: false
     }
   };
-  // 课程卡片位置调整
+
+  componentDidMount = async () => {
+    await this.getYears();
+    this.getCourses();
+  };
+
+  /**
+   * 课程卡片位置调整
+   */
   performCard = () => {
     var l = this.state.myCourses.length;
     var w = Number(window.innerWidth);
@@ -153,11 +167,10 @@ class EmployeeCourses extends React.Component {
       this.setState({ windowShow: { justifyContent: 'center' } });
     }
   };
-  componentDidMount = async () => {
-    await this.getYears();
-    this.getCourses();
-  };
-  //获取所有课程
+
+  /**
+   * 获取所有课程
+   */
   getCourses = async () => {
     let res,
       { currentYear } = this.state;
@@ -171,18 +184,22 @@ class EmployeeCourses extends React.Component {
       let myCourses = res.data;
       if (myCourses.length > 0) {
         const qsObj = qs.parse(window.location.search.substring(1));
+        //url中可能带有课程id
         const { targetId } = qsObj;
         let target = myCourses.find(
           item => item.REC_ID.toString() === targetId
         );
         let selectedCourse = {};
         if (target) {
+          //如有url中的课程则选中该课程
           target.checked = true;
           selectedCourse = { ...target };
         } else {
+          //否则选中第一个
           myCourses[0].checked = true;
           selectedCourse = { ...myCourses[0] };
         }
+        //日历事件
         let importantIndex = 0;
         let calendarEvents = myCourses.map(item => {
           return {
@@ -205,7 +222,6 @@ class EmployeeCourses extends React.Component {
         this.setState({ myCourses, selectedCourse, calendarEvents });
         this.setState({ CoursesOrg: this.state.myCourses });
         var urlID = qsObj.targetId;
-        console.log('rec_id', qsObj.targetId);
         // 获取邮件传来的ID
         if (urlID) {
           this.onPageChange(1, 3, urlID);
@@ -220,7 +236,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  //获取财年
+  /**
+   * 获取财年
+   */
   getYears = async () => {
     let res;
     try {
@@ -239,12 +257,15 @@ class EmployeeCourses extends React.Component {
       console.log(error);
     }
   };
-  //搜索课程
+
+  /**
+   * 搜索课程
+   *
+   */
   searchMyCourse = async () => {
     let res;
     try {
       let { selcetedCourseType, selectedYear, searchKey } = this.state;
-      console.log('sy', selectedYear);
       let cmswhere = `C3_613941384328 = '${selectedYear}' `;
       if (selcetedCourseType !== 'all') {
         cmswhere += `AND courseType = '${selcetedCourseType}'`;
@@ -273,6 +294,7 @@ class EmployeeCourses extends React.Component {
       console.log(error);
     }
   };
+
   //根据选中的课程获取心得
   getTip = async () => {
     let res;
@@ -970,22 +992,6 @@ class EmployeeCourses extends React.Component {
               )}
             </div>
           </div>
-
-          {/* <div className="emploee_courses-main-course_footer">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  backgroundColor:
-                    item.C3_623173774889 === 'Y' ? '#5bc039' : '#2470e8',
-                  marginRight: 6
-                }}
-              />
-              {item.C3_623173774889 === 'Y' ? '已完成' : '未完成'}
-            </div>
-          </div> */}
         </Card>
       ))
     ) : (

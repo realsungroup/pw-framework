@@ -25,6 +25,9 @@ import moment from 'moment';
 import CalendarMode from './CalendarMode';
 import PlanProgress from '../CreatePlan/PlanProgress';
 
+/**
+ * @author 邓铭
+ */
 const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
@@ -71,13 +74,13 @@ class ArrangingCourses extends React.Component {
     targetCourseArrangment: [], //移动人员时可选择的课程安排
     selectedTargetCourseArrangment: '', //移动人员时选中的目标课程安排id
     selectedMoveLearners: [], //移动人员时选中的人员
-    courses: [], //课程
+    courses: [], //从课程安排中去重后的课程，用于移动人员时选择课程
     searchKeyword: '', //搜索的关键词
     searchPeriod: ['', ''], //搜索时间段
     selectedRecentPeriod: 'all', //下拉选项的值
     rangePickerValue: [null, null], // 日期选择器的值
     mode: 'table', // 显示模式，有卡片模式、日历模式、表格模式，默认卡片模式
-    courseList: [],
+    courseList: [], //外训课列表
     dataSearch: [],
     fileList: [],
     isShowProgress: false, // 是否显示进度模态窗
@@ -97,9 +100,8 @@ class ArrangingCourses extends React.Component {
     this.props.onHandleLoading(true);
     await this.getYears();
     await this.getCourseArrangment();
-    // await this.getCourses();
     this.props.onHandleLoading(false);
-    this.getCalendar()
+    this.getCalendar();
     this.getOutCourse(OutCourseId);
   };
 
@@ -123,6 +125,9 @@ class ArrangingCourses extends React.Component {
     }
   };
 
+  /**
+   * 获取日历事件
+   */
   getCalendar = async () => {
     try {
       const res = await http().getTable({
@@ -157,7 +162,11 @@ class ArrangingCourses extends React.Component {
     }
   };
 
-  // 添加人员
+  /**
+   *
+   * 添加人员
+   *
+   */
   addEmployees = async employees => {
     let index_id = 0;
     let taskList = employees.map(item => {
@@ -171,18 +180,19 @@ class ArrangingCourses extends React.Component {
     this.setState({ taskList, isShowProgress: true });
   };
 
-  // 上传文件
+  /**
+   * 上传文件
+   */
   handleFileChange = info => {
-    let { file, fileList } = info;
-    // if (file.status === 'removed') {
-    //   this.setState({
-    //     fileList: fileList.filter(item => item.uid !== file.uid)
-    //   });
-    // } else {
+    let { fileList } = info;
     this.setState({ fileList });
-    // }
   };
-  //获取课程安排
+
+  /**
+   * 获取课程安排
+   * @param {number} pageIndex 分页下标
+   * @param {boolean} isSearch 是否为搜索操作
+   */
   getCourseArrangment = async (pageIndex = 1, isSearch = false) => {
     let res;
     const {
@@ -191,15 +201,17 @@ class ArrangingCourses extends React.Component {
       searchPeriod,
       selectedYear
     } = this.state;
-    const isHasPeriod = searchPeriod[0] && searchPeriod[1];
+    const isHasPeriod = searchPeriod[0] && searchPeriod[1]; //是否设置了搜索时间段
     this.props.onHandleLoading(true);
-    let cmswhere = "organization != '内训'";
+    let cmswhere = "organization != '内训'"; //内训课除外
     if (isHasPeriod) {
+      //设置时间段条件
       cmswhere += ` and StartDatetime > '${
         searchPeriod[0]
       }' and StartDatetime < '${searchPeriod[1]}'`;
     }
     if (selectedYear !== 'all') {
+      //财年
       cmswhere += `and FisYear = '${selectedYear}'`;
     }
     try {
@@ -215,7 +227,7 @@ class ArrangingCourses extends React.Component {
       return console.error(error);
     }
     if (res.error === 0) {
-      let courseArrangment = res.data;
+      const courseArrangment = res.data;
       //去重方法1 ： 使用 Set + Array.from + JSON.stringify + JSON.parse
       // let courses = courseArrangment.map(item => {
       //   return JSON.stringify({
@@ -229,7 +241,7 @@ class ArrangingCourses extends React.Component {
       // });
 
       //去重方法2 ：使用 Array的 filter + findIndex 实现
-      let courses = courseArrangment
+      const courses = courseArrangment
         .map(item => ({
           CourseID: item.CourseID,
           CourseName: item.CourseName
@@ -243,6 +255,7 @@ class ArrangingCourses extends React.Component {
         pagination: { ...pagination, total: res.total }
       });
       if (isSearch) {
+        //搜索操作则将分页页码置为1
         this.setState({
           pagination: { ...this.state.pagination, current: 1 }
         });
@@ -252,7 +265,10 @@ class ArrangingCourses extends React.Component {
       message.error(res.message);
     }
   };
-  //获取外训课程清单
+
+  /**
+   * 获取外训课程清单
+   */
   getOutCourse = async OutCourseId => {
     let res;
     try {
@@ -267,11 +283,15 @@ class ArrangingCourses extends React.Component {
       courseList: res.data
     });
   };
-  //搜索课程安排
-  searchCourseArrangment = () => {
-    this.getCourseArrangment(1, true);
-  };
-  //添加课程安排
+
+  /**
+   *  搜索课程安排
+   */
+  searchCourseArrangment = () => this.getCourseArrangment(1, true);
+
+  /**
+   * 添加课程安排（向后台请求）
+   */
   addCourseArrangment = async data => {
     let res;
     try {
@@ -285,6 +305,10 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
     }
   };
+
+  /**
+   * 修改课程安排 （向后台请求）
+   */
   modifyCourseArrangment = async data => {
     let res;
     try {
@@ -298,7 +322,35 @@ class ArrangingCourses extends React.Component {
       message.error(error.message);
     }
   };
-  // 添加记录
+
+  /**
+   * 删除课程安排 （向后台请求）
+   */
+  deleteCourseArrangment = async arrangment => {
+    let { courseArrangment } = this.state;
+    let res;
+    try {
+      res = await http().removeRecords({
+        resid: courseArrangmentResid,
+        data: [arrangment]
+      });
+      message.success(res.message);
+      courseArrangment.splice(
+        courseArrangment.findIndex(item => {
+          return item.REC_ID === arrangment.REC_ID;
+        }),
+        1
+      );
+      this.setState({ courseArrangment });
+      // this.getCourseArrangment();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  /**
+   * 添加记录
+   */
   addMem = async () => {
     if (this.state.toAddID) {
       this.setState({ fetching: true });
@@ -330,7 +382,10 @@ class ArrangingCourses extends React.Component {
       message.error('请搜索并选择人员！');
     }
   };
-  // 搜索员工
+
+  /**
+   * 搜索员工
+   */
   handleSearch = async value => {
     if (value) {
       this.setState({ fetching: true });
@@ -361,7 +416,10 @@ class ArrangingCourses extends React.Component {
       this.setState({ dataSearch: [] });
     }
   };
-  // 搜索后选择
+
+  /**
+   * 搜索后选择
+   */
   handleChangeS = (value, obj) => {
     this.setState({
       value,
@@ -372,29 +430,9 @@ class ArrangingCourses extends React.Component {
     });
   };
 
-  //删除课程安排
-  deleteCourseArrangment = async arrangment => {
-    let { courseArrangment } = this.state;
-    let res;
-    try {
-      res = await http().removeRecords({
-        resid: courseArrangmentResid,
-        data: [arrangment]
-      });
-      message.success(res.message);
-      courseArrangment.splice(
-        courseArrangment.findIndex(item => {
-          return item.REC_ID === arrangment.REC_ID;
-        }),
-        1
-      );
-      this.setState({ courseArrangment });
-      // this.getCourseArrangment();
-    } catch (error) {
-      message.error(error.message);
-    }
-  };
-  //移动人员
+  /**
+   * 移动人员
+   */
   moveLearner = async () => {
     let { selectedTargetCourseArrangment, selectedMoveLearners } = this.state;
     selectedMoveLearners.forEach((item, index) => {
@@ -408,7 +446,9 @@ class ArrangingCourses extends React.Component {
     });
   };
 
-  //设置确认选择的时间段
+  /**
+   * 设置确认选择的时间段
+   */
   onOk = async value => {
     this.setState(
       {
@@ -421,7 +461,10 @@ class ArrangingCourses extends React.Component {
       this.searchCourseArrangment
     );
   };
-  // 发邮件通知培训机构
+
+  /**
+   * 发邮件通知培训机构
+   */
   onHandleMessage = async (dataSource, selectedRowKeys) => {
     this.setState({ loading: true });
     if (selectedRowKeys.length) {
@@ -460,7 +503,10 @@ class ArrangingCourses extends React.Component {
       message.error('请勾选记录！');
     }
   };
-  // 初始化fileList
+
+  /**
+   * 初始化fileList
+   */
   resetFileList = v => {
     if (v.CourseOutline) {
       var arr = [
@@ -492,7 +538,9 @@ class ArrangingCourses extends React.Component {
     }
   };
 
-  //结束时调用的回调函数
+  /**
+   * 结束时调用的回调函数
+   */
   onFinishedPlanProgress = async () => {
     await http().modifyRecords({
       resid: courseArrangmentResid,
@@ -517,6 +565,10 @@ class ArrangingCourses extends React.Component {
       console.error(error);
     }
   };
+
+  /**
+   * 移动人员完成后向后台发请求以触发计算公式计算人数
+   */
   onMoveFinished = async () => {
     try {
       await http().modifyRecords({
@@ -541,7 +593,9 @@ class ArrangingCourses extends React.Component {
     );
   };
 
-  //判断是否为清空操作
+  /**
+   * 判断是否为清空操作
+   */
   onRangeSearchChange = (value, dateString) => {
     let rangePickerValue = value.length ? value : [null, null];
     this.setState({ rangePickerValue });
@@ -552,7 +606,10 @@ class ArrangingCourses extends React.Component {
       );
     }
   };
-  //设置搜索的最近时间段
+
+  /**
+   * 设置搜索的最近时间段
+   */
   setPeriodBySelect = e => {
     let searchPeriod = [],
       formatString = 'YYYY-MM-DD HH:mm:ss';
@@ -560,7 +617,7 @@ class ArrangingCourses extends React.Component {
       case 'all':
         searchPeriod = ['', ''];
         break;
-      case 'week':
+      case 'week'://一周内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -568,7 +625,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'weeks':
+      case 'weeks'://两周内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -576,7 +633,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'month':
+      case 'month'://一个月内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -584,7 +641,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'months':
+      case 'months'://两个月内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -599,6 +656,10 @@ class ArrangingCourses extends React.Component {
   };
 
   showTotal = (total, range) => `${range[0]}~${range[1]}，共${total}条数据`;
+
+  /**
+   * 财年变化
+   */
   handleYearChange = e =>
     this.setState(
       {
@@ -606,6 +667,7 @@ class ArrangingCourses extends React.Component {
       },
       this.searchCourseArrangment
     );
+
   handleRecentPeriodChange = e => {
     this.setState({
       selectedRecentPeriod: e,
@@ -614,9 +676,15 @@ class ArrangingCourses extends React.Component {
     this.setPeriodBySelect(e);
   };
 
+  /**
+   * 关键字查询
+   */
   handleKeySearch = value =>
     this.setState({ searchKeyword: value }, this.searchCourseArrangment);
 
+  /**
+   * 分页器页码变化
+   */
   handlePaginationChange = (page, pageSize) =>
     this.setState(
       {
@@ -636,12 +704,19 @@ class ArrangingCourses extends React.Component {
       pagination,
       years,
       selectedYear,
-      rangePickerValue
+      rangePickerValue,
+      selectedRecentPeriod,
+      calendarEvents,
+      isShowModifyModal,
+      courses,
+      fileList,
+      isShowSendMail
     } = this.state;
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
       <div className="external-training">
         <div className="external-training_arranging_courses">
+          {/* 头部 */}
           <header className="external-training_arranging_courses-header">
             <div className="external-training_arranging_courses-header_Mode">
               <Button
@@ -717,7 +792,7 @@ class ArrangingCourses extends React.Component {
               </Select>
               <Select
                 defaultValue="all"
-                value={this.state.selectedRecentPeriod}
+                value={selectedRecentPeriod}
                 style={selectStyle}
                 onChange={this.handleRecentPeriodChange}
               >
@@ -742,18 +817,29 @@ class ArrangingCourses extends React.Component {
               />
             </div>
           </header>
-          {this.state.mode === 'card' && (
+          {mode === 'card' && (
             <div className="external-training_arranging_courses-course_list">
               <div className="external-training_arranging_courses-course_list-wrapper">
-                {courseArrangment.length ? (　  
+                {courseArrangment.length ? (
                   courseArrangment.map(item => (
                     <Card
-                      title={item.classType=='外聘内训'?'[外聘内训]'+item.CourseName:item.CourseName}
+                      title={
+                        item.classType == '外聘内训'
+                          ? '[外聘内训]' + item.CourseName
+                          : item.CourseName
+                      }
                       className="arranging_courses_item"
                       key={item.REC_ID}
                       extra={
                         <div>
-                          {item.classType=='外聘内训'?<span style={{marginRight:'16px'}}>签到数：{item.C3_625242875063=='undefined'?'0':item.C3_625242875063}</span>:null}
+                          {item.classType == '外聘内训' ? (
+                            <span style={{ marginRight: '16px' }}>
+                              签到数：
+                              {item.C3_625242875063 == 'undefined'
+                                ? '0'
+                                : item.C3_625242875063}
+                            </span>
+                          ) : null}
                           {/* <Icon
                             style={{ color: '#faad14' }}
                             type="like"
@@ -850,12 +936,12 @@ class ArrangingCourses extends React.Component {
               />
             </div>
           )}
-          {this.state.mode === 'calendar' && (
+          {mode === 'calendar' && (
             <div style={{ height: '100%' }}>
-              <CalendarMode events={this.state.calendarEvents} />
+              <CalendarMode events={calendarEvents} />
             </div>
           )}
-          {this.state.mode === 'table' && (
+          {mode === 'table' && (
             <div
               style={{ width: '100%', flex: 1, height: '100%' }}
               className="arc_ag"
@@ -867,7 +953,11 @@ class ArrangingCourses extends React.Component {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
-                cmswhere={this.state.selectedYear=='all'?'':`C3_613941384328 = '${this.state.selectedYear}'`}
+                cmswhere={
+                  selectedYear == 'all'
+                    ? ''
+                    : `C3_613941384328 = '${selectedYear}'`
+                }
                 tableComponent="ag-grid"
                 sideBarAg={true}
                 hasRowSelection={true}
@@ -875,9 +965,9 @@ class ArrangingCourses extends React.Component {
             </div>
           )}
         </div>
-        {this.state.isShowModifyModal ? (
+        {isShowModifyModal ? (
           <Modal
-            visible={this.state.isShowModifyModal}
+            visible={isShowModifyModal}
             onCancel={() =>
               this.setState({
                 isShowModifyModal: false,
@@ -961,7 +1051,7 @@ class ArrangingCourses extends React.Component {
                       );
                     }}
                   >
-                    {this.state.courses.map(item => (
+                    {courses.map(item => (
                       <Option key={item.CourseID} value={item.CourseID}>
                         {item.CourseName}
                       </Option>
@@ -979,9 +1069,8 @@ class ArrangingCourses extends React.Component {
                       message: '请选择课程开始时间!'
                     }
                   ],
-                  initialValue: this.state.selectedCourseArrangment
-                    .StartDatetime
-                    ? moment(this.state.selectedCourseArrangment.StartDatetime)
+                  initialValue: selectedCourseArrangment.StartDatetime
+                    ? moment(selectedCourseArrangment.StartDatetime)
                     : null
                 })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
               </Form.Item>
@@ -994,8 +1083,8 @@ class ArrangingCourses extends React.Component {
                       message: '请选择课程结束时间!'
                     }
                   ],
-                  initialValue: this.state.selectedCourseArrangment.EndDatetime
-                    ? moment(this.state.selectedCourseArrangment.EndDatetime)
+                  initialValue: selectedCourseArrangment.EndDatetime
+                    ? moment(selectedCourseArrangment.EndDatetime)
                     : null
                 })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
               </Form.Item>
@@ -1008,7 +1097,7 @@ class ArrangingCourses extends React.Component {
                       message: '请输入讲师姓名!'
                     }
                   ],
-                  initialValue: this.state.selectedCourseArrangment.Teacher
+                  initialValue: selectedCourseArrangment.Teacher
                 })(<Input />)}
               </Form.Item>
 
@@ -1020,25 +1109,24 @@ class ArrangingCourses extends React.Component {
                       message: '请输入上课地点!'
                     }
                   ],
-                  initialValue: this.state.selectedCourseArrangment
-                    .CourseLocation
+                  initialValue: selectedCourseArrangment.CourseLocation
                 })(<Input />)}
               </Form.Item>
 
               <Form.Item label="实际费用">
                 {getFieldDecorator('actualCost', {
-                  initialValue: this.state.selectedCourseArrangment.actualCost
+                  initialValue: selectedCourseArrangment.actualCost
                 })(<Input type="number" />)}
               </Form.Item>
 
               <Form.Item label="季度">
                 {getFieldDecorator('quarter', {
-                  initialValue: this.state.selectedCourseArrangment.quarter
+                  initialValue: selectedCourseArrangment.quarter
                 })(<Input />)}
               </Form.Item>
               <Form.Item label="课程类型">
                 {getFieldDecorator('classType', {
-                  initialValue: this.state.selectedCourseArrangment.classType
+                  initialValue: selectedCourseArrangment.classType
                 })(
                   <Select placeholder="请选择课程类型">
                     <Option value="外训" key="外训">
@@ -1052,8 +1140,7 @@ class ArrangingCourses extends React.Component {
               </Form.Item>
               <Form.Item label="是否为另添加课程">
                 {getFieldDecorator('isArrangeSelf', {
-                  initialValue: this.state.selectedCourseArrangment
-                    .isArrangeSelf
+                  initialValue: selectedCourseArrangment.isArrangeSelf
                 })(
                   <Select>
                     <Option value="Y" key="Y">
@@ -1068,7 +1155,7 @@ class ArrangingCourses extends React.Component {
               <Form.Item label="课程大纲">
                 <Upload
                   onChange={this.handleFileChange}
-                  fileList={this.state.fileList}
+                  fileList={fileList}
                   customRequest={async file => {
                     const res = await uploadFile(file.file);
                     let { fileList } = this.state;
@@ -1489,7 +1576,7 @@ class ArrangingCourses extends React.Component {
             </Form>
           </Modal>
         ) : null}
-        {this.state.isShowSendMail == true ? (
+        {isShowSendMail == true ? (
           <Modal
             title="请选择想要开的课程"
             onCancel={() =>
@@ -1499,7 +1586,7 @@ class ArrangingCourses extends React.Component {
             }
             destroyOnClose={true}
             footer={null}
-            visible={this.state.isShowSendMail}
+            visible={isShowSendMail}
             width={'80%'}
           >
             <TableData

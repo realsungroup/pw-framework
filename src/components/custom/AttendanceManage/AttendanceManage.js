@@ -34,7 +34,7 @@ class AttendanceManage extends React.Component {
     collapsed: false, //左侧菜单是否收缩
     desktop: null,
     approvalRecordVisible: false,
-    selectRecord: {},
+    selectRecord: {}, //选中的记录，用于查看审批记录
     loading: false,
     notices: {
       [waitingApproval]: 0,
