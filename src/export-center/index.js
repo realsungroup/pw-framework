@@ -139,3 +139,5 @@ export { DepartmentManager } from '../components/custom/loadableCustom';
 export { OfferApproval } from '../components/custom/loadableCustom';
 export { HeadCount } from '../components/custom/loadableCustom';
 export { AttendanceRecord } from '../components/custom/loadableCustom';
+export { PersonInfoManager } from '../components/custom/loadableCustom';
+export { PersonInfoPrivate } from '../components/custom/loadableCustom';

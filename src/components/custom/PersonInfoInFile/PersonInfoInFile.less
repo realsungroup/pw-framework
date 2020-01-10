@@ -1,20 +1,40 @@
 .PersonInfoInFile{
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
-  overflow: scroll;
+  background-color: #f5f5f7;
+  overflow-y: scroll;
   position: fixed;
   padding: 0 0 64px 0;
   box-sizing:border-box;
+  .alert{
+    color:red;
+  }
   .page{
           width:794px;
          height:1132px;
          border:1px solid rgba(232,232,232,1);
          margin:32px calc(50% - 397px);
+         background: #fff;
     .innerPage{
       width:746px;
       margin-left: 24px;
       margin-top: 24px;
+    }
+    .date{
+      input{
+        border:none;
+      }
+    }
+    tr {
+      input,.ant-select-selection,.ant-input-number-sm{
+        border:none;
+      }
+    }
+    .fix{
+      display: block;
+      width: 100%;
+      height: 80px;
+      overflow: hidden;
     }
   }
   footer{
@@ -29,5 +49,19 @@
     line-height: 48px;
     border-top:1px solid #e8e8e8;
     box-shadow:0px 0px 8px 0px rgba(0,0,0,0.2);
+  }
+}
+.PersonInfoInFileForbid{
+  .ant-input[disabled],.ant-select-disabled,.ant-input-number-disabled,.ant-select-selection{
+    background-color: #fff!important;
+    color:#333!important;
+    cursor: default!important;
+    border:none!important;
+  }
+  input,.ant-input[disabled]{
+    border:none!important;
+  }
+  i{
+    display:none!important;
   }
 }

@@ -623,6 +623,7 @@ export const RankGrade = Loadable({
     return minLoading;
   }
 });
+
 export const DepartmentManager = Loadable({
   loader: () => import('./DepartmentManager'),
   loading() {
@@ -643,6 +644,19 @@ export const HeadCount = Loadable({
 });
 export const AttendanceRecord = Loadable({
   loader: () => import('./AttendanceRecord'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const PersonInfoManager = Loadable({
+  loader: () => import('./PersonInfoManager'),
+  loading() {
+    return minLoading;
+  }
+});
+export const PersonInfoPrivate = Loadable({
+  loader: () => import('./PersonInfoPrivate'),
   loading() {
     return minLoading;
   }
