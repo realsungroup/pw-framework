@@ -29,7 +29,7 @@ class PersonInfoManager extends React.Component {
     return (
      <div style={{width:'100%',height:'100%'}}>
       <TableData
-                resid={621422585590}
+                resid={464171754083}
                 hasRowView={false}
                 hasAdd={false}
                 hasRowSelection={false}

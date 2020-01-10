@@ -2,6 +2,8 @@ import React from 'react';
 import {Spin,Button,Input,Select,DatePicker,InputNumber,message } from 'antd';
 import http from 'Util20/api';
 import './PersonInfoInFile.less';
+import moment from 'moment';
+
 /**
  * 档案管理内的个人信息
  */
@@ -263,10 +265,38 @@ class PersonInfoInFile extends React.Component {
       }
       try {
         res = await http().getTable({
-          resid: 612530416359,
+          resid: 464171754083,
           cmswhere: str
         });
-        this.setState({loading:false});
+        var obj = res.data[0];
+        obj.C3_464172321287=moment(obj.C3_464172321287, 'YYYY-MM-DD');
+
+        obj.C3_464173481804=moment(obj.C3_464173481804, 'YYYY-MM-DD');
+        obj.C3_464173629942=moment(obj.C3_464173629942, 'YYYY-MM-DD');
+
+        obj.C3_464173514735=moment(obj.C3_464173514735, 'YYYY-MM-DD');
+        obj.C3_464173639392=moment(obj.C3_464173639392, 'YYYY-MM-DD');
+
+        obj.C3_464173524810=moment(obj.C3_464173524810, 'YYYY-MM-DD');
+        obj.C3_464173646851=moment(obj.C3_464173646851, 'YYYY-MM-DD');
+
+        obj.C3_464173535280=moment(obj.C3_464173535280, 'YYYY-MM-DD');
+        obj.C3_464173667723=moment(obj.C3_464173667723, 'YYYY-MM-DD');
+
+        obj.C3_464173535280=moment(obj.C3_464174451732, 'YYYY-MM-DD');
+        obj.C3_464174461446=moment(obj.C3_464174461446, 'YYYY-MM-DD');
+        obj.C3_464174473180=moment(obj.C3_464174473180, 'YYYY-MM-DD');
+        obj.C3_464174481889=moment(obj.C3_464174481889, 'YYYY-MM-DD');
+        obj.C3_464174535762=moment(obj.C3_464174535762, 'YYYY-MM-DD');
+        obj.C3_464174605218=moment(obj.C3_464174605218, 'YYYY-MM-DD');
+        obj.C3_464174545465=moment(obj.C3_464174545465, 'YYYY-MM-DD');
+        obj.C3_464174895167=moment(obj.C3_464174895167, 'YYYY-MM-DD');
+        obj.C3_464174554658=moment(obj.C3_464174554658, 'YYYY-MM-DD');
+        obj.C3_464174904208=moment(obj.C3_464174904208, 'YYYY-MM-DD');
+        obj.C3_464174563152=moment(obj.C3_464174563152, 'YYYY-MM-DD');
+        obj.C3_464174917676=moment(obj.C3_464174917676, 'YYYY-MM-DD');
+
+        this.setState({data:obj,loading:false});
         console.log(res);
       } catch (err) {
 
@@ -898,9 +928,9 @@ class PersonInfoInFile extends React.Component {
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
-          <Button onClick={this.onSubmit}>保存</Button>
-          <Button type='primary' style={{marginLeft:'8px'}}onClick={this.onSubmit}>提交</Button>
-          {this.props.private?null:<Button style={{marginLeft:'8px'}} onClick={this.onSubmit}>撤销提交</Button>}
+          <Button onClick={this.onSubmit}>提交</Button>
+          <Button type='primary' style={{marginLeft:'8px'}}onClick={this.onSubmit}>归档</Button>
+          {this.props.private?null:<Button style={{marginLeft:'8px'}} onClick={this.onSubmit}>撤销归档</Button>}
         </footer>
       </Spin>
       </div>
