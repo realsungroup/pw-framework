@@ -136,23 +136,135 @@ class PersonInfoInFile extends React.Component {
           C3_464277008583:'',//亲友联系方式1
           C3_464277179556:'',//亲友联系方式2
 
+          C3_464184775908:'',//简答1=备注1
+          C3_464184788901:'',//简答2=备注2
+          C3_464277267009:'',//简答3=备注3
           C3_551806597769:'',//犯罪记录
+
+          C3_544732637200:null,//电子签名
         }
       };
       if(props.edit){
         this.state.edit=true;
       }
+      if(props.private){
+        this.state.private=true;
+
+      }
     } 
     componentDidMount(){
-      this.getData();
+      this.getData(this.state.memberId);
+    }
+    judge=()=>{
+      var str=''
+      if(!this.state.data.C3_464172127930){
+        str='姓名'
+      }else if(!this.state.data.C3_464172148589){
+        str='英文名'
+      }else if(!this.state.data.C3_464172157606){
+        str='性别'
+      }else if(!this.state.data.C3_464172188709){
+        str='国籍'
+      }else if(!this.state.data.C3_464172212871){
+        str='籍贯'
+      }else if(!this.state.data.C3_464172226868){
+        str='民族'
+      }else if(!this.state.data.C3_464172266942){
+        str='血型'
+      }else if(!this.state.data.C3_464172321287){
+        str='出生日期'
+      }else if(!this.state.data.C3_464172350271){
+        str='文书送达地址'
+      }else if(!this.state.data.C3_464172402553){
+        str='现居住地址'
+      }else if(!this.state.data.C3_464172444813){
+        str='邮编'
+      }else if(!this.state.data.C3_464172486192){
+        str='家庭号码'
+      }else if(!this.state.data.C3_464172500234){
+        str='手机号码'
+      }else if(!this.state.data.C3_464172522558){
+        str='公司邮箱'
+      }else if(!this.state.data.C3_464172654284){
+        str='学历'
+      }else if(!this.state.data.C3_464172707004){
+        str='政治面貌'
+      }else if(!this.state.data.C3_464172722124){
+        str='户籍类别'
+      }else if(!(this.state.data.C3_464173481804&&this.state.data.C3_464173629942&&this.state.data.C3_464173711606&&this.state.data.C3_464173836290&&this.state.data.C3_464173912562)
+              ||
+              (this.state.data.C3_464173514735&&this.state.data.C3_464173639392&&this.state.data.C3_464173723045&&this.state.data.C3_464173847918&&this.state.data.C3_464173926575)
+              ||
+              (this.state.data.C3_464173524810&&this.state.data.C3_464173646851&&this.state.data.C3_464173733523&&this.state.data.C3_464173861459&&this.state.data.C3_464173937460)
+              ||
+              (this.state.data.C3_464173535280&&this.state.data.C3_464173667723&&this.state.data.C3_464173750564&&this.state.data.C3_464173879808&&this.state.data.C3_464173949368)
+              ){
+        str='学历/学位'
+      }else if(!(this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
+          ||
+          (this.state.data.C3_464174102741&&this.state.data.C3_464174263309&&this.state.data.C3_464174365244&&this.state.data.C3_464174461446)
+          ||
+          (this.state.data.C3_464174124614&&this.state.data.C3_464174274118&&this.state.data.C3_464174394548&&this.state.data.C3_464174473180)
+          ||
+          (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
+          ){
+        str='专业/执业资格'
+      }else if(!(this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
+          ||
+          (this.state.data.C3_464174545465&&this.state.data.C3_464174895167&&this.state.data.C3_464174984491&&this.state.data.C3_464175060992&&this.state.data.C3_464458911775)
+          ||
+          (this.state.data.C3_464174554658&&this.state.data.C3_464174904208&&this.state.data.C3_464174996449&&this.state.data.C3_464175072014&&this.state.data.C3_464458921788)
+          ||
+          (this.state.data.C3_464174563152&&this.state.data.C3_464174917676&&this.state.data.C3_464175006600&&this.state.data.C3_464175085490&&this.state.data.C3_464458930539)
+          ){
+        str='工作经验'
+      }else if(!(this.state.data.C3_464175119119&&this.state.data.C3_464175402821&&this.state.data.C3_464175464598&&this.state.data.C3_464175628311)
+            ||
+            (this.state.data.C3_464175141966&&this.state.data.C3_464175419381&&this.state.data.C3_464175479476&&this.state.data.C3_464175642417)
+            ||
+            (this.state.data.C3_464175301544&&this.state.data.C3_464175427954&&this.state.data.C3_464175490285&&this.state.data.C3_464175653685)
+            ||
+            (this.state.data.C3_464175313029&&this.state.data.C3_464175436022&&this.state.data.C3_464175539610&&this.state.data.C3_464175665668)
+            ){
+        str='家庭成员及主要社会关系'
+      }else if(!this.state.data.C3_464175727918){
+        str='紧急联系人姓名';
+      }else if(!this.state.data.C3_464175750587){
+        str='紧急联系人与员工的关系';
+      }else if(!this.state.data.C3_464175797109){
+        str='紧急联系人手机号码';
+      }else if(!this.state.data.C3_464175768379){
+        str='现居住地址';
+      }else if(!this.state.data.C3_464184775908){
+        str='问答1';
+      }else if(!this.state.data.C3_464184788901){
+        str='问答2';
+      }else if(!this.state.data.C3_464277267009){
+        str='问答3';
+      }
+      console.log(str)
+      if(str==''){
+        return true;
+
+      }else{
+        str+='尚未填写';
+        message.error(str);
+        return false;
+      }
     }
     getData = async(memberId) =>{
       this.setState({loading:true});
       let res;
+      var str='';
+      if(this.state.private){
+        str= `C3_464702128504 = '${memberId}'`
+      }else{
+        str= `C3_464172117706 = '${memberId}'`
+      }
       try {
         res = await http().getTable({
           resid: 612530416359,
-          cmswhere: `C3_464172117706 = '${memberId}'`
+          cmswhere: str
         });
         this.setState({loading:false});
         console.log(res);
@@ -164,7 +276,11 @@ class PersonInfoInFile extends React.Component {
       }
     }
     onSubmit = async() =>{
-      let res;
+      var j=this.judge();
+      if(j==false){
+        return false;
+      }else{
+       let res;
       try {
         res = await http().modifyRecords({
           resid: 612530416359,
@@ -180,6 +296,8 @@ class PersonInfoInFile extends React.Component {
 
         console.error(err.message);
       }
+      }
+      
     }
     onChange=(index,v)=>{
       if(this.state.edit){
@@ -215,15 +333,15 @@ class PersonInfoInFile extends React.Component {
          <h3 style={{textAlign:'center',cursor:'default',fontSize:'16px',paddingBottom:'16px',borderBottom:'1px solid #e8e8e8'}}>个人基本信息</h3>
         <h4 style={{width:'100%',marginBottom:'24px'}}>一、个人基本信息</h4>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>姓名：</b>
+            <b className={this.state.data.C3_464172127930?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>姓名：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v)=>{this.onChange('C3_464172127930',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>英文名：</b>
+            <b className={this.state.data.C3_464172148589?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>英文名：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v)=>{this.onChange('C3_464172148589',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>性别：</b>
+            <b className={this.state.data.C3_464172157606?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>性别：</b>
             <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_464172157606} onChange={(v)=>{this.onChange('C3_464172157606',v)}} style={{ width: 'calc(100% - 120px)' }}>
               <Option value="男">男</Option>
               <Option value="女">女</Option>
@@ -231,21 +349,21 @@ class PersonInfoInFile extends React.Component {
           </div>
           <div style={{clear:'both',height:'8px'}}></div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>国籍：</b>
+            <b className={this.state.data.C3_464172188709?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>国籍：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172188709} onChange={(v)=>{this.onChange('C3_464172188709',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>籍贯：</b>
+            <b className={this.state.data.C3_464172212871?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>籍贯：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172212871} onChange={(v)=>{this.onChange('C3_464172212871',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>民族：</b>
+            <b className={this.state.data.C3_464172226868?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>民族：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172226868} onChange={(v)=>{this.onChange('C3_464172226868',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{clear:'both',height:'8px'}}></div>
 
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>血型：</b>
+            <b className={this.state.data.C3_464172239173?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>血型：</b>
             <Select size='small' value={this.state.data.C3_464172239173} onChange={(v)=>{this.onChange('C3_464172239173',v)}} style={{ width: 'calc(100% - 120px)' }}>
               
               <Option value='A'>A</Option>
@@ -255,11 +373,11 @@ class PersonInfoInFile extends React.Component {
             </Select>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>出生日期：</b>
+            <b className={this.state.data.C3_464172321287?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>出生日期：</b>
             <DatePicker disabled={!this.state.edit}  value={this.state.data.C3_464172321287} onChange={(v)=>{this.onChange('C3_464172321287',v)}} size='small' placeholder={null} style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>学历：</b>
+            <b className={this.state.data.C3_464172654284?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>学历：</b>
             <Select value={this.state.data.C3_464172654284} onChange={(v)=>{this.onChange('C3_464172654284',v)}} size='small' style={{ width: 'calc(100% - 120px)' }}>
               <Option value='初中'>初中</Option>
               <Option value='中专'>中专</Option>
@@ -274,49 +392,49 @@ class PersonInfoInFile extends React.Component {
           <div style={{clear:'both',height:'8px'}}></div>
 
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件类型：</b>
+            <b className={this.state.data.C3_464172266942?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件类型：</b>
             <Input value={this.state.data.C3_464172266942} onChange={(v)=>{this.onChange('C3_464172266942',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'66.66%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件号码：</b>
+            <b className={this.state.data.C3_464172300168?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件号码：</b>
             <Input value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{clear:'both',height:'8px'}}></div>
 
           <div style={{width:'100%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>文书送达地址：</b>
+            <b className={this.state.data.C3_464172350271?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>文书送达地址：</b>
             <Input value={this.state.data.C3_464172350271} onChange={(v)=>{this.onChange('C3_464172350271',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{clear:'both',height:'8px'}}></div>
 
           <div style={{width:'100%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>现居住地址：</b>
+            <b className={this.state.data.C3_464172402553?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>现居住地址：</b>
             <Input value={this.state.data.C3_464172402553} onChange={(v)=>{this.onChange('C3_464172402553',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
          
           <div style={{clear:'both',height:'8px'}}></div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>邮编：</b>
+            <b className={this.state.data.C3_464172444813?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>邮编：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172444813} onChange={(v)=>{this.onChange('C3_464172444813',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>家庭号码：</b>
+            <b className={this.state.data.C3_464172486192?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>家庭号码：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172486192} onChange={(v)=>{this.onChange('C3_464172486192',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>手机号码：</b>
+            <b className={this.state.data.C3_464172500234?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>手机号码：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172500234} onChange={(v)=>{this.onChange('C3_464172500234',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           
           <div style={{clear:'both',height:'8px'}}></div>
 
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>政治面貌：</b>
+            <b className={this.state.data.C3_464172707004?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>政治面貌：</b>
             <Input value={this.state.data.C3_464172707004} onChange={(v)=>{this.onChange('C3_464172707004',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
 
           <div style={{width:'66.66%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>公司邮箱：</b>
+            <b className={this.state.data.C3_464172522558?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>公司邮箱：</b>
             <Input value={this.state.data.C3_464172522558} onChange={(v)=>{this.onChange('C3_464172522558',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
 
@@ -324,11 +442,11 @@ class PersonInfoInFile extends React.Component {
 
           
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>户籍类别：</b>
+            <b className={this.state.data.C3_464172722124?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>户籍类别：</b>
             <Input value={this.state.data.C3_464172722124} onChange={(v)=>{this.onChange('C3_464172722124',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>婚姻状况：</b>
+            <b className={this.state.data.C3_464172819253?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>婚姻状况：</b>
             <Select value={this.state.data.C3_464172819253} onChange={(v)=>{this.onChange('C3_464172819253',v)}} size='small' style={{ width: 'calc(100% - 120px)' }}>
               <Option value='未婚'>未婚</Option>
               <Option value='已婚'>已婚</Option>
@@ -347,14 +465,25 @@ class PersonInfoInFile extends React.Component {
           </div>
           <div style={{clear:'both',height:'24px',borderBottom:'1px solid #e8e8e8'}}></div>
           <h4 style={{width:'100%',marginTop:'16px',marginBottom:'16px'}}>二、教育和培训</h4>
-          <div style={{marginBottom:'16px'}}>学历/学位（请填写高中以上学历）</div>
+          <div style={{marginBottom:'16px'}}
+            className={
+              (this.state.data.C3_464173481804&&this.state.data.C3_464173629942&&this.state.data.C3_464173711606&&this.state.data.C3_464173836290&&this.state.data.C3_464173912562)
+              ||
+              (this.state.data.C3_464173514735&&this.state.data.C3_464173639392&&this.state.data.C3_464173723045&&this.state.data.C3_464173847918&&this.state.data.C3_464173926575)
+              ||
+              (this.state.data.C3_464173524810&&this.state.data.C3_464173646851&&this.state.data.C3_464173733523&&this.state.data.C3_464173861459&&this.state.data.C3_464173937460)
+              ||
+              (this.state.data.C3_464173535280&&this.state.data.C3_464173667723&&this.state.data.C3_464173750564&&this.state.data.C3_464173879808&&this.state.data.C3_464173949368)
+              ?'':'alert'}
+          
+          >学历/学位（请填写高中以上学历）</div>
           <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
           <tr>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>开始日期</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>结束日期</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>学校名称</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>专业</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>学历</th>
+            <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>开始日期</th>
+            <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>结束日期</th>
+            <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>学校名称</th>
+            <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>专业</th>
+            <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>学历</th>
           </tr>
           <tr>
             <td style={{height:'24px',lineHeight:'24px' }}>
@@ -407,7 +536,17 @@ class PersonInfoInFile extends React.Component {
           </tr>
         </table>
 
-        <div style={{marginTop:'16px',marginBottom:'16px'}}>专业/执业资格：</div>
+        <div
+        className={
+          (this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
+          ||
+          (this.state.data.C3_464174102741&&this.state.data.C3_464174263309&&this.state.data.C3_464174365244&&this.state.data.C3_464174461446)
+          ||
+          (this.state.data.C3_464174124614&&this.state.data.C3_464174274118&&this.state.data.C3_464174394548&&this.state.data.C3_464174473180)
+          ||
+          (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
+          ?'':'alert'}
+       style={{marginTop:'16px',marginBottom:'16px'}}>专业/执业资格：</div>
           <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px'}}>名称</th>
@@ -483,7 +622,17 @@ class PersonInfoInFile extends React.Component {
           </tr>
         </table>
 
-        <h4 style={{marginTop:'16px',marginBottom:'16px'}}>三、工作经验（请务必填写完整工作经历）</h4>
+        <h4 
+        className={
+          (this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
+          ||
+          (this.state.data.C3_464174545465&&this.state.data.C3_464174895167&&this.state.data.C3_464174984491&&this.state.data.C3_464175060992&&this.state.data.C3_464458911775)
+          ||
+          (this.state.data.C3_464174554658&&this.state.data.C3_464174904208&&this.state.data.C3_464174996449&&this.state.data.C3_464175072014&&this.state.data.C3_464458921788)
+          ||
+          (this.state.data.C3_464174563152&&this.state.data.C3_464174917676&&this.state.data.C3_464175006600&&this.state.data.C3_464175085490&&this.state.data.C3_464458930539)
+          ?'':'alert'}
+        style={{marginTop:'16px',marginBottom:'16px'}}>三、工作经验（请务必填写完整工作经历）</h4>
           <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>开始日期</th>
@@ -554,8 +703,19 @@ class PersonInfoInFile extends React.Component {
          padding:'24px',
          boxSizing:'border-box',
        }}>
-          <h4 style={{marginBottom:'8px'}}>四、家庭信息及紧急联系人</h4>
-          <div style={{marginBottom:'16px'}}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
+          <h4 
+         
+          
+          style={{marginBottom:'8px'}}>四、家庭信息及紧急联系人</h4>
+          <div  className={
+            (this.state.data.C3_464175119119&&this.state.data.C3_464175402821&&this.state.data.C3_464175464598&&this.state.data.C3_464175628311)
+            ||
+            (this.state.data.C3_464175141966&&this.state.data.C3_464175419381&&this.state.data.C3_464175479476&&this.state.data.C3_464175642417)
+            ||
+            (this.state.data.C3_464175301544&&this.state.data.C3_464175427954&&this.state.data.C3_464175490285&&this.state.data.C3_464175653685)
+            ||
+            (this.state.data.C3_464175313029&&this.state.data.C3_464175436022&&this.state.data.C3_464175539610&&this.state.data.C3_464175665668)
+            ?'':'alert'}style={{marginBottom:'16px'}}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
           <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
@@ -609,10 +769,10 @@ class PersonInfoInFile extends React.Component {
         <div style={{marginTop:'16px',marginBottom:'16px'}}>2.紧急联系人</div>
           <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
           <tr>
-          <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>手机号码</th>
-            <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>现居住地址</th>
+          <th className={this.state.data.C3_464175727918?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
+            <th className={this.state.data.C3_464175750587?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
+            <th className={this.state.data.C3_464175797109?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>手机号码</th>
+            <th className={this.state.data.C3_464175768379?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>现居住地址</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>电话</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>邮箱</th>
           </tr>
@@ -663,7 +823,7 @@ class PersonInfoInFile extends React.Component {
         <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
         <tr>
         <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
-          <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
+          <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>联系方式</th>
         </tr>
         <tr>
@@ -697,14 +857,14 @@ class PersonInfoInFile extends React.Component {
       :null}
       <div style={{height:'16px',borderTop:'1px solid #e8e8e8'}}></div>
       <h4 style={{marginBottom:'8px'}}>五、其他需要告知公司信息</h4>
-      <div style={{marginBottom:'16px'}}>1.是否得过严重的疾病？目前身体状况如何？是否有传染病，慢性病或怀孕等？如是，请详细说明。</div>
-      <Input.TextArea style={{resize:'none',height:'72px'}}/>
-      <div style={{marginTop:'16px',marginBottom:'8px'}}>2.是否有过4个月以上的失业经历？如有，请详细说明。</div>
-      <Input.TextArea style={{resize:'none',height:'72px'}}/>
-      <div style={{marginTop:'16px',marginBottom:'8px'}}>3.与前任雇主是否已经办妥离职手续，是否签有竞业限制协议，如有，请详细说明。</div>
-      <Input.TextArea style={{resize:'none',height:'72px'}}/>
+      <div className={this.state.data.C3_464184775908?'':'alert'}  style={{marginBottom:'16px'}}>1.是否得过严重的疾病？目前身体状况如何？是否有传染病，慢性病或怀孕等？如是，请详细说明。</div>
+      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184775908} onChange={(v)=>{this.onChange('C3_464184775908',v.target.value)}}  style={{resize:'none',height:'72px'}}/>
+      <div className={this.state.data.C3_464184788901?'':'alert'} style={{marginTop:'16px',marginBottom:'8px'}}>2.是否有过4个月以上的失业经历？如有，请详细说明。</div>
+      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184788901} onChange={(v)=>{this.onChange('C3_464184788901',v.target.value)}} style={{resize:'none',height:'72px'}}/>
+      <div className={this.state.data.C3_464277267009?'':'alert'}  style={{marginTop:'16px',marginBottom:'8px'}}>3.与前任雇主是否已经办妥离职手续，是否签有竞业限制协议，如有，请详细说明。</div>
+      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v)=>{this.onChange('C3_464277267009',v.target.value)}} style={{resize:'none',height:'72px'}}/>
       <div style={{marginTop:'16px',marginBottom:'8px'}}>4.本人最近两年是否有违法犯罪记录或者失信行为记录？</div>
-      <Input.TextArea style={{resize:'none',height:'72px'}}/>
+      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_551806597769} onChange={(v)=>{this.onChange('C3_551806597769',v.target.value)}} style={{resize:'none',height:'72px'}}/>
        </div>
        <div className='page' style={{
          position:'relative',
@@ -719,21 +879,28 @@ class PersonInfoInFile extends React.Component {
         &nbsp;&nbsp;&nbsp;&nbsp;4）本人同意公司根据生产需要安排的排班（包括加班）。公司现有的排班形式包括但不限于：上二休二、上四休三、上五休二等。<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br/>
          </p>
+         <div style={{marginTop:'24px'}}>
+           {this.state.data.C3_544732637200?
+           <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_544732637200}/>
+           :<span style={{color:'red'}}>无电子签名</span>}
+          </div>
         <div style={{position:'absolute',bottom:'40px',right:'24px'}}>
           <span>申请人签名：</span>
           <div style={{display:'inline-block',width:'144px',borderBottom:'1px solid #333'}}>
-            <Input disabled={!this.state.edit}size='small' style={{width:'100%',border:'none'}}/>
+            <Input disabled size='small' style={{width:'100%',border:'none',background:'#fff'}}/>
           </div>
           <span style={{marginLeft:'16px'}}>日期：</span>
           <div style={{display:'inline-block',width:'144px',borderBottom:'1px solid #333'}}>
-          <DatePicker disabled={!this.state.edit} size='small'  className='date' placeholder={null}/>
+          <Input disabled size='small' style={{width:'100%',border:'none',background:'#fff'}}/>
           </div>
         </div>
        </div>
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
-          <Button type='primary' onClick={this.onSubmit}>保存</Button>
+          <Button onClick={this.onSubmit}>保存</Button>
+          <Button type='primary' style={{marginLeft:'8px'}}onClick={this.onSubmit}>提交</Button>
+          {this.props.private?null:<Button style={{marginLeft:'8px'}} onClick={this.onSubmit}>撤销提交</Button>}
         </footer>
       </Spin>
       </div>

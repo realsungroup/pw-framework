@@ -46,7 +46,7 @@ class PersonInfoManager extends React.Component {
                         <Button
 
                           onClick={() => {
-                            this.setState({showDetail:true, selectedRecord:record.REC_ID});
+                            this.setState({showDetail:true, selectedRecord:record.C3_464172117706});
   
                           }}
                         >

@@ -1918,3 +1918,8 @@ window[631968621232] = {
   name:'PersonInfoManager',
   title:'个人档案管理'
 };
+
+window[631968828634] = {
+  name:'PersonInfoPrivate',
+  title:'个人档案'
+};
