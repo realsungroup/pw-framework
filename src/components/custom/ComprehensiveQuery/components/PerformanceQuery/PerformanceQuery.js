@@ -12,14 +12,20 @@ import { message, Select } from 'antd';
 const { Option } = Select;
 const activeClasssName = 'performance-query_nav_item__active';
 const activeTargetItem = 'performance-query_item_nav_item__active';
+
+/**
+ * 绩效查询
+ * @author 邓铭
+ */
+
 class PerformanceQuery extends React.Component {
   state = {
-    currentNav: 'target',
-    targetSelectItem: 'target',
-    middleOfYearSelectItem: 'targetSelfAppraise',
-    endOfYearSelectItem: 'targetSelfAppraise',
-    directlySelectItem: 'viewTarget',
-    years: [],
+    currentNav: 'target', // 选中的一级菜单
+    targetSelectItem: 'target', //目标选中的
+    middleOfYearSelectItem: 'targetSelfAppraise', //年中选中的
+    endOfYearSelectItem: 'targetSelfAppraise', //年末选中的
+    directlySelectItem: 'viewTarget', //直评查询选中的
+    years: [], //财年列表
     selectYear: { key: 0, label: '请选择财年' }
   };
   componentDidMount = async () => {

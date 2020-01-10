@@ -135,5 +135,8 @@ export { VisitorApplyVIP } from '../components/custom/loadableCustom';
 export { DataProcess } from '../components/custom/loadableCustom';
 export { InterviewInvitation } from '../components/custom/loadableCustom';
 export { RankGrade } from '../components/custom/loadableCustom';
+export { DepartmentManager } from '../components/custom/loadableCustom';
+export { OfferApproval } from '../components/custom/loadableCustom';
+export { HeadCount } from '../components/custom/loadableCustom';
 export { AttendanceRecord } from '../components/custom/loadableCustom';
 export { PersonInfoManager } from '../components/custom/loadableCustom';

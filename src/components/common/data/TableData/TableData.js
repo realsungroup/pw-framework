@@ -149,9 +149,13 @@ class TableData extends React.Component {
       this.props.dataMode !== prevProps.dataMode ||
       this.props.hostrecid !== prevProps.hostrecid
     ) {
-      this.setState({ loading: true });
-      await this.getData();
-      this.setState({ loading: false });
+      if (this.props.cparm1 !== prevProps.cparm1) {
+        this.handleRefresh(true);
+      } else {
+        this.setState({ loading: true });
+        await this.getData();
+        this.setState({ loading: false });
+      }
     }
   }
   addEventListener = () => {
@@ -1228,7 +1232,9 @@ class TableData extends React.Component {
     await this.getTableData(obj);
     this.setState({
       loading: false,
-      rowSelection: { ...this.state.rowSelection, selectedRowKeys: [] }
+      rowSelection: this.state.rowSelection
+        ? { ...this.state.rowSelection, selectedRowKeys: [] }
+        : null
     });
   };
 

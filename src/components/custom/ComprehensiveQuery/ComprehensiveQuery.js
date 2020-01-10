@@ -5,8 +5,8 @@ import './ComprehensiveQuery.less';
 import PerformanceQuery from './components/PerformanceQuery';
 import ViewRate from './components/ViewRate';
 import { getItem } from 'Util20/util';
-import PersonnelQuery from './components/PersonnelQuery';
-import Attendance from './components/Attendance';
+import PersonInfo from './components/PersonnelQuery/PersonInfo';
+import WorkInfo from './components/Attendance/WorkInfo';
 
 import DimissionQuery from './components/DimissionQuery';
 import InductionQuery from './components/InductionQuery';
@@ -15,28 +15,33 @@ import TrainingQuery from './components/TrainingQuery';
 
 const { TabPane } = Tabs;
 
+/**
+ * 综合查询
+ * @author 邓铭
+ */
+
 class ComprehensiveQuery extends React.Component {
   state = {
     node: {}, //选中的人员信息
     isExpand: true, //左侧展开状态
-    currentTab: this.props.tabKey
+    currentTab: this.props.tabKey //当前的tab页
   };
 
   constructor(props) {
     super(props);
     this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
   }
-  componentDidMount() {}
+
   setSelect = node => {
-    this.setState({
-      node
-    });
+    this.setState({ node });
   };
+
   setShrink = isExpand => {
     this.setState({
       isExpand
     });
   };
+
   handleTabChange = activeKey =>
     this.setState({
       currentTab: activeKey
@@ -46,10 +51,10 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = <PersonnelQuery node={this.state.node} />;
+        page = <PersonInfo person={this.state.node} />;
         break;
       case 'attendance':
-        page = <Attendance node={this.state.node} />;
+        page = <WorkInfo person={this.state.node} />;
         break;
       case 'performance':
         page = <PerformanceQuery person={this.state.node} />;

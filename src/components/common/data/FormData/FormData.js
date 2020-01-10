@@ -249,7 +249,7 @@ class FormData extends React.Component {
         style={{
           width: subTableArr[0].FrmWidth,
           position: 'absolute',
-          top: subTableArr[0].FrmTop - containerHeight * 0.1,
+          top: subTableArr[0].FrmTop,
           left: subTableArr[0].FrmLeft
         }}
       >

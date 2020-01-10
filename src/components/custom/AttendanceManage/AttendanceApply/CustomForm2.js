@@ -19,6 +19,11 @@ const formItemLayout = {
 };
 const { TextArea } = Input;
 const { Option } = Select;
+
+/**
+ * 补刷卡申请
+ */
+
 class CustomForm2 extends React.Component {
   state = {
     currentUser: JSON.parse(getItem('userInfo')).Data,

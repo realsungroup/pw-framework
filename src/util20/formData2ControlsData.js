@@ -243,7 +243,7 @@ const getData = (canOpControlArr, rulesControl) => {
       obj.advDicTableProps = {
         // 匹配字段
         resid: advData.ResID2,
-        cmsWhere: getCmswhere(advData),
+        // cmsWhere: getCmswhere(advData),
         cmscolumns: getCmscolumns(advData),
         matchFields: getMatchFields(advData), // 匹配字段（即高级字典表中的字段对应表单中的字段，如：[{ CDZ2_COL1: 111, CDZ2_COL2: 222 }, { CDZ2_COL1: 111, CDZ2_COL2: 222 }]）
         // 得到匹配字段的话，可以由选择的高级字典表中记录得到表单中字段的值（一一对应）

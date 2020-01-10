@@ -43,7 +43,6 @@ class AbsoluteForm extends React.PureComponent {
         {!!data.length &&
           data.map(item => {
             const { customStyle } = item.controlData;
-            console.log(item);
             return (
               <span
                 style={{
@@ -77,15 +76,18 @@ class AbsoluteForm extends React.PureComponent {
         {!!labelControllArr &&
           labelControllArr.map(item => {
             const { customStyle } = item;
-            const controlData = data.find(i => {
-              return i.controlData.ColName === item.FrmColNameForCtrl;
-            });
+            const controlData =
+              item.FrmColNameForCtrl &&
+              data.find(i => {
+                return i.controlData.ColName === item.FrmColNameForCtrl;
+              });
             return (
               <label
                 class={classNames({
                   required:
-                    controlData.controlData.ColIsNoNull ||
-                    controlData.controlData.FrmIsNoNull
+                    controlData &&
+                    (controlData.controlData.ColIsNoNull ||
+                      controlData.controlData.FrmIsNoNull)
                 })}
                 style={{
                   fontWeight: item.FrmFontBold * 500,

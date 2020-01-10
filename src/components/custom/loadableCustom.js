@@ -623,15 +623,36 @@ export const RankGrade = Loadable({
     return minLoading;
   }
 });
+export const DepartmentManager = Loadable({
+  loader: () => import('./DepartmentManager'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OfferApproval = Loadable({
+  loader: () => import('./OfferApproval'),
+  loading() {
+    return minLoading;
+  }
+});
+export const HeadCount = Loadable({
+  loader: () => import('./HeadCount'),
+  loading() {
+    return minLoading;
+  }
+});
 export const AttendanceRecord = Loadable({
   loader: () => import('./AttendanceRecord'),
   loading() {
     return minLoading;
   }
 });
+<<<<<<< HEAD
 export const PersonInfoManager = Loadable({
   loader: () => import('./PersonInfoManager'),
   loading() {
     return minLoading;
   }
 });
+=======
+>>>>>>> db781d33a2f55ebda07570976d99ff5fb16e471e

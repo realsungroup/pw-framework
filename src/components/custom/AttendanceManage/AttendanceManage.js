@@ -1,7 +1,6 @@
 import React from 'react';
 import { Menu, Icon, Modal, Spin, Badge } from 'antd';
 import './AttendanceManage.less';
-import WorkOvertimeApply from './WorkOvertimeApply';
 import AttendanceApply from './AttendanceApply';
 import WaitingHRApproval from './WaitingHRApproval';
 import WaitingApproval from './WaitingApproval';
@@ -23,12 +22,16 @@ const { SubMenu } = Menu;
 const waitingApproval = 449449634592;
 const approvaling = 544795775918;
 const managerApproval = 449442699960;
+/**
+ * 考勤审批
+ * @author 邓铭
+ */
 class AttendanceManage extends React.Component {
   state = {
     mode: 'inline',
     theme: 'light',
-    selectKey: 'sub1-7',
-    collapsed: false,
+    selectKey: 'sub1-7', //初始选中的菜单
+    collapsed: false, //左侧菜单是否收缩
     desktop: null,
     approvalRecordVisible: false,
     selectRecord: {},
@@ -56,6 +59,9 @@ class AttendanceManage extends React.Component {
     }
   }
 
+  /**
+   * 获取通知
+   */
   getNotices = async () => {
     try {
       let res = await http().getRowCountOfResource({
@@ -90,15 +96,13 @@ class AttendanceManage extends React.Component {
     let selectKey = this.state.selectKey;
     let page = null;
     switch (selectKey) {
-      // // 加班批量审批
-      // case 'workOverTimeApply':
-      //   page = <WorkOvertimeApply setLoading={this.setLoading} />;
-      // break;
       // 我的考勤申请单
       case 'sub1-1':
+        // 待HR审批
         page = <WaitingHRApproval setLoading={this.setLoading} />;
         break;
       case 'sub1-2':
+        // 待审批
         page = (
           <WaitingApproval
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
@@ -107,8 +111,8 @@ class AttendanceManage extends React.Component {
           />
         );
         break;
-
       case 'sub1-3':
+        // 审批中
         page = (
           <ApprovalingApplicationForm
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
@@ -118,6 +122,7 @@ class AttendanceManage extends React.Component {
         );
         break;
       case 'sub1-4':
+        // 已审批
         page = (
           <ApprovaledApplicationForm
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
@@ -126,12 +131,15 @@ class AttendanceManage extends React.Component {
         );
         break;
       case 'sub1-5':
+        // 已作废
         page = <InvalidApplicationForm setLoading={this.setLoading} />;
         break;
       case 'sub1-6':
+        // 已撤销
         page = <RevocationApplicationForm setLoading={this.setLoading} />;
         break;
       case 'sub1-7':
+        // 考勤申请
         page = (
           <AttendanceApply
             setLoading={this.setLoading}
@@ -141,6 +149,7 @@ class AttendanceManage extends React.Component {
         break;
       // 经理人考勤审批
       case 'sub2-1':
+        // 考勤审批
         page = (
           <ManagerAttendanceApproval
             setLoading={this.setLoading}
@@ -150,15 +159,19 @@ class AttendanceManage extends React.Component {
         );
         break;
       case 'sub2-2':
+        // 当月审批记录
         page = <ManagerCurrentMonthRecord setLoading={this.setLoading} />;
         break;
       case 'sub2-3':
+        // 历史审批记录
         page = <ManagerApprovalRecordHistory setLoading={this.setLoading} />;
         break;
       case 'sub2-4':
+        // 已过期未审批记录
         page = <OverdueApprovalRecord setLoading={this.setLoading} />;
         break;
       case 'sub2-5':
+        // 考勤审批授权
         page = <ManagerAttendanceApprovalAuth setLoading={this.setLoading} />;
         break;
       // 部门独立授权
@@ -198,6 +211,7 @@ class AttendanceManage extends React.Component {
             height: desktop === 'DESKTOP' ? '100vh' : 'calc(100vh - 160px)'
           }}
         >
+          {/* 左侧菜单 */}
           <div
             style={{
               width: `${collapsed ? '80px' : '200px'}`,

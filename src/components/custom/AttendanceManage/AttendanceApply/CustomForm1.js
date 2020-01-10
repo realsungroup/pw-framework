@@ -51,9 +51,13 @@ const vacateHours = [
   '23'
 ];
 
+/**
+ * 加班申请
+ * @author 邓铭
+ */
 class CustomForm1 extends React.Component {
   state = {
-    types: [],
+    types: [], //类型列表
     typeSubData: {},
     selectedTypeId: null,
     applyType: '', // 申请类型：加班或请假
@@ -90,6 +94,7 @@ class CustomForm1 extends React.Component {
   }
 
   componentDidUpdate(preProps, preState) {
+    // 填写的时间变化时自动计算加班时长
     const { filledData, selectedTypeId, currentUserCode } = this.state;
     const {
       startDate,
@@ -128,6 +133,15 @@ class CustomForm1 extends React.Component {
       }
     }
   }
+
+  /**
+   * 获取加班时长
+   * @param {string}startTime 开始时间
+   * @param {string}endTime 结束时间
+   * @param {string}selectedTypeId 加班类型id
+   * @param {string}currentUserCode 当前登录用户
+   * @returns {void}
+   */
   getTimeLength = async (
     startTime,
     endTime,
@@ -170,6 +184,9 @@ class CustomForm1 extends React.Component {
     }
   };
 
+  /**
+   * 获取加班类型数据
+   */
   getType = async () => {
     try {
       let res = await http().getRecordAndSubTables({
@@ -209,6 +226,10 @@ class CustomForm1 extends React.Component {
       message.error(error.message);
     }
   };
+
+  /**
+   * 提交表单
+   */
   handleSubmit = async e => {
     e.preventDefault();
     let {
@@ -270,6 +291,15 @@ class CustomForm1 extends React.Component {
     }
   };
 
+  /**
+   * 判断是否可以提交
+   * @param {string}startTime 开始时间
+   * @param {string}endTime 结束时间
+   * @param {number}timeLength 加班时长
+   * @param {string}selectedTypeId 加班类型id
+   * @param {string}currentUserCode 当前登录用户
+   * @returns {object}
+   */
   judgeCanSubmit = async (
     startTime,
     endTime,
@@ -328,6 +358,30 @@ class CustomForm1 extends React.Component {
     let fileList = [...info.fileList];
     this.setState({ fileList });
   };
+
+  handleTypeChange = v => {
+    if (v.length) {
+      this.setState({
+        selectedTypeId: v[1],
+        isNeedAttachment: this.state.typeSubData[v[1]].isNeedAttachment,
+        applyType: v[0],
+        errors: {
+          ...this.state.errors,
+          type: false
+        }
+      });
+    } else {
+      this.setState({
+        selectedTypeId: null,
+        isNeedAttachment: false,
+        applyType: '',
+        errors: {
+          ...this.state.errors,
+          type: true
+        }
+      });
+    }
+  };
   render() {
     const {
       currentUser,
@@ -340,13 +394,15 @@ class CustomForm1 extends React.Component {
       isNeedAttachment,
       errors
     } = this.state;
-    let startHours = [],
-      endHours = [],
-      disabled = true;
+    let startHours = [], //可选的开始时间点
+      endHours = [], //可选的结束时间点
+      disabled = true; //时间长度是否不可手动输入
 
+    // 已选择了申请类型
     if (selectedTypeId) {
       startHours = typeSubData[selectedTypeId].startHours;
       endHours = typeSubData[selectedTypeId].endHours;
+      // 所选的类型没有规定时间点，则0-24整点都可选
       if (!startHours.length) {
         endHours = startHours = vacateHours;
         if (applyType === '加班') {
@@ -374,30 +430,7 @@ class CustomForm1 extends React.Component {
             <Cascader
               options={types}
               placeholder="请选择类别"
-              onChange={v => {
-                if (v.length) {
-                  this.setState({
-                    selectedTypeId: v[1],
-                    isNeedAttachment: this.state.typeSubData[v[1]]
-                      .isNeedAttachment,
-                    applyType: v[0],
-                    errors: {
-                      ...this.state.errors,
-                      type: false
-                    }
-                  });
-                } else {
-                  this.setState({
-                    selectedTypeId: null,
-                    isNeedAttachment: false,
-                    applyType: '',
-                    errors: {
-                      ...this.state.errors,
-                      type: true
-                    }
-                  });
-                }
-              }}
+              onChange={this.handleTypeChange}
             />
           </Form.Item>
           <Form.Item
