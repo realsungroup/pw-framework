@@ -4,6 +4,10 @@ import TableData from '../../../common/data/TableData';
 import { Button, message, Select } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
+/**
+ * @description 试用期管理————辅导员
+ * @author 邓铭
+ */
 class TutorshipProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容

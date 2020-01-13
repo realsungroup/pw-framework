@@ -295,7 +295,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  //根据选中的课程获取心得
+  /**
+   * 根据选中的课程获取心得
+   */
   getTip = async () => {
     let res;
     try {
@@ -319,6 +321,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  /**
+   * 获取审批记录
+   */
   getApprovalRecords = async () => {
     try {
       const { selectedCourse } = this.state;
@@ -370,8 +375,10 @@ class EmployeeCourses extends React.Component {
       message.error(error.message);
     }
   };
-  //点击选中课程
-  // 拿子组件的评分
+
+  /**
+   * 课程评分变化时调用（传递给子组件使用）
+   */
   setRate = async rate => {
     if (this.state.selectedCourse.courseType === '内训') {
       this.setState({ rate });
@@ -392,7 +399,9 @@ class EmployeeCourses extends React.Component {
     });
   };
 
-  handleTabsChange = key => {};
+  /**
+   * 点击选中课程
+   */
   handleSelectCourse = item => {
     let myCourses = [...this.state.myCourses];
     myCourses.forEach(course => {
@@ -463,13 +472,17 @@ class EmployeeCourses extends React.Component {
       applyVisible: true
     });
   };
-  // 关闭详情 打开反馈模态框
+
+  /**
+   * 关闭详情 打开反馈模态框
+   */
   closeCourseDetailOpenFeeback = () => {
     this.setState({
       visible: false,
       feebackVisible: true
     });
   };
+
   closeCourseDetailOpenTip = () => {
     this.setState(
       {
@@ -479,7 +492,10 @@ class EmployeeCourses extends React.Component {
       this.getTip
     );
   };
-  //提交申请单
+
+  /**
+   * 提交申请单
+   */
   submitApply = async () => {
     let res,
       record = { ...this.state.selectedCourse },
@@ -519,7 +535,10 @@ class EmployeeCourses extends React.Component {
       }
     });
   };
-  //打开填写心得模态窗
+
+  /**
+   * 打开填写心得模态窗
+   */
   openWriteTip = async () => {
     this.setState({
       tipsModalVisible: true,
@@ -549,6 +568,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  /**
+   * 点击保存心得
+   */
   onSaveTip = async () => {
     let res,
       tip = { ...this.state.tip };
@@ -567,7 +589,10 @@ class EmployeeCourses extends React.Component {
       message.error(error.message);
     }
   };
-  //调用后端接口保存心得
+
+  /**
+   * 调用后端接口保存心得
+   */
   saveTip = async (tip, isSubmit) => {
     let res;
     let Filepath = '';
@@ -595,7 +620,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  //提交心得
+  /**
+   * 提交心得
+   */
   submitTip = async () => {
     let tip = { ...this.state.tip },
       res;
@@ -627,7 +654,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  //根据课程明细id获取，用于提交心得后刷新数据
+  /**
+   * 根据课程明细id获取，用于提交心得后刷新数据
+   */
   getCourseById = async () => {
     let res,
       { selectedCourse } = this.state;
@@ -652,6 +681,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  /**
+   * 点赞课程
+   */
   likeCourse = async (data, index) => {
     try {
       let res = await http().modifyRecords({
@@ -669,7 +701,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
-  //关闭心得模态窗
+  /**
+   * 关闭心得模态窗
+   */
   onCloseTipModal = () =>
     this.setState({
       tipsModalVisible: false,
@@ -680,7 +714,10 @@ class EmployeeCourses extends React.Component {
       },
       selcetedTip: {}
     });
-  // 提交评分和行动计划反馈
+
+  /**
+   * 提交评分和行动计划反馈
+   */
   submitRate = async () => {
     const {
       rateOut,
@@ -810,7 +847,10 @@ class EmployeeCourses extends React.Component {
       }
     });
   };
-  // 页码变化
+
+  /**
+   * 页码变化
+   */
   onPageChange = (v, s, REC_ID) => {
     var org = this.state.CoursesOrg;
     var res;
@@ -835,17 +875,25 @@ class EmployeeCourses extends React.Component {
 
     console.log('org', org);
   };
-  // 每页显示多少变化
+
+  /**
+   * 每页显示多少变化
+   */
   onScaleChange = (v, s) => {
     this.setState({ pageSize: s });
     this.onPageChange(v, s);
   };
-  //设置附加费用
+
+  /**
+   * 设置附加费用
+   */
   setExtraCost = extraCost => {
     this.setState({ extraCost: parseFloat(extraCost) });
   };
 
-  //点击放弃
+  /**
+   * 点击放弃
+   */
   isAbandon = async () => {
     let res,
       record = { ...this.state.selectedCourse };
@@ -865,6 +913,9 @@ class EmployeeCourses extends React.Component {
     }
   };
 
+  /**
+   * 关闭反馈模态窗
+   */
   handleCloseFeedBackModal = () => {
     this.setState({
       feebackVisible: false,
@@ -1017,6 +1068,7 @@ class EmployeeCourses extends React.Component {
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             <div className="emploee-courses_courses-manage">
+             {/* 选中的课程可用按钮 */}
               <div
                 className={
                   this.state.myCourses.length > 0

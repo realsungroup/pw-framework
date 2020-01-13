@@ -6,6 +6,9 @@ import CourseInfo from '../CourseInfo';
 const rowStyle = {
   marginBottom: 16
 };
+/**
+ * @description 课程申请单
+ */
 class CourseApply extends Component {
   constructor(props) {
     super(props);

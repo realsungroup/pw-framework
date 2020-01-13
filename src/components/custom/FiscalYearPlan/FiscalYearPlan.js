@@ -19,8 +19,10 @@ import DefinePlan from '../FiscalYearPlan/DefinePlan';
 import Authorize from './Authorize';
 
 const { Step } = Steps;
+
 /**
- * 财年计划
+ * @description 财年计划
+ * @author 邓铭
  */
 class FiscalYearPlan extends React.Component {
   state = {
@@ -146,6 +148,10 @@ class FiscalYearPlan extends React.Component {
         message.error(error.message);
       });
   };
+
+  /**
+   * 刷新选中的财年计划
+   */
   refreshSelectedPlan = async () => {
     if (!this.state.selectedPlan) {
       return;
@@ -172,6 +178,7 @@ class FiscalYearPlan extends React.Component {
     }
     this.setState({ loading: false });
   };
+
   render() {
     const { loading, current, selectedPlan } = this.state;
     let page;

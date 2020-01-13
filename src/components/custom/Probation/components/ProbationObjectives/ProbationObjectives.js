@@ -12,6 +12,11 @@ import {
 
 const { TextArea } = Input;
 const resid1 = '619808533610';
+
+/**
+ * @description 工作目标
+ * @author 邓铭
+ */
 const ProbationObjectives = props => {
   let { probationObjectives, modifyObjective, editable } = props;
   const hasOperation = props.auth.hasDelete && props.auth.hasModify && editable;

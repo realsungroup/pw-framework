@@ -17,6 +17,9 @@ import moment from 'moment';
 import http from 'Util20/api';
 const dateFormat = 'YYYY-MM-DD';
 const { TextArea } = Input;
+/**
+ * @description 反馈与行动计划
+ */
 class FeedBackAndPlan extends Component {
   constructor(props) {
     super(props);
@@ -34,8 +37,8 @@ class FeedBackAndPlan extends Component {
         rate8: 5
       },
       otherAdvice: {
-        advantages: '',
-        shortcommings: ''
+        advantages: '', // 益处
+        shortcommings: '' //缺点
       },
       //外训评分
       rateOut: {
@@ -44,16 +47,20 @@ class FeedBackAndPlan extends Component {
         rate3: 5,
         rate4: 5
       },
-      knowledge: [''],
-      plans: ['']
+      knowledge: [''], //获得的知识点
+      plans: [''] //行动计划
     };
   }
+
   componentDidMount() {
     if (this.props.mode === 'view') {
       this.getFeebackAndRate();
     }
   }
-  // 获取后台反馈的分数和行动计划
+
+  /**
+   * 获取后台反馈的分数和行动计划
+   */
   getFeebackAndRate = async () => {
     const { rate, rateOut } = this.state;
     let res; //课程反馈
@@ -133,6 +140,7 @@ class FeedBackAndPlan extends Component {
     });
     this.props.onSubmit(tempRate);
   };
+
   handleOutRateChange = key => value => {
     const tempRate = {
       ...this.state.rateOut
@@ -144,7 +152,9 @@ class FeedBackAndPlan extends Component {
     this.props.onSubmit(tempRate);
   };
 
-  //添加知识点
+  /**
+   * 添加知识点
+   */
   handleAddKnowledge = () => {
     let knowledge = [...this.state.knowledge];
     if (knowledge.length > 2) {
@@ -165,7 +175,9 @@ class FeedBackAndPlan extends Component {
     });
   };
 
-  // 删除知识点
+  /**
+   * 删除知识点
+   */
   handleDeleteKnowledge = index => () => {
     let knowledge = [...this.state.knowledge];
     if (knowledge.length === 1) {
@@ -178,7 +190,9 @@ class FeedBackAndPlan extends Component {
     });
   };
 
-  //添加行动计划
+  /**
+   * 添加行动计划
+   */
   handleAddPlan = () => {
     let plans = [...this.state.plans];
     if (plans.length > 2) {
@@ -199,7 +213,9 @@ class FeedBackAndPlan extends Component {
     });
   };
 
-  // 删除行动计划
+  /**
+   * 删除行动计划
+   */
   handleDeletePlan = index => () => {
     let plans = [...this.state.plans];
     if (plans.length <= 1) {

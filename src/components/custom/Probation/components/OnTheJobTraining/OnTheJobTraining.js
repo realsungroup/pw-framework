@@ -3,6 +3,11 @@ import './OnTheJobTraining.less';
 import { Card, Table, Button, Popconfirm } from 'antd';
 
 const { Column } = Table;
+
+/**
+ * @description 在岗培训
+ * @author 邓铭
+ */
 const OnTheJobTraining = props => {
   const {
     auth,
@@ -74,14 +79,18 @@ const OnTheJobTraining = props => {
                     &nbsp;|&nbsp;
                   </>
                 )}
-                {roleName === '员工'||roleName === 'HR'||roleName === '主管'?<Popconfirm
-                  title="确认邀请吗?"
-                  onConfirm={() =>
-                    inviteConfirm({ ...record, isNoticeTrainer: 'Y' })
-                  }
-                >
-                  <a href="javascript:;">邀请确认</a>
-                </Popconfirm>:null}
+                {roleName === '员工' ||
+                roleName === 'HR' ||
+                roleName === '主管' ? (
+                  <Popconfirm
+                    title="确认邀请吗?"
+                    onConfirm={() =>
+                      inviteConfirm({ ...record, isNoticeTrainer: 'Y' })
+                    }
+                  >
+                    <a href="javascript:;">邀请确认</a>
+                  </Popconfirm>
+                ) : null}
               </div>
             )}
           />
