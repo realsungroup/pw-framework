@@ -4,6 +4,11 @@ import moment from 'moment';
 import { Card, Input, Icon, Popconfirm, DatePicker, Button } from 'antd';
 
 const { TextArea } = Input;
+
+/**
+ * @description 辅导记录
+ * @author 邓铭
+ */
 const MentorshipRecord = props => {
   let {
     mentorshipRecord,
@@ -94,7 +99,8 @@ const MentorshipRecord = props => {
                   )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
-                  {(roleName === '辅导员' || roleName === 'HR') &&(item.REC_ID)&&
+                  {(roleName === '辅导员' || roleName === 'HR') &&
+                    item.REC_ID &&
                     item.isConfirm !== 'Y' && (
                       <Button
                         type="primary"

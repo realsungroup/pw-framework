@@ -3,6 +3,9 @@ import './CourseDetail.less';
 import { Card, Row, Col, Icon, Modal } from 'antd';
 import CourseInfo from '../CourseInfo';
 
+/**
+ * @description 课程详情
+ */
 class CourseDetail extends Component {
   constructor(props) {
     super(props);
@@ -19,8 +22,6 @@ class CourseDetail extends Component {
       onCourseType,
       course
     } = this.props;
-    // alert(onCourseType )
-    // alert(course.C3_615377473913 )
     return (
       <div className="courseDetail">
         <CourseInfo
@@ -53,7 +54,7 @@ class CourseDetail extends Component {
             </Row>
           ) : null}
           {/* 课程反馈，行动计划已提交才显示 */}
-          {course.C3_615377473913 === 'Y' && onCourseType=== '外训'? (
+          {course.C3_615377473913 === 'Y' && onCourseType === '外训' ? (
             <Row className="courseDetail__courseOptional">
               <Col span={3}>
                 <Icon type="paper-clip" />
@@ -70,7 +71,7 @@ class CourseDetail extends Component {
               <Col span={16}>{course.C3_615377481222}</Col>
             </Row>
           ) : null}
-          {course.isInnerFeedBack === 'Y' && onCourseType=== '内训'? (
+          {course.isInnerFeedBack === 'Y' && onCourseType === '内训' ? (
             <Row className="courseDetail__courseOptional">
               <Col span={3}>
                 <Icon type="paper-clip" />

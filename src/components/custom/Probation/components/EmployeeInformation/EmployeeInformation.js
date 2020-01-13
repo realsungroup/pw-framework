@@ -7,6 +7,10 @@ import debounce from 'lodash/debounce';
 
 const { Option } = Select;
 
+/**
+ * @description 员工基本信息
+ * @author 邓铭
+ */
 //609599795438  全部人员
 class EmployeeInformation extends React.Component {
   state = {

@@ -4,13 +4,19 @@ import TableData from '../../../common/data/TableData';
 import { Button, message } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
+/**
+ * @description 试用期管理————主管
+ * @author 邓铭
+ */
 class DirectorProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
     selectedRecord: {}
   };
 
-  // 点击同意转正
+  /**
+   * 点击同意转正
+   */
   handleAgreed = async record => {
     if (record.selectedRowKeys.length) {
       let res;
@@ -101,7 +107,6 @@ class DirectorProbation extends React.Component {
           <ProbationForms
             memberId={this.state.selectedRecord.memberId}
             employedId={this.state.selectedRecord.C3_625051545181}
-
             goBack={this.goBack}
             roleName="主管"
             setIsShowTable={this.setIsShowTable}

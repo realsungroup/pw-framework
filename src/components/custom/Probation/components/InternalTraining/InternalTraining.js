@@ -1,6 +1,6 @@
 import React from 'react';
 import './InternalTraining.less';
-import { Card, Table, Button, Popconfirm} from 'antd';
+import { Card, Table, Button, Popconfirm } from 'antd';
 
 const { Column } = Table;
 function areEqual(prevProps, nextProps) {
@@ -14,8 +14,12 @@ function areEqual(prevProps, nextProps) {
     JSON.stringify(nextProps.internalTraining)
   );
 }
+
+/**
+ * @description 内训课程
+ * @author 邓铭
+ */
 const InternalTraining = React.memo(props => {
-  console.log("le",props)
   return (
     <div id="internal-training" className="probation-form">
       <Card
@@ -23,20 +27,22 @@ const InternalTraining = React.memo(props => {
           <React.Fragment>
             <span className="card_title_name__zh">内训课程</span>
             <span className="card_title_name__en">Internal Training</span>
-			<Button style={{float:'right'}}
-			onClick={() => {
+            <Button
+              style={{ float: 'right' }}
+              onClick={() => {
                 props.setInterDetailVis(true);
               }}
-			>查看详情</Button>
-		  </React.Fragment>
+            >
+              查看详情
+            </Button>
+          </React.Fragment>
         }
         extra={
           // props.auth.hasAdd &&
-          // props.editable && 
-          props.roleName === ('主管'||'HR')&&
-          (
+          // props.editable &&
+          props.roleName === ('主管' || 'HR') && (
             <Button
-            style={{marginLeft:8}}
+              style={{ marginLeft: 8 }}
               onClick={() => {
                 props.setAddInternalCourseVisible(true);
               }}

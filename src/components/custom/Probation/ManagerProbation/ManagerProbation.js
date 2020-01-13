@@ -4,7 +4,11 @@ import TableData from '../../../common/data/TableData';
 import { Button, message } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
-class EmployeeProbation extends React.Component {
+/**
+ * @description 试用期管理————经理
+ * @author 邓铭
+ */
+class ManagerProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
     selectedRecord: {}
@@ -101,7 +105,6 @@ class EmployeeProbation extends React.Component {
           <ProbationForms
             memberId={this.state.selectedRecord.memberId}
             employedId={this.state.selectedRecord.C3_625051545181}
-
             goBack={this.goBack}
             roleName="经理"
             setIsShowTable={this.setIsShowTable}
@@ -112,4 +115,4 @@ class EmployeeProbation extends React.Component {
   }
 }
 
-export default EmployeeProbation;
+export default ManagerProbation;

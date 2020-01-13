@@ -18,10 +18,14 @@ const { confirm } = Modal;
 const { Option } = Select;
 const resid = '619609481002';
 const status = ['全部', '待转正', '转正中', '已转正'];
+
+/**
+ * 试用期管理————HR
+ */
 class HRProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
-    selectedRecord: {},
+    selectedRecord: {}, //选中的记录
     desktop: null,
     mode: 'inline',
     theme: 'light',
@@ -30,6 +34,7 @@ class HRProbation extends React.Component {
     collapsed: false,
     selectedStatus: '全部'
   };
+
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
@@ -37,130 +42,22 @@ class HRProbation extends React.Component {
       desktop
     });
   };
+
   onSelect = e => {
     this.setState({
       selectKey: e.key
     });
   };
+
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
   };
-  renderContent = () => {
-    let selectKey = this.state.selectKey;
-    const cmswhere =
-      this.state.selectedStatus === '全部'
-        ? ''
-        : `regStatus = '${this.state.selectedStatus}'`;
-    switch (selectKey) {
-      case '1':
-        return (
-          <div id="hr-probation">
-            {this.state.isShowTable ? (
-              <div style={{ height: '100vh' }}>
-                <TableData
-                  key="1"
-                  resid={resid}
-                  subtractH={240}
-                  hasAdd={false}
-                  hasRowView={false}
-                  hasRowDelete={false}
-                  hasRowEdit={false}
-                  hasDelete={false}
-                  hasModify={false}
-                  hasRowModify={false}
-                  hasRowSelection={true}
-                  actionBarWidth={100}
-                  wrappedComponentRef={element => (this.tableDataRef = element)}
-                  refTargetComponentName="TableData"
-                  cmswhere={cmswhere}
-                  customRowBtns={[
-                    (record, btnSize) => (
-                      <Button
-                        type="primary"
-                        onClick={this.onCustomViewBtnClick(record)}
-                        size={btnSize}
-                      >
-                        查看
-                      </Button>
-                    )
-                  ]}
-                  actionBarExtra={this.actionBarExtra(
-                    this.state.selectedStatus
-                  )}
-                />
-              </div>
-            ) : (
-              <ProbationForms
-                memberId={this.state.selectedRecord.memberId}
-                employedId={this.state.selectedRecord.C3_625051545181}
-                goBack={this.goBack}
-                roleName="HR"
-                setIsShowTable={this.setIsShowTable}
-              />
-            )}
-          </div>
-        );
-      case '2':
-        return (
-          <div style={{ height: '100vh' }}>
-            <TableData
-              key="2"
-              resid="619268906732"
-              subtractH={240}
-              hasAdd={true}
-              hasRowView={false}
-              hasRowDelete={true}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={true}
-              hasRowSelection={false}
-            />
-          </div>
-        );
-      case '3':
-        return (
-          <div style={{ height: '100vh' }}>
-            <TableData
-              key="3"
-              resid="619281130628"
-              subtractH={240}
-              hasAdd={true}
-              hasRowView={false}
-              hasRowDelete={true}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={true}
-              hasRowSelection={false}
-            />
-          </div>
-        );
-      case '4':
-        return (
-          <div style={{ height: '100vh' }}>
-            <TableData
-              resid="622983009643"
-              key="4"
-              subtractH={240}
-              hasAdd={true}
-              hasRowView={false}
-              hasRowDelete={true}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={true}
-              hasRowSelection={false}
-            />
-          </div>
-        );
-      default:
-        return '';
-    }
-  };
-  // 点击下拉框
+
+  /**
+   * 点击下拉框
+   */
   handleNotice = async (record, selectValue) => {
     if (record.selectedRowKeys.length) {
       let res;
@@ -215,7 +112,10 @@ class HRProbation extends React.Component {
       onCancel() {}
     });
   };
-  // 点击退回申请
+
+  /**
+   * 点击退回申请
+   */
   handleApply = async record => {
     if (record.selectedRowKeys.length) {
       this.setState({
@@ -252,7 +152,9 @@ class HRProbation extends React.Component {
     }
   };
 
-  // 同意转正
+  /**
+   * 同意转正
+   */
   hadleApproval = async record => {
     if (record.selectedRowKeys.length) {
       try {
@@ -370,6 +272,120 @@ class HRProbation extends React.Component {
 
   setIsShowTable = isShowTable => {
     this.setState({ isShowTable });
+  };
+
+  renderContent = () => {
+    let selectKey = this.state.selectKey;
+    const cmswhere =
+      this.state.selectedStatus === '全部'
+        ? ''
+        : `regStatus = '${this.state.selectedStatus}'`;
+    switch (selectKey) {
+      case '1':
+        return (
+          <div id="hr-probation">
+            {this.state.isShowTable ? (
+              <div style={{ height: '100vh' }}>
+                <TableData
+                  key="1"
+                  resid={resid}
+                  subtractH={240}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={true}
+                  actionBarWidth={100}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  cmswhere={cmswhere}
+                  customRowBtns={[
+                    (record, btnSize) => (
+                      <Button
+                        type="primary"
+                        onClick={this.onCustomViewBtnClick(record)}
+                        size={btnSize}
+                      >
+                        查看
+                      </Button>
+                    )
+                  ]}
+                  actionBarExtra={this.actionBarExtra(
+                    this.state.selectedStatus
+                  )}
+                />
+              </div>
+            ) : (
+              <ProbationForms
+                memberId={this.state.selectedRecord.memberId}
+                employedId={this.state.selectedRecord.C3_625051545181}
+                goBack={this.goBack}
+                roleName="HR"
+                setIsShowTable={this.setIsShowTable}
+              />
+            )}
+          </div>
+        );
+      case '2':
+        return (
+          <div style={{ height: '100vh' }}>
+            <TableData
+              key="2"
+              resid="619268906732"
+              subtractH={240}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={true}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={true}
+              hasRowSelection={false}
+            />
+          </div>
+        );
+      case '3':
+        return (
+          <div style={{ height: '100vh' }}>
+            <TableData
+              key="3"
+              resid="619281130628"
+              subtractH={240}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={true}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={true}
+              hasRowSelection={false}
+            />
+          </div>
+        );
+      case '4':
+        return (
+          <div style={{ height: '100vh' }}>
+            <TableData
+              resid="622983009643"
+              key="4"
+              subtractH={240}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={true}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={true}
+              hasRowSelection={false}
+            />
+          </div>
+        );
+      default:
+        return '';
+    }
   };
   render() {
     const { spinning, desktop, selectKey, collapsed, mode, theme } = this.state;
