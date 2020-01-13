@@ -3,6 +3,7 @@ import {Spin,Button,Input,Select,DatePicker,InputNumber,message } from 'antd';
 import http from 'Util20/api';
 import './PersonInfoInFile.less';
 import moment from 'moment';
+import { isString } from 'util';
 
 /**
  * 档案管理内的个人信息
@@ -131,7 +132,7 @@ class PersonInfoInFile extends React.Component {
 
           C3_464175890357:'',//有亲友在菲尼撒任职
 
-          C3_464175890357:'',//亲友姓名1
+          C3_464276899657:'',//亲友姓名1
           C3_464277095370:'',//亲友姓名2
           C3_464276983864:'',//亲友关系1
           C3_464277151777:'',//亲友关系2
@@ -141,9 +142,10 @@ class PersonInfoInFile extends React.Component {
           C3_464184775908:'',//简答1=备注1
           C3_464184788901:'',//简答2=备注2
           C3_464277267009:'',//简答3=备注3
-          C3_551806597769:'',//犯罪记录
+          C3_550784878452:'',//犯罪记录
 
-          C3_544732637200:null,//电子签名
+          C3_632229320322:null,//电子签名
+          C3_632229287467:'N'//归档
         }
       };
       if(props.edit){
@@ -157,6 +159,7 @@ class PersonInfoInFile extends React.Component {
     componentDidMount(){
       this.getData(this.state.memberId);
     }
+    // 提交前验证
     judge=()=>{
       var str=''
       if(!this.state.data.C3_464172127930){
@@ -269,33 +272,104 @@ class PersonInfoInFile extends React.Component {
           cmswhere: str
         });
         var obj = res.data[0];
-        obj.C3_464172321287=moment(obj.C3_464172321287, 'YYYY-MM-DD');
+        console.log('org',obj)
+        console.log(isString(obj.C3_464173535280))
+        // 格式化时间
+        if(isString(obj.C3_464172321287)){
+          obj.C3_464172321287=moment(obj.C3_464172321287 );
+        }
+        if(isString(obj.C3_464173481804)){
+          obj.C3_464173481804=moment(obj.C3_464173481804 );
 
-        obj.C3_464173481804=moment(obj.C3_464173481804, 'YYYY-MM-DD');
-        obj.C3_464173629942=moment(obj.C3_464173629942, 'YYYY-MM-DD');
+        }
+        if(isString(obj.C3_464173629942)){
+          obj.C3_464173629942=moment(obj.C3_464173629942 );
 
-        obj.C3_464173514735=moment(obj.C3_464173514735, 'YYYY-MM-DD');
-        obj.C3_464173639392=moment(obj.C3_464173639392, 'YYYY-MM-DD');
+        }
+        if(isString(obj.C3_464173514735)){
+          obj.C3_464173514735=moment(obj.C3_464173514735 );
 
-        obj.C3_464173524810=moment(obj.C3_464173524810, 'YYYY-MM-DD');
-        obj.C3_464173646851=moment(obj.C3_464173646851, 'YYYY-MM-DD');
+        }
+        if(isString(obj.C3_464173639392)){
+          obj.C3_464173639392=moment(obj.C3_464173639392 );
 
-        obj.C3_464173535280=moment(obj.C3_464173535280, 'YYYY-MM-DD');
-        obj.C3_464173667723=moment(obj.C3_464173667723, 'YYYY-MM-DD');
+        }
+        if(isString(obj.C3_464173524810)){
+          obj.C3_464173524810=moment(obj.C3_464173524810 );
 
-        obj.C3_464173535280=moment(obj.C3_464174451732, 'YYYY-MM-DD');
-        obj.C3_464174461446=moment(obj.C3_464174461446, 'YYYY-MM-DD');
-        obj.C3_464174473180=moment(obj.C3_464174473180, 'YYYY-MM-DD');
-        obj.C3_464174481889=moment(obj.C3_464174481889, 'YYYY-MM-DD');
-        obj.C3_464174535762=moment(obj.C3_464174535762, 'YYYY-MM-DD');
-        obj.C3_464174605218=moment(obj.C3_464174605218, 'YYYY-MM-DD');
-        obj.C3_464174545465=moment(obj.C3_464174545465, 'YYYY-MM-DD');
-        obj.C3_464174895167=moment(obj.C3_464174895167, 'YYYY-MM-DD');
-        obj.C3_464174554658=moment(obj.C3_464174554658, 'YYYY-MM-DD');
-        obj.C3_464174904208=moment(obj.C3_464174904208, 'YYYY-MM-DD');
-        obj.C3_464174563152=moment(obj.C3_464174563152, 'YYYY-MM-DD');
-        obj.C3_464174917676=moment(obj.C3_464174917676, 'YYYY-MM-DD');
+        }
+        if(isString(obj.C3_464173646851)){
+          obj.C3_464173646851=moment(obj.C3_464173646851 );
 
+        }
+        if(isString(obj.C3_464173535280)){
+          obj.C3_464173535280=moment(obj.C3_464173535280 );
+
+        }
+        if(isString(obj.C3_464173667723)){
+          obj.C3_464173667723=moment(obj.C3_464173667723 );
+
+        }
+        if(isString(obj.C3_464174451732)){
+          obj.C3_464174451732=moment(obj.C3_464174451732 );
+
+        }
+        if(isString(obj.C3_464174461446)){
+          obj.C3_464174461446=moment(obj.C3_464174461446 );
+
+        }
+        if(isString(obj.C3_464174473180)){
+          obj.C3_464174473180=moment(obj.C3_464174473180 );
+
+        }
+        if(isString(obj.C3_464174481889)){
+          obj.C3_464174481889=moment(obj.C3_464174481889 );
+
+        }
+        if(isString(obj.C3_464174535762)){
+          obj.C3_464174535762=moment(obj.C3_464174535762 );
+
+        }
+        if(isString(obj.C3_464174605218)){
+          obj.C3_464174605218=moment(obj.C3_464174605218 );
+
+        }
+        if(isString(obj.C3_464174545465)){
+          obj.C3_464174545465=moment(obj.C3_464174545465 );
+
+        }
+        if(isString(obj.C3_464174895167)){
+          obj.C3_464174895167=moment(obj.C3_464174895167 );
+
+        }
+        if(isString(obj.C3_464174554658)){
+          obj.C3_464174554658=moment(obj.C3_464174554658 );
+
+        }
+        if(isString(obj.C3_464174904208)){
+          obj.C3_464174904208=moment(obj.C3_464174904208 );
+
+        }
+        if(isString(obj.C3_464174563152)){
+          obj.C3_464174563152=moment(obj.C3_464174563152 );
+
+        }
+        if(isString(obj.C3_464174917676)){
+          obj.C3_464174917676=moment(obj.C3_464174917676 );
+
+        }
+        // 是否有亲属
+        if(obj.C3_464175890357==0){
+         this.setState({hasRelated:false});
+          
+        }else{
+          this.setState({hasRelated:true});
+
+        }
+        // 已归档的场合不可编辑
+        if(obj.C3_632229287467=='Y'){
+          this.setState({edit:false});
+        }
         this.setState({data:obj,loading:false});
         console.log(res);
       } catch (err) {
@@ -305,16 +379,25 @@ class PersonInfoInFile extends React.Component {
         console.error(err.message);
       }
     }
-    onSubmit = async() =>{
-      var j=this.judge();
+    onSubmit = async(value) =>{
+      // var j=this.judge();
+      var j=true;
       if(j==false){
         return false;
       }else{
+        // 判断归档、撤销归档、保存
+        var obj=this.state.data;
+        if(value=='sub'){
+          obj.C3_632229287467='Y';
+        }else{
+          obj.C3_632229287467='';
+        }
+        console.log('提交前',obj)
        let res;
       try {
         res = await http().modifyRecords({
-          resid: 612530416359,
-          data:[this.state.data]
+          resid: 464171754083,
+          data:[obj]
         });
         this.setState({loading:false});
         message.success('提交成功');
@@ -802,7 +885,7 @@ class PersonInfoInFile extends React.Component {
           <th className={this.state.data.C3_464175727918?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
             <th className={this.state.data.C3_464175750587?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
             <th className={this.state.data.C3_464175797109?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>手机号码</th>
-            <th className={this.state.data.C3_464175768379?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>现居住地址</th>
+            {/* <th className={this.state.data.C3_464175768379?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>现居住地址</th> */}
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>电话</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>邮箱</th>
           </tr>
@@ -813,8 +896,8 @@ class PersonInfoInFile extends React.Component {
               <Input value={this.state.data.C3_464175750587} onChange={(v)=>{this.onChange('C3_464175750587',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
             <td style={{height:'24px',lineHeight:'24px' }}>
               <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175797109} onChange={(v)=>{this.onChange('C3_464175797109',v)}} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'24px',lineHeight:'24px' }}>
-              <Input value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
+            {/* <td style={{height:'24px',lineHeight:'24px' }}> */}
+              {/* <Input value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td> */}
             <td style={{height:'24px',lineHeight:'24px' }}>
               <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175781611} onChange={(v)=>{this.onChange('C3_464175781611',v)}}  size='small' style={{width:'100%'}}/></td>
             <td style={{height:'24px',lineHeight:'24px' }}>
@@ -846,8 +929,24 @@ class PersonInfoInFile extends React.Component {
             <td style={{height:'24px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
           </tr> */}
         </table>
+        <div style={{width:'100%',marginTop:'16px'}}>
+            <b className={this.state.data.C3_464175768379?'':'alert'} style={{display:'inline-block',width:'144px',textAlign:'right'}}>紧急联系人现住地址：</b>
+            <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} size='small' style={{width:'calc(100% - 144px)'}}/>
+          </div>
         <div style={{marginTop:'16px',marginBottom:'16px'}}>
-      <input style={this.state.edit?null:{display:'none'}} type='checkbox' value={this.state.hasRelated} onChange={()=>{this.setState({hasRelated:(!this.state.hasRelated)});}}/><span style={{marginLeft:'8px'}}>有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
+      <input style={this.state.edit?null:{display:'none'}} type='checkbox' value={this.state.hasRelated} onChange={()=>{
+        var v=!this.state.hasRelated;
+        v=v?1:0;
+        this.setState({
+      data: {
+        ...this.state.data,
+        C3_464175890357: v
+      }
+      
+    });
+    this.setState({hasRelated:(!this.state.hasRelated)});
+    
+    }}/><span style={{marginLeft:'8px'}}>有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
        </div>
        {this.state.hasRelated?
         <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
@@ -858,7 +957,7 @@ class PersonInfoInFile extends React.Component {
         </tr>
         <tr>
           <td style={{height:'24px',lineHeight:'24px' }}>
-            <Input value={this.state.data.C3_464175890357} onChange={(v)=>{this.onChange('C3_464175890357',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
+            <Input value={this.state.data.C3_464276899657} onChange={(v)=>{this.onChange('C3_464276899657',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
           <td style={{height:'24px',lineHeight:'24px' }}>
             <Input value={this.state.data.C3_464276983864} onChange={(v)=>{this.onChange('C3_464276983864',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
           <td style={{height:'24px',lineHeight:'24px' }}>
@@ -894,7 +993,7 @@ class PersonInfoInFile extends React.Component {
       <div className={this.state.data.C3_464277267009?'':'alert'}  style={{marginTop:'16px',marginBottom:'8px'}}>3.与前任雇主是否已经办妥离职手续，是否签有竞业限制协议，如有，请详细说明。</div>
       <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v)=>{this.onChange('C3_464277267009',v.target.value)}} style={{resize:'none',height:'72px'}}/>
       <div style={{marginTop:'16px',marginBottom:'8px'}}>4.本人最近两年是否有违法犯罪记录或者失信行为记录？</div>
-      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_551806597769} onChange={(v)=>{this.onChange('C3_551806597769',v.target.value)}} style={{resize:'none',height:'72px'}}/>
+      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_550784878452=='N'?'否':this.state.data.C3_550784878452} onChange={(v)=>{this.onChange('C3_550784878452',v.target.value)}} style={{resize:'none',height:'72px'}}/>
        </div>
        <div className='page' style={{
          position:'relative',
@@ -910,8 +1009,8 @@ class PersonInfoInFile extends React.Component {
         &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br/>
          </p>
          <div style={{marginTop:'24px'}}>
-           {this.state.data.C3_544732637200?
-           <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_544732637200}/>
+           {this.state.data.C3_632229320322?
+           <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_632229320322}/>
            :<span style={{color:'red'}}>无电子签名</span>}
           </div>
         <div style={{position:'absolute',bottom:'40px',right:'24px'}}>
@@ -928,9 +1027,12 @@ class PersonInfoInFile extends React.Component {
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
-          <Button onClick={this.onSubmit}>提交</Button>
-          <Button type='primary' style={{marginLeft:'8px'}}onClick={this.onSubmit}>归档</Button>
-          {this.props.private?null:<Button style={{marginLeft:'8px'}} onClick={this.onSubmit}>撤销归档</Button>}
+          {this.state.C3_632229287467?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
+          {this.state.C3_632229287467?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
+          {this.props.private?null:(
+            this.state.C3_632229287467?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
+          )
+          }
         </footer>
       </Spin>
       </div>
