@@ -145,7 +145,7 @@ class PersonInfoInFile extends React.Component {
           C3_550784878452:'',//犯罪记录
 
           C3_632229320322:null,//电子签名
-          C3_632229287467:'N'//归档
+          C3_464700452077:'N'//归档
         }
       };
       if(props.edit){
@@ -367,7 +367,7 @@ class PersonInfoInFile extends React.Component {
 
         }
         // 已归档的场合不可编辑
-        if(obj.C3_632229287467=='Y'){
+        if(obj.C3_464700452077=='Y'){
           this.setState({edit:false});
         }
         this.setState({data:obj,loading:false});
@@ -388,9 +388,9 @@ class PersonInfoInFile extends React.Component {
         // 判断归档、撤销归档、保存
         var obj=this.state.data;
         if(value=='sub'){
-          obj.C3_632229287467='Y';
+          obj.C3_464700452077='Y';
         }else{
-          obj.C3_632229287467='';
+          obj.C3_464700452077='';
         }
         console.log('提交前',obj)
        let res;
@@ -1027,10 +1027,10 @@ class PersonInfoInFile extends React.Component {
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
-          {this.state.C3_632229287467?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {this.state.C3_632229287467?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
+          {this.state.C3_464700452077?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
+          {this.state.C3_464700452077?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
           {this.props.private?null:(
-            this.state.C3_632229287467?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
+            this.state.C3_464700452077?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
           )
           }
         </footer>

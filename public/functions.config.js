@@ -1923,3 +1923,8 @@ window[631968828634] = {
   name:'PersonInfoPrivate',
   title:'个人档案'
 };
+
+window[632244542306] = {
+  name:'IDLTransfer',
+  title:'IDL调岗'
+};

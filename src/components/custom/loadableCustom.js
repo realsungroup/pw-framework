@@ -661,3 +661,9 @@ export const PersonInfoPrivate = Loadable({
     return minLoading;
   }
 });
+export const IDLTransfer = Loadable({
+  loader: () => import('./IDLTransfer'),
+  loading() {
+    return minLoading;
+  }
+});

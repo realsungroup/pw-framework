@@ -141,3 +141,4 @@ export { HeadCount } from '../components/custom/loadableCustom';
 export { AttendanceRecord } from '../components/custom/loadableCustom';
 export { PersonInfoManager } from '../components/custom/loadableCustom';
 export { PersonInfoPrivate } from '../components/custom/loadableCustom';
+export { IDLTransfer } from '../components/custom/loadableCustom';
