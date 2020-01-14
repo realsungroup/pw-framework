@@ -13,12 +13,16 @@ class PersonInfoInFile extends React.Component {
 
     constructor(props) {
       // resid:612530416359
-
+      var baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
       super(props);
       var memberId = this.props.memberId;
       console.log(memberId)
 
       this.state = {
+        baseURL:baseURL,
         edit:false,
         loading:false,
         hasRelated:false,
@@ -267,7 +271,7 @@ class PersonInfoInFile extends React.Component {
         str= `C3_464172117706 = '${memberId}'`
       }
       try {
-        res = await http().getTable({
+        res = await http({baseURL:this.state.baseURL}).getTable({
           resid: 464171754083,
           cmswhere: str
         });
@@ -371,7 +375,6 @@ class PersonInfoInFile extends React.Component {
           this.setState({edit:false});
         }
         this.setState({data:obj,loading:false});
-        console.log(res);
       } catch (err) {
 
         this.setState({loading:false});
@@ -390,12 +393,12 @@ class PersonInfoInFile extends React.Component {
         if(value=='sub'){
           obj.C3_464700452077='Y';
         }else{
-          obj.C3_464700452077='';
+          obj.C3_464700452077='N';
         }
         console.log('提交前',obj)
        let res;
       try {
-        res = await http().modifyRecords({
+        res = await http({baseURL:this.state.baseURL}).modifyRecords({
           resid: 464171754083,
           data:[obj]
         });
@@ -1027,12 +1030,12 @@ class PersonInfoInFile extends React.Component {
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
-          {this.state.C3_464700452077?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {this.state.C3_464700452077?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
-          {this.props.private?null:(
-            this.state.C3_464700452077?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
+          {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
+          {/* {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}   */}
+          {/* {this.props.private?null:(
+            this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
           )
-          }
+          } */}
         </footer>
       </Spin>
       </div>

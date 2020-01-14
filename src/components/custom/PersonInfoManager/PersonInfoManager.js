@@ -1,6 +1,6 @@
 import React from 'react';
 import {Spin,Button,Icon} from 'antd';
-import http from 'Util20/api';
+// import http from 'Util20/api';
 import './PersonInfoManager.less';
 import PersonInfoInFile from '../PersonInfoInFile/';
 import TableData from '../../common/data/TableData';
@@ -12,16 +12,21 @@ class PersonInfoManager extends React.Component {
 
     constructor(props) {
       // resid:612530416359
+      var baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+      console.log('baseURL',baseURL)
 
       super(props);
       this.state = {
         showDetail:false,
-        selectedRecord:''
+        selectedRecord:'',
+        baseURL:baseURL
       }
      
     } 
     componentDidMount(){
-
     }
    
 
@@ -31,13 +36,15 @@ class PersonInfoManager extends React.Component {
       <TableData
                 resid={464171754083}
                 hasRowView={false}
+                baseURL={this.state.baseURL}
                 hasAdd={false}
-                hasRowSelection={false}
+                hasRowSelection={true}
                 hasRowDelete={false}
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
                 style={{ height: '100%' }}
+                hasBeBtns={true}
                 customRowBtns={[
                   (record, btnSize) => {
                     return (
