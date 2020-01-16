@@ -3,6 +3,7 @@ import {Steps,Button,Icon,Select,Input,Tabs,Spin,TreeSelect,Modal, DatePicker} f
 import './IDLTransfer.less';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
+import moment from 'moment';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -16,7 +17,7 @@ const { Step } = Steps;
       selectedRecord:[],//选中的人
       hint:'关于张三的转岗申请已经提交成功。',//提交结果提示
       page:'1',//tab页
-      result:'error',//是否提交成功
+      result:'success',//是否提交成功
       selection:'1',//申请记录筛选选择
       cms:`C3_464172157606 = '女'`,//申请记录筛选条件
       checkPoint:[['原部门主管','张三'],['原部门经理','李四']],//需要审批的节点
@@ -39,16 +40,25 @@ const { Step } = Steps;
       bucode:'',
       changeType:'',//变更类型
       activeDate:'',//生效日期
-      depaSele:{},//原部门的一级部门二级部门三级部门四级部门的数据
-      toSub:{
-
-      }//要提交的数据
+      depaSele:[{
+        C3_461011945566:'',
+        C3_461011949004:'',
+        C3_461011961036:'',
+        C3_461011968036:''
+      }],//原部门的一级部门二级部门三级部门四级部门的数据
     };
    }
    componentDidMount(){
      this.getLv();
      this.getDepartment('100');
    }
+   //获取申请人信息
+   getAppInfo=()=>{
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var usercode=userInfo.UserInfo.EMP_USERCODE;
+    return usercode;
+   }
+   //获取级别信息
    getLv=async()=>{
      this.setState({loading:true});
     var res='';
@@ -219,6 +229,46 @@ const { Step } = Steps;
   }
   // 向后台提交数据
    subData = async() =>{
+     this.setState({loading:true});
+      var toSub=[];
+      var n=0;
+      var date=this.state.activeDate;
+      date=moment().format('YYYY-MM-DD');
+      var usercode = this.getAppInfo();
+      while (n<this.state.selectMem.length){
+        var obj={
+          effortDate:date,//生效日期
+          changeReason:this.state.changeType,//变动类型
+          nDepartCode:this.state.newDepa.DEP_ID,//变动后部门编号
+          nDept_code:this.state.proId,//变动后项目代码
+          nDriectorCode:this.state.newSuper.C3_305737857578,//变动后主管编号
+          nJobCode:this.state.job.C3_602347243263,//变动后职务编号
+          nLevel:this.state.lv,//变动后级别
+          nBuCode:this.state.bucode,//变动后bucode
+
+          personID:this.state.selectMem[n].C3_305737857578,//人员编号
+          applyPersonId:usercode,//申请人编号
+
+          subApply:'Y',//提交状态
+        }
+        toSub.push(obj);
+        n++;
+      }
+
+      var res;
+      try{
+        res = await http().addRecords({
+          resid: 632255761674,
+          data:toSub
+        });
+        this.setState({loading:false,result:'success'});
+
+        console.log(res);
+      }catch(e){
+        this.setState({loading:false,result:'error'});
+        console.log(e)
+      }
+      console.log(toSub)
       this.setState({step:2,isSub:true})
    }
   //  翻tab
@@ -238,7 +288,7 @@ const { Step } = Steps;
     var arr=[this.state.depaV];
     this.state.depaOrg.map(item => {
       if (arr.includes(item.DEP_ID)) {
-        data.push(item);
+        data2.push(item);
       }
     });console.log(data2)
     this.setState({selectMem:data,step:1,depaSele:data2})
@@ -315,6 +365,7 @@ const { Step } = Steps;
             }
             {
               this.state.step==1?(
+                <Spin spinning={this.state.loading}>
               <div style={{width:'100%',height:'calc(100vh - 156px)',position:'relative'}} className='load'>
                 
                 <div className='form'>
@@ -332,12 +383,12 @@ const { Step } = Steps;
                   <br/>
                   <b>变更类型：</b>
                   <span style={{width:'auto'}}>
-                  <Select placeholder='请选择变更类型' style={{ width: 240 }} onChange={(v)=>{this.setState({changeType:v})}}>
+                  <Select placeholder='请选择变更类型' style={{ width: 240 }} value={this.state.changeType} onChange={(v)=>{this.setState({changeType:v})}}>
 
-                    <Option value='汇报关系' key='0'>汇报关系</Option>
-                    <Option value='部门变更' key='1'>部门变更</Option>
-                    <Option value='部门变更' key='2'>部门变更</Option>
-                    <Option value='部门变更' key='3'>部门变更</Option>
+                    <Option value='部门变更' key='0'>部门变更</Option>
+                    <Option value='汇报关系变更' key='1'>汇报关系变更</Option>
+                    <Option value='价格变更' key='2'>价格变更</Option>
+                    <Option value='职位变更' key='3'>职位变更</Option>
 
 
                   </Select>
@@ -376,7 +427,7 @@ const { Step } = Steps;
 
                   <b>变更后级别：</b>
                   <span style={{width:'auto'}}>
-                  <Select placeholder='请选择级别' style={{ width: 240 }} onChange={(v)=>{this.setState({lv:v})}}>
+                  <Select placeholder='请选择级别' style={{ width: 240 }} value={this.state.lv} onChange={(v)=>{this.setState({lv:v})}}>
                     {this.state.lvList.map((item)=>{return(
                     <Option value={item.value} key={item.key}>{item.value}</Option>
 
@@ -392,10 +443,10 @@ const { Step } = Steps;
                 <div className='memberList'>
                   <h3>变更前部门：</h3>
                   <div>
-                    {/* <b>一级部门：</b><span>{this.state.depaSele?this.state.depaSele[0].C3_461011945566:'- -'}</span>
-                    <b>二级部门：</b><span>{this.state.depaSele?this.state.depaSele[0].C3_461011984896:'- -'}</span>
-                    <b>三级部门：</b><span>{this.state.depaSele?this.state.depaSele[0].C3_461011985099:'- -'}</span>
-                    <b>四级部门：</b><span>{this.state.depaSele?this.state.depaSele[0].C3_461011985365:'- -'}</span> */}
+                    <b>一级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984661:'- -'}</span>
+                    <b>二级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984896:'- -'}</span>
+                    <b>三级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985099:'- -'}</span>
+                    <b>四级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985365:'- -'}</span>
                   </div>
                   <h3>待变更人员：<b>{this.state.selectMem.length}</b></h3>
                   <ul>
@@ -519,7 +570,9 @@ const { Step } = Steps;
                   <Button style={this.state.isSub?{}:{display:'none'}} type='primary' onClick={()=>this.setState({step:2})}>下一步</Button>
                   <Button style={!this.state.isSub?{}:{display:'none'}} type='primary' onClick={()=>this.subData()}>提交</Button>
                 </footer>
-              </div>):null
+              </div>
+              </Spin>
+              ):null
             }
             {
               this.state.step==2?(
@@ -529,16 +582,16 @@ const { Step } = Steps;
                   }
                  
                   <h2>{this.state.hint}</h2>
-                  {this.state.result=='success'?(<>
+                  {/* {this.state.result=='success'?(<>
                   <p>本次申请需要以下人员审批：</p>
                   <ul>
                     {this.state.checkPoint.map(item =>{return(
                     <li><b>{item[0]}：</b><span>{item[1]}</span></li>
                      ) })}
                   </ul>
-              </>):null}
+              </>):null} */}
                   {this.state.result=='success'?<><Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,isSub:false})}}>再申请一人</Button>
-                  <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,page:'2',isSub:false})}} type='primary'>查看申请记录</Button></>:<>
+                  <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,page:'2',isSub:false})}} type='primary'>查看审批记录</Button></>:<>
                   <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:1})}}>返回查看</Button>
                   <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:2})}} type='primary'>再试一次</Button>
                   </>}
@@ -548,7 +601,7 @@ const { Step } = Steps;
             }
             </div>
           </TabPane>
-          <TabPane tab="查看申请记录" key="2">
+          <TabPane tab="查看审批记录" key="2">
             <div className='wrap' >
               <div className='sider'>
                 <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`C3_464172157606 = '女'`})}}>审核中</p>
@@ -558,8 +611,8 @@ const { Step } = Steps;
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'100%'}}>
               <TableData
-                  resid={464171754083}
-                  cmswhere={this.state.cms=='all'?'':this.state.cms}
+                  resid={632255761674}
+                  // cmswhere={this.state.cms=='all'?'':this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
                   hasRowSelection={false}
@@ -568,7 +621,7 @@ const { Step } = Steps;
                   hasModify={false}
                   hasDelete={false}
                   style={{ height: '100%'}}
-                  hasRowView={true}
+                  hasRowView={false}
                 />
                 </div>
               
