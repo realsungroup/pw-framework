@@ -244,7 +244,7 @@ const { Step } = Steps;
           nDepartCode:this.state.newDepa.DEP_ID,//变动后部门编号
           nDept_code:this.state.proId,//变动后项目代码
           nDriectorCode:this.state.newSuper.C3_305737857578,//变动后主管编号
-          nJobCode:this.state.job.C3_602347243263,//变动后职务编号
+          nJobCode:this.state.job.C3_417821542057,//变动后职务编号
           nLevel:this.state.lv,//变动后级别
           nBuCode:this.state.bucode,//变动后bucode
 
@@ -421,7 +421,7 @@ const { Step } = Steps;
                   <br/>
 
                   <b>变更后职位：</b>
-                  <span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.job?(this.state.job.C3_602347243459+this.state.job.C3_612377399102+' - '+this.state.job.C3_602347243263):<span style={{color:'#f5222d'}}>请点击右侧按钮选择职位</span>}</span>
+                  <span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.job?(this.state.job.C3_417736870556+'/'+this.state.job.C3_417736857223+' - '+this.state.job.C3_417821542057):<span style={{color:'#f5222d'}}>请点击右侧按钮选择职位</span>}</span>
                   <Button icon="search" onClick={()=>this.setState({searchJobV:true})}>选择职位</Button>
                   
                   <br/>
@@ -556,7 +556,7 @@ const { Step } = Steps;
                 >
                   <div style={{width:'100%',height:'calc(80vh - 104px)',position:'relative'}}>
                    <TableData
-                  resid={602348115218}
+                  resid={417736675691}
                   hasRowView={false}
                   subtractH={220}
                   hasAdd={false}
@@ -634,6 +634,7 @@ const { Step } = Steps;
                   hasDelete={false}
                   style={{ height: '100%'}}
                   hasRowView={true}
+                  
                 />
                 </div>
               
