@@ -149,7 +149,8 @@ class PersonInfoInFile extends React.Component {
           C3_550784878452:'',//犯罪记录
 
           C3_632229320322:null,//电子签名
-          C3_464700452077:'N'//归档
+          C3_464700452077:'N',//提交
+          C3_471002935941:'N'//归档
         }
       };
       if(props.edit){
@@ -364,9 +365,17 @@ class PersonInfoInFile extends React.Component {
           this.setState({hasRelated:true});
 
         }
-        // 已归档的场合不可编辑
+        // 已提交的场合个人不可编辑
         if(obj.C3_464700452077=='Y'){
+          if(this.props.private){
+            this.setState({edit:false});
+
+          }
+        }
+        // 已归档的场合不可编辑
+        if(obj.C3_471002935941=='Y'){
           this.setState({edit:false});
+
         }
         this.setState({data:obj,loading:false});
       } catch (err) {
@@ -385,9 +394,10 @@ class PersonInfoInFile extends React.Component {
         // 判断归档、撤销归档、保存
         var obj=this.state.data;
         if(value=='sub'){
+          obj.C3_471002935941='Y';
+        }
+        if(value=='sav'){
           obj.C3_464700452077='Y';
-        }else{
-          obj.C3_464700452077='N';
         }
         console.log('提交前',obj)
        let res;
@@ -1025,7 +1035,8 @@ class PersonInfoInFile extends React.Component {
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
           {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
+          {this.state.data.C3_471002935941=='Y'?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
+          {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  
           {/* {this.props.private?null:(
             this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
           )

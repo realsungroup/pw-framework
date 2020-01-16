@@ -19,7 +19,7 @@ const { Step } = Steps;
       page:'1',//tab页
       result:'success',//是否提交成功
       selection:'1',//申请记录筛选选择
-      cms:`C3_464172157606 = '女'`,//申请记录筛选条件
+      cms:`status = '审核中'`,//申请记录筛选条件
       checkPoint:[['原部门主管','张三'],['原部门经理','李四']],//需要审批的节点
       isSub:false,//是否已经提交过申请
       loading:false,
@@ -46,6 +46,8 @@ const { Step } = Steps;
         C3_461011961036:'',
         C3_461011968036:''
       }],//原部门的一级部门二级部门三级部门四级部门的数据
+      changeReason:'',//变动原因,
+      depaFilter:'菲尼萨光电通讯科技(无锡)有限公司',//选择部门时的公司筛选
     };
    }
    componentDidMount(){
@@ -248,7 +250,7 @@ const { Step } = Steps;
 
           personID:this.state.selectMem[n].C3_305737857578,//人员编号
           applyPersonId:usercode,//申请人编号
-
+          changeReason:this.state.changeReason,//变动原因
           subApply:'Y',//提交状态
         }
         toSub.push(obj);
@@ -439,6 +441,10 @@ const { Step } = Steps;
 
                   <b>bucode：</b>
                   <Input value={this.state.bucode} onChange={(v)=>{this.setState({bucode:v.target.value})}}/>
+                  <br/>
+                  <br/>
+                    <b style={{width:'auto'}}>变动原因：({this.state.changeReason.length}/500字)</b>
+                  <Input.TextArea maxLength={500} style={{resize:'none'}} value={this.state.changeReason} onChange={(v)=>{this.setState({changeReason:v.target.value})}}/>
                 </div>
                 <div className='memberList'>
                   <h3>变更前部门：</h3>
@@ -479,10 +485,16 @@ const { Step } = Steps;
                   width={'80vw'}
                   height={'80vh'}
                 >
+                   <Select placeholder='请选择级别' style={{ width: 240 }} value={this.state.depaFilter} onChange={(v)=>{this.setState({depaFilter:v})}}>
+                   <Option value='菲尼萨光电通讯科技(无锡)有限公司' key='0'>菲尼萨光电通讯科技(无锡)有限公司</Option>
+                    <Option value='菲尼萨光电通讯(上海)有限公司' key='1'>菲尼萨光电通讯(上海)有限公司</Option>
+                  </Select>
+                  <br/>
+                  <br/>
                   <div style={{width:'100%',height:'calc(80vh - 104px)',position:'relative'}}>
                    <TableData
                   resid={632327119162}
-                  cmswhere={`C3_419339113187 != ''`}
+                  cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
                   hasRowView={false}
                   subtractH={220}
                   hasAdd={false}
@@ -604,15 +616,15 @@ const { Step } = Steps;
           <TabPane tab="查看审批记录" key="2">
             <div className='wrap' >
               <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`C3_464172157606 = '女'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2'})}}>被退回</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3'})}}>已通过</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`status = '审核中'`})}}>审核中</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '被拒绝'`})}}>被拒绝</p>
+                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`status = '已通过'`})}}>已通过</p>
                 <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p>
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'100%'}}>
               <TableData
-                  resid={632255761674}
-                  // cmswhere={this.state.cms=='all'?'':this.state.cms}
+                  resid={632314958317}
+                  cmswhere={this.state.cms=='all'?'':this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
                   hasRowSelection={false}
@@ -621,7 +633,7 @@ const { Step } = Steps;
                   hasModify={false}
                   hasDelete={false}
                   style={{ height: '100%'}}
-                  hasRowView={false}
+                  hasRowView={true}
                 />
                 </div>
               
