@@ -264,16 +264,10 @@ class PersonInfoInFile extends React.Component {
     getData = async(memberId) =>{
       this.setState({loading:true});
       let res;
-      var str='';
-      if(this.state.private){
-        str= `C3_464702128504 = '${memberId}'`
-      }else{
-        str= `C3_464172117706 = '${memberId}'`
-      }
       try {
         res = await http({baseURL:this.state.baseURL}).getTable({
           resid: 464171754083,
-          cmswhere: str
+          cmswhere: `C3_464172117706 = '${memberId}'`
         });
         var obj = res.data[0];
         console.log('org',obj)
@@ -1011,11 +1005,11 @@ class PersonInfoInFile extends React.Component {
         &nbsp;&nbsp;&nbsp;&nbsp;4）本人同意公司根据生产需要安排的排班（包括加班）。公司现有的排班形式包括但不限于：上二休二、上四休三、上五休二等。<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br/>
          </p>
-         <div style={{marginTop:'24px'}}>
+         {/* <div style={{marginTop:'24px'}}>
            {this.state.data.C3_632229320322?
            <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_632229320322}/>
            :<span style={{color:'red'}}>无电子签名</span>}
-          </div>
+          </div> */}
         <div style={{position:'absolute',bottom:'40px',right:'24px'}}>
           <span>申请人签名：</span>
           <div style={{display:'inline-block',width:'144px',borderBottom:'1px solid #333'}}>
@@ -1031,7 +1025,7 @@ class PersonInfoInFile extends React.Component {
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
           {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {/* {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}   */}
+          {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
           {/* {this.props.private?null:(
             this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
           )
