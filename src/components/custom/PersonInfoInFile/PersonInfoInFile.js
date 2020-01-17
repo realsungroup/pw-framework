@@ -386,8 +386,8 @@ class PersonInfoInFile extends React.Component {
       }
     }
     onSubmit = async(value) =>{
-      // var j=this.judge();
-      var j=true;
+      var j=this.judge();
+      // var j=true;
       if(j==false){
         return false;
       }else{

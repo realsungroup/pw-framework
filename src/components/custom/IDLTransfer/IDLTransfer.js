@@ -8,6 +8,7 @@ import moment from 'moment';
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { Step } = Steps;
+const subresid = 632314794466;//子表resid
  class  IDLTransfer extends  Component{
    constructor(props){
     super(props);
@@ -262,6 +263,7 @@ const { Step } = Steps;
         res = await http().addRecords({
           resid: 632255761674,
           data:toSub
+          
         });
         this.setState({loading:false,result:'success'});
 
@@ -617,7 +619,7 @@ const { Step } = Steps;
             <div className='wrap' >
               <div className='sider'>
                 <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`status = '审核中'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '被拒绝'`})}}>被拒绝</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '未通过'`})}}>未通过</p>
                 <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`status = '已通过'`})}}>已通过</p>
                 <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p>
               </div>
@@ -633,7 +635,7 @@ const { Step } = Steps;
                   hasModify={false}
                   hasDelete={false}
                   style={{ height: '100%'}}
-                  hasRowView={true}
+                  hasRowView={false}
                   
                 />
                 </div>

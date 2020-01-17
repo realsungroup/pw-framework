@@ -788,14 +788,13 @@ class TableData extends React.Component {
 
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
-    const { beBtnsMultiple, beBtnsOther, baseURL } = this.state;
-    const { size, formProps } = this.props;
+    const { beBtnsMultiple, beBtnsOther } = this.state;
+    const { size, formProps , baseURL} = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
     const recordFormDisplayMode =
       (formProps && formProps.displayMode) || 'default';
-
     return arr.map(btnInfo => (
       <LzBackendBtn
         baseURL={baseURL}
