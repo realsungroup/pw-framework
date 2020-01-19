@@ -148,9 +148,9 @@ class PersonInfoInFile extends React.Component {
           C3_464277267009:'',//简答3=备注3
           C3_550784878452:'',//犯罪记录
 
-          C3_632229320322:null,//电子签名
+          C3_544732637200:null,//电子签名
           C3_464700452077:'N',//提交
-          C3_471002935941:'N'//归档
+          // C3_471002935941:'N'//归档
         }
       };
       if(props.edit){
@@ -267,7 +267,7 @@ class PersonInfoInFile extends React.Component {
       let res;
       try {
         res = await http({baseURL:this.state.baseURL}).getTable({
-          resid: 464171754083,
+          resid: 464705942338,
           cmswhere: `C3_464172117706 = '${memberId}'`
         });
         var obj = res.data[0];
@@ -394,16 +394,19 @@ class PersonInfoInFile extends React.Component {
         // 判断归档、撤销归档、保存
         var obj=this.state.data;
         if(value=='sub'){
-          obj.C3_471002935941='Y';
-        }
-        if(value=='sav'){
           obj.C3_464700452077='Y';
+        }else{
+          // obj.C3_464700452077='N';
         }
+        // if(value=='sav'){
+        //   obj.C3_464700452077='Y';
+        // }
         console.log('提交前',obj)
        let res;
+       this.setState({loading:true});
       try {
         res = await http({baseURL:this.state.baseURL}).modifyRecords({
-          resid: 464171754083,
+          resid: 464705942338,
           data:[obj]
         });
         this.setState({loading:false});
@@ -433,7 +436,7 @@ class PersonInfoInFile extends React.Component {
        var footstr = "</body>";
        var newstr = document.getElementById('toPrint').innerHTML;
   
-       var style="<style media='print'>@page {size: auto; margin: 0mm;}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}i{color:#fff!important;}.ant-input-number{border:none;}</style>"
+       var style="<style media='print'>@page {size: auto; margin: 0mm;}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}i{color:#fff!important;}.ant-input-number{border:none;}*{color:#333333!important;border-color:#333333!important;}</style>"
        var headstr = "<html><head><title></title>"+style+"</head><body>";
        document.body.innerHTML = headstr + newstr + footstr;
        window.print();
@@ -451,39 +454,40 @@ class PersonInfoInFile extends React.Component {
          boxSizing:'border-box'
        }}>
          <h3 style={{textAlign:'center',cursor:'default',fontSize:'16px',paddingBottom:'16px',borderBottom:'1px solid #e8e8e8'}}>个人基本信息</h3>
-        <h4 style={{width:'100%',marginBottom:'24px'}}>一、个人基本信息</h4>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172127930?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>姓名：</b>
+        <h4 style={{width:'100%',marginBottom:'16px'}}>一、个人基本信息</h4>
+        <div style={{border:'1px solid #333'}}>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172127930?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>姓名：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v)=>{this.onChange('C3_464172127930',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172148589?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>英文名：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172148589?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>英文名：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v)=>{this.onChange('C3_464172148589',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172157606?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>性别：</b>
+            <b className={this.state.data.C3_464172157606?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>性别：</b>
             <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_464172157606} onChange={(v)=>{this.onChange('C3_464172157606',v)}} style={{ width: 'calc(100% - 120px)' }}>
               <Option value="男">男</Option>
               <Option value="女">女</Option>
             </Select>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172188709?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>国籍：</b>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172188709?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>国籍：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172188709} onChange={(v)=>{this.onChange('C3_464172188709',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172212871?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>籍贯：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172212871?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>籍贯：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172212871} onChange={(v)=>{this.onChange('C3_464172212871',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172226868?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>民族：</b>
+            <b className={this.state.data.C3_464172226868?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>民族：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172226868} onChange={(v)=>{this.onChange('C3_464172226868',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172239173?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>血型：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172239173?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>血型：</b>
             <Select size='small' value={this.state.data.C3_464172239173} onChange={(v)=>{this.onChange('C3_464172239173',v)}} style={{ width: 'calc(100% - 120px)' }}>
               
               <Option value='A'>A</Option>
@@ -492,12 +496,12 @@ class PersonInfoInFile extends React.Component {
               <Option value='O'>O</Option>
             </Select>
           </div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172321287?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>出生日期：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172321287?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>出生日期：</b>
             <DatePicker disabled={!this.state.edit}  value={this.state.data.C3_464172321287} onChange={(v)=>{this.onChange('C3_464172321287',v)}} size='small' placeholder={null} style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172654284?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>学历：</b>
+            <b className={this.state.data.C3_464172654284?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>学历：</b>
             <Select value={this.state.data.C3_464172654284} onChange={(v)=>{this.onChange('C3_464172654284',v)}} size='small' style={{ width: 'calc(100% - 120px)' }}>
               <Option value='初中'>初中</Option>
               <Option value='中专'>中专</Option>
@@ -509,81 +513,83 @@ class PersonInfoInFile extends React.Component {
               <Option value='其他'>其他</Option>
             </Select>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172266942?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件类型：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172266942?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>证件类型：</b>
             <Input value={this.state.data.C3_464172266942} onChange={(v)=>{this.onChange('C3_464172266942',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'66.66%',float:'left'}}>
-            <b className={this.state.data.C3_464172300168?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>证件号码：</b>
+            <b className={this.state.data.C3_464172300168?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>证件号码：</b>
             <Input value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
           <div style={{width:'100%',float:'left'}}>
-            <b className={this.state.data.C3_464172350271?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>文书送达地址：</b>
+            <b className={this.state.data.C3_464172350271?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>文书送达地址：</b>
             <Input value={this.state.data.C3_464172350271} onChange={(v)=>{this.onChange('C3_464172350271',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
           <div style={{width:'100%',float:'left'}}>
-            <b className={this.state.data.C3_464172402553?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>现居住地址：</b>
+            <b className={this.state.data.C3_464172402553?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>现居住地址：</b>
             <Input value={this.state.data.C3_464172402553} onChange={(v)=>{this.onChange('C3_464172402553',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
          
-          <div style={{clear:'both',height:'8px'}}></div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172444813?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>邮编：</b>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172444813?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>邮编：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172444813} onChange={(v)=>{this.onChange('C3_464172444813',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172486192?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>家庭号码：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172486192?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>家庭号码：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172486192} onChange={(v)=>{this.onChange('C3_464172486192',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172500234?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>手机号码：</b>
+            <b className={this.state.data.C3_464172500234?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>手机号码：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172500234} onChange={(v)=>{this.onChange('C3_464172500234',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172707004?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>政治面貌：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172707004?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>政治面貌：</b>
             <Input value={this.state.data.C3_464172707004} onChange={(v)=>{this.onChange('C3_464172707004',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
 
           <div style={{width:'66.66%',float:'left'}}>
-            <b className={this.state.data.C3_464172522558?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>公司邮箱：</b>
+            <b className={this.state.data.C3_464172522558?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>公司邮箱：</b>
             <Input value={this.state.data.C3_464172522558} onChange={(v)=>{this.onChange('C3_464172522558',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
 
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
           
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172722124?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>户籍类别：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172722124?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>户籍类别：</b>
             <Input value={this.state.data.C3_464172722124} onChange={(v)=>{this.onChange('C3_464172722124',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{width:'33.33%',float:'left'}}>
-            <b className={this.state.data.C3_464172819253?'':'alert'} style={{display:'inline-block',width:'104px',textAlign:'right'}}>婚姻状况：</b>
+          <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
+            <b className={this.state.data.C3_464172819253?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>婚姻状况：</b>
             <Select value={this.state.data.C3_464172819253} onChange={(v)=>{this.onChange('C3_464172819253',v)}} size='small' style={{ width: 'calc(100% - 120px)' }}>
               <Option value='未婚'>未婚</Option>
               <Option value='已婚'>已婚</Option>
             </Select>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>生育状况：</b>
+            <b style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>生育状况：</b>
             <Input value={this.state.data.C3_464172852423} onChange={(v)=>{this.onChange('C3_464172852423',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{clear:'both',height:'8px'}}></div>
+          <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
           
           <div style={{width:'100%',float:'left'}}>
-            <b style={{display:'inline-block',width:'104px',textAlign:'right'}}>个人邮箱：</b>
+            <b style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'16px'}}>个人邮箱：</b>
             <Input disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
-          <div style={{clear:'both',height:'24px',borderBottom:'1px solid #e8e8e8'}}></div>
+          <div style={{clear:'both',height:'1px'}}></div>
+
+          </div>
           <h4 style={{width:'100%',marginTop:'16px',marginBottom:'16px'}}>二、教育和培训</h4>
           <div style={{marginBottom:'16px'}}
             className={
@@ -597,7 +603,7 @@ class PersonInfoInFile extends React.Component {
               ?'':'alert'}
           
           >学历/学位（请填写高中以上学历）</div>
-          <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+          <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
             <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>开始日期</th>
             <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>结束日期</th>
@@ -667,7 +673,7 @@ class PersonInfoInFile extends React.Component {
           (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
           ?'':'alert'}
        style={{marginTop:'16px',marginBottom:'16px'}}>专业/执业资格：</div>
-          <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+          <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px'}}>名称</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px',width:'104px'}}>等级</th>
@@ -753,7 +759,7 @@ class PersonInfoInFile extends React.Component {
           (this.state.data.C3_464174563152&&this.state.data.C3_464174917676&&this.state.data.C3_464175006600&&this.state.data.C3_464175085490&&this.state.data.C3_464458930539)
           ?'':'alert'}
         style={{marginTop:'16px',marginBottom:'16px'}}>三、工作经验（请务必填写完整工作经历）</h4>
-          <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+          <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>开始日期</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>结束日期</th>
@@ -836,7 +842,7 @@ class PersonInfoInFile extends React.Component {
             ||
             (this.state.data.C3_464175313029&&this.state.data.C3_464175436022&&this.state.data.C3_464175539610&&this.state.data.C3_464175665668)
             ?'':'alert'}style={{marginBottom:'16px'}}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
-          <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+          <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
           <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
             <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>关系</th>
@@ -887,7 +893,7 @@ class PersonInfoInFile extends React.Component {
         </table>
 
         <div style={{marginTop:'16px',marginBottom:'16px'}}>2.紧急联系人</div>
-          <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+          <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
           <th className={this.state.data.C3_464175727918?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
             <th className={this.state.data.C3_464175750587?'':'alert'} style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
@@ -937,7 +943,7 @@ class PersonInfoInFile extends React.Component {
           </tr> */}
         </table>
         <div style={{width:'100%',marginTop:'16px'}}>
-            <b className={this.state.data.C3_464175768379?'':'alert'} style={{display:'inline-block',width:'144px',textAlign:'right'}}>紧急联系人现住地址：</b>
+            <b className={this.state.data.C3_464175768379?'':'alert'} style={{display:'inline-block',width:'144px',textAlign:'left',marginLeft:'16px'}}>紧急联系人现住地址：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} size='small' style={{width:'calc(100% - 144px)'}}/>
           </div>
         <div style={{marginTop:'16px',marginBottom:'16px'}}>
@@ -956,7 +962,7 @@ class PersonInfoInFile extends React.Component {
     }}/><span style={{marginLeft:'8px'}}>有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
        </div>
        {this.state.hasRelated?
-        <table border="1" style={{width:'100%',border:'1px solid #e8e8e8'}}>
+        <table border="1" style={{width:'100%',border:'1px solid #333'}}>
         <tr>
         <th style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>姓名</th>
           <th  style={{height:'24px',lineHeight:'24px',fontWeight:'bold',textIndent:'16px' }}>与员工的关系</th>
@@ -1015,12 +1021,8 @@ class PersonInfoInFile extends React.Component {
         &nbsp;&nbsp;&nbsp;&nbsp;4）本人同意公司根据生产需要安排的排班（包括加班）。公司现有的排班形式包括但不限于：上二休二、上四休三、上五休二等。<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br/>
          </p>
-         {/* <div style={{marginTop:'24px'}}>
-           {this.state.data.C3_632229320322?
-           <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_632229320322}/>
-           :<span style={{color:'red'}}>无电子签名</span>}
-          </div> */}
-        <div style={{position:'absolute',bottom:'40px',right:'24px'}}>
+         
+        <div style={{marginTop:'24px'}}>
           <span>申请人签名：</span>
           <div style={{display:'inline-block',width:'144px',borderBottom:'1px solid #333'}}>
             <Input disabled size='small' style={{width:'100%',border:'none',background:'#fff'}}/>
@@ -1030,15 +1032,20 @@ class PersonInfoInFile extends React.Component {
           <Input disabled size='small' style={{width:'100%',border:'none',background:'#fff'}}/>
           </div>
         </div>
+        <div style={{marginTop:'24px'}}>
+           {this.state.data.C3_544732637200?
+           <img style={{maxWidth:'100vw'}} src = {this.state.data.C3_544732637200}/>
+           :null}
+          </div>
        </div>
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'8px'}} onClick={this.onPrinting}>打印</Button>
           {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {this.state.data.C3_471002935941=='Y'?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
-          {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  
+          {this.state.data.C3_464700452077=='Y'?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
+          {/* {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'8px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  */}
           {/* {this.props.private?null:(
-            this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>撤销归档</Button>:null
+            this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'8px'}} type='danger' onClick={this.onSubmit}>取消归档</Button>:null
           )
           } */}
         </footer>

@@ -34,10 +34,13 @@ class PersonInfoManager extends React.Component {
     return (
      <div style={{width:'100%',height:'100%'}}>
       <TableData
-                resid={464171754083}
+      // 464171754083
+                resid={464705942338}
                 hasRowView={false}
                 baseURL={this.state.baseURL}
                 hasAdd={false}
+                refTargetComponentName="TableData"
+                wrappedComponentRef={element => (this.tableDataRef = element)}
                 hasRowSelection={true}
                 hasRowDelete={false}
                 hasRowModify={false}
@@ -67,7 +70,7 @@ class PersonInfoManager extends React.Component {
               />
       {this.state.showDetail?(
         <div className='overlay'>
-          <Icon type='close-circle' onClick={()=>{this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer'
+          <Icon type='close-circle' onClick={()=>{this.tableDataRef.handleRefresh();this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer'
         }}></Icon>
           <PersonInfoInFile edit={true} memberId={this.state.selectedRecord}></PersonInfoInFile>
          </div>

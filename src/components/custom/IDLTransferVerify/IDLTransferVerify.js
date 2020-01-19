@@ -62,6 +62,7 @@ const showAfter=[
    constructor(props){
     super(props);
     this.state ={
+      mode:props.mode,
       loading:false,
       conUnpass:false,
       selection:1,
@@ -135,6 +136,44 @@ const showAfter=[
     this.setState({visible:true,toCheck:arr,toCheckFront:obj});
 
   }
+  judgeMulti=async(dataSource,selectedRowKeys,bol)=>{
+    var j=bol?'已通过':'未通过';
+    var arr=[];
+    if (selectedRowKeys.length) {
+      this.setState({loading:true});
+
+      dataSource.map(item => {
+      selectedRowKeys.map(items => {
+        if (item.REC_ID === items) {
+          var obj=item;
+          obj.status=j;
+          arr.push(item);
+        }
+      });
+    });
+    var res='';
+     try {
+      res = await http().modifyRecords({
+        resid: 632314958317,
+        data: arr
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.tableDataRef.handleRefresh();
+
+        this.setState({loading:false});
+        
+      }
+    } catch (error) {
+      message.error(error.message);
+      this.setState({loading:false});
+
+    }
+  }else{
+      message.error('请选勾选记录！');
+
+    }
+  }
    render(){
      return (
       <div className='IDLTransferVerify'>
@@ -156,7 +195,7 @@ const showAfter=[
         <Modal 
           width={'90vw'}
           visible={this.state.visible}
-          footer={this.state.toCheckFront.status=='审核中'?(
+          footer={(this.state.toCheckFront.status=='审核中'&&this.state.mode!='view')?(
             <>
             <Button type='danger' style={{marginLeft:'8px'}} onClick={()=>{this.setState({conUnpass:true})}}>不通过审核</Button>
             <Button type='primary'>保存并审核</Button>
@@ -208,7 +247,7 @@ const showAfter=[
                 <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`status = '审核中'`})}}>审核中</p>
                 <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '未通过'`})}}>未通过</p>
                 <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`status = '已通过'`})}}>已通过</p>
-                <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p>
+                {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
              
@@ -219,13 +258,39 @@ const showAfter=[
                   hasAdd={false}
                   refTargetComponentName="TableData"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
-                  hasRowSelection={false}
+                  hasRowSelection={true}
                   hasRowDelete={false}
                   hasRowModify={false}
                   hasModify={false}
                   hasDelete={false}
                   style={{ height: '100%'}}
                   hasRowView={false}
+                  actionBarWidth={100}
+                  actionBarFixed={true}
+
+                  actionBarExtra={
+                    ({ dataSource, selectedRowKeys }) => {
+                      return (
+                        (this.state.selection=='1'&&this.state.mode!='view')?(
+                        <>
+                        <Button
+                          type='primary'
+                          onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,true)}}
+                        >
+                          通过审核
+                        </Button>
+                         <Button
+                          type='danger'
+                          onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,false)}}
+
+                         >
+                           不通过审核
+                         </Button>
+                         </>):null
+                      );
+                    }
+                  }
+
                   customRowBtns={[
                     record => {
                       return (

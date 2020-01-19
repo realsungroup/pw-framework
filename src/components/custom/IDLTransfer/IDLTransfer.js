@@ -4,6 +4,7 @@ import './IDLTransfer.less';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import moment from 'moment';
+import IDLTransferVerify from '../IDLTransferVerify';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -20,8 +21,7 @@ const subresid = 632314794466;//子表resid
       page:'1',//tab页
       result:'success',//是否提交成功
       selection:'1',//申请记录筛选选择
-      cms:`status = '审核中'`,//申请记录筛选条件
-      checkPoint:[['原部门主管','张三'],['原部门经理','李四']],//需要审批的节点
+      // checkPoint:[['原部门主管','张三'],['原部门经理','李四']],//需要审批的节点
       isSub:false,//是否已经提交过申请
       loading:false,
       department:[],//部门数据,
@@ -617,29 +617,8 @@ const subresid = 632314794466;//子表resid
           </TabPane>
           <TabPane tab="查看审批记录" key="2">
             <div className='wrap' >
-              <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`status = '审核中'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '未通过'`})}}>未通过</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`status = '已通过'`})}}>已通过</p>
-                <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p>
-              </div>
-              <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'100%'}}>
-              <TableData
-                  resid={632314958317}
-                  cmswhere={this.state.cms=='all'?'':this.state.cms}
-                  hasRowView={false}
-                  hasAdd={false}
-                  hasRowSelection={false}
-                  hasRowDelete={false}
-                  hasRowModify={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  style={{ height: '100%'}}
-                  hasRowView={false}
-                  
-                />
-                </div>
               
+               <IDLTransferVerify mode='view'></IDLTransferVerify>
             </div>
           </TabPane>
         </Tabs>
