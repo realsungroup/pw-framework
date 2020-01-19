@@ -1,5 +1,4 @@
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
 import {
   Button,
   Icon,
@@ -11,7 +10,6 @@ import {
   Input,
   Spin,
   Tabs,
-  Popconfirm
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
@@ -37,8 +35,6 @@ class CreatePlan extends React.Component {
       selectedCourse: [], //选择了的课程
       subData: [], //课程表数据
       levelData: [], //员工级别列表
-      kcxlData: [], //课程系列列表
-      kclbData: [], //课程类别列表
       levelSelect: '', //选中级别
       xlSelect: '', //选中的系列
       lbSelect: '', //选中的类别
@@ -53,7 +49,7 @@ class CreatePlan extends React.Component {
       indeterminate: false,
       isAllChecked: false,
       userCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE,
-      departments: []
+      departments: [] //部门
     };
   }
 
@@ -66,10 +62,11 @@ class CreatePlan extends React.Component {
     this.getData();
     this.getSubData();
     this.getLevel();
-    this.getKcxl();
-    this.getKclb();
-    // this.setState({ loading: false });
   }
+
+  /**
+   * 获取统计数据
+   */
   totalData = async () => {
     let cmswhere = `C3_609616660273= '${this.planid}'`;
     let res = await http().getTable({ resid: this.props.totalResid, cmswhere });
@@ -85,6 +82,10 @@ class CreatePlan extends React.Component {
       return message.error(err.message);
     }
   };
+
+  /**
+   * 获取部门
+   */
   getDepartment = async () => {
     try {
       const res = await http().getTable({
@@ -97,7 +98,10 @@ class CreatePlan extends React.Component {
       return message.error(error.message);
     }
   };
-  //获取员工列表
+
+  /**
+   * 获取员工列表
+   */
   async getData() {
     let pageIndex = this.state.pageIndex;
     let key = this.state.key;
@@ -144,7 +148,9 @@ class CreatePlan extends React.Component {
     this.setState({ loading: false });
   }
 
-  //获取员工级别列表
+  /**
+   * 获取级别列表
+   */
   async getLevel() {
     let res = await http().getTable({ resid: this.props.levelId });
     try {
@@ -177,7 +183,9 @@ class CreatePlan extends React.Component {
     }
   }
 
-  //获取课程表
+  /**
+   * 获取课程表
+   */
   async getSubData(key) {
     this.setState({ loading2: true });
     let { selectedCourse } = this.state;
@@ -236,41 +244,9 @@ class CreatePlan extends React.Component {
     }
   }
 
-  //获取课程系列列表
-  async getKcxl() {
-    let res = await http().getTable({ resid: this.props.kcxlResid });
-    try {
-      if (res.error === 0) {
-        let kcxlData = res.data;
-        this.setState({ kcxlData });
-      } else {
-        message.error(res.message);
-      }
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-  }
-
-  //获取课程类别列表
-  async getKclb() {
-    let res;
-    try {
-      res = await http().getTable({ resid: this.props.kclbResid });
-      console.info('res', res);
-      if (res.error === 0) {
-        let kclbData = res.data;
-        this.setState({ kclbData });
-      } else {
-        message.error(res.message);
-      }
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-  }
-
-  //选择员工
+  /**
+   * 选择员工
+   */
   onClick(i) {
     let { data, selectedEmployee } = this.state;
     if (data[i].check === true) {
@@ -299,7 +275,9 @@ class CreatePlan extends React.Component {
     });
   }
 
-  // 全选checkbox onChange事件
+  /**
+   * 全选checkbox onChange事件
+   */
   onCheckAll = e => {
     let { data } = this.state;
     if (e.target.checked) {
@@ -325,7 +303,9 @@ class CreatePlan extends React.Component {
     }
   };
 
-  //选择课程
+  /**
+   * 选择课程
+   */
   onClickCustom(i) {
     let { subData, selectedCourse } = this.state;
     if (subData[i].check) {
@@ -339,6 +319,7 @@ class CreatePlan extends React.Component {
     subData[i].check = !subData[i].check;
     this.setState({ subData, selectedCourse });
   }
+
   handleShowProgress = () => {
     let { isShowProgress } = this.state;
     let data = [...this.state.data];
@@ -364,7 +345,10 @@ class CreatePlan extends React.Component {
       }
     );
   };
-  //保存计划
+
+  /**
+   * 保存计划
+   */
   async onClickSave() {
     let { selectedCourse, selectedEmployee } = this.state;
     if (selectedCourse.length < 1 || selectedEmployee.length < 1) {
