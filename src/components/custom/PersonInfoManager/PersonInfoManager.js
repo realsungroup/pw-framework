@@ -18,9 +18,15 @@ class PersonInfoManager extends React.Component {
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
       var bol=false;//是否为劳务公司
-      if(bol==true){
+      var usercode = localStorage.getItem('userInfo');
+      var usrChara=JSON.parse(usercode)
+      var userCode=usrChara.UserInfo.EMP_USERCODE;
+      if(userCode=='632830432866'){
+        bol=true;
         baseURL ='http://kingofdinner.realsun.me:9091/';
+
       }
+    
       this.state = {
         showDetail:false,
         selectedRecord:'',
