@@ -13,15 +13,20 @@ class PersonInfoInFile extends React.Component {
 
     constructor(props) {
       // resid:612530416359
-      var baseURL =
-      window.pwConfig[
+      
+      super(props);
+      var baseURL=window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
-      super(props);
+      console.log(props.isOuter)
+      if(props.isOuter==true){
+        baseURL ='http://kingofdinner.realsun.me:9091/'
+      }
       var memberId = this.props.memberId;
       console.log(memberId)
 
       this.state = {
+        isOuter:props.isOuter,
         baseURL:baseURL,
         edit:false,
         loading:false,
@@ -1038,8 +1043,8 @@ class PersonInfoInFile extends React.Component {
        <div className='fix'>_</div>
         <footer>
           <Button style={{marginRight:'4px'}} onClick={this.onPrinting}>打印</Button>
-          {this.state.data.C3_464700452077=='Y'?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {this.state.data.C3_464700452077=='Y'?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
+          {(this.state.data.C3_464700452077=='Y'||this.state.isOuter==true)?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
+          {(this.state.data.C3_464700452077=='Y'||this.state.isOuter==true)?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
           {/* {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  */}
           {/* {this.props.private?null:(
             this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'4px'}} type='danger' onClick={this.onSubmit}>取消归档</Button>:null
