@@ -79,7 +79,7 @@ class PersonInfoManager extends React.Component {
               />
       {this.state.showDetail?(
         <div className='overlay'>
-          <Icon type='close-circle' onClick={()=>{this.tableDataRef.handleRefresh();this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer'
+          <Icon type='close-circle' onClick={()=>{this.tableDataRef.handleRefresh();this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer',fontSize:'24px',color:'#333'
         }}></Icon>
           <PersonInfoInFile edit={true} isOuter={this.state.isOuter} memberId={this.state.selectedRecord}></PersonInfoInFile>
          </div>

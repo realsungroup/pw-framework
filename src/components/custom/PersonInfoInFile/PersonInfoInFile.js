@@ -929,7 +929,7 @@ class PersonInfoInFile extends React.Component {
           </div>
         
         <div style={{marginTop:'4px',marginBottom:'4px'}}>
-      <input style={this.state.edit?null:{display:'none'}} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={()=>{
+      <span style={{marginLeft:'4px'}}>3.是否有亲属在本公司任职：<input style={this.state.edit?{marginRight:'4px'}:{display:'none'}} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={()=>{
         var v=!this.state.hasRelated;
         v=v?1:0;
         this.setState({
@@ -941,7 +941,7 @@ class PersonInfoInFile extends React.Component {
     });
     this.setState({hasRelated:(!this.state.hasRelated)});
     
-    }}/><span style={{marginLeft:'4px'}}>3.是否有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
+    }}/><span style={{color:'#fff'}}>{this.state.hasRelated?'是':'否'}</span> </span>
        </div>
        {this.state.hasRelated?
         <table border="1" style={{width:'100%',border:'1px solid #333'}}>
