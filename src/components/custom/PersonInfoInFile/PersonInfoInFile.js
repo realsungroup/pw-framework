@@ -370,18 +370,18 @@ class PersonInfoInFile extends React.Component {
           this.setState({hasRelated:true});
 
         }
-        // 已提交的场合个人不可编辑
+        // 已提交个人不可编辑
         if(obj.C3_464700452077=='Y'){
-          if(this.props.private){
+
             this.setState({edit:false});
 
-          }
-        }
-        // 已归档的场合不可编辑
-        if(obj.C3_471002935941=='Y'){
-          this.setState({edit:false});
 
         }
+        // // 已归档的场合不可编辑
+        // if(obj.C3_471002935941=='Y'){
+        //   this.setState({edit:false});
+
+        // }
         this.setState({data:obj,loading:false});
       } catch (err) {
 
@@ -441,7 +441,7 @@ class PersonInfoInFile extends React.Component {
        var footstr = "</body>";
        var newstr = document.getElementById('toPrint').innerHTML;
   
-       var style="<style media='print'>@page {size: auto; margin: 0mm;}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}i{color:#fff!important;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}</style>"
+       var style="<style media='print'>@page {size: auto; margin: 0mm;}.toHide{display:none!important}b,h4,h3{font-weight:normal}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}i{color:#fff!important;display:none!important}</style>"
        var headstr = "<html><head><title></title>"+style+"</head><body>";
        document.body.innerHTML = headstr + newstr + footstr;
        window.print();
@@ -458,7 +458,7 @@ class PersonInfoInFile extends React.Component {
          padding:'16px',
          boxSizing:'border-box'
        }}>
-         <h3 style={{textAlign:'center',cursor:'default',fontSize:'14px',paddingBottom:'4px',borderBottom:'1px solid #e8e8e8'}}>个人基本信息</h3>
+         <h3 style={{textAlign:'center',fontWeight:'bold',cursor:'default',fontSize:'14px',paddingBottom:'4px',borderBottom:'1px solid #e8e8e8'}}>个人详细信息表</h3>
         <h4 style={{width:'100%',marginBottom:'4px'}}>一、个人基本信息</h4>
         <div style={{border:'1px solid #333'}}>
           <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
@@ -610,11 +610,11 @@ class PersonInfoInFile extends React.Component {
           >学历/学位（请填写高中以上学历）</div>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
-            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>开始日期</th>
-            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>结束日期</th>
-            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>学校名称</th>
-            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>专业</th>
-            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>学历</th>
+            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>开始日期</th>
+            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>结束日期</th>
+            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>学校名称</th>
+            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>专业</th>
+            <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>学历</th>
           </tr>
           <tr>
             <td style={{height:'4px',lineHeight:'24px' }}>
@@ -680,10 +680,10 @@ class PersonInfoInFile extends React.Component {
        style={{marginTop:'4px',marginBottom:'4px'}}>专业/执业资格：</div>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
-          <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px'}}>名称</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px',width:'104px'}}>等级</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px'}}>颁发机构</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px'}}>获得日期</th>
+          <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px'}}>名称</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px',width:'104px'}}>等级</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px'}}>颁发机构</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px'}}>获得日期</th>
           </tr>
           <tr>
             <td style={{height:'4px',lineHeight:'24px' }}>
@@ -766,11 +766,11 @@ class PersonInfoInFile extends React.Component {
         style={{marginTop:'4px',marginBottom:'4px'}}>三、工作经验（请务必填写完整工作经历）</h4>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
-          <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>开始日期</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>结束日期</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>公司名称</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>职位</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>离职原因</th>
+          <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>开始日期</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>结束日期</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>公司名称</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>职位</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>离职原因</th>
           </tr>
           <tr>
             <td style={{height:'4px',lineHeight:'24px' }}>
@@ -840,10 +840,10 @@ class PersonInfoInFile extends React.Component {
             ?'':'alert'}style={{marginBottom:'4px'}}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
-          <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>姓名</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>关系</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>联系方式</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>工作单位</th>
+          <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>姓名</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>关系</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>联系方式</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>工作单位</th>
           </tr>
           <tr>
             <td style={{height:'4px',lineHeight:'24px' }}>
@@ -887,16 +887,24 @@ class PersonInfoInFile extends React.Component {
               <Input value={this.state.data.C3_464175665668} onChange={(v)=>{this.onChange('C3_464175665668',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
           </tr>
         </table>
+        </div>
 
-        <div style={{marginTop:'4px',marginBottom:'4px'}}>2.紧急联系人</div>
+        
+        
+        <div className='page' style={{
+         
+         padding:'16px',
+         boxSizing:'border-box',
+       }}>
+          <div style={{marginBottom:'4px'}}>2.紧急联系人（直系亲属）</div>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
-          <th className={this.state.data.C3_464175727918?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>姓名</th>
-            <th className={this.state.data.C3_464175750587?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>与员工的关系</th>
-            <th className={this.state.data.C3_464175797109?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>手机号码</th>
-            {/* <th className={this.state.data.C3_464175768379?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>现居住地址</th> */}
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>电话</th>
-            <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>邮箱</th>
+          <th className={this.state.data.C3_464175727918?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>姓名</th>
+            <th className={this.state.data.C3_464175750587?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>与员工的关系</th>
+            <th className={this.state.data.C3_464175797109?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>手机号码</th>
+            {/* <th className={this.state.data.C3_464175768379?'':'alert'} style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>现居住地址</th> */}
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>电话</th>
+            <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>邮箱</th>
           </tr>
           <tr>
             <td style={{height:'4px',lineHeight:'24px' }}>
@@ -913,46 +921,15 @@ class PersonInfoInFile extends React.Component {
               <Input value={this.state.data.C3_464175812688} onChange={(v)=>{this.onChange('C3_464175812688',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
 
           </tr>
-          {/* <tr>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          </tr>
-          <tr>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          </tr>
-          <tr>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><InputNumber disabled={!this.state.edit} size='small' style={{width:'100%'}}/></td>
-            <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          </tr> */}
-        </table>
-        </div>
-        
-        <div className='page' style={{
-         
-         padding:'16px',
-         boxSizing:'border-box',
-       }}>
           
-          <div style={{width:'100%'}}>
+        </table>
+          <div style={{border:'1px solid #333',width:'100%',borderTop:'none'}}>
             <b className={this.state.data.C3_464175768379?'':'alert'} style={{display:'inline-block',width:'144px',textAlign:'left',marginLeft:'4px'}}>紧急联系人现住地址：</b>
-            <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} size='small' style={{width:'calc(100% - 144px)'}}/>
+            <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v)=>{this.onChange('C3_464175768379',v.target.value)}} size='small' style={{width:'calc(100% - 148px)'}}/>
           </div>
         
         <div style={{marginTop:'4px',marginBottom:'4px'}}>
-      <input style={this.state.edit?null:{display:'none'}} type='checkbox' value={this.state.hasRelated} onChange={()=>{
+      <input style={this.state.edit?null:{display:'none'}} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={()=>{
         var v=!this.state.hasRelated;
         v=v?1:0;
         this.setState({
@@ -964,14 +941,14 @@ class PersonInfoInFile extends React.Component {
     });
     this.setState({hasRelated:(!this.state.hasRelated)});
     
-    }}/><span style={{marginLeft:'4px'}}>有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
+    }}/><span style={{marginLeft:'4px'}}>3.是否有亲属在本公司任职：{this.state.hasRelated?'是':'否'}</span>
        </div>
        {this.state.hasRelated?
         <table border="1" style={{width:'100%',border:'1px solid #333'}}>
         <tr>
-        <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>姓名</th>
-          <th  style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>与员工的关系</th>
-          <th style={{height:'4px',lineHeight:'24px',fontWeight:'bold',textIndent:'4px' }}>联系方式</th>
+        <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>姓名</th>
+          <th  style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>与员工的关系</th>
+          <th style={{height:'4px',lineHeight:'24px',fontWeight:'normal',textIndent:'4px' }}>联系方式</th>
         </tr>
         <tr>
           <td style={{height:'4px',lineHeight:'24px' }}>
@@ -990,16 +967,7 @@ class PersonInfoInFile extends React.Component {
           <td style={{height:'4px',lineHeight:'24px' }}>
             <Input value={this.state.data.C3_464277179556} onChange={(v)=>{this.onChange('C3_464277179556',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
         </tr>
-        {/* <tr>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-        </tr>
-        <tr>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-          <td style={{height:'4px',lineHeight:'24px' }}><Input disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
-        </tr> */}
+ 
       </table>
       :null}
       <div style={{height:'4px',borderTop:'1px solid #e8e8e8'}}></div>
@@ -1044,7 +1012,7 @@ class PersonInfoInFile extends React.Component {
         <footer>
           <Button style={{marginRight:'4px'}} onClick={this.onPrinting}>打印</Button>
           {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:((!this.props.private)?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>:null)}  
+          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
           {/* {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  */}
           {/* {this.props.private?null:(
             this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'4px'}} type='danger' onClick={this.onSubmit}>取消归档</Button>:null
