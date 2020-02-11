@@ -4,6 +4,7 @@ import './IDLTransferVerify.less';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import moment from 'moment';
+import { async } from 'q';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -22,18 +23,6 @@ const columns = [
     dataIndex: 'after',
   },
 ];
-const showBefore=[
-  'C3_632503853570',//部门名
-  'C3_632503844117',//职务名
-  'C3_632503845505',//级别
-  'C3_632503843378',//主管
-  'C3_632503855976',//项目代码
-  'C3_632503858946',//bucode
-  'C3_632503839577',//一级部门
-  'C3_632503840613',//二级部门
-  'C3_632503840359',//三级部门
-  'C3_632503841599',//四级部门
-]
 const attr=[
   '部门名',
   '职务名',
@@ -47,66 +36,211 @@ const attr=[
   '四级部门'
 ]
 const showAfter=[
-  'C3_632503853332',//部门名
-  'C3_632503845264',//职务名
-  'C3_632503845755',//级别
-  'C3_632503843620',//主管
-  'C3_632503856450',//项目代码
-  'C3_632503859143',//bucode
-  'C3_632503841349',//一级部门
-  'C3_632503841101',//二级部门
-  'C3_632503841849',//三级部门
-  'C3_632503842108',//四级部门
+  'depart',//部门名
+  'jobName',//职务名
+  'nLevel',//级别
+  'nDriectorName',//主管
+  'nProj_Code',//项目代码
+  'nBuCode',//bucode
+  'nFirstDepart',//一级部门
+  'nSecondDepart',//二级部门
+  'nThirdDepart',//三级部门
+  'nFourthDepart',//四级部门
 ]
  class  IDLTransferVerify extends  Component{
    constructor(props){
     super(props);
     this.state ={
+      approveRec:[],//临时储存的审批记录
       mode:props.mode,
       loading:false,
       conUnpass:false,
       selection:1,
-      cms:`status = '审核中'`,
+      canApprove:false,//是否为当前审批人
+      cms:`Approve = '审核中'`,
       visible:false,
+      C3_632503844784:'',//记录编号
       toCheck:[
         
       ],
+      member:[],//同一审批单的人员
       C3_632503853105:'',//审批说明
       toCheckFront:{
         C3_632503853105:null,
-        C3_632503840116:null,//生效日期
-        C3_632503839336:'- -',//对象姓名
-        C3_632503839068:'- -',//对象工号
-        C3_632503846004:'- -',//变动原因
+        effortDate:null,//生效日期
+        changeReason:'- -',//变动原因
       },
-      stream:['原部门主管审批','原部门经理审批','原部门总监审批','现部门经理审批','现部门总监审批','HR专员审批','HR总监审批'],
+      curStep:0,
+      // '原部门主管审批','原部门经理审批','原部门总监审批','现部门经理审批','现部门总监审批','现部门主管审批','HR专员审批','HR总监审批'
+      stream:[],
+      memberDetail:{
+
+      }
     }
     
   }
    componentDidMount(){
      
    }
-   
-   unPass=async()=>{
-     this.setState({
-       loading:true,visible:false
+  //  判断是否为发起人
+   judgetrigger=(v)=>{
+
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var jobNum = userInfo.UserInfo.EMP_USERCODE;
+    if(v==jobNum){
+      this.setState({isBeginner:true})
+    }
+    console.info(v,jobNum)
+   }
+   getMem=async(v)=>{
+     this.setState({loading:true});
+     try{
+     let res = await http().getTable({
+        resid: 632314958317,
+        cmswhere:`C3_632503844784='${v}'`
+      });
+      this.setState({member:res.data})
+      console.log('resqq',res)
+      }catch(e){
+        console.log(e);
+        this.setState({loading:false});
+      }
+      try{ 
+        let res2 = await  http().getTable({
+        resid: 634660498796,
+        cmswhere:`C3_634660564341='${v}'`
+      });
+      this.setState({approveRec:res2})
+      var n=0;
+      var arr=[];
+      var c=0;
+      while(n<res2.data.length){
+        arr.push(res2.data[n].C3_634660565034);
+        if(res2.data[n].C3_634660565837=='Y'){
+          var cc=res2.data[n].C3_634660566076;
+          if(cc>c){
+            c=cc
+          }
+          
+        }
+        n++;
+      }
+      // 判断是否为当前审批人
+      var c2=c+1;
+      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var jobNum = userInfo.UserInfo.EMP_ID;
+    n=0;
+    while(n<res2.data.length){
+      if(res2.data[n].C3_634660566076==c2){
+        if(jobNum==res2.data[n].C3_634660565295){
+          this.setState({canApprove:true});
+          
+        }else{
+          this.setState({canApprove:false});
+          this.setState({curAPe:res2.data[n].C3_634660565583})
+        }
+      }
+      n++;
+    }
+    c=Number(c)-1;
+      this.setState({loading:false,curStep:c,stream:arr});
+    }catch(e){
+      console.log(e);
+      this.setState({loading:false});
+      }
+   }
+   approve=async(v)=>{
+     this.setState({loading:true});
+     var res='';
+     var arr=this.state.approveRec.data;
+     var n=0;
+     var c=Number(this.state.curStep);
+      c=c+2;
+      var obj
+    while(n<arr.length){      
+      if(c==arr[n].C3_634660566076){
+        arr[n].C3_634660565837=v
+       obj=arr[n]
+      }
+      n++;
+    }
+console.log(obj)
+     try {
+      res = await http().modifyRecords({
+        resid: 634660498796,
+        data: [obj]
+      });
+      if(v=='N'){
+        this.unPass();
+      }else{
+        console.log(c)
+        if(arr.length==c){
+          
+          this.passStream();
+        }else{
+      
+          var res4='';
+                try {
+                res4 = await http().modifyRecords({
+                  resid: 632255761674,
+                  data: [{
+                    REC_ID:this.state.toCheckFront.REC_ID,
+                    effortDate:this.state.toCheckFront.effortDate,
+                  }]
+                });
+                console.log('res', res);
+              } catch (error) {
+                message.error(error.message);
+                this.setState({loading:false});
+
+              }
+        }
+      }
+      this.setState({conUnpass:false,visible:false,loading:false});
+    }catch(e){
+        console.log(e);
+        this.setState({loading:false});
+      }
+   }
+   passStream=async()=>{
+    var res='';
+    try {
+     res = await http().modifyRecords({
+       resid: 632255761674,
+       data: [{
+         REC_ID:this.state.toCheckFront.REC_ID,
+         Approve:'已通过',
+         effortDate:this.state.toCheckFront.effortDate,
+       }]
      });
+     console.log('res', res);
+     if (res.Error === 0) {
+       message.success(res.message);
+       this.tableDataRef.handleRefresh();
+       
+     }
+   } catch (error) {
+     message.error(error.message);
+     this.setState({loading:false});
+
+   }
+   }
+   unPass=async()=>{
+  
      var res='';
      try {
       res = await http().modifyRecords({
-        resid: 632314958317,
+        resid: 632255761674,
         data: [{
           REC_ID:this.state.toCheckFront.REC_ID,
-          status:'未通过',
-          C3_632503853105:this.state.C3_632503853105
+          Approve:'未通过',
+          ApproveRemark:this.state.C3_632503853105
         }]
       });
       console.log('res', res);
       if (res.Error === 0) {
         message.success(res.message);
         this.tableDataRef.handleRefresh();
-
-        this.setState({loading:false});
         
       }
     } catch (error) {
@@ -116,24 +250,20 @@ const showAfter=[
     }
    }
   showOverlay=(r)=>{
+    this.judgetrigger(r.applyPersonId);
     var n=0;
     var arr=[];
     while(n<attr.length){
-      var b=r[showBefore[n]]||'- -';
       var a=r[showAfter[n]]||'- -'
-      arr.push({
-        key:n,
-        attributes:attr[n],
-        before:b,
-        after:a,
-      })
+      arr.push(a)
       n++;
     }
     var obj=r;
-    var date=obj.C3_632503840116;
+    var date=obj.effortDate;
       date=moment(date);
-      obj.C3_632503840116=date;
-    this.setState({visible:true,toCheck:arr,toCheckFront:obj});
+      obj.effortDate=date;
+      this.getMem(obj.changeID);
+    this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
 
   }
   judgeMulti=async(dataSource,selectedRowKeys,bol)=>{
@@ -146,7 +276,7 @@ const showAfter=[
       selectedRowKeys.map(items => {
         if (item.REC_ID === items) {
           var obj=item;
-          obj.status=j;
+          obj.Approve=j;
           arr.push(item);
         }
       });
@@ -185,7 +315,7 @@ const showAfter=[
           footer={
             <>
             <Button onClick={()=>{this.setState({conUnpass:false})}}>取消</Button>
-            <Button type='primary' onClick={()=>{this.unPass();this.setState({conUnpass:false})}}>确认</Button>
+            <Button type='primary' onClick={()=>{this.approve('N')}}>确认</Button>
             </>
           }
         >
@@ -195,70 +325,114 @@ const showAfter=[
         <Modal 
           width={'90vw'}
           visible={this.state.visible}
-          footer={(this.state.toCheckFront.status=='审核中'&&this.state.mode!='view')?(
+          footer={(this.state.toCheckFront.Approve=='审核中'&&this.state.mode!='view')?(
+            this.state.isBeginner?<span>您是发起人</span>:(this.state.canApprove?
             <>
             <Button type='danger' style={{marginLeft:'8px'}} onClick={()=>{this.setState({conUnpass:true})}}>不通过审核</Button>
-            <Button type='primary'>保存并审核</Button>
-
-            </>
+            <Button type='primary' onClick={()=>this.approve('Y')}>保存并通过审核</Button>
+            </>:<span>您不是当前审批人,当前审批人是:{this.state.curAPe}</span>)
           ):null}
           onCancel={()=>this.setState({visible:false})}
           >
           <div className='toCheck' style={{height:'60vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-            <Steps size="small" current={0}>
+              {this.state.loading?null:<Steps size="small" current={this.state.curStep}>
               {this.state.stream.map(item=>{
                 return(
                   <Step title={item} />
 
                 )
               })}
-            </Steps>
+            </Steps>}
+            
             <div className='showContent'>
 
                 <b>生效时间：</b><DatePicker
-                    value={this.state.toCheckFront.C3_632503840116}
+                    value={this.state.toCheckFront.effortDate}
                     onChange={(v)=>this.setState({
                       toCheckFront: {
                           ...this.state.toCheckFront,
-                          C3_632503840116: v
+                          effortDate: v
                         }
                         })}
                   />
-                <b>调动对象姓名：</b><span>{this.state.toCheckFront.C3_632503839336}</span>
-                <b>调动对象工号：</b><span>{this.state.toCheckFront.C3_632503839068}</span>
+                {/* <b>调动对象姓名：</b><span>{this.state.toCheckFront.C3_632503839336}</span>
+                <b>调动对象工号：</b><span>{this.state.toCheckFront.C3_632503839068}</span> */}
                 <br/>
                 <br/>
                 <b>变动原因：</b>
-                 <span>{this.state.toCheckFront.C3_632503846004}</span>
+                 <span>{this.state.toCheckFront.changeReason}</span>
                  <br/>
                  {this.state.toCheckFront.C3_632503853105?(<div>
                 <b>审核反馈信息：</b>
                 <span>{this.state.toCheckFront.C3_632503853105}</span>
               </div>):null}
                 <div className='tableWrap'>
-                <Table style={{height:'calc(60vh - 168px)',overflowY:'auto'}} pagination={false} bordered dataSource={this.state.toCheck} columns={columns} size="small"/>
+                
+                <b>变动后信息：</b>
+               
+
+                <Spin spinning={this.state.loading}>
+                <div style={{clear:'both'}}></div>
+                {/* <Table style={{height:'calc(60vh - 168px)',overflowY:'auto'}} pagination={false} bordered dataSource={this.state.toCheck} columns={columns} size="small"/> */}
+                <ul style={{float:'left',listStyle:'none',padding:'0',paddingRight:'8px'}}>
+                  {attr.map(item=>{return(<li style={{lineHeight:'24px'}}>{item}</li>)})}
+                </ul>
+                <ul style={{float:'left',listStyle:'none',padding:'0'}}>
+                  {this.state.toCheck.map(item=>{return(<li style={{lineHeight:'24px'}}>{item}</li>)})}
+                </ul>
+                <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
+                  <b>变动人员：</b>
+                <div style={{clear:'both'}}></div>
+                  {this.state.member.map((item)=>{return(<p onClick={()=>{this.setState({memberDetail:item});console.log(222)}} style={{lineHeight:'24px',color:'#1890ff',cursor:'pointer',margin:'0'}}>{item.C3_632503839336+'-'+item.C3_632503839068}</p>)})}
+                </div>
+                {
+                  this.state.memberDetail?(
+                    <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
+                      <ul style={{listStyle:'none',padding:'0'}}>
+                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.memberDetail.C3_632503839336}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.memberDetail.C3_632503853570}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.memberDetail.C3_632503844117}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.memberDetail.C3_632503845505}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.memberDetail.C3_632503843378}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.memberDetail.C3_632503855976}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前bucode: </b>{this.state.memberDetail.C3_632503858946}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.memberDetail.C3_632503839577}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.memberDetail.C3_632503840613}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.memberDetail.C3_632503840359}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.memberDetail.C3_632503841599}</li>
+                      </ul>
+                    </div>
+                  ):null
+                }
+                <div style={{clear:'both'}}></div>
+                {this.state.toCheckFront.ApproveRemark?
+                (<><br/><b>审批说明:</b>
+                  <p>{this.state.toCheckFront.ApproveRemark}</p></>)
+                :null}
+                
+                </Spin>
                 </div>
             </div>
             </div>
           </div>
         </Modal>
         <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`status = '审核中'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`status = '未通过'`})}}>未通过</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`status = '已通过'`})}}>已通过</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`Approve = '审核中'`})}}>审核中</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '未通过'`})}}>未通过</p>
+                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '已通过'`})}}>已通过</p>
                 {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
              
               <TableData
-                  resid={632314958317}
+                  resid={632255761674}
                   cmswhere={this.state.cms=='all'?'':this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
                   refTargetComponentName="TableData"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
-                  hasRowSelection={true}
+                  // hasRowSelection={true}
                   hasRowDelete={false}
                   hasRowModify={false}
                   hasModify={false}
@@ -268,28 +442,28 @@ const showAfter=[
                   actionBarWidth={100}
                   actionBarFixed={true}
 
-                  actionBarExtra={
-                    ({ dataSource, selectedRowKeys }) => {
-                      return (
-                        (this.state.selection=='1'&&this.state.mode!='view')?(
-                        <>
-                        <Button
-                          type='primary'
-                          onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,true)}}
-                        >
-                          通过审核
-                        </Button>
-                         <Button
-                          type='danger'
-                          onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,false)}}
+                  // actionBarExtra={
+                  //   ({ dataSource, selectedRowKeys }) => {
+                  //     return (
+                  //       (this.state.selection=='1'&&this.state.mode!='view')?(
+                  //       <><Button
+                  //         type='primary'
+                  //         onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,true)}}
+                  //       >
+                  //         通过审核
+                  //       </Button>
+                  //        <Button
+                  //         type='danger'
+                  //         onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,false)}}
 
-                         >
-                           不通过审核
-                         </Button>
-                         </>):null
-                      );
-                    }
-                  }
+                  //        >
+                  //          不通过审核
+                  //        </Button>
+                  //        </>
+                  //       ):null
+                  //     );
+                  //   }
+                  // }
 
                   customRowBtns={[
                     record => {
@@ -299,7 +473,7 @@ const showAfter=[
                             this.showOverlay(record);
                           }}
                         >
-                          确认信息
+                          {this.state.cms==`Approve = '审核中'`?'审批':'确认信息'}
                         </Button>
                       );
                     }
