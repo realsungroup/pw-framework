@@ -6,6 +6,12 @@ import http from 'Util20/api';
 import moment from 'moment';
 import { async } from 'q';
 
+function compare(property) {
+  return function (a, b) {
+      return (a[property] - b[property])
+  }
+}
+    // 排序
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { Step } = Steps;
@@ -58,6 +64,7 @@ const showAfter=[
       selection:1,
       canApprove:false,//是否为当前审批人
       cms:`Approve = '审核中'`,
+      
       visible:false,
       C3_632503844784:'',//记录编号
       toCheck:[
@@ -80,7 +87,9 @@ const showAfter=[
     
   }
    componentDidMount(){
-     
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var jobNum = userInfo.UserInfo.EMP_ID;
+    this.setState({userId:jobNum,cmsView:`Approve = '审核中' and applyPersonNum = '${jobNum}'`});
    }
   //  判断是否为发起人
    judgetrigger=(v)=>{
@@ -115,7 +124,14 @@ const showAfter=[
       var arr=[];
       var c=0;
       while(n<res2.data.length){
-        arr.push(res2.data[n].C3_634660565034);
+        arr.push(
+          {
+            stepName:res2.data[n].C3_634660565034,
+            stepPeople:res2.data[n].C3_634660565583,
+            stepTime:res2.data[n].edit_time,
+            order:res2.data[n].C3_634660566076,
+        }
+          );
         if(res2.data[n].C3_634660565837=='Y'){
           var cc=res2.data[n].C3_634660566076;
           if(cc>c){
@@ -125,10 +141,12 @@ const showAfter=[
         }
         n++;
       }
+      console.log('arr',arr)
+      arr=arr.sort(compare('order'))  
+
       // 判断是否为当前审批人
       var c2=c+1;
-      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var jobNum = userInfo.UserInfo.EMP_ID;
+    var jobNum = this.state.userId;
     n=0;
     while(n<res2.data.length){
       if(res2.data[n].C3_634660566076==c2){
@@ -336,16 +354,16 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'60vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" current={this.state.curStep}>
-              {this.state.stream.map(item=>{
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`Approve = '已通过'`?'finish':'process')} current={this.state.curStep}>
+              {this.state.stream.map((item,key)=>{
                 return(
-                  <Step title={item} />
+                  <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>
 
                 )
               })}
             </Steps>}
             
-            <div className='showContent'>
+            <div className='showContent' style={{marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}>
 
                 <b>生效时间：</b><DatePicker
                     value={this.state.toCheckFront.effortDate}
@@ -418,21 +436,20 @@ console.log(obj)
           </div>
         </Modal>
         <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`Approve = '审核中'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '未通过'`})}}>未通过</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '已通过'`})}}>已通过</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`Approve = '审核中'`,cmsView:`Approve = '审核中' and applyPersonNum = '${this.state.userId}'`})}}>审核中</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '未通过'`,cmsView:`Approve = '未通过' and applyPersonNum = '${this.state.userId}'`})}}>未通过</p>
+                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '已通过'`,cmsView:`Approve = '已通过' and applyPersonNum = '${this.state.userId}'`})}}>已通过</p>
                 {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
              
               <TableData
                   resid={632255761674}
-                  cmswhere={this.state.cms=='all'?'':this.state.cms}
+                  cmswhere={this.state.mode=='view'?this.state.cmsView:this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
                   refTargetComponentName="TableData"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
-                  // hasRowSelection={true}
                   hasRowDelete={false}
                   hasRowModify={false}
                   hasModify={false}
@@ -441,29 +458,6 @@ console.log(obj)
                   hasRowView={false}
                   actionBarWidth={100}
                   actionBarFixed={true}
-
-                  // actionBarExtra={
-                  //   ({ dataSource, selectedRowKeys }) => {
-                  //     return (
-                  //       (this.state.selection=='1'&&this.state.mode!='view')?(
-                  //       <><Button
-                  //         type='primary'
-                  //         onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,true)}}
-                  //       >
-                  //         通过审核
-                  //       </Button>
-                  //        <Button
-                  //         type='danger'
-                  //         onClick={()=>{this.judgeMulti(dataSource,selectedRowKeys,false)}}
-
-                  //        >
-                  //          不通过审核
-                  //        </Button>
-                  //        </>
-                  //       ):null
-                  //     );
-                  //   }
-                  // }
 
                   customRowBtns={[
                     record => {
