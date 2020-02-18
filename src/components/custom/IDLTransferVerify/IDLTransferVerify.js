@@ -56,6 +56,8 @@ const showAfter=[
  class  IDLTransferVerify extends  Component{
    constructor(props){
     super(props);
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var jobNum = userInfo.UserInfo.EMP_ID;
     this.state ={
       approveRec:[],//临时储存的审批记录
       mode:props.mode,
@@ -64,7 +66,8 @@ const showAfter=[
       selection:1,
       canApprove:false,//是否为当前审批人
       cms:`Approve = '审核中'`,
-      
+      userId:jobNum,
+      cmsView:`Approve = '审核中' and applyPersonNum = '${jobNum}'`,
       visible:false,
       C3_632503844784:'',//记录编号
       toCheck:[
@@ -87,9 +90,7 @@ const showAfter=[
     
   }
    componentDidMount(){
-    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var jobNum = userInfo.UserInfo.EMP_ID;
-    this.setState({userId:jobNum,cmsView:`Approve = '审核中' and applyPersonNum = '${jobNum}'`});
+  
    }
   //  判断是否为发起人
    judgetrigger=(v)=>{
