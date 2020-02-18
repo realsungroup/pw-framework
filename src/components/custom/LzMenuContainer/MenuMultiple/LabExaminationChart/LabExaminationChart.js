@@ -5,6 +5,24 @@ import { Spin, Table } from "antd";
 import EchartsOfReact from "echarts-of-react";
 import moment from "moment";
 
+const colors = [
+  "#c23531",
+  "#2f4554",
+  "#61a0a8",
+  "#d48265",
+  "#91c7ae",
+  "#749f83",
+  "#ca8622",
+  "#bda29a",
+  "#6e7074",
+  "#546570",
+  "#14c263",
+  "#cd12a9",
+  "#912389",
+  "#a829f3",
+  "#1c61f6",
+  "#7ac421"
+];
 /**
  * 实验室检查图表
  */
@@ -28,9 +46,13 @@ class LabExaminationChart extends React.Component {
     /**
      * echart id
      */
-    chartid: PropTypes.string
+    chartid: PropTypes.string,
+    chartVisible: PropTypes.bool
   };
-  static defaultProps = { chartid: "lab-examination-chart" };
+  static defaultProps = {
+    chartid: "lab-examination-chart",
+    chartVisible: true
+  };
   constructor(props) {
     super(props);
 
@@ -79,10 +101,34 @@ class LabExaminationChart extends React.Component {
 
     // 曲线配置
     const series = [];
+    const yAxis = [];
     // 图例配置
     const legend = { data: [] };
-    fields.forEach(field => {
-      const obj = { name: field.title, type: "line", data: [] };
+    fields.forEach((field, index) => {
+      const obj = {
+        name: field.title,
+        type: "line",
+        data: [],
+        yAxisIndex: index
+      };
+      const _yAxis = {
+        // name: field.title,
+        type: "value",
+        position: "left ",
+        axisLine: {
+          lineStyle: {
+            color: colors[index]
+          }
+        }
+      };
+      if (index % 2 === 0) {
+        _yAxis.position = "left";
+        _yAxis.offset = (index / 2) * 35;
+      } else {
+        _yAxis.position = "right";
+        _yAxis.offset = (index / 2) * 35;
+      }
+      yAxis.push(_yAxis);
       newData.forEach(item => {
         const value = item[field.field];
         obj.data.push(value);
@@ -101,9 +147,10 @@ class LabExaminationChart extends React.Component {
     });
 
     const option = {
-      yAxis: {
-        type: "value"
-      },
+      // yAxis: {
+      //   type: "value"
+      // },
+      yAxis,
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -123,7 +170,8 @@ class LabExaminationChart extends React.Component {
         {
           type: "slider"
         }
-      ]
+      ],
+      color: colors
     };
 
     option.xAxis = xAxis;
@@ -149,20 +197,22 @@ class LabExaminationChart extends React.Component {
 
   render() {
     const { loading, option, tableData, columns, dsOfTableGrid } = this.state;
-    const { chartid } = this.props;
+    const { chartid, chartVisible } = this.props;
     return (
       <Spin spinning={loading}>
-        <div className="lab-examination-chart">
-          {option && (
-            <EchartsOfReact
-              id={chartid}
-              defaultWidth={"100%"}
-              defaultHeight={600}
-              option={option}
-            />
-          )}
-        </div>
-        <div>
+        {chartVisible && (
+          <div className="lab-examination-chart">
+            {option && (
+              <EchartsOfReact
+                id={chartid}
+                defaultWidth={"100%"}
+                defaultHeight={600}
+                option={option}
+              />
+            )}
+          </div>
+        )}
+        <div style={{ width: "100%", overflow: "auto" }}>
           {option && <Table columns={columns} dataSource={dsOfTableGrid} />}
         </div>
       </Spin>

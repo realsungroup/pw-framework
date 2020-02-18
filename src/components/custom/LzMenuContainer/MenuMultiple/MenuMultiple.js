@@ -24,7 +24,7 @@ const hasHeightWeightChartBtn = formTitle => {
 const hasChooseFieldBtn = formTitle => {
   //,CD-评分
   return (
-    formTitle.indexOf("实验室检查") !== -1 ||
+    // formTitle.indexOf("实验室检查") !== -1 ||
     formTitle.indexOf("CD-评分") !== -1
   );
 };

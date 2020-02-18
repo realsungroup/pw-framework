@@ -1,16 +1,65 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Modal, Input, message, Spin, Menu, Icon, Avatar } from "antd";
-
+import {
+  Modal,
+  Input,
+  message,
+  Spin,
+  Menu,
+  Icon,
+  Avatar,
+  Button,
+  Tree,
+  Tabs
+} from "antd";
 import "./LzMenuContainer.less";
 import { LzTable } from "../../../loadableComponents";
 import MenuMultiple from "./MenuMultiple";
-import { getMainTableData } from "Util/api";
+import { getMainTableData, getFormData, getSubTableData } from "Util/api";
+import dealControlArr from "Util/controls";
 import LzRowCols from "UnitComponent/components/LzRowCols";
+import { LzModal } from "../loadableCustom";
+import LabExaminationChart from "./MenuMultiple/LabExaminationChart";
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
+const { TreeNode } = Tree;
+const { TabPane } = Tabs;
+
+const getCanChooseFields = canOpControlArr => {
+  const arr = assortFields(canOpControlArr);
+  return arr;
+};
+const assortFields = controlArr => {
+  if (!controlArr || !controlArr.length) {
+    return [];
+  }
+  const filteredControlArr = controlArr.filter(
+    control => control.ColResDataSort
+  );
+  const klasses = [];
+  filteredControlArr.forEach(control => {
+    let i;
+    if (
+      !klasses.some((klass, index) => {
+        if (klass.title === control.ColResDataSort) {
+          i = index;
+          return true;
+        }
+      })
+    ) {
+      klasses.push({
+        title: control.ColResDataSort,
+        renderControlArr: [control]
+      });
+    } else {
+      klasses[i].renderControlArr.push(control);
+    }
+  });
+  return klasses;
+};
+
 /**
  * 菜单容器组件
  */
@@ -151,11 +200,62 @@ export default class LzMenuContainer extends React.Component {
       selectedKeys: [],
       resid: 0, // 主表 id
       subresid: 0, // 子表 id
-      hostrecid: 0 // 主表记录 id
+      hostrecid: 0, // 主表记录 id
+      chooseFieldModalVisible: false,
+      data: {
+        实验室检查: null,
+        CDAI: null,
+        用药: null,
+        内镜: null
+      },
+      selectedFileds: {
+        实验室检查: [],
+        CDAI: [],
+        用药: [],
+        内镜: []
+      },
+      spinning: false,
+      chartVisible: false,
+      recordList: {
+        实验室检查: [],
+        CDAI: [],
+        用药: [],
+        内镜: []
+      },
+      innerFieldName: {
+        实验室检查: "",
+        CDAI: "",
+        用药: "",
+        内镜: ""
+      }
     };
   }
 
   componentDidMount() {}
+
+  isFirst = true;
+  componentWillReceiveProps(preProps) {
+    const menuList = preProps.menuList;
+    if (menuList.length && this.isFirst) {
+      const { data } = this.state;
+      menuList.forEach(menu => {
+        if (menu.RES_NAME === "实验室检查") {
+          data["实验室检查"] = menu;
+        }
+        if (menu.RES_NAME.includes("CDAI")) {
+          data["CDAI"] = menu;
+        }
+        if (menu.RES_NAME === "用药信息") {
+          data["用药"] = menu;
+        }
+        if (menu.RES_NAME.includes("内镜")) {
+          data["内镜"] = menu;
+        }
+      });
+      this.setState({ data });
+      this.isFirst = false;
+    }
+  }
 
   // 切换菜单
   toggleMenu = index => {
@@ -287,7 +387,9 @@ export default class LzMenuContainer extends React.Component {
   };
 
   searchChange = event => {
-    this.setState({ searchValue: event.target.value });
+    this.setState({
+      searchValue: event.target.value
+    });
   };
 
   changeMenuStatus = menuStatus => {
@@ -463,9 +565,154 @@ export default class LzMenuContainer extends React.Component {
     );
   };
 
+  _canOpControlArr = { 实验室检查: [], CDAI: [], 用药: [], 内镜: [] };
+  getFormData = async (key, subresid) => {
+    let res;
+    const { data } = this.state;
+    const pArr = [
+      getFormData(subresid, "default"),
+      getFormData(subresid, "title-choose")
+    ];
+    try {
+      this.setState({ spinning: true });
+      res = await Promise.all(pArr);
+      this.setState({ spinning: false });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    const formFormData = dealControlArr(res[0].data.columns);
+    const chooseFieldFormData = dealControlArr(res[1].data.columns);
+
+    const treeData = getCanChooseFields(chooseFieldFormData.canOpControlArr);
+
+    this._canOpControlArr[key] = chooseFieldFormData.canOpControlArr;
+    data[key].formFormData = formFormData;
+    data[key].treeData = treeData;
+    this.setState({ data });
+  };
+
+  handleNodeCheck = key => selectedKeys => {
+    const selectedFileds = {
+      ...this.state.selectedFileds
+    };
+    selectedFileds[key] = selectedKeys;
+    this.setState({ selectedFileds });
+  };
+
+  renderTreeNodes = data => {
+    return data.map(item => {
+      if (item.renderControlArr) {
+        return (
+          <TreeNode title={item.title} key={item.title} dataRef={item}>
+            {this.renderTreeNodes(item.renderControlArr)}
+          </TreeNode>
+        );
+      }
+      return (
+        <TreeNode key={item.ColName} title={item.ColDispName} dataRef={item} />
+      );
+    });
+  };
+
+  getRecordList = async (key, subresid) => {
+    const { resid } = this.props;
+    const { recordList, innerFieldName, record } = this.state;
+    const hostrecid = record.REC_ID;
+    let res;
+    try {
+      res = await getSubTableData(resid, subresid, hostrecid);
+    } catch (err) {
+      return message.error(err.message);
+    }
+    recordList[key] = res.data;
+    innerFieldName[key] = res.cmscolumninfo[0].id;
+    this.setState({
+      recordList,
+      innerFieldName
+    });
+  };
+
+  handleCompleteFieldsChoose = () => {
+    const { selectedFileds } = this.state;
+    const newSelectedFileds = {};
+    const keys = Object.keys(selectedFileds);
+    keys.forEach(key => {
+      newSelectedFileds[key] = selectedFileds[key].filter(
+        key => key.indexOf("C3_") !== -1
+      );
+    });
+    if (keys.every(key => !selectedFileds[key].length)) {
+      return message.error("您未选择字段");
+    }
+    // const fields = { 实验室检查: [], CDAI: [], 用药: [], 内镜: [] };
+    const sortFields = {
+      实验室检查: new Map(),
+      CDAI: new Map(),
+      用药: new Map(),
+      内镜: new Map()
+    };
+
+    keys.forEach(key => {
+      newSelectedFileds[key].forEach(item => {
+        const curItem = this._canOpControlArr[key].find(
+          i => i.ColName === item
+        );
+        if (curItem) {
+          let mapValue = sortFields[key].get(curItem.ColResDataSort);
+          if (mapValue) {
+            mapValue.push({
+              field: curItem.ColName,
+              title: curItem.ColDispName
+            });
+          } else {
+            sortFields[key].set(curItem.ColResDataSort, [
+              {
+                field: curItem.ColName,
+                title: curItem.ColDispName
+              }
+            ]);
+          }
+        }
+      });
+    });
+
+    // keys.forEach(key => {
+    //   this._canOpControlArr[key].forEach(item => {
+    //     const curItem = newSelectedFileds[key].some(
+    //       key => key === item.ColName
+    //     );
+    //     if (curItem) {
+    //       fields[key].push({
+    //         field: item.ColName,
+    //         title: item.ColDispName
+    //       });
+    //     }
+    //   });
+    // });
+    this.setState({
+      chartVisible: true,
+      // fields,
+      sortFields
+    });
+  };
+
   render() {
-    const { menuStatus, modalVisible, searchValue, searchLoading } = this.state;
+    const {
+      menuStatus,
+      modalVisible,
+      searchValue,
+      searchLoading,
+      chooseFieldModalVisible,
+      data,
+      selectedFileds,
+      spinning,
+      chartVisible,
+      sortFields,
+      recordList,
+      innerFieldName
+    } = this.state;
     const { searchText } = this.props;
+    console.log(data);
     return (
       <div className="lz-menu-container">
         {/* menu */}
@@ -483,6 +730,23 @@ export default class LzMenuContainer extends React.Component {
               {...this.getAvatarSrc()}
             />
             {this.renderUserFields()}
+            <div className="user-info__button">
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.setState({
+                    chooseFieldModalVisible: true
+                  });
+                  const { data } = this.state;
+                  if (data.实验室检查 && !data.实验室检查.treeData) {
+                    this.getFormData("实验室检查", data.实验室检查.RES_ID);
+                    this.getRecordList("实验室检查", data.实验室检查.RES_ID);
+                  }
+                }}
+              >
+                数据总览
+              </Button>
+            </div>
           </div>
           {this.renderNavList()}
           <i
@@ -529,6 +793,309 @@ export default class LzMenuContainer extends React.Component {
             />
           </Spin>
         </Modal>
+        <Modal
+          title="选择字段"
+          visible={chooseFieldModalVisible}
+          onCancel={() =>
+            this.setState({
+              chooseFieldModalVisible: false
+            })
+          }
+          onOk={this.handleCompleteFieldsChoose}
+        >
+          <Spin spinning={spinning}>
+            <Tabs
+              onChange={key => {
+                if (data[key] && !data[key].treeData) {
+                  this.getFormData(key, data[key].RES_ID);
+                  this.getRecordList(key, data[key].RES_ID);
+                }
+              }}
+            >
+              <TabPane tab="实验室检查" key="实验室检查">
+                {!data.实验室检查 ? (
+                  <div
+                    style={{
+                      padding: 40,
+                      fontSize: 18,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    无此项
+                  </div>
+                ) : (
+                  <Tree
+                    checkable
+                    ref={this.getTreeRef}
+                    selectedKeys={selectedFileds.实验室检查}
+                    onCheck={this.handleNodeCheck("实验室检查")}
+                  >
+                    {this.renderTreeNodes(data.实验室检查.treeData || [])}
+                  </Tree>
+                )}
+              </TabPane>
+              <TabPane tab="CDAI评分" key="CDAI">
+                {!data.CDAI ? (
+                  <div
+                    style={{
+                      padding: 40,
+                      fontSize: 18,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    无此项
+                  </div>
+                ) : (
+                  <Tree
+                    checkable
+                    ref={this.getTreeRef}
+                    selectedKeys={selectedFileds.CDAI}
+                    onCheck={this.handleNodeCheck("CDAI")}
+                  >
+                    {this.renderTreeNodes(data.CDAI.treeData || [])}
+                  </Tree>
+                )}
+              </TabPane>
+              <TabPane tab="用药" key="用药">
+                {!data.用药 ? (
+                  <div
+                    style={{
+                      padding: 40,
+                      fontSize: 18,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    无此项
+                  </div>
+                ) : (
+                  <Tree
+                    checkable
+                    ref={this.getTreeRef}
+                    selectedKeys={selectedFileds.用药}
+                    onCheck={this.handleNodeCheck("用药")}
+                  >
+                    {this.renderTreeNodes(data.用药.treeData || [])}
+                  </Tree>
+                )}
+              </TabPane>
+              <TabPane tab="内镜" key="内镜">
+                {!data.内镜 ? (
+                  <div
+                    style={{
+                      padding: 40,
+                      fontSize: 18,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    无此项
+                  </div>
+                ) : (
+                  <Tree
+                    checkable
+                    ref={this.getTreeRef}
+                    selectedKeys={selectedFileds.内镜}
+                    onCheck={this.handleNodeCheck("内镜")}
+                  >
+                    {this.renderTreeNodes(data.内镜.treeData || [])}
+                  </Tree>
+                )}
+              </TabPane>
+            </Tabs>
+          </Spin>
+        </Modal>
+        {chartVisible && (
+          <LzModal
+            defaultScaleStatus="max"
+            onClose={() =>
+              this.setState({
+                chartVisible: false
+              })
+            }
+          >
+            <Spin spinning={spinning}>
+              <Tabs>
+                <TabPane tab="实验室检查" key="实验室检查">
+                  {!data.实验室检查 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      无此项
+                    </div>
+                  )}
+                  {data.实验室检查 && sortFields.实验室检查.size < 1 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      未选择字段
+                    </div>
+                  )}
+                  <Tabs>
+                    {Array.from(sortFields.实验室检查.entries()).map(item => {
+                      return (
+                        <TabPane tab={item[0]} key={item[0]}>
+                          <LabExaminationChart
+                            data={recordList.实验室检查}
+                            fields={item[1]}
+                            dateField={innerFieldName.实验室检查}
+                            chartid={item[0]}
+                          />
+                        </TabPane>
+                      );
+                    })}
+                  </Tabs>
+                </TabPane>
+                <TabPane tab="CDAI评分" key="CDAI">
+                  {!data.CDAI && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      无此项
+                    </div>
+                  )}
+                  {data.CDAI && sortFields.CDAI.size < 1 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      未选择字段
+                    </div>
+                  )}
+                  <Tabs>
+                    {Array.from(sortFields.CDAI.entries()).map(item => {
+                      return (
+                        <TabPane tab={item[0]} key={item[0]}>
+                          <LabExaminationChart
+                            data={recordList.CDAI}
+                            fields={item[1]}
+                            dateField={innerFieldName.CDAI}
+                            chartid={item[0]}
+                          />
+                        </TabPane>
+                      );
+                    })}
+                  </Tabs>
+                </TabPane>
+                <TabPane tab="用药" key="用药">
+                  {!data.用药 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      无此项
+                    </div>
+                  )}
+                  {data.用药 && sortFields.用药.size < 1 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      未选择字段
+                    </div>
+                  )}
+                  <Tabs>
+                    {Array.from(sortFields.用药.entries()).map(item => {
+                      return (
+                        <TabPane tab={item[0]} key={item[0]}>
+                          <LabExaminationChart
+                            data={recordList.用药}
+                            fields={item[1]}
+                            dateField={innerFieldName.用药}
+                            chartid={item[0]}
+                            chartVisible={false}
+                          />
+                        </TabPane>
+                      );
+                    })}
+                  </Tabs>
+                </TabPane>
+                <TabPane tab="内镜" key="内镜">
+                  {!data.内镜 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      无此项
+                    </div>
+                  )}
+                  {data.内镜 && sortFields.内镜.size < 1 && (
+                    <div
+                      style={{
+                        padding: 40,
+                        fontSize: 18,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      未选择字段
+                    </div>
+                  )}
+                  <Tabs>
+                    {Array.from(sortFields.内镜.entries()).map(item => {
+                      return (
+                        <TabPane tab={item[0]} key={item[0]}>
+                          <LabExaminationChart
+                            data={recordList.内镜}
+                            fields={item[1]}
+                            dateField={innerFieldName.内镜}
+                            chartid={item[0]}
+                            chartVisible={false}
+                          />
+                        </TabPane>
+                      );
+                    })}
+                  </Tabs>
+                </TabPane>
+              </Tabs>
+            </Spin>
+          </LzModal>
+        )}
       </div>
     );
   }
