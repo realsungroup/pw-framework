@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import {Steps,Button,Icon,Select,Input,Tabs,Spin,TreeSelect,Modal, DatePicker,Switch,Checkbox,message} from 'antd';
 import './IDLTransfer.less';
 import TableData from '../../common/data/TableData';
+import qs from 'qs';
 import http from 'Util20/api';
 import moment from 'moment';
 import IDLTransferVerify from '../IDLTransferVerify';
+import IDLTransferVerifyAction from '../IDLTransferVerifyAction';
 import { async } from 'q';
 
 const { Option } = Select;
@@ -16,13 +18,14 @@ const subresid = 632314794466;//子表resid
     super(props);
     this.state ={
       chooseFo:false,//是否选择下属
+      typeResid:'',
       checkGroup:{
         date:false,
-        depaCode:true,
-        proCode:true,
-        supervisor:true,
-        job:true,
-        class:true,
+        depaCode:false,
+        proCode:false,
+        supervisor:false,
+        job:false,
+        class:false,
         bucode:false,
         reason:false
       },//必填项
@@ -85,9 +88,17 @@ const subresid = 632314794466;//子表resid
    }
    componentDidMount(){
      this.getLv();
-     this.getDepartment('100');
-     this.getBitian();
+     
    }
+   //获取地址栏参数跳转页面
+   getTypeAndTitle = () => {
+    const quertString = window.location.search;
+    const qsObj = qs.parse(quertString.substring(1));
+    this.setState({
+      page: qsObj.page
+    });
+  };
+
   //  第二页提交前检查未填项
   checkUnfill=()=>{
     var msg='';
@@ -124,21 +135,54 @@ const subresid = 632314794466;//子表resid
     if(bol==true){
       message.error('您还未填写'+msg+',若不想填请取消选中状态');
       return false;
+
     }
   }
    //获取第二页必填项
-   getBitian=async()=>{
+   getBitian=async(v)=>{
+     this.setState({changeType:v,loading:true});
+     var resid='';
+     if(v=='部门变更'){
+      resid='634822081509'
+     }else if(v=='汇报关系变更'){
+       resid='634822110774'
+     }else if(v=='职位变更'){
+       resid='634822131537'
+     }else if(v=='级别变更'){
+      resid='634820028458'
+    }
      var res;
      try{
-      res = await http().getColumnInfo({
-        resid: 632314958317,
+      res = await http().getFieldProp({
+        resid: resid,
+        getcolumninfo:1
       });
-      console.log(res)
+      console.log('必填',res)
+      var resField=['effortDate','nDepartCode','nProj_Code','nDirectorNum','nJobCode','nLevel',"nBuCode","changeReason"];
+      var stateField=Object.keys(this.state.checkGroup);
+      var fin=this.state.checkGroup;
+      var n=0;
+      var check=[];
+      while(n<res.cmscolumninfo.length){
+        var c=0;
+        while(c<resField.length){
+          if(resField[c]==res.cmscolumninfo[n].id){
+            var k = stateField[c]
+            check.push(k)
+            fin[k]=res.cmscolumninfo[n][resField[c]].isBiTian;
+          }
+          c++;
+        }
+        n++;
+      }
+      console.log('fin',fin)
+      this.setState({loading:false,checkGroup:fin});
+      
      }catch(e){
-      console.log(e)
+      console.log(e);
+      this.setState({loading:false});
      }
    }
-
    //获取申请人信息
    getAppInfo=()=>{
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -159,7 +203,8 @@ const subresid = 632314794466;//子表resid
         arr.push({value:res.data[n].C3_449335790387,key:res.data[n].C3_449335790387})
         n++;
       }
-      this.setState({lvList:arr,loading:false});
+      this.setState({lvList:arr});
+      this.getDepartment('100');
     }catch(e){
       this.setState({loading:false})
       console.log(e)
@@ -631,7 +676,7 @@ const subresid = 632314794466;//子表resid
                   <br/>
                   <b>变更类型：</b>
                   <span style={{width:'auto'}}>
-                  <Select placeholder='请选择变更类型' style={{ width: 240 }} value={this.state.changeType} onChange={(v)=>{this.setState({changeType:v})}}>
+                  <Select placeholder='请选择变更类型' style={{ width: 240 }} value={this.state.changeType} onChange={(v)=>{this.getBitian(v)}}>
 
                     <Option value='部门变更' key='0'>部门变更</Option>
                     <Option value='汇报关系变更' key='1'>汇报关系变更</Option>
@@ -874,6 +919,7 @@ const subresid = 632314794466;//子表resid
                   <Icon type="close-circle" theme="filled" style={{color:'#f5222d'}}/>
                   }
                  
+                 
                   <h2>{this.state.hint}</h2>
                   {/* {this.state.result=='success'?(<>
                   <p>本次申请需要以下人员审批：</p>
@@ -898,6 +944,12 @@ const subresid = 632314794466;//子表resid
             <div className='wrap' >
             {/* view */}
                <IDLTransferVerify mode='view'></IDLTransferVerify>
+            </div>
+          </TabPane>
+          <TabPane tab="我的审核" key="3">
+            <div className='wrap' >
+            {/* view */}
+               <IDLTransferVerifyAction ></IDLTransferVerifyAction>
             </div>
           </TabPane>
         </Tabs>
