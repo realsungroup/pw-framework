@@ -465,5 +465,18 @@ http.createApi('getTableByHostRecord', {
   method: 'get',
   url: '/api/100/table/RetrieveRelTableByHostRecord'
 });
-
+/**
+ * 获取字段属性
+ */
+http.createApi('getFieldProp', {
+  method: 'get',
+  url: '/api/100/table/Retrieve'
+});
+/**
+ * 获取审批流
+ */
+http.createApi('CreateAuditFlowData', {
+  method: 'get',
+  url: '/api/AuditFlow/CreateAuditFlowData'
+});
 export default http;
