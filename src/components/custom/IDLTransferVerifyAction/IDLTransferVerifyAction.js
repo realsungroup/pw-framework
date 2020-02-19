@@ -190,14 +190,21 @@ console.log(obj)
         }else{
       
           var res4='';
+          var date=this.state.toCheckFront.effortDate;
+         if(date){date=moment(date).format('YYYY-MM-DD');}
                 try {
                 res4 = await http().modifyRecords({
                   resid: 632255761674,
                   data: [{
                     REC_ID:this.state.toCheckFront.REC_ID,
-                    effortDate:this.state.toCheckFront.effortDate,
+                    effortDate:date,
                   }]
                 });
+                if (res.Error === 0) {
+                  message.success(res.message);
+                  this.tableDataRef.handleRefresh();
+                  
+                }
                 console.log('res', res);
               } catch (error) {
                 message.error(error.message);
@@ -214,13 +221,15 @@ console.log(obj)
    }
    passStream=async()=>{
     var res='';
+    var date=this.state.toCheckFront.effortDate;
+     if(date){date=moment(date).format('YYYY-MM-DD');}
     try {
      res = await http().modifyRecords({
        resid: 632255761674,
        data: [{
          REC_ID:this.state.toCheckFront.REC_ID,
          Approve:'已通过',
-         effortDate:this.state.toCheckFront.effortDate,
+         effortDate:date,
        }]
      });
      console.log('res', res);
@@ -277,7 +286,7 @@ console.log(obj)
       }
       var obj=res.data[0];
       var date=obj.effortDate;
-        date=moment(date);
+        if(date){date=moment(date);}
         obj.effortDate=date;
         this.getMem(r.C3_634660564341);
       this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
@@ -357,7 +366,7 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'80vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'finish':'process')} current={this.state.curStep}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'finish':'process')} current={(this.state.curStep)+1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>
