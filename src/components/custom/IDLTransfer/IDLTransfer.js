@@ -140,7 +140,7 @@ const subresid = 632314794466;//子表resid
   }
    //获取第二页必填项
    getBitian=async(v)=>{
-     this.setState({changeType:v,loading:true});
+     this.setState({changeType:v,loading:true,newDepa:{}});
      var resid='';
      if(v=='部门变更'){
       resid='634822081509'
@@ -157,7 +157,7 @@ const subresid = 632314794466;//子表resid
         resid: resid,
         getcolumninfo:1
       });
-      console.log('必填',res)
+      
       var resField=['effortDate','nDepartCode','nProj_Code','nDirectorNum','nJobCode','nLevel',"nBuCode","changeReason"];
       var stateField=Object.keys(this.state.checkGroup);
       var fin=this.state.checkGroup;
@@ -176,6 +176,17 @@ const subresid = 632314794466;//子表resid
         n++;
       }
       console.log('fin',fin)
+      if(fin.depaCode==false){
+        
+        this.setState({newDepa:this.state.depaSele[0]});
+      }
+      if(fin.supervisor==false){
+        this.setState({newSuper:{
+          C3_227192484125:this.state.selectMem[0].C3_417993433650,
+          C3_305737857578:this.state.selectMem[0].C3_417993417686
+        }});
+
+      }
       this.setState({loading:false,checkGroup:fin});
       
      }catch(e){
@@ -460,7 +471,7 @@ const subresid = 632314794466;//子表resid
       var toSub=[];
       var n=0;
       var date=this.state.activeDate;
-      date=moment(date).format('YYYY-MM-DD');
+     if(date){date=moment(date).format('YYYY-MM-DD');}
       var usercode = this.getAppInfo();
       while (n<this.state.selectMem.length){
         var obj={
@@ -474,8 +485,10 @@ const subresid = 632314794466;//子表resid
           C3_632503845029:this.state.job.C3_417821542057,//变动后职务编号
           C3_632503845755:this.state.lv,//变动后级别
           C3_632503859143:this.state.bucode,//变动后bucode
-         
+          departCode:this.state.depaSele[0].DEP_ID+'',//变动前部门编号
+          directorCode:this.state.selectMem[0].C3_417993417686,// 传主管编号
           C3_632503838782:this.state.selectMem[n].C3_305737857578,//人员编号
+          
           C3_632503859474:usercode,//申请人编号
           C3_632503846004:this.state.changeReason,//变动原因
           subApply:'Y',//提交状态
@@ -497,7 +510,10 @@ const subresid = 632314794466;//子表resid
             {
               resid: '632255761674',
               maindata: {
+                hrPreAprrove:'waiting',//HR预审
                 Approve:'审核中',
+                departCode:this.state.depaSele[0].DEP_ID+'',//变动前部门编号
+                directorCode:this.state.selectMem[0].C3_417993417686,// 传主管编号
                 effortDate:date,//生效日期
                 changeReason:this.state.changeType,//变动类型
                 nDepartCode:this.state.newDepa.DEP_ID,//变动后部门编号
@@ -694,7 +710,7 @@ const subresid = 632314794466;//子表resid
         depaCode: !this.state.checkGroup.depaCode
       }
     })}>变更后部门代码：</Checkbox>
-              {this.state.checkGroup.depaCode?<span style={{width:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newDepa.C3_419339113187?this.state.newDepa.C3_419339113187:<span style={this.state.checkGroup.depaCode?(this.state.newDepa.C3_419339113187?{}:{color:'#f5222d'}):{color:'#999'}}>请点击右侧按钮选择部门</span>}</span>:null}
+              <span style={{width:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newDepa.C3_419339113187?this.state.newDepa.C3_419339113187:<span style={this.state.checkGroup.depaCode?(this.state.newDepa.C3_419339113187?{}:{color:'#f5222d'}):{color:'#999'}}>请点击右侧按钮选择部门</span>}</span>
                   <Button icon="search" disabled={!this.state.checkGroup.depaCode} onClick={()=>this.setState({searchDepaV:true})}>选择部门</Button>
                   <div>
                   <b>变更后部门名：</b><span>{this.state.newDepa.DEP_NAME?this.state.newDepa.DEP_NAME:'- -'}</span>
@@ -722,7 +738,7 @@ const subresid = 632314794466;//子表resid
         ...this.state.checkGroup,
         supervisor: !this.state.checkGroup.supervisor
       }
-    })}>变更后主管：</Checkbox>{this.state.checkGroup.supervisor?<span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newSuper.C3_227192484125?(this.state.newSuper.C3_227192484125+' - '+this.state.newSuper.C3_305737857578):<span style={{color:'#f5222d'}}>请点击右侧按钮选择主管</span>}</span>:null}
+    })}>变更后主管：</Checkbox><span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newSuper.C3_227192484125?(this.state.newSuper.C3_227192484125+' - '+this.state.newSuper.C3_305737857578):<span style={this.state.checkGroup.supervisor?{color:'#f5222d'}:{color:'#999'}}>请点击右侧按钮选择主管</span>}</span>
                   <Button disabled={!this.state.checkGroup.supervisor} icon="search" onClick={()=>this.setState({searchSuperV:true})}>选择主管</Button>
                   <br/>
                   <br/>
