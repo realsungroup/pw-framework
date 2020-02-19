@@ -12,23 +12,8 @@ function compare(property) {
   }
 }
     // 排序
-const { Option } = Select;
-const { TabPane } = Tabs;
+
 const { Step } = Steps;
-const columns = [
-  {
-    title: '属性',
-    dataIndex: 'attributes',
-  },
-  {
-    title: '变更前',
-    dataIndex: 'before',
-  },
-  {
-    title: '变更后',
-    dataIndex: 'after',
-  },
-];
 const attr=[
   '部门名',
   '职务名',
@@ -197,14 +182,16 @@ console.log(obj)
           
           this.passStream();
         }else{
-      
+          var date=this.state.toCheckFront.effortDate;
+         if(date){date=moment(date).format('YYYY-MM-DD');}
           var res4='';
                 try {
+                 
                 res4 = await http().modifyRecords({
                   resid: 632255761674,
                   data: [{
                     REC_ID:this.state.toCheckFront.REC_ID,
-                    effortDate:this.state.toCheckFront.effortDate,
+                    effortDate:date,
                   }]
                 });
                 console.log('res', res);
@@ -223,13 +210,15 @@ console.log(obj)
    }
    passStream=async()=>{
     var res='';
+    var date=this.state.toCheckFront.effortDate;
+   if(date){date=moment(date).format('YYYY-MM-DD');}
     try {
      res = await http().modifyRecords({
        resid: 632255761674,
        data: [{
          REC_ID:this.state.toCheckFront.REC_ID,
          Approve:'已通过',
-         effortDate:this.state.toCheckFront.effortDate,
+         effortDate:date,
        }]
      });
      console.log('res', res);
@@ -279,7 +268,7 @@ console.log(obj)
     }
     var obj=r;
     var date=obj.effortDate;
-      date=moment(date);
+      if(date){date=moment(date);}
       obj.effortDate=date;
       this.getMem(obj.changeID);
     this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
@@ -468,7 +457,7 @@ console.log(obj)
                             this.showOverlay(record);
                           }}
                         >
-                          {this.state.cms==`Approve = '审核中'`?'审批':'确认信息'}
+                          确认信息
                         </Button>
                       );
                     }
