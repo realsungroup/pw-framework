@@ -171,7 +171,11 @@ class LabExaminationChart extends React.Component {
           type: "slider"
         }
       ],
-      color: colors
+      color: colors,
+      grid: {
+        left: "20%",
+        right: "20%"
+      }
     };
 
     option.xAxis = xAxis;

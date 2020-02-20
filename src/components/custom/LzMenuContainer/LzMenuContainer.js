@@ -236,8 +236,10 @@ export default class LzMenuContainer extends React.Component {
   isFirst = true;
   componentWillReceiveProps(preProps) {
     const menuList = preProps.menuList;
+    const { record } = this.state;
     if (menuList.length && this.isFirst) {
       const { data } = this.state;
+      let nj;
       menuList.forEach(menu => {
         if (menu.RES_NAME === "实验室检查") {
           data["实验室检查"] = menu;
@@ -250,8 +252,12 @@ export default class LzMenuContainer extends React.Component {
         }
         if (menu.RES_NAME.includes("内镜")) {
           data["内镜"] = menu;
+          nj = { ...menu };
         }
       });
+      if (record.C3_617809531670 === "UC") {
+        data["CDAI"] = nj;
+      }
       this.setState({ data });
       this.isFirst = false;
     }
@@ -498,6 +504,7 @@ export default class LzMenuContainer extends React.Component {
 
   renderUserFields = () => {
     const { record } = this.state;
+    console.log(record);
     const { searchText } = this.props;
     // console.log('this.props.record:', this.props.record);
     // 没有选取人员时
@@ -634,13 +641,13 @@ export default class LzMenuContainer extends React.Component {
 
   handleCompleteFieldsChoose = () => {
     const { selectedFileds } = this.state;
-    const newSelectedFileds = {};
+    const newSelectedFileds = { ...selectedFileds };
     const keys = Object.keys(selectedFileds);
-    keys.forEach(key => {
-      newSelectedFileds[key] = selectedFileds[key].filter(
-        key => key.indexOf("C3_") !== -1
-      );
-    });
+    // keys.forEach(key => {
+    //   newSelectedFileds[key] = selectedFileds[key].filter(
+    //     key => key.indexOf("C3_") !== -1
+    //   );
+    // });
     if (keys.every(key => !selectedFileds[key].length)) {
       return message.error("您未选择字段");
     }
@@ -836,7 +843,7 @@ export default class LzMenuContainer extends React.Component {
                   </Tree>
                 )}
               </TabPane>
-              <TabPane tab="CDAI评分" key="CDAI">
+              <TabPane tab="评分" key="CDAI">
                 {!data.CDAI ? (
                   <div
                     style={{
@@ -964,7 +971,7 @@ export default class LzMenuContainer extends React.Component {
                     })}
                   </Tabs>
                 </TabPane>
-                <TabPane tab="CDAI评分" key="CDAI">
+                <TabPane tab="评分" key="CDAI">
                   {!data.CDAI && (
                     <div
                       style={{
