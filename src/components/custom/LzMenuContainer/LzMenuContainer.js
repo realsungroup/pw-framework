@@ -577,7 +577,7 @@ export default class LzMenuContainer extends React.Component {
     let res;
     const { data } = this.state;
     const pArr = [
-      getFormData(subresid, "default"),
+      // getFormData(subresid, "default"),
       getFormData(subresid, "title-choose")
     ];
     try {
@@ -587,13 +587,13 @@ export default class LzMenuContainer extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    const formFormData = dealControlArr(res[0].data.columns);
-    const chooseFieldFormData = dealControlArr(res[1].data.columns);
+    // const formFormData = dealControlArr(res[0].data.columns);
+    const chooseFieldFormData = dealControlArr(res[0].data.columns);
 
     const treeData = getCanChooseFields(chooseFieldFormData.canOpControlArr);
 
     this._canOpControlArr[key] = chooseFieldFormData.canOpControlArr;
-    data[key].formFormData = formFormData;
+    // data[key].formFormData = formFormData;
     data[key].treeData = treeData;
     this.setState({ data });
   };
