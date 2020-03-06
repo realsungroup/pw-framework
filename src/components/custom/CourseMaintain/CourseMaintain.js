@@ -11,14 +11,14 @@ class CourseMaintain extends React.Component {
     SquareCardArr: [],
     val: null
   };
-  
+
   render() {
     return (
       <TabsTableData
         arr={[
           {
-            wrappedComponentRef:(element => this.tableDataRef = element),
-            refTargetComponentName:"TableData",
+            wrappedComponentRef: element => (this.tableDataRef = element),
+            refTargetComponentName: 'TableData',
             resid: 610308370365,
             TabsTitle: '总课程',
             OutHeight: '80vh',
@@ -30,15 +30,15 @@ class CourseMaintain extends React.Component {
             hasRowDelete: true,
             hasRowModify: true,
             hasRowView: true,
-            hasRowSelection:true,
+            hasRowSelection: true,
             subtractH: 220,
             recordFormType: 'drawer',
             formProps: {
-              height: 700
+              height: 550
             },
             recordFormContainerProps: {
               placement: 'right',
-              height: 700
+              height: 650
             }
           },
           {
@@ -55,7 +55,7 @@ class CourseMaintain extends React.Component {
             hasRowView: true,
             subtractH: 220,
             formProps: {
-              height: 700
+              height: 550
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {
@@ -77,7 +77,29 @@ class CourseMaintain extends React.Component {
             hasRowView: true,
             subtractH: 220,
             formProps: {
+              height: 550
+            },
+            recordFormType: 'drawer',
+            recordFormContainerProps: {
+              placement: 'right',
               height: 700
+            }
+          },
+          {
+            resid: 624993320876,
+            TabsTitle: '新员工课程',
+            OutHeight: '80vh',
+            recordFormFormWidth: '90%',
+            hasBeBtns: true,
+            hasModify: false,
+            hasDelete: false,
+            hasAdd: true,
+            hasRowDelete: true,
+            hasRowModify: true,
+            hasRowView: false,
+            subtractH: 180,
+            formProps: {
+              height: 550
             },
             recordFormType: 'drawer',
             recordFormContainerProps: {
@@ -104,7 +126,7 @@ class CourseMaintain extends React.Component {
             recordFormType: 'drawer',
             recordFormContainerProps: {
               placement: 'right',
-              height: 550
+              height: 700
             }
           }
         ]}
