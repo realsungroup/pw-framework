@@ -59,9 +59,9 @@ class HRProbation extends React.Component {
    * 点击下拉框
    */
   handleNotice = async (record, selectValue) => {
+    let data = [];
+    let res;
     if (record.selectedRowKeys.length) {
-      let res;
-      let data = [];
       record.dataSource.map(item => {
         if (record.selectedRowKeys.includes(item.REC_ID)) {
           if (selectValue === '提醒主管填写') {
@@ -75,6 +75,7 @@ class HRProbation extends React.Component {
           }
           data.push(item);
         }
+
       });
       this.setState({ spinning: true });
       try {
@@ -89,6 +90,7 @@ class HRProbation extends React.Component {
         message.error(error.message);
         console.log(error);
       }
+
       this.tableDataRef.handleRefresh();
       this.setState({
         selectCourseArrangementVisible: false,
@@ -224,7 +226,7 @@ class HRProbation extends React.Component {
 
           <Button
             onClick={RegularApply => {
-              this.showConfirm(record, '员工填写');
+              this.showConfirm(record, '提醒员工填写');
             }}
             type="primary"
           >
@@ -232,7 +234,7 @@ class HRProbation extends React.Component {
           </Button>
           <Button
             onClick={RegularApply => {
-              this.showConfirm(record, '主管填写');
+              this.showConfirm(record, '提醒主管填写');
             }}
             type="primary"
           >
