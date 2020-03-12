@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Table,Steps,Button,Select,Tabs,Spin,Modal,message,Input,DatePicker} from 'antd';
-import './IDLTransferVerify.less';
+import './IDLTransferVerifyAction.less';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import moment from 'moment';
@@ -12,8 +12,23 @@ function compare(property) {
   }
 }
     // 排序
-
+const { Option } = Select;
+const { TabPane } = Tabs;
 const { Step } = Steps;
+const columns = [
+  {
+    title: '属性',
+    dataIndex: 'attributes',
+  },
+  {
+    title: '变更前',
+    dataIndex: 'before',
+  },
+  {
+    title: '变更后',
+    dataIndex: 'after',
+  },
+];
 const attr=[
   '部门名',
   '职务名',
@@ -38,7 +53,7 @@ const showAfter=[
   'nThirdDepart',//三级部门
   'nFourthDepart',//四级部门
 ]
- class  IDLTransferVerify extends  Component{
+ class  IDLTransferVerifyAction extends  Component{
    constructor(props){
     super(props);
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -50,9 +65,9 @@ const showAfter=[
       conUnpass:false,
       selection:1,
       canApprove:false,//是否为当前审批人
-      cms:`Approve = '审核中'`,
       userId:jobNum,
-      cmsView:`Approve = '审核中' and applyPersonNum = '${jobNum}'`,
+      cms:`C3_634660565837 = 'Waiting' and C3_634660565295 = '${jobNum}'`,
+      
       visible:false,
       C3_632503844784:'',//记录编号
       toCheck:[
@@ -75,18 +90,9 @@ const showAfter=[
     
   }
    componentDidMount(){
+    
+   }
   
-   }
-  //  判断是否为发起人
-   judgetrigger=(v)=>{
-
-    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var jobNum = userInfo.UserInfo.EMP_USERCODE;
-    if(v==jobNum){
-      this.setState({isBeginner:true})
-    }
-    console.info(v,jobNum)
-   }
    getMem=async(v)=>{
      this.setState({loading:true});
      try{
@@ -182,11 +188,11 @@ console.log(obj)
           
           this.passStream();
         }else{
+      
+          var res4='';
           var date=this.state.toCheckFront.effortDate;
          if(date){date=moment(date).format('YYYY-MM-DD');}
-          var res4='';
                 try {
-                 
                 res4 = await http().modifyRecords({
                   resid: 632255761674,
                   data: [{
@@ -194,6 +200,11 @@ console.log(obj)
                     effortDate:date,
                   }]
                 });
+                if (res.Error === 0) {
+                  message.success(res.message);
+                  this.tableDataRef.handleRefresh();
+                  
+                }
                 console.log('res', res);
               } catch (error) {
                 message.error(error.message);
@@ -211,7 +222,7 @@ console.log(obj)
    passStream=async()=>{
     var res='';
     var date=this.state.toCheckFront.effortDate;
-   if(date){date=moment(date).format('YYYY-MM-DD');}
+     if(date){date=moment(date).format('YYYY-MM-DD');}
     try {
      res = await http().modifyRecords({
        resid: 632255761674,
@@ -257,22 +268,33 @@ console.log(obj)
 
     }
    }
-  showOverlay=(r)=>{
-    this.judgetrigger(r.applyPersonId);
-    var n=0;
-    var arr=[];
-    while(n<attr.length){
-      var a=r[showAfter[n]]||'- -'
-      arr.push(a)
-      n++;
+  showOverlay=async(r)=>{
+    console.log('r',r)
+    var res='';
+    var v = r.C3_634660564341;
+    try{
+      res = await http().getTable({
+        resid: 632255761674,
+        cmswhere:`changeID = ${v}`
+      });
+      var n=0;
+      var arr=[];
+      while(n<attr.length){
+        var a=res.data[0][showAfter[n]]||'- -'
+        arr.push(a)
+        n++;
+      }
+      var obj=res.data[0];
+      var date=obj.effortDate;
+        if(date){date=moment(date);}
+        obj.effortDate=date;
+        this.getMem(r.C3_634660564341);
+      this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
+  
+    }catch(e){
+      console.log(e);this.setState({laoding:false})
     }
-    var obj=r;
-    var date=obj.effortDate;
-      if(date){date=moment(date);}
-      obj.effortDate=date;
-      this.getMem(obj.changeID);
-    this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
-
+   
   }
   judgeMulti=async(dataSource,selectedRowKeys,bol)=>{
     var j=bol?'已通过':'未通过';
@@ -314,7 +336,7 @@ console.log(obj)
   }
    render(){
      return (
-      <div className='IDLTransferVerify'>
+      <div className='IDLTransferVerifyAction'>
         <Spin spinning={this.state.loading}>
         <Modal
           width={'60vw'}
@@ -342,9 +364,9 @@ console.log(obj)
           ):null}
           onCancel={()=>this.setState({visible:false})}
           >
-          <div className='toCheck' style={{height:'60vh'}}>
+          <div className='toCheck' style={{height:'80vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`Approve = '已通过'`?'finish':'process')} current={this.state.curStep}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'finish':'process')} current={(this.state.curStep)+1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>
@@ -353,7 +375,7 @@ console.log(obj)
               })}
             </Steps>}
             
-            <div className='showContent' style={{marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}>
+            <div className='showContent' style={{height:'calc(80vh - 120px)',overflowY:'auto',marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}>
 
                 <b>生效时间：</b><DatePicker
                     value={this.state.toCheckFront.effortDate}
@@ -426,16 +448,16 @@ console.log(obj)
           </div>
         </Modal>
         <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`Approve = '审核中'`,cmsView:`Approve = '审核中' and applyPersonNum = '${this.state.userId}'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '未通过'`,cmsView:`Approve = '未通过' and applyPersonNum = '${this.state.userId}'`})}}>未通过</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '已通过'`,cmsView:`Approve = '已通过' and applyPersonNum = '${this.state.userId}'`})}}>已通过</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`C3_634660565837 = 'Waiting' and C3_634660565295 = '${this.state.userId}'`})}}>未审批</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`})}}>已审批通过</p>
+                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`})}}>已审批未通过</p>
                 {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
              
               <TableData
-                  resid={632255761674}
-                  cmswhere={this.state.mode=='view'?this.state.cmsView:this.state.cms}
+                  resid={634660498796}
+                  cmswhere={this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
                   refTargetComponentName="TableData"
@@ -457,7 +479,7 @@ console.log(obj)
                             this.showOverlay(record);
                           }}
                         >
-                          确认信息
+                          {this.state.cms==`C3_634660565837 = 'Waiting' and C3_634660565295 = '${this.state.userId}'`?'审批':'确认信息'}
                         </Button>
                       );
                     }
@@ -471,4 +493,4 @@ console.log(obj)
  }
 
 
- export default  IDLTransferVerify;
+ export default  IDLTransferVerifyAction;

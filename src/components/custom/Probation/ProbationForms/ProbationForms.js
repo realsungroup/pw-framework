@@ -106,7 +106,7 @@ class ProbationForms extends React.Component {
     this.getInternalCourses();
     // this.getTutorships();
     this.setState({ loading: false });
-    this.getOrientationTraining(memberId);
+    this.getOrientationTraining(memberId, employedId);
   }
 
   /**
@@ -540,16 +540,29 @@ class ProbationForms extends React.Component {
   /**
    * 获取入职培训表数据
    */
-  getOrientationTraining = async memberId => {
-    try {
-      let res = await http().getTable({
-        resid: resid3,
-        cmswhere: `menberId = '${memberId}'`
-      });
-      this.setState({ orientationTraining: res.data });
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
+  getOrientationTraining = async (memberId, employedId) => {
+    if (memberId = '0') {
+      try {
+        let res = await http().getTable({
+          resid: resid3,
+          cmswhere: `C3_625051545181 = '${employedId}'`
+        });
+        this.setState({ orientationTraining: res.data });
+      } catch (error) {
+        message.error(error.message);
+        console.log(error);
+      }
+    } else {
+      try {
+        let res = await http().getTable({
+          resid: resid3,
+          cmswhere: `menberId = '${memberId}'`
+        });
+        this.setState({ orientationTraining: res.data });
+      } catch (error) {
+        message.error(error.message);
+        console.log(error);
+      }
     }
   };
 

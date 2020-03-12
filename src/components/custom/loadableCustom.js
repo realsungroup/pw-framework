@@ -667,3 +667,9 @@ export const IDLTransfer = Loadable({
     return minLoading;
   }
 });
+export const IDLTransferHr = Loadable({
+  loader: () => import('./IDLTransferHr'),
+  loading() {
+    return minLoading;
+  }
+});

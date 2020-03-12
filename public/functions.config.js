@@ -1928,3 +1928,7 @@ window[632244542306] = {
   name:'IDLTransfer',
   title:'IDL调岗'
 };
+window[635350002067] = {
+  name:'IDLTransferHr',
+  title:'IDL调岗HR预审'
+};

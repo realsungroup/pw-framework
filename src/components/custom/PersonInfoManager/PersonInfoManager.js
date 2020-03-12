@@ -12,17 +12,26 @@ class PersonInfoManager extends React.Component {
 
     constructor(props) {
       // resid:612530416359
-      var baseURL =
-      window.pwConfig[
-        process.env.NODE_ENV
-      ].customURLs.comprehensiveQueryBaseURL;
-      console.log('baseURL',baseURL)
 
       super(props);
+      var baseURL=window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+      var bol=false;//是否为劳务公司
+      var usercode = localStorage.getItem('userInfo');
+      var usrChara=JSON.parse(usercode)
+      var userCode=usrChara.UserInfo.EMP_USERCODE;
+      if(userCode=='632830432866'){
+        bol=true;
+        baseURL ='http://kingofdinner.realsun.me:9091/';
+
+      }
+    
       this.state = {
         showDetail:false,
         selectedRecord:'',
-        baseURL:baseURL
+        baseURL:baseURL,
+        isOuter:bol
       }
      
     } 
@@ -70,9 +79,9 @@ class PersonInfoManager extends React.Component {
               />
       {this.state.showDetail?(
         <div className='overlay'>
-          <Icon type='close-circle' onClick={()=>{this.tableDataRef.handleRefresh();this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer'
+          <Icon type='close-circle' onClick={()=>{this.tableDataRef.handleRefresh();this.setState({showDetail:false})}} style={{zIndex:'1000',position:'fixed',right:'24px',top:'16px',cursor:'pointer',fontSize:'24px',color:'#333'
         }}></Icon>
-          <PersonInfoInFile edit={true} memberId={this.state.selectedRecord}></PersonInfoInFile>
+          <PersonInfoInFile edit={true} isOuter={this.state.isOuter} memberId={this.state.selectedRecord}></PersonInfoInFile>
          </div>
       ):null}
       

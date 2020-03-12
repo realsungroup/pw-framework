@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import {Steps,Button,Icon,Select,Input,Tabs,Spin,TreeSelect,Modal, DatePicker} from 'antd';
+import {Steps,Button,Icon,Select,Input,Tabs,Spin,TreeSelect,Modal, DatePicker,Switch,Checkbox,message} from 'antd';
 import './IDLTransfer.less';
 import TableData from '../../common/data/TableData';
+import qs from 'qs';
 import http from 'Util20/api';
 import moment from 'moment';
 import IDLTransferVerify from '../IDLTransferVerify';
+import IDLTransferVerifyAction from '../IDLTransferVerifyAction';
+import { async } from 'q';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -14,10 +17,22 @@ const subresid = 632314794466;//子表resid
    constructor(props){
     super(props);
     this.state ={
+      chooseFo:false,//是否选择下属
+      typeResid:'',
+      checkGroup:{
+        date:false,
+        depaCode:false,
+        proCode:false,
+        supervisor:false,
+        job:false,
+        class:false,
+        bucode:false,
+        reason:false
+      },//必填项
       depaOrg:null,//部门的原始数据
       step:0,//申请步骤
       selectedRecord:[],//选中的人
-      hint:'关于张三的转岗申请已经提交成功。',//提交结果提示
+      hint:'',//提交结果提示
       page:'1',//tab页
       result:'success',//是否提交成功
       selection:'1',//申请记录筛选选择
@@ -25,6 +40,26 @@ const subresid = 632314794466;//子表resid
       isSub:false,//是否已经提交过申请
       loading:false,
       department:[],//部门数据,
+      depaMember:[
+        {
+          title: 'Node1',
+          value: '0-0',
+          key: '0-0',
+          children: [
+            {
+              title: 'Child Node1',
+              value: '0-0-1',
+              key: '0-0-1',
+            },
+            {
+              title: 'Child Node2',
+              value: '0-0-2',
+              key: '0-0-2',
+            },
+          ],
+        }
+      ],// 部门下的调动前直属上级
+      depaMemberV:'',//选中的调动前直属上级
       company:[{name:'无锡',value:'100'},{name:'上海',value:'2000'}],//公司数据，
       companyV:'100',//选中的公司值
       depaV:null,//选中的部门值
@@ -53,7 +88,111 @@ const subresid = 632314794466;//子表resid
    }
    componentDidMount(){
      this.getLv();
-     this.getDepartment('100');
+     
+   }
+   //获取地址栏参数跳转页面
+   getTypeAndTitle = () => {
+    const quertString = window.location.search;
+    const qsObj = qs.parse(quertString.substring(1));
+    this.setState({
+      page: qsObj.page
+    });
+  };
+
+  //  第二页提交前检查未填项
+  checkUnfill=()=>{
+    var msg='';
+    var bol=false;
+    if(this.state.checkGroup.date&&(!this.state.activeDate)){
+      msg='生效日期';
+      bol=true;
+    }else if(this.state.checkGroup.depaCode&&(!this.state.newDepa.C3_419339113187)){
+      msg='变更后部门代码';
+      bol=true;
+    }else if(this.state.checkGroup.proCode&&(!this.state.proId)){
+      msg='变更后项目代码';
+      bol=true;
+    }else if(this.state.checkGroup.supervisor&&(!this.state.newSuper.C3_227192484125)){
+      msg='变更后主管';
+      bol=true;
+    }else if(this.state.checkGroup.job&&(!this.state.job.C3_417736870556)){
+      msg='职位';
+      bol=true;
+    }else if(this.state.checkGroup.class&&(!this.state.lv)){
+      msg='变更后级别';
+      bol=true;
+    }else if(this.state.checkGroup.bucode&&(!this.state.bucode)){
+      msg='bucode';
+      bol=true;
+    }else if(this.state.checkGroup.reason&&(!this.state.changeReason)){
+      msg='bucode';
+      bol=true;
+    }
+    if(!this.state.changeType){
+      message.error('您还未选择变更类型');
+      return false;
+    }
+    if(bol==true){
+      message.error('您还未填写'+msg+',若不想填请取消选中状态');
+      return false;
+
+    }
+  }
+   //获取第二页必填项
+   getBitian=async(v)=>{
+     this.setState({changeType:v,loading:true,newDepa:{}});
+     var resid='';
+     if(v=='部门变更'){
+      resid='634822081509'
+     }else if(v=='汇报关系变更'){
+       resid='634822110774'
+     }else if(v=='职位变更'){
+       resid='634822131537'
+     }else if(v=='级别变更'){
+      resid='634820028458'
+    }
+     var res;
+     try{
+      res = await http().getFieldProp({
+        resid: resid,
+        getcolumninfo:1
+      });
+      
+      var resField=['effortDate','nDepartCode','nProj_Code','nDirectorNum','nJobCode','nLevel',"nBuCode","changeReason"];
+      var stateField=Object.keys(this.state.checkGroup);
+      var fin=this.state.checkGroup;
+      var n=0;
+      var check=[];
+      while(n<res.cmscolumninfo.length){
+        var c=0;
+        while(c<resField.length){
+          if(resField[c]==res.cmscolumninfo[n].id){
+            var k = stateField[c]
+            check.push(k)
+            fin[k]=res.cmscolumninfo[n][resField[c]].isBiTian;
+          }
+          c++;
+        }
+        n++;
+      }
+      console.log('fin',fin)
+      if(fin.depaCode==false){
+        
+        this.setState({newDepa:this.state.depaSele[0]});
+      }
+      if(fin.supervisor==false){
+        this.setState({newSuper:{
+          C3_227192484125:this.state.selectMem[0].C3_417993433650,
+          C3_305737857578:this.state.selectMem[0].C3_417993417686
+        }});
+
+      }
+      this.setState({loading:false,checkGroup:fin});
+      
+     }catch(e){
+      console.log(e);
+      this.setState({loading:false});
+     }
    }
    //获取申请人信息
    getAppInfo=()=>{
@@ -75,7 +214,8 @@ const subresid = 632314794466;//子表resid
         arr.push({value:res.data[n].C3_449335790387,key:res.data[n].C3_449335790387})
         n++;
       }
-      this.setState({lvList:arr,loading:false});
+      this.setState({lvList:arr});
+      this.getDepartment('100');
     }catch(e){
       this.setState({loading:false})
       console.log(e)
@@ -221,10 +361,101 @@ const subresid = 632314794466;//子表resid
       this.setState({loading:false});
       console.log(e)}
    }
+  //  获取部门下面的人员并整理数据成tree
+  getDepaMem=async(v)=>{
+    this.setState({loading:true});
+    try{
+      let res = await http().getTable({
+        resid: 609599795438,
+        cmswhere:`HRUSER_DEPID = '${v}'`
+      });
+
+      function listToTree(list = []) {
+        const data = JSON.parse(JSON.stringify(list)) // 浅拷贝不改变源数据
+        const result = []
+        if (!Array.isArray(data)) {
+          return result
+        }
+        data.forEach(item => {
+          delete item.children
+        })
+        const map = {}
+        data.forEach(item => {
+          map[item.value] = item
+        })
+        data.forEach(item => {
+          const parent = map[item.parent_value]
+          if (parent) {
+            (parent.children || (parent.children = [])).push(item)
+          } else {
+            result.push(item)
+          }
+        })
+        return result
+      }
+      var arr=res.data;
+      var n=0;
+      var memData=[];
+      while(n<arr.length){
+        memData.push({
+          title:arr[n].C3_227192484125+'(工号:'+arr[n].C3_227192472953+')',
+          value:arr[n].C3_305737857578,
+          key:arr[n].C3_305737857578,
+          parent_value:arr[n].C3_417993417686,
+        })
+        n++;
+      }
+
+      memData=listToTree(memData);
+
+      this.setState({
+        depaMember:memData,
+        loading:false
+      })
+    }catch(e){
+      console.log(e);
+      this.setState({
+        loading:false
+      })
+    }
+  }
+  // 选择单人直接跳到第二页
+  searchAndJump=async(v)=>{
+    let res;
+    this.setState({loading:true});
+    try{
+      let res = await http().getTable({
+        resid: 609599795438,
+        cmswhere:`C3_305737857578 = '${v}'`
+      });
+      var data2=[]
+    // 存部门的第一部门第二部门第三部门第四部门
+    var arr=[this.state.depaV];
+    this.state.depaOrg.map(item => {
+      if (arr.includes(item.DEP_ID)) {
+        data2.push(item);
+      }
+    });
+      this.setState({selectMem:res.data,step:1,depaSele:data2,loading:false})
+    }catch(e){
+        console.log(e);
+        this.setState({loading:false})
+      }
+  }
   // 第一页切换部门
    onChange = value => {
-    this.setState({ depaV:value ,selectMem:[]});
+    this.setState({ depaV:value,depaMemberV:null,selMemberV:null ,selectMem:[]});
+    this.getDepaMem(value);
   };
+  // 第一页切换调动前直接上级主管
+  onChangeDepaMem=value=>{
+    this.setState({depaMemberV:value,selectMem:[],selMemberV:null});
+  }
+  // 第一页切换调动前直接上级主管
+  onChangeSelMem=value=>{
+    this.setState({depaMemberV:value,selectMem:[],selMemberV:null});
+    this.searchAndJump(value)
+  }
   // 第一页切换公司
   handleChange = (v) =>{
     this.setState({companyV:v,depaV:null});
@@ -232,48 +463,89 @@ const subresid = 632314794466;//子表resid
   }
   // 向后台提交数据
    subData = async() =>{
+     var r = this.checkUnfill();
+     if(r==false){
+       return false
+     }
      this.setState({loading:true});
       var toSub=[];
       var n=0;
       var date=this.state.activeDate;
-      date=moment().format('YYYY-MM-DD');
+     if(date){date=moment(date).format('YYYY-MM-DD');}
       var usercode = this.getAppInfo();
       while (n<this.state.selectMem.length){
         var obj={
-          effortDate:date,//生效日期
-          changeReason:this.state.changeType,//变动类型
-          nDepartCode:this.state.newDepa.DEP_ID,//变动后部门编号
-          nDept_code:this.state.proId,//变动后项目代码
-          nDriectorCode:this.state.newSuper.C3_305737857578,//变动后主管编号
-          nJobCode:this.state.job.C3_417821542057,//变动后职务编号
-          nLevel:this.state.lv,//变动后级别
-          nBuCode:this.state.bucode,//变动后bucode
-
-          personID:this.state.selectMem[n].C3_305737857578,//人员编号
-          applyPersonId:usercode,//申请人编号
-          changeReason:this.state.changeReason,//变动原因
+          resid: '632314958317',
+        maindata: {
+          C3_632503840116:date,//生效日期
+          C3_632503844363:this.state.changeType,//变动类型
+          C3_632503840854:this.state.newDepa.DEP_ID,//变动后部门编号
+          C3_632503856450:this.state.proId,//变动后项目代码
+          C3_632503842883:this.state.newSuper.C3_305737857578,//变动后主管编号
+          C3_632503845029:this.state.job.C3_417821542057,//变动后职务编号
+          C3_632503845755:this.state.lv,//变动后级别
+          C3_632503859143:this.state.bucode,//变动后bucode
+          departCode:this.state.depaSele[0].DEP_ID+'',//变动前部门编号
+          directorCode:this.state.selectMem[0].C3_417993417686,// 传主管编号
+          C3_632503838782:this.state.selectMem[n].C3_305737857578,//人员编号
+          
+          C3_632503859474:usercode,//申请人编号
+          C3_632503846004:this.state.changeReason,//变动原因
           subApply:'Y',//提交状态
+          _state: 'added',
+          _id: n+1
         }
+      }
+        
+       
         toSub.push(obj);
         n++;
       }
 
       var res;
       try{
-        res = await http().addRecords({
-          resid: 632255761674,
-          data:toSub
-          
-        });
-        this.setState({loading:false,result:'success'});
 
+        res = await http().saveRecordAndSubTables({
+          data: [
+            {
+              resid: '632255761674',
+              maindata: {
+                hrPreAprrove:'waiting',//HR预审
+                Approve:'审核中',
+                departCode:this.state.depaSele[0].DEP_ID+'',//变动前部门编号
+                directorCode:this.state.selectMem[0].C3_417993417686,// 传主管编号
+                effortDate:date,//生效日期
+                changeReason:this.state.changeType,//变动类型
+                nDepartCode:this.state.newDepa.DEP_ID,//变动后部门编号
+                nDept_code:this.state.proId,//变动后项目代码
+                nDriectorCode:this.state.newSuper.C3_305737857578,//变动后主管编号
+                nJobCode:this.state.job.C3_417821542057,//变动后职务编号
+                nLevel:this.state.lv,//变动后级别
+                nBuCode:this.state.bucode,//变动后bucode
+                applyPersonId:usercode,//申请人编号
+                changeReason:this.state.changeReason,//变动原因
+                subApply:'Y',//提交状态
+                _state: 'added',
+                _id: 0
+              },
+              subdata: toSub
+            }
+          ]
+        });
+
+        // res = await http().addRecords({
+        //   resid: 632255761674,
+        //   data:toSub
+          
+        // });
+        this.setState({loading:false,result:'success',hint:'提交成功',step:2,isSub:true});
         console.log(res);
       }catch(e){
-        this.setState({loading:false,result:'error'});
+        this.setState({loading:false,result:'error',hint:e.message,step:2,isSub:false});
         console.log(e)
       }
       console.log(toSub)
-      this.setState({step:2,isSub:true})
+      
    }
   //  翻tab
    callBack = (k) =>{
@@ -315,7 +587,7 @@ const subresid = 632314794466;//子表resid
             {
               this.state.step==0?(
               <Spin style={{width:'100%',height:'100%'}}spinning={this.state.loading}>
-              <div className={this.state.depaV?'sider load':'load sider focusWindow'} style={{width:'200px',paddingRight:'24px',marginTop:'24px',height:'calc(100vh - 132px)'}}>
+              <div className={this.state.chooseFo?'sider load':'load sider focusWindow'} style={{width:'200px',paddingRight:'24px',marginTop:'24px',height:'calc(100vh - 132px)'}}>
                 请选择公司:
                 <Select value={this.state.companyV} onChange={(v)=>this.handleChange(v)} defaultValue='100' style={{ width: '100%',marginBottom:'8px',marginTop:'8px' }}>
                   {
@@ -336,19 +608,46 @@ const subresid = 632314794466;//子表resid
                   searchPlaceholder='输入部门编号搜索'
                   onChange={this.onChange}
                 />
+                {
+                  this.state.depaV?<>
+                  
+                   <p style={{textAlign:'left',lineHeight:'16px',height:'auto',margin:'0',marginTop:'8px'}}>请选择人员:</p>
+                
+               <TreeSelect
+                  style={{ width: '100%',marginTop:'8px' ,marginBottom:'10px'}}
+                  value={this.state.depaMemberV}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                  treeData={this.state.depaMember}
+                  placeholder="请先选择人员"
+                  showSearch={true}
+                  searchPlaceholder='输入人员编号搜索'
+                  onChange={this.onChangeDepaMem}
+                />
+                
+                <Switch defaultChecked checked={this.state.chooseFo} onChange={()=>this.setState({chooseFo:!this.state.chooseFo})} />
+                  <span style={{textIndent:'8px',display:'inline-block'}}>选择下属</span>
+                  <br/>
+                {this.state.chooseFo?null:
+                <Button  style={{marginTop:10}} onClick={()=>{this.onChangeSelMem(this.state.depaMemberV)}} type='primary'>下一步</Button>
+                }
+                
+                  </>:null
+                }
+               
               </div>
+               
               </Spin>
               ):null
             }
             {
-              this.state.step==0&&this.state.depaV?
+              this.state.step==0&&this.state.chooseFo?
               (
                 <div className='load' style={{float:'left',width:'calc(100% - 224px)',marginLeft:'24px',marginTop:'24px',height:'calc(100% - 64px)'}}>
                   <TableData
                     resid={609599795438}
                     hasRowView={false}
                     hasAdd={false}
-                    cmswhere={`HRUSER_DEPID = '${this.state.depaV}'`}
+                    cmswhere={this.state.selMemberV?`C3_305737857578 = '${this.state.selMemberV}'` : `C3_417993417686 = '${this.state.depaMemberV}'`}
                     hasRowSelection={false}
                     hasRowDelete={false}
                     hasRowModify={false}
@@ -375,10 +674,16 @@ const subresid = 632314794466;//子表resid
                 <div className='form'>
                   
                   <h3>变更后：</h3>
-                  <b>生效日期：</b>
+                  <Checkbox checked={this.state.checkGroup.date} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        date: !this.state.checkGroup.date
+      }
+    })}>生效日期：</Checkbox>
                   <span style={{width:'auto'}}>
 
                   <DatePicker
+                    disabled={!this.state.checkGroup.date}
                     value={this.state.activeDate}
                     onChange={(v)=>this.setState({activeDate:v})}
                   />
@@ -387,11 +692,11 @@ const subresid = 632314794466;//子表resid
                   <br/>
                   <b>变更类型：</b>
                   <span style={{width:'auto'}}>
-                  <Select placeholder='请选择变更类型' style={{ width: 240 }} value={this.state.changeType} onChange={(v)=>{this.setState({changeType:v})}}>
+                  <Select placeholder='请选择变更类型' style={{ width: 240 }} value={this.state.changeType} onChange={(v)=>{this.getBitian(v)}}>
 
                     <Option value='部门变更' key='0'>部门变更</Option>
                     <Option value='汇报关系变更' key='1'>汇报关系变更</Option>
-                    <Option value='价格变更' key='2'>价格变更</Option>
+                    <Option value='级别变更' key='2'>级别变更</Option>
                     <Option value='职位变更' key='3'>职位变更</Option>
 
 
@@ -399,8 +704,14 @@ const subresid = 632314794466;//子表resid
                   </span>
                   <br/>
                   <br/>
-              <b style={this.state.newDepa.C3_419339113187?{}:{color:'#f5222d'}}>变更后部门代码：</b><span style={{width:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newDepa.C3_419339113187?this.state.newDepa.C3_419339113187:<span style={{color:'#f5222d'}}>请点击右侧按钮选择部门</span>}</span>
-                  <Button icon="search" onClick={()=>this.setState({searchDepaV:true})}>选择部门</Button>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.depaCode} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        depaCode: !this.state.checkGroup.depaCode
+      }
+    })}>变更后部门代码：</Checkbox>
+              <span style={{width:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newDepa.C3_419339113187?this.state.newDepa.C3_419339113187:<span style={this.state.checkGroup.depaCode?(this.state.newDepa.C3_419339113187?{}:{color:'#f5222d'}):{color:'#999'}}>请点击右侧按钮选择部门</span>}</span>
+                  <Button icon="search" disabled={!this.state.checkGroup.depaCode} onClick={()=>this.setState({searchDepaV:true})}>选择部门</Button>
                   <div>
                   <b>变更后部门名：</b><span>{this.state.newDepa.DEP_NAME?this.state.newDepa.DEP_NAME:'- -'}</span>
                   <b>变更后部门英文名：</b><span>{this.state.newDepa.DEP_NAME_EN?this.state.newDepa.DEP_NAME_EN:'- -'}</span>
@@ -413,25 +724,44 @@ const subresid = 632314794466;//子表resid
                   <b>变更后四级部门名：</b><span>{this.state.newDepa.C3_461011985365?this.state.newDepa.C3_461011985365:'- -' }</span>
                   {/* <b>变更后四级部门代码：</b><span>{this.state.newDepa.DEP_NAME}</span> */}
                   </div>
-                  <b >变更后项目代码：</b>
-                  <Input value={this.state.proId} onChange={(v)=>{this.setState({proId:v.target.value})}}/>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.proCode} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        proCode: !this.state.checkGroup.proCode
+      }
+    })}>变更后项目代码：</Checkbox>
+                  <Input disabled={!this.state.checkGroup.proCode} value={this.state.proId} onChange={(v)=>{this.setState({proId:v.target.value})}}/>
                   <br/>
                   <br/>
-                  <b>变更后主管：</b><span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newSuper.C3_227192484125?(this.state.newSuper.C3_227192484125+' - '+this.state.newSuper.C3_305737857578):<span style={{color:'#f5222d'}}>请点击右侧按钮选择主管</span>}</span>
-                  <Button icon="search" onClick={()=>this.setState({searchSuperV:true})}>选择主管</Button>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.supervisor} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        supervisor: !this.state.checkGroup.supervisor
+      }
+    })}>变更后主管：</Checkbox><span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.newSuper.C3_227192484125?(this.state.newSuper.C3_227192484125+' - '+this.state.newSuper.C3_305737857578):<span style={this.state.checkGroup.supervisor?{color:'#f5222d'}:{color:'#999'}}>请点击右侧按钮选择主管</span>}</span>
+                  <Button disabled={!this.state.checkGroup.supervisor} icon="search" onClick={()=>this.setState({searchSuperV:true})}>选择主管</Button>
                   <br/>
                   <br/>
-
-                  <b>变更后职位：</b>
-                  <span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.job?(this.state.job.C3_417736870556+'/'+this.state.job.C3_417736857223+' - '+this.state.job.C3_417821542057):<span style={{color:'#f5222d'}}>请点击右侧按钮选择职位</span>}</span>
-                  <Button icon="search" onClick={()=>this.setState({searchJobV:true})}>选择职位</Button>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.job} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        job: !this.state.checkGroup.job
+      }
+    })}>变更后职位：</Checkbox>
+                  
+                  {this.state.checkGroup.job?<span style={{minWidth:'248px',marginRight:'16px',minWidth:'0'}}>{this.state.job?(this.state.job.C3_417736870556+'/'+this.state.job.C3_417736857223+' - '+this.state.job.C3_417821542057):<span style={{color:'#f5222d'}}>请点击右侧按钮选择职位</span>}</span>:null}
+                  <Button disabled={!this.state.checkGroup.job} icon="search" onClick={()=>this.setState({searchJobV:true})}>选择职位</Button>
                   
                   <br/>
                   <br/>
-
-                  <b>变更后级别：</b>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.class} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        class: !this.state.checkGroup.class
+      }
+    })}>变更后级别：</Checkbox>
                   <span style={{width:'auto'}}>
-                  <Select placeholder='请选择级别' style={{ width: 240 }} value={this.state.lv} onChange={(v)=>{this.setState({lv:v})}}>
+                  <Select disabled={!this.state.checkGroup.class} placeholder='请选择级别' style={{ width: 240 }} value={this.state.lv} onChange={(v)=>{this.setState({lv:v})}}>
                     {this.state.lvList.map((item)=>{return(
                     <Option value={item.value} key={item.key}>{item.value}</Option>
 
@@ -440,21 +770,31 @@ const subresid = 632314794466;//子表resid
                   </span>
                   <br/>
                   <br/>
-
-                  <b>bucode：</b>
-                  <Input value={this.state.bucode} onChange={(v)=>{this.setState({bucode:v.target.value})}}/>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.bucode} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        bucode: !this.state.checkGroup.bucode
+      }
+    })}>bucode：</Checkbox>
+                  <Input disabled={!this.state.checkGroup.bucode} value={this.state.bucode} onChange={(v)=>{this.setState({bucode:v.target.value})}}/>
                   <br/>
                   <br/>
-                    <b style={{width:'auto'}}>变动原因：({this.state.changeReason.length}/500字)</b>
-                  <Input.TextArea maxLength={500} style={{resize:'none'}} value={this.state.changeReason} onChange={(v)=>{this.setState({changeReason:v.target.value})}}/>
+                  <Checkbox style={{marginRight:8}} checked={this.state.checkGroup.reason} onChange={()=>this.setState({
+      checkGroup: {
+        ...this.state.checkGroup,
+        reason: !this.state.checkGroup.reason
+      }
+    })}>变动原因：</Checkbox>
+                    {this.state.checkGroup.reason?<b style={{width:'auto'}}>({this.state.changeReason.length}/500字)</b>:null}
+                  <Input.TextArea maxLength={500} disabled={!this.state.checkGroup.reason} style={{resize:'none'}} value={this.state.changeReason} onChange={(v)=>{this.setState({changeReason:v.target.value})}}/>
                 </div>
                 <div className='memberList'>
                   <h3>变更前部门：</h3>
                   <div>
-                    <b>一级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984661:'- -'}</span>
-                    <b>二级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984896:'- -'}</span>
-                    <b>三级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985099:'- -'}</span>
-                    <b>四级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985365:'- -'}</span>
+                    <b>一级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984661:'- -'}</span><br/>
+                    <b>二级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011984896:'- -'}</span><br/>
+                    <b>三级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985099:'- -'}</span><br/>
+                    <b>四级部门：</b><span>{this.state.depaSele[0]?this.state.depaSele[0].C3_461011985365:'- -'}</span><br/>
                   </div>
                   <h3>待变更人员：<b>{this.state.selectMem.length}</b></h3>
                   <ul>
@@ -595,6 +935,7 @@ const subresid = 632314794466;//子表resid
                   <Icon type="close-circle" theme="filled" style={{color:'#f5222d'}}/>
                   }
                  
+                 
                   <h2>{this.state.hint}</h2>
                   {/* {this.state.result=='success'?(<>
                   <p>本次申请需要以下人员审批：</p>
@@ -604,10 +945,10 @@ const subresid = 632314794466;//子表resid
                      ) })}
                   </ul>
               </>):null} */}
-                  {this.state.result=='success'?<><Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,isSub:false})}}>再申请一人</Button>
+                  {this.state.result=='success'?<><Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,isSub:false,depaMemberV:null,selMemberV:null})}}>再申请一人</Button>
                   <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:0,page:'2',isSub:false})}} type='primary'>查看审批记录</Button></>:<>
                   <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:1})}}>返回查看</Button>
-                  <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:2})}} type='primary'>再试一次</Button>
+                  {/* <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:2})}} type='primary'>再试一次</Button> */}
                   </>}
                   
                 </div>
@@ -615,10 +956,16 @@ const subresid = 632314794466;//子表resid
             }
             </div>
           </TabPane>
-          <TabPane tab="查看审批记录" key="2">
+          <TabPane tab="我发起的审批记录" key="2">
             <div className='wrap' >
-              
+            {/* view */}
                <IDLTransferVerify mode='view'></IDLTransferVerify>
+            </div>
+          </TabPane>
+          <TabPane tab="我的审核" key="3">
+            <div className='wrap' >
+            {/* view */}
+               <IDLTransferVerifyAction ></IDLTransferVerifyAction>
             </div>
           </TabPane>
         </Tabs>
