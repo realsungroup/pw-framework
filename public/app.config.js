@@ -21,7 +21,9 @@ window.pwConfig = {
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
-
+      DataProcessBaseURL: 'http://10.108.2.66:9091/',
+      HeadCountBaseURL: 'http://10.108.2.66:9091/',
+      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/' //DL招聘-DL管理员下载URl
@@ -158,7 +160,9 @@ window.pwConfig = {
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
-
+      DataProcessBaseURL: 'http://10.108.2.66:9091/',
+      HeadCountBaseURL: 'http://10.108.2.66:9091/',
+      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/' //DL招聘-DL管理员下载URl

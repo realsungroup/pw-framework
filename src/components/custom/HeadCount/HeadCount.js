@@ -4,6 +4,8 @@ import { TableData } from '../../common/loadableCommon';
 import NewRecord from './NewRecord';
 import './HeadCount.less';
 
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.DataProcessBaseURL;
 /**
  * HeadCount
  */
@@ -20,7 +22,7 @@ class HeadCount extends React.Component {
         ) : (
           <TableData
             resid="518460953577"
-            baseURL="http://10.108.2.66:9091/"
+            baseURL={baseURL}
             subtractH={220}
             hasRowView={false}
             hasModify={false}

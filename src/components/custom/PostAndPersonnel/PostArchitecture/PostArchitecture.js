@@ -2,6 +2,8 @@ import React from 'react';
 import ArchitectureDiagram from '../../../common/data/ArchitectureDiagram';
 import './PostArchitecture.less';
 
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
 /*
  *岗位架构管理
  *
@@ -34,7 +36,7 @@ class PostArchitecture extends React.Component {
                 IsGroupTag: true
               }
             ]}
-            baseURL="http://10.108.2.66:9091/"
+            baseURL={baseURL}
           />
         </div>
       </div>
