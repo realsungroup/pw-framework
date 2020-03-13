@@ -37,6 +37,7 @@ class PersonInfoInFile extends React.Component {
         memberId:memberId,
         data:{
           C3_464172117706:'',//人员编号
+          C3_464702128504:'',//人员工号
           C3_464172127930:'',//中文名
           C3_464172148589:'',//英文名
           C3_464172157606:'',//性别
