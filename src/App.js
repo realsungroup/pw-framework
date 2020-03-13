@@ -44,6 +44,8 @@ import {
 
 addLocaleData([...en, ...zh]);
 
+const basename = window.pwConfig[process.env.NODE_ENV].basename;
+
 const ReminderMsg = (
   <div className="app__nonuse-ie">
     本应用不支持
@@ -198,7 +200,7 @@ class App extends Component {
           >
             <LocaleProvider locale={localeAntd}>
               <IntlProvider locale={locale} messages={messages}>
-                <Router>
+                <Router basename={basename || '/'}>
                   <Switch>
                     {desktopStyle === 'DESKTOP' && (
                       <PrivateRoute exact path="/" component={Desktop} />
