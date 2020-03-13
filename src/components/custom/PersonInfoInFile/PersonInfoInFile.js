@@ -18,9 +18,12 @@ class PersonInfoInFile extends React.Component {
       var baseURL=window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+      var laowuURL=window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.laowuURL;
       console.log(props.isOuter)
       if(props.isOuter==true){
-        baseURL ='http://kingofdinner.realsun.me:9091/'
+        baseURL =laowuURL
       }
       var memberId = this.props.memberId;
       console.log(memberId)
@@ -273,7 +276,7 @@ class PersonInfoInFile extends React.Component {
       try {
         res = await http({baseURL:this.state.baseURL}).getTable({
           resid: 464705942338,
-          cmswhere: `C3_464172117706 = '${memberId}'`
+          cmswhere: `C3_464702128504 = '${memberId}'`
         });
         var obj = res.data[0];
         console.log('org',obj)

@@ -22,6 +22,7 @@ window.pwConfig = {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
+      laowuURL:'http://kingofdinner.realsun.me:9091/',//劳务公司打印
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
@@ -161,6 +162,8 @@ window.pwConfig = {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
+      laowuURL:'http://kingofdinner.realsun.me:9091/',//劳务公司打印
+
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
