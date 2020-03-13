@@ -17,13 +17,17 @@ class PersonInfoManager extends React.Component {
       var baseURL=window.pwConfig[
         process.env.NODE_ENV
       ].customURLs.comprehensiveQueryBaseURL;
+      var laowuURL=window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.laowuURL;
+      console.log(laowuURL)
       var bol=false;//是否为劳务公司
       var usercode = localStorage.getItem('userInfo');
       var usrChara=JSON.parse(usercode)
       var userCode=usrChara.UserInfo.EMP_USERCODE;
       if(userCode=='632830432866'){
         bol=true;
-        baseURL ='http://kingofdinner.realsun.me:9091/';
+        baseURL =laowuURL;
 
       }
     
@@ -63,10 +67,8 @@ class PersonInfoManager extends React.Component {
   
                       <div>
                         <Button
-
                           onClick={() => {
-                            this.setState({showDetail:true, selectedRecord:record.C3_464172117706});
-  
+                            this.setState({showDetail:true, selectedRecord:record.C3_464702128504});
                           }}
                         >
                          详情
