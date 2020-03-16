@@ -35,15 +35,15 @@ const attr=[
   '级别',
   '主管',
   '项目代码',
-  'bucode',
+  'BU CODE',
   '一级部门',
   '二级部门',
   '三级部门',
   '四级部门'
 ]
 const showAfter=[
-  'depart',//部门名
-  'jobName',//职务名
+  'nDepart',//部门名
+  'nJobName',//职务名
   'nLevel',//级别
   'nDriectorName',//主管
   'nProj_Code',//项目代码
@@ -159,6 +159,54 @@ const showAfter=[
       this.setState({loading:false});
       }
    }
+   approveGroup=async(dataSource,selectedRowKeys)=>{
+      var data=[];
+      var freshData=[]
+      n=0
+      while(n<selectedRowKeys.length){
+        var c=0;
+        while(c<dataSource.length){
+          if(dataSource[n].REC_ID==selectedRowKeys[c]){
+            freshData.push({REC_ID:dataSource[n].C3_634660564341});
+          }
+          c++;
+        }
+        n++;
+      }
+      dataSource.map(item => {
+        if (selectedRowKeys.includes(item.REC_ID)) {
+          data.push(item);
+        }
+      });
+      var n=0;
+      while(n<data.length){
+        data[n].C3_634660565837='Y'
+        n++;
+      }
+    this.setState({loading:true});
+    var res;
+    try{
+      res = await http().modifyRecords({
+        resid: 637176902794,
+        data: data
+      });
+      
+      var res4 = await http().modifyRecords({
+        resid: 632255761674,
+        data:freshData
+      });
+    this.setState({loading:false});
+    if (res.Error === 0 && res4.Error === 0) {
+      message.success(res.message);
+      this.tableDataRef.handleRefresh();
+      
+    }
+    }catch(e){
+      console.log(e)
+    this.setState({loading:false});
+
+    }
+   }
    approve=async(v)=>{
      this.setState({loading:true});
      var res='';
@@ -177,17 +225,17 @@ const showAfter=[
 console.log(obj)
      try {
       res = await http().modifyRecords({
-        resid: 634660498796,
+        resid: 637176902794,
         data: [obj]
       });
       if(v=='N'){
         this.unPass();
       }else{
         console.log(c)
-        if(arr.length==c){
+        // if(arr.length==c){
           
-          this.passStream();
-        }else{
+        //   this.passStream();
+        // }else{
       
           var res4='';
           var date=this.state.toCheckFront.effortDate;
@@ -212,7 +260,7 @@ console.log(obj)
 
               }
         }
-      }
+      // }
       this.setState({conUnpass:false,visible:false,loading:false});
     }catch(e){
         console.log(e);
@@ -366,7 +414,7 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'80vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'finish':'process')} current={(this.state.curStep)+1}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'process':'process')} current={(this.state.curStep)+1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>
@@ -386,6 +434,7 @@ console.log(obj)
                         }
                         })}
                   />
+                  <b>变动类型：{this.state.toCheckFront.changeType}</b>
                 {/* <b>调动对象姓名：</b><span>{this.state.toCheckFront.C3_632503839336}</span>
                 <b>调动对象工号：</b><span>{this.state.toCheckFront.C3_632503839068}</span> */}
                 <br/>
@@ -416,31 +465,40 @@ console.log(obj)
                 <div style={{clear:'both'}}></div>
                   {this.state.member.map((item)=>{return(<p onClick={()=>{this.setState({memberDetail:item});console.log(222)}} style={{lineHeight:'24px',color:'#1890ff',cursor:'pointer',margin:'0'}}>{item.C3_632503839336+'-'+item.C3_632503839068}</p>)})}
                 </div>
-                {
-                  this.state.memberDetail?(
                     <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
-                      <ul style={{listStyle:'none',padding:'0'}}>
-                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.memberDetail.C3_632503839336}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.memberDetail.C3_632503853570}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.memberDetail.C3_632503844117}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.memberDetail.C3_632503845505}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.memberDetail.C3_632503843378}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.memberDetail.C3_632503855976}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前bucode: </b>{this.state.memberDetail.C3_632503858946}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.memberDetail.C3_632503839577}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.memberDetail.C3_632503840613}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.memberDetail.C3_632503840359}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.memberDetail.C3_632503841599}</li>
+                      <ul style={{listStyle:'none',padding:'0',width:200}}>
+                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.toCheckFront.person}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.toCheckFront.depart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.toCheckFront.jobName}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.toCheckFront.level}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.toCheckFront.driectorName}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.toCheckFront.proj_code}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前BU CODE: </b>{this.state.toCheckFront.bucode}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.toCheckFront.firstDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.toCheckFront.secondDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.toCheckFront.thirdDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.toCheckFront.fourthDepart}</li>
                       </ul>
                     </div>
-                  ):null
                 }
                 <div style={{clear:'both'}}></div>
                 {this.state.toCheckFront.ApproveRemark?
                 (<><br/><b>审批说明:</b>
                   <p>{this.state.toCheckFront.ApproveRemark}</p></>)
                 :null}
+                 <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
                 
+                <b>是否有Headcount：</b><span>{this.state.toCheckFront.C3_637425449725?this.state.toCheckFront.C3_637425449725:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>Headcount变更类型：</b><span>{this.state.toCheckFront.C3_637425577105?this.state.toCheckFront.C3_637425577105:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>替代人：</b><span>{this.state.toCheckFront.C3_637617454519?this.state.toCheckFront.C3_637617454519:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>招聘人员备注：</b><span>{this.state.toCheckFront.C3_637425470106?this.state.toCheckFront.C3_637425470106:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>招聘人员确认人姓名：</b><span>{this.state.toCheckFront.C3_637425935795?this.state.toCheckFront.C3_637425935795:'--'}</span>
+                <div style={{clear:'both'}}></div>
+              </div>
                 </Spin>
                 </div>
             </div>
@@ -456,10 +514,11 @@ console.log(obj)
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
              
               <TableData
-                  resid={634660498796}
+                  resid={this.state.selection=='1'?'637176902794':'634660498796'}
                   cmswhere={this.state.cms}
                   hasRowView={false}
                   hasAdd={false}
+                  hasRowSelection={this.state.selection=='1'?true:false}
                   refTargetComponentName="TableData"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   hasRowDelete={false}
@@ -470,7 +529,14 @@ console.log(obj)
                   hasRowView={false}
                   actionBarWidth={100}
                   actionBarFixed={true}
-
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      this.state.selection=='1'?
+                      <Button type='primary' disabled={!(selectedRowKeys.length>0)} onClick={()=>{this.approveGroup(dataSource,selectedRowKeys)}}>审批</Button>
+                      
+                      :null
+                    );
+                  }}
                   customRowBtns={[
                     record => {
                       return (
