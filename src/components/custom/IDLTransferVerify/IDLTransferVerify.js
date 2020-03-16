@@ -20,15 +20,15 @@ const attr=[
   '级别',
   '主管',
   '项目代码',
-  'bucode',
+  'BU CODE',
   '一级部门',
   '二级部门',
   '三级部门',
   '四级部门'
 ]
 const showAfter=[
-  'depart',//部门名
-  'jobName',//职务名
+  'nDepart',//部门名
+  'nJobName',//职务名
   'nLevel',//级别
   'nDriectorName',//主管
   'nProj_Code',//项目代码
@@ -50,9 +50,9 @@ const showAfter=[
       conUnpass:false,
       selection:1,
       canApprove:false,//是否为当前审批人
-      cms:`Approve = '审核中'`,
+      cms:`headcount = 'waiting' or hrPreAprrove ='waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = ''`,
       userId:jobNum,
-      cmsView:`Approve = '审核中' and applyPersonNum = '${jobNum}'`,
+      cmsView:`headcount = 'waiting' or hrPreAprrove ='waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${jobNum}'`,
       visible:false,
       C3_632503844784:'',//记录编号
       toCheck:[
@@ -316,6 +316,7 @@ console.log(obj)
      return (
       <div className='IDLTransferVerify'>
         <Spin spinning={this.state.loading}>
+        
         <Modal
           width={'60vw'}
           visible={this.state.conUnpass}
@@ -344,7 +345,7 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'60vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`Approve = '已通过'`?'finish':'process')} current={this.state.curStep}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`isStreamEnd = 'Y'`?'finish':'process')} current={(this.state.curStep)+1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>
@@ -364,6 +365,7 @@ console.log(obj)
                         }
                         })}
                   />
+                  <b>变动类型：{this.state.toCheckFront.changeType}</b>
                 {/* <b>调动对象姓名：</b><span>{this.state.toCheckFront.C3_632503839336}</span>
                 <b>调动对象工号：</b><span>{this.state.toCheckFront.C3_632503839068}</span> */}
                 <br/>
@@ -394,31 +396,39 @@ console.log(obj)
                 <div style={{clear:'both'}}></div>
                   {this.state.member.map((item)=>{return(<p onClick={()=>{this.setState({memberDetail:item});console.log(222)}} style={{lineHeight:'24px',color:'#1890ff',cursor:'pointer',margin:'0'}}>{item.C3_632503839336+'-'+item.C3_632503839068}</p>)})}
                 </div>
-                {
-                  this.state.memberDetail?(
                     <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
-                      <ul style={{listStyle:'none',padding:'0'}}>
-                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.memberDetail.C3_632503839336}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.memberDetail.C3_632503853570}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.memberDetail.C3_632503844117}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.memberDetail.C3_632503845505}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.memberDetail.C3_632503843378}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.memberDetail.C3_632503855976}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前bucode: </b>{this.state.memberDetail.C3_632503858946}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.memberDetail.C3_632503839577}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.memberDetail.C3_632503840613}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.memberDetail.C3_632503840359}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.memberDetail.C3_632503841599}</li>
+                      <ul style={{listStyle:'none',padding:'0',width:200}}>
+                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.toCheckFront.person}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.toCheckFront.depart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.toCheckFront.jobName}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.toCheckFront.level}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.toCheckFront.driectorName}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.toCheckFront.proj_code}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前BU CODE: </b>{this.state.toCheckFront.bucode}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.toCheckFront.firstDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.toCheckFront.secondDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.toCheckFront.thirdDepart}</li>
+                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.toCheckFront.fourthDepart}</li>
                       </ul>
                     </div>
-                  ):null
-                }
                 <div style={{clear:'both'}}></div>
                 {this.state.toCheckFront.ApproveRemark?
                 (<><br/><b>审批说明:</b>
                   <p>{this.state.toCheckFront.ApproveRemark}</p></>)
                 :null}
+                 <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
                 
+                <b>是否有Headcount：</b><span>{this.state.toCheckFront.C3_637425449725?this.state.toCheckFront.C3_637425449725:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>Headcount变更类型：</b><span>{this.state.toCheckFront.C3_637425577105?this.state.toCheckFront.C3_637425577105:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>替代人：</b><span>{this.state.toCheckFront.C3_637617454519?this.state.toCheckFront.C3_637617454519:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>招聘人员备注：</b><span>{this.state.toCheckFront.C3_637425470106?this.state.toCheckFront.C3_637425470106:'--'}</span>
+                <div style={{clear:'both'}}></div>
+                <b>招聘人员确认人姓名：</b><span>{this.state.toCheckFront.C3_637425935795?this.state.toCheckFront.C3_637425935795:'--'}</span>
+                <div style={{clear:'both'}}></div>
+              </div>
                 </Spin>
                 </div>
             </div>
@@ -426,9 +436,10 @@ console.log(obj)
           </div>
         </Modal>
         <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`Approve = '审核中'`,cmsView:`Approve = '审核中' and applyPersonNum = '${this.state.userId}'`})}}>审核中</p>
-                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '未通过'`,cmsView:`Approve = '未通过' and applyPersonNum = '${this.state.userId}'`})}}>未通过</p>
-                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '已通过'`,cmsView:`Approve = '已通过' and applyPersonNum = '${this.state.userId}'`})}}>已通过</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`hrPreAprrove ='waiting' or headcount = 'waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = ''`,cmsView:`hrPreAprrove ='waiting' or headcount = 'waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}'`})}}>未开始</p>
+                <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '审核中' and isnull(isStreamEnd,'') = ''`,cmsView:`Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}'`})}}>审核中</p>
+                <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '未通过'`,cmsView:`Approve = '未通过' and applyPersonNum = '${this.state.userId}'`})}}>未通过</p>
+                <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:`isStreamEnd = 'Y'`,cmsView:`isStreamEnd = 'Y' and applyPersonNum = '${this.state.userId}'`})}}>已通过</p>
                 {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
               </div>
               <div style={{float:'left',width:'calc(100% - 144px)',marginLeft:'24px',height:'calc(100vh - 60px)'}}>
