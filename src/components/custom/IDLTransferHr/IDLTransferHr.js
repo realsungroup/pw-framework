@@ -83,6 +83,7 @@ const subresid = 632314794466;//子表resid
       commandVisible:false,
       changeApprove:false,//审批人选择
       changeKey:null,//变更审批的序号
+      curStep:0
    }
   }
   //删除审批节点
@@ -273,86 +274,32 @@ const subresid = 632314794466;//子表resid
     }
     approve=async(v,end)=>{
       this.setState({loading:true})
-      console.log(v);
+
       var res='';
       if(v=='N'){
       var prev='N'
       var endv;
        if(end){
-        prev='Y';
-        endv='N';
-       }
-     try {
-      res = await http().modifyRecords({
-        resid: 632255761674,
-        data: [{
-          REC_ID:this.state.toCheckFront.REC_ID,
-          Approve:'未通过',
-          ApproveRemark:this.state.C3_632503853105,
-          hrPreAprrove:prev,
-          hrEndApprove:endv
-        }]
-      });
-      console.log('res', res);
-      if (res.Error === 0) {
-        message.success(res.message);
-        this.setState({visible:false,conUnpass:false,loading:false})
-        this.tableDataRef.handleRefresh();
+          prev='Y';
+          endv='N';
         
-      }
-    } catch (error) {
-      message.error(error.message);
-      this.setState({loading:false});
+       }
 
-    }
-      }else{
-        try {
-          var date=this.state.toCheckFront.effortDate;
-if(date){date=moment(date).format('YYYY-MM-DD');}
+      try {
         res = await http().modifyRecords({
           resid: 632255761674,
           data: [{
             REC_ID:this.state.toCheckFront.REC_ID,
-            Approve:'审核中',
+            Approve:'未通过',
             ApproveRemark:this.state.C3_632503853105,
-            hrPreAprrove:'Y',
-            effortDate:date,
-            hrEndApprove:'Y'
+            hrPreAprrove:prev,
+            hrEndApprove:endv
           }]
         });
-        var streamRec=[];
-        // C3_634660564341 变动编号
-        // C3_635250483297 审批阶段序号
-        // C3_634660566076 审批序号
-        // C3_635255573464 审批人编号
-        // C3_634660565034 审批阶段名称
-        // C3_634660565583 审批人
-        var n=0;
-        while(n<this.state.stream.length){
-            streamRec.push({
-              C3_634660564341:this.state.toCheckFront.changeID,
-              C3_635250483297:this.state.stream[n].auditRecno,
-              C3_634660566076:this.state.stream[n].auditNo,
-              C3_635255573464:this.state.stream[n].stepPeopleID,
-              C3_634660565034:this.state.stream[n].stepName,
-              C3_634660565583:this.state.stream[n].stepPeople
-            })
-            n++;
-        }
-        var res2 = await http().addRecords({
-          resid: 634660498796,
-          data:streamRec
-          
-        });
-        var res3 = res = await http().modifyRecords({
-          resid: 632255761674,
-          data:[{REC_ID:this.state.toCheckFront.REC_ID}]
-        });
-        if ((res.Error === 0) && (res2.Error === 0)) {
-
-          
+        console.log('res', res);
+        if (res.Error === 0) {
           message.success(res.message);
-          this.setState({visible:false,loading:false});
+          this.setState({visible:false,conUnpass:false,loading:false})
           this.tableDataRef.handleRefresh();
           
         }
@@ -361,7 +308,67 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
         this.setState({loading:false});
   
       }
-      }
+        }else{
+          var ps='审核中';
+          if(end){
+            ps='已通过'
+          }
+          try {
+            var date=this.state.toCheckFront.effortDate;
+  if(date){date=moment(date).format('YYYY-MM-DD');}
+          res = await http().modifyRecords({
+            resid: 632255761674,
+            data: [{
+              REC_ID:this.state.toCheckFront.REC_ID,
+              Approve:ps,
+              ApproveRemark:this.state.C3_632503853105,
+              hrPreAprrove:'Y',
+              effortDate:date,
+              hrEndApprove:'Y'
+            }]
+          });
+          var streamRec=[];
+          // C3_634660564341 变动编号
+          // C3_635250483297 审批阶段序号
+          // C3_634660566076 审批序号
+          // C3_635255573464 审批人编号
+          // C3_634660565034 审批阶段名称
+          // C3_634660565583 审批人
+          if(!end){
+            var n=0;
+            while(n<this.state.stream.length){
+                streamRec.push({
+                  C3_634660564341:this.state.toCheckFront.changeID,
+                  C3_635250483297:this.state.stream[n].auditRecno,
+                  C3_634660566076:this.state.stream[n].auditNo,
+                  C3_635255573464:this.state.stream[n].stepPeopleID,
+                  C3_634660565034:this.state.stream[n].stepName,
+                  C3_634660565583:this.state.stream[n].stepPeople
+                })
+                n++;
+            }
+            var res2 = await http().addRecords({
+              resid: 634660498796,
+              data:streamRec
+              
+            });
+          }
+          
+          var res3 = await http().modifyRecords({
+            resid: 632255761674,
+            data:[{REC_ID:this.state.toCheckFront.REC_ID}]
+          });
+            
+            message.success(res.message);
+            this.setState({visible:false,loading:false});
+            this.tableDataRef.handleRefresh();
+        } catch (error) {
+          message.error(error.message);
+          this.setState({loading:false});
+    
+        }
+        }
+
     }
   showOverlay=(v)=>{
     console.log(v)
@@ -480,6 +487,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
       var n=0;
       var arr=[];
       var c=0;
+      var isFin=0;
       while(n<res2.data.length){
         arr.push(
           {
@@ -489,18 +497,22 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
             order:res2.data[n].C3_634660566076,
         }
           );
-        if(res2.data[n].C3_634660565837=='Y'){
-          var cc=res2.data[n].C3_634660566076;
-          if(cc>c){
-            c=cc
+          if(res2.data[n].C3_637177232366=='Y'){
+            var c=res2.data[n].C3_635250483297;
+            
           }
-          
-        }
+          if(res2.data[n].C3_634660565837=='Y'){
+            isFin=isFin+1;
+          }
         n++;
       }
       console.log('arr',arr)
+      console.log('res2',res2)
       arr=arr.sort(compare('order'))  
-      this.setState({stream:arr});
+      if(isFin==res2.data.length){
+        c=res2.data.length+1;
+      }
+      this.setState({stream:arr,curStep:c});
     }else{
       this.StreamGenerate(id,v);
     }
@@ -736,7 +748,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
             <Button type='danger' loading={this.state.loading} style={{marginLeft:'8px'}} onClick={()=>{this.setState({conUnpass:true})}}>不通过审核</Button>
            
             {
-                      this.state.cms==`isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?
+                      this.state.cms==`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?
                      ( this.state.toCheckFront.effortDate?(<Button type='primary' style={{padding:'0 8px'}}onClick={()=>{this.approve('Y',true)}}>保存并通过审核</Button>):' 请先填写生效日期'
                       
           )
@@ -748,7 +760,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
           >
           <div className='toCheck' style={{height:'60vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {(this.state.stream.length==0)?'正在计算审批流':<Steps size="small" current={0}>
+              {(this.state.stream.length==0)?'正在计算审批流':<Steps size="small" current={this.state.curStep}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}</span>}/>

@@ -109,6 +109,8 @@ const showAfter=[
       var n=0;
       var arr=[];
       var c=0;
+      var isFin=0;
+
       while(n<res2.data.length){
         arr.push(
           {
@@ -118,35 +120,37 @@ const showAfter=[
             order:res2.data[n].C3_634660566076,
         }
           );
-        if(res2.data[n].C3_634660565837=='Y'){
-          var cc=res2.data[n].C3_635250483297;
-          if(cc>c){
-            c=cc
+          if(res2.data[n].C3_637177232366=='Y'){
+            var c=res2.data[n].C3_635250483297;
+            
           }
-          
-        }
-        n++;
-      }
-      console.log('arr',arr)
-      arr=arr.sort(compare('order'))  
+          if(res2.data[n].C3_634660565837=='Y'){
+            isFin=isFin+1;
+          }
+      arr=arr.sort(compare('order')); 
+      n++;
+     }
 
       // 判断是否为当前审批人
-      var c2=c+1;
-    var jobNum = this.state.userId;
-    n=0;
-    while(n<res2.data.length){
-      if(res2.data[n].C3_634660566076==c2){
-        if(jobNum==res2.data[n].C3_634660565295){
-          this.setState({canApprove:true});
+    //   var c2=c+1;
+    // var jobNum = this.state.userId;
+    // n=0;
+    // while(n<res2.data.length){
+    //   if(res2.data[n].C3_634660566076==c2){
+    //     if(jobNum==res2.data[n].C3_634660565295){
+    //       this.setState({canApprove:true});
           
-        }else{
-          this.setState({canApprove:false});
-          this.setState({curAPe:res2.data[n].C3_634660565583})
-        }
-      }
-      n++;
+    //     }else{
+    //       this.setState({canApprove:false});
+    //       this.setState({curAPe:res2.data[n].C3_634660565583})
+    //     }
+    //   }
+    //   n++;
+    // }
+    // c=Number(c)-1;
+    if(isFin==res2.data.length){
+      c=res2.data.length+1;
     }
-    c=Number(c)-1;
       this.setState({loading:false,curStep:c,stream:arr});
     }catch(e){
       console.log(e);
@@ -345,7 +349,7 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'60vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`isStreamEnd = 'Y'`?'finish':'process')} current={(this.state.curStep)+1}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`Approve = '未通过'`?'error':(this.state.cms==`isStreamEnd = 'Y'`?'finish':'process')} current={(this.state.curStep)-1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>

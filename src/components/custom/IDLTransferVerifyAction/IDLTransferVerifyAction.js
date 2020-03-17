@@ -115,6 +115,7 @@ const showAfter=[
       var n=0;
       var arr=[];
       var c=0;
+      var isFin=0;
       while(n<res2.data.length){
         arr.push(
           {
@@ -124,35 +125,21 @@ const showAfter=[
             order:res2.data[n].C3_634660566076,
         }
           );
-        if(res2.data[n].C3_634660565837=='Y'){
-          var cc=res2.data[n].C3_635250483297;
-          if(cc>c){
-            c=cc
-          }
+        if(res2.data[n].C3_637177232366=='Y'){
+          var c=res2.data[n].C3_635250483297;
           
+        }
+        if(res2.data[n].C3_634660565837=='Y'){
+          isFin=isFin+1;
         }
         n++;
       }
-      console.log('arr',arr)
+      console.log('arr',arr,c)
       arr=arr.sort(compare('order'))  
-
-      // 判断是否为当前审批人
-      var c2=c+1;
-    var jobNum = this.state.userId;
-    n=0;
-    while(n<res2.data.length){
-      if(res2.data[n].C3_634660566076==c2){
-        if(jobNum==res2.data[n].C3_634660565295){
-          this.setState({canApprove:true});
-          
-        }else{
-          this.setState({canApprove:false});
-          this.setState({curAPe:res2.data[n].C3_634660565583})
-        }
+      
+      if(isFin==res2.data.length){
+        c=res2.data.length+1;
       }
-      n++;
-    }
-    c=Number(c)-1;
       this.setState({loading:false,curStep:c,stream:arr});
     }catch(e){
       console.log(e);
@@ -160,6 +147,8 @@ const showAfter=[
       }
    }
    approveGroup=async(dataSource,selectedRowKeys)=>{
+    this.setState({loading:true});
+    var str=``;
       var data=[];
       var freshData=[]
       n=0
@@ -176,6 +165,7 @@ const showAfter=[
       dataSource.map(item => {
         if (selectedRowKeys.includes(item.REC_ID)) {
           data.push(item);
+          str+=`C3_634660564341 = '${item.C3_634660564341}' or `
         }
       });
       var n=0;
@@ -183,13 +173,30 @@ const showAfter=[
         data[n].C3_634660565837='Y'
         n++;
       }
-    this.setState({loading:true});
     var res;
+    var res2;
+    str = str.substring(0,str.length-3);
     try{
+          res2 = await http().getTable({
+                resid: 634660498796,
+                cmswhere:str
+          });
+          n=0;
+          var objGroup=[];
+          // C3_634660565295 = '${this.state.userId}'
+          while(n<res2.data.length){
+            if(res2.data[n].C3_634660565295==this.state.userId){
+              var objitem=res2.data[n];
+              objitem.C3_634660565837='Y';
+              objGroup.push(objitem);
+            }
+            n++;
+          }
       res = await http().modifyRecords({
-        resid: 637176902794,
-        data: data
+        resid: 634660498796,
+        data: objGroup
       });
+      
       
       var res4 = await http().modifyRecords({
         resid: 632255761674,
@@ -210,33 +217,30 @@ const showAfter=[
    approve=async(v)=>{
      this.setState({loading:true});
      var res='';
+     var resGet;
      var arr=this.state.approveRec.data;
      var n=0;
-     var c=Number(this.state.curStep);
-      c=c+2;
-      var obj
+    //  var c=Number(this.state.curStep);
+    //   c=c+2;
+      var objGroup=[];
+    console.log(this.state.approveRec.data)
+
     while(n<arr.length){      
-      if(c==arr[n].C3_635250483297){
+      if(this.state.userId==arr[n].C3_634660565295){
         arr[n].C3_634660565837=v
-       obj=arr[n]
+        objGroup.push(arr[n]);
       }
       n++;
     }
-console.log(obj)
+
      try {
       res = await http().modifyRecords({
         resid: 637176902794,
-        data: [obj]
+        data: objGroup
       });
       if(v=='N'){
         this.unPass();
       }else{
-        console.log(c)
-        // if(arr.length==c){
-          
-        //   this.passStream();
-        // }else{
-      
           var res4='';
           var date=this.state.toCheckFront.effortDate;
          if(date){date=moment(date).format('YYYY-MM-DD');}
@@ -260,7 +264,6 @@ console.log(obj)
 
               }
         }
-      // }
       this.setState({conUnpass:false,visible:false,loading:false});
     }catch(e){
         console.log(e);
@@ -412,7 +415,7 @@ console.log(obj)
           >
           <div className='toCheck' style={{height:'80vh'}}>
             <div className='steps' style={{width:'calc(100% - 48px)',marginLeft:'24px'}}>
-              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'process':'process')} current={(this.state.curStep)+1}>
+              {this.state.loading?null:<Steps size="small" status={this.state.cms==`C3_634660565837 = 'N' and C3_634660565295 = '${this.state.userId}'`?'error':(this.state.cms==`C3_634660565837 = 'Y' and C3_634660565295 = '${this.state.userId}'`?'process':'process')} current={(this.state.curStep)-1}>
               {this.state.stream.map((item,key)=>{
                 return(
                   <Step title={item.stepName} description={<span>{item.stepPeople}<br/>{item.stepTime}</span>}/>

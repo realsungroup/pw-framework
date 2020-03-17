@@ -875,7 +875,7 @@ const subresid = 632314794466;//子表resid
                   <div style={{width:'100%',height:'calc(80vh - 104px)',position:'relative'}}>
                    
                    <TableData
-                  resid={632255761674}
+                  resid={637754719247}
                   cmswhere={`publishCode = '${this.state.draftCode}' and headcount ='draft' and applyPersonNum = '${this.state.userId}'`}
                   hasRowView={false}
                   subtractH={220}
