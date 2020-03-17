@@ -50,9 +50,9 @@ const showAfter=[
       conUnpass:false,
       selection:1,
       canApprove:false,//是否为当前审批人
-      cms:`headcount = 'waiting' or hrPreAprrove ='waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = ''`,
+      cms:`headcount = 'waiting' or hrPreAprrove ='waiting'`,
       userId:jobNum,
-      cmsView:`headcount = 'waiting' or hrPreAprrove ='waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${jobNum}'`,
+      cmsView:`headcount = 'waiting' or hrPreAprrove ='waiting' and applyPersonNum = '${jobNum}'`,
       visible:false,
       C3_632503844784:'',//记录编号
       toCheck:[
@@ -119,7 +119,7 @@ const showAfter=[
         }
           );
         if(res2.data[n].C3_634660565837=='Y'){
-          var cc=res2.data[n].C3_634660566076;
+          var cc=res2.data[n].C3_635250483297;
           if(cc>c){
             c=cc
           }
@@ -354,7 +354,8 @@ console.log(obj)
               })}
             </Steps>}
             
-            <div className='showContent' style={{marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}>
+            <div className='showContent' style={{marginTop:24,width:'100%',marginLeft:'0'}}>
+
 
                 <b>生效时间：</b><DatePicker
                     value={this.state.toCheckFront.effortDate}
@@ -411,7 +412,6 @@ console.log(obj)
                       <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.toCheckFront.fourthDepart}</li>
                       </ul>
                     </div>
-                <div style={{clear:'both'}}></div>
                 {this.state.toCheckFront.ApproveRemark?
                 (<><br/><b>审批说明:</b>
                   <p>{this.state.toCheckFront.ApproveRemark}</p></>)
@@ -436,7 +436,7 @@ console.log(obj)
           </div>
         </Modal>
         <div className='sider'>
-                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`hrPreAprrove ='waiting' or headcount = 'waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = ''`,cmsView:`hrPreAprrove ='waiting' or headcount = 'waiting' or Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}'`})}}>未开始</p>
+                <p className={this.state.selection=='1'?'current':null} onClick={()=>{this.setState({selection:'1',cms:`hrPreAprrove ='waiting' or headcount = 'waiting'`,cmsView:`hrPreAprrove ='waiting' or headcount = 'waiting' and applyPersonNum = '${this.state.userId}'`})}}>未开始</p>
                 <p className={this.state.selection=='2'?'current':null} onClick={()=>{this.setState({selection:'2',cms:`Approve = '审核中' and isnull(isStreamEnd,'') = ''`,cmsView:`Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}'`})}}>审核中</p>
                 <p className={this.state.selection=='3'?'current':null} onClick={()=>{this.setState({selection:'3',cms:`Approve = '未通过'`,cmsView:`Approve = '未通过' and applyPersonNum = '${this.state.userId}'`})}}>未通过</p>
                 <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:`isStreamEnd = 'Y'`,cmsView:`isStreamEnd = 'Y' and applyPersonNum = '${this.state.userId}'`})}}>已通过</p>

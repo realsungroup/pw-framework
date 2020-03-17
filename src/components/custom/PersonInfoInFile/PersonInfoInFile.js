@@ -1,5 +1,5 @@
 import React from 'react';
-import {Spin,Button,Input,Select,DatePicker,InputNumber,message } from 'antd';
+import {Spin,Button,Input,Select,DatePicker,InputNumber,message,Icon } from 'antd';
 import http from 'Util20/api';
 import './PersonInfoInFile.less';
 import moment from 'moment';
@@ -1004,6 +1004,7 @@ class PersonInfoInFile extends React.Component {
           <Input disabled size='small' style={{width:'100%',border:'none',background:'#fff'}}/>
           </div>
         </div>
+        
         <div style={{marginTop:'4px'}}>
            {this.state.data.C3_544732637200?
            <img style={{maxHeight:'120px',width:'auto'}} src = {this.state.data.C3_544732637200}/>
@@ -1011,6 +1012,7 @@ class PersonInfoInFile extends React.Component {
           </div>
        
        </div>
+       <Button className='toHide' style={{position:'fixed',top:'64px',right:'24px',width:'64px',height:'64px',padding:'0'}}onClick={this.onPrinting}><Icon style={{transform:'scale(2)'}} type='printer' /></Button>
        
        <div className='fix'>_</div>
         <footer>

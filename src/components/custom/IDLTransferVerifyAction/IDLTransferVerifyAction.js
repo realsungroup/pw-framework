@@ -125,7 +125,7 @@ const showAfter=[
         }
           );
         if(res2.data[n].C3_634660565837=='Y'){
-          var cc=res2.data[n].C3_634660566076;
+          var cc=res2.data[n].C3_635250483297;
           if(cc>c){
             c=cc
           }
@@ -216,7 +216,7 @@ const showAfter=[
       c=c+2;
       var obj
     while(n<arr.length){      
-      if(c==arr[n].C3_634660566076){
+      if(c==arr[n].C3_635250483297){
         arr[n].C3_634660565837=v
        obj=arr[n]
       }
@@ -323,7 +323,7 @@ console.log(obj)
     try{
       res = await http().getTable({
         resid: 632255761674,
-        cmswhere:`changeID = ${v}`
+        cmswhere:`changeID = '${v}'`
       });
       var n=0;
       var arr=[];
@@ -403,13 +403,11 @@ console.log(obj)
         <Modal 
           width={'90vw'}
           visible={this.state.visible}
-          footer={(this.state.toCheckFront.Approve=='审核中'&&this.state.mode!='view')?(
-            this.state.isBeginner?<span>您是发起人</span>:(this.state.canApprove?
+          footer={this.state.selection=='1'?
             <>
             <Button type='danger' style={{marginLeft:'8px'}} onClick={()=>{this.setState({conUnpass:true})}}>不通过审核</Button>
             <Button type='primary' onClick={()=>this.approve('Y')}>保存并通过审核</Button>
-            </>:<span>您不是当前审批人,当前审批人是:{this.state.curAPe}</span>)
-          ):null}
+            </>:null}
           onCancel={()=>this.setState({visible:false})}
           >
           <div className='toCheck' style={{height:'80vh'}}>
@@ -423,7 +421,8 @@ console.log(obj)
               })}
             </Steps>}
             
-            <div className='showContent' style={{height:'calc(80vh - 120px)',overflowY:'auto',marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}>
+            {/* <div className='showContent' style={{height:'calc(80vh - 120px)',overflowY:'auto',marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}> */}
+            <div className='showContent' style={{marginTop:24,width:'100%',marginLeft:'0'}}>
 
                 <b>生效时间：</b><DatePicker
                     value={this.state.toCheckFront.effortDate}
@@ -480,8 +479,6 @@ console.log(obj)
                       <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.toCheckFront.fourthDepart}</li>
                       </ul>
                     </div>
-                }
-                <div style={{clear:'both'}}></div>
                 {this.state.toCheckFront.ApproveRemark?
                 (<><br/><b>审批说明:</b>
                   <p>{this.state.toCheckFront.ApproveRemark}</p></>)

@@ -4,6 +4,7 @@ import {Spin,Button,Icon} from 'antd';
 import './PersonInfoManager.less';
 import PersonInfoInFile from '../PersonInfoInFile/';
 import TableData from '../../common/data/TableData';
+import TableDataSavePage from '../../common/data/TableDataSavePage';
 
 /**
  * 档案管理内的个人信息
@@ -46,7 +47,7 @@ class PersonInfoManager extends React.Component {
   render() {
     return (
      <div style={{width:'100%',height:'100%'}}>
-      <TableData
+      <TableDataSavePage
       // 464171754083
                 resid={464705942338}
                 hasRowView={false}
@@ -54,7 +55,7 @@ class PersonInfoManager extends React.Component {
                 hasAdd={false}
                 refTargetComponentName="TableData"
                 wrappedComponentRef={element => (this.tableDataRef = element)}
-                hasRowSelection={true}
+                hasRowSelection={false}
                 hasRowDelete={false}
                 hasRowModify={false}
                 hasModify={false}

@@ -715,7 +715,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
             <>
             <Button onClick={()=>{this.setState({conUnpass:false})}}>取消</Button>
             {
-                      this.state.cms==`isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?
+                      this.state.cms==`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?
                       <Button type='primary' onClick={()=>{this.approve('N',true)}}>确认</Button>
                       : <Button type='primary' onClick={()=>{this.approve('N')}}>确认</Button>
 
@@ -730,7 +730,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
           <Modal 
           width={'90vw'}
           visible={this.state.visible}
-          footer={this.state.cms==`headcount = 'waiting'`?(<Button type='primary' onClick={()=>this.setState({visibleHC:true})}>填写HC审批信息</Button>):((this.state.cms==`hrPreAprrove = 'waiting'`)||(this.state.cms==`isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`)?
+          footer={this.state.cms==`headcount = 'waiting' and locationCompany = '${this.state.right.location}'`?(<Button type='primary' onClick={()=>this.setState({visibleHC:true})}>填写HC审批信息</Button>):((this.state.cms==`hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`)||(this.state.cms==`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`)?
           (this.state.stream.length==0?'审批流计算中，不可预审。请耐心等待...':
             <>
             <Button type='danger' loading={this.state.loading} style={{marginLeft:'8px'}} onClick={()=>{this.setState({conUnpass:true})}}>不通过审核</Button>
@@ -757,7 +757,7 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
               })}
             </Steps>}
             <div style={{clear:'both'}}></div>
-            {((this.state.cms==`hrPreAprrove = 'waiting'`)&&(this.state.stream.length>0))?<Button onClick={()=>{this.setState({commandVisible:true})}} style={{marginTop:8}}>变更审批流</Button>:null}
+            {((this.state.cms==`hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`)&&(this.state.stream.length>0))?<Button onClick={()=>{this.setState({commandVisible:true})}} style={{marginTop:8}}>变更审批流</Button>:null}
             <div className='showContent' style={{marginTop:24,width:'100%',marginLeft:'0'}}>
 
                 <b>生效时间：</b><DatePicker
@@ -857,9 +857,16 @@ if(date){date=moment(date).format('YYYY-MM-DD');}
                   hasRowView={false}
                   actionBarWidth={120}
                   actionBarFixed={true}
-                  hasRowSelection={
-                    (this.state.cms==`hrPreAprrove = 'waiting'`)?true:false
-                  }
+                  hasRowSelection={true}
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      this.state.cms==`hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`?
+                      <Button type='primary' disabled={!(selectedRowKeys.length>0)} style={{padding:'0 8px'}} onClick={()=>{this.approveGroup(dataSource,selectedRowKeys)}}>审批</Button>
+                      
+                      :null
+                    );
+                  }}
+                  // approveGroup
                   customRowBtns={[
                     record => {
                       return (
