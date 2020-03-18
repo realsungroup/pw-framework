@@ -156,6 +156,7 @@ class PersonInfoInFile extends React.Component {
           C3_464184788901:'',//简答2=备注2
           C3_464277267009:'',//简答3=备注3
           C3_550784878452:'',//犯罪记录
+          C3_551806597769:'',//劳务公司犯罪记录
 
           C3_544732637200:null,//电子签名
           C3_464700452077:'N',//提交
@@ -983,7 +984,17 @@ class PersonInfoInFile extends React.Component {
       <div className={this.state.data.C3_464277267009?'':'alert'}  style={{marginTop:'4px',marginBottom:'4px'}}>3.与前任雇主是否已经办妥离职手续，是否签有竞业限制协议，如有，请详细说明。</div>
       <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v)=>{this.onChange('C3_464277267009',v.target.value)}} style={{resize:'none',height:'72px'}}/>
       <div style={{marginTop:'4px',marginBottom:'4px'}}>4.本人最近两年是否有违法犯罪记录或者失信行为记录？</div>
-      <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_550784878452=='N'?'否':this.state.data.C3_550784878452} onChange={(v)=>{this.onChange('C3_550784878452',v.target.value)}} style={{resize:'none',height:'72px'}}/>
+      <Input.TextArea disabled={!this.state.edit} 
+      value={this.state.isOuter?this.state.data.C3_551806597769=='N'?'否':this.state.data.C3_551806597769:(this.state.data.C3_550784878452=='N'?'否':this.state.data.C3_550784878452)} 
+      onChange={(v)=>{
+        if(this.state.isOuter){
+        this.onChange('C3_551806597769',v.target.value)
+
+        }else{
+          this.onChange('C3_550784878452',v.target.value)
+        }
+      } }
+      style={{resize:'none',height:'72px'}}/>
        
       <p style={{marginTop:'4px'}}>
          本人承诺：<br/>

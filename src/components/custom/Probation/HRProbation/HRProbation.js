@@ -38,8 +38,11 @@ class HRProbation extends React.Component {
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
+    var baseURL=window.pwConfig[
+      process.env.NODE_ENV
+    ].customURLs.onlineTrainning;
     this.setState({
-      desktop
+      desktop,baseURL
     });
   };
 
@@ -385,6 +388,27 @@ class HRProbation extends React.Component {
             />
           </div>
         );
+        case '5':
+        return (
+          <div style={{ height: '100vh',backgroundColor:'#fff'}}>
+            <TableData
+              baseURL={this.state.baseURL}
+              resid="636217231879"
+              key="4"
+              subtractH={240}
+              hasAdd={false}
+              tableComponent="ag-grid"
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+            />
+            培训记录
+          </div>
+        );
       default:
         return '';
     }
@@ -459,6 +483,10 @@ class HRProbation extends React.Component {
             <Menu.Item key="4">
               <Icon type="calendar" />
               <span> 入职培训管理</span>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Icon type="calendar" />
+              <span> 在线培训数据</span>
             </Menu.Item>
           </Menu>
         </div>
