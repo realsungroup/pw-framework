@@ -310,8 +310,10 @@ const subresid = 632314794466;//子表resid
       }
         }else{
           var ps='审核中';
+          var endV=''
           if(end){
             ps='已通过'
+            endV='Y'
           }
           try {
             var date=this.state.toCheckFront.effortDate;
@@ -324,7 +326,7 @@ const subresid = 632314794466;//子表resid
               ApproveRemark:this.state.C3_632503853105,
               hrPreAprrove:'Y',
               effortDate:date,
-              hrEndApprove:'Y'
+              hrEndApprove:endV
             }]
           });
           var streamRec=[];
@@ -567,7 +569,7 @@ const subresid = 632314794466;//子表resid
              <hr/>
              <li className={this.state.cms==`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?'cur':''} onClick={()=>{this.setState({cms:`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`})}}>HR终审未审批</li>
              <li className={this.state.cms==`hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'`})}}>HR终审已通过</li>
-             <li className={this.state.cms==`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`})}}>HR终审未审批</li>
+             <li className={this.state.cms==`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`})}}>HR终审未通过</li>
              
            </>:null}
             
