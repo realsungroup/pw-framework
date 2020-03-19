@@ -1023,13 +1023,13 @@ class PersonInfoInFile extends React.Component {
           </div>
        
        </div>
-       <Button className='toHide' style={{position:'fixed',top:'64px',right:'24px',width:'64px',height:'64px',padding:'0'}}onClick={this.onPrinting}><Icon style={{transform:'scale(2)'}} type='printer' /></Button>
+       {/* <Button className='toHide' style={{position:'fixed',top:'64px',right:'24px',width:'64px',height:'64px',padding:'0'}}onClick={this.onPrinting}><Icon style={{transform:'scale(2)'}} type='printer' /></Button> */}
        
        <div className='fix'>_</div>
         <footer>
-          <Button style={{marginRight:'4px'}} onClick={this.onPrinting}>打印</Button>
-          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' onClick={this.onSubmit}>保存</Button>}
-          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
+          <Button style={{width:'92px'}} onClick={this.onPrinting}>打印</Button>
+          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{width:'92px'}} onClick={this.onSubmit}>保存</Button>}
+          {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{width:'92px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
           {/* {this.state.data.C3_464700452077=='Y'?null:(this.props.private?<Button type='primary' style={{marginLeft:'4px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sav')}>保存并提交</Button>:null)}  */}
           {/* {this.props.private?null:(
             this.state.data.C3_464700452077=='Y'?<Button style={{marginLeft:'4px'}} type='danger' onClick={this.onSubmit}>取消归档</Button>:null
