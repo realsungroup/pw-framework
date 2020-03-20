@@ -16,12 +16,12 @@ class PostArchitecture extends React.Component {
         <div className="post-architecture_diagram-container">
           <ArchitectureDiagram
             resid="627649390227"
-            historyResid="627649406457"
-            rootResid="627649574324"
-            idField="personid"
-            pidField="directorId"
+            historyResid="627649406457"//历史
+            rootResid="627649574324"//根节点
+            idField="personid"//主表id字段名
+            pidField="directorId"//父节点id字段名
             level={3}
-            remarkField="C3_627679142400"
+            remarkField="C3_627679142400"//历史情况的title
             displayFileds={{
               firstField: 'name',
               secondaryField: 'userId',
@@ -29,7 +29,7 @@ class PostArchitecture extends React.Component {
             }}
             groupConfig={[
               {
-                ResourceOfTag: '628082603616',
+                ResourceOfTag: '628082603616',//获取分组信息
                 SourceColumnOfGroupName: 'groupname',
                 SourceColumnOfTagName: 'tagname',
                 ColumnOfTagName: 'tagname',

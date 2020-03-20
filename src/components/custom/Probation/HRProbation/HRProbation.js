@@ -9,11 +9,12 @@ import {
   Modal,
   Spin,
   Popconfirm,
-  Select
+  Select,
+  Tabs
 } from 'antd';
 import ProbationForms from '../ProbationForms';
 import http from 'Util20/api';
-
+const { TabPane } = Tabs;
 const { confirm } = Modal;
 const { Option } = Select;
 const resid = '619609481002';
@@ -391,22 +392,79 @@ class HRProbation extends React.Component {
         case '5':
         return (
           <div style={{ height: '100vh',backgroundColor:'#fff'}}>
-            <TableData
-              baseURL={this.state.baseURL}
-              resid="636217231879"
-              key="4"
-              subtractH={240}
-              hasAdd={false}
-              tableComponent="ag-grid"
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-            />
-            培训记录
+            <Tabs defaultActiveKey="_1" >
+              <TabPane tab="在线培训完成情况" key="_1">
+              <div style={{height:'calc(100vh - 60px)'}}>
+
+                  <TableData
+                    baseURL={this.state.baseURL}
+                    resid="637950044474"
+                    key="7"
+                    subtractH={240}
+                    hasAdd={false}
+                    tableComponent="ag-grid"
+                    hasRowView={false}
+                    hasRowDelete={false}
+                    hasRowEdit={false}
+                    hasDelete={false}
+                    hasModify={false}
+                    hasRowModify={false}
+                    hasRowSelection={false}
+                  />
+                  </div>
+              </TabPane>
+              <TabPane tab="在线培训完成明细" key="_2">
+              <div style={{height:'calc(100vh - 60px)'}}>
+
+                  <TableData
+                  baseURL={this.state.baseURL}
+                  resid="636217231879"
+                  key="5"
+                  subtractH={240}
+                  hasAdd={false}
+                  tableComponent="ag-grid"
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                />
+                </div>
+              </TabPane>
+              <TabPane tab="微信推送记录" key="_3" >
+                <div style={{height:'calc(100vh - 60px)'}}>
+                <TableData
+                  baseURL={this.state.baseURL}
+                  resid="637941032529"
+                  key="6"
+                  subtractH={240}
+                  hasAdd={false}
+                  tableComponent="ag-grid"
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                />
+                </div>
+              </TabPane>
+                  
+            </Tabs>
+             
+
+              
+            
+
+            
+            
+
+            
+
+           
           </div>
         );
       default:
