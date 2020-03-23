@@ -1395,6 +1395,33 @@ class ProbationForms extends React.Component {
                 ))}
               </Select>
             </Col>
+            <Col span={4} offset={4}>
+              培训师2(选填):
+            </Col>
+            <Col span={12}>
+              <Select
+                style={{ width: 150 }}
+                placeholder="请输入培训师2工号"
+                showSearch
+                filterOption={false}
+                onSearch={this.fetchUser}
+                onChange={v => {
+                  this.setState({
+                    addOnJobTrainingData: {
+                      ...this.state.addOnJobTrainingData,
+                      trainer2: v.label,
+                      trainerMemberId2: v.key
+                    }
+                  });
+                }}
+                labelInValue
+                loading={this.state.fetching}
+              >
+                {this.state.trainerData.map(d => (
+                  <Option key={d.key}>{d.label}</Option>
+                ))}
+              </Select>
+            </Col>
           </Row>
         </Modal>
         <Modal

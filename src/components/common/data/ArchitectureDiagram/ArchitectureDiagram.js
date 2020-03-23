@@ -582,8 +582,7 @@ class ArchitectureDiagram extends React.Component {
         </div> */}
         <div className="architecture-diagram_header_icon-button-group">
           <div className="architecture-diagram_header_icon-button">
-            分组
-            <Switch checked={isGrouping} onChange={this.handleGroupChange} />
+            分组<Switch checked={isGrouping} style={{marginLeft:'8px'}} onChange={this.handleGroupChange} />
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
