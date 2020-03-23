@@ -261,6 +261,23 @@ class PwAggrid extends React.Component {
           case 4:
           case 8:
             aggridColumn.filter = 'agDateColumnFilter';
+            aggridColumn.filterParams = {
+              // provide comparator function
+              comparator: function(filterLocalDateAtMidnight, cellValue) {
+                const dateAsString = cellValue;
+                if (dateAsString == null) return 0;
+                const cellDate = moment(dateAsString).toDate();
+
+                // Now that both parameters are Date objects, we can compare
+                if (cellDate < filterLocalDateAtMidnight) {
+                  return -1;
+                } else if (cellDate > filterLocalDateAtMidnight) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              }
+            };
             break;
           case 1:
           case 5:
@@ -596,7 +613,7 @@ class PwAggrid extends React.Component {
             frameworkComponents={this.state.frameworkComponents}
             groupMultiAutoColumn={true}
             rememberGroupStateWhenNewData={true}
-            enableCharts={ true }
+            enableCharts={true}
           ></AgGridReact>
         </div>
       </div>
