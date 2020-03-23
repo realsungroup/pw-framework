@@ -49,6 +49,7 @@ const OnTheJobTraining = props => {
           <Column title="序号/No" dataIndex="no" fixed="left" width={100} />
           <Column title="课程/Courses" dataIndex="course" />
           <Column title="培训师/Trainer" dataIndex="trainer" />
+          <Column title="培训师2/Trainer2" dataIndex="trainMember" />
           <Column
             title="已通知确认/IsNoticeConfirm"
             dataIndex="isNoticeTrainer"

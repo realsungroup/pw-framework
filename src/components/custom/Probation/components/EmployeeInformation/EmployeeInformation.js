@@ -77,11 +77,24 @@ class EmployeeInformation extends React.Component {
   handleChange2 = value => {
     this.props.setTutorshipSemi({ name: value.label, userMemberId: value.key });
   };
+  handleChange3 = value => {
+    this.props.setTutorship2({ name: value.label, userMemberId: value.key });
+  };
+  handleChange4 = value => {
+    this.props.setTutorshipSemi2({ name: value.label, userMemberId: value.key });
+  };
   ck = () => {
     if (this.props.employeeInformation.isSemi == true) {
       this.props.isSemi(false);
     } else {
       this.props.isSemi(true);
+    }
+  };
+  ck2 = () => {
+    if (this.props.employeeInformation.isSemi2 == true) {
+      this.props.isSemi2(false);
+    } else {
+      this.props.isSemi2(true);
     }
   };
   // 是否自定义辅导员
@@ -94,7 +107,15 @@ class EmployeeInformation extends React.Component {
     }
     this.props.isSemi(v.target.checked);
   };
-
+  toReco2 = v => {
+    console.log(v);
+    if (v.target.checked == false) {
+      this.props.setTutorship2({ name: null, userMemberId: null }, true);
+    } else {
+      this.props.setTutorshipSemi2({ name: null, userMemberId: null }, true);
+    }
+    this.props.isSemi2(v.target.checked);
+  };
   render() {
     const { employeeInformation, roleName, editable } = this.props;
     let value = employeeInformation.instructor
@@ -107,6 +128,18 @@ class EmployeeInformation extends React.Component {
       ? {
           label: employeeInformation.instructorDirectorName,
           key: employeeInformation.instructorDirectorId
+        }
+      : undefined;
+      let value2 = employeeInformation.C3_637084526216
+      ? {
+          label: employeeInformation.C3_637084539039,
+          key: employeeInformation.C3_637084526216
+        }
+      : undefined;
+    let valueSemi2 = employeeInformation.instructorDirectorId2
+      ? {
+          label: employeeInformation.instructorDirectorName2,
+          key: employeeInformation.instructorDirectorId2
         }
       : undefined;
     let { fetching, data } = this.state;
@@ -179,7 +212,7 @@ class EmployeeInformation extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col span={24}>
+            <Col span={12}>
               <span className="employee-imformation_lable">辅导员/Mentor:</span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
                 <div>
@@ -245,7 +278,74 @@ class EmployeeInformation extends React.Component {
                 employeeInformation.instructor
               )}
             </Col>
+            <Col span={12}>
+              <span className="employee-imformation_lable">辅导员2/Mentor2:</span>
+              {(roleName === '主管' || roleName === 'HR') && editable ? (
+                <div>
+                  {employeeInformation.isSemi2 == false ? (
+                    <Select
+                      showSearch
+                      style={{ width: 150 }}
+                      placeholder="请输入辅导员2工号"
+                      filterOption={false}
+                      onSearch={this.fetchUser}
+                      onChange={this.handleChange3}
+                      labelInValue
+                      value={value2}
+                      key={0}
+                      loading={fetching}
+                    >
+                      {data.map(d => (
+                        <Option key={d.key}>{d.label}</Option>
+                      ))}
+                    </Select>
+                  ) : null}
+                  <div className="clearfix"></div>
+                  {employeeInformation.isSemi2 == false ? null : (
+                    <Select
+                      style={{ width: 150, display: 'block' }}
+                      placeholder="请输入员工工号"
+                      showSearch
+                      filterOption={false}
+                      onSearch={this.fectchSemi}
+                      onChange={this.handleChange4}
+                      labelInValue
+                      key={1}
+                      value={valueSemi2}
+                      loading={fetching}
+                    >
+                      {this.state.data2.map(d => (
+                        <Option key={d.key}>{d.label}</Option>
+                      ))}
+                    </Select>
+                  )}
+                  <input
+                    defaultChecked={employeeInformation.isSemi2}
+                    type="checkbox"
+                    ref="semiStatus"
+                    value={employeeInformation.isSemi2}
+                    style={{
+                      marginTop: '8px',
+                      marginBottom: '8px',
+                      marginRight: '8px'
+                    }}
+                    onClick={this.ck2}
+                    onChange={v => {
+                      this.toReco2(v);
+                    }}
+                  />
+                  <span>
+                    我没有找到想要的辅导员，我想申请其他人成为辅导员。
+                    <br />I can't find the mentor ,and I want to recommend
+                    another who will become a mentor.
+                  </span>
+                </div>
+              ) : (
+                employeeInformation.instructor
+              )}
+            </Col>
           </Row>
+          
         </Card>
       </div>
     );

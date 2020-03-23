@@ -144,55 +144,84 @@ class ProbationForms extends React.Component {
    */
   agreeApply = async () => {
     this.setState({ loading: true });
+    debugger
+
     try {
-      let res = await http().modifyRecords({
-        resid: resid1,
-        data: [
-          {
-            REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: 'Y'
-          }
-        ]
-      });
-      this.setState({ loading: false, flagAlreadyHit: 1 });
-      var memID = this.state.employeeInformation.instructorDirectorId;
+      
       var dept;
       var userID;
       var userMemberId;
       var toAdd;
       var name;
-      let res2 = await http().getTable({
-        resid: '609599795438',
-        cmswhere: `C3_305737857578 = '${memID}'`
-      });
-      dept =
-        res2.data[0].C3_422840479020 ||
-        res2.data[0].C3_422840472843 ||
-        res2.data[0].C3_422840463535 ||
-        res2.data[0].C3_422840460773;
-      userID = res2.data[0].C3_227192472953;
-      userMemberId = res2.data[0].C3_305737857578;
-      name = res2.data[0].C3_227192484125;
-      toAdd = [
-        {
-          dept: dept,
-          userID: userID,
-          userMemberId: userMemberId,
-          name: name
-        }
-      ];
-
-      let res3 = await http().getTable({
-        resid: '619281130628',
-        cmswhere: `userMemberId = '${memID}'`
-      });
-      if (res3.data.length == 0) {
-        let res4 = await http().addRecords({
-          resid: '619281130628',
-          data: toAdd
+      var memID = this.state.employeeInformation.instructorDirectorId;
+      if(memID){
+        let res2 = await http().getTable({
+          resid: '609599795438',
+          cmswhere: `C3_305737857578 = '${memID}'`
         });
+        dept =
+          res2.data[0].C3_422840479020 ||
+          res2.data[0].C3_422840472843 ||
+          res2.data[0].C3_422840463535 ||
+          res2.data[0].C3_422840460773;
+        userID = res2.data[0].C3_227192472953;
+        userMemberId = res2.data[0].C3_305737857578;
+        name = res2.data[0].C3_227192484125;
+        toAdd = [
+          {
+            dept: dept,
+            userID: userID,
+            userMemberId: userMemberId,
+            name: name
+          }
+        ];
+  
+        let res3 = await http().getTable({
+          resid: '619281130628',
+          cmswhere: `userMemberId = '${memID}'`
+        });
+        if (res3.data.length == 0) {
+          let res4 = await http().addRecords({
+            resid: '619281130628',
+            data: toAdd
+          });
+        }
       }
-
+      var memID2 = this.state.employeeInformation.instructorDirectorId2;
+      if(memID2){
+        let res5 = await http().getTable({
+          resid: '609599795438',
+          cmswhere: `C3_305737857578 = '${memID2}'`
+        });
+        dept =
+          res5.data[0].C3_422840479020 ||
+          res5.data[0].C3_422840472843 ||
+          res5.data[0].C3_422840463535 ||
+          res5.data[0].C3_422840460773;
+        userID = res5.data[0].C3_227192472953;
+        userMemberId = res5.data[0].C3_305737857578;
+        name = res5.data[0].C3_227192484125;
+        toAdd = [
+          {
+            dept: dept,
+            userID: userID,
+            userMemberId: userMemberId,
+            name: name
+          }
+        ];
+  
+        let res6 = await http().getTable({
+          resid: '619281130628',
+          cmswhere: `userMemberId = '${memID2}'`
+        });
+        if (res6.data.length == 0) {
+          let res7 = await http().addRecords({
+            resid: '619281130628',
+            data: toAdd
+          });
+        }
+      }
+      
       // 辅导员表ID619281130628
 
       // 辅导员工号C3_227192472953
@@ -202,7 +231,46 @@ class ProbationForms extends React.Component {
       // 辅导员部门C3_422840479020
 
       //辅导员姓名C3_227192484125
+      var C3_637084526216;
+      var C3_637084539039;
+      var instructorDirectorName2;
+      var instructorDirectorId2;
+      var instructorID;
+      var instructor;
+      var instructorDirectorName;
+      var instructorDirectorId;
+      if(memID){
+        instructorID= this.state.employeeInformation.instructorDirectorId;
+        instructor=this.state.employeeInformation.instructorDirectorName;
+        instructorDirectorName='';
+        instructorDirectorId='';
+      }
+      if(memID2){
+        C3_637084526216 = this.state.employeeInformation.instructorDirectorId2;
+        C3_637084539039 = this.state.employeeInformation.instructorDirectorName2;
+        instructorDirectorName2 = '';
+        instructorDirectorId2 = '';
+      }
+      let res = await http().modifyRecords({
+        resid: resid1,
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID,
+            instructorIsPass: 'Y',
+            C3_637084526216,
+            C3_637084539039,
+            instructorDirectorName2,
+            instructorDirectorId2,
+            instructorID,
+            instructor,
+            instructorDirectorName,
+            instructorDirectorId
+          }
+        ]
+      });
       message.success('成功同意辅导员');
+      this.setState({ loading: false ,flagAlreadyHit: 1});
+
     } catch (error) {
       this.setState({ loading: false });
       message.error(error.message);
@@ -469,7 +537,28 @@ class ProbationForms extends React.Component {
             probationObjectives.push({ [resid9]: subData });
           }
         }
-        data &&
+        if(data){
+          if (data.instructorDirectorName) {
+            data.isSemi=true;
+            this.setState({flagHitBack:true});
+            console.log(111)
+          } else {
+            console.log(222)
+            data.isSemi=false;
+          }
+          if (data.instructorDirectorName2) {
+            data.isSemi2=true;
+            this.setState({flagHitBack:true});
+          } else {
+            data.isSemi2=false;
+          }
+          if (data.instructorIsPass == 'Y') {
+            this.setState({ flagAlreadyHit: 1 });
+          } else if (data.instructorIsPass == 'N') {
+            this.setState({ flagAlreadyHit: 2 });
+          } else {
+            this.setState({ flagAlreadyHit: 0 });
+          }
           this.setState({
             employeeInformation: data,
             probationObjectives: probationObjectives,
@@ -490,29 +579,9 @@ class ProbationForms extends React.Component {
               internal: SubResource[viewableTable.internalResid]
             }
           });
-        if (data.instructorDirectorName) {
-          this.setState({
-            employeeInformation: {
-              ...this.state.employeeInformation,
-              isSemi: true
-            },
-            flagHitBack: true
-          });
-        } else {
-          this.setState({
-            employeeInformation: {
-              ...this.state.employeeInformation,
-              isSemi: false
-            }
-          });
         }
-        if (data.instructorIsPass == 'Y') {
-          this.setState({ flagAlreadyHit: 1 });
-        } else if (data.instructorIsPass == 'N') {
-          this.setState({ flagAlreadyHit: 2 });
-        } else {
-          this.setState({ flagAlreadyHit: 0 });
-        }
+          
+       
       } else {
         message.info('没有试用期记录');
       }
@@ -779,6 +848,30 @@ class ProbationForms extends React.Component {
     });
   };
 
+  setTutorship2 = ({ name, userMemberId }, bol) => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        C3_637084526216: userMemberId,
+        C3_637084539039: name,
+        instructorDirectorName2: undefined,
+        instructorDirectorId2: undefined
+      }
+    });
+  };
+
+  setTutorshipSemi2 = ({ name, userMemberId }, bol) => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        instructorDirectorId2: userMemberId,
+        instructorDirectorName2: name,
+        C3_637084526216: undefined,
+        C3_637084539039: undefined
+      }
+    });
+  };
+
   isSemi = v => {
     this.setState({
       employeeInformation: {
@@ -787,7 +880,14 @@ class ProbationForms extends React.Component {
       }
     });
   };
-
+  isSemi2 = v => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        isSemi2: v
+      }
+    });
+  };
   /**
    * 添加在岗培训课程
    */
@@ -1036,8 +1136,11 @@ class ProbationForms extends React.Component {
                 employeeInformation={employeeInformation}
                 tutorships={this.state.tutorships}
                 setTutorship={this.setTutorship}
+                setTutorship2={this.setTutorship2}
                 setTutorshipSemi={this.setTutorshipSemi}
+                setTutorshipSemi2={this.setTutorshipSemi2}
                 isSemi={this.isSemi}
+                isSemi2={this.isSemi2}
                 roleName={roleName}
                 editable={editable}
               />
@@ -1395,6 +1498,10 @@ class ProbationForms extends React.Component {
                 ))}
               </Select>
             </Col>
+          
+          </Row>
+          <Row className="probation-forms_modal_inputrow">
+
             <Col span={4} offset={4}>
               培训师2(选填):
             </Col>
@@ -1409,8 +1516,8 @@ class ProbationForms extends React.Component {
                   this.setState({
                     addOnJobTrainingData: {
                       ...this.state.addOnJobTrainingData,
-                      trainer2: v.label,
-                      trainerMemberId2: v.key
+                      trainMember: v.label,
+                      trainMemberId2: v.key
                     }
                   });
                 }}
