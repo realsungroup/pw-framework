@@ -29,7 +29,9 @@ window.pwConfig = {
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
-      onlineTrainning:'https://finisar26.realsun.me:1101'//在线培训数据查询
+      onlineTrainning:'https://finisar26.realsun.me:1101',//在线培训数据查询
+      onlineTrainningDownload:'http://finisar26.realsun.me:1100/'//在线培训数据下载
+
     },
 
     // 需前端缓存配置的资源
@@ -172,7 +174,8 @@ window.pwConfig = {
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
-      onlineTrainning:'https://finisar26.realsun.me:1101'//在线培训数据查询
+      onlineTrainning:'https://finisar26.realsun.me:1101',//在线培训数据查询
+      onlineTrainningDownload:'http://finisar26.realsun.me:1100/'//在线培训数据下载
     },
 
     // 需前端缓存配置的资源

@@ -42,8 +42,12 @@ class HRProbation extends React.Component {
     var baseURL=window.pwConfig[
       process.env.NODE_ENV
     ].customURLs.onlineTrainning;
+    var baseURLDownload=window.pwConfig[
+      process.env.NODE_ENV
+    ].customURLs.onlineTrainningDownload;
+
     this.setState({
-      desktop,baseURL
+      desktop,baseURL,baseURLDownload
     });
   };
 
@@ -398,6 +402,7 @@ class HRProbation extends React.Component {
 
                   <TableData
                     baseURL={this.state.baseURL}
+                    downloadBaseURL={this.state.baseURLDownload}
                     resid="637950044474"
                     key="7"
                     subtractH={240}
@@ -418,6 +423,7 @@ class HRProbation extends React.Component {
 
                   <TableData
                   baseURL={this.state.baseURL}
+                  downloadBaseURL={this.state.baseURLDownload}
                   resid="636217231879"
                   key="5"
                   subtractH={240}
@@ -437,6 +443,8 @@ class HRProbation extends React.Component {
                 <div style={{height:'calc(100vh - 60px)'}}>
                 <TableData
                   baseURL={this.state.baseURL}
+                  downloadBaseURL={this.state.baseURLDownload}
+
                   resid="637941032529"
                   key="6"
                   subtractH={240}
@@ -452,19 +460,7 @@ class HRProbation extends React.Component {
                 />
                 </div>
               </TabPane>
-                  
-            </Tabs>
-             
-
-              
-            
-
-            
-            
-
-            
-
-           
+            </Tabs>        
           </div>
         );
       default:
