@@ -57,3 +57,24 @@ export const NotFound = Loadable({
     return <FullLoading loading={true} />;
   }
 });
+
+export const Register = Loadable({
+  loader: () => import('./Register'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
+export const DoctorRegister = Loadable({
+  loader: () => import('./DoctorRegister'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
+export const CompanyRegister = Loadable({
+  loader: () => import('./CompanyRegister'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});

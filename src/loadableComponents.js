@@ -49,6 +49,27 @@ export const Login = Loadable({
   }
 });
 
+export const Register = Loadable({
+  loader: () => import('./pages/Register'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
+
+export const DoctorRegister = Loadable({
+  loader: () => import('./pages/DoctorRegister'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
+
+export const CompanyRegister = Loadable({
+  loader: () => import('./pages/CompanyRegister'),
+  loading() {
+    return <Loading loading={true} />;
+  }
+});
+
 export const PersonCenter = Loadable({
   loader: () => import('./pages/PersonCenter'),
   loading() {

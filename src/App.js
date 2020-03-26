@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-import { PageContainer, Login, NotFound } from './pages/loadablePage';
+import { PageContainer, Login, NotFound,Register,DoctorRegister,CompanyRegister } from './pages/loadablePage';
 
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -178,6 +178,9 @@ class App extends Component {
                       component={PageContainer}
                     />
                     <Route path="/login" component={Login} />
+                    <Route path="/register" component={Register} />
+                    <Route path="/doctorRegister" component={DoctorRegister} />
+                    <Route path="/companyRegister" component={CompanyRegister} />
                     <Route path="*" component={NotFound} />
                   </Switch>
                 </Router>

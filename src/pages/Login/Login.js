@@ -184,6 +184,19 @@ class Login extends React.Component {
       return usernameSuffix;
     }
   };
+  onRegister = () => {
+    console.log(this.props)
+    this.props.history.push({
+      pathname: '/register'
+    });
+  };
+
+  // onDoctorRegister = () => {
+  //   console.log(this.props)
+  //   this.props.history.push({
+  //     pathname: '/doctorRegister'
+  //   });
+  // };
 
   render() {
     const { redirectToReferrer, loginMode, language, loading } = this.state;
@@ -280,6 +293,11 @@ class Login extends React.Component {
               >
                 <FM id="Login.Login" defaultMessage="登录" />
               </Button>
+            </Form.Item>
+            <Form.Item>
+               <Button style = {{float:"left"}} onClick={this.onRegister}>账号注册</Button>
+              {/* <Button style = {{float:"left"}} onClick={this.onCompanyRegister}>机构注册</Button>
+              <Button style = {{float:"right"}} onClick={this.onDoctorRegister}>医生注册</Button> */}
             </Form.Item>
           </Form>
           <div className="login__copyright">Copyright © 2008 ~ 2018 </div>
