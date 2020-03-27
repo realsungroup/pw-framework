@@ -28,7 +28,65 @@ class Register extends React.Component {
     };
   }
 
-  handleSubmit = () => {};
+  handleSubmit = () => {
+    const { form } = this.props;
+    let res;
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
+      if (err) {
+        return;
+      }
+      let registerData = {
+        companyNo: form.getFieldValue("companyNo"), // 机构代码
+        loginAccount: form.getFieldValue("loginNum"), //登录账号
+        loginPassword: form.getFieldValue("loginPassword"), // 登录密码
+        handPhone: form.getFieldValue("phone"), // 手机号
+        code: form.getFieldValue("code"),//验证码
+        // validresid: 616852937051  // 暂未定义注册表
+      };
+      this.setState({
+        showSpin: true
+      });
+
+      //还未定义api
+      // try {
+      //   res = await http().register(registerData);
+      //   if (res.data.error == 0) {
+      //     message.success("注册成功");
+      //     this.props.history.push({
+      //       pathname: "/login",
+      //       state: { doctorData }
+      //     });
+      //   } else {
+      //     message.error(res.data.message);
+      //   }
+      // } catch (error) {
+      //   message.error(error.message);
+      // }
+      
+      this.setState({
+        showSpin: false
+      });
+    });
+  };
+
+  //获取验证码
+  getVerCode = async () => {
+    const { form } = this.props;
+    let res;
+    if (form.getFieldValue("phone")) {
+      this.countDown();
+      try {
+        res = await http().getVerCode({
+          telephone: form.getFieldValue("phone")
+        });
+      } catch (error) {
+        message.error(error.message);
+      }
+    } else {
+      message.info("请先输入手机号获取验证码");
+    }
+  };
+
   //验证码计时
   countDown = () => {
     let counts = 60;
@@ -49,18 +107,21 @@ class Register extends React.Component {
       }
     }, 1000);
   };
+
   //切换登录路由
   onLogin = () => {
     this.props.history.push({
       pathname: '/login'
     });
   };
+
   //切换医生注册
   onDoctorRegister = () => {
     this.props.history.push({
       pathname: '/doctorRegister'
     });
   };
+
   //切换机构注册
   onCompanyRegister = () => {
     this.props.history.push({
@@ -78,45 +139,65 @@ class Register extends React.Component {
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
               <h1>注册</h1>
               <Form.Item>
-                <Input
-                  prefix={
-                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="机构代码"
-                />
+                {getFieldDecorator('companyNo', {
+                  rules: [{ required: true, message: '请输入你的机构代码!' }]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="机构代码"
+                  />
+                )}
               </Form.Item>
               <Form.Item>
-                <Input
-                  prefix={
-                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="登录账号"
-                />
+                {getFieldDecorator('loginNum', {
+                  rules: [{ required: true, message: '请输入你的登录账号!' }]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="登录账号"
+                  />
+                )}
               </Form.Item>
               <Form.Item>
-                <Input
-                  prefix={
-                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="登录密码"
-                />
+                {getFieldDecorator('loginPassword', {
+                  rules: [{ required: true, message: '请输入你的登录密码!' }]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="登录密码"
+                  />
+                )}
               </Form.Item>
               <Form.Item>
-                <Input
-                  prefix={
-                    <Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="手机号"
-                />
+                {getFieldDecorator('phone', {
+                  rules: [{ required: true, message: '请输入你的手机号!' }]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="手机号"
+                  />
+                )}
               </Form.Item>
               <Form.Item className="login-form-valid">
-                <Input
-                  className="login-form-valid-input"
-                  prefix={
-                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                  }
-                  placeholder="验证码 "
-                />
+                {getFieldDecorator('valid', {
+                  rules: [{ required: true, message: '请输入你的验证码!' }]
+                })(
+                  <Input
+                    className="login-form-valid-input"
+                    prefix={
+                      <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="验证码 "
+                  />
+                )}
                 {disabled ? (
                   <Button
                     className="code-button"
@@ -142,7 +223,7 @@ class Register extends React.Component {
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"
-                  onClick={this.register}
+                  onClick={this.handleSubmit}
                   size="normal"
                 >
                   注册
