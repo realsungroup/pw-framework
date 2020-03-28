@@ -479,4 +479,12 @@ http.createApi('CreateAuditFlowData', {
   method: 'get',
   url: '/api/AuditFlow/CreateAuditFlowData'
 });
+
+/**
+ *
+ */
+http.createApi('getByProcedure', {
+  method: 'get',
+  url: '/api/200/table/GetByProcedure'
+});
 export default http;

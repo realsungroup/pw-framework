@@ -1,6 +1,7 @@
 .architecture-diagram {
   width: 100%;
   height: 100%;
+  overflow: scroll;
   & > .ant-spin-nested-loading {
     width: 100%;
     height: 100%;
@@ -14,7 +15,7 @@
     align-items: center;
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
-    padding: 0 24px;
+    // padding: 0 24px;
     height: 32px;
     &_icon-button-group {
       display: flex;
@@ -22,7 +23,8 @@
       border-right: 1px solid #ebebeb;
     }
     &_icon-button {
-      width: 100px;
+      // min-width: 90px;
+      padding: 0 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -32,6 +34,12 @@
       }
       &.delete-button {
         color: #f5222d;
+      }
+      &.disable-button {
+        color: #f5222d;
+      }
+      &.enable-button {
+        color: #2593fc;
       }
       &__icon {
         font-size: 18px;
@@ -56,13 +64,28 @@
     fill: #ffffff;
   }
 
+  .discard > rect {
+    fill: #bbbbbb;
+  }
+
+  .discard > text {
+    fill: #999999;
+  }
+  .empty > rect {
+    fill: #fa8c16;
+  }
+
+  .empty > text {
+    fill: #ffffff;
+  }
+
   &_main-container {
     height: calc(100% - 64px);
     min-height: 600px;
     display: grid;
     grid-template-columns: 1fr 200px;
     grid-template-rows: 100%;
-    &.hidden{
+    &.hidden {
       display: none;
     }
     .architecture-diagram_main_sider {
@@ -71,7 +94,10 @@
         background: rgba(24, 144, 255, 1);
         line-height: 28px;
         color: #ffffff;
-        padding-left: 12px;
+        padding: 0 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       .architecture-diagram_main_item-detail {
         min-height: 200px;
@@ -114,10 +140,10 @@
       }
     }
   }
-  .architecture-diagram_tabledata__container{
+  .architecture-diagram_tabledata__container {
     height: calc(100% - 64px);
     min-height: 600px;
-    &.hidden{
+    &.hidden {
       display: none;
     }
   }

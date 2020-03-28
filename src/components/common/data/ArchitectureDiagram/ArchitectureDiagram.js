@@ -10,7 +10,11 @@ import {
   Drawer,
   Switch,
   Select,
-  Form
+  Form,
+  Popover,
+  Checkbox,
+  DatePicker,
+  InputNumber
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -27,6 +31,7 @@ import TableData from '../TableData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { defaultProps, propTypes } from './propTypes';
+import moment from 'moment';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -61,10 +66,12 @@ class ArchitectureDiagram extends React.Component {
     mode: 'chart', //显示模式：图->chart; 表-> table
     isGrouping: false,
     firstField: this.props.displayFileds.firstField,
-    secondaryField: this.props.displayFileds.secondaryField
+    secondaryField: this.props.displayFileds.secondaryField,
+    selectedDate: moment(),
+    takeEffectDate: ''
   };
   async componentDidMount() {
-    await this.getRootNodes();
+    // await this.getRootNodes();
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);
@@ -92,13 +99,22 @@ class ArchitectureDiagram extends React.Component {
           field_1: displayFileds.secondaryField,
           img_0: displayFileds.imgField
         },
-        // layout: OrgChart.mixed,
+        collapse: {
+          level: 3
+        },
+        scaleInitial: 0.5,
+        // mouseScrool: OrgChart.action.zoom,
+        layout: OrgChart.mixed,
         enableDragDrop: true,
         toolbar: {
           layout: true,
           zoom: true,
           fit: true
           // expandAll: false
+        },
+        menu: {
+          pdf: { text: '导出PDF' },
+          png: { text: '导出PNG' }
         },
         nodeMenu: {
           call: {
@@ -121,7 +137,6 @@ class ArchitectureDiagram extends React.Component {
         tags: {
           selected
         },
-        scaleInitial: 1,
         scaleMin: 0.3,
         mouseScroolBehaviour: OrgChart.action.zoom
       }
@@ -138,7 +153,12 @@ class ArchitectureDiagram extends React.Component {
     } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
-      content: getIntlVal(intl.locale, enTip, zhTip),
+      content: (
+        <div>
+          {getIntlVal(intl.locale, enTip, zhTip)}
+          <div>生效日期：{this.state.selectedDate.format('YYYY-MM-DD')}</div>
+        </div>
+      ),
       onOk: () => {
         this.updateNode(newNode);
       }
@@ -183,36 +203,38 @@ class ArchitectureDiagram extends React.Component {
       idField,
       pidField,
       dblinkname,
-      groupConfig
+      groupConfig,
+      procedureConfig
     } = this.props;
-    const { currentLevel } = this.state;
+    const { currentLevel, selectedDate } = this.state;
     const options = {
+      ...procedureConfig,
       resid,
-      ColumnOfID: idField,
-      ColumnOfPID: pidField,
-      ProductIDs: this._rootIds.join(','),
-      Levels: currentLevel,
-      cmswhere: this._cmswhere,
-      dblinkname,
-      tags: groupConfig
+      paravalues: selectedDate.format('YYYY-MM-DD')
     };
     this.setState({ loading: true });
     try {
-      let httpParams = {};
+      const httpParams = {};
       // 使用传入的 baseURL
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(http(httpParams).getNodesData(options));
-      let res = await this.p1.promise;
+      this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
+      const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
-      this._tags = res.tags;
-      let nodes = res.nodes.map(item => {
+      // this._tags = res.tags;
+      const nodes = res.data.map(item => {
+        const tags = [];
+        if (item.isScrap === 'Y') {
+          tags.push('discard');
+        } else if (item.isEmpty === 'Y') {
+          tags.push('empty');
+        }
         return {
           ...item,
           id: item[idField],
-          pid: item[pidField]
-          // img: '//balkangraph.com/js/img/empty-img-white.svg'
+          pid: item[pidField],
+          tags
         };
       });
       this._nodes = nodes;
@@ -242,11 +264,15 @@ class ArchitectureDiagram extends React.Component {
         resid,
         subresid: historyResid,
         hostrecid: selectedNode.REC_ID,
-        dblinkname
+        dblinkname,
+        getcolumninfo: 1
       })
     );
     try {
       const res = await this.p3.promise;
+      if (!this._historyColinfo) {
+        this._historyColinfo = res.cmscolumninfo;
+      }
       this.setState({ historyData: res.data });
     } catch (error) {
       console.error(error);
@@ -274,7 +300,7 @@ class ArchitectureDiagram extends React.Component {
    * 添加节点
    */
   handleAdd = level => () => {
-    const { pidField, idField } = this.props;
+    const { pidField, idField, createWindowName } = this.props;
     const { selectedNode } = this.state;
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
@@ -282,10 +308,10 @@ class ArchitectureDiagram extends React.Component {
     let record = {};
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
-      this.getFormData(record);
+      this.getFormData(record, createWindowName);
     } else if (level === 'bro') {
       record[pidField] = selectedNode[pidField];
-      this.getFormData(record);
+      this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
   };
@@ -295,15 +321,59 @@ class ArchitectureDiagram extends React.Component {
    */
   handleModify = () => {
     const { selectedNode } = this.state;
+    const { createWindowName, editWindowName } = this.props;
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
-    this.getFormData({ ...selectedNode });
+    if (selected.isCreated === 'Y') {
+      this.getFormData({ ...selectedNode }, editWindowName);
+    } else {
+      this.getFormData({ ...selectedNode }, createWindowName);
+    }
     this.setState({
       addBroVisible: true,
       operation: 'modify',
       record: { ...selectedNode }
     });
+  };
+
+  /**
+   * 删除节点
+   */
+  handleDelete = () => {
+    const { selectedNode } = this.state;
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
+    if (selected.isCreated === 'Y') {
+      Modal.confirm({
+        title: '提示',
+        content: '确认删除？',
+        onOk: async () => {
+          try {
+            const { resid, baseURL } = this.props;
+            this.setState({ loading: true });
+            let httpParams = {};
+            // 使用传入的 baseURL
+            if (baseURL) {
+              httpParams.baseURL = baseURL;
+            }
+            const res = await http(httpParams).removeRecords({
+              resid,
+              data: [{ REC_ID: selectedNode.REC_ID }]
+            });
+            this.chart.removeNode(selectedNode.id);
+            message.success('删除成功');
+            this.setState({ loading: false });
+          } catch (error) {
+            this.setState({ loading: false });
+            message.error(error.message);
+          }
+        }
+      });
+    } else {
+      message.info('该节点无法删除');
+    }
   };
 
   /**
@@ -316,15 +386,18 @@ class ArchitectureDiagram extends React.Component {
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
-    this.setState({ selectedNode: node }, this.getHistory);
-    let findNodes = chart.find(selected);
-    if (findNodes.length) {
-      findNodes.forEach(item => {
-        chart.removeNodeTag(item.id, selected);
-      });
+    const { selectedNode } = this.state;
+    if (selectedNode.id) {
+      chart.removeNodeTag(selectedNode.id, selected);
     }
+    // let findNodes = chart.find(selected);
+    // if (findNodes.length) {
+    //   findNodes.forEach(item => {
+    //     chart.removeNodeTag(item.id, selected);
+    //   });
+    // }
     chart.addNodeTag(node.id, selected);
-    chart.draw();
+    // chart.draw();
     let breadcrumb = [];
     this.getBreadcrumb(node, breadcrumb);
     this.setState({ breadcrumb });
@@ -333,12 +406,13 @@ class ArchitectureDiagram extends React.Component {
       vertical: true,
       horizontal: true
     });
+    this.setState({ selectedNode: node }, this.getHistory);
   };
 
   /**
    * 获取主表窗体数据
    */
-  getFormData = async record => {
+  getFormData = async (record, formName = 'default') => {
     let res;
     try {
       const { resid, baseURL } = this.props;
@@ -350,7 +424,7 @@ class ArchitectureDiagram extends React.Component {
       }
       res = await http(httpParams).getFormData({
         resid: resid,
-        formName: 'default'
+        formName
       });
       const formData = dealControlArr(res.data.columns);
       this._dataProp = getDataProp(formData, record, true, false, false);
@@ -476,21 +550,33 @@ class ArchitectureDiagram extends React.Component {
     const { pidField, idField } = this.props;
     this.closeBroModal();
     if (operation === 'add') {
+      const tags = [];
+      if (record.isScrap === 'Y') {
+        tags.push('discard');
+      } else if (record.isEmpty === 'Y') {
+        tags.push('empty');
+      }
       this.chart.addNode({
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: record.tags ? record.tags : []
+        tags: record.tags ? [...record.tags, ...tags] : tags
       });
     } else if (operation === 'modify') {
-      const oldTags = this.chart.get(record[idField]).tags;
+      // const oldTags = this.chart.get(record[idField]).tags;
+      const tags = [];
+      if (record.isScrap === 'Y') {
+        tags.push('discard');
+      } else if (record.isEmpty === 'Y') {
+        tags.push('empty');
+      }
       let node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
         tags: record.tags
-          ? [...record.tags, ...oldTags, selected]
-          : [...oldTags, selected]
+          ? [...record.tags, ...tags, selected]
+          : [...tags, selected]
       };
       this.setState({ selectedNode: node });
       this.chart.updateNode(node);
@@ -518,7 +604,6 @@ class ArchitectureDiagram extends React.Component {
       httpParams.baseURL = baseURL;
     }
     const nodes = this.chart.nodes;
-    console.log(nodes);
     const keys = Object.keys(nodes);
     const ids = keys.filter(key => {
       return !nodes[key].childrenIds.length;
@@ -560,8 +645,93 @@ class ArchitectureDiagram extends React.Component {
     this.chart.draw();
   };
 
+  onLevelChange = level => {
+    this.setState({ currentLevel: level });
+    this.chart.expandCollapseToLevel(1, {
+      level
+    });
+  };
+
+  handleDateChange = (date, dateString) => {
+    this.setState({ selectedDate: date }, async () => {
+      let data = await this.getData();
+      this.chart.load(data);
+    });
+  };
+
+  /**
+   *
+   */
+  handleDisableEnable = value => () => {
+    Modal.confirm({
+      title: value === 'disable' ? '停用' : '启用',
+      content: (
+        <div>
+          <DatePicker
+            onChange={(date, dateString) => {
+              this.setState({ takeEffectDate: dateString });
+            }}
+            placeholder="请选择生效日期"
+            showToday
+            defaultValue={this.state.selectedDate}
+          />
+        </div>
+      ),
+      onOk: async () => {
+        const { takeEffectDate, selectedNode } = this.state;
+        const { baseURL, resid } = this.props;
+        try {
+          let httpParams = {};
+          // 使用传入的 baseURL
+          if (baseURL) {
+            httpParams.baseURL = baseURL;
+          }
+          const isScrap = value === 'disable' ? 'Y' : 'N';
+          this.setState({ loading: true });
+          const res = await http(httpParams).modifyRecords({
+            resid,
+            data: [
+              {
+                REC_ID: selectedNode.REC_ID,
+                isScrap,
+                updateDate: takeEffectDate
+              }
+            ]
+          });
+          const data = res.data[0];
+          const tags = [selected];
+          if (data.isScrap === 'Y') {
+            tags.push('discard');
+          } else if (data.isEmpty === 'Y') {
+            tags.push('empty');
+          }
+          this.chart.updateNode({
+            ...selectedNode,
+            ...data,
+            tags
+          });
+          this.setState({ loading: false });
+        } catch (error) {
+          this.setState({ loading: false });
+
+          message.error(error.message);
+        }
+      }
+    });
+  };
+
   renderHeader = () => {
-    const { mode, isGrouping } = this.state;
+    const { mode, isGrouping, selectedNode, currentLevel } = this.state;
+    const { hasOpration, hasImport } = this.props;
+    const enable = selectedNode.isScrap === '';
+    const disable = selectedNode.isScrap === 'N';
+    let opration = '';
+    if (selectedNode.isScrap === '') {
+      opration = 'enable';
+    }
+    if (selectedNode.isScrap === 'N') {
+      opration = 'disable';
+    }
     return (
       <header className="architecture-diagram_header">
         {/* <div className="architecture-diagram_header_icon-button-group">
@@ -582,7 +752,12 @@ class ArchitectureDiagram extends React.Component {
         </div> */}
         <div className="architecture-diagram_header_icon-button-group">
           <div className="architecture-diagram_header_icon-button">
-            分组<Switch checked={isGrouping} style={{marginLeft:'8px'}} onChange={this.handleGroupChange} />
+            分组
+            <Switch
+              checked={isGrouping}
+              style={{ marginLeft: '8px' }}
+              onChange={this.handleGroupChange}
+            />
           </div>
         </div>
         <div className="architecture-diagram_header_icon-button-group">
@@ -615,68 +790,161 @@ class ArchitectureDiagram extends React.Component {
             表格化
           </div>
         </div>
-        <div className="architecture-diagram_header_icon-button-group">
-          <div
-            className="architecture-diagram_header_icon-button"
-            onClick={this.handleAdd('sub')}
+        {hasOpration && mode === 'chart' && (
+          <div className="architecture-diagram_header_icon-button-group">
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleAdd('sub')}
+            >
+              <img
+                src={add1}
+                className="architecture-diagram_header_icon-button__icon"
+                alt=""
+              />
+              添加子级
+            </div>
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleAdd('bro')}
+            >
+              <img
+                src={add2}
+                className="architecture-diagram_header_icon-button__icon"
+                alt=""
+              />
+              添加同级
+            </div>
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleModify}
+            >
+              <Icon
+                type="edit"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              修改
+            </div>
+            <div
+              className="architecture-diagram_header_icon-button delete-button"
+              onClick={this.handleDelete}
+            >
+              <Icon
+                type="delete"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              删除
+            </div>
+            {selectedNode.REC_ID && (
+              <div
+                className={classNames(
+                  'architecture-diagram_header_icon-button ',
+                  {
+                    'disable-button': disable,
+                    'enable-button': enable
+                  }
+                )}
+                onClick={this.handleDisableEnable(opration)}
+              >
+                {disable && (
+                  <>
+                    <Icon
+                      type="logout"
+                      className="architecture-diagram_header_icon-button__icon"
+                    />
+                    停用
+                  </>
+                )}
+                {enable && (
+                  <>
+                    <Icon
+                      type="login"
+                      className="architecture-diagram_header_icon-button__icon"
+                    />
+                    启用
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {mode === 'chart' && (
+          <div className="architecture-diagram_header_icon-button-group">
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleSelfDefine}
+            >
+              <img
+                src={selfDefine}
+                className="architecture-diagram_header_icon-button__icon"
+                alt=""
+              />
+              自定义卡片
+            </div>
+          </div>
+        )}
+        {mode === 'chart' && (
+          <div className="architecture-diagram_header_icon-button-group">
+            <div className="architecture-diagram_header_icon-button">
+              <Icon
+                type="switcher"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              层级
+              <InputNumber
+                size="small"
+                min={1}
+                max={100000}
+                value={currentLevel}
+                onChange={this.onLevelChange}
+              />
+            </div>
+          </div>
+        )}
+        {hasImport && (
+          <div className="architecture-diagram_header_icon-button-group">
+            <div className="architecture-diagram_header_icon-button">
+              <Icon
+                type="upload"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              导入数据
+            </div>
+            <div className="architecture-diagram_header_icon-button">
+              <Icon
+                type="download"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              下载导入模板
+            </div>
+            {/* <Popover
+            placement="right"
+            content={
+              <div>
+                <div>
+                  <Checkbox>未处理记录</Checkbox>
+                </div>
+                <div>
+                  <Checkbox>导入结果</Checkbox>
+                </div>
+                <div>
+                  <Checkbox>岗位信息</Checkbox>
+                </div>
+                <div>
+                  <Checkbox>历史信息</Checkbox>
+                </div>
+              </div>
+            }
           >
-            <img
-              src={add1}
-              className="architecture-diagram_header_icon-button__icon"
-              alt=""
-            />
-            添加子级
+            <div className="architecture-diagram_header_icon-button">
+              <Icon
+                type="layout"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              显示
+            </div>
+          </Popover> */}
           </div>
-          <div
-            className="architecture-diagram_header_icon-button"
-            onClick={this.handleAdd('bro')}
-          >
-            <img
-              src={add2}
-              className="architecture-diagram_header_icon-button__icon"
-              alt=""
-            />
-            添加同级
-          </div>
-          <div
-            className="architecture-diagram_header_icon-button"
-            onClick={this.handleModify}
-          >
-            <Icon
-              type="edit"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            修改
-          </div>
-          <div className="architecture-diagram_header_icon-button delete-button">
-            <Icon
-              type="delete"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            删除
-          </div>
-        </div>
-        <div className="architecture-diagram_header_icon-button-group">
-          <div
-            className="architecture-diagram_header_icon-button"
-            onClick={this.handleSelfDefine}
-          >
-            <img
-              src={selfDefine}
-              className="architecture-diagram_header_icon-button__icon"
-              alt=""
-            />
-            自定义卡片
-          </div>
-        </div>
-        <div
-          className="architecture-diagram_header_icon-button-group"
-          onClick={this.loadNextLevel}
-        >
-          <div className="architecture-diagram_header_icon-button">
-            加载下一层
-          </div>
-        </div>
+        )}
       </header>
     );
   };
@@ -712,17 +980,27 @@ class ArchitectureDiagram extends React.Component {
       record,
       loading,
       mode,
-      selfDefineVisible
+      selfDefineVisible,
+      selectedDate
     } = this.state;
-    const { remarkField, resid, baseURL } = this.props;
+    const { resid, baseURL } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
           {this.renderHeader()}
           <div className="architecture-diagram_breadcrumb">
+            <div>
+              <DatePicker
+                value={selectedDate}
+                showToday
+                onChange={this.handleDateChange}
+                size="small"
+              />
+            </div>
             当前位置：
             {this.renderBreadcrumb()}
           </div>
+
           <div
             className={classNames({
               'architecture-diagram_main-container': true,
@@ -734,6 +1012,7 @@ class ArchitectureDiagram extends React.Component {
               <div className="architecture-diagram_main_item-detail">
                 <div className="architecture-diagram_main_sider_title">
                   详细情况
+                  <Icon type="minus" style={{ fontSize: 16 }} />
                 </div>
                 {selectedNode.REC_ID ? (
                   <div className="architecture-diagram_main_item-detail_list">
@@ -758,6 +1037,7 @@ class ArchitectureDiagram extends React.Component {
               <div className="architecture-diagram_main_item-history">
                 <div className="architecture-diagram_main_sider_title">
                   历史情况
+                  <Icon type="minus" style={{ fontSize: 16 }} />
                 </div>
                 <div className="architecture-diagram_change-hsitory_list">
                   {selectedNode.REC_ID ? (
@@ -765,14 +1045,25 @@ class ArchitectureDiagram extends React.Component {
                       <Timeline>
                         {historyData.map(item => (
                           <Timeline.Item>
-                            {item[remarkField]}
-                            <a
+                            {/* {item[remarkField]} */}
+                            {this._historyColinfo.map(i => {
+                              return (
+                                <p
+                                  key={i.id}
+                                  className="architecture-diagram_main_item-detail_list_item"
+                                >
+                                  <label>{i.text}：</label>
+                                  <span>{item[i.id]}</span>
+                                </p>
+                              );
+                            })}
+                            {/* <a
                               href="javascript::"
                               className="architecture-diagram_change-hsitory_list__view-button"
                               onClick={this.viewHistoryDetail}
                             >
                               查看
-                            </a>
+                            </a> */}
                           </Timeline.Item>
                         ))}
                       </Timeline>
@@ -819,6 +1110,7 @@ class ArchitectureDiagram extends React.Component {
               baseURL={baseURL}
             />
           </div>
+          {/* <div style={{ height: 500 }}></div> */}
         </Spin>
 
         <Modal

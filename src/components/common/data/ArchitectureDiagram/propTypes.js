@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 
 export const defaultProps = {
-  level: 3
+  level: 3,
+  hasOpration: true,
+  hasImport: true
 };
 
 export const propTypes = {
@@ -100,5 +102,8 @@ export const propTypes = {
    * 默认: -
    * 描述: -
    */
-  baseURL: PropTypes.string
+  baseURL: PropTypes.string,
+
+  hasOpration: PropTypes.bool,
+  hasImport: PropTypes.bool
 };
