@@ -287,7 +287,6 @@ class ArchitectureDiagram extends React.Component {
       let fooNode = this.chart.config.nodes.find(item => {
         return item.id === selectedNode.pid;
       });
-      console.log(1, fooNode);
       if (fooNode) {
         breadcrumb.unshift(selectedNode);
         this.getBreadcrumb(fooNode, breadcrumb);
@@ -295,8 +294,6 @@ class ArchitectureDiagram extends React.Component {
         breadcrumb.unshift(selectedNode);
       }
     } else {
-      console.log(2, selectedNode);
-
       breadcrumb.unshift(selectedNode);
     }
   };
