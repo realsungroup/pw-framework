@@ -104,7 +104,7 @@ class ArchitectureDiagram extends React.Component {
         },
         scaleInitial: 0.5,
         // mouseScrool: OrgChart.action.zoom,
-        layout: OrgChart.mixed,
+        layout: OrgChart.tree,
         enableDragDrop: true,
         toolbar: {
           layout: true,
@@ -210,7 +210,7 @@ class ArchitectureDiagram extends React.Component {
     const options = {
       ...procedureConfig,
       resid,
-      paravalues: selectedDate.format('YYYY-MM-DD')
+      paravalues: selectedDate.format('YYYYMMDD')
     };
     this.setState({ loading: true });
     try {
@@ -284,14 +284,19 @@ class ArchitectureDiagram extends React.Component {
    */
   getBreadcrumb = (selectedNode, breadcrumb = []) => {
     if (selectedNode.pid) {
-      let fooNode = this._nodes.find(item => {
+      let fooNode = this.chart.config.nodes.find(item => {
         return item.id === selectedNode.pid;
       });
+      console.log(1, fooNode);
       if (fooNode) {
         breadcrumb.unshift(selectedNode);
         this.getBreadcrumb(fooNode, breadcrumb);
+      } else {
+        breadcrumb.unshift(selectedNode);
       }
     } else {
+      console.log(2, selectedNode);
+
       breadcrumb.unshift(selectedNode);
     }
   };
@@ -345,7 +350,7 @@ class ArchitectureDiagram extends React.Component {
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
-    if (selected.isCreated === 'Y') {
+    if (selectedNode.isCreated === 'Y') {
       Modal.confirm({
         title: '提示',
         content: '确认删除？',
@@ -387,7 +392,7 @@ class ArchitectureDiagram extends React.Component {
       return;
     }
     const { selectedNode } = this.state;
-    if (selectedNode.id) {
+    if (selectedNode && selectedNode.id) {
       chart.removeNodeTag(selectedNode.id, selected);
     }
     // let findNodes = chart.find(selected);
@@ -528,7 +533,13 @@ class ArchitectureDiagram extends React.Component {
     this.p5 = makeCancelable(
       http(httpParams).modifyRecords({
         resid,
-        data: [{ REC_ID: newNode.REC_ID, [pidField]: newNode.pid }],
+        data: [
+          {
+            REC_ID: newNode.REC_ID,
+            updateDate: this.state.selectedDate,
+            [pidField]: newNode.pid
+          }
+        ],
         dblinkname
       })
     );
@@ -570,7 +581,7 @@ class ArchitectureDiagram extends React.Component {
       } else if (record.isEmpty === 'Y') {
         tags.push('empty');
       }
-      let node = {
+      const node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
@@ -995,6 +1006,7 @@ class ArchitectureDiagram extends React.Component {
                 showToday
                 onChange={this.handleDateChange}
                 size="small"
+                allowClear={false}
               />
             </div>
             当前位置：
