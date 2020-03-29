@@ -1,7 +1,24 @@
 .architecture-diagram {
   width: 100%;
   height: 100%;
-  overflow: scroll;
+  position: relative;
+  &__expand-buttons {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 99;
+  }
+  &__expand {
+    color: #fff;
+    margin-right: 2px;
+    background: rgba(24, 144, 255, 1);
+    padding: 4px 8px;
+    i.anticon.anticon-switcher {
+      cursor: pointer;
+      margin-left: 32px;
+    }
+  }
   & > .ant-spin-nested-loading {
     width: 100%;
     height: 100%;
@@ -56,6 +73,7 @@
   #architecture-diagram_orgchart {
     background: #f0f2f5;
     height: 100%;
+    flex: 1;
   }
   .selected > rect {
     fill: #1890ff;
@@ -84,14 +102,17 @@
   }
 
   &_main-container {
-    height: calc(100% - 64px);
+    // height: calc(100% - 64px);
+    height: 100%;
     min-height: 600px;
-    display: grid;
-    grid-template-columns: 1fr 200px;
-    grid-template-rows: 100%;
+    // display: grid;
+    // grid-template-columns: 1fr 200px;
+    // grid-template-rows: 100%;
+    display: flex;
     &.hidden {
       display: none;
     }
+
     .architecture-diagram_main_sider {
       .architecture-diagram_main_sider_title {
         height: 28px;
@@ -105,6 +126,7 @@
       }
       .architecture-diagram_main_item-detail {
         min-height: 200px;
+        width: 200px;
         &_list {
           height: 200px;
           overflow: auto;
@@ -122,6 +144,7 @@
       }
       .architecture-diagram_main_item-history {
         min-height: 300px;
+        width: 200px;
         .architecture-diagram_change-hsitory_list {
           height: 300px;
           overflow: auto;
@@ -150,5 +173,24 @@
     &.hidden {
       display: none;
     }
+  }
+  .architecture-diagram__import-result {
+    height: 500px;
+    &__title {
+      height: 28px;
+      background: rgba(24, 144, 255, 1);
+      line-height: 28px;
+      color: #ffffff;
+      padding: 0 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__content {
+      margin: 8px 24px;
+    }
+  }
+  .architecture-diagram__min-button {
+    cursor: pointer;
   }
 }

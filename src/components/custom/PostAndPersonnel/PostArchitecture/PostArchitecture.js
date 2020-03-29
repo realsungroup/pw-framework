@@ -50,7 +50,7 @@ class PostArchitecture extends React.Component {
               key="job"
               resid="638632769633"
               historyResid="638632807929" //历史
-              rootResid="638559408357" //根节点
+              // rootResid="638559408357" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
               level={3}
@@ -74,29 +74,31 @@ class PostArchitecture extends React.Component {
           <div className="post-architecture_diagram-container">
             <ArchitectureDiagram
               key="person"
-              resid="627649390227"
-              historyResid="627649406457" //历史
-              rootResid="627649574324" //根节点
-              idField="personid" //主表id字段名
-              pidField="directorId" //父节点id字段名
+              resid="638642823696"
+              historyResid="638643664427" //历史
+              // rootResid="627649574324" //根节点
+              idField="orgcode" //主表id字段名
+              pidField="orgSupCode" //父节点id字段名
               level={3}
               hasOpration={false}
-              remarkField="C3_627679142400" //历史情况的title
+              // remarkField="C3_627679142400" //历史情况的title
               displayFileds={{
-                firstField: 'name',
-                secondaryField: 'userId',
-                imgField: 'img'
+                firstField: 'memberCN',
+                secondaryField: 'orgName',
+                imgField: 'memberAvatar'
               }}
-              groupConfig={[
-                {
-                  ResourceOfTag: '628082603616', //获取分组信息
-                  SourceColumnOfGroupName: 'groupname',
-                  SourceColumnOfTagName: 'tagname',
-                  ColumnOfTagName: 'tagname',
-                  IsGroupTag: true
-                }
-              ]}
+              procedureConfig={{
+                procedure: 'pw_orgstaffbydates',
+                paranames: 'dates',
+                paratypes: 'string'
+              }}
               baseURL={baseURL}
+              importConfig={{
+                mode: 'fe',
+                saveState: 'editoradd',
+                containerType: 'drawer'
+              }}
+              hasView
             />
           </div>
         )}
