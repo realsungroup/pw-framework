@@ -12,9 +12,10 @@ import {
   Select,
   Form,
   Popover,
-  Checkbox,
+  Button,
   DatePicker,
-  InputNumber
+  InputNumber,
+  notification
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -79,7 +80,8 @@ class ArchitectureDiagram extends React.Component {
     historyMin: false,
     resultMin: false,
     hasImportResult: false,
-    detailVisible: false
+    detailVisible: false,
+    selectedResultResid: ''
   };
   async componentDidMount() {
     // await this.getRootNodes();
@@ -766,8 +768,27 @@ class ArchitectureDiagram extends React.Component {
         importConfig.mode,
         importConfig.containerType,
         importConfig.saveState,
-        importConfig.containerProps
+        importConfig.containerProps,
+        this.handleFinishImport
       );
+  };
+
+  handleFinishImport = () => {
+    console.log('handleFinishImport');
+    this.setState({ hasImportResult: true }, () => {
+      this.contentRef.scrollTo({
+        left: 0,
+        top: 700,
+        behavior: 'smooth'
+      });
+    });
+    notification.open({
+      message: '导入完成',
+      description: '请查看导入结果',
+      onClick: () => {
+        console.log('Notification Clicked!');
+      }
+    });
   };
 
   renderHeader = () => {
@@ -1025,6 +1046,8 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderImportResult = () => {
+    const { baseURL } = this.props;
+    const { selectedResultResid } = this.state;
     return (
       <div id="import-result" className="architecture-diagram__import-result">
         <div className="architecture-diagram__import-result__title">
@@ -1033,22 +1056,106 @@ class ArchitectureDiagram extends React.Component {
             type="minus"
             className="architecture-diagram__min-button"
             style={{ fontSize: 16 }}
+            onClick={() => {
+              this.setState({ resultMin: true });
+            }}
           />
         </div>
         <div className="architecture-diagram__import-result__content">
           <div>
-            <Select style={{ width: 120 }} size="small" defaultValue="all">
-              <Select.Option value="all">全部</Select.Option>
-              <Select.Option value="unmatch">未匹配</Select.Option>
-              <Select.Option value="error">错误</Select.Option>
+            <Select
+              style={{ width: 120, marginRight: 16 }}
+              size="small"
+              defaultValue="638645137963"
+              onChange={v => {
+                this.setState({ selectedResultResid: v });
+              }}
+            >
+              <Select.Option value="638645137963">全部</Select.Option>
+              <Select.Option value="638646080344">正常</Select.Option>
+              <Select.Option value="638645984799">未匹配</Select.Option>
+              <Select.Option value="638646009862">错误</Select.Option>
             </Select>
-            <Select style={{ width: 120 }} size="small" defaultValue="all">
+            <Select
+              style={{ width: 120, marginRight: 16 }}
+              size="small"
+              defaultValue="all"
+            >
               <Select.Option value="all">全部</Select.Option>
               <Select.Option value="DL">DL</Select.Option>
               <Select.Option value="IDL">IDL</Select.Option>
             </Select>
+            <Button size="small" type="primary" style={{ marginRight: 24 }}>
+              导入
+            </Button>
+            <span style={{ marginRight: 16 }}>合计：100</span>
+            <span style={{ marginRight: 16 }}>成功：70</span>
+            <span style={{ marginRight: 16 }}>错误：20</span>
+            <span style={{ marginRight: 16 }}>未匹配：10</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <TableData
+              baseURL={baseURL}
+              resid={selectedResultResid || '638645137963'}
+              // subtractH={240}
+              hasAdd={false}
+              tableComponent="ag-grid"
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+            />
           </div>
         </div>
+      </div>
+    );
+  };
+  renderExpand = () => {
+    const { detaileMin, historyMin, resultMin } = this.state;
+    return (
+      <div className="architecture-diagram__expand-buttons">
+        {detaileMin && (
+          <div className="architecture-diagram__expand">
+            详细情况
+            <Icon
+              type="switcher"
+              onClick={() => {
+                this.setState({ detaileMin: false });
+              }}
+            />
+          </div>
+        )}
+        {historyMin && (
+          <div className="architecture-diagram__expand">
+            历史情况
+            <Icon
+              type="switcher"
+              onClick={() => {
+                this.setState({ historyMin: false });
+              }}
+            />
+          </div>
+        )}
+        {resultMin && (
+          <div
+            className="architecture-diagram__expand"
+            onClick={() => {
+              this.setState({ resultMin: false }, () => {
+                this.contentRef.scrollTo({
+                  left: 0,
+                  top: 700,
+                  behavior: 'smooth'
+                });
+              });
+            }}
+          >
+            导入结果
+            <Icon type="switcher" />
+          </div>
+        )}
       </div>
     );
   };
@@ -1075,41 +1182,7 @@ class ArchitectureDiagram extends React.Component {
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
-          <div className="architecture-diagram__expand-buttons">
-            {detaileMin && (
-              <div className="architecture-diagram__expand">
-                详细情况
-                <Icon
-                  type="switcher"
-                  onClick={() => {
-                    this.setState({ detaileMin: false });
-                  }}
-                />
-              </div>
-            )}
-            {historyMin && (
-              <div className="architecture-diagram__expand">
-                历史情况
-                <Icon
-                  type="switcher"
-                  onClick={() => {
-                    this.setState({ historyMin: false });
-                  }}
-                />
-              </div>
-            )}
-            {resultMin && (
-              <div
-                className="architecture-diagram__expand"
-                onClick={() => {
-                  this.setState({ resultMin: false });
-                }}
-              >
-                导入结果
-                <Icon type="switcher" />
-              </div>
-            )}
-          </div>
+          {this.renderExpand()}
           {this.renderHeader()}
           <div className="architecture-diagram_breadcrumb">
             <div>
@@ -1124,7 +1197,12 @@ class ArchitectureDiagram extends React.Component {
             当前位置：
             {this.renderBreadcrumb()}
           </div>
-          <div style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
+          <div
+            className="architecture-diagram__content"
+            ref={ref => {
+              this.contentRef = ref;
+            }}
+          >
             <div
               className={classNames({
                 'architecture-diagram_main-container': true,
@@ -1272,7 +1350,7 @@ class ArchitectureDiagram extends React.Component {
                 baseURL={baseURL}
               />
             </div>
-            {hasImportResult && this.renderImportResult()}
+            {hasImportResult && !resultMin && this.renderImportResult()}
           </div>
         </Spin>
 

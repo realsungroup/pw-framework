@@ -17,11 +17,12 @@ import XLSX from 'xlsx';
 const Dragger = Upload.Dragger;
 const noop = () => {};
 
-async function runPromiseByQueue(myPromises, callback) {
+async function runPromiseByQueue(myPromises, callback, onFinishImport) {
   for (let value of myPromises) {
     await value();
     callback && callback();
   }
+  onFinishImport && onFinishImport();
 }
 
 const getImportSuccessCount = arr => {
@@ -86,12 +87,10 @@ export default class Import extends React.Component {
   static defaultProps = {};
   constructor(props) {
     super(props);
-    
-    const httpParams={};
-    if (this.props.baseURL)
-    {
-      httpParams.baseURL=this.props.baseURL;
 
+    const httpParams = {};
+    if (this.props.baseURL) {
+      httpParams.baseURL = this.props.baseURL;
     }
     this.state = {
       list: [],
@@ -129,7 +128,10 @@ export default class Import extends React.Component {
     if (mode === 'be') {
       let res;
       this.p1 = makeCancelable(
-        http(this.state.httpParams).getImportConfigs({ resid: this.props.resid, dblinkname })
+        http(this.state.httpParams).getImportConfigs({
+          resid: this.props.resid,
+          dblinkname
+        })
       );
       try {
         res = await this.p1.promise;
@@ -147,7 +149,10 @@ export default class Import extends React.Component {
       // 获取列定义数据
       let res;
       try {
-        res = await http(this.state.httpParams).getTableColumnDefine({ resid, dblinkname });
+        res = await http(this.state.httpParams).getTableColumnDefine({
+          resid,
+          dblinkname
+        });
       } catch (err) {
         this.setState({ loading: false });
         console.error(err);
@@ -371,7 +376,7 @@ export default class Import extends React.Component {
           return this.saveOneRecord(resid, record, index);
         };
       });
-      runPromiseByQueue(pArr);
+      runPromiseByQueue(pArr, null, this.props.onFinishImport);
     });
   };
 

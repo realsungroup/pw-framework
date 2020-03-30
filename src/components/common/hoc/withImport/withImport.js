@@ -25,6 +25,7 @@ const withImport = WrappedComponent => {
      * @param {string} type 类型
      * @param {string} saveState 保存数据的模式
      * @param {object} containerProps 容器接收的 props
+     * @param {function} onFinishImport 导入完成后的回调
      */
     handleOpenImportView = async (
       dblinkname,
@@ -33,7 +34,8 @@ const withImport = WrappedComponent => {
       mode,
       type = 'drawer',
       saveState,
-      containerProps
+      containerProps,
+      onFinishImport
     ) => {
       const importContainerProps = {
         title: '导入数据',
@@ -54,7 +56,8 @@ const withImport = WrappedComponent => {
         baseURL,
         mode,
         saveState,
-        dblinkname
+        dblinkname,
+        onFinishImport
       });
     };
 
