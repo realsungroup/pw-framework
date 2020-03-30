@@ -535,8 +535,10 @@ const subresid = 632314794466;//子表resid
         resid:637687733184,
         cmswhere:`id = ${userCode}`
       });
-     
+     if(res.data[0]){
       this.setState({right:res.data[0]})
+
+     }
       if(res.data[0].HCPreApprove=='N'){
         this.setState({cms:`hrPreAprrove = 'waiting' and locationCompany = '${res.data[0].location}'`});
         }else{
@@ -650,7 +652,7 @@ const subresid = 632314794466;//子表resid
           onCancel={()=>this.setState({commandVisible:false})}
         >
         
-          <div style={{width:'90vw',height:'60vh'}}>
+          <div style={{width:'85vw',height:'60vh',overflow:'auto'}}>
             {this.state.streamChange.map((item,key)=>{return(
               <div>
                 <div style={{height:'16px'}}></div>
@@ -703,7 +705,7 @@ const subresid = 632314794466;//子表resid
           </Select>
           <div style={{width:'100%',height:'1rem'}}></div>
           <b>Headcount类型：</b>
-          <Select style={{width:'200px'}}value={this.state.C3_637425577105} onChange={(v)=>{this.setState({C3_637425577105:v})}}>
+          <Select disabled={this.state.C3_637425449725=='无'?true:false}style={{width:'200px'}}value={this.state.C3_637425449725=='无'?null:this.state.C3_637425577105} onChange={(v)=>{this.setState({C3_637425577105:v})}}>
           {this.state.HCList.map((item,key)=>{
             return(
               <Option key={key} value={item}>{item}</Option>
@@ -856,6 +858,7 @@ const subresid = 632314794466;//子表resid
         </Modal>
         <Spin spinning={this.state.loading} >
           <div style={{height:'100vh'}}>
+            {(this.state.right.HCPreApprove=='Y')||(this.state.right.HRPreApprove=='Y')?
             <TableData
                   resid={632255761674}
                   cmswhere={this.state.cms}
@@ -895,7 +898,7 @@ const subresid = 632314794466;//子表resid
                       );
                     }
                   ]}
-                />
+                />:<h3> 您无权查看，请联系管理员添加权限。</h3>}
                 </div>
             </Spin>
           </content>
