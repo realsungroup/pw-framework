@@ -386,6 +386,7 @@ class ArchitectureDiagram extends React.Component {
           } catch (error) {
             this.setState({ loading: false });
             message.error(error.message);
+            console.log(error);
           }
         }
       });
@@ -477,17 +478,20 @@ class ArchitectureDiagram extends React.Component {
       this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
     let nodes = [node]; //计算后的节点，必包含点击的节点
     this.calcSubNodes([node], nodes, this._nodes);
-    if (selectedNode.id) {
-      this.chart.removeNodeTag(selectedNode.id, selected);
-    }
+    nodes.forEach(node => {
+      if (node.tags.includes(selected)) {
+        node.tags.splice(node.tags.findIndex(tag => tag === selected), 1);
+      }
+    });
     this.chart.load(nodes);
-    this.setState({ selectedNode: {} });
+    this.setState({ selectedNode: {}, breadcrumb: [] });
   };
 
   calcSubNodes = (calcNode, subNodes, allNodes) => {
     //仍有要计算子节点的数据
     if (calcNode.length) {
       let filterNodes = allNodes.filter(item => {
+        item.tags.splice(item.tags.findIndex(tag => tag === selected), 1);
         return calcNode.some(i => i.id === item.pid);
       });
       subNodes.push(...filterNodes);
@@ -728,16 +732,16 @@ class ArchitectureDiagram extends React.Component {
           } else if (data.isEmpty === 'Y') {
             tags.push('empty');
           }
-          console.log(tags);
-          this.chart.updateNode({
+          const node = {
             ...selectedNode,
             ...data,
-            tags
-          });
-          this.setState({ loading: false, selectedNode: data });
+            tags: [...tags]
+          };
+          this.chart.updateNode(node);
+          this.setState({ loading: false, selectedNode: node });
         } catch (error) {
           this.setState({ loading: false });
-
+          console.log(error);
           message.error(error.message);
         }
       }
@@ -749,7 +753,7 @@ class ArchitectureDiagram extends React.Component {
       openImportView,
       baseURL,
       importConfig,
-      resid,
+      importResid,
       dblinkname
     } = this.props;
     const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
@@ -758,7 +762,7 @@ class ArchitectureDiagram extends React.Component {
       openImportView(
         dblinkname,
         url,
-        resid,
+        importResid,
         importConfig.mode,
         importConfig.containerType,
         importConfig.saveState,

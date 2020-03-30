@@ -99,6 +99,7 @@ class PostArchitecture extends React.Component {
                 containerType: 'drawer'
               }}
               hasView
+              importResid="638645137963"
             />
           </div>
         )}
