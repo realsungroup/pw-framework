@@ -140,13 +140,13 @@ class Register extends React.Component {
               <h1>注册</h1>
               <Form.Item>
                 {getFieldDecorator('companyNo', {
-                  rules: [{ required: true, message: '请输入你的机构代码!' }]
+                  rules: [{ required: true, message: '请输入你的机构名称!' }]
                 })(
                   <Input
                     prefix={
                       <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
-                    placeholder="机构代码"
+                    placeholder="机构名称"
                   />
                 )}
               </Form.Item>
@@ -168,7 +168,7 @@ class Register extends React.Component {
                 })(
                   <Input
                     prefix={
-                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                      <Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
                     placeholder="登录密码"
                   />

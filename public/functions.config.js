@@ -14,8 +14,8 @@ window[588425594397] = {
       hasDelete: false,
       addText: "添加基本信息",
       enAddText: "Add basic information",
-      rowModifyText: "修改基本信息",
-      enRowModifyText: "Modify basic information",
+      rowModifyText: "修改个人信息",
+      enRowModifyText: "Modify personal information",
       formProps: {
         displayMode: "classify"
       }
