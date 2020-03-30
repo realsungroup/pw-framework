@@ -90,14 +90,16 @@ const subresid = 632314794466;//子表resid
    componentDidMount(){
      this.getLv();
      this.getBucode();
+     this.getTypeAndTitle();
      
    }
    //获取地址栏参数跳转页面
    getTypeAndTitle = () => {
     const quertString = window.location.search;
     const qsObj = qs.parse(quertString.substring(1));
+    var page = qsObj.page||1
     this.setState({
-      page: qsObj.page
+      page: page
     });
   };
   getBucode=async()=>{
