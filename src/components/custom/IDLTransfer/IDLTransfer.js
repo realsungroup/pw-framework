@@ -97,10 +97,13 @@ const subresid = 632314794466;//子表resid
    getTypeAndTitle = () => {
     const quertString = window.location.search;
     const qsObj = qs.parse(quertString.substring(1));
-    var page = qsObj.page||1
-    this.setState({
-      page: page
-    });
+    var page = qsObj.page;
+    if(page){
+      this.setState({
+        page: page
+      });
+    }
+    
   };
   getBucode=async()=>{
     var res;
