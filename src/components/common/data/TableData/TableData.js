@@ -789,7 +789,7 @@ class TableData extends React.Component {
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
     const { beBtnsMultiple, beBtnsOther } = this.state;
-    const { size, formProps , baseURL} = this.props;
+    const { size, formProps, baseURL } = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
@@ -1611,6 +1611,10 @@ class TableData extends React.Component {
     this.props.closeRecordForm();
   };
 
+  getAggridSelectedRows = () => {
+    return this.gridApi.getSelectedRows();
+  };
+
   getActionBar = () => {
     const actionBar = {
       title: <FM id="common.operation" defaultMessage="操作" />,
@@ -1694,7 +1698,8 @@ class TableData extends React.Component {
       actionBarExtraAg,
       headerExtra,
       rowSelectionAg,
-      sideBarAg
+      sideBarAg,
+      afterSaveRefresh
     } = this.props;
 
     const {
@@ -1723,6 +1728,10 @@ class TableData extends React.Component {
       return (
         <PwAggird
           title={title}
+          onReady={gridApi => {
+            this.gridApi = gridApi;
+          }}
+          afterSaveRefresh={afterSaveRefresh}
           originalColumn={originalColumn}
           hasZoomInOut={hasZoomInOut}
           zoomStatus={zoomStatus}

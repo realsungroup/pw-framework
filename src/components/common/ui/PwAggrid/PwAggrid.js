@@ -68,7 +68,6 @@ class PwAggrid extends React.Component {
       const start_time = moment();
       this._clonedData = clone(this.props.dataSource);
       const end_time = moment();
-      console.log(end_time.diff(start_time));
     }
   }
 
@@ -152,7 +151,13 @@ class PwAggrid extends React.Component {
 
   handleSaveRecords = async records => {
     try {
-      const res = await http().modifyRecords({
+      let httpParams = {};
+      const { baseURL } = this.props;
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      const res = await http(httpParams).modifyRecords({
         resid: this.props.resid,
         data: records
       });
@@ -160,6 +165,9 @@ class PwAggrid extends React.Component {
         update: res.data
       });
       this._modifiedData.clear();
+      if (this.props.afterSaveRefresh) {
+        this.props.onRefresh && this.props.onRefresh();
+      }
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -201,12 +209,15 @@ class PwAggrid extends React.Component {
 
   onGridReady = params => {
     this.gridApi = params.api;
+    this.props.onReady && this.props.onReady(params.api);
     this.gridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
   };
 
   onQuickFilterChanged = () => {
-    this.gridApi.setQuickFilter(document.getElementById('quickFilter').value);
+    this.gridApi.setQuickFilter(
+      document.getElementById('quickFilter-' + this.props.resid).value
+    );
   };
 
   getcolumnDefs = memoize((columns, columnDefs) => {
@@ -338,7 +349,6 @@ class PwAggrid extends React.Component {
     this.setState({ saveBtnLoading: true });
     const data = Array.from(this._modifiedData.values());
     const addData = Array.from(this._addData.values());
-    console.log(data, addData);
     if (addData.length) {
       await this.handleAddRecords(addData);
       this.gridApi.updateRowData({
@@ -506,7 +516,7 @@ class PwAggrid extends React.Component {
               <Input
                 type="text"
                 onInput={this.onQuickFilterChanged}
-                id="quickFilter"
+                id={'quickFilter-' + this.props.resid}
                 width={120}
                 placeholder="全局筛选"
               />

@@ -81,10 +81,20 @@ class ArchitectureDiagram extends React.Component {
     resultMin: false,
     hasImportResult: false,
     detailVisible: false,
-    selectedResultResid: ''
+    selectedResultResid: '638645137963',
+    selectedType: 'IDL'
   };
   async componentDidMount() {
     // await this.getRootNodes();
+    if (this.props.hasUnhandleRecords) {
+      this.setState({ hasImportResult: true }, () => {
+        this.contentRef.scrollTo({
+          left: 0,
+          top: 700,
+          behavior: 'smooth'
+        });
+      });
+    }
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);
@@ -821,16 +831,18 @@ class ArchitectureDiagram extends React.Component {
             保存
           </div>
         </div> */}
-        <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
-            分组
-            <Switch
-              checked={isGrouping}
-              style={{ marginLeft: '8px' }}
-              onChange={this.handleGroupChange}
-            />
+        {mode === 'chart' && (
+          <div className="architecture-diagram_header_icon-button-group">
+            <div className="architecture-diagram_header_icon-button">
+              分组
+              <Switch
+                checked={isGrouping}
+                style={{ marginLeft: '8px' }}
+                onChange={this.handleGroupChange}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="architecture-diagram_header_icon-button-group">
           <div
             className={classNames({
@@ -1047,7 +1059,7 @@ class ArchitectureDiagram extends React.Component {
 
   renderImportResult = () => {
     const { baseURL } = this.props;
-    const { selectedResultResid } = this.state;
+    const { selectedResultResid, selectedType, mode } = this.state;
     return (
       <div id="import-result" className="architecture-diagram__import-result">
         <div className="architecture-diagram__import-result__title">
@@ -1062,7 +1074,7 @@ class ArchitectureDiagram extends React.Component {
           />
         </div>
         <div className="architecture-diagram__import-result__content">
-          <div>
+          <div style={{ marginBottom: 16 }}>
             <Select
               style={{ width: 120, marginRight: 16 }}
               size="small"
@@ -1070,6 +1082,7 @@ class ArchitectureDiagram extends React.Component {
               onChange={v => {
                 this.setState({ selectedResultResid: v });
               }}
+              value={selectedResultResid}
             >
               <Select.Option value="638645137963">全部</Select.Option>
               <Select.Option value="638646080344">正常</Select.Option>
@@ -1079,27 +1092,102 @@ class ArchitectureDiagram extends React.Component {
             <Select
               style={{ width: 120, marginRight: 16 }}
               size="small"
-              defaultValue="all"
+              defaultValue="IDL"
+              onChange={v => {
+                this.setState({ selectedType: v });
+              }}
+              value={selectedType}
             >
-              <Select.Option value="all">全部</Select.Option>
               <Select.Option value="DL">DL</Select.Option>
               <Select.Option value="IDL">IDL</Select.Option>
             </Select>
-            <Button size="small" type="primary" style={{ marginRight: 24 }}>
-              导入
-            </Button>
-            <span style={{ marginRight: 16 }}>合计：100</span>
+            {selectedResultResid === '638645984799' && (
+              <Button
+                size="small"
+                type="primary"
+                style={{ marginRight: 24 }}
+                onClick={() => {
+                  const waitingImport = this.tableDataRef.getAggridSelectedRows();
+                  if (!waitingImport.length) {
+                    return message.info('请选择待导入的数据');
+                  }
+                  let selectedNode;
+                  if (mode === 'table') {
+                    selectedNode = this.tableDataRef1.getAggridSelectedRows()[0];
+                    if (!selectedNode) {
+                      return message.info('请在上方表中选择待导入的岗位');
+                    }
+                  } else {
+                    selectedNode = this.state.selectedNode;
+                    if (!selectedNode.REC_ID) {
+                      return message.info('请在架构图中选择待导入的岗位');
+                    }
+                  }
+                  const records = [];
+                  let names = '';
+                  waitingImport.forEach((record, index) => {
+                    names += record.C3_421886426562;
+                    if (index + 1 !== waitingImport.length) {
+                      names += ',';
+                    }
+                    records.push({
+                      REC_ID: record.REC_ID,
+                      C3_465142349966: selectedNode.orgNumber
+                    });
+                  });
+                  Modal.confirm({
+                    title: '提示',
+                    content: (
+                      <div>
+                        【<span style={{ color: '#f5222d' }}>{names}</span>】
+                        将导入到 【
+                        <span style={{ color: '#1890ff' }}>
+                          {selectedNode.orgName}
+                        </span>
+                        】
+                      </div>
+                    ),
+                    onOk: async () => {
+                      try {
+                        this.setState({ loading: true });
+                        let httpParams = {};
+                        // 使用传入的 baseURL
+                        if (baseURL) {
+                          httpParams.baseURL = baseURL;
+                        }
+                        await http(httpParams).modifyRecords({
+                          resid: '638645984799',
+                          data: records
+                        });
+                        this.setState({ loading: false });
+                        message.success('导入成功');
+                        this.tableDataRef.handleRefresh();
+                      } catch (error) {
+                        message.error(error.message);
+                        this.setState({ loading: false });
+                      }
+                    }
+                  });
+                }}
+              >
+                导入
+              </Button>
+            )}
+            {/* <span style={{ marginRight: 16 }}>合计：100</span>
             <span style={{ marginRight: 16 }}>成功：70</span>
             <span style={{ marginRight: 16 }}>错误：20</span>
-            <span style={{ marginRight: 16 }}>未匹配：10</span>
+            <span style={{ marginRight: 16 }}>未匹配：10</span> */}
           </div>
           <div style={{ flex: 1 }}>
             <TableData
               baseURL={baseURL}
               resid={selectedResultResid || '638645137963'}
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData"
               // subtractH={240}
               hasAdd={false}
               tableComponent="ag-grid"
+              rowSelectionAg={selectedType === 'IDL' ? 'single' : 'multiple'}
               hasRowView={false}
               hasRowDelete={false}
               hasRowEdit={false}
@@ -1107,6 +1195,8 @@ class ArchitectureDiagram extends React.Component {
               hasModify={false}
               hasRowModify={false}
               hasRowSelection={false}
+              cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
+              afterSaveRefresh={true}
             />
           </div>
         </div>
@@ -1334,6 +1424,8 @@ class ArchitectureDiagram extends React.Component {
               <TableData
                 resid={resid}
                 subtractH={220}
+                wrappedComponentRef={element => (this.tableDataRef1 = element)}
+                refTargetComponentName="TableData"
                 tableComponent="ag-grid"
                 rowSelectionAg="single"
                 sideBarAg={true}

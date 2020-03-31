@@ -73,7 +73,8 @@ export const defaultProps = {
   },
   tableComponent: 'antdTable',
   rowSelectionAg: 'multiple',
-  sideBarAg: false
+  sideBarAg: false,
+  afterSaveRefresh: false
 };
 
 export const propTypes = {
@@ -682,5 +683,12 @@ export const propTypes = {
     PropTypes.bool,
     PropTypes.string,
     PropTypes.object
-  ])
+  ]),
+
+  /**
+   *
+   * 保存成功后是否刷新表格数据(使用于aggrid模式)
+   * 默认: fasle
+   */
+  afterSaveRefresh: PropTypes.bool
 };

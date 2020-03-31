@@ -3,6 +3,8 @@ import ArchitectureDiagram from '../../../common/data/ArchitectureDiagram';
 import './PostArchitecture.less';
 import TableData from '../../../common/data/TableData';
 import classNames from 'classnames';
+import http, { makeCancelable } from 'Util20/api';
+import { message } from 'antd';
 
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
@@ -13,10 +15,40 @@ const baseURL =
 class PostArchitecture extends React.Component {
   state = {
     emp: false,
-    selectedTab: 'job'
+    selectedTab: 'job',
+    hasUnhandleRecords: false
+  };
+  componentDidMount() {
+    this.getUnhandleRecords();
+  }
+  componentWillUnmount() {
+    this.p1 && this.p1.cancel();
+  }
+  getUnhandleRecords = async () => {
+    try {
+      const pArr = [];
+      pArr.push(
+        http({ baseURL }).getTable({
+          resid: '638646009862'
+        })
+      );
+      pArr.push(
+        http({ baseURL }).getTable({
+          resid: '638645984799'
+        })
+      );
+      this.p1 = makeCancelable(Promise.all(pArr));
+      const res = await this.p1.promise;
+      const [res1, res2] = res;
+      if (res1.data.length || res2.data.length) {
+        this.setState({ hasUnhandleRecords: true, selectedTab: 'person' });
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   render() {
-    const { selectedTab } = this.state;
+    const { selectedTab, hasUnhandleRecords } = this.state;
     return (
       <div className="post-architecture">
         <div
@@ -75,6 +107,7 @@ class PostArchitecture extends React.Component {
             <ArchitectureDiagram
               key="person"
               resid="638642823696"
+              hasUnhandleRecords={true}
               historyResid="638643664427" //历史
               // rootResid="627649574324" //根节点
               idField="orgcode" //主表id字段名
