@@ -22,6 +22,85 @@
   &__content {
     height: calc(100% - 64px);
     overflow: auto;
+    &__main {
+      height: 100%;
+      display: flex;
+      &__container {
+        flex: 1;
+        height: 100%;
+      }
+      .architecture-diagram__tabledata__container,
+      .architecture-diagram__chart-container {
+        height: 100%;
+      }
+      .architecture-diagram__tabledata__container.hidden {
+        display: none;
+      }
+      .architecture-diagram__chart-container.hidden {
+        display: none;
+      }
+      .architecture-diagram_main_sider {
+        display: flex;
+        flex-direction: column;
+        .architecture-diagram_main_sider_title {
+          height: 28px;
+          background: rgba(24, 144, 255, 1);
+          line-height: 28px;
+          color: #ffffff;
+          padding: 0 12px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .architecture-diagram_main_item-detail {
+          min-height: 200px;
+          width: 200px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          &_list {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            &_item {
+              margin: 0;
+              span {
+                color: #999999;
+              }
+            }
+          }
+          .architecture-diagram_unselect-tip {
+            padding: 12px;
+          }
+        }
+        .architecture-diagram_main_item-history {
+          min-height: 300px;
+          width: 200px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          .architecture-diagram_change-hsitory_list {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            &__view-button {
+              margin-left: 8px;
+            }
+            .architecture-diagram_change-hsitory {
+              border-bottom: 1px solid #e7e7e7;
+              padding: 8px 0;
+              word-break: break-all;
+              &_item {
+                margin: 0;
+                span {
+                  color: #999999;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   & > .ant-spin-nested-loading {
     width: 100%;
@@ -96,6 +175,16 @@
     fill: #ffffff;
   }
 
+  .empty.selected > rect {
+    fill: #ffa940;
+  }
+  .empty.selected > line {
+    stroke: #ffa940;
+  }
+  .empty.selected > text {
+    fill: #ffffff;
+  }
+
   .discard > rect {
     fill: #bbbbbb;
   }
@@ -117,70 +206,16 @@
     &.hidden {
       display: none;
     }
-
-    .architecture-diagram_main_sider {
-      .architecture-diagram_main_sider_title {
-        height: 28px;
-        background: rgba(24, 144, 255, 1);
-        line-height: 28px;
-        color: #ffffff;
-        padding: 0 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .architecture-diagram_main_item-detail {
-        min-height: 200px;
-        width: 200px;
-        &_list {
-          height: 200px;
-          overflow: auto;
-          padding: 10px;
-          &_item {
-            margin: 0;
-            span {
-              color: #999999;
-            }
-          }
-        }
-        .architecture-diagram_unselect-tip {
-          padding: 12px;
-        }
-      }
-      .architecture-diagram_main_item-history {
-        min-height: 300px;
-        width: 200px;
-        .architecture-diagram_change-hsitory_list {
-          height: 300px;
-          overflow: auto;
-          padding: 10px;
-          &__view-button {
-            margin-left: 8px;
-          }
-          .architecture-diagram_change-hsitory {
-            border-bottom: 1px solid #e7e7e7;
-            padding: 8px 0;
-            word-break: break-all;
-            &_item {
-              margin: 0;
-              span {
-                color: #999999;
-              }
-            }
-          }
-        }
-      }
-    }
   }
   .architecture-diagram_tabledata__container {
-    height: calc(100% - 64px);
+    height: 100%;
     min-height: 600px;
     &.hidden {
       display: none;
     }
   }
   .architecture-diagram__import-result {
-    height: 600px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     &__title {

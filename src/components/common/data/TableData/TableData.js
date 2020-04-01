@@ -1699,7 +1699,8 @@ class TableData extends React.Component {
       headerExtra,
       rowSelectionAg,
       sideBarAg,
-      afterSaveRefresh
+      afterSaveRefresh,
+      onAgGridSelectionChanged
     } = this.props;
 
     const {
@@ -1731,6 +1732,7 @@ class TableData extends React.Component {
           onReady={gridApi => {
             this.gridApi = gridApi;
           }}
+          onAgGridSelectionChanged={onAgGridSelectionChanged}
           afterSaveRefresh={afterSaveRefresh}
           originalColumn={originalColumn}
           hasZoomInOut={hasZoomInOut}

@@ -459,6 +459,7 @@ class Control extends React.Component {
               value={value}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              {...props}
             />
           );
         }
@@ -468,6 +469,7 @@ class Control extends React.Component {
               value={value}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              {...props}
             />
           );
         }
@@ -483,7 +485,13 @@ class Control extends React.Component {
         }
         case 'DatePicker': {
           const valueProp = getDatePickerValueProp(value);
-          return <DatePicker {...valueProp} onChange={this.handleChange} />;
+          return (
+            <DatePicker
+              {...valueProp}
+              onChange={this.handleChange}
+              {...props}
+            />
+          );
         }
         case 'DateTimePicker': {
           const valueProp = getDatePickerValueProp(value);
@@ -492,6 +500,7 @@ class Control extends React.Component {
               {...valueProp}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              {...props}
             />
           );
         }

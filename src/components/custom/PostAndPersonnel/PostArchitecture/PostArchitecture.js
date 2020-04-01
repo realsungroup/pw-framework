@@ -85,7 +85,7 @@ class PostArchitecture extends React.Component {
               // rootResid="638559408357" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={3}
+              level={6}
               displayFileds={{
                 firstField: 'orgName',
                 secondaryField: 'orgcode'
@@ -107,12 +107,12 @@ class PostArchitecture extends React.Component {
             <ArchitectureDiagram
               key="person"
               resid="638642823696"
-              hasUnhandleRecords={true}
+              hasUnhandleRecords={hasUnhandleRecords}
               historyResid="638643664427" //历史
               // rootResid="627649574324" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={3}
+              level={6}
               hasOpration={false}
               // remarkField="C3_627679142400" //历史情况的title
               displayFileds={{

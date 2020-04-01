@@ -34,6 +34,7 @@ import isEmpty from 'lodash/isEmpty';
 import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
 import withImport from '../../hoc/withImport';
+import withModalDrawer from '../../hoc/withModalDrawer';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -75,7 +76,7 @@ class ArchitectureDiagram extends React.Component {
     firstField: this.props.displayFileds.firstField,
     secondaryField: this.props.displayFileds.secondaryField,
     selectedDate: moment(),
-    takeEffectDate: '',
+    takeEffectDate: '', //生效日期
     detaileMin: false,
     historyMin: false,
     resultMin: false,
@@ -87,12 +88,27 @@ class ArchitectureDiagram extends React.Component {
   async componentDidMount() {
     // await this.getRootNodes();
     if (this.props.hasUnhandleRecords) {
-      this.setState({ hasImportResult: true }, () => {
-        this.contentRef.scrollTo({
-          left: 0,
-          top: 700,
-          behavior: 'smooth'
-        });
+      Modal.error({
+        title: '有未处理的记录',
+        content: '请尽快处理',
+        onOk: () => {
+          this.setState({ hasImportResult: true ,selectedResultResid:'638646009862'}, () => {
+            this.contentRef.scrollTo({
+              left: 0,
+              top: window.innerHeight,
+              behavior: 'smooth'
+            });
+          });
+        },
+        onCancel: () => {
+          this.setState({ hasImportResult: true }, () => {
+            this.contentRef.scrollTo({
+              left: 0,
+              top: window.innerHeight,
+              behavior: 'smooth'
+            });
+          });
+        }
       });
     }
     let data = await this.getData();
@@ -124,7 +140,7 @@ class ArchitectureDiagram extends React.Component {
           img_0: displayFileds.imgField
         },
         collapse: {
-          level: 3
+          level: this.state.currentLevel
         },
         scaleInitial: 0.5,
         // mouseScrool: OrgChart.action.zoom,
@@ -141,10 +157,20 @@ class ArchitectureDiagram extends React.Component {
           png: { text: '导出PNG' }
         },
         nodeMenu: {
-          call: {
+          setRoot: {
             text: '设为顶层',
             icon: '<img/>',
             onClick: this.setRootNode
+          },
+          addPerson: {
+            text: '添加兼职人员',
+            icon: '<img/>',
+            onClick: this.openAddModal
+          },
+          importPerson: {
+            text: '从未匹配人员导入',
+            icon: '<img/>',
+            onClick: this.openImportModal
           }
         },
 
@@ -230,7 +256,7 @@ class ArchitectureDiagram extends React.Component {
       groupConfig,
       procedureConfig
     } = this.props;
-    const { currentLevel, selectedDate } = this.state;
+    const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
       resid,
@@ -326,16 +352,18 @@ class ArchitectureDiagram extends React.Component {
    */
   handleAdd = level => () => {
     const { pidField, idField, createWindowName } = this.props;
-    const { selectedNode } = this.state;
+    const { selectedNode, selectedDate } = this.state;
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
     let record = {};
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
+      record.updateDate = selectedDate;
       this.getFormData(record, createWindowName);
     } else if (level === 'bro') {
       record[pidField] = selectedNode[pidField];
+      record.updateDate = selectedDate;
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
@@ -350,10 +378,10 @@ class ArchitectureDiagram extends React.Component {
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
-    if (selected.isCreated === 'Y') {
-      this.getFormData({ ...selectedNode }, editWindowName);
-    } else {
+    if (selectedNode.isCreated === 'Y') {
       this.getFormData({ ...selectedNode }, createWindowName);
+    } else {
+      this.getFormData({ ...selectedNode }, editWindowName);
     }
     this.setState({
       addBroVisible: true,
@@ -366,7 +394,13 @@ class ArchitectureDiagram extends React.Component {
    * 删除节点
    */
   handleDelete = () => {
-    const { selectedNode } = this.state;
+    const { selectedNode, mode } = this.state;
+    // let node;
+    // if (mode === 'table') {
+
+    // } else {
+    //   node = selectedNode;
+    // }
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
@@ -479,6 +513,94 @@ class ArchitectureDiagram extends React.Component {
       return message.error(err.message);
     }
     this.setState({ loading: false });
+  };
+
+  openAddModal = nodeId => {
+    console.log(nodeId);
+    this.props.openModalOrDrawer(
+      'modal',
+      { title: '添加兼职人员', width: '80vw' },
+      () => {
+        return (
+          <div>
+            <div>
+              <Button type="primary" size="small">
+                兼职
+              </Button>
+            </div>
+            <div style={{ height: 600 }}>
+              <TableData
+                baseURL={this.props.baseURL}
+                resid="638645137963"
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                // subtractH={240}
+                hasAdd={false}
+                tableComponent="ag-grid"
+                rowSelectionAg="single"
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+                importConfig={null}
+              />
+            </div>
+          </div>
+        );
+      },
+      {}
+    );
+  };
+  openImportModal = nodeId => {
+    console.log(this.chart.get(nodeId));
+    this.props.openModalOrDrawer(
+      'modal',
+      {
+        title: '从未匹配人员导入',
+        width: '80vw',
+        onCancel: this.props.closeModalOrDrawer,
+        footer: null
+      },
+      () => {
+        return (
+          <div>
+            <div>
+              <Button type="primary" size="small">
+                任职
+              </Button>
+            </div>
+            <div style={{ height: 600 }}>
+              <TableData
+                baseURL={this.props.baseURL}
+                resid="638645984799"
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                // subtractH={240}
+                hasAdd={false}
+                tableComponent="ag-grid"
+                // rowSelectionAg={selectedType === 'IDL' ? 'single' : 'multiple'}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                // cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
+                afterSaveRefresh={true}
+                hasAdvSearch={false}
+                importConfig={null}
+              />
+            </div>
+          </div>
+        );
+      },
+      {}
+    );
   };
 
   /**
@@ -597,6 +719,7 @@ class ArchitectureDiagram extends React.Component {
         pid: record[pidField],
         tags: record.tags ? [...record.tags, ...tags] : tags
       };
+      message.success('添加成功');
       this.chart.addNode(node);
       this._nodes.push(node);
     } else if (operation === 'modify') {
@@ -615,7 +738,8 @@ class ArchitectureDiagram extends React.Component {
           ? [...record.tags, ...tags, selected]
           : [...tags, selected]
       };
-      this.setState({ selectedNode: node });
+      message.success('修改成功');
+      this.setState({ selectedNode: node }, this.getHistory);
       this.chart.updateNode(node);
     }
   };
@@ -623,64 +747,64 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 加载下一层级的数据
    */
-  loadNextLevel = async () => {
-    if (this.state.isGrouping) {
-      return message.info('请先取消分组');
-    }
-    const {
-      resid,
-      idField,
-      pidField,
-      baseURL,
-      dblinkname,
-      groupConfig
-    } = this.props;
-    let httpParams = {};
-    // 使用传入的 baseURL
-    if (baseURL) {
-      httpParams.baseURL = baseURL;
-    }
-    const nodes = this.chart.nodes;
-    const keys = Object.keys(nodes);
-    const ids = keys.filter(key => {
-      return !nodes[key].childrenIds.length;
-    });
-    const options = {
-      resid,
-      Levels: 1,
-      ColumnOfID: idField,
-      ColumnOfPID: pidField,
-      MoveDirection: 1,
-      MoveLevels: 1,
-      ProductIDs: ids.join(','),
-      cmswhere: this._cmswhere,
-      dblinkname,
-      tags: groupConfig
-    };
-    this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
-    this.setState({ loading: true });
-    let res;
-    try {
-      res = await this.p4.promise;
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-    if (!res.nodes || !res.nodes.length) {
-      this.setState({ loading: false });
-      return message.info('没有更多数据');
-    }
-    this.setState({ currentLevel: this.state.currentLevel + 1 });
-    res.nodes.forEach(node => {
-      this.chart.add({
-        ...node,
-        id: node[idField],
-        pid: node[pidField]
-      });
-    });
-    this.setState({ loading: false });
-    this.chart.draw();
-  };
+  // loadNextLevel = async () => {
+  //   if (this.state.isGrouping) {
+  //     return message.info('请先取消分组');
+  //   }
+  //   const {
+  //     resid,
+  //     idField,
+  //     pidField,
+  //     baseURL,
+  //     dblinkname,
+  //     groupConfig
+  //   } = this.props;
+  //   let httpParams = {};
+  //   // 使用传入的 baseURL
+  //   if (baseURL) {
+  //     httpParams.baseURL = baseURL;
+  //   }
+  //   const nodes = this.chart.nodes;
+  //   const keys = Object.keys(nodes);
+  //   const ids = keys.filter(key => {
+  //     return !nodes[key].childrenIds.length;
+  //   });
+  //   const options = {
+  //     resid,
+  //     Levels: 1,
+  //     ColumnOfID: idField,
+  //     ColumnOfPID: pidField,
+  //     MoveDirection: 1,
+  //     MoveLevels: 1,
+  //     ProductIDs: ids.join(','),
+  //     cmswhere: this._cmswhere,
+  //     dblinkname,
+  //     tags: groupConfig
+  //   };
+  //   this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
+  //   this.setState({ loading: true });
+  //   let res;
+  //   try {
+  //     res = await this.p4.promise;
+  //   } catch (err) {
+  //     console.error(err);
+  //     return message.error(err.message);
+  //   }
+  //   if (!res.nodes || !res.nodes.length) {
+  //     this.setState({ loading: false });
+  //     return message.info('没有更多数据');
+  //   }
+  //   this.setState({ currentLevel: this.state.currentLevel + 1 });
+  //   res.nodes.forEach(node => {
+  //     this.chart.add({
+  //       ...node,
+  //       id: node[idField],
+  //       pid: node[pidField]
+  //     });
+  //   });
+  //   this.setState({ loading: false });
+  //   this.chart.draw();
+  // };
 
   onLevelChange = level => {
     this.setState({ currentLevel: level });
@@ -732,6 +856,7 @@ class ArchitectureDiagram extends React.Component {
               {
                 REC_ID: selectedNode.REC_ID,
                 isScrap,
+                isCreated: 'N',
                 updateDate: takeEffectDate || selectedDate
               }
             ]
@@ -788,7 +913,7 @@ class ArchitectureDiagram extends React.Component {
     this.setState({ hasImportResult: true }, () => {
       this.contentRef.scrollTo({
         left: 0,
-        top: 700,
+        top: window.innerHeight,
         behavior: 'smooth'
       });
     });
@@ -873,30 +998,34 @@ class ArchitectureDiagram extends React.Component {
             表格化
           </div>
         </div>
-        {hasOpration && mode === 'chart' && (
+        {hasOpration && (
           <div className="architecture-diagram_header_icon-button-group">
-            <div
-              className="architecture-diagram_header_icon-button"
-              onClick={this.handleAdd('sub')}
-            >
-              <img
-                src={add1}
-                className="architecture-diagram_header_icon-button__icon"
-                alt=""
-              />
-              添加子级
-            </div>
-            <div
-              className="architecture-diagram_header_icon-button"
-              onClick={this.handleAdd('bro')}
-            >
-              <img
-                src={add2}
-                className="architecture-diagram_header_icon-button__icon"
-                alt=""
-              />
-              添加同级
-            </div>
+            {mode === 'chart' && (
+              <>
+                <div
+                  className="architecture-diagram_header_icon-button"
+                  onClick={this.handleAdd('sub')}
+                >
+                  <img
+                    src={add1}
+                    className="architecture-diagram_header_icon-button__icon"
+                    alt=""
+                  />
+                  添加子级
+                </div>
+                <div
+                  className="architecture-diagram_header_icon-button"
+                  onClick={this.handleAdd('bro')}
+                >
+                  <img
+                    src={add2}
+                    className="architecture-diagram_header_icon-button__icon"
+                    alt=""
+                  />
+                  添加同级
+                </div>
+              </>
+            )}
             <div
               className="architecture-diagram_header_icon-button"
               onClick={this.handleModify}
@@ -1170,7 +1299,7 @@ class ArchitectureDiagram extends React.Component {
                   });
                 }}
               >
-                导入
+                匹配
               </Button>
             )}
             {/* <span style={{ marginRight: 16 }}>合计：100</span>
@@ -1197,6 +1326,8 @@ class ArchitectureDiagram extends React.Component {
               hasRowSelection={false}
               cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
               afterSaveRefresh={true}
+              hasAdvSearch={false}
+              importConfig={null}
             />
           </div>
         </div>
@@ -1236,7 +1367,7 @@ class ArchitectureDiagram extends React.Component {
               this.setState({ resultMin: false }, () => {
                 this.contentRef.scrollTo({
                   left: 0,
-                  top: 700,
+                  top: window.innerHeight,
                   behavior: 'smooth'
                 });
               });
@@ -1268,7 +1399,7 @@ class ArchitectureDiagram extends React.Component {
       hasImportResult,
       detailVisible
     } = this.state;
-    const { resid, baseURL, displayFileds, hasView } = this.props;
+    const { resid, baseURL, displayFileds, hasView, idField } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -1293,13 +1424,54 @@ class ArchitectureDiagram extends React.Component {
               this.contentRef = ref;
             }}
           >
-            <div
-              className={classNames({
-                'architecture-diagram_main-container': true,
-                hidden: mode === 'table'
-              })}
-            >
-              <div id="architecture-diagram_orgchart"></div>
+            <div className="architecture-diagram__content__main">
+              <div className="architecture-diagram__content__main__container">
+                <div
+                  className={classNames({
+                    'architecture-diagram__tabledata__container': true,
+                    hidden: mode === 'chart'
+                  })}
+                >
+                  <TableData
+                    resid={resid}
+                    subtractH={220}
+                    wrappedComponentRef={element =>
+                      (this.tableDataRef1 = element)
+                    }
+                    refTargetComponentName="TableData"
+                    tableComponent="ag-grid"
+                    rowSelectionAg="single"
+                    sideBarAg={true}
+                    hasAdvSearch={true}
+                    hasAdd={false}
+                    hasRowView={false}
+                    hasRowDelete={false}
+                    hasRowEdit={false}
+                    hasDelete={false}
+                    hasModify={false}
+                    hasBeBtns={false}
+                    hasRowModify={false}
+                    hasRowSelection={false}
+                    baseURL={baseURL}
+                    onAgGridSelectionChanged={(rows = []) => {
+                      if (rows.length) {
+                        const node = this.chart.get(rows[0][idField]);
+                        console.log(node);
+                        // this.setState({selectedNode:node});
+                      } else {
+                      }
+                    }}
+                  />
+                </div>
+                <div
+                  className={classNames({
+                    'architecture-diagram__chart-container': true,
+                    hidden: mode === 'table'
+                  })}
+                >
+                  <div id="architecture-diagram_orgchart"></div>
+                </div>
+              </div>
               <div className="architecture-diagram_main_sider">
                 {!detaileMin && (
                   <div className="architecture-diagram_main_item-detail">
@@ -1372,29 +1544,72 @@ class ArchitectureDiagram extends React.Component {
                       {selectedNode.REC_ID ? (
                         historyData.length ? (
                           <Timeline>
-                            {historyData.map(item => (
-                              <Timeline.Item>
-                                {/* {item[remarkField]} */}
-                                {this._historyColinfo.map(i => {
-                                  return (
-                                    <p
-                                      key={i.id}
-                                      className="architecture-diagram_main_item-detail_list_item"
-                                    >
-                                      <label>{i.text}：</label>
-                                      <span>{item[i.id]}</span>
-                                    </p>
-                                  );
-                                })}
-                                {/* <a
-                              href="javascript::"
-                              className="architecture-diagram_change-hsitory_list__view-button"
-                              onClick={this.viewHistoryDetail}
-                            >
-                              查看
-                            </a> */}
-                              </Timeline.Item>
-                            ))}
+                            {historyData.map((item, index) => {
+                              const showMore = item.showMore;
+                              return (
+                                <Timeline.Item>
+                                  <div>
+                                    {this._historyColinfo.map((i, ind) => {
+                                      return (
+                                        <p
+                                          key={i.id}
+                                          className="architecture-diagram_main_item-detail_list_item"
+                                          style={{
+                                            display:
+                                              !showMore && ind > 3
+                                                ? 'none'
+                                                : 'block'
+                                          }}
+                                        >
+                                          <label>{i.text}：</label>
+                                          <span>{item[i.id]}</span>
+                                          {!showMore && ind === 3 && (
+                                            <span
+                                              style={{
+                                                color: '#1890ff',
+                                                marginLeft: 8,
+                                                cursor: 'pointer'
+                                              }}
+                                              onClick={() => {
+                                                historyData[
+                                                  index
+                                                ].showMore = true;
+                                                this.setState({
+                                                  historyData
+                                                });
+                                              }}
+                                            >
+                                              更多
+                                            </span>
+                                          )}
+                                          {showMore &&
+                                            ind + 1 ===
+                                              this._historyColinfo.length && (
+                                              <span
+                                                style={{
+                                                  color: '#1890ff',
+                                                  marginLeft: 8,
+                                                  cursor: 'pointer'
+                                                }}
+                                                onClick={() => {
+                                                  historyData[
+                                                    index
+                                                  ].showMore = false;
+                                                  this.setState({
+                                                    historyData
+                                                  });
+                                                }}
+                                              >
+                                                收起
+                                              </span>
+                                            )}
+                                        </p>
+                                      );
+                                    })}
+                                  </div>
+                                </Timeline.Item>
+                              );
+                            })}
                           </Timeline>
                         ) : (
                           <div className="architecture-diagram_unselect-tip">
@@ -1415,33 +1630,7 @@ class ArchitectureDiagram extends React.Component {
                 )}
               </div>
             </div>
-            <div
-              className={classNames({
-                'architecture-diagram_tabledata__container': true,
-                hidden: mode === 'chart'
-              })}
-            >
-              <TableData
-                resid={resid}
-                subtractH={220}
-                wrappedComponentRef={element => (this.tableDataRef1 = element)}
-                refTargetComponentName="TableData"
-                tableComponent="ag-grid"
-                rowSelectionAg="single"
-                sideBarAg={true}
-                hasAdvSearch={true}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowModify={false}
-                hasRowSelection={false}
-                baseURL={baseURL}
-              />
-            </div>
+
             {hasImportResult && !resultMin && this.renderImportResult()}
           </div>
         </Spin>
@@ -1533,13 +1722,13 @@ class ArchitectureDiagram extends React.Component {
           title="变动记录"
           placement="left"
         >
-          <div style={{ display: 'flex' }}>
-            <img
-              src={selectedNode[displayFileds.imgField]}
-              style={{ height: 48, width: 48 }}
-              alt=""
-            />
-            <div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ marginBottom: 12 }}>
+              <img
+                src={selectedNode[displayFileds.imgField]}
+                style={{ height: 48, width: 48 }}
+                alt="人员照片"
+              />
               <span
                 style={{
                   color: '#000',
@@ -1551,6 +1740,29 @@ class ArchitectureDiagram extends React.Component {
                 {selectedNode[displayFileds.firstField]}
               </span>
               <span>{selectedNode[displayFileds.secondaryField]}</span>
+            </div>
+            <div style={{ height: 500 }}>
+              <TableData
+                baseURL={baseURL}
+                resid={'638643664427'}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                // subtractH={240}
+                hasAdd={false}
+                // tableComponent="ag-grid"
+                // rowSelectionAg={ 'single' }
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                cmswhere={`C3_305737857578 = '${selectedNode.memberCode}'`}
+                hasAdvSearch={false}
+                importConfig={null}
+                actionBarWidth={100}
+              />
             </div>
           </div>
         </Drawer>
@@ -1576,7 +1788,8 @@ class ArchitectureDiagram extends React.Component {
 }
 const composedHoc = compose(
   injectIntl,
-  withImport
+  withImport,
+  withModalDrawer()
 );
 
 export default composedHoc(ArchitectureDiagram);

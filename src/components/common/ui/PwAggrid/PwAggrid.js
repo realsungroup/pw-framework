@@ -406,6 +406,12 @@ class PwAggrid extends React.Component {
     });
   };
 
+  handleSelectionChanged = e => {
+    const { onAgGridSelectionChanged } = this.props;
+    onAgGridSelectionChanged &&
+      onAgGridSelectionChanged(e.api.getSelectedRows());
+  };
+
   render() {
     const {
       size,
@@ -613,6 +619,7 @@ class PwAggrid extends React.Component {
             onPasteStart={this.onPasteStart}
             onPasteEnd={this.onPasteEnd}
             getRowNodeId={data => data.REC_ID}
+            onSelectionChanged={this.handleSelectionChanged}
             // animateRows={true}
             editType="fullRow"
             onRowEditingStopped={this.handleRowEditingStopped}
