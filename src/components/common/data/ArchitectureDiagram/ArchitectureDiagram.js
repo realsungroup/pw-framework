@@ -125,6 +125,7 @@ class ArchitectureDiagram extends React.Component {
     this.p2 && this.p2.cancel();
     this.p3 && this.p3.cancel();
     this.p4 && this.p4.cancel();
+    this.p6 && this.p6.cancel();
   }
 
   /**
@@ -284,12 +285,16 @@ class ArchitectureDiagram extends React.Component {
       this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
-      // this._tags = res.tags;
-      this._tags = [];
-      let tagsSet = new Set();
+      this._tags = {};
       const nodes = res.data.map(item => {
-        tagsSet.add(item.tagsname);
-        const tags = [];
+        const tag = item.tagsname;
+        this._tags[tag] = {
+          group: true,
+          groupName: tag,
+          groupState: OrgChart.EXPAND,
+          template: 'group_grey'
+        };
+        const tags = [item.tagsname];
         if (item.isScrap === 'Y') {
           tags.push('discard');
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
@@ -304,7 +309,6 @@ class ArchitectureDiagram extends React.Component {
           tags
         };
       });
-      console.log(Array.from(tagsSet.keys));
 
       this.setState({ loading: false });
       return nodes;
@@ -347,19 +351,20 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  _partHistoryColinfo = [];
   /**
    * 获取历史兼职数据
    */
   getPartHistory = async () => {
     const { baseURL, dblinkname, historyResid } = this.props;
     const { selectedNode } = this.state;
-    this.p3 && this.p3.cancel();
+    this.p6 && this.p6.cancel();
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
       httpParams.baseURL = baseURL;
     }
-    this.p3 = makeCancelable(
+    this.p6 = makeCancelable(
       http(httpParams).getTableByHostRecord({
         resid: '639083780814',
         subresid: historyResid,
@@ -370,7 +375,7 @@ class ArchitectureDiagram extends React.Component {
     );
     try {
       const res = await this.p6.promise;
-      if (!this._partHistoryColinfo) {
+      if (!this._partHistoryColinfo.length) {
         this._partHistoryColinfo = res.cmscolumninfo;
       }
       this.setState({ partHistoryData: res.data });
@@ -574,6 +579,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
+    if (node.isPartOccupied === 'Y') {
+      return message.info('已有兼职人员，请先清空');
+    }
     const { baseURL } = this.props;
     this.props.openModalOrDrawer(
       'modal',
@@ -615,6 +623,10 @@ class ArchitectureDiagram extends React.Component {
                         将兼职 【
                         <span style={{ color: '#1890ff' }}>{node.orgName}</span>
                         】
+                        <div>
+                          生效日期：
+                          {this.state.selectedDate.format('YYYY-MM-DD')}
+                        </div>
                       </div>
                     ),
                     onOk: async () => {
@@ -681,6 +693,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
+    if (node.isPartOccupied === 'Y') {
+      return message.info('已有兼职人员，请先清空');
+    }
     this.props.openModalOrDrawer(
       'modal',
       {
@@ -721,6 +736,10 @@ class ArchitectureDiagram extends React.Component {
                         将任职 【
                         <span style={{ color: '#1890ff' }}>{node.orgName}</span>
                         】
+                        <div>
+                          生效日期：
+                          {this.state.selectedDate.format('YYYY-MM-DD')}
+                        </div>
                       </div>
                     ),
                     onOk: async () => {
@@ -839,7 +858,7 @@ class ArchitectureDiagram extends React.Component {
     }
     if (checked) {
       this.chart.config.tags = {
-        selected,
+        // selected,
         ...this._tags
       };
     } else {
