@@ -158,13 +158,14 @@
     height: 100%;
     flex: 1;
   }
+  // 选中状态
   .selected > rect {
     fill: #1890ff;
   }
   .selected > text {
     fill: #ffffff;
   }
-
+  // 空缺状态
   .empty > rect {
     fill: #fa8c16;
   }
@@ -174,7 +175,7 @@
   .empty > text {
     fill: #ffffff;
   }
-
+  // 选中空缺状态
   .empty.selected > rect {
     fill: #ffa940;
   }
@@ -184,7 +185,7 @@
   .empty.selected > text {
     fill: #ffffff;
   }
-
+  // 废弃状态
   .discard > rect {
     fill: #bbbbbb;
   }
@@ -193,6 +194,17 @@
   }
   .discard > text {
     fill: #999999;
+  }
+  //兼任状态
+  .tartOccupied > rect {
+    fill: #2f54eb;
+  }
+  // 兼任选中状态
+  .tartOccupied.selected > line {
+    stroke: #2f54eb;
+  }
+  .tartOccupied.selected > text {
+    fill: #ffffff;
   }
 
   &_main-container {
@@ -218,6 +230,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #ffffff;
+    z-index: 1;
     &__title {
       height: 28px;
       background: rgba(24, 144, 255, 1);

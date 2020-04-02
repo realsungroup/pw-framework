@@ -5,6 +5,8 @@ import TableData from '../../../common/data/TableData';
 import classNames from 'classnames';
 import http, { makeCancelable } from 'Util20/api';
 import { message } from 'antd';
+import moment from 'moment';
+import EmptyJobs from './EmptyJobs';
 
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
@@ -145,7 +147,17 @@ class PostArchitecture extends React.Component {
               borderTop: '1px solid #e8e8e8'
             }}
           >
-            <TableData
+            <EmptyJobs
+              baseURL={baseURL}
+              resid="638632769633"
+              procedureConfig={{
+                procedure: 'pw_orgstaffbydates',
+                paranames: 'dates',
+                paratypes: 'string',
+                paravalues: moment().format('YYYYMMDD')
+              }}
+            />
+            {/* <TableData
               baseURL={baseURL}
               resid="627649390227"
               key="7"
@@ -159,7 +171,7 @@ class PostArchitecture extends React.Component {
               hasModify={false}
               hasRowModify={false}
               hasRowSelection={false}
-            />
+            /> */}
           </div>
         )}
       </div>
