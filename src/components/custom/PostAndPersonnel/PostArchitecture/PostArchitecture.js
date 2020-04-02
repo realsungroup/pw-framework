@@ -1,5 +1,6 @@
 import React from 'react';
 import ArchitectureDiagram from '../../../common/data/ArchitectureDiagram';
+import JobArchitectureDiagram from './ArchitectureDiagram';
 import './PostArchitecture.less';
 import TableData from '../../../common/data/TableData';
 import classNames from 'classnames';
@@ -80,8 +81,9 @@ class PostArchitecture extends React.Component {
         <div style={{ clear: 'both' }}></div>
         {selectedTab === 'job' && (
           <div className="post-architecture_diagram-container">
-            <ArchitectureDiagram
+            <JobArchitectureDiagram
               key="job"
+              name="job"
               resid="638632769633"
               historyResid="638632807929" //历史
               // rootResid="638559408357" //根节点
@@ -108,6 +110,7 @@ class PostArchitecture extends React.Component {
           <div className="post-architecture_diagram-container">
             <ArchitectureDiagram
               key="person"
+              name="person"
               resid="638642823696"
               hasUnhandleRecords={hasUnhandleRecords}
               historyResid="638643664427" //历史

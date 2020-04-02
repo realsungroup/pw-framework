@@ -14,27 +14,26 @@ import {
   Button,
   DatePicker,
   InputNumber,
-  notification,
-  Tabs
+  notification
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
 import selfDefine from './svg/自定义卡片.svg';
 import http, { makeCancelable } from 'Util20/api';
-import FormData from '../FormData';
+import FormData from '../../../../common/data/FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
-import TableData from '../TableData';
+import TableData from '../../../../common/data/TableData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
-import withImport from '../../hoc/withImport';
-import withModalDrawer from '../../hoc/withModalDrawer';
+import withImport from '../../../../common/hoc/withImport';
+import withModalDrawer from '../../../../common/hoc/withModalDrawer';
 
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -88,33 +87,7 @@ class ArchitectureDiagram extends React.Component {
   };
   async componentDidMount() {
     // await this.getRootNodes();
-    if (this.props.hasUnhandleRecords) {
-      Modal.error({
-        title: '有未处理的记录',
-        content: '请尽快处理',
-        onOk: () => {
-          this.setState(
-            { hasImportResult: true, selectedResultResid: '638646009862' },
-            () => {
-              this.contentRef.scrollTo({
-                left: 0,
-                top: window.innerHeight,
-                behavior: 'smooth'
-              });
-            }
-          );
-        },
-        onCancel: () => {
-          this.setState({ hasImportResult: true }, () => {
-            this.contentRef.scrollTo({
-              left: 0,
-              top: window.innerHeight,
-              behavior: 'smooth'
-            });
-          });
-        }
-      });
-    }
+
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);
@@ -165,21 +138,6 @@ class ArchitectureDiagram extends React.Component {
             text: '设为顶层',
             icon: '<img/>',
             onClick: this.setRootNode
-          },
-          addPerson: {
-            text: '添加兼职人员',
-            icon: '<img/>',
-            onClick: this.openAddModal
-          },
-          importPerson: {
-            text: '从未匹配人员导入',
-            icon: '<img/>',
-            onClick: this.openImportModal
-          },
-          clearPerson: {
-            text: `<span style='color:red'>清空人员</span>`,
-            icon: '<img/>',
-            onClick: this.clearPerson
           }
         },
 
@@ -284,18 +242,17 @@ class ArchitectureDiagram extends React.Component {
       this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
-      // this._tags = res.tags;
       this._tags = [];
       let tagsSet = new Set();
       const nodes = res.data.map(item => {
         tagsSet.add(item.tagsname);
         const tags = [];
         if (item.isScrap === 'Y') {
-          tags.push('discard');
+          tags.push('discard'); //废弃
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
-          tags.push('tartOccupied');
+          tags.push('tartOccupied'); //兼任
         } else if (item.isEmpty === 'Y') {
-          tags.push('empty');
+          tags.push('empty'); //空缺
         }
         return {
           ...item,
@@ -304,8 +261,7 @@ class ArchitectureDiagram extends React.Component {
           tags
         };
       });
-            console.log(Array.from(tagsSet.keys));
-
+      console.log(Array.from(tagsSet.keys));
       this.setState({ loading: false });
       return nodes;
     } catch (error) {
@@ -348,38 +304,6 @@ class ArchitectureDiagram extends React.Component {
   };
 
   /**
-   * 获取历史兼职数据
-   */
-  getPartHistory = async () => {
-    const { baseURL, dblinkname, historyResid } = this.props;
-    const { selectedNode } = this.state;
-    this.p3 && this.p3.cancel();
-    let httpParams = {};
-    // 使用传入的 baseURL
-    if (baseURL) {
-      httpParams.baseURL = baseURL;
-    }
-    this.p3 = makeCancelable(
-      http(httpParams).getTableByHostRecord({
-        resid: '639083780814',
-        subresid: historyResid,
-        hostrecid: selectedNode.REC_ID,
-        dblinkname,
-        getcolumninfo: 1
-      })
-    );
-    try {
-      const res = await this.p6.promise;
-      if (!this._partHistoryColinfo) {
-        this._partHistoryColinfo = res.cmscolumninfo;
-      }
-      this.setState({ partHistoryData: res.data });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  /**
    * 计算面包屑数据
    */
   getBreadcrumb = (selectedNode, breadcrumb = []) => {
@@ -411,10 +335,14 @@ class ArchitectureDiagram extends React.Component {
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
       record.updateDate = selectedDate;
+      record.orgSupCode = selectedNode.orgcode;
+      record.orgSupNumber = selectedNode.orgNumber;
       this.getFormData(record, createWindowName);
     } else if (level === 'bro') {
       record[pidField] = selectedNode[pidField];
       record.updateDate = selectedDate;
+      record.orgSupCode = selectedNode.orgSupCode;
+      record.orgSupNumber = selectedNode.orgSupNumber;
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
@@ -513,7 +441,6 @@ class ArchitectureDiagram extends React.Component {
     });
     this.setState({ selectedNode: node, breadcrumb }, () => {
       this.getHistory();
-      this.getPartHistory();
     });
   };
 
@@ -927,7 +854,6 @@ class ArchitectureDiagram extends React.Component {
       message.success('修改成功');
       this.setState({ selectedNode: node }, () => {
         this.getHistory();
-        this.getPartHistory();
       });
       this.chart.updateNode(node);
     }
@@ -1580,7 +1506,6 @@ class ArchitectureDiagram extends React.Component {
       selectedNode,
       addBroVisible,
       historyData,
-      partHistoryData,
       viewHistoryDetailVisible,
       operation,
       record,
@@ -1751,192 +1676,43 @@ class ArchitectureDiagram extends React.Component {
                       />
                     </div>
                     <div className="architecture-diagram_change-hsitory_list">
-                      <Tabs defaultActiveKey="1" size="small">
-                        <Tabs.TabPane tab="历史任职记录" key="1">
-                          {selectedNode.REC_ID ? (
-                            historyData.length ? (
-                              <Timeline>
-                                {historyData.map((item, index) => {
-                                  const showMore = item.showMore;
-                                  return (
-                                    <Timeline.Item>
-                                      <div>
-                                        {this._historyColinfo.map((i, ind) => {
-                                          return (
-                                            <p
-                                              key={i.id}
-                                              className="architecture-diagram_main_item-detail_list_item"
-                                              style={{
-                                                display:
-                                                  !showMore && ind > 3
-                                                    ? 'none'
-                                                    : 'block'
-                                              }}
-                                            >
-                                              <label>{i.text}：</label>
-                                              <span>{item[i.id]}</span>
-                                              {!showMore && ind === 3 && (
-                                                <span
-                                                  style={{
-                                                    color: '#1890ff',
-                                                    marginLeft: 8,
-                                                    cursor: 'pointer'
-                                                  }}
-                                                  onClick={() => {
-                                                    historyData[
-                                                      index
-                                                    ].showMore = true;
-                                                    this.setState({
-                                                      historyData
-                                                    });
-                                                  }}
-                                                >
-                                                  更多
-                                                </span>
-                                              )}
-                                              {showMore &&
-                                                ind + 1 ===
-                                                  this._historyColinfo
-                                                    .length && (
-                                                  <span
-                                                    style={{
-                                                      color: '#1890ff',
-                                                      marginLeft: 8,
-                                                      cursor: 'pointer'
-                                                    }}
-                                                    onClick={() => {
-                                                      historyData[
-                                                        index
-                                                      ].showMore = false;
-                                                      this.setState({
-                                                        historyData
-                                                      });
-                                                    }}
-                                                  >
-                                                    收起
-                                                  </span>
-                                                )}
-                                            </p>
-                                          );
-                                        })}
-                                      </div>
-                                    </Timeline.Item>
-                                  );
-                                })}
-                              </Timeline>
-                            ) : (
-                              <div className="architecture-diagram_unselect-tip">
-                                <Alert
-                                  message="无历史记录"
-                                  type="info"
-                                  showIcon
-                                />
-                              </div>
-                            )
-                          ) : (
-                            <div className="architecture-diagram_unselect-tip">
-                              <Alert
-                                message="尚未选中任何卡片！"
-                                type="info"
-                                showIcon
-                              />
-                            </div>
-                          )}
-                        </Tabs.TabPane>
-                        <Tabs.TabPane tab="历史兼职记录" key="2">
-                          {selectedNode.REC_ID ? (
-                            historyData.length ? (
-                              <Timeline>
-                                {historyData.map((item, index) => {
-                                  const showMore = item.showMore;
-                                  return (
-                                    <Timeline.Item>
-                                      <div>
-                                        {this._partHistoryColinfo.map(
-                                          (i, ind) => {
-                                            return (
-                                              <p
-                                                key={i.id}
-                                                className="architecture-diagram_main_item-detail_list_item"
-                                                style={{
-                                                  display:
-                                                    !showMore && ind > 3
-                                                      ? 'none'
-                                                      : 'block'
-                                                }}
-                                              >
-                                                <label>{i.text}：</label>
-                                                <span>{item[i.id]}</span>
-                                                {!showMore && ind === 3 && (
-                                                  <span
-                                                    style={{
-                                                      color: '#1890ff',
-                                                      marginLeft: 8,
-                                                      cursor: 'pointer'
-                                                    }}
-                                                    onClick={() => {
-                                                      partHistoryData[
-                                                        index
-                                                      ].showMore = true;
-                                                      this.setState({
-                                                        partHistoryData
-                                                      });
-                                                    }}
-                                                  >
-                                                    更多
-                                                  </span>
-                                                )}
-                                                {showMore &&
-                                                  ind + 1 ===
-                                                    this._partHistoryColinfo
-                                                      .length && (
-                                                    <span
-                                                      style={{
-                                                        color: '#1890ff',
-                                                        marginLeft: 8,
-                                                        cursor: 'pointer'
-                                                      }}
-                                                      onClick={() => {
-                                                        partHistoryData[
-                                                          index
-                                                        ].showMore = false;
-                                                        this.setState({
-                                                          partHistoryData
-                                                        });
-                                                      }}
-                                                    >
-                                                      收起
-                                                    </span>
-                                                  )}
-                                              </p>
-                                            );
-                                          }
-                                        )}
-                                      </div>
-                                    </Timeline.Item>
-                                  );
-                                })}
-                              </Timeline>
-                            ) : (
-                              <div className="architecture-diagram_unselect-tip">
-                                <Alert
-                                  message="无历史记录"
-                                  type="info"
-                                  showIcon
-                                />
-                              </div>
-                            )
-                          ) : (
-                            <div className="architecture-diagram_unselect-tip">
-                              <Alert
-                                message="尚未选中任何卡片！"
-                                type="info"
-                                showIcon
-                              />
-                            </div>
-                          )}
-                        </Tabs.TabPane>
-                      </Tabs>
+                      {selectedNode.REC_ID ? (
+                        historyData.length ? (
+                          <Timeline>
+                            {historyData.map((item, index) => {
+                              return (
+                                <Timeline.Item>
+                                  <div>
+                                    {this._historyColinfo.map((i, ind) => {
+                                      return (
+                                        <p
+                                          key={i.id}
+                                          className="architecture-diagram_main_item-detail_list_item"
+                                        >
+                                          <label>{i.text}：</label>
+                                          <span>{item[i.id]}</span>
+                                        </p>
+                                      );
+                                    })}
+                                  </div>
+                                </Timeline.Item>
+                              );
+                            })}
+                          </Timeline>
+                        ) : (
+                          <div className="architecture-diagram_unselect-tip">
+                            <Alert message="无历史记录" type="info" showIcon />
+                          </div>
+                        )
+                      ) : (
+                        <div className="architecture-diagram_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
