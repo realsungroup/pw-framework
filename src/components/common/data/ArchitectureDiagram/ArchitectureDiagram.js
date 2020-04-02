@@ -600,13 +600,12 @@ class ArchitectureDiagram extends React.Component {
                   }
                   const records = [
                     {
-                      REC_ID: node.REC_ID,
-                      memberCode: waitingImport[0].C3_305737857578,
-                      isPartOccupied: 'Y',
-                      isEmpty: 'Y',
-                      updateDate: this.state.selectedDate
+                      pnid: waitingImport[0].C3_305737857578,
+                      orgcode: node.orgcode,
+                      startdate: this.state.selectedDate
                     }
                   ];
+                  console.log(records);
                   const name = waitingImport[0].C3_227192484125;
                   Modal.confirm({
                     title: '请确认兼职信息',
@@ -626,13 +625,13 @@ class ArchitectureDiagram extends React.Component {
                         if (baseURL) {
                           httpParams.baseURL = baseURL;
                         }
-                        await http(httpParams).modifyRecords({
-                          resid: this.props.resid,
+                        await http(httpParams).addRecords({
+                          resid: '639083780814',
                           data: records
                         });
-                        this.setState({ loading: false });
                         message.success('兼职成功');
                         this.props.closeModalOrDrawer();
+                        this.setState({ loading: false });
                         let data = await this.getData();
                         this.chart.load(data);
                         this._nodes = [...this.chart.config.nodes];
