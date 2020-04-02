@@ -304,7 +304,7 @@ class ArchitectureDiagram extends React.Component {
           tags
         };
       });
-            console.log(Array.from(tagsSet.keys));
+      console.log(Array.from(tagsSet.keys));
 
       this.setState({ loading: false });
       return nodes;
@@ -1717,7 +1717,9 @@ class ArchitectureDiagram extends React.Component {
                                       cursor: 'pointer',
                                       marginLeft: 8
                                     }}
-                                    onClick={this.openAddModal}
+                                    onClick={() =>
+                                      this.openAddModal(selectedNode.id)
+                                    }
                                   >
                                     选择人员
                                   </span>
