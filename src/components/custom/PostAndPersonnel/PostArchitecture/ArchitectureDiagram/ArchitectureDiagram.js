@@ -235,6 +235,9 @@ class ArchitectureDiagram extends React.Component {
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
         }
+        if(item.isCreated==='Y'){
+          tags.push('created')
+        }
         const node = {
           ...item,
           id: item[idField],
