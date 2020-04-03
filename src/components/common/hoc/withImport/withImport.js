@@ -76,6 +76,7 @@ const withImport = WrappedComponent => {
           {...this.props}
           {...otherProps}
           openImportView={this.handleOpenImportView}
+          closeImportView={this.handleClose}
         />
       );
     }

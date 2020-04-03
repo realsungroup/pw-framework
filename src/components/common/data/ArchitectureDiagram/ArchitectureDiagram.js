@@ -120,6 +120,17 @@ class ArchitectureDiagram extends React.Component {
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const preNode = prevState.selectedNode;
+    const node = this.state.selectedNode;
+    if (node.id && preNode !== node) {
+      let breadcrumb = [];
+      this.getBreadcrumb(node, breadcrumb);
+      this.setState({ breadcrumb });
+    }
+  }
+
   componentWillUnmount() {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
@@ -203,8 +214,6 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
-  clearPerson = () => {};
-
   handleDragNode = (sender, oldNode, newNode) => {
     const { displayFileds, intl } = this.props;
     const newParentNode = this.chart.get(newNode.pid);
@@ -260,16 +269,8 @@ class ArchitectureDiagram extends React.Component {
    * 获取节点数据
    */
   getData = async () => {
-    const {
-      resid,
-      baseURL,
-      idField,
-      pidField,
-      dblinkname,
-      groupConfig,
-      procedureConfig
-    } = this.props;
-    const { selectedDate } = this.state;
+    const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
+    const { selectedDate, selectedNode } = this.state;
     const options = {
       ...procedureConfig,
       resid,
@@ -286,6 +287,7 @@ class ArchitectureDiagram extends React.Component {
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
+      let newSelectedNode = {};
       const nodes = res.data.map(item => {
         const tag = item.tagsname;
         this._tags[tag] = {
@@ -295,6 +297,7 @@ class ArchitectureDiagram extends React.Component {
           template: 'group_grey'
         };
         const tags = [item.tagsname];
+
         if (item.isScrap === 'Y') {
           tags.push('discard');
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
@@ -302,15 +305,19 @@ class ArchitectureDiagram extends React.Component {
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
         }
-        return {
+        const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
           tags
         };
+        if (selectedNode.id === item[idField]) {
+          node.tags.push(selected);
+          newSelectedNode = node;
+        }
+        return node;
       });
-
-      this.setState({ loading: false });
+      this.setState({ loading: false, selectedNode: newSelectedNode });
       return nodes;
     } catch (error) {
       console.error(error);
@@ -450,13 +457,7 @@ class ArchitectureDiagram extends React.Component {
    * 删除节点
    */
   handleDelete = () => {
-    const { selectedNode, mode } = this.state;
-    // let node;
-    // if (mode === 'table') {
-
-    // } else {
-    //   node = selectedNode;
-    // }
+    const { selectedNode } = this.state;
     if (!selectedNode.REC_ID) {
       return message.info('请选择一个卡片');
     }
@@ -500,23 +501,22 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 点击节点
    */
-  handleNodeClick = (chart, node) => {
+  handleNodeClick = (chart, args) => {
+    const node = chart.get(args.node.id);
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
     const { selectedNode } = this.state;
-    if (selectedNode && selectedNode.id) {
+    if (selectedNode && selectedNode.id !== undefined) {
       chart.removeNodeTag(selectedNode.id, selected);
     }
     chart.addNodeTag(node.id, selected);
-    let breadcrumb = [];
-    this.getBreadcrumb(node, breadcrumb);
     chart.center(node.id, {
       rippleId: node.id,
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node, breadcrumb }, () => {
+    this.setState({ selectedNode: node }, () => {
       this.getHistory();
       this.getPartHistory();
     });
@@ -610,7 +610,7 @@ class ArchitectureDiagram extends React.Component {
                     {
                       pnid: waitingImport[0].C3_305737857578,
                       orgcode: node.orgcode,
-                      startdate: this.state.selectedDate
+                      dates: this.state.selectedDate.format('YYYYMMDD')
                     }
                   ];
                   console.log(records);
@@ -639,7 +639,9 @@ class ArchitectureDiagram extends React.Component {
                         }
                         await http(httpParams).addRecords({
                           resid: '639083780814',
-                          data: records
+                          data: records,
+                          uniquecolumns: 'orgcode,dates',
+                          isEditOrAdd: 'true'
                         });
                         message.success('兼职成功');
                         this.props.closeModalOrDrawer();
@@ -647,6 +649,9 @@ class ArchitectureDiagram extends React.Component {
                         let data = await this.getData();
                         this.chart.load(data);
                         this._nodes = [...this.chart.config.nodes];
+                        if (node.id) {
+                          this.chart.center(node.id);
+                        }
                       } catch (error) {
                         message.error(error.message);
                         this.setState({ loading: false });
@@ -687,14 +692,118 @@ class ArchitectureDiagram extends React.Component {
       {}
     );
   };
+  clearPerson = nodeId => {
+    const node = this.chart.get(nodeId);
+    if (node.isEmpty === 'Y' && node.isPartOccupied !== 'Y') {
+      return message.info('无任职或兼职人员');
+    }
+    const { baseURL } = this.props;
+    if (node.isPartOccupied === 'Y') {
+      //有兼职人员，则清空兼职人员
+      Modal.confirm({
+        title: '清空岗位人员',
+        content: (
+          <div>
+            此岗位的兼职人员将被清空，请确认
+            <div>
+              生效日期：
+              {this.state.selectedDate.format('YYYY-MM-DD')}
+            </div>
+          </div>
+        ),
+        onOk: async () => {
+          try {
+            this.setState({ loading: true });
+            let httpParams = {};
+            // 使用传入的 baseURL
+            if (baseURL) {
+              httpParams.baseURL = baseURL;
+            }
+            await http(httpParams).addRecords({
+              resid: '639083780814',
+              data: [
+                {
+                  orgcode: node.orgcode,
+                  pnid: 0,
+                  dates: this.state.selectedDate.format('YYYYMMDD')
+                }
+              ],
+              uniquecolumns: 'orgcode,dates',
+              isEditOrAdd: 'true'
+            });
+            this.setState({ loading: false });
+            message.success('清空成功');
+            this.props.closeModalOrDrawer();
+            // 重新获取数据
+            let data = await this.getData();
+            this.chart.load(data);
+            this._nodes = [...this.chart.config.nodes];
+            if (node.id) {
+              this.chart.center(node.id);
+            }
+          } catch (error) {
+            message.error(error.message);
+            this.setState({ loading: false });
+          }
+        }
+      });
+    } else {
+      Modal.confirm({
+        title: '清空岗位人员',
+        content: (
+          <div>
+            此岗位的兼职人员将被清空，请确认
+            <div>
+              生效日期：
+              {this.state.selectedDate.format('YYYY-MM-DD')}
+            </div>
+          </div>
+        ),
+        onOk: async () => {
+          try {
+            this.setState({ loading: true });
+            let httpParams = {};
+            // 使用传入的 baseURL
+            if (baseURL) {
+              httpParams.baseURL = baseURL;
+            }
+            await http(httpParams).modifyRecords({
+              resid: '639230706234',
+              data: [
+                {
+                  C3_305737857578: node.memberCode,
+                  C3_465142349966: '',
+                  C3_470524257391: this.state.selectedDate
+                }
+              ],
+              isEditOrAdd: 'true'
+            });
+            this.setState({ loading: false });
+            message.success('清空成功');
+            this.props.closeModalOrDrawer();
+            let data = await this.getData();
+            this.chart.load(data);
+            this._nodes = [...this.chart.config.nodes];
+            if (node.id) {
+              this.chart.center(node.id);
+            }
+          } catch (error) {
+            message.error(error.message);
+            this.setState({ loading: false });
+          }
+        }
+      });
+    }
+  };
+
   openImportModal = nodeId => {
     const node = this.chart.get(nodeId);
     const { baseURL } = this.props;
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
-    if (node.isPartOccupied === 'Y') {
-      return message.info('已有兼职人员，请先清空');
+    if (node.isVirtual !== 'Y' && node.PartOccupiedPnId) {
+      return message.info('IDL岗位，不可添加多人');
     }
     this.props.openModalOrDrawer(
       'modal',
@@ -760,7 +869,9 @@ class ArchitectureDiagram extends React.Component {
                         let data = await this.getData();
                         this.chart.load(data);
                         this._nodes = [...this.chart.config.nodes];
-                        // this.importModalTableDataRef.handleRefresh();
+                        if (node.id) {
+                          this.chart.center(node.id);
+                        }
                       } catch (error) {
                         message.error(error.message);
                         this.setState({ loading: false });
@@ -818,11 +929,8 @@ class ArchitectureDiagram extends React.Component {
       }
     });
     node.tags.push(selected);
-
-    let breadcrumb = [];
-    this.getBreadcrumb(node, breadcrumb);
-    this.setState({ selectedNode: node, breadcrumb });
     this.chart.load(nodes);
+    this.setState({ selectedNode: node });
   };
 
   calcSubNodes = (calcNode, subNodes, allNodes) => {
@@ -1022,9 +1130,13 @@ class ArchitectureDiagram extends React.Component {
 
   handleDateChange = (date, dateString) => {
     this.setState({ selectedDate: date }, async () => {
+      const { selectedNode } = this.state;
       let data = await this.getData();
       this.chart.load(data);
       this._nodes = [...this.chart.config.nodes];
+      if (selectedNode.id) {
+        this.chart.center(selectedNode.id);
+      }
     });
   };
 
@@ -1117,8 +1229,8 @@ class ArchitectureDiagram extends React.Component {
   };
 
   handleFinishImport = () => {
-    console.log('handleFinishImport');
-    this.setState({ hasImportResult: true }, () => {
+    this.props.closeImportView();
+    this.setState({ hasImportResult: true, resultMin: false }, () => {
       this.contentRef.scrollTo({
         left: 0,
         top: window.innerHeight,
@@ -1132,6 +1244,16 @@ class ArchitectureDiagram extends React.Component {
         console.log('Notification Clicked!');
       }
     });
+  };
+
+  handleRefresh = async () => {
+    const { selectedNode } = this.state;
+    const data = await this.getData();
+    this.chart.load(data);
+    this._nodes = [...this.chart.config.nodes];
+    if (selectedNode.id) {
+      this.chart.center(selectedNode.id);
+    }
   };
 
   renderHeader = () => {
@@ -1628,6 +1750,14 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
+            <Button
+              onClick={this.handleRefresh}
+              style={{ margin: '0 8px' }}
+              type="primary"
+              size="small"
+            >
+              刷新
+            </Button>
             当前位置：
             {this.renderBreadcrumb()}
           </div>
