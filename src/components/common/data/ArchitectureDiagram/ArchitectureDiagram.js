@@ -20,6 +20,7 @@ import {
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
+import avatarDef from './svg/avatar.svg';
 import selfDefine from './svg/自定义卡片.svg';
 import http, { makeCancelable } from 'Util20/api';
 import FormData from '../FormData';
@@ -47,9 +48,9 @@ OrgChart.templates.architectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="50" cy="60" r="40"></circle>' +
+  '<circle  cx="50" cy="60" r="20"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="80" height="80">' +
+  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="40" height="40">' +
   '</image>';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
   '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="51" text-anchor="middle">{val}</text>';
@@ -302,10 +303,22 @@ class ArchitectureDiagram extends React.Component {
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
         }
+        
+          let ImgObj = new Image(); //判断图片是否存在  
+          ImgObj.src = item.memberAvatar;  
+          let url;
+          //没有图片，则返回-1  
+          if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {  
+            url = item.memberAvatar;
+          } else {  
+            url=avatarDef
+          }  
+
         return {
           ...item,
           id: item[idField],
           pid: item[pidField],
+          memberAvatar:url,
           tags
         };
       });
@@ -1619,7 +1632,7 @@ class ArchitectureDiagram extends React.Component {
           {this.renderExpand()}
           {this.renderHeader()}
           <div className="architecture-diagram_breadcrumb">
-            <div>
+            <div style={{marginRight:8}}>
               <DatePicker
                 value={selectedDate}
                 showToday
@@ -1628,7 +1641,7 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
-            当前位置：
+             当前位置：
             {this.renderBreadcrumb()}
           </div>
           <div
