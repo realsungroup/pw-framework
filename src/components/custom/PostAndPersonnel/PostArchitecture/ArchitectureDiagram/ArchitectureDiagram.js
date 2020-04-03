@@ -86,13 +86,22 @@ class ArchitectureDiagram extends React.Component {
     selectedType: 'IDL'
   };
   async componentDidMount() {
-    // await this.getRootNodes();
-
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const preNode = prevState.selectedNode;
+    const node = this.state.selectedNode;
+    if (node.id && preNode !== node) {
+      let breadcrumb = [];
+      this.getBreadcrumb(node, breadcrumb);
+      this.setState({ breadcrumb });
+    }
+  }
+
   componentWillUnmount() {
     this.p1 && this.p1.cancel();
     this.p2 && this.p2.cancel();
@@ -160,8 +169,6 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
-  clearPerson = () => {};
-
   handleDragNode = (sender, oldNode, newNode) => {
     const { displayFileds, intl } = this.props;
     const newParentNode = this.chart.get(newNode.pid);
@@ -186,47 +193,14 @@ class ArchitectureDiagram extends React.Component {
     return false;
   };
 
-  _topRootIds = []; //最顶层节点id
-  _rootIds = []; //当前跟节点id
-  /**
-   * 获取根节点
-   */
-  getRootNodes = async () => {
-    const { baseURL, rootResid, dblinkname, idField } = this.props;
-    let httpParams = {};
-    // 使用传入的 baseURL
-    if (baseURL) {
-      httpParams.baseURL = baseURL;
-    }
-    this.p2 = makeCancelable(
-      http(httpParams).getTable({ resid: rootResid, dblinkname })
-    );
-    let res;
-    try {
-      res = await this.p2.promise;
-    } catch (error) {
-      console.error(error);
-      return message.error(error.message);
-    }
-    this._topRootIds = this._rootIds = res.data.map(item => item[idField]);
-  };
-
   _cmscolumninfo = []; // 主表的列定义
   _nodes = []; // 当前所有节点数据
   /**
    * 获取节点数据
    */
   getData = async () => {
-    const {
-      resid,
-      baseURL,
-      idField,
-      pidField,
-      dblinkname,
-      groupConfig,
-      procedureConfig
-    } = this.props;
-    const { selectedDate } = this.state;
+    const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
+    const { selectedDate, selectedNode } = this.state;
     const options = {
       ...procedureConfig,
       resid,
@@ -242,27 +216,38 @@ class ArchitectureDiagram extends React.Component {
       this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
-      this._tags = [];
-      let tagsSet = new Set();
+      this._tags = {};
+      let newSelectedNode = {};
       const nodes = res.data.map(item => {
-        tagsSet.add(item.tagsname);
-        const tags = [];
+        const tag = item.tagsname;
+        this._tags[tag] = {
+          group: true,
+          groupName: tag,
+          groupState: OrgChart.EXPAND,
+          template: 'group_grey'
+        };
+        const tags = [item.tagsname];
+
         if (item.isScrap === 'Y') {
-          tags.push('discard'); //废弃
+          tags.push('discard');
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
-          tags.push('tartOccupied'); //兼任
+          tags.push('tartOccupied');
         } else if (item.isEmpty === 'Y') {
-          tags.push('empty'); //空缺
+          tags.push('empty');
         }
-        return {
+        const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
           tags
         };
+        if (selectedNode.id === item[idField]) {
+          node.tags.push(selected);
+          newSelectedNode = node;
+        }
+        return node;
       });
-      console.log(Array.from(tagsSet.keys));
-      this.setState({ loading: false });
+      this.setState({ loading: false, selectedNode: newSelectedNode });
       return nodes;
     } catch (error) {
       console.error(error);
@@ -423,27 +408,25 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 点击节点
    */
-  handleNodeClick = (chart, node) => {
+  handleNodeClick = (chart, args) => {
+    const node = chart.get(args.node.id);
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
     const { selectedNode } = this.state;
-    if (selectedNode && selectedNode.id) {
+    if (selectedNode && selectedNode.id !== undefined) {
       chart.removeNodeTag(selectedNode.id, selected);
     }
     chart.addNodeTag(node.id, selected);
-    let breadcrumb = [];
-    this.getBreadcrumb(node, breadcrumb);
     chart.center(node.id, {
       rippleId: node.id,
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node, breadcrumb }, () => {
+    this.setState({ selectedNode: node }, () => {
       this.getHistory();
     });
   };
-
   /**
    * 获取主表窗体数据
    */
@@ -496,223 +479,6 @@ class ArchitectureDiagram extends React.Component {
     this.setState({ loading: false });
   };
 
-  openAddModal = nodeId => {
-    const node = this.chart.get(nodeId);
-    if (node.isEmpty !== 'Y') {
-      return message.info('非空缺岗位');
-    }
-    const { baseURL } = this.props;
-    this.props.openModalOrDrawer(
-      'modal',
-      {
-        title: '添加兼职人员',
-        width: '80vw',
-        onCancel: this.props.closeModalOrDrawer,
-        footer: null
-      },
-      () => {
-        return (
-          <div>
-            <div>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  const waitingImport = this.addModalTableDataRef.getSelectedRecords();
-                  if (!waitingImport.length) {
-                    return message.info('请选择一位人员');
-                  }
-                  if (waitingImport.length > 1) {
-                    return message.info('只能选择一位人员');
-                  }
-                  const records = [
-                    {
-                      REC_ID: node.REC_ID,
-                      memberCode: waitingImport[0].C3_305737857578,
-                      isPartOccupied: 'Y',
-                      isEmpty: 'Y',
-                      updateDate: this.state.selectedDate
-                    }
-                  ];
-                  const name = waitingImport[0].C3_227192484125;
-                  Modal.confirm({
-                    title: '请确认兼职信息',
-                    content: (
-                      <div>
-                        【<span style={{ color: '#f5222d' }}>{name}</span>】
-                        将兼职 【
-                        <span style={{ color: '#1890ff' }}>{node.orgName}</span>
-                        】
-                      </div>
-                    ),
-                    onOk: async () => {
-                      try {
-                        this.setState({ loading: true });
-                        let httpParams = {};
-                        // 使用传入的 baseURL
-                        if (baseURL) {
-                          httpParams.baseURL = baseURL;
-                        }
-                        await http(httpParams).modifyRecords({
-                          resid: this.props.resid,
-                          data: records
-                        });
-                        this.setState({ loading: false });
-                        message.success('兼职成功');
-                        this.props.closeModalOrDrawer();
-                        let data = await this.getData();
-                        this.chart.load(data);
-                        this._nodes = [...this.chart.config.nodes];
-                      } catch (error) {
-                        message.error(error.message);
-                        this.setState({ loading: false });
-                      }
-                    }
-                  });
-                }}
-              >
-                兼职
-              </Button>
-            </div>
-            <div style={{ height: 600 }}>
-              <TableData
-                baseURL={this.props.baseURL}
-                resid="639138610234"
-                wrappedComponentRef={element =>
-                  (this.addModalTableDataRef = element)
-                }
-                refTargetComponentName="TableData"
-                // subtractH={240}
-                hasAdd={false}
-                // tableComponent="ag-grid"
-                // rowSelectionAg="single"
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                hasRowSelection={true}
-                hasAdvSearch={false}
-                importConfig={null}
-              />
-            </div>
-          </div>
-        );
-      },
-      {}
-    );
-  };
-  openImportModal = nodeId => {
-    const node = this.chart.get(nodeId);
-    const { baseURL } = this.props;
-    if (node.isEmpty !== 'Y') {
-      return message.info('非空缺岗位');
-    }
-    this.props.openModalOrDrawer(
-      'modal',
-      {
-        title: '从未匹配人员导入',
-        width: '80vw',
-        onCancel: this.props.closeModalOrDrawer,
-        footer: null
-      },
-      () => {
-        return (
-          <div>
-            <div>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  const waitingImport = this.importModalTableDataRef.getAggridSelectedRows();
-                  if (!waitingImport.length) {
-                    return message.info('请选择待人员');
-                  }
-                  const records = [];
-                  let names = '';
-                  waitingImport.forEach((record, index) => {
-                    names += record.C3_421886426562;
-                    if (index + 1 !== waitingImport.length) {
-                      names += ',';
-                    }
-                    records.push({
-                      REC_ID: record.REC_ID,
-                      C3_465142349966: node.orgNumber
-                    });
-                  });
-                  Modal.confirm({
-                    title: '提示',
-                    content: (
-                      <div>
-                        【<span style={{ color: '#f5222d' }}>{names}</span>】
-                        将任职 【
-                        <span style={{ color: '#1890ff' }}>{node.orgName}</span>
-                        】
-                      </div>
-                    ),
-                    onOk: async () => {
-                      try {
-                        this.setState({ loading: true });
-                        let httpParams = {};
-                        // 使用传入的 baseURL
-                        if (baseURL) {
-                          httpParams.baseURL = baseURL;
-                        }
-                        await http(httpParams).modifyRecords({
-                          resid: '638645984799',
-                          data: records
-                        });
-                        this.setState({ loading: false });
-                        message.success('任职成功');
-                        this.props.closeModalOrDrawer();
-                        let data = await this.getData();
-                        this.chart.load(data);
-                        this._nodes = [...this.chart.config.nodes];
-                        // this.importModalTableDataRef.handleRefresh();
-                      } catch (error) {
-                        message.error(error.message);
-                        this.setState({ loading: false });
-                      }
-                    }
-                  });
-                }}
-              >
-                任职
-              </Button>
-            </div>
-            <div style={{ height: 600 }}>
-              <TableData
-                baseURL={this.props.baseURL}
-                resid="638645984799"
-                wrappedComponentRef={element =>
-                  (this.importModalTableDataRef = element)
-                }
-                refTargetComponentName="TableData"
-                // subtractH={240}
-                hasAdd={false}
-                tableComponent="ag-grid"
-                rowSelectionAg={node.isVirtual === 'Y' ? 'multiple' : 'single'}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                hasRowSelection={false}
-                // cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
-                afterSaveRefresh={true}
-                hasAdvSearch={false}
-                importConfig={null}
-              />
-            </div>
-          </div>
-        );
-      },
-      {}
-    );
-  };
-
   /**
    * 设置某个节点为根节点
    */
@@ -727,11 +493,8 @@ class ArchitectureDiagram extends React.Component {
       }
     });
     node.tags.push(selected);
-
-    let breadcrumb = [];
-    this.getBreadcrumb(node, breadcrumb);
-    this.setState({ selectedNode: node, breadcrumb });
     this.chart.load(nodes);
+    this.setState({ selectedNode: node });
   };
 
   calcSubNodes = (calcNode, subNodes, allNodes) => {
@@ -820,36 +583,38 @@ class ArchitectureDiagram extends React.Component {
     const { pidField, idField } = this.props;
     this.closeBroModal();
     if (operation === 'add') {
-      const tags = [];
+      const tags = [record.tagsname];
       if (record.isScrap === 'Y') {
-        tags.push('discard');
+        tags.push('discard'); //废弃
+      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
+        tags.push('tartOccupied'); //兼任
       } else if (record.isEmpty === 'Y') {
-        tags.push('empty');
+        tags.push('empty'); //空缺
       }
       const node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: record.tags ? [...record.tags, ...tags] : tags
+        tags
       };
       message.success('添加成功');
       this.chart.addNode(node);
       this._nodes.push(node);
     } else if (operation === 'modify') {
       // const oldTags = this.chart.get(record[idField]).tags;
-      const tags = [];
+      const tags = [record.tagsname];
       if (record.isScrap === 'Y') {
-        tags.push('discard');
+        tags.push('discard'); //废弃
+      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
+        tags.push('tartOccupied'); //兼任
       } else if (record.isEmpty === 'Y') {
-        tags.push('empty');
+        tags.push('empty'); //空缺
       }
       const node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: record.tags
-          ? [...record.tags, ...tags, selected]
-          : [...tags, selected]
+        tags: [...tags, selected]
       };
       message.success('修改成功');
       this.setState({ selectedNode: node }, () => {
@@ -858,68 +623,6 @@ class ArchitectureDiagram extends React.Component {
       this.chart.updateNode(node);
     }
   };
-
-  /**
-   * 加载下一层级的数据
-   */
-  // loadNextLevel = async () => {
-  //   if (this.state.isGrouping) {
-  //     return message.info('请先取消分组');
-  //   }
-  //   const {
-  //     resid,
-  //     idField,
-  //     pidField,
-  //     baseURL,
-  //     dblinkname,
-  //     groupConfig
-  //   } = this.props;
-  //   let httpParams = {};
-  //   // 使用传入的 baseURL
-  //   if (baseURL) {
-  //     httpParams.baseURL = baseURL;
-  //   }
-  //   const nodes = this.chart.nodes;
-  //   const keys = Object.keys(nodes);
-  //   const ids = keys.filter(key => {
-  //     return !nodes[key].childrenIds.length;
-  //   });
-  //   const options = {
-  //     resid,
-  //     Levels: 1,
-  //     ColumnOfID: idField,
-  //     ColumnOfPID: pidField,
-  //     MoveDirection: 1,
-  //     MoveLevels: 1,
-  //     ProductIDs: ids.join(','),
-  //     cmswhere: this._cmswhere,
-  //     dblinkname,
-  //     tags: groupConfig
-  //   };
-  //   this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
-  //   this.setState({ loading: true });
-  //   let res;
-  //   try {
-  //     res = await this.p4.promise;
-  //   } catch (err) {
-  //     console.error(err);
-  //     return message.error(err.message);
-  //   }
-  //   if (!res.nodes || !res.nodes.length) {
-  //     this.setState({ loading: false });
-  //     return message.info('没有更多数据');
-  //   }
-  //   this.setState({ currentLevel: this.state.currentLevel + 1 });
-  //   res.nodes.forEach(node => {
-  //     this.chart.add({
-  //       ...node,
-  //       id: node[idField],
-  //       pid: node[pidField]
-  //     });
-  //   });
-  //   this.setState({ loading: false });
-  //   this.chart.draw();
-  // };
 
   onLevelChange = level => {
     this.setState({ currentLevel: level });
@@ -930,9 +633,13 @@ class ArchitectureDiagram extends React.Component {
 
   handleDateChange = (date, dateString) => {
     this.setState({ selectedDate: date }, async () => {
+      const { selectedNode } = this.state;
       let data = await this.getData();
       this.chart.load(data);
       this._nodes = [...this.chart.config.nodes];
+      if (selectedNode.id) {
+        this.chart.center(selectedNode.id);
+      }
     });
   };
 
@@ -981,9 +688,11 @@ class ArchitectureDiagram extends React.Component {
           const data = res.data[0];
           const tags = [selected];
           if (data.isScrap === 'Y') {
-            tags.push('discard');
+            tags.push('discard'); //废弃
+          } else if (data.isEmpty === 'Y' && data.PartOccupiedPnId) {
+            tags.push('tartOccupied'); //兼任
           } else if (data.isEmpty === 'Y') {
-            tags.push('empty');
+            tags.push('empty'); //空缺
           }
           const node = {
             ...selectedNode,
@@ -1000,46 +709,15 @@ class ArchitectureDiagram extends React.Component {
       }
     });
   };
-  // 导入
-  handleImport = () => {
-    const {
-      openImportView,
-      baseURL,
-      importConfig,
-      importResid,
-      dblinkname
-    } = this.props;
-    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
 
-    openImportView &&
-      openImportView(
-        dblinkname,
-        url,
-        importResid,
-        importConfig.mode,
-        importConfig.containerType,
-        importConfig.saveState,
-        importConfig.containerProps,
-        this.handleFinishImport
-      );
-  };
-
-  handleFinishImport = () => {
-    console.log('handleFinishImport');
-    this.setState({ hasImportResult: true }, () => {
-      this.contentRef.scrollTo({
-        left: 0,
-        top: window.innerHeight,
-        behavior: 'smooth'
-      });
-    });
-    notification.open({
-      message: '导入完成',
-      description: '请查看导入结果',
-      onClick: () => {
-        console.log('Notification Clicked!');
-      }
-    });
+  handleRefresh = async () => {
+    const { selectedNode } = this.state;
+    const data = await this.getData();
+    this.chart.load(data);
+    this._nodes = [...this.chart.config.nodes];
+    if (selectedNode.id) {
+      this.chart.center(selectedNode.id);
+    }
   };
 
   renderHeader = () => {
@@ -1294,11 +972,11 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {name === 'person' &&
-                `${item.orgName}(${
-                  item.memberCN ? item.memberCN : '无任职人'
-                })`}
-              {name === 'job' && item[displayFileds.firstField]}
+              {`${item[displayFileds.firstField]}(${
+                item[displayFileds.secondaryField] >= 0
+                  ? item[displayFileds.secondaryField]
+                  : 'N/A'
+              })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1306,154 +984,6 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
-  renderImportResult = () => {
-    const { baseURL } = this.props;
-    const { selectedResultResid, selectedType, mode } = this.state;
-    return (
-      <div id="import-result" className="architecture-diagram__import-result">
-        <div className="architecture-diagram__import-result__title">
-          导入结果
-          <Icon
-            type="minus"
-            className="architecture-diagram__min-button"
-            style={{ fontSize: 16 }}
-            onClick={() => {
-              this.setState({ resultMin: true });
-            }}
-          />
-        </div>
-        <div className="architecture-diagram__import-result__content">
-          <div style={{ marginBottom: 16 }}>
-            <Select
-              style={{ width: 120, marginRight: 16 }}
-              size="small"
-              defaultValue="638645137963"
-              onChange={v => {
-                this.setState({ selectedResultResid: v });
-              }}
-              value={selectedResultResid}
-            >
-              <Select.Option value="638645137963">全部</Select.Option>
-              <Select.Option value="638646080344">正常</Select.Option>
-              <Select.Option value="638645984799">未匹配</Select.Option>
-              <Select.Option value="638646009862">错误</Select.Option>
-            </Select>
-            <Select
-              style={{ width: 120, marginRight: 16 }}
-              size="small"
-              defaultValue="IDL"
-              onChange={v => {
-                this.setState({ selectedType: v });
-              }}
-              value={selectedType}
-            >
-              <Select.Option value="DL">DL</Select.Option>
-              <Select.Option value="IDL">IDL</Select.Option>
-            </Select>
-            {selectedResultResid === '638645984799' && (
-              <Button
-                size="small"
-                type="primary"
-                style={{ marginRight: 24 }}
-                onClick={() => {
-                  const waitingImport = this.tableDataRef.getAggridSelectedRows();
-                  if (!waitingImport.length) {
-                    return message.info('请选择待导入的数据');
-                  }
-                  let selectedNode;
-                  if (mode === 'table') {
-                    selectedNode = this.tableDataRef1.getAggridSelectedRows()[0];
-                    if (!selectedNode) {
-                      return message.info('请在上方表中选择待导入的岗位');
-                    }
-                  } else {
-                    selectedNode = this.state.selectedNode;
-                    if (!selectedNode.REC_ID) {
-                      return message.info('请在架构图中选择待导入的岗位');
-                    }
-                  }
-                  const records = [];
-                  let names = '';
-                  waitingImport.forEach((record, index) => {
-                    names += record.C3_421886426562;
-                    if (index + 1 !== waitingImport.length) {
-                      names += ',';
-                    }
-                    records.push({
-                      REC_ID: record.REC_ID,
-                      C3_465142349966: selectedNode.orgNumber
-                    });
-                  });
-                  Modal.confirm({
-                    title: '提示',
-                    content: (
-                      <div>
-                        【<span style={{ color: '#f5222d' }}>{names}</span>】
-                        将导入到 【
-                        <span style={{ color: '#1890ff' }}>
-                          {selectedNode.orgName}
-                        </span>
-                        】
-                      </div>
-                    ),
-                    onOk: async () => {
-                      try {
-                        this.setState({ loading: true });
-                        let httpParams = {};
-                        // 使用传入的 baseURL
-                        if (baseURL) {
-                          httpParams.baseURL = baseURL;
-                        }
-                        await http(httpParams).modifyRecords({
-                          resid: '638645984799',
-                          data: records
-                        });
-                        this.setState({ loading: false });
-                        message.success('导入成功');
-                        this.tableDataRef.handleRefresh();
-                      } catch (error) {
-                        message.error(error.message);
-                        this.setState({ loading: false });
-                      }
-                    }
-                  });
-                }}
-              >
-                匹配
-              </Button>
-            )}
-            {/* <span style={{ marginRight: 16 }}>合计：100</span>
-            <span style={{ marginRight: 16 }}>成功：70</span>
-            <span style={{ marginRight: 16 }}>错误：20</span>
-            <span style={{ marginRight: 16 }}>未匹配：10</span> */}
-          </div>
-          <div style={{ flex: 1 }}>
-            <TableData
-              baseURL={baseURL}
-              resid={selectedResultResid || '638645137963'}
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              refTargetComponentName="TableData"
-              // subtractH={240}
-              hasAdd={false}
-              tableComponent="ag-grid"
-              rowSelectionAg={selectedType === 'IDL' ? 'single' : 'multiple'}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
-              afterSaveRefresh={true}
-              hasAdvSearch={false}
-              importConfig={null}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
   renderExpand = () => {
     const { detaileMin, historyMin, resultMin } = this.state;
     return (
@@ -1535,6 +1065,14 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
+            <Button
+              onClick={this.handleRefresh}
+              style={{ margin: '0 8px' }}
+              type="primary"
+              size="small"
+            >
+              刷新
+            </Button>
             当前位置：
             {this.renderBreadcrumb()}
           </div>
@@ -1634,19 +1172,6 @@ class ArchitectureDiagram extends React.Component {
                                     查看
                                   </span>
                                 )}
-                              {!selectedNode[item.id] &&
-                                item.id === displayFileds.firstField && (
-                                  <span
-                                    style={{
-                                      color: '#1890FF',
-                                      cursor: 'pointer',
-                                      marginLeft: 8
-                                    }}
-                                    onClick={this.openAddModal}
-                                  >
-                                    选择人员
-                                  </span>
-                                )}
                             </p>
                           );
                         })}
@@ -1718,8 +1243,6 @@ class ArchitectureDiagram extends React.Component {
                 )}
               </div>
             </div>
-
-            {hasImportResult && !resultMin && this.renderImportResult()}
           </div>
         </Spin>
 
