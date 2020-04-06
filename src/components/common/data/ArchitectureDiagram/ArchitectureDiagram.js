@@ -37,6 +37,16 @@ import moment from 'moment';
 import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
 
+function childCount(id, nodes) {
+  let count = 0;
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].pid == id) {
+      count++;
+      count += childCount(nodes[i].id, nodes);
+    }
+  }
+  return count;
+}
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -48,14 +58,18 @@ OrgChart.templates.architectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="50" cy="60" r="20"></circle>' +
+  '<circle  cx="50" cy="60" r="40"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="40" height="40">' +
+  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="51" text-anchor="middle">{val}</text>';
+  '<text width="200" class="field_0" style="font-size: 16px;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
 OrgChart.templates.architectureDiagramTemplate.field_1 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="76" text-anchor="middle">{val}</text>';
+  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="150" y="65" text-anchor="middle">{val}</text>';
+OrgChart.templates.architectureDiagramTemplate.field_2 =
+  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="150" y="85" text-anchor="middle">{val}</text>';
+OrgChart.templates.architectureDiagramTemplate.field_3 =
+  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="20" text-anchor="middle">Total:{val}</text>';
 
 class ArchitectureDiagram extends React.Component {
   static defaultProps = defaultProps;
@@ -120,6 +134,9 @@ class ArchitectureDiagram extends React.Component {
     this.initializeOrgchart();
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
+    for (var i = 0; i < data.length; i++) {
+      data[i].number_children = childCount(data[i].id, data);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -154,6 +171,8 @@ class ArchitectureDiagram extends React.Component {
         nodeBinding: {
           field_0: displayFileds.firstField,
           field_1: displayFileds.secondaryField,
+          field_2: displayFileds.thirdField,
+          field_3: 'number_children',
           img_0: displayFileds.imgField
         },
         collapse: {
@@ -306,22 +325,22 @@ class ArchitectureDiagram extends React.Component {
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
         }
-        
-          let ImgObj = new Image(); //判断图片是否存在  
-          ImgObj.src = item.memberAvatar;  
-          let url;
-          //没有图片，则返回-1  
-          if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {  
-            url = item.memberAvatar;
-          } else {  
-            url=avatarDef
-          }  
+
+        let ImgObj = new Image(); //判断图片是否存在
+        ImgObj.src = item.memberAvatar;
+        let url;
+        //没有图片，则返回-1
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+          url = item.memberAvatar;
+        } else {
+          url = avatarDef;
+        }
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          memberAvatar:url,
+          memberAvatar: url,
           tags
         };
         if (selectedNode.id === item[idField]) {
@@ -516,6 +535,8 @@ class ArchitectureDiagram extends React.Component {
    */
   handleNodeClick = (chart, args) => {
     const node = chart.get(args.node.id);
+    console.log(node);
+
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
@@ -1754,7 +1775,7 @@ class ArchitectureDiagram extends React.Component {
           {this.renderExpand()}
           {this.renderHeader()}
           <div className="architecture-diagram_breadcrumb">
-            <div style={{marginRight:8}}>
+            <div style={{ marginRight: 8 }}>
               <DatePicker
                 value={selectedDate}
                 showToday
