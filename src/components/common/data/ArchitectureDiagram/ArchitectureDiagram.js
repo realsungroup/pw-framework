@@ -325,7 +325,9 @@ class ArchitectureDiagram extends React.Component {
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
         }
-
+        if (item.isCreated === 'Y') {
+          tags.push('created');
+        }
         let ImgObj = new Image(); //判断图片是否存在
         ImgObj.src = item.memberAvatar;
         let url;
