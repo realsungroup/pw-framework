@@ -6,6 +6,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-enterprise';
 import memoize from 'memoize-one';
+import { Spin } from 'antd';
+import './EmptyJob.less';
 
 const isFirstColumn = params => {
   var displayedColumns = params.columnApi.getAllDisplayedColumns();
@@ -25,7 +27,8 @@ class ArchitectureDiagram extends React.Component {
       headerCheckboxSelection: isFirstColumn
     },
     columnDefs: [],
-    dataSource: []
+    dataSource: [],
+    loading: true
   };
   async componentDidMount() {
     this.getData();
@@ -160,42 +163,46 @@ class ArchitectureDiagram extends React.Component {
     });
   });
   render() {
-    const { defaultColDef, dataSource } = this.state;
+    const { defaultColDef, dataSource, loading } = this.state;
     const columnDefs = this.getcolumnDefs(
       this._cmscolumninfo,
       this.state.columnDefs
     );
     return (
-      <div style={{ height: '100%' }} className="ag-theme-balham">
-        <AgGridReact
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          rowData={dataSource}
-          pagination={true}
-          paginationPageSize={100}
-          floatingFilter={true}
-          // rowSelection={rowSelectionAg}
-          rowMultiSelectWithClick={true} //是否
-          onGridReady={this.onGridReady}
-          enableRangeSelection={true} //是否启用范围选择
-          suppressRowClickSelection={true}
-          // onCellValueChanged={this.onCellValueChanged}
-          // onPasteStart={this.onPasteStart}
-          // onPasteEnd={this.onPasteEnd}
-          getRowNodeId={data => data.REC_ID}
-          // onSelectionChanged={this.handleSelectionChanged}
-          // animateRows={true}
-          // editType="fullRow"
-          // onRowEditingStopped={this.handleRowEditingStopped}
-          // onRowEditingStarted={this.handleRowEditingStarted}
-          // rowClassRules={this.state.rowClassRules}
-          // sideBar={this.props.sideBarAg}
-          // components={this.state.components}
-          // frameworkComponents={this.state.frameworkComponents}
-          groupMultiAutoColumn={true}
-          rememberGroupStateWhenNewData={true}
-          enableCharts={true}
-        ></AgGridReact>
+      <div className="empty-jobs">
+        <Spin spinning={loading}>
+          <div style={{ height: '100%' }} className="ag-theme-balham">
+            <AgGridReact
+              columnDefs={columnDefs}
+              defaultColDef={defaultColDef}
+              rowData={dataSource}
+              pagination={true}
+              paginationPageSize={100}
+              floatingFilter={true}
+              // rowSelection={rowSelectionAg}
+              rowMultiSelectWithClick={true} //是否
+              onGridReady={this.onGridReady}
+              enableRangeSelection={true} //是否启用范围选择
+              suppressRowClickSelection={true}
+              // onCellValueChanged={this.onCellValueChanged}
+              // onPasteStart={this.onPasteStart}
+              // onPasteEnd={this.onPasteEnd}
+              getRowNodeId={data => data.REC_ID}
+              // onSelectionChanged={this.handleSelectionChanged}
+              // animateRows={true}
+              // editType="fullRow"
+              // onRowEditingStopped={this.handleRowEditingStopped}
+              // onRowEditingStarted={this.handleRowEditingStarted}
+              // rowClassRules={this.state.rowClassRules}
+              // sideBar={this.props.sideBarAg}
+              // components={this.state.components}
+              // frameworkComponents={this.state.frameworkComponents}
+              groupMultiAutoColumn={true}
+              rememberGroupStateWhenNewData={true}
+              enableCharts={true}
+            ></AgGridReact>
+          </div>
+        </Spin>
       </div>
     );
   }

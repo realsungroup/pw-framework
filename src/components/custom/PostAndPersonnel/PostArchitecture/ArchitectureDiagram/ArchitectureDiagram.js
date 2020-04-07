@@ -13,8 +13,7 @@ import {
   Form,
   Button,
   DatePicker,
-  InputNumber,
-  notification
+  InputNumber
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -34,6 +33,7 @@ import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
 import withImport from '../../../../common/hoc/withImport';
 import withModalDrawer from '../../../../common/hoc/withModalDrawer';
+import { getItem, setItem } from 'Util20/util';
 
 function childCount(id, nodes) {
   let count = 0;
@@ -66,39 +66,57 @@ OrgChart.templates.jobarchitectureDiagramTemplate.field_1 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_2 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="85" text-anchor="middle">{val}</text>';
-OrgChart.templates.architectureDiagramTemplate.field_3 =
+OrgChart.templates.jobarchitectureDiagramTemplate.field_3 =
   '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="20" text-anchor="middle">Total:{val}</text>';
 
 class ArchitectureDiagram extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
 
-  state = {
-    selectedNode: {}, // 选中项
-    addBroVisible: false,
-    selfDefineVisible: false,
-    loading: false,
-    viewHistoryDetailVisible: false,
-    historyData: [], // 选中项的历史记录
-    partHistoryData: [],
-    operation: 'add', // FormData用到的prop
-    record: {}, // FormData用到的prop
-    breadcrumb: [], //面包屑数据
-    currentLevel: this.props.level, //当前层级
-    mode: 'chart', //显示模式：图->chart; 表-> table
-    isGrouping: false,
-    firstField: this.props.displayFileds.firstField,
-    secondaryField: this.props.displayFileds.secondaryField,
-    selectedDate: moment(),
-    takeEffectDate: '', //生效日期
-    detaileMin: false,
-    historyMin: false,
-    resultMin: false,
-    hasImportResult: false,
-    detailVisible: false,
-    selectedResultResid: '638645137963',
-    selectedType: 'IDL'
-  };
+  constructor(props) {
+    super(props);
+    const displayFiledsJson = getItem(`displayField${this.props.resid}`);
+    let firstField, secondaryField, thirdField;
+    if (displayFiledsJson) {
+      const displayFileds = JSON.parse(displayFiledsJson);
+      firstField = displayFileds.firstField;
+      secondaryField = displayFileds.secondaryField;
+      thirdField = displayFileds.thirdField;
+    } else {
+      setItem(
+        `displayField${this.props.resid}`,
+        JSON.stringify(this.props.displayFileds)
+      );
+    }
+    this.state = {
+      selectedNode: {}, // 选中项
+      addBroVisible: false,
+      selfDefineVisible: false,
+      loading: false,
+      viewHistoryDetailVisible: false,
+      historyData: [], // 选中项的历史记录
+      partHistoryData: [],
+      operation: 'add', // FormData用到的prop
+      record: {}, // FormData用到的prop
+      breadcrumb: [], //面包屑数据
+      currentLevel: this.props.level, //当前层级
+      mode: 'chart', //显示模式：图->chart; 表-> table
+      isGrouping: false,
+      firstField: firstField || this.props.displayFileds.firstField,
+      secondaryField: secondaryField || this.props.displayFileds.secondaryField,
+      thirdField: thirdField || this.props.displayFileds.thirdField,
+      selectedDate: moment(),
+      takeEffectDate: '', //生效日期
+      detaileMin: false,
+      historyMin: false,
+      resultMin: false,
+      hasImportResult: false,
+      detailVisible: false,
+      selectedResultResid: '638645137963',
+      selectedType: 'IDL'
+    };
+  }
+
   async componentDidMount() {
     let data = await this.getData();
     this.initializeOrgchart();
@@ -132,18 +150,16 @@ class ArchitectureDiagram extends React.Component {
    * @returns void
    */
   initializeOrgchart = () => {
-    const { displayFileds } = this.props;
+    const { firstField, secondaryField, thirdField } = this.state;
     this.chart = new OrgChart(
       document.getElementById('architecture-diagram_orgchart'),
       {
         template: 'jobarchitectureDiagramTemplate',
         nodeBinding: {
-          field_0: displayFileds.firstField,
-          field_1: displayFileds.secondaryField,
-          field_2: displayFileds.thirdField,
-          field_3: 'number_children',
-
-          img_0: displayFileds.imgField
+          field_0: firstField,
+          field_1: secondaryField,
+          field_2: thirdField,
+          field_3: 'number_children'
         },
         collapse: {
           level: this.state.currentLevel
@@ -187,6 +203,9 @@ class ArchitectureDiagram extends React.Component {
         mouseScroolBehaviour: OrgChart.action.zoom
       }
     );
+    this.chart.on('dbclick', (sender, node) => {
+      this.setRootNode(node.id);
+    });
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
@@ -1313,7 +1332,19 @@ class ArchitectureDiagram extends React.Component {
                   let nodeBinding = this.chart.config.nodeBinding;
                   nodeBinding.field_0 = v;
                   this.chart.draw();
-                  this.setState({ firstField: v });
+                  this.setState({ firstField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
                 }}
               >
                 {this._cmscolumninfo.map(item => {
@@ -1331,7 +1362,49 @@ class ArchitectureDiagram extends React.Component {
                   let nodeBinding = this.chart.config.nodeBinding;
                   nodeBinding.field_1 = v;
                   this.chart.draw();
-                  this.setState({ secondaryField: v });
+                  this.setState({ secondaryField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
+                }}
+              >
+                {this._cmscolumninfo.map(item => {
+                  return (
+                    <Select.Option value={item.id}>{item.text}</Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item label="次次要字段">
+              <Select
+                // style={{ width: 120 }}
+                defaultValue={this.state.thirdField}
+                onChange={v => {
+                  let nodeBinding = this.chart.config.nodeBinding;
+                  nodeBinding.field_2 = v;
+                  this.chart.draw();
+                  this.setState({ thirdField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
                 }}
               >
                 {this._cmscolumninfo.map(item => {

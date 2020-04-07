@@ -15,7 +15,9 @@ import {
   DatePicker,
   InputNumber,
   notification,
-  Tabs
+  Tabs,
+  Checkbox,
+  Popover
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -23,6 +25,7 @@ import add2 from './svg/子级.svg';
 import avatarDef from './svg/avatar.svg';
 import selfDefine from './svg/自定义卡片.svg';
 import http, { makeCancelable } from 'Util20/api';
+import { getItem, setItem } from 'Util20/util';
 import FormData from '../FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
@@ -75,32 +78,79 @@ class ArchitectureDiagram extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
 
-  state = {
-    selectedNode: {}, // 选中项
-    addBroVisible: false,
-    selfDefineVisible: false,
-    loading: false,
-    viewHistoryDetailVisible: false,
-    historyData: [], // 选中项的历史记录
-    partHistoryData: [],
-    operation: 'add', // FormData用到的prop
-    record: {}, // FormData用到的prop
-    breadcrumb: [], //面包屑数据
-    currentLevel: this.props.level, //当前层级
-    mode: 'chart', //显示模式：图->chart; 表-> table
-    isGrouping: false,
-    firstField: this.props.displayFileds.firstField,
-    secondaryField: this.props.displayFileds.secondaryField,
-    selectedDate: moment(),
-    takeEffectDate: '', //生效日期
-    detaileMin: false,
-    historyMin: false,
-    resultMin: false,
-    hasImportResult: false,
-    detailVisible: false,
-    selectedResultResid: '638645137963',
-    selectedType: 'IDL'
-  };
+  constructor(props) {
+    super(props);
+    const displayFiledsJson = getItem(`displayField${this.props.resid}`);
+    let firstField, secondaryField, thirdField;
+    if (displayFiledsJson) {
+      const displayFileds = JSON.parse(displayFiledsJson);
+      firstField = displayFileds.firstField;
+      secondaryField = displayFileds.secondaryField;
+      thirdField = displayFileds.thirdField;
+    } else {
+      setItem(
+        `displayField${this.props.resid}`,
+        JSON.stringify(this.props.displayFileds)
+      );
+    }
+    this.state = {
+      selectedNode: {}, // 选中项
+      addBroVisible: false,
+      selfDefineVisible: false,
+      loading: false,
+      viewHistoryDetailVisible: false,
+      historyData: [], // 选中项的历史记录
+      partHistoryData: [],
+      operation: 'add', // FormData用到的prop
+      record: {}, // FormData用到的prop
+      breadcrumb: [], //面包屑数据
+      currentLevel: this.props.level, //当前层级
+      mode: 'chart', //显示模式：图->chart; 表-> table
+      isGrouping: false,
+      firstField: firstField || this.props.displayFileds.firstField,
+      secondaryField: secondaryField || this.props.displayFileds.secondaryField,
+      thirdField: thirdField || this.props.displayFileds.thirdField,
+      selectedDate: moment(),
+      takeEffectDate: '', //生效日期
+      detaileMin: false,
+      historyMin: false,
+      resultMin: false,
+      hasImportResult: false,
+      detailVisible: false,
+      selectedResultResid: '638645137963',
+      selectedType: 'IDL',
+      hasResult: true,
+      hasDetail: true,
+      hasHistory: true
+    };
+  }
+  // state = {
+  //   selectedNode: {}, // 选中项
+  //   addBroVisible: false,
+  //   selfDefineVisible: false,
+  //   loading: false,
+  //   viewHistoryDetailVisible: false,
+  //   historyData: [], // 选中项的历史记录
+  //   partHistoryData: [],
+  //   operation: 'add', // FormData用到的prop
+  //   record: {}, // FormData用到的prop
+  //   breadcrumb: [], //面包屑数据
+  //   currentLevel: this.props.level, //当前层级
+  //   mode: 'chart', //显示模式：图->chart; 表-> table
+  //   isGrouping: false,
+  //   firstField: this.props.displayFileds.firstField,
+  //   secondaryField: this.props.displayFileds.secondaryField,
+  //   thirdField: this.props.displayFileds.thirdField,
+  //   selectedDate: moment(),
+  //   takeEffectDate: '', //生效日期
+  //   detaileMin: false,
+  //   historyMin: false,
+  //   resultMin: false,
+  //   hasImportResult: false,
+  //   detailVisible: false,
+  //   selectedResultResid: '638645137963',
+  //   selectedType: 'IDL'
+  // };
   async componentDidMount() {
     // await this.getRootNodes();
     if (this.props.hasUnhandleRecords) {
@@ -164,14 +214,16 @@ class ArchitectureDiagram extends React.Component {
    */
   initializeOrgchart = () => {
     const { displayFileds } = this.props;
+    const { firstField, secondaryField, thirdField } = this.state;
+
     this.chart = new OrgChart(
       document.getElementById('architecture-diagram_orgchart'),
       {
         template: 'architectureDiagramTemplate',
         nodeBinding: {
-          field_0: displayFileds.firstField,
-          field_1: displayFileds.secondaryField,
-          field_2: displayFileds.thirdField,
+          field_0: firstField,
+          field_1: secondaryField,
+          field_2: thirdField,
           field_3: 'number_children',
           img_0: displayFileds.imgField
         },
@@ -232,6 +284,9 @@ class ArchitectureDiagram extends React.Component {
         mouseScroolBehaviour: OrgChart.action.zoom
       }
     );
+    this.chart.on('dbclick', (sender, node) => {
+      this.setRootNode(node.id);
+    });
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
@@ -1095,68 +1150,6 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
-  /**
-   * 加载下一层级的数据
-   */
-  // loadNextLevel = async () => {
-  //   if (this.state.isGrouping) {
-  //     return message.info('请先取消分组');
-  //   }
-  //   const {
-  //     resid,
-  //     idField,
-  //     pidField,
-  //     baseURL,
-  //     dblinkname,
-  //     groupConfig
-  //   } = this.props;
-  //   let httpParams = {};
-  //   // 使用传入的 baseURL
-  //   if (baseURL) {
-  //     httpParams.baseURL = baseURL;
-  //   }
-  //   const nodes = this.chart.nodes;
-  //   const keys = Object.keys(nodes);
-  //   const ids = keys.filter(key => {
-  //     return !nodes[key].childrenIds.length;
-  //   });
-  //   const options = {
-  //     resid,
-  //     Levels: 1,
-  //     ColumnOfID: idField,
-  //     ColumnOfPID: pidField,
-  //     MoveDirection: 1,
-  //     MoveLevels: 1,
-  //     ProductIDs: ids.join(','),
-  //     cmswhere: this._cmswhere,
-  //     dblinkname,
-  //     tags: groupConfig
-  //   };
-  //   this.p4 = makeCancelable(http(httpParams).getMoveNodes(options));
-  //   this.setState({ loading: true });
-  //   let res;
-  //   try {
-  //     res = await this.p4.promise;
-  //   } catch (err) {
-  //     console.error(err);
-  //     return message.error(err.message);
-  //   }
-  //   if (!res.nodes || !res.nodes.length) {
-  //     this.setState({ loading: false });
-  //     return message.info('没有更多数据');
-  //   }
-  //   this.setState({ currentLevel: this.state.currentLevel + 1 });
-  //   res.nodes.forEach(node => {
-  //     this.chart.add({
-  //       ...node,
-  //       id: node[idField],
-  //       pid: node[pidField]
-  //     });
-  //   });
-  //   this.setState({ loading: false });
-  //   this.chart.draw();
-  // };
-
   onLevelChange = level => {
     this.setState({ currentLevel: level });
     this.chart.expandCollapseToLevel(1, {
@@ -1240,6 +1233,12 @@ class ArchitectureDiagram extends React.Component {
       }
     });
   };
+
+  handleDownload = () => {
+    window.open(
+      'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg'
+    );
+  };
   // 导入
   handleImport = () => {
     const {
@@ -1293,7 +1292,15 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderHeader = () => {
-    const { mode, isGrouping, selectedNode, currentLevel } = this.state;
+    const {
+      mode,
+      isGrouping,
+      selectedNode,
+      currentLevel,
+      hasDetail,
+      hasResult,
+      hasHistory
+    } = this.state;
     const { hasOpration, hasImport } = this.props;
     const enable = selectedNode.isScrap === '' || selectedNode.isScrap === null;
     const disable = selectedNode.isScrap === 'N';
@@ -1306,22 +1313,6 @@ class ArchitectureDiagram extends React.Component {
     }
     return (
       <header className="architecture-diagram_header">
-        {/* <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
-            <Icon
-              type="redo"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            重置
-          </div>
-          <div className="architecture-diagram_header_icon-button">
-            <Icon
-              type="save"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            保存
-          </div>
-        </div> */}
         {mode === 'chart' && (
           <div className="architecture-diagram_header_icon-button-group">
             <div className="architecture-diagram_header_icon-button">
@@ -1490,40 +1481,61 @@ class ArchitectureDiagram extends React.Component {
               />
               导入数据
             </div>
-            <div className="architecture-diagram_header_icon-button">
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleDownload}
+            >
               <Icon
                 type="download"
                 className="architecture-diagram_header_icon-button__icon"
               />
               下载导入模板
             </div>
-            {/* <Popover
-            placement="right"
-            content={
-              <div>
+            <Popover
+              placement="right"
+              content={
                 <div>
-                  <Checkbox>未处理记录</Checkbox>
+                  <div>
+                    <Checkbox
+                      checked={hasResult}
+                      onChange={e => {
+                        this.setState({ hasResult: e.target.checked });
+                      }}
+                    >
+                      导入结果
+                    </Checkbox>
+                  </div>
+                  <div>
+                    <Checkbox
+                      checked={hasDetail}
+                      onChange={e => {
+                        this.setState({ hasDetail: e.target.checked });
+                      }}
+                    >
+                      详细信息
+                    </Checkbox>
+                  </div>
+                  <div>
+                    <Checkbox
+                      checked={hasHistory}
+                      onChange={e => {
+                        this.setState({ hasHistory: e.target.checked });
+                      }}
+                    >
+                      历史信息
+                    </Checkbox>
+                  </div>
                 </div>
-                <div>
-                  <Checkbox>导入结果</Checkbox>
-                </div>
-                <div>
-                  <Checkbox>岗位信息</Checkbox>
-                </div>
-                <div>
-                  <Checkbox>历史信息</Checkbox>
-                </div>
+              }
+            >
+              <div className="architecture-diagram_header_icon-button">
+                <Icon
+                  type="layout"
+                  className="architecture-diagram_header_icon-button__icon"
+                />
+                显示
               </div>
-            }
-          >
-            <div className="architecture-diagram_header_icon-button">
-              <Icon
-                type="layout"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              显示
-            </div>
-          </Popover> */}
+            </Popover>
           </div>
         )}
       </header>
@@ -1705,10 +1717,17 @@ class ArchitectureDiagram extends React.Component {
     );
   };
   renderExpand = () => {
-    const { detaileMin, historyMin, resultMin } = this.state;
+    const {
+      detaileMin,
+      historyMin,
+      resultMin,
+      hasDetail,
+      hasHistory,
+      hasResult
+    } = this.state;
     return (
       <div className="architecture-diagram__expand-buttons">
-        {detaileMin && (
+        {hasDetail && detaileMin && (
           <div className="architecture-diagram__expand">
             详细情况
             <Icon
@@ -1719,7 +1738,7 @@ class ArchitectureDiagram extends React.Component {
             />
           </div>
         )}
-        {historyMin && (
+        {hasHistory && historyMin && (
           <div className="architecture-diagram__expand">
             历史情况
             <Icon
@@ -1730,7 +1749,7 @@ class ArchitectureDiagram extends React.Component {
             />
           </div>
         )}
-        {resultMin && (
+        {hasResult && resultMin && (
           <div
             className="architecture-diagram__expand"
             onClick={() => {
@@ -1768,7 +1787,10 @@ class ArchitectureDiagram extends React.Component {
       resultMin,
       historyMin,
       hasImportResult,
-      detailVisible
+      detailVisible,
+      hasDetail,
+      hasHistory,
+      hasResult
     } = this.state;
     const { resid, baseURL, displayFileds, hasView, idField } = this.props;
     return (
@@ -1852,7 +1874,7 @@ class ArchitectureDiagram extends React.Component {
                 </div>
               </div>
               <div className="architecture-diagram_main_sider">
-                {!detaileMin && (
+                {hasDetail && !detaileMin && (
                   <div className="architecture-diagram_main_item-detail">
                     <div className="architecture-diagram_main_sider_title">
                       详细情况
@@ -1923,7 +1945,7 @@ class ArchitectureDiagram extends React.Component {
                     )}
                   </div>
                 )}
-                {!historyMin && (
+                {hasHistory && !historyMin && (
                   <div className="architecture-diagram_main_item-history">
                     <div className="architecture-diagram_main_sider_title">
                       历史情况
@@ -2129,7 +2151,10 @@ class ArchitectureDiagram extends React.Component {
               </div>
             </div>
 
-            {hasImportResult && !resultMin && this.renderImportResult()}
+            {hasResult &&
+              hasImportResult &&
+              !resultMin &&
+              this.renderImportResult()}
           </div>
         </Spin>
 
@@ -2180,7 +2205,19 @@ class ArchitectureDiagram extends React.Component {
                   let nodeBinding = this.chart.config.nodeBinding;
                   nodeBinding.field_0 = v;
                   this.chart.draw();
-                  this.setState({ firstField: v });
+                  this.setState({ firstField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
                 }}
               >
                 {this._cmscolumninfo.map(item => {
@@ -2198,7 +2235,49 @@ class ArchitectureDiagram extends React.Component {
                   let nodeBinding = this.chart.config.nodeBinding;
                   nodeBinding.field_1 = v;
                   this.chart.draw();
-                  this.setState({ secondaryField: v });
+                  this.setState({ secondaryField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
+                }}
+              >
+                {this._cmscolumninfo.map(item => {
+                  return (
+                    <Select.Option value={item.id}>{item.text}</Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item label="次次要字段">
+              <Select
+                // style={{ width: 120 }}
+                defaultValue={this.state.thirdField}
+                onChange={v => {
+                  let nodeBinding = this.chart.config.nodeBinding;
+                  nodeBinding.field_2 = v;
+                  this.chart.draw();
+                  this.setState({ thirdField: v }, () => {
+                    const {
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    } = this.state;
+                    const json = JSON.stringify({
+                      firstField,
+                      secondaryField,
+                      thirdField
+                    });
+                    setItem(`displayField${this.props.resid}`, json);
+                  });
                 }}
               >
                 {this._cmscolumninfo.map(item => {
