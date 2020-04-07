@@ -89,10 +89,11 @@ class PostArchitecture extends React.Component {
               // rootResid="638559408357" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={6}
+              level={3}
               displayFileds={{
                 firstField: 'orgName',
-                secondaryField: 'orgcode'
+                secondaryField: 'orgcode',
+                thirdField: 'orgcode'
               }}
               procedureConfig={{
                 procedure: 'pw_orgstaffbydates',
@@ -117,12 +118,13 @@ class PostArchitecture extends React.Component {
               // rootResid="627649574324" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={6}
+              level={3}
               hasOpration={false}
               // remarkField="C3_627679142400" //历史情况的title
               displayFileds={{
                 firstField: 'memberCN',
                 secondaryField: 'orgName',
+                thirdField: 'orgDepEN',
                 imgField: 'memberAvatar'
               }}
               procedureConfig={{
