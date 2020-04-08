@@ -17,7 +17,9 @@ import {
   notification,
   Tabs,
   Checkbox,
-  Popover
+  Popover,
+  Tree,
+  Input
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -39,6 +41,22 @@ import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
 import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
+import memoize from 'memoize-one';
+
+const getParentKey = (key, tree) => {
+  let parentKey;
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i];
+    if (node.children) {
+      if (node.children.some(item => item.key === key)) {
+        parentKey = node.key;
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children);
+      }
+    }
+  }
+  return parentKey;
+};
 
 function childCount(id, nodes) {
   let count = 0;
@@ -50,6 +68,8 @@ function childCount(id, nodes) {
   }
   return count;
 }
+const { TreeNode } = Tree;
+const { Search } = Input;
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -121,7 +141,15 @@ class ArchitectureDiagram extends React.Component {
       selectedType: 'IDL',
       hasResult: true,
       hasDetail: true,
-      hasHistory: true
+      hasHistory: true,
+      selectedDepartment: '',
+      departmentTreeVisible: false,
+      treeData: [],
+      treeDataList: [],
+      expandedKeys: [],
+      searchValue: '',
+      autoExpandParent: true,
+      selectedBranch: 'all'
     };
   }
   // state = {
@@ -181,6 +209,8 @@ class ArchitectureDiagram extends React.Component {
       });
     }
     let data = await this.getData();
+    this.getDepartments();
+
     this.initializeOrgchart();
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
@@ -206,6 +236,33 @@ class ArchitectureDiagram extends React.Component {
     this.p4 && this.p4.cancel();
     this.p6 && this.p6.cancel();
   }
+
+  getDepartments = async () => {
+    const { baseURL } = this.props;
+    try {
+      const httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      this.p2 = makeCancelable(
+        http(httpParams).getTable({ resid: '417643880834' })
+      );
+      const res = await this.p2.promise;
+      this.generateTreeData(res.data);
+      this.setState({
+        treeDataList: res.data.map(item => {
+          return {
+            key: item.DEP_ID,
+            title:
+              item.DEP_NAME + (item.DEP_NAME_EN ? '-' + item.DEP_NAME_EN : '')
+          };
+        })
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
 
   /**
    *  初始化orgchart
@@ -484,7 +541,7 @@ class ArchitectureDiagram extends React.Component {
    * 计算面包屑数据
    */
   getBreadcrumb = (selectedNode, breadcrumb = []) => {
-    if (selectedNode.pid) {
+    if (selectedNode.pid >= 0) {
       const fooNode = this._nodes.find(item => {
         return item.id === selectedNode.pid;
       });
@@ -592,14 +649,18 @@ class ArchitectureDiagram extends React.Component {
    */
   handleNodeClick = (chart, args) => {
     const node = chart.get(args.node.id);
-    console.log(node);
-
     if (node.tags && node.tags.includes(selected)) {
       return;
     }
     const { selectedNode } = this.state;
     if (selectedNode && selectedNode.id !== undefined) {
       chart.removeNodeTag(selectedNode.id, selected);
+    }
+    const hasSelectedTagNode = chart.config.nodes.find(node =>
+      node.tags.includes(selected)
+    );
+    if (hasSelectedTagNode) {
+      chart.removeNodeTag(hasSelectedTagNode.id, selected);
     }
     chart.addNodeTag(node.id, selected);
     chart.center(node.id, {
@@ -1036,6 +1097,80 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  findDepartment = (departmentId, departments, result = []) => {
+    const data = departments.find(item => {
+      return item.DEP_ID == departmentId;
+    });
+    if (data) {
+      result.push(data);
+    } else {
+      departments.forEach(department => {
+        this.findDepartment(departmentId, department.children, result);
+      });
+    }
+  };
+
+  getDepartmentsByDepartments = (data, departments = []) => {
+    if (data.children.length) {
+      departments.push(...data.children);
+      data.children.forEach(department => {
+        this.getDepartmentsByDepartments(department, departments);
+      });
+    }
+  };
+
+  generateTreeData = (data = []) => {
+    const treeData = [
+      { title: 'Enterprise', key: -1, DEP_ID: -1, children: [] }
+    ];
+    data.forEach(item => {
+      if (item.DEP_PID === 0) {
+        treeData[0].children.push({
+          DEP_ID: item.DEP_ID,
+          DEP_PID: item.DEP_PID,
+          title:
+            item.DEP_NAME + (item.DEP_NAME_EN ? '-' + item.DEP_NAME_EN : ''),
+          key: item.DEP_ID,
+          children: []
+        });
+      }
+    });
+    treeData[0].children.forEach(item => {
+      this.calcChildren(item, data);
+    });
+    this.setState({ treeData });
+  };
+
+  calcChildren = (item, data = []) => {
+    data.forEach(d => {
+      if (d.DEP_PID === item.DEP_ID) {
+        item.children.push({
+          DEP_ID: d.DEP_ID,
+          DEP_PID: d.DEP_PID,
+          title: d.DEP_NAME + (d.DEP_NAME_EN ? '-' + d.DEP_NAME_EN : ''),
+          key: d.DEP_ID,
+          children: []
+        });
+      }
+    });
+    if (item.children.length) {
+      item.children.forEach(i => {
+        this.calcChildren(i, data);
+      });
+    }
+  };
+
+  filterTreeData = memoize((filterText, treeData) => {
+    if (!treeData.length || filterText === 'all') {
+      return treeData;
+    }
+    let _treeData = [{ ...treeData[0] }];
+    _treeData[0].children = _treeData[0].children.filter(item => {
+      return item.key == filterText;
+    });
+    return _treeData;
+  });
+
   closeBroModal = () => this.setState({ addBroVisible: false });
 
   viewHistoryDetail = () => {
@@ -1289,6 +1424,33 @@ class ArchitectureDiagram extends React.Component {
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
+  };
+
+  renderDepartmentTree = data => {
+    const { searchValue } = this.state;
+    return data.map(item => {
+      const index = item.title.indexOf(searchValue);
+      const beforeStr = item.title.substr(0, index);
+      const afterStr = item.title.substr(index + searchValue.length);
+      const title =
+        index > -1 ? (
+          <span>
+            {beforeStr}
+            <span style={{ color: '#f50' }}>{searchValue}</span>
+            {afterStr}
+          </span>
+        ) : (
+          <span>{item.title}</span>
+        );
+      if (item.children) {
+        return (
+          <TreeNode key={item.key} title={title}>
+            {this.renderDepartmentTree(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode key={item.key} title={title} />;
+    });
   };
 
   renderHeader = () => {
@@ -1790,9 +1952,17 @@ class ArchitectureDiagram extends React.Component {
       detailVisible,
       hasDetail,
       hasHistory,
-      hasResult
+      hasResult,
+      selectedDepartment,
+      departmentTreeVisible,
+      treeData,
+      treeDataList,
+      expandedKeys,
+      autoExpandParent,
+      selectedBranch
     } = this.state;
     const { resid, baseURL, displayFileds, hasView, idField } = this.props;
+    const _treeData = this.filterTreeData(selectedBranch, treeData);
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -1808,6 +1978,17 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
+            <div
+              onClick={() => {
+                this.setState({ departmentTreeVisible: true });
+              }}
+              style={{ cursor: 'pointer', marginLeft: 8 }}
+            >
+              部门：
+              <span style={{ color: '#1890ff' }}>
+                {selectedDepartment ? selectedDepartment : '未选择'}
+              </span>
+            </div>
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
@@ -1816,8 +1997,9 @@ class ArchitectureDiagram extends React.Component {
             >
               刷新
             </Button>
-            当前位置：
-            {this.renderBreadcrumb()}
+          </div>
+          <div className="architecture-diagram_breadcrumb">
+            当前位置：{this.renderBreadcrumb()}
           </div>
           <div
             className="architecture-diagram__content"
@@ -2358,6 +2540,102 @@ class ArchitectureDiagram extends React.Component {
             // formProps={{ width: 500 }}
             baseURL={this.props.baseURL}
           />
+        </Drawer>
+        <Drawer
+          title="部门筛选"
+          onClose={() => {
+            this.setState({
+              departmentTreeVisible: false
+            });
+          }}
+          width={500}
+          placement="left"
+          visible={departmentTreeVisible}
+        >
+          <div>
+            <p>请选择分公司：</p>
+            <Select
+              value={selectedBranch}
+              style={{ width: '100%', marginBottom: 8 }}
+              onChange={v => {
+                this.setState({ selectedBranch: v });
+              }}
+            >
+              <Select.Option key="all">全部分公司 </Select.Option>
+              {treeData[0] &&
+                treeData[0].children.map(item => {
+                  return (
+                    <Select.Option key={item.key}>{item.title} </Select.Option>
+                  );
+                })}
+            </Select>
+          </div>
+          <div>
+            <p>请选择部门：</p>
+            <Search
+              style={{ marginBottom: 8 }}
+              placeholder="输入部门名称搜索"
+              onChange={e => {
+                const { value } = e.target;
+                const expandedKeys = treeDataList
+                  .map(item => {
+                    if (item.title.indexOf(value) > -1) {
+                      return getParentKey(item.key, _treeData);
+                    }
+                    return null;
+                  })
+                  .filter((item, i, self) => item && self.indexOf(item) === i);
+                this.setState({
+                  expandedKeys,
+                  searchValue: value,
+                  autoExpandParent: true
+                });
+              }}
+            />
+          </div>
+          <Tree
+            autoExpandParent={autoExpandParent}
+            onExpand={expandedKeys => {
+              this.setState({
+                expandedKeys,
+                autoExpandParent: false
+              });
+            }}
+            expandedKeys={expandedKeys}
+            onSelect={(selectedKeys, e) => {
+              const selectedKey = selectedKeys[0];
+              if (selectedKey > 0) {
+                const result = [];
+                const departments = [];
+                this.findDepartment(selectedKey, treeData[0].children, result);
+                if (result.length) {
+                  departments.push(result[0]);
+                  this.getDepartmentsByDepartments(result[0], departments);
+                  const nodes = this._nodes.filter(node => {
+                    return departments.find(
+                      department => department.DEP_ID == node.orgDepCode
+                    );
+                  });
+                  this.chart.load(nodes);
+
+                  this.setState({
+                    selectedNode: {},
+                    breadcrumb: [],
+                    selectedDepartment: result[0].title
+                  });
+                }
+              } else {
+                this.chart.load(this._nodes);
+                this.setState({
+                  selectedNode: {},
+                  breadcrumb: [],
+                  selectedDepartment: ''
+                });
+              }
+            }}
+          >
+            {this.renderDepartmentTree(_treeData)}
+          </Tree>
         </Drawer>
       </div>
     );
