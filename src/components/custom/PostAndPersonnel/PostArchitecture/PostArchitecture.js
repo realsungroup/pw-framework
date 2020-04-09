@@ -22,7 +22,7 @@ class PostArchitecture extends React.Component {
     hasUnhandleRecords: false
   };
   componentDidMount() {
-    // this.getUnhandleRecords();
+    this.getUnhandleRecords();
   }
   componentWillUnmount() {
     this.p1 && this.p1.cancel();

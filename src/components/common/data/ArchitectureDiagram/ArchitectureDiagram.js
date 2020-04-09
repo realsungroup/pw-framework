@@ -17,9 +17,7 @@ import {
   notification,
   Tabs,
   Checkbox,
-  Popover,
-  Tree,
-  Input
+  Popover
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -35,28 +33,13 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
 import TableData from '../TableData';
+import TreeData from '../TreeData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
 import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
-import memoize from 'memoize-one';
-
-const getParentKey = (key, tree) => {
-  let parentKey;
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i];
-    if (node.children) {
-      if (node.children.some(item => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
-      }
-    }
-  }
-  return parentKey;
-};
 
 function childCount(id, nodes) {
   let count = 0;
@@ -68,8 +51,7 @@ function childCount(id, nodes) {
   }
   return count;
 }
-const { TreeNode } = Tree;
-const { Search } = Input;
+
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -209,8 +191,6 @@ class ArchitectureDiagram extends React.Component {
       });
     }
     let data = await this.getData();
-    this.getDepartments();
-
     this.initializeOrgchart();
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
@@ -236,33 +216,6 @@ class ArchitectureDiagram extends React.Component {
     this.p4 && this.p4.cancel();
     this.p6 && this.p6.cancel();
   }
-
-  getDepartments = async () => {
-    const { baseURL } = this.props;
-    try {
-      const httpParams = {};
-      // 使用传入的 baseURL
-      if (baseURL) {
-        httpParams.baseURL = baseURL;
-      }
-      this.p2 = makeCancelable(
-        http(httpParams).getTable({ resid: '417643880834' })
-      );
-      const res = await this.p2.promise;
-      this.generateTreeData(res.data);
-      this.setState({
-        treeDataList: res.data.map(item => {
-          return {
-            key: item.DEP_ID,
-            title:
-              item.DEP_NAME + (item.DEP_NAME_EN ? '-' + item.DEP_NAME_EN : '')
-          };
-        })
-      });
-    } catch (error) {
-      message.error(error.message);
-    }
-  };
 
   /**
    *  初始化orgchart
@@ -1075,13 +1028,20 @@ class ArchitectureDiagram extends React.Component {
       this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
     let nodes = [node]; //计算后的节点，必包含点击的节点
     this.calcSubNodes([node], nodes, this._nodes);
-    nodes.forEach(node => {
-      if (node.tags.includes(selected)) {
-        node.tags.splice(node.tags.findIndex(tag => tag === selected), 1);
-      }
-    });
     node.tags.push(selected);
     this.chart.load(nodes);
+    this.chart.expandCollapseToLevel(nodeId, {
+      level: this.state.currentLevel
+    });
+    this.chart.draw(OrgChart.action.init);
+
+    // const { selectedNode } = this.state;
+    // if (selectedNode.id >= 0) {
+    //   this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    // }
+    // this.chart.config.roots = [nodeId];
+    // this.chart.addNodeTag(nodeId, selected);
+    // this.chart.draw(OrgChart.action.init);
     this.setState({ selectedNode: node });
   };
 
@@ -1089,87 +1049,16 @@ class ArchitectureDiagram extends React.Component {
     //仍有要计算子节点的数据
     if (calcNode.length) {
       let filterNodes = allNodes.filter(item => {
-        item.tags.splice(item.tags.findIndex(tag => tag === selected), 1);
+        // item.tags.splice(item.tags.findIndex(tag => tag === selected), 1);
+        if (item.tags.includes(selected)) {
+          item.tags.splice(item.tags.findIndex(tag => tag === selected), 1);
+        }
         return calcNode.some(i => i.id === item.pid);
       });
       subNodes.push(...filterNodes);
       this.calcSubNodes(filterNodes, subNodes, allNodes);
     }
   };
-
-  findDepartment = (departmentId, departments, result = []) => {
-    const data = departments.find(item => {
-      return item.DEP_ID == departmentId;
-    });
-    if (data) {
-      result.push(data);
-    } else {
-      departments.forEach(department => {
-        this.findDepartment(departmentId, department.children, result);
-      });
-    }
-  };
-
-  getDepartmentsByDepartments = (data, departments = []) => {
-    if (data.children.length) {
-      departments.push(...data.children);
-      data.children.forEach(department => {
-        this.getDepartmentsByDepartments(department, departments);
-      });
-    }
-  };
-
-  generateTreeData = (data = []) => {
-    const treeData = [
-      { title: 'Enterprise', key: -1, DEP_ID: -1, children: [] }
-    ];
-    data.forEach(item => {
-      if (item.DEP_PID === 0) {
-        treeData[0].children.push({
-          DEP_ID: item.DEP_ID,
-          DEP_PID: item.DEP_PID,
-          title:
-            item.DEP_NAME + (item.DEP_NAME_EN ? '-' + item.DEP_NAME_EN : ''),
-          key: item.DEP_ID,
-          children: []
-        });
-      }
-    });
-    treeData[0].children.forEach(item => {
-      this.calcChildren(item, data);
-    });
-    this.setState({ treeData });
-  };
-
-  calcChildren = (item, data = []) => {
-    data.forEach(d => {
-      if (d.DEP_PID === item.DEP_ID) {
-        item.children.push({
-          DEP_ID: d.DEP_ID,
-          DEP_PID: d.DEP_PID,
-          title: d.DEP_NAME + (d.DEP_NAME_EN ? '-' + d.DEP_NAME_EN : ''),
-          key: d.DEP_ID,
-          children: []
-        });
-      }
-    });
-    if (item.children.length) {
-      item.children.forEach(i => {
-        this.calcChildren(i, data);
-      });
-    }
-  };
-
-  filterTreeData = memoize((filterText, treeData) => {
-    if (!treeData.length || filterText === 'all') {
-      return treeData;
-    }
-    let _treeData = [{ ...treeData[0] }];
-    _treeData[0].children = _treeData[0].children.filter(item => {
-      return item.key == filterText;
-    });
-    return _treeData;
-  });
 
   closeBroModal = () => this.setState({ addBroVisible: false });
 
@@ -1287,9 +1176,10 @@ class ArchitectureDiagram extends React.Component {
 
   onLevelChange = level => {
     this.setState({ currentLevel: level });
-    this.chart.expandCollapseToLevel(1, {
+    this.chart.expandCollapseToLevel(0, {
       level
     });
+    this.chart.draw(OrgChart.action.init);
   };
 
   handleDateChange = (date, dateString) => {
@@ -1424,33 +1314,6 @@ class ArchitectureDiagram extends React.Component {
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
-  };
-
-  renderDepartmentTree = data => {
-    const { searchValue } = this.state;
-    return data.map(item => {
-      const index = item.title.indexOf(searchValue);
-      const beforeStr = item.title.substr(0, index);
-      const afterStr = item.title.substr(index + searchValue.length);
-      const title =
-        index > -1 ? (
-          <span>
-            {beforeStr}
-            <span style={{ color: '#f50' }}>{searchValue}</span>
-            {afterStr}
-          </span>
-        ) : (
-          <span>{item.title}</span>
-        );
-      if (item.children) {
-        return (
-          <TreeNode key={item.key} title={title}>
-            {this.renderDepartmentTree(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode key={item.key} title={title} />;
-    });
   };
 
   renderHeader = () => {
@@ -1954,15 +1817,9 @@ class ArchitectureDiagram extends React.Component {
       hasHistory,
       hasResult,
       selectedDepartment,
-      departmentTreeVisible,
-      treeData,
-      treeDataList,
-      expandedKeys,
-      autoExpandParent,
-      selectedBranch
+      departmentTreeVisible
     } = this.state;
     const { resid, baseURL, displayFileds, hasView, idField } = this.props;
-    const _treeData = this.filterTreeData(selectedBranch, treeData);
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -2552,90 +2409,37 @@ class ArchitectureDiagram extends React.Component {
           placement="left"
           visible={departmentTreeVisible}
         >
-          <div>
-            <p>请选择分公司：</p>
-            <Select
-              value={selectedBranch}
-              style={{ width: '100%', marginBottom: 8 }}
-              onChange={v => {
-                this.setState({ selectedBranch: v });
-              }}
-            >
-              <Select.Option key="all">全部分公司 </Select.Option>
-              {treeData[0] &&
-                treeData[0].children.map(item => {
-                  return (
-                    <Select.Option key={item.key}>{item.title} </Select.Option>
-                  );
-                })}
-            </Select>
-          </div>
-          <div>
-            <p>请选择部门：</p>
-            <Search
-              style={{ marginBottom: 8 }}
-              placeholder="输入部门名称搜索"
-              onChange={e => {
-                const { value } = e.target;
-                const expandedKeys = treeDataList
-                  .map(item => {
-                    if (item.title.indexOf(value) > -1) {
-                      return getParentKey(item.key, _treeData);
-                    }
-                    return null;
-                  })
-                  .filter((item, i, self) => item && self.indexOf(item) === i);
-                this.setState({
-                  expandedKeys,
-                  searchValue: value,
-                  autoExpandParent: true
-                });
-              }}
-            />
-          </div>
-          <Tree
-            autoExpandParent={autoExpandParent}
-            onExpand={expandedKeys => {
-              this.setState({
-                expandedKeys,
-                autoExpandParent: false
-              });
+          <TreeData
+            resid="417643880834"
+            baseURL={baseURL}
+            idField="DEP_ID"
+            pidField="DEP_PID"
+            titleField="DEP_NAME"
+            rootNode={{
+              title: 'Enterprise',
+              key: 0
             }}
-            expandedKeys={expandedKeys}
-            onSelect={(selectedKeys, e) => {
-              const selectedKey = selectedKeys[0];
-              if (selectedKey > 0) {
-                const result = [];
-                const departments = [];
-                this.findDepartment(selectedKey, treeData[0].children, result);
-                if (result.length) {
-                  departments.push(result[0]);
-                  this.getDepartmentsByDepartments(result[0], departments);
-                  const nodes = this._nodes.filter(node => {
-                    return departments.find(
-                      department => department.DEP_ID == node.orgDepCode
-                    );
+            onCheck={checkedKeys => {
+              if (checkedKeys.length) {
+                const nodes = this._nodes.filter(node => {
+                  return checkedKeys.some(key => {
+                    return node.orgDepCode == key;
                   });
-                  this.chart.load(nodes);
-
-                  this.setState({
-                    selectedNode: {},
-                    breadcrumb: [],
-                    selectedDepartment: result[0].title
-                  });
-                }
+                });
+                this.chart.load(nodes);
+                this.setState({
+                  selectedNode: {},
+                  breadcrumb: []
+                });
               } else {
                 this.chart.load(this._nodes);
                 this.setState({
                   selectedNode: {},
-                  breadcrumb: [],
-                  selectedDepartment: ''
+                  breadcrumb: []
                 });
               }
             }}
-          >
-            {this.renderDepartmentTree(_treeData)}
-          </Tree>
+          />
         </Drawer>
       </div>
     );
