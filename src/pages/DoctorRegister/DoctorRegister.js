@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Button, Input, Form, Icon, Radio, Spin } from 'antd';
+import { message, Button, Input, Form, Icon, Radio, Spin,Select } from 'antd';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo.png';
 import { resetPassByEmail } from 'Util/api';
@@ -9,7 +9,7 @@ import http from 'Util20/api';
 import './DoctorRegister.less';
 
 const { loginLogoSize } = window.pwConfig;
-
+const Option = Select.Option; 
 const {
   domainLoginConfig,
   defaultLoginMode,
@@ -89,6 +89,7 @@ class DoctorRegister extends React.Component {
       }
     }, 1000);
   };
+  handleChange = () =>{}
   //切换登录路由
   onLogin = () => {
     this.props.history.push({
@@ -123,6 +124,7 @@ class DoctorRegister extends React.Component {
                   rules: [{ required: true, message: '请输入你的姓名!' }]
                 })(
                 <Input
+                label = "姓名"
                   prefix={
                     <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
@@ -131,7 +133,40 @@ class DoctorRegister extends React.Component {
                 )}
               </Form.Item>
               <Form.Item>
-              {getFieldDecorator('professionalTitle', {
+                {getFieldDecorator('sex', {
+                  rules: [{ required: true, message: '请输入你的性别!' }]
+                })(
+                  <Select onChange = {this.handleChange} placeholder = "选择性别" >
+                    <Option value = "男">男</Option>
+                    <Option value = "女">女</Option>
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item>
+              {getFieldDecorator('hospital', {
+                  rules: [{ required: true, message: '请输入你的医院!' }]
+                })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="所属医院"
+                />
+                )}
+              </Form.Item>
+              <Form.Item>
+              {getFieldDecorator('section', {
+                  rules: [{ required: true, message: '请输入你的科别!' }]
+                })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="科别"
+                />)}
+              </Form.Item>
+              <Form.Item>
+              {getFieldDecorator('jobTitle', {
                   rules: [{ required: true, message: '请输入你的职称!' }]
                 })(
                 <Input
@@ -143,15 +178,16 @@ class DoctorRegister extends React.Component {
                 )}
               </Form.Item>
               <Form.Item>
-              {getFieldDecorator('section', {
-                  rules: [{ required: true, message: '请输入你的科室类别!' }]
+              {getFieldDecorator('doctorID', {
+                  rules: [{ required: true, message: '请输入你的医生资格证编号!' }]
                 })(
                 <Input
                   prefix={
                     <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder="科室类别"
-                />)}
+                  placeholder="医生资格证编号"
+                />
+                )}
               </Form.Item>
               <Form.Item>
               {getFieldDecorator('loginAccount', {

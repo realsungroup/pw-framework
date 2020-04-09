@@ -68,22 +68,6 @@ class PatientInfo extends React.Component {
     });
   };
 
-  handleQSClick = record => {
-    this.setState({
-      modalVisible: true,
-      record: { ...record },
-      navListResidField: 'C3_620929861096'
-    });
-  };
-
-  handleHistoryClick = record => {
-    this.setState({
-      modalVisible: true,
-      record: { ...record },
-      navListResidField: 'C3_620929845890'
-    });
-  };
-
   customRowBtns = [
     (record, size) => {
       return (
@@ -94,30 +78,6 @@ class PatientInfo extends React.Component {
           onClick={() => this.handleInputCaseClick(record)}
         >
           输入病例
-        </Button>
-      );
-    },
-    (record, size) => {
-      return (
-        <Button
-          key="问卷调差"
-          style={customBtnStyle}
-          size={size}
-          onClick={() => this.handleQSClick(record)}
-        >
-          问卷调查
-        </Button>
-      );
-    },
-    (record, size) => {
-      return (
-        <Button
-          key="历史记录"
-          style={customBtnStyle}
-          size={size}
-          onClick={() => this.handleHistoryClick(record)}
-        >
-          历史记录
         </Button>
       );
     }

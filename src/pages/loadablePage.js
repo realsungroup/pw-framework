@@ -65,6 +65,13 @@ export const Register = Loadable({
   }
 });
 
+export const ForgetPassword = Loadable({
+  loader: () => import('./ForgetPassword'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
 export const DoctorRegister = Loadable({
   loader: () => import('./DoctorRegister'),
   loading() {

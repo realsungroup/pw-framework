@@ -6,7 +6,7 @@ import logoImg from '../../assets/logo.png';
 import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
-import './Register.less';
+import './ForgetPassword.less';
 
 const { loginLogoSize } = window.pwConfig;
 const  Option = Select.Option;
@@ -17,14 +17,13 @@ const {
   themeColor
 } = window.pwConfig;
 
-class Register extends React.Component {
+class ForgetPassword extends React.Component {
   constructor() {
     super();
     this.state = {
       showSpin: false,
       disabled: false,
       counts: '',
-      registerMode: 'normal' //normal 普通注册 companyRegister 机构注册 doctorRegister医生注册
     };
   }
 
@@ -111,26 +110,11 @@ class Register extends React.Component {
   handleChange = () =>{
 
   }
-  //切换登录路由
-  onLogin = () => {
+  onLogin = () =>{
     this.props.history.push({
       pathname: '/login'
     });
-  };
-
-  //切换医生注册
-  onDoctorRegister = () => {
-    this.props.history.push({
-      pathname: '/doctorRegister'
-    });
-  };
-
-  //切换机构注册
-  onCompanyRegister = () => {
-    this.props.history.push({
-      pathname: '/companyRegister'
-    });
-  };
+  }
 
   render() {
     const { disabled, counts, showSpin, registerMode } = this.state;
@@ -140,42 +124,7 @@ class Register extends React.Component {
         <div className="register-contain">
           <Spin spinning={showSpin}>
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
-              <h1>注册</h1>
-              <Form.Item>
-                {getFieldDecorator('companyNo', {
-                  rules: [{ required: true, message: '请输入你的机构名称!' }]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                    }
-                    placeholder="机构名称"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item>
-                {getFieldDecorator('userName', {
-                  rules: [{ required: true, message: '请输入你的姓名!' }]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                    }
-                    placeholder="姓名"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item>
-                {getFieldDecorator('sex', {
-                  rules: [{ required: true, message: '请输入你的性别!' }]
-                })(
-                     
-                  <Select onChange = {this.handleChange()} placeholder = "选择性别" >
-                    <Option value = "男">男</Option>
-                    <Option value = "女">女</Option>
-                  </Select>
-                )}
-              </Form.Item>
+              <h1>找回密码</h1>
               <Form.Item>
                 {getFieldDecorator('loginNum', {
                   rules: [{ required: true, message: '请输入你的登录账号!' }]
@@ -185,18 +134,7 @@ class Register extends React.Component {
                       <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
                     placeholder="登录账号"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item>
-                {getFieldDecorator('loginPassword', {
-                  rules: [{ required: true, message: '请输入你的登录密码!' }]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />
-                    }
-                    placeholder="登录密码"
+                    autoComplete = 'off'
                   />
                 )}
               </Form.Item>
@@ -245,6 +183,20 @@ class Register extends React.Component {
                 )}
               </Form.Item>
               <Form.Item>
+                {getFieldDecorator('loginPassword', {
+                  rules: [{ required: true, message: '请输入你的新密码!' }]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="输入你的新密码"
+                    type= 'password'
+                    autoComplete = 'off'
+                  />
+                )}
+              </Form.Item>
+              <Form.Item>
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -252,20 +204,13 @@ class Register extends React.Component {
                   onClick={this.handleSubmit}
                   size="normal"
                 >
-                  注册
+                  提交
                 </Button>
                 <div className="login-form-register">
                   <a onClick={this.onLogin}>已有账号？请登录</a>
                 </div>
               </Form.Item>
-              <Form.Item className="other-register">
-                <div className="login-form-doctor-register">
-                  <a onClick={this.onDoctorRegister}>医生注册</a>
-                </div>
-                <div className="login-form-company-register">
-                  <a onClick={this.onCompanyRegister}>机构注册</a>
-                </div>
-              </Form.Item>
+             
             </Form>
           </Spin>
         </div>
@@ -274,4 +219,4 @@ class Register extends React.Component {
   }
 }
 
-export default injectIntl(Form.create()(Register));
+export default injectIntl(Form.create()(ForgetPassword));
