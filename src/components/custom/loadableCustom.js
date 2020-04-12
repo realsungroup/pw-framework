@@ -23,3 +23,10 @@ export const LzMenuForms = Loadable({
     return minLoading;
   }
 });
+
+export const RecordInput = Loadable({
+  loader: () => import('./RecordInput'),
+  loading() {
+    return minLoading;
+  }
+});

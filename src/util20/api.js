@@ -201,5 +201,21 @@ http.createApi('getUserDesktop', {
   method: 'get',
   url: '/api/Resource/RetrieveUserDesktop'
 });
+/**
+ * 用户注册
+ * 
+ */
+http.createApi("register", {
+  method: "get",
+  url: "api/Account/Register"
+});
+/**
+ * 获取验证码
+ * 
+ */
+http.createApi("getVerCode", {
+  method: "get",
+  url: "api/SMS/SMS_SendValidCode"
+});
 
 export default http;

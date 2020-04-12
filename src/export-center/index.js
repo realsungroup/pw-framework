@@ -10,4 +10,4 @@ export { LzTable } from '../loadableComponents';
 
 // 定制组件
 
-export { PatientInfo } from '../components/custom/loadableCustom';
+export { PatientInfo,RecordInput } from '../components/custom/loadableCustom';

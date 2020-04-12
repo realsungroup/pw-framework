@@ -1,21 +1,11 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { message, Button, Input, Form, Icon, Radio, Spin, Select } from 'antd';
-import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo.png';
-import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
 import './Register.less';
 
-const { loginLogoSize } = window.pwConfig;
-const  Option = Select.Option;
-const {
-  domainLoginConfig,
-  defaultLoginMode,
-  enterprisecode,
-  themeColor
-} = window.pwConfig;
+// const { loginLogoSize } = window.pwConfig;
+const Option = Select.Option;
 
 class Register extends React.Component {
   constructor() {
@@ -24,11 +14,10 @@ class Register extends React.Component {
       showSpin: false,
       disabled: false,
       counts: '',
-      registerMode: 'normal' //normal 普通注册 companyRegister 机构注册 doctorRegister医生注册
     };
   }
 
-  handleSubmit = () => {
+  register = () => {
     const { form } = this.props;
     let res;
     this.props.form.validateFieldsAndScroll(async (err, values) => {
@@ -36,33 +25,31 @@ class Register extends React.Component {
         return;
       }
       let registerData = {
-        companyNo: form.getFieldValue("companyNo"), // 机构代码
-        loginAccount: form.getFieldValue("loginNum"), //登录账号
-        loginPassword: form.getFieldValue("loginPassword"), // 登录密码
-        handPhone: form.getFieldValue("phone"), // 手机号
-        code: form.getFieldValue("code"),//验证码
-        // validresid: 616852937051  // 暂未定义注册表
+        userCompany: form.getFieldValue('companyName'), // 机构名称
+        userName: form.getFieldValue('userName'), // 用户姓名
+        sex: form.getFieldValue('sex'), // 性别
+        loginAccount: form.getFieldValue('loginNum'), //登录账号
+        loginPassword: form.getFieldValue('loginPassword'), // 登录密码
+        handPhone: form.getFieldValue('phone'), // 手机号
+        code: form.getFieldValue('valid'), //验证码
+        validresid: 639669815518  // 注册表
       };
       this.setState({
         showSpin: true
       });
-
-      //还未定义api
-      // try {
-      //   res = await http().register(registerData);
-      //   if (res.data.error == 0) {
-      //     message.success("注册成功");
-      //     this.props.history.push({
-      //       pathname: "/login",
-      //       state: { doctorData }
-      //     });
-      //   } else {
-      //     message.error(res.data.message);
-      //   }
-      // } catch (error) {
-      //   message.error(error.message);
-      // }
-      
+      try {
+        res = await http().register(registerData);
+        if (res.data.error == 0) {
+          message.success("注册成功");
+          this.props.history.push({
+            pathname: "/login",
+          });
+        } else {
+          message.error(res.data.message);
+        }
+      } catch (error) {
+        message.error(error.message);
+      }
       this.setState({
         showSpin: false
       });
@@ -73,17 +60,17 @@ class Register extends React.Component {
   getVerCode = async () => {
     const { form } = this.props;
     let res;
-    if (form.getFieldValue("phone")) {
+    if (form.getFieldValue('phone')) {
       this.countDown();
       try {
         res = await http().getVerCode({
-          telephone: form.getFieldValue("phone")
+          telephone: form.getFieldValue('phone')
         });
       } catch (error) {
         message.error(error.message);
       }
     } else {
-      message.info("请先输入手机号获取验证码");
+      message.info('请先输入手机号获取验证码');
     }
   };
 
@@ -108,25 +95,23 @@ class Register extends React.Component {
     }, 1000);
   };
 
-  handleChange = () =>{
-
-  }
+  handleChange = () => {};
   //切换登录路由
-  onLogin = () => {
-    this.props.history.push({
+  onLogin = async () => {
+    await this.props.history.push({
       pathname: '/login'
     });
   };
 
   //切换医生注册
-  onDoctorRegister = () => {
+  onDoctorRegister = async () => {
     this.props.history.push({
       pathname: '/doctorRegister'
     });
   };
 
   //切换机构注册
-  onCompanyRegister = () => {
+  onCompanyRegister = async () => {
     this.props.history.push({
       pathname: '/companyRegister'
     });
@@ -139,21 +124,25 @@ class Register extends React.Component {
       <div className="page">
         <div className="register-contain">
           <Spin spinning={showSpin}>
-            <Form onSubmit={this.handleSubmit} className="login-form-userName">
+            <Form
+              onSubmit={this.handleSubmit}
+              className="login-form-userName"
+            >
               <h1>注册</h1>
-              <Form.Item>
-                {getFieldDecorator('companyNo', {
+              <Form.Item label="所属机构" className = "registerForm" >
+                {getFieldDecorator('companyName', {
                   rules: [{ required: true, message: '请输入你的机构名称!' }]
                 })(
                   <Input
                     prefix={
                       <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
+                    className = "inputContainer"
                     placeholder="机构名称"
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="姓名" className = "registerForm" >
                 {getFieldDecorator('userName', {
                   rules: [{ required: true, message: '请输入你的姓名!' }]
                 })(
@@ -165,18 +154,21 @@ class Register extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="性别" className = "registerForm" >
                 {getFieldDecorator('sex', {
                   rules: [{ required: true, message: '请输入你的性别!' }]
                 })(
-                     
-                  <Select onChange = {this.handleChange()} placeholder = "选择性别" >
-                    <Option value = "男">男</Option>
-                    <Option value = "女">女</Option>
+                  <Select
+                    onChange={this.handleChange()}
+                    placeholder="选择性别"
+                    style={{ width: '190px' }}
+                  >
+                    <Option value="男">男</Option>
+                    <Option value="女">女</Option>
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="登录账号" className = "registerForm" >
                 {getFieldDecorator('loginNum', {
                   rules: [{ required: true, message: '请输入你的登录账号!' }]
                 })(
@@ -188,7 +180,7 @@ class Register extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="登录密码" className = "registerForm" >
                 {getFieldDecorator('loginPassword', {
                   rules: [{ required: true, message: '请输入你的登录密码!' }]
                 })(
@@ -200,7 +192,7 @@ class Register extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="手机号" className = "registerForm" >
                 {getFieldDecorator('phone', {
                   rules: [{ required: true, message: '请输入你的手机号!' }]
                 })(
@@ -244,28 +236,28 @@ class Register extends React.Component {
                   </Button>
                 )}
               </Form.Item>
-              <Form.Item>
+              <div className = "registerOrLogin">
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="login-form-button"
-                  onClick={this.handleSubmit}
-                  size="normal"
+                  className="register-form-button"
+                  onClick={this.register}
+                  size="default"
                 >
                   注册
                 </Button>
-                <div className="login-form-register">
+                <div className="register-form-login">
                   <a onClick={this.onLogin}>已有账号？请登录</a>
                 </div>
-              </Form.Item>
-              <Form.Item className="other-register">
-                <div className="login-form-doctor-register">
+              </div>
+              <div className= "other-register">
+                <div className="other-register-doctor">
                   <a onClick={this.onDoctorRegister}>医生注册</a>
                 </div>
-                <div className="login-form-company-register">
+                <div className="other-register-company">
                   <a onClick={this.onCompanyRegister}>机构注册</a>
                 </div>
-              </Form.Item>
+              </div>
             </Form>
           </Spin>
         </div>

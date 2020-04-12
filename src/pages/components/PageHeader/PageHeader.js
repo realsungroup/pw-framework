@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
-import logoImg from '../../../assets/logo.png';
+import logoImg from '../../../assets/Newlogo.png';
 import UserInfo from '../../components/UserInfo';
 import './PageHeader.less';
 import http, { makeCancelable } from 'Util20/api';

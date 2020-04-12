@@ -74,10 +74,10 @@ pwConfig.lockScreenWaitTime = 600;
  * logo 配置
  */
 // 首页 logo 尺寸
-pwConfig.homeLogoSize = 42;
+pwConfig.homeLogoSize = 60;
 
 // 登录页 logo 尺寸
-pwConfig.loginLogoSize = 42;
+pwConfig.loginLogoSize = 80;
 
 /**
  * 上传文件配置

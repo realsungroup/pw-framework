@@ -43,6 +43,7 @@
   &__form {
     display: inline-block;
     width: 100%;
+    overflow:hidden
   }
   &__copyright {
     color: #999;
@@ -59,7 +60,9 @@
     text-align: left;
   }
 }
-
+.login_form .ant-row .ant-form-item-control-wrapper{
+  clear: both;
+}
 @media screen and (max-width: 1066px) {
   .login {
     text-align: center;

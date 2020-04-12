@@ -28,7 +28,7 @@ class CompanyRegister extends React.Component {
     };
   }
 
-  handleSubmit = () => {
+  register = () => {
     const { form } = this.props;
     let res;
     this.props.form.validateFieldsAndScroll(async (err, values) => {
@@ -55,7 +55,6 @@ class CompanyRegister extends React.Component {
       //     message.success("注册成功");
       //     this.props.history.push({
       //       pathname: "/login",
-      //       state: { doctorData }
       //     });
       //   } else {
       //     message.error(res.data.message);
@@ -118,7 +117,7 @@ class CompanyRegister extends React.Component {
           <Spin spinning={showSpin}>
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
               <h1>机构注册</h1>
-              <Form.Item>
+              <Form.Item label="机构名称" className = "registerForm">
                 {getFieldDecorator('companyName', {
                   rules: [{ required: true, message: '请输入你的机构名称!' }]
                 })(
@@ -130,7 +129,21 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="法人姓名" className = "registerForm">
+                {getFieldDecorator('userName', {
+                  rules: [
+                    { required: true, message: '请输入上述机构法人姓名!' }
+                  ]
+                })(
+                  <Input
+                    prefix={
+                      <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    }
+                    placeholder="法人姓名"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item label="机构地址" className = "registerForm">
                 {getFieldDecorator('companyAddress', {
                   rules: [{ required: true, message: '请输入你的机构地址!' }]
                 })(
@@ -142,7 +155,7 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="管理员账号" className = "registerForm">
                 {getFieldDecorator('adminAccount', {
                   rules: [{ required: true, message: '请输入你的管理员账号!' }]
                 })(
@@ -154,7 +167,7 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="管理员密码" className = "registerForm">
                 {getFieldDecorator('adminPassword', {
                   rules: [{ required: true, message: '请输入你的管理员密码!' }]
                 })(
@@ -166,7 +179,7 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item label="手机号" className = "registerForm">
                 {getFieldDecorator('telephone', {
                   rules: [{ required: true, message: '请输入你的手机号!' }]
                 })(
@@ -210,12 +223,12 @@ class CompanyRegister extends React.Component {
                   </Button>
                 )}
               </Form.Item>
-              <Form.Item>
+              <div className = 'registerOrLogin'>
                 <Button
                   type="primary"
-                  // htmlType="submit"
+                  htmlType="submit"
                   className="login-form-button"
-                  // onClick={this.register}
+                  onClick={this.register}
                   size="normal"
                 >
                   注册
@@ -223,15 +236,15 @@ class CompanyRegister extends React.Component {
                 <div className="login-form-register">
                   <a onClick={this.onLogin}>已有账号？请登录</a>
                 </div>
-              </Form.Item>
-              <Form.Item className="other-register">
+              </div>
+              <div className="other-register">
                 <div className="login-form-doctor-register">
                   <a onClick={this.onDoctorRegister}>医生注册</a>
                 </div>
                 <div className="login-form-company-register">
                   <a onClick={this.onRegister}>普通注册</a>
                 </div>
-              </Form.Item>
+              </div>
             </Form>
           </Spin>
         </div>
