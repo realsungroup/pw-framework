@@ -6,12 +6,21 @@ import TabsTableData from '../TabsTableData';
 class CourseMaintain extends React.Component {
   constructor(props) {
     super(props);
+   
   }
   state = {
     SquareCardArr: [],
-    val: null
+    val: null,
+    
   };
-
+  componentDidMount(){
+    var baseURL=window.pwConfig[
+      process.env.NODE_ENV
+    ].customURLs.onlineTrainning;
+    this.setState({
+      baseURL:baseURL
+    })
+  }
   render() {
     return (
       <TabsTableData
@@ -128,7 +137,42 @@ class CourseMaintain extends React.Component {
               placement: 'right',
               height: 700
             }
-          }
+          },
+          {
+            resid: 640027948998,
+            TabsTitle: '内训在线培训记录',
+            OutHeight: '80vh',
+            baseURL:this.state.baseURL,
+            recordFormFormWidth: '90%',
+            hasBeBtns: true,
+            hasModify: false,
+            hasDelete: false,
+            hasAdd: false,
+            hasRowDelete: true,
+            hasRowModify: false,
+            hasRowView: false,
+            subtractH: 180,
+            formProps: {
+              height: 550
+            }},
+            {
+              resid: 640021774020,
+              TabsTitle: '在线内训权限',
+              OutHeight: '80vh',
+              baseURL:this.state.baseURL,
+              recordFormFormWidth: '90%',
+              hasBeBtns: true,
+              hasModify: false,
+              hasDelete: false,
+              hasAdd: false,
+              hasRowDelete: true,
+              hasRowModify: false,
+              hasRowView: false,
+              subtractH: 180,
+              formProps: {
+                height: 550
+              }}
+
         ]}
       />
     );
