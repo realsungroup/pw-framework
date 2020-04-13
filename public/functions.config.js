@@ -1932,3 +1932,7 @@ window[635350002067] = {
   name:'IDLTransferHr',
   title:'IDL调岗HR预审'
 };
+window[640088086206] = {
+  name:'RBAVideoData',
+  title:'RBA视频数据'
+};

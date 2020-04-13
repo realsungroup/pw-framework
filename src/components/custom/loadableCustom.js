@@ -673,3 +673,9 @@ export const IDLTransferHr = Loadable({
     return minLoading;
   }
 });
+export const RBAVideoData = Loadable({
+  loader: () => import('./RBAVideoData'),
+  loading() {
+    return minLoading;
+  }
+});
