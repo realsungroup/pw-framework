@@ -679,3 +679,9 @@ export const RBAVideoData = Loadable({
     return minLoading;
   }
 });
+export const Compact = Loadable({
+  loader: () => import('./Compact'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Popconfirm, message, Spin, Tabs } from 'antd';
+import { TableData } from 'Common/loadableCommon';
 import './Compact.less';
 const filterTab1=[
   {
@@ -47,10 +48,12 @@ class Compact extends Component {
       key1:'_0A',
       ke2:'_0B',
       residTab1:440237518278,
-      cms:`C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`
+      cms:`C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`,
+      cms2:`C3_640119278050= 'DL'`
     };
   }
   render() {
+    const {TabPane} = Tabs
     return (
       <div className="Compact">
          <Tabs
@@ -71,7 +74,7 @@ class Compact extends Component {
                 )
               })}
               </div>
-                  <div className='Tab1oOuter'>
+                  <div className='Tab1Outer'>
                    <TableData
                    resid={this.state.residTab1}
                    subtractH={220}
@@ -82,12 +85,16 @@ class Compact extends Component {
                    hasRowView={false}
                    hasRowDelete={false}
                    hasRowEdit={false}
-                   hasDelete={true}
-                   hasModify={false}
+                   hasDelete={false}
+                   hasModify={true}
                    hasBeBtns={false}
                    hasRowModify={false}
                    hasRowSelection={false}
-                   cmswhere={this.state.cms}
+                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                     <Button>查看历史信息</Button>
+                    );
+                  }}
                  />
                  </div>
             </TabPane>
@@ -108,17 +115,17 @@ class Compact extends Component {
               <div className='filterLine'>
               {filterTab2B.map((item,key) => {
                 return (
-                  <span className={(this.state.key2=='_'+key+'B')?'filter current':'filter'} key={'_'+key+'B'} onClick={()=>{this.setState({key2:'_'+key+'A',cms2:item.cms2})}}>
+                  <span className={(this.state.key2=='_'+key+'B')?'filter current':'filter'} key={'_'+key+'B'} onClick={()=>{this.setState({key2:'_'+key+'B',cms2:item.cms});console.log(key)}}>
                     {item.label}
                   </span>
                 )
               })}
               </div>
+              <div className='Tab1Outer'>
+
               <TableData
                    resid={488995522229}
                    subtractH={220}
-                   sideBarAg={true}
-                   hasAdvSearch={true}
                    hasAdd={true}
                    hasRowView={false}
                    hasRowDelete={false}
@@ -128,8 +135,28 @@ class Compact extends Component {
                    hasBeBtns={false}
                    hasRowModify={false}
                    hasRowSelection={false}
-                   cmswhere={this.state.cms + ` and ` + this.state.cms2}
+                   cmswhere={this.state.cms1+` and `+this.state.cms2}
+                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                    <>
+                      {this.state.key1=='_2A'?
+                        <>
+                          <Button type='primary'>已签约</Button>
+                          <Button type='danger'>未签约</Button>
+                        </>:null
+                      }
+                      {this.state.key1=='_1A'?
+                        <>
+                          <Button>查看合同信息</Button>
+                          <Button type='primary'>发送通知邮件</Button>
+                        </>:null
+                      }
+                    </> 
+                    );
+                  }}
                  />
+              </div>
+
             </TabPane>
         </Tabs>
 

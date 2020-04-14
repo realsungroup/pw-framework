@@ -1936,3 +1936,7 @@ window[640088086206] = {
   name:'RBAVideoData',
   title:'RBA视频数据'
 };
+window[640189772997] = {
+  name:'Compact',
+  title:'合同管理'
+};
