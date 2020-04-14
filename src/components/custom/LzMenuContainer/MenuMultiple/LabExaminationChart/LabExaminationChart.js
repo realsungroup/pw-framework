@@ -65,7 +65,7 @@ class LabExaminationChart extends React.Component {
   }
 
   getOption = () => {
-    const { dateField, data, fields } = this.props;
+    const { dateField, data, fields, colInfo } = this.props;
     // columns
     const columns = [];
     const itemnamecolumndata = {
@@ -130,10 +130,33 @@ class LabExaminationChart extends React.Component {
       }
       yAxis.push(_yAxis);
       newData.forEach(item => {
-        const value = item[field.field];
+        let colinfo = colInfo.find(col => col.ColName === field.field);
+        let value = item[field.field];
+        if (colinfo.ColValType === 14) {
+          const options = colinfo.ListOfColOptions;
+          const isMultiple = colinfo.ColParam10;
+          if (isMultiple) {
+            if (typeof value === "string" && value) {
+              value = value.split(",");
+            }
+            const arr = options.map(option => {
+              if (
+                Array.isArray(value) &&
+                value.find(item => item === option.valueColValue)
+              ) {
+                return option.displayColValue;
+              }
+            });
+            value = arr || [];
+            value = value.filter(item => item).join(",");
+          }
+        }
+
         obj.data.push(value);
         const dateColumnName = moment(item[dateField]).format("YYYYMMDD");
-        const row = { name: obj.name };
+        const row = {
+          name: obj.name
+        };
         row[dateColumnName] = value;
         const index = dsOfTableGrid.findIndex(row => row.name === obj.name);
         if (~index) {

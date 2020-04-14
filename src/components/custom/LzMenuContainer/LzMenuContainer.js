@@ -244,7 +244,7 @@ export default class LzMenuContainer extends React.Component {
         if (menu.RES_NAME === "实验室检查") {
           data["实验室检查"] = menu;
         }
-        if (menu.RES_NAME.includes("CDAI")) {
+        if (menu.RES_NAME.includes("评分")) {
           data["CDAI"] = menu;
         }
         if (menu.RES_NAME === "用药信息") {
@@ -255,9 +255,9 @@ export default class LzMenuContainer extends React.Component {
           nj = { ...menu };
         }
       });
-      if (record.C3_617809531670 === "UC") {
-        data["CDAI"] = nj;
-      }
+      // if (record.C3_617809531670 === "UC") {
+      //   data["CDAI"] = nj;
+      // }
       this.setState({ data });
       this.isFirst = false;
     }
@@ -504,7 +504,7 @@ export default class LzMenuContainer extends React.Component {
 
   renderUserFields = () => {
     const { record } = this.state;
-    console.log(record);
+    // console.log(record);
     const { searchText } = this.props;
     // console.log('this.props.record:', this.props.record);
     // 没有选取人员时
@@ -719,7 +719,6 @@ export default class LzMenuContainer extends React.Component {
       innerFieldName
     } = this.state;
     const { searchText } = this.props;
-    console.log(data);
     return (
       <div className="lz-menu-container">
         {/* menu */}
@@ -961,6 +960,7 @@ export default class LzMenuContainer extends React.Component {
                       return (
                         <TabPane tab={item[0]} key={item[0]}>
                           <LabExaminationChart
+                            colInfo={this._canOpControlArr["实验室检查"]}
                             data={recordList.实验室检查}
                             fields={item[1]}
                             dateField={innerFieldName.实验室检查}
@@ -1003,6 +1003,7 @@ export default class LzMenuContainer extends React.Component {
                       return (
                         <TabPane tab={item[0]} key={item[0]}>
                           <LabExaminationChart
+                            colInfo={this._canOpControlArr["CDAI"]}
                             data={recordList.CDAI}
                             fields={item[1]}
                             dateField={innerFieldName.CDAI}
@@ -1045,6 +1046,7 @@ export default class LzMenuContainer extends React.Component {
                       return (
                         <TabPane tab={item[0]} key={item[0]}>
                           <LabExaminationChart
+                            colInfo={this._canOpControlArr["用药"]}
                             data={recordList.用药}
                             fields={item[1]}
                             dateField={innerFieldName.用药}
@@ -1088,6 +1090,7 @@ export default class LzMenuContainer extends React.Component {
                       return (
                         <TabPane tab={item[0]} key={item[0]}>
                           <LabExaminationChart
+                            colInfo={this._canOpControlArr["内镜"]}
                             data={recordList.内镜}
                             fields={item[1]}
                             dateField={innerFieldName.内镜}
