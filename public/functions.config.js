@@ -1910,33 +1910,37 @@ window[629200936654] = {
 };
 
 window[631618595197] = {
-  name:'AttendanceRecord',
-  title:'签到记录导出'
+  name: 'AttendanceRecord',
+  title: '签到记录导出'
 };
 
 window[631968621232] = {
-  name:'PersonInfoManager',
-  title:'个人档案管理'
+  name: 'PersonInfoManager',
+  title: '个人档案管理'
 };
 
 window[631968828634] = {
-  name:'PersonInfoPrivate',
-  title:'个人档案'
+  name: 'PersonInfoPrivate',
+  title: '个人档案'
 };
 
 window[632244542306] = {
-  name:'IDLTransfer',
-  title:'IDL调岗'
+  name: 'IDLTransfer',
+  title: 'IDL调岗'
 };
 window[635350002067] = {
-  name:'IDLTransferHr',
-  title:'IDL调岗HR预审'
+  name: 'IDLTransferHr',
+  title: 'IDL调岗HR预审'
 };
 window[640088086206] = {
-  name:'RBAVideoData',
-  title:'RBA视频数据'
+  name: 'RBAVideoData',
+  title: 'RBA视频数据'
 };
 window[640189772997] = {
-  name:'Compact',
-  title:'合同管理'
+  name: 'Compact',
+  title: '合同管理'
+};
+window[640189820723] = {
+  name: 'ContractApproval',
+  title: '合同审批'
 };

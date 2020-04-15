@@ -685,3 +685,9 @@ export const Compact = Loadable({
     return minLoading;
   }
 });
+export const ContractApproval = Loadable({
+  loader: () => import('./ContractApproval'),
+  loading() {
+    return minLoading;
+  }
+});

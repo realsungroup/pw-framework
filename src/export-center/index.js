@@ -145,3 +145,4 @@ export { IDLTransfer } from '../components/custom/loadableCustom';
 export { IDLTransferHr } from '../components/custom/loadableCustom';
 export { RBAVideoData } from '../components/custom/loadableCustom';
 export { Compact } from '../components/custom/loadableCustom';
+export { ContractApproval } from '../components/custom/loadableCustom';
