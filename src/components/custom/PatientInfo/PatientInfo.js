@@ -119,7 +119,7 @@ class PatientInfo extends React.Component {
         )
         {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
-           <RecordInput />
+           <RecordInput {...record} />
           </LzModal>
         )}
       </div>
