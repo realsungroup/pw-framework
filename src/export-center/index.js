@@ -143,3 +143,5 @@ export { PersonInfoManager } from '../components/custom/loadableCustom';
 export { PersonInfoPrivate } from '../components/custom/loadableCustom';
 export { IDLTransfer } from '../components/custom/loadableCustom';
 export { IDLTransferHr } from '../components/custom/loadableCustom';
+export { RBAVideoData } from '../components/custom/loadableCustom';
+export { Compact } from '../components/custom/loadableCustom';
