@@ -4,7 +4,10 @@ import classnames from 'classnames';
 import './PostAndPersonnel.less';
 import PersonnelChanges from './PersonnelChanges';
 import PostArchitecture from './PostArchitecture';
+import PersonRelationship from './PersonRelationship';
 
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
 const { SubMenu } = Menu;
 const styles = {
   menuStyle: {
@@ -40,6 +43,30 @@ class PostAndPersonnel extends React.Component {
         break;
       case 'post-architecture':
         page = <PostArchitecture />;
+        break;
+      case 'person-relationship':
+        page = (
+          <PersonRelationship
+            resid="639856535460"
+            idField="C3_305737857578" //主表id字段名
+            pidField="C3_417993417686" //父节点id字段名
+            level={3}
+            hasOpration={false}
+            displayFileds={{
+              firstField: 'C3_419343735913',
+              secondaryField: 'C3_227212499515',
+              thirdField: 'C3_417990929081',
+              imgField: 'C3_461934233303'
+            }}
+            procedureConfig={{
+              procedure: 'pw_staffs',
+              paranames: 'dates',
+              paratypes: 'string'
+            }}
+            baseURL={baseURL}
+            hasView
+          />
+        );
         break;
       default:
         break;
@@ -148,7 +175,7 @@ class PostAndPersonnel extends React.Component {
                 </span>
               }
             >
-              <Menu.Item>档案管理</Menu.Item>
+              <Menu.Item key="person-relationship">人事关系</Menu.Item>
               <Menu.Item>档案导入</Menu.Item>
             </SubMenu>
             <Menu.Item key="">
