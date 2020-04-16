@@ -1,6 +1,7 @@
 import React from 'react';
 // import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
+import ShowDataChart from '../ShowDataChart/ShowDataChart';
 import './RecordInput.less';
 import {
   Button,
@@ -62,11 +63,10 @@ class RecordInput extends React.Component {
     this.setState({
       days: moment(nowDate).diff(start, 'day')
     });
-    this.getTableData();
+    // this.getTableData();
   };
 
   handleChartData = () => {
-    console.log("1",this.state.res)
     let legendData = [];
     // recordTime = this.state.res.map(item => {
     //   if (item.recordTime != '') {
@@ -86,54 +86,57 @@ class RecordInput extends React.Component {
   };
 
   //获取数据
-  getTableData = async () => {
-    let res;
-    if (this.state.selectKey == 1) {
-      try {
-        res = await getMainTableData(resid1, {
-          getcolumninfo:1
-        });
-        this.setState({ res: res});
-        console.log(res);
-      } catch (err) {
-        return message.error(err.message);
-      }
-    } else if (this.state.selectKey == 2) {
-      try {
-        res = await getTableData(resid2, {
-          getcolumninfo:1
-        });
-      } catch (err) {
-        return message.error(err.message);
-      }
-    } else if (this.state.selectKey == 3) {
-      try {
-        res = await getTableData(resid3, {
-          getcolumninfo:1
-        });
-      } catch (err) {
-        return message.error(err.message);
-      }
-    }
-    this.handleChartData();
-  };
+  // getTableData = async () => {
+  //   let res;
+  //   if (this.state.selectKey == 1) {
+  //     try {
+  //       res = await getMainTableData(resid1, {
+  //         getcolumninfo:1
+  //       });
+  //       this.setState({ res: res});
+  //     } catch (err) {
+  //       return message.error(err.message);
+  //     }
+  //   } else if (this.state.selectKey == 2) {
+  //     try {
+  //       res = await getTableData(resid2, {
+  //         getcolumninfo:1
+  //       });
+  //     } catch (err) {
+  //       return message.error(err.message);
+  //     }
+  //   } else if (this.state.selectKey == 3) {
+  //     try {
+  //       res = await getTableData(resid3, {
+  //         getcolumninfo:1
+  //       });
+  //     } catch (err) {
+  //       return message.error(err.message);
+  //     }
+  //   }
+  //   this.handleChartData();
+  // };
 
   //开始日期
   beginDateChange = value => {
     let start = moment(value).format('YYYY-MM-DD');
     let end = moment(this.state.endDate);
-    this.setState({ beginDate: moment(start) });
+    // this.setState({ beginDate: moment(start) });
     let days = end.diff(moment(start), 'day');
     this.setState({
-      days: days
+      days: days,
+      beginDate: moment(start)
     });
   };
   //结束日期
   endDateChange = value => {
-    this.setState({ endDate: moment(value).format('YYYY-MM-DD') });
+    // this.setState({ endDate: moment(value).format('YYYY-MM-DD') });
     let end = moment(value).format('YYYY-MM-DD');
     let days = moment(end).diff(this.state.beginDate, 'day');
-    this.setState({ days: days });
+    this.setState({ 
+      days: days,
+      endDate:moment(end)
+     });
   };
 
   activeKeyChange = key => {
@@ -256,11 +259,10 @@ class RecordInput extends React.Component {
                 </Form.Item>
               </div>
               <div id="recordInput__showChart1">
-                <EChartsOfReact
-                  id="myChart1"
-                  option={this.state.option}
-                  defaultWidth={1200}
-                  defaultHeight={400}
+                <ShowDataChart
+                beginDate = {this.state.beginDate}
+                endDate = {this.state.endDate}
+                selectKey = {this.state.selectKey}
                 />
               </div>
               <div className="recordInput__dataContainer">

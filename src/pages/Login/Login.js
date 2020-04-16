@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { message, Button, Input, Form, Icon, Radio } from 'antd';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/Newlogo.png';
+import leftImg from '../../assets/leftImg.png';
 import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
@@ -216,7 +217,8 @@ class Login extends React.Component {
     const { intl } = this.props;
     return (
       <div className="login">
-        <div className="login__left-part" />
+        {/* <div className="login__left-part" /> */}
+        <img src={leftImg}  className ="login__left-part" alt=""/>
         <div className="login__right-part">
           <img
             style={{ height: loginLogoSize }}

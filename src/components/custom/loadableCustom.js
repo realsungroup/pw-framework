@@ -30,3 +30,9 @@ export const RecordInput = Loadable({
     return minLoading;
   }
 });
+export const ShowDataChart = Loadable({
+  loader: () => import('./ShowDataChart'),
+  loading() {
+    return minLoading;
+  }
+});

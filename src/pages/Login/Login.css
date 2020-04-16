@@ -1,5 +1,5 @@
 /** less 文件中引入背景图有 bug，所以使用 css */
 .login__left-part {
-  background-image: url('../../assets/leftImg.png') no-repeat;
+  /* background-image: url('../../assets/leftImg.png') no-repeat; */
   background-size: auto 100%;
 }
