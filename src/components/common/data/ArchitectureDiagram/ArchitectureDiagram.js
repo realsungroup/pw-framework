@@ -33,6 +33,7 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
 import TableData from '../TableData';
+import PwAggrid from '../../ui/PwAggrid';
 import TreeData from '../TreeData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -40,6 +41,7 @@ import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
 import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
+import qs from 'qs';
 
 function childCount(id, nodes) {
   let count = 0;
@@ -51,7 +53,48 @@ function childCount(id, nodes) {
   }
   return count;
 }
+function exportExcel(data, headerData = [], fileName) {
+  //要导出的json数据
 
+  let header = '';
+  headerData.forEach(item => {
+    header += item.text + ',';
+  });
+  header = header.substring(0, header.length - 1);
+  header += `\n`;
+  //列标题，逗号隔开，每一个逗号就是隔开一个单元格
+  // let str = `姓名,电话,邮箱\n`;
+  let str = header;
+  //增加\t为了不让表格显示科学计数法或者其他格式
+  // for (let i = 0; i < data.length; i++) {
+  //   for (let item in data[i]) {
+  //     str += `${data[i][item] + '\t'},`;
+  //   }
+  //   str += '\n';
+  // }
+  data.forEach(_data => {
+    headerData.forEach(item => {
+      const value = _data[item.id];
+      if (value !== null && value !== undefined) {
+        str += `${value + '\t'},`;
+      } else {
+        str += ',';
+      }
+    });
+    str += '\n';
+  });
+
+  //encodeURIComponent解决中文乱码
+  let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+  //通过创建a标签实现
+  let link = document.createElement('a');
+  link.href = uri;
+  //对下载的文件命名
+  link.download = fileName + '.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -196,6 +239,13 @@ class ArchitectureDiagram extends React.Component {
     this._nodes = [...this.chart.config.nodes];
     for (var i = 0; i < data.length; i++) {
       data[i].number_children = childCount(data[i].id, data);
+    }
+    const querystring = window.location.search.substring(1);
+    const qsObj = qs.parse(querystring);
+    if (qsObj.selectedNode) {
+      this.handleNodeClick(this.chart, {
+        node: { id: Number(qsObj.selectedNode) }
+      });
     }
   }
 
@@ -350,6 +400,7 @@ class ArchitectureDiagram extends React.Component {
 
   _cmscolumninfo = []; // 主表的列定义
   _nodes = []; // 当前所有节点数据
+  _emptyJobs = []; //空缺岗位
   /**
    * 获取节点数据
    */
@@ -389,6 +440,7 @@ class ArchitectureDiagram extends React.Component {
           tags.push('tartOccupied');
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
+          this._emptyJobs.push(item);
         }
         if (item.isCreated === 'Y') {
           tags.push('created');
@@ -1563,6 +1615,20 @@ class ArchitectureDiagram extends React.Component {
             </Popover>
           </div>
         )}
+        <div className="architecture-diagram_header_icon-button-group">
+          <div
+            className="architecture-diagram_header_icon-button"
+            onClick={() => {
+              exportExcel(this._emptyJobs, this._cmscolumninfo, '空缺岗位');
+            }}
+          >
+            <Icon
+              type="switcher"
+              className="architecture-diagram_header_icon-button__icon"
+            />
+            下载空缺岗位表格
+          </div>
+        </div>
       </header>
     );
   };
@@ -1835,22 +1901,23 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
-            <div
+            <Button
               onClick={() => {
                 this.setState({ departmentTreeVisible: true });
               }}
-              style={{ cursor: 'pointer', marginLeft: 8 }}
+              style={{ margin: '0 8px' }}
+              type="primary"
+              size="small"
+              icon="filter"
             >
-              部门：
-              <span style={{ color: '#1890ff' }}>
-                {selectedDepartment ? selectedDepartment : '未选择'}
-              </span>
-            </div>
+              筛选部门
+            </Button>
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
               type="primary"
               size="small"
+              icon="sync"
             >
               刷新
             </Button>
@@ -1872,35 +1939,16 @@ class ArchitectureDiagram extends React.Component {
                     hidden: mode === 'chart'
                   })}
                 >
-                  <TableData
-                    resid={resid}
-                    subtractH={220}
-                    wrappedComponentRef={element =>
-                      (this.tableDataRef1 = element)
-                    }
-                    refTargetComponentName="TableData"
-                    tableComponent="ag-grid"
-                    rowSelectionAg="single"
-                    sideBarAg={true}
-                    hasAdvSearch={true}
+                  <PwAggrid
+                    originalColumn={this._cmscolumninfo}
+                    dataSource={this._nodes}
+                    // rowSelection={rowSelection}
+                    gridProps={[]}
+                    resid={this.props.resid}
+                    baseURL={this.props.baseURL}
                     hasAdd={false}
-                    hasRowView={false}
-                    hasRowDelete={false}
-                    hasRowEdit={false}
-                    hasDelete={false}
                     hasModify={false}
-                    hasBeBtns={false}
-                    hasRowModify={false}
-                    hasRowSelection={false}
-                    baseURL={baseURL}
-                    onAgGridSelectionChanged={(rows = []) => {
-                      if (rows.length) {
-                        const node = this.chart.get(rows[0][idField]);
-                        console.log(node);
-                        // this.setState({selectedNode:node});
-                      } else {
-                      }
-                    }}
+                    hasDelete={false}
                   />
                 </div>
                 <div

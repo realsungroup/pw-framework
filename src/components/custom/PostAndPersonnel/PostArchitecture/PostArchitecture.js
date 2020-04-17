@@ -52,6 +52,9 @@ class PostArchitecture extends React.Component {
   };
   render() {
     const { selectedTab, hasUnhandleRecords } = this.state;
+    const { role } = this.props;
+    const hasGroup = role === 'manager' ? false : true;
+    const hasDepartmentFilter = hasGroup;
     return (
       <div className="post-architecture">
         <div
@@ -68,16 +71,16 @@ class PostArchitecture extends React.Component {
             'tab-selected': selectedTab === 'person'
           })}
         >
-          人事架构
+          岗位任职
         </div>
-        <div
+        {/* <div
           onClick={() => this.setState({ selectedTab: 'vacancy' })}
           className={classNames('post-architecture_title', {
             'tab-selected': selectedTab === 'vacancy'
           })}
         >
           空缺岗位列表
-        </div>
+        </div> */}
         <div style={{ clear: 'both' }}></div>
         {selectedTab === 'job' && (
           <div className="post-architecture_diagram-container">
@@ -104,6 +107,9 @@ class PostArchitecture extends React.Component {
               createWindowName="CreateWindow"
               editWindowName="EditWindow"
               hasImport={false}
+              hasGroup={hasGroup}
+              hasDepartmentFilter={hasDepartmentFilter}
+              role={role}
             />
           </div>
         )}
@@ -120,7 +126,6 @@ class PostArchitecture extends React.Component {
               pidField="orgSupCode" //父节点id字段名
               level={3}
               hasOpration={false}
-              // remarkField="C3_627679142400" //历史情况的title
               displayFileds={{
                 firstField: 'memberCN',
                 secondaryField: 'orgName',
@@ -140,6 +145,9 @@ class PostArchitecture extends React.Component {
               }}
               hasView
               importResid="638645137963"
+              hasGroup={hasGroup}
+              hasDepartmentFilter={hasDepartmentFilter}
+              role={role}
             />
           </div>
         )}
@@ -162,21 +170,6 @@ class PostArchitecture extends React.Component {
                 paravalues: moment().format('YYYYMMDD')
               }}
             />
-            {/* <TableData
-              baseURL={baseURL}
-              resid="627649390227"
-              key="7"
-              subtractH={240}
-              hasAdd={false}
-              tableComponent="ag-grid"
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-            /> */}
           </div>
         )}
       </div>

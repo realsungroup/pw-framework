@@ -15,28 +15,28 @@ import {
   DatePicker,
   InputNumber
 } from 'antd';
-import './ArchitectureDiagram.less';
+import './PersonRelationship.less';
+import avatarDef from './svg/avatar.svg';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
 import selfDefine from './svg/自定义卡片.svg';
 import http, { makeCancelable } from 'Util20/api';
-import FormData from '../../../../common/data/FormData';
+import FormData from '../../../common/data/FormData';
 import { getDataProp } from 'Util20/formData2ControlsData';
 import dealControlArr from 'Util20/controls';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { clone, getIntlVal } from 'Util20/util';
-import TableData from '../../../../common/data/TableData';
-import TreeData from '../../../../common/data/TreeData';
-import PwAggrid from '../../../../common/ui/PwAggrid';
+import TableData from '../../../common/data/TableData';
+import TreeData from '../../../common/data/TreeData';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { defaultProps, propTypes } from './propTypes';
 import moment from 'moment';
-import withImport from '../../../../common/hoc/withImport';
-import withModalDrawer from '../../../../common/hoc/withModalDrawer';
+import withImport from '../../../common/hoc/withImport';
+import withModalDrawer from '../../../common/hoc/withModalDrawer';
+import PwAggrid from '../../../common/ui/PwAggrid';
 import { getItem, setItem } from 'Util20/util';
-import qs from 'qs';
 
 function childCount(id, nodes) {
   let count = 0;
@@ -48,73 +48,31 @@ function childCount(id, nodes) {
   }
   return count;
 }
-function exportExcel(data, headerData = [], fileName) {
-  //要导出的json数据
-
-  let header = '';
-  headerData.forEach(item => {
-    header += item.text + ',';
-  });
-  header = header.substring(0, header.length - 1);
-  header += `\n`;
-  //列标题，逗号隔开，每一个逗号就是隔开一个单元格
-  // let str = `姓名,电话,邮箱\n`;
-  let str = header;
-  //增加\t为了不让表格显示科学计数法或者其他格式
-  // for (let i = 0; i < data.length; i++) {
-  //   for (let item in data[i]) {
-  //     str += `${data[i][item] + '\t'},`;
-  //   }
-  //   str += '\n';
-  // }
-  data.forEach(_data => {
-    headerData.forEach(item => {
-     const value = _data[item.id];
-     if (value !== null && value !== undefined) {
-       str += `${value + '\t'},`;
-     } else {
-       str += ',';
-     }
-    });
-    str += '\n';
-  });
-
-  //encodeURIComponent解决中文乱码
-  let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
-  //通过创建a标签实现
-  let link = document.createElement('a');
-  link.href = uri;
-  //对下载的文件命名
-  link.download = fileName + '.csv';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
-OrgChart.templates.jobarchitectureDiagramTemplate = Object.assign(
+OrgChart.templates.relationshipArchitectureDiagramTemplate = Object.assign(
   {},
   OrgChart.templates.ula
 );
-OrgChart.templates.jobarchitectureDiagramTemplate.node =
+OrgChart.templates.relationshipArchitectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
-OrgChart.templates.jobarchitectureDiagramTemplate.img_0 =
+OrgChart.templates.relationshipArchitectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="50" cy="60" r="40"></circle>' +
+  '<circle  cx="40" cy="50" r="40"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="80" height="80">' +
+  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="60" height="60">' +
   '</image>';
-OrgChart.templates.jobarchitectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
-OrgChart.templates.jobarchitectureDiagramTemplate.field_1 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
-OrgChart.templates.jobarchitectureDiagramTemplate.field_2 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="85" text-anchor="middle">{val}</text>';
-OrgChart.templates.jobarchitectureDiagramTemplate.field_3 =
-  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="20" text-anchor="middle">Total:{val}</text>';
+OrgChart.templates.relationshipArchitectureDiagramTemplate.field_0 =
+  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="30" text-anchor="middle">{val}</text>';
+OrgChart.templates.relationshipArchitectureDiagramTemplate.field_1 =
+  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="55" text-anchor="middle">{val}</text>';
+OrgChart.templates.relationshipArchitectureDiagramTemplate.field_2 =
+  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="75" text-anchor="middle">{val}</text>';
+OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
+  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="100" text-anchor="middle">HC:{val}</text>';
 
-class ArchitectureDiagram extends React.Component {
+class PersonRelationship extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
 
@@ -172,13 +130,6 @@ class ArchitectureDiagram extends React.Component {
     for (var i = 0; i < data.length; i++) {
       data[i].number_children = childCount(data[i].id, data);
     }
-    const querystring = window.location.search.substring(1);
-    const qsObj = qs.parse(querystring);
-    if (qsObj.selectedNode) {
-      this.handleNodeClick(this.chart, {
-        node: { id: Number(qsObj.selectedNode) }
-      });
-    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -204,15 +155,18 @@ class ArchitectureDiagram extends React.Component {
    */
   initializeOrgchart = () => {
     const { firstField, secondaryField, thirdField } = this.state;
+    const { displayFileds } = this.props;
+
     this.chart = new OrgChart(
-      document.getElementById('architecture-diagram_orgchart'),
+      document.getElementById('person-relationship_orgchart'),
       {
-        template: 'jobarchitectureDiagramTemplate',
+        template: 'relationshipArchitectureDiagramTemplate',
         nodeBinding: {
           field_0: firstField,
           field_1: secondaryField,
           field_2: thirdField,
-          field_3: 'number_children'
+          field_3: 'number_children',
+          img_0: displayFileds.imgField
         },
         collapse: {
           level: this.state.currentLevel,
@@ -288,18 +242,37 @@ class ArchitectureDiagram extends React.Component {
 
   _cmscolumninfo = []; // 主表的列定义
   _nodes = []; // 当前所有节点数据
-  _emptyJobs = []; //空缺岗位
   /**
    * 获取节点数据
    */
   getData = async () => {
-    const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
-    const { selectedDate, selectedNode } = this.state;
-    const options = {
-      ...procedureConfig,
+    const {
       resid,
-      paravalues: selectedDate.format('YYYYMMDD')
-    };
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      displayFileds,
+      role
+    } = this.props;
+    const { selectedDate, selectedNode } = this.state;
+    let options = {};
+    if (role === 'manager') {
+      options = {
+        procedure: 'pw_staffs',
+        paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
+        paratypes: 'string,int,string,int,int',
+        resid,
+        paravalues: '20200410,1239,,-1,0'
+      };
+    } else {
+      options = {
+        ...procedureConfig,
+        resid,
+        paravalues: selectedDate.format('YYYYMMDD')
+      };
+    }
+
     this.setState({ loading: true });
     try {
       const httpParams = {};
@@ -328,15 +301,25 @@ class ArchitectureDiagram extends React.Component {
           tags.push('tartOccupied');
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
-          this._emptyJobs.push(item);
         }
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
+        let ImgObj = new Image(); //判断图片是否存在
+        ImgObj.src = item[displayFileds.imgField];
+        let url;
+        //没有图片，则返回-1
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+          url = item[displayFileds.imgField];
+        } else {
+          url = avatarDef;
+        }
+
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
+          [displayFileds.imgField]: url,
           tags
         };
         if (selectedNode.id === item[idField]) {
@@ -353,7 +336,6 @@ class ArchitectureDiagram extends React.Component {
       return [];
     }
   };
-
   /**
    * 获取历史数据
    */
@@ -527,9 +509,7 @@ class ArchitectureDiagram extends React.Component {
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node }, () => {
-      this.getHistory();
-    });
+    this.setState({ selectedNode: node });
   };
   /**
    * 获取主表窗体数据
@@ -854,7 +834,7 @@ class ArchitectureDiagram extends React.Component {
 
   renderHeader = () => {
     const { mode, isGrouping, selectedNode, currentLevel } = this.state;
-    const { hasOpration, hasImport, hasGroup } = this.props;
+    const { hasOpration, hasGroup } = this.props;
     const enable = selectedNode.isScrap === '' || selectedNode.isScrap === null;
     const disable = selectedNode.isScrap === 'N';
     let opration = '';
@@ -865,26 +845,10 @@ class ArchitectureDiagram extends React.Component {
       opration = 'disable';
     }
     return (
-      <header className="architecture-diagram_header">
-        {/* <div className="architecture-diagram_header_icon-button-group">
-          <div className="architecture-diagram_header_icon-button">
-            <Icon
-              type="redo"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            重置
-          </div>
-          <div className="architecture-diagram_header_icon-button">
-            <Icon
-              type="save"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            保存
-          </div>
-        </div> */}
+      <header className="person-relationship_header">
         {mode === 'chart' && hasGroup && (
-          <div className="architecture-diagram_header_icon-button-group">
-            <div className="architecture-diagram_header_icon-button">
+          <div className="person-relationship_header_icon-button-group">
+            <div className="person-relationship_header_icon-button">
               分组
               <Switch
                 checked={isGrouping}
@@ -894,126 +858,46 @@ class ArchitectureDiagram extends React.Component {
             </div>
           </div>
         )}
-        <div className="architecture-diagram_header_icon-button-group">
+        <div className="person-relationship_header_icon-button-group">
           <div
             className={classNames({
-              'architecture-diagram_header_icon-button': true,
-              'architecture-diagram_header_icon-button__selected':
+              'person-relationship_header_icon-button': true,
+              'person-relationship_header_icon-button__selected':
                 mode === 'chart'
             })}
             onClick={this.handleModeChange('chart')}
           >
             <Icon
               type="apartment"
-              className="architecture-diagram_header_icon-button__icon"
+              className="person-relationship_header_icon-button__icon"
             />
             图形化
           </div>
           <div
             className={classNames({
-              'architecture-diagram_header_icon-button': true,
-              'architecture-diagram_header_icon-button__selected':
+              'person-relationship_header_icon-button': true,
+              'person-relationship_header_icon-button__selected':
                 mode === 'table'
             })}
             onClick={this.handleModeChange('table')}
           >
             <Icon
               type="table"
-              className="architecture-diagram_header_icon-button__icon"
+              className="person-relationship_header_icon-button__icon"
             />
             表格化
           </div>
         </div>
-        {hasOpration && (
-          <div className="architecture-diagram_header_icon-button-group">
-            {mode === 'chart' && (
-              <>
-                <div
-                  className="architecture-diagram_header_icon-button"
-                  onClick={this.handleAdd('sub')}
-                >
-                  <img
-                    src={add1}
-                    className="architecture-diagram_header_icon-button__icon"
-                    alt=""
-                  />
-                  添加子级
-                </div>
-                <div
-                  className="architecture-diagram_header_icon-button"
-                  onClick={this.handleAdd('bro')}
-                >
-                  <img
-                    src={add2}
-                    className="architecture-diagram_header_icon-button__icon"
-                    alt=""
-                  />
-                  添加同级
-                </div>
-              </>
-            )}
-            <div
-              className="architecture-diagram_header_icon-button"
-              onClick={this.handleModify}
-            >
-              <Icon
-                type="edit"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              修改
-            </div>
-            <div
-              className="architecture-diagram_header_icon-button delete-button"
-              onClick={this.handleDelete}
-            >
-              <Icon
-                type="delete"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              删除
-            </div>
-            {selectedNode.REC_ID && (
-              <div
-                className={classNames(
-                  'architecture-diagram_header_icon-button ',
-                  {
-                    'disable-button': disable,
-                    'enable-button': enable
-                  }
-                )}
-                onClick={this.handleDisableEnable(opration)}
-              >
-                {disable && (
-                  <>
-                    <Icon
-                      type="logout"
-                      className="architecture-diagram_header_icon-button__icon"
-                    />
-                    停用
-                  </>
-                )}
-                {enable && (
-                  <>
-                    <Icon
-                      type="login"
-                      className="architecture-diagram_header_icon-button__icon"
-                    />
-                    启用
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+
         {mode === 'chart' && (
-          <div className="architecture-diagram_header_icon-button-group">
+          <div className="person-relationship_header_icon-button-group">
             <div
-              className="architecture-diagram_header_icon-button"
+              className="person-relationship_header_icon-button"
               onClick={this.handleSelfDefine}
             >
               <img
                 src={selfDefine}
-                className="architecture-diagram_header_icon-button__icon"
+                className="person-relationship_header_icon-button__icon"
                 alt=""
               />
               自定义卡片
@@ -1021,11 +905,11 @@ class ArchitectureDiagram extends React.Component {
           </div>
         )}
         {mode === 'chart' && (
-          <div className="architecture-diagram_header_icon-button-group">
-            <div className="architecture-diagram_header_icon-button">
+          <div className="person-relationship_header_icon-button-group">
+            <div className="person-relationship_header_icon-button">
               <Icon
                 type="switcher"
-                className="architecture-diagram_header_icon-button__icon"
+                className="person-relationship_header_icon-button__icon"
               />
               层级
               <InputNumber
@@ -1038,41 +922,30 @@ class ArchitectureDiagram extends React.Component {
             </div>
           </div>
         )}
-        {hasImport && (
-          <div className="architecture-diagram_header_icon-button-group">
+        {this.props.role === 'hr' && (
+          <div className="person-relationship_header_icon-button-group">
             <div
-              className="architecture-diagram_header_icon-button"
-              onClick={this.handleImport}
+              className="person-relationship_header_icon-button"
+              onClick={() => {
+                if (selectedNode.id) {
+                  window.open(
+                    '/fnmodule?resid=626954797692&recid=626954935897&type=人事信息管理&title=岗位信息' +
+                      '&selectedNode=' +
+                      selectedNode.orgcode
+                  );
+                } else {
+                  message.info('请选择一个卡片');
+                }
+              }}
             >
               <Icon
-                type="upload"
-                className="architecture-diagram_header_icon-button__icon"
+                type="switcher"
+                className="person-relationship_header_icon-button__icon"
               />
-              导入数据
-            </div>
-            <div className="architecture-diagram_header_icon-button">
-              <Icon
-                type="download"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              下载导入模板
+              打开岗位管理窗口
             </div>
           </div>
         )}
-        <div className="architecture-diagram_header_icon-button-group">
-          <div
-            className="architecture-diagram_header_icon-button"
-            onClick={() => {
-              exportExcel(this._emptyJobs, this._cmscolumninfo, '空缺岗位');
-            }}
-          >
-            <Icon
-              type="switcher"
-              className="architecture-diagram_header_icon-button__icon"
-            />
-            下载空缺岗位表格
-          </div>
-        </div>
       </header>
     );
   };
@@ -1092,7 +965,7 @@ class ArchitectureDiagram extends React.Component {
               key={item.id}
             >
               {`${item[displayFileds.firstField]}(${
-                item[displayFileds.secondaryField] >= 0
+                item[displayFileds.secondaryField]
                   ? item[displayFileds.secondaryField]
                   : 'N/A'
               })`}
@@ -1103,58 +976,10 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
-  renderExpand = () => {
-    const { detaileMin, historyMin, resultMin } = this.state;
-    return (
-      <div className="architecture-diagram__expand-buttons">
-        {detaileMin && (
-          <div className="architecture-diagram__expand">
-            详细情况
-            <Icon
-              type="switcher"
-              onClick={() => {
-                this.setState({ detaileMin: false });
-              }}
-            />
-          </div>
-        )}
-        {historyMin && (
-          <div className="architecture-diagram__expand">
-            历史情况
-            <Icon
-              type="switcher"
-              onClick={() => {
-                this.setState({ historyMin: false });
-              }}
-            />
-          </div>
-        )}
-        {resultMin && (
-          <div
-            className="architecture-diagram__expand"
-            onClick={() => {
-              this.setState({ resultMin: false }, () => {
-                this.contentRef.scrollTo({
-                  left: 0,
-                  top: window.innerHeight,
-                  behavior: 'smooth'
-                });
-              });
-            }}
-          >
-            导入结果
-            <Icon type="switcher" />
-          </div>
-        )}
-      </div>
-    );
-  };
-
   render() {
     const {
       selectedNode,
       addBroVisible,
-      historyData,
       viewHistoryDetailVisible,
       operation,
       record,
@@ -1163,19 +988,22 @@ class ArchitectureDiagram extends React.Component {
       selfDefineVisible,
       selectedDate,
       detaileMin,
-      historyMin,
       detailVisible,
-      selectedDepartment,
-      departmentTreeVisible,
-      hasDepartmentFilter
+      departmentTreeVisible
     } = this.state;
-    const { resid, baseURL, displayFileds, hasView, idField } = this.props;
+    const {
+      resid,
+      baseURL,
+      displayFileds,
+      hasView,
+      idField,
+      hasDepartmentFilter
+    } = this.props;
     return (
-      <div className="architecture-diagram">
+      <div className="person-relationship">
         <Spin spinning={loading}>
-          {this.renderExpand()}
           {this.renderHeader()}
-          <div className="architecture-diagram_breadcrumb">
+          <div className="person-relationship_breadcrumb">
             <div>
               <DatePicker
                 value={selectedDate}
@@ -1185,6 +1013,7 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
+
             {hasDepartmentFilter && (
               <Button
                 onClick={() => {
@@ -1208,20 +1037,20 @@ class ArchitectureDiagram extends React.Component {
               刷新
             </Button>
           </div>
-          <div className="architecture-diagram_breadcrumb">
+          <div className="person-relationship_breadcrumb">
             当前位置：{this.renderBreadcrumb()}
           </div>
           <div
-            className="architecture-diagram__content"
+            className="person-relationship__content"
             ref={ref => {
               this.contentRef = ref;
             }}
           >
-            <div className="architecture-diagram__content__main">
-              <div className="architecture-diagram__content__main__container">
+            <div className="person-relationship__content__main">
+              <div className="person-relationship__content__main__container">
                 <div
                   className={classNames({
-                    'architecture-diagram__tabledata__container': true,
+                    'person-relationship__tabledata__container': true,
                     hidden: mode === 'chart'
                   })}
                 >
@@ -1239,34 +1068,26 @@ class ArchitectureDiagram extends React.Component {
                 </div>
                 <div
                   className={classNames({
-                    'architecture-diagram__chart-container': true,
+                    'person-relationship__chart-container': true,
                     hidden: mode === 'table'
                   })}
                 >
-                  <div id="architecture-diagram_orgchart"></div>
+                  <div id="person-relationship_orgchart"></div>
                 </div>
               </div>
-              <div className="architecture-diagram_main_sider">
+              <div className="person-relationship_main_sider">
                 {!detaileMin && (
-                  <div className="architecture-diagram_main_item-detail">
-                    <div className="architecture-diagram_main_sider_title">
+                  <div className="person-relationship_main_item-detail">
+                    <div className="person-relationship_main_sider_title">
                       详细情况
-                      <Icon
-                        type="minus"
-                        className="architecture-diagram__min-button"
-                        style={{ fontSize: 16 }}
-                        onClick={() => {
-                          this.setState({ detaileMin: true });
-                        }}
-                      />
                     </div>
-                    {selectedNode.REC_ID ? (
-                      <div className="architecture-diagram_main_item-detail_list">
+                    {selectedNode.id ? (
+                      <div className="person-relationship_main_item-detail_list">
                         {this._cmscolumninfo.map(item => {
                           return (
                             <p
                               key={item.id}
-                              className="architecture-diagram_main_item-detail_list_item"
+                              className="person-relationship_main_item-detail_list_item"
                             >
                               <label>{item.text}：</label>
                               <span>{selectedNode[item.id]}</span>
@@ -1293,7 +1114,7 @@ class ArchitectureDiagram extends React.Component {
                         })}
                       </div>
                     ) : (
-                      <div className="architecture-diagram_unselect-tip">
+                      <div className="person-relationship_unselect-tip">
                         <Alert
                           message="尚未选中任何卡片！"
                           type="info"
@@ -1301,60 +1122,6 @@ class ArchitectureDiagram extends React.Component {
                         />
                       </div>
                     )}
-                  </div>
-                )}
-                {!historyMin && (
-                  <div className="architecture-diagram_main_item-history">
-                    <div className="architecture-diagram_main_sider_title">
-                      历史情况
-                      <Icon
-                        type="minus"
-                        className="architecture-diagram__min-button"
-                        style={{ fontSize: 16 }}
-                        onClick={() => {
-                          this.setState({ historyMin: true });
-                        }}
-                      />
-                    </div>
-                    <div className="architecture-diagram_change-hsitory_list">
-                      {selectedNode.REC_ID ? (
-                        historyData.length ? (
-                          <Timeline>
-                            {historyData.map((item, index) => {
-                              return (
-                                <Timeline.Item>
-                                  <div>
-                                    {this._historyColinfo.map((i, ind) => {
-                                      return (
-                                        <p
-                                          key={i.id}
-                                          className="architecture-diagram_main_item-detail_list_item"
-                                        >
-                                          <label>{i.text}：</label>
-                                          <span>{item[i.id]}</span>
-                                        </p>
-                                      );
-                                    })}
-                                  </div>
-                                </Timeline.Item>
-                              );
-                            })}
-                          </Timeline>
-                        ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert message="无历史记录" type="info" showIcon />
-                          </div>
-                        )
-                      ) : (
-                        <div className="architecture-diagram_unselect-tip">
-                          <Alert
-                            message="尚未选中任何卡片！"
-                            type="info"
-                            showIcon
-                          />
-                        </div>
-                      )}
-                    </div>
                   </div>
                 )}
               </div>
@@ -1588,7 +1355,7 @@ class ArchitectureDiagram extends React.Component {
               if (checkedKeys.length) {
                 const nodes = this._nodes.filter(node => {
                   return checkedKeys.some(key => {
-                    return node.orgDepCode == key;
+                    return node.HRUSER_DEPID == key;
                   });
                 });
                 this.chart.load(nodes);
@@ -1616,4 +1383,4 @@ const composedHoc = compose(
   withModalDrawer()
 );
 
-export default composedHoc(ArchitectureDiagram);
+export default composedHoc(PersonRelationship);

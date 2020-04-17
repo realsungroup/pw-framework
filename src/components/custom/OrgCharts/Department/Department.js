@@ -15,7 +15,7 @@ import {
   DatePicker,
   InputNumber
 } from 'antd';
-import './PersonRelationship.less';
+import './Department.less';
 import avatarDef from './svg/avatar.svg';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
@@ -58,20 +58,20 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="50" cy="60" r="40"></circle>' +
+  '<circle  cx="40" cy="50" r="40"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
+  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="20" text-anchor="middle">{val}</text>';
+  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="30" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_1 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="45" text-anchor="middle">{val}</text>';
+  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="55" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_2 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
+  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="75" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
   '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="100" text-anchor="middle">HC:{val}</text>';
 
-class PersonRelationship extends React.Component {
+class Department extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
 
@@ -157,7 +157,7 @@ class PersonRelationship extends React.Component {
     const { displayFileds } = this.props;
 
     this.chart = new OrgChart(
-      document.getElementById('person-relationship_orgchart'),
+      document.getElementById('department-chart_orgchart'),
       {
         template: 'relationshipArchitectureDiagramTemplate',
         nodeBinding: {
@@ -251,14 +251,27 @@ class PersonRelationship extends React.Component {
       idField,
       pidField,
       procedureConfig,
-      displayFileds
+      displayFileds,
+      role
     } = this.props;
     const { selectedDate, selectedNode } = this.state;
-    const options = {
-      ...procedureConfig,
-      resid,
-      paravalues: selectedDate.format('YYYYMMDD')
-    };
+    let options = {};
+    if (role === 'manager') {
+      options = {
+        procedure: 'pw_staffs',
+        paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
+        paratypes: 'string,int,string,int,int',
+        resid,
+        paravalues: '20200410,1239,,-1,0'
+      };
+    } else {
+      options = {
+        ...procedureConfig,
+        resid,
+        paravalues: selectedDate.format('YYYYMMDD')
+      };
+    }
+
     this.setState({ loading: true });
     try {
       const httpParams = {};
@@ -495,9 +508,7 @@ class PersonRelationship extends React.Component {
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node }, () => {
-      // this.getHistory();
-    });
+    this.setState({ selectedNode: node });
   };
   /**
    * 获取主表窗体数据
@@ -822,7 +833,7 @@ class PersonRelationship extends React.Component {
 
   renderHeader = () => {
     const { mode, isGrouping, selectedNode, currentLevel } = this.state;
-    const { hasOpration, hasImport } = this.props;
+    const { hasOpration, hasGroup } = this.props;
     const enable = selectedNode.isScrap === '' || selectedNode.isScrap === null;
     const disable = selectedNode.isScrap === 'N';
     let opration = '';
@@ -833,10 +844,10 @@ class PersonRelationship extends React.Component {
       opration = 'disable';
     }
     return (
-      <header className="person-relationship_header">
-        {mode === 'chart' && (
-          <div className="person-relationship_header_icon-button-group">
-            <div className="person-relationship_header_icon-button">
+      <header className="department-chart_header">
+        {mode === 'chart' && hasGroup && (
+          <div className="department-chart_header_icon-button-group">
+            <div className="department-chart_header_icon-button">
               分组
               <Switch
                 checked={isGrouping}
@@ -846,58 +857,56 @@ class PersonRelationship extends React.Component {
             </div>
           </div>
         )}
-        <div className="person-relationship_header_icon-button-group">
+        <div className="department-chart_header_icon-button-group">
           <div
             className={classNames({
-              'person-relationship_header_icon-button': true,
-              'person-relationship_header_icon-button__selected':
-                mode === 'chart'
+              'department-chart_header_icon-button': true,
+              'department-chart_header_icon-button__selected': mode === 'chart'
             })}
             onClick={this.handleModeChange('chart')}
           >
             <Icon
               type="apartment"
-              className="person-relationship_header_icon-button__icon"
+              className="department-chart_header_icon-button__icon"
             />
             图形化
           </div>
           <div
             className={classNames({
-              'person-relationship_header_icon-button': true,
-              'person-relationship_header_icon-button__selected':
-                mode === 'table'
+              'department-chart_header_icon-button': true,
+              'department-chart_header_icon-button__selected': mode === 'table'
             })}
             onClick={this.handleModeChange('table')}
           >
             <Icon
               type="table"
-              className="person-relationship_header_icon-button__icon"
+              className="department-chart_header_icon-button__icon"
             />
             表格化
           </div>
         </div>
         {hasOpration && (
-          <div className="person-relationship_header_icon-button-group">
+          <div className="department-chart_header_icon-button-group">
             {mode === 'chart' && (
               <>
                 <div
-                  className="person-relationship_header_icon-button"
+                  className="department-chart_header_icon-button"
                   onClick={this.handleAdd('sub')}
                 >
                   <img
                     src={add1}
-                    className="person-relationship_header_icon-button__icon"
+                    className="department-chart_header_icon-button__icon"
                     alt=""
                   />
                   添加子级
                 </div>
                 <div
-                  className="person-relationship_header_icon-button"
+                  className="department-chart_header_icon-button"
                   onClick={this.handleAdd('bro')}
                 >
                   <img
                     src={add2}
-                    className="person-relationship_header_icon-button__icon"
+                    className="department-chart_header_icon-button__icon"
                     alt=""
                   />
                   添加同级
@@ -905,41 +914,38 @@ class PersonRelationship extends React.Component {
               </>
             )}
             <div
-              className="person-relationship_header_icon-button"
+              className="department-chart_header_icon-button"
               onClick={this.handleModify}
             >
               <Icon
                 type="edit"
-                className="person-relationship_header_icon-button__icon"
+                className="department-chart_header_icon-button__icon"
               />
               修改
             </div>
             <div
-              className="person-relationship_header_icon-button delete-button"
+              className="department-chart_header_icon-button delete-button"
               onClick={this.handleDelete}
             >
               <Icon
                 type="delete"
-                className="person-relationship_header_icon-button__icon"
+                className="department-chart_header_icon-button__icon"
               />
               删除
             </div>
             {selectedNode.REC_ID && (
               <div
-                className={classNames(
-                  'person-relationship_header_icon-button ',
-                  {
-                    'disable-button': disable,
-                    'enable-button': enable
-                  }
-                )}
+                className={classNames('department-chart_header_icon-button ', {
+                  'disable-button': disable,
+                  'enable-button': enable
+                })}
                 onClick={this.handleDisableEnable(opration)}
               >
                 {disable && (
                   <>
                     <Icon
                       type="logout"
-                      className="person-relationship_header_icon-button__icon"
+                      className="department-chart_header_icon-button__icon"
                     />
                     停用
                   </>
@@ -948,7 +954,7 @@ class PersonRelationship extends React.Component {
                   <>
                     <Icon
                       type="login"
-                      className="person-relationship_header_icon-button__icon"
+                      className="department-chart_header_icon-button__icon"
                     />
                     启用
                   </>
@@ -958,14 +964,14 @@ class PersonRelationship extends React.Component {
           </div>
         )}
         {mode === 'chart' && (
-          <div className="person-relationship_header_icon-button-group">
+          <div className="department-chart_header_icon-button-group">
             <div
-              className="person-relationship_header_icon-button"
+              className="department-chart_header_icon-button"
               onClick={this.handleSelfDefine}
             >
               <img
                 src={selfDefine}
-                className="person-relationship_header_icon-button__icon"
+                className="department-chart_header_icon-button__icon"
                 alt=""
               />
               自定义卡片
@@ -973,11 +979,11 @@ class PersonRelationship extends React.Component {
           </div>
         )}
         {mode === 'chart' && (
-          <div className="person-relationship_header_icon-button-group">
-            <div className="person-relationship_header_icon-button">
+          <div className="department-chart_header_icon-button-group">
+            <div className="department-chart_header_icon-button">
               <Icon
                 type="switcher"
-                className="person-relationship_header_icon-button__icon"
+                className="department-chart_header_icon-button__icon"
               />
               层级
               <InputNumber
@@ -1033,17 +1039,22 @@ class PersonRelationship extends React.Component {
       selfDefineVisible,
       selectedDate,
       detaileMin,
-      historyMin,
       detailVisible,
-      selectedDepartment,
       departmentTreeVisible
     } = this.state;
-    const { resid, baseURL, displayFileds, hasView, idField } = this.props;
+    const {
+      resid,
+      baseURL,
+      displayFileds,
+      hasView,
+      idField,
+      hasDepartmentFilter
+    } = this.props;
     return (
-      <div className="person-relationship">
+      <div className="department-chart">
         <Spin spinning={loading}>
           {this.renderHeader()}
-          <div className="person-relationship_breadcrumb">
+          <div className="department-chart_breadcrumb">
             <div>
               <DatePicker
                 value={selectedDate}
@@ -1053,40 +1064,44 @@ class PersonRelationship extends React.Component {
                 allowClear={false}
               />
             </div>
-            <div
-              onClick={() => {
-                this.setState({ departmentTreeVisible: true });
-              }}
-              style={{ cursor: 'pointer', marginLeft: 8 }}
-            >
-              部门：
-              <span style={{ color: '#1890ff' }}>
-                {selectedDepartment ? selectedDepartment : '未选择'}
-              </span>
-            </div>
+
+            {hasDepartmentFilter && (
+              <Button
+                onClick={() => {
+                  this.setState({ departmentTreeVisible: true });
+                }}
+                style={{ margin: '0 8px' }}
+                type="primary"
+                size="small"
+                icon="filter"
+              >
+                筛选部门
+              </Button>
+            )}
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
               type="primary"
               size="small"
+              icon="sync"
             >
               刷新
             </Button>
           </div>
-          <div className="person-relationship_breadcrumb">
+          <div className="department-chart_breadcrumb">
             当前位置：{this.renderBreadcrumb()}
           </div>
           <div
-            className="person-relationship__content"
+            className="department-chart__content"
             ref={ref => {
               this.contentRef = ref;
             }}
           >
-            <div className="person-relationship__content__main">
-              <div className="person-relationship__content__main__container">
+            <div className="department-chart__content__main">
+              <div className="department-chart__content__main__container">
                 <div
                   className={classNames({
-                    'person-relationship__tabledata__container': true,
+                    'department-chart__tabledata__container': true,
                     hidden: mode === 'chart'
                   })}
                 >
@@ -1122,12 +1137,62 @@ class PersonRelationship extends React.Component {
                 </div>
                 <div
                   className={classNames({
-                    'person-relationship__chart-container': true,
+                    'department-chart__chart-container': true,
                     hidden: mode === 'table'
                   })}
                 >
-                  <div id="person-relationship_orgchart"></div>
+                  <div id="department-chart_orgchart"></div>
                 </div>
+              </div>
+              <div className="department-chart_main_sider">
+                {!detaileMin && (
+                  <div className="department-chart_main_item-detail">
+                    <div className="department-chart_main_sider_title">
+                      详细情况
+                    </div>
+                    {selectedNode.id ? (
+                      <div className="department-chart_main_item-detail_list">
+                        {this._cmscolumninfo.map(item => {
+                          return (
+                            <p
+                              key={item.id}
+                              className="department-chart_main_item-detail_list_item"
+                            >
+                              <label>{item.text}：</label>
+                              <span>{selectedNode[item.id]}</span>
+                              {hasView &&
+                                item.id === displayFileds.firstField &&
+                                selectedNode[item.id] && (
+                                  <span
+                                    style={{
+                                      color: '#1890FF',
+                                      cursor: 'pointer',
+                                      marginLeft: 8
+                                    }}
+                                    onClick={() => {
+                                      this.setState({
+                                        detailVisible: true
+                                      });
+                                    }}
+                                  >
+                                    查看
+                                  </span>
+                                )}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="department-chart_unselect-tip">
+                        <Alert
+                          message="尚未选中任何卡片！"
+                          type="info"
+                          showIcon
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1387,4 +1452,4 @@ const composedHoc = compose(
   withModalDrawer()
 );
 
-export default composedHoc(PersonRelationship);
+export default composedHoc(Department);

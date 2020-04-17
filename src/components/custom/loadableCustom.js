@@ -691,3 +691,9 @@ export const ContractApproval = Loadable({
     return minLoading;
   }
 });
+export const PersonnelInformation = Loadable({
+  loader: () => import('./PersonnelInformation'),
+  loading() {
+    return minLoading;
+  }
+});

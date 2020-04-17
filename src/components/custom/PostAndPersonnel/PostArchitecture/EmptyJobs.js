@@ -6,7 +6,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-enterprise';
 import memoize from 'memoize-one';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 import './EmptyJob.less';
 
 const isFirstColumn = params => {
@@ -15,9 +15,6 @@ const isFirstColumn = params => {
   return thisIsFirstColumn;
 };
 class ArchitectureDiagram extends React.Component {
-  // static defaultProps = defaultProps;
-  // static propTypes = propTypes;
-
   state = {
     defaultColDef: {
       filter: true,

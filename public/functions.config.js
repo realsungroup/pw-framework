@@ -1797,7 +1797,31 @@ window[626452876459] = {
 };
 window[626954797692] = {
   name: 'PostAndPersonnel',
-  title: '岗位与人事'
+  title: '岗位信息',
+  props: {
+    role: 'hr'
+  }
+};
+window[640366512916] = {
+  name: 'PostAndPersonnel',
+  title: '岗位管理',
+  props: {
+    role: 'manager'
+  }
+};
+window[640366451797] = {
+  name: 'PersonnelInformation',
+  title: '人事信息',
+  props: {
+    role: 'hr'
+  }
+};
+window[640366551916] = {
+  name: 'PersonnelInformation',
+  title: '人事管理',
+  props: {
+    role: 'manager'
+  }
 };
 window[627590812010] = {
   name: 'DLPrint',
