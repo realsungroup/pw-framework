@@ -267,7 +267,9 @@ class Compact extends Component {
                 refTargetComponentName="TableData"
                 cmswhere={
                   checkboxOptions.length !== 1
-                    ? ''
+                    ? checkboxOptions.length === 2
+                      ? ''
+                      : `1 = 2`
                     : `C3_640119278050 = '${checkboxOptions[0]}'`
                 }
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {

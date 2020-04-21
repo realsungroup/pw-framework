@@ -13,16 +13,16 @@ class DepartmentManager extends React.Component {
     return (
       <div className="department-manager">
         <Department
-          resid="639856535460"
-          idField="C3_305737857578" //主表id字段名
-          pidField="C3_417993417686" //父节点id字段名
+          resid="417643880834"
+          idField="DEP_ID" //主表id字段名
+          pidField="DEP_PID" //父节点id字段名
           level={2}
           hasOpration={false}
           displayFileds={{
-            firstField: 'C3_419343735913',
-            secondaryField: 'C3_227212499515',
-            thirdField: 'C3_417990929081',
-            imgField: 'C3_461934233303'
+            firstField: 'DEP_NAME',
+            secondaryField: 'C3_417651850998',
+            thirdField: 'C3_419339113187'
+            // imgField: 'C3_461934233303'
           }}
           procedureConfig={{
             procedure: 'pw_staffs',
