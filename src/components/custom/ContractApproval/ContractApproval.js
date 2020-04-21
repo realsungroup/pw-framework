@@ -9,9 +9,9 @@ const { TabPane } = Tabs;
 const { TextArea } = Input;
 const tabsStyle = { width: '100%', height: '100%', backgroundColor: '#fff' };
 const tabPaneStyle = { width: '100%', height: 'calc(100vh - 64px)' };
-const waitingResid = '640263988039'; //待处理
-const passedResid = '640264003717'; //待处理
-const refusedResid = '640264038053'; //待处理
+const waitingResid = '640785369308'; //待处理
+const passedResid = '640796960036'; //已通过
+const refusedResid = '460263988039'; //已拒绝
 
 /**
  * 合同审批
