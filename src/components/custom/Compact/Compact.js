@@ -33,7 +33,7 @@ const filterTab1 = [
 const filterTab2A = [
   {
     label: '待发送邮件',
-    resid: '640264082868'
+    resid: '640264102764'
   },
   {
     label: '已发送邮件',
@@ -260,7 +260,7 @@ class Compact extends Component {
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
-                hasBeBtns={false}
+                hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -275,54 +275,6 @@ class Compact extends Component {
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
                     <>
-                      {key1 == '_1A' ? (
-                        <>
-                          <Button
-                            size="small"
-                            type="primary"
-                            onClick={() => {
-                              if (selectedRowKeys.length) {
-                                let selectedRecords = selectedRowKeys.map(
-                                  key => {
-                                    return {
-                                      ...dataSource.find(item => {
-                                        return item.REC_ID === key;
-                                      })
-                                    };
-                                  }
-                                );
-                                this.handleConfirm(selectedRecords, true);
-                              } else {
-                                message.info('请勾选记录！');
-                              }
-                            }}
-                          >
-                            选中人已签约
-                          </Button>
-                          <Button
-                            size="small"
-                            type="danger"
-                            onClick={() => {
-                              if (selectedRowKeys.length) {
-                                let selectedRecords = selectedRowKeys.map(
-                                  key => {
-                                    return {
-                                      ...dataSource.find(item => {
-                                        return item.REC_ID === key;
-                                      })
-                                    };
-                                  }
-                                );
-                                this.handleConfirm(selectedRecords, false);
-                              } else {
-                                message.info('请勾选记录！');
-                              }
-                            }}
-                          >
-                            选中人不签约
-                          </Button>
-                        </>
-                      ) : null}
                       {key1 == '_0A' ? (
                         <>
                           <Button
@@ -371,36 +323,6 @@ class Compact extends Component {
                               type="primary"
                             >
                               发送通知邮件
-                            </Button>
-                          );
-                        }
-                      ]
-                    : key1 === '_1A'
-                    ? [
-                        (record, btnSize) => {
-                          return (
-                            <Button
-                              size={btnSize}
-                              onClick={() => {
-                                this.handleConfirm([record], true);
-                              }}
-                              type="primary"
-                            >
-                              该员工已签约
-                            </Button>
-                          );
-                        },
-                        (record, btnSize) => {
-                          return (
-                            <Button
-                              size={btnSize}
-                              onClick={() => {
-                                this.handleConfirm([record], false);
-                              }}
-                              type="danger"
-                              style={{ marginLeft: 8 }}
-                            >
-                              该员工不签约
                             </Button>
                           );
                         }

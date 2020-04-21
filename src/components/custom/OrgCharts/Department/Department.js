@@ -68,8 +68,8 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.field_1 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="55" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_2 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="75" text-anchor="middle">{val}</text>';
-OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
-  '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="100" text-anchor="middle">HC:{val}</text>';
+// OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
+//   '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="100" text-anchor="middle">HC:{val}</text>';
 
 class Department extends React.Component {
   static defaultProps = defaultProps;
@@ -164,8 +164,8 @@ class Department extends React.Component {
           field_0: firstField,
           field_1: secondaryField,
           field_2: thirdField,
-          field_3: 'number_children',
-          img_0: displayFileds.imgField
+          field_3: 'number_children'
+          // img_0: displayFileds.imgField
         },
         collapse: {
           level: this.state.currentLevel,
@@ -279,7 +279,9 @@ class Department extends React.Component {
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
+      this.p1 = makeCancelable(
+        http(httpParams).getTable({ resid, getcolumninfo: 1 })
+      );
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
@@ -304,21 +306,21 @@ class Department extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        let ImgObj = new Image(); //判断图片是否存在
-        ImgObj.src = item[displayFileds.imgField];
-        let url;
-        //没有图片，则返回-1
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-          url = item[displayFileds.imgField];
-        } else {
-          url = avatarDef;
-        }
+        // let ImgObj = new Image(); //判断图片是否存在
+        // ImgObj.src = item[displayFileds.imgField];
+        // let url;
+        // //没有图片，则返回-1
+        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+        //   url = item[displayFileds.imgField];
+        // } else {
+        //   url = avatarDef;
+        // }
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          [displayFileds.imgField]: url,
+          // [displayFileds.imgField]: url,
           tags
         };
         if (selectedNode.id === item[idField]) {

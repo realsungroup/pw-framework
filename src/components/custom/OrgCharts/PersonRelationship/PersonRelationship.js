@@ -128,7 +128,7 @@ class PersonRelationship extends React.Component {
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
     for (var i = 0; i < data.length; i++) {
-      data[i].number_children = childCount(data[i].id, data);
+      data[i].number_children = childCount(data[i].id, data) + 1;
     }
   }
 
@@ -175,7 +175,7 @@ class PersonRelationship extends React.Component {
         scaleInitial: 0.5,
         // mouseScrool: OrgChart.action.zoom,
         layout: OrgChart.tree,
-        enableDragDrop: true,
+        enableDragDrop: this.props.role === 'hr' ? true : false,
         toolbar: {
           layout: true,
           zoom: true,
@@ -934,7 +934,9 @@ class PersonRelationship extends React.Component {
                       selectedNode.orgcode
                   );
                 } else {
-                  message.info('请选择一个卡片');
+                  window.open(
+                    '/fnmodule?resid=626954797692&recid=626954935897&type=人事信息管理&title=岗位信息'
+                  );
                 }
               }}
             >

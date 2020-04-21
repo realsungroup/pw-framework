@@ -36,7 +36,11 @@ class ContractApproval extends React.Component {
             });
           }}
         >
-          <Button type="primary" size={btnSize}>
+          <Button
+            className="table-data__action-btn"
+            type="primary"
+            size={btnSize}
+          >
             同意
           </Button>
         </Popconfirm>
@@ -53,6 +57,7 @@ class ContractApproval extends React.Component {
             });
           }}
           type="danger"
+          className="table-data__action-btn"
         >
           拒绝
         </Button>

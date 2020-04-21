@@ -16,18 +16,13 @@ class DepartmentManager extends React.Component {
           resid="417643880834"
           idField="DEP_ID" //主表id字段名
           pidField="DEP_PID" //父节点id字段名
-          level={2}
-          hasOpration={false}
+          level={3}
+          hasOpration={true}
           displayFileds={{
             firstField: 'DEP_NAME',
             secondaryField: 'C3_417651850998',
             thirdField: 'C3_419339113187'
             // imgField: 'C3_461934233303'
-          }}
-          procedureConfig={{
-            procedure: 'pw_staffs',
-            paranames: 'dates',
-            paratypes: 'string'
           }}
           baseURL={baseURL}
           hasDepartmentFilter={false}

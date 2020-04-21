@@ -238,7 +238,7 @@ class ArchitectureDiagram extends React.Component {
     this.chart.load(data);
     this._nodes = [...this.chart.config.nodes];
     for (var i = 0; i < data.length; i++) {
-      data[i].number_children = childCount(data[i].id, data);
+      data[i].number_children = childCount(data[i].id, data) + 1;
     }
     const querystring = window.location.search.substring(1);
     const qsObj = qs.parse(querystring);
@@ -466,6 +466,11 @@ class ArchitectureDiagram extends React.Component {
           node.tags.push(selected);
           newSelectedNode = node;
         }
+        res.cmscolumninfo.forEach(item => {
+          if (node[item.id] == null || node[item.id] === undefined) {
+            node[item.id] = item.text + '：N/A';
+          }
+        });
         return node;
       });
       this.setState({ loading: false, selectedNode: newSelectedNode });
@@ -1623,7 +1628,7 @@ class ArchitectureDiagram extends React.Component {
             }}
           >
             <Icon
-              type="switcher"
+              type="file-excel"
               className="architecture-diagram_header_icon-button__icon"
             />
             下载空缺岗位表格

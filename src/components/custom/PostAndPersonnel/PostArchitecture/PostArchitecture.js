@@ -94,9 +94,9 @@ class PostArchitecture extends React.Component {
               pidField="orgSupCode" //父节点id字段名
               level={3}
               displayFileds={{
-                firstField: 'orgName',
-                secondaryField: 'orgcode',
-                thirdField: 'orgcode'
+                firstField: 'orgJobEN',
+                secondaryField: 'orgNumber',
+                thirdField: 'orgDepEN'
               }}
               procedureConfig={{
                 procedure: 'pw_orgstaffbydates',
@@ -127,8 +127,8 @@ class PostArchitecture extends React.Component {
               level={3}
               hasOpration={false}
               displayFileds={{
-                firstField: 'memberCN',
-                secondaryField: 'orgName',
+                firstField: 'memberEN',
+                secondaryField: 'orgJobEN',
                 thirdField: 'orgDepEN',
                 imgField: 'memberAvatar'
               }}
