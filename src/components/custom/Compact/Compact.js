@@ -251,8 +251,10 @@ class Compact extends Component {
               className="Tab1Outer"
               style={{ height: 'calc(100vh - 125px)' }}
             >
+              {residTab2==640264082868?
+              
               <TableData
-                resid={residTab2}
+                resid={640264082868}
                 subtractH={220}
                 hasAdd={false}
                 hasRowView={true}
@@ -330,6 +332,175 @@ class Compact extends Component {
                     : []
                 }
               />
+
+              :null}
+              {residTab2==640264102764?
+              
+              <TableData
+                resid={640264102764}
+                subtractH={220}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                cmswhere={
+                  checkboxOptions.length !== 1
+                    ? checkboxOptions.length === 2
+                      ? ''
+                      : `1 = 2`
+                    : `C3_640119278050 = '${checkboxOptions[0]}'`
+                }
+                actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                  return (
+                    <>
+                      {key1 == '_0A' ? (
+                        <>
+                          <Button
+                            size="small"
+                            type="primary"
+                            onClick={() => {
+                              if (selectedRowKeys.length) {
+                                let selectedRecords = selectedRowKeys.map(
+                                  key => {
+                                    return {
+                                      ...dataSource.find(item => {
+                                        return item.REC_ID === key;
+                                      })
+                                    };
+                                  }
+                                );
+                                this.setState({
+                                  signingVisible: true,
+                                  selectedPersons: selectedRecords
+                                });
+                              } else {
+                                message.info('请勾选记录！');
+                              }
+                            }}
+                          >
+                            发送通知邮件
+                          </Button>
+                        </>
+                      ) : null}
+                    </>
+                  );
+                }}
+                customRowBtns={
+                  key1 === '_0A'
+                    ? [
+                        (record, btnSize) => {
+                          return (
+                            <Button
+                              size={btnSize}
+                              onClick={() => {
+                                this.setState({
+                                  selectedPersons: [record],
+                                  signingVisible: true
+                                });
+                              }}
+                              type="primary"
+                            >
+                              发送通知邮件
+                            </Button>
+                          );
+                        }
+                      ]
+                    : []
+                }
+              />
+
+              :null}
+              {residTab2==640264137935?
+              
+              <TableData
+                resid={640264137935}
+                subtractH={220}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                cmswhere={
+                  checkboxOptions.length !== 1
+                    ? checkboxOptions.length === 2
+                      ? ''
+                      : `1 = 2`
+                    : `C3_640119278050 = '${checkboxOptions[0]}'`
+                }
+                actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                  return (
+                    <>
+                      {key1 == '_0A' ? (
+                        <>
+                          <Button
+                            size="small"
+                            type="primary"
+                            onClick={() => {
+                              if (selectedRowKeys.length) {
+                                let selectedRecords = selectedRowKeys.map(
+                                  key => {
+                                    return {
+                                      ...dataSource.find(item => {
+                                        return item.REC_ID === key;
+                                      })
+                                    };
+                                  }
+                                );
+                                this.setState({
+                                  signingVisible: true,
+                                  selectedPersons: selectedRecords
+                                });
+                              } else {
+                                message.info('请勾选记录！');
+                              }
+                            }}
+                          >
+                            发送通知邮件
+                          </Button>
+                        </>
+                      ) : null}
+                    </>
+                  );
+                }}
+                customRowBtns={
+                  key1 === '_0A'
+                    ? [
+                        (record, btnSize) => {
+                          return (
+                            <Button
+                              size={btnSize}
+                              onClick={() => {
+                                this.setState({
+                                  selectedPersons: [record],
+                                  signingVisible: true
+                                });
+                              }}
+                              type="primary"
+                            >
+                              发送通知邮件
+                            </Button>
+                          );
+                        }
+                      ]
+                    : []
+                }
+              />
+
+              :null}
+              
             </div>
           </TabPane>
         </Tabs>
