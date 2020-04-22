@@ -33,7 +33,7 @@ const filterTab1 = [
 const filterTab2A = [
   {
     label: '待发送邮件',
-    resid: '640264102764'
+    resid: '640264082868'
   },
   {
     label: '已发送邮件',
