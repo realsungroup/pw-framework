@@ -9,12 +9,15 @@ import {
   Checkbox,
   DatePicker
 } from 'antd';
+import moment from 'moment';
+
 import TableData from '../../common/data/TableData';
 import './Compact.less';
 import http from 'Util20/api';
 
 const contractHistoryResid = '436624421847'; //合同历史记录
 const { TabPane } = Tabs;
+const {RangePicker} = DatePicker
 const CheckboxOptions = ['DL', 'IDL'];
 const filterTab1 = [
   {
@@ -40,7 +43,7 @@ const filterTab2A = [
     resid: '640264102764'
   },
   {
-    label: '不签约合同',
+    label: '合同审批节点查看',
     resid: '640264137935'
   }
 ];
@@ -76,7 +79,10 @@ class Compact extends Component {
       signingLoading: false
     };
   }
-
+  changeDate=(v)=>{
+    let str = moment(v[0]).format('YYYY-MM-DD hh:mm:ss')+' ~ '+moment(v[1]).format('YYYY-MM-DD hh:mm:ss');
+      this.setState({ signingDate: v , meetTime:str});
+  }
   /**
    * 发送签约邮件
    */
@@ -538,8 +544,8 @@ class Compact extends Component {
           </div>
         </Modal>
         <Modal
-          title="选择签约日期"
-          width={300}
+          title="选择签约起止时间"
+          width={400}
           visible={signingVisible}
           onOk={() => {
             if (!signingDate) {
@@ -549,7 +555,7 @@ class Compact extends Component {
 
             selectedPersons.forEach(item => {
               item.C3_491580883247 = 'Y';
-              item.meetDate = signingDate;
+              item.meetDate = this.state.meetTime;
             });
             this.handleSendEmail(selectedPersons);
           }}
@@ -562,10 +568,11 @@ class Compact extends Component {
           }}
           confirmLoading={signingLoading}
         >
-          <DatePicker
-            showToday
+          <RangePicker
+            // showToday
+            showTime
             value={signingDate}
-            onChange={v => this.setState({ signingDate: v })}
+            onChange={v => this.changeDate(v)}
           />
         </Modal>
       </div>
