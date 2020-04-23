@@ -16,6 +16,7 @@ const {
   enterprisecode,
   themeColor
 } = window.pwConfig;
+const resid = 639670241314;
 
 class CompanyRegister extends React.Component {
   constructor() {
@@ -23,51 +24,112 @@ class CompanyRegister extends React.Component {
     this.state = {
       showSpin: false,
       disabled: false,
+      redirectToReferrer:false,
       counts: '',
       registerMode: 'normal' //normal 普通注册 companyRegister 机构注册 doctorRegister医生注册
     };
   }
 
-  register = () => {
+  
+  register =  () => {
     const { form } = this.props;
     let res;
-    this.props.form.validateFieldsAndScroll(async (err, values) => {
+     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (err) {
         return;
       }
       let registerData = {
-        companyName: form.getFieldValue('companyName'), // 机构名称
-        companyAddress: form.getFieldValue('companyAddress'), //机构地址
-        adminAccount: form.getFieldValue('adminAccount'), //管理员账号
-        adminPassword: form.getFieldValue('adminPassword'), //管理员密码
-        telephone: form.getFieldValue('telephone'), //手机号
-        verificationCode: form.getFieldValue('verificationCode') //验证码
-        // validresid: 616852937051  // 暂未定义注册表
+        // companyName: form.getFieldValue('companyName'), // 机构名称
+        nickname: form.getFieldValue('userName'), // 法人姓名
+        // sex: form.getFieldValue('companyAddress'), // 机构地址
+        userid: form.getFieldValue('adminAccount'), //管理员账号
+        newpass: form.getFieldValue('adminPassword'), // 密码
+        Handphone: form.getFieldValue('telephone'), // 手机号
+        validcode: form.getFieldValue('verificationCode'), //验证码
+        validresid: 616851598789, // 注册表
       };
       this.setState({
-        showSpin: true
+        showSpin: true,
       });
-
-      //还未定义api
-      // try {
-      //   res = await http().register(registerData);
-      //   if (res.data.error == 0) {
-      //     message.success("注册成功");
-      //     this.props.history.push({
-      //       pathname: "/login",
-      //     });
-      //   } else {
-      //     message.error(res.data.message);
-      //   }
-      // } catch (error) {
-      //   message.error(error.message);
-      // }
-
+      try {
+        res = await http().register(registerData);
+        if (res.error == 0) {
+          message.success('注册成功');
+        } else {
+          message.error(res.message);
+        }
+        this.handleLogin();
+      } catch (error) {
+        message.error(error.message);
+      }
+     
       this.setState({
-        showSpin: false
+        showSpin: false,
       });
     });
   };
+  //登录
+  handleLogin = async () => {
+    let res;
+    const { form } = this.props;
+      let registerInformation = {
+        companyName: form.getFieldValue('companyName'), // 机构名称
+        legalPerson: form.getFieldValue('userName'), // 法人姓名
+        companyAddress: form.getFieldValue('companyAddress'), // 机构地址
+        telephone: form.getFieldValue('telephone'), // 联系电话
+        userid: form.getFieldValue('adminAccount'), //登录账号
+        newpass: form.getFieldValue('adminPassword'), // 登录密码
+
+      };
+      try {
+        res = await http().defaultLogin({
+          Code: registerInformation.userid,
+          Password: registerInformation.newpass,
+          // useCookie:true
+        });
+        const result = res.OpResult;
+        if (result === 'Y') {
+          // 登录成功
+        setItem('userInfo', JSON.stringify(res));
+        const userInfo = JSON.parse(getItem('userInfo'));
+        if (res.OpResult !== 'Y') {
+          message.error(res.ErrorMsg);
+        } else {
+          setItem('userInfo', JSON.stringify(userInfo));
+        }
+          // this.setState({
+          //   redirectToReferrer: true
+          // });
+          this.props.history.replace(
+            '/fnmodule?resid=588425594397&recid=635517197444&type=人口信息学&title=患者信息'
+          )
+          window.location.reload();
+        } else if (result === 'N') {
+          return message.error(res.ErrorMsg);
+        }
+       this.saveRegisterInfo(registerInformation)
+      } catch (error) {
+        message.error(error.message);
+      }
+  };
+
+  //保存注册信息
+  saveRegisterInfo = async (data) =>{
+   let  dataInfo = {
+      ...data,
+      _id : 1,
+      _state : "editoradd"
+    }
+    let res;
+    try {
+          res = await http().saveRecord({
+           resid,
+           data:JSON.stringify([dataInfo])
+          });
+        } catch (error) {
+          message.error(error.message);
+          }
+  }
 
   //验证码计时
   countDown = () => {
@@ -109,8 +171,12 @@ class CompanyRegister extends React.Component {
   };
 
   render() {
-    const { disabled, counts, showSpin, registerMode } = this.state;
+    const { disabled, counts, showSpin,redirectToReferrer } = this.state;
     const { getFieldDecorator } = this.props.form;
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
     return (
       <div className="page">
         <div className="register-contain">

@@ -229,21 +229,22 @@ class Login extends React.Component {
           {/* 切换为 普通登录/域登录 */}
           <div className="login__options">
             <div className="login__options-login-mode">
-              <a href="javascript:;" onClick={this.loginModeChange}>
-                {loginMode === 'normal' ? (
+              <a href="javascript:;" 
+              // onClick={this.loginModeChange}
+              >
+                {/* {loginMode === 'normal' ? ( */}
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
-                ) : (
+                {/* ) : (
                   <FM id="Login.DomainLogin" defaultMessage="域登录" />
-                )}
+                )} */}
               </a>
             </div>
             <div>
               <Radio.Group
                 value={language}
-                onChange={this.handleLanguageSelectChange}
+                // onChange={this.handleLanguageSelectChange}
               >
                 <Radio.Button value="中文">中文</Radio.Button>
-                <Radio.Button value="English">English</Radio.Button>
               </Radio.Group>
             </div>
           </div>
@@ -307,7 +308,7 @@ class Login extends React.Component {
               <Button style = {{float:"right"}} onClick={this.onForgetPassword}>忘记密码</Button>
             </Form.Item>
           </Form>
-          <div className="login__copyright">Copyright © 2008 ~ 2018 </div>
+          <div className="login__copyright">Copyright © 2008 ~ 2020 </div>
         </div>
       </div>
     );

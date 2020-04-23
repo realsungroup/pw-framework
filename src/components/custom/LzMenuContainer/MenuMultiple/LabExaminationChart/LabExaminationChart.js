@@ -66,6 +66,7 @@ class LabExaminationChart extends React.Component {
 
   getOption = () => {
     const { dateField, data, fields } = this.props;
+    console.log("dateField",dateField,"data",data,"fields",fields)
     // columns
     const columns = [];
     const itemnamecolumndata = {

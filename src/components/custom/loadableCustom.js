@@ -30,8 +30,20 @@ export const RecordInput = Loadable({
     return minLoading;
   }
 });
-export const ShowDataChart = Loadable({
-  loader: () => import('./ShowDataChart'),
+export const BPChart = Loadable({
+  loader: () => import('./BPChart'),
+  loading() {
+    return minLoading;
+  }
+});
+export const GLUChart = Loadable({
+  loader: () => import('./GLUChart'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OtherData = Loadable({
+  loader: () => import('./OtherData'),
   loading() {
     return minLoading;
   }

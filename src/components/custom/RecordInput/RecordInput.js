@@ -1,7 +1,8 @@
 import React from 'react';
 // import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
-import ShowDataChart from '../ShowDataChart/ShowDataChart';
+import BPChart from '../BPChart/BPChart';
+import GLUChart from '../GLUChart/GLUChart';
 import './RecordInput.less';
 import {
   Button,
@@ -13,11 +14,12 @@ import {
   Input,
   TimePicker,
   DatePicker,
-  Tabs
+  Tabs,
+  Collapse,
 } from 'antd';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import http from 'Util20/api';
-import { getTableData,getMainTableData } from '../../../util/api';
+import { getTableData, getMainTableData } from '../../../util/api';
 import moment from 'moment';
 import EChartsOfReact from 'echarts-of-react';
 import echarts from 'echarts/lib/echarts';
@@ -27,6 +29,7 @@ import echarts from 'echarts/lib/echarts';
  */
 const { TextArea } = Input;
 const { TabPane } = Tabs;
+const { Panel } = Collapse;
 
 const resid1 = 640186569410; // 血压检测表
 const resid2 = 640190825057; // 血糖检测表
@@ -45,182 +48,227 @@ class RecordInput extends React.Component {
       bloodPressureDate: [],
       selectKey: '1',
       res: {},
+      infoModal: false,
       xAxis: {}, // x轴渲染的数据
       legend: {}, // 图表上方的选择器
-      series: []
+      series: [],
     };
   }
 
   componentWillMount = () => {
-    console.log(this.props);
+    console.log('props', this.props);
     let nowDate = moment().format('YYYY-MM-DD');
     let start = moment(nowDate).add(-30, 'days');
     this.setState({
       now: moment(nowDate),
       endDate: moment(nowDate),
-      beginDate: moment(nowDate).add(-30, 'days')
+      beginDate: moment(nowDate).add(-30, 'days'),
     });
     this.setState({
-      days: moment(nowDate).diff(start, 'day')
+      days: moment(nowDate).diff(start, 'day'),
     });
     // this.getTableData();
   };
 
-  handleChartData = () => {
-    let legendData = [];
-    // recordTime = this.state.res.map(item => {
-    //   if (item.recordTime != '') {
-    //     let record = moment(item.recordTime).format('YYYY-MM-DD');
-    //     return record;
-    //   }
-    // });
-
-    // legendData = this.state.res.cmscolumninfo.map(item => {
-    //   let data = item.forEach(key => {
-    //     if (key.ColResDataSort != '') {
-    //       return key;
-    //     }
-    //   });
-    //   return data;
-    // });
-  };
-
-  //获取数据
-  // getTableData = async () => {
-  //   let res;
-  //   if (this.state.selectKey == 1) {
-  //     try {
-  //       res = await getMainTableData(resid1, {
-  //         getcolumninfo:1
-  //       });
-  //       this.setState({ res: res});
-  //     } catch (err) {
-  //       return message.error(err.message);
-  //     }
-  //   } else if (this.state.selectKey == 2) {
-  //     try {
-  //       res = await getTableData(resid2, {
-  //         getcolumninfo:1
-  //       });
-  //     } catch (err) {
-  //       return message.error(err.message);
-  //     }
-  //   } else if (this.state.selectKey == 3) {
-  //     try {
-  //       res = await getTableData(resid3, {
-  //         getcolumninfo:1
-  //       });
-  //     } catch (err) {
-  //       return message.error(err.message);
-  //     }
-  //   }
-  //   this.handleChartData();
-  // };
-
   //开始日期
-  beginDateChange = value => {
+  beginDateChange = (value) => {
     let start = moment(value).format('YYYY-MM-DD');
     let end = moment(this.state.endDate);
     // this.setState({ beginDate: moment(start) });
     let days = end.diff(moment(start), 'day');
     this.setState({
       days: days,
-      beginDate: moment(start)
+      beginDate: moment(start),
     });
   };
   //结束日期
-  endDateChange = value => {
+  endDateChange = (value) => {
     // this.setState({ endDate: moment(value).format('YYYY-MM-DD') });
     let end = moment(value).format('YYYY-MM-DD');
     let days = moment(end).diff(this.state.beginDate, 'day');
-    this.setState({ 
+    this.setState({
       days: days,
-      endDate:moment(end)
-     });
+      endDate: moment(end),
+    });
   };
 
-  activeKeyChange = key => {
+  activeKeyChange = (key) => {
     this.setState({
-      selectKey: key
+      selectKey: key,
+    });
+  };
+
+  userInformation = () => {
+    this.setState({
+      infoModal: true,
+    });
+  };
+  closeModal = () => {
+    this.setState({
+      infoModal: false,
     });
   };
   render() {
-    const option = {
-      title: {
-        text: '血压'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['舒张压', '收缩压']
-      },
-      xAxis: {
-        data: [
-          '2020-04-11',
-          '2020-04-12',
-          '2020-04-13',
-          '2020-04-14',
-          '2020-04-15',
-          '2020-04-16',
-          '2020-04-17'
-        ]
-      },
-      yAxis: {
-        splitLine: {
-          show: false
-        }
-      },
-      toolbox: {},
-      dataZoom: [
-        {
-          startValue: '2020-01-01'
-        },
-        {
-          type: 'inside'
-        }
-      ],
-      series: [
-        {
-          name: '舒张压',
-          type: 'line',
-          data: [120, 132, 101, 134, 90, 230, 210],
-          markLine: {
-            silent: true,
-            data: [
-              {
-                yAxis: 80
-              },
-              {
-                yAxis: 100
-              }
-            ]
-          }
-        },
-        {
-          name: '收缩压',
-          type: 'line',
-          data: [110, 122, 91, 124, 80, 140, 120],
-          markLine: {
-            silent: true,
-            data: [
-              {
-                yAxis: 100
-              },
-              {
-                yAxis: 120
-              }
-            ]
-          }
-        }
-      ]
-    };
-    const { now, beginDate } = this.state;
+    const { now, beginDate,endDate } = this.state;
     return (
       <div className="DataPut">
         <h2 style={{ marginLeft: '9px' }}>常见信息录入</h2>
         <Tabs defaultActiveKey="1" onChange={this.activeKeyChange}>
           <TabPane tab="血压" key="1">
+            <Form className="recordInput">
+              <div className="recordInput__userInfo">
+                <Form.Item
+                  label="用户编号"
+                  className="recordInput__userInfo__userNo"
+                >
+                  <Input defaultValue={this.props.userNo} disabled />
+                </Form.Item>
+                <Form.Item
+                  label="用户姓名"
+                  className="recordInput__userInfo__userName"
+                >
+                  <Input defaultValue={this.props.userName} disabled />
+                </Form.Item>
+                <Form.Item
+                  label="开始日期"
+                  className="recordInput__userInfo__beginDate"
+                >
+                  <DatePicker
+                    onChange={this.beginDateChange}
+                    value={beginDate}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="结束日期"
+                  className="recordInput__userInfo__endDate"
+                >
+                  <DatePicker onChange={this.endDateChange} value={endDate} />
+                </Form.Item>
+                <Form.Item label="共计" className="recordInput__userInfo__days">
+                  <Input
+                    value={`${this.state.days}天`}
+                    // disabled
+                    style={{ width: '35%' }}
+                  />
+                </Form.Item>
+                <Form.Item className="recordInput__userInfo__days">
+                  <Button onClick={this.userInformation}>会员信息</Button>
+                </Form.Item>
+              </div>
+              <div id="recordInput__showChart1">
+                <BPChart
+                  beginDate={this.state.beginDate}
+                  endDate={this.state.endDate}
+                  selectKey={this.state.selectKey}
+                />
+              </div>
+              <div className="recordInput__dataContainer">
+                <TableData
+                  resid={639829713698}
+                  hasModify={false}
+                  height={500}
+                  hasDelete={false}
+                  hasRowDelete={false}
+                  defaultColumnWidth={150}
+                  actionBarWidth={200}
+                  subtractH={150}
+                />
+              </div>
+              {/* <div className="recordInput__basicMd">
+                <Form.Item label="基本用药">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__basic"
+                    value={this.s}
+                  />
+                </Form.Item>
+                <Form.Item label="用药变化">
+                  <TextArea rows={3} className="recordInput__basicMd__change" />
+                </Form.Item>
+                <Form.Item label="备注">
+                  <TextArea rows={3} className="recordInput__basicMd__remark" />
+                </Form.Item>
+              </div> */}
+            </Form>
+          </TabPane>
+          <TabPane tab="血糖" key="2">
+            <Form className="recordInput">
+              <div className="recordInput__userInfo">
+                <Form.Item
+                  label="用户编号"
+                  className="recordInput__userInfo__userNo"
+                >
+                  <Input defaultValue={this.props.userNo} disabled />
+                </Form.Item>
+                <Form.Item
+                  label="用户姓名"
+                  className="recordInput__userInfo__userName"
+                >
+                  <Input defaultValue={this.props.userName} disabled />
+                </Form.Item>
+                <Form.Item
+                  label="开始日期"
+                  className="recordInput__userInfo__beginDate"
+                >
+                  <DatePicker
+                    onChange={this.beginDateChange}
+                    value={beginDate}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="结束日期"
+                  className="recordInput__userInfo__endDate"
+                >
+                  <DatePicker onChange={this.endDateChange} value={endDate} />
+                </Form.Item>
+                <Form.Item label="共计" className="recordInput__userInfo__days">
+                  <Input
+                    value={`${this.state.days}天`}
+                    // disabled
+                    style={{ width: '35%' }}
+                  />
+                </Form.Item>
+                <Form.Item className="recordInput__userInfo__days">
+                  <Button onClick={this.userInformation}>会员信息</Button>
+                </Form.Item>
+              </div>
+              <div id="recordInput__showChart2">
+                <GLUChart
+                  beginDate={this.state.beginDate}
+                  endDate={this.state.endDate}
+                  selectKey={this.state.selectKey}
+                />
+              </div>
+              <div className="recordInput__dataContainer">
+                <TableData
+                  resid={640190825057}
+                  hasModify={false}
+                  height={500}
+                  hasDelete={false}
+                  hasRowDelete={false}
+                  defaultColumnWidth={150}
+                  actionBarWidth={200}
+                  subtractH={150}
+                />
+              </div>
+              {/* <div className="recordInput__basicMd">
+                <Form.Item label="基本用药">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__basic"
+                    value={this.s}
+                  />
+                </Form.Item>
+                <Form.Item label="用药变化">
+                  <TextArea rows={3} className="recordInput__basicMd__change" />
+                </Form.Item>
+                <Form.Item label="备注">
+                  <TextArea rows={3} className="recordInput__basicMd__remark" />
+                </Form.Item>
+              </div> */}
+            </Form>
+          </TabPane>
+          <TabPane tab="体温" key="3">
             <Form className="recordInput">
               <div className="recordInput__userInfo">
                 <Form.Item
@@ -257,163 +305,16 @@ class RecordInput extends React.Component {
                     style={{ width: '35%' }}
                   />
                 </Form.Item>
-              </div>
-              <div id="recordInput__showChart1">
-                <ShowDataChart
-                beginDate = {this.state.beginDate}
-                endDate = {this.state.endDate}
-                selectKey = {this.state.selectKey}
-                />
-              </div>
-              <div className="recordInput__dataContainer">
-                <TableData
-                  resid={640186569410}
-                  hasModify={false}
-                  height={500}
-                  hasDelete={false}
-                  hasRowDelete={false}
-                  defaultColumnWidth={150}
-                  actionBarWidth={200}
-                  subtractH={150}
-                />
-              </div>
-              <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.s}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
-              </div>
-            </Form>
-          </TabPane>
-          <TabPane tab="血糖" key="2">
-            <Form className="recordInput">
-              <div className="recordInput__userInfo">
-                <Form.Item
-                  label="用户编号"
-                  className="recordInput__userInfo__userNo"
-                >
-                  <Input defaultValue="00000001" disabled />
-                </Form.Item>
-                <Form.Item
-                  label="用户姓名"
-                  className="recordInput__userInfo__userName"
-                >
-                  <Input defaultValue="张三" disabled />
-                </Form.Item>
-                <Form.Item
-                  label="开始日期"
-                  className="recordInput__userInfo__beginDate"
-                >
-                  <DatePicker
-                    onChange={this.beginDateChange}
-                    value={beginDate}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="结束日期"
-                  className="recordInput__userInfo__endDate"
-                >
-                  <DatePicker onChange={this.endDateChange} value={now} />
-                </Form.Item>
-                <Form.Item label="共计" className="recordInput__userInfo__days">
-                  <Input
-                    value={`${this.state.days}天`}
-                    // disabled
-                    style={{ width: '35%' }}
-                  />
-                </Form.Item>
-              </div>
-              <div id="recordInput__showChart2">
-                <EChartsOfReact
-                  id="myChart2"
-                  option={this.state.option}
-                  defaultWidth={1200}
-                  defaultHeight={400}
-                />
-              </div>
-              <div className="recordInput__dataContainer">
-                <TableData
-                  resid={resid2}
-                  hasModify={false}
-                  height={500}
-                  hasDelete={false}
-                  hasRowDelete={false}
-                  defaultColumnWidth={150}
-                  actionBarWidth={200}
-                  subtractH={150}
-                />
-              </div>
-              <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.s}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
-              </div>
-            </Form>
-          </TabPane>
-          <TabPane tab="体温" key="3">
-            <Form className="recordInput">
-              <div className="recordInput__userInfo">
-                <Form.Item
-                  label="用户编号"
-                  className="recordInput__userInfo__userNo"
-                >
-                  <Input defaultValue="00000001" disabled />
-                </Form.Item>
-                <Form.Item
-                  label="用户姓名"
-                  className="recordInput__userInfo__userName"
-                >
-                  <Input defaultValue="张三" disabled />
-                </Form.Item>
-                <Form.Item
-                  label="开始日期"
-                  className="recordInput__userInfo__beginDate"
-                >
-                  <DatePicker
-                    onChange={this.beginDateChange}
-                    value={beginDate}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="结束日期"
-                  className="recordInput__userInfo__endDate"
-                >
-                  <DatePicker onChange={this.endDateChange} value={now} />
-                </Form.Item>
-                <Form.Item label="共计" className="recordInput__userInfo__days">
-                  <Input
-                    value={`${this.state.days}天`}
-                    // disabled
-                    style={{ width: '35%' }}
-                  />
+                <Form.Item className="recordInput__userInfo__days">
+                  <Button onClick={this.userInformation}>会员信息</Button>
                 </Form.Item>
               </div>
               <div id="recordInput__showChart3">
-                <EChartsOfReact
-                  id="myChart3"
-                  option={this.state.option}
-                  defaultWidth={1200}
-                  defaultHeight={400}
-                />
+                {/* <ShowDataChart
+                beginDate = {this.state.beginDate}
+                endDate = {this.state.endDate}
+                selectKey = {this.state.selectKey}
+                /> */}
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -427,7 +328,7 @@ class RecordInput extends React.Component {
                   subtractH={150}
                 />
               </div>
-              <div className="recordInput__basicMd">
+              {/* <div className="recordInput__basicMd">
                 <Form.Item label="基本用药">
                   <TextArea
                     rows={3}
@@ -441,10 +342,49 @@ class RecordInput extends React.Component {
                 <Form.Item label="备注">
                   <TextArea rows={3} className="recordInput__basicMd__remark" />
                 </Form.Item>
-              </div>
+              </div> */}
             </Form>
           </TabPane>
         </Tabs>
+        <Modal
+          visible={this.state.infoModal}
+          onCancel={this.closeModal}
+          onOk={this.closeModal}
+        >
+          <div className="UserInfo">
+            <Collapse defaultActiveKey={['1']}>
+              <Panel header="用户基本信息" key="1">
+                <p>会员编号：{this.props.userNo}</p>
+                <p>会员姓名：{this.props.userName}</p>
+              </Panel>
+              <Panel header="用户健康状况" key="2">
+                <p>家族病史：{this.props.familyMedicalHistory}</p>
+                <p>主要疾病：{this.props.principalDisease}</p>
+                <p>药物过敏：{this.props.drugAllergy}</p>
+                <p>高血压：{this.props.highBloodPressure}</p>
+                <p>糖尿病：{this.props.diabetesMellitus}</p>
+                <p>慢性病：{this.props.chronicDisease}</p>
+                <p>精神病史：{this.props.psychiatricHistory}</p>
+                <p>免疫情况：{this.props.immunized}</p>
+                <p>所需服务：{this.props.needService}</p>
+              </Panel>
+              <Panel header="个人行为情况" key="3">
+                <p>性格：{this.props.character}</p>
+                <p>吸烟史：{this.props.smokeHistory}</p>
+                <p>饮酒史：{this.props.drinkHistory}</p>
+                <p>睡眠状况：{this.props.SleepQuality}</p>
+                <p>锻炼项目：{this.props.exerciseEvent}</p>
+                <p>饮食习惯：{this.props.dietaryHabit}</p>
+                <p>兴趣爱好：{this.props.hobbies}</p>
+                <p>是否残疾：{this.props.isDisability}</p>
+                <p>身体不适处理方式：{this.props.processMode}</p>
+              </Panel>
+              <Panel header="自述状况" key="4">
+                <p>自述状况：{this.props.processMode}</p>
+              </Panel>
+            </Collapse>
+          </div>
+        </Modal>
       </div>
     );
   }

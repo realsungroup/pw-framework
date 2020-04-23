@@ -217,5 +217,19 @@ http.createApi("getVerCode", {
   method: "get",
   url: "api/SMS/SMS_SendValidCode"
 });
+/**
+ * 获取下级节点名称及resid
+ */
+http.createApi("getAppLinks", {
+  method: "get",
+  url: "api/Resource/RetrieveUserAllAppLinks"
+});
+/**
+ * 向一张表中插入一条数据
+ */
+http.createApi("saveRecord", {
+  method: "post",
+  url: "api/100/table/Save"
+});
 
 export default http;

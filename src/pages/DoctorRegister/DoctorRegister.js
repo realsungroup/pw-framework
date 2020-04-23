@@ -2,11 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Button, Input, Form, Icon, Radio, Spin, Select } from 'antd';
 import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo.png';
-import { resetPassByEmail } from 'Util/api';
-import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
 import './DoctorRegister.less';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 
 const { loginLogoSize } = window.pwConfig;
 const Option = Select.Option;
@@ -16,6 +14,7 @@ const {
   enterprisecode,
   themeColor
 } = window.pwConfig;
+const resid = 639670405070;
 
 class DoctorRegister extends React.Component {
   constructor() {
@@ -23,50 +22,113 @@ class DoctorRegister extends React.Component {
     this.state = {
       showSpin: false,
       disabled: false,
-      counts: ''
+      counts: '',
+      redirectToReferrer:false
     };
   }
 
-  register = () => {
+  register =  () => {
     const { form } = this.props;
     let res;
-    this.props.form.validateFieldsAndScroll(async (err, values) => {
+     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (err) {
         return;
       }
       let registerData = {
-        userName: form.getFieldValue('userName'), // 姓名
-        sex: form.getFieldValue('sex'), // 性别
-        section: form.getFieldValue('section'), //科室类别
-        loginAccount: form.getFieldValue('loginAccount'), //登录账号
-        password: form.getFieldValue('password'), //登录密码
-        telephone: form.getFieldValue('telephone'), //手机号
-        code: form.getFieldValue('code'), //验证码
-        validresid: 639669815518  // 注册表
+        // hospital: form.getFieldValue('hospital'), // 所属医院
+        nickname: form.getFieldValue('userName'), // 用户姓名
+        // sex: form.getFieldValue('sex'), // 性别
+        userid: form.getFieldValue('loginAccount'), //登录账号
+        newpass: form.getFieldValue('password'), // 登录密码
+        Handphone: form.getFieldValue('telephone'), // 手机号
+        validcode: form.getFieldValue('code'), //验证码
+        validresid: 616851598789, // 注册表
       };
       this.setState({
-        showSpin: true
+        showSpin: true,
       });
-
       try {
         res = await http().register(registerData);
-        if (res.data.error == 0) {
-          message.success("注册成功");
-          this.props.history.push({
-            pathname: "/login",
-          });
+        if (res.error == 0) {
+          message.success('注册成功');
         } else {
-          message.error(res.data.message);
+          message.error(res.message);
         }
+        this.handleLogin();
       } catch (error) {
         message.error(error.message);
       }
-
+     
       this.setState({
-        showSpin: false
+        showSpin: false,
       });
     });
   };
+  //登录
+  handleLogin = async () => {
+    let res;
+    const { form } = this.props;
+      let registerInformation = {
+        hospital: form.getFieldValue('hospital'), // 所属医院
+        doctorName: form.getFieldValue('userName'), // 用户姓名
+        doctorSex: form.getFieldValue('sex'), // 性别
+        division: form.getFieldValue('section'), // 科别
+        credentialsID: form.getFieldValue('doctorID'), // 资格证编号
+        telphone: form.getFieldValue('telephone'), // 手机号
+        userid: form.getFieldValue('loginAccount'), //登录账号
+        newpass: form.getFieldValue('password'), // 登录密码
+
+      };
+      try {
+        res = await http().defaultLogin({
+          Code: registerInformation.userid,
+          Password: registerInformation.newpass,
+          // useCookie:true
+        });
+        const result = res.OpResult;
+        if (result === 'Y') {
+          // 登录成功
+        setItem('userInfo', JSON.stringify(res));
+        const userInfo = JSON.parse(getItem('userInfo'));
+        if (res.OpResult !== 'Y') {
+          message.error(res.ErrorMsg);
+        } else {
+          setItem('userInfo', JSON.stringify(userInfo));
+        }
+          // this.setState({
+          //   redirectToReferrer: true
+          // });
+          this.props.history.replace(
+            '/fnmodule?resid=588425594397&recid=635517197444&type=人口信息学&title=患者信息'
+          )
+          window.location.reload();
+        } else if (result === 'N') {
+          return message.error(res.ErrorMsg);
+        }
+       this.saveRegisterInfo(registerInformation)
+      } catch (error) {
+        message.error(error.message);
+      }
+  };
+
+  //保存注册信息
+  saveRegisterInfo = async (data) =>{
+   let  dataInfo = {
+      ...data,
+      _id : 1,
+      _state : "editoradd"
+    }
+    let res;
+    try {
+          res = await http().saveRecord({
+           resid,
+           data:JSON.stringify([dataInfo])
+          });
+        } catch (error) {
+          message.error(error.message);
+          }
+  }
+
 
 
   //获取验证码
@@ -127,8 +189,12 @@ class DoctorRegister extends React.Component {
     });
   };
   render() {
-    const { disabled, counts, showSpin } = this.state;
+    const { disabled, counts, showSpin ,redirectToReferrer} = this.state;
     const { getFieldDecorator } = this.props.form;
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
     return (
       <div className="page">
         <div className="register-contain">
@@ -274,7 +340,7 @@ class DoctorRegister extends React.Component {
                   htmlType="submit"
                   className="login-form-button"
                   onClick={this.register}
-                  size="normal"
+                  size="default"
                 >
                   注册
                 </Button>

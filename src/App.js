@@ -13,6 +13,7 @@ import en_US from './locales/en-US';
 
 import { PageContainer, Login, NotFound,Register,DoctorRegister,CompanyRegister,ForgetPassword } from './pages/loadablePage';
 
+import {PatientInfo} from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
 
@@ -60,7 +61,6 @@ const Reminder = (
     中打开
   </div>
 );
-
 class WarningBar extends React.PureComponent {
   render() {
     const { visible, onClose } = this.props;
@@ -178,6 +178,7 @@ class App extends Component {
                       component={PageContainer}
                     />
                     <Route path="/login" component={Login} />
+                    <Route path="/index" component={PatientInfo} />
                     <Route path="/ForgetPassword" component={ForgetPassword} />
                     <Route path="/register" component={Register} />
                     <Route path="/doctorRegister" component={DoctorRegister} />
