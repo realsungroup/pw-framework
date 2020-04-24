@@ -22,7 +22,8 @@ class ContractApproval extends React.Component {
     refuseVisible: false,
     refuseReson: '',
     refuseConfirmLoading: false,
-    selectedRecord: {}
+    selectedRecord: {},
+    loading:false
   };
   waitingCustomRowBtns = [
     (record, btnSize) => {
@@ -84,6 +85,51 @@ class ContractApproval extends React.Component {
       this.setState({ refuseConfirmLoading: false });
     }
   };
+  multiApproval = async (dataSource, selectedRowKeys,val) =>{
+    // console.log(dataSource, selectedRowKeys,val)
+    let value='N';
+    if(val){
+      value='Y'
+    }
+    if (selectedRowKeys.length) {
+    this.setState({loading:true});
+
+      let selectedRecords = selectedRowKeys.map(
+        key => {
+          return {
+            ...dataSource.find(item => {
+              return item.REC_ID === key;
+            })
+          };
+        }
+      );
+      let n=0;
+      while(n<selectedRecords.length){
+        selectedRecords[n].C3_532015901062=value
+        n++;
+      }
+      try{
+        let res = http().modifyRecords({
+          resid:waitingResid,
+          data:selectedRecords
+        });
+        message.success('操作成功');
+        this.tableDataRef.handleRefresh();
+        this.setState({loading:false});
+        
+      }catch(e){
+        console.log(e.message);
+        this.setState({loading:false});
+      }
+      console.log(selectedRecords);
+    this.setState({loading:false});
+
+    } else {
+      message.info('请勾选记录！');
+
+    }
+  
+  }
 
   render() {
     const {
@@ -113,8 +159,18 @@ class ContractApproval extends React.Component {
                 hasDelete={false}
                 hasModify={false}
                 hasBeBtns={false}
-                hasRowSelection={false}
+                hasRowSelection={true}
                 customRowBtns={this.waitingCustomRowBtns}
+                actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                  return (
+                    <>
+                      
+                          <Button type='primary' loading={this.state.loading} onClick={()=>this.multiApproval(dataSource,selectedRowKeys,true)}>批量同意</Button>
+                          <Button type='danger' loading={this.state.loading} onClick={()=>this.multiApproval(dataSource,selectedRowKeys,false)}>批量拒绝</Button>
+                    
+                    </>
+                  );
+                }}
               />
             </div>
           </TabPane>
