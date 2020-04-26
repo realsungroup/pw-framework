@@ -16,6 +16,7 @@ import './Compact.less';
 import http from 'Util20/api';
 
 const contractHistoryResid = '436624421847'; //合同历史记录
+const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
 const {RangePicker} = DatePicker
 const CheckboxOptions = ['DL', 'IDL'];
@@ -43,7 +44,7 @@ const filterTab2A = [
     resid: '640264102764'
   },
   {
-    label: '合同审批节点查看',
+    label: '所有记录',
     resid: '640264137935'
   }
 ];
@@ -76,7 +77,10 @@ class Compact extends Component {
       checkboxOptions: CheckboxOptions,
       signingDate: null,
       signingVisible: false,
-      signingLoading: false
+      signingLoading: false,
+      showCheck:false,
+      checkMem:'',
+      loading:false
     };
   }
   changeDate=(v)=>{
@@ -106,6 +110,41 @@ class Compact extends Component {
       this.setState({ signingLoading: false });
     }
   };
+  // 发送提醒审批邮件
+  // sendMail=async(data)=>{
+  //   this.setState({loading:true});
+  //   console.log(data)
+    // 工号
+    // 姓名
+    // 合同类别
+    // 合同期开始
+    // 合同期结束
+    // var obj={
+    //   C3_641217561996:'Y',//发送邮件
+    //   C3_641218070825:data.C3_532015785778,//工号
+    //   C3_641218081651:data.C3_532015800738,//姓名
+    //   C3_641218091102:data.C3_640790367952,//合同类别
+    //   C3_641218115536:data.C3_640790368615,//合同期开始
+    //   C3_641218133499:data.C3_640790368858,//合同期截止
+    //   C3_641218180355:data.C3_640790990665,//审批人工号
+    //   C3_641218158590:'',//审批人邮箱
+    //   C3_641218180355:'',//审批人工号
+    //   C3_641218170823:'',//审批人编号
+    // }
+
+  //   try{
+  //     let res = http().addRecords({
+  //       resid:mailHis,
+  //       data:[obj]
+
+  //     })
+  //   message.success('提醒邮件发送成功');
+  //   this.setState({loading:false});
+
+  //   }catch(e){
+  //     console.log(e.message)
+  //   }
+  // }
 
   handleConfirm = (persons, signing) => {
     let names = '';
@@ -320,6 +359,7 @@ class Compact extends Component {
                     ? [
                         (record, btnSize) => {
                           return (
+                            <>
                             <Button
                               size={btnSize}
                               onClick={() => {
@@ -332,6 +372,9 @@ class Compact extends Component {
                             >
                               发送通知邮件
                             </Button>
+
+                            <Button size='small' style={{marginLeft:'4px'}} onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+</>
                           );
                         }
                       ]
@@ -398,27 +441,11 @@ class Compact extends Component {
                     </>
                   );
                 }}
-                customRowBtns={
-                  key1 === '_0A'
-                    ? [
-                        (record, btnSize) => {
-                          return (
-                            <Button
-                              size={btnSize}
-                              onClick={() => {
-                                this.setState({
-                                  selectedPersons: [record],
-                                  signingVisible: true
-                                });
-                              }}
-                              type="primary"
-                            >
-                              发送通知邮件
-                            </Button>
-                          );
-                        }
-                      ]
-                    : []
+                customRowBtns={[(record)=>{return(
+                  <Button size='small' onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+
+
+                )}]
                 }
               />
 
@@ -478,30 +505,14 @@ class Compact extends Component {
                           </Button>
                         </>
                       ) : null}
+                    
                     </>
                   );
                 }}
-                customRowBtns={
-                  key1 === '_0A'
-                    ? [
-                        (record, btnSize) => {
-                          return (
-                            <Button
-                              size={btnSize}
-                              onClick={() => {
-                                this.setState({
-                                  selectedPersons: [record],
-                                  signingVisible: true
-                                });
-                              }}
-                              type="primary"
-                            >
-                              发送通知邮件
-                            </Button>
-                          );
-                        }
-                      ]
-                    : []
+                customRowBtns={[(record)=>{return(
+                  <Button size='small'  onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+
+                )}]
                 }
               />
 
@@ -509,7 +520,65 @@ class Compact extends Component {
               
             </div>
           </TabPane>
+          <TabPane
+            tab="邮件提醒发送历史"
+            key="3"
+            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          >
+            <TableData
+                resid={mailHis}
+                subtractH={220}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                tableComponent='ag-grid'
+              />
+          </TabPane>
         </Tabs>
+        <Modal
+          title="审批节点"
+          width={'90vw'}
+          visible={this.state.showCheck}
+          footer={null}
+          onCancel={() => {
+            this.setState({
+             showCheck:false,
+             checkMem:''
+            });
+          }}
+        >
+          <div style={{height:'80vh'}}>
+
+          <TableData
+                resid={640899304937}
+                subtractH={220}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                cmswhere={`C3_532015785778 = '${this.state.checkMem}'`}
+                // customRowBtns={[(record)=>{return(
+                //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
+                // )}]
+                // }
+              />
+
+            </div>
+        </Modal>
         <Modal
           title="合同历史信息"
           width="80vw"
@@ -575,6 +644,7 @@ class Compact extends Component {
             onChange={v => this.changeDate(v)}
           />
         </Modal>
+       
       </div>
     );
   }
