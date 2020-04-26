@@ -33,7 +33,7 @@ class ContractApproval extends React.Component {
           onConfirm={() => {
             this.approval({
               ...record,
-              C3_532015901062: 'Y'
+              C3_640779681600: 'Y'
             });
           }}
         >
@@ -87,10 +87,6 @@ class ContractApproval extends React.Component {
   };
   multiApproval = async (dataSource, selectedRowKeys,val) =>{
     // console.log(dataSource, selectedRowKeys,val)
-    let value='N';
-    if(val){
-      value='Y'
-    }
     if (selectedRowKeys.length) {
     this.setState({loading:true});
 
@@ -105,7 +101,11 @@ class ContractApproval extends React.Component {
       );
       let n=0;
       while(n<selectedRecords.length){
-        selectedRecords[n].C3_532015901062=value
+        if(val){
+        selectedRecords[n].C3_640779681600='Y'
+        }else{
+        selectedRecords[n].C3_640785923825='Y'
+        }
         n++;
       }
       try{
@@ -113,9 +113,13 @@ class ContractApproval extends React.Component {
           resid:waitingResid,
           data:selectedRecords
         });
+        var _this=this;
         message.success('操作成功');
-        this.tableDataRef.handleRefresh();
-        this.setState({loading:false});
+        var t =setTimeout(function(){
+          _this.tableDataRef.handleRefresh();
+          _this.setState({loading:false});
+        },2000)
+       
         
       }catch(e){
         console.log(e.message);
@@ -225,7 +229,7 @@ class ContractApproval extends React.Component {
             this.setState({ refuseConfirmLoading: true });
             this.approval({
               ...selectedRecord,
-              C3_532015901062: 'N',
+              C3_640785923825: 'Y',
               C3_640264966061: refuseReson
             });
           }}
