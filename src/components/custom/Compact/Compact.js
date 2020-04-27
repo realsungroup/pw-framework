@@ -80,6 +80,7 @@ class Compact extends Component {
       signingLoading: false,
       showCheck:false,
       checkMem:'',
+      checkType:'',
       loading:false
     };
   }
@@ -103,7 +104,7 @@ class Compact extends Component {
         signingDate: null
       });
       message.success('操作成功');
-      this.tableDataRef.handleRefresh();
+      this.tableDataRef2.handleRefresh();
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -166,7 +167,7 @@ class Compact extends Component {
             data: persons
           });
           message.success('操作成功');
-          this.tableDataRef.handleRefresh();
+          this.tableDataRef2.handleRefresh();
         } catch (error) {
           message.error(error.message);
           console.error(error);
@@ -174,7 +175,16 @@ class Compact extends Component {
       }
     });
   };
-
+refre=()=>{
+  if(this.tableDataRef){
+    this.tableDataRef.handleRefresh();
+  }
+  if(this.tableDataRef2){
+    this.tableDataRef2.handleRefresh();
+  } if(this.tableDataRef3){
+    this.tableDataRef3.handleRefresh();
+  }
+}
   render() {
     const {
       selectedPerson,
@@ -191,9 +201,11 @@ class Compact extends Component {
       <div className="Compact">
         <Tabs
           defaultActiveKey="1"
+      onTabClick={()=>{this.refre();}} 
           style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
         >
           <TabPane
+          // forceRender={true}
             tab="合同信息"
             key="1"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
@@ -218,8 +230,8 @@ class Compact extends Component {
               })}
             </div>
             <div className="Tab1Outer">
-              <TableData
-                resid={this.state.residTab1}
+            {this.state.residTab1=='440237518278'?<TableData
+                resid={440237518278}
                 subtractH={180}
                 // tableComponent="ag-grid"
                 // sideBarAg={true}
@@ -233,6 +245,8 @@ class Compact extends Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+
                 customRowBtns={[
                   (record, btnSize) => {
                     return (
@@ -250,10 +264,83 @@ class Compact extends Component {
                     );
                   }
                 ]}
-              />
+              />:null}
+              {this.state.residTab1=='437092525908'?<TableData
+                resid={437092525908}
+                subtractH={180}
+                // tableComponent="ag-grid"
+                // sideBarAg={true}
+                hasAdvSearch={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasRowModify={true}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowSelection={false}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        size={btnSize}
+                        onClick={() => {
+                          this.setState({
+                            selectedPerson: record,
+                            contractHistoryVisible: true
+                          });
+                        }}
+                      >
+                        查看历史信息
+                      </Button>
+                    );
+                  }
+                ]}
+              />:null}
+              {this.state.residTab1=='436624135588'?<TableData
+                resid={436624135588}
+                subtractH={180}
+                // tableComponent="ag-grid"
+                // sideBarAg={true}
+                hasAdvSearch={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasRowModify={true}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowSelection={false}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        size={btnSize}
+                        onClick={() => {
+                          this.setState({
+                            selectedPerson: record,
+                            contractHistoryVisible: true
+                          });
+                        }}
+                      >
+                        查看历史信息
+                      </Button>
+                    );
+                  }
+                ]}
+              />:null}
+
             </div>
           </TabPane>
           <TabPane
+          // forceRender={true}
+
             tab="人员续签"
             key="2"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
@@ -310,7 +397,7 @@ class Compact extends Component {
                 hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+                wrappedComponentRef={element => (this.tableDataRef2 = element)}
                 refTargetComponentName="TableData"
                 cmswhere={
                   checkboxOptions.length !== 1
@@ -373,7 +460,7 @@ class Compact extends Component {
                               发送通知邮件
                             </Button>
 
-                            <Button size='small' style={{marginLeft:'4px'}} onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+                            <Button size='small' style={{marginLeft:'4px'}} onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
 </>
                           );
                         }
@@ -397,7 +484,7 @@ class Compact extends Component {
                 hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+                wrappedComponentRef={element => (this.tableDataRef2 = element)}
                 refTargetComponentName="TableData"
                 cmswhere={
                   checkboxOptions.length !== 1
@@ -442,7 +529,7 @@ class Compact extends Component {
                   );
                 }}
                 customRowBtns={[(record)=>{return(
-                  <Button size='small' onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+                  <Button size='small' onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
 
 
                 )}]
@@ -464,7 +551,7 @@ class Compact extends Component {
                 hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+                wrappedComponentRef={element => (this.tableDataRef2 = element)}
                 refTargetComponentName="TableData"
                 cmswhere={
                   checkboxOptions.length !== 1
@@ -510,7 +597,7 @@ class Compact extends Component {
                   );
                 }}
                 customRowBtns={[(record)=>{return(
-                  <Button size='small'  onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137})}}>查看审批节点</Button>
+                  <Button size='small'  onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
 
                 )}]
                 }
@@ -521,6 +608,8 @@ class Compact extends Component {
             </div>
           </TabPane>
           <TabPane
+          // forceRender={true}
+
             tab="邮件提醒发送历史"
             key="3"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
@@ -537,7 +626,7 @@ class Compact extends Component {
                 hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+                wrappedComponentRef={element => (this.tableDataRef3 = element)}
                 refTargetComponentName="TableData"
                 tableComponent='ag-grid'
               />
@@ -551,7 +640,8 @@ class Compact extends Component {
           onCancel={() => {
             this.setState({
              showCheck:false,
-             checkMem:''
+             checkMem:'',
+             checkType:'',
             });
           }}
         >
@@ -570,7 +660,7 @@ class Compact extends Component {
                 hasRowModify={false}
                 hasRowSelection={true}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
-                cmswhere={`C3_532015785778 = '${this.state.checkMem}'`}
+                cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
                 // customRowBtns={[(record)=>{return(
                 //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
                 // )}]
@@ -623,7 +713,7 @@ class Compact extends Component {
             this.setState({ signingLoading: true });
 
             selectedPersons.forEach(item => {
-              item.C3_491580883247 = 'Y';
+              item.C3_49158meetDa0883247 = 'Y';
               item.meetDate = this.state.meetTime;
             });
             this.handleSendEmail(selectedPersons);
