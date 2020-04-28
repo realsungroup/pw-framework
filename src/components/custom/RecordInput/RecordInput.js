@@ -42,9 +42,9 @@ class RecordInput extends React.Component {
       endDate: '',
       now: '',
       days: '',
-      basic: '',
-      change: '',
-      remark: '',
+      basic: '', //基本用药
+      change: '', //用药变化
+      remark: '', //备注
       bloodPressureDate: [],
       selectKey: '1',
       res: {},
@@ -56,7 +56,6 @@ class RecordInput extends React.Component {
   }
 
   componentWillMount = () => {
-    console.log('props', this.props);
     let nowDate = moment().format('YYYY-MM-DD');
     let start = moment(nowDate).add(-30, 'days');
     this.setState({
@@ -67,8 +66,53 @@ class RecordInput extends React.Component {
     this.setState({
       days: moment(nowDate).diff(start, 'day'),
     });
-    // this.getTableData();
+    this.getTableData();
   };
+
+  getTableData = async () => {
+    const {selectKey,basic,change,remark} = this.state; 
+    let res;
+    if(selectKey == '1'){
+      try {
+        res = await getMainTableData(resid1, {
+          getcolumninfo: 1,
+        });
+      } catch (err) {
+        return message.error(err.message);
+      }
+    }else if(selectKey == '2'){
+      try {
+        res = await getMainTableData(resid2, {
+          getcolumninfo: 1,
+        });
+      } catch (err) {
+        return message.error(err.message);
+      }
+    }else if (selectKey == '3'){
+      try {
+        res = await getMainTableData(resid3, {
+          getcolumninfo: 1,
+        });
+      } catch (err) {
+        return message.error(err.message);
+      }
+    }
+    console.log("data",res)
+    let arr  =[];
+    res.data.map(items =>{
+      for(let i in items){
+       if(i == 'basicPharmacy' && items[i] !== null  ) {
+       arr.push(items)
+        console.log("i",items[i])
+       }
+      }
+    })
+    this.setState({
+      basic:arr[0].basicPharmacy,
+      change:arr[0].pharmacyChange,
+      remark:arr[0].remark
+    })
+  }
 
   //开始日期
   beginDateChange = (value) => {
@@ -109,7 +153,7 @@ class RecordInput extends React.Component {
     });
   };
   render() {
-    const { now, beginDate,endDate } = this.state;
+    const { now, beginDate, endDate } = this.state;
     return (
       <div className="DataPut">
         <h2 style={{ marginLeft: '9px' }}>常见信息录入</h2>
@@ -162,6 +206,56 @@ class RecordInput extends React.Component {
                   selectKey={this.state.selectKey}
                 />
               </div>
+              <div className="recordInput__basicMd">
+              <h3 style = {{color:"#000"}}>上一次用药情况:</h3>
+                <div className = "recordInput__basicMd__last">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__basic"
+                      value={this.state.basic}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__change"
+                      value={this.state.change}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__remark"
+                      value={this.state.remark}
+                    />
+                  </Form.Item>
+                </div>
+                <h3 style = {{color:"#000"}}>当前用药情况:</h3>
+                <div className = "recordInput__basicMd__now">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__basic"
+                      value={this.state.basic}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__change"
+                      value={this.state.change}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__remark"
+                      value={this.state.remark}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
               <div className="recordInput__dataContainer">
                 <TableData
                   resid={639829713698}
@@ -174,21 +268,6 @@ class RecordInput extends React.Component {
                   subtractH={150}
                 />
               </div>
-              {/* <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.s}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
-              </div> */}
             </Form>
           </TabPane>
           <TabPane tab="血糖" key="2">
@@ -239,6 +318,29 @@ class RecordInput extends React.Component {
                   selectKey={this.state.selectKey}
                 />
               </div>
+              <div className="recordInput__basicMd">
+                <Form.Item label="基本用药">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__basic"
+                    value={this.state.basic}
+                  />
+                </Form.Item>
+                <Form.Item label="用药变化">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__change"
+                    value={this.state.change}
+                  />
+                </Form.Item>
+                <Form.Item label="备注">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__remark"
+                    value={this.state.remark}
+                  />
+                </Form.Item>
+              </div>
               <div className="recordInput__dataContainer">
                 <TableData
                   resid={640190825057}
@@ -251,21 +353,6 @@ class RecordInput extends React.Component {
                   subtractH={150}
                 />
               </div>
-              {/* <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.s}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
-              </div> */}
             </Form>
           </TabPane>
           <TabPane tab="体温" key="3">
@@ -316,6 +403,21 @@ class RecordInput extends React.Component {
                 selectKey = {this.state.selectKey}
                 /> */}
               </div>
+              <div className="recordInput__basicMd">
+                <Form.Item label="基本用药">
+                  <TextArea
+                    rows={3}
+                    className="recordInput__basicMd__basic"
+                    value={this.state.basic}
+                  />
+                </Form.Item>
+                <Form.Item label="用药变化">
+                  <TextArea rows={3} className="recordInput__basicMd__change" />
+                </Form.Item>
+                <Form.Item label="备注">
+                  <TextArea rows={3} className="recordInput__basicMd__remark" />
+                </Form.Item>
+              </div>
               <div className="recordInput__dataContainer">
                 <TableData
                   resid={resid3}
@@ -328,21 +430,6 @@ class RecordInput extends React.Component {
                   subtractH={150}
                 />
               </div>
-              {/* <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.s}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
-              </div> */}
             </Form>
           </TabPane>
         </Tabs>

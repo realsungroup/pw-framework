@@ -46,7 +46,6 @@ class BPChart extends React.Component {
   }
 
   componentWillMount = () => {
-    console.log('props', this.props);
     this.getTableData();
   };
   async componentDidMount() {
@@ -166,8 +165,6 @@ class BPChart extends React.Component {
       legendData,
       this.props.beginDate.format('YYYY-MM-DD')
     );
-    console.log(this.props.endDate.format('YYYY-MM-DD'));
-    console.log(source);
     this._echarts.setOption({
       dataset: {
         dimensions: [],

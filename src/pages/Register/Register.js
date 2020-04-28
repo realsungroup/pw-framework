@@ -194,10 +194,10 @@ class Register extends React.Component {
         <div className="register-contain">
           <Spin spinning={showSpin}>
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
-              <h1>注册</h1>
+              <h1>个人注册</h1>
               <Form.Item label="所属机构" className="registerForm">
                 {getFieldDecorator('companyName', {
-                  rules: [{ required: true, message: '请输入你的机构名称!' }],
+                  rules: [],
                 })(
                   <Input
                     prefix={

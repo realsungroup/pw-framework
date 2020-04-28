@@ -11,7 +11,7 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-import { PageContainer, Login, NotFound,Register,DoctorRegister,CompanyRegister,ForgetPassword } from './pages/loadablePage';
+import { PageContainer, Login, NotFound,Register,DoctorRegister,CompanyRegister,ForgetPassword ,IndexHome} from './pages/loadablePage';
 
 import {PatientInfo} from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
@@ -178,6 +178,7 @@ class App extends Component {
                       component={PageContainer}
                     />
                     <Route path="/login" component={Login} />
+                    <Route path="/indexHome" component={IndexHome} />
                     <Route path="/index" component={PatientInfo} />
                     <Route path="/ForgetPassword" component={ForgetPassword} />
                     <Route path="/register" component={Register} />
