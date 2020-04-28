@@ -350,8 +350,12 @@ class TotalStatical extends Component {
         text: `${++index}.${item.question_topic}`,
         style: 'header'
       });
-      const list = item.answers.map(i => {
-        return [{ text: i.write_content, style: 'tableRow' }];
+      let list = [];
+    
+      item.answers.map(i => {
+        if(i.isAdopt=='Y'){
+          list.push( [{ text: i.write_content, style: 'tableRow' }]);
+        }
       });
       answers.push({
         style: 'tableExample',
