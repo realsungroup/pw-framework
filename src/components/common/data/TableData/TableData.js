@@ -112,20 +112,26 @@ class TableData extends React.Component {
     this.setState({ loading: false });
   };
 
-  // componentWillReceiveProps = async nextProps => {
-  //   if (
-  //     this.props.resid !== nextProps.resid ||
-  //     this.props.subresid !== nextProps.subresid ||
-  //     this.props.dataMode !== nextProps.dataMode ||
-  //     this.props.hostrecid !== nextProps.hostrecid
-  //   ) {
-  //     this.setState({ loading: true });
+  componentWillReceiveProps = async nextProps => {
+    // if (
+    //   this.props.resid !== nextProps.resid ||
+    //   this.props.subresid !== nextProps.subresid ||
+    //   this.props.dataMode !== nextProps.dataMode ||
+    //   this.props.hostrecid !== nextProps.hostrecid
+    // ) {
+    //   this.setState({ loading: true });
 
-  //     this.initVariables(nextProps);
-  //     await this.getData(nextProps);
-  //     this.setState({ loading: false });
-  //   }
-  // };
+    //   this.initVariables(nextProps);
+    //   await this.getData(nextProps);
+    //   this.setState({ loading: false });
+    // }
+    console.log("nextProps",nextProps)
+    if(this.props.dataSource !== nextProps.dataSource){
+      this.setState({
+        dataSource:nextProps.dataSource
+      })
+    }
+  };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -308,6 +314,7 @@ class TableData extends React.Component {
     page = 1,
     pageSize = 10,
     key = this._searchValue,
+    // cmswhere= this.props.cmswhere,
     sortOrder = this._sortOrder,
     sortField = this._sortField
   }) => {
@@ -331,6 +338,7 @@ class TableData extends React.Component {
       tableComponent,
       nullValueNotFetch
     } = this.props;
+    console.log("this.props",this.props)
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
@@ -346,6 +354,7 @@ class TableData extends React.Component {
       try {
         // 获取主表数据
         if (dataMode === 'main') {
+          console.log("in")
           const params = {
             resid,
             key,
