@@ -232,17 +232,18 @@ class TotalStatical extends Component {
     }
   };
   // 导出图片的功能
-  handleExportImgBtnClick = () => {
+  handleExportImgBtnClick = async() => {
     const { queryName } = this.state;
     // 下载图片
-    function download(src, name) {
+    this.refs.toPrint.classList.add('printMode');
+    await function download(src, name) {
       if (!src) return;
       const a = document.createElement('a');
       a.setAttribute('download', name);
       a.href = src;
       a.click();
     }
-    html2canvas(document.querySelector('.total-statical__main')).then(
+    await html2canvas(document.querySelector('.total-statical__main')).then(
       canvas => {
         const imgDataURL = canvas.toDataURL('image/png', 1.0);
         if (isChrome()) {
@@ -255,6 +256,8 @@ class TotalStatical extends Component {
         }
       }
     );
+    
+    await this.refs.toPrint.classList.remove('printMode');
   };
 
   // 导出pdf文件
@@ -428,7 +431,7 @@ class TotalStatical extends Component {
               {item.answers.map((answer, _index) => {
                 const isAdopt = answer.isAdopt === 'Y';
                 return (
-                  <li key={_index} className="total-statical__ubox__lee">
+                  <li key={_index} className={!isAdopt?'total-statical__ubox__lee unAdoped':'total-statical__ubox__lee'}>
                     <span style={{ flex: 1 }}>{answer.write_content}</span>
                     <span>
                       <Button
@@ -482,7 +485,7 @@ class TotalStatical extends Component {
     return (
       <React.Fragment>
         <div className="total-statical">
-          <div className="total-statical__main">
+          <div ref='toPrint' className="total-statical__main">
             <h3 className="total-statical__title">{queryName}</h3>
             {this.renderCommonChart()}
             {this.renderAnswerChart()}
