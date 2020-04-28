@@ -1,0 +1,45 @@
+.fixed-functions {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  &__setting-btn {
+    float: right;
+    color: #1890ff;
+    cursor: pointer;
+  }
+  .fixed-functions-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    overflow: scroll;
+  }
+  .new-home__fixed-function {
+    display: flex;
+    align-items: center;
+    width: 33%;
+    flex-grow: 1;
+    height: 48px;
+    border: 1px solid rgba(232, 232, 232, 1);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    margin-right: 5%;
+    padding: 0 16px;
+    max-width: 30%;
+    cursor: pointer;
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(220, 220, 220, 1);
+      border-radius: 4px;
+    }
+    .cancel-btn {
+      visibility: hidden;
+    }
+    .cancel-btn.show-cancel {
+      visibility: visible;
+    }
+  }
+}

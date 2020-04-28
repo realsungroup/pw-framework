@@ -263,7 +263,7 @@ class PersonRelationship extends React.Component {
         paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
         paratypes: 'string,int,string,int,int',
         resid,
-        paravalues: '20200410,1239,,-1,0'
+        paravalues: `${selectedDate.format('YYYYMMDD')},1239,,-1,0`
       };
     } else {
       options = {

@@ -1,0 +1,51 @@
+@import '../../../../styles/variables.less';
+.page-header-v2-btn {
+  position: relative;
+  padding: 8px 0;
+  text-align: center;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .page-header-v2-btn-icon {
+    display: inline-block;
+    font-size: 24px;
+    color: @primary-color;
+    vertical-align: middle;
+  }
+  &-text {
+    padding-left: 8px;
+  }
+}
+
+.page-header-v2-btn:hover {
+  background-color: rgba(240, 248, 255, 0.5);
+}
+
+// .page-header-v2-btn-text {
+//   background-color: red;
+//   color: #fff;
+//   border-radius: 4px;
+//   line-height: 20px;
+//   position: absolute;
+//   padding: 0 2px;
+//   left: 20px;
+//   top: 2px;
+// }
+@media screen and (max-width: 700px) {
+  .page-header-v2-btn {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    text-align: center;
+    width: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    .page-header-v2-btn-icon {
+      display: inline-block;
+      font-size: 20px;
+      color: @primary-color;
+      vertical-align: middle;
+    }
+  }
+}

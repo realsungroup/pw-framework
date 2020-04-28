@@ -1,0 +1,193 @@
+@import url('../../../styles/variables.less');
+.page-header {
+  // position: fixed;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  text-align: left;
+  padding: 8px;
+  background-color: #fff;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 1);
+  border-bottom: 1px solid #dddddd;
+  z-index: 22;
+  transition: 0.3s; // power-works 的 logo
+  &__logo {
+    padding-right: 20px;
+    margin-right: 12px;
+    height: 100%;
+    display: inline-block;
+    cursor: pointer;
+    .icon-logo {
+      font-size: 46px;
+      position: relative;
+      top: -15px;
+      text-decoration: none;
+    }
+    .page-header-unordered-list-icon {
+      font-size: 24px;
+      margin-right: 16px;
+      color: @primary-color;
+    }
+  } // 客户 logoo
+  &__client-logo {
+    font-size: 16px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &__user {
+    float: right;
+    height: 100%;
+    padding-right: 16px;
+  }
+  &__abbreviation {
+    display: flex;
+    align-items: center;
+    float: right;
+    height: 100%;
+    padding: 0 8px;
+    cursor: pointer;
+  }
+  &__lock-screen {
+    display: flex;
+    align-items: center;
+    float: right;
+    height: 100%;
+    padding: 0 8px;
+    cursor: pointer;
+  }
+  .anticon&__abbreviation-icon {
+    font-size: 24px;
+    color: @primary-color;
+  }
+  &__right-btns {
+    float: right;
+    height: 100%;
+    padding-left: 16px;
+    margin-left: 24px;
+    border-left: #e7e7e7 solid thin;
+    &::after {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+    }
+  }
+  .icon-theme {
+    font-size: 24px;
+    color: @primary-color;
+  }
+  .icon-language {
+    font-size: 24px;
+    color: @primary-color;
+  }
+  &.in-top {
+    box-shadow: none;
+  }
+}
+.page-header__left-drawer {
+  top: 56px;
+}
+.page-header-search-box,
+.page-header-right-btn {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.page-header-search-box {
+  width: 20%;
+}
+
+.page-header-logo-inner {
+  height: 90%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.page-header::after,
+.color-picker-btns {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.color-picker-btn {
+  margin: 2px;
+}
+
+.sketch-picker {
+  box-shadow: none !important;
+}
+
+.workbench-body-drawer {
+  .icon-gongzuotai {
+    font-size: 24px;
+  }
+  &__title {
+    font-size: 18px;
+    height: 64px;
+    line-height: 64px;
+    color: #fff;
+    text-indent: 20px;
+  }
+  &__sub-item-icon {
+    font-size: 18px;
+  }
+  &__switch {
+    width: 46px;
+    height: 46px;
+    line-height: 46px;
+    text-align: center;
+    position: absolute;
+    left: -46px;
+    top: 90px;
+    background: #1585ff;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    .iconfont {
+      color: #fff;
+    }
+  }
+  .ant-drawer-body {
+    padding: 0;
+  }
+  .ant-drawer-wrapper-body {
+    background: #001524;
+  }
+}
+
+@media screen and (max-width: 1066px) {
+  .page-header {
+    &__logo {
+      display: none;
+    }
+    &__client-logo {
+      left: 16px;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .page-header {
+    padding: 0;
+    padding-right: 16px;
+    height: 60px;
+    &__client-logo {
+      transform: translate(-32px, -50%) scale(0.5);
+      height: 100%;
+      line-height: 60px;
+    }
+    &__right-btns {
+      float: right;
+      border: none !important;
+      padding: 0;
+      margin: 0;
+    }
+    &__user {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+.new-home__recent-apps {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &-list {
+    flex: 1;
+    overflow: auto;
+  }
+  &-item {
+    height: 48px;
+    border: 1px solid rgba(232, 232, 232, 1);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+    &__title {
+      display: flex;
+      align-items: center;
+    }
+    .anticon-pushpin {
+      font-size: 24px;
+      color: #bbbbbb;
+      visibility: hidden;
+      &.show-pushpin {
+        visibility: visible;
+      }
+    }
+  }
+  &__norecent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 54px;
+    &-img {
+      margin-bottom: 32px;
+    }
+  }
+}

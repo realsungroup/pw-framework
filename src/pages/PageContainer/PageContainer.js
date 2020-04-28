@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchBox from '../components/SearchBox';
-import PageHeader from '../components/PageHeader';
+// import PageHeader from '../components/PageHeader';
 import UserInfo from '../components/UserInfo';
 import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
@@ -11,6 +11,7 @@ import {
   GetConfig,
   Reminder
 } from '../loadablePage';
+import NewHome from '../NewHome';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
@@ -26,7 +27,6 @@ const time = lockScreenWaitTime;
 export default class Container extends React.Component {
   constructor(props) {
     super(props);
-
 
     const desktopStyle = 'DESKTOP';
 
@@ -125,7 +125,6 @@ export default class Container extends React.Component {
     const { reminderNum, password } = this.state;
     const user = JSON.parse(getItem('userInfo'));
     let userData;
-
     // 读取用户信息报错时
     // 说明没登录
     // 进入登录页面
@@ -145,7 +144,7 @@ export default class Container extends React.Component {
     let username;
     if (user) {
       this.userCode = user.UserCode;
-      this.domainCode=user.DomainCode;
+      this.domainCode = user.DomainCode;
       username = user.Data;
     }
     return (
@@ -185,14 +184,14 @@ export default class Container extends React.Component {
           </LockScreen>
         )}
         {/* 页面 */}
-        <PageHeader
+        {/* <PageHeader
           searchBox={searchBox}
           title={userInfo}
           reminderNum={reminderNum}
           lockScreenRef={this.lockScreenRef}
-        />
+        /> */}
         <PageBody>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact component={NewHome} />
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
           <Route path="/fnmodule" component={GetConfig} />

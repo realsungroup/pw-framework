@@ -179,8 +179,8 @@ class App extends Component {
       window.location.href.indexOf('/fnmodule') === -1
     ) {
       const { origin, search } = window.location;
-      window.location.href = `${origin}/fnmodule${search}`;
-      return;
+      // window.location.href = `${origin}/fnmodule${search}`;
+      // return;
     }
 
     return (
@@ -216,10 +216,7 @@ class App extends Component {
                       <PrivateRoute exact path="/" component={PageContainer} />
                     )}
                     {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute
-                        path="/fnmodule"
-                        component={PageContainer}
-                      />
+                      <PrivateRoute path="/fnmodule" component={GetConfig} />
                     )}
                     {desktopStyle === 'WORKBENCH' && (
                       <PrivateRoute
