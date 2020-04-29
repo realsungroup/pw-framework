@@ -36,27 +36,27 @@ class RecentApps extends React.PureComponent {
                   onClick={() => {
                     this.props.onClick([{ app, typeName: app.BusinessNode }]);
                   }}
-                  onMouseEnter={e => {
-                    const ele = e.target.querySelector('i.anticon-pushpin');
-                    if (ele) {
-                      const className = ele.className;
-                      if (!className.includes('show-pushpin')) {
-                        e.target.querySelector('i.anticon-pushpin').className =
-                          className + ' show-pushpin';
-                      }
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    const ele = e.target.querySelector('i.anticon-pushpin');
-                    if (ele) {
-                      const className = ele.className;
-                      if (className.includes('show-pushpin')) {
-                        e.target.querySelector(
-                          'i.anticon-pushpin'
-                        ).className = className.replace(' show-pushpin', '');
-                      }
-                    }
-                  }}
+                  // onMouseEnter={e => {
+                  //   const ele = e.target.querySelector('i.anticon-pushpin');
+                  //   if (ele) {
+                  //     const className = ele.className;
+                  //     if (!className.includes('show-pushpin')) {
+                  //       e.target.querySelector('i.anticon-pushpin').className =
+                  //         className + ' show-pushpin';
+                  //     }
+                  //   }
+                  // }}
+                  // onMouseLeave={e => {
+                  //   const ele = e.target.querySelector('i.anticon-pushpin');
+                  //   if (ele) {
+                  //     const className = ele.className;
+                  //     if (className.includes('show-pushpin')) {
+                  //       e.target.querySelector(
+                  //         'i.anticon-pushpin'
+                  //       ).className = className.replace(' show-pushpin', '');
+                  //     }
+                  //   }
+                  // }}
                 >
                   <div className="new-home__recent-apps-item__title">
                     {app.appIconUrl ? (

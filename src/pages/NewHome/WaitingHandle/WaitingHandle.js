@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal } from 'antd';
 import { TableData } from 'Common/loadableCommon';
 import qs from 'qs';
+import emptyImg from '../assets/boxemp.png';
 
 class WaitingHandle extends React.Component {
   state = {
@@ -33,11 +34,16 @@ class WaitingHandle extends React.Component {
               }}
             >
               <div>{data.REMINDER_TITLE}</div>
-
               <div>{data.REMINDER_TASKNUM}</div>
             </div>
           );
         })}
+        {data.length === 0 && (
+          <div className="new-home__waiting-handle-empty">
+            <img src={emptyImg} />
+            <p className="new-home__waiting-handle-empty-tip">暂无待办事项</p>
+          </div>
+        )}
         <Modal
           visible={modalVisible}
           onCancel={this.closeModal}

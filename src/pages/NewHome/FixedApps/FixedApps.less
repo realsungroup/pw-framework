@@ -1,3 +1,4 @@
+@import url('../../../styles/variables.less');
 .fixed-functions {
   display: flex;
   flex: 1;
@@ -5,38 +6,69 @@
   height: 100%;
   &__setting-btn {
     float: right;
-    color: #1890ff;
+    color: @primary-color;
     cursor: pointer;
+  }
+  &__empty {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 7.29vh;
+      width: auto;
+    }
+    &-tip {
+      width: 155px;
+      margin-left: 40px;
+      color: #666666;
+    }
   }
   .fixed-functions-list {
     display: flex;
     flex-wrap: wrap;
     flex: 1;
     overflow: scroll;
+    align-content: flex-start;
   }
   .new-home__fixed-function {
     display: flex;
     align-items: center;
-    width: 33%;
+    width: 32%;
     flex-grow: 1;
     height: 48px;
     border: 1px solid rgba(232, 232, 232, 1);
     border-radius: 4px;
     margin-bottom: 16px;
-    margin-right: 5%;
+    margin-right: 2%;
     padding: 0 16px;
-    max-width: 30%;
+    max-width: 32%;
     cursor: pointer;
+    position: relative;
     &:nth-child(3n) {
       margin-right: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 30px;
+      background: #ffffff;
     }
     &:hover {
       background: rgba(0, 0, 0, 0.06);
       border: 1px solid rgba(220, 220, 220, 1);
       border-radius: 4px;
+      &::after {
+        width: 0px;
+      }
     }
     .cancel-btn {
-      visibility: hidden;
+      // visibility: hidden;
     }
     .cancel-btn.show-cancel {
       visibility: visible;

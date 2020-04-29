@@ -60,23 +60,7 @@ const dealApps = apps => {
   });
   return arr;
 };
-// const dealApps = memoizeone(modules => {
-//   modules.forEach(module => {
-//     module.apps.forEach(app => {
-//       if (!module.categoricalApps) {
-//         module.categoricalApps = new Map();
-//       }
-//       let categoryapps = module.categoricalApps.get(app.PwCategory || '未分类');
-//       if (categoryapps) {
-//         categoryapps.push(app);
-//         module.categoricalApps.set(app.PwCategory || '未分类', categoryapps);
-//       } else {
-//         module.categoricalApps.set(app.PwCategory || '未分类', [app]);
-//       }
-//     });
-//   });
-//   return modules;
-// });
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -152,6 +136,7 @@ class Home extends React.Component {
     let res;
     try {
       res = await http().getUserDesktop();
+      this.setState({ appDataFetching: false });
     } catch (err) {
       this.setState({ appDataFetching: false });
       console.error(err);
@@ -271,7 +256,7 @@ class Home extends React.Component {
 
   handleShowAbbreviation = () => {
     if (this.state.activeApps.length) {
-      this.setState({ showAbbreviation: true });
+      this.setState({ showAbbreviation: !this.state.showAbbreviation });
     } else {
       message.info('您还未打开任何功能窗口');
     }
@@ -337,10 +322,10 @@ class Home extends React.Component {
     const arr = [];
     if (appArr.length === 1) {
       const activeApp = activeApps.find(
-        app =>
-          app.ResID === appArr[0].app.ResID || app.resid === appArr[0].app.resid
+        app => app.ResID === appArr[0].app.ResID
       );
       if (activeApp) {
+        console.log(activeApp);
         return this.handleBottomBarAppTrigger(activeApp);
       }
     }
@@ -713,6 +698,7 @@ class Home extends React.Component {
                 expandedKeys={allFoldersExpandedKeys}
                 onRefresh={this.getData}
                 onClick={this.handleOpenWindow}
+                loading={appDataFetching}
               />
             </div>
             <div className="new-home__waiting-handle">
@@ -758,7 +744,8 @@ class Home extends React.Component {
                     <img
                       alt={module.typeName}
                       className="new-home__module-icon"
-                      src={module.apps.length && module.apps[0].BusinessIconUrl}
+                      // src={module.apps.length && module.apps[0].BusinessIconUrl}
+                      src={module.url}
                     />
                     <span className="new-home__module-name">
                       {module.typeName}
@@ -790,9 +777,15 @@ class Home extends React.Component {
                                         { app, typeName: module.typeName }
                                       ])
                                     }
+                                    title={app.title}
                                   >
-                                    <div className="desktop__folder-category-app-icon">
+                                    <div className="new-home__module-category-app-icon">
                                       {app.appIconUrl ? (
+                                        <img
+                                          src={app.appIconUrl}
+                                          // alt={app.appIconUrl}
+                                        />
+                                      ) : (
                                         <Icon
                                           type="mail"
                                           style={{
@@ -800,12 +793,6 @@ class Home extends React.Component {
                                             fontSize: 20,
                                             marginRight: 8
                                           }}
-                                        />
-                                      ) : (
-                                        <i
-                                          className={`iconfont icon-${app.DeskiconCls ||
-                                            'wdkq_icon'}`}
-                                          style={{ fontSize: 48 }}
                                         />
                                       )}
                                     </div>
@@ -840,7 +827,7 @@ class Home extends React.Component {
               key={app.title}
               onClick={() => this.handleBottomBarAppTrigger(app)}
             >
-              <span>{app.title}</span>
+              <span className="new-home__top-bar__app-title">{app.title}</span>
               <Icon
                 type="close"
                 onClick={e => {

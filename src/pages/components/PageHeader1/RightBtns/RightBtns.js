@@ -372,7 +372,7 @@ class RightBtns extends React.Component {
         />
 
         <Popover
-          placement="bottomRight"
+          placement="bottomLeft"
           title={
             <div style={{ textAlign: 'right' }}>
               <FM id="RightBtns.SelectThemeColor" defaultMessage="选择主题色" />
@@ -410,7 +410,7 @@ class RightBtns extends React.Component {
           className="right-btns__header-btn"
           iconClass="icon-setting"
           onClick={() => this.setState({ personCenterVisible: true })}
-          tip="显示模式"
+          tip={<FM id="RightBtns.DisplayMode" defaultMessage="显示模式" />}
         />
         <Popover
           placement="bottomRight"

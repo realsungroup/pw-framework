@@ -12,6 +12,7 @@ import qs from 'qs';
 import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 import HeaderBtn from './HeaderBtn';
+import windowImg from './images/window-icon.png';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -46,14 +47,14 @@ class PageHeader extends React.Component {
     this.setState({
       drawerVisible: false
     });
-    window.addEventListener('scroll', debounce(this.shadowChange, 200));
+    // window.addEventListener('scroll', debounce(this.shadowChange, 200));
     const { title, type } = this.getTypeAndTitle();
     this.props.dispatch({ type: 'SET_TITLE_TYPE', data: { title, type } });
-    this.props.dispatch(getNavlistApps());
+    // this.props.dispatch(getNavlistApps());
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('scroll', this.shadowChange);
+    // window.removeEventListener('scroll', this.shadowChange);
   };
 
   getTypeAndTitle = () => {
@@ -176,7 +177,7 @@ class PageHeader extends React.Component {
           }}
         >
           <Badge count={activeAppsNumber}>
-            <Icon type="switcher" className="page-header__abbreviation-icon" />
+            <img src={windowImg} className="page-header__abbreviation-icon" />
           </Badge>
         </div>
 
@@ -192,6 +193,7 @@ class PageHeader extends React.Component {
             defaultOpenKeys={allFoldersExpandedKeys}
             // selectedKeys={[this.state.current]}
             mode="inline"
+            className="new-home__page-header__menu"
           >
             {menus.map(folder => this.renderMenuItem(folder))}
           </Menu>
