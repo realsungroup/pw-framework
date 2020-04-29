@@ -7,7 +7,7 @@ import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts
 
 const isChrome = () => {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -350,8 +350,12 @@ class TotalStatical extends Component {
         text: `${++index}.${item.question_topic}`,
         style: 'header'
       });
-      const list = item.answers.map(i => {
-        return [{ text: i, style: 'tableRow' }];
+      let list = [];
+    
+      item.answers.map(i => {
+        if(i.isAdopt=='Y'){
+          list.push( [{ text: i.write_content, style: 'tableRow' }]);
+        }
       });
       answers.push({
         style: 'tableExample',
