@@ -194,6 +194,7 @@ class PageHeader extends React.Component {
             // selectedKeys={[this.state.current]}
             mode="inline"
             className="new-home__page-header__menu"
+            overflowedIndicator={<Icon type="down" />}
           >
             {menus.map(folder => this.renderMenuItem(folder))}
           </Menu>
@@ -234,6 +235,7 @@ class PageHeader extends React.Component {
           this.props.onMenuClick(data);
         }}
       >
+        {/* <img src={data.appIconUrl} className="new-home-app-icon-mail" /> */}
         {data.title}
       </Menu.Item>
     );

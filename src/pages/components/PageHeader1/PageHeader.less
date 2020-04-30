@@ -194,7 +194,11 @@
 .new-home__page-header__menu {
   .ant-menu-item {
     &:hover {
-      // border: 1px solid @primary-color;
+      border: 1px solid;
+      text-decoration: underline;
     }
+  }
+  .ant-menu-inline .ant-menu-item::after {
+    border-right: none;
   }
 }

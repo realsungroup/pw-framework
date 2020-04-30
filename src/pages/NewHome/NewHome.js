@@ -19,6 +19,8 @@ import RecentApps from './RecentApps';
 import Spin from './Spin';
 import DesktopLockScreen from '../Desktop/DesktopLockScreen';
 import { delay } from 'lodash';
+import html2canvas from 'html2canvas';
+import moment from 'moment';
 
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
 
@@ -84,7 +86,8 @@ class Home extends React.Component {
       waitingHandleFetching: false,
       appDataFetching: false,
       showAbbreviation: false,
-      searchTextHeader: ''
+      searchTextHeader: '',
+      abbreviations: []
     };
   }
   componentDidMount() {
@@ -103,6 +106,7 @@ class Home extends React.Component {
     }
     let recentApps = JSON.parse(getItem('recentApps'));
     if (recentApps && Array.isArray(recentApps)) {
+      recentApps = this.getSortRecentApps(recentApps);
       this.setState({ recentApps });
     } else {
       setItem('recentApps', JSON.stringify([]));
@@ -111,6 +115,19 @@ class Home extends React.Component {
     this.getData();
     this.fetchWaitingHandle();
   }
+  // componentDidUpdate(preProps, preState) {
+  //   if (
+  //     this.state.recentApps.length &&
+  //     preState.recentApps !== this.state.recentApps
+  //   ) {
+  //     // const newRecentApps = this.state.recentApps
+  //   }
+  // }
+  getSortRecentApps = memoizeone((apps = []) => {
+    return apps.sort((a, b) => {
+      return a.dateString < b.dateString ? 1 : -1;
+    });
+  });
 
   fetchWaitingHandle = async () => {
     try {
@@ -256,7 +273,12 @@ class Home extends React.Component {
 
   handleShowAbbreviation = () => {
     if (this.state.activeApps.length) {
-      this.setState({ showAbbreviation: !this.state.showAbbreviation });
+      this.setState({ showAbbreviation: !this.state.showAbbreviation }, () => {
+        if (this.state.showAbbreviation) {
+          let apps = document.querySelectorAll('iframe');
+          this.toimag(apps);
+        }
+      });
     } else {
       message.info('您还未打开任何功能窗口');
     }
@@ -309,7 +331,8 @@ class Home extends React.Component {
       activeApps: newActiveApps,
       zIndexActiveApps: newZIndexActiveApps,
       appsSwitchStatus: newAppsSwitchStatus,
-      showHome: false
+      showHome: false,
+      showAbbreviation: false
     });
   };
   /**
@@ -325,7 +348,6 @@ class Home extends React.Component {
         app => app.ResID === appArr[0].app.ResID
       );
       if (activeApp) {
-        console.log(activeApp);
         return this.handleBottomBarAppTrigger(activeApp);
       }
     }
@@ -380,7 +402,7 @@ class Home extends React.Component {
     } = this.state;
     const appArr = [];
     const newRecentApps = [...recentApps];
-    let hasNewRecentApp = false;
+    // let hasNewRecentApp = false;
     willOpenApps.forEach(willOpenApp => {
       // 不能打开同一个窗口
       if (
@@ -400,15 +422,23 @@ class Home extends React.Component {
       const recentApp = recentApps.find(item => {
         return willOpenApp.activeAppOthersProps.ResID == item.ResID;
       });
+      const datastring = moment().format('YYYY-MM-DD HH:mm:ss');
       if (!recentApp) {
-        hasNewRecentApp = true;
-        newRecentApps.unshift(willOpenApp.activeAppOthersProps);
+        // hasNewRecentApp = true;
+        newRecentApps.unshift({
+          ...willOpenApp.activeAppOthersProps,
+          dateString: datastring
+        });
+      } else {
+        recentApp.dateString = datastring;
       }
     });
-    if (hasNewRecentApp) {
-      setItem('recentApps', JSON.stringify(newRecentApps));
-      this.setState({ recentApps: newRecentApps });
+    if (newRecentApps.length > 20) {
+      newRecentApps.length = 20;
     }
+    const sortApps = this.getSortRecentApps(newRecentApps);
+    setItem('recentApps', JSON.stringify(this.getSortRecentApps(sortApps)));
+    // this.setState({ recentApps: newRecentApps });
 
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
@@ -419,7 +449,9 @@ class Home extends React.Component {
       activeApps: [...activeApps, ...appArr],
       zIndexActiveApps: newZIndexActiveApps,
       appsSwitchStatus: [...appsSwitchStatus, true],
-      showHome: false
+      showHome: false,
+      showAbbreviation: false,
+      recentApps: sortApps
     });
   };
   handleAddToDesktop = appData => {
@@ -551,14 +583,16 @@ class Home extends React.Component {
   };
 
   handleCloseActiveApp = activeApp => {
-    const { activeApps, zIndexActiveApps } = this.state;
+    const { activeApps, zIndexActiveApps, abbreviations } = this.state;
     const newActiveApps = [...activeApps];
+    const newAbbreviations = [...abbreviations];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
 
     newActiveApps.splice(appIndex, 1);
+    newAbbreviations.splice(appIndex, 1);
 
     // 删除 zIndexActiveApps
     const newZIndexActiveApps = [...zIndexActiveApps];
@@ -569,7 +603,8 @@ class Home extends React.Component {
 
     this.setState({
       activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps
+      zIndexActiveApps: newZIndexActiveApps,
+      abbreviations: newAbbreviations
     });
     if (newActiveApps.length === 0) {
       this.setState({ showAbbreviation: false });
@@ -779,23 +814,18 @@ class Home extends React.Component {
                                     }
                                     title={app.title}
                                   >
-                                    <div className="new-home__module-category-app-icon">
-                                      {app.appIconUrl ? (
-                                        <img
-                                          src={app.appIconUrl}
-                                          // alt={app.appIconUrl}
-                                        />
-                                      ) : (
-                                        <Icon
-                                          type="mail"
-                                          style={{
-                                            color: '#1890FF',
-                                            fontSize: 20,
-                                            marginRight: 8
-                                          }}
-                                        />
-                                      )}
-                                    </div>
+                                    {app.appIconUrl ? (
+                                      <img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                        // alt={app.appIconUrl}
+                                      />
+                                    ) : (
+                                      <Icon
+                                        type="mail"
+                                        className="new-home-app-icon-mail"
+                                      />
+                                    )}
                                     <span className="new-home__module-category-app-title">
                                       {app.title}
                                     </span>
@@ -848,7 +878,8 @@ class Home extends React.Component {
       userInfo,
       menus,
       searchTextHeader,
-      allFoldersExpandedKeys
+      allFoldersExpandedKeys,
+      showAbbreviation
     } = this.state;
 
     // const userInfo = (
@@ -884,9 +915,19 @@ class Home extends React.Component {
     );
   }
 
+  toimag = async iframes => {
+    const abbreviations = this.state.abbreviations;
+    for (let i = 0; i < iframes.length; i++) {
+      let dom = iframes[i].contentDocument.querySelector('.functions');
+      const canvas = await html2canvas(dom);
+      const imgDataURL = canvas.toDataURL('image/png', 1.0);
+
+      abbreviations[i] = imgDataURL;
+      this.setState({ abbreviations });
+    }
+  };
   renderAbbreviation = () => {
-    const { showAbbreviation, activeApps } = this.state;
-    // let apps = document.querySelectorAll('.window-view');
+    const { showAbbreviation, activeApps, abbreviations } = this.state;
     return (
       <div
         className={classNames('new-home__abbreviation', {
@@ -895,24 +936,17 @@ class Home extends React.Component {
       >
         {activeApps.map((item, index) => {
           return (
-            <div className="new-home__abbreviation-app">
+            <div className="new-home__abbreviation-app" key={item.REC_ID}>
               <header className="new-home__abbreviation-app__header">
                 <div className="new-home__abbreviation-app__header__title">
                   {item.appIconUrl ? (
-                    <Icon
-                      type="mail"
-                      style={{
-                        color: '#1890FF',
-                        fontSize: 20,
-                        marginRight: 8
-                      }}
+                    <img
+                      src={item.appIconUrl}
+                      className="new-home-app-icon"
+                      // alt={app.appIconUrl}
                     />
                   ) : (
-                    <i
-                      className={`iconfont icon-${item.DeskiconCls ||
-                        'wdkq_icon'}`}
-                      style={{ fontSize: 48 }}
-                    />
+                    <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
                   {item.appName}
                 </div>
@@ -932,7 +966,12 @@ class Home extends React.Component {
                   this.setState({ showAbbreviation: false });
                   this.handleBottomBarAppTrigger(item);
                 }}
-              ></div>
+              >
+                <img
+                  src={abbreviations[index]}
+                  style={{ height: '100%', width: '100%' }}
+                />
+              </div>
             </div>
           );
         })}

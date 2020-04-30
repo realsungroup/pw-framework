@@ -198,44 +198,16 @@ class FixedApps extends React.PureComponent {
                 onClick={() => {
                   this.props.onClick([{ app, typeName: app.BusinessNode }]);
                 }}
-                // onMouseEnter={e => {
-                //   const ele = e.target.querySelector('i.anticon-close');
-                //   if (ele) {
-                //     const className = ele.className;
-                //     if (!className.includes('show-cancel')) {
-                //       e.target.querySelector('i.anticon-close').className =
-                //         className + ' show-cancel';
-                //     }
-                //   }
-                // }}
-                // onMouseLeave={e => {
-                //   const ele = e.target.querySelector('i.anticon-close');
-                //   if (ele) {
-                //     const className = ele.className;
-                //     if (className.includes('show-cancel')) {
-                //       e.target.querySelector(
-                //         'i.anticon-close'
-                //       ).className = className.replace(' show-cancel', '');
-                //     }
-                //   }
-                // }}
               >
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                   {app.appIconUrl ? (
-                    <Icon
-                      type="mail"
-                      style={{
-                        color: '#1890FF',
-                        fontSize: 20,
-                        marginRight: 8
-                      }}
+                    <img
+                      src={app.appIconUrl}
+                      className="new-home-app-icon"
+                      // alt={app.appIconUrl}
                     />
                   ) : (
-                    <i
-                      className={`iconfont icon-${app.DeskiconCls ||
-                        'wdkq_icon'}`}
-                      style={{ fontSize: 20, marginRight: 8 }}
-                    />
+                    <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
                   {app.title}
                 </div>
