@@ -10,4 +10,17 @@ export { LzTable } from '../loadableComponents';
 
 // 定制组件
 
-export { PatientInfo,RecordInput,BPChart,GLUChart,OtherData } from '../components/custom/loadableCustom';
+export { 
+  PatientInfo,
+  RecordInput,
+  BPChart,
+  GLUChart,
+  OtherData,
+  DoctorList,
+  IndexHome,
+  AttentionPeople,
+  PersonalInformation,
+  DoctorAdvice
+
+
+} from '../components/custom/loadableCustom';

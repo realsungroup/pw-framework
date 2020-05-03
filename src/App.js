@@ -1,19 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { PrivateRoute } from './util/auth';
 import { IntlProvider, addLocaleData } from 'react-intl';
 
 import { Icon, LocaleProvider, Button, message } from 'antd';
+import {createBrowserHistory} from 'history'
+
 
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-import { PageContainer, Login, NotFound,Register,DoctorRegister,CompanyRegister,ForgetPassword ,IndexHome} from './pages/loadablePage';
+import {
+  PageContainer,
+  Login,
+  NotFound,
+  Register,
+  DoctorRegister,
+  CompanyRegister,
+  ForgetPassword,
+} from './pages/loadablePage';
 
-import {PatientInfo} from '../src/components/custom/loadableCustom';
+import {
+  PatientInfo,
+  IndexHome,
+  DoctorList,
+  AttentionPeople,
+  PersonInfor,
+  PersonalInformation,
+  DoctorAdvice
+} from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
 
@@ -32,8 +50,11 @@ import './App.css';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
+// import PersonInformation from './components/custom/PersonInformation';
 
 addLocaleData([...en, ...zh]);
+
+const history = createBrowserHistory()
 
 const Reminder = (
   <div className="app__nonuse-ie">
@@ -101,7 +122,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      warningBarVisible: true
+      warningBarVisible: true,
     };
   }
   componentDidMount = () => {
@@ -143,8 +164,50 @@ class App extends Component {
     }
 
     return (
-      <ErrorBoundary>
+      <Fragment>
+        {/* <ErrorBoundary> */}
         <Provider store={store}>
+          
+
+        {/* <withRouter
+              {...this.props}
+              render={(props) =>{
+                console.log("come")
+              return  true ? (
+                  <IndexHome {...props}  />
+                 ) : (
+                  null
+                  // <Redirect
+                  //   to={{
+                  //     pathname: '/login',
+                  //     state: {
+                  //       from: props.location,
+                  //     },
+                  //   }}
+                  // />
+                )
+              }
+            }
+            /> */}
+          <Router history={history} >
+
+          <IndexHome/>
+            {/* <Route
+              {...this.props}
+              render={(props) =>{
+                console.log("come")
+              return  true ? (
+                  <IndexHome {...props}  />
+                 ) : (
+                  null
+                 
+                )
+              }
+            }
+            /> */}
+          </Router>
+            {/* <PrivateRoute exact path="*" component={IndexHome} /> */}
+
           <NonsupportIE
             // curIEVersion="ie11"
             supportVersionList={['ie11']}
@@ -159,39 +222,110 @@ class App extends Component {
           >
             <LocaleProvider locale={localeAntd}>
               <IntlProvider locale={locale} messages={messages}>
-                <Router>
+                <Router history={history}>
+                  
                   <Switch>
-                    <PrivateRoute exact path="/" component={PageContainer} />
-                    <PrivateRoute path="/home" component={PageContainer} />
-                    <PrivateRoute path="/fnmodule" component={PageContainer} />
-                    <PrivateRoute
-                      path="/workbench-setting"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute path="/reminder" component={PageContainer} />
-                    <PrivateRoute
-                      path="/report-table"
-                      component={PageContainer}
-                    />
-                    <PrivateRoute
-                      path="/person-center"
-                      component={PageContainer}
-                    />
+
+                    {/* <PrivateRoute exact path="/" component={IndexHome} />
+                    <PrivateRoute path="/home" component={IndexHome} /> */}
+                    {/* <PrivateRoute path="/fnmodule" component={PageContainer} />
+            <PrivateRoute
+              path="/workbench-setting"
+              component={PageContainer}
+            />
+            <PrivateRoute path="/reminder" component={PageContainer} />
+            <PrivateRoute
+              path="/report-table"
+              component={PageContainer}
+            />
+            <PrivateRoute
+              path="/person-center"
+              component={PageContainer}
+            /> */}
+            {console.log("come2")}
                     <Route path="/login" component={Login} />
                     <Route path="/indexHome" component={IndexHome} />
                     <Route path="/index" component={PatientInfo} />
+                    <Route path="/personInfor" component={PersonInfor} />
                     <Route path="/ForgetPassword" component={ForgetPassword} />
                     <Route path="/register" component={Register} />
                     <Route path="/doctorRegister" component={DoctorRegister} />
-                    <Route path="/companyRegister" component={CompanyRegister} />
-                    <Route path="*" component={NotFound} />
+                    <Route
+                      path="/companyRegister"
+                      component={CompanyRegister}
+                    />
+                    <Route
+                      path="/attentionPeople"
+                      component={AttentionPeople}
+                    />
+                    <Route
+                      path="/doctorList"
+                      component={DoctorList}
+                    />
+                    <Route
+                      path="/personalInformation"
+                      component={PersonalInformation}
+                    />
+                    <Route
+                      path="/doctorAdvice"
+                      component={DoctorAdvice}
+                    />
+                    {/* <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>
               </IntlProvider>
             </LocaleProvider>
           </NonsupportIE>
         </Provider>
-      </ErrorBoundary>
+        {/* <Provider store={store}>
+  <NonsupportIE
+    // curIEVersion="ie11"
+    supportVersionList={['ie11']}
+    reminder={Reminder}
+    warningBar={ReactDOM.createPortal(
+      <WarningBar
+        visible={this.state.warningBarVisible}
+        onClose={this.handleCloseWarningBar}
+      />,
+      document.body
+    )}
+  >
+    <LocaleProvider locale={localeAntd}>
+      <IntlProvider locale={locale} messages={messages}>
+        <Router>
+          <Switch>
+            <PrivateRoute exact path="/" component={PageContainer} />
+            <PrivateRoute path="/home" component={PageContainer} />
+            <PrivateRoute path="/fnmodule" component={PageContainer} />
+            <PrivateRoute
+              path="/workbench-setting"
+              component={PageContainer}
+            />
+            <PrivateRoute path="/reminder" component={PageContainer} />
+            <PrivateRoute
+              path="/report-table"
+              component={PageContainer}
+            />
+            <PrivateRoute
+              path="/person-center"
+              component={PageContainer}
+            />
+            <Route path="/login" component={Login} />
+            <Route path="/indexHome" component={IndexHome} />
+            <Route path="/index" component={PatientInfo} />
+            <Route path="/ForgetPassword" component={ForgetPassword} />
+            <Route path="/register" component={Register} />
+            <Route path="/doctorRegister" component={DoctorRegister} />
+            <Route path="/companyRegister" component={CompanyRegister} />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </Router>
+      </IntlProvider>
+    </LocaleProvider>
+  </NonsupportIE>
+</Provider> */}
+        {/* </ErrorBoundary> */}
+      </Fragment>
     );
   }
 }

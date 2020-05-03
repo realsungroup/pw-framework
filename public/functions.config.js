@@ -13,6 +13,7 @@ window[588425594397] = {
       hasAdd:false,
       hasModify: false,
       hasDelete: false,
+      hasBeBtns:true,
       addText: "添加基本信息",
       enAddText: "Add basic information",
       rowModifyText: "修改个人信息",

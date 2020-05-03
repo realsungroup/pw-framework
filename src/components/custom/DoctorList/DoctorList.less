@@ -1,0 +1,27 @@
+.container{
+  margin : 0 auto
+}
+
+.doctorList{
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,400px);
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  &__avatar{
+    width: 90px;
+    height: 105px;
+    line-height: 105px;
+    font-size: 18px;
+  }
+  &__information{
+    float: right;
+  }
+}
+
+.doctorList .ant-card{
+  width: 400px;
+  margin-left: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+}

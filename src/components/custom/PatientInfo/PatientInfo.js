@@ -3,8 +3,7 @@ import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
 import './PatientInfo.less';
 import { Button, message, Modal, Select, Input,Form } from 'antd';
-import { RecordInput } from '../loadableCustom';
-import { OtherData } from '../loadableCustom';
+import { RecordInput,DoctorList ,OtherData} from '../loadableCustom';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import http, { makeCancelable } from 'Util20/api';
 
@@ -34,31 +33,32 @@ class PatientInfo extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { resid } = this.props.tableDataProps;
-    this.p1 = makeCancelable(
-      http().getTable({
-        resid,
-        // cmswhere: `C3_617809531670 = 'UC'`
-      })
-    );
-    this.p2 = makeCancelable(
-      http().getTable({
-        resid,
-        // cmswhere: `C3_617809531670 = 'CD'`
-      })
-    );
-    const pArr = [this.p1.promise, this.p2.promise];
+    // const { resid } = this.props.tableDataProps;
+    // this.p1 = makeCancelable(
+    //   http().getTable({
+    //     resid,
+    //     // cmswhere: `C3_617809531670 = 'UC'`
+    //   })
+    // );
+    // this.p2 = makeCancelable(
+    //   http().getTable({
+    //     resid,
+    //     // cmswhere: `C3_617809531670 = 'CD'`
+    //   })
+    // );
+    // const pArr = [this.p1.promise, this.p2.promise];
 
-    let res;
-    try {
-      res = await Promise.all(pArr);
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-    const ucLen = res[0].total;
-    const cdLen = res[1].total;
-    this.setState({ ucLen, cdLen });
+    // let res;
+    // try {
+    //   res = await Promise.all(pArr);
+    // } catch (err) {
+    //   console.error(err);
+    //   return message.error(err.message);
+    // }
+    // const ucLen = res[0].total;
+    // const cdLen = res[1].total;
+    // this.setState({ ucLen, cdLen });
+    console.log("rposp",this.props)
     this.getAppLinks();
   };
   //获取检测指标下的所有节点
@@ -68,7 +68,7 @@ class PatientInfo extends React.Component {
       app = await http().getAppLinks({
         getresourcedata: 1,
         getrecordcount: 1,
-        parentresids: 639829676005,
+        parentresids: 641318283132,
       });
     } catch (err) {
       return message.error(err.message);
@@ -112,7 +112,6 @@ handleAppLinks = () =>{
       // navListResidField: 'C3_620929565473'
     });
   };
-
   customRowBtns = [
     (record, size) => {
       return (
@@ -159,12 +158,25 @@ handleAppLinks = () =>{
   };
 
   render() {
-    const { tableDataProps } = this.props;
     const { modalVisible, record, otherVisible } = this.state;
     return (
       <div className="patient-info">
         <TableData
-          {...tableDataProps}
+          resid={639844485796}
+          subtractH= {170}
+          actionBarFixed={true}
+          height= {500}
+          size= 'small'
+          actionBarWidth= {490}
+          hasAdd={false}
+          hasModify={false}
+          hasDelete= {false}
+          hasBeBtns={true}
+          addText= "添加基本信息"
+          enAddText= "Add basic information"
+          rowModifyText= "修改个人信息"
+          enRowModifyText= "Modify personal information"
+          defaultColumnWidth={180}
           customRowBtns={this.customRowBtns}
           actionBarExtra={this.renderActionBarExtra}
         />
@@ -181,7 +193,8 @@ handleAppLinks = () =>{
           >
             {/* <RecordInput {...record} /> */}
             {/* <OtherData {...record} /> */}
-            <h1>请选择您要录入的科室</h1>
+            <DoctorList {...record} />
+            {/* <h1>请选择您要录入的科室</h1>
             <span>科室：</span>
             <Select style={{ width: '200px', marginLeft: '10px' }}>
               <Option value="常见数据录入">常见数据录入</Option>
@@ -196,7 +209,7 @@ handleAppLinks = () =>{
               <Form.Item label="常见数据录入">
                 <Input defaultValue="体温检测" />
               </Form.Item>
-            </Form>
+            </Form> */}
           </LzModal>
         )}
       </div>

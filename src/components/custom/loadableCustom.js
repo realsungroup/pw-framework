@@ -48,3 +48,39 @@ export const OtherData = Loadable({
     return minLoading;
   }
 });
+export const DoctorList = Loadable({
+  loader: () => import('./DoctorList'),
+  loading() {
+    return minLoading;
+  }
+});
+export const IndexHome = Loadable({
+  loader: () => import('./IndexHome'),
+  loading() {
+    return minLoading;
+  }
+});
+export const AttentionPeople = Loadable({
+  loader: () => import('./AttentionPeople'),
+  loading() {
+    return minLoading;
+  }
+});
+export const PersonInfor = Loadable({
+  loader: () => import('./PersonInfor'),
+  loading() {
+    return minLoading;
+  }
+});
+export const PersonalInformation = Loadable({
+  loader: () => import('./PersonalInformation'),
+  loading() {
+    return minLoading;
+  }
+});
+export const DoctorAdvice = Loadable({
+  loader: () => import('./DoctorAdvice'),
+  loading() {
+    return minLoading;
+  }
+});

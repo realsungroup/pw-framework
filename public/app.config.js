@@ -61,14 +61,14 @@ pwConfig.businessOptionalResIds = [
  */
 // 默认主题色
 pwConfig.themeColor = {
-  '@primary-color': 'rgb(142,145, 232)'
+  '@primary-color': '#0d58ff'
 };
 
 /**
  * 锁屏
  */
 // 用户多久未操作登录后界面时，会锁屏（单位：秒）
-pwConfig.lockScreenWaitTime = 600;
+pwConfig.lockScreenWaitTime = 86400;
 
 /**
  * logo 配置

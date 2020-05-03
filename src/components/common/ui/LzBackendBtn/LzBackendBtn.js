@@ -64,7 +64,7 @@ class LzBackendBtn extends React.PureComponent {
         http().dealButton({
           resid,
           recids,
-          Code
+          strCommand:Code
         })
       );
       try {

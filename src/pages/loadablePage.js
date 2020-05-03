@@ -85,9 +85,3 @@ export const CompanyRegister = Loadable({
     return <FullLoading loading={true} />;
   }
 });
-export const IndexHome = Loadable({
-  loader: () => import('./IndexHome'),
-  loading() {
-    return <FullLoading loading={true} />;
-  }
-});

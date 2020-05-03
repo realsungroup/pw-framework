@@ -42,9 +42,12 @@ class RecordInput extends React.Component {
       endDate: '',
       now: '',
       days: '',
-      basic: '', //基本用药
-      change: '', //用药变化
-      remark: '', //备注
+      basic: '', //上一次基本用药
+      change: '', //上一次用药变化
+      remark: '', //上一次备注
+      nowBasic: '', //当前基本用药
+      nowChange: '', //当前用药变化
+      nowRemark: '', //当前备注
       bloodPressureDate: [],
       selectKey: '1',
       res: {},
@@ -52,6 +55,7 @@ class RecordInput extends React.Component {
       xAxis: {}, // x轴渲染的数据
       legend: {}, // 图表上方的选择器
       series: [],
+      lastRecordId:''
     };
   }
 
@@ -97,28 +101,29 @@ class RecordInput extends React.Component {
         return message.error(err.message);
       }
     }
-    console.log("data",res)
+    let dataLen = res.data.length-1;
     let arr  =[];
     res.data.map(items =>{
       for(let i in items){
        if(i == 'basicPharmacy' && items[i] !== null  ) {
        arr.push(items)
-        console.log("i",items[i])
        }
       }
     })
+    console.log('arr',arr)
     this.setState({
-      basic:arr[0].basicPharmacy,
-      change:arr[0].pharmacyChange,
-      remark:arr[0].remark
+      basic:arr[arr.length-1].basicPharmacy,
+      change:arr[arr.length-1].pharmacyChange,
+      remark:arr[arr.length-1].remark,
+      lastRecordId:res.data[dataLen].REC_ID
     })
+    // console.log('res',this.state.lastRecordId)
   }
 
   //开始日期
   beginDateChange = (value) => {
     let start = moment(value).format('YYYY-MM-DD');
     let end = moment(this.state.endDate);
-    // this.setState({ beginDate: moment(start) });
     let days = end.diff(moment(start), 'day');
     this.setState({
       days: days,
@@ -127,7 +132,6 @@ class RecordInput extends React.Component {
   };
   //结束日期
   endDateChange = (value) => {
-    // this.setState({ endDate: moment(value).format('YYYY-MM-DD') });
     let end = moment(value).format('YYYY-MM-DD');
     let days = moment(end).diff(this.state.beginDate, 'day');
     this.setState({
@@ -136,6 +140,70 @@ class RecordInput extends React.Component {
     });
   };
 
+
+  basicChange = ({target:{value}}) =>{
+    console.log("value",value)
+    this.setState({
+      nowBasic:value
+    })
+  }
+  pharmacyChange = ({target:{value}}) =>{
+    console.log("value",value)
+    this.setState({
+      nowChange:value
+    })
+  }
+  remarkChange = ({target:{value}}) =>{
+    console.log("value",value)
+    this.setState({
+      nowRemark:value
+    })
+  }
+//保存用药信息
+  savePharmacyData = async () =>{
+    const {nowBasic,nowChange,nowRemark,lastRecordId,selectKey} = this.state;
+    let data = {
+      basicPharmacy:nowBasic,
+      pharmacyChange:nowChange,
+      remark:nowRemark,
+      REC_ID:lastRecordId,
+    }
+    let res;
+    if(selectKey == 1){
+      try{
+        res = await http().modifyRecords({
+          resid:resid1,
+          data:[data]
+        })
+        message.success('保存成功');
+      }catch(error){
+        message.error(error.message)
+      }
+    }else if (selectKey == 2 ){
+      try{
+        res = await http().modifyRecords({
+          resid:resid2,
+          data:[data]
+        })
+        message.success('保存成功');
+      }catch(error){
+        message.error(error.message)
+      }
+    }else if (selectKey == 3 ){
+      let resid = resid3
+      try{
+        res = await http().saveRecord({
+          resid,
+          data:JSON.stringify([data])
+        })
+        message.success('保存成功');
+      }catch(error){
+        message.error(error.message)
+      }
+    }
+    
+
+  }
   activeKeyChange = (key) => {
     this.setState({
       selectKey: key,
@@ -152,6 +220,7 @@ class RecordInput extends React.Component {
       infoModal: false,
     });
   };
+
   render() {
     const { now, beginDate, endDate } = this.state;
     return (
@@ -237,24 +306,30 @@ class RecordInput extends React.Component {
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__basic"
-                      value={this.state.basic}
+                      onChange = {this.basicChange}
                     />
                   </Form.Item>
                   <Form.Item label="用药变化">
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__change"
-                      value={this.state.change}
+                      onChange = {this.pharmacyChange}
                     />
                   </Form.Item>
                   <Form.Item label="备注">
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__remark"
-                      value={this.state.remark}
+                      onChange = {this.remarkChange}
                     />
                   </Form.Item>
                 </div>
+                <Button
+                type = "primary"
+                onClick = {this.savePharmacyData}
+                color = "#7ca8fc"
+                style = {{marginLeft: '45%',marginBottom:"20px"}}
+                >保存当前用药信息</Button>
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -263,6 +338,7 @@ class RecordInput extends React.Component {
                   height={500}
                   hasDelete={false}
                   hasRowDelete={false}
+                  hasRowModify={false}
                   defaultColumnWidth={150}
                   actionBarWidth={200}
                   subtractH={150}
