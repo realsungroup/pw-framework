@@ -692,6 +692,10 @@ class TableData extends React.Component {
     });
   };
 
+  // 搜索的值改变
+  onSearchChange = value =>{
+    this._searchValue=value;
+  }
   // 导入
   handleImport = () => {
     const { openImportView, baseURL, importConfig, dblinkname } = this.props;
@@ -1230,7 +1234,7 @@ class TableData extends React.Component {
    * @param {boolean} isFirst 是否刷新的页数为第一页，默认：false
    */
   handleRefresh = async (isFirst = false) => {
-    this.setState({ loading: true });
+     this.setState({ loading: true });
     const { pagination } = this.state;
     let obj;
     // 刷新第一页的表格数据
@@ -1768,7 +1772,8 @@ class TableData extends React.Component {
           onSearch={this.handleSearch}
           onImport={this.handleImport}
           onDownload={this.handleDownload}
-          onSearchChange={this.onSearchChange}
+          onSearchChange={(v)=>{this.onSearchChange(v)}}
+
           onChange={this.handleTableChange}
           renderOtherBtns={this.renderBeBtns}
           rowSelection={rowSelection}
@@ -1829,7 +1834,7 @@ class TableData extends React.Component {
         onSearch={this.handleSearch}
         onImport={this.handleImport}
         onDownload={this.handleDownload}
-        onSearchChange={this.onSearchChange}
+        onSearchChange={(v)=>{this.onSearchChange(v)}}
         onChange={this.handleTableChange}
         renderOtherBtns={this.renderBeBtns}
         rowSelection={rowSelection}
