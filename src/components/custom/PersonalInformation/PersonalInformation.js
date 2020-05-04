@@ -5,7 +5,7 @@ import { Button, message, Modal, Select, Input, Form } from 'antd';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import { RecordInput, DoctorList, OtherData } from '../loadableCustom';
 import http from "../../../util20/api";
-
+import DivisionTable from './DivisionTable';
 
 /**
  * 填写信息
@@ -25,7 +25,8 @@ class PersonalInformation extends React.Component {
       cdLen: {},
       ucLen: {},
       otherVisible: false,
-      appLinks: []
+      appLinks: [],
+      selectKey: '',
     }
   }
 
@@ -63,7 +64,6 @@ class PersonalInformation extends React.Component {
       record: { ...record },
       // navListResidField: 'C3_620929565473'
     });
-
     http().addRecords({
       resid: 641570651236, // 表资源 id
       data: [
@@ -82,7 +82,6 @@ class PersonalInformation extends React.Component {
     });
   };
 
-
   //其他信息录入
   handleOtherCaseClick = (record) => {
     this.setState({
@@ -100,8 +99,17 @@ class PersonalInformation extends React.Component {
     this.setState({ otherVisible: false });
   };
 
+  handleCellClick = (value) => {
+    this.setState({ otherVisible: false }, () => {
+      // 100 ms 后再打开 modal，用户体验好一点
+      setTimeout(() => {
+        this.setState({ modalVisible: true, selectKey: value.substring(0, 2) });
+      }, 100)
+    });
+  }
+
   render() {
-    const { modalVisible, otherVisible, record } = this.state
+    const { modalVisible, otherVisible, record, selectKey } = this.state
     return (
       <div>
         <TableData
@@ -123,18 +131,18 @@ class PersonalInformation extends React.Component {
         />
         {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
-            <RecordInput {...record} />
+            <RecordInput {...record} selectKey={selectKey} />
           </LzModal>
         )}
         {otherVisible && (
           <LzModal
-            defaultScaleStatus="max"
             onClose={this.handleOtherModalClose}
           >
+            <DivisionTable onCellClick={this.handleCellClick}></DivisionTable>
             {/* <RecordInput {...record} /> */}
             {/* <OtherData {...record} /> */}
             {/* <DoctorList {...record} /> */}
-            <h1>请选择您要录入的科室</h1>
+            {/* <h1>请选择您要录入的科室</h1>
             <span>科室：</span>
             <Select style={{ width: '200px', marginLeft: '10px' }}>
               <Option value="常见数据录入">常见数据录入</Option>
@@ -149,7 +157,7 @@ class PersonalInformation extends React.Component {
               <Form.Item label="常见数据录入">
                 <Input defaultValue="体温检测" />
               </Form.Item>
-            </Form>
+            </Form> */}
           </LzModal>
         )}
       </div>

@@ -40,6 +40,7 @@ const userResid = 639670761186; // 会员信息
 class RecordInput extends React.Component {
   constructor(props) {
     super(props);
+    console.log({ selectKey: props.selectKey });
     this.state = {
       beginDate: '',
       endDate: '',
@@ -52,14 +53,14 @@ class RecordInput extends React.Component {
       nowChange: '', //当前用药变化
       nowRemark: '', //当前备注
       bloodPressureDate: [],
-      selectKey: '1',
+      selectKey: props.selectKey || '血压',
       res: {},
       infoModal: false,
       xAxis: {}, // x轴渲染的数据
       legend: {}, // 图表上方的选择器
       series: [],
       lastRecordId: '',
-      userinfo: {},
+      userinfo: {}
     };
   }
 
@@ -101,8 +102,10 @@ class RecordInput extends React.Component {
 
   getTableData = async () => {
     const { selectKey, basic, change, remark } = this.state;
+
+    console.log({ selectKey, basic, change, remark });
     let res;
-    if (selectKey == '1') {
+    if (selectKey === '血压') {
       try {
         res = await getMainTableData(resid1, {
           getcolumninfo: 1,
@@ -110,7 +113,7 @@ class RecordInput extends React.Component {
       } catch (err) {
         return message.error(err.message);
       }
-    } else if (selectKey == '2') {
+    } else if (selectKey === '血糖') {
       try {
         res = await getMainTableData(resid2, {
           getcolumninfo: 1,
@@ -118,7 +121,7 @@ class RecordInput extends React.Component {
       } catch (err) {
         return message.error(err.message);
       }
-    } else if (selectKey == '3') {
+    } else if (selectKey === '体温') {
       try {
         res = await getMainTableData(resid3, {
           getcolumninfo: 1,
@@ -136,6 +139,8 @@ class RecordInput extends React.Component {
         }
       }
     });
+    console.log({ res });
+
     this.setState({
       basic: arr[arr.length - 1].basicPharmacy,
       change: arr[arr.length - 1].pharmacyChange,
@@ -199,7 +204,7 @@ class RecordInput extends React.Component {
       REC_ID: lastRecordId,
     };
     let res;
-    if (selectKey == 1) {
+    if (selectKey === '血压') {
       try {
         res = await http().modifyRecords({
           resid: resid1,
@@ -209,7 +214,7 @@ class RecordInput extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
-    } else if (selectKey == 2) {
+    } else if (selectKey === '血糖') {
       try {
         res = await http().modifyRecords({
           resid: resid2,
@@ -219,7 +224,7 @@ class RecordInput extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
-    } else if (selectKey == 3) {
+    } else if (selectKey === '体温') {
       let resid = resid3;
       try {
         res = await http().modifyRecords({
@@ -250,12 +255,13 @@ class RecordInput extends React.Component {
   };
 
   render() {
-    const { now, beginDate, endDate, userinfo } = this.state;
+    const { now, beginDate, endDate, userinfo, selectKey } = this.state;
+
     return (
       <div className="DataPut">
         <h2 style={{ marginLeft: '9px' }}>常见信息录入</h2>
-        <Tabs defaultActiveKey="1" onChange={this.activeKeyChange}>
-          <TabPane tab="血压" key="1">
+        <Tabs activeKey={selectKey} onChange={this.activeKeyChange}>
+          <TabPane tab="血压" key="血压">
             <Form className="recordInput">
               <div className="recordInput__userInfo">
                 <Form.Item
@@ -382,7 +388,7 @@ class RecordInput extends React.Component {
               </div>
             </Form>
           </TabPane>
-          <TabPane tab="血糖" key="2">
+          <TabPane tab="血糖" key="血糖">
             <Form className="recordInput">
               <div className="recordInput__userInfo">
                 <Form.Item
@@ -509,7 +515,7 @@ class RecordInput extends React.Component {
               </div>
             </Form>
           </TabPane>
-          <TabPane tab="体温" key="3">
+          <TabPane tab="体温" key="体温">
             <Form className="recordInput">
               <div className="recordInput__userInfo">
                 <Form.Item
