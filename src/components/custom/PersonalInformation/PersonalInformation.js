@@ -92,7 +92,7 @@ class PersonalInformation extends React.Component {
   };
 
   handleModalClose = () => {
-    this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false, selectKey: '' });
   };
 
   handleOtherModalClose = () => {

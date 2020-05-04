@@ -17,7 +17,7 @@ class DoctorList extends React.Component {
     this.state = {
       doctorList: [],
       loading: true,
-      isSelect:false
+      isSelect: false
     };
   }
 
@@ -44,9 +44,9 @@ class DoctorList extends React.Component {
     }
   };
 
-  doctorConfirm = (index) =>{
-   let {doctorList} = this.state;
-   let res; 
+  doctorConfirm = (index) => {
+    let { doctorList } = this.state;
+    let res;
     doctorList[index].isSelect = true
     this.setState({
       doctorList
@@ -63,8 +63,8 @@ class DoctorList extends React.Component {
   }
 
 
-  doctorCancel = () =>{
-   
+  doctorCancel = () => {
+
   }
 
 
@@ -74,7 +74,7 @@ class DoctorList extends React.Component {
       <div className="container">
         <h1 style={{ margin: '10px' }}>医生列表:</h1>
         <div className="doctorList">
-          {this.state.doctorList.map((subrecord,index) => (
+          {this.state.doctorList.map((subrecord, index) => (
             <Card
               title={'姓名：' + `${subrecord.doctorName}`}
               extra={
@@ -87,9 +87,9 @@ class DoctorList extends React.Component {
                   onCancel={this.doctorCancel}
                   okText="是"
                   cancelText="否"
-                 
+
                 >
-                  {subrecord.isSelect ?(<span  style = {{cursor:"pointer",color:"#0086ff"}} >已选择</span>):(<span  style = {{cursor:"pointer",color:"#0086ff"}} >选择</span>)}
+                  {subrecord.isSelect ? (<span style={{ cursor: "pointer", color: "#0086ff" }} >已选择</span>) : (<span style={{ cursor: "pointer", color: "#0086ff" }} >选择</span>)}
                 </Popconfirm>
               }
             >

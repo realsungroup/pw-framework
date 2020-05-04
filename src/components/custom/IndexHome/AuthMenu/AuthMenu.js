@@ -18,6 +18,14 @@ class AuthMenu extends React.Component {
     this.selectedKey = props.location.pathname;
   }
 
+  componentDidUpdate = () => {
+    if (this.props.location.pathname !== this.selectedKey) {
+      this.selectedKey = this.props.location.pathname;
+      this.forceUpdate();
+    }
+  }
+
+
   render() {
     return (
       <div className='auth-menu'>

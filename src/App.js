@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { PrivateRoute } from './util/auth';
 import { IntlProvider, addLocaleData } from 'react-intl';
 
 import { Icon, LocaleProvider, Button, message } from 'antd';
-import {createBrowserHistory} from 'history'
+import { createBrowserHistory } from 'history'
 
 
 import en from 'react-intl/locale-data/en';
@@ -127,11 +127,11 @@ class App extends Component {
   }
   componentDidMount = () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
       message.success('复制成功');
     });
 
-    clipboard.on('error', function(e) {
+    clipboard.on('error', function (e) {
       message.error('复制失败');
     });
   };
@@ -152,7 +152,7 @@ class App extends Component {
       } else {
         language = userInfo.UserInfo.EMP_LANGUAGE;
       }
-    } catch (err) {}
+    } catch (err) { }
 
     let localeAntd = zh_CN_antd;
     let locale = 'zh',
@@ -167,9 +167,9 @@ class App extends Component {
       <Fragment>
         {/* <ErrorBoundary> */}
         <Provider store={store}>
-          
 
-        {/* <withRouter
+
+          {/* <withRouter
               {...this.props}
               render={(props) =>{
                 console.log("come")
@@ -191,7 +191,7 @@ class App extends Component {
             /> */}
           <Router history={history} >
 
-          <IndexHome/>
+            <IndexHome />
             {/* <Route
               {...this.props}
               render={(props) =>{
@@ -206,7 +206,7 @@ class App extends Component {
             }
             /> */}
           </Router>
-            {/* <PrivateRoute exact path="*" component={IndexHome} /> */}
+          {/* <PrivateRoute exact path="*" component={IndexHome} /> */}
 
           <NonsupportIE
             // curIEVersion="ie11"
@@ -223,7 +223,7 @@ class App extends Component {
             <LocaleProvider locale={localeAntd}>
               <IntlProvider locale={locale} messages={messages}>
                 <Router history={history}>
-                  
+
                   <Switch>
 
                     {/* <PrivateRoute exact path="/" component={IndexHome} />
@@ -242,7 +242,7 @@ class App extends Component {
               path="/person-center"
               component={PageContainer}
             /> */}
-            {console.log("come2")}
+                    {console.log("come2")}
                     <Route path="/login" component={Login} />
                     <Route path="/indexHome" component={IndexHome} />
                     <Route path="/index" component={PatientInfo} />
