@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 import HeaderBtn from './HeaderBtn';
 import windowImg from './images/window-icon.png';
+import windowSvg from './images/窗口.svg';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -187,7 +188,7 @@ class PageHeader extends React.Component {
             overlayClassName="new-home__page-header-popver"
           >
             <Badge count={activeAppsNumber}>
-              <img src={windowImg} className="page-header__abbreviation-icon" />
+              <img src={windowSvg} className="page-header__abbreviation-icon" />
             </Badge>
           </Popover>
         </div>

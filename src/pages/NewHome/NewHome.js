@@ -700,7 +700,7 @@ class Home extends React.Component {
       return (
         <WindowView
           ref={node => this.getWindowViewRef(node, activeApp.title)}
-          key={activeApp.appName + index}
+          key={activeApp.ResID}
           title={activeApp.appName}
           visible={visible}
           // onClose={() => this.handleCloseActiveApp(activeApp)}
