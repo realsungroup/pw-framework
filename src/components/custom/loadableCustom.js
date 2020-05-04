@@ -42,6 +42,12 @@ export const GLUChart = Loadable({
     return minLoading;
   }
 });
+export const TemperatureChart = Loadable({
+  loader: () => import('./TemperatureChart'),
+  loading() {
+    return minLoading;
+  }
+});
 export const OtherData = Loadable({
   loader: () => import('./OtherData'),
   loading() {
