@@ -17,6 +17,7 @@ import {
   DatePicker,
   Tabs,
   Collapse,
+  Spin,
 } from 'antd';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import http from 'Util20/api';
@@ -38,6 +39,11 @@ const resid3 = 640190883264; // 体温检测表
 const userResid = 639670761186; // 会员信息
 
 class RecordInput extends React.Component {
+  static defaultProps = {
+    // 模式
+    mode: 'edit',
+  }
+
   constructor(props) {
     super(props);
     console.log({ selectKey: props.selectKey });
@@ -60,7 +66,7 @@ class RecordInput extends React.Component {
       legend: {}, // 图表上方的选择器
       series: [],
       lastRecordId: '',
-      userinfo: {},
+      userinfo: null,
     };
   }
 
@@ -139,7 +145,7 @@ class RecordInput extends React.Component {
         }
       }
     });
-    console.log('arr',arr)
+    console.log('arr', arr)
     if (!arr[0]) {
       this.setState({
         basic: '',
@@ -265,6 +271,12 @@ class RecordInput extends React.Component {
   render() {
     const { now, beginDate, endDate, userinfo, selectKey } = this.state;
 
+    if (!userinfo) {
+      return <Spin></Spin>
+    }
+
+    const { mode } = this.props;
+
     return (
       <div className="DataPut">
         <h2 style={{ marginLeft: '9px' }}>常见信息录入</h2>
@@ -372,14 +384,16 @@ class RecordInput extends React.Component {
                     />
                   </Form.Item>
                 </div>
-                <Button
-                  type="primary"
-                  onClick={this.savePharmacyData}
-                  color="#7ca8fc"
-                  style={{ marginLeft: '45%', marginBottom: '20px' }}
-                >
-                  保存当前用药信息
-                </Button>
+                {mode === 'edit' && (
+                  <Button
+                    type="primary"
+                    onClick={this.savePharmacyData}
+                    color="#7ca8fc"
+                    style={{ marginLeft: '45%', marginBottom: '20px' }}
+                  >
+                    保存当前用药信息
+                  </Button>
+                )}
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -392,6 +406,7 @@ class RecordInput extends React.Component {
                   defaultColumnWidth={150}
                   actionBarWidth={200}
                   subtractH={150}
+                  hasAdd={mode === 'edit'}
                 />
               </div>
             </Form>
@@ -499,14 +514,16 @@ class RecordInput extends React.Component {
                     />
                   </Form.Item>
                 </div>
-                <Button
-                  type="primary"
-                  onClick={this.savePharmacyData}
-                  color="#7ca8fc"
-                  style={{ marginLeft: '45%', marginBottom: '20px' }}
-                >
-                  保存当前用药信息
-                </Button>
+                {mode === 'edit' && (
+                  <Button
+                    type="primary"
+                    onClick={this.savePharmacyData}
+                    color="#7ca8fc"
+                    style={{ marginLeft: '45%', marginBottom: '20px' }}
+                  >
+                    保存当前用药信息
+                  </Button>
+                )}
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -519,6 +536,7 @@ class RecordInput extends React.Component {
                   defaultColumnWidth={150}
                   actionBarWidth={200}
                   subtractH={150}
+                  hasAdd={mode === 'edit'}
                 />
               </div>
             </Form>
@@ -626,14 +644,16 @@ class RecordInput extends React.Component {
                     />
                   </Form.Item>
                 </div>
-                <Button
-                  type="primary"
-                  onClick={this.savePharmacyData}
-                  color="#7ca8fc"
-                  style={{ marginLeft: '45%', marginBottom: '20px' }}
-                >
-                  保存当前用药信息
-                </Button>
+                {mode === 'edit' && (
+                  <Button
+                    type="primary"
+                    onClick={this.savePharmacyData}
+                    color="#7ca8fc"
+                    style={{ marginLeft: '45%', marginBottom: '20px' }}
+                  >
+                    保存当前用药信息
+                  </Button>
+                )}
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -646,6 +666,7 @@ class RecordInput extends React.Component {
                   defaultColumnWidth={150}
                   actionBarWidth={200}
                   subtractH={150}
+                  hasAdd={mode === 'edit'}
                 />
               </div>
             </Form>

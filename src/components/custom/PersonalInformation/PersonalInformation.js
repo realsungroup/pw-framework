@@ -66,6 +66,7 @@ class PersonalInformation extends React.Component {
     });
     http().addRecords({
       resid: 641570651236, // 表资源 id
+      isEditOrAdd: true,
       data: [
         {
           tableNo: 640186569410,

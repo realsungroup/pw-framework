@@ -30,6 +30,7 @@ import {
   AttentionPeople,
   PersonInfor,
   PersonalInformation,
+  SearchInfo,
   DoctorAdvice
 } from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
@@ -257,6 +258,10 @@ class App extends Component {
                     <Route
                       path="/attentionPeople"
                       component={AttentionPeople}
+                    />
+                    <Route
+                      path="/searchInfo"
+                      component={SearchInfo}
                     />
                     <Route
                       path="/doctorList"
