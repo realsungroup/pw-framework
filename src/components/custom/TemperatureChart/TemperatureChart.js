@@ -1,6 +1,6 @@
 import React from 'react';
 import TableData from 'Common/data/TableData';
-import './BPChart.less';
+import './TemperatureChart.less';
 import {
   Button,
   message,
@@ -27,7 +27,7 @@ const colors = ['#5793f3', '#d14a61', '#675bba'];
 const resid1 = 640186569410; // 血压检测表
 const resid2 = 640190825057; // 血糖检测表
 const resid3 = 640190883264; // 体温检测表
-class BPChart extends React.Component {
+class TemperatureChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,11 +49,11 @@ class BPChart extends React.Component {
     this.getTableData();
   };
   async componentDidMount() {
-    this._echarts = echarts.init(document.getElementById('dataChart1'));
+    this._echarts = echarts.init(document.getElementById('dataChart3'));
     this._echarts.setOption({
       color: colors,
       title: {
-        text: '血压',
+        text: '体温',
       },
       legend: {
         data: [],
@@ -121,13 +121,14 @@ class BPChart extends React.Component {
   getTableData = async () => {
     let res;
     try {
-      res = await getMainTableData(resid1, {
+      res = await getMainTableData(resid3, {
         getcolumninfo: 1,
       });
       this.setState({ res: res });
     } catch (err) {
       return message.error(err.message);
     }
+    console.log('res',res)
     let source = [];
     let recordTime = []; //记录日期数据
     this.state.res.data.map((item) => {
@@ -151,13 +152,10 @@ class BPChart extends React.Component {
         legendId.push(item.id);
       }
     });
-    let seriesData = [[], []];
+    let seriesData = [];
     this.state.res.data.map((item) => {
-      if (item.SBP !== null) {
-        seriesData[1].push(item.SBP);
-      }
-      if (item.DBP !== null) {
-        seriesData[0].push(item.DBP);
+      if (item.Tem !== null) {
+        seriesData.push(item.Tem);
       }
     });
     source.push(
@@ -165,6 +163,7 @@ class BPChart extends React.Component {
       legendData,
       this.props.beginDate.format('YYYY-MM-DD')
     );
+    console.log("seriesData",seriesData)
     this._echarts.setOption({
       dataset: {
         dimensions: [],
@@ -190,7 +189,7 @@ class BPChart extends React.Component {
         {
           name: legendData[0],
           type: 'line',
-          data: seriesData[1],
+          data: seriesData,
           markLine: {
             silent: true,
             data: [
@@ -203,22 +202,6 @@ class BPChart extends React.Component {
             ],
           },
         },
-        {
-          name: legendData[1],
-          type: 'line',
-          data: seriesData[0],
-          markLine: {
-            silent: true,
-            data: [
-              {
-                yAxis: 60,
-              },
-              {
-                yAxis: 90,
-              },
-            ],
-          },
-        },
       ],
     });
   };
@@ -226,7 +209,7 @@ class BPChart extends React.Component {
   render() {
     return (
       <div
-        id="dataChart1"
+        id="dataChart3"
         style={{
           height: 400,
           width: '80%',
@@ -236,5 +219,5 @@ class BPChart extends React.Component {
   }
 }
 
-export default BPChart;
+export default TemperatureChart;
 

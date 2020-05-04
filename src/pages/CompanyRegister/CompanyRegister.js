@@ -101,7 +101,7 @@ class CompanyRegister extends React.Component {
           //   redirectToReferrer: true
           // });
           this.props.history.replace(
-            '/fnmodule?resid=588425594397&recid=635517197444&type=人口信息学&title=患者信息'
+            '/'
           )
           window.location.reload();
         } else if (result === 'N') {

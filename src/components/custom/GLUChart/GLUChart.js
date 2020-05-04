@@ -374,7 +374,3 @@ class GLUChart extends React.Component {
 }
 
 export default GLUChart;
-
-//设置时间范围未生效
-//检测指标标准线暂时为写死
-//

@@ -197,12 +197,6 @@ class Login extends React.Component {
     });
   };
 
-  onChangeIndex = () => {
-    this.props.history.push({
-      pathname: '/indexHome'
-    });
-  };
-
   render() {
     const { redirectToReferrer, loginMode, language, loading } = this.state;
     // 进入登录页的源路由
@@ -304,7 +298,6 @@ class Login extends React.Component {
             <Form.Item>
                <Button style = {{float:"left"}} onClick={this.onRegister}>账号注册</Button>
               <Button style = {{float:"right"}} onClick={this.onForgetPassword}>忘记密码</Button>
-              <Button style = {{float:"right"}} onClick={this.onChangeIndex}>index</Button>
             </Form.Item>
           </Form>
           <div className="login__copyright">Copyright © 2008 ~ 2020 </div>

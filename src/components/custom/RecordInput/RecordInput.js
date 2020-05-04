@@ -3,6 +3,7 @@ import React from 'react';
 import TableData from 'Common/data/TableData';
 import BPChart from '../BPChart/BPChart';
 import GLUChart from '../GLUChart/GLUChart';
+import TemperatureChart from '../TemperatureChart/TemperatureChart';
 import './RecordInput.less';
 import {
   Button,
@@ -34,6 +35,8 @@ const { Panel } = Collapse;
 const resid1 = 640186569410; // 血压检测表
 const resid2 = 640190825057; // 血糖检测表
 const resid3 = 640190883264; // 体温检测表
+const userResid = 639670761186; // 会员信息
+
 class RecordInput extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +58,8 @@ class RecordInput extends React.Component {
       xAxis: {}, // x轴渲染的数据
       legend: {}, // 图表上方的选择器
       series: [],
-      lastRecordId:''
+      lastRecordId: '',
+      userinfo: {},
     };
   }
 
@@ -71,12 +75,34 @@ class RecordInput extends React.Component {
       days: moment(nowDate).diff(start, 'day'),
     });
     this.getTableData();
+    this.getUserInfo();
+  };
+
+  getUserInfo = async () => {
+    let res;
+    const resid = userResid;
+    try {
+      res = await http().getTable({
+        resid,
+        cmswhere: `userNo = '${this.props.userNo}'`,
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    console.log('resdata', res);
+    this.setState({
+      userinfo: res.data[0],
+    });
+  };
+
+  disabledDate = (current) => {
+    return current && current > moment().endOf('day');
   };
 
   getTableData = async () => {
-    const {selectKey,basic,change,remark} = this.state; 
+    const { selectKey, basic, change, remark } = this.state;
     let res;
-    if(selectKey == '1'){
+    if (selectKey == '1') {
       try {
         res = await getMainTableData(resid1, {
           getcolumninfo: 1,
@@ -84,7 +110,7 @@ class RecordInput extends React.Component {
       } catch (err) {
         return message.error(err.message);
       }
-    }else if(selectKey == '2'){
+    } else if (selectKey == '2') {
       try {
         res = await getMainTableData(resid2, {
           getcolumninfo: 1,
@@ -92,7 +118,7 @@ class RecordInput extends React.Component {
       } catch (err) {
         return message.error(err.message);
       }
-    }else if (selectKey == '3'){
+    } else if (selectKey == '3') {
       try {
         res = await getMainTableData(resid3, {
           getcolumninfo: 1,
@@ -101,24 +127,23 @@ class RecordInput extends React.Component {
         return message.error(err.message);
       }
     }
-    let dataLen = res.data.length-1;
-    let arr  =[];
-    res.data.map(items =>{
-      for(let i in items){
-       if(i == 'basicPharmacy' && items[i] !== null  ) {
-       arr.push(items)
-       }
+    let dataLen = res.data.length - 1;
+    let arr = [];
+    res.data.map((items) => {
+      for (let i in items) {
+        if (i == 'basicPharmacy' && items[i] !== null) {
+          arr.push(items);
+        }
       }
-    })
-    console.log('arr',arr)
+    });
     this.setState({
-      basic:arr[arr.length-1].basicPharmacy,
-      change:arr[arr.length-1].pharmacyChange,
-      remark:arr[arr.length-1].remark,
-      lastRecordId:res.data[dataLen].REC_ID
-    })
+      basic: arr[arr.length - 1].basicPharmacy,
+      change: arr[arr.length - 1].pharmacyChange,
+      remark: arr[arr.length - 1].remark,
+      lastRecordId: res.data[dataLen].REC_ID,
+    });
     // console.log('res',this.state.lastRecordId)
-  }
+  };
 
   //开始日期
   beginDateChange = (value) => {
@@ -140,70 +165,73 @@ class RecordInput extends React.Component {
     });
   };
 
-
-  basicChange = ({target:{value}}) =>{
-    console.log("value",value)
+  basicChange = ({ target: { value } }) => {
+    console.log('value', value);
     this.setState({
-      nowBasic:value
-    })
-  }
-  pharmacyChange = ({target:{value}}) =>{
-    console.log("value",value)
+      nowBasic: value,
+    });
+  };
+  pharmacyChange = ({ target: { value } }) => {
+    console.log('value', value);
     this.setState({
-      nowChange:value
-    })
-  }
-  remarkChange = ({target:{value}}) =>{
-    console.log("value",value)
+      nowChange: value,
+    });
+  };
+  remarkChange = ({ target: { value } }) => {
+    console.log('value', value);
     this.setState({
-      nowRemark:value
-    })
-  }
-//保存用药信息
-  savePharmacyData = async () =>{
-    const {nowBasic,nowChange,nowRemark,lastRecordId,selectKey} = this.state;
+      nowRemark: value,
+    });
+  };
+  //保存用药信息
+  savePharmacyData = async () => {
+    const {
+      nowBasic,
+      nowChange,
+      nowRemark,
+      lastRecordId,
+      selectKey,
+    } = this.state;
     let data = {
-      basicPharmacy:nowBasic,
-      pharmacyChange:nowChange,
-      remark:nowRemark,
-      REC_ID:lastRecordId,
-    }
+      basicPharmacy: nowBasic,
+      pharmacyChange: nowChange,
+      remark: nowRemark,
+      REC_ID: lastRecordId,
+    };
     let res;
-    if(selectKey == 1){
-      try{
+    if (selectKey == 1) {
+      try {
         res = await http().modifyRecords({
-          resid:resid1,
-          data:[data]
-        })
+          resid: resid1,
+          data: [data],
+        });
         message.success('保存成功');
-      }catch(error){
-        message.error(error.message)
+      } catch (error) {
+        message.error(error.message);
       }
-    }else if (selectKey == 2 ){
-      try{
+    } else if (selectKey == 2) {
+      try {
         res = await http().modifyRecords({
-          resid:resid2,
-          data:[data]
-        })
+          resid: resid2,
+          data: [data],
+        });
         message.success('保存成功');
-      }catch(error){
-        message.error(error.message)
+      } catch (error) {
+        message.error(error.message);
       }
-    }else if (selectKey == 3 ){
-      let resid = resid3
-      try{
-        res = await http().saveRecord({
+    } else if (selectKey == 3) {
+      let resid = resid3;
+      try {
+        res = await http().modifyRecords({
           resid,
-          data:JSON.stringify([data])
-        })
+          data: JSON.stringify([data]),
+        });
         message.success('保存成功');
-      }catch(error){
-        message.error(error.message)
+      } catch (error) {
+        message.error(error.message);
       }
     }
-    
-
-  }
+  };
   activeKeyChange = (key) => {
     this.setState({
       selectKey: key,
@@ -222,7 +250,7 @@ class RecordInput extends React.Component {
   };
 
   render() {
-    const { now, beginDate, endDate } = this.state;
+    const { now, beginDate, endDate, userinfo } = this.state;
     return (
       <div className="DataPut">
         <h2 style={{ marginLeft: '9px' }}>常见信息录入</h2>
@@ -249,13 +277,19 @@ class RecordInput extends React.Component {
                   <DatePicker
                     onChange={this.beginDateChange}
                     value={beginDate}
+                    allowClear={false}
                   />
                 </Form.Item>
                 <Form.Item
                   label="结束日期"
                   className="recordInput__userInfo__endDate"
                 >
-                  <DatePicker onChange={this.endDateChange} value={endDate} />
+                  <DatePicker
+                    onChange={this.endDateChange}
+                    allowClear={false}
+                    disabledDate={this.disabledDate}
+                    value={endDate}
+                  />
                 </Form.Item>
                 <Form.Item label="共计" className="recordInput__userInfo__days">
                   <Input
@@ -276,8 +310,8 @@ class RecordInput extends React.Component {
                 />
               </div>
               <div className="recordInput__basicMd">
-              <h3 style = {{color:"#000"}}>上一次用药情况:</h3>
-                <div className = "recordInput__basicMd__last">
+                <h3 style={{ color: '#000' }}>上一次用药情况:</h3>
+                <div className="recordInput__basicMd__last">
                   <Form.Item label="基本用药">
                     <TextArea
                       rows={3}
@@ -300,36 +334,38 @@ class RecordInput extends React.Component {
                     />
                   </Form.Item>
                 </div>
-                <h3 style = {{color:"#000"}}>当前用药情况:</h3>
-                <div className = "recordInput__basicMd__now">
+                <h3 style={{ color: '#000' }}>当前用药情况:</h3>
+                <div className="recordInput__basicMd__now">
                   <Form.Item label="基本用药">
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__basic"
-                      onChange = {this.basicChange}
+                      onChange={this.basicChange}
                     />
                   </Form.Item>
                   <Form.Item label="用药变化">
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__change"
-                      onChange = {this.pharmacyChange}
+                      onChange={this.pharmacyChange}
                     />
                   </Form.Item>
                   <Form.Item label="备注">
                     <TextArea
                       rows={3}
                       className="recordInput__basicMd__now__remark"
-                      onChange = {this.remarkChange}
+                      onChange={this.remarkChange}
                     />
                   </Form.Item>
                 </div>
                 <Button
-                type = "primary"
-                onClick = {this.savePharmacyData}
-                color = "#7ca8fc"
-                style = {{marginLeft: '45%',marginBottom:"20px"}}
-                >保存当前用药信息</Button>
+                  type="primary"
+                  onClick={this.savePharmacyData}
+                  color="#7ca8fc"
+                  style={{ marginLeft: '45%', marginBottom: '20px' }}
+                >
+                  保存当前用药信息
+                </Button>
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -368,13 +404,19 @@ class RecordInput extends React.Component {
                   <DatePicker
                     onChange={this.beginDateChange}
                     value={beginDate}
+                    allowClear={false}
                   />
                 </Form.Item>
                 <Form.Item
                   label="结束日期"
                   className="recordInput__userInfo__endDate"
                 >
-                  <DatePicker onChange={this.endDateChange} value={endDate} />
+                  <DatePicker
+                    onChange={this.endDateChange}
+                    value={endDate}
+                    allowClear={false}
+                    disabledDate={this.disabledDate}
+                  />
                 </Form.Item>
                 <Form.Item label="共计" className="recordInput__userInfo__days">
                   <Input
@@ -395,27 +437,62 @@ class RecordInput extends React.Component {
                 />
               </div>
               <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.state.basic}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__change"
-                    value={this.state.change}
-                  />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__remark"
-                    value={this.state.remark}
-                  />
-                </Form.Item>
+                <h3 style={{ color: '#000' }}>上一次用药情况:</h3>
+                <div className="recordInput__basicMd__last">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__basic"
+                      value={this.state.basic}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__change"
+                      value={this.state.change}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__remark"
+                      value={this.state.remark}
+                    />
+                  </Form.Item>
+                </div>
+                <h3 style={{ color: '#000' }}>当前用药情况:</h3>
+                <div className="recordInput__basicMd__now">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__basic"
+                      onChange={this.basicChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__change"
+                      onChange={this.pharmacyChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__remark"
+                      onChange={this.remarkChange}
+                    />
+                  </Form.Item>
+                </div>
+                <Button
+                  type="primary"
+                  onClick={this.savePharmacyData}
+                  color="#7ca8fc"
+                  style={{ marginLeft: '45%', marginBottom: '20px' }}
+                >
+                  保存当前用药信息
+                </Button>
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -424,6 +501,7 @@ class RecordInput extends React.Component {
                   height={500}
                   hasDelete={false}
                   hasRowDelete={false}
+                  hasRowModify={false}
                   defaultColumnWidth={150}
                   actionBarWidth={200}
                   subtractH={150}
@@ -453,13 +531,19 @@ class RecordInput extends React.Component {
                   <DatePicker
                     onChange={this.beginDateChange}
                     value={beginDate}
+                    allowClear={false}
                   />
                 </Form.Item>
                 <Form.Item
                   label="结束日期"
                   className="recordInput__userInfo__endDate"
                 >
-                  <DatePicker onChange={this.endDateChange} value={now} />
+                  <DatePicker
+                    onChange={this.endDateChange}
+                    value={now}
+                    allowClear={false}
+                    disabledDate={this.disabledDate}
+                  />
                 </Form.Item>
                 <Form.Item label="共计" className="recordInput__userInfo__days">
                   <Input
@@ -473,26 +557,69 @@ class RecordInput extends React.Component {
                 </Form.Item>
               </div>
               <div id="recordInput__showChart3">
-                {/* <ShowDataChart
-                beginDate = {this.state.beginDate}
-                endDate = {this.state.endDate}
-                selectKey = {this.state.selectKey}
-                /> */}
+                <TemperatureChart
+                  beginDate={this.state.beginDate}
+                  endDate={this.state.endDate}
+                  selectKey={this.state.selectKey}
+                />
               </div>
               <div className="recordInput__basicMd">
-                <Form.Item label="基本用药">
-                  <TextArea
-                    rows={3}
-                    className="recordInput__basicMd__basic"
-                    value={this.state.basic}
-                  />
-                </Form.Item>
-                <Form.Item label="用药变化">
-                  <TextArea rows={3} className="recordInput__basicMd__change" />
-                </Form.Item>
-                <Form.Item label="备注">
-                  <TextArea rows={3} className="recordInput__basicMd__remark" />
-                </Form.Item>
+                <h3 style={{ color: '#000' }}>上一次用药情况:</h3>
+                <div className="recordInput__basicMd__last">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__basic"
+                      value={this.state.basic}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__change"
+                      value={this.state.change}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__last__remark"
+                      value={this.state.remark}
+                    />
+                  </Form.Item>
+                </div>
+                <h3 style={{ color: '#000' }}>当前用药情况:</h3>
+                <div className="recordInput__basicMd__now">
+                  <Form.Item label="基本用药">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__basic"
+                      onChange={this.basicChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="用药变化">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__change"
+                      onChange={this.pharmacyChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="备注">
+                    <TextArea
+                      rows={3}
+                      className="recordInput__basicMd__now__remark"
+                      onChange={this.remarkChange}
+                    />
+                  </Form.Item>
+                </div>
+                <Button
+                  type="primary"
+                  onClick={this.savePharmacyData}
+                  color="#7ca8fc"
+                  style={{ marginLeft: '45%', marginBottom: '20px' }}
+                >
+                  保存当前用药信息
+                </Button>
               </div>
               <div className="recordInput__dataContainer">
                 <TableData
@@ -500,6 +627,7 @@ class RecordInput extends React.Component {
                   hasModify={false}
                   height={500}
                   hasDelete={false}
+                  hasRowModify={false}
                   hasRowDelete={false}
                   defaultColumnWidth={150}
                   actionBarWidth={200}
@@ -517,33 +645,33 @@ class RecordInput extends React.Component {
           <div className="UserInfo">
             <Collapse defaultActiveKey={['1']}>
               <Panel header="用户基本信息" key="1">
-                <p>会员编号：{this.props.userNo}</p>
-                <p>会员姓名：{this.props.userName}</p>
+                <p>会员编号：{userinfo.userNo}</p>
+                <p>会员姓名：{userinfo.userName}</p>
               </Panel>
               <Panel header="用户健康状况" key="2">
-                <p>家族病史：{this.props.familyMedicalHistory}</p>
-                <p>主要疾病：{this.props.principalDisease}</p>
-                <p>药物过敏：{this.props.drugAllergy}</p>
-                <p>高血压：{this.props.highBloodPressure}</p>
-                <p>糖尿病：{this.props.diabetesMellitus}</p>
-                <p>慢性病：{this.props.chronicDisease}</p>
-                <p>精神病史：{this.props.psychiatricHistory}</p>
-                <p>免疫情况：{this.props.immunized}</p>
-                <p>所需服务：{this.props.needService}</p>
+                <p>家族病史：{userinfo.familyMedicalHistory}</p>
+                <p>主要疾病：{userinfo.principalDisease}</p>
+                <p>药物过敏：{userinfo.drugAllergy}</p>
+                <p>高血压：{userinfo.highBloodPressure}</p>
+                <p>糖尿病：{userinfo.diabetesMellitus}</p>
+                <p>慢性病：{userinfo.chronicDisease}</p>
+                <p>精神病史：{userinfo.psychiatricHistory}</p>
+                <p>免疫情况：{userinfo.immunized}</p>
+                <p>所需服务：{userinfo.needService}</p>
               </Panel>
               <Panel header="个人行为情况" key="3">
-                <p>性格：{this.props.character}</p>
-                <p>吸烟史：{this.props.smokeHistory}</p>
-                <p>饮酒史：{this.props.drinkHistory}</p>
-                <p>睡眠状况：{this.props.SleepQuality}</p>
-                <p>锻炼项目：{this.props.exerciseEvent}</p>
-                <p>饮食习惯：{this.props.dietaryHabit}</p>
-                <p>兴趣爱好：{this.props.hobbies}</p>
-                <p>是否残疾：{this.props.isDisability}</p>
-                <p>身体不适处理方式：{this.props.processMode}</p>
+                <p>性格：{userinfo.character}</p>
+                <p>吸烟史：{userinfo.smokeHistory}</p>
+                <p>饮酒史：{userinfo.drinkHistory}</p>
+                <p>睡眠状况：{userinfo.SleepQuality}</p>
+                <p>锻炼项目：{userinfo.exerciseEvent}</p>
+                <p>饮食习惯：{userinfo.dietaryHabit}</p>
+                <p>兴趣爱好：{userinfo.hobbies}</p>
+                <p>是否残疾：{userinfo.isDisability}</p>
+                <p>身体不适处理方式：{userinfo.processMode}</p>
               </Panel>
               <Panel header="自述状况" key="4">
-                <p>自述状况：{this.props.processMode}</p>
+                <p>自述状况：{userinfo.processMode}</p>
               </Panel>
             </Collapse>
           </div>
