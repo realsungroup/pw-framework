@@ -139,14 +139,4 @@ export const getMenus = () => {
   return menusMap[id];
 }
 
-/**
- * 通过 url 获取 Menu 组件所需要的 selectedKey
- * @param {string} url 地址
- * 
- * @returns {string} Menu 组件所需要的 selectedKey
- */
-export const getSelectedKeyByUrl = (url) => {
-  const item = allMenus.find(item => item.url === url);
-  return item.title;
-}
 

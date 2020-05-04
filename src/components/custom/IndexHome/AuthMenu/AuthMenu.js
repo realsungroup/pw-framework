@@ -16,7 +16,7 @@ class AuthMenu extends React.Component {
     super(props);
     this.menus = getMenus();
     console.log({ props });
-    this.selectedKey = getSelectedKeyByUrl(props.location.pathname)
+    this.selectedKey = props.location.pathname;
   }
 
   render() {
@@ -29,7 +29,7 @@ class AuthMenu extends React.Component {
         >
           {this.menus.map(menuItem => {
             return (
-              <Menu.Item key={menuItem.title}>
+              <Menu.Item key={menuItem.url}>
                 <Link to={menuItem.url}>
                   {menuItem.title}
                 </Link>
