@@ -200,12 +200,8 @@ class FixedApps extends React.PureComponent {
                 }}
               >
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                  {app.appIconUrl ? (
-                    <img
-                      src={app.appIconUrl}
-                      className="new-home-app-icon"
-                      // alt={app.appIconUrl}
-                    />
+                  {app.appIconUrl && app.appIconUrlValidate ? (
+                    <img src={app.appIconUrl} className="new-home-app-icon" />
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
                   )}

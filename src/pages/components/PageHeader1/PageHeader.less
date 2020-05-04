@@ -202,3 +202,33 @@
     border-right: none;
   }
 }
+.new-home__page-header-popver {
+  .ant-popover-inner-content {
+    padding: 8px 0;
+    width: 200px;
+  }
+  .new-home__page-header__active-apps {
+    .new-home__page-header__active-app {
+      border-top: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
+      padding: 8px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      &__title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        color: #000000;
+        .new-home__page-header__active-app--active {
+          color: @primary-color;
+        }
+      }
+      &:hover {
+        background: rgba(0, 0, 0, 0.03);
+        border-top: 1px solid rgba(220, 220, 220, 1);
+        border-bottom: 1px solid rgba(220, 220, 220, 1);
+      }
+    }
+  }
+}

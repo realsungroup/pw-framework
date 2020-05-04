@@ -106,6 +106,9 @@
           }
           .new-home__module-name {
             color: #000000;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
         .new-home__module-apps {
@@ -262,6 +265,8 @@
       height: 29.3vh;
       background: #ffffff;
       cursor: pointer;
+      display: flex;
+      align-items: center;
       &:hover {
         box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.26);
       }

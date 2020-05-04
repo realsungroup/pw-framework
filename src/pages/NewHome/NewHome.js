@@ -24,6 +24,17 @@ import moment from 'moment';
 
 const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
 
+function validateImage(pathImg) {
+  ////判断图片地址是否有效
+  let ImgObj = new Image();
+  ImgObj.src = pathImg;
+  if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 const objArrUnique = (arr, key) => {
   for (let i = 0; i < arr.length; i++) {
     for (let j = i + 1; j < arr.length; j++) {
@@ -45,10 +56,11 @@ const dealApps = apps => {
         apps: [],
         typeName: app.BusinessNode,
         categoricalApps: new Map(),
-        url: app.BusinessIconUrl || folderPng
+        url: validateImage(app.BusinessIconUrl) || folderPng
       };
       index = arr.length - 1;
     }
+    app.appIconUrlValidate = validateImage(app.appIconUrl);
     let categoryapps = arr[index].categoricalApps.get(
       app.PwCategory || '未分类'
     );
@@ -87,7 +99,8 @@ class Home extends React.Component {
       appDataFetching: false,
       showAbbreviation: false,
       searchTextHeader: '',
-      abbreviations: []
+      abbreviations: [],
+      abbreviationDoms: []
     };
   }
   componentDidMount() {
@@ -107,6 +120,9 @@ class Home extends React.Component {
     let recentApps = JSON.parse(getItem('recentApps'));
     if (recentApps && Array.isArray(recentApps)) {
       recentApps = this.getSortRecentApps(recentApps);
+      recentApps.forEach(item => {
+        item.appIconUrlValidate = validateImage(item.appIconUrl);
+      });
       this.setState({ recentApps });
     } else {
       setItem('recentApps', JSON.stringify([]));
@@ -274,10 +290,19 @@ class Home extends React.Component {
   handleShowAbbreviation = () => {
     if (this.state.activeApps.length) {
       this.setState({ showAbbreviation: !this.state.showAbbreviation }, () => {
-        if (this.state.showAbbreviation) {
-          let apps = document.querySelectorAll('iframe');
-          this.toimag(apps);
-        }
+        setTimeout(() => {
+          if (this.state.showAbbreviation) {
+            let apps = document.querySelectorAll('iframe');
+            this.toimag(apps);
+
+            // const doms = [];
+            // apps.forEach(item => {
+            //   let dom = item.contentDocument.querySelector('.functions');
+            //   doms.push(dom);
+            // });
+            // this.setState({ abbreviationDoms: doms });
+          }
+        }, 200);
       });
     } else {
       message.info('您还未打开任何功能窗口');
@@ -814,11 +839,11 @@ class Home extends React.Component {
                                     }
                                     title={app.title}
                                   >
-                                    {app.appIconUrl ? (
+                                    {app.appIconUrl &&
+                                    app.appIconUrlValidate ? (
                                       <img
                                         src={app.appIconUrl}
                                         className="new-home-app-icon"
-                                        // alt={app.appIconUrl}
                                       />
                                     ) : (
                                       <Icon
@@ -881,27 +906,24 @@ class Home extends React.Component {
       allFoldersExpandedKeys,
       showAbbreviation
     } = this.state;
-
-    // const userInfo = (
-    //   <UserInfo userName={userData.userName} userRank={userData.userRank} />
-    // );
     return (
       <div className="new-home">
         <PageHeader
-          // title={userInfo}
-          // reminderNum={reminderNum}
           onPwlogoClick={() =>
             this.setState({ showHome: true, showAbbreviation: false })
           }
           lockScreenRef={this.desktopLockScreenRef}
           onShowAbbreviation={this.handleShowAbbreviation}
           activeAppsNumber={activeApps.length}
+          activeApps={activeApps}
           menus={menus}
           onMenuClick={this.handleAddToDesktop}
           onLockScreen={this.handleLockScreen}
           onSearchChange={this.handleSearchChange}
           searchTextHeader={searchTextHeader}
           allFoldersExpandedKeys={allFoldersExpandedKeys}
+          onOpenWindow={this.handleOpenWindow}
+          onCloseActiveApp={this.handleCloseActiveApp}
         />
         {!showHome && activeApps.length ? this.renderTopBar(activeApps) : null}
         {this.renderHome()}
@@ -916,18 +938,52 @@ class Home extends React.Component {
   }
 
   toimag = async iframes => {
-    const abbreviations = this.state.abbreviations;
-    for (let i = 0; i < iframes.length; i++) {
-      let dom = iframes[i].contentDocument.querySelector('.functions');
-      const canvas = await html2canvas(dom);
-      const imgDataURL = canvas.toDataURL('image/png', 1.0);
+    // const abbreviations = this.state.abbreviations;
+    // for (let i = 0; i < iframes.length; i++) {
+    //   let dom = iframes[i].contentDocument.querySelector('.functions');
+    //   const canvas = await html2canvas(dom);
+    //   const imgDataURL = canvas.toDataURL('image/png', 1.0);
 
-      abbreviations[i] = imgDataURL;
-      this.setState({ abbreviations });
-    }
+    //   abbreviations[i] = imgDataURL;
+    //   this.setState({ abbreviations });
+    // }
+    iframes.forEach((item, index) => {
+      let dom = item.contentDocument.querySelector('.functions');
+      const promise = new Promise((resolve, reject) => {
+        const { showAbbreviation } = this.state;
+        if (showAbbreviation) {
+          html2canvas(dom)
+            .then(canvas => {
+              const imgDataURL = canvas.toDataURL('image/png', 1.0);
+              resolve({ imgDataURL: imgDataURL, index });
+            })
+            .catch(error => {
+              reject(error);
+            });
+        } else {
+          reject(new Error('取消生成缩略图'));
+        }
+      });
+      promise
+        .then(val => {
+          const { abbreviations, showAbbreviation } = this.state;
+          if (showAbbreviation) {
+            abbreviations[val.index] = val.imgDataURL;
+            this.setState({ abbreviations });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   };
   renderAbbreviation = () => {
-    const { showAbbreviation, activeApps, abbreviations } = this.state;
+    const {
+      showAbbreviation,
+      activeApps,
+      abbreviations,
+      abbreviationDoms
+    } = this.state;
     return (
       <div
         className={classNames('new-home__abbreviation', {
@@ -939,12 +995,8 @@ class Home extends React.Component {
             <div className="new-home__abbreviation-app" key={item.REC_ID}>
               <header className="new-home__abbreviation-app__header">
                 <div className="new-home__abbreviation-app__header__title">
-                  {item.appIconUrl ? (
-                    <img
-                      src={item.appIconUrl}
-                      className="new-home-app-icon"
-                      // alt={app.appIconUrl}
-                    />
+                  {item.appIconUrl && item.appIconUrlValidate ? (
+                    <img src={item.appIconUrl} className="new-home-app-icon" />
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
@@ -967,17 +1019,108 @@ class Home extends React.Component {
                   this.handleBottomBarAppTrigger(item);
                 }}
               >
-                <img
-                  src={abbreviations[index]}
-                  style={{ height: '100%', width: '100%' }}
-                />
+                {abbreviations[index] ? (
+                  <img
+                    src={abbreviations[index]}
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                ) : (
+                  <Spin />
+                )}
               </div>
             </div>
+          );
+          return (
+            <AbbreviationApp
+              app={item}
+              key={item.REC_ID}
+              onCloseActiveApp={this.handleCloseActiveApp}
+              onClick={() => {
+                this.setState({ showAbbreviation: false });
+                this.handleBottomBarAppTrigger(item);
+              }}
+              dom={abbreviationDoms[index]}
+              ready={showAbbreviation}
+            />
           );
         })}
       </div>
     );
   };
+}
+
+class AbbreviationApp extends React.Component {
+  state = {
+    abbreviation: ''
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.ready && !this.props.ready;
+  }
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+    this.props.ready && this.toimag();
+  }
+  toimag = () => {
+    const { dom } = this.props;
+    const promise = new Promise((resolve, reject) => {
+      html2canvas(dom)
+        .then(canvas => {
+          const imgDataURL = canvas.toDataURL('image/png', 1.0);
+          console.log(imgDataURL);
+          resolve(imgDataURL);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+    promise
+      .then(val => {
+        this.setState({ abbreviation: val });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  render() {
+    const { app, onCloseActiveApp, onClick } = this.props;
+    const { abbreviation } = this.state;
+    return (
+      <div className="new-home__abbreviation-app" key={app.REC_ID}>
+        <header className="new-home__abbreviation-app__header">
+          <div className="new-home__abbreviation-app__header__title">
+            {app.appIconUrl && app.appIconUrlValidate ? (
+              <img src={app.appIconUrl} className="new-home-app-icon" />
+            ) : (
+              <Icon type="mail" className="new-home-app-icon-mail" />
+            )}
+            {app.appName}
+          </div>
+          <div>
+            <Icon
+              type="close"
+              className="abbreviation-app__header__close-btn"
+              onClick={() => {
+                onCloseActiveApp(app);
+              }}
+            />
+          </div>
+        </header>
+        <div
+          className="new-home__abbreviation-app__body"
+          onClick={() => {
+            onClick(app);
+          }}
+        >
+          {abbreviation ? (
+            <img src={abbreviation} style={{ height: '100%', width: '100%' }} />
+          ) : (
+            <Spin />
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Home;
