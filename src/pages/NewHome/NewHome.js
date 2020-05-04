@@ -293,14 +293,14 @@ class Home extends React.Component {
         setTimeout(() => {
           if (this.state.showAbbreviation) {
             let apps = document.querySelectorAll('iframe');
-            this.toimag(apps);
+            // this.toimag(apps);
+            const doms = [];
+            apps.forEach(item => {
+              let dom = item.contentDocument.querySelector('.functions');
+              doms.push(dom);
+            });
 
-            // const doms = [];
-            // apps.forEach(item => {
-            //   let dom = item.contentDocument.querySelector('.functions');
-            //   doms.push(dom);
-            // });
-            // this.setState({ abbreviationDoms: doms });
+            this.setState({ abbreviationDoms: doms });
           }
         }, 200);
       });
@@ -608,16 +608,16 @@ class Home extends React.Component {
   };
 
   handleCloseActiveApp = activeApp => {
-    const { activeApps, zIndexActiveApps, abbreviations } = this.state;
+    const { activeApps, zIndexActiveApps, abbreviationDoms } = this.state;
     const newActiveApps = [...activeApps];
-    const newAbbreviations = [...abbreviations];
+    const newabbreviationDoms = [...abbreviationDoms];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
 
     newActiveApps.splice(appIndex, 1);
-    newAbbreviations.splice(appIndex, 1);
+    newabbreviationDoms.splice(appIndex, 1);
 
     // 删除 zIndexActiveApps
     const newZIndexActiveApps = [...zIndexActiveApps];
@@ -629,7 +629,7 @@ class Home extends React.Component {
     this.setState({
       activeApps: newActiveApps,
       zIndexActiveApps: newZIndexActiveApps,
-      abbreviations: newAbbreviations
+      abbreviationDoms: newabbreviationDoms
     });
     if (newActiveApps.length === 0) {
       this.setState({ showAbbreviation: false });
@@ -992,45 +992,6 @@ class Home extends React.Component {
       >
         {activeApps.map((item, index) => {
           return (
-            <div className="new-home__abbreviation-app" key={item.REC_ID}>
-              <header className="new-home__abbreviation-app__header">
-                <div className="new-home__abbreviation-app__header__title">
-                  {item.appIconUrl && item.appIconUrlValidate ? (
-                    <img src={item.appIconUrl} className="new-home-app-icon" />
-                  ) : (
-                    <Icon type="mail" className="new-home-app-icon-mail" />
-                  )}
-                  {item.appName}
-                </div>
-                <div>
-                  <Icon
-                    type="close"
-                    className="abbreviation-app__header__close-btn"
-                    onClick={() => {
-                      this.handleCloseActiveApp(item);
-                    }}
-                  />
-                </div>
-              </header>
-              <div
-                className="new-home__abbreviation-app__body"
-                onClick={() => {
-                  this.setState({ showAbbreviation: false });
-                  this.handleBottomBarAppTrigger(item);
-                }}
-              >
-                {abbreviations[index] ? (
-                  <img
-                    src={abbreviations[index]}
-                    style={{ height: '100%', width: '100%' }}
-                  />
-                ) : (
-                  <Spin />
-                )}
-              </div>
-            </div>
-          );
-          return (
             <AbbreviationApp
               app={item}
               key={item.REC_ID}
@@ -1055,32 +1016,40 @@ class AbbreviationApp extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.ready && !this.props.ready;
+    return (
+      (nextProps.ready && nextProps.dom != this.props.dom) ||
+      nextState.abbreviation != this.state.abbreviation
+    );
   }
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-    this.props.ready && this.toimag();
+  componentDidUpdate(prevProps, prevState) {
+    const { ready, dom } = this.props;
+    if (dom != prevProps.dom) {
+      ready && dom && this.toimag();
+    }
   }
   toimag = () => {
     const { dom } = this.props;
-    const promise = new Promise((resolve, reject) => {
-      html2canvas(dom)
-        .then(canvas => {
-          const imgDataURL = canvas.toDataURL('image/png', 1.0);
-          console.log(imgDataURL);
-          resolve(imgDataURL);
+    if (dom) {
+      //   let dom = item.contentDocument.querySelector('.functions');
+
+      const promise = new Promise((resolve, reject) => {
+        html2canvas(dom)
+          .then(canvas => {
+            const imgDataURL = canvas.toDataURL('image/png', 1.0);
+            resolve(imgDataURL);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+      promise
+        .then(val => {
+          this.setState({ abbreviation: val });
         })
         .catch(error => {
-          reject(error);
+          console.log(error);
         });
-    });
-    promise
-      .then(val => {
-        this.setState({ abbreviation: val });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    }
   };
   render() {
     const { app, onCloseActiveApp, onClick } = this.props;
