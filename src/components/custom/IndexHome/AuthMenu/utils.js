@@ -125,8 +125,7 @@ export const getGroupList = (userInfo) => {
 export const getMenus = () => {
   const userInfo = getUserInfo();
   const groupList = getGroupList(userInfo);
-
-  console.log({ groupList });
+  
   let id;
   if (groupList.includes(idMap.userGroup)) {
     id = idMap.userGroup;
