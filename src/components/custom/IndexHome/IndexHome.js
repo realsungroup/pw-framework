@@ -5,8 +5,9 @@ import { message, Button, Input, Form, Icon, Radio, Spin, Select } from 'antd';
 import { Menu } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import logo from '../../../assets/Newlogo.png';
-import {withRouter} from 'react-router-dom'
-import http from "../../../util20/api"
+import { withRouter, Switch, Route } from 'react-router-dom'
+import http from "../../../util20/api";
+import AuthMenu from './AuthMenu'
 
 const { SubMenu } = Menu;
 
@@ -18,14 +19,14 @@ class IndexHome extends React.Component {
     current: 'mail',
   };
 
-  componentWillMount = () =>{
+  componentWillMount = () => {
     console.log(this.props)
     http().clearCache()
   }
 
   //切换入住人员
   userList = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push({
       pathname: '/index',
     });
@@ -36,7 +37,7 @@ class IndexHome extends React.Component {
 
   //切换关注人员
   attentionPeo = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push('/attentionPeople');
     // this.props.location.pathname = "/attentionPeople"
     this.props.history.go()
@@ -45,7 +46,7 @@ class IndexHome extends React.Component {
 
   //切换人员信息
   personInfor = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push('/personInfor');
     // this.props.location.pathname = "/attentionPeople"
     this.props.history.go()
@@ -53,7 +54,7 @@ class IndexHome extends React.Component {
   };
   //切换医生页面
   doctorList = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push('/doctorList');
     // this.props.location.pathname = "/attentionPeople"
     this.props.history.go()
@@ -61,7 +62,7 @@ class IndexHome extends React.Component {
   };
   //切换个人信息
   personalInformation = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push('/personalInformation');
     // this.props.location.pathname = "/attentionPeople"
     this.props.history.go()
@@ -69,7 +70,7 @@ class IndexHome extends React.Component {
   };
   //切换医嘱记录
   doctorAdvice = async () => {
-    console.log("props",this.props)
+    console.log("props", this.props)
     this.props.history.push('/doctorAdvice');
     // this.props.location.pathname = "/attentionPeople"
     this.props.history.go()
@@ -87,7 +88,8 @@ class IndexHome extends React.Component {
             </div>
           </div>
           <div className="indexContainer__header__menu">
-            <Menu
+            <AuthMenu></AuthMenu>
+            {/* <Menu
               onClick={this.handleClick}
               selectedKeys={[this.state.current]}
               mode="horizontal"
@@ -139,7 +141,7 @@ class IndexHome extends React.Component {
                   <Menu.Item key="setting:21">培训记录</Menu.Item>
                 </Menu.ItemGroup>
               </SubMenu>
-            </Menu>
+            </Menu> */}
           </div>
         </div>
       </div>
@@ -147,4 +149,4 @@ class IndexHome extends React.Component {
   }
 }
 
-export default withRouter( IndexHome);
+export default withRouter(IndexHome);
