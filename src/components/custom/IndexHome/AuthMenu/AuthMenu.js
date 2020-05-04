@@ -15,7 +15,6 @@ class AuthMenu extends React.Component {
   constructor(props) {
     super(props);
     this.menus = getMenus();
-    console.log({ props });
     this.selectedKey = props.location.pathname;
   }
 
