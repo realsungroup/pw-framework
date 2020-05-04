@@ -1,25 +1,30 @@
-.container{
-  margin : 0 auto
-}
-
-.doctorList{
+.doctor-list {
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill,400px);
-  grid-row-gap: 20px;
-  grid-column-gap: 20px;
-  &__avatar{
-    width: 90px;
-    height: 105px;
-    line-height: 105px;
-    font-size: 18px;
+  &__content {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 400px);
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    &__avatar {
+      width: 90px;
+      height: 105px;
+      line-height: 105px;
+      font-size: 18px;
+    }
+    &__information {
+      float: right;
+    }
   }
-  &__information{
-    float: right;
+  &__spin {
+    img {
+      width: 22px !important;
+      height: 22px !important;
+    }
   }
 }
 
-.doctorList .ant-card{
+.doctorList .ant-card {
   width: 400px;
   margin-left: 20px;
   margin-top: 20px;
