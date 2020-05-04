@@ -60,7 +60,7 @@ class RecordInput extends React.Component {
       legend: {}, // 图表上方的选择器
       series: [],
       lastRecordId: '',
-      userinfo: {}
+      userinfo: {},
     };
   }
 
@@ -139,14 +139,22 @@ class RecordInput extends React.Component {
         }
       }
     });
-    console.log({ res });
+    console.log('arr',arr)
+    if (!arr[0]) {
+      this.setState({
+        basic: '',
+        change: '',
+        remark: '',
+      });
+    } else {
+      this.setState({
+        basic: arr[arr.length - 1].basicPharmacy,
+        change: arr[arr.length - 1].pharmacyChange,
+        remark: arr[arr.length - 1].remark,
+        lastRecordId: res.data[dataLen].REC_ID,
+      });
+    }
 
-    this.setState({
-      basic: arr[arr.length - 1].basicPharmacy,
-      change: arr[arr.length - 1].pharmacyChange,
-      remark: arr[arr.length - 1].remark,
-      lastRecordId: res.data[dataLen].REC_ID,
-    });
     // console.log('res',this.state.lastRecordId)
   };
 
