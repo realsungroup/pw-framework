@@ -220,6 +220,7 @@ class ButtJointDoctor extends React.Component {
               key={`${subrecord.doctorName}-${index}`}
               title={'姓名：' + `${subrecord.doctorName}`}
               extra={this.renderCardTopRight(subrecord, index)}
+              className='butt-joint-doctor__card'
             >
               <Avatar
                 className='doctor-list__avatar'
