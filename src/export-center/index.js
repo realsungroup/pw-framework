@@ -17,10 +17,8 @@ export {
   GLUChart,
   OtherData,
   DoctorList,
-  IndexHome,
+  Header,
   AttentionPeople,
   PersonalInformation,
   DoctorAdvice
-
-
 } from '../components/custom/loadableCustom';

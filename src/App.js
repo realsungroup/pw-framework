@@ -25,7 +25,7 @@ import {
 
 import {
   PatientInfo,
-  IndexHome,
+  Header,
   DoctorList,
   AttentionPeople,
   PersonInfor,
@@ -168,46 +168,9 @@ class App extends Component {
       <Fragment>
         {/* <ErrorBoundary> */}
         <Provider store={store}>
-
-
-          {/* <withRouter
-              {...this.props}
-              render={(props) =>{
-                console.log("come")
-              return  true ? (
-                  <IndexHome {...props}  />
-                 ) : (
-                  null
-                  // <Redirect
-                  //   to={{
-                  //     pathname: '/login',
-                  //     state: {
-                  //       from: props.location,
-                  //     },
-                  //   }}
-                  // />
-                )
-              }
-            }
-            /> */}
-          <Router history={history} >
-
-            <IndexHome />
-            {/* <Route
-              {...this.props}
-              render={(props) =>{
-                console.log("come")
-              return  true ? (
-                  <IndexHome {...props}  />
-                 ) : (
-                  null
-                 
-                )
-              }
-            }
-            /> */}
-          </Router>
-          {/* <PrivateRoute exact path="*" component={IndexHome} /> */}
+          {/* <Router history={history} >
+          <PrivateRoute exact path="*" component={IndexHome} />
+          </Router> */}
 
           <NonsupportIE
             // curIEVersion="ie11"
@@ -224,57 +187,48 @@ class App extends Component {
             <LocaleProvider locale={localeAntd}>
               <IntlProvider locale={locale} messages={messages}>
                 <Router history={history}>
-
                   <Switch>
-
-                    {/* <PrivateRoute exact path="/" component={IndexHome} />
-                    <PrivateRoute path="/home" component={IndexHome} /> */}
-                    {/* <PrivateRoute path="/fnmodule" component={PageContainer} />
-            <PrivateRoute
-              path="/workbench-setting"
-              component={PageContainer}
-            />
-            <PrivateRoute path="/reminder" component={PageContainer} />
-            <PrivateRoute
-              path="/report-table"
-              component={PageContainer}
-            />
-            <PrivateRoute
-              path="/person-center"
-              component={PageContainer}
-            /> */}
-                    {console.log("come2")}
                     <Route path="/login" component={Login} />
-                    <Route path="/indexHome" component={IndexHome} />
-                    <Route path="/index" component={PatientInfo} />
-                    <Route path="/personInfor" component={PersonInfor} />
-                    <Route path="/ForgetPassword" component={ForgetPassword} />
                     <Route path="/register" component={Register} />
-                    <Route path="/doctorRegister" component={DoctorRegister} />
-                    <Route
-                      path="/companyRegister"
-                      component={CompanyRegister}
-                    />
-                    <Route
+                    <Route path="/ForgetPassword" component={ForgetPassword} />
+                    <Route path="/companyRegister" component={CompanyRegister} />
+
+                    <PrivateRoute exact path="/" component={Header} />
+                    <PrivateRoute exact path="/indexHome" component={Header} />
+                    <PrivateRoute exact path="/index" component={PatientInfo} />
+                    <PrivateRoute exact path="/personInfor" component={PersonInfor} />
+                    <PrivateRoute exact path="/doctorRegister" component={DoctorRegister} />
+                    <PrivateRoute exact path="/doctorRegister" component={DoctorRegister} />
+                    <PrivateRoute exact path="/attentionPeople" component={AttentionPeople} />
+                    <PrivateRoute exact path="/searchInfo" component={SearchInfo} />
+                    <PrivateRoute exact path="/doctorList" component={DoctorList} />
+                    <PrivateRoute exact path="/personalInformation" component={PersonalInformation} />
+                    <PrivateRoute exact path="/doctorAdvice" component={DoctorAdvice} />
+
+                    {/* <Route path="/indexHome" component={IndexHome} /> */}
+                    {/* <Route path="/index" component={PatientInfo} /> */}
+                    {/* <Route path="/personInfor" component={PersonInfor} /> */}
+                    {/* <Route path="/doctorRegister" component={DoctorRegister} /> */}
+                    {/* <Route
                       path="/attentionPeople"
                       component={AttentionPeople}
-                    />
-                    <Route
+                    /> */}
+                    {/* <Route
                       path="/searchInfo"
                       component={SearchInfo}
-                    />
-                    <Route
+                    /> */}
+                    {/* <Route
                       path="/doctorList"
                       component={DoctorList}
-                    />
-                    <Route
+                    /> */}
+                    {/* <Route
                       path="/personalInformation"
                       component={PersonalInformation}
-                    />
-                    <Route
+                    /> */}
+                    {/* <Route
                       path="/doctorAdvice"
                       component={DoctorAdvice}
-                    />
+                    /> */}
                     {/* <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>

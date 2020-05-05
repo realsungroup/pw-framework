@@ -66,8 +66,8 @@ export const DoctorList = Loadable({
   }
 });
 
-export const IndexHome = Loadable({
-  loader: () => import('./IndexHome'),
+export const Header = Loadable({
+  loader: () => import('./Header'),
   loading() {
     return minLoading;
   }

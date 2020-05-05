@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
 import TableData from 'Common/data/TableData';
-import './PersonalInformation.less'
+import './PersonalInformation.less';
 import { Button, message, Modal, Select, Input, Form } from 'antd';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import { RecordInput, DoctorList, OtherData } from '../loadableCustom';
-import http from "../../../util20/api";
+import http from '../../../util20/api';
 import DivisionTable from './DivisionTable';
+import { Header } from '../loadableCustom';
 
 /**
  * 填写信息
@@ -13,11 +14,11 @@ import DivisionTable from './DivisionTable';
 const customBtnStyle = {
   margin: '0 4px',
 };
-const Option = Select
+const Option = Select;
 
 class PersonalInformation extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       modalVisible: false,
       record: {},
@@ -27,14 +28,14 @@ class PersonalInformation extends React.Component {
       otherVisible: false,
       appLinks: [],
       selectKey: '',
-    }
+    };
   }
 
   customRowBtns = [
     (record, size) => {
       return (
         <Button
-          key="常见数据录入"
+          key='常见数据录入'
           style={customBtnStyle}
           size={size}
           onClick={() => this.handleInputCaseClick(record)}
@@ -46,7 +47,7 @@ class PersonalInformation extends React.Component {
     (record, size) => {
       return (
         <Button
-          key="其他数据录入"
+          key='其他数据录入'
           style={customBtnStyle}
           size={size}
           onClick={() => this.handleOtherCaseClick(record)}
@@ -79,7 +80,8 @@ class PersonalInformation extends React.Component {
         {
           tableNo: 640452189185,
           tableName: '体温检测',
-        }],
+        },
+      ],
     });
   };
 
@@ -105,14 +107,15 @@ class PersonalInformation extends React.Component {
       // 100 ms 后再打开 modal，用户体验好一点
       setTimeout(() => {
         this.setState({ modalVisible: true, selectKey: value.substring(0, 2) });
-      }, 100)
+      }, 100);
     });
-  }
+  };
 
   render() {
-    const { modalVisible, otherVisible, record, selectKey } = this.state
+    const { modalVisible, otherVisible, record, selectKey } = this.state;
     return (
       <div>
+        <Header />
         <TableData
           resid={641576107105}
           subtractH={170}
@@ -126,20 +129,18 @@ class PersonalInformation extends React.Component {
           hasRowDelete={true}
           hasRowView={false}
           hasBeBtns={true}
-          rowModifyText="修改个人信息"
-          enRowModifyText="Modify personal information"
+          rowModifyText='修改个人信息'
+          enRowModifyText='Modify personal information'
           customRowBtns={this.customRowBtns}
         />
         {modalVisible && (
-          <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
+          <LzModal defaultScaleStatus='max' onClose={this.handleModalClose}>
             <RecordInput {...record} selectKey={selectKey} />
           </LzModal>
         )}
         {otherVisible && (
-          <LzModal
-            onClose={this.handleOtherModalClose}
-          >
-            <DivisionTable onCellClick={this.handleCellClick}></DivisionTable>
+          <LzModal onClose={this.handleOtherModalClose}>
+            <DivisionTable onCellClick={this.handleCellClick} />
             {/* <RecordInput {...record} /> */}
             {/* <OtherData {...record} /> */}
             {/* <DoctorList {...record} /> */}
@@ -162,9 +163,8 @@ class PersonalInformation extends React.Component {
           </LzModal>
         )}
       </div>
-    )
+    );
   }
-
 }
 
 export default PersonalInformation;
