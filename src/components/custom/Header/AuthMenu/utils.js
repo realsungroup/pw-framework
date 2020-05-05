@@ -5,15 +5,15 @@
 export const userGroupMenus = [
   {
     title: '查询信息',
-    url: '/searchInfo'
+    url: '/searchInfo',
   },
   {
     title: '填写信息',
-    url: '/personalInformation'
+    url: '/personalInformation',
   },
   {
     title: '选择医护',
-    url: '/doctorList'
+    url: '/doctorList',
   },
 ];
 
@@ -24,20 +24,20 @@ export const userGroupMenus = [
 export const organizationGroupMenus = [
   {
     title: '人员信息',
-    url: '/personInfor'
+    url: '/personInfor',
   },
   {
     title: '入住人员',
-    url: '/index'
+    url: '/index',
   },
   {
     title: '关注人员',
-    url: '/attentionPeople'
+    url: '/attentionPeople',
   },
   {
     title: '对接医生或医院',
-    url: '/doctorList',
-  }
+    url: '/buttJointDoctor',
+  },
 ];
 
 /**
@@ -47,19 +47,23 @@ export const organizationGroupMenus = [
 export const doctorGroupMenus = [
   {
     title: '医生在线提示',
-    url: '/onlineTips'
+    url: '/onlineTips',
   },
   {
     title: '响应会员要求',
-    url: '/memberRequire'
+    url: '/memberRequire',
   },
   {
     title: '医嘱记录',
-    url: '/doctorAdvice'
+    url: '/doctorAdvice',
   },
 ];
 
-export const allMenus = [...userGroupMenus, ...organizationGroupMenus, ...doctorGroupMenus]
+export const allMenus = [
+  ...userGroupMenus,
+  ...organizationGroupMenus,
+  ...doctorGroupMenus,
+];
 
 const idMap = {
   userGroup: '641318283132',
@@ -76,12 +80,12 @@ const menusMap = {
 /**
  * 通过 id 获取菜单数据
  * @param {string} id id
- * 
+ *
  * @returns {object} 菜单信息
  */
 export const getMenusById = (id) => {
   return menusMap[id];
-}
+};
 
 /**
  * 从 localStoreage 中获取 userInfo
@@ -95,29 +99,29 @@ export const getUserInfo = () => {
   let userInfo = null;
   try {
     userInfo = JSON.parse(userInfoString);
-  } catch (err) {
-  }
+  } catch (err) {}
   return userInfo;
-}
+};
 
 /**
  * 从用户信息中提取 groupList
  * @param {object} userInfo 用户信息
- * 
+ *
  * @returns {array} groupList 数组
  */
 export const getGroupList = (userInfo) => {
   if (!userInfo) {
     return [];
   }
-  let groupListString = userInfo && userInfo.UserInfo && userInfo.UserInfo.GroupList || '';
+  let groupListString =
+    (userInfo && userInfo.UserInfo && userInfo.UserInfo.GroupList) || '';
   groupListString = groupListString.replace(/[(|)]/g, '');
 
   let ret = groupListString.split(',');
-  ret = ret.map(item => item.trim().replace(/['|']/g, ''));
+  ret = ret.map((item) => item.trim().replace(/['|']/g, ''));
 
   return ret;
-}
+};
 
 /**
  * 获取菜单数据
@@ -125,7 +129,7 @@ export const getGroupList = (userInfo) => {
 export const getMenus = () => {
   const userInfo = getUserInfo();
   const groupList = getGroupList(userInfo);
-  
+
   let id;
   if (groupList.includes(idMap.userGroup)) {
     id = idMap.userGroup;
@@ -136,6 +140,4 @@ export const getMenus = () => {
   }
 
   return menusMap[id] || [];
-}
-
-
+};

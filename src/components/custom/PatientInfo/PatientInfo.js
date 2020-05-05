@@ -2,10 +2,11 @@ import React from 'react';
 import { propTypes, defaultProps } from './propTypes';
 import TableData from 'Common/data/TableData';
 import './PatientInfo.less';
-import { Button, message, Modal, Select, Input,Form } from 'antd';
-import { RecordInput,DoctorList ,OtherData} from '../loadableCustom';
+import { Button, message, Modal, Select, Input, Form } from 'antd';
+import { RecordInput, DoctorList, OtherData } from '../loadableCustom';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import http, { makeCancelable } from 'Util20/api';
+import { Header } from '../loadableCustom';
 
 const customBtnStyle = {
   margin: '0 4px',
@@ -28,7 +29,7 @@ class PatientInfo extends React.Component {
       cdLen: {},
       ucLen: {},
       otherVisible: false,
-      appLinks:[]
+      appLinks: [],
     };
   }
 
@@ -58,7 +59,7 @@ class PatientInfo extends React.Component {
     // const ucLen = res[0].total;
     // const cdLen = res[1].total;
     // this.setState({ ucLen, cdLen });
-    console.log("rposp",this.props)
+    console.log('rposp', this.props);
     this.getAppLinks();
   };
   //获取检测指标下的所有节点
@@ -74,22 +75,22 @@ class PatientInfo extends React.Component {
       return message.error(err.message);
     }
     this.setState({
-      appLinks:app.data[0].AppLinks
-    })
-    this.handleAppLinks()
+      appLinks: app.data[0].AppLinks,
+    });
+    this.handleAppLinks();
   };
 
-handleAppLinks = () =>{
-  let { appLinks } = this.state.appLinks;
-  console.log('app', appLinks);
-  let parent = [];
-  // appLinks.map(item =>{
-  //   if ( item.RES_PID = topResid  ){
-  //     parent.push(item.RES_NAME)
-  //   }
-  // })
-  console.log("parentNode",parent)
-}
+  handleAppLinks = () => {
+    let { appLinks } = this.state.appLinks;
+    console.log('app', appLinks);
+    let parent = [];
+    // appLinks.map(item =>{
+    //   if ( item.RES_PID = topResid  ){
+    //     parent.push(item.RES_NAME)
+    //   }
+    // })
+    console.log('parentNode', parent);
+  };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -116,7 +117,7 @@ handleAppLinks = () =>{
     (record, size) => {
       return (
         <Button
-          key="常见数据录入"
+          key='常见数据录入'
           style={customBtnStyle}
           size={size}
           onClick={() => this.handleInputCaseClick(record)}
@@ -128,7 +129,7 @@ handleAppLinks = () =>{
     (record, size) => {
       return (
         <Button
-          key="其他数据录入"
+          key='其他数据录入'
           style={customBtnStyle}
           size={size}
           onClick={() => this.handleOtherCaseClick(record)}
@@ -160,35 +161,36 @@ handleAppLinks = () =>{
   render() {
     const { modalVisible, record, otherVisible } = this.state;
     return (
-      <div className="patient-info">
+      <div className='patient-info'>
+        <Header />
         <TableData
           resid={639844485796}
-          subtractH= {170}
+          subtractH={170}
           actionBarFixed={true}
-          height= {500}
-          size= 'small'
-          actionBarWidth= {490}
+          height={500}
+          size='small'
+          actionBarWidth={490}
           hasAdd={false}
           hasModify={false}
-          hasDelete= {false}
+          hasDelete={false}
           hasBeBtns={true}
-          addText= "添加基本信息"
-          enAddText= "Add basic information"
-          rowModifyText= "修改个人信息"
-          enRowModifyText= "Modify personal information"
+          addText='添加基本信息'
+          enAddText='Add basic information'
+          rowModifyText='修改个人信息'
+          enRowModifyText='Modify personal information'
           defaultColumnWidth={180}
           customRowBtns={this.customRowBtns}
           actionBarExtra={this.renderActionBarExtra}
         />
         )
         {modalVisible && (
-          <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
+          <LzModal defaultScaleStatus='max' onClose={this.handleModalClose}>
             <RecordInput {...record} />
           </LzModal>
         )}
         {otherVisible && (
           <LzModal
-            defaultScaleStatus="max"
+            defaultScaleStatus='max'
             onClose={this.handleOtherModalClose}
           >
             {/* <RecordInput {...record} /> */}

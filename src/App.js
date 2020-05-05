@@ -31,6 +31,7 @@ import {
   PersonalInformation,
   SearchInfo,
   DoctorAdvice,
+  ButtJointDoctor,
 } from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -206,11 +207,6 @@ class App extends Component {
                     />
                     <PrivateRoute
                       exact
-                      path='/doctorRegister'
-                      component={DoctorRegister}
-                    />
-                    <PrivateRoute
-                      exact
                       path='/attentionPeople'
                       component={AttentionPeople}
                     />
@@ -233,6 +229,11 @@ class App extends Component {
                       exact
                       path='/doctorAdvice'
                       component={DoctorAdvice}
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/buttJointDoctor'
+                      component={ButtJointDoctor}
                     />
 
                     {/* <Route path="*" component={NotFound} /> */}
