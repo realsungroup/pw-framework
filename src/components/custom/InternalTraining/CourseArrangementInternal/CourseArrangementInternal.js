@@ -491,18 +491,18 @@ class CourseArrangementInternal extends React.Component {
                 courseArrangements.map((item, key) => (
                   <Card
                     title={
-                      <div>
-                        <span>{item.CourseName}</span>
-                        <span
+                      <div style={{overflow:'hidden'}}>
+                        <div style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',float:'left',maxWidth:'calc(50vw - 328px)'}}>{item.CourseName}</div>
+                        <div
                           className="arranging_courses-course_list-course_type"
                           style={
                             item.innerArrangeType === '1'
-                              ? { backgroundColor: '#1787fb' }
-                              : { backgroundColor: '#57c22d' }
+                              ? { backgroundColor: '#1787fb',float:'left' }
+                              : { backgroundColor: '#57c22d',float:'left' }
                           }
                         >
                           {item.C3_616254048241}
-                        </span>
+                        </div>
                         <Spin
                           className="spinoimg"
                           spinning={this.state.loading}
@@ -638,7 +638,7 @@ class CourseArrangementInternal extends React.Component {
                     <div className="arranging_courses_item_content">
                       <div
                         className="view_sheet"
-                        style={item.needSheet ? {} : { display: 'none' }}
+                        style={!item.needSheet ? {} : { display: 'none' }}
                         onClick={() => {
                           window.open(
                             'fnmodule?resid=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&recid=610653889243&type=%E9%97%AE%E5%8D%B7%E7%B3%BB%E7%BB%9F&title=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&questionnaireRecid=' +
@@ -1106,6 +1106,7 @@ class CourseArrangementInternal extends React.Component {
                       placeholder="请输入名额"
                       value={inputCourseArrangement.places}
                       type="number"
+                      min='1'
                       onChange={e => {
                         this.setState({
                           inputCourseArrangement: {
@@ -1266,9 +1267,18 @@ class CourseArrangementInternal extends React.Component {
                     <List.Item
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
+                        let obj= {
+                          teacher: item.C3_610390419677,
+                          startDate: '',
+                          endDate: '',
+                          courseType: item.C3_625849192541,
+                          places: 1,
+                          location: item.C3_610390410802
+                        }
                         this.setState({
                           isSelectedCourse: true,
-                          selectedCourse: item
+                          selectedCourse: item,
+                          inputCourseArrangement:obj
                         });
                       }}
                     >

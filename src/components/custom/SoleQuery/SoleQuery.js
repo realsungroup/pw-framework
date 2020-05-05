@@ -222,7 +222,7 @@ class SoleQuery extends Component {
      var staffNum=localStorage.getItem('userInfo');
      staffNum=JSON.parse(staffNum);
      staffNum=staffNum.UserInfo.EMP_USERCODE;
-     if(staffNum.length>0){
+     if((staffNum.length>0) && (courseId.length>0)){
       bol=true;
      }
       if(bol==true){
