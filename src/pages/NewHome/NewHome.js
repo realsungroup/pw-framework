@@ -31,7 +31,9 @@ function validateImage(pathImg) {
   ////判断图片地址是否有效
   let ImgObj = new Image();
   ImgObj.src = pathImg;
-  if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+  process.env.NODE_ENV === 'development' &&
+    console.log(pathImg, ImgObj.width, ImgObj.height);
+  if (ImgObj.width > 0 && ImgObj.height > 0) {
     return true;
   } else {
     return false;
@@ -159,7 +161,6 @@ class Home extends React.Component {
       });
       linknames = linknames.substring(0, linknames.length - 1);
       const res = await http().getReminderDatas({ linknames });
-      console.log(res.data);
       const data = [];
       reminderDataConfig.forEach(item => {
         if (res.data[item.dblinkname]) {
@@ -169,7 +170,6 @@ class Home extends React.Component {
           data.push(...res.data[item.dblinkname]);
         }
       });
-      console.log(data);
       this.setState({ waitingHandleData: data });
     } catch (error) {
       console.error(error);
