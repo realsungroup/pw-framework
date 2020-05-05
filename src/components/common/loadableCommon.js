@@ -10,6 +10,13 @@ export const TableData = Loadable({
   }
 });
 
+export const PWRedirect = Loadable({
+  loader: () => import('./data/PWRedirect'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const BusinessManagement = Loadable({
   loader: () => import('./data/BusinessManagement'),
   loading() {

@@ -234,8 +234,7 @@ window[592305842055] = {
       },
       customColumnWidth: {
         依据: 600
-      },
-     
+      }
     },
     addBtn: {
       type: 'text',
@@ -1968,4 +1967,12 @@ window[640189772997] = {
 window[640189820723] = {
   name: 'ContractApproval',
   title: '合同审批'
+};
+window[641990842014] = {
+  name: 'PWRedirect',
+  title: '测试',
+  props: {
+    resid: '534530373089',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
 };

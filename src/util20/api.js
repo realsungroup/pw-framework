@@ -487,4 +487,12 @@ http.createApi('getByProcedure', {
   method: 'get',
   url: '/api/200/table/GetByProcedure'
 });
+
+/**
+ *根据资源编号获取跳转URL
+ */
+http.createApi('getRedirectUrl', {
+  method: 'get',
+  url: '/api/Resource/GetRedirectUrl'
+});
 export default http;
