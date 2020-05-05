@@ -106,6 +106,18 @@ window.pwConfig = {
     // 工作台配置
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
 
+    // 提醒数据配置
+    reminderDataConfig: [
+      {
+        dblinkname: 'me',
+        baseurl: 'http://ngrok4.realsun.me:6060/'
+      },
+      {
+        dblinkname: 'ehr',
+        baseurl: 'http://ngrok5.realsun.me:6060/'
+      }
+    ],
+
     // bi 系统配置
     biBaseURL: 'http://localhost:3002/', // bi 系统基地址
 
@@ -243,6 +255,18 @@ window.pwConfig = {
 
     // 工作台配置
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+
+    // 提醒数据配置
+    reminderDataConfig: [
+      {
+        dblinkname: 'me',
+        baseurl: 'http://ngrok4.realsun.me:6060'
+      },
+      {
+        dblinkname: 'ehr',
+        baseurl: 'http://ngrok5.realsun.me:6060'
+      }
+    ],
 
     // bi 系统配置
     biBaseURL: 'http://localhost:3001/', // bi 系统基地址
