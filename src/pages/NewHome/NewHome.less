@@ -269,6 +269,33 @@
       &:hover {
         box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.26);
       }
+      .abbreviation-app__default-wrapper {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .abbreviation-app__default-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          &__app-name {
+            color: @primary-color;
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 16px;
+          }
+          &__img {
+            height: 10.42vh;
+            width: auto;
+          }
+          &__tip {
+            color: #666666;
+            margin-top: 16px;
+          }
+        }
+      }
     }
     &:nth-child(3n) {
       margin-right: 0;

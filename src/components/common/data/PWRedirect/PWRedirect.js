@@ -23,6 +23,7 @@ function getDomain(url) {
   result = url.substring(startIndex, endIndex);
   return result;
 }
+const style = { height: '100%', width: '100%' };
 class PWRedirect extends React.Component {
   state = { url: '' };
   componentDidMount() {
@@ -45,16 +46,21 @@ class PWRedirect extends React.Component {
   render() {
     const { url } = this.state;
 
-    return url ? (
-      <iframe
-        src={url}
-        height="100%"
-        title={this.props.resid}
-        width="100%"
-        frameBorder="none"
-      />
-    ) : (
-      <div>请稍等...</div>
+    return (
+      <div style={style} className="pw-redirect">
+        {url ? (
+          <iframe
+            src={url}
+            height="100%"
+            title={this.props.resid}
+            width="100%"
+            frameBorder="none"
+            className="pw-redirect-iframe"
+          />
+        ) : (
+          <div>请稍等...</div>
+        )}
+      </div>
     );
   }
 }

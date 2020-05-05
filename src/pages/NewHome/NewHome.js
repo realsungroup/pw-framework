@@ -3,6 +3,7 @@ import './NewHome.less';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import folderPng from './assets/folder.png';
+import defaultAbbreviation from './assets/default-abbreviation.png';
 import memoizeone from 'memoize-one';
 import { Icon, message, Modal } from 'antd';
 import WindowView from './WindowView';
@@ -22,7 +23,9 @@ import { delay } from 'lodash';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 
-const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
+const { businessOptionalResIds, reminderDataConfig } = window.pwConfig[
+  process.env.NODE_ENV
+];
 
 function validateImage(pathImg) {
   ////判断图片地址是否有效
@@ -148,9 +151,24 @@ class Home extends React.Component {
   fetchWaitingHandle = async () => {
     try {
       this.setState({ waitingHandleFetching: true });
-      const res = await http().getReminderData();
-
-      this.setState({ waitingHandleData: res.data });
+      let linknames = '';
+      reminderDataConfig.forEach(item => {
+        linknames += item.dblinkname + ',';
+      });
+      linknames = linknames.substring(0, linknames.length - 1);
+      const res = await http().getReminderDatas({ linknames });
+      console.log(res.data);
+      const data = [];
+      reminderDataConfig.forEach(item => {
+        if (res.data[item.dblinkname]) {
+          res.data[item.dblinkname].forEach(_item => {
+            _item.dblinkname = item.dblinkname;
+          });
+          data.push(...res.data[item.dblinkname]);
+        }
+      });
+      console.log(data);
+      this.setState({ waitingHandleData: data });
     } catch (error) {
       console.error(error);
       return message.error(error.message);
@@ -689,6 +707,25 @@ class Home extends React.Component {
     this.setState({ searchTextHeader: e.target.value });
     delay(this.filterMenus, 200);
   };
+  handleResizeStop = (activeApp, dW, dH) => {
+    console.log(dW, dH);
+    activeApp.width = activeApp.width + dW;
+    activeApp.height = activeApp.height + dH;
+
+    activeApp.customWidth = activeApp.width;
+    activeApp.customHeight = activeApp.height;
+
+    activeApp.zoomStatus = 'custom';
+    this.forceUpdate();
+  };
+  handleCustom = activeApp => {
+    activeApp.x = activeApp.customX;
+    activeApp.y = activeApp.customY;
+    activeApp.width = activeApp.customWidth;
+    activeApp.height = activeApp.customHeight;
+    activeApp.zoomStatus = 'custom';
+    this.forceUpdate();
+  };
   renderWindowView = () => {
     const { activeApps, zIndexActiveApps, showHome } = this.state;
     return activeApps.map((activeApp, index) => {
@@ -713,10 +750,10 @@ class Home extends React.Component {
           y={activeApp.y}
           minWidth={activeApp.minWidth}
           minHeight={activeApp.minHeight}
-          // onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
+          onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
           // onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
           // onMax={() => this.handleMax(activeApp)}
-          // onCustom={() => this.handleCustom(activeApp)}
+          onCustom={() => this.handleCustom(activeApp)}
           isActive={activeApp.isActive}
           zoomStatus={activeApp.zoomStatus}
         >
@@ -770,6 +807,7 @@ class Home extends React.Component {
                   <WaitingHandle
                     data={waitingHandleData}
                     onItemClick={this.handleRemindItemClick}
+                    reminderDataConfig={reminderDataConfig}
                   />
                 )}
               </div>
@@ -1012,7 +1050,8 @@ class Home extends React.Component {
 
 class AbbreviationApp extends React.Component {
   state = {
-    abbreviation: ''
+    abbreviation: '',
+    showDefaultAbbreviation: false
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -1031,7 +1070,12 @@ class AbbreviationApp extends React.Component {
     const { dom } = this.props;
     if (dom) {
       //   let dom = item.contentDocument.querySelector('.functions');
-
+      if (dom.querySelector('.pw-redirect')) {
+        return this.setState({
+          showDefaultAbbreviation: true,
+          abbreviation: defaultAbbreviation
+        });
+      }
       const promise = new Promise((resolve, reject) => {
         html2canvas(dom)
           .then(canvas => {
@@ -1053,7 +1097,7 @@ class AbbreviationApp extends React.Component {
   };
   render() {
     const { app, onCloseActiveApp, onClick } = this.props;
-    const { abbreviation } = this.state;
+    const { abbreviation, showDefaultAbbreviation } = this.state;
     return (
       <div className="new-home__abbreviation-app" key={app.REC_ID}>
         <header className="new-home__abbreviation-app__header">
@@ -1082,7 +1126,27 @@ class AbbreviationApp extends React.Component {
           }}
         >
           {abbreviation ? (
-            <img src={abbreviation} style={{ height: '100%', width: '100%' }} />
+            showDefaultAbbreviation ? (
+              <div className="abbreviation-app__default-wrapper">
+                <div className="abbreviation-app__default-content">
+                  <div className="abbreviation-app__default-content__app-name">
+                    {app.appName}
+                  </div>
+                  <img
+                    src={abbreviation}
+                    className="abbreviation-app__default-content__img"
+                  />
+                  <div className="abbreviation-app__default-content__tip">
+                    该功能不支持缩略图显示
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={abbreviation}
+                style={{ height: '100%', width: '100%' }}
+              />
+            )
           ) : (
             <Spin />
           )}
