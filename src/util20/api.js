@@ -142,6 +142,15 @@ http.createApi('getReminderData', {
 });
 
 /**
+ * 根据dblinkname配置获取提醒数据
+ * 参数：无
+ */
+http.createApi('getReminderDatas', {
+  method: 'get',
+  url: 'api/Resource/RetrieveDataOfHasReminders'
+});
+
+/**
  * 获取 OrgChart 所需的节点
  */
 http.createApi('getNodesData', {
