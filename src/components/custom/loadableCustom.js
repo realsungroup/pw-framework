@@ -114,3 +114,10 @@ export const ButtJointDoctor = Loadable({
     return minLoading;
   },
 });
+
+export const MemberRequire = Loadable({
+  loader: () => import('./MemberRequire'),
+  loading() {
+    return minLoading;
+  },
+});

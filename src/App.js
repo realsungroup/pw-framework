@@ -32,6 +32,7 @@ import {
   SearchInfo,
   DoctorAdvice,
   ButtJointDoctor,
+  MemberRequire,
 } from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -234,6 +235,11 @@ class App extends Component {
                       exact
                       path='/buttJointDoctor'
                       component={ButtJointDoctor}
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/memberRequire'
+                      component={MemberRequire}
                     />
 
                     {/* <Route path="*" component={NotFound} /> */}
