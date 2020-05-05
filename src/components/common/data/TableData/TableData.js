@@ -255,7 +255,8 @@ class TableData extends React.Component {
       defaultColumnWidth,
       columnsWidth,
       fixedColumns,
-      hasRowEdit
+      hasRowEdit,
+      recordsFilter,
     } = this.props;
     const { columns, components } = getColumns(
       res.cmscolumninfo,
@@ -268,7 +269,7 @@ class TableData extends React.Component {
       cmscolumns,
       hasRowEdit
     );
-    const dataSource = res.data;
+    const dataSource = typeof recordsFilter === 'function' ? recordsFilter(res.data) : res.data;
 
     const state = {
       columns,
