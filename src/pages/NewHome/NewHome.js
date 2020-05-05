@@ -59,7 +59,9 @@ const dealApps = apps => {
         apps: [],
         typeName: app.BusinessNode,
         categoricalApps: new Map(),
-        url: validateImage(app.BusinessIconUrl) || folderPng
+        url: validateImage(app.BusinessIconUrl)
+          ? app.BusinessIconUrl
+          : folderPng
       };
       index = arr.length - 1;
     }
