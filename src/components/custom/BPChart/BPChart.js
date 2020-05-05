@@ -48,7 +48,8 @@ class BPChart extends React.Component {
   componentWillMount = () => {
     this.getTableData();
   };
-  async componentDidMount() {
+
+  componentDidMount() {
     this._echarts = echarts.init(document.getElementById('dataChart1'));
     this._echarts.setOption({
       color: colors,
@@ -81,32 +82,19 @@ class BPChart extends React.Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (this.props.beginDate !== prevProps.beginDate) {
-      let start = this.props.beginDate.format('YYYY-MM-DD');
-      if(this.props.beginDate.isBefore(moment(this.state.minDate))){
-        start = this.state.minDate
-      }
+    if (
+      this.props.beginDate !== prevProps.beginDate ||
+      this.props.endDate !== prevProps.endDate
+    ) {
+      const start = this.props.beginDate.format('YYYY-MM-DD');
+      const end = this.props.endDate.format('YYYY-MM-DD');
+
       this._echarts.setOption({
         dataZoom: [
           {
-            // startValue: this.props.beginDate.format("YYYY-MM-DD"),
             startValue: start,
           },
           {
-            type: 'inside',
-          },
-        ],
-      });
-    }
-    if (this.props.endDate !== prevProps.endDate) {
-      let end = this.props.endDate.format('YYYY-MM-DD');
-      if(this.props.endDate.isAfter(moment(this.state.maxDate))){
-        end = this.state.maxDate
-      }
-      this._echarts.setOption({
-        dataZoom: [
-          {
-            // startValue: this.props.beginDate.format("YYYY-MM-DD"),
             endValue: end,
           },
           {
@@ -226,7 +214,7 @@ class BPChart extends React.Component {
   render() {
     return (
       <div
-        id="dataChart1"
+        id='dataChart1'
         style={{
           height: 400,
           width: '80%',
@@ -237,4 +225,3 @@ class BPChart extends React.Component {
 }
 
 export default BPChart;
-

@@ -25,6 +25,7 @@ import { getTableData, getMainTableData } from '../../../util/api';
 import moment from 'moment';
 import EChartsOfReact from 'echarts-of-react';
 import echarts from 'echarts/lib/echarts';
+const { MonthPicker, RangePicker } = DatePicker;
 
 /**
  * 常见数据录入
@@ -179,10 +180,27 @@ class RecordInput extends React.Component {
       beginDate: moment(start),
     });
   };
+
+  handleRangPickerChange = (value) => {
+    if (!value) {
+      return;
+    }
+    const start = value[0];
+    const end = value[1];
+    const days = end.diff(moment(start), 'day');
+    this.setState({
+      days: days,
+      beginDate: start,
+      endDate: end,
+    });
+  };
+
   //结束日期
   endDateChange = (value) => {
     let end = moment(value).format('YYYY-MM-DD');
     let days = moment(end).diff(this.state.beginDate, 'day');
+
+    console.log({ end, days });
     this.setState({
       days: days,
       endDate: moment(end),
@@ -302,6 +320,17 @@ class RecordInput extends React.Component {
                   <Input defaultValue={this.props.userName} disabled />
                 </Form.Item>
                 <Form.Item
+                  label='起止日期'
+                  className='recordInput__userInfo__beginDate'
+                >
+                  <RangePicker
+                    value={[beginDate, endDate]}
+                    onChange={this.handleRangPickerChange}
+                    disabledDate={this.disabledDate}
+                  />
+                </Form.Item>
+
+                {/* <Form.Item
                   label='开始日期'
                   className='recordInput__userInfo__beginDate'
                 >
@@ -321,7 +350,7 @@ class RecordInput extends React.Component {
                     disabledDate={this.disabledDate}
                     value={endDate}
                   />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item label='共计' className='recordInput__userInfo__days'>
                   <Input
                     value={`${this.state.days}天`}
@@ -432,6 +461,16 @@ class RecordInput extends React.Component {
                   <Input defaultValue={this.props.userName} disabled />
                 </Form.Item>
                 <Form.Item
+                  label='起止日期'
+                  className='recordInput__userInfo__beginDate'
+                >
+                  <RangePicker
+                    value={[beginDate, endDate]}
+                    onChange={this.handleRangPickerChange}
+                    disabledDate={this.disabledDate}
+                  />
+                </Form.Item>
+                {/* <Form.Item
                   label='开始日期'
                   className='recordInput__userInfo__beginDate'
                 >
@@ -451,7 +490,7 @@ class RecordInput extends React.Component {
                     allowClear={false}
                     disabledDate={this.disabledDate}
                   />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item label='共计' className='recordInput__userInfo__days'>
                   <Input
                     value={`${this.state.days}天`}
@@ -562,6 +601,16 @@ class RecordInput extends React.Component {
                   <Input defaultValue={this.props.userName} disabled />
                 </Form.Item>
                 <Form.Item
+                  label='起止日期'
+                  className='recordInput__userInfo__beginDate'
+                >
+                  <RangePicker
+                    value={[beginDate, endDate]}
+                    onChange={this.handleRangPickerChange}
+                    disabledDate={this.disabledDate}
+                  />
+                </Form.Item>
+                {/* <Form.Item
                   label='开始日期'
                   className='recordInput__userInfo__beginDate'
                 >
@@ -581,7 +630,7 @@ class RecordInput extends React.Component {
                     allowClear={false}
                     disabledDate={this.disabledDate}
                   />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item label='共计' className='recordInput__userInfo__days'>
                   <Input
                     value={`${this.state.days}天`}

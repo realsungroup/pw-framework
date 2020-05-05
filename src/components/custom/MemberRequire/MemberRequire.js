@@ -83,26 +83,7 @@ class MemberRequire extends React.Component {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      // navListResidField: 'C3_620929565473'
     });
-    // http().addRecords({
-    //   resid: 641570651236, // 表资源 id
-    //   isEditOrAdd: true,
-    //   data: [
-    //     {
-    //       tableNo: 640186569410,
-    //       tableName: '血压检测',
-    //     },
-    //     {
-    //       tableNo: 640452175220,
-    //       tableName: '血糖检测',
-    //     },
-    //     {
-    //       tableNo: 640452189185,
-    //       tableName: '体温检测',
-    //     },
-    //   ],
-    // });
   };
 
   //其他信息录入
@@ -110,7 +91,6 @@ class MemberRequire extends React.Component {
     this.setState({
       otherVisible: true,
       record: { ...record },
-      // navListResidField: 'C3_620929565473'
     });
   };
 
