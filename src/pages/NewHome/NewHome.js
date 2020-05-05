@@ -31,8 +31,6 @@ function validateImage(pathImg) {
   return new Promise(res => {
     let ImgObj = new Image();
     ImgObj.onload = () => {
-      process.env.NODE_ENV === 'development' &&
-        console.log(pathImg, ImgObj.width, ImgObj.height);
       if (ImgObj.width > 0 && ImgObj.height > 0) {
         res(true);
       } else {
