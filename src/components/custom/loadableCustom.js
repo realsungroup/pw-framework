@@ -697,3 +697,9 @@ export const PersonnelInformation = Loadable({
     return minLoading;
   }
 });
+export const HeadquartersManage = Loadable({
+  loader: () => import('./HeadquartersManage'),
+  loading() {
+    return minLoading;
+  }
+});
