@@ -5,8 +5,7 @@ import { PrivateRoute } from './util/auth';
 import { IntlProvider, addLocaleData } from 'react-intl';
 
 import { Icon, LocaleProvider, Button, message } from 'antd';
-import { createBrowserHistory } from 'history'
-
+import { createBrowserHistory } from 'history';
 
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
@@ -31,7 +30,7 @@ import {
   PersonInfor,
   PersonalInformation,
   SearchInfo,
-  DoctorAdvice
+  DoctorAdvice,
 } from '../src/components/custom/loadableCustom';
 // import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
@@ -55,28 +54,28 @@ import store from './store';
 
 addLocaleData([...en, ...zh]);
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 const Reminder = (
-  <div className="app__nonuse-ie">
+  <div className='app__nonuse-ie'>
     本应用不支持
-    <div className="app__nonuse-tag">
-      <Icon type="ie" theme="outlined" />
+    <div className='app__nonuse-tag'>
+      <Icon type='ie' theme='outlined' />
       <span>IE11版本以下的 浏览器</span>
     </div>
     <br />
     请将地址：{document.location.href} 复制到
     <br />
-    <div className="app__nonuse-tag">
-      <a href="javascript:;" target="_blank">
-        <Icon type="chrome" theme="outlined" />
+    <div className='app__nonuse-tag'>
+      <a href='javascript:;' target='_blank'>
+        <Icon type='chrome' theme='outlined' />
         <span>谷歌浏览器</span>
       </a>
     </div>
     或
-    <div className="app__nonuse-tag">
-      <a href="javascript:;" target="_blank">
-        <Icon type="fire" theme="outlined" />
+    <div className='app__nonuse-tag'>
+      <a href='javascript:;' target='_blank'>
+        <Icon type='fire' theme='outlined' />
         <span>火狐浏览器</span>
       </a>
     </div>
@@ -88,11 +87,11 @@ class WarningBar extends React.PureComponent {
     const { visible, onClose } = this.props;
     let style = visible ? {} : { display: 'none' };
     return (
-      <div className="app__warning-bar" style={style}>
-        <div className="app__warning-bar-icon">
-          <Icon type="warning" style={{ marginRight: 20, fontSize: 35 }} />
+      <div className='app__warning-bar' style={style}>
+        <div className='app__warning-bar-icon'>
+          <Icon type='warning' style={{ marginRight: 20, fontSize: 35 }} />
         </div>
-        <div className="app__warning-bar-text">
+        <div className='app__warning-bar-text'>
           <div>
             请注意 PowerWorks 在 Internet Explorer 上运行可能会影响您的使用体验
           </div>
@@ -101,14 +100,14 @@ class WarningBar extends React.PureComponent {
             以获得更好的使用效果。
           </div>
         </div>
-        <div className="app__warning-bar-close">
-          <Button size="small" onClick={onClose}>
+        <div className='app__warning-bar-close'>
+          <Button size='small' onClick={onClose}>
             关闭
           </Button>
           <Button
-            type="primary"
-            size="small"
-            className="app__warning-bar-copy"
+            type='primary'
+            size='small'
+            className='app__warning-bar-copy'
             data-clipboard-text={document.location.href}
           >
             复制本页地址
@@ -128,11 +127,11 @@ class App extends Component {
   }
   componentDidMount = () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
-    clipboard.on('success', function (e) {
+    clipboard.on('success', function(e) {
       message.success('复制成功');
     });
 
-    clipboard.on('error', function (e) {
+    clipboard.on('error', function(e) {
       message.error('复制失败');
     });
   };
@@ -153,7 +152,7 @@ class App extends Component {
       } else {
         language = userInfo.UserInfo.EMP_LANGUAGE;
       }
-    } catch (err) { }
+    } catch (err) {}
 
     let localeAntd = zh_CN_antd;
     let locale = 'zh',
@@ -168,10 +167,6 @@ class App extends Component {
       <Fragment>
         {/* <ErrorBoundary> */}
         <Provider store={store}>
-          {/* <Router history={history} >
-          <PrivateRoute exact path="*" component={IndexHome} />
-          </Router> */}
-
           <NonsupportIE
             // curIEVersion="ie11"
             supportVersionList={['ie11']}
@@ -188,47 +183,58 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router history={history}>
                   <Switch>
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/ForgetPassword" component={ForgetPassword} />
-                    <Route path="/companyRegister" component={CompanyRegister} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path='/ForgetPassword' component={ForgetPassword} />
+                    <Route
+                      path='/companyRegister'
+                      component={CompanyRegister}
+                    />
 
-                    <PrivateRoute exact path="/" component={Header} />
-                    <PrivateRoute exact path="/indexHome" component={Header} />
-                    <PrivateRoute exact path="/index" component={PatientInfo} />
-                    <PrivateRoute exact path="/personInfor" component={PersonInfor} />
-                    <PrivateRoute exact path="/doctorRegister" component={DoctorRegister} />
-                    <PrivateRoute exact path="/doctorRegister" component={DoctorRegister} />
-                    <PrivateRoute exact path="/attentionPeople" component={AttentionPeople} />
-                    <PrivateRoute exact path="/searchInfo" component={SearchInfo} />
-                    <PrivateRoute exact path="/doctorList" component={DoctorList} />
-                    <PrivateRoute exact path="/personalInformation" component={PersonalInformation} />
-                    <PrivateRoute exact path="/doctorAdvice" component={DoctorAdvice} />
-
-                    {/* <Route path="/indexHome" component={IndexHome} /> */}
-                    {/* <Route path="/index" component={PatientInfo} /> */}
-                    {/* <Route path="/personInfor" component={PersonInfor} /> */}
-                    {/* <Route path="/doctorRegister" component={DoctorRegister} /> */}
-                    {/* <Route
-                      path="/attentionPeople"
+                    <PrivateRoute exact path='/' component={Header} />
+                    <PrivateRoute exact path='/indexHome' component={Header} />
+                    <PrivateRoute exact path='/index' component={PatientInfo} />
+                    <PrivateRoute
+                      exact
+                      path='/personInfor'
+                      component={PersonInfor}
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/doctorRegister'
+                      component={DoctorRegister}
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/doctorRegister'
+                      component={DoctorRegister}
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/attentionPeople'
                       component={AttentionPeople}
-                    /> */}
-                    {/* <Route
-                      path="/searchInfo"
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/searchInfo'
                       component={SearchInfo}
-                    /> */}
-                    {/* <Route
-                      path="/doctorList"
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/doctorList'
                       component={DoctorList}
-                    /> */}
-                    {/* <Route
-                      path="/personalInformation"
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/personalInformation'
                       component={PersonalInformation}
-                    /> */}
-                    {/* <Route
-                      path="/doctorAdvice"
+                    />
+                    <PrivateRoute
+                      exact
+                      path='/doctorAdvice'
                       component={DoctorAdvice}
-                    /> */}
+                    />
+
                     {/* <Route path="*" component={NotFound} /> */}
                   </Switch>
                 </Router>
@@ -236,54 +242,6 @@ class App extends Component {
             </LocaleProvider>
           </NonsupportIE>
         </Provider>
-        {/* <Provider store={store}>
-  <NonsupportIE
-    // curIEVersion="ie11"
-    supportVersionList={['ie11']}
-    reminder={Reminder}
-    warningBar={ReactDOM.createPortal(
-      <WarningBar
-        visible={this.state.warningBarVisible}
-        onClose={this.handleCloseWarningBar}
-      />,
-      document.body
-    )}
-  >
-    <LocaleProvider locale={localeAntd}>
-      <IntlProvider locale={locale} messages={messages}>
-        <Router>
-          <Switch>
-            <PrivateRoute exact path="/" component={PageContainer} />
-            <PrivateRoute path="/home" component={PageContainer} />
-            <PrivateRoute path="/fnmodule" component={PageContainer} />
-            <PrivateRoute
-              path="/workbench-setting"
-              component={PageContainer}
-            />
-            <PrivateRoute path="/reminder" component={PageContainer} />
-            <PrivateRoute
-              path="/report-table"
-              component={PageContainer}
-            />
-            <PrivateRoute
-              path="/person-center"
-              component={PageContainer}
-            />
-            <Route path="/login" component={Login} />
-            <Route path="/indexHome" component={IndexHome} />
-            <Route path="/index" component={PatientInfo} />
-            <Route path="/ForgetPassword" component={ForgetPassword} />
-            <Route path="/register" component={Register} />
-            <Route path="/doctorRegister" component={DoctorRegister} />
-            <Route path="/companyRegister" component={CompanyRegister} />
-            <Route path="*" component={NotFound} />
-          </Switch>
-        </Router>
-      </IntlProvider>
-    </LocaleProvider>
-  </NonsupportIE>
-</Provider> */}
-        {/* </ErrorBoundary> */}
       </Fragment>
     );
   }
