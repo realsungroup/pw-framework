@@ -59,8 +59,7 @@ class PatientInfo extends React.Component {
     // const ucLen = res[0].total;
     // const cdLen = res[1].total;
     // this.setState({ ucLen, cdLen });
-    console.log('rposp', this.props);
-    this.getAppLinks();
+    // this.getAppLinks();
   };
   //获取检测指标下的所有节点
   getAppLinks = async () => {

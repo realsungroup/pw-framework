@@ -26,8 +26,19 @@ class Header extends React.Component {
 
   quitLogin =() =>{
     localStorage.clear();
-    window.location.reload();
+    // window.location.reload();
+    this.onLogin()
   }
+
+
+  //切换登录路由
+  onLogin = async () => {
+    await this.props.history.push({
+      pathname: '/login',
+    });
+  };
+
+
   render() {
     return (
       <div className='header'>
