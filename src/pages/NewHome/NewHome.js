@@ -28,6 +28,22 @@ const { businessOptionalResIds, reminderDataConfig } = window.pwConfig[
 ];
 
 function validateImage(pathImg) {
+  return new Promise(res => {
+    let ImgObj = new Image();
+    ImgObj.onload = () => {
+      process.env.NODE_ENV === 'development' &&
+        console.log(pathImg, ImgObj.width, ImgObj.height);
+      if (ImgObj.width > 0 && ImgObj.height > 0) {
+        res(true);
+      } else {
+        res(false);
+      }
+    };
+    ImgObj.onerror = () => {
+      res(false);
+    };
+    ImgObj.src = pathImg;
+  });
   ////判断图片地址是否有效
   let ImgObj = new Image();
   ImgObj.src = pathImg;
@@ -49,25 +65,25 @@ const objArrUnique = (arr, key) => {
     }
   }
 };
-const dealApps = apps => {
+const dealApps = async (apps, arr) => {
   apps.forEach(app => (app.ResID = app.ResID || app.resid));
   objArrUnique(apps, 'ResID');
-  let arr = [];
-  apps.forEach(app => {
+  // let arr = [];
+  for (let ind = 0; ind < apps.length; ind++) {
+    const app = apps[ind];
     const appIndex = arr.findIndex(item => item.typeName === app.BusinessNode);
     let index = appIndex;
     if (appIndex === -1) {
+      const validate = await validateImage(app.BusinessIconUrl);
       arr[arr.length] = {
         apps: [],
         typeName: app.BusinessNode,
         categoricalApps: new Map(),
-        url: validateImage(app.BusinessIconUrl)
-          ? app.BusinessIconUrl
-          : folderPng
+        url: validate ? app.BusinessIconUrl : folderPng
       };
       index = arr.length - 1;
     }
-    app.appIconUrlValidate = validateImage(app.appIconUrl);
+    app.appIconUrlValidate = await validateImage(app.appIconUrl);
     let categoryapps = arr[index].categoricalApps.get(
       app.PwCategory || '未分类'
     );
@@ -78,8 +94,8 @@ const dealApps = apps => {
       arr[index].categoricalApps.set(app.PwCategory || '未分类', [app]);
     }
     arr[index].apps.push(app);
-  });
-  return arr;
+  }
+  // return arr;
 };
 
 class Home extends React.Component {
@@ -124,20 +140,28 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
+    this.getData();
+    this.fetchWaitingHandle();
+    this.setRecentApps();
+  }
+
+  setRecentApps = async () => {
     let recentApps = JSON.parse(getItem('recentApps'));
     if (recentApps && Array.isArray(recentApps)) {
       recentApps = this.getSortRecentApps(recentApps);
-      recentApps.forEach(item => {
-        item.appIconUrlValidate = validateImage(item.appIconUrl);
-      });
+      // recentApps.forEach(item => {
+      //   item.appIconUrlValidate = validateImage(item.appIconUrl);
+      // });
+      for (let index = 0; index < recentApps.length; index++) {
+        const element = recentApps[index];
+        element.appIconUrlValidate = await validateImage(element.appIconUrl);
+      }
       this.setState({ recentApps });
     } else {
       setItem('recentApps', JSON.stringify([]));
       this.setState({ recentApps: [] });
     }
-    this.getData();
-    this.fetchWaitingHandle();
-  }
+  };
   // componentDidUpdate(preProps, preState) {
   //   if (
   //     this.state.recentApps.length &&
@@ -189,7 +213,6 @@ class Home extends React.Component {
     let res;
     try {
       res = await http().getUserDesktop();
-      this.setState({ appDataFetching: false });
     } catch (err) {
       this.setState({ appDataFetching: false });
       console.error(err);
@@ -197,7 +220,9 @@ class Home extends React.Component {
     }
 
     // 桌面的文件夹
-    const folders = dealApps([...res.data, ...(res.userdefined || [])]);
+    const folders = [];
+    await dealApps([...res.data, ...(res.userdefined || [])], folders);
+    this.setState({ appDataFetching: false });
     this.setState(
       { folders, allApps: res.data, fixedApps: res.userdefined },
       () => {
