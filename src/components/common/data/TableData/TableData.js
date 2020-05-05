@@ -386,7 +386,8 @@ class TableData extends React.Component {
       defaultColumnWidth,
       columnsWidth,
       fixedColumns,
-      hasRowEdit
+      hasRowEdit,
+      recordsFilter,
     } = this.props;
 
     const secondParams = {
@@ -396,7 +397,7 @@ class TableData extends React.Component {
       fixedColumns
     };
 
-    let dataSource = res.data;
+    let dataSource = typeof recordsFilter === 'function' ? recordsFilter(res.data) : res.data;
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
       dataSource = [];
