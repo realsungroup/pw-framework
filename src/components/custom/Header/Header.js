@@ -24,6 +24,10 @@ class Header extends React.Component {
     http().clearCache();
   };
 
+  quitLogin =() =>{
+    localStorage.clear();
+    window.location.reload();
+  }
   render() {
     return (
       <div className='header'>
@@ -32,10 +36,14 @@ class Header extends React.Component {
             <img className='header__header__logo__png' src={logo} />
             <div className='header__header__logo__name'>
               <h1>安康医道</h1>
+             
             </div>
           </div>
           <div className='header__header__menu'>
             <AuthMenu />
+          </div>
+          <div className='header__header__quit' onClick = {this.quitLogin}>
+           <span> 退出登录</span>
           </div>
         </div>
       </div>
