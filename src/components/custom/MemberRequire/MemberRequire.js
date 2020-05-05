@@ -6,6 +6,8 @@ import { RecordInput, DoctorList, OtherData } from '../loadableCustom';
 import http from '../../../util20/api';
 import { Header } from '../loadableCustom';
 import './MemberRequire.less';
+import moment from 'moment';
+import DivisionTable from '../PersonalInformation/DivisionTable';
 
 /**
  * 填写信息
@@ -57,31 +59,50 @@ class MemberRequire extends React.Component {
     },
   ];
 
+  modifyViewTime = (record) => {
+    if (!record.viewTime) {
+      http()
+        .modifyRecords({
+          resid: 641582795393, // 表资源 id
+          data: [
+            {
+              REC_ID: record.REC_ID,
+              viewTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+            },
+          ],
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    }
+  };
+
   //常用信息录入
   handleInputCaseClick = (record) => {
+    this.modifyViewTime(record);
     this.setState({
       modalVisible: true,
       record: { ...record },
       // navListResidField: 'C3_620929565473'
     });
-    http().addRecords({
-      resid: 641570651236, // 表资源 id
-      isEditOrAdd: true,
-      data: [
-        {
-          tableNo: 640186569410,
-          tableName: '血压检测',
-        },
-        {
-          tableNo: 640452175220,
-          tableName: '血糖检测',
-        },
-        {
-          tableNo: 640452189185,
-          tableName: '体温检测',
-        },
-      ],
-    });
+    // http().addRecords({
+    //   resid: 641570651236, // 表资源 id
+    //   isEditOrAdd: true,
+    //   data: [
+    //     {
+    //       tableNo: 640186569410,
+    //       tableName: '血压检测',
+    //     },
+    //     {
+    //       tableNo: 640452175220,
+    //       tableName: '血糖检测',
+    //     },
+    //     {
+    //       tableNo: 640452189185,
+    //       tableName: '体温检测',
+    //     },
+    //   ],
+    // });
   };
 
   //其他信息录入
@@ -134,7 +155,17 @@ class MemberRequire extends React.Component {
         />
         {modalVisible && (
           <LzModal defaultScaleStatus='max' onClose={this.handleModalClose}>
-            <RecordInput {...record} selectKey={selectKey} mode='view' />
+            <RecordInput
+              {...record}
+              selectKey={selectKey}
+              mode='view'
+              hasSavePharmacyBtn
+            />
+          </LzModal>
+        )}
+        {otherVisible && (
+          <LzModal onClose={this.handleOtherModalClose}>
+            <DivisionTable onCellClick={this.handleCellClick} />
           </LzModal>
         )}
       </div>
