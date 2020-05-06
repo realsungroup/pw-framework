@@ -117,8 +117,11 @@ class SeeFeedback extends React.Component {
         data: [data]
       });
       this.setState({
-        sendToTrainerLoading: false
+        sendToTrainerLoading: false,
+        feedbackOverallVisible: false,
+        selectedCourse: {}
       });
+      message.success('已发给培训师');
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
@@ -371,10 +374,6 @@ class SeeFeedback extends React.Component {
                   C3_622485660010: selectedCourse.C3_622485660010,
                   C3_622485682264: selectedCourse.C3_622485682264,
                   C3_622485773574: 'Y'
-                });
-                this.setState({
-                  feedbackOverallVisible: false,
-                  selectedCourse: {}
                 });
               }}
             >
