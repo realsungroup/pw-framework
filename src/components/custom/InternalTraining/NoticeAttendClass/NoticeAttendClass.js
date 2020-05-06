@@ -270,17 +270,17 @@ class NoticeAttendClass extends React.Component {
   };
 
   saveClassNotice = async () => {
-	// this.state.CourseArrangeID
-	// let res;
-	// try{
-	// 	res = await http().getTable({
-	// 		resid:616168186243,
-	// 	})
-		
-	// }catch(e){
-	// 	message.error(e.message);
-	// }
-	
+    // this.state.CourseArrangeID
+    // let res;
+    // try{
+    // 	res = await http().getTable({
+    // 		resid:616168186243,
+    // 	})
+
+    // }catch(e){
+    // 	message.error(e.message);
+    // }
+
     this.setState({
       isShowNotice: false
     });
@@ -434,7 +434,7 @@ class NoticeAttendClass extends React.Component {
                             onClick={() => {
                               this.setState({
                                 CourseArrange: item,
-                                isShowNotice: true,
+                                isShowNotice: true
                               });
                             }}
                           >
@@ -444,7 +444,8 @@ class NoticeAttendClass extends React.Component {
                           <span
                             onClick={() => {
                               this.setState({
-                                CourseArrange: item
+                                CourseArrange: item,
+                                CourseArrangeID: item.CourseArrangeID
                               });
                               this.setState({
                                 isShowModal: true
@@ -675,7 +676,6 @@ class NoticeAttendClass extends React.Component {
               key="2"
               style={{ width: '100%', height: '100%' }}
             >
-              {' '}
               <header className="notice_attend_class-header">
                 <div className="notice_attend_class-header_Mode">
                   <span
@@ -913,10 +913,24 @@ class NoticeAttendClass extends React.Component {
             destroyOnClose
             onOk={this.saveClassNotice}
             title="编辑上课须知"
-			footer={this.state.CourseArrange.isFull?null:<span><Button onClick={() =>
-              this.setState({
-                isShowNotice: false
-              })}>取消</Button><Button type='primary' onClick={this.saveClassNotice}>发送提醒上课通知</Button></span>}
+            footer={
+              this.state.CourseArrange.isFull ? null : (
+                <span>
+                  <Button
+                    onClick={() =>
+                      this.setState({
+                        isShowNotice: false
+                      })
+                    }
+                  >
+                    取消
+                  </Button>
+                  <Button type="primary" onClick={this.saveClassNotice}>
+                    发送提醒上课通知
+                  </Button>
+                </span>
+              )
+            }
           >
             <Form.Item label="上课须知" colon cla>
               <TextArea
@@ -924,7 +938,9 @@ class NoticeAttendClass extends React.Component {
                 value={this.state.classNotice}
               />
             </Form.Item>
-			{this.state.CourseArrange.isFull?<span style={{color:'red'}}>课程已满请移动人员或删除人员</span>:null}
+            {this.state.CourseArrange.isFull ? (
+              <span style={{ color: 'red' }}>课程已满请移动人员或删除人员</span>
+            ) : null}
           </Modal>
         ) : null}
       </div>
