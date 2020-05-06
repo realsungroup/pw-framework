@@ -109,12 +109,15 @@
           }
           .new-home__module-category {
             border-bottom: 1px dashed #dcdcdc;
-            padding: 16px;
+            padding: 16px 0px;
             &:last-child {
               border: none;
             }
             &-title {
               color: #000000;
+              margin-left: 16px;
+            margin-bottom: 8px;
+
             }
             &-app-title {
               color: #000000;
@@ -226,4 +229,15 @@
 .new-home__iframe {
   height: 100%;
   width: 100%;
+}
+.new-home-app-icon{
+  height:16px;
+  margin:2px;
+}
+.new-home__module-category-app{
+  box-sizing: border-box;
+  height: 40px;
+  .new-home-app-icon,i{
+    margin-left: 16px;
+  }
 }
