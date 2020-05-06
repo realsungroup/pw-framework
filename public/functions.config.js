@@ -234,8 +234,7 @@ window[592305842055] = {
       },
       customColumnWidth: {
         依据: 600
-      },
-     
+      }
     },
     addBtn: {
       type: 'text',
@@ -1968,4 +1967,72 @@ window[640189772997] = {
 window[640189820723] = {
   name: 'ContractApproval',
   title: '合同审批'
+};
+window[641990842014] = {
+  name: 'PWRedirect',
+  title: '测试',
+  props: {
+    resid: '534530373089',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+window[641992029202] = {
+  name: 'PWRedirect',
+  title: 'Offer Proposal管理',
+  props: {
+    resid: '534530373089',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+window[641992076936] = {
+  name: 'PWRedirect',
+  title: 'Offer Proposal审批',
+  props: {
+    resid: '534957565681',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+window[641992112255] = {
+  name: 'PWRedirect',
+  title: 'Offer Comfirmation管理',
+  props: {
+    resid: '537391112338',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+
+window[641992135890] = {
+  name: 'PWRedirect',
+  title: 'Offer Comfirmation核对',
+  props: {
+    resid: '537532977680',
+    replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+//总部-headcount
+window[641992200325] = {
+  name: 'PWRedirect',
+  title: '总部HeadCount',
+  props: {
+    resid: '578227119902',
+    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+  }
+};
+//总部-offer
+window[641992279531] = {
+  name: 'PWRedirect',
+  title: '总部Offer',
+  props: {
+    resid: '578236391005',
+    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+  }
+};
+//总部-管理员
+window[641992499902] = {
+  name: 'HeadquartersManage',
+  title: '总部工作流管理',
+  // props: {
+  //   resid: '576924862772',//未定
+  //   replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+  // }
 };

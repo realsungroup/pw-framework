@@ -252,33 +252,33 @@ export default class WindowView extends React.Component {
     });
 
     const child = (
-      <Draggable
-        handle=".window-view__header"
-        position={{ x, y }}
-        onStop={this.handleDragStop}
-        onStart={this.handelActiveWindowView}
+      // <Draggable
+      //   handle=".window-view__header"
+      //   position={{ x, y }}
+      //   onStop={this.handleDragStop}
+      //   onStart={this.handelActiveWindowView}
+      // >
+      <div
+        // minWidth={minWidth}
+        // minHeight={minHeight}
+        // size={{
+        //   width: width || 230,
+        //   height: height || 380
+        // }}
+        className={classNames('window-view', {
+          'window-view--hide': !visible,
+          'window-view--inactive': !isActive
+        })}
+        style={{ position: 'absolute', zIndex }}
+        // onResizeStart={this.handelActiveWindowView}
+        // onResizeStop={this.handleResizeStop}
+        // onClick={this.handelActiveWindowView}
+        {...otherProps}
       >
-        <Resizable
-          minWidth={minWidth}
-          minHeight={minHeight}
-          size={{
-            width: width || 230,
-            height: height || 380
-          }}
-          className={classNames('window-view', {
-            'window-view--hide': !visible,
-            'window-view--inactive': !isActive
-          })}
-          style={{ position: 'absolute', zIndex }}
-          onResizeStart={this.handelActiveWindowView}
-          onResizeStop={this.handleResizeStop}
-          onClick={this.handelActiveWindowView}
-          {...otherProps}
-        >
-          <div className="window-view__content">{newChildren}</div>
-          {/* mask */}
-        </Resizable>
-      </Draggable>
+        <div className="window-view__content">{newChildren}</div>
+        {/* mask */}
+      </div>
+      // </Draggable>
     );
 
     const container = document.querySelector('.new-home-wrapper');

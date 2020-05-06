@@ -47,6 +47,7 @@ const RightBtns = {
   'RightBtns.ChangePassword': 'ChangePassword',
   'RightBtns.ClearCache': 'ClearCache',
   'RightBtns.ChangeThemeColor': 'Change Theme Color',
+  'RightBtns.DisplayMode': 'Display Mode',
   'RightBtns.SelectThemeColor': 'Select Theme Color',
   'RightBtns.ChangeLanguage': 'Change Language/更换语言',
   'RightBtns.SelectLanguage': 'Select Language/选择语言',

@@ -562,13 +562,12 @@ const subresid = 632314794466;//子表resid
                 <li className={this.state.cms==`headcount = 'Y' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`headcount = 'Y' and locationCompany = '${this.state.right.location}'`})}}>HC已通过</li>
                 <li className={this.state.cms==`headcount = 'N' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`headcount = 'N' and locationCompany = '${this.state.right.location}'`})}}>HC未通过</li>
                 
-              <hr/>
            </>:null}
            {this.state.right.HRPreApprove=='Y'?<>
             <li className={this.state.cms==`hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`})}}>HR预审未审批</li>
              <li className={this.state.cms==`hrPreAprrove = 'Y' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrPreAprrove = 'Y' and locationCompany = '${this.state.right.location}'`})}}>HR预审已通过</li>
              <li className={this.state.cms==`hrPreAprrove = 'N' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrPreAprrove = 'N' and locationCompany = '${this.state.right.location}'`})}}>HR预审未通过</li>
-             <hr/>
+             
              <li className={this.state.cms==`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`?'cur':''} onClick={()=>{this.setState({cms:`locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`})}}>HR终审未审批</li>
              <li className={this.state.cms==`hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'`})}}>HR终审已通过</li>
              <li className={this.state.cms==`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`?'cur':''} onClick={()=>{this.setState({cms:`hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'`})}}>HR终审未通过</li>

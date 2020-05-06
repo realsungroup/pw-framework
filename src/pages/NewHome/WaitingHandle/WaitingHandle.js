@@ -2,17 +2,19 @@ import React from 'react';
 import { Modal } from 'antd';
 import { TableData } from 'Common/loadableCommon';
 import qs from 'qs';
+import emptyImg from '../assets/boxemp.png';
 
 class WaitingHandle extends React.Component {
   state = {
     modalVisible: false,
-    remindData: {}
+    remindData: {},
+    baseURL: undefined
   };
   closeModal = () => this.setState({ modalVisible: false });
   openModal = () => this.setState({ modalVisible: true });
   render() {
-    const { data } = this.props;
-    const { modalVisible, remindData } = this.state;
+    const { data, reminderDataConfig, onItemClick } = this.props;
+    const { modalVisible, remindData, baseURL } = this.state;
     return (
       <div className="new-home__waiting-handle-list">
         {data.map(data => {
@@ -22,22 +24,32 @@ class WaitingHandle extends React.Component {
               key={data.REMINDER_TITLE}
               onClick={() => {
                 if (data.REMINDER_LINKTYPE == 0) {
+                  const config = reminderDataConfig.find(config => {
+                    return config.dblinkname === data.dblinkname;
+                  });
+                  console.log(config.baseurl);
                   this.setState({
                     remindData: data,
-                    modalVisible: true
+                    modalVisible: true,
+                    baseURL: config.baseurl
                   });
                 } else if (data.REMINDER_LINKTYPE == 1) {
                   const qsObj = qs.parse(data.REMINDER_LINKURL.split('?')[1]);
-                  this.props.onItemClick(qsObj.resid, data.REMINDER_LINKURL);
+                  onItemClick(qsObj.resid, data.REMINDER_LINKURL);
                 }
               }}
             >
               <div>{data.REMINDER_TITLE}</div>
-
               <div>{data.REMINDER_TASKNUM}</div>
             </div>
           );
         })}
+        {data.length === 0 && (
+          <div className="new-home__waiting-handle-empty">
+            <img src={emptyImg} />
+            <p className="new-home__waiting-handle-empty-tip">暂无待办事项</p>
+          </div>
+        )}
         <Modal
           visible={modalVisible}
           onCancel={this.closeModal}
@@ -57,6 +69,7 @@ class WaitingHandle extends React.Component {
               hasModify={false}
               hasBeBtns={true}
               lngMtsID={remindData.REMINDER_MTSID}
+              baseURL={baseURL}
             />
           </div>
         </Modal>

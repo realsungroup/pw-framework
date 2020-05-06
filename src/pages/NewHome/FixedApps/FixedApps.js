@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Modal, Tree, Button, Spin, message, Popconfirm } from 'antd';
 import './FixedApps.less';
 import { removeFns, addWorkbenchApps } from '../../../util/api';
+import fixImg from '../assets/fix.png';
 
 const { TreeNode } = Tree;
 const clone = o => {
@@ -170,7 +171,7 @@ class FixedApps extends React.PureComponent {
   };
 
   render() {
-    const { apps, fnTreeData } = this.props;
+    const { apps, fnTreeData, loading } = this.props;
     const { modalVisible, spinning } = this.state;
     const checkedKeys = this.state.checkedKeys.length
       ? this.state.checkedKeys
@@ -197,44 +198,12 @@ class FixedApps extends React.PureComponent {
                 onClick={() => {
                   this.props.onClick([{ app, typeName: app.BusinessNode }]);
                 }}
-                onMouseEnter={e => {
-                  const ele = e.target.querySelector('i.anticon-close');
-                  if (ele) {
-                    const className = ele.className;
-                    if (!className.includes('show-cancel')) {
-                      e.target.querySelector('i.anticon-close').className =
-                        className + ' show-cancel';
-                    }
-                  }
-                }}
-                onMouseLeave={e => {
-                  const ele = e.target.querySelector('i.anticon-close');
-                  if (ele) {
-                    const className = ele.className;
-                    if (className.includes('show-cancel')) {
-                      e.target.querySelector(
-                        'i.anticon-close'
-                      ).className = className.replace(' show-cancel', '');
-                    }
-                  }
-                }}
               >
-                <div style={{ flex: 1 }}>
-                  {app.appIconUrl ? (
-                    <Icon
-                      type="mail"
-                      style={{
-                        color: '#1890FF',
-                        fontSize: 20,
-                        marginRight: 8
-                      }}
-                    />
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                  {app.appIconUrl && app.appIconUrlValidate ? (
+                    <img src={app.appIconUrl} className="new-home-app-icon" />
                   ) : (
-                    <i
-                      className={`iconfont icon-${app.DeskiconCls ||
-                        'wdkq_icon'}`}
-                      style={{ fontSize: 48 }}
-                    />
+                    <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
                   {app.title}
                 </div>
@@ -252,6 +221,14 @@ class FixedApps extends React.PureComponent {
               </div>
             );
           })}
+          {!loading && apps.length === 0 && (
+            <div className="fixed-functions__empty">
+              <img src={fixImg} />
+              <div className="fixed-functions__empty-tip">
+                您还没有设置固定功能， 您可以点击固定图标设置 或者点击右上角设置
+              </div>
+            </div>
+          )}
         </div>
         <Modal
           visible={modalVisible}

@@ -7,7 +7,7 @@
 
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
-export { TableData } from '../components/common/loadableCommon';
+export { TableData, PWRedirect } from '../components/common/loadableCommon';
 export { BusinessManagement } from '../components/common/loadableCommon';
 export {
   TableDataWrap,
@@ -147,3 +147,4 @@ export { RBAVideoData } from '../components/custom/loadableCustom';
 export { Compact } from '../components/custom/loadableCustom';
 export { ContractApproval } from '../components/custom/loadableCustom';
 export { PersonnelInformation } from '../components/custom/loadableCustom';
+export { HeadquartersManage } from '../components/custom/loadableCustom';

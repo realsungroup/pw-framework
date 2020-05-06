@@ -142,6 +142,15 @@ http.createApi('getReminderData', {
 });
 
 /**
+ * 根据dblinkname配置获取提醒数据
+ * 参数：无
+ */
+http.createApi('getReminderDatas', {
+  method: 'get',
+  url: 'api/Resource/RetrieveDataOfHasReminders'
+});
+
+/**
  * 获取 OrgChart 所需的节点
  */
 http.createApi('getNodesData', {
@@ -486,5 +495,13 @@ http.createApi('CreateAuditFlowData', {
 http.createApi('getByProcedure', {
   method: 'get',
   url: '/api/200/table/GetByProcedure'
+});
+
+/**
+ *根据资源编号获取跳转URL
+ */
+http.createApi('getRedirectUrl', {
+  method: 'get',
+  url: '/api/Resource/GetRedirectUrl'
 });
 export default http;

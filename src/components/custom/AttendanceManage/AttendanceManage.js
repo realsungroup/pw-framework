@@ -204,13 +204,7 @@ class AttendanceManage extends React.Component {
     } = this.state;
     return (
       <Spin spinning={loading}>
-        <div
-          id="attendance-manage"
-          style={{
-            display: 'flex',
-            height: desktop === 'DESKTOP' ? '100vh' : 'calc(100vh - 160px)'
-          }}
-        >
+        <div id="attendance-manage">
           {/* 左侧菜单 */}
           <div
             style={{

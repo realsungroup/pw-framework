@@ -30,7 +30,9 @@ window.pwConfig = {
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
-      onlineTrainningDownload: 'http://finisar26.realsun.me:1100/' //在线培训数据下载
+      onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
+      headquartersBaseURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流
+      headquartersDownloadURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流下载URl
     },
 
     // 需前端缓存配置的资源
@@ -106,6 +108,18 @@ window.pwConfig = {
     // 工作台配置
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
 
+    // 提醒数据配置
+    reminderDataConfig: [
+      {
+        dblinkname: 'me',
+        baseurl: 'http://ngrok4.realsun.me:6060/'
+      },
+      {
+        dblinkname: 'ehr',
+        baseurl: 'http://ngrok5.realsun.me:6060/'
+      }
+    ],
+
     // bi 系统配置
     biBaseURL: 'http://localhost:3002/', // bi 系统基地址
 
@@ -174,7 +188,9 @@ window.pwConfig = {
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
-      onlineTrainningDownload: 'http://finisar26.realsun.me:1100/' //在线培训数据下载
+      onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
+      headquartersBaseURL: 'http://10.108.2.66:9091/', //总部工作流管理-总部工作流
+      headquartersDownloadURL: 'http://10.108.2.66:80', //总部工作流管理-总部工作流下载URl
     },
 
     // 需前端缓存配置的资源
@@ -243,6 +259,18 @@ window.pwConfig = {
 
     // 工作台配置
     openFuncInSelfResids: [597167932280], // 在本页面打开功能页面的功能 resid
+
+    // 提醒数据配置
+    reminderDataConfig: [
+      {
+        dblinkname: 'me',
+        baseurl: 'http://ngrok4.realsun.me:6060'
+      },
+      {
+        dblinkname: 'ehr',
+        baseurl: 'http://ngrok5.realsun.me:6060'
+      }
+    ],
 
     // bi 系统配置
     biBaseURL: 'http://localhost:3001/', // bi 系统基地址

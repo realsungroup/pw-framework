@@ -269,9 +269,13 @@ this.setState({emergency:emergency})
        var sTime=res2.data[n].startTime.split(' ');
        var eTime=res2.data[n].endTime.split(' ');
        sTime=sTime[0].split('/')
-       sTime=sTime[0]+'-'+sTime[1]+'-'+sTime[2];
+       sTime=sTime[0]
+      //  +'-'+sTime[1];
+      //  +'-'+sTime[2];
        eTime=eTime[0].split('/')
-       eTime=eTime[0]+'-'+eTime[1]+'-'+eTime[2];
+       eTime=eTime[0]
+      //  +'-'+eTime[1];
+      //  +'-'+eTime[2];
       arrEdu.push({
         time:sTime+'至'+eTime,
         school:res2.data[n].school,

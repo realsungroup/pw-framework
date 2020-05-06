@@ -3,6 +3,7 @@ import './NewHome.less';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import folderPng from './assets/folder.png';
+import defaultAbbreviation from './assets/default-abbreviation.png';
 import memoizeone from 'memoize-one';
 import { Icon, message, Modal } from 'antd';
 import WindowView from './WindowView';
@@ -19,8 +20,39 @@ import RecentApps from './RecentApps';
 import Spin from './Spin';
 import DesktopLockScreen from '../Desktop/DesktopLockScreen';
 import { delay } from 'lodash';
+import html2canvas from 'html2canvas';
+import moment from 'moment';
 
-const { businessOptionalResIds } = window.pwConfig[process.env.NODE_ENV];
+const { businessOptionalResIds, reminderDataConfig } = window.pwConfig[
+  process.env.NODE_ENV
+];
+
+function validateImage(pathImg) {
+  return new Promise(res => {
+    let ImgObj = new Image();
+    ImgObj.onload = () => {
+      if (ImgObj.width > 0 && ImgObj.height > 0) {
+        res(true);
+      } else {
+        res(false);
+      }
+    };
+    ImgObj.onerror = () => {
+      res(false);
+    };
+    ImgObj.src = pathImg;
+  });
+  ////判断图片地址是否有效
+  let ImgObj = new Image();
+  ImgObj.src = pathImg;
+  process.env.NODE_ENV === 'development' &&
+    console.log(pathImg, ImgObj.width, ImgObj.height);
+  if (ImgObj.width > 0 && ImgObj.height > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 const objArrUnique = (arr, key) => {
   for (let i = 0; i < arr.length; i++) {
@@ -31,22 +63,25 @@ const objArrUnique = (arr, key) => {
     }
   }
 };
-const dealApps = apps => {
+const dealApps = async (apps, arr) => {
   apps.forEach(app => (app.ResID = app.ResID || app.resid));
   objArrUnique(apps, 'ResID');
-  let arr = [];
-  apps.forEach(app => {
+  // let arr = [];
+  for (let ind = 0; ind < apps.length; ind++) {
+    const app = apps[ind];
     const appIndex = arr.findIndex(item => item.typeName === app.BusinessNode);
     let index = appIndex;
     if (appIndex === -1) {
+      const validate = await validateImage(app.BusinessIconUrl);
       arr[arr.length] = {
         apps: [],
         typeName: app.BusinessNode,
         categoricalApps: new Map(),
-        url: app.BusinessIconUrl || folderPng
+        url: validate ? app.BusinessIconUrl : folderPng
       };
       index = arr.length - 1;
     }
+    app.appIconUrlValidate = await validateImage(app.appIconUrl);
     let categoryapps = arr[index].categoricalApps.get(
       app.PwCategory || '未分类'
     );
@@ -57,26 +92,10 @@ const dealApps = apps => {
       arr[index].categoricalApps.set(app.PwCategory || '未分类', [app]);
     }
     arr[index].apps.push(app);
-  });
-  return arr;
+  }
+  // return arr;
 };
-// const dealApps = memoizeone(modules => {
-//   modules.forEach(module => {
-//     module.apps.forEach(app => {
-//       if (!module.categoricalApps) {
-//         module.categoricalApps = new Map();
-//       }
-//       let categoryapps = module.categoricalApps.get(app.PwCategory || '未分类');
-//       if (categoryapps) {
-//         categoryapps.push(app);
-//         module.categoricalApps.set(app.PwCategory || '未分类', categoryapps);
-//       } else {
-//         module.categoricalApps.set(app.PwCategory || '未分类', [app]);
-//       }
-//     });
-//   });
-//   return modules;
-// });
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -100,7 +119,9 @@ class Home extends React.Component {
       waitingHandleFetching: false,
       appDataFetching: false,
       showAbbreviation: false,
-      searchTextHeader: ''
+      searchTextHeader: '',
+      abbreviations: [],
+      abbreviationDoms: []
     };
   }
   componentDidMount() {
@@ -117,23 +138,61 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
+    this.getData();
+    this.fetchWaitingHandle();
+    this.setRecentApps();
+  }
+
+  setRecentApps = async () => {
     let recentApps = JSON.parse(getItem('recentApps'));
     if (recentApps && Array.isArray(recentApps)) {
+      recentApps = this.getSortRecentApps(recentApps);
+      // recentApps.forEach(item => {
+      //   item.appIconUrlValidate = validateImage(item.appIconUrl);
+      // });
+      for (let index = 0; index < recentApps.length; index++) {
+        const element = recentApps[index];
+        element.appIconUrlValidate = await validateImage(element.appIconUrl);
+      }
       this.setState({ recentApps });
     } else {
       setItem('recentApps', JSON.stringify([]));
       this.setState({ recentApps: [] });
     }
-    this.getData();
-    this.fetchWaitingHandle();
-  }
+  };
+  // componentDidUpdate(preProps, preState) {
+  //   if (
+  //     this.state.recentApps.length &&
+  //     preState.recentApps !== this.state.recentApps
+  //   ) {
+  //     // const newRecentApps = this.state.recentApps
+  //   }
+  // }
+  getSortRecentApps = memoizeone((apps = []) => {
+    return apps.sort((a, b) => {
+      return a.dateString < b.dateString ? 1 : -1;
+    });
+  });
 
   fetchWaitingHandle = async () => {
     try {
       this.setState({ waitingHandleFetching: true });
-      const res = await http().getReminderData();
-
-      this.setState({ waitingHandleData: res.data });
+      let linknames = '';
+      reminderDataConfig.forEach(item => {
+        linknames += item.dblinkname + ',';
+      });
+      linknames = linknames.substring(0, linknames.length - 1);
+      const res = await http().getReminderDatas({ linknames });
+      const data = [];
+      reminderDataConfig.forEach(item => {
+        if (res.data[item.dblinkname]) {
+          res.data[item.dblinkname].forEach(_item => {
+            _item.dblinkname = item.dblinkname;
+          });
+          data.push(...res.data[item.dblinkname]);
+        }
+      });
+      this.setState({ waitingHandleData: data });
     } catch (error) {
       console.error(error);
       return message.error(error.message);
@@ -159,7 +218,9 @@ class Home extends React.Component {
     }
 
     // 桌面的文件夹
-    const folders = dealApps([...res.data, ...(res.userdefined || [])]);
+    const folders = [];
+    await dealApps([...res.data, ...(res.userdefined || [])], folders);
+    this.setState({ appDataFetching: false });
     this.setState(
       { folders, allApps: res.data, fixedApps: res.userdefined },
       () => {
@@ -271,7 +332,21 @@ class Home extends React.Component {
 
   handleShowAbbreviation = () => {
     if (this.state.activeApps.length) {
-      this.setState({ showAbbreviation: true });
+      this.setState({ showAbbreviation: !this.state.showAbbreviation }, () => {
+        setTimeout(() => {
+          if (this.state.showAbbreviation) {
+            let apps = document.querySelectorAll('iframe');
+            // this.toimag(apps);
+            const doms = [];
+            apps.forEach(item => {
+              let dom = item.contentDocument.querySelector('.functions');
+              doms.push(dom);
+            });
+
+            this.setState({ abbreviationDoms: doms });
+          }
+        }, 200);
+      });
     } else {
       message.info('您还未打开任何功能窗口');
     }
@@ -324,7 +399,8 @@ class Home extends React.Component {
       activeApps: newActiveApps,
       zIndexActiveApps: newZIndexActiveApps,
       appsSwitchStatus: newAppsSwitchStatus,
-      showHome: false
+      showHome: false,
+      showAbbreviation: false
     });
   };
   /**
@@ -337,8 +413,7 @@ class Home extends React.Component {
     const arr = [];
     if (appArr.length === 1) {
       const activeApp = activeApps.find(
-        app =>
-          app.ResID === appArr[0].app.ResID || app.resid === appArr[0].app.resid
+        app => app.ResID === appArr[0].app.ResID
       );
       if (activeApp) {
         return this.handleBottomBarAppTrigger(activeApp);
@@ -395,7 +470,7 @@ class Home extends React.Component {
     } = this.state;
     const appArr = [];
     const newRecentApps = [...recentApps];
-    let hasNewRecentApp = false;
+    // let hasNewRecentApp = false;
     willOpenApps.forEach(willOpenApp => {
       // 不能打开同一个窗口
       if (
@@ -415,15 +490,23 @@ class Home extends React.Component {
       const recentApp = recentApps.find(item => {
         return willOpenApp.activeAppOthersProps.ResID == item.ResID;
       });
+      const datastring = moment().format('YYYY-MM-DD HH:mm:ss');
       if (!recentApp) {
-        hasNewRecentApp = true;
-        newRecentApps.unshift(willOpenApp.activeAppOthersProps);
+        // hasNewRecentApp = true;
+        newRecentApps.unshift({
+          ...willOpenApp.activeAppOthersProps,
+          dateString: datastring
+        });
+      } else {
+        recentApp.dateString = datastring;
       }
     });
-    if (hasNewRecentApp) {
-      setItem('recentApps', JSON.stringify(newRecentApps));
-      this.setState({ recentApps: newRecentApps });
+    if (newRecentApps.length > 20) {
+      newRecentApps.length = 20;
     }
+    const sortApps = this.getSortRecentApps(newRecentApps);
+    setItem('recentApps', JSON.stringify(this.getSortRecentApps(sortApps)));
+    // this.setState({ recentApps: newRecentApps });
 
     activeApps.forEach(activeApp => {
       activeApp.isActive = false;
@@ -434,7 +517,9 @@ class Home extends React.Component {
       activeApps: [...activeApps, ...appArr],
       zIndexActiveApps: newZIndexActiveApps,
       appsSwitchStatus: [...appsSwitchStatus, true],
-      showHome: false
+      showHome: false,
+      showAbbreviation: false,
+      recentApps: sortApps
     });
   };
   handleAddToDesktop = appData => {
@@ -566,14 +651,16 @@ class Home extends React.Component {
   };
 
   handleCloseActiveApp = activeApp => {
-    const { activeApps, zIndexActiveApps } = this.state;
+    const { activeApps, zIndexActiveApps, abbreviationDoms } = this.state;
     const newActiveApps = [...activeApps];
+    const newabbreviationDoms = [...abbreviationDoms];
 
     const appIndex = newActiveApps.findIndex(
       item => item.appName === activeApp.appName
     );
 
     newActiveApps.splice(appIndex, 1);
+    newabbreviationDoms.splice(appIndex, 1);
 
     // 删除 zIndexActiveApps
     const newZIndexActiveApps = [...zIndexActiveApps];
@@ -584,7 +671,8 @@ class Home extends React.Component {
 
     this.setState({
       activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps
+      zIndexActiveApps: newZIndexActiveApps,
+      abbreviationDoms: newabbreviationDoms
     });
     if (newActiveApps.length === 0) {
       this.setState({ showAbbreviation: false });
@@ -644,6 +732,25 @@ class Home extends React.Component {
     this.setState({ searchTextHeader: e.target.value });
     delay(this.filterMenus, 200);
   };
+  handleResizeStop = (activeApp, dW, dH) => {
+    console.log(dW, dH);
+    activeApp.width = activeApp.width + dW;
+    activeApp.height = activeApp.height + dH;
+
+    activeApp.customWidth = activeApp.width;
+    activeApp.customHeight = activeApp.height;
+
+    activeApp.zoomStatus = 'custom';
+    this.forceUpdate();
+  };
+  handleCustom = activeApp => {
+    activeApp.x = activeApp.customX;
+    activeApp.y = activeApp.customY;
+    activeApp.width = activeApp.customWidth;
+    activeApp.height = activeApp.customHeight;
+    activeApp.zoomStatus = 'custom';
+    this.forceUpdate();
+  };
   renderWindowView = () => {
     const { activeApps, zIndexActiveApps, showHome } = this.state;
     return activeApps.map((activeApp, index) => {
@@ -655,7 +762,7 @@ class Home extends React.Component {
       return (
         <WindowView
           ref={node => this.getWindowViewRef(node, activeApp.title)}
-          key={activeApp.appName + index}
+          key={activeApp.ResID}
           title={activeApp.appName}
           visible={visible}
           // onClose={() => this.handleCloseActiveApp(activeApp)}
@@ -668,10 +775,10 @@ class Home extends React.Component {
           y={activeApp.y}
           minWidth={activeApp.minWidth}
           minHeight={activeApp.minHeight}
-          // onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
+          onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
           // onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
           // onMax={() => this.handleMax(activeApp)}
-          // onCustom={() => this.handleCustom(activeApp)}
+          onCustom={() => this.handleCustom(activeApp)}
           isActive={activeApp.isActive}
           zoomStatus={activeApp.zoomStatus}
         >
@@ -713,6 +820,7 @@ class Home extends React.Component {
                 expandedKeys={allFoldersExpandedKeys}
                 onRefresh={this.getData}
                 onClick={this.handleOpenWindow}
+                loading={appDataFetching}
               />
             </div>
             <div className="new-home__waiting-handle">
@@ -724,6 +832,7 @@ class Home extends React.Component {
                   <WaitingHandle
                     data={waitingHandleData}
                     onItemClick={this.handleRemindItemClick}
+                    reminderDataConfig={reminderDataConfig}
                   />
                 )}
               </div>
@@ -758,7 +867,8 @@ class Home extends React.Component {
                     <img
                       alt={module.typeName}
                       className="new-home__module-icon"
-                      src={module.apps.length && module.apps[0].BusinessIconUrl}
+                      // src={module.apps.length && module.apps[0].BusinessIconUrl}
+                      src={module.url}
                     />
                     <span className="new-home__module-name">
                       {module.typeName}
@@ -790,25 +900,20 @@ class Home extends React.Component {
                                         { app, typeName: module.typeName }
                                       ])
                                     }
+                                    title={app.title}
                                   >
-                                    <div className="desktop__folder-category-app-icon">
-                                      {app.appIconUrl ? (
-                                        <Icon
-                                          type="mail"
-                                          style={{
-                                            color: '#1890FF',
-                                            fontSize: 20,
-                                            marginRight: 8
-                                          }}
-                                        />
-                                      ) : (
-                                        <i
-                                          className={`iconfont icon-${app.DeskiconCls ||
-                                            'wdkq_icon'}`}
-                                          style={{ fontSize: 48 }}
-                                        />
-                                      )}
-                                    </div>
+                                    {app.appIconUrl &&
+                                    app.appIconUrlValidate ? (
+                                      <img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                      />
+                                    ) : (
+                                      <Icon
+                                        type="mail"
+                                        className="new-home-app-icon-mail"
+                                      />
+                                    )}
                                     <span className="new-home__module-category-app-title">
                                       {app.title}
                                     </span>
@@ -840,7 +945,7 @@ class Home extends React.Component {
               key={app.title}
               onClick={() => this.handleBottomBarAppTrigger(app)}
             >
-              <span>{app.title}</span>
+              <span className="new-home__top-bar__app-title">{app.title}</span>
               <Icon
                 type="close"
                 onClick={e => {
@@ -861,29 +966,27 @@ class Home extends React.Component {
       userInfo,
       menus,
       searchTextHeader,
-      allFoldersExpandedKeys
+      allFoldersExpandedKeys,
+      showAbbreviation
     } = this.state;
-
-    // const userInfo = (
-    //   <UserInfo userName={userData.userName} userRank={userData.userRank} />
-    // );
     return (
       <div className="new-home">
         <PageHeader
-          // title={userInfo}
-          // reminderNum={reminderNum}
           onPwlogoClick={() =>
             this.setState({ showHome: true, showAbbreviation: false })
           }
           lockScreenRef={this.desktopLockScreenRef}
           onShowAbbreviation={this.handleShowAbbreviation}
           activeAppsNumber={activeApps.length}
+          activeApps={activeApps}
           menus={menus}
           onMenuClick={this.handleAddToDesktop}
           onLockScreen={this.handleLockScreen}
           onSearchChange={this.handleSearchChange}
           searchTextHeader={searchTextHeader}
           allFoldersExpandedKeys={allFoldersExpandedKeys}
+          onOpenWindow={this.handleOpenWindow}
+          onCloseActiveApp={this.handleCloseActiveApp}
         />
         {!showHome && activeApps.length ? this.renderTopBar(activeApps) : null}
         {this.renderHome()}
@@ -897,9 +1000,53 @@ class Home extends React.Component {
     );
   }
 
+  toimag = async iframes => {
+    // const abbreviations = this.state.abbreviations;
+    // for (let i = 0; i < iframes.length; i++) {
+    //   let dom = iframes[i].contentDocument.querySelector('.functions');
+    //   const canvas = await html2canvas(dom);
+    //   const imgDataURL = canvas.toDataURL('image/png', 1.0);
+
+    //   abbreviations[i] = imgDataURL;
+    //   this.setState({ abbreviations });
+    // }
+    iframes.forEach((item, index) => {
+      let dom = item.contentDocument.querySelector('.functions');
+      const promise = new Promise((resolve, reject) => {
+        const { showAbbreviation } = this.state;
+        if (showAbbreviation) {
+          html2canvas(dom)
+            .then(canvas => {
+              const imgDataURL = canvas.toDataURL('image/png', 1.0);
+              resolve({ imgDataURL: imgDataURL, index });
+            })
+            .catch(error => {
+              reject(error);
+            });
+        } else {
+          reject(new Error('取消生成缩略图'));
+        }
+      });
+      promise
+        .then(val => {
+          const { abbreviations, showAbbreviation } = this.state;
+          if (showAbbreviation) {
+            abbreviations[val.index] = val.imgDataURL;
+            this.setState({ abbreviations });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
+  };
   renderAbbreviation = () => {
-    const { showAbbreviation, activeApps } = this.state;
-    // let apps = document.querySelectorAll('.window-view');
+    const {
+      showAbbreviation,
+      activeApps,
+      abbreviations,
+      abbreviationDoms
+    } = this.state;
     return (
       <div
         className={classNames('new-home__abbreviation', {
@@ -908,50 +1055,130 @@ class Home extends React.Component {
       >
         {activeApps.map((item, index) => {
           return (
-            <div className="new-home__abbreviation-app">
-              <header className="new-home__abbreviation-app__header">
-                <div className="new-home__abbreviation-app__header__title">
-                  {item.appIconUrl ? (
-                    <Icon
-                      type="mail"
-                      style={{
-                        color: '#1890FF',
-                        fontSize: 20,
-                        marginRight: 8
-                      }}
-                    />
-                  ) : (
-                    <i
-                      className={`iconfont icon-${item.DeskiconCls ||
-                        'wdkq_icon'}`}
-                      style={{ fontSize: 48 }}
-                    />
-                  )}
-                  {item.appName}
-                </div>
-                <div>
-                  <Icon
-                    type="close"
-                    className="abbreviation-app__header__close-btn"
-                    onClick={() => {
-                      this.handleCloseActiveApp(item);
-                    }}
-                  />
-                </div>
-              </header>
-              <div
-                className="new-home__abbreviation-app__body"
-                onClick={() => {
-                  this.setState({ showAbbreviation: false });
-                  this.handleBottomBarAppTrigger(item);
-                }}
-              ></div>
-            </div>
+            <AbbreviationApp
+              app={item}
+              key={item.REC_ID}
+              onCloseActiveApp={this.handleCloseActiveApp}
+              onClick={() => {
+                this.setState({ showAbbreviation: false });
+                this.handleBottomBarAppTrigger(item);
+              }}
+              dom={abbreviationDoms[index]}
+              ready={showAbbreviation}
+            />
           );
         })}
       </div>
     );
   };
+}
+
+class AbbreviationApp extends React.Component {
+  state = {
+    abbreviation: '',
+    showDefaultAbbreviation: false
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      (nextProps.ready && nextProps.dom != this.props.dom) ||
+      nextState.abbreviation != this.state.abbreviation
+    );
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { ready, dom } = this.props;
+    if (dom != prevProps.dom) {
+      ready && dom && this.toimag();
+    }
+  }
+  toimag = () => {
+    const { dom } = this.props;
+    if (dom) {
+      //   let dom = item.contentDocument.querySelector('.functions');
+      if (dom.querySelector('.pw-redirect')) {
+        return this.setState({
+          showDefaultAbbreviation: true,
+          abbreviation: defaultAbbreviation
+        });
+      }
+      const promise = new Promise((resolve, reject) => {
+        html2canvas(dom)
+          .then(canvas => {
+            const imgDataURL = canvas.toDataURL('image/png', 1.0);
+            resolve(imgDataURL);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+      promise
+        .then(val => {
+          this.setState({ abbreviation: val });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+  render() {
+    const { app, onCloseActiveApp, onClick } = this.props;
+    const { abbreviation, showDefaultAbbreviation } = this.state;
+    return (
+      <div className="new-home__abbreviation-app" key={app.REC_ID}>
+        <header className="new-home__abbreviation-app__header">
+          <div className="new-home__abbreviation-app__header__title">
+            {app.appIconUrl && app.appIconUrlValidate ? (
+              <img src={app.appIconUrl} className="new-home-app-icon" />
+            ) : (
+              <Icon type="mail" className="new-home-app-icon-mail" />
+            )}
+            {app.appName}
+          </div>
+          <div>
+            <Icon
+              type="close"
+              className="abbreviation-app__header__close-btn"
+              onClick={() => {
+                onCloseActiveApp(app);
+              }}
+            />
+          </div>
+        </header>
+        <div
+          className="new-home__abbreviation-app__body"
+          onClick={() => {
+            onClick(app);
+          }}
+        >
+          {abbreviation ? (
+            showDefaultAbbreviation ? (
+              <div className="abbreviation-app__default-wrapper">
+                <div className="abbreviation-app__default-content">
+                  <div className="abbreviation-app__default-content__app-name">
+                    {app.appName}
+                  </div>
+                  <img
+                    src={abbreviation}
+                    className="abbreviation-app__default-content__img"
+                  />
+                  <div className="abbreviation-app__default-content__tip">
+                    该功能不支持缩略图显示
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={abbreviation}
+                style={{ height: '100%', width: '100%' }}
+              />
+            )
+          ) : (
+            <Spin />
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Home;

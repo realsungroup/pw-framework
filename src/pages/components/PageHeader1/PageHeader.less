@@ -7,7 +7,7 @@
   text-align: left;
   padding: 8px;
   background-color: #fff;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 1);
+  // box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 1);
   border-bottom: 1px solid #dddddd;
   z-index: 22;
   transition: 0.3s; // power-works 的 logo
@@ -57,6 +57,10 @@
     padding: 0 8px;
     cursor: pointer;
   }
+  &__abbreviation-icon {
+    height: 30px;
+  }
+
   .anticon&__abbreviation-icon {
     font-size: 24px;
     color: @primary-color;
@@ -188,6 +192,47 @@
     }
     &__user {
       display: none;
+    }
+  }
+}
+.new-home__page-header__menu {
+  .ant-menu-item {
+    &:hover {
+      border: 1px solid;
+      text-decoration: underline;
+    }
+  }
+  .ant-menu-inline .ant-menu-item::after {
+    border-right: none;
+  }
+}
+.new-home__page-header-popver {
+  .ant-popover-inner-content {
+    padding: 8px 0;
+    width: 200px;
+  }
+  .new-home__page-header__active-apps {
+    .new-home__page-header__active-app {
+      border-top: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
+      padding: 8px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      &__title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        color: #000000;
+        .new-home__page-header__active-app--active {
+          color: @primary-color;
+        }
+      }
+      &:hover {
+        background: rgba(0, 0, 0, 0.03);
+        border-top: 1px solid rgba(220, 220, 220, 1);
+        border-bottom: 1px solid rgba(220, 220, 220, 1);
+      }
     }
   }
 }

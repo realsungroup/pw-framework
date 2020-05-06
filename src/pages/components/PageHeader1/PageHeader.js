@@ -7,11 +7,13 @@ import logoImg from '../../../assets/logo-26.png';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
 import http, { makeCancelable } from 'Util20/api';
-import { Drawer, Menu, Icon, Input, Badge, Popconfirm } from 'antd';
+import { Drawer, Menu, Icon, Input, Badge, Popover } from 'antd';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 import HeaderBtn from './HeaderBtn';
+import windowImg from './images/window-icon.png';
+import windowSvg from './images/窗口.svg';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -46,14 +48,14 @@ class PageHeader extends React.Component {
     this.setState({
       drawerVisible: false
     });
-    window.addEventListener('scroll', debounce(this.shadowChange, 200));
+    // window.addEventListener('scroll', debounce(this.shadowChange, 200));
     const { title, type } = this.getTypeAndTitle();
     this.props.dispatch({ type: 'SET_TITLE_TYPE', data: { title, type } });
-    this.props.dispatch(getNavlistApps());
+    // this.props.dispatch(getNavlistApps());
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('scroll', this.shadowChange);
+    // window.removeEventListener('scroll', this.shadowChange);
   };
 
   getTypeAndTitle = () => {
@@ -97,7 +99,10 @@ class PageHeader extends React.Component {
       menus,
       searchTextHeader,
       onSearchChange,
-      allFoldersExpandedKeys
+      allFoldersExpandedKeys,
+      activeApps,
+      onOpenWindow,
+      onCloseActiveApp
     } = this.props;
     const { isInTop, drawerVisible, rightDrawerVisible } = this.state;
 
@@ -109,11 +114,7 @@ class PageHeader extends React.Component {
     };
 
     return (
-      <div
-        className={classNames('page-header', {
-          'in-top': isInTop
-        })}
-      >
+      <div className={classNames('page-header')}>
         <div className="page-header__logo">
           <a
             href="javascript:;"
@@ -175,9 +176,21 @@ class PageHeader extends React.Component {
             this.props.onShowAbbreviation();
           }}
         >
-          <Badge count={activeAppsNumber}>
-            <Icon type="switcher" className="page-header__abbreviation-icon" />
-          </Badge>
+          <Popover
+            placement="bottomRight"
+            content={
+              <ActiveAppList
+                activeApps={activeApps}
+                onOpenWindow={onOpenWindow}
+                onCloseActiveApp={onCloseActiveApp}
+              />
+            }
+            overlayClassName="new-home__page-header-popver"
+          >
+            <Badge count={activeAppsNumber}>
+              <img src={windowSvg} className="page-header__abbreviation-icon" />
+            </Badge>
+          </Popover>
         </div>
 
         <Drawer
@@ -192,6 +205,8 @@ class PageHeader extends React.Component {
             defaultOpenKeys={allFoldersExpandedKeys}
             // selectedKeys={[this.state.current]}
             mode="inline"
+            className="new-home__page-header__menu"
+            overflowedIndicator={<Icon type="down" />}
           >
             {menus.map(folder => this.renderMenuItem(folder))}
           </Menu>
@@ -209,6 +224,7 @@ class PageHeader extends React.Component {
       </div>
     );
   }
+
   renderMenuItem = data => {
     if (data.isParentNode) {
       return (
@@ -232,11 +248,75 @@ class PageHeader extends React.Component {
           this.props.onMenuClick(data);
         }}
       >
+        {/* <img src={data.appIconUrl} className="new-home-app-icon-mail" /> */}
         {data.title}
       </Menu.Item>
     );
   };
 }
+const ActiveAppList = React.memo(
+  ({ activeApps, onOpenWindow, onCloseActiveApp }) => {
+    return (
+      <div className="new-home__page-header__active-apps">
+        {activeApps.length ? (
+          activeApps.map(app => {
+            return (
+              <div
+                className="new-home__page-header__active-app"
+                key={app.REC_ID}
+                onClick={e => {
+                  e.stopPropagation();
+                  onOpenWindow([
+                    {
+                      app,
+                      typeName: app.BusinessNode
+                    }
+                  ]);
+                }}
+              >
+                <div className="new-home__page-header__active-app__title">
+                  {app.appIconUrl && app.appIconUrlValidate ? (
+                    <img src={app.appIconUrl} className="new-home-app-icon" />
+                  ) : (
+                    <Icon type="mail" className="new-home-app-icon-mail" />
+                  )}
+                  <span
+                    className={
+                      app.isActive
+                        ? 'new-home__page-header__active-app--active'
+                        : ''
+                    }
+                  >
+                    {app.title}
+                  </span>
+                </div>
+                <Icon
+                  type="close"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onCloseActiveApp(app);
+                  }}
+                  className="cancel-btn"
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div
+            style={{
+              height: 100,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            未打开任何功能
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 const mapStateToProps = state => ({ ...state });
 

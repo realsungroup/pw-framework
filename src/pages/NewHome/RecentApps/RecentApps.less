@@ -17,8 +17,22 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    position: relative;
     &:hover {
       background: rgba(0, 0, 0, 0.06);
+      &::after {
+        width: 0px;
+      }
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 40px;
+      background: #ffffff;
     }
     &__title {
       display: flex;
@@ -27,10 +41,10 @@
     .anticon-pushpin {
       font-size: 24px;
       color: #bbbbbb;
-      visibility: hidden;
-      &.show-pushpin {
-        visibility: visible;
-      }
+      // visibility: hidden;
+      // &.show-pushpin {
+      //   visibility: visible;
+      // }
     }
   }
   &__norecent {
