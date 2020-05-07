@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Button, Input, Form, Icon, Radio,Modal ,Checkbox,Popconfirm} from 'antd';
 import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo-26.png';
 import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';

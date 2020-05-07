@@ -90,7 +90,7 @@ window.pwConfig = {
     // logo 配置
     homeLogoSize: 42, // 首页 logo 尺寸
 
-    loginLogoSize: 42, // 登录页 logo 尺寸
+    loginLogoSize: 80, // 登录页 logo 尺寸
 
     // 上传文件配置
     // upload: {
