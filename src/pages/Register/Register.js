@@ -14,19 +14,20 @@ class Register extends React.Component {
   constructor() {
     super();
     this.state = {
-      redirectToReferrer:false,
+      redirectToReferrer: false,
       showSpin: false,
       disabled: false,
       counts: '',
-      userId:'',
-      password:''
+      userId: '',
+      password: '',
+      once:true
     };
   }
 
-  register =  () => {
+  register = () => {
     const { form } = this.props;
     let res;
-     this.props.form.validateFieldsAndScroll(async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (err) {
         return;
       }
@@ -54,7 +55,7 @@ class Register extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
-     
+
       this.setState({
         showSpin: false,
       });
@@ -64,24 +65,23 @@ class Register extends React.Component {
   handleLogin = async () => {
     let res;
     const { form } = this.props;
-      let registerInformation = {
-        company: form.getFieldValue('companyName'), // 机构名称
-        userName: form.getFieldValue('userName'), // 用户姓名
-        sex: form.getFieldValue('sex'), // 性别
-        telphone: form.getFieldValue('phone'), // 手机号
-        userid: form.getFieldValue('loginNum'), //登录账号
-        newpass: form.getFieldValue('loginPassword'), // 登录密码
-
-      };
-      try {
-        res = await http().defaultLogin({
-          Code: registerInformation.userid,
-          Password: registerInformation.newpass,
-          // useCookie:true
-        });
-        const result = res.OpResult;
-        if (result === 'Y') {
-          // 登录成功
+    let registerInformation = {
+      company: form.getFieldValue('companyName'), // 机构名称
+      userName: form.getFieldValue('userName'), // 用户姓名
+      sex: form.getFieldValue('sex'), // 性别
+      telphone: form.getFieldValue('phone'), // 手机号
+      userid: form.getFieldValue('loginNum'), //登录账号
+      newpass: form.getFieldValue('loginPassword'), // 登录密码
+    };
+    try {
+      res = await http().defaultLogin({
+        Code: registerInformation.userid,
+        Password: registerInformation.newpass,
+        // useCookie:true
+      });
+      const result = res.OpResult;
+      if (result === 'Y') {
+        // 登录成功
         setItem('userInfo', JSON.stringify(res));
         const userInfo = JSON.parse(getItem('userInfo'));
         if (res.OpResult !== 'Y') {
@@ -89,38 +89,45 @@ class Register extends React.Component {
         } else {
           setItem('userInfo', JSON.stringify(userInfo));
         }
-          // this.setState({
-          //   redirectToReferrer: true
-          // });
-          this.props.history.replace(
-            '/'
-          )
-          window.location.reload();
-        } else if (result === 'N') {
-          return message.error(res.ErrorMsg);
-        }
-       this.saveRegisterInfo(registerInformation)
-      } catch (error) {
-        message.error(error.message);
+      } else if (result === 'N') {
+        return message.error(res.ErrorMsg);
       }
+      if(this.state.once){
+        this.saveRegisterInfo(registerInformation);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+
   };
 
-  saveRegisterInfo = async (data) =>{
-   let  dataInfo = {
+  saveRegisterInfo = async (data) => {
+    let dataInfo = {
       ...data,
-      _id : 1,
-      _state : "editoradd"
-    }
+      _id: 1,
+      _state: 'editoradd',
+    };
     let res;
     try {
-          res = await http().saveRecord({
-           resid,
-           data:JSON.stringify([dataInfo])
-          });
-        } catch (error) {
-          message.error(error.message);
-          }
-  }
+      res = await http().saveRecord({
+        resid,
+        data: JSON.stringify([dataInfo]),
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    http().clearCache();
+    this.handleLogin();
+        this.setState({
+          once:false
+        })
+    setTimeout(()=>{
+      this.props.history.replace('/')
+      window.location.reload()
+    }
+    ,500)
+  };
+
 
   //获取验证码
   getVerCode = async () => {
@@ -183,9 +190,17 @@ class Register extends React.Component {
   };
 
   render() {
-    const { redirectToReferrer,disabled, counts, showSpin, registerMode } = this.state;
+    const {
+      redirectToReferrer,
+      disabled,
+      counts,
+      showSpin,
+      registerMode,
+    } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const { from } = this.props.location.state || { from: { pathname: '/index' } };
+    const { from } = this.props.location.state || {
+      from: { pathname: '/index' },
+    };
     if (redirectToReferrer) {
       return <Redirect to={from} />;
     }
@@ -224,10 +239,7 @@ class Register extends React.Component {
                 {getFieldDecorator('sex', {
                   rules: [{ required: true, message: '请输入你的性别!' }],
                 })(
-                  <Select
-                    placeholder="选择性别"
-                    style={{ width: '190px' }}
-                  >
+                  <Select placeholder="选择性别" style={{ width: '190px' }}>
                     <Option value="男">男</Option>
                     <Option value="女">女</Option>
                   </Select>

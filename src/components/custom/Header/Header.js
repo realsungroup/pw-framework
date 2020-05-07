@@ -20,7 +20,7 @@ class Header extends React.Component {
   };
 
   componentWillMount = () => {
-    console.log(this.props);
+    // console.log(this.props);
     http().clearCache();
   };
 

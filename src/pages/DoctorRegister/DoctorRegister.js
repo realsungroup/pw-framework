@@ -12,7 +12,7 @@ const {
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
-  themeColor
+  themeColor,
 } = window.pwConfig;
 const resid = 639670405070;
 
@@ -23,14 +23,15 @@ class DoctorRegister extends React.Component {
       showSpin: false,
       disabled: false,
       counts: '',
-      redirectToReferrer:false
+      redirectToReferrer: false,
+      once:true
     };
   }
 
-  register =  () => {
+  register = () => {
     const { form } = this.props;
     let res;
-     this.props.form.validateFieldsAndScroll(async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (err) {
         return;
       }
@@ -58,7 +59,7 @@ class DoctorRegister extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
-     
+
       this.setState({
         showSpin: false,
       });
@@ -68,26 +69,25 @@ class DoctorRegister extends React.Component {
   handleLogin = async () => {
     let res;
     const { form } = this.props;
-      let registerInformation = {
-        hospital: form.getFieldValue('hospital'), // 所属医院
-        doctorName: form.getFieldValue('userName'), // 用户姓名
-        doctorSex: form.getFieldValue('sex'), // 性别
-        division: form.getFieldValue('section'), // 科别
-        credentialsID: form.getFieldValue('doctorID'), // 资格证编号
-        telphone: form.getFieldValue('telephone'), // 手机号
-        userid: form.getFieldValue('loginAccount'), //登录账号
-        newpass: form.getFieldValue('password'), // 登录密码
-
-      };
-      try {
-        res = await http().defaultLogin({
-          Code: registerInformation.userid,
-          Password: registerInformation.newpass,
-          // useCookie:true
-        });
-        const result = res.OpResult;
-        if (result === 'Y') {
-          // 登录成功
+    let registerInformation = {
+      hospital: form.getFieldValue('hospital'), // 所属医院
+      doctorName: form.getFieldValue('userName'), // 用户姓名
+      doctorSex: form.getFieldValue('sex'), // 性别
+      division: form.getFieldValue('section'), // 科别
+      credentialsID: form.getFieldValue('doctorID'), // 资格证编号
+      telphone: form.getFieldValue('telephone'), // 手机号
+      userid: form.getFieldValue('loginAccount'), //登录账号
+      newpass: form.getFieldValue('password'), // 登录密码
+    };
+    try {
+      res = await http().defaultLogin({
+        Code: registerInformation.userid,
+        Password: registerInformation.newpass,
+        // useCookie:true
+      });
+      const result = res.OpResult;
+      if (result === 'Y') {
+        // 登录成功
         setItem('userInfo', JSON.stringify(res));
         const userInfo = JSON.parse(getItem('userInfo'));
         if (res.OpResult !== 'Y') {
@@ -95,41 +95,46 @@ class DoctorRegister extends React.Component {
         } else {
           setItem('userInfo', JSON.stringify(userInfo));
         }
-          // this.setState({
-          //   redirectToReferrer: true
-          // });
-          this.props.history.replace(
-            '/'
-          )
-          window.location.reload();
-        } else if (result === 'N') {
-          return message.error(res.ErrorMsg);
-        }
-       this.saveRegisterInfo(registerInformation)
-      } catch (error) {
-        message.error(error.message);
+        // this.setState({
+        //   redirectToReferrer: true
+        // });
+      } else if (result === 'N') {
+        return message.error(res.ErrorMsg);
       }
+      if(this.state.once){
+        this.saveRegisterInfo(registerInformation);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
 
   //保存注册信息
-  saveRegisterInfo = async (data) =>{
-   let  dataInfo = {
+  saveRegisterInfo = async (data) => {
+    let dataInfo = {
       ...data,
-      _id : 1,
-      _state : "editoradd"
-    }
+      _id: 1,
+      _state: 'editoradd',
+    };
     let res;
     try {
-          res = await http().saveRecord({
-           resid,
-           data:JSON.stringify([dataInfo])
-          });
-        } catch (error) {
-          message.error(error.message);
-          }
-  }
-
-
+      res = await http().saveRecord({
+        resid,
+        data: JSON.stringify([dataInfo]),
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    http().clearCache();
+    this.handleLogin();
+    this.setState({
+      once: false,
+    });
+    setTimeout(() => {
+      this.props.history.replace('/');
+      window.location.reload();
+    }, 500);
+  };
 
   //获取验证码
   getVerCode = async () => {
@@ -139,7 +144,7 @@ class DoctorRegister extends React.Component {
       this.countDown();
       try {
         res = await http().getVerCode({
-          telephone: form.getFieldValue('phone')
+          telephone: form.getFieldValue('phone'),
         });
       } catch (error) {
         message.error(error.message);
@@ -153,17 +158,17 @@ class DoctorRegister extends React.Component {
   countDown = () => {
     let counts = 60;
     this.setState({
-      disabled: true
+      disabled: true,
     });
     let countdown = setInterval(() => {
       if (counts > 0) {
         counts--;
         this.setState({
-          counts
+          counts,
         });
       } else {
         this.setState({
-          disabled: false
+          disabled: false,
         });
         clearInterval(countdown);
       }
@@ -173,23 +178,23 @@ class DoctorRegister extends React.Component {
   //切换登录路由
   onLogin = () => {
     this.props.history.push({
-      pathname: '/login'
+      pathname: '/login',
     });
   };
   //切换公司注册
   onCompanyRegister = () => {
     this.props.history.push({
-      pathname: '/companyRegister'
+      pathname: '/companyRegister',
     });
   };
   //切换普通注册
   onRegister = () => {
     this.props.history.push({
-      pathname: '/register'
+      pathname: '/register',
     });
   };
   render() {
-    const { disabled, counts, showSpin ,redirectToReferrer} = this.state;
+    const { disabled, counts, showSpin, redirectToReferrer } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     if (redirectToReferrer) {
@@ -201,9 +206,9 @@ class DoctorRegister extends React.Component {
           <Spin spinning={showSpin}>
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
               <h1 style={{ marginTop: '9px' }}>医生注册</h1>
-              <Form.Item label="姓名" className = "registerForm">
+              <Form.Item label="姓名" className="registerForm">
                 {getFieldDecorator('userName', {
-                  rules: [{ required: true, message: '请输入你的姓名!' }]
+                  rules: [{ required: true, message: '请输入你的姓名!' }],
                 })(
                   <Input
                     label="姓名"
@@ -214,9 +219,9 @@ class DoctorRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="性别" className = "registerForm">
+              <Form.Item label="性别" className="registerForm">
                 {getFieldDecorator('sex', {
-                  rules: [{ required: true, message: '请选择你的性别!' }]
+                  rules: [{ required: true, message: '请选择你的性别!' }],
                 })(
                   <Select
                     onChange={this.handleChange}
@@ -228,9 +233,9 @@ class DoctorRegister extends React.Component {
                   </Select>
                 )}
               </Form.Item>
-              <Form.Item label="所属医院" className = "registerForm">
+              <Form.Item label="所属医院" className="registerForm">
                 {getFieldDecorator('hospital', {
-                  rules: [{ required: true, message: '请输入你的医院!' }]
+                  rules: [{ required: true, message: '请输入你的医院!' }],
                 })(
                   <Input
                     prefix={
@@ -240,9 +245,9 @@ class DoctorRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="科别" className = "registerForm">
+              <Form.Item label="科别" className="registerForm">
                 {getFieldDecorator('section', {
-                  rules: [{ required: true, message: '请输入你的科别!' }]
+                  rules: [{ required: true, message: '请输入你的科别!' }],
                 })(
                   <Input
                     prefix={
@@ -252,11 +257,11 @@ class DoctorRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="医生资格证编号" className = "registerForm">
+              <Form.Item label="医生资格证编号" className="registerForm">
                 {getFieldDecorator('doctorID', {
                   rules: [
-                    { required: true, message: '请输入你的医生资格证编号!' }
-                  ]
+                    { required: true, message: '请输入你的医生资格证编号!' },
+                  ],
                 })(
                   <Input
                     prefix={
@@ -266,9 +271,9 @@ class DoctorRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="登录账号" className = "registerForm">
+              <Form.Item label="登录账号" className="registerForm">
                 {getFieldDecorator('loginAccount', {
-                  rules: [{ required: true, message: '请输入你的登录账号!' }]
+                  rules: [{ required: true, message: '请输入你的登录账号!' }],
                 })(
                   <Input
                     prefix={
@@ -278,21 +283,22 @@ class DoctorRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="登录密码" className = "registerForm">
+              <Form.Item label="登录密码" className="registerForm">
                 {getFieldDecorator('password', {
-                  rules: [{ required: true, message: '请输入你的登录密码!' }]
+                  rules: [{ required: true, message: '请输入你的登录密码!' }],
                 })(
                   <Input
                     prefix={
                       <Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
                     placeholder="登录密码"
+                    type ="password"
                   />
                 )}
               </Form.Item>
-              <Form.Item label="手机号" className = "registerForm">
+              <Form.Item label="手机号" className="registerForm">
                 {getFieldDecorator('telephone', {
-                  rules: [{ required: true, message: '请输入你的手机号!' }]
+                  rules: [{ required: true, message: '请输入你的手机号!' }],
                 })(
                   <Input
                     prefix={
@@ -304,7 +310,7 @@ class DoctorRegister extends React.Component {
               </Form.Item>
               <Form.Item className="login-form-valid">
                 {getFieldDecorator('code', {
-                  rules: [{ required: true, message: '请输入你的验证码!' }]
+                  rules: [{ required: true, message: '请输入你的验证码!' }],
                 })(
                   <Input
                     className="login-form-valid-input"
@@ -334,7 +340,7 @@ class DoctorRegister extends React.Component {
                   </Button>
                 )}
               </Form.Item>
-              <div className = "registerOrLogin">
+              <div className="registerOrLogin">
                 <Button
                   type="primary"
                   htmlType="submit"

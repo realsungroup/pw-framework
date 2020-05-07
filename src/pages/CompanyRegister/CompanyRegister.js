@@ -14,7 +14,7 @@ const {
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
-  themeColor
+  themeColor,
 } = window.pwConfig;
 const resid = 639670241314;
 
@@ -24,17 +24,17 @@ class CompanyRegister extends React.Component {
     this.state = {
       showSpin: false,
       disabled: false,
-      redirectToReferrer:false,
+      redirectToReferrer: false,
       counts: '',
-      registerMode: 'normal' //normal 普通注册 companyRegister 机构注册 doctorRegister医生注册
+      registerMode: 'normal', //normal 普通注册 companyRegister 机构注册 doctorRegister医生注册
+      once:true
     };
   }
 
-  
-  register =  () => {
+  register = () => {
     const { form } = this.props;
     let res;
-     this.props.form.validateFieldsAndScroll(async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (err) {
         return;
       }
@@ -62,7 +62,7 @@ class CompanyRegister extends React.Component {
       } catch (error) {
         message.error(error.message);
       }
-     
+
       this.setState({
         showSpin: false,
       });
@@ -72,24 +72,23 @@ class CompanyRegister extends React.Component {
   handleLogin = async () => {
     let res;
     const { form } = this.props;
-      let registerInformation = {
-        companyName: form.getFieldValue('companyName'), // 机构名称
-        legalPerson: form.getFieldValue('userName'), // 法人姓名
-        companyAddress: form.getFieldValue('companyAddress'), // 机构地址
-        telephone: form.getFieldValue('telephone'), // 联系电话
-        userid: form.getFieldValue('adminAccount'), //登录账号
-        newpass: form.getFieldValue('adminPassword'), // 登录密码
-
-      };
-      try {
-        res = await http().defaultLogin({
-          Code: registerInformation.userid,
-          Password: registerInformation.newpass,
-          // useCookie:true
-        });
-        const result = res.OpResult;
-        if (result === 'Y') {
-          // 登录成功
+    let registerInformation = {
+      companyName: form.getFieldValue('companyName'), // 机构名称
+      legalPerson: form.getFieldValue('userName'), // 法人姓名
+      companyAddress: form.getFieldValue('companyAddress'), // 机构地址
+      telephone: form.getFieldValue('telephone'), // 联系电话
+      userid: form.getFieldValue('adminAccount'), //登录账号
+      newpass: form.getFieldValue('adminPassword'), // 登录密码
+    };
+    try {
+      res = await http().defaultLogin({
+        Code: registerInformation.userid,
+        Password: registerInformation.newpass,
+        // useCookie:true
+      });
+      const result = res.OpResult;
+      if (result === 'Y') {
+        // 登录成功
         setItem('userInfo', JSON.stringify(res));
         const userInfo = JSON.parse(getItem('userInfo'));
         if (res.OpResult !== 'Y') {
@@ -97,55 +96,62 @@ class CompanyRegister extends React.Component {
         } else {
           setItem('userInfo', JSON.stringify(userInfo));
         }
-          // this.setState({
-          //   redirectToReferrer: true
-          // });
-          this.props.history.replace(
-            '/'
-          )
-          window.location.reload();
-        } else if (result === 'N') {
-          return message.error(res.ErrorMsg);
-        }
-       this.saveRegisterInfo(registerInformation)
-      } catch (error) {
-        message.error(error.message);
+        // this.setState({
+        //   redirectToReferrer: true
+        // });
+      } else if (result === 'N') {
+        return message.error(res.ErrorMsg);
       }
+      if(this.state.once){
+        this.saveRegisterInfo(registerInformation);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
 
   //保存注册信息
-  saveRegisterInfo = async (data) =>{
-   let  dataInfo = {
+  saveRegisterInfo = async (data) => {
+    let dataInfo = {
       ...data,
-      _id : 1,
-      _state : "editoradd"
-    }
+      _id: 1,
+      _state: 'editoradd',
+    };
     let res;
     try {
-          res = await http().saveRecord({
-           resid,
-           data:JSON.stringify([dataInfo])
-          });
-        } catch (error) {
-          message.error(error.message);
-          }
-  }
+      res = await http().saveRecord({
+        resid,
+        data: JSON.stringify([dataInfo]),
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    http().clearCache();
+    this.handleLogin();
+    this.setState({
+      once: false,
+    });
+    setTimeout(() => {
+      this.props.history.replace('/');
+      window.location.reload();
+    }, 500);
+  };
 
   //验证码计时
   countDown = () => {
     let counts = 60;
     this.setState({
-      disabled: true
+      disabled: true,
     });
     let countdown = setInterval(() => {
       if (counts > 0) {
         counts--;
         this.setState({
-          counts
+          counts,
         });
       } else {
         this.setState({
-          disabled: false
+          disabled: false,
         });
         clearInterval(countdown);
       }
@@ -154,24 +160,24 @@ class CompanyRegister extends React.Component {
   //切换登录路由
   onLogin = () => {
     this.props.history.push({
-      pathname: '/login'
+      pathname: '/login',
     });
   };
   //切换普通注册
   onRegister = () => {
     this.props.history.push({
-      pathname: '/register'
+      pathname: '/register',
     });
   };
   //切换医生注册
   onDoctorRegister = () => {
     this.props.history.push({
-      pathname: '/doctorRegister'
+      pathname: '/doctorRegister',
     });
   };
 
   render() {
-    const { disabled, counts, showSpin,redirectToReferrer } = this.state;
+    const { disabled, counts, showSpin, redirectToReferrer } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     if (redirectToReferrer) {
@@ -183,9 +189,9 @@ class CompanyRegister extends React.Component {
           <Spin spinning={showSpin}>
             <Form onSubmit={this.handleSubmit} className="login-form-userName">
               <h1>机构注册</h1>
-              <Form.Item label="机构名称" className = "registerForm">
+              <Form.Item label="机构名称" className="registerForm">
                 {getFieldDecorator('companyName', {
-                  rules: [{ required: true, message: '请输入你的机构名称!' }]
+                  rules: [{ required: true, message: '请输入你的机构名称!' }],
                 })(
                   <Input
                     prefix={
@@ -195,11 +201,11 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="法人姓名" className = "registerForm">
+              <Form.Item label="法人姓名" className="registerForm">
                 {getFieldDecorator('userName', {
                   rules: [
-                    { required: true, message: '请输入上述机构法人姓名!' }
-                  ]
+                    { required: true, message: '请输入上述机构法人姓名!' },
+                  ],
                 })(
                   <Input
                     prefix={
@@ -209,9 +215,9 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="机构地址" className = "registerForm">
+              <Form.Item label="机构地址" className="registerForm">
                 {getFieldDecorator('companyAddress', {
-                  rules: [{ required: true, message: '请输入你的机构地址!' }]
+                  rules: [{ required: true, message: '请输入你的机构地址!' }],
                 })(
                   <Input
                     prefix={
@@ -221,9 +227,9 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="管理员账号" className = "registerForm">
+              <Form.Item label="管理员账号" className="registerForm">
                 {getFieldDecorator('adminAccount', {
-                  rules: [{ required: true, message: '请输入你的管理员账号!' }]
+                  rules: [{ required: true, message: '请输入你的管理员账号!' }],
                 })(
                   <Input
                     prefix={
@@ -233,21 +239,22 @@ class CompanyRegister extends React.Component {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="管理员密码" className = "registerForm">
+              <Form.Item label="管理员密码" className="registerForm">
                 {getFieldDecorator('adminPassword', {
-                  rules: [{ required: true, message: '请输入你的管理员密码!' }]
+                  rules: [{ required: true, message: '请输入你的管理员密码!' }],
                 })(
                   <Input
                     prefix={
                       <Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />
                     }
                     placeholder="管理员密码"
+                    type= "password"
                   />
                 )}
               </Form.Item>
-              <Form.Item label="手机号" className = "registerForm">
+              <Form.Item label="手机号" className="registerForm">
                 {getFieldDecorator('telephone', {
-                  rules: [{ required: true, message: '请输入你的手机号!' }]
+                  rules: [{ required: true, message: '请输入你的手机号!' }],
                 })(
                   <Input
                     prefix={
@@ -259,7 +266,7 @@ class CompanyRegister extends React.Component {
               </Form.Item>
               <Form.Item className="login-form-valid">
                 {getFieldDecorator('verificationCode', {
-                  rules: [{ required: true, message: '请输入验证码!' }]
+                  rules: [{ required: true, message: '请输入验证码!' }],
                 })(
                   <Input
                     className="login-form-valid-input"
@@ -289,7 +296,7 @@ class CompanyRegister extends React.Component {
                   </Button>
                 )}
               </Form.Item>
-              <div className = 'registerOrLogin'>
+              <div className="registerOrLogin">
                 <Button
                   type="primary"
                   htmlType="submit"

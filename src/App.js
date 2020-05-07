@@ -192,6 +192,10 @@ class App extends Component {
                       path='/companyRegister'
                       component={CompanyRegister}
                     />
+                    <Route
+                      path='/doctorRegister'
+                      component={DoctorRegister}
+                    />
 
                     <PrivateRoute exact path='/' component={Header} />
                     <PrivateRoute exact path='/indexHome' component={Header} />
@@ -200,11 +204,6 @@ class App extends Component {
                       exact
                       path='/personInfor'
                       component={PersonInfor}
-                    />
-                    <PrivateRoute
-                      exact
-                      path='/doctorRegister'
-                      component={DoctorRegister}
                     />
                     <PrivateRoute
                       exact
