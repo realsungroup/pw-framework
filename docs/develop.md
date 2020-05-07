@@ -120,7 +120,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import {Spin} from 'antd'
 
-const minLoading = <Spin spinning={true}><div style={{width:'100vw',height:'100vh',background:'#fff',color:'#fff'}}>_</div></Spin>;
+const minLoading = <Spin spinning={true}><div style={{width:'100vw',height:'100vh',background:'#fff',color:'#fff'}}></div></Spin>;
 
 // 实现 MyCustomComponent 组件的按需加载，再导出
 export const MyCustomComponent = Loadable({
