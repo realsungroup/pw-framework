@@ -62,7 +62,7 @@ const subresid = 632314794466;//子表resid
       toCheckFront:{
         C3_632503853105:null,
         effortDate:null,//生效日期
-        changeReason:'- -',//变动原因
+        changeReason:'',//变动原因
       },
       toCheck:[
         
@@ -378,7 +378,7 @@ const subresid = 632314794466;//子表resid
     var n= 0;
     var arr=[];
     while(n<attr.length){
-      var a=v[showAfter[n]]||'- -'
+      var a=v[showAfter[n]]||''
       arr.push(a)
       n++;
     }
@@ -795,59 +795,47 @@ const subresid = 632314794466;//子表resid
                 <span>{this.state.toCheckFront.C3_632503853105}</span>
               </div>):null}
                 <div className='tableWrap'>
-                
-                <b>变动后信息：</b>
+               
                 <Spin spinning={this.state.loading}>
-                <div style={{clear:'both'}}></div>
-                <ul style={{float:'left',listStyle:'none',padding:'0',paddingRight:'8px'}}>
-                  {attr.map(item=>{return(<li style={{lineHeight:'24px'}}>{item}</li>)})}
-                </ul>
-                <ul style={{float:'left',listStyle:'none',padding:'0'}}>
-                  {this.state.toCheck.map(item=>{return(<li style={{lineHeight:'24px'}}>{item}</li>)})}
-                </ul>
-                <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
-                  <b>变动人员：</b>
-                <div style={{clear:'both'}}></div>
-                  {this.state.member.map((item)=>{return(<p onClick={()=>{this.setState({memberDetail:item});console.log(222)}} style={{lineHeight:'24px',color:'#1890ff',cursor:'pointer',margin:'0'}}>{item.C3_632503839336+'-'+item.C3_632503839068}</p>)})}
-                </div>
-                    <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
-                      <ul style={{listStyle:'none',padding:'0',width:200}}>
-                      <li style={{lineHeight:'24px'}}><b>姓名: </b>{this.state.toCheckFront.person}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前部门名: </b>{this.state.toCheckFront.depart}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前职务名: </b>{this.state.toCheckFront.jobName}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前级别: </b>{this.state.toCheckFront.level}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前主管: </b>{this.state.toCheckFront.driectorName}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前项目代码: </b>{this.state.toCheckFront.proj_code}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前BU CODE: </b>{this.state.toCheckFront.bucode}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前一级部门: </b>{this.state.toCheckFront.firstDepart}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前二级部门: </b>{this.state.toCheckFront.secondDepart}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前三级部门: </b>{this.state.toCheckFront.thirdDepart}</li>
-                      <li style={{lineHeight:'24px'}}><b>变更前四级部门: </b>{this.state.toCheckFront.fourthDepart}</li>
+                    <div style={{float:'left'}}>
+                      <ul style={{padding:'0'}}>
+                      <li> <b>姓名: </b>{this.state.toCheckFront.person}</li>
+                      <li ><b>部门名: </b>{this.state.toCheckFront.depart===this.state.toCheck[0]?this.state.toCheckFront.depart:<b style={{color:'#f5222d'}}>{this.state.toCheckFront.depart+' => '+this.state.toCheck[0]}</b>}</li>
+                      <li ><b>职务名: </b>{this.state.toCheckFront.jobName===this.state.toCheck[1]?this.state.toCheckFront.jobName:<b style={{color:'#f5222d'}}>{this.state.toCheckFront.jobName+' => '+this.state.toCheck[1]}</b>}</li>
+                      <li><b>级别: </b>{this.state.toCheckFront.level===this.state.toCheck[2]?this.state.toCheckFront.level:<b style={{color:'#f5222d'}}>{this.state.toCheckFront.level+' => '+this.state.toCheck[2]}</b>}</li>
+                      <li><b>主管: </b>{this.state.toCheckFront.driectorName===this.state.toCheck[3]?this.state.toCheckFront.driectorName:<b style={{color:'#f5222d'}}>{this.state.toCheckFront.driectorName+' => '+this.state.toCheck[3]}</b>}</li>
+                      <li ><b>项目代码: </b>{this.state.toCheckFront.proj_code===this.state.toCheck[4]?this.state.toCheckFront.proj_code:<b style={{color:'#f5222d'}}>{this.state.toCheckFront.proj_code+' => '+this.state.toCheck[4]}</b>}</li>
+                      <li><b>BU CODE: </b>{(this.state.toCheckFront.bucode||'')===this.state.toCheck[5]?this.state.toCheckFront.bucode:<b style={{color:'#f5222d'}}>{(this.state.toCheckFront.bucode||'')+' => '+this.state.toCheck[5]}</b>}</li>
+                      <li ><b>一级部门: </b>{(this.state.toCheckFront.firstDepart||'')===this.state.toCheck[6]?this.state.toCheckFront.firstDepart:<b style={{color:'#f5222d'}}>{(this.state.toCheckFront.firstDepart||'')+' => '+this.state.toCheck[6]}</b>}</li>
+                      <li ><b>二级部门: </b>{(this.state.toCheckFront.secondDepart||'')===this.state.toCheck[7]?this.state.toCheckFront.secondDepart:<b style={{color:'#f5222d'}}>{(this.state.toCheckFront.secondDepart||'')+' => '+this.state.toCheck[7]}</b>}</li>
+                      <li ><b>三级部门: </b>{(this.state.toCheckFront.thirdDepart||'')===this.state.toCheck[8]?this.state.toCheckFront.thirdDepart:<b style={{color:'#f5222d'}}>{(this.state.toCheckFront.thirdDepart||'')+' => '+this.state.toCheck[8]}</b>}</li>
+                      <li ><b>四级部门: </b>{(this.state.toCheckFront.fourthDepart||'')===this.state.toCheck[9]?this.state.toCheckFront.fourthDepart:<b style={{color:'#f5222d'}}>{(this.state.toCheckFront.fourthDepart||'')+' => '+this.state.toCheck[9]}</b>}</li>
                       </ul>
                     </div>
                 {this.state.toCheckFront.ApproveRemark?
                 (<><br/><b>审批说明:</b>
                   <p>{this.state.toCheckFront.ApproveRemark}</p></>)
                 :null}
-                 {/* C3_637425449725:'',//是否有HC
-  //     C3_637425577105:'',//变更类型
-  //     C3_637425666513:'',//替代人
-  //     C3_637425470106:'',//招聘人员备注
-  //     C3_637425470106:'',//招聘人员备注
-  //     C3_637425923781:'',//招聘人员确认人工号
-  //     C3_637425935795:'',//招聘人员确认人姓名 */}
-                <div style={{float:'left',marginLeft:'40px',position:'relative',top:'-24px'}}>
-                
-                  <b>是否有Headcount：</b><span>{this.state.toCheckFront.C3_637425449725?this.state.toCheckFront.C3_637425449725:'--'}</span>
-                  <div style={{clear:'both'}}></div>
-                  <b>headcount变更类型：</b><span>{this.state.toCheckFront.C3_637425577105?this.state.toCheckFront.C3_637425577105:'--'}</span>
-                  <div style={{clear:'both'}}></div>
-                  <b>替代人：</b><span>{this.state.toCheckFront.C3_637617454519?this.state.toCheckFront.C3_637617454519:'--'}</span>
-                  <div style={{clear:'both'}}></div>
-                  <b>招聘人员备注：</b><span>{this.state.toCheckFront.C3_637425470106?this.state.toCheckFront.C3_637425470106:'--'}</span>
-                  <div style={{clear:'both'}}></div>
-                  <b>招聘人员确认人姓名：</b><span>{this.state.toCheckFront.C3_637425935795?this.state.toCheckFront.C3_637425935795:'--'}</span>
-                  <div style={{clear:'both'}}></div>
+                <div style={{float:'left'}}>
+                <ul style={{padding:'0',marginLeft:'-1px'}}>
+                  <li>
+                  <b>是否有Headcount：</b><span>{this.state.toCheckFront.C3_637425449725?this.state.toCheckFront.C3_637425449725:''}</span>
+                  </li>
+                  
+                  <li>
+                  <b>headcount变更类型：</b><span>{this.state.toCheckFront.C3_637425577105?this.state.toCheckFront.C3_637425577105:''}</span>
+                  </li>
+                  <li>
+                  <b>替代人：</b><span>{this.state.toCheckFront.C3_637617454519?this.state.toCheckFront.C3_637617454519:''}</span>
+                  </li>
+                  <li>
+                  <b>招聘人员备注：</b><span>{this.state.toCheckFront.C3_637425470106?this.state.toCheckFront.C3_637425470106:''}</span>
+                  </li>
+
+                  <li>
+                  <b>招聘人员确认人姓名：</b><span>{this.state.toCheckFront.C3_637425935795?this.state.toCheckFront.C3_637425935795:''}</span>
+                  </li>
+                  </ul>
                 </div>
                 </Spin>
                 </div>

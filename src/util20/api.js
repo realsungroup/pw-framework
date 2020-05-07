@@ -39,7 +39,11 @@ http.setResponseInterceptors(
     ) {
       return res;
     } else {
-      throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
+      if((res.Errmsg==='loginerror')||(res.message==='loginerror')||(res.ErrorMsg==='loginerror')){
+        window.location.href='/login'
+      }else{
+        throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
+      }
     }
   },
   function(error) {

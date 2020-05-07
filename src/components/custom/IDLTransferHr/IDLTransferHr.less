@@ -10,39 +10,33 @@
   overflow: hidden;
   sider{
     display: block;
-    width: 160px;
-    height: 100vh;
+    width: 100vw;
+    height: 48px;
     float: left;
     box-sizing: border-box;
-    border-right:1px solid #e8e8e8;
+    border-bottom:1px solid #dcdcdc;
+    overflow: hidden;
     ul{
-      width: 100%;
-      margin-top: 32px;
+      width: auto;
+      float: left;
+      overflow: hidden;
       li{
-        line-height: 32px;
+        float: left;
+        line-height: 47px;
         margin-bottom: 12px;
         font-size: 16px;
         box-sizing: border-box;
         cursor: pointer;
-        text-align: left;
-        text-indent: 24px;
-        width: 100%;
-        height: 32px;
-        &:hover{
-          background: rgba(0,0,0,0.03);
-          border-top:1px solid #dcdcdc;
-          border-bottom:1px solid #dcdcdc;
+        text-align: center;
+        padding:0 8px;
+        margin:0 8px;
+        height: 47px;
+        transition:.3s;
+        &:hover,&.cur{
+          border-bottom:2px solid #1890ff;
           cursor:pointer;
-          line-height: 30px;
+          color:#1890ff;
         }
-      }
-      .cur{
-        background: rgba(0,0,0,0.06);
-          border-top:1px solid #dcdcdc;
-          border-bottom:1px solid #dcdcdc;
-          cursor:pointer;
-          line-height: 30px;
-        color:#1890ff;
       }
   }
   
@@ -50,10 +44,26 @@
   content{
     display: block;
     float: left;
-    width:calc(100vw - 160px);
-    height: 100vh;
+    width:100vw;
+    height: calc(100vh - 48px);
     }
 }
 .ant-modal-body{
   overflow: auto;
 }
+.tableWrap ul{
+  border-top:1px solid #bbb;
+  border-bottom:1px solid #bbb;
+  li{
+    border-left:1px solid #bbb;
+    border-right:1px solid #bbb;
+    border-bottom:1px solid #bbb;
+
+    line-height: 24px;
+    list-style: none;
+    padding:0 8px;
+    &:last-child{
+      border-bottom: none;
+    }
+  }
+} 

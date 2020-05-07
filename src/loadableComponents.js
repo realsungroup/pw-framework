@@ -1,8 +1,9 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import Loading from 'react-fullscreen-loading';
+import {Spin} from 'antd'
 
-const minLoading = <span>加载中...</span>;
+const minLoading = <Spin spinning={true}><div style={{width:'100vw',height:'100vh',background:'#fff',color:'#fff'}}></div></Spin>;
 
 /**
  * 页面组件

@@ -81,7 +81,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#004a95'
+      '@primary-color': '#A11D21'
     }, // 默认主题色
 
     // 锁屏
@@ -90,7 +90,7 @@ window.pwConfig = {
     // logo 配置
     homeLogoSize: 42, // 首页 logo 尺寸
 
-    loginLogoSize: 42, // 登录页 logo 尺寸
+    loginLogoSize: 80, // 登录页 logo 尺寸
 
     // 上传文件配置
     // upload: {
@@ -238,7 +238,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#004a95'
+      '@primary-color': '#A11D21'
     }, // 默认主题色
 
     // 锁屏
