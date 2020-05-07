@@ -102,7 +102,8 @@ class PageHeader extends React.Component {
       allFoldersExpandedKeys,
       activeApps,
       onOpenWindow,
-      onCloseActiveApp
+      onCloseActiveApp,
+      visible
     } = this.props;
     const { isInTop, drawerVisible, rightDrawerVisible } = this.state;
 
@@ -114,7 +115,7 @@ class PageHeader extends React.Component {
     };
 
     return (
-      <div className={classNames('page-header')}>
+      <div className={classNames('page-header', { hidden: !visible })}>
         <div className="page-header__logo">
           <a
             href="javascript:;"

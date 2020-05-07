@@ -119,6 +119,7 @@ class Home extends React.Component {
       waitingHandleFetching: false,
       appDataFetching: false,
       showAbbreviation: false,
+      headerVisible: true,
       searchTextHeader: '',
       abbreviations: [],
       abbreviationDoms: []
@@ -934,28 +935,50 @@ class Home extends React.Component {
     );
   };
   renderTopBar = activeApps => {
+    const { headerVisible } = this.state;
     return (
       <div className="new-home__top-bar">
-        {activeApps.map(app => {
-          return (
-            <div
-              className={classNames('new-home__top-bar__app', {
-                active: app.isActive
-              })}
-              key={app.title}
-              onClick={() => this.handleBottomBarAppTrigger(app)}
-            >
-              <span className="new-home__top-bar__app-title">{app.title}</span>
-              <Icon
-                type="close"
-                onClick={e => {
-                  e.stopPropagation();
-                  this.handleCloseActiveApp(app);
-                }}
-              />
-            </div>
-          );
-        })}
+        <div className="new-home__top-bar__app-list">
+          {activeApps.map(app => {
+            return (
+              <div
+                className={classNames('new-home__top-bar__app', {
+                  active: app.isActive
+                })}
+                key={app.title}
+                onClick={() => this.handleBottomBarAppTrigger(app)}
+              >
+                <span className="new-home__top-bar__app-title">
+                  {app.title}
+                </span>
+                <Icon
+                  type="close"
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.handleCloseActiveApp(app);
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div className="new-home__top-bar__action-btn">
+          {headerVisible ? (
+            <Icon
+              type="arrows-alt"
+              onClick={() => {
+                this.setState({ headerVisible: false });
+              }}
+            />
+          ) : (
+            <Icon
+              type="shrink"
+              onClick={() => {
+                this.setState({ headerVisible: true });
+              }}
+            />
+          )}
+        </div>
       </div>
     );
   };
@@ -967,7 +990,8 @@ class Home extends React.Component {
       menus,
       searchTextHeader,
       allFoldersExpandedKeys,
-      showAbbreviation
+      showAbbreviation,
+      headerVisible
     } = this.state;
     return (
       <div className="new-home">
@@ -987,6 +1011,7 @@ class Home extends React.Component {
           allFoldersExpandedKeys={allFoldersExpandedKeys}
           onOpenWindow={this.handleOpenWindow}
           onCloseActiveApp={this.handleCloseActiveApp}
+          visible={headerVisible}
         />
         {!showHome && activeApps.length ? this.renderTopBar(activeApps) : null}
         {this.renderHome()}

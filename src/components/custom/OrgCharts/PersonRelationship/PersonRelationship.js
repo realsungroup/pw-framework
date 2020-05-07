@@ -1048,34 +1048,13 @@ class PersonRelationship extends React.Component {
               this.contentRef = ref;
             }}
           >
-            <div className="person-relationship__content__main">
-              <div className="person-relationship__content__main__container">
-                <div
-                  className={classNames({
-                    'person-relationship__tabledata__container': true,
-                    hidden: mode === 'chart'
-                  })}
-                >
-                  <PwAggrid
-                    originalColumn={this._cmscolumninfo}
-                    dataSource={this._nodes}
-                    // rowSelection={rowSelection}
-                    gridProps={[]}
-                    resid={this.props.resid}
-                    baseURL={this.props.baseURL}
-                    hasAdd={false}
-                    hasModify={false}
-                    hasDelete={false}
-                  />
-                </div>
-                <div
-                  className={classNames({
-                    'person-relationship__chart-container': true,
-                    hidden: mode === 'table'
-                  })}
-                >
-                  <div id="person-relationship_orgchart"></div>
-                </div>
+            <div
+              className={classNames('person-relationship__content__main', {
+                hidden: mode === 'table'
+              })}
+            >
+              <div className="person-relationship__chart-container">
+                <div id="person-relationship_orgchart"></div>
               </div>
               <div className="person-relationship_main_sider">
                 {!detaileMin && (
@@ -1127,6 +1106,24 @@ class PersonRelationship extends React.Component {
                   </div>
                 )}
               </div>
+            </div>
+            <div
+              className={classNames({
+                'person-relationship__tabledata__container': true,
+                hidden: mode === 'chart'
+              })}
+            >
+              <PwAggrid
+                originalColumn={this._cmscolumninfo}
+                dataSource={this._nodes}
+                // rowSelection={rowSelection}
+                gridProps={[]}
+                resid={this.props.resid}
+                baseURL={this.props.baseURL}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+              />
             </div>
           </div>
         </Spin>

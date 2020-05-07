@@ -260,6 +260,60 @@ class ArchitectureDiagram extends React.Component {
     this.chart.on('dbclick', (sender, node) => {
       this.setRootNode(node.id);
     });
+    this.chart.on('exportstart', function(sender, args) {
+      args.content += `
+      <style type="text/css">
+        .created > rect {
+          fill-opacity: 0.4;
+        }
+        .selected > rect {
+          fill: #1890ff;
+        }
+        .selected > text {
+          fill: #ffffff;
+        }
+        .empty > rect {
+          fill: #fa8c16;
+        }
+        .empty > line {
+          stroke: #fa8c16;
+        }
+        .empty > text {
+          fill: #ffffff;
+        }
+        .empty.selected > rect {
+          fill: #ffa940;
+        }
+        .empty.selected > line {
+          stroke: #ffa940;
+        }
+        .empty.selected > text {
+          fill: #ffffff;
+        }
+        .discard > rect {
+          fill: #bbbbbb;
+        }
+        .discard > line {
+          stroke: #bbbbbb;
+        }
+        .discard > text {
+          fill: #999999;
+        }
+        .tartOccupied > line {
+          stroke: #13c2c2;
+        }
+        .tartOccupied.selected > rect {
+          fill: #36cfc9;
+        }
+        .tartOccupied.selected > line {
+          stroke: #36cfc9;
+        }
+        .tartOccupied.selected > text {
+          fill: #ffffff;
+        }
+        </style>
+      `;
+    });
   };
 
   handleDragNode = (sender, oldNode, newNode) => {

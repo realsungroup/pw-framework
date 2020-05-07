@@ -22,16 +22,27 @@
   &__content {
     height: calc(100% - 96px);
     overflow: auto;
+    .person-relationship__tabledata__container {
+      height: 100%;
+      flex: 1;
+      &.hidden {
+        display: none;
+      }
+    }
     &__main {
       height: 100%;
       display: flex;
+      &.hidden {
+        display: none;
+      }
       &__container {
         flex: 1;
         height: 100%;
       }
-      .person-relationship__tabledata__container,
+
       .person-relationship__chart-container {
         height: 100%;
+        flex: 1;
       }
       .person-relationship__tabledata__container.hidden {
         display: none;
