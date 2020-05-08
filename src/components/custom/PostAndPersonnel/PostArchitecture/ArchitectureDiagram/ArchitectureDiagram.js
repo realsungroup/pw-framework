@@ -106,7 +106,7 @@ OrgChart.templates.jobarchitectureDiagramTemplate.img_0 =
   '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="80" height="80">' +
   '</image>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
+  '<text width="250" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_1 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_2 =
@@ -1137,8 +1137,8 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderBreadcrumb = () => {
-    const { breadcrumb } = this.state;
-    const { displayFileds } = this.props;
+    const { breadcrumb, firstField, secondaryField } = this.state;
+    // const { displayFileds } = this.props;
     return (
       <Breadcrumb separator=">">
         {breadcrumb.map(item => {
@@ -1150,10 +1150,8 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {`${item[displayFileds.firstField]}(${
-                item[displayFileds.secondaryField] >= 0
-                  ? item[displayFileds.secondaryField]
-                  : 'N/A'
+              {`${item[firstField]}(${
+                item[secondaryField] >= 0 ? item[secondaryField] : 'N/A'
               })`}
             </Breadcrumb.Item>
           );
