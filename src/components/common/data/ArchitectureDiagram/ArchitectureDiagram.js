@@ -95,9 +95,25 @@ function exportExcel(data, headerData = [], fileName) {
   link.click();
   document.body.removeChild(link);
 }
-window.btnClickA = function(e) {
-  console.log(e.target.href.baseVal);
-  // Modal.confirm({ title: '照片', content: <div>123</div> });
+window.imageClick = function(e) {
+  Modal.info({
+    title: '照片',
+    icon: null,
+    width: '100%',
+    okText: '关闭',
+    content: (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 300
+        }}
+      >
+        <img src={e.target.href.baseVal} />
+      </div>
+    )
+  });
 };
 const selected = 'selected';
 const OrgChart = window.OrgChart;
@@ -112,7 +128,7 @@ OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
   '<circle  cx="50" cy="60" r="40"></circle>' +
   '</clipPath>' +
-  '<image onclick="btnClickA(evt)" preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
+  '<image onclick="imageClick(evt)" preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
   '<text width="200" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
@@ -163,7 +179,7 @@ class ArchitectureDiagram extends React.Component {
       takeEffectDate: '', //生效日期
       detaileMin: false,
       historyMin: false,
-      resultMin: false,
+      resultMin: true,
       hasImportResult: false,
       detailVisible: false,
       selectedResultResid: '638645137963',
@@ -1385,6 +1401,7 @@ class ArchitectureDiagram extends React.Component {
         top: window.innerHeight,
         behavior: 'smooth'
       });
+      this.tableDataRef && this.tableDataRef.handleRefresh();
     });
     notification.open({
       message: '导入完成',
@@ -1694,9 +1711,14 @@ class ArchitectureDiagram extends React.Component {
 
   renderImportResult = () => {
     const { baseURL } = this.props;
-    const { selectedResultResid, selectedType, mode } = this.state;
+    const { selectedResultResid, selectedType, mode, resultMin } = this.state;
     return (
-      <div id="import-result" className="architecture-diagram__import-result">
+      <div
+        id="import-result"
+        className={classNames('architecture-diagram__import-result', {
+          hidden: resultMin
+        })}
+      >
         <div className="architecture-diagram__import-result__title">
           导入结果
           <Icon
@@ -2271,10 +2293,7 @@ class ArchitectureDiagram extends React.Component {
               </div>
             </div>
 
-            {hasResult &&
-              hasImportResult &&
-              !resultMin &&
-              this.renderImportResult()}
+            {hasResult && this.renderImportResult()}
           </div>
         </Spin>
 

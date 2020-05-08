@@ -159,7 +159,7 @@
     flex: 1;
   }
   //未启用状态
-  .created>rect{
+  .created > rect {
     fill-opacity: 0.4;
   }
   // 选中状态
@@ -243,6 +243,9 @@
     bottom: 0;
     background: #ffffff;
     z-index: 1;
+    &.hidden {
+      display: none;
+    }
     &__title {
       height: 28px;
       background: rgba(24, 144, 255, 1);
