@@ -1110,7 +1110,6 @@ class Desktop extends React.Component {
             return (
               <div
                 className="desktop__folder-category"
-                style={{ background: index % 2 ? '#E6F7FF' : '#FFFFFF' }}
               >
                 <div className="desktop__folder-category-title">
                   {category[0]}
@@ -1128,6 +1127,7 @@ class Desktop extends React.Component {
                       >
                         <div className="desktop__folder-category-app-icon">
                           {app.appIconUrl ? (
+                            <div className='overlay'>
                             <img
                               src={app.appIconUrl}
                               alt={app.appIconUrl}
@@ -1137,6 +1137,7 @@ class Desktop extends React.Component {
                                 width: 'auto'
                               }}
                             />
+                            </div>
                           ) : (
                             <i
                               className={`iconfont icon-${app.DeskiconCls ||
@@ -1200,6 +1201,7 @@ class Desktop extends React.Component {
           getPopupContainer={getPopoverContainer}
         >
           <div className="desktop__folder">
+            <div className='overlay'></div>
             <img
               src={folder.url}
               alt="folder"
