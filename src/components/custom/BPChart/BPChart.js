@@ -26,7 +26,7 @@ const colors = ['#5793f3', '#d14a61', '#675bba'];
 
 const resid1 = 640186569410; // 血压检测表
 const resid2 = 640190825057; // 血糖检测表
-const resid3 = 640190883264; // 体温检测表
+const resid3 = 640452189185; // 体温检测表
 class BPChart extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +57,7 @@ class BPChart extends React.Component {
         text: '血压',
       },
       legend: {
-        data: [],
+        data: ["2020-04-04"],
       },
       tooltip: {
         trigger: 'axis',
@@ -153,7 +153,9 @@ class BPChart extends React.Component {
       legendData,
       this.props.beginDate.format('YYYY-MM-DD')
     );
-    this._echarts.setOption({
+    console.log("recordTime",recordTime)
+    console.log("source",source)
+   recordTime.length > 1 && this._echarts.setOption({
       dataset: {
         dimensions: [],
         source: [recordTime],

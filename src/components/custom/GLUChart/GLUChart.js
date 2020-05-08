@@ -35,8 +35,8 @@ const point = [
 ];
 
 const resid1 = 640186569410; // 血压检测表
-const resid2 = 640190825057; // 血糖检测表
-const resid3 = 640190883264; // 体温检测表
+const resid2 = 640452175220; // 血糖检测表
+const resid3 = 640452189185; // 体温检测表
 class GLUChart extends React.Component {
   constructor(props) {
     super(props);
@@ -222,7 +222,7 @@ class GLUChart extends React.Component {
     );
     // console.log(this.props.beginDate.format('YYYY-MM-DD'));
     console.log(source);
-    this._echarts.setOption({
+    recordTime.length>1&&this._echarts.setOption({
       dataset: {
         dimensions: [],
         source: [recordTime],

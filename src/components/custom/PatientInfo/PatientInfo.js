@@ -7,6 +7,7 @@ import { RecordInput, DoctorList, OtherData } from '../loadableCustom';
 import { LzModal, LzMenuForms } from '../loadableCustom';
 import http, { makeCancelable } from 'Util20/api';
 import { Header } from '../loadableCustom';
+import DivisionTable from '../PersonalInformation/DivisionTable';
 
 const customBtnStyle = {
   margin: '0 4px',
@@ -30,7 +31,9 @@ class PatientInfo extends React.Component {
       ucLen: {},
       otherVisible: false,
       appLinks: [],
+      selectKey: '',
     };
+
   }
 
   componentDidMount = async () => {
@@ -140,7 +143,7 @@ class PatientInfo extends React.Component {
   ];
 
   handleModalClose = () => {
-    this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false , selectKey: '' });
   };
 
   handleOtherModalClose = () => {
@@ -157,8 +160,18 @@ class PatientInfo extends React.Component {
     // );
   };
 
+  handleCellClick = (value) => {
+    this.setState({ otherVisible: false }, () => {
+      // 100 ms 后再打开 modal，用户体验好一点
+      setTimeout(() => {
+        this.setState({ modalVisible: true, selectKey: value.substring(0, 2) });
+      }, 100);
+    });
+  };
+
+
   render() {
-    const { modalVisible, record, otherVisible } = this.state;
+    const { modalVisible, record, otherVisible,selectKey } = this.state;
     return (
       <div className='patient-info'>
         <Header />
@@ -184,7 +197,7 @@ class PatientInfo extends React.Component {
         )
         {modalVisible && (
           <LzModal defaultScaleStatus='max' onClose={this.handleModalClose}>
-            <RecordInput {...record} />
+            <RecordInput {...record}  selectKey={selectKey} />
           </LzModal>
         )}
         {otherVisible && (
@@ -192,25 +205,7 @@ class PatientInfo extends React.Component {
             defaultScaleStatus='max'
             onClose={this.handleOtherModalClose}
           >
-            {/* <RecordInput {...record} /> */}
-            {/* <OtherData {...record} /> */}
-            <DoctorList {...record} />
-            {/* <h1>请选择您要录入的科室</h1>
-            <span>科室：</span>
-            <Select style={{ width: '200px', marginLeft: '10px' }}>
-              <Option value="常见数据录入">常见数据录入</Option>
-            </Select>
-            <Form style ={{width : "200px"}} className = "otherData">
-              <Form.Item label="常见数据录入">
-                <Input defaultValue="血压检测" />
-              </Form.Item>
-              <Form.Item label="常见数据录入">
-                <Input defaultValue="血糖检测" />
-              </Form.Item>
-              <Form.Item label="常见数据录入">
-                <Input defaultValue="体温检测" />
-              </Form.Item>
-            </Form> */}
+            <DivisionTable onCellClick={this.handleCellClick} />
           </LzModal>
         )}
       </div>

@@ -39,6 +39,10 @@ const resid2 = 640190825057; // 血糖检测表
 const resid3 = 640190883264; // 体温检测表
 const userResid = 639670761186; // 会员信息
 
+const resid5 = 640186569410; // 血压检测继承表
+const resid6 = 640452175220; // 血糖检测继承表
+const resid7 = 640452189185; // 体温检测继承表
+
 class RecordInput extends React.Component {
   static defaultProps = {
     // 模式
@@ -87,10 +91,14 @@ class RecordInput extends React.Component {
     this.setState({
       days: moment(nowDate).diff(start, 'day'),
     });
-    this.getTableData();
-    this.getUserInfo();
+   
   };
+  componentDidMount = () =>{
+    const {selectKey} = this.state
 
+    this.getTableData(selectKey);
+    this.getUserInfo();
+  }
   getUserInfo = async () => {
     let res;
     const resid = userResid;
@@ -102,7 +110,6 @@ class RecordInput extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-    console.log('resdata', res);
     this.setState({
       userinfo: res.data[0],
     });
@@ -112,10 +119,9 @@ class RecordInput extends React.Component {
     return current && current > moment().endOf('day');
   };
 
-  getTableData = async () => {
-    const { selectKey, basic, change, remark } = this.state;
+  getTableData = async (selectKey) => {
+    const {basic, change, remark } = this.state;
 
-    console.log({ selectKey, basic, change, remark });
     let res;
     if (selectKey === '血压') {
       try {
@@ -142,7 +148,8 @@ class RecordInput extends React.Component {
         return message.error(err.message);
       }
     }
-    let dataLen = res.data.length - 1;
+    let lastId = res.data[res.data.length-1] ? res.data[res.data.length-1].REC_ID :'' ;
+    console.log("res",res)
     let arr = [];
     res.data.map((items) => {
       for (let i in items) {
@@ -151,7 +158,9 @@ class RecordInput extends React.Component {
         }
       }
     });
-    console.log('arr', arr);
+    this.setState({
+      lastRecordId: lastId,
+    })
     if (!arr[0]) {
       this.setState({
         basic: '',
@@ -163,11 +172,8 @@ class RecordInput extends React.Component {
         basic: arr[arr.length - 1].basicPharmacy,
         change: arr[arr.length - 1].pharmacyChange,
         remark: arr[arr.length - 1].remark,
-        lastRecordId: res.data[dataLen].REC_ID,
       });
     }
-
-    // console.log('res',this.state.lastRecordId)
   };
 
   //开始日期
@@ -200,7 +206,6 @@ class RecordInput extends React.Component {
     let end = moment(value).format('YYYY-MM-DD');
     let days = moment(end).diff(this.state.beginDate, 'day');
 
-    console.log({ end, days });
     this.setState({
       days: days,
       endDate: moment(end),
@@ -208,19 +213,16 @@ class RecordInput extends React.Component {
   };
 
   basicChange = ({ target: { value } }) => {
-    console.log('value', value);
     this.setState({
       nowBasic: value,
     });
   };
   pharmacyChange = ({ target: { value } }) => {
-    console.log('value', value);
     this.setState({
       nowChange: value,
     });
   };
   remarkChange = ({ target: { value } }) => {
-    console.log('value', value);
     this.setState({
       nowRemark: value,
     });
@@ -234,6 +236,7 @@ class RecordInput extends React.Component {
       lastRecordId,
       selectKey,
     } = this.state;
+
     let data = {
       basicPharmacy: nowBasic,
       pharmacyChange: nowChange,
@@ -244,7 +247,7 @@ class RecordInput extends React.Component {
     if (selectKey === '血压') {
       try {
         res = await http().modifyRecords({
-          resid: resid1,
+          resid: resid5,
           data: [data],
         });
         message.success('保存成功');
@@ -254,7 +257,7 @@ class RecordInput extends React.Component {
     } else if (selectKey === '血糖') {
       try {
         res = await http().modifyRecords({
-          resid: resid2,
+          resid: resid6,
           data: [data],
         });
         message.success('保存成功');
@@ -262,11 +265,11 @@ class RecordInput extends React.Component {
         message.error(error.message);
       }
     } else if (selectKey === '体温') {
-      let resid = resid3;
+      let resid = resid7;
       try {
         res = await http().modifyRecords({
           resid,
-          data: JSON.stringify([data]),
+          data: [data],
         });
         message.success('保存成功');
       } catch (error) {
@@ -275,9 +278,11 @@ class RecordInput extends React.Component {
     }
   };
   activeKeyChange = (key) => {
+    console.log("key",key)
     this.setState({
       selectKey: key,
     });
+    this.getTableData(key)
   };
 
   userInformation = () => {
@@ -431,7 +436,7 @@ class RecordInput extends React.Component {
               </div>
               <div className='recordInput__dataContainer'>
                 <TableData
-                  resid={639829713698}
+                  resid={640186569410}
                   hasModify={false}
                   height={500}
                   hasDelete={false}
@@ -571,7 +576,7 @@ class RecordInput extends React.Component {
               </div>
               <div className='recordInput__dataContainer'>
                 <TableData
-                  resid={640190825057}
+                  resid={640452175220}
                   hasModify={false}
                   height={500}
                   hasDelete={false}
@@ -711,7 +716,7 @@ class RecordInput extends React.Component {
               </div>
               <div className='recordInput__dataContainer'>
                 <TableData
-                  resid={resid3}
+                  resid={640452189185}
                   hasModify={false}
                   height={500}
                   hasDelete={false}

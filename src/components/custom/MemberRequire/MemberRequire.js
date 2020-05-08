@@ -117,7 +117,7 @@ class MemberRequire extends React.Component {
       <div>
         <Header />
         <TableData
-          resid={641582795393}
+          resid={642011558196}
           subtractH={170}
           actionBarFixed={true}
           height={500}
