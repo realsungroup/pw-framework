@@ -1,8 +1,8 @@
 /** less 文件中引入背景图有 bug，所以使用 css */
 .login__left-part {
-  background-image: url('./images/login-left.png');
+  background-image: url('./images/login-red.png');
   background-size: auto 100%;
-  filter:hue-rotate(140deg);
+  filter:brightness(1.5);
 }
 
 .ant-col .ant-btn-block,.ant-col .ant-btn-primary,.ant-col .ant-btn-primary:hover,.ant-col .ant-btn-primary:before,.ant-col .ant-btn-primary:after{
