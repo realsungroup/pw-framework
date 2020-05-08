@@ -95,6 +95,10 @@ function exportExcel(data, headerData = [], fileName) {
   link.click();
   document.body.removeChild(link);
 }
+window.btnClickA = function(e) {
+  console.log(e.target.href.baseVal);
+  // Modal.confirm({ title: '照片', content: <div>123</div> });
+};
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -108,10 +112,10 @@ OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
   '<circle  cx="50" cy="60" r="40"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
+  '<image onclick="btnClickA(evt)" preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
-  '<text width="200" class="field_0" style="font-size: 16px;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
+  '<text width="200" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
 OrgChart.templates.architectureDiagramTemplate.field_1 =
   '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="150" y="65" text-anchor="middle">{val}</text>';
 OrgChart.templates.architectureDiagramTemplate.field_2 =
@@ -206,33 +210,7 @@ class ArchitectureDiagram extends React.Component {
   // };
   async componentDidMount() {
     // await this.getRootNodes();
-    if (this.props.hasUnhandleRecords) {
-      Modal.error({
-        title: '有未处理的记录',
-        content: '请尽快处理',
-        onOk: () => {
-          this.setState(
-            { hasImportResult: true, selectedResultResid: '638646009862' },
-            () => {
-              this.contentRef.scrollTo({
-                left: 0,
-                top: window.innerHeight,
-                behavior: 'smooth'
-              });
-            }
-          );
-        },
-        onCancel: () => {
-          this.setState({ hasImportResult: true }, () => {
-            this.contentRef.scrollTo({
-              left: 0,
-              top: window.innerHeight,
-              behavior: 'smooth'
-            });
-          });
-        }
-      });
-    }
+
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);
@@ -252,7 +230,7 @@ class ArchitectureDiagram extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const preNode = prevState.selectedNode;
     const node = this.state.selectedNode;
-    if (node.id && preNode !== node) {
+    if (node.id >= 0 && preNode !== node) {
       let breadcrumb = [];
       this.getBreadcrumb(node, breadcrumb);
       this.setState({ breadcrumb });
@@ -1693,8 +1671,8 @@ class ArchitectureDiagram extends React.Component {
   };
 
   renderBreadcrumb = () => {
-    const { breadcrumb } = this.state;
-    const { displayFileds, name } = this.props;
+    const { breadcrumb, firstField, secondaryField } = this.state;
+    // const { displayFileds, name } = this.props;
     return (
       <Breadcrumb separator=">">
         {breadcrumb.map(item => {
@@ -1706,11 +1684,7 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {name === 'person' &&
-                `${item.orgName}(${
-                  item.memberCN ? item.memberCN : '无任职人'
-                })`}
-              {name === 'job' && item[displayFileds.firstField]}
+              {`${item.orgName}(${item.memberCN ? item.memberCN : '无任职人'})`}
             </Breadcrumb.Item>
           );
         })}

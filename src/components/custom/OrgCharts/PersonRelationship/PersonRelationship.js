@@ -64,7 +64,7 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.img_0 =
   '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;" fill="#000000" x="125" y="30" text-anchor="middle">{val}</text>';
+  '<text width="250" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="125" y="30" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_1 =
   '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="55" text-anchor="middle">{val}</text>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.field_2 =
@@ -75,7 +75,7 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
 class PersonRelationship extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
-
+  userNo = '';
   constructor(props) {
     super(props);
     const displayFiledsJson = getItem(`displayField${this.props.resid}`);
@@ -91,6 +91,10 @@ class PersonRelationship extends React.Component {
         JSON.stringify(this.props.displayFileds)
       );
     }
+    const userInfo = JSON.parse(getItem('userInfo'));
+    console.log(userInfo);
+    this.userNo = userInfo ? userInfo.UserInfo.EMP_USERCODE : '';
+
     this.state = {
       selectedNode: {}, // 选中项
       addBroVisible: false,
@@ -263,7 +267,7 @@ class PersonRelationship extends React.Component {
         paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
         paratypes: 'string,int,string,int,int',
         resid,
-        paravalues: `${selectedDate.format('YYYYMMDD')},1239,,-1,0`
+        paravalues: `${selectedDate.format('YYYYMMDD')},${this.userNo},,-1,0`
       };
     } else {
       options = {
@@ -953,7 +957,7 @@ class PersonRelationship extends React.Component {
   };
 
   renderBreadcrumb = () => {
-    const { breadcrumb } = this.state;
+    const { breadcrumb, firstField, secondaryField } = this.state;
     const { displayFileds } = this.props;
     return (
       <Breadcrumb separator=">">
@@ -966,10 +970,8 @@ class PersonRelationship extends React.Component {
               }}
               key={item.id}
             >
-              {`${item[displayFileds.firstField]}(${
-                item[displayFileds.secondaryField]
-                  ? item[displayFileds.secondaryField]
-                  : 'N/A'
+              {`${item[firstField]}(${
+                item[secondaryField] ? item[secondaryField] : 'N/A'
               })`}
             </Breadcrumb.Item>
           );
