@@ -206,33 +206,7 @@ class ArchitectureDiagram extends React.Component {
   // };
   async componentDidMount() {
     // await this.getRootNodes();
-    if (this.props.hasUnhandleRecords) {
-      Modal.error({
-        title: '有未处理的记录',
-        content: '请尽快处理',
-        onOk: () => {
-          this.setState(
-            { hasImportResult: true, selectedResultResid: '638646009862' },
-            () => {
-              this.contentRef.scrollTo({
-                left: 0,
-                top: window.innerHeight,
-                behavior: 'smooth'
-              });
-            }
-          );
-        },
-        onCancel: () => {
-          this.setState({ hasImportResult: true }, () => {
-            this.contentRef.scrollTo({
-              left: 0,
-              top: window.innerHeight,
-              behavior: 'smooth'
-            });
-          });
-        }
-      });
-    }
+
     let data = await this.getData();
     this.initializeOrgchart();
     this.chart.load(data);

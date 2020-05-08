@@ -75,7 +75,7 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.field_3 =
 class PersonRelationship extends React.Component {
   static defaultProps = defaultProps;
   static propTypes = propTypes;
-
+  userNo = '';
   constructor(props) {
     super(props);
     const displayFiledsJson = getItem(`displayField${this.props.resid}`);
@@ -91,6 +91,10 @@ class PersonRelationship extends React.Component {
         JSON.stringify(this.props.displayFileds)
       );
     }
+    const userInfo = JSON.parse(getItem('userInfo'));
+    console.log(userInfo);
+    this.userNo = userInfo ? userInfo.UserInfo.EMP_USERCODE : '';
+
     this.state = {
       selectedNode: {}, // 选中项
       addBroVisible: false,
@@ -263,7 +267,7 @@ class PersonRelationship extends React.Component {
         paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
         paratypes: 'string,int,string,int,int',
         resid,
-        paravalues: `${selectedDate.format('YYYYMMDD')},1239,,-1,0`
+        paravalues: `${selectedDate.format('YYYYMMDD')},${this.userNo},,-1,0`
       };
     } else {
       options = {
