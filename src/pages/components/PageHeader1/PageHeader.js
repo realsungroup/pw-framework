@@ -278,7 +278,9 @@ const ActiveAppList = React.memo(
               >
                 <div className="new-home__page-header__active-app__title">
                   {app.appIconUrl && app.appIconUrlValidate ? (
-                    <img src={app.appIconUrl} className="new-home-app-icon" />
+                    <div className='overlay'>
+                     <img src={app.appIconUrl} className="new-home-app-icon" />
+                    </div>
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
                   )}

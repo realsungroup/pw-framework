@@ -39,7 +39,9 @@ class RecentApps extends React.PureComponent {
                 >
                   <div className="new-home__recent-apps-item__title">
                     {app.appIconUrl && app.appIconUrlValidate ? (
+                      <div className='overlay'>
                       <img src={app.appIconUrl} className="new-home-app-icon" />
+                      </div>
                     ) : (
                       <Icon type="mail" className="new-home-app-icon-mail" />
                     )}

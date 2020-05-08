@@ -919,10 +919,12 @@ class Home extends React.Component {
                                   >
                                     {app.appIconUrl &&
                                     app.appIconUrlValidate ? (
+                                    <div className='overlay'><div className='overlay-inner'></div>
                                       <img
                                         src={app.appIconUrl}
                                         className="new-home-app-icon"
                                       />
+                                    </div>  
                                     ) : (
                                       <Icon
                                         type="mail"
@@ -1167,7 +1169,10 @@ class AbbreviationApp extends React.Component {
         <header className="new-home__abbreviation-app__header">
           <div className="new-home__abbreviation-app__header__title">
             {app.appIconUrl && app.appIconUrlValidate ? (
+                                    <div className='overlay'><div className='overlay-inner'></div>
+
               <img src={app.appIconUrl} className="new-home-app-icon" />
+              </div>
             ) : (
               <Icon type="mail" className="new-home-app-icon-mail" />
             )}
