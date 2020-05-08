@@ -18,7 +18,7 @@ import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
 
-const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig[
+const { domainLoginConfig, lockScreenWaitTime ,themeColor,} = window.pwConfig[
   process.env.NODE_ENV
 ];
 
@@ -44,14 +44,14 @@ export default class Container extends React.Component {
       try {
         userInfo = JSON.parse(userInfo);
       } catch (err) {
-        return this.setThemeColor(window.themeColor);
+        // return this.setThemeColor(window.themeColor);
       }
       const themeColor =
         (userInfo.UserInfo.EMP_Color && {
           '@primary-color': userInfo.UserInfo.EMP_Color
         }) ||
         window.themeColor;
-      this.setThemeColor(themeColor);
+      // this.setThemeColor(themeColor);
     }
   };
 

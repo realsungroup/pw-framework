@@ -189,7 +189,8 @@ class PageHeader extends React.Component {
             overlayClassName="new-home__page-header-popver"
           >
             <Badge count={activeAppsNumber}>
-              <img src={windowSvg} className="page-header__abbreviation-icon" />
+              {/* <img src={windowSvg} className="page-header__abbreviation-icon" /> */}
+              <span className="new-home__page-header-icon iconfont icon-chuangkou"></span>
             </Badge>
           </Popover>
         </div>

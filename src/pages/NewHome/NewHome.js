@@ -23,7 +23,7 @@ import { delay } from 'lodash';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 
-const { businessOptionalResIds, reminderDataConfig } = window.pwConfig[
+const { businessOptionalResIds, reminderDataConfig,themeColor } = window.pwConfig[
   process.env.NODE_ENV
 ];
 
@@ -100,6 +100,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
+    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     this.state = {
       selectedModule: '',
       recentApps: [],
@@ -122,7 +123,8 @@ class Home extends React.Component {
       headerVisible: true,
       searchTextHeader: '',
       abbreviations: [],
-      abbreviationDoms: []
+      abbreviationDoms: [],
+      color
     };
   }
   componentDidMount() {
@@ -139,10 +141,22 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
+    // 设置主题色
+    this.setThemeColor(this.state.color);
     this.getData();
     this.fetchWaitingHandle();
     this.setRecentApps();
   }
+  setThemeColor = themeColor => {
+    window.less
+      .modifyVars({ '@primary-color': themeColor })
+      .then(() => {})
+      .catch(err => {
+        console.log({ err });
+        message.error(err.message);
+      });
+  };
+
 
   setRecentApps = async () => {
     let recentApps = JSON.parse(getItem('recentApps'));
