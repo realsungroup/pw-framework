@@ -1968,6 +1968,22 @@ window[640189820723] = {
   name: 'ContractApproval',
   title: '合同审批'
 };
+window[642077290667] = {
+  name: 'WzApprove',
+  title: '物资进出管理'
+};
+window[642506200802] = {
+  name: 'WzAdminApprove',
+  title: '物资行政部审批'
+};
+window[642506243685] = {
+  name: 'WzEquipmentApprove',
+  title: '物资设备部核准'
+};
+window[642506222417] = {
+  name: 'WzImportApprove',
+  title: '物资进出口审批'
+};
 window[641990842014] = {
   name: 'PWRedirect',
   title: '测试',

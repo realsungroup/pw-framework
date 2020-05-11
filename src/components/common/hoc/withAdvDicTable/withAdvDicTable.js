@@ -62,7 +62,7 @@ const withAdvDicTable = WrappedComponent => {
       }
       const advData = controlData.AdvDictionaryListData[0];
       if (!advData) {
-        alert('advDictionatyData.AdvDictionaryListData 为空数组');
+        // alert('advDictionatyData.AdvDictionaryListData 为空数组');
         return;
       }
       const resid = advData.ResID2;
