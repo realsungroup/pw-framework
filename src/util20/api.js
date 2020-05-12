@@ -232,4 +232,13 @@ http.createApi("saveRecord", {
   url: "api/100/table/Save"
 });
 
+/**
+ * 修改密码
+ */
+http.createApi("ResetPassword", {
+  method: "post",
+  url: "api/user/ResetPassword"
+});
+
+
 export default http;

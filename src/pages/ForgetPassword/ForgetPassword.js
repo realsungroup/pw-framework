@@ -35,36 +35,27 @@ class ForgetPassword extends React.Component {
         return;
       }
       let registerData = {
-        companyNo: form.getFieldValue("companyNo"), // 机构代码
-        loginAccount: form.getFieldValue("loginNum"), //登录账号
-        loginPassword: form.getFieldValue("loginPassword"), // 登录密码
-        handPhone: form.getFieldValue("phone"), // 手机号
-        code: form.getFieldValue("code"),//验证码
-        // validresid: 616852937051  // 暂未定义注册表
+        userid: form.getFieldValue("loginNum"), //登录账号
+        newpass1: form.getFieldValue("newPass"), // 新密码
+        resetcode: form.getFieldValue("valid"),//验证码
       };
-      this.setState({
-        showSpin: true
-      });
-
-      //还未定义api
-      // try {
-      //   res = await http().register(registerData);
-      //   if (res.data.error == 0) {
-      //     message.success("注册成功");
-      //     this.props.history.push({
-      //       pathname: "/login",
-      //       state: { doctorData }
-      //     });
-      //   } else {
-      //     message.error(res.data.message);
-      //   }
-      // } catch (error) {
-      //   message.error(error.message);
-      // }
+      try {
+        res = await http().ResetPassword(
+          registerData
+          );
+        if (res.data.error == 0) {
+          message.success("注册成功");
+          // this.props.history.push({
+          //   pathname: "/login",
+          // });
+        } else {
+          message.error(res.data.message);
+        }
+      } catch (error) {
+        message.error(error.message);
+      }
       
-      this.setState({
-        showSpin: false
-      });
+      
     });
   };
 
@@ -183,7 +174,7 @@ class ForgetPassword extends React.Component {
                 )}
               </Form.Item>
               <Form.Item>
-                {getFieldDecorator('loginPassword', {
+                {getFieldDecorator('newPass', {
                   rules: [{ required: true, message: '请输入你的新密码!' }]
                 })(
                   <Input
