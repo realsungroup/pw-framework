@@ -31,7 +31,7 @@ class LaborCorSelect extends React.Component {
     let res;
     try {
       res = await http({
-        baseURL: 'http://kingofdinner.realsun.me:1201/'
+        baseURL:this.baseURL
       }).getTable({
         resid: '617194995537'
       });
@@ -59,7 +59,7 @@ class LaborCorSelect extends React.Component {
       });
       console.log('data', data);
       res = await http({
-        baseURL: 'http://kingofdinner.realsun.me:1201/'
+        baseURL: this.baseURL
       }).modifyRecords({
         resid: 620816140260,
         data

@@ -148,3 +148,7 @@ export { Compact } from '../components/custom/loadableCustom';
 export { ContractApproval } from '../components/custom/loadableCustom';
 export { PersonnelInformation } from '../components/custom/loadableCustom';
 export { HeadquartersManage } from '../components/custom/loadableCustom';
+export { WzApprove } from '../components/custom/loadableCustom';
+export { WzAdminApprove } from '../components/custom/loadableCustom';
+export { WzEquipmentApprove } from '../components/custom/loadableCustom';
+export { WzImportApprove } from '../components/custom/loadableCustom';

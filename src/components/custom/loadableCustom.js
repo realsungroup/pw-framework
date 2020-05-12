@@ -704,3 +704,27 @@ export const HeadquartersManage = Loadable({
     return minLoading;
   }
 });
+export const WzApprove = Loadable({
+  loader: () => import('./WzApprove'),
+  loading() {
+    return minLoading;
+  }
+});
+export const WzAdminApprove = Loadable({
+  loader: () => import('./WzAdminApprove'),
+  loading() {
+    return minLoading;
+  }
+});
+export const WzEquipmentApprove = Loadable({
+  loader: () => import('./WzEquipmentApprove'),
+  loading() {
+    return minLoading;
+  }
+});
+export const WzImportApprove = Loadable({
+  loader: () => import('./WzImportApprove'),
+  loading() {
+    return minLoading;
+  }
+});

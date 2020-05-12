@@ -178,8 +178,14 @@ const columns = [
 class DLPrint extends React.Component {
   constructor(props) {
     super(props);
-    
+    this.baseURL =
+      window.pwConfig[
+        process.env.NODE_ENV
+      ].customURLs.comprehensiveQueryBaseURL;
+    this.dlEmployBaseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.dlEmployBaseURL;
   }
+  
   state={
     showPrint:false,
     data:{},
@@ -231,7 +237,7 @@ this.setState({emergency:emergency})
     })
     // 获取工作经历
     try {
-      let res = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:617195083937,
         cmswhere:`InterviewerId='${v.intervieweeId}'`
       });
@@ -259,7 +265,7 @@ this.setState({emergency:emergency})
     }
     // 获取学历信息
     try {
-      let res2 = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res2 = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:617195073738,
         cmswhere:`IntervieweeId='${v.intervieweeId}'`
       });
@@ -295,7 +301,7 @@ this.setState({emergency:emergency})
     }
     // 获取家庭关系
     try {
-      let res3 = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res3 = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:617195098273,
         cmswhere:`InterviewerId='${v.intervieweeId}'`
       });
@@ -328,7 +334,7 @@ this.setState({emergency:emergency})
     }
     // 获取其他信息
     try {
-      let res4 = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res4 = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:617195125330,
         cmswhere:`InterviewerId='${v.intervieweeId}'`
       });
@@ -342,7 +348,7 @@ this.setState({emergency:emergency})
     }
     // 获取能力指标
     try {
-      let res5 = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res5 = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:617195136194,
         cmswhere:`InterviewerId='${v.intervieweeId}'`
       });
@@ -356,7 +362,7 @@ this.setState({emergency:emergency})
     }
     // 获取简答题
     try {
-      let res6 = await http({baseURL:'http://kingofdinner.realsun.me:1201/'}).getTable({
+      let res6 = await http({baseURL:this.dlEmployBaseURL}).getTable({
         resid:618312967605,
         cmswhere:`REC_CRTID='${v.ID}'`
       });
@@ -634,7 +640,7 @@ this.setState({emergency:emergency})
           hasModify={false}
           hasDelete={false}
           hasAdd={false}
-          baseURL = 'http://kingofdinner.realsun.me:1201/'
+          baseURL = {this.dlEmployBaseURL}
           subtractH={190}
           hasRowDelete={false}
           hasRowModify={false}

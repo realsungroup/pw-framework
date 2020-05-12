@@ -33,6 +33,8 @@ window.pwConfig = {
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
       headquartersBaseURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流下载URl
+      WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
+      WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
     },
 
     // 需前端缓存配置的资源
@@ -191,6 +193,8 @@ window.pwConfig = {
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
       headquartersBaseURL: 'http://10.108.2.66:9091/', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://10.108.2.66:80', //总部工作流管理-总部工作流下载URl
+      WzBaseURL: 'http://10.108.2.66:2001', //物资管理
+      WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
     },
 
     // 需前端缓存配置的资源
