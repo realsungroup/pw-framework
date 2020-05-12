@@ -125,11 +125,10 @@ class TableData extends React.Component {
     //   await this.getData(nextProps);
     //   this.setState({ loading: false });
     // }
-    console.log("nextProps",nextProps)
-    if(this.props.dataSource !== nextProps.dataSource){
+    if (this.props.dataSource !== nextProps.dataSource) {
       this.setState({
-        dataSource:nextProps.dataSource
-      })
+        dataSource: nextProps.dataSource
+      });
     }
   };
 
@@ -338,7 +337,7 @@ class TableData extends React.Component {
       tableComponent,
       nullValueNotFetch
     } = this.props;
-    console.log("this.props",this.props)
+    console.log('this.props', this.props);
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
@@ -354,7 +353,7 @@ class TableData extends React.Component {
       try {
         // 获取主表数据
         if (dataMode === 'main') {
-          console.log("in")
+          console.log('in');
           const params = {
             resid,
             key,
@@ -693,9 +692,9 @@ class TableData extends React.Component {
   };
 
   // 搜索的值改变
-  onSearchChange = value =>{
-    this._searchValue=value;
-  }
+  onSearchChange = value => {
+    this._searchValue = value;
+  };
   // 导入
   handleImport = () => {
     const { openImportView, baseURL, importConfig, dblinkname } = this.props;
@@ -1234,7 +1233,7 @@ class TableData extends React.Component {
    * @param {boolean} isFirst 是否刷新的页数为第一页，默认：false
    */
   handleRefresh = async (isFirst = false) => {
-     this.setState({ loading: true });
+    this.setState({ loading: true });
     const { pagination } = this.state;
     let obj;
     // 刷新第一页的表格数据
@@ -1772,8 +1771,9 @@ class TableData extends React.Component {
           onSearch={this.handleSearch}
           onImport={this.handleImport}
           onDownload={this.handleDownload}
-          onSearchChange={(v)=>{this.onSearchChange(v)}}
-
+          onSearchChange={v => {
+            this.onSearchChange(v);
+          }}
           onChange={this.handleTableChange}
           renderOtherBtns={this.renderBeBtns}
           rowSelection={rowSelection}
@@ -1834,7 +1834,9 @@ class TableData extends React.Component {
         onSearch={this.handleSearch}
         onImport={this.handleImport}
         onDownload={this.handleDownload}
-        onSearchChange={(v)=>{this.onSearchChange(v)}}
+        onSearchChange={v => {
+          this.onSearchChange(v);
+        }}
         onChange={this.handleTableChange}
         renderOtherBtns={this.renderBeBtns}
         rowSelection={rowSelection}
@@ -1884,10 +1886,15 @@ class TableData extends React.Component {
         height: '100%'
       };
     }
+    const { style } = this.props;
     return (
       <div
         className="table-data"
-        style={zoomOutStyle.position ? zoomOutStyle : { width, height }}
+        style={
+          zoomOutStyle.position
+            ? { ...zoomOutStyle, ...style }
+            : { width, height, ...style }
+        }
         ref={element => (this.tableDataRef = element)}
       >
         <Spin spinning={loading}>{this.renderPwTable()}</Spin>

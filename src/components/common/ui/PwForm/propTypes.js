@@ -152,5 +152,11 @@ export const propTypes = {
    * 编辑按钮文案
    * 默认：'编辑'
    */
-  editText: PropTypes.string
+  editText: PropTypes.string,
+
+  /**
+   * 字段显示的顺序（每一个元素为字段的名称，索引为序号）
+   * 默认：-
+   */
+  fieldsOrder: PropTypes.array
 };

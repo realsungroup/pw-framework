@@ -12,6 +12,33 @@ const Fragment = React.Fragment;
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
+const getActiveKey = data => {
+  const activeKey = [];
+  data.forEach(item => activeKey.push(item.type));
+  return activeKey;
+};
+
+const getOrderedData = (data, fieldsOrder) => {
+  if (!fieldsOrder) {
+    return data;
+  }
+  const newData = [...data];
+  let ret = [];
+  fieldsOrder.forEach(filedName => {
+    const index = newData.findIndex(item => item.id === filedName);
+    if (index !== -1) {
+      ret.push({ ...newData[index] });
+      newData.splice(index, 1);
+    }
+  });
+
+  if (newData.length) {
+    ret = ret.concat(newData);
+  }
+
+  return ret;
+};
+
 /**
  * PwForm
  */
@@ -19,32 +46,21 @@ class PwForm extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
 
-  constructor(props) {
-    super(props);
-    const { data } = props;
-    const activeKey = this.getActiveKey(data);
-    this.state = {
-      activeKey
-    };
-  }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.data.length !== 0 &&
-      this.props.data.length === 0 &&
-      nextProps.displayMode === 'classify'
-    ) {
-      const activeKey = this.getActiveKey(nextProps.data);
-      this.setState({ activeKey });
+  static getDerivedStateFromProps(props, state) {
+    if ('data' in props) {
+      const state = {
+        data: getOrderedData(props.data, props.fieldsOrder)
+      };
+      if (props.displayMode === 'classify') {
+        state.activeKey = getActiveKey(props.data);
+      }
+      return state;
     }
+    return null;
   }
 
-  getActiveKey = data => {
-    const activeKey = [];
-    data.forEach(item => activeKey.push(item.type));
-    return activeKey;
+  state = {
+    data: []
   };
 
   handleCollapseChange = activeKey => {
@@ -66,7 +82,8 @@ class PwForm extends React.Component {
   };
 
   renderForm = () => {
-    const { data, colCount, displayMode } = this.props;
+    const { colCount, displayMode } = this.props;
+    const { data } = this.state;
     // 默认显示模式
     if (displayMode === 'default') {
       return this.renderFormItems(data, colCount);
