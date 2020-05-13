@@ -224,6 +224,7 @@ class CourseResources extends Component {
     return (
       <div className="course_resources">
         <Spin spinning={this.state.loading}>
+        <div style={{width:'100%',height:'100vh'}}>
         <TableData
           resid="615983242584"
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -239,6 +240,7 @@ class CourseResources extends Component {
           customRowBtns={btns}
           actionBarWidth={150}
         />
+        </div>
       </Spin>
 
       </div>
