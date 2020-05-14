@@ -66,15 +66,15 @@ class WzImportApprove extends React.Component {
           <span>备注:</span>
           <input value={subrecord.C3_561660151378} disabled />
         </div>
-        <img src={subrecord.C3_564586355793} alt="" />
-        <img src={subrecord.C3_564586356936} alt="" />
-        <img src={subrecord.C3_564586366720} alt="" />
-        <img src={subrecord.C3_576509688476} alt="" />
-        <img src={subrecord.C3_576509688694} alt="" />
-        <img src={subrecord.C3_576509688897} alt="" />
-        <img src={subrecord.C3_561812970226} alt="" />
-        <img src={subrecord.C3_561812973382} alt="" />
-        <img src={subrecord.C3_561812974789} alt="" />
+        {subrecord.C3_564586355793&&(<img src={subrecord.C3_564586355793} alt="" />)} 
+        {subrecord.C3_564586356936&&(<img src={subrecord.C3_564586356936} alt="" />)}
+        {subrecord.C3_564586366720&&(<img src={subrecord.C3_564586366720} alt="" />)}
+        {subrecord.C3_576509688476&&(<img src={subrecord.C3_576509688476} alt="" />)}
+        {subrecord.C3_576509688694&&(<img src={subrecord.C3_576509688694} alt="" />)}
+        {subrecord.C3_576509688897&&(<img src={subrecord.C3_576509688897} alt="" />)}
+        {subrecord.C3_561812970226&&(<img src={subrecord.C3_561812970226} alt="" />)}
+        {subrecord.C3_561812973382&&(<img src={subrecord.C3_561812973382} alt="" />)}
+        {subrecord.C3_561812974789&&(<img src={subrecord.C3_561812974789} alt="" />)}
         <hr />
       </div>
     ));
