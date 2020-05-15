@@ -23,9 +23,11 @@ import { delay } from 'lodash';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 
-const { businessOptionalResIds, reminderDataConfig,themeColor } = window.pwConfig[
-  process.env.NODE_ENV
-];
+const {
+  businessOptionalResIds,
+  reminderDataConfig,
+  themeColor
+} = window.pwConfig[process.env.NODE_ENV];
 
 function validateImage(pathImg) {
   return new Promise(res => {
@@ -72,16 +74,14 @@ const dealApps = async (apps, arr) => {
     const appIndex = arr.findIndex(item => item.typeName === app.BusinessNode);
     let index = appIndex;
     if (appIndex === -1) {
-      const validate = await validateImage(app.BusinessIconUrl);
       arr[arr.length] = {
         apps: [],
         typeName: app.BusinessNode,
         categoricalApps: new Map(),
-        url: validate ? app.BusinessIconUrl : folderPng
+        url: app.BusinessIconUrl || folderPng
       };
       index = arr.length - 1;
     }
-    app.appIconUrlValidate = await validateImage(app.appIconUrl);
     let categoryapps = arr[index].categoricalApps.get(
       app.PwCategory || '未分类'
     );
@@ -157,19 +157,24 @@ class Home extends React.Component {
       });
   };
 
-
   setRecentApps = async () => {
     let recentApps = JSON.parse(getItem('recentApps'));
     if (recentApps && Array.isArray(recentApps)) {
       recentApps = this.getSortRecentApps(recentApps);
-      // recentApps.forEach(item => {
-      //   item.appIconUrlValidate = validateImage(item.appIconUrl);
-      // });
-      for (let index = 0; index < recentApps.length; index++) {
-        const element = recentApps[index];
-        element.appIconUrlValidate = await validateImage(element.appIconUrl);
-      }
-      this.setState({ recentApps });
+
+      this.setState({ recentApps }, async () => {
+        const { recentApps } = this.state;
+        const pArr = [];
+        recentApps.forEach(app => {
+          pArr.push(validateImage(app.appIconUrl));
+        });
+        const resArr = await Promise.all(pArr).then();
+        for (let index = 0; index < resArr.length; index++) {
+          const validate = resArr[index];
+          recentApps[index].appIconUrlValidate = validate;
+        }
+        this.setState({ recentApps: [...recentApps] });
+      });
     } else {
       setItem('recentApps', JSON.stringify([]));
       this.setState({ recentApps: [] });
@@ -219,7 +224,36 @@ class Home extends React.Component {
     this.setState({ appDataFetching: true });
     const res = await this.getAndSetUserDesktop(isFirst);
     await this.getAndSetAllAppLinks(res.userdefined);
-    this.setState({ appDataFetching: false });
+    this.setState({ appDataFetching: false }, async () => {
+      const { folders } = this.state;
+      const bigpArr = [];
+      const smallpArr = [];
+      folders.forEach((folder, index) => {
+        bigpArr.push(validateImage(folder.url));
+        folder.apps.forEach(app => {
+          if (!smallpArr[index]) {
+            smallpArr[index] = [];
+          }
+          smallpArr[index].push(validateImage(app.appIconUrl));
+        });
+      });
+      //判断大图标是否有效
+      const bigRes = await Promise.all(bigpArr).then();
+      bigRes.forEach((res, index) => {
+        if (!res) {
+          folders[index].url = folderPng;
+        }
+      });
+      // 判断小图标是否有效
+      for (let index = 0; index < smallpArr.length; index++) {
+        const resArr = await Promise.all(smallpArr[index]).then();
+        resArr.forEach((res, i) => {
+          folders[index].apps[i].appIconUrlValidate = res;
+        });
+      }
+
+      this.setState({ folders: [...folders] });
+    });
   };
 
   getAndSetUserDesktop = async (isFirst = false) => {
@@ -235,9 +269,13 @@ class Home extends React.Component {
     // 桌面的文件夹
     const folders = [];
     await dealApps([...res.data, ...(res.userdefined || [])], folders);
-    this.setState({ appDataFetching: false });
     this.setState(
-      { folders, allApps: res.data, fixedApps: res.userdefined },
+      {
+        folders,
+        allApps: res.data,
+        fixedApps: res.userdefined,
+        appDataFetching: false
+      },
       () => {
         const appArr = [];
 
@@ -919,12 +957,13 @@ class Home extends React.Component {
                                   >
                                     {app.appIconUrl &&
                                     app.appIconUrlValidate ? (
-                                    <div className='overlay'><div className='overlay-inner'></div>
-                                      <img
-                                        src={app.appIconUrl}
-                                        className="new-home-app-icon"
-                                      />
-                                    </div>  
+                                      <div className="overlay">
+                                        <div className="overlay-inner"></div>
+                                        <img
+                                          src={app.appIconUrl}
+                                          className="new-home-app-icon"
+                                        />
+                                      </div>
                                     ) : (
                                       <Icon
                                         type="mail"
@@ -1169,9 +1208,10 @@ class AbbreviationApp extends React.Component {
         <header className="new-home__abbreviation-app__header">
           <div className="new-home__abbreviation-app__header__title">
             {app.appIconUrl && app.appIconUrlValidate ? (
-                                    <div className='overlay'><div className='overlay-inner'></div>
+              <div className="overlay">
+                <div className="overlay-inner"></div>
 
-              <img src={app.appIconUrl} className="new-home-app-icon" />
+                <img src={app.appIconUrl} className="new-home-app-icon" />
               </div>
             ) : (
               <Icon type="mail" className="new-home-app-icon-mail" />
@@ -1206,7 +1246,7 @@ class AbbreviationApp extends React.Component {
                     className="abbreviation-app__default-content__img"
                   />
                   <div className="abbreviation-app__default-content__tip">
-                    该功能不支持缩略图显示
+                    点击查看详情
                   </div>
                 </div>
               </div>
