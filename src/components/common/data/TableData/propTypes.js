@@ -36,7 +36,7 @@ export const defaultProps = {
   hasZoomInOut: true,
   defaultPagination: {
     current: 1,
-    pageSize: 10,
+    pageSize: 40,
     showSizeChanger: true,
     showQuickJumper: true
   },
