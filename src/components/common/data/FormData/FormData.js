@@ -376,7 +376,8 @@ class FormData extends React.Component {
       dblinkname,
       useAbsolute,
       subTalbeLayout,
-      style
+      style,
+      layout
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -397,7 +398,32 @@ class FormData extends React.Component {
       containerControlArr &&
       containerControlArr.length &&
       containerControlArr[0].FrmWidth;
-    return !useAbsolute ? (
+
+    const _useAbsolute = useAbsolute || layout === 'absolute';
+
+    if (_useAbsolute) {
+      return (
+        <>
+          <AbsoluteForm
+            data={data}
+            record={record}
+            {...formProps}
+            mode={mode}
+            {...otherProps}
+            onSave={this.handleSave}
+            onCancel={this.props.onCancel}
+            operation={operation}
+            beforeSaveFields={beforeSaveFields}
+            resid={resid}
+            dblinkname={dblinkname}
+          />
+          {hasSubTables &&
+            this.renderSubTablesAbsolute(containerHeight, containerWidth)}
+        </>
+      );
+    }
+
+    return (
       <div className="form-data" style={style}>
         {!!data.length && (
           <div
@@ -423,6 +449,7 @@ class FormData extends React.Component {
               beforeSaveFields={beforeSaveFields}
               resid={resid}
               dblinkname={dblinkname}
+              layout={layout}
             />
           </div>
         )}
@@ -430,24 +457,6 @@ class FormData extends React.Component {
           {hasSubTables && this.renderSubTables()}
         </div>
       </div>
-    ) : (
-      <>
-        <AbsoluteForm
-          data={data}
-          record={record}
-          {...formProps}
-          mode={mode}
-          {...otherProps}
-          onSave={this.handleSave}
-          onCancel={this.props.onCancel}
-          operation={operation}
-          beforeSaveFields={beforeSaveFields}
-          resid={resid}
-          dblinkname={dblinkname}
-        />
-        {hasSubTables &&
-          this.renderSubTablesAbsolute(containerHeight, containerWidth)}
-      </>
     );
   }
 }

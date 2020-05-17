@@ -12,7 +12,8 @@ export const defaultProps = {
   cancelText: '取消',
   enCancelText: 'Cancel',
   editText: '编辑',
-  enEditText: 'Edit'
+  enEditText: 'Edit',
+  layout: 'grid'
 };
 
 export const propTypes = {
@@ -81,6 +82,12 @@ export const propTypes = {
   //     ]
   //   }
   // ]
+
+  /**
+   * 布局方式
+   * 默认：'grid'
+   */
+  layout: PropTypes.oneOf(['grid', 'float']),
 
   /**
    * 列数量

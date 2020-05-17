@@ -8,7 +8,28 @@
     flex: 1;
     overflow: auto;
   }
+  &__form-item {
+    &--float {
+      float: left;
+    }
+    &--remove-antd-style {
+      .ant-form-item,
+      .ant-form-item-children {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+      }
+      .ant-form-item-label,
+      .ant-form-item-control {
+        line-height: normal;
+      }
+    }
+  }
+  &__form-item-label {
+    text-align: right;
+  }
 }
+
 .absolute-form {
   position: relative;
   .has-error .ant-form-explain {
