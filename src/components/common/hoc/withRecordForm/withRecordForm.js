@@ -40,6 +40,7 @@ export function withRecordForm(options = {}) {
        * @param {function} params.onCancel 取消后的回调函数
        * @param {string} params.dblinkname 数据库链接名称
        * @param {string} params.baseURL 基地址
+       * @param {string} params.formDataProps FormData 组件接受的 props
        */
       handleOpenRecordForm = ({
         type = 'modal',
@@ -66,7 +67,8 @@ export function withRecordForm(options = {}) {
         onCancel = () => {},
         dblinkname,
         useAbsolute = false,
-        baseURL = ''
+        baseURL = '',
+        formDataProps = {}
       }) => {
         const FormDataProps = {
           data,
@@ -87,7 +89,8 @@ export function withRecordForm(options = {}) {
           storeWay,
           dblinkname,
           useAbsolute,
-          baseURL
+          baseURL,
+          ...formDataProps
         };
         const containerProps = {
           title,

@@ -274,11 +274,34 @@ class PwForm extends React.Component {
       enSaveText,
       enCancelText,
       enEditText,
-      saveNeedConfirm
+      saveNeedConfirm,
+      data,
+      layout
     } = this.props;
     const { intl } = this.props;
+
+    let _width = width,
+      _height = height;
+    if (layout === 'float') {
+      let { containerControlArr } = data;
+      const containerWidth =
+        containerControlArr &&
+        containerControlArr.length &&
+        containerControlArr[0].FrmWidth;
+      const containerHeight =
+        containerControlArr &&
+        containerControlArr.length &&
+        containerControlArr[0].FrmHeight;
+
+      _width = containerWidth;
+      _height = containerHeight;
+    }
+
     return (
-      <div className={`pw-form ${className}`} style={{ width, height }}>
+      <div
+        className={`pw-form ${className}`}
+        style={{ width: _width, height: _height }}
+      >
         {/* body */}
         <Form className="pw-form__body">{this.renderForm()}</Form>
         {/* footer */}

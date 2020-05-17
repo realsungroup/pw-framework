@@ -449,7 +449,7 @@ class FormData extends React.Component {
               beforeSaveFields={beforeSaveFields}
               resid={resid}
               dblinkname={dblinkname}
-              layout={layout}
+              layout={formProps && formProps.layout ? formProps.layout : layout}
             />
           </div>
         )}

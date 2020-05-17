@@ -41,6 +41,7 @@ import {
   PageContainer,
   NotFound
 } from './pages/loadablePage';
+import SwitchHome from './pages/components/SwitchHome';
 
 addLocaleData([...en, ...zh]);
 
@@ -116,7 +117,8 @@ class App extends Component {
 
     this.state = {
       warningBarVisible: true,
-      resId
+      resId,
+      desktopStyle: null
     };
   }
 
@@ -134,13 +136,7 @@ class App extends Component {
     clipboard.on('error', function(e) {
       message.error('复制失败');
     });
-  };
 
-  handleCloseWarningBar = () => {
-    this.setState({ warningBarVisible: false });
-  };
-
-  render() {
     // 国际化
     let userInfo,
       language = '中文';
@@ -154,15 +150,6 @@ class App extends Component {
       }
     } catch (err) {}
 
-    let localeAntd = zh_CN_antd;
-    let locale = 'zh',
-      messages = zh_CN;
-    if (language === 'English') {
-      localeAntd = en_US_antd;
-      locale = 'en';
-      messages = en_US;
-    }
-
     // 'DESKTOP' or 'WORKBENCH'
     let desktopStyle = 'DESKTOP';
     try {
@@ -171,16 +158,48 @@ class App extends Component {
         // 默认 'WORKBENCH'
         desktopStyle = 'WORKBENCH';
       }
+
+      const _desktopStyle = localStorage.getItem('desktopStyle');
+      console.log({ _desktopStyle });
+      if (
+        _desktopStyle &&
+        (_desktopStyle === 'DESKTOP' || _desktopStyle === 'WORKBENCH')
+      ) {
+        desktopStyle = _desktopStyle;
+      }
     } catch (err) {}
 
-    if (
-      desktopStyle === 'WORKBENCH' &&
-      this.state.resId &&
-      window.location.href.indexOf('/fnmodule') === -1
-    ) {
-      const { origin, search } = window.location;
-      // window.location.href = `${origin}/fnmodule${search}`;
-      // return;
+    this.setState({
+      userInfo,
+      desktopStyle,
+      language
+    });
+  };
+
+  handleCloseWarningBar = () => {
+    this.setState({ warningBarVisible: false });
+  };
+
+  handleSwitchHome = homeMode => {
+    this.setState({ desktopStyle: homeMode });
+    console.log({ homeMode });
+    localStorage.setItem('desktopStyle', homeMode);
+  };
+
+  render() {
+    const { desktopStyle, language } = this.state;
+
+    if (!desktopStyle) {
+      return null;
+    }
+
+    let localeAntd = zh_CN_antd;
+    let locale = 'zh',
+      messages = zh_CN;
+    if (language === 'English') {
+      localeAntd = en_US_antd;
+      locale = 'en';
+      messages = en_US;
     }
 
     return (
@@ -255,6 +274,11 @@ class App extends Component {
             </LocaleProvider>
           </NonsupportIE>
         </Provider>
+
+        <SwitchHome
+          homeMode={desktopStyle}
+          onSwitch={this.handleSwitchHome}
+        ></SwitchHome>
       </ErrorBoundary>
     );
   }
