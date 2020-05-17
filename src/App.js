@@ -274,11 +274,12 @@ class App extends Component {
             </LocaleProvider>
           </NonsupportIE>
         </Provider>
-
-        <SwitchHome
-          homeMode={desktopStyle}
-          onSwitch={this.handleSwitchHome}
-        ></SwitchHome>
+        {window.location.pathname === '/' && (
+          <SwitchHome
+            homeMode={desktopStyle}
+            onSwitch={this.handleSwitchHome}
+          ></SwitchHome>
+        )}
       </ErrorBoundary>
     );
   }
