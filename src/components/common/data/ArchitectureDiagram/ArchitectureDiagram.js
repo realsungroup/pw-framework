@@ -182,7 +182,7 @@ class ArchitectureDiagram extends React.Component {
       resultMin: true,
       hasImportResult: false,
       detailVisible: false,
-      selectedResultResid: '638645137963',
+      selectedResultResid: '638645984799',
       selectedType: 'IDL',
       hasResult: true,
       hasDetail: true,
@@ -226,14 +226,14 @@ class ArchitectureDiagram extends React.Component {
   // };
   async componentDidMount() {
     // await this.getRootNodes();
-
-    let data = await this.getData();
     this.initializeOrgchart();
+    let data = await this.getDataById();
     this.chart.load(data);
+    this.getData(false);
     this._nodes = [...this.chart.config.nodes];
-    for (var i = 0; i < data.length; i++) {
-      data[i].number_children = childCount(data[i].id, data) + 1;
-    }
+    // for (var i = 0; i < data.length; i++) {
+    //   data[i].number_children = childCount(data[i].id, data) + 1;
+    // }
     const querystring = window.location.search.substring(1);
     const qsObj = qs.parse(querystring);
     if (qsObj.selectedNode) {
@@ -452,7 +452,7 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 获取节点数据
    */
-  getData = async () => {
+  getData = async (needLoading = true) => {
     const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
     const { selectedDate, selectedNode } = this.state;
     const options = {
@@ -460,7 +460,7 @@ class ArchitectureDiagram extends React.Component {
       resid,
       paravalues: selectedDate.format('YYYYMMDD')
     };
-    this.setState({ loading: true });
+    needLoading && this.setState({ loading: true });
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -510,6 +510,7 @@ class ArchitectureDiagram extends React.Component {
           memberAvatar: url,
           tags
         };
+        const { selectedNode } = this.state;
         if (selectedNode.id === item[idField]) {
           node.tags.push(selected);
           newSelectedNode = node;
@@ -522,6 +523,100 @@ class ArchitectureDiagram extends React.Component {
         return node;
       });
       this.setState({ loading: false, selectedNode: newSelectedNode });
+      this.chart.load(nodes);
+      this._nodes = [...this.chart.config.nodes];
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
+      }
+      return nodes;
+    } catch (error) {
+      console.error(error);
+      this.setState({ loading: false });
+      return [];
+    }
+  };
+
+  getDataById = async () => {
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      level,
+      rootId
+    } = this.props;
+    const { selectedDate, selectedNode } = this.state;
+    const options = {
+      ...procedureConfig,
+      resid,
+      paravalues: selectedDate.format('YYYYMMDD'),
+      idcolumn: idField,
+      pidcolumn: pidField,
+      id: rootId,
+      totallevels: level
+    };
+    this.setState({ loading: true });
+    try {
+      const httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      this.p11 = makeCancelable(http(httpParams).getByProcedureWithId(options));
+      const res = await this.p11.promise;
+      this._cmscolumninfo = res.cmscolumninfo;
+      this._tags = {};
+      const nodes = res.data.map(item => {
+        const tag = item.tagsname;
+        this._tags[tag] = {
+          group: true,
+          groupName: tag,
+          groupState: OrgChart.EXPAND,
+          template: 'group_grey'
+        };
+        const tags = [item.tagsname];
+
+        if (item.isScrap === 'Y') {
+          tags.push('discard');
+        } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
+          tags.push('tartOccupied');
+        } else if (item.isEmpty === 'Y') {
+          tags.push('empty');
+          this._emptyJobs.push(item);
+        }
+        if (item.isCreated === 'Y') {
+          tags.push('created');
+        }
+
+        let ImgObj = new Image(); //判断图片是否存在
+        ImgObj.src = item.memberAvatar;
+        let url;
+        //没有图片，则返回-1
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+          url = item.memberAvatar;
+        } else {
+          url = avatarDef;
+        }
+
+        const node = {
+          ...item,
+          id: item[idField],
+          pid: item[pidField],
+          memberAvatar: url,
+          tags
+        };
+        if (selectedNode.id === item[idField]) {
+          node.tags.push(selected);
+        }
+        res.cmscolumninfo.forEach(item => {
+          if (node[item.id] == null || node[item.id] === undefined) {
+            node[item.id] = item.text + '：N/A';
+          }
+        });
+        return node;
+      });
+      this.setState({ loading: false });
       return nodes;
     } catch (error) {
       console.error(error);
@@ -823,7 +918,6 @@ class ArchitectureDiagram extends React.Component {
                       dates: this.state.selectedDate.format('YYYYMMDD')
                     }
                   ];
-                  console.log(records);
                   const name = waitingImport[0].C3_227192484125;
                   Modal.confirm({
                     title: '请确认兼职信息',
@@ -1622,20 +1716,22 @@ class ArchitectureDiagram extends React.Component {
               />
               下载导入模板
             </div>
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={() => {
+                this.setState({ resultMin: false });
+              }}
+            >
+              <Icon
+                type="eye"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              查看导入结果
+            </div>
             <Popover
               placement="right"
               content={
                 <div>
-                  <div>
-                    <Checkbox
-                      checked={hasResult}
-                      onChange={e => {
-                        this.setState({ hasResult: e.target.checked });
-                      }}
-                    >
-                      导入结果
-                    </Checkbox>
-                  </div>
                   <div>
                     <Checkbox
                       checked={hasDetail}
@@ -1709,168 +1805,172 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
+  handleCloseImportResult = () => {
+    this.setState({
+      resultMin: true
+    });
+  };
   renderImportResult = () => {
     const { baseURL } = this.props;
     const { selectedResultResid, selectedType, mode, resultMin } = this.state;
     return (
       <div
-        id="import-result"
         className={classNames('architecture-diagram__import-result', {
           hidden: resultMin
         })}
       >
-        <div className="architecture-diagram__import-result__title">
-          导入结果
-          <Icon
-            type="minus"
-            className="architecture-diagram__min-button"
-            style={{ fontSize: 16 }}
-            onClick={() => {
-              this.setState({ resultMin: true });
-            }}
-          />
-        </div>
-        <div className="architecture-diagram__import-result__content">
-          <div style={{ marginBottom: 16 }}>
-            <Select
-              style={{ width: 120, marginRight: 16 }}
-              size="small"
-              defaultValue="638645137963"
-              onChange={v => {
-                this.setState({ selectedResultResid: v });
-              }}
-              value={selectedResultResid}
-            >
-              <Select.Option value="638645137963">全部</Select.Option>
-              <Select.Option value="638646080344">正常</Select.Option>
-              <Select.Option value="638645984799">未匹配</Select.Option>
-              <Select.Option value="638646009862">错误</Select.Option>
-            </Select>
-            <Select
-              style={{ width: 120, marginRight: 16 }}
-              size="small"
-              defaultValue="IDL"
-              onChange={v => {
-                this.setState({ selectedType: v });
-              }}
-              value={selectedType}
-            >
-              <Select.Option value="DL">DL</Select.Option>
-              <Select.Option value="IDL">IDL</Select.Option>
-            </Select>
-            {selectedResultResid === '638645984799' && (
-              <Button
+        <div
+          className="architecture-diagram__import-result-mask"
+          onClick={this.handleCloseImportResult}
+        ></div>
+        <div
+          id="import-result"
+          className={classNames('architecture-diagram__import-result__main')}
+        >
+          <div className="architecture-diagram__import-result__main__title">
+            导入结果
+            <Icon
+              type="close"
+              className="architecture-diagram__min-button"
+              style={{ fontSize: 16 }}
+              onClick={this.handleCloseImportResult}
+            />
+          </div>
+          <div className="architecture-diagram__import-result__main__content">
+            <div style={{ marginBottom: 16 }}>
+              <Select
+                style={{ width: 120, marginRight: 16 }}
                 size="small"
-                type="primary"
-                style={{ marginRight: 24 }}
-                onClick={() => {
-                  const waitingImport = this.tableDataRef.getAggridSelectedRows();
-                  if (!waitingImport.length) {
-                    return message.info('请选择待导入的数据');
-                  }
-                  let selectedNode;
-                  if (mode === 'table') {
-                    selectedNode = this.tableDataRef1.getAggridSelectedRows()[0];
-                    if (!selectedNode) {
-                      return message.info('请在上方表中选择待导入的岗位');
+                defaultValue="638645137963"
+                onChange={v => {
+                  this.setState({ selectedResultResid: v });
+                }}
+                value={selectedResultResid}
+              >
+                <Select.Option value="638645137963">全部</Select.Option>
+                <Select.Option value="638646080344">正常</Select.Option>
+                <Select.Option value="638645984799">未匹配</Select.Option>
+                <Select.Option value="638646009862">错误</Select.Option>
+              </Select>
+              <Select
+                style={{ width: 120, marginRight: 16 }}
+                size="small"
+                defaultValue="IDL"
+                onChange={v => {
+                  this.setState({ selectedType: v });
+                }}
+                value={selectedType}
+              >
+                <Select.Option value="DL">DL</Select.Option>
+                <Select.Option value="IDL">IDL</Select.Option>
+              </Select>
+              {selectedResultResid === '638645984799' && (
+                <Button
+                  size="small"
+                  type="primary"
+                  style={{ marginRight: 24 }}
+                  onClick={() => {
+                    const waitingImport = this.tableDataRef.getAggridSelectedRows();
+                    if (!waitingImport.length) {
+                      return message.info('请选择待导入的数据');
                     }
-                  } else {
-                    selectedNode = this.state.selectedNode;
-                    if (!selectedNode.REC_ID) {
-                      return message.info('请在架构图中选择待导入的岗位');
-                    }
-                  }
-                  const records = [];
-                  let names = '';
-                  waitingImport.forEach((record, index) => {
-                    names += record.C3_421886426562;
-                    if (index + 1 !== waitingImport.length) {
-                      names += ',';
-                    }
-                    records.push({
-                      REC_ID: record.REC_ID,
-                      C3_465142349966: selectedNode.orgNumber
-                    });
-                  });
-                  Modal.confirm({
-                    title: '提示',
-                    content: (
-                      <div>
-                        【<span style={{ color: '#f5222d' }}>{names}</span>】
-                        将导入到 【
-                        <span style={{ color: '#1890ff' }}>
-                          {selectedNode.orgName}
-                        </span>
-                        】
-                      </div>
-                    ),
-                    onOk: async () => {
-                      try {
-                        this.setState({ loading: true });
-                        let httpParams = {};
-                        // 使用传入的 baseURL
-                        if (baseURL) {
-                          httpParams.baseURL = baseURL;
-                        }
-                        await http(httpParams).modifyRecords({
-                          resid: '638645984799',
-                          data: records
-                        });
-                        this.setState({ loading: false });
-                        message.success('导入成功');
-                        this.tableDataRef.handleRefresh();
-                      } catch (error) {
-                        message.error(error.message);
-                        this.setState({ loading: false });
+                    let selectedNode;
+                    if (mode === 'table') {
+                      selectedNode = this.tableDataRef1.getAggridSelectedRows()[0];
+                      if (!selectedNode) {
+                        return message.info('请在上方表中选择待导入的岗位');
+                      }
+                    } else {
+                      selectedNode = this.state.selectedNode;
+                      if (!selectedNode.REC_ID) {
+                        return message.info('请在架构图中选择待导入的岗位');
                       }
                     }
-                  });
-                }}
-              >
-                匹配
-              </Button>
-            )}
-            {/* <span style={{ marginRight: 16 }}>合计：100</span>
+                    const records = [];
+                    let names = '';
+                    waitingImport.forEach((record, index) => {
+                      names += record.C3_421886426562;
+                      if (index + 1 !== waitingImport.length) {
+                        names += ',';
+                      }
+                      records.push({
+                        REC_ID: record.REC_ID,
+                        C3_465142349966: selectedNode.orgNumber
+                      });
+                    });
+                    Modal.confirm({
+                      title: '提示',
+                      content: (
+                        <div>
+                          【<span style={{ color: '#f5222d' }}>{names}</span>】
+                          将导入到 【
+                          <span style={{ color: '#1890ff' }}>
+                            {selectedNode.orgName}
+                          </span>
+                          】
+                        </div>
+                      ),
+                      onOk: async () => {
+                        try {
+                          this.setState({ loading: true });
+                          let httpParams = {};
+                          // 使用传入的 baseURL
+                          if (baseURL) {
+                            httpParams.baseURL = baseURL;
+                          }
+                          await http(httpParams).modifyRecords({
+                            resid: '638645984799',
+                            data: records
+                          });
+                          this.setState({ loading: false });
+                          message.success('导入成功');
+                          this.tableDataRef.handleRefresh();
+                        } catch (error) {
+                          message.error(error.message);
+                          this.setState({ loading: false });
+                        }
+                      }
+                    });
+                  }}
+                >
+                  匹配
+                </Button>
+              )}
+              {/* <span style={{ marginRight: 16 }}>合计：100</span>
             <span style={{ marginRight: 16 }}>成功：70</span>
             <span style={{ marginRight: 16 }}>错误：20</span>
             <span style={{ marginRight: 16 }}>未匹配：10</span> */}
-          </div>
-          <div style={{ flex: 1 }}>
-            <TableData
-              baseURL={baseURL}
-              resid={selectedResultResid || '638645137963'}
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              refTargetComponentName="TableData"
-              // subtractH={240}
-              hasAdd={false}
-              tableComponent="ag-grid"
-              rowSelectionAg={selectedType === 'IDL' ? 'single' : 'multiple'}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
-              afterSaveRefresh={true}
-              hasAdvSearch={false}
-              importConfig={null}
-            />
+            </div>
+            <div style={{ flex: 1 }}>
+              <TableData
+                baseURL={baseURL}
+                resid={selectedResultResid || '638645137963'}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                // subtractH={240}
+                hasAdd={false}
+                tableComponent="ag-grid"
+                rowSelectionAg={selectedType === 'IDL' ? 'single' : 'multiple'}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
+                afterSaveRefresh={true}
+                hasAdvSearch={false}
+                importConfig={null}
+              />
+            </div>
           </div>
         </div>
       </div>
     );
   };
   renderExpand = () => {
-    const {
-      detaileMin,
-      historyMin,
-      resultMin,
-      hasDetail,
-      hasHistory,
-      hasResult
-    } = this.state;
+    const { detaileMin, historyMin, hasDetail, hasHistory } = this.state;
     return (
       <div className="architecture-diagram__expand-buttons">
         {hasDetail && detaileMin && (
@@ -1893,23 +1993,6 @@ class ArchitectureDiagram extends React.Component {
                 this.setState({ historyMin: false });
               }}
             />
-          </div>
-        )}
-        {hasResult && resultMin && (
-          <div
-            className="architecture-diagram__expand"
-            onClick={() => {
-              this.setState({ resultMin: false }, () => {
-                this.contentRef.scrollTo({
-                  left: 0,
-                  top: window.innerHeight,
-                  behavior: 'smooth'
-                });
-              });
-            }}
-          >
-            导入结果
-            <Icon type="switcher" />
           </div>
         )}
       </div>
@@ -2296,7 +2379,17 @@ class ArchitectureDiagram extends React.Component {
             {hasResult && this.renderImportResult()}
           </div>
         </Spin>
-
+        {/* <Drawer
+          visible={!resultMin}
+          onCancel={() => {
+            this.setState({ resultMin: true });
+          }}
+          placement="left"
+          width={800}
+          title="导入结果"
+        >
+          {this.renderImportResult()}
+        </Drawer> */}
         <Modal
           visible={addBroVisible}
           title={operation === 'modify' ? '修改' : '添加'}

@@ -127,13 +127,15 @@ class PersonRelationship extends React.Component {
   }
 
   async componentDidMount() {
-    let data = await this.getData();
     this.initializeOrgchart();
+    // let data = await this.getData();
+    let data = await this.getDataById();
     this.chart.load(data);
-    this._nodes = [...this.chart.config.nodes];
-    for (var i = 0; i < data.length; i++) {
-      data[i].number_children = childCount(data[i].id, data) + 1;
-    }
+    this.getData(false);
+    // this._nodes = [...this.chart.config.nodes];
+    // for (var i = 0; i < data.length; i++) {
+    //   data[i].number_children = childCount(data[i].id, data) + 1;
+    // }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -249,7 +251,7 @@ class PersonRelationship extends React.Component {
   /**
    * 获取节点数据
    */
-  getData = async () => {
+  getData = async needLoading => {
     const {
       resid,
       baseURL,
@@ -277,7 +279,7 @@ class PersonRelationship extends React.Component {
       };
     }
 
-    this.setState({ loading: true });
+    needLoading && this.setState({ loading: true });
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -286,6 +288,112 @@ class PersonRelationship extends React.Component {
       }
       this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
       const res = await this.p1.promise;
+      this._cmscolumninfo = res.cmscolumninfo;
+      this._tags = {};
+      let newSelectedNode = {};
+      const nodes = res.data.map(item => {
+        const tag = item.tagsname;
+        this._tags[tag] = {
+          group: true,
+          groupName: tag,
+          groupState: OrgChart.EXPAND,
+          template: 'group_grey'
+        };
+        const tags = [item.tagsname];
+
+        if (item.isScrap === 'Y') {
+          tags.push('discard');
+        } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
+          tags.push('tartOccupied');
+        } else if (item.isEmpty === 'Y') {
+          tags.push('empty');
+        }
+        if (item.isCreated === 'Y') {
+          tags.push('created');
+        }
+        let ImgObj = new Image(); //判断图片是否存在
+        ImgObj.src = item[displayFileds.imgField];
+        let url;
+        //没有图片，则返回-1
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+          url = item[displayFileds.imgField];
+        } else {
+          url = avatarDef;
+        }
+
+        const node = {
+          ...item,
+          id: item[idField],
+          pid: item[pidField],
+          [displayFileds.imgField]: url,
+          tags
+        };
+        const { selectedNode } = this.state;
+        if (selectedNode.id === item[idField]) {
+          node.tags.push(selected);
+          newSelectedNode = node;
+        }
+        return node;
+      });
+      this.setState({ loading: false, selectedNode: newSelectedNode });
+      this.chart.load(nodes);
+      this._nodes = [...this.chart.config.nodes];
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
+      }
+      return nodes;
+    } catch (error) {
+      console.error(error);
+      this.setState({ loading: false });
+      return [];
+    }
+  };
+
+  getDataById = async () => {
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      displayFileds,
+      role,
+      rootId,
+      level
+    } = this.props;
+    const { selectedDate, selectedNode } = this.state;
+    let options = {};
+    if (role === 'manager') {
+      options = {
+        ...procedureConfig,
+        resid,
+        paravalues: selectedDate.format('YYYYMMDD'),
+        idcolumn: idField,
+        pidcolumn: pidField,
+        id: this.userNo,
+        totallevels: level
+      };
+    } else {
+      options = {
+        ...procedureConfig,
+        resid,
+        paravalues: selectedDate.format('YYYYMMDD'),
+        idcolumn: idField,
+        pidcolumn: pidField,
+        id: rootId,
+        totallevels: level
+      };
+    }
+
+    this.setState({ loading: true });
+    try {
+      const httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      this.p11 = makeCancelable(http(httpParams).getByProcedureWithId(options));
+      const res = await this.p11.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
       let newSelectedNode = {};

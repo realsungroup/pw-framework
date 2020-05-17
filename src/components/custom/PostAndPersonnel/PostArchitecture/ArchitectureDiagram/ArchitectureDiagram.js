@@ -165,13 +165,15 @@ class ArchitectureDiagram extends React.Component {
   }
 
   async componentDidMount() {
-    let data = await this.getData();
     this.initializeOrgchart();
+    // let data = await this.getData();
+    const data = await this.getDataById();
     this.chart.load(data);
+    this.getData(false);
     this._nodes = [...this.chart.config.nodes];
-    for (var i = 0; i < data.length; i++) {
-      data[i].number_children = childCount(data[i].id, data) + 1;
-    }
+    // for (var i = 0; i < data.length; i++) {
+    //   data[i].number_children = childCount(data[i].id, data) + 1;
+    // }
     const querystring = window.location.search.substring(1);
     const qsObj = qs.parse(querystring);
     if (qsObj.selectedNode) {
@@ -346,15 +348,15 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 获取节点数据
    */
-  getData = async () => {
+  getData = async (needLoading = true) => {
     const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
-    const { selectedDate, selectedNode } = this.state;
+    const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
       resid,
       paravalues: selectedDate.format('YYYYMMDD')
     };
-    this.setState({ loading: true });
+    needLoading && this.setState({ loading: true });
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -363,6 +365,92 @@ class ArchitectureDiagram extends React.Component {
       }
       this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
       const res = await this.p1.promise;
+      this._cmscolumninfo = res.cmscolumninfo;
+      this._tags = {};
+      let newSelectedNode = {};
+      const nodes = res.data.map(item => {
+        const tag = item.tagsname;
+        this._tags[tag] = {
+          group: true,
+          groupName: tag,
+          groupState: OrgChart.EXPAND,
+          template: 'group_grey'
+        };
+        const tags = [item.tagsname];
+
+        if (item.isScrap === 'Y') {
+          tags.push('discard');
+        } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
+          tags.push('tartOccupied');
+        } else if (item.isEmpty === 'Y') {
+          tags.push('empty');
+          this._emptyJobs.push(item);
+        }
+        if (item.isCreated === 'Y') {
+          tags.push('created');
+        }
+        const node = {
+          ...item,
+          id: item[idField],
+          pid: item[pidField],
+          tags
+        };
+        // alert(selectedNode);
+        const { selectedNode } = this.state;
+
+        if (selectedNode.id === item[idField]) {
+          node.tags.push(selected);
+          newSelectedNode = node;
+        }
+        res.cmscolumninfo.forEach(item => {
+          if (node[item.id] == null || node[item.id] === undefined) {
+            node[item.id] = item.text + '：N/A';
+          }
+        });
+        return node;
+      });
+      this.setState({ loading: false, selectedNode: newSelectedNode });
+      this.chart.load(nodes);
+      this._nodes = [...this.chart.config.nodes];
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
+      }
+      return nodes;
+    } catch (error) {
+      console.error(error);
+      this.setState({ loading: false });
+      return [];
+    }
+  };
+  getDataById = async () => {
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      level,
+      rootId
+    } = this.props;
+    const { selectedDate, selectedNode } = this.state;
+    const options = {
+      ...procedureConfig,
+      resid,
+      paravalues: selectedDate.format('YYYYMMDD'),
+      idcolumn: idField,
+      pidcolumn: pidField,
+      id: rootId,
+      totallevels: level
+    };
+    this.setState({ loading: true });
+    try {
+      const httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      this.p11 = makeCancelable(http(httpParams).getByProcedureWithId(options));
+      const res = await this.p11.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
       let newSelectedNode = {};
@@ -404,13 +492,22 @@ class ArchitectureDiagram extends React.Component {
         });
         return node;
       });
-      this.setState({ loading: false, selectedNode: newSelectedNode });
+      this.setState({ loading: false });
       return nodes;
     } catch (error) {
       console.error(error);
       this.setState({ loading: false });
       return [];
     }
+  };
+
+  clearCache = async () => {
+    const { selectedDate } = this.state;
+    await http().clearOrgCache({
+      key: selectedDate.format(
+        'YYYYMMDD' + this.props.procedureConfig.procedure
+      )
+    });
   };
 
   /**
@@ -550,6 +647,7 @@ class ArchitectureDiagram extends React.Component {
             this.setState({ selectedNode: {}, breadcrumb: [] });
             message.success('删除成功');
             this.setState({ loading: false });
+            this.clearCache();
           } catch (error) {
             this.setState({ loading: false });
             message.error(error.message);
@@ -745,6 +843,7 @@ class ArchitectureDiagram extends React.Component {
     }
     this.setState({ loading: false });
     this.chart.updateNode(newNode);
+    this.clearCache();
   };
 
   /**
@@ -792,6 +891,7 @@ class ArchitectureDiagram extends React.Component {
         this.getHistory();
       });
       this.chart.updateNode(node);
+      this.clearCache();
     }
   };
 
@@ -873,6 +973,7 @@ class ArchitectureDiagram extends React.Component {
           };
           this.chart.updateNode(node);
           this.setState({ loading: false, selectedNode: node });
+          this.clearCache();
         } catch (error) {
           this.setState({ loading: false });
           console.log(error);

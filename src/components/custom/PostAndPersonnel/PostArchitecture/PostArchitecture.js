@@ -110,6 +110,7 @@ class PostArchitecture extends React.Component {
               hasGroup={hasGroup}
               hasDepartmentFilter={hasDepartmentFilter}
               role={role}
+              rootId={100000}
             />
           </div>
         )}
@@ -148,6 +149,7 @@ class PostArchitecture extends React.Component {
               hasGroup={hasGroup}
               hasDepartmentFilter={hasDepartmentFilter}
               role={role}
+              rootId={100000}
             />
           </div>
         )}

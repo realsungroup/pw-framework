@@ -39,9 +39,13 @@ http.setResponseInterceptors(
     ) {
       return res;
     } else {
-      if((res.Errmsg==='loginerror')||(res.message==='loginerror')||(res.ErrorMsg==='loginerror')){
-        window.location.href='/login'
-      }else{
+      if (
+        res.Errmsg === 'loginerror' ||
+        res.message === 'loginerror' ||
+        res.ErrorMsg === 'loginerror'
+      ) {
+        window.location.href = '/login';
+      } else {
         throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
       }
     }
@@ -499,6 +503,22 @@ http.createApi('CreateAuditFlowData', {
 http.createApi('getByProcedure', {
   method: 'get',
   url: '/api/200/table/GetByProcedure'
+});
+
+/**
+ *
+ */
+http.createApi('getByProcedureWithId', {
+  method: 'get',
+  url: '/api/OrgStaff/GetByProcedure'
+});
+
+/**
+ *
+ */
+http.createApi('clearOrgCache', {
+  method: 'get',
+  url: '/api/OrgStaff/clearcache'
 });
 
 /**
