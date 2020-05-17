@@ -686,9 +686,14 @@ export const propTypes = {
   ]),
 
   /**
-   *
    * 保存成功后是否刷新表格数据(使用于aggrid模式)
    * 默认: fasle
    */
-  afterSaveRefresh: PropTypes.bool
+  afterSaveRefresh: PropTypes.bool,
+
+  /**
+   * 表格样式
+   * 默认：-
+   */
+  style: PropTypes.object
 };

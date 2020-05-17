@@ -9,7 +9,11 @@ export const defaultProps = {
     formWidth: '30%',
     tabsWidth: '70%'
   },
-  storeWay: 'be'
+  storeWay: 'be',
+  subTableArrProps: [],
+  subTalbeLayout: 'tab',
+  useAbsolute: false,
+  layout: 'grid'
 };
 
 export const propTypes = {
@@ -67,6 +71,16 @@ export const propTypes = {
   /**
    * 表单中的子表数组
    */
+  // subTableArr = [
+  //   {
+  //     subResid: 666,
+  //     // ...其他属性
+  //   },
+  //   {
+  //     subResid: 666,
+  //     // ...其他属性
+  //   }
+  // ]
   subTableArr: PropTypes.array,
 
   /**
@@ -85,5 +99,23 @@ export const propTypes = {
    * 数据库链接名称（当你想要用其他数据库时使用）
    * 默认：-
    */
-  dblinkname: PropTypes.string
+  dblinkname: PropTypes.string,
+
+  /**
+   * 子表布局
+   * 默认：'tab' 每一个子表存在于标签页中 | 'grid' 每一个子表使用栅格布局
+   */
+  subTalbeLayout: PropTypes.oneOf(['tab', 'grid']),
+
+  /**
+   * 是否使用绝对定位布局
+   * 默认：false
+   */
+  useAbsolute: PropTypes.bool,
+
+  /**
+   * 表单布局方式：'grid' 栅格布局 | 'float' 浮动布局（用于文字环绕图片） | 'absolute' 绝对定位布局（和 useAbsolute 参数效果一致）
+   * 默认：'grid'
+   */
+  layout: PropTypes.oneOf(['grid', 'float', 'absolute'])
 };

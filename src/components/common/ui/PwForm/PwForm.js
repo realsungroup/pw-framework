@@ -7,10 +7,40 @@ import { propTypes, defaultProps } from './propTypes';
 import { injectIntl } from 'react-intl';
 import './PwForm.less';
 import { getIntlVal } from 'Util20/util';
+import classNames from 'classnames';
 
 const Fragment = React.Fragment;
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
+
+const getActiveKey = data => {
+  const activeKey = [];
+  data.forEach(item => activeKey.push(item.type));
+  return activeKey;
+};
+
+const getOrderedData = (data, fieldsOrder) => {
+  if (!fieldsOrder) {
+    return data;
+  }
+  const newData = [...data];
+  let ret = [];
+  fieldsOrder.forEach(filedName => {
+    const index = newData.findIndex(item => item.id === filedName);
+    if (index !== -1) {
+      ret.push({ ...newData[index] });
+      newData.splice(index, 1);
+    }
+  });
+
+  if (newData.length) {
+    ret = ret.concat(newData);
+  }
+
+  return ret;
+};
+
+const classPrefix = 'pw-form';
 
 /**
  * PwForm
@@ -19,32 +49,21 @@ class PwForm extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
 
-  constructor(props) {
-    super(props);
-    const { data } = props;
-    const activeKey = this.getActiveKey(data);
-    this.state = {
-      activeKey
-    };
-  }
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.data.length !== 0 &&
-      this.props.data.length === 0 &&
-      nextProps.displayMode === 'classify'
-    ) {
-      const activeKey = this.getActiveKey(nextProps.data);
-      this.setState({ activeKey });
+  static getDerivedStateFromProps(props, state) {
+    if ('data' in props) {
+      const state = {
+        data: getOrderedData(props.data, props.fieldsOrder)
+      };
+      if (props.displayMode === 'classify') {
+        state.activeKey = getActiveKey(props.data);
+      }
+      return state;
     }
+    return null;
   }
 
-  getActiveKey = data => {
-    const activeKey = [];
-    data.forEach(item => activeKey.push(item.type));
-    return activeKey;
+  state = {
+    data: []
   };
 
   handleCollapseChange = activeKey => {
@@ -52,21 +71,29 @@ class PwForm extends React.Component {
   };
 
   renderFormItems = (data, colCount) => {
-    return (
-      <Fragment>
-        {colCount === 1 ? (
-          data.map(dateItem => this.renderFormItem(dateItem))
-        ) : (
-          <LzRowCols renderData={data} keyName="id" colCount={colCount}>
-            {dateItem => this.renderFormItem(dateItem)}
-          </LzRowCols>
-        )}
-      </Fragment>
-    );
+    const { layout } = this.props;
+
+    if (layout === 'grid') {
+      return (
+        <Fragment>
+          {colCount === 1 ? (
+            data.map(dateItem => this.renderFormItem(dateItem))
+          ) : (
+            <LzRowCols renderData={data} keyName="id" colCount={colCount}>
+              {dateItem => this.renderFormItem(dateItem)}
+            </LzRowCols>
+          )}
+        </Fragment>
+      );
+    }
+
+    // float
+    return data.map(dateItem => this.renderFloatFormItem(dateItem));
   };
 
   renderForm = () => {
-    const { data, colCount, displayMode } = this.props;
+    const { colCount, displayMode } = this.props;
+    const { data } = this.state;
     // 默认显示模式
     if (displayMode === 'default') {
       return this.renderFormItems(data, colCount);
@@ -99,9 +126,12 @@ class PwForm extends React.Component {
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
-      initialValue: dataItem.initialValue,
-      rules: dataItem.rules
+      initialValue: dataItem.initialValue
     };
+
+    if (mode === 'edit') {
+      options.rules = dataItem.rules;
+    }
 
     const hasBeforeSave =
       !!beforeSaveFields && beforeSaveFields.indexOf(dataItem.id) !== -1;
@@ -127,6 +157,102 @@ class PwForm extends React.Component {
           />
         )}
       </FormItem>
+    );
+  };
+
+  getStyle = (dataItem, label) => {
+    const { data } = this.props;
+    const { labelControllArr } = data;
+
+    if (!labelControllArr) {
+      return {};
+    }
+
+    const labelItem = labelControllArr.find(item => item.FrmText === label);
+
+    if (!labelItem) {
+      return {};
+    }
+
+    const labelItemStyle = labelItem.customStyle;
+    const controlItemStyle = dataItem.controlData.customStyle;
+
+    return {
+      wrapperStyle: {
+        width: labelItemStyle.width + controlItemStyle.width,
+        height: Math.max(labelItemStyle.height, controlItemStyle.height)
+      },
+      labelStyle: {
+        width: labelItemStyle.width,
+        height: labelItemStyle.height
+      },
+      controlStyle: {
+        width: controlItemStyle.width,
+        height: controlItemStyle.height
+      }
+    };
+  };
+
+  renderFloatFormItem = dataItem => {
+    const { id, label } = dataItem;
+    const {
+      form,
+      mode,
+      resid,
+      operation,
+      record,
+      beforeSaveFields,
+      dblinkname,
+      labelControllArr
+    } = this.props;
+    const { getFieldDecorator } = form;
+    const options = {
+      initialValue: dataItem.initialValue
+    };
+
+    if (mode === 'edit') {
+      options.rules = dataItem.rules;
+    }
+
+    const hasBeforeSave =
+      !!beforeSaveFields && beforeSaveFields.indexOf(dataItem.id) !== -1;
+
+    const {
+      wrapperStyle = {},
+      labelStyle = {},
+      controlStyle = {}
+    } = this.getStyle(dataItem, label);
+
+    return (
+      <div
+        className={classNames(
+          `${classPrefix}__form-item--float`,
+          `${classPrefix}__form-item--remove-antd-style`
+        )}
+        key={id}
+        style={wrapperStyle}
+      >
+        <FormItem key={id}>
+          <div className={`${classPrefix}__form-item-label`} style={labelStyle}>
+            {label}:
+          </div>
+          <div style={controlStyle}>
+            {getFieldDecorator(dataItem.id, options)(
+              <Control
+                dataItem={dataItem}
+                form={form}
+                mode={mode}
+                resid={resid}
+                record={record}
+                operation={operation}
+                hasBeforeSave={hasBeforeSave}
+                beforeSaveFields={hasBeforeSave}
+                dblinkname={dblinkname}
+              />
+            )}
+          </div>
+        </FormItem>
+      </div>
     );
   };
 

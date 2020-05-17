@@ -5,14 +5,12 @@ import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
 import { message, Tabs } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
-import { compose } from 'recompose';
 import { TableData } from '../../loadableCommon';
 import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
 
-const { Fragment } = React;
 const TabPane = Tabs.TabPane;
 
 /**
@@ -220,21 +218,27 @@ class FormData extends React.Component {
 
   renderSubTables = () => {
     const { defaultActiveKey } = this.state;
-    const { subTableArr, data, width } = this.props;
+    const { subTalbeLayout, subTableArr, data, width } = this.props;
 
-    return (
-      <Tabs
-        defaultActiveKey={defaultActiveKey}
-        className={classNames('form-data__tabs', {
-          'form-data__tabs--full': !data.length
-        })}
-        style={{ width: width.tabsWidth }}
-      >
-        {subTableArr.map((subTable, index) =>
-          this.renderTabPane(subTable, index)
-        )}
-      </Tabs>
-    );
+    if (subTalbeLayout === 'tab') {
+      return (
+        <Tabs
+          defaultActiveKey={defaultActiveKey}
+          className={classNames('form-data__tabs', {
+            'form-data__tabs--full': !data.length
+          })}
+          style={{ width: width.tabsWidth }}
+        >
+          {subTableArr.map((subTable, index) =>
+            this.renderTabPane(subTable, index)
+          )}
+        </Tabs>
+      );
+    } else {
+      return subTableArr.map((subTable, index) =>
+        this.renderTabPane(subTable, index, false)
+      );
+    }
   };
   renderSubTablesAbsolute = (containerHeight, containerWidth) => {
     const { defaultActiveKey } = this.state;
@@ -300,7 +304,8 @@ class FormData extends React.Component {
       </TabPane>
     );
   };
-  renderTabPane = (subTable, index) => {
+
+  renderTabPane = (subTable, index, hasTabPane = true) => {
     const { subTableArrProps, record, info, operation } = this.props;
     const { resid } = info;
 
@@ -319,23 +324,43 @@ class FormData extends React.Component {
 
     const storeWay = operation === 'add' ? 'fe' : 'be';
 
+    if (hasTabPane) {
+      return (
+        <TabPane tab={tab} key={index}>
+          <TableData
+            wrappedComponentRef={element =>
+              (this[`tableDataRef${index}`] = element)
+            }
+            refTargetComponentName="TableData"
+            dataMode="sub"
+            resid={resid}
+            subresid={subTable.subResid}
+            hostrecid={record.REC_ID}
+            size="small"
+            {...props}
+            {...tableProps}
+            storeWay={storeWay}
+          />
+        </TabPane>
+      );
+    }
+
     return (
-      <TabPane tab={tab} key={index}>
-        <TableData
-          wrappedComponentRef={element =>
-            (this[`tableDataRef${index}`] = element)
-          }
-          refTargetComponentName="TableData"
-          dataMode="sub"
-          resid={resid}
-          subresid={subTable.subResid}
-          hostrecid={record.REC_ID}
-          size="small"
-          {...props}
-          {...tableProps}
-          storeWay={storeWay}
-        />
-      </TabPane>
+      <TableData
+        key={index}
+        wrappedComponentRef={element =>
+          (this[`tableDataRef${index}`] = element)
+        }
+        refTargetComponentName="TableData"
+        dataMode="sub"
+        resid={resid}
+        subresid={subTable.subResid}
+        hostrecid={record.REC_ID}
+        size="small"
+        {...props}
+        {...tableProps}
+        storeWay={storeWay}
+      />
     );
   };
 
@@ -349,7 +374,10 @@ class FormData extends React.Component {
       info,
       width,
       dblinkname,
-      useAbsolute
+      useAbsolute,
+      subTalbeLayout,
+      style,
+      layout
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -370,12 +398,44 @@ class FormData extends React.Component {
       containerControlArr &&
       containerControlArr.length &&
       containerControlArr[0].FrmWidth;
-    return !useAbsolute ? (
-      <div className="form-data">
+
+    const _useAbsolute = useAbsolute || layout === 'absolute';
+
+    if (_useAbsolute) {
+      return (
+        <>
+          <AbsoluteForm
+            data={data}
+            record={record}
+            {...formProps}
+            mode={mode}
+            {...otherProps}
+            onSave={this.handleSave}
+            onCancel={this.props.onCancel}
+            operation={operation}
+            beforeSaveFields={beforeSaveFields}
+            resid={resid}
+            dblinkname={dblinkname}
+          />
+          {hasSubTables &&
+            this.renderSubTablesAbsolute(containerHeight, containerWidth)}
+        </>
+      );
+    }
+
+    return (
+      <div className="form-data" style={style}>
         {!!data.length && (
           <div
-            style={{ width: hasSubTables ? width.formWidth : '100%' }}
-            className="form-data__form-wrap"
+            style={{
+              width:
+                hasSubTables && subTalbeLayout === 'tab'
+                  ? width.formWidth
+                  : '100%'
+            }}
+            className={classNames({
+              'form-data__form-wrap': subTalbeLayout === 'tab'
+            })}
           >
             <PwForm
               data={data}
@@ -389,29 +449,14 @@ class FormData extends React.Component {
               beforeSaveFields={beforeSaveFields}
               resid={resid}
               dblinkname={dblinkname}
+              layout={layout}
             />
           </div>
         )}
-        {hasSubTables && this.renderSubTables()}
+        <div style={{ width: '100%' }}>
+          {hasSubTables && this.renderSubTables()}
+        </div>
       </div>
-    ) : (
-      <>
-        <AbsoluteForm
-          data={data}
-          record={record}
-          {...formProps}
-          mode={mode}
-          {...otherProps}
-          onSave={this.handleSave}
-          onCancel={this.props.onCancel}
-          operation={operation}
-          beforeSaveFields={beforeSaveFields}
-          resid={resid}
-          dblinkname={dblinkname}
-        />
-        {hasSubTables &&
-          this.renderSubTablesAbsolute(containerHeight, containerWidth)}
-      </>
     );
   }
 }

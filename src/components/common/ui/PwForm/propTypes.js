@@ -12,7 +12,8 @@ export const defaultProps = {
   cancelText: '取消',
   enCancelText: 'Cancel',
   editText: '编辑',
-  enEditText: 'Edit'
+  enEditText: 'Edit',
+  layout: 'grid'
 };
 
 export const propTypes = {
@@ -81,6 +82,12 @@ export const propTypes = {
   //     ]
   //   }
   // ]
+
+  /**
+   * 布局方式
+   * 默认：'grid'
+   */
+  layout: PropTypes.oneOf(['grid', 'float']),
 
   /**
    * 列数量
@@ -152,5 +159,11 @@ export const propTypes = {
    * 编辑按钮文案
    * 默认：'编辑'
    */
-  editText: PropTypes.string
+  editText: PropTypes.string,
+
+  /**
+   * 字段显示的顺序（每一个元素为字段的名称，索引为序号）
+   * 默认：-
+   */
+  fieldsOrder: PropTypes.array
 };
