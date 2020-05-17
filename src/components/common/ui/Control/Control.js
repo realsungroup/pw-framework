@@ -130,6 +130,8 @@ const getSelectViewValue = (value, controlData, props) => {
   }
 };
 
+const imageReg = /\.png|\.jpg|\.jpeg$/;
+
 /**
  * Control
  */
@@ -418,7 +420,39 @@ class Control extends React.Component {
 
     if (mode === 'view') {
       switch (name) {
-        case 'Upload':
+        case 'Upload': {
+          let urls = [];
+          if (value) {
+            urls = value.split(';file;');
+          }
+          return (
+            <Fragment>
+              {urls.map(url => {
+                // 图片
+                if (imageReg.test(url)) {
+                  return (
+                    <img
+                      src={url}
+                      style={{ width: '100%', height: '100%' }}
+                      alt={url}
+                    ></img>
+                  );
+                }
+
+                return (
+                  <a
+                    target="blank"
+                    style={{ display: 'block' }}
+                    key={url}
+                    href={url}
+                  >
+                    {url}
+                  </a>
+                );
+              })}
+            </Fragment>
+          );
+        }
         case 'TakePicture': {
           let urls = [];
           if (value) {
