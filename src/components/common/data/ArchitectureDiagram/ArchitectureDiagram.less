@@ -28,10 +28,12 @@
       &__container {
         flex: 1;
         height: 100%;
+        width: 1000px;
       }
       .architecture-diagram__tabledata__container,
       .architecture-diagram__chart-container {
         height: 100%;
+        width: 100%;
       }
       .architecture-diagram__tabledata__container.hidden {
         display: none;
@@ -42,6 +44,7 @@
       .architecture-diagram_main_sider {
         display: flex;
         flex-direction: column;
+        // width: 200px;
         .architecture-diagram_main_sider_title {
           height: 28px;
           background: rgba(24, 144, 255, 1);
@@ -156,7 +159,8 @@
   #architecture-diagram_orgchart {
     background: #f0f2f5;
     height: 100%;
-    flex: 1;
+    // flex: 1;
+    width: 100%;
   }
   //未启用状态
   .created > rect {
@@ -235,33 +239,51 @@
   }
   .architecture-diagram__import-result {
     height: calc(100% - 64px);
-    display: flex;
-    flex-direction: column;
     width: 100%;
     position: absolute;
     left: 0;
     bottom: 0;
-    background: #ffffff;
     z-index: 1;
     &.hidden {
       display: none;
     }
-    &__title {
-      height: 28px;
-      background: rgba(24, 144, 255, 1);
-      line-height: 28px;
-      color: #ffffff;
-      padding: 0 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    &__content {
-      margin: 8px 24px;
-      flex: 1;
+    &__main {
+      height: 100%;
+      width: calc(100% - 200px);
       display: flex;
       flex-direction: column;
+      background: #ffffff;
+
+      &__title {
+        height: 28px;
+        background: #ffffff;
+        line-height: 28px;
+        color: #333333;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 0;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      &__content {
+        padding: 8px 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        z-index: 0;
+        background: #ffffff;
+      }
     }
+  }
+  .architecture-diagram__import-result-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0);
+    opacity: 0.2;
   }
   .architecture-diagram__min-button {
     cursor: pointer;

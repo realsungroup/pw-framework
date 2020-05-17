@@ -94,6 +94,7 @@ class PersonnelInformation extends React.Component {
               hasGroup={role === 'manager' ? false : true}
               hasDepartmentFilter={role === 'manager' ? false : true}
               role={role}
+              rootId={134}
             />
           </TabPane>
         </Tabs>
