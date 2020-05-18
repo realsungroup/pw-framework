@@ -84,40 +84,39 @@ export const inExaminationAndApproval = {
   resid: 605803642531,
   hasSearch: true,
   hasBeBtns: true,
-  subtractH: 196,
-  hasAdd: false,
+  hasRowModify: true, //行内修改按钮
   hasModify: false,
   hasDelete: false,
-  hasRowModify: false,
-  hasRowView: true,
+  hasRowView: false,
+  beforeSaveFields: 'C3_605703930741',
+  subtractH: 196,
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
-  hasRowDelete: false,
-  hasBeBtns: true,
   // height:500,
-  formProps: {
-    height: 600
-  },
+  //   formProps:{
+  //     height:500,
+  //  },
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
   },
+  addText: '请填写访客基本信息',
   subTableArrProps: [
     {
       subTableName: '访客信息',
       subResid: 606066688508,
       tableProps: {
-        hasAdd: false,
+        addText: '添加访客身份信息',
+        hasAdd: true,
         hasModify: false,
         hasDelete: false,
-        // hasRowEdit: true,
-        hasRowModify: false,
+        hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        height: 500,
+        height: 400,
         defaultColumnWidth: 100,
-        actionBarWidth: 200,
+        actionBarWidth: 100,
         subtractH: 196
       }
     },
