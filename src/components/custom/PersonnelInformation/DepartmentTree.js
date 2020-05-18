@@ -26,8 +26,16 @@ class DepartmentTree extends React.Component {
     console.log(this.state);
   }
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    const { onlyPersonData } = this.props;
+    let data;
+    if (onlyPersonData) {
+      data = await this.getSubNodes();
+      await this.fetchData(data);
+    } else {
+      await this.fetchData(data);
+    }
+    this.setState({ loading: false });
   }
 
   componentWillUnmount() {
@@ -37,8 +45,15 @@ class DepartmentTree extends React.Component {
   /**
    * 获取后台表数据
    */
-  fetchData = async () => {
-    const { baseURL, resid, idField, titleField, rootNode } = this.props;
+  fetchData = async data => {
+    const {
+      baseURL,
+      resid,
+      idField,
+      titleField,
+      rootNode,
+      onlyPersonData
+    } = this.props;
     this.setState({ loading: true });
     try {
       const httpParams = {};
@@ -48,7 +63,16 @@ class DepartmentTree extends React.Component {
       }
       this.p1 = makeCancelable(http(httpParams).getTable({ resid }));
       const res = await this.p1.promise;
-      this.generateTreeData(res.data);
+      if (onlyPersonData) {
+        const filterdata = res.data.filter(item => {
+          return data.find(d => {
+            return d[idField] == item[idField];
+          });
+        });
+        this.generatePersonTreeData(filterdata);
+      } else {
+        this.generateTreeData(res.data);
+      }
       const treeDataList = res.data.map(item => {
         return {
           key: item[idField],
@@ -59,12 +83,37 @@ class DepartmentTree extends React.Component {
       this.setState({
         treeDataList
       });
+      return res.data;
     } catch (error) {
-      message.error(error.message);
+      message.error(error);
+      return [];
     }
-    this.setState({ loading: false });
   };
 
+  getSubNodes = async () => {
+    const { baseURL } = this.props;
+    const httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    // http://ngrok5.realsun.me:6060/api/OrgStaff/GetSubNodes?resid=417643880834&idcolumn=DEP_ID&pidcolumn=DEP_PID&totallevels=2&rootresid=424709122808&rootidcolumn=DEP_ID
+    try {
+      const res = await http(httpParams).getSubNodes({
+        resid: 417643880834,
+        idcolumn: 'DEP_ID',
+        pidcolumn: 'DEP_PID',
+        totallevels: 2,
+        rootresid: 424709122808,
+        rootidcolumn: 'DEP_ID'
+      });
+      // console.log(res.data);
+      return res.data;
+    } catch (error) {
+      message.error(error);
+      return [];
+    }
+  };
   generateTreeData = (data = []) => {
     const { idField, pidField, titleField, rootNode } = this.props;
     const treeData = [
@@ -89,6 +138,31 @@ class DepartmentTree extends React.Component {
     treeData[0].children.forEach(item => {
       this.calcChildren(item, data);
     });
+    this.setState({ treeData });
+  };
+  generatePersonTreeData = (data = []) => {
+    const { idField, pidField, titleField } = this.props;
+    const treeData = [];
+    data.forEach(item => {
+      const isRootNode = data.some(d => {
+        return d[idField] === item[pidField];
+      });
+      if (!isRootNode) {
+        treeData.push({
+          [idField]: item[idField],
+          [pidField]: item[pidField],
+          title: item[titleField],
+          key: item[idField],
+          children: []
+        });
+      }
+    });
+
+    treeData.forEach(item => {
+      this.calcChildren(item, data);
+    });
+    console.log(treeData);
+
     this.setState({ treeData });
   };
 
@@ -185,30 +259,32 @@ class DepartmentTree extends React.Component {
       treeData,
       autoExpandParent,
       expandedKeys,
-      loading
+      loading,
     } = this.state;
-    const { onSelect, treeClassName } = this.props;
+    const { onSelect, treeClassName, onlyPersonData } = this.props;
     const _treeData = this.filterTreeData(selectedBranch, treeData);
     return (
       <div>
-        <div>
-          <p>请选择分公司：</p>
-          <Select
-            value={selectedBranch}
-            style={{ width: '100%', marginBottom: 8 }}
-            onChange={v => {
-              this.setState({ selectedBranch: v });
-            }}
-            mode="multiple"
-          >
-            {treeData[0] &&
-              treeData[0].children.map(item => {
-                return (
-                  <Select.Option key={item.key}>{item.title} </Select.Option>
-                );
-              })}
-          </Select>
-        </div>
+        {!onlyPersonData && (
+          <div>
+            <p>请选择分公司：</p>
+            <Select
+              value={selectedBranch}
+              style={{ width: '100%', marginBottom: 8 }}
+              onChange={v => {
+                this.setState({ selectedBranch: v });
+              }}
+              mode="multiple"
+            >
+              {treeData[0] &&
+                treeData[0].children.map(item => {
+                  return (
+                    <Select.Option key={item.key}>{item.title} </Select.Option>
+                  );
+                })}
+            </Select>
+          </div>
+        )}
 
         {loading ? (
           '加载数据...'
