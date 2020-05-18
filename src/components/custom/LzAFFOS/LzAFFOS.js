@@ -138,7 +138,7 @@ export default class LzAFFOS extends React.Component {
               />
             </div>
           </TabPane> */}
-
+ 
           <TabPane tab="审批中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <p style ={{textIndent:"2em",color:"red",fontWeight:"bold",fontSize:"28px"}}>您的申请已提交，疫情期间请确保已向行政安保部门提供该访客的单位承诺书，谢谢！</p>
