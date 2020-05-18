@@ -119,7 +119,7 @@ export const inExaminationAndApproval = {
         defaultColumnWidth: 100,
         actionBarWidth: 100,
         subtractH: 196,
-        formProps: { saveReopen: true, saveOpenText: '保存打开' }
+        formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' }
       }
     },
     {
