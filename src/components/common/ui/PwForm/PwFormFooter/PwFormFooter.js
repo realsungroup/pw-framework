@@ -14,6 +14,7 @@ const PwFormFooter = React.memo(
     mode,
     form,
     saveText,
+    saveOpenText,
     cancelText,
     editText,
     saveNeedConfirm,
@@ -51,7 +52,7 @@ const PwFormFooter = React.memo(
                     type="primary"
                     onClick={() => onReopenSave && onReopenSave(form)}
                   >
-                    保存并打开
+                    {saveOpenText}
                   </Button>
                 )}
                 {hasCancel && (
