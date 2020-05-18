@@ -1,39 +1,40 @@
 import React from 'react';
-import SearchBox from '../components/SearchBox';
-// import PageHeader from '../components/PageHeader';
-import UserInfo from '../components/UserInfo';
 import { Route } from 'react-router-dom';
 import { getItem } from '../../util/localCache';
 import {
-  Home,
   PersonCenter,
   WorkbenchSetting,
   GetConfig,
-  Reminder
+  Reminder,
+  Desktop,
+  WorkBench
 } from '../loadablePage';
-import NewHome from '../NewHome';
 import { message, Input, Button, Icon } from 'antd';
 import { defaultLogin, domainLogin } from 'Util/api';
 import LockScreen from '../components/LockScreen';
 import PageBody from '../components/PageBody';
 import './PageContainer.less';
+import SwitchHome from '../components/SwitchHome';
 
-const { domainLoginConfig, lockScreenWaitTime ,themeColor,} = window.pwConfig[
+const { domainLoginConfig, lockScreenWaitTime, themeColor } = window.pwConfig[
   process.env.NODE_ENV
 ];
 
 const time = lockScreenWaitTime;
 
+const desktopStyleMap = {
+  DESKTOP: Desktop,
+  WORKBENCH: WorkBench
+};
+
 export default class Container extends React.Component {
   constructor(props) {
     super(props);
 
-    const desktopStyle = 'DESKTOP';
-
     this.state = {
       reminderNum: 0,
       password: '',
-      desktopStyle
+      desktopStyle: null
     };
     this.lockScreenRef = React.createRef();
   }
@@ -53,6 +54,28 @@ export default class Container extends React.Component {
         window.themeColor;
       // this.setThemeColor(themeColor);
     }
+
+    // 'DESKTOP' or 'WORKBENCH'
+    let desktopStyle = 'DESKTOP';
+    try {
+      desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
+      if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
+        // 默认 'WORKBENCH'
+        desktopStyle = 'WORKBENCH';
+      }
+
+      const _desktopStyle = localStorage.getItem('desktopStyle');
+      if (
+        _desktopStyle &&
+        (_desktopStyle === 'DESKTOP' || _desktopStyle === 'WORKBENCH')
+      ) {
+        desktopStyle = _desktopStyle;
+      }
+    } catch (err) {}
+
+    this.setState({
+      desktopStyle
+    });
   };
 
   setThemeColor = themeColor => {
@@ -121,8 +144,18 @@ export default class Container extends React.Component {
     window.removeEventListener('unload', this.unloadCallback);
   };
 
+  handleSwitchHome = homeMode => {
+    this.setState({ desktopStyle: homeMode });
+    localStorage.setItem('desktopStyle', homeMode);
+  };
+
   render() {
-    const { reminderNum, password } = this.state;
+    const { password, desktopStyle } = this.state;
+
+    if (!desktopStyle) {
+      return null;
+    }
+
     const user = JSON.parse(getItem('userInfo'));
     let userData;
     // 读取用户信息报错时
@@ -136,17 +169,13 @@ export default class Container extends React.Component {
       document.location.href = '/login';
     }
 
-    const searchBox = <SearchBox placeholder="" />;
-    const userInfo = (
-      <UserInfo userName={userData.userName} userRank={userData.userRank} />
-    );
-
     let username;
     if (user) {
       this.userCode = user.UserCode;
       this.domainCode = user.DomainCode;
       username = user.Data;
     }
+
     return (
       <div className="page-container">
         {/* 锁屏 */}
@@ -183,20 +212,19 @@ export default class Container extends React.Component {
             </div>
           </LockScreen>
         )}
-        {/* 页面 */}
-        {/* <PageHeader
-          searchBox={searchBox}
-          title={userInfo}
-          reminderNum={reminderNum}
-          lockScreenRef={this.lockScreenRef}
-        /> */}
         <PageBody>
-          <Route path="/" exact component={NewHome} />
+          <Route path="/" exact component={desktopStyleMap[desktopStyle]} />
           <Route path="/person-center" component={PersonCenter} />
           <Route path="/workbench-setting" component={WorkbenchSetting} />
           <Route path="/fnmodule" component={GetConfig} />
           <Route path="/reminder" component={Reminder} />
         </PageBody>
+        {window.location.pathname === '/' && (
+          <SwitchHome
+            homeMode={desktopStyle}
+            onSwitch={this.handleSwitchHome}
+          ></SwitchHome>
+        )}
       </div>
     );
   }
