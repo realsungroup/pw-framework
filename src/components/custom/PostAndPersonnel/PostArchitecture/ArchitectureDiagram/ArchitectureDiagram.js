@@ -504,9 +504,8 @@ class ArchitectureDiagram extends React.Component {
   clearCache = async () => {
     const { selectedDate } = this.state;
     await http().clearOrgCache({
-      key: selectedDate.format(
-        'YYYYMMDD' + this.props.procedureConfig.procedure
-      )
+      key:
+        selectedDate.format('YYYYMMDD') + this.props.procedureConfig.procedure
     });
   };
 
