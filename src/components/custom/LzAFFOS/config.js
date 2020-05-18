@@ -74,7 +74,8 @@ export const inApplication = {
         height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100,
-        subtractH: 196
+        subtractH: 196,
+        formProps: { saveReopen: true, saveNeedConfirm: true }
       }
     }
   ]
@@ -117,7 +118,8 @@ export const inExaminationAndApproval = {
         height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100,
-        subtractH: 196
+        subtractH: 196,
+        formProps: { saveReopen: true, saveNeedConfirm: true }
       }
     },
     {
