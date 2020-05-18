@@ -37,6 +37,13 @@ export const Desktop = Loadable({
   }
 });
 
+export const WorkBench = Loadable({
+  loader: () => import('./NewHome'),
+  loading() {
+    return <FullLoading loading={true} />;
+  }
+});
+
 export const Reminder = Loadable({
   loader: () => import('./Reminder'),
   loading() {
