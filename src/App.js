@@ -11,9 +11,6 @@ import zh from 'react-intl/locale-data/zh';
 import zh_CN from './locales/zh-CN';
 import en_US from './locales/en-US';
 
-// import { PageContainer, Login, NotFound } from './pages/loadablePage';
-
-// import NonsupportIE from 'nonsupport-ie-react';
 import NonsupportIE from './pages/components/NonsupportIE';
 
 import ClipboardJS from 'clipboard';
@@ -34,14 +31,12 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import {
-  Desktop,
   GetConfig,
   Login,
   Reminder,
   PageContainer,
   NotFound
 } from './pages/loadablePage';
-import SwitchHome from './pages/components/SwitchHome';
 
 addLocaleData([...en, ...zh]);
 
@@ -150,28 +145,8 @@ class App extends Component {
       }
     } catch (err) {}
 
-    // 'DESKTOP' or 'WORKBENCH'
-    let desktopStyle = 'DESKTOP';
-    try {
-      desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
-      if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
-        // 默认 'WORKBENCH'
-        desktopStyle = 'WORKBENCH';
-      }
-
-      const _desktopStyle = localStorage.getItem('desktopStyle');
-      console.log({ _desktopStyle });
-      if (
-        _desktopStyle &&
-        (_desktopStyle === 'DESKTOP' || _desktopStyle === 'WORKBENCH')
-      ) {
-        desktopStyle = _desktopStyle;
-      }
-    } catch (err) {}
-
     this.setState({
       userInfo,
-      desktopStyle,
       language
     });
   };
@@ -187,11 +162,7 @@ class App extends Component {
   };
 
   render() {
-    const { desktopStyle, language } = this.state;
-
-    if (!desktopStyle) {
-      return null;
-    }
+    const { language } = this.state;
 
     let localeAntd = zh_CN_antd;
     let locale = 'zh',
@@ -221,50 +192,22 @@ class App extends Component {
               <IntlProvider locale={locale} messages={messages}>
                 <Router basename={basename || '/'}>
                   <Switch>
-                    {desktopStyle === 'DESKTOP' && (
-                      <PrivateRoute exact path="/" component={Desktop} />
-                    )}
-                    {desktopStyle === 'DESKTOP' && (
-                      <PrivateRoute path="/fnmodule" component={GetConfig} />
-                    )}
-                    {desktopStyle === 'DESKTOP' && (
-                      <PrivateRoute path="/reminder" component={Reminder} />
-                    )}
-
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute exact path="/" component={PageContainer} />
-                    )}
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute path="/fnmodule" component={GetConfig} />
-                    )}
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute
-                        path="/reminder"
-                        component={PageContainer}
-                      />
-                    )}
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute
-                        path="/workbench-setting"
-                        component={PageContainer}
-                      />
-                    )}
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute
-                        path="/report-table"
-                        component={PageContainer}
-                      />
-                    )}
-                    {desktopStyle === 'WORKBENCH' && (
-                      <PrivateRoute
-                        path="/person-center"
-                        component={PageContainer}
-                      />
-                    )}
-
-                    {['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1 && (
-                      <PrivateRoute exact path="/" component={PageContainer} />
-                    )}
+                    <PrivateRoute exact path="/" component={PageContainer} />
+                    <PrivateRoute path="/fnmodule" component={GetConfig} />
+                    <PrivateRoute path="/reminder" component={Reminder} />
+                    <PrivateRoute exact path="/" component={PageContainer} />
+                    <PrivateRoute
+                      path="/workbench-setting"
+                      component={PageContainer}
+                    />
+                    <PrivateRoute
+                      path="/report-table"
+                      component={PageContainer}
+                    />
+                    <PrivateRoute
+                      path="/person-center"
+                      component={PageContainer}
+                    />
 
                     <Route path="/login" component={Login} />
                     <Route path="*" component={NotFound} />
@@ -274,12 +217,6 @@ class App extends Component {
             </LocaleProvider>
           </NonsupportIE>
         </Provider>
-        {window.location.pathname === '/' && (
-          <SwitchHome
-            homeMode={desktopStyle}
-            onSwitch={this.handleSwitchHome}
-          ></SwitchHome>
-        )}
       </ErrorBoundary>
     );
   }

@@ -1797,7 +1797,9 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {`${item.orgName}(${item.memberCN ? item.memberCN : '无任职人'})`}
+              {`${item[firstField]}(${
+                item.memberCN ? item.memberCN : '无任职人'
+              })`}
             </Breadcrumb.Item>
           );
         })}
