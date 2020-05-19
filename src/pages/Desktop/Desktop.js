@@ -6,7 +6,6 @@ import { message, Popover, Icon, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
 import classNames from 'classnames';
-import { cloneDeep } from 'lodash';
 import DesktopLockScreen from './DesktopLockScreen';
 import DesktopModifyPass from './DesktopModifyPass';
 import DesktopBg from './DesktopBg';
@@ -14,7 +13,6 @@ import {
   DesktopReminderList,
   DesktopColorPicker,
   DesktopDashboard,
-  WindowView,
   DesktopPersonCenter
 } from './loadableDesktop';
 import { OrgChartData } from '../../components/common/loadableCommon';
@@ -29,7 +27,6 @@ import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
 import logoPng from './assets/logo.png';
-import qs from 'qs';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
 import { delay } from 'lodash';
@@ -54,36 +51,6 @@ const objArrUnique = (arr, key) => {
       }
     }
   }
-};
-
-const dealApps = apps => {
-  apps.forEach(app => (app.ResID = app.ResID || app.resid));
-  objArrUnique(apps, 'ResID');
-  let arr = [];
-  apps.forEach(app => {
-    const appIndex = arr.findIndex(item => item.typeName === app.BusinessNode);
-    let index = appIndex;
-    if (appIndex === -1) {
-      arr[arr.length] = {
-        apps: [],
-        typeName: app.BusinessNode,
-        categoricalApps: new Map(),
-        url: app.BusinessIconUrl || folderPng
-      };
-      index = arr.length - 1;
-    }
-    let categoryapps = arr[index].categoricalApps.get(
-      app.PwCategory || '未分类'
-    );
-    if (categoryapps) {
-      categoryapps.push(app);
-      arr[index].categoricalApps.set(app.PwCategory || '未分类', categoryapps);
-    } else {
-      arr[index].categoricalApps.set(app.PwCategory || '未分类', [app]);
-    }
-    arr[index].apps.push(app);
-  });
-  return arr;
 };
 
 class Desktop extends React.Component {
@@ -125,11 +92,8 @@ class Desktop extends React.Component {
 
     // 默认打开仪表盘
     if (defaultOpenWindow === '仪表盘') {
-      this.handleOpenDashboard();
+      // this.handleOpenDashboard();
     }
-
-    // 获取数据
-    this.getData(true);
   };
 
   setThemeColor = themeColor => {
@@ -140,10 +104,6 @@ class Desktop extends React.Component {
         console.log({ err });
         message.error(err.message);
       });
-  };
-
-  getDesktopMainRef = node => {
-    this.desktopMainRef = node;
   };
 
   getWindowViewRef = (node, title) => {
@@ -174,214 +134,6 @@ class Desktop extends React.Component {
   handleModifyPassSuccess = () => {
     this.setState({ modifyPassModalVisible: false });
     this.props.history.push('/login');
-  };
-
-  getData = async (isFirst = false) => {
-    this.setState({ loading: true });
-    const res = await this.getAndSetUserDesktop(isFirst);
-    await this.getAndSetAllAppLinks(res.userdefined);
-    this.setState({ loading: false });
-  };
-
-  getAndSetUserDesktop = async (isFirst = false) => {
-    let res;
-    try {
-      res = await http().getUserDesktop();
-    } catch (err) {
-      this.setState({ loading: false });
-      console.error(err);
-      return message.error(err.message);
-    }
-
-    // 桌面的文件夹
-    const folders = dealApps([...res.data, ...(res.userdefined || [])]);
-    this.setState({ folders }, () => {
-      const appArr = [];
-      // 第一次打开桌面时，默认打开的 app
-      if (isFirst) {
-        folders.some(folder =>
-          folder.apps.some(app => {
-            if (app.title === defaultOpenWindow) {
-              appArr.push({ app, typeName: folder.typeName });
-              return true;
-            }
-          })
-        );
-      }
-      // 地址栏有某个功能模块的 querystring 的话，也直接打开窗口
-      const search = this.props.history.location.search.substring(1);
-      const qsObj = qs.parse(search);
-      if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
-        let temp = folders.some(folder =>
-          folder.apps.some(app => {
-            if (app.title === qsObj.title) {
-              app.fnmoduleUrl = `fnmodule${this.props.history.location.search}`;
-              appArr.push({ app, typeName: folder.typeName });
-              return true;
-            }
-          })
-        );
-
-        // 若后端未定义这个入口（即改入口由前端定义的）
-        if (!temp) {
-          appArr.push({
-            app: {
-              appName: qsObj.title,
-              title: qsObj.title,
-              name: qsObj.title,
-              ResID: qsObj.resid,
-              REC_ID: qsObj.recid,
-              fnmoduleUrl: `fnmodule${this.props.history.location.search}`
-            },
-            typeName: qsObj.type
-          });
-        }
-      }
-      this.handleOpenWindow(appArr);
-    });
-    return res;
-  };
-
-  getAndSetAllAppLinks = async selectedApps => {
-    const residStr = businessOptionalResIds.join(',');
-    let res;
-    try {
-      res = await http().getAllAppLinks({
-        parentresids: residStr,
-        getresourcedata: 1,
-        getrecordcount: 1
-      });
-    } catch (err) {
-      console.error(err);
-      this.setState({ loading: false });
-      return message.error(err.message);
-    }
-
-    // 左下角的所有功能
-    const { expandedKeys, fnTreeData } = this.dealFnTreeData(
-      res.data || [],
-      selectedApps
-    );
-
-    this.setState({
-      allFolders: fnTreeData,
-      menus: fnTreeData,
-      allFoldersExpandedKeys: expandedKeys
-    });
-  };
-
-  dealFnTreeData = (fnTreeData, selectedApps) => {
-    const expandedKeys = [],
-      checkedKeys = [],
-      selectedFnList = [];
-    fnTreeData.forEach(item => {
-      item.title = item.resname;
-      item.key = item.resid;
-      expandedKeys.push(item.key + '');
-      item.isParentNode = true;
-      item.categoricalApps = new Map();
-      item.AppLinks.forEach(app => {
-        app.title = app.RES_NAME;
-        app.key = app.RES_PID + '_' + app.RES_ID;
-        app.isParentNode = false;
-        if (
-          selectedApps.some(item => {
-            if (item.name === app.RES_NAME) {
-              // REC_ID 为空时，为必要功能
-              return (app.recid = item.REC_ID);
-            }
-          })
-        ) {
-          checkedKeys.push(app.key);
-          selectedFnList.push(cloneDeep(app));
-        }
-        let categoryapps = item.categoricalApps.get(app.PwCategory || '未分类');
-        if (categoryapps) {
-          categoryapps.push(app);
-          item.categoricalApps.set(app.PwCategory || '未分类', categoryapps);
-        } else {
-          item.categoricalApps.set(app.PwCategory || '未分类', [app]);
-        }
-      });
-    });
-
-    return { expandedKeys, fnTreeData, checkedKeys, selectedFnList };
-  };
-
-  /**
-   * 打开窗口
-   * @params {array} appArr，如：[{ app, typeName }]
-   */
-  handleOpenWindow = appArr => {
-    const { activeApps } = this.state;
-    // app, typeName
-    const arr = [];
-    if (
-      appArr.length === 1 &&
-      activeApps.find(app => app.REC_ID === appArr[0].app.REC_ID)
-    ) {
-      const activeApp = activeApps.find(
-        app => app.REC_ID === appArr[0].app.REC_ID
-      );
-      if (activeApp) {
-        return this.handleBottomBarAppTrigger(activeApp);
-      }
-    }
-    appArr.forEach(item => {
-      const { app, typeName } = item;
-      const resid = app.ResID || app.resid;
-      const url =
-        item.app.fnmoduleUrl ||
-        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
-      const children = (
-        <iframe src={url} frameBorder="0" className="desktop__iframe" />
-      );
-      const width = this.desktopMainRef.clientWidth;
-      const height = this.desktopMainRef.clientHeight;
-      arr.push({
-        children,
-        title: app.title,
-        activeAppOthersProps: {
-          ...app,
-          width,
-          height,
-          x: 0,
-          y: 0,
-          customWidth: 800,
-          customHeight: height,
-          customX: 0,
-          customY: 0,
-          minWidth: 330,
-          minHeight: 100,
-          zoomStatus: 'max'
-        }
-      });
-    });
-
-    this.addAppToBottomBar(arr);
-  };
-
-  handleCloseActiveApp = activeApp => {
-    const { activeApps, zIndexActiveApps } = this.state;
-    const newActiveApps = [...activeApps];
-
-    const appIndex = newActiveApps.findIndex(
-      item => item.appName === activeApp.appName
-    );
-
-    newActiveApps.splice(appIndex, 1);
-
-    // 删除 zIndexActiveApps
-    const newZIndexActiveApps = [...zIndexActiveApps];
-    const index = newZIndexActiveApps.findIndex(
-      app => app.title === activeApp.title
-    );
-    newZIndexActiveApps.splice(index, 1);
-
-    this.setState({
-      activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps
-    });
   };
 
   isDesktopShow = false;
@@ -420,51 +172,8 @@ class Desktop extends React.Component {
     });
   };
 
-  handleBottomBarAppTrigger = activeApp => {
-    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
-    const newActiveApps = [...activeApps];
-    const newAppsSwitchStatus = [...appsSwitchStatus];
-
-    const appIndex = newActiveApps.findIndex(
-      item => item.appName === activeApp.appName
-    );
-
-    // app 是否被打开
-    let isOpen;
-    // 当窗口为非激活状态时，窗口一定为打开
-    if (!newActiveApps[appIndex].isActive) {
-      isOpen = true;
-
-      // 当窗口为激活状态时
-    } else {
-      isOpen = !newActiveApps[appIndex].isOpen;
-    }
-    newActiveApps[appIndex].isOpen = isOpen;
-    newAppsSwitchStatus[appIndex] = isOpen;
-
-    // 只能有一个 app 被激活
-    newActiveApps.forEach(activeApp => (activeApp.isActive = false));
-    newActiveApps[appIndex].isActive = true;
-
-    // 如果是打开的，则调整 zIndex
-    const newZIndexActiveApps = [...zIndexActiveApps];
-    if (isOpen) {
-      const index = newZIndexActiveApps.findIndex(
-        app => app.title === activeApp.title
-      );
-      const removedApp = newZIndexActiveApps.splice(index, 1);
-      newZIndexActiveApps.push(removedApp[0]);
-    }
-
-    this.setState({
-      activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps,
-      appsSwitchStatus: newAppsSwitchStatus
-    });
-  };
-
   handleActiveWindowView = activeApp => {
-    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
+    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.props;
     const newActiveApps = [...activeApps];
     const newAppsSwitchStatus = [...appsSwitchStatus];
 
@@ -536,68 +245,6 @@ class Desktop extends React.Component {
   handleSearchChange = e => {
     this.setState({ searchValue: e.target.value });
     delay(this.filterMenus, 200);
-  };
-
-  handleAddToDesktop = appData => {
-    const { folders } = this.state;
-    const { activeApps } = this.state;
-    let activeApp = activeApps.find(app => app.REC_ID === appData.recid);
-    if (activeApp) {
-      return this.handleBottomBarAppTrigger(activeApp);
-    }
-    let desktopApp, typeName;
-    const isExistDesktop = folders.some(folder => {
-      return folder.apps.some(app => {
-        if (app.title === appData.title) {
-          desktopApp = app;
-          typeName = folder.typeName;
-          return true;
-        }
-      });
-    });
-    const app = desktopApp;
-    // 已经存在于桌面，则直接打开窗口
-    if (isExistDesktop) {
-      const resid = parseInt(app.ResID || app.resid, 10);
-      const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
-      const appName = app.title;
-      const { activeApps } = this.state;
-      activeApps.forEach(activeApp => {
-        activeApp.isActive = false;
-      });
-
-      const children = (
-        <iframe src={url} frameBorder="0" className="desktop__iframe" />
-      );
-      const width = this.desktopMainRef.clientWidth;
-      const height = this.desktopMainRef.clientHeight;
-
-      this.setState({ menuVisible: false });
-
-      this.addAppToBottomBar([
-        {
-          children,
-          title: app.title,
-          activeAppOthersProps: {
-            ...app,
-            width,
-            height,
-            x: 0,
-            y: 0,
-            customWidth: 800,
-            customHeight: height,
-            customX: 0,
-            customY: 0,
-            minWidth: 330,
-            minHeight: 100,
-            zoomStatus: 'max'
-          }
-        }
-      ]);
-      // 不存在于桌面，则先将 app 添加到桌面，然后再打开窗口
-    } else {
-      this.addAppToDesktop(appData);
-    }
   };
 
   handleRemoveDesktopApp = async appData => {
@@ -770,7 +417,8 @@ class Desktop extends React.Component {
    */
   addAppToBottomBar = willOpenApps => {
     // children, title, activeAppOthersProps = {}
-    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
+    const { zIndexActiveApps, appsSwitchStatus } = this.state;
+    const { activeApps } = this.props;
 
     const appArr = [];
     willOpenApps.forEach(willOpenApp => {
@@ -1052,12 +700,17 @@ class Desktop extends React.Component {
     ]);
   };
 
+  handleImageError = e => {
+    e.target.src = folderPng;
+  };
+
   renderApps = (apps, typeName) => {
+    const { onOpenWindow } = this.props;
     return apps.map(app => (
       <div
         className="desktop__folder-app"
         key={app.ResID || app.resid}
-        onClick={() => this.handleOpenWindow([{ app, typeName }])}
+        onClick={() => onOpenWindow([{ app, typeName }], this.desktopMainRef)}
       >
         <div className="desktop__folder-app-icon">
           {app.appIconUrl ? (
@@ -1108,9 +761,7 @@ class Desktop extends React.Component {
         {categories &&
           categories.map((category, index) => {
             return (
-              <div
-                className="desktop__folder-category"
-              >
+              <div className="desktop__folder-category">
                 <div className="desktop__folder-category-title">
                   {category[0]}
                 </div>
@@ -1120,23 +771,24 @@ class Desktop extends React.Component {
                       <div
                         className="desktop__folder-category-app"
                         onClick={() =>
-                          this.handleOpenWindow([
+                          this.props.onOpenWindow([
                             { app, typeName: folder.typeName }
                           ])
                         }
                       >
                         <div className="desktop__folder-category-app-icon">
                           {app.appIconUrl ? (
-                            <div className='overlay'>
-                            <img
-                              src={app.appIconUrl}
-                              alt={app.appIconUrl}
-                              style={{
-                                display: 'inline-block',
-                                height: 32,
-                                width: 'auto'
-                              }}
-                            />
+                            <div className="overlay">
+                              <img
+                                src={app.appIconUrl}
+                                alt={app.appIconUrl}
+                                style={{
+                                  display: 'inline-block',
+                                  height: 32,
+                                  width: 'auto'
+                                }}
+                                onError={this.handleImageError}
+                              />
                             </div>
                           ) : (
                             <i
@@ -1184,7 +836,7 @@ class Desktop extends React.Component {
   };
 
   renderFolders = () => {
-    const { folders } = this.state;
+    const { folders } = this.props;
     return folders.map((folder, index) => {
       return (
         <Popover
@@ -1201,7 +853,7 @@ class Desktop extends React.Component {
           getPopupContainer={getPopoverContainer}
         >
           <div className="desktop__folder">
-            <div className='overlay'></div>
+            <div className="overlay"></div>
             <img
               src={folder.url}
               alt="folder"
@@ -1216,6 +868,7 @@ class Desktop extends React.Component {
 
   renderActiveApps = () => {
     const { activeApps } = this.state;
+    const { onBottomBarAppTrigger, onCloseActiveApp } = this.props;
 
     return activeApps.map((activeApp, index) => {
       const classes = classNames('desktop__active-app', {
@@ -1225,7 +878,7 @@ class Desktop extends React.Component {
         <div
           className={classes}
           key={activeApp + index}
-          onClick={() => this.handleBottomBarAppTrigger(activeApp)}
+          onClick={() => onBottomBarAppTrigger(activeApp)}
         >
           {activeApp.DeskiconCls && (
             <i
@@ -1240,47 +893,10 @@ class Desktop extends React.Component {
             className="desktop__active-app-close"
             onClick={e => {
               e.stopPropagation();
-              this.handleCloseActiveApp(activeApp);
+              onCloseActiveApp(activeApp);
             }}
           />
         </div>
-      );
-    });
-  };
-
-  renderWindowView = () => {
-    const { activeApps, zIndexActiveApps } = this.state;
-    return activeApps.map((activeApp, index) => {
-      const visible = activeApp.isOpen;
-      // 窗口的 zIndex，从 4 开始
-      const zIndex =
-        zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 4;
-
-      return (
-        <WindowView
-          ref={node => this.getWindowViewRef(node, activeApp.title)}
-          key={activeApp.appName + index}
-          title={activeApp.appName}
-          visible={visible}
-          onClose={() => this.handleCloseActiveApp(activeApp)}
-          onMin={() => this.handleMinActiveApp(activeApp)}
-          onActive={() => this.handleActiveWindowView(activeApp)}
-          zIndex={zIndex}
-          width={activeApp.width}
-          height={activeApp.height}
-          x={activeApp.x}
-          y={activeApp.y}
-          minWidth={activeApp.minWidth}
-          minHeight={activeApp.minHeight}
-          onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
-          onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
-          onMax={() => this.handleMax(activeApp)}
-          onCustom={() => this.handleCustom(activeApp)}
-          isActive={activeApp.isActive}
-          zoomStatus={activeApp.zoomStatus}
-        >
-          {activeApp.children}
-        </WindowView>
       );
     });
   };
@@ -1301,14 +917,18 @@ class Desktop extends React.Component {
         </SubMenu>
       );
     }
+
+    const { onAddToDesktop } = this.props;
     return (
-      <Menu.Item
-        key={data.key + ''}
-        onClick={() => this.handleAddToDesktop(data)}
-      >
+      <Menu.Item key={data.key + ''} onClick={() => onAddToDesktop(data)}>
         {data.title}
       </Menu.Item>
     );
+  };
+
+  getDesktopMainRef = node => {
+    this.desktopMainRef = node;
+    this.props.getDesktopMainRef && this.props.getDesktopMainRef(node);
   };
 
   render() {
@@ -1322,10 +942,20 @@ class Desktop extends React.Component {
       reminderListLoading,
       modifyPassModalVisible,
       selectedBg,
-      activeApps,
-      searchValue,
-      menus
+      // activeApps,
+      searchValue
     } = this.state;
+
+    const {
+      activeApps,
+      onAddToDesktop,
+      onBottomBarAppTrigger,
+      onCloseActiveApp,
+      onOpenOrgChart,
+      onOpenDashboard,
+      onReminderClick,
+      menus
+    } = this.props;
 
     // 背景样式
     const desktopStyle = {};
@@ -1355,25 +985,22 @@ class Desktop extends React.Component {
           menuVisible={menuVisible}
           userInfo={userInfo}
           menus={menus}
-          onOpenDashboard={this.handleOpenDashboard}
+          onOpenDashboard={onOpenDashboard}
           onOpenReminderList={this.handleOpenReminderList}
-          onOpenOrgChart={this.handleOpenOrgChart}
-          onMenuClick={this.handleAddToDesktop}
-          onAppClick={this.handleBottomBarAppTrigger}
+          onOpenOrgChart={onOpenOrgChart}
+          onMenuClick={onAddToDesktop}
+          onAppClick={onBottomBarAppTrigger}
           onPoweroffClick={this.handlePoweroffClick}
           onOpenModifyPassModal={this.handleOpenModifyPassModal}
           onLockScreen={this.handleLockScreen}
           onOpenPersonCenter={this.handleOpenPersonCenter}
-          onCloseApp={this.handleCloseActiveApp}
+          onCloseApp={onCloseActiveApp}
           onDesktopSwitch={this.handleDesktopSwitch}
           onSearchFocus={this.handleSearchFocus}
           onSearchChange={this.handleSearchChange}
           searchValue={searchValue}
           orgChartConfig={orgChartConfig}
         />
-
-        {/* 窗口 */}
-        {this.renderWindowView()}
 
         <Icon
           type="loading"
@@ -1387,7 +1014,7 @@ class Desktop extends React.Component {
           visible={reminderListVisible}
           list={reminderList}
           loading={reminderListLoading}
-          onItemClick={this.handleReminderListItemClick}
+          onItemClick={onReminderClick}
         />
 
         {/* 右键菜单 */}

@@ -3,8 +3,8 @@ import './Spin.less';
 
 export default function Spin() {
   return (
-    <div className="load-wrapper">
-      <div className="load">
+    <div className="spin__load-wrapper">
+      <div className="spin__load">
         <hr />
         <hr />
         <hr />

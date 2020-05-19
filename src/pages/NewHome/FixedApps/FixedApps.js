@@ -201,8 +201,8 @@ class FixedApps extends React.PureComponent {
               >
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                   {app.appIconUrl && app.appIconUrlValidate ? (
-                    <div className='overlay'>
-                    <img src={app.appIconUrl} className="new-home-app-icon" />
+                    <div className="overlay">
+                      <img src={app.appIconUrl} className="new-home-app-icon" />
                     </div>
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
@@ -250,10 +250,9 @@ class FixedApps extends React.PureComponent {
           <Spin spinning={spinning}>
             <Tree
               checkable
-              defaultExpandAll={true}
-              onExpand={this.onExpand}
-              expandedKeys={this.props.expandedKeys}
-              autoExpandParent={this.state.autoExpandParent}
+              defaultExpandAll
+              // expandedKeys={this.props.expandedKeys}
+              autoExpandParent
               onCheck={this.onCheck}
               checkedKeys={checkedKeys}
               onSelect={this.onSelect}
