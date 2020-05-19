@@ -1057,6 +1057,7 @@ class TableData extends React.Component {
       storeWay,
       onSuccess: this.handleSuccess,
       onCancel: this.handleCancel,
+      onReopenSaveSuccess: this.handleReopenSaveSuccess,
       dblinkname,
       useAbsolute: recordFormUseAbsolute,
       baseURL,
@@ -1606,6 +1607,26 @@ class TableData extends React.Component {
     } else {
       this.handleDealDataSource(operation, formData, record);
     }
+  };
+  handleReopenSaveSuccess = (operation, formData, record, form) => {
+    this.props.closeRecordForm();
+    const { intl, storeWay } = this.props;
+    if (operation === 'add') {
+      message.success(intl.messages['common.addSuccess']);
+    } else if (operation === 'modify') {
+      message.success(intl.messages['common.modifySuccess']);
+    }
+    // 后端存储，则刷新表格数据
+    if (storeWay === 'be') {
+      this.handleRefresh();
+
+      // 前端存储，则修改 dataSource
+    } else {
+      this.handleDealDataSource(operation, formData, record);
+    }
+    setTimeout(() => {
+      this.handleAdd();
+    }, 500);
   };
 
   handleDealDataSource = (operation, formData, record) => {

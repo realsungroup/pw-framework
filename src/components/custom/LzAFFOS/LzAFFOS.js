@@ -40,7 +40,7 @@ export default class LzAFFOS extends React.Component {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '申请中'
+      activeKey: '审批中'
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -111,7 +111,7 @@ export default class LzAFFOS extends React.Component {
     }
     console.log(res2);
     this.tableDataRef.handleRefresh();
-    this.setState({ activeKey: '申请中' });
+    this.setState({ activeKey: '审批中' });
   };
 
   render() {
@@ -124,24 +124,33 @@ export default class LzAFFOS extends React.Component {
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="申请中" key="申请中">
+          {/* <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...inApplication}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 formProps={{
-                  saveText: '请添加访客信息后再保存',
+                  saveText: '请在右侧添加访客信息后再提交',
                   height: 500,
                   saveNeedConfirm: true
                 }}
               />
             </div>
-          </TabPane>
-
+          </TabPane> */}
+ 
           <TabPane tab="审批中" key="审批中">
-            <div style={{ height: 'calc(100vh - 220px)' }}>
-              <TableData {...inExaminationAndApproval} />
+            <div style={{ height: 'calc(100vh - 60px)' }}>
+              <p style ={{textIndent:"2em",color:"red",fontWeight:"bold",fontSize:"28px"}}>您的申请已提交，疫情期间请确保已向行政安保部门提供该访客的单位承诺书，谢谢！</p>
+              <TableData {...inExaminationAndApproval} 
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData"
+              formProps={{
+                saveText: '请在右侧添加访客信息后再提交',
+                height: 500,
+                saveNeedConfirm: true
+              }}
+              />
             </div>
           </TabPane>
           <TabPane tab="已审批" key="已审批">

@@ -225,6 +225,11 @@ class Home extends React.Component {
       }
 
       this.setState({ folders: [...folders] });
+      // folders.forEach(folder => {
+      //   folder.apps.forEach(app => {
+      //     app.isPersonCenter === 'Y' && console.log(app, '-----', folder);
+      //   });
+      // });
     });
   };
 

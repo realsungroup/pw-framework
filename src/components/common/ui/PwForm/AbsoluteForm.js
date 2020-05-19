@@ -32,7 +32,8 @@ class AbsoluteForm extends React.PureComponent {
                   fontSize: customStyle.fontSize,
                   color: item.FrmForeColor,
                   fontFamily: item.FrmFontName,
-                  overflow: 'visible'
+                  overflow: 'visible',
+                  lineHeight: customStyle.height + 'px'
                 }}
               >
                 {`${item.FrmText}`}
@@ -45,15 +46,21 @@ class AbsoluteForm extends React.PureComponent {
             const { customStyle } = item.controlData;
             return (
               <span
+                title={item.initialValue}
                 style={{
                   position: 'absolute',
-                  top: (customStyle.top / containerHeight) * 100 + '%',
+                  top: ((customStyle.top + 4) / containerHeight) * 100 + '%',
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
                   height: (customStyle.height / containerHeight) * 100 + '%',
                   fontSize: customStyle.fontSize,
                   color: item.controlData.FrmForeColor,
-                  overflow: 'auto'
+                  overflow: 'auto',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  padding: '0px 2px'
+                  // overflow: 'hidden',
+                  // whiteSpace: 'nowrap',
+                  // textOverflow: 'ellipsis'
                 }}
               >
                 {item.initialValue}

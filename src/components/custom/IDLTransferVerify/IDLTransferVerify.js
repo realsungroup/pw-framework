@@ -275,6 +275,7 @@ console.log(obj)
       if(date){date=moment(date);}
       obj.effortDate=date;
       this.getMem(obj.changeID);
+      console.log('obj',obj)
     this.setState({memberDetail:null,visible:true,toCheck:arr,toCheckFront:obj,C3_632503844784:obj.changeID});
 
   }

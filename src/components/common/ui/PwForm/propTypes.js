@@ -9,6 +9,8 @@ export const defaultProps = {
   displayMode: 'default',
   saveText: '保存',
   enSaveText: 'Save',
+  saveOpenText: '保存并打开',
+  enSaveOpenText: 'saveAndOpen',
   cancelText: '取消',
   enCancelText: 'Cancel',
   editText: '编辑',
@@ -154,6 +156,18 @@ export const propTypes = {
    * 默认：'取消'
    */
   cancelText: PropTypes.string,
+
+  /**
+   * 确认按钮文案
+   * 默认：'保存'
+   */
+  saveOpenText: PropTypes.string,
+
+  /**
+   * 取消按钮文案
+   * 默认：'取消'
+   */
+  enSaveOpenText: PropTypes.string,
 
   /**
    * 编辑按钮文案

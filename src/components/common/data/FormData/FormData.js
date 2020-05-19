@@ -215,6 +215,175 @@ class FormData extends React.Component {
         );
     });
   };
+  handleReopenSave = form => {
+    const {
+      operation,
+      info,
+      record,
+      storeWay,
+      subTableArr,
+      dblinkname,
+      baseURL
+    } = this.props;
+    const { hasSubTables } = this.state;
+    const { dataMode, resid, subresid, hostrecid } = info;
+    const id = getResid(dataMode, resid, subresid);
+    let httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    form.validateFields(async (err, values) => {
+      if (err) {
+        return message.error('表单数据有误');
+      }
+      let res;
+      const formData = dealFormData(values);
+      formData.REC_ID = record.REC_ID;
+
+      // 后端存储，则发送请求
+      if (storeWay === 'be') {
+        // 添加且有子表
+        if (operation === 'add' && hasSubTables) {
+          const arr = subTableArr
+            .map((subTable, index) => ({
+              resid: subTable.subResid,
+              dataSource: this[`tableDataRef${index}`].getDataSource()
+            }))
+            .filter(item => !!item.dataSource.length);
+
+          let data;
+          const state = operation === 'add' ? 'added' : 'modified';
+          const dataObj = {
+            resid,
+            maindata: { ...formData, _id: 1, _state: state },
+            _id: 1
+          };
+
+          let i = 0;
+          arr.forEach(item => {
+            item.dataSource.forEach(record => {
+              if (!dataObj.subdata) {
+                dataObj.subdata = [];
+              }
+              dataObj.subdata.push({
+                resid: item.resid,
+                maindata: { ...record, _state: state, _id: ++i }
+              });
+            });
+          });
+
+          if (dataObj.subdata) {
+            dataObj.subdata.reverse();
+          }
+
+          data = [dataObj];
+
+          this.p1 = makeCancelable(
+            http(httpParams).saveRecordAndSubTables({ data, dblinkname })
+          );
+          try {
+            res = await this.p1.promise;
+            console.log({ res });
+          } catch (err) {
+            message.error(err.message);
+            return console.error(err);
+          }
+
+          // 添加但无子表
+        } else if (operation === 'add' && !hasSubTables) {
+          const params = {
+            resid: id,
+            data: [formData],
+            dblinkname
+          };
+          if (dataMode === 'sub') {
+            params.hostresid = resid;
+            params.hostrecid = hostrecid;
+          }
+          this.p1 = makeCancelable(http(httpParams).addRecords(params));
+          try {
+            res = await this.p1.promise;
+          } catch (err) {
+            console.error(err);
+            return message.error(err.message);
+          }
+
+          // 修改
+        } else {
+          const params = {
+            resid: id,
+            data: [formData],
+            dblinkname
+          };
+          if (dataMode === 'sub') {
+            params.hostresid = resid;
+            params.hostrecid = hostrecid;
+          }
+          this.p1 = makeCancelable(http(httpParams).modifyRecords(params));
+          try {
+            res = await this.p1.promise;
+          } catch (err) {
+            console.error(err);
+            return message.error(err.message);
+          }
+        }
+
+        // 前端存储，且有子表，则连子表数据一起发送到后端
+      } else if (storeWay === 'fe' && hasSubTables) {
+        const arr = subTableArr
+          .map((subTable, index) => ({
+            resid: subTable.subResid,
+            dataSource: this[`tableDataRef${index}`].getDataSource()
+          }))
+          .filter(item => !!item.dataSource.length);
+
+        let data;
+        const state = operation === 'add' ? 'added' : 'modified';
+        const dataObj = {
+          resid,
+          maindata: { ...formData, _id: 1, _state: state },
+          _id: 1
+        };
+
+        let i = 0;
+        arr.forEach(item => {
+          item.dataSource.forEach(record => {
+            if (!dataObj.subdata) {
+              dataObj.subdata = [];
+            }
+            dataObj.subdata.push({
+              resid: item.resid,
+              maindata: { ...record, _state: state, _id: ++i }
+            });
+          });
+        });
+
+        if (dataObj.subdata) {
+          dataObj.subdata.reverse();
+        }
+
+        data = [dataObj];
+
+        this.p1 = makeCancelable(
+          http(httpParams).saveRecordAndSubTables({ data, dblinkname })
+        );
+        try {
+          res = await this.p1.promise;
+        } catch (err) {
+          message.error(err.message);
+          return console.error(err);
+        }
+      }
+      let savedRecord = res && res.data[0]; //保存成功后的数据
+      this.props.onReopenSaveSuccess &&
+        this.props.onReopenSaveSuccess(
+          operation,
+          formData,
+          savedRecord ? savedRecord : record,
+          form
+        );
+    });
+  };
 
   renderSubTables = () => {
     const { defaultActiveKey } = this.state;
@@ -443,6 +612,7 @@ class FormData extends React.Component {
               mode={mode}
               {...otherProps}
               onSave={this.handleSave}
+              onReopenSave={this.handleReopenSave}
               onCancel={this.props.onCancel}
               operation={operation}
               record={record}

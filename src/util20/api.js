@@ -516,6 +516,14 @@ http.createApi('getByProcedureWithId', {
 /**
  *
  */
+http.createApi('getSubNodes', {
+  method: 'get',
+  url: '/api/OrgStaff/GetSubNodes'
+});
+
+/**
+ *
+ */
 http.createApi('clearOrgCache', {
   method: 'get',
   url: '/api/OrgStaff/clearcache'

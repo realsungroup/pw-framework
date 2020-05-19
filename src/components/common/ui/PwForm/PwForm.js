@@ -276,7 +276,11 @@ class PwForm extends React.Component {
       enEditText,
       saveNeedConfirm,
       data,
-      layout
+      layout,
+      saveReopen,
+      onReopenSave,
+      saveOpenText,
+      enSaveOpenText
     } = this.props;
     const { intl } = this.props;
 
@@ -315,9 +319,12 @@ class PwForm extends React.Component {
           mode={mode}
           form={this.props.form}
           saveText={getIntlVal(intl.locale, enSaveText, saveText)}
+          saveOpenText={getIntlVal(intl.locale, enSaveOpenText, saveOpenText)}
           cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
           editText={getIntlVal(intl.locale, enEditText, editText)}
           saveNeedConfirm={saveNeedConfirm}
+          saveReopen={saveReopen}
+          onReopenSave={onReopenSave}
         />
       </div>
     );

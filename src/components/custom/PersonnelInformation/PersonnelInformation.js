@@ -41,6 +41,7 @@ class PersonnelInformation extends React.Component {
                     });
                   }}
                   treeClassName="personnel-information-tree"
+                  onlyPersonData={role === 'manager'}
                 />
               </div>
               <div className="table-data-wrapper">
@@ -51,8 +52,6 @@ class PersonnelInformation extends React.Component {
                   refTargetComponentName="TableData"
                   subtractH={180}
                   hasAdd={true}
-                  // tableComponent="ag-grid"
-                  // rowSelectionAg={ 'single' }
                   hasRowView={true}
                   hasRowDelete={true}
                   hasRowEdit={false}
@@ -62,7 +61,7 @@ class PersonnelInformation extends React.Component {
                   hasRowSelection={false}
                   hasAdvSearch={false}
                   importConfig={null}
-                  actionBarWidth={100}
+                  actionBarWidth={200}
                   cmswhere={
                     selectedDepartment
                       ? `HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}'`
