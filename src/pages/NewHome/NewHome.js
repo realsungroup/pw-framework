@@ -225,11 +225,6 @@ class Home extends React.Component {
       }
 
       this.setState({ folders: [...folders] });
-      // folders.forEach(folder => {
-      //   folder.apps.forEach(app => {
-      //     app.isPersonCenter === 'Y' && console.log(app, '-----', folder);
-      //   });
-      // });
     });
   };
 
@@ -245,7 +240,15 @@ class Home extends React.Component {
 
     // 桌面的文件夹
     const folders = [];
-    await dealApps([...res.data, ...(res.userdefined || [])], folders);
+    const apps = res.data.filter(app => {
+      // return app.isPersonCenter === 'Y';
+      return true;
+    });
+    const userdefined = res.userdefined.filter(app => {
+      // return app.isPersonCenter === 'Y';
+      return true;
+    });
+    await dealApps([...apps, ...(userdefined || [])], folders);
     this.setState(
       {
         folders,

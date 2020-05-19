@@ -259,23 +259,30 @@ class PersonRelationship extends React.Component {
       pidField,
       procedureConfig,
       displayFileds,
-      role
+      role,
+      rootId
     } = this.props;
     const { selectedDate, selectedNode } = this.state;
     let options = {};
     if (role === 'manager') {
       options = {
-        procedure: 'pw_staffs',
-        paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
-        paratypes: 'string,int,string,int,int',
+        ...procedureConfig,
         resid,
-        paravalues: `${selectedDate.format('YYYYMMDD')},${this.userNo},,-1,0`
+        paravalues: selectedDate.format('YYYYMMDD'),
+        idcolumn: idField,
+        pidcolumn: pidField,
+        id: this.userNo,
+        totallevels: 300
       };
     } else {
       options = {
         ...procedureConfig,
         resid,
-        paravalues: selectedDate.format('YYYYMMDD')
+        paravalues: selectedDate.format('YYYYMMDD'),
+        idcolumn: idField,
+        pidcolumn: pidField,
+        id: rootId,
+        totallevels: 300
       };
     }
 
@@ -286,7 +293,7 @@ class PersonRelationship extends React.Component {
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
+      this.p1 = makeCancelable(http(httpParams).getByProcedureWithId(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
