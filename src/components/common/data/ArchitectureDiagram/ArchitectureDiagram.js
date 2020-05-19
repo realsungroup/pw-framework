@@ -470,7 +470,7 @@ class ArchitectureDiagram extends React.Component {
       idcolumn: idField,
       pidcolumn: pidField,
       id: rootId,
-      totallevels: 300
+      totallevels: 0
     };
     needLoading && this.setState({ loading: true });
     try {
@@ -2171,6 +2171,9 @@ class ArchitectureDiagram extends React.Component {
                     {selectedNode.REC_ID ? (
                       <div className="architecture-diagram_main_item-detail_list">
                         {this._cmscolumninfo.map(item => {
+                          if (!item[item.id].enableValue) {
+                            return null;
+                          }
                           return (
                             <p
                               key={item.id}
@@ -2334,9 +2337,9 @@ class ArchitectureDiagram extends React.Component {
                         </Tabs.TabPane>
                         <Tabs.TabPane tab="历史兼职记录" key="2">
                           {selectedNode.REC_ID ? (
-                            historyData.length ? (
+                            partHistoryData.length ? (
                               <Timeline>
-                                {historyData.map((item, index) => {
+                                {partHistoryData.map((item, index) => {
                                   const showMore = item.showMore;
                                   return (
                                     <Timeline.Item>
