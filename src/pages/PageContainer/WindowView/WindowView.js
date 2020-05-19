@@ -14,6 +14,12 @@ import Draggable from 'react-draggable';
 export default class WindowView extends React.Component {
   static propTypes = {
     /**
+     * 窗口类型
+     * 默认：'WORKBENCH'
+     */
+    type: PropTypes.oneOf(['DESKTOP', 'WORKBENCH']),
+
+    /**
      * 窗口是否显示
      * 默认：-
      */
@@ -106,12 +112,20 @@ export default class WindowView extends React.Component {
      * 缩放状态：'min' 最小化状态；'max' 最大化状态；'custom' 自定义窗口大小状态
      * 默认：-
      */
-    zoomStatus: PropTypes.oneOf(['min', 'max', 'custom'])
+    zoomStatus: PropTypes.oneOf(['min', 'max', 'custom']),
+
+    /**
+     * 在工作台模式下是否最大化
+     * 默认：false
+     */
+    isWorkbenchMax: PropTypes.bool
   };
 
   static defaultProps = {
     x: 0,
-    y: 0
+    y: 0,
+    type: 'WORKBENCH',
+    isWorkbenchMax: false
   };
 
   constructor(props) {
@@ -174,18 +188,29 @@ export default class WindowView extends React.Component {
   };
 
   handelActiveWindowView = () => {
-    const { onActive } = this.props;
-    onActive && onActive();
+    const { type } = this.props;
+    if (type === 'DESKTOP') {
+      const { onActive } = this.props;
+      onActive && onActive();
+    } else {
+      return false;
+    }
   };
 
   handleResizeStop = (event, direction, refToElement, delta) => {
-    const { onResizeStop } = this.props;
-    onResizeStop && onResizeStop(delta.width, delta.height);
+    const { type } = this.props;
+    if (type === 'DESKTOP') {
+      const { onResizeStop } = this.props;
+      onResizeStop && onResizeStop(delta.width, delta.height);
+    }
   };
 
   handleDragStop = (e, data) => {
-    const { onDragStop } = this.props;
-    onDragStop && onDragStop(data.lastX, data.lastY);
+    const { type } = this.props;
+    if (type === 'DESKTOP') {
+      const { onDragStop } = this.props;
+      onDragStop && onDragStop(data.lastX, data.lastY);
+    }
   };
 
   handleGoBack = () => {
@@ -218,6 +243,24 @@ export default class WindowView extends React.Component {
     );
   };
 
+  getEnable = type => {
+    let enable = false;
+    if (type === 'DESKTOP') {
+      enable = {
+        top: false,
+        right: true,
+        bottom: true,
+        left: false,
+        topRight: false,
+        bottomRight: true,
+        bottomLeft: false,
+        topLeft: false
+      };
+    }
+
+    return enable;
+  };
+
   render() {
     const {
       visible,
@@ -232,6 +275,10 @@ export default class WindowView extends React.Component {
       y,
       zIndex,
       isActive,
+      type,
+      maxWidth,
+      maxHeight,
+      isWorkbenchMax,
       ...restProps
     } = this.props;
 
@@ -251,6 +298,18 @@ export default class WindowView extends React.Component {
       ref: this.getChildrenRef
     });
 
+    const resizeStyle = {
+      position: 'absolute',
+      zIndex
+    };
+
+    // 设置 width 和 height 无效，re-resizeable 的 bug
+    // https://codesandbox.io/s/blazing-wave-gj19m?file=/src/index.js:256-260
+    // if (type === 'WORKBENCH') {
+    //   resizeStyle.width = width;
+    //   resizeStyle.height = height;
+    // }
+
     const child = (
       <Draggable
         handle=".window-view__header"
@@ -259,23 +318,35 @@ export default class WindowView extends React.Component {
         onStart={this.handelActiveWindowView}
       >
         <Resizable
-          minWidth={minWidth}
-          minHeight={minHeight}
-          size={{
-            width: width || 230,
-            height: height || 380
-          }}
+          enable={this.getEnable(type)}
+          {...{ minWidth, minHeight, maxWidth, maxHeight }}
+          size={
+            type === 'DESKTOP'
+              ? {
+                  width: width || 230,
+                  height: height || 380
+                }
+              : {}
+          }
           className={classNames('window-view', {
             'window-view--hide': !visible,
-            'window-view--inactive': !isActive
+            'window-view--inactive': !isActive,
+            'window-view--workbench': type === 'WORKBENCH',
+            'window-view--workbench-normal':
+              type === 'WORKBENCH' && !isWorkbenchMax,
+            'window-view--workbench-max': type === 'WORKBENCH' && isWorkbenchMax
           })}
-          style={{ position: 'absolute', zIndex }}
+          style={resizeStyle}
           onResizeStart={this.handelActiveWindowView}
           onResizeStop={this.handleResizeStop}
           onClick={this.handelActiveWindowView}
           {...otherProps}
         >
-          <div className="window-view__header">
+          <div
+            className={classNames('window-view__header', {
+              'window-view__header--hide': type === 'WORKBENCH'
+            })}
+          >
             <div
               className="window-view__header-title"
               onClick={this.handleGoBack}
@@ -305,7 +376,7 @@ export default class WindowView extends React.Component {
       </Draggable>
     );
 
-    const container = document.querySelector('.desktop__main');
+    const container = document.querySelector('.page-container');
     return ReactDOM.createPortal(child, container);
   }
 }

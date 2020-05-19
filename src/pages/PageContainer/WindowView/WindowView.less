@@ -16,6 +16,17 @@
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 11px 3px;
   border-color: rgb(170, 170, 170);
   overflow: hidden;
+  &--workbench {
+    box-shadow: none !important;
+  }
+  &--workbench-normal {
+    width: 100% !important;
+    height: calc(100vh - 94px) !important;
+  }
+  &--workbench-max {
+    width: 100% !important;
+    height: calc(100vh - 38px) !important;
+  }
   &--hide {
     display: none;
   }
@@ -23,6 +34,9 @@
     .window-view__header {
       background: #e7eaed;
       border-color: #e7eaed;
+      &--hide {
+        display: none;
+      }
     }
   }
   &__header {
@@ -31,6 +45,9 @@
     display: flex;
     justify-content: space-between;
     background: #dee1e6;
+    &--hide {
+      display: none !important;
+    }
   }
   &__content {
     flex: 1 1;
