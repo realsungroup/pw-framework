@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Icon } from 'antd';
 import defaultAbbreviation from './assets/default-abbreviation.png';
 import html2canvas from 'html2canvas';

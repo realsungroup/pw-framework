@@ -824,7 +824,13 @@ export default class PageContainer extends React.Component {
   };
 
   handleSwitchHome = homeMode => {
-    this.setState({ desktopStyle: homeMode });
+    const { activeApps } = this.state;
+    const newActiveApps = activeApps.map(item => ({
+      ...item,
+      isOpen: false
+    }));
+
+    this.setState({ desktopStyle: homeMode, activeApps: newActiveApps });
     localStorage.setItem('desktopStyle', homeMode);
   };
 
