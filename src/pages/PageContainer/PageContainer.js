@@ -1060,6 +1060,7 @@ export default class PageContainer extends React.Component {
         {activeApps.map((item, index) => {
           return (
             <AbbreviationApp
+              ready={showAbbreviation}
               app={item}
               key={item.REC_ID}
               onCloseActiveApp={this.handleCloseActiveApp}
@@ -1068,7 +1069,6 @@ export default class PageContainer extends React.Component {
                 this.handleBottomBarAppTrigger(item);
               }}
               dom={abbreviationDoms[index]}
-              ready={showAbbreviation}
             />
           );
         })}
