@@ -1,0 +1,78 @@
+@import url('../../../styles/variables.less');
+
+.abbreviation-app {
+  margin-right: 2%;
+  width: 32%;
+  margin-bottom: 3.13vh;
+
+  &__app-icon {
+    height: 21px;
+    width: auto;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  &__app-icon-mail {
+    color: @primary-color!important;
+    font-size: 20px;
+    margin-right: 8px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.08vh;
+  }
+
+  &__header-title {
+    display: flex;
+    align-items: center;
+  }
+
+  &__header-close-btn {
+    cursor: pointer;
+  }
+  &__body {
+    height: 29.3vh;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    &:hover {
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.26);
+    }
+  }
+
+  &__default-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__default-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &__app-name {
+      color: @primary-color;
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+    &__img {
+      height: 10.42vh;
+      width: auto;
+    }
+    &__tip {
+      color: #666666;
+      margin-top: 16px;
+    }
+  }
+
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+}

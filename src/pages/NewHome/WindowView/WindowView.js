@@ -188,36 +188,6 @@ export default class WindowView extends React.Component {
     onDragStop && onDragStop(data.lastX, data.lastY);
   };
 
-  handleGoBack = () => {
-    this.iframeRef &&
-      this.iframeRef.contentWindow &&
-      this.iframeRef.contentWindow.postMessage(
-        {
-          type: 'goBack'
-        },
-        '*'
-      );
-  };
-
-  renderMiddleBtn = () => {
-    const { zoomStatus } = this.props;
-    if (zoomStatus === 'max') {
-      return (
-        <div
-          className="window-view__header-custom-btn"
-          onClick={this.handleCustom}
-        >
-          <Icon type="switcher" />
-        </div>
-      );
-    }
-    return (
-      <div className="window-view__header-max-btn" onClick={this.handleMax}>
-        <i />
-      </div>
-    );
-  };
-
   render() {
     const {
       visible,

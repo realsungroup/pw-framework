@@ -1,15 +1,8 @@
 import React from 'react';
-import './NewHome.less';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 import folderPng from './assets/folder.png';
-import defaultAbbreviation from './assets/default-abbreviation.png';
 import memoizeone from 'memoize-one';
-import { Icon, message, Modal } from 'antd';
-import WindowView from './WindowView';
-import SearchBox from '../components/SearchBox';
-import UserInfo from '../components/UserInfo';
-import PageHeader from '../components/PageHeader1';
+import { Icon, message } from 'antd';
 import { getItem, setItem } from '../../util/localCache';
 import http from 'Util20/api';
 import qs from 'qs';
@@ -17,11 +10,9 @@ import { cloneDeep } from 'lodash';
 import FixedApps from './FixedApps';
 import WaitingHandle from './WaitingHandle';
 import RecentApps from './RecentApps';
-import Spin from './Spin';
-import DesktopLockScreen from '../Desktop/DesktopLockScreen';
-import { delay } from 'lodash';
+import Spin from 'Common/ui/Spin';
 import html2canvas from 'html2canvas';
-import moment from 'moment';
+import './NewHome.less';
 
 const {
   businessOptionalResIds,
@@ -141,21 +132,9 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
-    // 设置主题色
-    this.setThemeColor(this.state.color);
-    this.getData();
     this.fetchWaitingHandle();
     this.setRecentApps();
   }
-  setThemeColor = themeColor => {
-    window.less
-      .modifyVars({ '@primary-color': themeColor })
-      .then(() => {})
-      .catch(err => {
-        console.log({ err });
-        message.error(err.message);
-      });
-  };
 
   setRecentApps = async () => {
     let recentApps = JSON.parse(getItem('recentApps'));
@@ -180,14 +159,7 @@ class Home extends React.Component {
       this.setState({ recentApps: [] });
     }
   };
-  // componentDidUpdate(preProps, preState) {
-  //   if (
-  //     this.state.recentApps.length &&
-  //     preState.recentApps !== this.state.recentApps
-  //   ) {
-  //     // const newRecentApps = this.state.recentApps
-  //   }
-  // }
+
   getSortRecentApps = memoizeone((apps = []) => {
     return apps.sort((a, b) => {
       return a.dateString < b.dateString ? 1 : -1;
@@ -316,7 +288,7 @@ class Home extends React.Component {
             });
           }
         }
-        appArr.length && this.handleOpenWindow(appArr);
+        appArr.length && this.props.onOpenWindow(appArr);
       }
     );
     return res;
@@ -349,6 +321,7 @@ class Home extends React.Component {
       allFoldersExpandedKeys: expandedKeys
     });
   };
+
   dealFnTreeData = (fnTreeData, selectedApps) => {
     const expandedKeys = [],
       checkedKeys = [],
@@ -391,497 +364,64 @@ class Home extends React.Component {
     this.setState({ selectedModule: app });
   };
 
-  handleShowAbbreviation = () => {
-    if (this.state.activeApps.length) {
-      this.setState({ showAbbreviation: !this.state.showAbbreviation }, () => {
-        setTimeout(() => {
-          if (this.state.showAbbreviation) {
-            let apps = document.querySelectorAll('iframe');
-            // this.toimag(apps);
-            const doms = [];
-            apps.forEach(item => {
-              let dom = item.contentDocument.querySelector('.functions');
-              doms.push(dom);
-            });
-
-            this.setState({ abbreviationDoms: doms });
-          }
-        }, 200);
-      });
-    } else {
-      message.info('您还未打开任何功能窗口');
-    }
-  };
-
   getDesktopMainRef = node => {
     this.desktopMainRef = node;
   };
-  getWindowViewRef = (node, title) => {
-    this[`windowViewRef${title}`] = node;
-  };
-  handleBottomBarAppTrigger = activeApp => {
-    const { activeApps, zIndexActiveApps, appsSwitchStatus } = this.state;
-    const newActiveApps = [...activeApps];
-    const newAppsSwitchStatus = [...appsSwitchStatus];
 
-    const appIndex = newActiveApps.findIndex(
-      item => item.appName === activeApp.appName
-    );
-
-    // app 是否被打开
-    let isOpen;
-    // 当窗口为非激活状态时，窗口一定为打开
-    if (!newActiveApps[appIndex].isActive) {
-      isOpen = true;
-
-      // 当窗口为激活状态时
-    } else {
-      isOpen = !newActiveApps[appIndex].isOpen;
-      // isOpen = true;
-    }
-    newActiveApps[appIndex].isOpen = true;
-    newAppsSwitchStatus[appIndex] = isOpen;
-
-    // 只能有一个 app 被激活
-    newActiveApps.forEach(activeApp => (activeApp.isActive = false));
-    newActiveApps[appIndex].isActive = true;
-
-    // 如果是打开的，则调整 zIndex
-    const newZIndexActiveApps = [...zIndexActiveApps];
-    if (isOpen) {
-      const index = newZIndexActiveApps.findIndex(
-        app => app.title === activeApp.title
-      );
-      const removedApp = newZIndexActiveApps.splice(index, 1);
-      newZIndexActiveApps.push(removedApp[0]);
-    }
-
-    this.setState({
-      activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps,
-      appsSwitchStatus: newAppsSwitchStatus,
-      showHome: false,
-      showAbbreviation: false
-    });
-  };
-  /**
-   * 打开窗口
-   * @params {array} appArr，如：[{ app, typeName }]
-   */
-  handleOpenWindow = appArr => {
-    const { activeApps } = this.state;
-    // app, typeName
-    const arr = [];
-    if (appArr.length === 1) {
-      const activeApp = activeApps.find(
-        app => app.ResID === appArr[0].app.ResID
-      );
-      if (activeApp) {
-        return this.handleBottomBarAppTrigger(activeApp);
-      }
-    }
-    appArr.forEach(item => {
-      const { app, typeName } = item;
-      const resid = app.ResID || app.resid;
-      const url =
-        item.app.fnmoduleUrl ||
-        `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
-      const children = (
-        <iframe src={url} frameBorder="0" className="new-home__iframe" />
-      );
-      const width = this.desktopMainRef.clientWidth;
-      const height = this.desktopMainRef.clientHeight - 38;
-
-      arr.push({
-        children,
-        title: app.title,
-        activeAppOthersProps: {
-          ...app,
-          width,
-          height,
-          x: 0,
-          y: 0,
-          customWidth: 800,
-          customHeight: height,
-          customX: 0,
-          customY: 0,
-          minWidth: 330,
-          minHeight: 100,
-          zoomStatus: 'max'
-        }
-      });
-    });
-    this.addAppToBottomBar(arr);
-  };
-
-  /**
-   * 添加应用到底部 bar（即打开窗口）
-   * @param {array} willOpenApps 将要打开的 app；如：[{ children, title, activeAppOthersProps }]
-   * children:表示子组件
-   * title:窗口标题
-   * activeAppOthersProps:activeApp 其他的 props
-   */
-  addAppToBottomBar = willOpenApps => {
-    // children, title, activeAppOthersProps = {}
-    const {
-      activeApps,
-      zIndexActiveApps,
-      appsSwitchStatus,
-      recentApps
-    } = this.state;
-    const appArr = [];
-    const newRecentApps = [...recentApps];
-    // let hasNewRecentApp = false;
-    willOpenApps.forEach(willOpenApp => {
-      // 不能打开同一个窗口
-      if (
-        activeApps.findIndex(
-          activeApp => activeApp.appName === willOpenApp.title
-        ) === -1
-      ) {
-        appArr.push({
-          ...willOpenApp.activeAppOthersProps,
-          children: willOpenApp.children,
-          appName: willOpenApp.title,
-          isOpen: true,
-          isActive: true
-        });
-      }
-      // 判断是否在最近使用的功能中
-      const recentApp = recentApps.find(item => {
-        return willOpenApp.activeAppOthersProps.ResID == item.ResID;
-      });
-      const datastring = moment().format('YYYY-MM-DD HH:mm:ss');
-      if (!recentApp) {
-        // hasNewRecentApp = true;
-        newRecentApps.unshift({
-          ...willOpenApp.activeAppOthersProps,
-          dateString: datastring
-        });
-      } else {
-        recentApp.dateString = datastring;
-      }
-    });
-    if (newRecentApps.length > 20) {
-      newRecentApps.length = 20;
-    }
-    const sortApps = this.getSortRecentApps(newRecentApps);
-    setItem('recentApps', JSON.stringify(this.getSortRecentApps(sortApps)));
-    // this.setState({ recentApps: newRecentApps });
-
-    activeApps.forEach(activeApp => {
-      activeApp.isActive = false;
-    });
-    const newZIndexActiveApps = [...zIndexActiveApps, ...appArr];
-
-    this.setState({
-      activeApps: [...activeApps, ...appArr],
-      zIndexActiveApps: newZIndexActiveApps,
-      appsSwitchStatus: [...appsSwitchStatus, true],
-      showHome: false,
-      showAbbreviation: false,
-      recentApps: sortApps
-    });
-  };
-  handleAddToDesktop = appData => {
-    const { folders } = this.state;
-    const { activeApps } = this.state;
-    let activeApp = activeApps.find(app => app.ResID == appData.RES_ID);
-    if (activeApp) {
-      return this.handleBottomBarAppTrigger(activeApp);
-    }
-    let desktopApp, typeName;
-    const isExistDesktop = folders.some(folder => {
-      return folder.apps.some(app => {
-        if (app.title === appData.title) {
-          desktopApp = app;
-          typeName = folder.typeName;
-          return true;
-        }
-      });
-    });
-    const app = desktopApp;
-    // 已经存在于桌面，则直接打开窗口
-    if (isExistDesktop) {
-      const resid = parseInt(app.ResID || app.resid, 10);
-      const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
-      const appName = app.title;
-      const { activeApps } = this.state;
-      activeApps.forEach(activeApp => {
-        activeApp.isActive = false;
-      });
-
-      const children = (
-        <iframe src={url} frameBorder="0" className="new-home__iframe" />
-      );
-      const width = this.desktopMainRef.clientWidth;
-      const height = this.desktopMainRef.clientHeight;
-
-      this.setState({ menuVisible: false });
-
-      this.addAppToBottomBar([
-        {
-          children,
-          title: app.title,
-          activeAppOthersProps: {
-            ...app,
-            width,
-            height,
-            x: 0,
-            y: 0,
-            customWidth: 800,
-            customHeight: height,
-            customX: 0,
-            customY: 0,
-            minWidth: 330,
-            minHeight: 100,
-            zoomStatus: 'max'
-          }
-        }
-      ]);
-      // 不存在于桌面，则先将 app 添加到桌面，然后再打开窗口
-    } else {
-      this.addAppToDesktop(appData);
-    }
-  };
-  addAppToDesktop = async appData => {
-    try {
-      await http().addRecords({
-        resid: 582414136652,
-        data: [
-          {
-            ResID: appData.RES_ID,
-            UserID: this.state.userInfo.SysUserInfo.UserID
-          }
-        ]
-      });
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-
-    // 添加到桌面之后，刷新数据
-    await this.getData();
-    const { folders } = this.state;
-    let desktopApp, typeName;
-    folders.some(folder => {
-      return folder.apps.some(app => {
-        if (app.title === appData.title) {
-          desktopApp = app;
-          typeName = folder.typeName;
-          return true;
-        }
-      });
-    });
-    const app = desktopApp;
-    // 打开窗口
-    const resid = parseInt(app.ResID || app.resid, 10);
-    const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
-    const appName = app.title;
-    const { activeApps } = this.state;
-    activeApps.forEach(activeApp => {
-      activeApp.isActive = false;
-    });
-
-    const children = (
-      <iframe src={url} frameBorder="0" className="desktop__iframe" />
-    );
-    const width = this.desktopMainRef.clientWidth;
-    const height = this.desktopMainRef.clientHeight;
-
-    this.addAppToBottomBar([
-      {
-        children,
-        title: app.title,
-        activeAppOthersProps: {
-          ...app,
-          width,
-          height,
-          x: 0,
-          y: 0,
-          customWidth: 800,
-          customHeight: height,
-          customX: 0,
-          customY: 0,
-          minWidth: 330,
-          minHeight: 100,
-          zoomStatus: 'max'
-        }
-      }
-    ]);
-  };
-
-  handleCloseActiveApp = activeApp => {
-    const { activeApps, zIndexActiveApps, abbreviationDoms } = this.state;
-    const newActiveApps = [...activeApps];
-    const newabbreviationDoms = [...abbreviationDoms];
-
-    const appIndex = newActiveApps.findIndex(
-      item => item.appName === activeApp.appName
-    );
-
-    newActiveApps.splice(appIndex, 1);
-    newabbreviationDoms.splice(appIndex, 1);
-
-    // 删除 zIndexActiveApps
-    const newZIndexActiveApps = [...zIndexActiveApps];
-    const index = newZIndexActiveApps.findIndex(
-      app => app.title === activeApp.title
-    );
-    newZIndexActiveApps.splice(index, 1);
-
-    this.setState({
-      activeApps: newActiveApps,
-      zIndexActiveApps: newZIndexActiveApps,
-      abbreviationDoms: newabbreviationDoms
-    });
-    if (newActiveApps.length === 0) {
-      this.setState({ showAbbreviation: false });
-    }
-  };
   handleRemindItemClick = (resid, url) => {
+    const { onOpenWindow } = this.props;
     const app = this.state.allApps.find(item => {
       return item.ResID == resid;
     });
     if (app) {
-      this.handleOpenWindow([{ app, typeName: app.BusinessNode }]);
+      onOpenWindow([{ app, typeName: app.BusinessNode }]);
     } else {
       window.open(url);
     }
   };
-  getDesktopLockScreenRef = node => {
-    this.desktopLockScreenRef = node;
-  };
-  handleLockScreen = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '您确定要锁定屏幕吗？',
-      onOk: this.lockScreen
-    });
-  };
-  lockScreen = () => {
-    this.desktopLockScreenRef.lockScreenRef.lockScreen();
-  };
 
-  filterMenus = () => {
-    const { allFolders, searchTextHeader: value } = this.state;
-    const menus = allFolders
-      .map(folder => {
-        // 搜索的值不是分类的值
-        if (folder.title.indexOf(value) === -1) {
-          // 1.1
-          const appLinks = folder.AppLinks.map(appLink => {
-            if (appLink.title.indexOf(value) === -1) {
-              return false;
-            }
-            return appLink;
-          }).filter(Boolean);
-          if (!appLinks.length) {
-            return false;
-          }
-          return { ...folder, AppLinks: appLinks };
-        }
-        // 2 搜索的值是分类的值
-        return folder;
-      })
-      .filter(Boolean);
-
-    this.setState({ menus });
-  };
-
-  handleSearchChange = e => {
-    this.setState({ searchTextHeader: e.target.value });
-    delay(this.filterMenus, 200);
-  };
-  handleResizeStop = (activeApp, dW, dH) => {
-    console.log(dW, dH);
-    activeApp.width = activeApp.width + dW;
-    activeApp.height = activeApp.height + dH;
-
-    activeApp.customWidth = activeApp.width;
-    activeApp.customHeight = activeApp.height;
-
-    activeApp.zoomStatus = 'custom';
-    this.forceUpdate();
-  };
-  handleCustom = activeApp => {
-    activeApp.x = activeApp.customX;
-    activeApp.y = activeApp.customY;
-    activeApp.width = activeApp.customWidth;
-    activeApp.height = activeApp.customHeight;
-    activeApp.zoomStatus = 'custom';
-    this.forceUpdate();
-  };
-  renderWindowView = () => {
-    const { activeApps, zIndexActiveApps, showHome } = this.state;
-    return activeApps.map((activeApp, index) => {
-      const visible = !showHome && activeApp.isOpen;
-      // 窗口的 zIndex，从 4 开始
-      const zIndex =
-        zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 4;
-
-      return (
-        <WindowView
-          ref={node => this.getWindowViewRef(node, activeApp.title)}
-          key={activeApp.ResID}
-          title={activeApp.appName}
-          visible={visible}
-          // onClose={() => this.handleCloseActiveApp(activeApp)}
-          // onMin={() => this.handleMinActiveApp(activeApp)}
-          // onActive={() => this.handleActiveWindowView(activeApp)}
-          zIndex={zIndex}
-          width={activeApp.width}
-          height={activeApp.height}
-          x={activeApp.x}
-          y={activeApp.y}
-          minWidth={activeApp.minWidth}
-          minHeight={activeApp.minHeight}
-          onResizeStop={(dW, dH) => this.handleResizeStop(activeApp, dW, dH)}
-          // onDragStop={(dX, dY) => this.handleDragStop(activeApp, dX, dY)}
-          // onMax={() => this.handleMax(activeApp)}
-          onCustom={() => this.handleCustom(activeApp)}
-          isActive={activeApp.isActive}
-          zoomStatus={activeApp.zoomStatus}
-        >
-          {activeApp.children}
-        </WindowView>
-      );
-    });
+  handleImageError = e => {
+    e.target.src = folderPng;
   };
 
   renderHome = () => {
     const {
-      folders,
       selectedModule,
-      fixedApps,
-      allFolders,
       allFoldersExpandedKeys,
       waitingHandleFetching,
-      waitingHandleData,
-      recentApps,
-      appDataFetching
+      waitingHandleData
     } = this.state;
+    const {
+      fixedApps,
+      allFolders,
+      folders,
+      onOpenWindow,
+      getDesktopMainRef,
+      onRefresh,
+      loading,
+      recentApps
+    } = this.props;
     return (
-      <div className="new-home-wrapper" ref={this.getDesktopMainRef}>
+      <div className="new-home-wrapper" ref={getDesktopMainRef}>
         <aside className="new-home__recently">
           <RecentApps
             apps={recentApps}
-            onRefresh={this.getData}
-            onClick={this.handleOpenWindow}
+            onRefresh={onRefresh}
+            onClick={onOpenWindow}
           />
         </aside>
         <main className="new-home__main">
           <div className="new-home__center">
             <div className="new-home__fixed-functions">
-              {appDataFetching && <Spin />}
+              {loading && <Spin />}
 
               <FixedApps
                 apps={fixedApps}
                 fnTreeData={allFolders}
                 expandedKeys={allFoldersExpandedKeys}
-                onRefresh={this.getData}
-                onClick={this.handleOpenWindow}
-                loading={appDataFetching}
+                onRefresh={onRefresh}
+                onClick={onOpenWindow}
+                loading={loading}
               />
             </div>
             <div className="new-home__waiting-handle">
@@ -900,7 +440,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="new-home__functions">
-            {appDataFetching && <Spin />}
+            {loading && <Spin />}
             {folders.map((module, index) => {
               const categories = [...module.categoricalApps.entries()];
               let left = (index + 1) % 3;
@@ -930,6 +470,7 @@ class Home extends React.Component {
                       className="new-home__module-icon"
                       // src={module.apps.length && module.apps[0].BusinessIconUrl}
                       src={module.url}
+                      onError={this.handleImageError}
                     />
                     <span className="new-home__module-name">
                       {module.typeName}
@@ -957,7 +498,7 @@ class Home extends React.Component {
                                   <div
                                     className="new-home__module-category-app"
                                     onClick={() =>
-                                      this.handleOpenWindow([
+                                      onOpenWindow([
                                         { app, typeName: module.typeName }
                                       ])
                                     }
@@ -970,6 +511,7 @@ class Home extends React.Component {
                                         <img
                                           src={app.appIconUrl}
                                           className="new-home-app-icon"
+                                          alt={app.appIconUrl}
                                         />
                                       </div>
                                     ) : (
@@ -997,107 +539,12 @@ class Home extends React.Component {
       </div>
     );
   };
-  renderTopBar = activeApps => {
-    const { headerVisible } = this.state;
-    return (
-      <div className="new-home__top-bar">
-        <div className="new-home__top-bar__app-list">
-          {activeApps.map(app => {
-            return (
-              <div
-                className={classNames('new-home__top-bar__app', {
-                  active: app.isActive
-                })}
-                key={app.title}
-                onClick={() => this.handleBottomBarAppTrigger(app)}
-              >
-                <span className="new-home__top-bar__app-title">
-                  {app.title}
-                </span>
-                <Icon
-                  type="close"
-                  onClick={e => {
-                    e.stopPropagation();
-                    this.handleCloseActiveApp(app);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div className="new-home__top-bar__action-btn">
-          {headerVisible ? (
-            <Icon
-              type="arrows-alt"
-              onClick={() => {
-                this.setState({ headerVisible: false });
-              }}
-            />
-          ) : (
-            <Icon
-              type="shrink"
-              onClick={() => {
-                this.setState({ headerVisible: true });
-              }}
-            />
-          )}
-        </div>
-      </div>
-    );
-  };
+
   render() {
-    const {
-      activeApps,
-      showHome,
-      userInfo,
-      menus,
-      searchTextHeader,
-      allFoldersExpandedKeys,
-      showAbbreviation,
-      headerVisible
-    } = this.state;
-    return (
-      <div className="new-home">
-        <PageHeader
-          onPwlogoClick={() =>
-            this.setState({ showHome: true, showAbbreviation: false })
-          }
-          lockScreenRef={this.desktopLockScreenRef}
-          onShowAbbreviation={this.handleShowAbbreviation}
-          activeAppsNumber={activeApps.length}
-          activeApps={activeApps}
-          menus={menus}
-          onMenuClick={this.handleAddToDesktop}
-          onLockScreen={this.handleLockScreen}
-          onSearchChange={this.handleSearchChange}
-          searchTextHeader={searchTextHeader}
-          allFoldersExpandedKeys={allFoldersExpandedKeys}
-          onOpenWindow={this.handleOpenWindow}
-          onCloseActiveApp={this.handleCloseActiveApp}
-          visible={headerVisible}
-        />
-        {!showHome && activeApps.length ? this.renderTopBar(activeApps) : null}
-        {this.renderHome()}
-        {this.renderWindowView()}
-        {this.renderAbbreviation()}
-        <DesktopLockScreen
-          userInfo={userInfo}
-          ref={this.getDesktopLockScreenRef}
-        />
-      </div>
-    );
+    return <div className="new-home">{this.renderHome()}</div>;
   }
 
   toimag = async iframes => {
-    // const abbreviations = this.state.abbreviations;
-    // for (let i = 0; i < iframes.length; i++) {
-    //   let dom = iframes[i].contentDocument.querySelector('.functions');
-    //   const canvas = await html2canvas(dom);
-    //   const imgDataURL = canvas.toDataURL('image/png', 1.0);
-
-    //   abbreviations[i] = imgDataURL;
-    //   this.setState({ abbreviations });
-    // }
     iframes.forEach((item, index) => {
       let dom = item.contentDocument.querySelector('.functions');
       const promise = new Promise((resolve, reject) => {
@@ -1128,149 +575,6 @@ class Home extends React.Component {
         });
     });
   };
-  renderAbbreviation = () => {
-    const {
-      showAbbreviation,
-      activeApps,
-      abbreviations,
-      abbreviationDoms
-    } = this.state;
-    return (
-      <div
-        className={classNames('new-home__abbreviation', {
-          visible: showAbbreviation
-        })}
-      >
-        {activeApps.map((item, index) => {
-          return (
-            <AbbreviationApp
-              app={item}
-              key={item.REC_ID}
-              onCloseActiveApp={this.handleCloseActiveApp}
-              onClick={() => {
-                this.setState({ showAbbreviation: false });
-                this.handleBottomBarAppTrigger(item);
-              }}
-              dom={abbreviationDoms[index]}
-              ready={showAbbreviation}
-            />
-          );
-        })}
-      </div>
-    );
-  };
-}
-
-class AbbreviationApp extends React.Component {
-  state = {
-    abbreviation: '',
-    showDefaultAbbreviation: false
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      (nextProps.ready && nextProps.dom != this.props.dom) ||
-      nextState.abbreviation != this.state.abbreviation
-    );
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const { ready, dom } = this.props;
-    if (dom != prevProps.dom) {
-      ready && dom && this.toimag();
-    }
-  }
-  toimag = () => {
-    const { dom } = this.props;
-    if (dom) {
-      //   let dom = item.contentDocument.querySelector('.functions');
-      if (dom.querySelector('.pw-redirect')) {
-        return this.setState({
-          showDefaultAbbreviation: true,
-          abbreviation: defaultAbbreviation
-        });
-      }
-      const promise = new Promise((resolve, reject) => {
-        html2canvas(dom)
-          .then(canvas => {
-            const imgDataURL = canvas.toDataURL('image/png', 1.0);
-            resolve(imgDataURL);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-      promise
-        .then(val => {
-          this.setState({ abbreviation: val });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  };
-  render() {
-    const { app, onCloseActiveApp, onClick } = this.props;
-    const { abbreviation, showDefaultAbbreviation } = this.state;
-    return (
-      <div className="new-home__abbreviation-app" key={app.REC_ID}>
-        <header className="new-home__abbreviation-app__header">
-          <div className="new-home__abbreviation-app__header__title">
-            {app.appIconUrl && app.appIconUrlValidate ? (
-              <div className="overlay">
-                <div className="overlay-inner"></div>
-
-                <img src={app.appIconUrl} className="new-home-app-icon" />
-              </div>
-            ) : (
-              <Icon type="mail" className="new-home-app-icon-mail" />
-            )}
-            {app.appName}
-          </div>
-          <div>
-            <Icon
-              type="close"
-              className="abbreviation-app__header__close-btn"
-              onClick={() => {
-                onCloseActiveApp(app);
-              }}
-            />
-          </div>
-        </header>
-        <div
-          className="new-home__abbreviation-app__body"
-          onClick={() => {
-            onClick(app);
-          }}
-        >
-          {abbreviation ? (
-            showDefaultAbbreviation ? (
-              <div className="abbreviation-app__default-wrapper">
-                <div className="abbreviation-app__default-content">
-                  <div className="abbreviation-app__default-content__app-name">
-                    {app.appName}
-                  </div>
-                  <img
-                    src={abbreviation}
-                    className="abbreviation-app__default-content__img"
-                  />
-                  <div className="abbreviation-app__default-content__tip">
-                    点击查看详情
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <img
-                src={abbreviation}
-                style={{ height: '100%', width: '100%' }}
-              />
-            )
-          ) : (
-            <Spin />
-          )}
-        </div>
-      </div>
-    );
-  }
 }
 
 export default Home;

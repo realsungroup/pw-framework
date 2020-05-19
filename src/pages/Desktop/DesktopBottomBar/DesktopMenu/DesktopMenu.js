@@ -145,16 +145,6 @@ export default class DesktopMenu extends React.PureComponent {
           />
         </div>
         <div className="desktop-menu-list">
-          {/* <Menu
-            theme="theme"
-            style={{ width: '100%' }}
-            // defaultOpenKeys={allFoldersExpandedKeys}
-            // selectedKeys={[this.state.current]}
-            // mode="inline"
-            // mode="vertical"
-          >
-            {menus.map(folder => this.renderMenuItem(folder))}
-          </Menu> */}
           <ul
             className="desktop-menu-list__functions-entry"
             onMouseLeave={() => {

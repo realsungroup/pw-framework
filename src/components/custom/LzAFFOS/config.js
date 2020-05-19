@@ -115,6 +115,8 @@ export const inExaminationAndApproval = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
+        hasRowEdit:true,
+        rowEditFormName:'default',
         height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100,

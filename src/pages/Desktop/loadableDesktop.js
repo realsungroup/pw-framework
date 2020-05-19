@@ -23,13 +23,6 @@ export const DesktopReminderList = Loadable({
   }
 });
 
-export const WindowView = Loadable({
-  loader: () => import('./WindowView'),
-  loading() {
-    return <FullLoading loading={true} />;
-  }
-});
-
 export const DesktopPersonCenter = Loadable({
   loader: () => import('./DesktopPersonCenter'),
   loading() {

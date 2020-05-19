@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import './DesktopReminderList.less';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { List, Icon } from 'antd';
 import { FormattedMessage as FM } from 'react-intl';
+import './DesktopReminderList.less';
 
 /**
  * 桌面提醒列表
