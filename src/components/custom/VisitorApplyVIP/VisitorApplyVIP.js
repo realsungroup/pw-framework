@@ -335,8 +335,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'N'}>不需要</Radio>
-                  <Radio value={'Y'}>需要</Radio>
+                  <Radio value={'否'}>不需要</Radio>
+                  <Radio value={'是'}>需要</Radio>
                 </Radio.Group>
               )}
               <div>仅限外部审核及重要访客</div>
@@ -400,8 +400,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>需要</Radio>
-                  <Radio value={'N'}>不需要</Radio>
+                  <Radio value={'是'}>需要</Radio>
+                  <Radio value={'否'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
@@ -420,8 +420,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>需要</Radio>
-                  <Radio value={'N'}>不需要</Radio>
+                  <Radio value={'是'}>需要</Radio>
+                  <Radio value={'否'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
@@ -469,8 +469,8 @@ class VisitorApplyVIP extends React.Component {
                 ]
               })(
                 <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'Y'}>需要</Radio>
-                  <Radio value={'N'}>不需要</Radio>
+                  <Radio value={'是'}>需要</Radio>
+                  <Radio value={'否'}>不需要</Radio>
                 </Radio.Group>
               )}
             </Form.Item>
