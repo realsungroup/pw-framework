@@ -106,11 +106,11 @@ OrgChart.templates.jobarchitectureDiagramTemplate.img_0 =
   '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="80" height="80">' +
   '</image>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_0 =
-  '<text width="250" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
+  '<text width="230" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_1 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
+  '<text width="230" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="65" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_2 =
-  '<text width="250" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="85" text-anchor="middle">{val}</text>';
+  '<text width="230" class="field_1" style="font-size: 16px;" fill="#000000" x="125" y="85" text-anchor="middle">{val}</text>';
 OrgChart.templates.jobarchitectureDiagramTemplate.field_3 =
   '<text width="200" class="field_1" style="font-size: 16px;" fill="#000000" x="200" y="20" text-anchor="middle">Total:{val}</text>';
 
@@ -135,6 +135,7 @@ class ArchitectureDiagram extends React.Component {
     }
     this.state = {
       selectedNode: {}, // 选中项
+      tableSelectedNode: {},
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
@@ -159,8 +160,8 @@ class ArchitectureDiagram extends React.Component {
       detailVisible: false,
       selectedResultResid: '638645137963',
       selectedType: 'IDL',
-      selectedDepartment: '',
-      departmentTreeVisible: false
+      departmentTreeVisible: false,
+      selectedDepartments: []
     };
   }
 
@@ -349,12 +350,23 @@ class ArchitectureDiagram extends React.Component {
    * 获取节点数据
    */
   getData = async (needLoading = true) => {
-    const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      rootId
+    } = this.props;
     const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
       resid,
-      paravalues: selectedDate.format('YYYYMMDD')
+      paravalues: selectedDate.format('YYYYMMDD'),
+      idcolumn: idField,
+      pidcolumn: pidField,
+      id: rootId,
+      totallevels: 300
     };
     needLoading && this.setState({ loading: true });
     try {
@@ -363,7 +375,7 @@ class ArchitectureDiagram extends React.Component {
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
+      this.p1 = makeCancelable(http(httpParams).getByProcedureWithId(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
@@ -404,13 +416,23 @@ class ArchitectureDiagram extends React.Component {
         }
         res.cmscolumninfo.forEach(item => {
           if (node[item.id] == null || node[item.id] === undefined) {
-            node[item.id] = item.text + '：N/A';
+            node[item.id] = 'N/A';
           }
         });
         return node;
       });
       this.setState({ loading: false, selectedNode: newSelectedNode });
-      this.chart.load(nodes);
+      const { selectedDepartments } = this.state;
+      if (selectedDepartments.length) {
+        const _nodes = nodes.filter(node => {
+          return selectedDepartments.some(key => {
+            return node.orgDepCode == key;
+          });
+        });
+        this.chart.load(_nodes);
+      } else {
+        this.chart.load(nodes);
+      }
       this._nodes = [...this.chart.config.nodes];
       for (var i = 0; i < nodes.length; i++) {
         nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
@@ -487,7 +509,7 @@ class ArchitectureDiagram extends React.Component {
         }
         res.cmscolumninfo.forEach(item => {
           if (node[item.id] == null || node[item.id] === undefined) {
-            node[item.id] = item.text + '：N/A';
+            node[item.id] = 'N/A';
           }
         });
         return node;
@@ -503,9 +525,16 @@ class ArchitectureDiagram extends React.Component {
 
   clearCache = async () => {
     const { selectedDate } = this.state;
-    await http().clearOrgCache({
-      key:
-        selectedDate.format('YYYYMMDD') + this.props.procedureConfig.procedure
+    const { baseURL } = this.props;
+    const httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    await http(httpParams).clearOrgCache({
+      // key:
+      //   selectedDate.format('YYYYMMDD') + this.props.procedureConfig.procedure
+      key: ''
     });
   };
 
@@ -590,20 +619,25 @@ class ArchitectureDiagram extends React.Component {
    * 修改节点
    */
   handleModify = () => {
-    const { selectedNode } = this.state;
+    const { selectedNode, mode, tableSelectedNode } = this.state;
     const { createWindowName, editWindowName } = this.props;
-    if (!selectedNode.REC_ID) {
-      return message.info('请选择一个卡片');
+    const node = mode === 'chart' ? selectedNode : tableSelectedNode;
+    if (!node.REC_ID) {
+      if (mode === 'chart') {
+        return message.info('请选择一个卡片');
+      } else {
+        return message.info('请选择一条记录');
+      }
     }
-    if (selectedNode.isCreated === 'Y') {
-      this.getFormData({ ...selectedNode }, createWindowName);
+    if (node.isCreated === 'Y') {
+      this.getFormData({ ...node }, createWindowName);
     } else {
-      this.getFormData({ ...selectedNode }, editWindowName);
+      this.getFormData({ ...node }, editWindowName);
     }
     this.setState({
       addBroVisible: true,
       operation: 'modify',
-      record: { ...selectedNode }
+      record: { ...node }
     });
   };
 
@@ -611,16 +645,20 @@ class ArchitectureDiagram extends React.Component {
    * 删除节点
    */
   handleDelete = () => {
-    const { selectedNode, mode } = this.state;
+    const { selectedNode, mode, tableSelectedNode } = this.state;
     // let node;
     // if (mode === 'table') {
-
+    //   node = tableSelectedNode;
     // } else {
     //   node = selectedNode;
     // }
-    if (!selectedNode.REC_ID) {
-      return message.info('请选择一个卡片');
-    }
+    // if (!selectedNode.REC_ID) {
+    //   if (mode === 'table') {
+    //     return message.info('请选择一条记录');
+    //   } else {
+    //     return message.info('请选择一个卡片');
+    //   }
+    // }
     if (selectedNode.isCreated === 'Y') {
       Modal.confirm({
         title: '提示',
@@ -869,6 +907,7 @@ class ArchitectureDiagram extends React.Component {
       message.success('添加成功');
       this.chart.addNode(node);
       this._nodes.push(node);
+      this.clearCache();
     } else if (operation === 'modify') {
       // const oldTags = this.chart.get(record[idField]).tags;
       const tags = [record.tagsname];
@@ -985,8 +1024,8 @@ class ArchitectureDiagram extends React.Component {
   handleRefresh = async () => {
     const { selectedNode } = this.state;
     const data = await this.getData();
-    this.chart.load(data);
-    this._nodes = [...this.chart.config.nodes];
+    // this.chart.load(data);
+    // this._nodes = [...this.chart.config.nodes];
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
@@ -1011,10 +1050,17 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  handleAggridSelectionChange = rows => {
+    this.setState({ tableSelectedNode: rows[0] ? rows[0] : {} });
+  };
+
   renderHeader = () => {
     const { mode, isGrouping, selectedNode, currentLevel } = this.state;
     const { hasOpration, hasImport, hasGroup } = this.props;
-    const enable = selectedNode.isScrap === '' || selectedNode.isScrap === null;
+    const enable =
+      selectedNode.isScrap === 'N/A' ||
+      selectedNode.isScrap === '' ||
+      selectedNode.isScrap === null;
     const disable = selectedNode.isScrap === 'N';
     let opration = '';
     if (selectedNode.isScrap === '') {
@@ -1121,17 +1167,19 @@ class ArchitectureDiagram extends React.Component {
               />
               修改
             </div>
-            <div
-              className="architecture-diagram_header_icon-button delete-button"
-              onClick={this.handleDelete}
-            >
-              <Icon
-                type="delete"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              删除
-            </div>
-            {selectedNode.REC_ID && (
+            {mode === 'chart' && (
+              <div
+                className="architecture-diagram_header_icon-button delete-button"
+                onClick={this.handleDelete}
+              >
+                <Icon
+                  type="delete"
+                  className="architecture-diagram_header_icon-button__icon"
+                />
+                删除
+              </div>
+            )}
+            {selectedNode.REC_ID && mode === 'chart' && (
               <div
                 className={classNames(
                   'architecture-diagram_header_icon-button ',
@@ -1322,7 +1370,6 @@ class ArchitectureDiagram extends React.Component {
       detaileMin,
       historyMin,
       detailVisible,
-      selectedDepartment,
       departmentTreeVisible,
       hasDepartmentFilter
     } = this.state;
@@ -1384,9 +1431,10 @@ class ArchitectureDiagram extends React.Component {
                 >
                   <PwAggrid
                     originalColumn={this._cmscolumninfo}
-                    dataSource={this._nodes}
+                    dataSource={this.chart ? this.chart.config.nodes : []}
                     // rowSelection={rowSelection}
                     gridProps={[]}
+                    onAgGridSelectionChanged={this.handleAggridSelectionChange}
                     resid={this.props.resid}
                     baseURL={this.props.baseURL}
                     hasAdd={false}
@@ -1751,13 +1799,15 @@ class ArchitectureDiagram extends React.Component {
                 this.chart.load(nodes);
                 this.setState({
                   selectedNode: {},
-                  breadcrumb: []
+                  breadcrumb: [],
+                  selectedDepartments: checkedKeys
                 });
               } else {
                 this.chart.load(this._nodes);
                 this.setState({
                   selectedNode: {},
-                  breadcrumb: []
+                  breadcrumb: [],
+                  selectedDepartments: []
                 });
               }
             }}

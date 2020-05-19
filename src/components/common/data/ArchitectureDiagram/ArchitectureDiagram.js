@@ -160,6 +160,7 @@ class ArchitectureDiagram extends React.Component {
     }
     this.state = {
       selectedNode: {}, // 选中项
+      tableSelectedNode: {},
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
@@ -187,7 +188,7 @@ class ArchitectureDiagram extends React.Component {
       hasResult: true,
       hasDetail: true,
       hasHistory: true,
-      selectedDepartment: '',
+      selectedDepartments: [],
       departmentTreeVisible: false,
       treeData: [],
       treeDataList: [],
@@ -230,7 +231,7 @@ class ArchitectureDiagram extends React.Component {
     let data = await this.getDataById();
     this.chart.load(data);
     this.getData(false);
-    this._nodes = [...this.chart.config.nodes];
+    // this._nodes = [...this.chart.config.nodes];
     // for (var i = 0; i < data.length; i++) {
     //   data[i].number_children = childCount(data[i].id, data) + 1;
     // }
@@ -453,12 +454,23 @@ class ArchitectureDiagram extends React.Component {
    * 获取节点数据
    */
   getData = async (needLoading = true) => {
-    const { resid, baseURL, idField, pidField, procedureConfig } = this.props;
+    const {
+      resid,
+      baseURL,
+      idField,
+      pidField,
+      procedureConfig,
+      rootId
+    } = this.props;
     const { selectedDate, selectedNode } = this.state;
     const options = {
       ...procedureConfig,
       resid,
-      paravalues: selectedDate.format('YYYYMMDD')
+      paravalues: selectedDate.format('YYYYMMDD'),
+      idcolumn: idField,
+      pidcolumn: pidField,
+      id: rootId,
+      totallevels: 300
     };
     needLoading && this.setState({ loading: true });
     try {
@@ -467,7 +479,7 @@ class ArchitectureDiagram extends React.Component {
       if (baseURL) {
         httpParams.baseURL = baseURL;
       }
-      this.p1 = makeCancelable(http(httpParams).getByProcedure(options));
+      this.p1 = makeCancelable(http(httpParams).getByProcedureWithId(options));
       const res = await this.p1.promise;
       this._cmscolumninfo = res.cmscolumninfo;
       this._tags = {};
@@ -517,14 +529,25 @@ class ArchitectureDiagram extends React.Component {
         }
         res.cmscolumninfo.forEach(item => {
           if (node[item.id] == null || node[item.id] === undefined) {
-            node[item.id] = item.text + '：N/A';
+            node[item.id] = 'N/A';
           }
         });
         return node;
       });
       this.setState({ loading: false, selectedNode: newSelectedNode });
-      this.chart.load(nodes);
-      this._nodes = [...this.chart.config.nodes];
+      const { selectedDepartments } = this.state;
+      if (selectedDepartments.length) {
+        const _nodes = nodes.filter(node => {
+          return selectedDepartments.some(key => {
+            return node.orgDepCode == key;
+          });
+        });
+        this.chart.load(_nodes);
+      } else {
+        this.chart.load(nodes);
+      }
+
+      this._nodes = [...nodes];
       for (var i = 0; i < nodes.length; i++) {
         nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
       }
@@ -611,7 +634,7 @@ class ArchitectureDiagram extends React.Component {
         }
         res.cmscolumninfo.forEach(item => {
           if (node[item.id] == null || node[item.id] === undefined) {
-            node[item.id] = item.text + '：N/A';
+            node[item.id] = 'N/A';
           }
         });
         return node;
@@ -735,20 +758,25 @@ class ArchitectureDiagram extends React.Component {
    * 修改节点
    */
   handleModify = () => {
-    const { selectedNode } = this.state;
+    const { selectedNode, mode, tableSelectedNode } = this.state;
     const { createWindowName, editWindowName } = this.props;
-    if (!selectedNode.REC_ID) {
-      return message.info('请选择一个卡片');
+    const node = mode === 'chart' ? selectedNode : tableSelectedNode;
+    if (!node.REC_ID) {
+      if (mode === 'chart') {
+        return message.info('请选择一个卡片');
+      } else {
+        return message.info('请选择一条记录');
+      }
     }
-    if (selectedNode.isCreated === 'Y') {
-      this.getFormData({ ...selectedNode }, createWindowName);
+    if (node.isCreated === 'Y') {
+      this.getFormData({ ...node }, createWindowName);
     } else {
-      this.getFormData({ ...selectedNode }, editWindowName);
+      this.getFormData({ ...node }, editWindowName);
     }
     this.setState({
       addBroVisible: true,
       operation: 'modify',
-      record: { ...selectedNode }
+      record: { ...node }
     });
   };
 
@@ -947,6 +975,7 @@ class ArchitectureDiagram extends React.Component {
                           uniquecolumns: 'orgcode,dates',
                           isEditOrAdd: 'true'
                         });
+                        await this.clearCache();
                         message.success('兼职成功');
                         this.props.closeModalOrDrawer();
                         this.setState({ loading: false });
@@ -996,6 +1025,22 @@ class ArchitectureDiagram extends React.Component {
       {}
     );
   };
+
+  clearCache = async () => {
+    const { selectedDate } = this.state;
+    const { baseURL } = this.props;
+    const httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    await http(httpParams).clearOrgCache({
+      // key:
+      //   selectedDate.format('YYYYMMDD') + this.props.procedureConfig.procedure
+      key: ''
+    });
+  };
+
   clearPerson = nodeId => {
     const node = this.chart.get(nodeId);
     if (node.isEmpty === 'Y' && node.isPartOccupied !== 'Y') {
@@ -1035,6 +1080,7 @@ class ArchitectureDiagram extends React.Component {
               uniquecolumns: 'orgcode,dates',
               isEditOrAdd: 'true'
             });
+            await this.clearCache();
             this.setState({ loading: false });
             message.success('清空成功');
             this.props.closeModalOrDrawer();
@@ -1082,6 +1128,7 @@ class ArchitectureDiagram extends React.Component {
               ],
               isEditOrAdd: 'true'
             });
+            await this.clearCache();
             this.setState({ loading: false });
             message.success('清空成功');
             this.props.closeModalOrDrawer();
@@ -1167,6 +1214,7 @@ class ArchitectureDiagram extends React.Component {
                           resid: '638645984799',
                           data: records
                         });
+                        await this.clearCache();
                         this.setState({ loading: false });
                         message.success('任职成功');
                         this.props.closeModalOrDrawer();
@@ -1317,6 +1365,7 @@ class ArchitectureDiagram extends React.Component {
     );
     try {
       res = await this.p5.promise;
+      await this.clearCache();
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
@@ -1459,9 +1508,7 @@ class ArchitectureDiagram extends React.Component {
   };
 
   handleDownload = () => {
-    window.open(
-      'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg'
-    );
+    window.open('http://wux-hr03/rispweb/upfiles/transtem.xls');
   };
   // 导入
   handleImport = () => {
@@ -1487,14 +1534,15 @@ class ArchitectureDiagram extends React.Component {
       );
   };
 
-  handleFinishImport = () => {
+  handleFinishImport = async () => {
+    await this.clearCache();
     this.props.closeImportView();
     this.setState({ hasImportResult: true, resultMin: false }, () => {
-      this.contentRef.scrollTo({
-        left: 0,
-        top: window.innerHeight,
-        behavior: 'smooth'
-      });
+      // this.contentRef.scrollTo({
+      //   left: 0,
+      //   top: window.innerHeight,
+      //   behavior: 'smooth'
+      // });
       this.tableDataRef && this.tableDataRef.handleRefresh();
     });
     notification.open({
@@ -1509,11 +1557,15 @@ class ArchitectureDiagram extends React.Component {
   handleRefresh = async () => {
     const { selectedNode } = this.state;
     const data = await this.getData();
-    this.chart.load(data);
-    this._nodes = [...this.chart.config.nodes];
+    // this.chart.load(data);
+    // this._nodes = [...this.chart.config.nodes];
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
+  };
+
+  handleAggridSelectionChange = rows => {
+    this.setState({ tableSelectedNode: rows[0] ? rows[0] : {} });
   };
 
   renderHeader = () => {
@@ -1618,16 +1670,18 @@ class ArchitectureDiagram extends React.Component {
               />
               修改
             </div>
-            <div
-              className="architecture-diagram_header_icon-button delete-button"
-              onClick={this.handleDelete}
-            >
-              <Icon
-                type="delete"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              删除
-            </div>
+            {mode === 'chart' && (
+              <div
+                className="architecture-diagram_header_icon-button delete-button"
+                onClick={this.handleDelete}
+              >
+                <Icon
+                  type="delete"
+                  className="architecture-diagram_header_icon-button__icon"
+                />
+                删除
+              </div>
+            )}
             {selectedNode.REC_ID && (
               <div
                 className={classNames(
@@ -2022,7 +2076,6 @@ class ArchitectureDiagram extends React.Component {
       hasDetail,
       hasHistory,
       hasResult,
-      selectedDepartment,
       departmentTreeVisible
     } = this.state;
     const { resid, baseURL, displayFileds, hasView, idField } = this.props;
@@ -2083,6 +2136,7 @@ class ArchitectureDiagram extends React.Component {
                     originalColumn={this._cmscolumninfo}
                     dataSource={this._nodes}
                     // rowSelection={rowSelection}
+                    onAgGridSelectionChanged={this.handleAggridSelectionChange}
                     gridProps={[]}
                     resid={this.props.resid}
                     baseURL={this.props.baseURL}
@@ -2624,13 +2678,15 @@ class ArchitectureDiagram extends React.Component {
                 this.chart.load(nodes);
                 this.setState({
                   selectedNode: {},
-                  breadcrumb: []
+                  breadcrumb: [],
+                  selectedDepartments: checkedKeys
                 });
               } else {
                 this.chart.load(this._nodes);
                 this.setState({
                   selectedNode: {},
-                  breadcrumb: []
+                  breadcrumb: [],
+                  selectedDepartments: []
                 });
               }
             }}

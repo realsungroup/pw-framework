@@ -92,6 +92,7 @@ class Department extends React.Component {
     }
     this.state = {
       selectedNode: {}, // 选中项
+      tableSelectedNode: {},
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
@@ -403,12 +404,15 @@ class Department extends React.Component {
       record.updateDate = selectedDate;
       record.orgSupCode = selectedNode.orgcode;
       record.orgSupNumber = selectedNode.orgNumber;
+      record.C3_417654796647 = selectedNode.DEP_NAME;
+
       this.getFormData(record, createWindowName);
     } else if (level === 'bro') {
       record[pidField] = selectedNode[pidField];
       record.updateDate = selectedDate;
       record.orgSupCode = selectedNode.orgSupCode;
       record.orgSupNumber = selectedNode.orgSupNumber;
+      record.C3_417654796647 = selectedNode.C3_417654796647;
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
@@ -418,20 +422,25 @@ class Department extends React.Component {
    * 修改节点
    */
   handleModify = () => {
-    const { selectedNode } = this.state;
+    const { selectedNode, mode, tableSelectedNode } = this.state;
     const { createWindowName, editWindowName } = this.props;
-    if (!selectedNode.REC_ID) {
-      return message.info('请选择一个卡片');
+    const node = mode === 'chart' ? selectedNode : tableSelectedNode;
+    if (!node.REC_ID) {
+      if (mode === 'chart') {
+        return message.info('请选择一个卡片');
+      } else {
+        return message.info('请选择一条记录');
+      }
     }
-    if (selectedNode.isCreated === 'Y') {
-      this.getFormData({ ...selectedNode }, createWindowName);
+    if (node.isCreated === 'Y') {
+      this.getFormData({ ...node }, createWindowName);
     } else {
-      this.getFormData({ ...selectedNode }, editWindowName);
+      this.getFormData({ ...node }, editWindowName);
     }
     this.setState({
       addBroVisible: true,
       operation: 'modify',
-      record: { ...selectedNode }
+      record: { ...node }
     });
   };
 
@@ -832,6 +841,9 @@ class Department extends React.Component {
       });
     }
   };
+  handleAggridSelectionChange = rows => {
+    this.setState({ tableSelectedNode: rows[0] ? rows[0] : {} });
+  };
 
   renderHeader = () => {
     const { mode, isGrouping, selectedNode, currentLevel } = this.state;
@@ -924,16 +936,6 @@ class Department extends React.Component {
                 className="department-chart_header_icon-button__icon"
               />
               修改
-            </div>
-            <div
-              className="department-chart_header_icon-button delete-button"
-              onClick={this.handleDelete}
-            >
-              <Icon
-                type="delete"
-                className="department-chart_header_icon-button__icon"
-              />
-              删除
             </div>
             {selectedNode.REC_ID && (
               <div
@@ -1126,13 +1128,7 @@ class Department extends React.Component {
                     hasRowModify={false}
                     hasRowSelection={false}
                     baseURL={baseURL}
-                    onAgGridSelectionChanged={(rows = []) => {
-                      if (rows.length) {
-                        const node = this.chart.get(rows[0][idField]);
-                        // this.setState({selectedNode:node});
-                      } else {
-                      }
-                    }}
+                    onAgGridSelectionChanged={this.handleAggridSelectionChange}
                   />
                 </div>
                 <div
