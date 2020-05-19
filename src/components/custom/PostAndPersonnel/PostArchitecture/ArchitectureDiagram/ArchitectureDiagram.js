@@ -171,7 +171,7 @@ class ArchitectureDiagram extends React.Component {
     const data = await this.getDataById();
     this.chart.load(data);
     this.getData(false);
-    this._nodes = [...this.chart.config.nodes];
+    // this._nodes = [...this.chart.config.nodes];
     // for (var i = 0; i < data.length; i++) {
     //   data[i].number_children = childCount(data[i].id, data) + 1;
     // }
