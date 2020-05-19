@@ -1978,6 +1978,7 @@ class ArchitectureDiagram extends React.Component {
                             resid: '638645984799',
                             data: records
                           });
+                          await this.clearCache();
                           this.setState({ loading: false });
                           message.success('导入成功');
                           this.tableDataRef.handleRefresh();
