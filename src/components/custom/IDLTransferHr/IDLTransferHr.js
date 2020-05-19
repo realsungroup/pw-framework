@@ -466,7 +466,7 @@ const subresid = 632314794466;//子表resid
       }
       n++;
     }
-    this.getRight();
+    // this.getRight();
 
     this.setState({loading:false,HCList:arr,list725:arr2});
   }catch(e){console.log(e);this.setState({loading:false});}
@@ -547,6 +547,9 @@ const subresid = 632314794466;//子表resid
     }catch(e){
       console.log(e);
     }
+  }
+  componentWillMount(){
+    this.getRight();
   }
    componentDidMount(){
 
@@ -845,7 +848,8 @@ const subresid = 632314794466;//子表resid
         </Modal>
         <Spin spinning={this.state.loading} >
           <div style={{height:'100vh'}}>
-            {(this.state.right.HCPreApprove=='Y')||(this.state.right.HRPreApprove=='Y')?
+            {this.state.cms!=``?
+            ((this.state.right.HCPreApprove=='Y')||(this.state.right.HRPreApprove=='Y')?
             <TableData
                   resid={632255761674}
                   cmswhere={this.state.cms}
@@ -885,7 +889,9 @@ const subresid = 632314794466;//子表resid
                       );
                     }
                   ]}
-                />:<h3> 您无权查看，请联系管理员添加权限。</h3>}
+                />:<h3> 您无权查看，请联系管理员添加权限。</h3>)
+            :null}
+            
                 </div>
             </Spin>
           </content>
