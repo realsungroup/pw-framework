@@ -1506,6 +1506,7 @@ class ArchitectureDiagram extends React.Component {
   handleFinishImport = async () => {
     await this.clearCache();
     this.props.closeImportView();
+    await this.getData();
     this.setState({ hasImportResult: true, resultMin: false }, () => {
       // this.contentRef.scrollTo({
       //   left: 0,
