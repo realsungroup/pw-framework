@@ -269,7 +269,36 @@ export default class PageContainer extends React.Component {
     this.setState({ loading: true });
     const res = await this.getAndSetUserDesktop(isFirst);
     await this.getAndSetAllAppLinks(res.userdefined);
-    this.setState({ loading: false });
+    this.setState({ loading: false }, async () => {
+      const { folders } = this.state;
+      const bigpArr = [];
+      const smallpArr = [];
+      folders.forEach((folder, index) => {
+        bigpArr.push(validateImage(folder.url));
+        folder.apps.forEach(app => {
+          if (!smallpArr[index]) {
+            smallpArr[index] = [];
+          }
+          smallpArr[index].push(validateImage(app.appIconUrl));
+        });
+      });
+      //判断大图标是否有效
+      const bigRes = await Promise.all(bigpArr).then();
+      bigRes.forEach((res, index) => {
+        if (!res) {
+          folders[index].url = folderPng;
+        }
+      });
+      // 判断小图标是否有效
+      for (let index = 0; index < smallpArr.length; index++) {
+        const resArr = await Promise.all(smallpArr[index]).then();
+        resArr.forEach((res, i) => {
+          folders[index].apps[i].appIconUrlValidate = res;
+        });
+      }
+
+      this.setState({ folders: [...folders] });
+    });
   };
 
   getAndSetUserDesktop = async (isFirst = false) => {
