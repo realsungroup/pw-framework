@@ -167,7 +167,6 @@ class ArchitectureDiagram extends React.Component {
 
   async componentDidMount() {
     this.initializeOrgchart();
-    // let data = await this.getData();
     const data = await this.getDataById();
     this.chart.load(data);
     this.getData(false);
@@ -944,9 +943,8 @@ class ArchitectureDiagram extends React.Component {
   handleDateChange = (date, dateString) => {
     this.setState({ selectedDate: date }, async () => {
       const { selectedNode } = this.state;
-      let data = await this.getData();
-      this.chart.load(data);
-      this._nodes = [...this.chart.config.nodes];
+      await this.getData();
+
       if (selectedNode.id) {
         this.chart.center(selectedNode.id);
       }
@@ -1023,7 +1021,7 @@ class ArchitectureDiagram extends React.Component {
 
   handleRefresh = async () => {
     const { selectedNode } = this.state;
-    const data = await this.getData();
+    await this.getData();
     // this.chart.load(data);
     // this._nodes = [...this.chart.config.nodes];
     if (selectedNode.id) {

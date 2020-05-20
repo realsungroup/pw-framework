@@ -201,35 +201,8 @@ class ArchitectureDiagram extends React.Component {
       selectedBranch: 'all'
     };
   }
-  // state = {
-  //   selectedNode: {}, // 选中项
-  //   addBroVisible: false,
-  //   selfDefineVisible: false,
-  //   loading: false,
-  //   viewHistoryDetailVisible: false,
-  //   historyData: [], // 选中项的历史记录
-  //   partHistoryData: [],
-  //   operation: 'add', // FormData用到的prop
-  //   record: {}, // FormData用到的prop
-  //   breadcrumb: [], //面包屑数据
-  //   currentLevel: this.props.level, //当前层级
-  //   mode: 'chart', //显示模式：图->chart; 表-> table
-  //   isGrouping: false,
-  //   firstField: this.props.displayFileds.firstField,
-  //   secondaryField: this.props.displayFileds.secondaryField,
-  //   thirdField: this.props.displayFileds.thirdField,
-  //   selectedDate: moment(),
-  //   takeEffectDate: '', //生效日期
-  //   detaileMin: false,
-  //   historyMin: false,
-  //   resultMin: false,
-  //   hasImportResult: false,
-  //   detailVisible: false,
-  //   selectedResultResid: '638645137963',
-  //   selectedType: 'IDL'
-  // };
+
   async componentDidMount() {
-    // await this.getRootNodes();
     this.initializeOrgchart();
     let data = await this.getDataById();
     this.chart.load(data);
@@ -982,9 +955,7 @@ class ArchitectureDiagram extends React.Component {
                         message.success('兼职成功');
                         this.props.closeModalOrDrawer();
                         this.setState({ loading: false });
-                        let data = await this.getData();
-                        this.chart.load(data);
-                        this._nodes = [...this.chart.config.nodes];
+                        await this.getData();
                         if (node.id) {
                           this.chart.center(node.id);
                         }
@@ -1088,9 +1059,8 @@ class ArchitectureDiagram extends React.Component {
             message.success('清空成功');
             this.props.closeModalOrDrawer();
             // 重新获取数据
-            let data = await this.getData();
-            this.chart.load(data);
-            this._nodes = [...this.chart.config.nodes];
+            await this.getData();
+
             if (node.id) {
               this.chart.center(node.id);
             }
@@ -1135,9 +1105,8 @@ class ArchitectureDiagram extends React.Component {
             this.setState({ loading: false });
             message.success('清空成功');
             this.props.closeModalOrDrawer();
-            let data = await this.getData();
-            this.chart.load(data);
-            this._nodes = [...this.chart.config.nodes];
+            await this.getData();
+
             if (node.id) {
               this.chart.center(node.id);
             }
@@ -1221,9 +1190,8 @@ class ArchitectureDiagram extends React.Component {
                         this.setState({ loading: false });
                         message.success('任职成功');
                         this.props.closeModalOrDrawer();
-                        let data = await this.getData();
-                        this.chart.load(data);
-                        this._nodes = [...this.chart.config.nodes];
+                        await this.getData();
+
                         if (node.id) {
                           this.chart.center(node.id);
                         }
@@ -1436,9 +1404,7 @@ class ArchitectureDiagram extends React.Component {
   handleDateChange = (date, dateString) => {
     this.setState({ selectedDate: date }, async () => {
       const { selectedNode } = this.state;
-      let data = await this.getData();
-      this.chart.load(data);
-      this._nodes = [...this.chart.config.nodes];
+      await this.getData();
       if (selectedNode.id) {
         this.chart.center(selectedNode.id);
       }
@@ -1511,7 +1477,7 @@ class ArchitectureDiagram extends React.Component {
   };
 
   handleDownload = () => {
-    window.open('http://wux-hr03/rispweb/upfiles/transtem.xls');
+    window.open('http://10.108.2.66/rispweb/upfiles/transtem.xls');
   };
   // 导入
   handleImport = () => {
@@ -1559,9 +1525,8 @@ class ArchitectureDiagram extends React.Component {
 
   handleRefresh = async () => {
     const { selectedNode } = this.state;
-    const data = await this.getData();
-    // this.chart.load(data);
-    // this._nodes = [...this.chart.config.nodes];
+    await this.getData();
+
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
