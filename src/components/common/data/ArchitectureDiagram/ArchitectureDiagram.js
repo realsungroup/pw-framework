@@ -110,7 +110,10 @@ window.imageClick = function(e) {
           height: 300
         }}
       >
-        <img src={e.target.href.baseVal} />
+        <img
+          style={{ height: '100%', width: 'auto' }}
+          src={e.target.href.baseVal}
+        />
       </div>
     )
   });
@@ -1998,7 +2001,7 @@ class ArchitectureDiagram extends React.Component {
             <span style={{ marginRight: 16 }}>错误：20</span>
             <span style={{ marginRight: 16 }}>未匹配：10</span> */}
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, overflow: 'hidden' }}>
               <TableData
                 baseURL={baseURL}
                 resid={selectedResultResid || '638645137963'}
@@ -2017,6 +2020,7 @@ class ArchitectureDiagram extends React.Component {
                 hasRowSelection={false}
                 cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
                 afterSaveRefresh={true}
+                afterSaveCallback={this.clearCache}
                 hasAdvSearch={false}
                 importConfig={null}
               />

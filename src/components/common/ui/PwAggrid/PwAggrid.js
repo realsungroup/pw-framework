@@ -152,7 +152,7 @@ class PwAggrid extends React.Component {
   handleSaveRecords = async records => {
     try {
       let httpParams = {};
-      const { baseURL } = this.props;
+      const { baseURL, afterSaveCallback, afterSaveRefresh } = this.props;
       // 使用传入的 baseURL
       if (baseURL) {
         httpParams.baseURL = baseURL;
@@ -165,9 +165,10 @@ class PwAggrid extends React.Component {
         update: res.data
       });
       this._modifiedData.clear();
-      if (this.props.afterSaveRefresh) {
+      if (afterSaveRefresh) {
         this.props.onRefresh && this.props.onRefresh();
       }
+      afterSaveCallback && afterSaveCallback();
     } catch (error) {
       message.error(error.message);
       console.error(error);

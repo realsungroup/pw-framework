@@ -1741,6 +1741,7 @@ class TableData extends React.Component {
       rowSelectionAg,
       sideBarAg,
       afterSaveRefresh,
+      afterSaveCallback,
       onAgGridSelectionChanged
     } = this.props;
 
@@ -1775,6 +1776,7 @@ class TableData extends React.Component {
           }}
           onAgGridSelectionChanged={onAgGridSelectionChanged}
           afterSaveRefresh={afterSaveRefresh}
+          afterSaveCallback={afterSaveCallback}
           originalColumn={originalColumn}
           hasZoomInOut={hasZoomInOut}
           zoomStatus={zoomStatus}
