@@ -1,53 +1,46 @@
-.comprehensive-query-index {
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  #comprehensive-query {
-    height: 100vh;
-    .main-content {
-      height: 100%;
+#comprehensive-query {
+  height: 100vh;
+  background: #ffffff;
+  .main-content {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    .comprehensive-query_goback-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
       position: fixed;
-      top: 0;
-      right: 0;
+      right: 20px;
+      bottom: 80px;
+      background: #fff;
+      z-index: 999;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
       display: flex;
-      flex-direction: column;
-      .comprehensive-query_goback-btn {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        position: fixed;
-        right: 20px;
-        bottom: 80px;
-        background: #fff;
-        z-index: 999;
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      .nav-header {
-        // padding-left: 32px;
-        background-color: #fff;
-        .ant-tabs-bar {
-          margin: 0;
-        }
-      }
-      .comprehensive-query_main-content-wrap {
-        flex: 1;
-        margin: 24px 24px 24px 0px;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .nav-header {
+      // padding-left: 32px;
+      background-color: #fff;
+      .ant-tabs-bar {
+        margin: 0;
       }
     }
+    .comprehensive-query_main-content-wrap {
+      flex: 1;
+      margin: 24px 24px 24px 0px;
+    }
   }
-  .comprehensive-query-index_cards {
-    display: grid;
-    grid-template-columns: repeat(4, 265px);
-    grid-template-rows: repeat(2, auto);
-    column-gap: 24px;
-    row-gap: 24px;
-  }
+}
+.comprehensive-query-index_cards {
+  display: grid;
+  grid-template-columns: repeat(4, 265px);
+  grid-template-rows: repeat(2, auto);
+  column-gap: 24px;
+  row-gap: 24px;
 }
