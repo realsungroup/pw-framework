@@ -275,7 +275,7 @@ class WorkOvertimeChart extends React.Component {
         procedure: 'GetS3OTListByLeaderMonth'
       });
       const columns = res.cmscolumninfo.map(item => {
-        return { title: item.text, dataIndex: item.text, width: 100 };
+        return { title: item.text, dataIndex: item.id, width: 100 };
       });
       const dataSource = res.data.map(item => {
         return { ...item, key: item['工号'] };
@@ -423,7 +423,7 @@ class WorkOvertimeChart extends React.Component {
                 gridProps={[
                   {
                     resid: '624039666618',
-                    baseURL: window.pwConfig[process.env.NODE_ENV.baseURL],
+                    baseURL: window.pwConfig[process.env.NODE_ENV].baseURL,
                     dataSource: 'procedure',
                     procedureParams: {
                       paranames: '@leaderygno,@yearmonth',

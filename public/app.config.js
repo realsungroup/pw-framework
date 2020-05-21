@@ -20,7 +20,7 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
+      attendanceBaseURL: 'http://ngrok5.realsun.me:6060/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
@@ -34,7 +34,7 @@ window.pwConfig = {
       headquartersBaseURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
-      WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
+      WzDownloadURL: 'http://ngrok8.realsun.me:6060' //物资管理
     },
 
     // 需前端缓存配置的资源
@@ -194,7 +194,7 @@ window.pwConfig = {
       headquartersBaseURL: 'http://10.108.2.66:9091/', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://10.108.2.66:80', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
-      WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
+      WzDownloadURL: 'http://10.108.2.66:2001' //物资管理下载地址
     },
 
     // 需前端缓存配置的资源
