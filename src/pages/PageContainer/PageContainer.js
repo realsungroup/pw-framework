@@ -859,7 +859,11 @@ export default class PageContainer extends React.Component {
       isOpen: false
     }));
 
-    this.setState({ desktopStyle: homeMode, activeApps: newActiveApps });
+    this.setState({
+      desktopStyle: homeMode,
+      activeApps: newActiveApps,
+      showHome: true
+    });
     localStorage.setItem('desktopStyle', homeMode);
   };
 
