@@ -1761,10 +1761,7 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '人事查询',
-  props:{
-    tabKey:'personnel'
-  }
+  title: '综合查询'
 };
 window[642853818882] = {
   name: 'ComprehensiveQuery',
@@ -2054,6 +2051,30 @@ window[641992135890] = {
   props: {
     resid: '537532977680',
     replaceBaseUrl: 'http://ngrok16.realsun.me:6060'
+  }
+};
+window[643313663856] = {
+  name: 'PWRedirect',
+  title: '薪资统计报表一',
+  props: {
+    resid: '643314531373',
+    replaceBaseUrl: ''
+  }
+};
+window[643374153807] = {
+  name: 'PWRedirect',
+  title: '在职情况',
+  props: {
+    resid: '643375082697',
+    replaceBaseUrl: ''
+  }
+};
+window[643376172016] = {
+  name: 'PWRedirect',
+  title: '离职情况',
+  props: {
+    resid: '643375999327',
+    replaceBaseUrl: ''
   }
 };
 //总部-headcount
@@ -2431,11 +2452,11 @@ window[642854088542] = {
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
@@ -3438,11 +3459,11 @@ window[642855095782] = {
     resid: 450887249266,
     actionBarWidth: 200,
    hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+   downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -3463,10 +3484,10 @@ window[642855105931] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
     baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
+    hasDelete: true,
+    hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
@@ -5741,13 +5762,13 @@ window[642854837350] = {
   name: 'TableData', // 组件名称，
   title: '刷卡记录', // 功能模块名称
   props: {
-    resid: 375296681546,
+    resid: 549653969241,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
@@ -5794,8 +5815,9 @@ window[640366579330] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    baseURL: 'http://10.108.2.66:9091',
+baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
+
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -5804,21 +5826,5 @@ window[640366579330] = {
       // height: 500
     },
     subtractH: 240
-  }
-};
-window[643374153807] = {
-  name: 'PWRedirect',
-  title: '在职情况',
-  props: {
-    resid: '643375082697',
-    replaceBaseUrl: ''
-  }
-};
-window[643313663856] = {
-  name: 'PWRedirect',
-  title: '薪资报表',
-  props: {
-    resid: '643314531373',
-    replaceBaseUrl: ''
   }
 };
