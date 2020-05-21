@@ -1536,7 +1536,7 @@ window['629806026549'] = {
   props: {
     rootId: 0,
     dblinkname: '',
-    baseURL: 'http://10.108.2.66:9091',
+baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/'
   }
 };
@@ -2601,6 +2601,8 @@ window[642854223262] = {
   props: {
     resid: 527089107422,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -2620,6 +2622,9 @@ window[642854235003] = {
   title: 'RBA排班锁定', // 功能模块名称
   props: {
     resid: 619700236031,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
@@ -2641,6 +2646,9 @@ window[642854252939] = {
   props: {
     resid: 611406015223,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -2662,6 +2670,9 @@ window[642854266702] = {
     resid: 608738442390,
     actionBarWidth: 200,
    hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+   downloadBaseURL: 'http://10.108.2.66:80/',
+
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2681,6 +2692,9 @@ window[642854279289] = {
   props: {
     resid: 616676083973,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -2700,6 +2714,8 @@ window[642854434101] = {
   title: '考勤日报', // 功能模块名称
   props: {
     resid: 375296167687,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
@@ -2720,6 +2736,8 @@ window[642854450973] = {
   title: '考勤月报', // 功能模块名称
   props: {
     resid: 311025002785,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
@@ -2761,6 +2779,8 @@ window[642854476015] = {
   props: {
     resid: 599061859652,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -2820,6 +2840,8 @@ window[642854648916] = {
   title: '月度结算表', // 功能模块名称
   props: {
     resid: 431886989798,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
@@ -2841,6 +2863,8 @@ window[642854660698] = {
   props: {
     resid: 424363791882,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -2860,6 +2884,8 @@ window[642854669532] = {
   title: '薪资结算名单', // 功能模块名称
   props: {
     resid: 429954752986,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
    hasAdd: true,
     hasBeBtns: true,
@@ -3841,6 +3867,8 @@ window[642856395014] = {
   props: {
     resid: 438956460750,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -3861,6 +3889,8 @@ window[642856420818] = {
   props: {
     resid: 498754836060,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -3961,6 +3991,9 @@ window[642856472970] = {
   props: {
     resid: 631650286919,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -3982,6 +4015,8 @@ window[642856600971] = {
     resid: 631650245633,
     actionBarWidth: 200,
    hasAdd: true,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4001,6 +4036,9 @@ window[642856612138] = {
   props: {
     resid: 469639002606,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -4141,6 +4179,8 @@ window[642856691841] = {
   props: {
     resid: 526569913543,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -4161,6 +4201,8 @@ window[642856702868] = {
   props: {
     resid: 537450483861,
     actionBarWidth: 200,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -4182,6 +4224,9 @@ window[642856714810] = {
     resid: 537450500319,
     actionBarWidth: 200,
    hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+   downloadBaseURL: 'http://10.108.2.66:80/',
+
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5658,3 +5703,71 @@ window[642865548263] = {
   }
 };
 
+window[642854837350] = {
+  name: 'TableData', // 组件名称，
+  title: '刷卡记录', // 功能模块名称
+  props: {
+    resid: 549653969241,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[642854549263] = {
+  name: 'TableData', // 组件名称，
+  title: '结算汇总表', // 功能模块名称
+  props: {
+    resid: 426597421978,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[640366579330] = {
+  name: 'TableData', // 组件名称，
+  title: 'Headcount申请', // 功能模块名称
+  props: {
+    resid: 518460953577,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
