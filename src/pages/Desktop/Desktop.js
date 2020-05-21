@@ -87,23 +87,10 @@ class Desktop extends React.Component {
   }
 
   componentDidMount = async () => {
-    // 设置主题色
-    this.setThemeColor(this.state.color);
-
     // 默认打开仪表盘
     if (defaultOpenWindow === '仪表盘') {
       // this.handleOpenDashboard();
     }
-  };
-
-  setThemeColor = themeColor => {
-    window.less
-      .modifyVars({ '@primary-color': themeColor })
-      .then(() => {})
-      .catch(err => {
-        console.log({ err });
-        message.error(err.message);
-      });
   };
 
   getWindowViewRef = (node, title) => {
