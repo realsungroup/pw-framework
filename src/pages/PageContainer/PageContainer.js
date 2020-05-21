@@ -143,15 +143,15 @@ export default class PageContainer extends React.Component {
       showAbbreviation: false,
       recentApps: [],
       abbreviationDoms: [],
-      color, // 主题色
+      color // 主题色
     };
     this.lockScreenRef = React.createRef();
   }
 
   componentDidMount = () => {
     const { userInfo, color } = this.state;
-     // 设置主题色
-     this.setThemeColor(this.state.color);
+    // 设置主题色
+    this.setThemeColor(this.state.color);
     // 'DESKTOP' or 'WORKBENCH'
     let desktopStyle = 'DESKTOP';
     try {
@@ -971,10 +971,12 @@ export default class PageContainer extends React.Component {
         zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 4;
 
       return (
-        <div className="page-container__window-view-wrapper">
+        <div
+          className="page-container__window-view-wrapper"
+          key={activeApp.ResID}
+        >
           <WindowView
             ref={node => this.getWindowViewRef(node, activeApp.title)}
-            key={activeApp.ResID}
             title={activeApp.appName}
             visible={visible}
             onClose={() => this.handleCloseActiveApp(activeApp)}
