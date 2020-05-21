@@ -43,7 +43,7 @@ class PersonInfoManager extends React.Component {
     const { baseURL, selectedDepartment } = this.state;
     return (
       <div className="PersonInfoManager">
-        {/* <div className="department-tree-wrapper">
+        <div className="department-tree-wrapper">
           <DepartmentTree
             resid="417643880834"
             baseURL={baseURL}
@@ -61,11 +61,11 @@ class PersonInfoManager extends React.Component {
             }}
             treeClassName="personnel-information-tree"
           />
-        </div> */}
+        </div>
         <div className="table-data-wrapper">
           <TableDataSavePage
             // 464171754083
-            resid={464705942338}
+            resid={637772568684}
             hasRowView={false}
             baseURL={baseURL}
             hasAdd={false}
@@ -92,7 +92,7 @@ class PersonInfoManager extends React.Component {
                       onClick={() => {
                         this.setState({
                           showDetail: true,
-                          selectedRecord: record.C3_464702128504
+                          selectedRecord: record.C3_227192472953
                         });
                       }}
                     >
