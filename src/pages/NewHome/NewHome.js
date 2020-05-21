@@ -133,7 +133,7 @@ class Home extends React.Component {
       document.location.href = '/login';
     }
     this.fetchWaitingHandle();
-    this.setRecentApps();
+    // this.setRecentApps();
   }
 
   setRecentApps = async () => {

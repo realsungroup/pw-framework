@@ -123,6 +123,7 @@ export default class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
+    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     this.state = {
       reminderNum: 0,
       password: '',
@@ -141,13 +142,16 @@ export default class PageContainer extends React.Component {
       showHome: true,
       showAbbreviation: false,
       recentApps: [],
-      abbreviationDoms: []
+      abbreviationDoms: [],
+      color // 主题色
     };
     this.lockScreenRef = React.createRef();
   }
 
   componentDidMount = () => {
-    const { userInfo } = this.state;
+    const { userInfo, color } = this.state;
+    // 设置主题色
+    this.setThemeColor(this.state.color);
     // 'DESKTOP' or 'WORKBENCH'
     let desktopStyle = 'DESKTOP';
     try {
@@ -179,7 +183,8 @@ export default class PageContainer extends React.Component {
   };
 
   setRecentApps = async () => {
-    let recentApps = JSON.parse(getItem('recentApps'));
+    const { userInfo } = this.state;
+    let recentApps = JSON.parse(getItem('recentApps' + userInfo.UserCode));
     if (recentApps && Array.isArray(recentApps)) {
       recentApps = this.getSortRecentApps(recentApps);
 
@@ -197,7 +202,10 @@ export default class PageContainer extends React.Component {
         this.setState({ recentApps: [...recentApps] });
       });
     } else {
-      localStorage.setItem('recentApps', JSON.stringify([]));
+      localStorage.setItem(
+        'recentApps' + userInfo.UserCode,
+        JSON.stringify([])
+      );
       this.setState({ recentApps: [] });
     }
   };
@@ -715,7 +723,8 @@ export default class PageContainer extends React.Component {
       activeApps,
       zIndexActiveApps,
       appsSwitchStatus,
-      recentApps
+      recentApps,
+      userInfo
     } = this.state;
 
     const appArr = [];
@@ -760,7 +769,7 @@ export default class PageContainer extends React.Component {
       }
       sortApps = this.getSortRecentApps(newRecentApps);
       localStorage.setItem(
-        'recentApps',
+        'recentApps' + userInfo.UserCode,
         JSON.stringify(this.getSortRecentApps(sortApps))
       );
     }
@@ -787,18 +796,13 @@ export default class PageContainer extends React.Component {
   };
 
   setThemeColor = themeColor => {
-    setTimeout(() => {
-      try {
-        window.less
-          .modifyVars(themeColor)
-          .then(() => {})
-          .catch(err => {
-            message.error(err.message);
-          });
-      } catch (err) {
-        message.error('设置主题色出错，请刷新页面');
-      }
-    }, 0);
+    window.less
+      .modifyVars({ '@primary-color': themeColor })
+      .then(() => {})
+      .catch(err => {
+        console.log({ err });
+        message.error(err.message);
+      });
   };
 
   unloadCallback = () => {
@@ -859,7 +863,11 @@ export default class PageContainer extends React.Component {
       isOpen: false
     }));
 
-    this.setState({ desktopStyle: homeMode, activeApps: newActiveApps });
+    this.setState({
+      desktopStyle: homeMode,
+      activeApps: newActiveApps,
+      showHome: true
+    });
     localStorage.setItem('desktopStyle', homeMode);
   };
 
@@ -963,10 +971,12 @@ export default class PageContainer extends React.Component {
         zIndexActiveApps.findIndex(app => app.title === activeApp.title) + 4;
 
       return (
-        <div className="page-container__window-view-wrapper">
+        <div
+          className="page-container__window-view-wrapper"
+          key={activeApp.ResID}
+        >
           <WindowView
             ref={node => this.getWindowViewRef(node, activeApp.title)}
-            key={activeApp.ResID}
             title={activeApp.appName}
             visible={visible}
             onClose={() => this.handleCloseActiveApp(activeApp)}
