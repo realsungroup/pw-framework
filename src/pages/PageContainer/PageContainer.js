@@ -179,7 +179,8 @@ export default class PageContainer extends React.Component {
   };
 
   setRecentApps = async () => {
-    let recentApps = JSON.parse(getItem('recentApps'));
+    const { userInfo } = this.state;
+    let recentApps = JSON.parse(getItem('recentApps' + userInfo.UserCode));
     if (recentApps && Array.isArray(recentApps)) {
       recentApps = this.getSortRecentApps(recentApps);
 
@@ -197,7 +198,10 @@ export default class PageContainer extends React.Component {
         this.setState({ recentApps: [...recentApps] });
       });
     } else {
-      localStorage.setItem('recentApps', JSON.stringify([]));
+      localStorage.setItem(
+        'recentApps' + userInfo.UserCode,
+        JSON.stringify([])
+      );
       this.setState({ recentApps: [] });
     }
   };
@@ -715,7 +719,8 @@ export default class PageContainer extends React.Component {
       activeApps,
       zIndexActiveApps,
       appsSwitchStatus,
-      recentApps
+      recentApps,
+      userInfo
     } = this.state;
 
     const appArr = [];
@@ -760,7 +765,7 @@ export default class PageContainer extends React.Component {
       }
       sortApps = this.getSortRecentApps(newRecentApps);
       localStorage.setItem(
-        'recentApps',
+        'recentApps' + userInfo.UserCode,
         JSON.stringify(this.getSortRecentApps(sortApps))
       );
     }
