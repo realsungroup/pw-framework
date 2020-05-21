@@ -4,6 +4,8 @@ import defaultAbbreviation from './assets/default-abbreviation.png';
 import html2canvas from 'html2canvas';
 import Spin from 'Common/ui/Spin';
 import './AbbreviationApp.less';
+import Img from 'Common/ui/Img';
+import folderPng from './assets/folder.png';
 
 /**
  * 缩略图
@@ -59,18 +61,12 @@ export default class AbbreviationApp extends React.PureComponent {
       <div className="abbreviation-app" key={app.REC_ID}>
         <header className="abbreviation-app__header">
           <div className="abbreviation-app__header-title">
-            {app.appIconUrl && app.appIconUrlValidate ? (
-              <div className="overlay">
-                <div className="overlay-inner"></div>
-                <img
-                  src={app.appIconUrl}
-                  className="abbreviation-app__app-icon"
-                  alt={abbreviation}
-                />
-              </div>
-            ) : (
-              <Icon type="mail" className="abbreviation-app__app-icon-mail" />
-            )}
+            <Img
+              src={app.appIconUrl}
+              className="new-home-app-icon"
+              alt={app.appIconUrl}
+              defaultImg={folderPng}
+            />
             {app.appName}
           </div>
           <div>
