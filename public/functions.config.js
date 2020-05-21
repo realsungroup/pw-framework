@@ -1761,7 +1761,35 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '综合查询',
+  title: '人事查询',
+  props:{
+    tabKey:'personnel'
+  }
+};
+window[642853818882] = {
+  name: 'ComprehensiveQuery',
+  title: '绩效查询',
+  props:{
+    tabKey:'performance'
+  }
+};
+window[642853831562] = {
+  name: 'ComprehensiveQuery',
+  title: '考勤查询',
+  props:{
+    tabKey:'performance'
+  }
+};
+window[643372961628] = {
+  name: 'ComprehensiveQuery',
+  title: '评级评优查询',
+  props:{
+    tabKey:'rating'
+  }
+};
+window[642853806554] = {
+  name: 'ComprehensiveQuery',
+  title: '人事查询',
   props:{
     tabKey:'personnel'
   }
@@ -5762,9 +5790,8 @@ window[640366579330] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -5773,5 +5800,21 @@ baseURL: 'http://10.108.2.66:9091',
       // height: 500
     },
     subtractH: 240
+  }
+};
+window[643374153807] = {
+  name: 'PWRedirect',
+  title: '在职情况',
+  props: {
+    resid: '643375082697',
+    replaceBaseUrl: ''
+  }
+};
+window[643313663856] = {
+  name: 'PWRedirect',
+  title: '薪资报表',
+  props: {
+    resid: '643314531373',
+    replaceBaseUrl: ''
   }
 };
