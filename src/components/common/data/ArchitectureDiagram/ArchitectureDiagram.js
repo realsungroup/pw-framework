@@ -485,11 +485,12 @@ class ArchitectureDiagram extends React.Component {
         ImgObj.src = item.memberAvatar;
         let url;
         //没有图片，则返回-1
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-          url = item.memberAvatar;
-        } else {
-          url = avatarDef;
-        }
+        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+        //   url = item.memberAvatar;
+        // } else {
+        //   url = avatarDef;
+        // }
+        url = avatarDef;
 
         const node = {
           ...item,
@@ -592,11 +593,12 @@ class ArchitectureDiagram extends React.Component {
         ImgObj.src = item.memberAvatar;
         let url;
         //没有图片，则返回-1
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-          url = item.memberAvatar;
-        } else {
-          url = avatarDef;
-        }
+        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+        //   url = item.memberAvatar;
+        // } else {
+        //   url = avatarDef;
+        // }
+        url = avatarDef;
 
         const node = {
           ...item,
