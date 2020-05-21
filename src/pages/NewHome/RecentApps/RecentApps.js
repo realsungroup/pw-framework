@@ -3,6 +3,8 @@ import noHistoryImage from '../assets/nohistory.png';
 import './RecentApps.less';
 import { Icon, message } from 'antd';
 import { removeFns, addWorkbenchApps } from '../../../util/api';
+import Img from 'Common/ui/Img';
+import folderPng from '../assets/folder.png';
 
 class RecentApps extends React.PureComponent {
   handleFixAppp = app => async e => {
@@ -38,13 +40,12 @@ class RecentApps extends React.PureComponent {
                   }}
                 >
                   <div className="new-home__recent-apps-item__title">
-                    {app.appIconUrl && app.appIconUrlValidate ? (
-                      <div className='overlay'>
-                      <img src={app.appIconUrl} className="new-home-app-icon" />
-                      </div>
-                    ) : (
-                      <Icon type="mail" className="new-home-app-icon-mail" />
-                    )}
+                    <Img
+                      src={app.appIconUrl}
+                      className="new-home-app-icon"
+                      alt={app.appIconUrl}
+                      defaultImg={folderPng}
+                    />
                     {app.title}
                   </div>
                   <Icon type="pushpin" onClick={this.handleFixAppp(app)} />

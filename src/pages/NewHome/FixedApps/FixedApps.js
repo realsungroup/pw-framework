@@ -3,6 +3,8 @@ import { Icon, Modal, Tree, Button, Spin, message, Popconfirm } from 'antd';
 import './FixedApps.less';
 import { removeFns, addWorkbenchApps } from '../../../util/api';
 import fixImg from '../assets/fix.png';
+import Img from 'Common/ui/Img';
+import folderPng from '../assets/folder.png';
 
 const { TreeNode } = Tree;
 const clone = o => {
@@ -200,13 +202,12 @@ class FixedApps extends React.PureComponent {
                 }}
               >
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                  {app.appIconUrl && app.appIconUrlValidate ? (
-                    <div className="overlay">
-                      <img src={app.appIconUrl} className="new-home-app-icon" />
-                    </div>
-                  ) : (
-                    <Icon type="mail" className="new-home-app-icon-mail" />
-                  )}
+                  <Img
+                    src={app.appIconUrl}
+                    className="new-home-app-icon"
+                    alt={app.appIconUrl}
+                    defaultImg={folderPng}
+                  />
                   {app.title}
                 </div>
                 <Popconfirm

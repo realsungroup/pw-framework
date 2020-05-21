@@ -11,6 +11,7 @@ import FixedApps from './FixedApps';
 import WaitingHandle from './WaitingHandle';
 import RecentApps from './RecentApps';
 import Spin from 'Common/ui/Spin';
+import Img from 'Common/ui/Img';
 import html2canvas from 'html2canvas';
 import './NewHome.less';
 
@@ -504,22 +505,15 @@ class Home extends React.Component {
                                     }
                                     title={app.title}
                                   >
-                                    {app.appIconUrl &&
-                                    app.appIconUrlValidate ? (
-                                      <div className="overlay">
-                                        <div className="overlay-inner"></div>
-                                        <img
-                                          src={app.appIconUrl}
-                                          className="new-home-app-icon"
-                                          alt={app.appIconUrl}
-                                        />
-                                      </div>
-                                    ) : (
-                                      <Icon
-                                        type="mail"
-                                        className="new-home-app-icon-mail"
+                                    <div className="overlay">
+                                      <div className="overlay-inner"></div>
+                                      <Img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                        alt={app.appIconUrl}
+                                        defaultImg={folderPng}
                                       />
-                                    )}
+                                    </div>
                                     <span className="new-home__module-category-app-title">
                                       {app.title}
                                     </span>
