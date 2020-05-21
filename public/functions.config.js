@@ -2586,6 +2586,204 @@ window[642854704644] = {
     subtractH: 240
   }
 };
+window[642854157717] = {
+  name: 'TableData', // 组件名称，
+  title: '班组调整记录查询', // 功能模块名称
+  props: {
+    resid: 423660730564,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642856273477] = {
+  name: 'TableData', // 组件名称，
+  title: 'DL招聘需求统计', // 功能模块名称
+  props: {
+    resid: 615914981961,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[618661462541] = {
+  name: 'TableData', // 组件名称，
+  title: '内部推荐', // 功能模块名称
+  props: {
+    resid: 605636164944,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642855799959] = {
+  name: 'TableData', // 组件名称，
+  title: 'DL招聘管理', // 功能模块名称
+  props: {
+    resid: 527959305537,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642856262431] = {
+  name: 'TableData', // 组件名称，
+  title: 'S1S2招聘管理', // 功能模块名称
+  props: {
+    resid: 527959305537,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642856283564] = {
+  name: 'TableData', // 组件名称，
+  title: 'DL业务部门查看', // 功能模块名称
+  props: {
+    resid: 561649722687,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642854180216] = {
+  name: 'TableData', // 组件名称，
+  title: '班次调整记录查询', // 功能模块名称
+  props: {
+    resid: 423666035454,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642854167694] = {
+  name: 'TableData', // 组件名称，
+  title: '班组调整', // 功能模块名称
+  props: {
+    resid: 423574450430,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642854189801] = {
+  name: 'TableData', // 组件名称，
+  title: '班次调整', // 功能模块名称
+  props: {
+    resid: 423664972378,
+    actionBarWidth: 200,
+   hasAdd: true,
+   baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
 window[642854713880] = {
   name: 'TableData', // 组件名称，
   title: '班次调整记录查询', // 功能模块名称
