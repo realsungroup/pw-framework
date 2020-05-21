@@ -43,7 +43,7 @@ class PersonInfoManager extends React.Component {
     const { baseURL, selectedDepartment } = this.state;
     return (
       <div className="PersonInfoManager">
-        <div className="department-tree-wrapper">
+        {/* <div className="department-tree-wrapper">
           <DepartmentTree
             resid="417643880834"
             baseURL={baseURL}
@@ -61,7 +61,7 @@ class PersonInfoManager extends React.Component {
             }}
             treeClassName="personnel-information-tree"
           />
-        </div>
+        </div> */}
         <div className="table-data-wrapper">
           <TableDataSavePage
             // 464171754083
