@@ -3408,6 +3408,8 @@ window[642855095782] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -3430,6 +3432,8 @@ window[642855105931] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
