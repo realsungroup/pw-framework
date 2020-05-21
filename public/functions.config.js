@@ -5790,9 +5790,8 @@ window[640366579330] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -5801,5 +5800,21 @@ baseURL: 'http://10.108.2.66:9091',
       // height: 500
     },
     subtractH: 240
+  }
+};
+window[643374153807] = {
+  name: 'PWRedirect',
+  title: '在职情况',
+  props: {
+    resid: '643375082697',
+    replaceBaseUrl: ''
+  }
+};
+window[643313663856] = {
+  name: 'PWRedirect',
+  title: '薪资报表',
+  props: {
+    resid: '643314531373',
+    replaceBaseUrl: ''
   }
 };
