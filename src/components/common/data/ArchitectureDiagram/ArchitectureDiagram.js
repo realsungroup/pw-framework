@@ -129,7 +129,7 @@ OrgChart.templates.architectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="50" cy="60" r="40"></circle>' +
+  '<circle  cx="45" cy="45" r="40"></circle>' +
   '</clipPath>' +
   '<image onclick="imageClick(evt)" preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
   '</image>';
@@ -481,22 +481,22 @@ class ArchitectureDiagram extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        let ImgObj = new Image(); //判断图片是否存在
-        ImgObj.src = item.memberAvatar;
-        let url;
+        // let ImgObj = new Image(); //判断图片是否存在
+        // ImgObj.src = item.memberAvatar;
+        // let url;
         //没有图片，则返回-1
         // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
         //   url = item.memberAvatar;
         // } else {
         //   url = avatarDef;
         // }
-        url = avatarDef;
+        // url = avatarDef;
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          memberAvatar: url,
+          memberAvatar: avatarDef,
           tags
         };
         const { selectedNode } = this.state;
@@ -589,22 +589,22 @@ class ArchitectureDiagram extends React.Component {
           tags.push('created');
         }
 
-        let ImgObj = new Image(); //判断图片是否存在
-        ImgObj.src = item.memberAvatar;
-        let url;
+        // let ImgObj = new Image(); //判断图片是否存在
+        // ImgObj.src = item.memberAvatar;
+        // let url;
         //没有图片，则返回-1
         // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
         //   url = item.memberAvatar;
         // } else {
         //   url = avatarDef;
         // }
-        url = avatarDef;
+        // url = avatarDef;
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          memberAvatar: url,
+          memberAvatar: avatarDef,
           tags
         };
         if (selectedNode.id === item[idField]) {

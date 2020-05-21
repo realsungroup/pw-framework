@@ -59,7 +59,7 @@ OrgChart.templates.relationshipArchitectureDiagramTemplate.node =
   '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae"></rect><line x1="0" y1="0" x2="0" y2="120" stroke="#1890FF" stroke-width="2" ></line>';
 OrgChart.templates.relationshipArchitectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
-  '<circle  cx="40" cy="50" r="40"></circle>' +
+  '<circle  cx="45" cy="45" r="40"></circle>' +
   '</clipPath>' +
   '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="10"  width="60" height="60">' +
   '</image>';
@@ -318,21 +318,21 @@ class PersonRelationship extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        let ImgObj = new Image(); //判断图片是否存在
-        ImgObj.src = item[displayFileds.imgField];
-        let url;
-        //没有图片，则返回-1
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-          url = item[displayFileds.imgField];
-        } else {
-          url = avatarDef;
-        }
+        // let ImgObj = new Image(); //判断图片是否存在
+        // ImgObj.src = item[displayFileds.imgField];
+        // let url;
+        // //没有图片，则返回-1
+        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+        //   url = item[displayFileds.imgField];
+        // } else {
+        //   url = avatarDef;
+        // }
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          [displayFileds.imgField]: url,
+          [displayFileds.imgField]: avatarDef,
           tags
         };
         const { selectedNode } = this.state;
@@ -424,21 +424,21 @@ class PersonRelationship extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        let ImgObj = new Image(); //判断图片是否存在
-        ImgObj.src = item[displayFileds.imgField];
-        let url;
-        //没有图片，则返回-1
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-          url = item[displayFileds.imgField];
-        } else {
-          url = avatarDef;
-        }
+        // let ImgObj = new Image(); //判断图片是否存在
+        // ImgObj.src = item[displayFileds.imgField];
+        // let url;
+        // //没有图片，则返回-1
+        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
+        //   url = item[displayFileds.imgField];
+        // } else {
+        //   url = avatarDef;
+        // }
 
         const node = {
           ...item,
           id: item[idField],
           pid: item[pidField],
-          [displayFileds.imgField]: url,
+          [displayFileds.imgField]: avatarDef,
           tags
         };
         if (selectedNode.id === item[idField]) {
