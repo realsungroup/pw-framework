@@ -2434,6 +2434,8 @@ window[642854088542] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
@@ -5739,8 +5741,10 @@ window[642854837350] = {
   name: 'TableData', // 组件名称，
   title: '刷卡记录', // 功能模块名称
   props: {
-    resid: 549653969241,
+    resid: 375296681546,
     actionBarWidth: 200,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
