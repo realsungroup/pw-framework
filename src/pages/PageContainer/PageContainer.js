@@ -123,6 +123,7 @@ export default class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
+    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     this.state = {
       reminderNum: 0,
       password: '',
@@ -141,13 +142,16 @@ export default class PageContainer extends React.Component {
       showHome: true,
       showAbbreviation: false,
       recentApps: [],
-      abbreviationDoms: []
+      abbreviationDoms: [],
+      color, // 主题色
     };
     this.lockScreenRef = React.createRef();
   }
 
   componentDidMount = () => {
-    const { userInfo } = this.state;
+    const { userInfo, color } = this.state;
+     // 设置主题色
+     this.setThemeColor(this.state.color);
     // 'DESKTOP' or 'WORKBENCH'
     let desktopStyle = 'DESKTOP';
     try {
@@ -792,18 +796,13 @@ export default class PageContainer extends React.Component {
   };
 
   setThemeColor = themeColor => {
-    setTimeout(() => {
-      try {
-        window.less
-          .modifyVars(themeColor)
-          .then(() => {})
-          .catch(err => {
-            message.error(err.message);
-          });
-      } catch (err) {
-        message.error('设置主题色出错，请刷新页面');
-      }
-    }, 0);
+    window.less
+      .modifyVars({ '@primary-color': themeColor })
+      .then(() => {})
+      .catch(err => {
+        console.log({ err });
+        message.error(err.message);
+      });
   };
 
   unloadCallback = () => {
