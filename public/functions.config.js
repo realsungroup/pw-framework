@@ -1761,7 +1761,10 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '综合查询'
+  title: '综合查询',
+  props:{
+    tabKey:'personnel'
+  }
 };
 window[621257502796] = {
   name: 'AttendanceManage',
