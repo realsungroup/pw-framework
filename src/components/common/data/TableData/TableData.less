@@ -6,6 +6,7 @@
   height: 100%;
   *{
     border-radius: 0!important;
+    box-sizing: border-box;
   }
   & > .ant-spin-nested-loading {
     width: 100%;
@@ -25,7 +26,9 @@
   .react-resizable-handle {
     z-index: 101;
   }
-
+  .ant-table-selection-column{
+    height: 34px!important;
+  }
   // &>.ant-spin-nested-loading,
   // &>.ant-spin-nested-loading>.ant-spin-container {
   //   // width: 100%;
@@ -39,9 +42,10 @@
       background: none!important;
       position: relative;
       *{
-        position: relative;
+        // position: relative;
         z-index:2;
       }
+    
     }
   }
   tr:nth-child(odd){
