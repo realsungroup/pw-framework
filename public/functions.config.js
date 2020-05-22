@@ -1763,18 +1763,19 @@ window[620212364621] = {
   name: 'ComprehensiveQuery',
   title: '综合查询'
 };
-window[642853818882] = {
+window[642853831562] = {
   name: 'ComprehensiveQuery',
   title: '绩效查询',
   props:{
     tabKey:'performance'
   }
 };
-window[642853831562] = {
+
+window[642853818882] = {
   name: 'ComprehensiveQuery',
   title: '考勤查询',
   props:{
-    tabKey:'performance'
+    tabKey:'attendance'
   }
 };
 window[643372961628] = {
