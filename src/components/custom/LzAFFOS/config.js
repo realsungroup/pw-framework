@@ -108,7 +108,7 @@ export const inExaminationAndApproval = {
       subTableName: '访客信息',
       subResid: 606066688508,
       tableProps: {
-        addText: '添加访客身份信息',
+        addText: '添加访客信息（可添加多人）',
         hasAdd: true,
         hasModify: false,
         hasDelete: false,
