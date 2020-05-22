@@ -437,12 +437,7 @@ class RightBtns extends React.Component {
             tip={<FM id="RightBtns.ChangeLanguage" defaultMessage="更换语言" />}
           />
         </Popover>
-        {/* <HeaderBtn
-          className="right-btns__header-btn"
-          iconClass="icon-about"
-          onClick={this.handleAboutClick}
-          tip={<FM id="RightBtns.About" defaultMessage="关于" />}
-        /> */}
+
         <Popconfirm
           placement="bottomLeft"
           title={
@@ -459,7 +454,12 @@ class RightBtns extends React.Component {
             tip={<FM id="RightBtns.Logoff" defaultMessage="退出登录" />}
           />
         </Popconfirm>
-
+        <HeaderBtn
+          className="right-btns__header-btn"
+          iconClass="icon-about"
+          onClick={this.handleAboutClick}
+          tip={<FM id="RightBtns.About" defaultMessage="关于" />}
+        />
         <Modal
           visible={aboutModalVisible}
           width={'500px'}
