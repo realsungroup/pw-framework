@@ -136,7 +136,8 @@ class PersonInfo extends React.Component {
                       hasBeBtns: false,
                       actionBarWidth: 100,
                       baseURL: this.baseURL,
-                      height: 300,
+                      height: 600,
+                      subtractH: 170,
                       downloadBaseURL: this.attendanceDownloadURL
                     }
                   }

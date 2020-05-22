@@ -467,7 +467,6 @@ class FormData extends React.Component {
             {...tableProps}
             storeWay={storeWay}
             height={subTableArr[0].FrmHeight}
-            subtractH={150}
           />
         </div>
       </TabPane>

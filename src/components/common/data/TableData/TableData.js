@@ -840,7 +840,8 @@ class TableData extends React.Component {
               defaultRecord,
               recordFormData,
               baseURL,
-              iframeURL
+              iframeURL,
+              btnInfo.Name1
             );
           });
         }}
@@ -872,7 +873,8 @@ class TableData extends React.Component {
           controlData,
           defaultRecord,
           recordFormData,
-          baseURL
+          baseURL,
+          iframeURL
         ) => {
           this.setState(
             { selectedRecord: record, recordFormShowMode: '' },
@@ -884,7 +886,9 @@ class TableData extends React.Component {
                 controlData,
                 defaultRecord,
                 recordFormData,
-                baseURL
+                baseURL,
+                iframeURL,
+                btnInfo.Name1
               );
             }
           );
@@ -968,7 +972,8 @@ class TableData extends React.Component {
     operation,
     record,
     data,
-    recordFormData
+    recordFormData,
+    title
   ) => {
     const {
       dataMode,
@@ -1026,7 +1031,7 @@ class TableData extends React.Component {
 
     const { subTableArr } = recordFormData || this._recordFormData;
 
-    const title = this.getTitle();
+    const _title = title || this.getTitle();
 
     let newHostRecid = hostrecid;
     if (backendBtnType === 'single') {
@@ -1035,7 +1040,7 @@ class TableData extends React.Component {
     const className = 'table-data-form';
     openRecordForm({
       type: recordFormType,
-      title,
+      title: _title,
       formProps:
         recordFormType === 'modal'
           ? {
@@ -1327,7 +1332,8 @@ class TableData extends React.Component {
     defaultRecord,
     recordFormData,
     baseURL,
-    iframeURL
+    iframeURL,
+    title
   ) => {
     if (type === 1 || type === 5) {
       this.handleRefresh();
@@ -1368,7 +1374,8 @@ class TableData extends React.Component {
         'view',
         records[0],
         controlData,
-        recordFormData
+        recordFormData,
+        title
       );
       // 添加记录
     } else if (type === 8) {
