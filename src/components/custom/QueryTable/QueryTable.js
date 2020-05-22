@@ -96,11 +96,11 @@ class QueryTable extends Component {
         data: data
       })
       .then(res => {
-        message.success('提醒邮件发送成功')
+        message.success('提醒邮件发送成功');
         console.log('修改返回结果', res);
       })
       .catch(err => {
-        message.error(err.message)
+        message.error(err.message);
         console.error(err.message);
       });
   };
@@ -113,9 +113,7 @@ class QueryTable extends Component {
           <Link
             to={{
               pathname: '/fnmodule',
-              search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
-                item.query_id
-              }`
+              search: `?resid=选择人员&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
             }}
             target="_self"
           >
@@ -201,9 +199,7 @@ class QueryTable extends Component {
                     <Link
                       to={{
                         pathname: '/fnmodule',
-                        search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${
-                          item.query_id
-                        }`
+                        search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
                       }}
                       target="_self"
                     >
@@ -214,16 +210,19 @@ class QueryTable extends Component {
                     </Link>
                   )}
                   {this.renderButton(item)}
+
                   <Link
                     to={{
                       pathname: '/fnmodule',
-                      search: `?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${
-                        item.REC_ID
-                      }`
+                      search: `?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${item.REC_ID}`
                     }}
                     target="_self"
                   >
-                    <Button className="stepBtn" type="primary">
+                    <Button
+                      className="stepBtn"
+                      type="primary"
+                      disabled={item.query_status === '草稿'}
+                    >
                       <Icon type="download" />
                       分析&下载
                     </Button>
@@ -376,7 +375,6 @@ class QueryTable extends Component {
                 height={400}
                 subtractH={190}
                 cmswhere={`query_id='${this.state.sendListId}'`}
-                
               />
             </TabPane>
           </Tabs>
