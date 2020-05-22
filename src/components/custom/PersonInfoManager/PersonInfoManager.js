@@ -27,15 +27,26 @@ class PersonInfoManager extends React.Component {
     if (userCode == '632830432866') {
       bol = true;
       baseURL = laowuURL;
+      this.state = {
+        showDetail: false,
+        selectedRecord: '',
+        baseURL: baseURL,
+        isOuter: bol,
+        selectedDepartment: '',
+        laowu:true
+      };
+    }else{
+      this.state = {
+        showDetail: false,
+        selectedRecord: '',
+        baseURL: baseURL,
+        isOuter: bol,
+        selectedDepartment: '',
+        laowu:false
+      };
     }
 
-    this.state = {
-      showDetail: false,
-      selectedRecord: '',
-      baseURL: baseURL,
-      isOuter: bol,
-      selectedDepartment: ''
-    };
+    
   }
   componentDidMount() {}
 
@@ -43,7 +54,7 @@ class PersonInfoManager extends React.Component {
     const { baseURL, selectedDepartment } = this.state;
     return (
       <div className="PersonInfoManager">
-        <div className="department-tree-wrapper">
+        {!this.state.laowu?<div className="department-tree-wrapper">
           <DepartmentTree
             resid="417643880834"
             baseURL={baseURL}
@@ -61,11 +72,12 @@ class PersonInfoManager extends React.Component {
             }}
             treeClassName="personnel-information-tree"
           />
-        </div>
+        </div>:null}
+        
         <div className="table-data-wrapper">
           <TableDataSavePage
             // 464171754083
-            resid={464705942338}
+            resid={this.state.laowu?464705942338:637772568684}
             hasRowView={false}
             baseURL={baseURL}
             hasAdd={false}
@@ -80,9 +92,10 @@ class PersonInfoManager extends React.Component {
             hasBeBtns={true}
             subtractH={180}
             cmswhere={
+              this.state.laowu?'':(
               selectedDepartment
                 ? `HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}'`
-                : ''
+                : '')
             }
             customRowBtns={[
               (record, btnSize) => {
@@ -90,9 +103,15 @@ class PersonInfoManager extends React.Component {
                   <div>
                     <Button
                       onClick={() => {
+                        var t;
+                        if(this.state.laowu){
+                          t='C3_464702128504'
+                        }else{
+                          t='C3_227192472953'
+                        }
                         this.setState({
                           showDetail: true,
-                          selectedRecord: record.C3_464702128504
+                          selectedRecord: record[t]
                         });
                       }}
                     >
