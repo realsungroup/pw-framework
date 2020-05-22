@@ -26,7 +26,7 @@ window.pwConfig = {
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureBaseURL: 'http://ngrok5.realsun.me:6060//',
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:6060/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
