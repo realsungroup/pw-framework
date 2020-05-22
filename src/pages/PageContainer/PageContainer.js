@@ -334,7 +334,7 @@ export default class PageContainer extends React.Component {
           });
         }
       }
-      // this.handleOpenWindow(appArr);
+      this.handleOpenWindow(appArr);
     });
     return res;
   };
