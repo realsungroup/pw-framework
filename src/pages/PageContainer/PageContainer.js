@@ -175,10 +175,10 @@ export default class PageContainer extends React.Component {
     });
 
     this.getData(true);
+    this.setRecentApps();
 
     if (desktopStyle === 'WORKBENCH') {
       this.fetchWaitingHandle();
-      this.setRecentApps();
     }
   };
 
