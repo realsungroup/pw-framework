@@ -139,16 +139,15 @@ class EmployeeApplyCourse extends React.Component {
     selectedCourse: {},
     searchKey: '',
     courseArrangeID: '',
-    UserCode:''
+    UserCode: ''
   };
 
   componentDidMount() {
     this.getCourses();
     let usercode = localStorage.getItem('userInfo');
-    let usrChara=JSON.parse(usercode)
-    console.log(usrChara)
-    let userCode=usrChara.UserInfo.EMP_USERCODE;
-    this.setState({UserCode:userCode})
+    let usrChara = JSON.parse(usercode);
+    let userCode = usrChara.UserInfo.EMP_USERCODE;
+    this.setState({ UserCode: userCode });
   }
 
   //获取课程
@@ -202,7 +201,7 @@ class EmployeeApplyCourse extends React.Component {
             CourseArrangeID: course.CourseArrangeID,
             C3_613941384328: course.currentYear,
             C3_613956470258: 'Y',
-            C3_613941384832:this.state.UserCode,
+            C3_613941384832: this.state.UserCode
             // C3_613941386081:classTime
           }
         ]
@@ -233,7 +232,7 @@ class EmployeeApplyCourse extends React.Component {
             organization: course.TrainingOrganization,
             isCustom: 'Y',
             FisYear: course.currentYear,
-            quarter:course.quarter
+            quarter: course.quarter
           }
         ]
       });
@@ -336,10 +335,10 @@ class EmployeeApplyCourse extends React.Component {
           actionBarExtra={[
             <Button
               onClick={() => {
-                this.setState({ applyByCourseVisible: true });
+                this.setState({ applyByUnexistCourseVisible: true });
               }}
             >
-              选课申请
+              填写报销单
             </Button>
 
             // <Button>资格证书申请</Button>
@@ -493,7 +492,7 @@ class EmployeeApplyCourse extends React.Component {
         </Modal>
         <Modal
           visible={this.state.applyByUnexistCourseVisible}
-          title="自定义课程申请"
+          title="填写报销单"
           width="50%"
           onCancel={this.closeModal}
           footer={null}

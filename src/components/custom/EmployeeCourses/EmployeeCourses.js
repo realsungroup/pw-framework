@@ -1063,12 +1063,12 @@ class EmployeeCourses extends React.Component {
     return (
       <div className="emploee-courses">
         <Tabs defaultActiveKey="MyCourses" tabBarStyle={TABBARSTYLE}>
-          <TabPane tab="课程申请" key="applyCourse">
+          <TabPane tab="填写报销单" key="applyCourse">
             <EmployeeApplyCourse />
           </TabPane>
           <TabPane tab="课程管理" key="MyCourses">
             <div className="emploee-courses_courses-manage">
-             {/* 选中的课程可用按钮 */}
+              {/* 选中的课程可用按钮 */}
               <div
                 className={
                   this.state.myCourses.length > 0
