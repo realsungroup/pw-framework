@@ -198,6 +198,7 @@ class Home extends React.Component {
       this.setState({ waitingHandleData: data });
     } catch (error) {
       console.error(error);
+      this.setState({ waitingHandleFetching: false });
       return message.error(error.message);
     }
     this.setState({ waitingHandleFetching: false });
