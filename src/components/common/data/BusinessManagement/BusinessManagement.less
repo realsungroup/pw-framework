@@ -1,3 +1,4 @@
+@import '../../../../styles/variables.less';
 .business-management {
   &__title {
     height: 60px;
@@ -19,7 +20,42 @@
       border-radius: 16px;
       background: #eee;
       &:focus {
-        background: #fff;
+        background: rgba(255,255,255,0);
+      }
+    }
+  }
+  .ant-layout-sider{
+    background: rgba(255,255,255,1);
+
+    *{
+      background: rgba(255,255,255,0)!important;
+      box-shadow: none!important;
+    }
+    .ant-menu-item{
+      *{
+        color:#333;
+      }
+      
+    }
+    .ant-menu-submenu-title , .ant-menu-submenu-arrow{
+      color:#333;
+      i{
+        &:before{
+          background: #666!important;
+        }
+        &:after{
+          background: #666!important;
+        }
+      }
+      &:hover{
+        color:@primary-color;
+      }
+    }
+    .ant-menu-item-selected{
+      background-color: @primary-color!important;
+      span{
+        color:#fff;
+
       }
     }
   }
