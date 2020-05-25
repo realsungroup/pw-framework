@@ -20,6 +20,7 @@ class FixedApps extends React.PureComponent {
     selectedKeys: [],
     expandedKeys: [], // 展开的节点的 key
     autoExpandParent: true,
+    forbidChange:false,
     checkedKeys: [] // 已选中的节点的 key
   };
   selectedFnList = []; // 已添加的功能列表
@@ -88,6 +89,15 @@ class FixedApps extends React.PureComponent {
   };
 
   componentDidUpdate(preProps) {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+      //判断是否Edge浏览器
+      if (userAgent.indexOf("Edge") > -1) {
+          this.setState({forbidChange:true})
+      }
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          this.setState({forbidChange:true})
+      }; 
     if (preProps.apps !== this.props.apps) {
       this.selectedFnList = clone(this.props.apps);
     }
@@ -202,12 +212,25 @@ class FixedApps extends React.PureComponent {
                 }}
               >
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                  <Img
-                    src={app.appIconUrl}
-                    className="new-home-app-icon"
-                    alt={app.appIconUrl}
-                    defaultImg={folderPng}
-                  />
+                {this.state.forbidChange?
+                                     <Img
+                                     src={app.appIconUrl}
+                                     className="new-home-app-icon"
+                                     alt={app.appIconUrl}
+                                     defaultImg={folderPng}
+                                   />
+                                    :
+                                    <div className="overlay">
+                                      <div className="overlay-inner"></div>
+                                      <Img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                        alt={app.appIconUrl}
+                                        defaultImg={folderPng}
+                                      />
+                                    </div>
+                                    }
+                 
                   {app.title}
                 </div>
                 <Popconfirm

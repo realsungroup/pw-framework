@@ -65,6 +65,7 @@ class Desktop extends React.Component {
       value: defaultDesktopBg // 背景值
     };
     this.state = {
+      forbidChange:false,
       folders: [], // 在桌面的文件夹
       activeApps: [], // 打开的 app
       allFolders: [], // 所有的文件夹
@@ -88,6 +89,15 @@ class Desktop extends React.Component {
 
   componentDidMount = async () => {
     // 默认打开仪表盘
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+    //判断是否Edge浏览器
+    if (userAgent.indexOf("Edge") > -1) {
+        this.setState({forbidChange:true})
+    }
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        this.setState({forbidChange:true})
+    }; 
     if (defaultOpenWindow === '仪表盘') {
       // this.handleOpenDashboard();
     }
@@ -765,8 +775,21 @@ class Desktop extends React.Component {
                       >
                         <div className="desktop__folder-category-app-icon">
                           {app.appIconUrl ? (
-                            <div className="overlay">
-                              <img
+                            this.state.forbidChange?
+                            <img
+                            src={app.appIconUrl}
+                            alt={app.appIconUrl}
+                            style={{
+                              display: 'inline-block',
+                              height: 32,
+                              width: 'auto'
+                            }}
+                            onError={this.handleImageError}
+                          />
+                             :
+                             <div className="overlay">
+                               <div className="overlay-inner"></div>
+                               <img
                                 src={app.appIconUrl}
                                 alt={app.appIconUrl}
                                 style={{
@@ -776,7 +799,7 @@ class Desktop extends React.Component {
                                 }}
                                 onError={this.handleImageError}
                               />
-                            </div>
+                             </div>
                           ) : (
                             <i
                               className={`iconfont icon-${app.DeskiconCls ||

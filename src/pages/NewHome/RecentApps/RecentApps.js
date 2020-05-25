@@ -7,6 +7,9 @@ import Img from 'Common/ui/Img';
 import folderPng from '../assets/folder.png';
 
 class RecentApps extends React.PureComponent {
+  state={
+    forbidChange:false
+  }
   handleFixAppp = app => async e => {
     e.stopPropagation();
     let addFnsParams = {
@@ -22,7 +25,17 @@ class RecentApps extends React.PureComponent {
     message.success('已添加至固定功能');
     this.props.onRefresh && this.props.onRefresh(false);
   };
-
+  componentDidUpdate(preProps) {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+      //判断是否Edge浏览器
+      if (userAgent.indexOf("Edge") > -1) {
+          this.setState({forbidChange:true})
+      }
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          this.setState({forbidChange:true})
+      };
+  }
   render() {
     const { apps } = this.props;
 
@@ -40,12 +53,24 @@ class RecentApps extends React.PureComponent {
                   }}
                 >
                   <div className="new-home__recent-apps-item__title">
-                    <Img
-                      src={app.appIconUrl}
-                      className="new-home-app-icon"
-                      alt={app.appIconUrl}
-                      defaultImg={folderPng}
-                    />
+                  {this.state.forbidChange?
+                                     <Img
+                                     src={app.appIconUrl}
+                                     className="new-home-app-icon"
+                                     alt={app.appIconUrl}
+                                     defaultImg={folderPng}
+                                   />
+                                    :
+                                    <div className="overlay">
+                                      <div className="overlay-inner"></div>
+                                      <Img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                        alt={app.appIconUrl}
+                                        defaultImg={folderPng}
+                                      />
+                                    </div>
+                                    }
                     {app.title}
                   </div>
                   <Icon type="pushpin" onClick={this.handleFixAppp(app)} />
