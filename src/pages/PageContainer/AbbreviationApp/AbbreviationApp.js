@@ -13,10 +13,21 @@ import folderPng from './assets/folder.png';
 export default class AbbreviationApp extends React.PureComponent {
   state = {
     abbreviation: '',
-    showDefaultAbbreviation: false
+    showDefaultAbbreviation: false,
+    forbidChange:false,
+
   };
 
   componentDidMount = () => {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+      //判断是否Edge浏览器
+      if (userAgent.indexOf("Edge") > -1) {
+          this.setState({forbidChange:true})
+      }
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          this.setState({forbidChange:true})
+      }; 
     const { ready, dom } = this.props;
     !this.state.abbreviation && ready && dom && this.toimag();
   };
@@ -61,12 +72,24 @@ export default class AbbreviationApp extends React.PureComponent {
       <div className="abbreviation-app" key={app.REC_ID}>
         <header className="abbreviation-app__header">
           <div className="abbreviation-app__header-title">
-            <Img
-              src={app.appIconUrl}
-              className="new-home-app-icon"
-              alt={app.appIconUrl}
-              defaultImg={folderPng}
-            />
+          {this.state.forbidChange?
+                                     <Img
+                                     src={app.appIconUrl}
+                                     className="new-home-app-icon"
+                                     alt={app.appIconUrl}
+                                     defaultImg={folderPng}
+                                   />
+                                    :
+                                    <div className="overlay">
+                                      <div className="overlay-inner"></div>
+                                      <Img
+                                        src={app.appIconUrl}
+                                        className="new-home-app-icon"
+                                        alt={app.appIconUrl}
+                                        defaultImg={folderPng}
+                                      />
+                                    </div>
+                                    }
             {app.appName}
           </div>
           <div>

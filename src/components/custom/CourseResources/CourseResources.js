@@ -5,12 +5,15 @@ import { Button, Popconfirm, message, Alert,Spin } from 'antd';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import qs from 'qs';
+import moment from 'moment';
+
 
 class CourseResources extends Component {
   state = {
     userInfo: JSON.parse(getItem('userInfo')).UserInfo,
     appliedCourses: [],
-    loading:false
+    loading:false,
+    curDate:'20000101'
   };
 
   componentDidMount = () => {
@@ -18,6 +21,10 @@ class CourseResources extends Component {
     var success = window.location.search;
     success = qs.parse(success.substring(1));
     success=success.success;
+    let DateTime = new Date();
+    DateTime = moment(DateTime).format('YYYYMMDD')
+    DateTime=Number(DateTime)
+    this.setState({curDate:DateTime});
     if(success=='true'){
       message.success('报名成功！')
     }
@@ -187,14 +194,19 @@ class CourseResources extends Component {
               }}>填写问卷并报名</Button>
             )
           }else{
-            return (
-              <Popconfirm
-              onConfirm={this.handleConfirm.bind(this, record)}
-              title="是否提交报名申请"
-            >
-              <Button>提交报名申请</Button>
-            </Popconfirm>
-            )
+            if(Number(record.C3_625672176260)<=this.state.curDate){
+              return('该课程无法报名')
+            }else{
+              return (
+                <Popconfirm
+                onConfirm={this.handleConfirm.bind(this, record)}
+                title="是否提交报名申请"
+              >
+                <Button>提交报名申请</Button>
+              </Popconfirm>
+              )
+            }
+            
           }
           
         }else if(record.isStopApply === 'Y' && record.classType === '内训'){

@@ -116,10 +116,20 @@ class Home extends React.Component {
       searchTextHeader: '',
       abbreviations: [],
       abbreviationDoms: [],
-      color
+      color,
+      forbidChange:false
     };
   }
   componentDidMount() {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+      //判断是否Edge浏览器
+      if (userAgent.indexOf("Edge") > -1) {
+          this.setState({forbidChange:true})
+      }
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          this.setState({forbidChange:true})
+      }; 
     const user = JSON.parse(getItem('userInfo'));
     let userData;
     // 读取用户信息报错时
@@ -506,6 +516,14 @@ class Home extends React.Component {
                                     }
                                     title={app.title}
                                   >
+                                    {this.state.forbidChange?
+                                     <Img
+                                     src={app.appIconUrl}
+                                     className="new-home-app-icon"
+                                     alt={app.appIconUrl}
+                                     defaultImg={folderPng}
+                                   />
+                                    :
                                     <div className="overlay">
                                       <div className="overlay-inner"></div>
                                       <Img
@@ -515,6 +533,8 @@ class Home extends React.Component {
                                         defaultImg={folderPng}
                                       />
                                     </div>
+                                    }
+                                    
                                     <span className="new-home__module-category-app-title">
                                       {app.title}
                                     </span>

@@ -35,6 +35,7 @@ class PageHeader extends React.Component {
     isInTop: true, // 页面滚动条是否处在最顶部
     apps: [],
     drawerVisible: false,
+    forbidChange:false,
     rightDrawerVisible: false,
     type: '', // 所在页面的功能类型
     title: '' // 所在页面的功能标题
@@ -43,8 +44,17 @@ class PageHeader extends React.Component {
   static defaultProps = {
     rightBtns: <RightBtns />
   };
-
   componentDidMount() {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+      
+      //判断是否Edge浏览器
+      if (userAgent.indexOf("Edge") > -1) {
+          this.setState({forbidChange:true})
+      }
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          this.setState({forbidChange:true})
+      }; 
+   
     this.setState({
       drawerVisible: false
     });
@@ -278,9 +288,13 @@ const ActiveAppList = React.memo(
               >
                 <div className="new-home__page-header__active-app__title">
                   {app.appIconUrl && app.appIconUrlValidate ? (
-                    <div className='overlay'>
-                     <img src={app.appIconUrl} className="new-home-app-icon" />
-                    </div>
+                    this.state.forbidChange?
+                      <img src={app.appIconUrl} className="new-home-app-icon" />
+                     :
+                     <div className="overlay">
+                       <div className="overlay-inner"></div>
+                       <img src={app.appIconUrl} className="new-home-app-icon" />
+                     </div>
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
