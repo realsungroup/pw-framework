@@ -1,4 +1,3 @@
-import symbol from 'es6-symbol';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -13,8 +12,6 @@ import { Spin } from 'antd';
 Spin.setDefaultIndicator(
   <img style={{ width: 69, height: 75 }} src={loadingGif} alt="" />
 );
-
-window.Symbol = window.Symbol || symbol;
 
 ReactDOM.render(<App />, document.getElementById('root'));
 serviceWorker.unregister();
