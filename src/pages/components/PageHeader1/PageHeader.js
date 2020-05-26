@@ -28,7 +28,7 @@ const getTarget = resid => {
   }
   return {};
 };
-
+let forbidChange=false;
 class PageHeader extends React.Component {
   state = {
     loading: false,
@@ -38,7 +38,7 @@ class PageHeader extends React.Component {
     forbidChange:false,
     rightDrawerVisible: false,
     type: '', // 所在页面的功能类型
-    title: '' // 所在页面的功能标题
+    title: '', // 所在页面的功能标题
   };
 
   static defaultProps = {
@@ -49,10 +49,10 @@ class PageHeader extends React.Component {
       
       //判断是否Edge浏览器
       if (userAgent.indexOf("Edge") > -1) {
-          this.setState({forbidChange:true})
+        forbidChange=true;
       }
       if (!!window.ActiveXObject || "ActiveXObject" in window) {
-          this.setState({forbidChange:true})
+        forbidChange=false;
       }; 
    
     this.setState({
@@ -113,8 +113,9 @@ class PageHeader extends React.Component {
       activeApps,
       onOpenWindow,
       onCloseActiveApp,
-      visible
+      visible,
     } = this.props;
+
     const { isInTop, drawerVisible, rightDrawerVisible } = this.state;
 
     const { apps, title = '', type = '' } = PageHeaderReducers;
@@ -123,7 +124,7 @@ class PageHeader extends React.Component {
     const userData = {
       userName: user.SysUserInfo.UserName
     };
-
+    
     return (
       <div className={classNames('page-header', { hidden: !visible })}>
         <div className="page-header__logo">
@@ -288,7 +289,7 @@ const ActiveAppList = React.memo(
               >
                 <div className="new-home__page-header__active-app__title">
                   {app.appIconUrl && app.appIconUrlValidate ? (
-                    this.state.forbidChange?
+                   forbidChange?
                       <img src={app.appIconUrl} className="new-home-app-icon" />
                      :
                      <div className="overlay">
