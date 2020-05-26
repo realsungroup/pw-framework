@@ -128,6 +128,9 @@ class CourseResources extends Component {
           )
         }else if(record.isStopApply !== 'Y' && record.classType === '内训'){
           if(record.needSheet=='Y'){
+            if(Number(record.C3_625672176260)<=this.state.curDate){
+              return('该课程无法报名')
+            }else{
             return (
               <Button onClick={async()=>{
                 this.setState({loading:true});
@@ -192,7 +195,7 @@ class CourseResources extends Component {
                 
                 
               }}>填写问卷并报名</Button>
-            )
+            )}
           }else{
             if(Number(record.C3_625672176260)<=this.state.curDate){
               return('该课程无法报名')
