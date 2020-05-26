@@ -98,21 +98,28 @@ export const getColumns = (
   return { columns, components };
 };
 
-// 获取行选择配置
+export const getHasRowSelection = (hasRowSelection, hasModify, hasDelete) => {
+  return hasRowSelection || hasModify || hasDelete;
+};
+
+/**
+ * 获取行选择配置
+ * @param {boolean} hasRowSelection 是否有行选择功能
+ * @param {boolean} hasModify 是否有修改
+ * @param {*} hasDelete
+ * @param {*} rowSelection
+ */
 export const getRowSelection = (
   hasRowSelection,
   hasModify,
   hasDelete,
-  selectedRowKeys,
-  rowSelectionChange,
-  fixed
+  rowSelection
 ) => {
-  if (hasRowSelection || hasModify || hasDelete) {
+  if (getHasRowSelection(hasRowSelection, hasModify, hasDelete)) {
+    const { columnWidth = 50, ...otherRowSelection } = rowSelection;
     return {
-      selectedRowKeys,
-      onChange: rowSelectionChange,
-      columnWidth: 50,
-      fixed
+      columnWidth,
+      ...otherRowSelection
     };
   }
   return null;
