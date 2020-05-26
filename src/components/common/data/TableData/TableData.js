@@ -1365,7 +1365,8 @@ class TableData extends React.Component {
         'modify',
         defaultRecord,
         controlData,
-        recordFormData
+        recordFormData,
+        title
       );
       // 查看记录
     } else if (type === 7) {
