@@ -74,7 +74,8 @@ export const defaultProps = {
   tableComponent: 'antdTable',
   rowSelectionAg: 'multiple',
   sideBarAg: false,
-  afterSaveRefresh: false
+  afterSaveRefresh: false,
+  rowSelection: {}
 };
 
 export const propTypes = {
@@ -644,6 +645,18 @@ export const propTypes = {
    * 默认：false
    */
   hasRowSelection: PropTypes.bool,
+
+  /**
+   * 行选择配置，具体配置参考：https://3x.ant.design/components/table-cn/#rowSelection
+   * 默认：{}
+   */
+  rowSelection: PropTypes.object,
+
+  /**
+   * 选择行的回调：(record, selected, selectedRows, nativeEvent) => void;
+   * 默认：-
+   */
+  onSelect: PropTypes.func,
 
   /**
    * 基地址

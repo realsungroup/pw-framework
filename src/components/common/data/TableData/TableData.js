@@ -1,7 +1,7 @@
 import React from 'react';
 import PwTable from '../../ui/PwTable';
 import PwAggird from '../../ui/PwAggrid';
-import { message, Button, Spin, Modal, Icon, Input } from 'antd';
+import { message, Button, Spin } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
 import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
@@ -18,7 +18,6 @@ import { withRecordForm } from '../../hoc/withRecordForm';
 import { defaultProps, propTypes } from './propTypes';
 import { EditableContext } from './EditableRow';
 import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
-import { ResizableBox } from 'react-resizable';
 // import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal, getItem } from 'Util20/util';
@@ -52,20 +51,32 @@ class TableData extends React.Component {
       hasDelete,
       width,
       height,
-      hasRowSelection
+      hasRowSelection,
+      rowSelection,
     } = props;
     const pagination = getPagination(
       defaultPagination,
       this.handlePageChange,
       this.handleShowSizeChange
     );
-    const rowSelection = getRowSelection(
+    const _rowSelection = getRowSelection(
       hasRowSelection,
       hasModify,
       hasDelete,
-      [],
-      this.rowSelectionChange,
-      true
+      {
+        columnWidth: rowSelection.columnWidth,
+        columnTitle: rowSelection.columnTitle,
+        fixed: rowSelection.fixed,
+        getCheckboxProps: rowSelection.getCheckboxProps,
+        hideDefaultSelections: rowSelection.hideDefaultSelections,
+        selectedRowKeys: rowSelection.selectedRowKeys,
+        selections: rowSelection.selections,
+        type: rowSelection.type,
+        onChange: this.rowSelectionChange,
+        onSelect: this.handleRowSelect,
+        onSelectAll: this.handleRowSelectAll,
+        onSelectInvert: this.handleRowSelectInvert,
+      }
     );
 
     this._showAGgrid = false;
@@ -88,7 +99,7 @@ class TableData extends React.Component {
       beBtnsSingle: [], // 后端操作单条记录的按钮
       beBtnsOther: [], // 后端其他操作按钮（如：打开添加表单；打开修改表单；打开查看表单；地址跳转等）
       recordFormShowMode: '', // 记录表单的显示模式：'add' 添加 | 'modify' 修改 | 'view' 查看
-      rowSelection, // 行选择配置
+      rowSelection: _rowSelection, // 行选择配置
       selectedRecord: {}, // 所选择的记录
       scrollXY: { x: 1000, y: 1000 },
       editingKey: null, // 正在进行行内编辑的记录 REC_ID
@@ -203,6 +214,9 @@ class TableData extends React.Component {
 
     // 后端返回的表格列数据
     this._columns = [];
+
+    // 通过 getColumns() 得到的 columns 数据
+    this._dealedColumns = [];
   };
 
   getData = async props => {
@@ -242,26 +256,29 @@ class TableData extends React.Component {
 
   getScrollXY = async y => {
     const {
-      defaultColumnWidth,
       columnsWidth,
       actionBarWidth,
       width,
       height,
       subtractH
     } = this.props;
-    const { columns, rowSelection } = this.state;
-    const count = columns.length;
-    let customWidth = 0,
-      customCount = 0;
+    const { rowSelection } = this.state;
+    let columnsWidthKeys = [];
+    let customWidth = 0;
     if (columnsWidth) {
-      const arr = Object.keys(columnsWidth);
-      customCount = arr.length;
-      arr.forEach(key => {
+      columnsWidthKeys = Object.keys(columnsWidth);
+      columnsWidthKeys.forEach(key => {
         customWidth += columnsWidth[key];
       });
     }
 
-    let x = (count - customCount) * defaultColumnWidth + customWidth;
+    this._dealedColumns.forEach(item => {
+      if (!columnsWidthKeys.find(key => key === item.title)) {
+        customWidth += item.width;
+      }
+    })
+
+    let x = customWidth;
 
     // 操作栏
     if (this.hasActionBar()) {
@@ -294,16 +311,27 @@ class TableData extends React.Component {
     this._x = x;
     this._y = y;
 
-    const { hasModify, hasDelete, hasRowSelection } = this.props;
+    const { hasModify, hasDelete, hasRowSelection, } = this.props;
     let newRowSelection = null;
     if (rowSelection) {
       newRowSelection = getRowSelection(
         hasRowSelection,
         hasModify,
         hasDelete,
-        this.state.rowSelection.selectedRowKeys,
-        this.rowSelectionChange,
-        this.tableDataRef && this._x + 32 >= this.tableDataRef.clientWidth
+        {
+          columnWidth: rowSelection.columnWidth,
+          columnTitle: rowSelection.columnTitle,
+          fixed: rowSelection.fixed,
+          getCheckboxProps: rowSelection.getCheckboxProps,
+          hideDefaultSelections: rowSelection.hideDefaultSelections,
+          selectedRowKeys: rowSelection.selectedRowKeys,
+          selections: rowSelection.selections,
+          type: rowSelection.type,
+          onChange: this.rowSelectionChange,
+          onSelect: this.handleRowSelect,
+          onSelectAll: this.handleRowSelectAll,
+          onSelectInvert: this.handleRowSelectInvert,
+        }
       );
     }
     this.setState({ scrollXY, rowSelection: newRowSelection });
@@ -337,7 +365,7 @@ class TableData extends React.Component {
       tableComponent,
       nullValueNotFetch
     } = this.props;
-    console.log('this.props', this.props);
+
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
@@ -464,13 +492,18 @@ class TableData extends React.Component {
     } else {
       // console.error('该配置未设成数组');
     }
+
     const { columns, components } = getColumns(
       res.cmscolumninfo,
       secondParams,
       cmscolumns,
       hasRowEdit
     );
+
+    this._dealedColumns = columns;
+
     this.setState({ originalColumn: res.cmscolumninfo });
+
     const state = {
       columns,
       dataSource,
@@ -633,8 +666,25 @@ class TableData extends React.Component {
     this.setState({
       rowSelection: { ...this.state.rowSelection, selectedRowKeys }
     });
+    const { rowSelection } = this.props;
+    rowSelection && rowSelection.onChange && rowSelection.onChange(selectedRowKeys);
   };
 
+  handleRowSelect = (record, selected, selectedRows, nativeEvent) => {
+    const { rowSelection } = this.props;
+    rowSelection && rowSelection.onSelect && rowSelection.onSelect(record, selected, selectedRows, nativeEvent);
+  }
+
+  handleRowSelectAll = (selected, selectedRows, changeRows) => {
+    const { rowSelection } = this.props;
+    rowSelection && rowSelection.onSelectAll && rowSelection.onSelectAll(selected, selectedRows, changeRows);
+  }
+
+  handleRowSelectInvert = (selectedRows) => {
+    const { rowSelection } = this.props;
+    rowSelection && rowSelection.onSelectInvert && rowSelection.onSelectInvert(selectedRows);
+  }
+  
   handlePageChange = async (page, pageSize) => {
     this.setState({ loading: true });
     await this.getTableData({ page, pageSize });
@@ -905,7 +955,7 @@ class TableData extends React.Component {
     if (!rowSelection) {
       return records;
     }
-    const { selectedRowKeys } = rowSelection;
+    const { selectedRowKeys = [] } = rowSelection;
     dataSource.forEach(record => {
       const result = selectedRowKeys.some(key => key === record.REC_ID);
       if (result) {
@@ -1365,7 +1415,8 @@ class TableData extends React.Component {
         'modify',
         defaultRecord,
         controlData,
-        recordFormData
+        recordFormData,
+        title
       );
       // 查看记录
     } else if (type === 7) {
