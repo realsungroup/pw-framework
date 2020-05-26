@@ -26,18 +26,22 @@
     }
   }
   .fixed-functions-list {
-    display: flex;
-    flex-wrap: wrap;
+    // display: flex;
+    // flex-wrap: wrap;
     // flex: 1;
     // overflow: scroll;
-    overflow-y: auto;
     align-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    clear: both;
   }
   .new-home__fixed-function {
+    float: left;
     display: flex;
     align-items: center;
     width: 32%;
-    flex-grow: 1;
+    // flex-grow: 1;
+    // flex-shrink: 0;
     height: 48px;
     border: 1px solid rgba(232, 232, 232, 1);
     border-radius: 4px;

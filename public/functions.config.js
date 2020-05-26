@@ -1166,8 +1166,8 @@ window[611077057050] = {
           hasRowDelete: true,
           hasRowModify: false,
           hasDelete: false,
-          subtractH: 190,
-          height: 500,
+          subtractH: 170,
+          height: 440,
           hasRowView: false
         }
       }
@@ -1536,7 +1536,7 @@ window['629806026549'] = {
   props: {
     rootId: 0,
     dblinkname: '',
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/'
   }
 };
@@ -1766,30 +1766,30 @@ window[620212364621] = {
 window[642853831562] = {
   name: 'ComprehensiveQuery',
   title: '绩效查询',
-  props:{
-    tabKey:'performance'
+  props: {
+    tabKey: 'performance'
   }
 };
 
 window[642853818882] = {
   name: 'ComprehensiveQuery',
   title: '考勤查询',
-  props:{
-    tabKey:'attendance'
+  props: {
+    tabKey: 'attendance'
   }
 };
 window[643372961628] = {
   name: 'ComprehensiveQuery',
   title: '评级评优查询',
-  props:{
-    tabKey:'rating'
+  props: {
+    tabKey: 'rating'
   }
 };
 window[642853806554] = {
   name: 'ComprehensiveQuery',
   title: '人事查询',
-  props:{
-    tabKey:'personnel'
+  props: {
+    tabKey: 'personnel'
   }
 };
 window[621257502796] = {
@@ -2099,7 +2099,7 @@ window[641992279531] = {
 //总部-管理员
 window[641992499902] = {
   name: 'HeadquartersManage',
-  title: '总部工作流管理',
+  title: '总部工作流管理'
   // props: {
   //   resid: '576924862772',//未定
   //   replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
@@ -2131,7 +2131,7 @@ window[642853692520] = {
   props: {
     resid: 244132786765,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2151,7 +2151,7 @@ window[642853703890] = {
   props: {
     resid: 547739772004,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2171,7 +2171,7 @@ window[642853717153] = {
   props: {
     resid: 424790789055,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2191,7 +2191,7 @@ window[642853731843] = {
   props: {
     resid: 426094684841,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2211,7 +2211,7 @@ window[642853756410] = {
   props: {
     resid: 417736675691,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2231,7 +2231,7 @@ window[642853770096] = {
   props: {
     resid: 449335746776,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2251,7 +2251,7 @@ window[642853871961] = {
   props: {
     resid: 308874433885,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2271,7 +2271,7 @@ window[642853893908] = {
   props: {
     resid: 424358078333,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2291,7 +2291,7 @@ window[642853907777] = {
   props: {
     resid: 375278046796,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2311,7 +2311,7 @@ window[642853918132] = {
   props: {
     resid: 375292143375,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2331,7 +2331,7 @@ window[642853928356] = {
   props: {
     resid: 432205173401,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2351,7 +2351,7 @@ window[642853955171] = {
   props: {
     resid: 423682233289,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2371,7 +2371,7 @@ window[642854041376] = {
   props: {
     resid: 375364128640,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2391,7 +2391,7 @@ window[642854056479] = {
   props: {
     resid: 375455814611,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2411,7 +2411,7 @@ window[642854067180] = {
   props: {
     resid: 429955296972,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2431,7 +2431,7 @@ window[642854077482] = {
   props: {
     resid: 441994427244,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2451,7 +2451,7 @@ window[642854088542] = {
   props: {
     resid: 630169827334,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -2473,7 +2473,7 @@ window[642854098292] = {
   props: {
     resid: 435412554124,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2493,7 +2493,7 @@ window[642854107052] = {
   props: {
     resid: 435419664427,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2513,7 +2513,7 @@ window[642854117487] = {
   props: {
     resid: 435431842051,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2533,7 +2533,7 @@ window[642854131163] = {
   props: {
     resid: 442578987574,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2553,7 +2553,7 @@ window[642854141907] = {
   props: {
     resid: 518262920381,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2573,7 +2573,7 @@ window[642854704644] = {
   props: {
     resid: 423660730564,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2593,8 +2593,8 @@ window[642854157717] = {
   props: {
     resid: 423660730564,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2615,8 +2615,8 @@ window[642856273477] = {
   props: {
     resid: 615914981961,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2637,8 +2637,8 @@ window[618661462541] = {
   props: {
     resid: 605636164944,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2659,8 +2659,8 @@ window[642855799959] = {
   props: {
     resid: 527959305537,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2681,8 +2681,8 @@ window[642856262431] = {
   props: {
     resid: 527959305537,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2703,8 +2703,8 @@ window[642856283564] = {
   props: {
     resid: 561649722687,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2725,8 +2725,8 @@ window[642854180216] = {
   props: {
     resid: 423666035454,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2747,8 +2747,8 @@ window[642854167694] = {
   props: {
     resid: 423574450430,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2769,8 +2769,8 @@ window[642854189801] = {
   props: {
     resid: 423664972378,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2791,7 +2791,7 @@ window[642854713880] = {
   props: {
     resid: 423666035454,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2811,7 +2811,7 @@ window[642854200143] = {
   props: {
     resid: 525642530090,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2831,7 +2831,7 @@ window[642854211673] = {
   props: {
     resid: 525780641896,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2851,9 +2851,9 @@ window[642854223262] = {
   props: {
     resid: 527089107422,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2872,11 +2872,11 @@ window[642854235003] = {
   title: 'RBA排班锁定', // 功能模块名称
   props: {
     resid: 619700236031,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2896,10 +2896,10 @@ window[642854252939] = {
   props: {
     resid: 611406015223,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2919,9 +2919,9 @@ window[642854266702] = {
   props: {
     resid: 608738442390,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
-   downloadBaseURL: 'http://10.108.2.66:80/',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasBeBtns: true,
     hasModify: true,
@@ -2942,10 +2942,10 @@ window[642854279289] = {
   props: {
     resid: 616676083973,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2964,10 +2964,10 @@ window[642854434101] = {
   title: '考勤日报', // 功能模块名称
   props: {
     resid: 375296167687,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2986,10 +2986,10 @@ window[642854450973] = {
   title: '考勤月报', // 功能模块名称
   props: {
     resid: 311025002785,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3009,7 +3009,7 @@ window[642854462178] = {
   props: {
     resid: 556378759707,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3029,9 +3029,9 @@ window[642854476015] = {
   props: {
     resid: 599061859652,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3051,7 +3051,7 @@ window[642854476015] = {
   props: {
     resid: 435408076402,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3071,7 +3071,7 @@ window[642854616358] = {
   props: {
     resid: 435842967084,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3090,10 +3090,10 @@ window[642854648916] = {
   title: '月度结算表', // 功能模块名称
   props: {
     resid: 431886989798,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3113,9 +3113,9 @@ window[642854660698] = {
   props: {
     resid: 424363791882,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3134,10 +3134,10 @@ window[642854669532] = {
   title: '薪资结算名单', // 功能模块名称
   props: {
     resid: 429954752986,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3157,7 +3157,7 @@ window[642854678648] = {
   props: {
     resid: 458996839834,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3177,7 +3177,7 @@ window[642854689917] = {
   props: {
     resid: 445799437011,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3197,7 +3197,7 @@ window[642854704644] = {
   props: {
     resid: 423660730564,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3217,7 +3217,7 @@ window[642854723134] = {
   props: {
     resid: 423660885541,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3237,7 +3237,7 @@ window[642854733765] = {
   props: {
     resid: 425274222825,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3257,7 +3257,7 @@ window[642854743729] = {
   props: {
     resid: 425274253986,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3277,7 +3277,7 @@ window[642854754543] = {
   props: {
     resid: 432648732840,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3297,7 +3297,7 @@ window[642854784459] = {
   props: {
     resid: 432648481019,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3317,7 +3317,7 @@ window[642854766667] = {
   props: {
     resid: 429706598519,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3337,7 +3337,7 @@ window[642854803335] = {
   props: {
     resid: 431960259688,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3357,7 +3357,7 @@ window[642854826219] = {
   props: {
     resid: 509634460766,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3377,7 +3377,7 @@ window[642865344500] = {
   props: {
     resid: 375296681546,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3397,7 +3397,7 @@ window[642854845983] = {
   props: {
     resid: 382917623098,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3417,7 +3417,7 @@ window[642854858872] = {
   props: {
     resid: 423662411106,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3437,7 +3437,7 @@ window[642854754543] = {
   props: {
     resid: 425603753670,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3457,7 +3457,7 @@ window[642854885216] = {
   props: {
     resid: 425248261392,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3477,7 +3477,7 @@ window[642854896162] = {
   props: {
     resid: 430310411405,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3497,7 +3497,7 @@ window[642865689790] = {
   props: {
     resid: 429707656053,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3517,7 +3517,7 @@ window[642854917620] = {
   props: {
     resid: 432051276159,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3537,7 +3537,7 @@ window[642854999190] = {
   props: {
     resid: 423574450430,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3557,7 +3557,7 @@ window[642865743568] = {
   props: {
     resid: 429708025503,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3577,7 +3577,7 @@ window[642855062753] = {
   props: {
     resid: 423664972378,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3597,7 +3597,7 @@ window[642865760883] = {
   props: {
     resid: 429708037784,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3617,7 +3617,7 @@ window[642855075847] = {
   props: {
     resid: 437046073629,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3637,7 +3637,7 @@ window[642855085886] = {
   props: {
     resid: 427541771982,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3657,9 +3657,9 @@ window[642855095782] = {
   props: {
     resid: 450887249266,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
-   downloadBaseURL: 'http://10.108.2.66:80/',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3679,7 +3679,7 @@ window[642855105931] = {
   props: {
     resid: 546778189544,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3701,7 +3701,7 @@ window[642855115194] = {
   props: {
     resid: 563450902742,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3721,7 +3721,7 @@ window[642868538751] = {
   props: {
     resid: 549048498204,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3741,7 +3741,7 @@ window[642855166893] = {
   props: {
     resid: 449351877765,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3761,7 +3761,7 @@ window[642855176494] = {
   props: {
     resid: 449439660450,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3781,7 +3781,7 @@ window[642855189869] = {
   props: {
     resid: 448999733055,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3801,7 +3801,7 @@ window[642855262376] = {
   props: {
     resid: 518463420928,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3821,7 +3821,7 @@ window[642855273462] = {
   props: {
     resid: 519213761827,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3841,7 +3841,7 @@ window[642855707652] = {
   props: {
     resid: 518448231083,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3861,7 +3861,7 @@ window[642855719230] = {
   props: {
     resid: 518447767466,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3881,7 +3881,7 @@ window[642855734719] = {
   props: {
     resid: 578151493683,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3901,7 +3901,7 @@ window[642855746711] = {
   props: {
     resid: 621522035695,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3921,7 +3921,7 @@ window[642855760886] = {
   props: {
     resid: 621522106327,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3941,7 +3941,7 @@ window[642855770350] = {
   props: {
     resid: 518442541615,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3961,7 +3961,7 @@ window[642855780253] = {
   props: {
     resid: 518460953577,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3981,7 +3981,7 @@ window[642856303619] = {
   props: {
     resid: 561553433582,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4001,7 +4001,7 @@ window[642856315965] = {
   props: {
     resid: 561571034816,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4021,7 +4021,7 @@ window[642856328223] = {
   props: {
     resid: 561571598834,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4041,7 +4041,7 @@ window[642856338095] = {
   props: {
     resid: 561571827662,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4061,7 +4061,7 @@ window[642856348581] = {
   props: {
     resid: 561571882590,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4081,7 +4081,7 @@ window[642856357054] = {
   props: {
     resid: 561572171961,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4101,7 +4101,7 @@ window[642856366737] = {
   props: {
     resid: 567704019233,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4121,9 +4121,9 @@ window[642856395014] = {
   props: {
     resid: 438956460750,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4143,9 +4143,9 @@ window[642856420818] = {
   props: {
     resid: 498754836060,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4165,7 +4165,7 @@ window[642856432739] = {
   props: {
     resid: 622312148402,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4185,7 +4185,7 @@ window[642856442104] = {
   props: {
     resid: 466074745928,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4205,7 +4205,7 @@ window[642856451989] = {
   props: {
     resid: 466092254274,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4225,7 +4225,7 @@ window[642856463210] = {
   props: {
     resid: 580490764050,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4245,10 +4245,10 @@ window[642856472970] = {
   props: {
     resid: 631650286919,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4268,8 +4268,8 @@ window[642856600971] = {
   props: {
     resid: 631650245633,
     actionBarWidth: 200,
-   hasAdd: true,
-baseURL: 'http://10.108.2.66:9091',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -4290,10 +4290,10 @@ window[642856612138] = {
   props: {
     resid: 469639002606,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4313,7 +4313,7 @@ window[642856627631] = {
   props: {
     resid: 639652386422,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4333,7 +4333,7 @@ window[642856644144] = {
   props: {
     resid: 631911796331,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4353,7 +4353,7 @@ window[642856652519] = {
   props: {
     resid: 631981611070,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4373,7 +4373,7 @@ window[642856661616] = {
   props: {
     resid: 501177761232,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4393,7 +4393,7 @@ window[642856673827] = {
   props: {
     resid: 483137369847,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4413,7 +4413,7 @@ window[642856682732] = {
   props: {
     resid: 528384647857,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4433,9 +4433,9 @@ window[642856691841] = {
   props: {
     resid: 526569913543,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4455,9 +4455,9 @@ window[642856702868] = {
   props: {
     resid: 537450483861,
     actionBarWidth: 200,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4477,9 +4477,9 @@ window[642856714810] = {
   props: {
     resid: 537450500319,
     actionBarWidth: 200,
-   hasAdd: true,
-   baseURL: 'http://10.108.2.66:9091',
-   downloadBaseURL: 'http://10.108.2.66:80/',
+    hasAdd: true,
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasBeBtns: true,
     hasModify: true,
@@ -4500,7 +4500,7 @@ window[642856723891] = {
   props: {
     resid: 537461583719,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4520,7 +4520,7 @@ window[642856733155] = {
   props: {
     resid: 537453474424,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4540,7 +4540,7 @@ window[642856745730] = {
   props: {
     resid: 244152029750,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4560,7 +4560,7 @@ window[642856753982] = {
   props: {
     resid: 244152488375,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4580,7 +4580,7 @@ window[642856763791] = {
   props: {
     resid: 244154194921,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4600,7 +4600,7 @@ window[642856772119] = {
   props: {
     resid: 244153076250,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4620,7 +4620,7 @@ window[642856782319] = {
   props: {
     resid: 294361971375,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4640,7 +4640,7 @@ window[642856799479] = {
   props: {
     resid: 418249909821,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4660,7 +4660,7 @@ window[642856807541] = {
   props: {
     resid: 433711303327,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4680,7 +4680,7 @@ window[642856817466] = {
   props: {
     resid: 438600204340,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4700,7 +4700,7 @@ window[642856836829] = {
   props: {
     resid: 441282320318,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4720,7 +4720,7 @@ window[642856846560] = {
   props: {
     resid: 476546200533,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4740,7 +4740,7 @@ window[642858017774] = {
   props: {
     resid: 441207245544,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4760,7 +4760,7 @@ window[642858195015] = {
   props: {
     resid: 527159436080,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4780,7 +4780,7 @@ window[642858209225] = {
   props: {
     resid: 527188258798,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4800,7 +4800,7 @@ window[642858219205] = {
   props: {
     resid: 632588177275,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4820,7 +4820,7 @@ window[642858230550] = {
   props: {
     resid: 441210406417,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4840,7 +4840,7 @@ window[642858239772] = {
   props: {
     resid: 441290388300,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4860,7 +4860,7 @@ window[642858250217] = {
   props: {
     resid: 641211714413,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4880,7 +4880,7 @@ window[642858265046] = {
   props: {
     resid: 558633802683,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4900,7 +4900,7 @@ window[642858275747] = {
   props: {
     resid: 548773045652,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4920,7 +4920,7 @@ window[642858287535] = {
   props: {
     resid: 556830749419,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4940,7 +4940,7 @@ window[643038878833] = {
   props: {
     resid: 548773450921,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4960,7 +4960,7 @@ window[642858302008] = {
   props: {
     resid: 548774841771,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -4981,7 +4981,7 @@ window[642858311245] = {
   props: {
     resid: 549312161483,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5001,7 +5001,7 @@ window[642858321470] = {
   props: {
     resid: 549315073634,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5021,7 +5021,7 @@ window[642858331244] = {
   props: {
     resid: 549315898894,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5041,7 +5041,7 @@ window[642858341571] = {
   props: {
     resid: 551380257255,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5061,7 +5061,7 @@ window[642858355008] = {
   props: {
     resid: 553432350418,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5082,7 +5082,7 @@ window[642858364531] = {
   props: {
     resid: 549316940861,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5102,7 +5102,7 @@ window[642858381832] = {
   props: {
     resid: 556627948068,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5122,7 +5122,7 @@ window[642858651331] = {
   props: {
     resid: 467806334724,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5142,7 +5142,7 @@ window[642858661984] = {
   props: {
     resid: 420161931474,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5162,7 +5162,7 @@ window[642858671562] = {
   props: {
     resid: 420151178050,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5182,7 +5182,7 @@ window[642858680954] = {
   props: {
     resid: 464112827627,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5202,7 +5202,7 @@ window[642858691148] = {
   props: {
     resid: 426074830919,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5222,7 +5222,7 @@ window[642858700263] = {
   props: {
     resid: 434932652492,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5242,7 +5242,7 @@ window[642858711892] = {
   props: {
     resid: 442065444190,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5262,7 +5262,7 @@ window[642858815692] = {
   props: {
     resid: 564509985230,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5282,7 +5282,7 @@ window[642858825314] = {
   props: {
     resid: 612897333692,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5302,7 +5302,7 @@ window[642864859197] = {
   props: {
     resid: 531400067855,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5322,7 +5322,7 @@ window[642864873312] = {
   props: {
     resid: 531400837731,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5342,7 +5342,7 @@ window[642864883370] = {
   props: {
     resid: 531400430406,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5362,7 +5362,7 @@ window[642864894557] = {
   props: {
     resid: 547116884120,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5382,7 +5382,7 @@ window[642864905946] = {
   props: {
     resid: 531401843164,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5402,7 +5402,7 @@ window[642864915093] = {
   props: {
     resid: 547133324903,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5422,7 +5422,7 @@ window[642864924530] = {
   props: {
     resid: 547133469814,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5442,7 +5442,7 @@ window[642864936700] = {
   props: {
     resid: 606994091322,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5462,7 +5462,7 @@ window[642864955816] = {
   props: {
     resid: 498060017391,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5482,7 +5482,7 @@ window[642864965745] = {
   props: {
     resid: 498068110441,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5502,7 +5502,7 @@ window[642865093743] = {
   props: {
     resid: 498068191125,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5522,7 +5522,7 @@ window[642865104085] = {
   props: {
     resid: 498749604658,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5542,7 +5542,7 @@ window[642865117751] = {
   props: {
     resid: 506167643900,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5562,7 +5562,7 @@ window[642865127153] = {
   props: {
     resid: 518632114918,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5582,7 +5582,7 @@ window[642865138428] = {
   props: {
     resid: 596552265142,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5602,7 +5602,7 @@ window[642865148916] = {
   props: {
     resid: 595166508878,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5622,7 +5622,7 @@ window[642865159694] = {
   props: {
     resid: 629221162564,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5642,7 +5642,7 @@ window[642865168807] = {
   props: {
     resid: 596649621922,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5662,7 +5662,7 @@ window[642865180079] = {
   props: {
     resid: 596649568623,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5682,7 +5682,7 @@ window[642865189736] = {
   props: {
     resid: 601988366281,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5702,7 +5702,7 @@ window[642865230273] = {
   props: {
     resid: 301050266340,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5722,7 +5722,7 @@ window[642865241049] = {
   props: {
     resid: 412431312761,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5742,7 +5742,7 @@ window[642865251509] = {
   props: {
     resid: 542290371363,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5762,7 +5762,7 @@ window[642865263466] = {
   props: {
     resid: 542286020945,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5782,7 +5782,7 @@ window[642865468370] = {
   props: {
     resid: 506183042085,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5802,7 +5802,7 @@ window[642865477980] = {
   props: {
     resid: 506183134562,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5822,7 +5822,7 @@ window[642865487428] = {
   props: {
     resid: 506183209943,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5842,7 +5842,7 @@ window[642865500060] = {
   props: {
     resid: 526474795022,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5862,7 +5862,7 @@ window[642865508238] = {
   props: {
     resid: 526472168103,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5882,7 +5882,7 @@ window[642865517021] = {
   props: {
     resid: 552594305731,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5902,7 +5902,7 @@ window[642865529507] = {
   props: {
     resid: 549653997867,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5922,7 +5922,7 @@ window[642865539047] = {
   props: {
     resid: 557491342865,
     actionBarWidth: 200,
-   hasAdd: true,
+    hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -5990,7 +5990,7 @@ window[642854549263] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasDelete: true,
@@ -6014,7 +6014,7 @@ window[640366579330] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://10.108.2.66:9091',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasDelete: true,
