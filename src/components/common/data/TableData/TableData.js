@@ -272,8 +272,6 @@ class TableData extends React.Component {
       });
     }
 
-    console.log({columnsWidthKeys})
-
     this._dealedColumns.forEach(item => {
       if (!columnsWidthKeys.find(key => key === item.title)) {
         customWidth += item.width;
