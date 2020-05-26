@@ -69,7 +69,7 @@ export const getColumns = (
 
   columnsInfo.forEach(item => {
     const column = {
-      width: defaultColumnWidth,
+      width: item[item.id].CS_SHOW_WIDTH || defaultColumnWidth,
       title: item.text,
       dataIndex: item.id,
       key: item.id,

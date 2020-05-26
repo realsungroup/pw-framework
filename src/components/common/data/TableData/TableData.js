@@ -214,6 +214,9 @@ class TableData extends React.Component {
 
     // 后端返回的表格列数据
     this._columns = [];
+
+    // 通过 getColumns() 得到的 columns 数据
+    this._dealedColumns = [];
   };
 
   getData = async props => {
@@ -253,26 +256,31 @@ class TableData extends React.Component {
 
   getScrollXY = async y => {
     const {
-      defaultColumnWidth,
       columnsWidth,
       actionBarWidth,
       width,
       height,
       subtractH
     } = this.props;
-    const { columns, rowSelection } = this.state;
-    const count = columns.length;
-    let customWidth = 0,
-      customCount = 0;
+    const { rowSelection } = this.state;
+    let columnsWidthKeys = [];
+    let customWidth = 0;
     if (columnsWidth) {
-      const arr = Object.keys(columnsWidth);
-      customCount = arr.length;
-      arr.forEach(key => {
+      columnsWidthKeys = Object.keys(columnsWidth);
+      columnsWidthKeys.forEach(key => {
         customWidth += columnsWidth[key];
       });
     }
 
-    let x = (count - customCount) * defaultColumnWidth + customWidth;
+    console.log({columnsWidthKeys})
+
+    this._dealedColumns.forEach(item => {
+      if (!columnsWidthKeys.find(key => key === item.title)) {
+        customWidth += item.width;
+      }
+    })
+
+    let x = customWidth;
 
     // 操作栏
     if (this.hasActionBar()) {
@@ -359,7 +367,7 @@ class TableData extends React.Component {
       tableComponent,
       nullValueNotFetch
     } = this.props;
-    console.log('this.props', this.props);
+
     let res;
     const mergedCmsWhere = getCmsWhere(cmswhere, this._cmsWhere);
 
@@ -486,13 +494,18 @@ class TableData extends React.Component {
     } else {
       // console.error('该配置未设成数组');
     }
+
     const { columns, components } = getColumns(
       res.cmscolumninfo,
       secondParams,
       cmscolumns,
       hasRowEdit
     );
+
+    this._dealedColumns = columns;
+
     this.setState({ originalColumn: res.cmscolumninfo });
+
     const state = {
       columns,
       dataSource,
