@@ -117,19 +117,19 @@ class Home extends React.Component {
       abbreviations: [],
       abbreviationDoms: [],
       color,
-      forbidChange:false
+      forbidChange: false
     };
   }
   componentDidMount() {
     var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-      
-      //判断是否Edge浏览器
-      if (userAgent.indexOf("Edge") > -1) {
-          this.setState({forbidChange:true})
-      }
-      if (!!window.ActiveXObject || "ActiveXObject" in window) {
-          this.setState({forbidChange:true})
-      }; 
+
+    //判断是否Edge浏览器
+    if (userAgent.indexOf('Edge') > -1) {
+      this.setState({ forbidChange: true });
+    }
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      this.setState({ forbidChange: true });
+    }
     const user = JSON.parse(getItem('userInfo'));
     let userData;
     // 读取用户信息报错时
@@ -396,6 +396,29 @@ class Home extends React.Component {
     e.target.src = folderPng;
   };
 
+  filterPersonApps = memoizeone((folders = []) => {
+    const newFolders = [...folders];
+    newFolders.forEach(folder => {
+      folder.apps = folder.apps.filter(app => {
+        return app.isPersonCenter === 'Y';
+      });
+      folder.categoricalApps = new Map();
+      folder.apps.forEach(app => {
+        let categoryapps = folder.categoricalApps.get(
+          app.PwCategory || '未分类'
+        );
+        if (categoryapps) {
+          categoryapps.push(app);
+          folder.categoricalApps.set(app.PwCategory || '未分类', categoryapps);
+        } else {
+          folder.categoricalApps.set(app.PwCategory || '未分类', [app]);
+        }
+      });
+    });
+    return newFolders.filter(folder => {
+      return folder.categoricalApps.size;
+    });
+  });
   renderHome = () => {
     const {
       selectedModule,
@@ -406,13 +429,14 @@ class Home extends React.Component {
     const {
       fixedApps,
       allFolders,
-      folders,
       onOpenWindow,
       getDesktopMainRef,
       onRefresh,
       loading,
       recentApps
+      // folders
     } = this.props;
+    const folders = this.filterPersonApps(this.props.folders);
     return (
       <div className="new-home-wrapper" ref={getDesktopMainRef}>
         <aside className="new-home__recently">
@@ -426,7 +450,6 @@ class Home extends React.Component {
           <div className="new-home__center">
             <div className="new-home__fixed-functions">
               {loading && <Spin />}
-
               <FixedApps
                 apps={fixedApps}
                 fnTreeData={allFolders}
@@ -516,25 +539,25 @@ class Home extends React.Component {
                                     }
                                     title={app.title}
                                   >
-                                    {this.state.forbidChange?
-                                     <Img
-                                     src={app.appIconUrl}
-                                     className="new-home-app-icon"
-                                     alt={app.appIconUrl}
-                                     defaultImg={folderPng}
-                                   />
-                                    :
-                                    <div className="overlay">
-                                      <div className="overlay-inner"></div>
+                                    {this.state.forbidChange ? (
                                       <Img
                                         src={app.appIconUrl}
                                         className="new-home-app-icon"
                                         alt={app.appIconUrl}
                                         defaultImg={folderPng}
                                       />
-                                    </div>
-                                    }
-                                    
+                                    ) : (
+                                      <div className="overlay">
+                                        <div className="overlay-inner"></div>
+                                        <Img
+                                          src={app.appIconUrl}
+                                          className="new-home-app-icon"
+                                          alt={app.appIconUrl}
+                                          defaultImg={folderPng}
+                                        />
+                                      </div>
+                                    )}
+
                                     <span className="new-home__module-category-app-title">
                                       {app.title}
                                     </span>
