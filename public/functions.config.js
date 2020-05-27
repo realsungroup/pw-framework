@@ -6027,3 +6027,9 @@ window[640366579330] = {
     subtractH: 240
   }
 };
+
+window[643895586124] = {
+  name: 'OnlineTrainingManager', // 组件名称，
+  title: '在线培训管理', // 功能模块名称
+  props: {}
+};

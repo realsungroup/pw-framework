@@ -1,8 +1,19 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import {Spin} from 'antd'
+import { Spin } from 'antd';
 
-const minLoading = <Spin spinning={true}><div style={{width:'100vw',height:'100vh',background:'#fff',color:'#fff'}}></div></Spin>;
+const minLoading = (
+  <Spin spinning={true}>
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        background: '#fff',
+        color: '#fff'
+      }}
+    ></div>
+  </Spin>
+);
 
 export const TypeIn = Loadable({
   loader: () => import('./TypeIn'),
@@ -724,6 +735,12 @@ export const WzEquipmentApprove = Loadable({
 });
 export const WzImportApprove = Loadable({
   loader: () => import('./WzImportApprove'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OnlineTrainingManager = Loadable({
+  loader: () => import('./OnlineTrainingManager'),
   loading() {
     return minLoading;
   }
