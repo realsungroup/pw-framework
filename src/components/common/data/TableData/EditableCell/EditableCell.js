@@ -38,7 +38,13 @@ export default class EditableCell extends React.Component {
     /**
      * 记录
      */
-    record: PropTypes.object
+    record: PropTypes.object,
+
+    /**
+     * 单元格宽度
+     * 默认：-
+     */
+    width: PropTypes.number,
   };
 
   static defaultProps = {
@@ -53,6 +59,8 @@ export default class EditableCell extends React.Component {
       record, // 记录
       index,
       dataItem, // 控件数据
+      width,
+      height,
       ...restProps
     } = this.props;
 
@@ -71,7 +79,7 @@ export default class EditableCell extends React.Component {
         {form => {
           const { getFieldDecorator } = form;
           return (
-            <td {...restProps}>
+            <td {...restProps} style={{ width }}>
               {isRenderControl ? (
                 <FormItem>
                   {getFieldDecorator(dataIndex, options)(

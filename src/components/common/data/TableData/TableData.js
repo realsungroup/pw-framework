@@ -1462,17 +1462,30 @@ class TableData extends React.Component {
         if (!column.editable) {
           return column;
         }
-        return {
+        const newColumn = { ...column };
+        const ret = {
           ...column,
-          onCell: (record, index) => ({
-            record,
-            title: column.title,
-            dataIndex: column.dataIndex,
-            index,
-            editing: this.isEditing(record),
-            dataItem: this.getDataItem(record, column.dataIndex)
-          })
-        };
+          onCell: (record, index) => {
+            const isEditing = this.isEditing(record);
+            const ret = {
+              record,
+              title: newColumn.title,
+              dataIndex: newColumn.dataIndex,
+              index,
+              editing: isEditing,
+              dataItem: this.getDataItem(record, newColumn.dataIndex)
+            }
+            if (isEditing) {
+              ret.height = newColumn._editHeight ? newColumn._editHeight : undefined;
+            }
+            return ret;
+          }
+        }
+        // 行内编辑列的宽度
+        if (this.state.editingKey) {
+          ret.width = newColumn._editWidth ? newColumn._editWidth : newColumn.width;
+        }
+        return ret;
       });
     }
 

@@ -74,7 +74,9 @@ export const getColumns = (
       dataIndex: item.id,
       key: item.id,
       align: 'center',
-      editable: true
+      editable: true,
+      _editWidth: item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
+      _editHeight: item[item.id].Minieditorheight, // 在行内编辑状态下的高度
     };
 
     // 自定义列宽度
