@@ -27,7 +27,6 @@ class WaitingHandle extends React.Component {
                   const config = reminderDataConfig.find(config => {
                     return config.dblinkname === data.dblinkname;
                   });
-                  console.log(config.baseurl);
                   this.setState({
                     remindData: data,
                     modalVisible: true,
