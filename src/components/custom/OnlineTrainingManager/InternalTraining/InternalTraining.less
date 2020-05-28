@@ -1,0 +1,54 @@
+.online-internal-training {
+  height: 100%;
+  display: flex;
+  padding-top: 16px;
+
+  .course-container {
+    width: 300px;
+    padding: 16px;
+    .add-course-btn {
+      width: 269px;
+      height: 64px;
+      background: rgba(24, 144, 255, 0.05);
+      border: 1px solid rgba(24, 144, 255, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px auto;
+      color: #1890ff;
+      cursor: pointer;
+    }
+    .entry-training-course {
+      width: 269px;
+      height: 64px;
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(232, 232, 232, 1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px auto;
+      cursor: pointer;
+      padding: 12px;
+      .course-name {
+        flex: 1;
+        text-align: center;
+      }
+      &:hover {
+        border: 1px solid rgba(24, 144, 255, 1);
+        color: #1890ff;
+      }
+      &.selected {
+        background: rgba(24, 144, 255, 1);
+        color: #ffffff;
+        .course-number {
+          color: #1890ff;
+          background: #ffffff;
+        }
+      }
+    }
+  }
+  .test-table {
+    flex: 1;
+    background: #ffffff;
+  }
+}
