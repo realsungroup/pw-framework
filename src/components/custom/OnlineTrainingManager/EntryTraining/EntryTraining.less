@@ -1,13 +1,15 @@
 .online-entry-training {
   height: 100%;
   display: flex;
-  padding-top: 16px;
-
+  padding: 16px;
+  overflow: hidden;
   .course-container {
     width: 300px;
-    padding: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
     .add-course-btn {
-      width: 269px;
       height: 64px;
       background: rgba(24, 144, 255, 0.05);
       border-radius: 32px;
@@ -15,12 +17,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 16px auto;
+      margin: 16px 0;
       color: #1890ff;
       cursor: pointer;
     }
+    .course-list {
+      flex: 1;
+      overflow-y: auto;
+    }
     .entry-training-course {
-      width: 269px;
       height: 64px;
       background: rgba(255, 255, 255, 1);
       border-radius: 40px 0px 0px 40px;
@@ -28,9 +33,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 16px auto;
-      cursor: pointer;
-      padding: 12px;
+      margin-bottom: 16px;
+      cursor: move;
+      padding: 0 12px;
+      .course-more-btn {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        opacity: 0;
+        font-size: 16px;
+      }
       .course-number {
         height: 40px;
         width: 40px;
@@ -38,10 +50,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(232, 232, 232, 1);
       }
       &:hover {
         border: 1px solid rgba(24, 144, 255, 1);
         color: #1890ff;
+        .course-more-btn {
+          opacity: 1;
+        }
       }
       &.selected {
         background: rgba(24, 144, 255, 1);
@@ -50,6 +67,9 @@
           color: #1890ff;
 
           background: #ffffff;
+        }
+        .course-more-btn {
+          opacity: 1;
         }
       }
     }
@@ -62,6 +82,7 @@
 .course-more-actions {
   .action {
     margin: 4px 0;
+    cursor: pointer;
     &.danger-action {
       color: #f5222d;
     }

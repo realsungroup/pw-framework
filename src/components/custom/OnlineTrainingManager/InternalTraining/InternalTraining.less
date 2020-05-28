@@ -1,13 +1,15 @@
 .online-internal-training {
   height: 100%;
   display: flex;
-  padding-top: 16px;
+  padding: 16px;
 
   .course-container {
     width: 300px;
-    padding: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
     .add-course-btn {
-      width: 269px;
       height: 64px;
       background: rgba(24, 144, 255, 0.05);
       border: 1px solid rgba(24, 144, 255, 1);
@@ -18,17 +20,27 @@
       color: #1890ff;
       cursor: pointer;
     }
-    .entry-training-course {
-      width: 269px;
+    .course-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .internal-training-course {
       height: 64px;
       background: rgba(255, 255, 255, 1);
       border: 1px solid rgba(232, 232, 232, 1);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 16px auto;
+      margin-top: 16px;
       cursor: pointer;
-      padding: 12px;
+      padding: 0 12px;
+      .course-more-btn {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        opacity: 0;
+        font-size: 16px;
+      }
       .course-name {
         flex: 1;
         text-align: center;
@@ -36,6 +48,9 @@
       &:hover {
         border: 1px solid rgba(24, 144, 255, 1);
         color: #1890ff;
+        .course-more-btn {
+          opacity: 1;
+        }
       }
       &.selected {
         background: rgba(24, 144, 255, 1);
@@ -43,6 +58,9 @@
         .course-number {
           color: #1890ff;
           background: #ffffff;
+        }
+        .course-more-btn {
+          opacity: 1;
         }
       }
     }

@@ -220,6 +220,15 @@ http.createApi('getUserDesktop', {
 });
 
 /**
+ * 根据父resid查询下级的子资源记录（查询试卷列表）
+ * 参数：parentresid
+ */
+http.createApi('getUserAppLinks', {
+  method: 'get',
+  url: 'api/Resource/RetrieveUserAppLinks'
+});
+
+/**
  * 获取当前用户综合管理树
  * 参数：{ rootid }
  * 1. rootid：根节点 id
