@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Button, message, LocaleProvider, Radio } from 'antd';
+import {
+  Button,
+  message,
+  LocaleProvider,
+  Radio,
+  Input,
+  Modal,
+  Form
+} from 'antd';
 import http from 'Util20/api';
 import { setItem, getItem } from 'Util20/util';
 // 使用自定义 loading
@@ -33,9 +41,27 @@ const style = {
 };
 
 class TemplateWrap extends Component {
-  handleLoginClick = async () => {
-    const code = '20465';
-    const password = 'xxh@20465';
+  constructor(props) {
+    super(props);
+
+    const baseURL = 'http://powerworks.realsun.me:5051/';
+
+    this.state = {
+      visible: false,
+      code: 'demo',
+      password: '1234@qwer',
+      baseURL
+    };
+
+    http.setDefaultBaseURL(baseURL);
+  }
+
+  handleLoginClick = () => {
+    this.setState({ visible: true });
+  };
+
+  handleSubmit = async () => {
+    const { code, password } = this.state;
 
     let res;
     try {
@@ -47,8 +73,14 @@ class TemplateWrap extends Component {
       console.error(err);
       return message.error(err.message);
     }
-    message.success('登录成功');
-    setItem('userInfo', JSON.stringify(res));
+
+    if (res.OpResult === 'Y') {
+      message.success('登录成功');
+      this.setState({ visible: false });
+      setItem('userInfo', JSON.stringify(res));
+    } else {
+      message.error(res.ErrorMsg || '登录失败');
+    }
   };
 
   handleClearCache = async () => {
@@ -70,6 +102,7 @@ class TemplateWrap extends Component {
 
   render() {
     // 国际化
+    const { visible, baseURL, code, password } = this.state;
     const language = getItem('language') || '中文';
     setItem('language', language);
 
@@ -82,33 +115,84 @@ class TemplateWrap extends Component {
       messages = en_US;
     }
 
+    const wrapperStyle = {
+      marginTop: 8
+    };
+
     return (
       <LocaleProvider locale={localeAntd}>
         <IntlProvider locale={locale} messages={messages}>
           <div style={{ height: '100%', width: '100%' }}>
-            <Button
-              style={style}
-              onClick={this.handleLoginClick}
-              type="primary"
-            >
-              登录
-            </Button>
-            <Button
-              style={style}
-              onClick={this.handleClearCache}
-              type="primary"
-            >
-              清除缓存
-            </Button>
-            <Radio.Group
-              style={style}
-              value={language}
-              onChange={this.handleLanguageSelectChange}
-            >
-              <Radio.Button value="中文">中文</Radio.Button>
-              <Radio.Button value="English">English</Radio.Button>
-            </Radio.Group>
+            <div style={wrapperStyle}>
+              <span>基地址：</span>
+              <Input
+                value={baseURL}
+                onChange={e => {
+                  const value = e.target.value;
+                  this.setState({ baseURL: value });
+                  http.setDefaultBaseURL(value);
+                }}
+              ></Input>
+            </div>
+            <div style={wrapperStyle}>
+              <Button
+                style={style}
+                onClick={this.handleLoginClick}
+                type="primary"
+              >
+                登录
+              </Button>
+            </div>
+
+            <div style={wrapperStyle}>
+              <Button
+                style={style}
+                onClick={this.handleClearCache}
+                type="primary"
+              >
+                清除缓存
+              </Button>
+            </div>
+
+            <div style={wrapperStyle}>
+              <Radio.Group
+                style={style}
+                value={language}
+                onChange={this.handleLanguageSelectChange}
+              >
+                <Radio.Button value="中文">中文</Radio.Button>
+                <Radio.Button value="English">English</Radio.Button>
+              </Radio.Group>
+            </div>
+
             <div style={{ marginTop: 16 }}>{this.props.children}</div>
+            <Modal
+              visible={visible}
+              onCancel={() => this.setState({ visible: false })}
+              footer={null}
+            >
+              <Form>
+                <Form.Item>
+                  <Input
+                    value={code}
+                    placeholder="用户名"
+                    onChange={e => this.setState({ code: e.target.value })}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    value={password}
+                    placeholder="密码"
+                    onChange={e => this.setState({ password: e.target.value })}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" onClick={this.handleSubmit} block>
+                    登录
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
           </div>
         </IntlProvider>
       </LocaleProvider>
