@@ -381,7 +381,6 @@ class TableData extends React.Component {
       try {
         // 获取主表数据
         if (dataMode === 'main') {
-          console.log('in');
           const params = {
             resid,
             key,
@@ -631,15 +630,15 @@ class TableData extends React.Component {
       baseURL,
       dblinkname,
       hideBebtns = {},
-      resid
     } = this.props;
-    const id = resid || this._id;
+    const id = this._id;
     let btns = {};
     try {
       btns = await httpGetBeBtns(id, baseURL, dblinkname, hideBebtns);
     } catch (err) {
       return console.error(err);
     }
+
     const { beBtnsMultiple = [], beBtnsSingle = [], beBtnsOther = [] } =
       btns || {};
 
@@ -1672,8 +1671,23 @@ class TableData extends React.Component {
     }
     // 后端存储，则刷新表格数据
     if (storeWay === 'be') {
-      this.handleRefresh();
-
+      // 添加成功时
+      if (operation === 'add') {
+        const { whereRefreshWhenAdd } = this.props;
+        if (whereRefreshWhenAdd === 'start') {
+          this.handleRefresh(true);
+        } else if (whereRefreshWhenAdd === 'end') {
+          const { total, pageSize } = this.state.pagination;
+          const getCurrent = () => {
+            return Math.ceil((total + 1) / pageSize);
+          }
+          this.setState({ pagination: {...this.state.pagination, current: getCurrent(), total: total + 1 }}, () => {
+            this.handleRefresh();
+          })
+        } else {
+          this.handleRefresh();
+        }
+      }
       // 前端存储，则修改 dataSource
     } else {
       this.handleDealDataSource(operation, formData, record);

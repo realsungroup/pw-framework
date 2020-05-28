@@ -708,5 +708,11 @@ export const propTypes = {
    * 表格样式
    * 默认：-
    */
-  style: PropTypes.object
+  style: PropTypes.object,
+
+  /**
+   * 当添加记录成功时，获取表格数据是获取第一页的数据还是最后一页的数据：'start' 表示获取第一页的数据 | 'end' 表示获取最后一页的数据
+   * 默认：-
+   */
+  whereRefreshWhenAdd: PropTypes.oneOf(['start', 'end']),
 };

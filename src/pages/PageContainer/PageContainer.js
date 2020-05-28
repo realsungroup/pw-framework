@@ -643,6 +643,73 @@ export default class PageContainer extends React.Component {
     }
   };
 
+  addAppToDesktop = async appData => {
+    try {
+      await http().addRecords({
+        resid: 582414136652,
+        data: [
+          {
+            ResID: appData.RES_ID,
+            UserID: this.state.userInfo.SysUserInfo.UserID
+          }
+        ]
+      });
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+
+    // 添加到桌面之后，刷新数据
+    await this.getData();
+    const { folders } = this.state;
+    let desktopApp, typeName;
+    folders.some(folder => {
+      return folder.apps.some(app => {
+        if (app.title === appData.title) {
+          desktopApp = app;
+          typeName = folder.typeName;
+          return true;
+        }
+      });
+    });
+    const app = desktopApp;
+    // 打开窗口
+    const resid = parseInt(app.ResID || app.resid, 10);
+    const url = `/fnmodule?resid=${resid}&recid=${app.REC_ID}&type=${typeName}&title=${app.title}`;
+    const appName = app.title;
+    const { activeApps } = this.state;
+    activeApps.forEach(activeApp => {
+      activeApp.isActive = false;
+    });
+
+    const children = (
+      <iframe src={url} frameBorder="0" className="desktop__iframe" />
+    );
+    const width = this.desktopMainRef.clientWidth;
+    const height = this.desktopMainRef.clientHeight;
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: app.title,
+        activeAppOthersProps: {
+          ...app,
+          width,
+          height,
+          x: 0,
+          y: 0,
+          customWidth: 800,
+          customHeight: height,
+          customX: 0,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 100,
+          zoomStatus: 'max'
+        }
+      }
+    ]);
+  };
+
   isDesktopShow = false;
   handleCloseActiveApp = activeApp => {
     const { activeApps, zIndexActiveApps, abbreviationDoms } = this.state;
@@ -833,12 +900,16 @@ export default class PageContainer extends React.Component {
       ...item,
       isOpen: false
     }));
-
-    this.setState({
+    const state = {
       desktopStyle: homeMode,
       activeApps: newActiveApps,
       showHome: true
-    });
+    };
+    if (homeMode === 'WORKBENCH') {
+      state.headerVisible = true;
+    }
+
+    this.setState(state);
     localStorage.setItem('desktopStyle', homeMode);
   };
 
