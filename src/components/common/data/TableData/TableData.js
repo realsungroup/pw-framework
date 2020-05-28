@@ -1671,8 +1671,23 @@ class TableData extends React.Component {
     }
     // 后端存储，则刷新表格数据
     if (storeWay === 'be') {
-      this.handleRefresh();
-
+      // 添加成功时
+      if (operation === 'add') {
+        const { whereRefreshWhenAdd } = this.props;
+        if (whereRefreshWhenAdd === 'start') {
+          this.handleRefresh(true);
+        } else if (whereRefreshWhenAdd === 'end') {
+          const { total, pageSize } = this.state.pagination;
+          const getCurrent = () => {
+            return Math.ceil((total + 1) / pageSize);
+          }
+          this.setState({ pagination: {...this.state.pagination, current: getCurrent(), total: total + 1 }}, () => {
+            this.handleRefresh();
+          })
+        } else {
+          this.handleRefresh();
+        }
+      }
       // 前端存储，则修改 dataSource
     } else {
       this.handleDealDataSource(operation, formData, record);
