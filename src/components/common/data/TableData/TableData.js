@@ -381,7 +381,6 @@ class TableData extends React.Component {
       try {
         // 获取主表数据
         if (dataMode === 'main') {
-          console.log('in');
           const params = {
             resid,
             key,
@@ -631,15 +630,15 @@ class TableData extends React.Component {
       baseURL,
       dblinkname,
       hideBebtns = {},
-      resid
     } = this.props;
-    const id = resid || this._id;
+    const id = this._id;
     let btns = {};
     try {
       btns = await httpGetBeBtns(id, baseURL, dblinkname, hideBebtns);
     } catch (err) {
       return console.error(err);
     }
+
     const { beBtnsMultiple = [], beBtnsSingle = [], beBtnsOther = [] } =
       btns || {};
 
