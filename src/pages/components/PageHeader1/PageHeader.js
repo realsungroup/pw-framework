@@ -28,17 +28,17 @@ const getTarget = resid => {
   }
   return {};
 };
-let forbidChange=false;
+let forbidChange = false;
 class PageHeader extends React.Component {
   state = {
     loading: false,
     isInTop: true, // 页面滚动条是否处在最顶部
     apps: [],
     drawerVisible: false,
-    forbidChange:false,
+    forbidChange: false,
     rightDrawerVisible: false,
     type: '', // 所在页面的功能类型
-    title: '', // 所在页面的功能标题
+    title: '' // 所在页面的功能标题
   };
 
   static defaultProps = {
@@ -46,15 +46,15 @@ class PageHeader extends React.Component {
   };
   componentDidMount() {
     var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-      
-      //判断是否Edge浏览器
-      if (userAgent.indexOf("Edge") > -1) {
-        forbidChange=true;
-      }
-      if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        forbidChange=false;
-      }; 
-   
+
+    //判断是否Edge浏览器
+    if (userAgent.indexOf('Edge') > -1) {
+      forbidChange = true;
+    }
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      forbidChange = false;
+    }
+
     this.setState({
       drawerVisible: false
     });
@@ -113,7 +113,7 @@ class PageHeader extends React.Component {
       activeApps,
       onOpenWindow,
       onCloseActiveApp,
-      visible,
+      visible
     } = this.props;
 
     const { isInTop, drawerVisible, rightDrawerVisible } = this.state;
@@ -124,9 +124,13 @@ class PageHeader extends React.Component {
     const userData = {
       userName: user.SysUserInfo.UserName
     };
-    
+
     return (
-      <div className={classNames('page-header', { hidden: !visible })}>
+      <div
+        className={classNames('page-header', {
+          'page-header--hidden': !visible
+        })}
+      >
         <div className="page-header__logo">
           <a
             href="javascript:;"
@@ -258,7 +262,8 @@ class PageHeader extends React.Component {
         key={data.key + ''}
         onClick={() => {
           this.setState({ drawerVisible: false });
-          this.props.onMenuClick(data);
+          const { onMenuClick } = this.props;
+          onMenuClick && onMenuClick(data);
         }}
       >
         {/* <img src={data.appIconUrl} className="new-home-app-icon-mail" /> */}
@@ -289,13 +294,17 @@ const ActiveAppList = React.memo(
               >
                 <div className="new-home__page-header__active-app__title">
                   {app.appIconUrl && app.appIconUrlValidate ? (
-                   forbidChange?
+                    forbidChange ? (
                       <img src={app.appIconUrl} className="new-home-app-icon" />
-                     :
-                     <div className="overlay">
-                       <div className="overlay-inner"></div>
-                       <img src={app.appIconUrl} className="new-home-app-icon" />
-                     </div>
+                    ) : (
+                      <div className="overlay">
+                        <div className="overlay-inner"></div>
+                        <img
+                          src={app.appIconUrl}
+                          className="new-home-app-icon"
+                        />
+                      </div>
+                    )
                   ) : (
                     <Icon type="mail" className="new-home-app-icon-mail" />
                   )}
