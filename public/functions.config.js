@@ -2493,7 +2493,7 @@ window[642853918132] = {
     resid: 375292143375,
     baseURL:'http://ngrok5.realsun.me:6060',
     mainTableProps:{
-      actionBarWidth: 200,
+      actionBarWidth: 300,
       hasAdd: true,
       hasBeBtns: true,
       hasModify: true,
@@ -2596,25 +2596,38 @@ window[642854056479] = {
   }
 };
 window[642854067180] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '年假台账', // 功能模块名称
   props: {
     resid: 429955296972,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+     baseURL:'http://ngrok5.realsun.me:6060',
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      441994427244:{
+      hasBeBtns: true,
+      },
+      630169827334:{
+      hasBeBtns: true,
+      },
+    }
   }
 };
+
 window[642854077482] = {
   name: 'TableData', // 组件名称，
   title: '年假年度剩余调整', // 功能模块名称
@@ -2658,23 +2671,32 @@ window[642854088542] = {
   }
 };
 window[642854098292] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '哺乳假台账', // 功能模块名称
   props: {
     resid: 435412554124,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+     baseURL:'http://ngrok5.realsun.me:6060',
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      435419664427:{
+      hasBeBtns: true,
+      },
+    }
   }
 };
 window[642854107052] = {
@@ -3299,24 +3321,52 @@ window[642854648916] = {
 };
 window[642854660698] = {
   name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '考勤日报处理', // 功能模块名称
   props: {
     resid: 424363791882,
-    actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      // baseURL: 'http://10.108.2.66:9091',
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      423574450430:{
+        hasBeBtns:true
+      },
+      423664972378:{
+        hasBeBtns:true
+      },
+      382917623098:{
+        hasBeBtns:true
+      },
+      423662411106:{
+        hasBeBtns:true
+      },
+      425248261392:{
+        hasBeBtns:true
+      },
+      425173186017:{
+        hasBeBtns:true
+      },
+      426438255597:{
+        hasBeBtns:true
+      },
+    }
+    
   }
 };
 window[642854669532] = {
@@ -3946,28 +3996,39 @@ window[642855166893] = {
   }
 };
 window[642855176494] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '考勤审批流程信息', // 功能模块名称
   props: {
     resid: 449439660450,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      449439564546:{
+        hasBeBtns:true
+      },
+      449441441589:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642855189869] = {
   name: 'TableData', // 组件名称，
-  title: '考勤事情审批流', // 功能模块名称
+  title: '考勤事项审批流', // 功能模块名称
   props: {
     resid: 448999733055,
     actionBarWidth: 200,
@@ -3986,43 +4047,59 @@ window[642855189869] = {
   }
 };
 window[642855262376] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '待审核招聘需求', // 功能模块名称
   props: {
     resid: 518463420928,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      518464309741:{
+        hasBeBtns:true
+      }
+    }
   }
 };
 window[642855273462] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
     resid: 519213761827,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      518464309741:{
+        hasBeBtns:true
+      }
+    }
   }
 };
 window[642855707652] = {
@@ -4046,23 +4123,34 @@ window[642855707652] = {
   }
 };
 window[642855719230] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
     resid: 518447767466,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      522692921247:{
+        hasBeBtns:true
+      },
+      518461643267:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642855734719] = {
@@ -4086,23 +4174,31 @@ window[642855734719] = {
   }
 };
 window[642855746711] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '待录用员工工资审批', // 功能模块名称
   props: {
     resid: 621522035695,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      621522106327:{
+        hasBeBtns:true
+      }
+    }
   }
 };
 window[642855760886] = {
@@ -4146,23 +4242,62 @@ window[642855770350] = {
   }
 };
 window[642855780253] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name:'MainTableSubTable',
   title: '我的招聘审批', // 功能模块名称
   props: {
     resid: 518442541615,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      518461643267:{
+        hasBeBtns:true
+      }
+    }
+  }
+};
+window[644083949537] = {
+  // name: 'TableData', // 组件名称，
+  name:'MainTableSubTable',
+  title: 'S1S2生产人员招聘', // 功能模块名称
+  props: {
+    resid: 527959305537,
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
+    },
+    subTablesProps:{
+      518986543520:{
+        hasBeBtns:true
+      },
+      518461643267:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642856303619] = {
@@ -4186,23 +4321,37 @@ window[642856303619] = {
   }
 };
 window[642856315965] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '财年授予定义', // 功能模块名称
   props: {
     resid: 561571034816,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      561550682069:{
+        hasBeBtns:true
+      },
+      561550544816:{
+        hasBeBtns:true
+      },
+      568398863279:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642856328223] = {
@@ -4538,43 +4687,236 @@ window[642856644144] = {
   }
 };
 window[642856652519] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: 'DL工资审核', // 功能模块名称
   props: {
     resid: 631981611070,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      631908306906:{
+        hasBeBtns:true
+      },
+      631908278263:{
+        hasBeBtns:true
+      },
+      631908322536:{
+        hasBeBtns:true
+      },
+      631908332741:{
+        hasBeBtns:true
+      },
+      631908345599:{
+        hasBeBtns:true
+      },
+      631908357382:{
+        hasBeBtns:true
+      },
+      631908368002:{
+        hasBeBtns:true
+      },
+      631908380066:{
+        hasBeBtns:true
+      },
+      631908391826:{
+        hasBeBtns:true
+      },
+      631908402889:{
+        hasBeBtns:true
+      },
+      631908414849:{
+        hasBeBtns:true
+      },
+      631908468437:{
+        hasBeBtns:true
+      },
+      631908487343:{
+        hasBeBtns:true
+      },
+      631908500686:{
+        hasBeBtns:true
+      },
+      631908512015:{
+        hasBeBtns:true
+      },
+      631908524164:{
+        hasBeBtns:true
+      },
+      631908535350:{
+        hasBeBtns:true
+      },
+      631908546056:{
+        hasBeBtns:true
+      },
+      631908556110:{
+        hasBeBtns:true
+      },
+      631908578110:{
+        hasBeBtns:true
+      },
+      631908587861:{
+        hasBeBtns:true
+      },
+      631908598349:{
+        hasBeBtns:true
+      },
+      631908607040:{
+        hasBeBtns:true
+      },
+      631908616827:{
+        hasBeBtns:true
+      },
+      631908628445:{
+        hasBeBtns:true
+      },
+      631908639692:{
+        hasBeBtns:true
+      },
+      631908648936:{
+        hasBeBtns:true
+      },
+      631908660368:{
+        hasBeBtns:true
+      },
+      631908672225:{
+        hasBeBtns:true
+      },
+      631909905356:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642856661616] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '工资审核', // 功能模块名称
   props: {
     resid: 501177761232,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      483143248907:{
+        hasBeBtns:true
+      },
+      483143269379:{
+        hasBeBtns:true
+      },
+      483143292739:{
+        hasBeBtns:true
+      },
+      483143313607:{
+        hasBeBtns:true
+      },
+      490441845783:{
+        hasBeBtns:true
+      },
+      490441985369:{
+        hasBeBtns:true
+      },
+      490442033277:{
+        hasBeBtns:true
+      },
+      490442082614:{
+        hasBeBtns:true
+      },
+      490442208450:{
+        hasBeBtns:true
+      },
+      490442251347:{
+        hasBeBtns:true
+      },
+      490442311854:{
+        hasBeBtns:true
+      },
+      490442351603:{
+        hasBeBtns:true
+      },
+      490442367584:{
+        hasBeBtns:true
+      },
+      490442379053:{
+        hasBeBtns:true
+      },
+      490442394231:{
+        hasBeBtns:true
+      },
+      490442407188:{
+        hasBeBtns:true
+      },
+      533377990246:{
+        hasBeBtns:true
+      },
+      533378160861:{
+        hasBeBtns:true
+      },
+      533378175759:{
+        hasBeBtns:true
+      },
+      533378198800:{
+        hasBeBtns:true
+      },
+      533378212840:{
+        hasBeBtns:true
+      },
+      533378238689:{
+        hasBeBtns:true
+      },
+      533378256722:{
+        hasBeBtns:true
+      },
+      533378269639:{
+        hasBeBtns:true
+      },
+      533378289607:{
+        hasBeBtns:true
+      },
+      533378309262:{
+        hasBeBtns:true
+      },
+      533378346468:{
+        hasBeBtns:true
+      },
+      533378368276:{
+        hasBeBtns:true
+      },
+      533378381536:{
+        hasBeBtns:true
+      },
+      533378397713:{
+        hasBeBtns:true
+      },
+      533378418165:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642856673827] = {
@@ -4685,23 +5027,34 @@ window[642856714810] = {
   }
 };
 window[642856723891] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '十三薪审批', // 功能模块名称
   props: {
     resid: 537461583719,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      537453474424:{
+        hasBeBtns:true
+      },
+      438607023678:{
+        hasBeBtns:true
+      },
+    }
   }
 };
 window[642856733155] = {
@@ -4765,43 +5118,62 @@ window[642856753982] = {
   }
 };
 window[642856763791] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '保险基数表', // 功能模块名称
   props: {
     resid: 244154194921,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      244153076250:{
+        hasBeBtns:true
+      },
+      433706772782:{
+        hasBeBtns:true
+      }
+    }
   }
 };
 window[642856772119] = {
   name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '保险比例表', // 功能模块名称
   props: {
     resid: 244153076250,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      433706772782:{
+        hasBeBtns:true
+      }
+    }
   }
 };
 window[642856782319] = {
@@ -5308,22 +5680,31 @@ window[642858381832] = {
 };
 window[642858651331] = {
   name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '个人财年评估表', // 功能模块名称
   props: {
     resid: 467806334724,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTableProps:{
+      421696601858:{
+        hasBeBtns:true
+      }
+    }
+    
   }
 };
 window[642858661984] = {
