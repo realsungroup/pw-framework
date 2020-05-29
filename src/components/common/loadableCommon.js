@@ -11,6 +11,13 @@ export const TableData = Loadable({
   }
 });
 
+export const MainTableSubTables = Loadable({
+  loader: () => import('./data/MainTableSubTables'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const PWRedirect = Loadable({
   loader: () => import('./data/PWRedirect'),
   loading() {
