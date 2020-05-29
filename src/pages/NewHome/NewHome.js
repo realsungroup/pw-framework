@@ -397,7 +397,7 @@ class Home extends React.Component {
   };
 
   filterPersonApps = memoizeone((folders = []) => {
-    const newFolders = [...folders];
+    const newFolders = JSON.parse(JSON.stringify(folders));
     newFolders.forEach(folder => {
       folder.apps = folder.apps.filter(app => {
         return app.isPersonCenter === 'Y';
@@ -436,7 +436,7 @@ class Home extends React.Component {
       recentApps
       // folders
     } = this.props;
-    const folders = this.filterPersonApps(this.props.folders);
+    const folders = this.filterPersonApps([...this.props.folders]);
     return (
       <div className="new-home-wrapper" ref={getDesktopMainRef}>
         <aside className="new-home__recently">
