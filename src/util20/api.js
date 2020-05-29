@@ -539,6 +539,35 @@ http.createApi('clearOrgCache', {
 });
 
 /**
+ *创建表
+ * @param {number|string} parentresid
+ * @param {number|string} sourceresid
+ * @param {string} resname
+ */
+http.createApi('addUserResouce', {
+  method: 'get',
+  url: '/api/ical/AddUserResouce'
+});
+
+/**
+ *创建继承表
+ *@param {number|string} sourceresid
+ *@param {string} resname
+ */
+http.createApi('addInheritResource', {
+  method: 'get',
+  url: '/api/Resource/AddInheritResource'
+});
+
+/**
+ *创建表字段
+ */
+http.createApi('addColumnOfUserResource', {
+  method: 'post',
+  url: '/api/ical/AddColumnOfUserResource'
+});
+
+/**
  *根据资源编号获取跳转URL
  */
 http.createApi('getRedirectUrl', {

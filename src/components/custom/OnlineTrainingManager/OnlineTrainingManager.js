@@ -1,10 +1,11 @@
 import React from 'react';
 import './OnlineTrainingManager.less';
-import { Tabs } from 'antd';
+import { Tabs, message } from 'antd';
 import EntryTraining from './EntryTraining';
 import InternalTraining from './InternalTraining';
 import InternalTrainingAuth from './InternalTrainingAuth';
 import TestPaperManager from './TestPaperManager';
+import http, { makeCancelable } from 'Util20/api';
 
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
@@ -12,7 +13,23 @@ const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.OnlineTrainingManagerBaseURL;
 class OnlineTrainingManager extends React.Component {
+  state = { coursePapers: [] };
+  componentDidMount() {
+    this.fetchCoursePaper();
+  }
+  fetchCoursePaper = async () => {
+    try {
+      const res = await http({ baseURL }).getUserAppLinks({
+        parentresid: 636548884907
+      });
+      this.setState({ coursePapers: res.data });
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+  };
   render() {
+    const { coursePapers } = this.state;
     return (
       <Tabs
         defaultActiveKey="1"
@@ -21,10 +38,10 @@ class OnlineTrainingManager extends React.Component {
         className="online-training-manager"
       >
         <TabPane tab="入职培训" key="1" style={{ height: '100%' }}>
-          <EntryTraining baseURL={baseURL} />
+          <EntryTraining baseURL={baseURL} coursePapers={coursePapers} />
         </TabPane>
         <TabPane tab="在线内训" key="2">
-          <InternalTraining baseURL={baseURL} />
+          <InternalTraining baseURL={baseURL} coursePapers={coursePapers} />
         </TabPane>
         <TabPane tab="在线内训授权" key="3">
           <InternalTrainingAuth baseURL={baseURL} />

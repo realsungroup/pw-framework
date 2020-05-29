@@ -1,6 +1,15 @@
 import React from 'react';
 import './EntryTraining.less';
-import { Input, Icon, Popover, message, Modal, Form, Button } from 'antd';
+import {
+  Input,
+  Icon,
+  Popover,
+  message,
+  Modal,
+  Form,
+  Button,
+  Select
+} from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import classnames from 'classnames';
 import { getDataProp } from 'Util20/formData2ControlsData';
@@ -14,6 +23,7 @@ import memoize from 'memoize-one';
 const resid = 636485130000;
 const chapterResid = 636732588990;
 const { Search } = Input;
+const { Option } = Select;
 
 // 设置样式
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -68,17 +78,7 @@ class EntryTraining extends React.Component {
       message.error(error.message);
     }
   };
-  fetchCoursePaper = async parentresid => {
-    try {
-      const res = await http({ baseURL: this.props.baseURL }).getUserAppLinks({
-        parentresid: resid
-      });
-      console.log(res);
-    } catch (error) {
-      console.error(error);
-      message.error(error.message);
-    }
-  };
+
   getModifyFormData = async (formName = 'default') => {
     let res;
     try {
@@ -283,10 +283,14 @@ class EntryTraining extends React.Component {
     });
   };
   handleAddChapter = async () => {
+    const { addChapterData } = this.state;
+    if (!addChapterData.C3_636735399221) {
+      return message.info('请输入名称');
+    }
     try {
       await http({ baseURL: this.props.baseURL }).addRecords({
         resid: chapterResid,
-        data: [this.state.addChapterData]
+        data: [addChapterData]
       });
       this.setState({ addChapterVisible: false, addChapterData: {} });
       this.tableDataRef.handleRefresh();
@@ -296,10 +300,14 @@ class EntryTraining extends React.Component {
     }
   };
   handleModifyChapter = async () => {
+    const { modifyChapterData } = this.state;
+    if (!modifyChapterData.C3_636735399221) {
+      return message.info('请输入名称');
+    }
     try {
       await http({ baseURL: this.props.baseURL }).modifyRecords({
         resid: chapterResid,
-        data: [this.state.modifyChapterData]
+        data: [modifyChapterData]
       });
       this.setState({ modifyChapterVisible: false, modifyChapterData: {} });
       this.tableDataRef.handleRefresh();
@@ -311,7 +319,6 @@ class EntryTraining extends React.Component {
 
   addChapterClick = () => {
     const { selectedCourse, addChapterData } = this.state;
-    this.fetchCoursePaper(selectedCourse.REC_ID);
     this.setState({
       addChapterVisible: true,
       addChapterData: {
@@ -333,7 +340,7 @@ class EntryTraining extends React.Component {
       addChapterData,
       modifyChapterData
     } = this.state;
-    const { baseURL } = this.props;
+    const { baseURL, coursePapers } = this.props;
     const _courses = this.filterCourses(courses, filterText);
     return (
       <div className="online-entry-training">
@@ -555,13 +562,13 @@ class EntryTraining extends React.Component {
             <Form.Item label="流程记录编号">
               <Input value={addChapterData.C3_636732625526} disabled />
             </Form.Item>
-            <Form.Item label="章节编号">
-              <Input
-                value={addChapterData.C3_636735383253}
-                onChange={this.handleAddChapterInputChange('C3_636735383253')}
-              />
-            </Form.Item>
-            <Form.Item label="章节名称">
+            <Form.Item
+              label="章节名称"
+              validateStatus={
+                !addChapterData.C3_636735399221 ? 'error' : 'success'
+              }
+              help={!addChapterData.C3_636735399221 && '请输入名称'}
+            >
               <Input
                 value={addChapterData.C3_636735399221}
                 onChange={this.handleAddChapterInputChange('C3_636735399221')}
@@ -574,10 +581,28 @@ class EntryTraining extends React.Component {
               />
             </Form.Item>
             <Form.Item label="考试编号">
-              <Input
+              <Select
+                showSearch
                 value={addChapterData.C3_636735464189}
-                onChange={this.handleAddChapterInputChange('C3_636735464189')}
-              />
+                optionFilterProp="children"
+                onChange={value => {
+                  this.setState({
+                    addChapterData: {
+                      ...this.state.addChapterData,
+                      C3_636735464189: value
+                    }
+                  });
+                }}
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {coursePapers.map(paper => {
+                  return <Option value={paper.RES_ID}>{paper.RES_NAME}</Option>;
+                })}
+              </Select>
             </Form.Item>
           </Form>
         </Modal>
@@ -592,14 +617,15 @@ class EntryTraining extends React.Component {
               <Input value={modifyChapterData.C3_636732625526} disabled />
             </Form.Item>
             <Form.Item label="章节编号">
-              <Input
-                value={modifyChapterData.C3_636735383253}
-                onChange={this.handleModifyChapterInputChange(
-                  'C3_636735383253'
-                )}
-              />
+              <Input value={modifyChapterData.C3_636735383253} disabled />
             </Form.Item>
-            <Form.Item label="章节名称">
+            <Form.Item
+              label="章节名称"
+              validateStatus={
+                !modifyChapterData.C3_636735399221 ? 'error' : 'success'
+              }
+              help={!modifyChapterData.C3_636735399221 && '请输入名称'}
+            >
               <Input
                 value={modifyChapterData.C3_636735399221}
                 onChange={this.handleModifyChapterInputChange(
@@ -614,12 +640,28 @@ class EntryTraining extends React.Component {
               />
             </Form.Item>
             <Form.Item label="考试编号">
-              <Input
+              <Select
+                showSearch
                 value={modifyChapterData.C3_636735464189}
-                onChange={this.handleModifyChapterInputChange(
-                  'C3_636735464189'
-                )}
-              />
+                optionFilterProp="children"
+                onChange={value => {
+                  this.setState({
+                    modifyChapterData: {
+                      ...this.state.modifyChapterData,
+                      C3_636735464189: value
+                    }
+                  });
+                }}
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {coursePapers.map(paper => {
+                  return <Option value={paper.RES_ID}>{paper.RES_NAME}</Option>;
+                })}
+              </Select>
             </Form.Item>
           </Form>
         </Modal>
