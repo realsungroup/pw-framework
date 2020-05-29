@@ -2486,23 +2486,33 @@ window[642853907777] = {
   }
 };
 window[642853918132] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '排班定义', // 功能模块名称
   props: {
     resid: 375292143375,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
+    baseURL:'http://ngrok5.realsun.me:6060',
+    mainTableProps:{
+      actionBarWidth: 200,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 240
     },
-    subtractH: 240
+    subTablesProps:{
+      375292357468:{
+      hasBeBtns: true,
+      },
+
+    }
   }
 };
 window[642853928356] = {
@@ -4119,7 +4129,7 @@ window[642855770350] = {
   name: 'TableData', // 组件名称，
   title: '我的招聘申请', // 功能模块名称
   props: {
-    resid: 518442541615,
+    resid: 518460953577,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
@@ -4139,7 +4149,7 @@ window[642855780253] = {
   name: 'TableData', // 组件名称，
   title: '我的招聘审批', // 功能模块名称
   props: {
-    resid: 518460953577,
+    resid: 518442541615,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
