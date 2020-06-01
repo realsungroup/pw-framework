@@ -75,7 +75,8 @@ export const defaultProps = {
   rowSelectionAg: 'multiple',
   sideBarAg: false,
   afterSaveRefresh: false,
-  rowSelection: {}
+  rowSelection: {},
+  isUseBESize: false,
 };
 
 export const propTypes = {
@@ -715,4 +716,10 @@ export const propTypes = {
    * 默认：-
    */
   whereRefreshWhenAdd: PropTypes.oneOf(['start', 'end']),
+
+  /**
+   * 是否使用后端给的列尺寸（width/height）
+   * 默认：false
+   */
+  isUseBESize: PropTypes.bool,
 };

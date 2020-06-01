@@ -459,7 +459,8 @@ class TableData extends React.Component {
       defaultColumnWidth,
       columnsWidth,
       fixedColumns,
-      hasRowEdit
+      hasRowEdit,
+      isUseBESize
     } = this.props;
 
     const secondParams = {
@@ -496,7 +497,8 @@ class TableData extends React.Component {
       res.cmscolumninfo,
       secondParams,
       cmscolumns,
-      hasRowEdit
+      hasRowEdit,
+      isUseBESize
     );
 
     this._dealedColumns = columns;
@@ -1452,7 +1454,7 @@ class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    const { hasRowEdit } = this.props;
+    const { hasRowEdit, isUseBESize } = this.props;
     let newColumns = [...columns];
 
     // 行内编辑
@@ -1474,14 +1476,14 @@ class TableData extends React.Component {
               editing: isEditing,
               dataItem: this.getDataItem(record, newColumn.dataIndex)
             }
-            if (isEditing) {
+            if (isUseBESize && isEditing) {
               ret.height = newColumn._editHeight ? newColumn._editHeight : undefined;
             }
             return ret;
           }
         }
         // 行内编辑列的宽度
-        if (this.state.editingKey) {
+        if (isUseBESize && this.state.editingKey) {
           ret.width = newColumn._editWidth ? newColumn._editWidth : newColumn.width;
         }
         return ret;

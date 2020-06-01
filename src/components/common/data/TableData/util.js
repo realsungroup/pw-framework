@@ -47,7 +47,8 @@ export const getColumns = (
     tableDataWidth
   },
   cmscolumns,
-  hasRowEdit
+  hasRowEdit,
+  isUseBESize
 ) => {
   const columns = [];
 
@@ -68,8 +69,15 @@ export const getColumns = (
   }
 
   columnsInfo.forEach(item => {
+    let columnWidth;
+    // 使用后端给的 width
+    if (isUseBESize) {
+      columnWidth = item[item.id].CS_SHOW_WIDTH || defaultColumnWidth;
+    } else {
+      columnWidth = defaultColumnWidth;
+    }
     const column = {
-      width: item[item.id].CS_SHOW_WIDTH || defaultColumnWidth,
+      width: columnWidth,
       title: item.text,
       dataIndex: item.id,
       key: item.id,
