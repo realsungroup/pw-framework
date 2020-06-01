@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './DesktopBottomBar.less';
 import PropTypes from 'prop-types';
 import { Select, Icon } from 'antd';
@@ -126,7 +127,8 @@ export default class DesktopBottomBar extends React.Component {
       searchValue,
       orgChartConfig
     } = this.props;
-    return (
+
+    const child = (
       <div className="desktop-bottom-bar">
         <div className="desktop-bottom-bar__left">
           {/* logo */}
@@ -192,5 +194,13 @@ export default class DesktopBottomBar extends React.Component {
         />
       </div>
     );
+
+    const container = document.querySelector('.page-container');
+
+    if (!container) {
+      return null;
+    }
+
+    return ReactDOM.createPortal(child, container);
   }
 }
