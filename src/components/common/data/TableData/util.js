@@ -72,7 +72,7 @@ export const getColumns = (
     let columnWidth;
     // 使用后端给的 width
     if (isUseBESize) {
-      columnWidth = item[item.id].CS_SHOW_WIDTH || defaultColumnWidth;
+      columnWidth = (item[item.id] && item[item.id].CS_SHOW_WIDTH) || defaultColumnWidth;
     } else {
       columnWidth = defaultColumnWidth;
     }
@@ -83,8 +83,8 @@ export const getColumns = (
       key: item.id,
       align: 'center',
       editable: true,
-      _editWidth: item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
-      _editHeight: item[item.id].Minieditorheight, // 在行内编辑状态下的高度
+      _editWidth: item[item.id] && item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
+      _editHeight: item[item.id] && item[item.id].Minieditorheight, // 在行内编辑状态下的高度
     };
 
     // 自定义列宽度
