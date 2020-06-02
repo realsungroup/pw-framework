@@ -78,6 +78,7 @@ export const defaultProps = {
   rowSelection: {},
   isUseBESize: false,
   isUseFormDefine: true,
+  rowEditAddPosition: 'start'
 };
 
 export const propTypes = {
@@ -729,4 +730,10 @@ export const propTypes = {
    * 默认：true
    */
   isUseFormDefine: PropTypes.bool,
+
+  /**
+   * 行内编辑添加时的行所在的位置
+   * 默认：'start'
+   */
+  rowEditAddPosition: PropTypes.oneOf(['start', 'end']),
 };
