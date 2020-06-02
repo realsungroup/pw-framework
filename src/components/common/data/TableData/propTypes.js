@@ -732,7 +732,7 @@ export const propTypes = {
   isUseFormDefine: PropTypes.bool,
 
   /**
-   * 行内编辑添加时的行所在的位置
+   * 行内编辑添加时的行所在的位置：'start' 记录第一行 | 'end' 记录最后一行
    * 默认：'start'
    */
   rowEditAddPosition: PropTypes.oneOf(['start', 'end']),
