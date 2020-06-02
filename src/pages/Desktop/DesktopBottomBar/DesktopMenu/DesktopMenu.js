@@ -52,6 +52,18 @@ export default class DesktopMenu extends React.PureComponent {
     };
   }
 
+  componentDidMount = () => {
+    window.addEventListener('click', this.handleHideMenu);
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener('click', this.handleHideMenu);
+  };
+
+  handleHideMenu = () => {
+    this.setState({ menuVisible: false });
+  };
+
   stopPropagation = e => {
     e.stopPropagation();
   };
@@ -219,7 +231,7 @@ export default class DesktopMenu extends React.PureComponent {
       </div>
     );
 
-    const container = document.querySelector('.desktop');
+    const container = document.querySelector('.page-container');
 
     if (!container) {
       return null;

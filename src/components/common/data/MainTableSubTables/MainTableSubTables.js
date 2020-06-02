@@ -63,7 +63,12 @@ class MainTableSubTables extends React.Component {
         item.resName = item.ResName;
       });
     }
-    this.setState({ hasSubTable, subTables: res.data });
+    let subTables = [];
+    if (Array.isArray(res.data)) {
+      subTables = res.data.filter(item => item.IsRelationResShowOn);
+    }
+
+    this.setState({ hasSubTable, subTables });
   };
 
   handleSelectedMenuItem = menuItem => {

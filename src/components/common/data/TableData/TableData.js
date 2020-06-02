@@ -21,7 +21,7 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 // import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal, getItem } from 'Util20/util';
-import { dealFormData } from 'Util20/controls';
+import dealControlArr, { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
 
@@ -31,6 +31,10 @@ const btnSizeMap = {
   large: 'large',
   middle: 'default',
   small: 'small'
+};
+
+const getResColumns = cmscolumninfo => {
+  return cmscolumninfo.map(item => ({ ...item[item.id] }));
 };
 
 /**
@@ -52,7 +56,7 @@ class TableData extends React.Component {
       width,
       height,
       hasRowSelection,
-      rowSelection,
+      rowSelection
     } = props;
     const pagination = getPagination(
       defaultPagination,
@@ -75,7 +79,7 @@ class TableData extends React.Component {
         onChange: this.rowSelectionChange,
         onSelect: this.handleRowSelect,
         onSelectAll: this.handleRowSelectAll,
-        onSelectInvert: this.handleRowSelectInvert,
+        onSelectInvert: this.handleRowSelectInvert
       }
     );
 
@@ -227,7 +231,8 @@ class TableData extends React.Component {
       hasRowModify,
       hasRowView,
       hasRowEdit,
-      storeWay
+      storeWay,
+      isUseFormDefine
     } = props || this.props;
 
     const { pagination } = this.state;
@@ -244,6 +249,10 @@ class TableData extends React.Component {
       if (hasBeBtns) {
         await this.getBeBtns();
       }
+    }
+
+    if (!isUseFormDefine) {
+      return;
     }
 
     // 需要获取窗体数据，用于行内编辑或记录记录表单中
@@ -276,7 +285,7 @@ class TableData extends React.Component {
       if (!columnsWidthKeys.find(key => key === item.title)) {
         customWidth += item.width;
       }
-    })
+    });
 
     let x = customWidth;
 
@@ -311,30 +320,42 @@ class TableData extends React.Component {
     this._x = x;
     this._y = y;
 
-    const { hasModify, hasDelete, hasRowSelection, } = this.props;
+    const { hasModify, hasDelete, hasRowSelection } = this.props;
     let newRowSelection = null;
     if (rowSelection) {
-      newRowSelection = getRowSelection(
-        hasRowSelection,
-        hasModify,
-        hasDelete,
-        {
-          columnWidth: rowSelection.columnWidth,
-          columnTitle: rowSelection.columnTitle,
-          fixed: rowSelection.fixed,
-          getCheckboxProps: rowSelection.getCheckboxProps,
-          hideDefaultSelections: rowSelection.hideDefaultSelections,
-          selectedRowKeys: rowSelection.selectedRowKeys,
-          selections: rowSelection.selections,
-          type: rowSelection.type,
-          onChange: this.rowSelectionChange,
-          onSelect: this.handleRowSelect,
-          onSelectAll: this.handleRowSelectAll,
-          onSelectInvert: this.handleRowSelectInvert,
-        }
-      );
+      newRowSelection = getRowSelection(hasRowSelection, hasModify, hasDelete, {
+        columnWidth: rowSelection.columnWidth,
+        columnTitle: rowSelection.columnTitle,
+        fixed: rowSelection.fixed,
+        getCheckboxProps: rowSelection.getCheckboxProps,
+        hideDefaultSelections: rowSelection.hideDefaultSelections,
+        selectedRowKeys: rowSelection.selectedRowKeys,
+        selections: rowSelection.selections,
+        type: rowSelection.type,
+        onChange: this.rowSelectionChange,
+        onSelect: this.handleRowSelect,
+        onSelectAll: this.handleRowSelectAll,
+        onSelectInvert: this.handleRowSelectInvert
+      });
     }
     this.setState({ scrollXY, rowSelection: newRowSelection });
+  };
+
+  dealTableDataFormData = res => {
+    const { formProps } = this.props;
+
+    // 获取和调用获取窗体定义数据（res.data.columns）相同的数据
+    let resColumns = getResColumns(res.cmscolumninfo || []);
+    const formData = dealControlArr(resColumns);
+
+    this._recordFormData = formData;
+    this._rowEditFormData = formData;
+
+    // 缓存记录表单和行内编辑表单所接收的 data prop
+    const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
+    this._dealedRowEditFormData = this._dealedRecordFormData =
+      formData &&
+      getDataProp(formData, {}, undefined, recordFormIsClassifyLayout);
   };
 
   getTableData = async ({
@@ -459,7 +480,9 @@ class TableData extends React.Component {
       defaultColumnWidth,
       columnsWidth,
       fixedColumns,
-      hasRowEdit
+      hasRowEdit,
+      isUseBESize,
+      isUseFormDefine
     } = this.props;
 
     const secondParams = {
@@ -470,6 +493,11 @@ class TableData extends React.Component {
     };
 
     let dataSource = res.data;
+
+    if (!isUseFormDefine) {
+      this.dealTableDataFormData(res);
+    }
+
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
       dataSource = [];
@@ -496,7 +524,8 @@ class TableData extends React.Component {
       res.cmscolumninfo,
       secondParams,
       cmscolumns,
-      hasRowEdit
+      hasRowEdit,
+      isUseBESize
     );
 
     this._dealedColumns = columns;
@@ -625,12 +654,7 @@ class TableData extends React.Component {
    * FormName：窗体名称
    */
   getBeBtns = async () => {
-    const {
-      httpGetBeBtns,
-      baseURL,
-      dblinkname,
-      hideBebtns = {},
-    } = this.props;
+    const { httpGetBeBtns, baseURL, dblinkname, hideBebtns = {} } = this.props;
     const id = this._id;
     let btns = {};
     try {
@@ -666,24 +690,32 @@ class TableData extends React.Component {
       rowSelection: { ...this.state.rowSelection, selectedRowKeys }
     });
     const { rowSelection } = this.props;
-    rowSelection && rowSelection.onChange && rowSelection.onChange(selectedRowKeys);
+    rowSelection &&
+      rowSelection.onChange &&
+      rowSelection.onChange(selectedRowKeys);
   };
 
   handleRowSelect = (record, selected, selectedRows, nativeEvent) => {
     const { rowSelection } = this.props;
-    rowSelection && rowSelection.onSelect && rowSelection.onSelect(record, selected, selectedRows, nativeEvent);
-  }
+    rowSelection &&
+      rowSelection.onSelect &&
+      rowSelection.onSelect(record, selected, selectedRows, nativeEvent);
+  };
 
   handleRowSelectAll = (selected, selectedRows, changeRows) => {
     const { rowSelection } = this.props;
-    rowSelection && rowSelection.onSelectAll && rowSelection.onSelectAll(selected, selectedRows, changeRows);
-  }
+    rowSelection &&
+      rowSelection.onSelectAll &&
+      rowSelection.onSelectAll(selected, selectedRows, changeRows);
+  };
 
-  handleRowSelectInvert = (selectedRows) => {
+  handleRowSelectInvert = selectedRows => {
     const { rowSelection } = this.props;
-    rowSelection && rowSelection.onSelectInvert && rowSelection.onSelectInvert(selectedRows);
-  }
-  
+    rowSelection &&
+      rowSelection.onSelectInvert &&
+      rowSelection.onSelectInvert(selectedRows);
+  };
+
   handlePageChange = async (page, pageSize) => {
     this.setState({ loading: true });
     await this.getTableData({ page, pageSize });
@@ -1119,31 +1151,63 @@ class TableData extends React.Component {
     });
   };
 
+  rowEditRecId = -1;
+
+  // 触发行内编辑的方式：'rowEdit' 点行内编辑触发 | 'add' 点添加触发
+  triggerRowEditType = '';
+
   // 点击添加按钮
   handleAdd = () => {
-    this.setState(
-      {
-        recordFormShowMode: 'add',
-        selectedRecord: {}
-      },
-      () => {
-        this.openRecordForm();
-      }
-    );
+    const { hasRowEdit, rowEditAddPosition } = this.props;
+    if (!hasRowEdit) {
+      this.setState(
+        {
+          recordFormShowMode: 'add',
+          selectedRecord: {}
+        },
+        () => {
+          this.openRecordForm();
+        }
+      );
+    }
+
+    // 行内编辑添加
+    const { dataSource, originalColumn } = this.state;
+    const nullRecord = {
+      REC_ID: this.rowEditRecId--
+    };
+    originalColumn.forEach(item => {
+      nullRecord[item.id] = null;
+    });
+
+    let newDataSource;
+    if (rowEditAddPosition === 'start') {
+      newDataSource = [nullRecord, ...dataSource];
+    } else {
+      newDataSource = [...dataSource, nullRecord];
+    }
+    this.setState({
+      dataSource: newDataSource,
+      editingKey: nullRecord.REC_ID
+    });
+    this.triggerRowEditType = 'add';
   };
 
   handleRowEdit = record => {
     this.setState({
       editingKey: record.REC_ID
     });
+    this.triggerRowEditType = 'rowEdit';
   };
 
   handleRowSave = (form, oldRecord) => {
+    const { hasRowEdit } = this.props;
     const { validateFields } = form;
     validateFields(async (err, values) => {
       if (err) {
         return;
       }
+
       const { dataMode, resid, subresid, baseURL, dblinkname } = this.props;
       const id = getResid(dataMode, resid, subresid);
       const formData = dealFormData(values);
@@ -1154,27 +1218,52 @@ class TableData extends React.Component {
         httpParams.baseURL = baseURL;
       }
 
-      this.p2 = makeCancelable(
-        http(httpParams).modifyRecords({
-          resid: id,
-          data: [formData],
-          dblinkname
-        })
-      );
+      // 添加记录
+      if (this.triggerRowEditType === 'add') {
+        this.p2 = makeCancelable(
+          http(httpParams).addRecords({
+            resid: id,
+            data: [formData],
+            dblinkname
+          })
+        );
+      } else {
+        // 编辑存在的记录
+        this.p2 = makeCancelable(
+          http(httpParams).modifyRecords({
+            resid: id,
+            data: [formData],
+            dblinkname
+          })
+        );
+      }
+
       try {
         await this.p2.promise;
       } catch (err) {
         console.error(err);
         return message.error(err.message);
       }
-      message.success('修改成功');
+      if (hasRowEdit) {
+        message.success('添加成功');
+      } else {
+        message.success('修改成功');
+      }
+      this.triggerRowEditType = '';
       this.setState({ editingKey: null });
       this.handleRefresh();
     });
   };
 
   handleRowCancel = () => {
-    this.setState({ editingKey: null });
+    const { rowEditAddPosition } = this.props;
+    const dataSource = [...this.state.dataSource];
+    if (rowEditAddPosition === 'start') {
+      dataSource.shift();
+    } else {
+      dataSource.pop();
+    }
+    this.setState({ editingKey: null, dataSource });
   };
 
   handleModify = record => {
@@ -1452,7 +1541,7 @@ class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    const { hasRowEdit } = this.props;
+    const { hasRowEdit, isUseBESize } = this.props;
     let newColumns = [...columns];
 
     // 行内编辑
@@ -1473,16 +1562,20 @@ class TableData extends React.Component {
               index,
               editing: isEditing,
               dataItem: this.getDataItem(record, newColumn.dataIndex)
-            }
-            if (isEditing) {
-              ret.height = newColumn._editHeight ? newColumn._editHeight : undefined;
+            };
+            if (isUseBESize && isEditing) {
+              ret.height = newColumn._editHeight
+                ? newColumn._editHeight
+                : undefined;
             }
             return ret;
           }
-        }
+        };
         // 行内编辑列的宽度
-        if (this.state.editingKey) {
-          ret.width = newColumn._editWidth ? newColumn._editWidth : newColumn.width;
+        if (isUseBESize && this.state.editingKey) {
+          ret.width = newColumn._editWidth
+            ? newColumn._editWidth
+            : newColumn.width;
         }
         return ret;
       });
@@ -1680,10 +1773,19 @@ class TableData extends React.Component {
           const { total, pageSize } = this.state.pagination;
           const getCurrent = () => {
             return Math.ceil((total + 1) / pageSize);
-          }
-          this.setState({ pagination: {...this.state.pagination, current: getCurrent(), total: total + 1 }}, () => {
-            this.handleRefresh();
-          })
+          };
+          this.setState(
+            {
+              pagination: {
+                ...this.state.pagination,
+                current: getCurrent(),
+                total: total + 1
+              }
+            },
+            () => {
+              this.handleRefresh();
+            }
+          );
         } else {
           this.handleRefresh();
         }

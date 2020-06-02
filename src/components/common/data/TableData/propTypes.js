@@ -75,7 +75,10 @@ export const defaultProps = {
   rowSelectionAg: 'multiple',
   sideBarAg: false,
   afterSaveRefresh: false,
-  rowSelection: {}
+  rowSelection: {},
+  isUseBESize: false,
+  isUseFormDefine: true,
+  rowEditAddPosition: 'start'
 };
 
 export const propTypes = {
@@ -715,4 +718,22 @@ export const propTypes = {
    * 默认：-
    */
   whereRefreshWhenAdd: PropTypes.oneOf(['start', 'end']),
+
+  /**
+   * 是否使用后端给的列尺寸（width/height）
+   * 默认：false
+   */
+  isUseBESize: PropTypes.bool,
+
+  /**
+   * 是否使用窗体定义数据来控制记录表单的控件（为 false 时，不能设置记录为定位模式，因为缺少了位置数据）
+   * 默认：true
+   */
+  isUseFormDefine: PropTypes.bool,
+
+  /**
+   * 行内编辑添加时的行所在的位置：'start' 记录第一行 | 'end' 记录最后一行
+   * 默认：'start'
+   */
+  rowEditAddPosition: PropTypes.oneOf(['start', 'end']),
 };
