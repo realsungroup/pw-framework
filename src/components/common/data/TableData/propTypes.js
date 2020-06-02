@@ -77,6 +77,7 @@ export const defaultProps = {
   afterSaveRefresh: false,
   rowSelection: {},
   isUseBESize: false,
+  isUseFormDefine: true,
 };
 
 export const propTypes = {
@@ -722,4 +723,10 @@ export const propTypes = {
    * 默认：false
    */
   isUseBESize: PropTypes.bool,
+
+  /**
+   * 是否使用窗体定义数据来控制记录表单的控件（为 false 时，不能设置记录为定位模式，因为缺少了位置数据）
+   * 默认：true
+   */
+  isUseFormDefine: PropTypes.bool,
 };

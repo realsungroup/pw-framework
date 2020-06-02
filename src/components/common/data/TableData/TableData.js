@@ -21,7 +21,7 @@ import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 // import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { getIntlVal, getItem } from 'Util20/util';
-import { dealFormData } from 'Util20/controls';
+import dealControlArr, { dealFormData  } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
 
@@ -32,6 +32,10 @@ const btnSizeMap = {
   middle: 'default',
   small: 'small'
 };
+
+const getResColumns = (cmscolumninfo) => {
+  return cmscolumninfo.map(item => ({ ...item[item.id] }))
+}
 
 /**
  * TableData
@@ -227,7 +231,8 @@ class TableData extends React.Component {
       hasRowModify,
       hasRowView,
       hasRowEdit,
-      storeWay
+      storeWay,
+      isUseFormDefine
     } = props || this.props;
 
     const { pagination } = this.state;
@@ -244,6 +249,10 @@ class TableData extends React.Component {
       if (hasBeBtns) {
         await this.getBeBtns();
       }
+    }
+
+    if (!isUseFormDefine) {
+      return;
     }
 
     // 需要获取窗体数据，用于行内编辑或记录记录表单中
@@ -336,6 +345,28 @@ class TableData extends React.Component {
     }
     this.setState({ scrollXY, rowSelection: newRowSelection });
   };
+
+  dealTableDataFormData = (res) => {
+    const { formProps } = this.props;
+
+    // 获取和调用获取窗体定义数据（res.data.columns）相同的数据
+    let resColumns = getResColumns(res.cmscolumninfo || []);
+    const formData = dealControlArr(resColumns);
+
+    this._recordFormData = formData;
+    this._rowEditFormData = formData;
+
+    // 缓存记录表单和行内编辑表单所接收的 data prop
+    const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
+    this._dealedRowEditFormData = this._dealedRecordFormData =
+    formData &&
+      getDataProp(
+        formData,
+        {},
+        undefined,
+        recordFormIsClassifyLayout
+      );
+  }
 
   getTableData = async ({
     page = 1,
@@ -460,7 +491,8 @@ class TableData extends React.Component {
       columnsWidth,
       fixedColumns,
       hasRowEdit,
-      isUseBESize
+      isUseBESize,
+      isUseFormDefine
     } = this.props;
 
     const secondParams = {
@@ -471,6 +503,11 @@ class TableData extends React.Component {
     };
 
     let dataSource = res.data;
+
+    if (!isUseFormDefine) {
+      this.dealTableDataFormData(res);
+    }
+
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
       dataSource = [];

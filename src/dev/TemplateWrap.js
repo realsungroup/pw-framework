@@ -43,9 +43,13 @@ const style = {
 class TemplateWrap extends Component {
   constructor(props) {
     super(props);
-
-    const baseURL = 'http://powerworks.realsun.me:5051/';
-
+    let baseURL;
+    try {
+      baseURL = getItem('templateWrapBaseURL');
+    } catch (err) {}
+    if (!baseURL) {
+      baseURL = 'http://ngrok4.realsun.me:6060';
+    }
     this.state = {
       visible: false,
       code: 'demo',
@@ -131,6 +135,7 @@ class TemplateWrap extends Component {
                   const value = e.target.value;
                   this.setState({ baseURL: value });
                   http.setDefaultBaseURL(value);
+                  setItem('templateWrapBaseURL', value);
                 }}
               ></Input>
             </div>
