@@ -568,6 +568,76 @@ http.createApi('addColumnOfUserResource', {
 });
 
 /**
+ *修改表字段
+ */
+http.createApi('editColumnOfUserResource', {
+  method: 'post',
+  url: '/api/ical/EditColumnOfUserResource'
+});
+
+/**
+ *删除表字段
+ */
+http.createApi('setColToShowDisable', {
+  method: 'get',
+  url: '/api/ical/SetColToShowDisable'
+});
+
+/**
+ *设置下拉选项
+ */
+http.createApi('setfieldoptions', {
+  method: 'get',
+  url: '/api/PWFields/setfieldoptions'
+});
+
+/**
+ *关联下拉字典
+ */
+http.createApi('setFieldAdvOptionDict', {
+  method: 'get',
+  url: '/api/PWFields/SetFieldAdvOptionDict'
+});
+
+/**
+ *设置题目分数
+ */
+http.createApi('setColScore', {
+  method: 'get',
+  url: '/api/PWFields/SetColScore'
+});
+
+/**
+ *根据resid获取继承表
+ */
+http.createApi('getInheritResIDsByHostResid', {
+  method: 'get',
+  url: '/api/Resource/GetInheritResIDsByHostResid'
+});
+/**
+ * 向上移动字段
+ */
+http.createApi('moveUpColumn', {
+  method: 'get',
+  url: '/api/PWFields/MoveUpColumn'
+});
+
+/**
+ * 向下移动字段
+ */
+http.createApi('moveDownColumn', {
+  method: 'get',
+  url: '/api/PWFields/MoveDownColumn'
+});
+/**
+ * 设置字段显示或隐藏
+ */
+http.createApi('setFieldShow', {
+  method: 'get',
+  url: '/api/PWFields/SetFieldShow'
+});
+
+/**
  *根据资源编号获取跳转URL
  */
 http.createApi('getRedirectUrl', {

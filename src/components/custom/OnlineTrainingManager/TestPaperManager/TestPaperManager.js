@@ -31,7 +31,6 @@ const formItemLayout = {
 
 const resid1 = 636040535718; //专门放试卷表
 const resid2 = 636548884907; //放试卷实例的表
-
 const templateResid = 636040619243; //模板表id
 class TestPaperManager extends React.Component {
   state = {
@@ -60,6 +59,9 @@ class TestPaperManager extends React.Component {
     }
   };
 
+  /**
+   * 创建试卷
+   */
   handleCreatePaper = async () => {
     const paperName = this.paperNameRef.state.value;
     if (!paperName || !paperName.trim()) {
@@ -74,6 +76,7 @@ class TestPaperManager extends React.Component {
         resname: paperName
       });
       await http(httpParam).addInheritResource({
+        parentresid: resid2,
         sourceresid: res.data,
         resname: paperName
       });
@@ -87,11 +90,15 @@ class TestPaperManager extends React.Component {
         sourceresid: res.data,
         resname: '多选-' + paperName
       });
+      const { papers } = this.state;
+      const paper = { RES_ID: res.data, RES_NAME: paperName };
+      papers.push(paper);
       this.setState({
         designPapering: true,
         addPaperVisible: false,
-        selectedResid: res.data,
-        createBtnLoading: false
+        selectedPaper: paper,
+        createBtnLoading: false,
+        papers: [...papers]
       });
     } catch (error) {
       console.log(error);

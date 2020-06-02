@@ -6,6 +6,7 @@ import InternalTraining from './InternalTraining';
 import InternalTrainingAuth from './InternalTrainingAuth';
 import TestPaperManager from './TestPaperManager';
 import http, { makeCancelable } from 'Util20/api';
+import TableData from 'Common/data/TableData';
 
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
@@ -32,7 +33,7 @@ class OnlineTrainingManager extends React.Component {
     const { coursePapers } = this.state;
     return (
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey="4"
         size="small"
         tabBarStyle={tabBarStyle}
         className="online-training-manager"
@@ -48,6 +49,20 @@ class OnlineTrainingManager extends React.Component {
         </TabPane>
         <TabPane tab="在线培训试卷管理" key="4">
           <TestPaperManager baseURL={baseURL} />
+        </TabPane>
+        <TabPane tab="考试回答记录" key="5">
+          <TableData
+            resid="644009541954"
+            subtractH={220}
+            hasRowView={false}
+            hasModify={false}
+            hasDelete={false}
+            hasAdd={false}
+            tableComponent="ag-grid"
+            sideBarAg={true}
+            hasRowSelection={true}
+            baseURL={baseURL}
+          />
         </TabPane>
       </Tabs>
     );
