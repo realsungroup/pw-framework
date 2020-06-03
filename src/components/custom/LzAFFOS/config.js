@@ -121,8 +121,10 @@ export const inExaminationAndApproval = {
         defaultColumnWidth: 100,
         actionBarWidth: 100,
         subtractH: 196,
-        actionBarToFixed:false,
+        actionBarFixed: false,
         rowEditAddPosition:'start',
+        hasRowEditAdd: true,
+        storeWay: 'fe',
         formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' }
       }
     },

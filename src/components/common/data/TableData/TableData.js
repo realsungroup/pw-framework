@@ -1201,7 +1201,7 @@ class TableData extends React.Component {
   };
 
   handleRowSave = (form, oldRecord) => {
-    const { hasRowEdit } = this.props;
+    const { hasRowEdit, storeWay } = this.props;
     const { validateFields } = form;
     validateFields(async (err, values) => {
       if (err) {
@@ -1218,6 +1218,18 @@ class TableData extends React.Component {
         httpParams.baseURL = baseURL;
       }
 
+      if (storeWay === 'fe') {
+        const dataSource = [...this.state.dataSource];
+        const index = dataSource.findIndex(
+          item => item.REC_ID === formData.REC_ID
+        );
+        dataSource.splice(index, 1, { ...formData });
+
+        // 保存到前端
+        return this.setState({ editingKey: null, dataSource });
+      }
+
+      // 保存到后端
       // 添加记录
       if (this.triggerRowEditType === 'add') {
         this.p2 = makeCancelable(
