@@ -38,6 +38,25 @@ const getResColumns = cmscolumninfo => {
 };
 
 /**
+ * 精确的 where 语句转换为模式搜索的 where 语句，如：
+ * "C3_609845305680 = '11' and C3_610390410802 = '121'" =》 "C3_609845305680 like '%11%' and C3_610390410802 like '%121%'"
+ * @param {string} cmsWhere cmswhere，如："C3_609845305680 = '11' and C3_610390410802 = '121'"
+ */
+const accurate2fuzzy = (cmsWhere) => {
+  if (!cmsWhere) {
+    return ''
+  }
+  const a1 = cmsWhere.split('and').map(item => item.trim());
+  a1.forEach((s, index) => {
+    const sArr = s.split('=').map(item => item.trim());
+    sArr[1] = sArr[1].replace(/'/g, '');
+    sArr[1] = `'%${sArr[1]}%'`;
+    a1[index] = `${sArr[0]} like ${sArr[1]}`;
+  });
+  return a1.join(' and ');
+}
+
+/**
  * TableData
  */
 class TableData extends React.Component {
@@ -1470,7 +1489,7 @@ class TableData extends React.Component {
 
   _cmsWhere = '';
   getCmsWhere = cmsWhere => {
-    this._cmsWhere = cmsWhere;
+    this._cmsWhere = accurate2fuzzy(cmsWhere);
     this.handleRefresh(true);
   };
 
