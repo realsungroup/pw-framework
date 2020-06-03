@@ -40,19 +40,34 @@ class TestPaperManager extends React.Component {
     selectedPaper: null,
     createBtnLoading: false,
     fetchingPapers: true,
-    filterText: ''
+    filterText: '',
+    chapters: []
   };
 
-  componentDidMount() {
-    this.fetchPapers();
+  async componentDidMount() {
+    this.setState({ fetchingPapers: true });
+    await this.fetchPapers();
+    await this.fetchChapters();
+    this.setState({ fetchingPapers: false });
   }
   fetchPapers = async () => {
     try {
-      this.setState({ fetchingPapers: true });
       const res = await http({ baseURL: this.props.baseURL }).getUserAppLinks({
         parentresid: resid1
       });
-      this.setState({ papers: res.data, fetchingPapers: false });
+      this.setState({ papers: res.data });
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    }
+  };
+
+  fetchChapters = async () => {
+    try {
+      const res = await http({ baseURL: this.props.baseURL }).getTable({
+        resid: 636732588990
+      });
+      this.setState({ chapters: res.data });
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -91,7 +106,7 @@ class TestPaperManager extends React.Component {
         resname: '多选-' + paperName
       });
       const { papers } = this.state;
-      const paper = { RES_ID: res.data, RES_NAME: paperName };
+      const paper = { RES_ID: res.data, RES_NAME: paperName, RES_PID: resid1 };
       papers.push(paper);
       this.setState({
         designPapering: true,
@@ -112,7 +127,7 @@ class TestPaperManager extends React.Component {
   };
 
   renderPapers = () => {
-    const { papers, fetchingPapers, filterText } = this.state;
+    const { papers, fetchingPapers, filterText, chapters } = this.state;
     return fetchingPapers ? (
       <Spin />
     ) : (
@@ -158,7 +173,18 @@ class TestPaperManager extends React.Component {
                   }}
                 >
                   <h4>{paper.RES_NAME}</h4>
-                  <p>已关联章节</p>
+                  <p>
+                    {chapters.some(chapter => {
+                      console.log(
+                        chapter.testMain,
+                        paper.RES_ID,
+                        chapter.testMain == paper.RES_ID
+                      );
+                      return chapter.testMain == paper.RES_ID;
+                    })
+                      ? '已关联章节'
+                      : '未关联章节'}
+                  </p>
                   <Icon type="delete" className="test-paper-delete-btn" />
                 </div>
               );

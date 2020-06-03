@@ -586,10 +586,14 @@ class EntryTraining extends React.Component {
                 value={addChapterData.C3_636735464189}
                 optionFilterProp="children"
                 onChange={value => {
+                  const paper = coursePapers.find(
+                    paper => paper.RES_ID == value
+                  );
                   this.setState({
                     addChapterData: {
                       ...this.state.addChapterData,
-                      C3_636735464189: value
+                      C3_636735464189: value,
+                      testMain: paper.RES_INDPID
                     }
                   });
                 }}
@@ -645,10 +649,14 @@ class EntryTraining extends React.Component {
                 value={modifyChapterData.C3_636735464189}
                 optionFilterProp="children"
                 onChange={value => {
+                  const paper = coursePapers.find(
+                    paper => paper.RES_ID == value
+                  );
                   this.setState({
                     modifyChapterData: {
                       ...this.state.modifyChapterData,
-                      C3_636735464189: value
+                      C3_636735464189: value,
+                      testMain: paper.RES_INDPID
                     }
                   });
                 }}

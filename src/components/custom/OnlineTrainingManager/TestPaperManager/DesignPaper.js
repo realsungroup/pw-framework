@@ -244,7 +244,7 @@ class DesignPaper extends React.Component {
         mutiselect: isMultiple[0]
       });
       this.setState({
-        columnInfo: res2.data,
+        columnInfo: res2.data.filter(item => item.ColNotes),
         createBtnLoading: false,
         addQuestionVisible: false
       });
@@ -264,7 +264,7 @@ class DesignPaper extends React.Component {
         colname
       });
       this.setState({
-        columnInfo: res.data.data
+        columnInfo: res.data.data.filter(item => item.ColNotes)
       });
     } catch (error) {
       console.log(error);
@@ -277,7 +277,10 @@ class DesignPaper extends React.Component {
     try {
       this.setState({ savingQuestion: true });
       const res = await http({ baseURL }).editColumnOfUserResource(data);
-      this.setState({ savingQuestion: false, columnInfo: res.data.data });
+      this.setState({
+        savingQuestion: false,
+        columnInfo: res.data.data.filter(item => item.ColNotes)
+      });
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -291,7 +294,10 @@ class DesignPaper extends React.Component {
     try {
       this.setState({ savingQuestion: true });
       const res = await http({ baseURL }).setColScore({ ...data, resid });
-      this.setState({ savingQuestion: false, columnInfo: res.data });
+      this.setState({
+        savingQuestion: false,
+        columnInfo: res.data.filter(item => item.ColNotes)
+      });
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -311,7 +317,10 @@ class DesignPaper extends React.Component {
         ...data,
         resid
       });
-      this.setState({ savingQuestion: false, columnInfo: res.data.data });
+      this.setState({
+        savingQuestion: false,
+        columnInfo: res.data.filter(item => item.ColNotes)
+      });
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -576,7 +585,7 @@ class DesignPaper extends React.Component {
         );
       }
     }
-
+    // console.log(selectedQuestion);
     return (
       <div className="question-editor">
         <Spin spinning={savingQuestion}>
@@ -659,15 +668,45 @@ class DesignPaper extends React.Component {
                   );
                 })}
               {ColValType === 1 &&
-                selectedQuestion.ValueOptions.map(option => {
+                selectedQuestion.ValueOptions.map((option, index) => {
                   return (
-                    <div className="question-option" key={option}>
-                      <Input value={option} />
+                    <div className="question-option" key={index}>
+                      <Input
+                        value={option}
+                        onChange={e => {
+                          selectedQuestion.ValueOptions[index] = e.target.value;
+                          this.setState({
+                            selectedQuestion: {
+                              ...selectedQuestion
+                            }
+                          });
+                        }}
+                        onBlur={() => {
+                          this.setSingleOption({
+                            colname: selectedQuestion.ColName,
+                            options: selectedQuestion.ValueOptions.join(',')
+                          });
+                        }}
+                      />
                       <div className="question-option-actions">
-                        <Icon
-                          type="delete"
-                          className="question-option-action question-option-action--danger"
-                        />
+                        <Popconfirm
+                          title="确认删除吗？"
+                          onConfirm={() => {
+                            selectedQuestion.ValueOptions.splice(index, 1);
+                            this.setSingleOption({
+                              colname: selectedQuestion.ColName,
+                              options: selectedQuestion.ValueOptions.join(',')
+                            });
+                            this.setState({
+                              selectedQuestion: { ...selectedQuestion }
+                            });
+                          }}
+                        >
+                          <Icon
+                            type="delete"
+                            className="question-option-action question-option-action--danger"
+                          />
+                        </Popconfirm>
                       </div>
                     </div>
                   );
@@ -694,11 +733,18 @@ class DesignPaper extends React.Component {
                     }
                   } else {
                     if (ColValType === 1) {
+                      const newOptions = selectedQuestion.ValueOptions.concat([
+                        ''
+                      ]);
                       this.setSingleOption({
                         colname: selectedQuestion.ColName,
-                        options: selectedQuestion.ValueOptions.concat([
-                          ''
-                        ]).join(',')
+                        options: newOptions.join(',')
+                      });
+                      this.setState({
+                        selectedQuestion: {
+                          ...selectedQuestion,
+                          ValueOptions: newOptions
+                        }
                       });
                     } else {
                       if (singleRecords[_mulptiRecords.length]) {
