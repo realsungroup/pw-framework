@@ -3,6 +3,7 @@ window[606476781618] = {
   name: 'AdminConfirm',
   title: '录入',
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
     resid: 605617716920,
     hasBeBtns: false,
     hasAdd: false,
@@ -200,6 +201,7 @@ window[606493652444] = {
   name: 'ExpireViolationsList',
   title: '到期违纪清单',
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
     resid: 605799219043,
     hasBeBtns: true,
     hasAdd: false,
@@ -223,6 +225,7 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
     searchFields: [
@@ -402,6 +405,7 @@ window[592305842055] = {
   // name: 'LzTable',
   name: 'StatisticAnalysisJC',
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
     // 单元组件 props
     resid: 590863325025,
     isSearch: false,
@@ -630,6 +634,7 @@ window[592400266558] = {
 
   name: 'LzMenuForms',
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
     mode: 'multiple',
     advSearchConfig: {
       // 高级搜索配置
@@ -2289,6 +2294,8 @@ window[642853675476] = {
   name: 'TableData', // 组件名称，
   title: '工资卡信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 497727888930,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2309,6 +2316,8 @@ window[642853692520] = {
   name: 'TableData', // 组件名称，
   title: '离职信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244132786765,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2329,6 +2338,8 @@ window[642853703890] = {
   name: 'TableData', // 组件名称，
   title: '除名信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 547739772004,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2349,6 +2360,8 @@ window[642853717153] = {
   name: 'TableData', // 组件名称，
   title: '办公室实习', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 424790789055,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2369,6 +2382,8 @@ window[642853731843] = {
   name: 'TableData', // 组件名称，
   title: '办公室外包', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 426094684841,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2389,6 +2404,8 @@ window[642853756410] = {
   name: 'TableData', // 组件名称，
   title: '职务定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 417736675691,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2409,6 +2426,8 @@ window[642853770096] = {
   name: 'TableData', // 组件名称，
   title: '级别定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 449335746776,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2429,6 +2448,8 @@ window[642853871961] = {
   name: 'TableData', // 组件名称，
   title: '项目定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 308874433885,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2449,6 +2470,8 @@ window[642853893908] = {
   name: 'TableData', // 组件名称，
   title: '期间定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 424358078333,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2469,6 +2492,8 @@ window[642853907777] = {
   name: 'TableData', // 组件名称，
   title: '班次定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 375278046796,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2491,7 +2516,8 @@ window[642853918132] = {
   title: '排班定义', // 功能模块名称
   props: {
     resid: 375292143375,
-    baseURL:'http://ngrok5.realsun.me:6060',
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     mainTableProps:{
       actionBarWidth: 300,
       hasAdd: true,
@@ -2519,6 +2545,8 @@ window[642853928356] = {
   name: 'TableData', // 组件名称，
   title: '考勤数据锁定', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 432205173401,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2539,6 +2567,8 @@ window[642853955171] = {
   name: 'TableData', // 组件名称，
   title: '部门授权', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423682233289,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2559,6 +2589,8 @@ window[642854041376] = {
   name: 'TableData', // 组件名称，
   title: '节日登记', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 375364128640,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2579,6 +2611,8 @@ window[642854056479] = {
   name: 'TableData', // 组件名称，
   title: '节日调休', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 375455814611,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2601,7 +2635,8 @@ window[642854067180] = {
   title: '年假台账', // 功能模块名称
   props: {
     resid: 429955296972,
-     baseURL:'http://ngrok5.realsun.me:6060',
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     mainTableProps:{
       actionBarWidth: 200,
       hasAdd: true,
@@ -2632,6 +2667,8 @@ window[642854077482] = {
   name: 'TableData', // 组件名称，
   title: '年假年度剩余调整', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 441994427244,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2656,7 +2693,7 @@ window[642854088542] = {
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasModify: true,
     hasBackBtn: true,
@@ -2676,7 +2713,8 @@ window[642854098292] = {
   title: '哺乳假台账', // 功能模块名称
   props: {
     resid: 435412554124,
-     baseURL:'http://ngrok5.realsun.me:6060',
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     mainTableProps:{
       actionBarWidth: 200,
       hasAdd: true,
@@ -2703,6 +2741,8 @@ window[642854107052] = {
   name: 'TableData', // 组件名称，
   title: '哺乳假使用明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 435419664427,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2723,6 +2763,8 @@ window[642854117487] = {
   name: 'TableData', // 组件名称，
   title: '调休假台账', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 435431842051,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2743,6 +2785,8 @@ window[642854131163] = {
   name: 'TableData', // 组件名称，
   title: '调休年度剩余调整', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 442578987574,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2763,6 +2807,8 @@ window[642854141907] = {
   name: 'TableData', // 组件名称，
   title: '事假台账', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518262920381,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2783,6 +2829,8 @@ window[642854704644] = {
   name: 'TableData', // 组件名称，
   title: '班组调整记录查询', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423660730564,
     actionBarWidth: 200,
     hasAdd: true,
@@ -2803,11 +2851,11 @@ window[642854157717] = {
   name: 'TableData', // 组件名称，
   title: '班组调整记录查询', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423660730564,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2828,7 +2876,7 @@ window[642856273477] = {
     resid: 615914981961,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2850,7 +2898,7 @@ window[618661462541] = {
     resid: 605636164944,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2872,8 +2920,6 @@ window[642855799959] = {
     resid: 527959305537,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -2916,7 +2962,7 @@ window[642856283564] = {
     resid: 561649722687,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2938,7 +2984,7 @@ window[642854180216] = {
     resid: 423666035454,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2953,14 +2999,14 @@ window[642854180216] = {
     subtractH: 240
   }
 };
-window[642854167694] = {
+window[642854999190] = {
   name: 'TableData', // 组件名称，
   title: '班组调整', // 功能模块名称
   props: {
     resid: 423574450430,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -2975,14 +3021,14 @@ window[642854167694] = {
     subtractH: 240
   }
 };
-window[642854189801] = {
+window[642855062753] = {
   name: 'TableData', // 组件名称，
   title: '班次调整', // 功能模块名称
   props: {
     resid: 423664972378,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -3001,6 +3047,8 @@ window[642854713880] = {
   name: 'TableData', // 组件名称，
   title: '班次调整记录查询', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423666035454,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3021,6 +3069,8 @@ window[642854200143] = {
   name: 'TableData', // 组件名称，
   title: '产线定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 525642530090,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3041,6 +3091,8 @@ window[642854211673] = {
   name: 'TableData', // 组件名称，
   title: 'RBA规则定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 525780641896,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3063,7 +3115,7 @@ window[642854223262] = {
   props: {
     resid: 527089107422,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
@@ -3084,7 +3136,7 @@ window[642854235003] = {
   title: 'RBA排班锁定', // 功能模块名称
   props: {
     resid: 619700236031,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     actionBarWidth: 200,
@@ -3108,7 +3160,7 @@ window[642854252939] = {
   props: {
     resid: 611406015223,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasAdd: true,
@@ -3132,7 +3184,7 @@ window[642854266702] = {
     resid: 608738442390,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasBeBtns: true,
@@ -3154,7 +3206,7 @@ window[642854279289] = {
   props: {
     resid: 616676083973,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasAdd: true,
@@ -3176,7 +3228,7 @@ window[642854434101] = {
   title: '考勤日报', // 功能模块名称
   props: {
     resid: 375296167687,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
     hasAdd: true,
@@ -3198,7 +3250,7 @@ window[642854450973] = {
   title: '考勤月报', // 功能模块名称
   props: {
     resid: 311025002785,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
     hasAdd: true,
@@ -3219,6 +3271,8 @@ window[642854462178] = {
   name: 'TableData', // 组件名称，
   title: '上海公出无锡报表', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 556378759707,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3241,8 +3295,8 @@ window[642854476015] = {
   props: {
     resid: 599061859652,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -3257,10 +3311,12 @@ window[642854476015] = {
     subtractH: 240
   }
 };
-window[642854476015] = {
+window[642868834485] = {
   name: 'TableData', // 组件名称，
   title: '考勤补结算', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 435408076402,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3302,8 +3358,8 @@ window[642854648916] = {
   title: '月度结算表', // 功能模块名称
   props: {
     resid: 431886989798,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
@@ -3320,7 +3376,7 @@ window[642854648916] = {
   }
 };
 window[642854660698] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤日报处理', // 功能模块名称
   props: {
@@ -3374,7 +3430,7 @@ window[642854669532] = {
   title: '薪资结算名单', // 功能模块名称
   props: {
     resid: 429954752986,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     actionBarWidth: 200,
     hasAdd: true,
@@ -3415,6 +3471,8 @@ window[642854689917] = {
   name: 'TableData', // 组件名称，
   title: '离职不结算名单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 445799437011,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3595,6 +3653,8 @@ window[642854826219] = {
   name: 'TableData', // 组件名称，
   title: '加班请假登记记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 509634460766,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3615,6 +3675,8 @@ window[642865344500] = {
   name: 'TableData', // 组件名称，
   title: '刷卡记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 375296681546,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3635,6 +3697,8 @@ window[642854845983] = {
   name: 'TableData', // 组件名称，
   title: '刷卡登记', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 382917623098,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3655,6 +3719,8 @@ window[642854858872] = {
   name: 'TableData', // 组件名称，
   title: '请假登记', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423662411106,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3675,6 +3741,8 @@ window[642854754543] = {
   name: 'TableData', // 组件名称，
   title: '请假导入错误记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 425603753670,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3695,6 +3763,8 @@ window[642854885216] = {
   name: 'TableData', // 组件名称，
   title: '加班登记', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 425248261392,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3715,6 +3785,8 @@ window[642854896162] = {
   name: 'TableData', // 组件名称，
   title: '加班未确认', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 430310411405,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3735,6 +3807,8 @@ window[642865689790] = {
   name: 'TableData', // 组件名称，
   title: '加班导入错误记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 429707656053,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3755,6 +3829,8 @@ window[642854917620] = {
   name: 'TableData', // 组件名称，
   title: '加班导入记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 432051276159,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3775,6 +3851,8 @@ window[642854999190] = {
   name: 'TableData', // 组件名称，
   title: '班组调整', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423574450430,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3795,6 +3873,8 @@ window[642865743568] = {
   name: 'TableData', // 组件名称，
   title: '班组导入错误记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 429708025503,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3815,6 +3895,8 @@ window[642855062753] = {
   name: 'TableData', // 组件名称，
   title: '班次调整', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423664972378,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3835,6 +3917,8 @@ window[642865760883] = {
   name: 'TableData', // 组件名称，
   title: '班次导入错误记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 429708037784,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3855,6 +3939,8 @@ window[642855075847] = {
   name: 'TableData', // 组件名称，
   title: '加班补贴导入', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 437046073629,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3875,6 +3961,8 @@ window[642855085886] = {
   name: 'TableData', // 组件名称，
   title: '每月基数导入', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 427541771982,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3895,11 +3983,11 @@ window[642855095782] = {
   name: 'TableData', // 组件名称，
   title: '审批请假加班记录查询', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 450887249266,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3923,7 +4011,7 @@ window[642855105931] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasDelete: true,
     hasRowModify: true,
@@ -3939,6 +4027,8 @@ window[642855115194] = {
   name: 'TableData', // 组件名称，
   title: '已撤销移动请假加班记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 563450902742,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3959,6 +4049,8 @@ window[642868538751] = {
   name: 'TableData', // 组件名称，
   title: '请假加班审批记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 549048498204,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3979,6 +4071,8 @@ window[642855166893] = {
   name: 'TableData', // 组件名称，
   title: '考勤事项审批设置', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 449351877765,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4000,6 +4094,8 @@ window[642855176494] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤审批流程信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 449439660450,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4030,6 +4126,8 @@ window[642855189869] = {
   name: 'TableData', // 组件名称，
   title: '考勤事项审批流', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 448999733055,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4051,6 +4149,8 @@ window[642855262376] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待审核招聘需求', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518463420928,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4079,6 +4179,8 @@ window[642855273462] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 519213761827,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4106,6 +4208,8 @@ window[642855707652] = {
   name: 'TableData', // 组件名称，
   title: '已拒绝招聘需求', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518448231083,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4127,6 +4231,8 @@ window[642855719230] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518447767466,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4157,6 +4263,8 @@ window[642855734719] = {
   name: 'TableData', // 组件名称，
   title: '需总部审批', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 578151493683,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4178,6 +4286,8 @@ window[642855746711] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待录用员工工资审批', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 621522035695,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4205,6 +4315,8 @@ window[642855760886] = {
   name: 'TableData', // 组件名称，
   title: '待录用员工薪资信息表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 621522106327,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4225,6 +4337,8 @@ window[642855770350] = {
   name: 'TableData', // 组件名称，
   title: '我的招聘申请', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518460953577,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4246,6 +4360,8 @@ window[642855780253] = {
   name:'MainTableSubTable',
   title: '我的招聘审批', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 518442541615,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4274,6 +4390,8 @@ window[644083949537] = {
   name:'MainTableSubTable',
   title: 'S1S2生产人员招聘', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 527959305537,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4304,6 +4422,8 @@ window[642856303619] = {
   name: 'TableData', // 组件名称，
   title: '员工年度授予计划', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561553433582,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4325,6 +4445,8 @@ window[642856315965] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '财年授予定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561571034816,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4358,6 +4480,8 @@ window[642856328223] = {
   name: 'TableData', // 组件名称，
   title: '员工年度授予名单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561571598834,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4378,6 +4502,8 @@ window[642856338095] = {
   name: 'TableData', // 组件名称，
   title: '员工年度授予HR审核', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561571827662,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4398,6 +4524,8 @@ window[642856348581] = {
   name: 'TableData', // 组件名称，
   title: '员工年度授予部门调整', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561571882590,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4418,6 +4546,8 @@ window[642856357054] = {
   name: 'TableData', // 组件名称，
   title: '员工年度授予导出', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561572171961,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4438,6 +4568,8 @@ window[642856366737] = {
   name: 'TableData', // 组件名称，
   title: '个人查看授予明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 567704019233,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4460,7 +4592,7 @@ window[642856395014] = {
   props: {
     resid: 438956460750,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
@@ -4482,7 +4614,7 @@ window[642856420818] = {
   props: {
     resid: 498754836060,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
@@ -4502,6 +4634,8 @@ window[642856432739] = {
   name: 'TableData', // 组件名称，
   title: '新员工薪资', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 622312148402,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4522,6 +4656,8 @@ window[642856442104] = {
   name: 'TableData', // 组件名称，
   title: '实习生工资明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 466074745928,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4542,6 +4678,8 @@ window[642856451989] = {
   name: 'TableData', // 组件名称，
   title: '经济补偿金', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 466092254274,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4562,6 +4700,8 @@ window[642856463210] = {
   name: 'TableData', // 组件名称，
   title: '研发人员薪资导出', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 580490764050,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4584,7 +4724,7 @@ window[642856472970] = {
   props: {
     resid: 631650286919,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasAdd: true,
@@ -4608,7 +4748,7 @@ window[642856600971] = {
     resid: 631650245633,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasBeBtns: true,
     hasModify: true,
@@ -4629,7 +4769,7 @@ window[642856612138] = {
   props: {
     resid: 469639002606,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasAdd: true,
@@ -4650,6 +4790,8 @@ window[642856627631] = {
   name: 'TableData', // 组件名称，
   title: 'DL工资审核附件', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 639652386422,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4670,6 +4812,8 @@ window[642856644144] = {
   name: 'TableData', // 组件名称，
   title: 'DL工资审批记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 631911796331,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4691,6 +4835,8 @@ window[642856652519] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'DL工资审核', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 631981611070,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4806,6 +4952,8 @@ window[642856661616] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '工资审核', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 501177761232,
     mainTableProps:{
       actionBarWidth: 200,
@@ -4923,6 +5071,8 @@ window[642856673827] = {
   name: 'TableData', // 组件名称，
   title: '工资差异明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 483137369847,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4943,6 +5093,8 @@ window[642856682732] = {
   name: 'TableData', // 组件名称，
   title: '工资审批记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 528384647857,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4965,7 +5117,7 @@ window[642856691841] = {
   props: {
     resid: 526569913543,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
@@ -4987,7 +5139,7 @@ window[642856702868] = {
   props: {
     resid: 537450483861,
     actionBarWidth: 200,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
     hasBeBtns: true,
@@ -5010,7 +5162,7 @@ window[642856714810] = {
     resid: 537450500319,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
 
     hasBeBtns: true,
@@ -5031,6 +5183,8 @@ window[642856723891] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '十三薪审批', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 537461583719,
     mainTableProps:{
       actionBarWidth: 200,
@@ -5061,6 +5215,8 @@ window[642856733155] = {
   name: 'TableData', // 组件名称，
   title: '十三薪审批记录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 537453474424,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5081,6 +5237,8 @@ window[642856745730] = {
   name: 'TableData', // 组件名称，
   title: '个税税率表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244152029750,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5101,6 +5259,8 @@ window[642856753982] = {
   name: 'TableData', // 组件名称，
   title: '个税基数表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244152488375,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5122,6 +5282,8 @@ window[642856763791] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险基数表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244154194921,
     mainTableProps:{
       actionBarWidth: 200,
@@ -5153,6 +5315,8 @@ window[642856772119] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险比例表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244153076250,
     mainTableProps:{
       actionBarWidth: 200,
@@ -5180,6 +5344,8 @@ window[642856782319] = {
   name: 'TableData', // 组件名称，
   title: '社保类型', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 294361971375,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5200,6 +5366,8 @@ window[642856799479] = {
   name: 'TableData', // 组件名称，
   title: '劳务公司名单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 418249909821,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5220,6 +5388,8 @@ window[642856807541] = {
   name: 'TableData', // 组件名称，
   title: '病假扣款比例', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 433711303327,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5240,6 +5410,8 @@ window[642856817466] = {
   name: 'TableData', // 组件名称，
   title: '社保关系', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 438600204340,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5260,8 +5432,10 @@ window[642856836829] = {
   name: 'TableData', // 组件名称，
   title: '生成工资分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 441282320318,
-    actionBarWidth: 200,
+    actionBarWidth: 300,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -5270,6 +5444,8 @@ window[642856836829] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5280,6 +5456,9 @@ window[642856846560] = {
   name: 'TableData', // 组件名称，
   title: '生成工资财务分录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 476546200533,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5300,6 +5479,9 @@ window[642858017774] = {
   name: 'TableData', // 组件名称，
   title: '公司工资分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 441207245544,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5320,6 +5502,9 @@ window[642858195015] = {
   name: 'TableData', // 组件名称，
   title: '外包分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 527159436080,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5340,6 +5525,9 @@ window[642858209225] = {
   name: 'TableData', // 组件名称，
   title: '非外包人员分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 527188258798,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5360,6 +5548,9 @@ window[642858219205] = {
   name: 'TableData', // 组件名称，
   title: 'DL非外包分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 632588177275,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5380,6 +5571,8 @@ window[642858230550] = {
   name: 'TableData', // 组件名称，
   title: '工作地工资分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 441210406417,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5400,6 +5593,8 @@ window[642858239772] = {
   name: 'TableData', // 组件名称，
   title: '派遣公司工资分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 441290388300,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5420,6 +5615,9 @@ window[642858250217] = {
   name: 'TableData', // 组件名称，
   title: '外包分配表-柏合', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 641211714413,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5440,6 +5638,8 @@ window[642858265046] = {
   name: 'TableData', // 组件名称，
   title: 'Oracel模块', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 558633802683,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5460,6 +5660,9 @@ window[642858275747] = {
   name: 'TableData', // 组件名称，
   title: '研发人员月度信息维护', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 548773045652,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5480,6 +5683,9 @@ window[642858287535] = {
   name: 'TableData', // 组件名称，
   title: '月度工时比例分配', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 556830749419,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5500,6 +5706,9 @@ window[643038878833] = {
   name: 'TableData', // 组件名称，
   title: '项目代码管理', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 548773450921,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5520,6 +5729,9 @@ window[642858302008] = {
   name: 'TableData', // 组件名称，
   title: '研发人员生成工资分配表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 548774841771,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5541,6 +5753,9 @@ window[642858311245] = {
   name: 'TableData', // 组件名称，
   title: '研发人员工资分配', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 549312161483,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5561,6 +5776,9 @@ window[642858321470] = {
   name: 'TableData', // 组件名称，
   title: '研发工作地工资分配', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 549315073634,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5581,6 +5799,9 @@ window[642858331244] = {
   name: 'TableData', // 组件名称，
   title: '研发人员工资凭证明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 549315898894,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5601,6 +5822,9 @@ window[642858341571] = {
   name: 'TableData', // 组件名称，
   title: '工时分配明细', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 551380257255,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5621,6 +5845,9 @@ window[642858355008] = {
   name: 'TableData', // 组件名称，
   title: '工时分配汇总表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 553432350418,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5642,6 +5869,9 @@ window[642858364531] = {
   name: 'TableData', // 组件名称，
   title: '生成研发财务分录', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 549316940861,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5662,6 +5892,9 @@ window[642858381832] = {
   name: 'TableData', // 组件名称，
   title: '研发人员清单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 556627948068,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5679,10 +5912,13 @@ window[642858381832] = {
   }
 };
 window[642858651331] = {
-  name: 'TableData', // 组件名称，
+  // name: 'TableData', // 组件名称，
   name: 'MainTableSubTables', // 组件名称，
   title: '个人财年评估表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 467806334724,
     mainTableProps:{
       actionBarWidth: 200,
@@ -5711,6 +5947,9 @@ window[642858661984] = {
   name: 'TableData', // 组件名称，
   title: '绩效评估财年定义', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isUseFormDefine:false,
     resid: 420161931474,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5911,6 +6150,8 @@ window[642864883370] = {
   name: 'TableData', // 组件名称，
   title: '安装申请-部门经理审批', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 531400430406,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5931,6 +6172,8 @@ window[642864894557] = {
   name: 'TableData', // 组件名称，
   title: '预算负责人审批', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 547116884120,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5951,6 +6194,8 @@ window[642864905946] = {
   name: 'TableData', // 组件名称，
   title: '安装情况记录', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 531401843164,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5971,6 +6216,8 @@ window[642864915093] = {
   name: 'TableData', // 组件名称，
   title: '安装成功的申请单', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 547133324903,
     actionBarWidth: 200,
     hasAdd: true,
@@ -5991,6 +6238,8 @@ window[642864924530] = {
   name: 'TableData', // 组件名称，
   title: '已经撤销的申请单', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 547133469814,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6011,6 +6260,8 @@ window[642864936700] = {
   name: 'TableData', // 组件名称，
   title: '已拒绝记录', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 606994091322,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6031,6 +6282,8 @@ window[642864955816] = {
   name: 'TableData', // 组件名称，
   title: '我的门禁开通申请', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 498060017391,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6051,6 +6304,8 @@ window[642864965745] = {
   name: 'TableData', // 组件名称，
   title: '审批下属门禁权限', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 498068110441,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6071,6 +6326,8 @@ window[642865093743] = {
   name: 'TableData', // 组件名称，
   title: '审批管辖门禁权限', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 498068191125,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6091,6 +6348,8 @@ window[642865104085] = {
   name: 'TableData', // 组件名称，
   title: '替他人申请门禁', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 498749604658,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6111,6 +6370,8 @@ window[642865117751] = {
   name: 'TableData', // 组件名称，
   title: '删除下属门禁授权', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 506167643900,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6131,6 +6392,8 @@ window[642865127153] = {
   name: 'TableData', // 组件名称，
   title: '门禁开通记录', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 518632114918,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6151,6 +6414,8 @@ window[642865138428] = {
   name: 'TableData', // 组件名称，
   title: '管理员邮件通知', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 596552265142,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6171,6 +6436,8 @@ window[642865148916] = {
   name: 'TableData', // 组件名称，
   title: '门禁权限月度名单', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 595166508878,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6191,6 +6458,8 @@ window[642865159694] = {
   name: 'TableData', // 组件名称，
   title: '当月门禁清单', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 629221162564,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6211,6 +6480,8 @@ window[642865168807] = {
   name: 'TableData', // 组件名称，
   title: '有误数据', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 596649621922,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6231,6 +6502,8 @@ window[642865180079] = {
   name: 'TableData', // 组件名称，
   title: '确认无误数据', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 596649568623,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6251,6 +6524,8 @@ window[642865189736] = {
   name: 'TableData', // 组件名称，
   title: '大厅门禁权限名单', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 601988366281,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6271,6 +6546,8 @@ window[642865230273] = {
   name: 'TableData', // 组件名称，
   title: '办卡信息', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 301050266340,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6291,6 +6568,8 @@ window[642865241049] = {
   name: 'TableData', // 组件名称，
   title: '设备信息', // 功能模块名称
   props: {
+    baseURL:'http://ngrok5.realsun.me:6060',
+    downloadBaseURL:'http://10.108.2.66:80',
     resid: 412431312761,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6555,15 +6834,14 @@ window[642854549263] = {
   name: 'TableData', // 组件名称，
   title: '结算汇总表', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 426597421978,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80/',
-
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -6590,6 +6868,56 @@ window[640366579330] = {
 
     hasDelete: true,
     hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+
+window[644335881606] = {
+  name: 'TableData', // 组件名称，
+  title: '财务IE日报汇总', // 功能模块名称
+  props: {
+    resid: 434745561835,
+    actionBarWidth: 200,
+    hasAdd: true,
+    addText:'浏览报表',
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[644327624410] = {
+  name: 'TableData', // 组件名称，
+  title: '公司选项', // 功能模块名称
+  props: {
+    resid: 375291923250,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowEdit: true,
+    actionBarFixed:false,
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
