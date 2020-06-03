@@ -1,7 +1,6 @@
 import React from 'react';
 import withTitle from 'Common/hoc/withTitle';
 import { getItem, setItem } from 'Util20/util';
-import './Desktop.less';
 import { message, Popover, Icon, Menu, Modal } from 'antd';
 import http from 'Util20/api';
 import folderPng from './assets/folder.png';
@@ -30,6 +29,10 @@ import logoPng from './assets/logo.png';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
 import { delay } from 'lodash';
+import Img from 'Common/ui/Img'
+
+
+import './Desktop.less';
 
 const { SubMenu } = Menu;
 const {
@@ -864,10 +867,11 @@ class Desktop extends React.Component {
         >
           <div className="desktop__folder">
             <div className="overlay"></div>
-            <img
+            <Img
               src={folder.url}
               alt="folder"
               className="desktop__folder-img"
+              defaultImg={folderPng}
             />
             <h3 className="desktop__folder-title">{folder.typeName}</h3>
           </div>
@@ -951,7 +955,6 @@ class Desktop extends React.Component {
       reminderListVisible,
       reminderListLoading,
       modifyPassModalVisible,
-      selectedBg,
       // activeApps,
       searchValue
     } = this.state;
@@ -964,7 +967,10 @@ class Desktop extends React.Component {
       onOpenOrgChart,
       onOpenDashboard,
       onReminderClick,
-      menus
+      menus,
+      onOpenColorPicker,
+      onOpenDesktopBg,
+      selectedBg
     } = this.props;
 
     // 背景样式
@@ -1032,7 +1038,7 @@ class Desktop extends React.Component {
           <MenuItem onClick={this.handleClearCache}>
             <span>清除缓存</span>
           </MenuItem>
-          <MenuItem onClick={this.handleOpenColorPicker}>
+          <MenuItem onClick={onOpenColorPicker}>
             <span>更换主题色</span>
           </MenuItem>
           <SubMenuItem
@@ -1067,7 +1073,7 @@ class Desktop extends React.Component {
             </MenuItem>
           </SubMenuItem>
           <MenuItem
-            onClick={this.handleOpenDesktopBg}
+            onClick={onOpenDesktopBg}
             className="deszktop__context-menu-desktop-icon-wrapper"
           >
             <img
