@@ -91,6 +91,7 @@
       background: #ffffff;
       display: flex;
       padding: 4px 20px;
+      align-items: center;
       &-back-btn {
         margin-right: 28px;
         cursor: pointer;
@@ -133,6 +134,10 @@
 
             cursor: pointer;
             display: flex;
+            &:hover,
+            &.selected {
+              border: 1px solid rgba(24, 144, 255, 1);
+            }
             .paper-question-number {
               margin-right: 16px;
             }
@@ -159,6 +164,7 @@
         flex: 1;
         background: #ffffff;
         padding: 16px;
+        overflow-y: auto;
         .add-option-btn {
           height: 24px;
           line-height: 24px;
