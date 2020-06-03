@@ -33,7 +33,7 @@ class OnlineTrainingManager extends React.Component {
     const { coursePapers } = this.state;
     return (
       <Tabs
-        defaultActiveKey="4"
+        defaultActiveKey="1"
         size="small"
         tabBarStyle={tabBarStyle}
         className="online-training-manager"
