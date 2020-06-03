@@ -1158,9 +1158,9 @@ class TableData extends React.Component {
 
   // 点击添加按钮
   handleAdd = () => {
-    const { hasRowEdit, rowEditAddPosition } = this.props;
-    if (!hasRowEdit) {
-      this.setState(
+    const { hasRowEdit, hasRowEditAdd, rowEditAddPosition } = this.props;
+    if (!hasRowEdit || !hasRowEditAdd) {
+      return this.setState(
         {
           recordFormShowMode: 'add',
           selectedRecord: {}
@@ -1186,18 +1186,18 @@ class TableData extends React.Component {
     } else {
       newDataSource = [...dataSource, nullRecord];
     }
+    this.triggerRowEditType = 'add';
     this.setState({
       dataSource: newDataSource,
       editingKey: nullRecord.REC_ID
     });
-    this.triggerRowEditType = 'add';
   };
 
   handleRowEdit = record => {
+    this.triggerRowEditType = 'rowEdit';
     this.setState({
       editingKey: record.REC_ID
     });
-    this.triggerRowEditType = 'rowEdit';
   };
 
   handleRowSave = (form, oldRecord) => {
