@@ -1,0 +1,32 @@
+.subordinate-achievements {
+  height: 100%;
+  display: flex;
+  &__menu {
+    width: 152px;
+    background: #ffffff;
+  }
+  &__main {
+    width: 272px;
+    padding: 16px 8px;
+    &-container {
+      background: #ffffff;
+      height: 100%;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &__table {
+    flex: 1;
+    padding: 16px 8px;
+    &-container {
+      background: #ffffff;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .subordinate-achievements-tabledata-container {
+        flex: 1;
+      }
+    }
+  }
+}

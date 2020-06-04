@@ -160,5 +160,7 @@ export {
   MyAssessmentTable,
   DirectlyUnderTarget,
   EvaluateManage,
-  WeeklySettlement
+  WeeklySettlement,
+  SubordinateAchievements,
+  AchievementResult
 } from '../components/custom/loadableCustom';

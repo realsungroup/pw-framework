@@ -6950,3 +6950,13 @@ window[644526445002] = {
   title: '周结算', // 功能模块名称
   props: {}
 };
+window[642858626812] = {
+  name: 'SubordinateAchievements', // 组件名称，
+  title: '查看下属绩效', // 功能模块名称
+  props: {}
+};
+window[642858635809] = {
+  name: 'AchievementResult', // 组件名称，
+  title: '绩效结果', // 功能模块名称
+  props: {}
+};
