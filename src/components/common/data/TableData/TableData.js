@@ -1302,7 +1302,7 @@ class TableData extends React.Component {
     let selectedRecord = record;
     if (!selectedRecord) {
       const { selectedRowKeys } = this.state.rowSelection;
-      if (selectedRowKeys.length !== 1) {
+      if (!selectedRowKeys || selectedRowKeys.length !== 1) {
         return message.error(intl.messages['TableData.pleaseSelectARecord']);
       }
       const { dataSource } = this.state;
