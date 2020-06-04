@@ -8,7 +8,10 @@
 // lib
 export { LzTable, LzMenuContainer } from '../loadableComponents';
 export { TableData, PWRedirect } from '../components/common/loadableCommon';
-export { BusinessManagement, MainTableSubTables } from '../components/common/loadableCommon';
+export {
+  BusinessManagement,
+  MainTableSubTables
+} from '../components/common/loadableCommon';
 export {
   TableDataWrap,
   TableDataInner,
@@ -152,4 +155,8 @@ export { WzApprove } from '../components/custom/loadableCustom';
 export { WzAdminApprove } from '../components/custom/loadableCustom';
 export { WzEquipmentApprove } from '../components/custom/loadableCustom';
 export { WzImportApprove } from '../components/custom/loadableCustom';
-export { OnlineTrainingManager } from '../components/custom/loadableCustom';
+export {
+  OnlineTrainingManager,
+  MyAssessmentTable,
+  DirectlyUnderTarget
+} from '../components/custom/loadableCustom';

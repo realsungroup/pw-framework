@@ -1,0 +1,68 @@
+.approval-target {
+  height: 100%;
+  display: flex;
+  padding: 16px;
+
+  &__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &__table {
+      flex: 1;
+      background: #ffffff;
+    }
+  }
+}
+
+.target-employee-info {
+  background: #ffffff;
+  margin-bottom: 8px;
+  display: flex;
+  padding: 8px 24px;
+  .employee-info-item {
+    margin-right: 12px;
+  }
+}
+.target-emlpoyee-list {
+  background: #ffffff;
+  margin-right: 8px;
+  width: 272px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    display: flex;
+    .header__left {
+      flex: 1;
+      margin-right: 8px;
+    }
+    .header__right {
+      flex: 1;
+    }
+  }
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .content__header {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+    .content__list {
+      flex: 1;
+      padding-top: 16px;
+      &-item {
+        display: flex;
+        color: #333333;
+        border: 1px solid rgba(232, 232, 232, 1);
+        padding: 8px;
+        &__checkbox-container {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
