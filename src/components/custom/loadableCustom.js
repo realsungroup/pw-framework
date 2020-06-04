@@ -745,3 +745,15 @@ export const OnlineTrainingManager = Loadable({
     return minLoading;
   }
 });
+export const MyAssessmentTable = Loadable({
+  loader: () => import('./MyAssessmentTable'),
+  loading() {
+    return minLoading;
+  }
+});
+export const DirectlyUnderTarget = Loadable({
+  loader: () => import('./DirectlyUnderTarget'),
+  loading() {
+    return minLoading;
+  }
+});

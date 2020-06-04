@@ -1,0 +1,58 @@
+.my-assessment-table {
+  height: 100%;
+  display: flex;
+  &__menu {
+    width: 152px;
+    background: #ffffff;
+  }
+  &__main {
+    width: 272px;
+    padding: 16px 8px;
+    &-container {
+      background: #ffffff;
+      height: 100%;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      .my-assessment-table__main__header {
+        display: flex;
+        &__left {
+          flex: 1;
+          margin-right: 8px;
+        }
+        &__right {
+          flex: 1;
+        }
+      }
+      .my-assessment-table__main__list {
+        flex: 1;
+        overflow-y: auto;
+        padding-top: 16px;
+        &-item {
+          display: flex;
+          border: 1px solid rgba(232, 232, 232, 1);
+          margin-bottom: 12px;
+          padding: 8px;
+          cursor: pointer;
+          &--selected {
+            border: 1px solid rgba(24, 144, 255, 1);
+          }
+          &__left {
+            flex: 1;
+            color: #333333;
+          }
+        }
+      }
+      .my-assessment-table__main__footer {
+      }
+    }
+  }
+  &__table {
+    flex: 1;
+    padding: 16px 8px;
+    &-container {
+      background: #ffffff;
+      height: 100%;
+    }
+  }
+}
