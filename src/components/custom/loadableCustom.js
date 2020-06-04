@@ -757,3 +757,15 @@ export const DirectlyUnderTarget = Loadable({
     return minLoading;
   }
 });
+export const EvaluateManage = Loadable({
+  loader: () => import('./EvaluateManage'),
+  loading() {
+    return minLoading;
+  }
+});
+export const WeeklySettlement = Loadable({
+  loader: () => import('./WeeklySettlement'),
+  loading() {
+    return minLoading;
+  }
+});

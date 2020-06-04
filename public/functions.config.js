@@ -6940,3 +6940,13 @@ window[642858605607] = {
   title: '直属目标管理', // 功能模块名称
   props: {}
 };
+window[642858615601] = {
+  name: 'EvaluateManage', // 组件名称，
+  title: '评价管理', // 功能模块名称
+  props: {}
+};
+window[644526445002] = {
+  name: 'WeeklySettlement', // 组件名称，
+  title: '周结算', // 功能模块名称
+  props: {}
+};

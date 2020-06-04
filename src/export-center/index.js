@@ -158,5 +158,7 @@ export { WzImportApprove } from '../components/custom/loadableCustom';
 export {
   OnlineTrainingManager,
   MyAssessmentTable,
-  DirectlyUnderTarget
+  DirectlyUnderTarget,
+  EvaluateManage,
+  WeeklySettlement
 } from '../components/custom/loadableCustom';
