@@ -743,4 +743,45 @@ export const propTypes = {
    * 默认：'start'
    */
   rowEditAddPosition: PropTypes.oneOf(['start', 'end']),
+
+  /**
+   * 行颜色配置
+   * 如：
+   * {
+   *   position: 'text'
+   * }
+   * 默认：-
+   */
+  rowColorConfig: PropTypes.shape({
+    // 行颜色所在的位置：'bg' 表示背景色 | 'text' 表示文字颜色
+    position: PropTypes.oneOf(['bg', 'text'])
+  }),
+
+  /**
+   * 行颜色应用规则
+   * 后端目前只支持最多三种颜色（对应三组规则，每组规则中对应 n 个条件，n 个条件使用 and 连接）
+   * 可以通过配置该规则。若前端配置了该规则，则不会去请求后端的规则；前端可以配置无线组规则，只需要在 key 的最后一位进行序号的递增即可
+   * 默认：-
+   */
+  // 规则示例（按照 RowColorCol1, 2, 3, 4 的顺序匹配颜色，匹配到了，就是用该序号的颜色，否则进行下一组匹配）
+  // const ruleData = {
+  //   // age >= 18 and sex = 0 时，颜色为 'red'
+  //   RowColorCol1: ['age', 'sex'], // 
+  //   RowColorCond1: ['>=', '='],
+  //   RowColorCondVal1: [18, 0],
+  //   RowColor1: 'red',
+  
+  //   // age >= 18 and sex = 1 时，颜色为 'green'
+  //   RowColorCol2: ['age', 'sex'],
+  //   RowColorCond2: ['>=', '='],
+  //   RowColorCondVal2: [18, 1],
+  //   RowColor2: 'green',
+  
+  //   // age < 18 and sex = 1 时，颜色为 'green'
+  //   RowColorCol3: ['age', 'sex'],
+  //   RowColorCond3: ['<', '='],
+  //   RowColorCondVal3: [18, 0],
+  //   RowColor3: 'blue',
+  // };
+  rowColorRules: PropTypes.object,
 };
