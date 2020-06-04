@@ -146,7 +146,7 @@ export default class LzAFFOS extends React.Component {
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
               formProps={{
-                saveText: '请在右侧添加访客信息后再提交',
+                saveText: '提交',
                 height: 500,
                 saveNeedConfirm: true
               }}
