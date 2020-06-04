@@ -38,6 +38,25 @@ const getResColumns = cmscolumninfo => {
 };
 
 /**
+ * 精确的 where 语句转换为模式搜索的 where 语句，如：
+ * "C3_609845305680 = '11' and C3_610390410802 = '121'" =》 "C3_609845305680 like '%11%' and C3_610390410802 like '%121%'"
+ * @param {string} cmsWhere cmswhere，如："C3_609845305680 = '11' and C3_610390410802 = '121'"
+ */
+const accurate2fuzzy = (cmsWhere) => {
+  if (!cmsWhere) {
+    return ''
+  }
+  const a1 = cmsWhere.split('and').map(item => item.trim());
+  a1.forEach((s, index) => {
+    const sArr = s.split('=').map(item => item.trim());
+    sArr[1] = sArr[1].replace(/'/g, '');
+    sArr[1] = `'%${sArr[1]}%'`;
+    a1[index] = `${sArr[0]} like ${sArr[1]}`;
+  });
+  return a1.join(' and ');
+}
+
+/**
  * TableData
  */
 class TableData extends React.Component {
@@ -1158,9 +1177,9 @@ class TableData extends React.Component {
 
   // 点击添加按钮
   handleAdd = () => {
-    const { hasRowEdit, rowEditAddPosition } = this.props;
-    if (!hasRowEdit) {
-      this.setState(
+    const { hasRowEdit, hasRowEditAdd, rowEditAddPosition } = this.props;
+    if (!hasRowEdit || !hasRowEditAdd) {
+      return this.setState(
         {
           recordFormShowMode: 'add',
           selectedRecord: {}
@@ -1186,22 +1205,22 @@ class TableData extends React.Component {
     } else {
       newDataSource = [...dataSource, nullRecord];
     }
+    this.triggerRowEditType = 'add';
     this.setState({
       dataSource: newDataSource,
       editingKey: nullRecord.REC_ID
     });
-    this.triggerRowEditType = 'add';
   };
 
   handleRowEdit = record => {
+    this.triggerRowEditType = 'rowEdit';
     this.setState({
       editingKey: record.REC_ID
     });
-    this.triggerRowEditType = 'rowEdit';
   };
 
   handleRowSave = (form, oldRecord) => {
-    const { hasRowEdit } = this.props;
+    const { hasRowEdit, storeWay } = this.props;
     const { validateFields } = form;
     validateFields(async (err, values) => {
       if (err) {
@@ -1218,6 +1237,18 @@ class TableData extends React.Component {
         httpParams.baseURL = baseURL;
       }
 
+      if (storeWay === 'fe') {
+        const dataSource = [...this.state.dataSource];
+        const index = dataSource.findIndex(
+          item => item.REC_ID === formData.REC_ID
+        );
+        dataSource.splice(index, 1, { ...formData });
+
+        // 保存到前端
+        return this.setState({ editingKey: null, dataSource });
+      }
+
+      // 保存到后端
       // 添加记录
       if (this.triggerRowEditType === 'add') {
         this.p2 = makeCancelable(
@@ -1458,7 +1489,7 @@ class TableData extends React.Component {
 
   _cmsWhere = '';
   getCmsWhere = cmsWhere => {
-    this._cmsWhere = cmsWhere;
+    this._cmsWhere = accurate2fuzzy(cmsWhere);
     this.handleRefresh(true);
   };
 

@@ -31,6 +31,7 @@ class TableDataDiscipline extends React.Component {
         style={{ height: '100vh' }}
       >
         <TableData
+        baseURL= 'http://ngrok5.realsun.me:6060'
           resid={622206065690}
           subtractH={220}
           hasBeBtns={false}

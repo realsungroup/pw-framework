@@ -78,7 +78,8 @@ export const defaultProps = {
   rowSelection: {},
   isUseBESize: false,
   isUseFormDefine: true,
-  rowEditAddPosition: 'start'
+  rowEditAddPosition: 'start',
+  hasRowEditAdd: false,
 };
 
 export const propTypes = {
@@ -730,6 +731,12 @@ export const propTypes = {
    * 默认：true
    */
   isUseFormDefine: PropTypes.bool,
+
+  /**
+   * 是否有行内编辑添加功能（必须开启 hasRowEdit 配置）
+   * 默认：false
+   */
+  hasRowEditAdd: PropTypes.bool,
 
   /**
    * 行内编辑添加时的行所在的位置：'start' 记录第一行 | 'end' 记录最后一行

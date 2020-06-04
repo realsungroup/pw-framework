@@ -27,6 +27,8 @@ import moment from 'moment';
 import memoizeone from 'memoize-one';
 import AbbreviationApp from './AbbreviationApp';
 import { OrgChartData } from '../../components/common/loadableCommon';
+import DesktopBg from './DesktopBg';
+import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 
 import {
   DesktopReminderList,
@@ -124,6 +126,10 @@ export default class PageContainer extends React.Component {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
     const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
+    const selectedBg = JSON.parse(getItem('selectedBg')) || {
+      bgMode: 'image', // 背景模式
+      value: defaultDesktopBg // 背景值
+    };
     this.state = {
       reminderNum: 0,
       password: '',
@@ -143,7 +149,8 @@ export default class PageContainer extends React.Component {
       showAbbreviation: false,
       recentApps: [],
       abbreviationDoms: [],
-      color // 主题色
+      color, // 主题色
+      selectedBg
     };
     this.lockScreenRef = React.createRef();
   }
@@ -1241,6 +1248,71 @@ export default class PageContainer extends React.Component {
     ]);
   };
 
+  handleOpenColorPicker = () => {
+    const { color } = this.state;
+    const children = (
+      <DesktopColorPicker
+        color={color}
+        onColorSelect={this.handleSelectColor}
+      />
+    );
+
+    const x = this.desktopMainRef.clientWidth / 2 - 115;
+    const y = this.desktopMainRef.clientHeight / 2 - 190;
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '更换主题色',
+        activeAppOthersProps: {
+          width: 230,
+          height: 380,
+          x,
+          y,
+          customWidth: 230,
+          customHeight: 380,
+          customX: x,
+          customY: y,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
+  };
+
+  handleSelectDeskBg = selectedBg => {
+    this.setState({ selectedBg: { ...selectedBg } });
+    localStorage.setItem('selectedBg', JSON.stringify(selectedBg));
+  };
+  handleOpenDesktopBg = () => {
+    const { selectedBg } = this.state;
+    const children = (
+      <DesktopBg selectedBg={selectedBg} onSave={this.handleSelectDeskBg} />
+    );
+
+    const width = 800;
+    const height = this.desktopMainRef.clientHeight;
+    const x = this.desktopMainRef.clientWidth / 2 - 400;
+    const y = 0;
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '更换背景图片',
+        activeAppOthersProps: {
+          width,
+          height,
+          x,
+          y,
+          customWidth: width,
+          customHeight: height,
+          customX: x,
+          customY: y,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
+  };
+
   render() {
     if (!this.state.desktopStyle) {
       return null;
@@ -1277,7 +1349,8 @@ export default class PageContainer extends React.Component {
       allFoldersExpandedKeys,
       headerVisible,
       userInfo,
-      recentApps
+      recentApps,
+      selectedBg
     } = this.state;
 
     return (
@@ -1331,6 +1404,9 @@ export default class PageContainer extends React.Component {
                   onOpenDashboard={this.handleOpenDashboard}
                   onReminderClick={this.handleReminderListItemClick}
                   menus={menus}
+                  onOpenColorPicker={this.handleOpenColorPicker}
+                  onOpenDesktopBg={this.handleOpenDesktopBg}
+                  selectedBg={selectedBg}
                 ></Component>
               );
             }}
