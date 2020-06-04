@@ -36,15 +36,116 @@ const btnSizeMap = {
 const getResColumns = cmscolumninfo => {
   return cmscolumninfo.map(item => ({ ...item[item.id] }));
 };
+const getColor = (record, { cols, conds, vals, color }) => {
+  const len = cols.length;
+  let flag = true; // 是否符合规则
+  for (let i = 0; i < len; i++) {
+    const actualVal = record[cols[i]];
+    const value = vals[i];
+    const cond = conds[i];
+    let isBreak = false;
+    switch (cond) {
+      case '<': {
+        if (!(actualVal < value)) {
+          isBreak = true;
+        }
+        break;
+      }
+      case '<=': {
+        if (!(actualVal <= value)) {
+          isBreak = true;
+        }
+        break;
+      }
+      case '=': {
+        if (!(actualVal == value)) {
+          isBreak = true;
+        }
+        break;
+      }
+      case '>=': {
+        if (!(actualVal >= value)) {
+          isBreak = true;
+        }
+        break;
+      }
+      case '>': {
+        if (!(actualVal > value)) {
+          isBreak = true;
+        }
+        break;
+      }
+      default: {
+        isBreak = true;
+      }
+    }
+
+    if (isBreak) {
+      flag = false;
+      break;
+    }
+  }
+
+  return flag ? color : '';
+};
+
+const getColorByRules = (record, ruleData, ruleCount) => {
+  const dataFilter = item => {
+    if (typeof item === 'string' && !item) {
+      return false;
+    }
+    return true;
+  };
+
+  let color;
+  for (let i = 1; i <= ruleCount; i++) {
+    color = getColor(record, {
+      cols: ruleData[`RowColorCol${i}`].filter(dataFilter),
+      conds: ruleData[`RowColorCond${i}`].filter(dataFilter),
+      vals: ruleData[`RowColorCondVal${i}`].filter(dataFilter),
+      color: ruleData[`RowColor${i}`]
+    });
+    if (color) {
+      break;
+    }
+  }
+  return color;
+};
+
+const getRuleCount = ruleData => {
+  const keys = Object.keys(ruleData);
+  let count = 0;
+  keys.forEach(item => {
+    if (/RowColorCol\d+$/.test(item)) {
+      count++;
+    }
+  });
+  return count;
+};
+
+const getWithRowColorDataSource = (dataSource, ruleData) => {
+  const newDataSource = dataSource.map(item => ({ ...item }));
+
+  const ruleCount = getRuleCount(ruleData);
+
+  newDataSource.forEach(record => {
+    const color = getColorByRules(record, ruleData, ruleCount);
+    if (color) {
+      record._rowColor = color;
+    }
+  });
+
+  return newDataSource;
+};
 
 /**
  * 精确的 where 语句转换为模式搜索的 where 语句，如：
  * "C3_609845305680 = '11' and C3_610390410802 = '121'" =》 "C3_609845305680 like '%11%' and C3_610390410802 like '%121%'"
  * @param {string} cmsWhere cmswhere，如："C3_609845305680 = '11' and C3_610390410802 = '121'"
  */
-const accurate2fuzzy = (cmsWhere) => {
+const accurate2fuzzy = cmsWhere => {
   if (!cmsWhere) {
-    return ''
+    return '';
   }
   const a1 = cmsWhere.split('and').map(item => item.trim());
   a1.forEach((s, index) => {
@@ -54,7 +155,7 @@ const accurate2fuzzy = (cmsWhere) => {
     a1[index] = `${sArr[0]} like ${sArr[1]}`;
   });
   return a1.join(' and ');
-}
+};
 
 /**
  * TableData
@@ -144,6 +245,8 @@ class TableData extends React.Component {
     this.addEventListener();
 
     this.setState({ loading: false });
+
+    this.getRowColorData();
   };
 
   componentWillReceiveProps = async nextProps => {
@@ -197,6 +300,27 @@ class TableData extends React.Component {
       }
     }
   }
+
+  getRowColorData = async () => {
+    const { rowColorRules } = this.props;
+    let rules;
+    if (rowColorRules) {
+      rules = rowColorRules;
+    } else {
+      let res;
+      try {
+        res = await http().getRowColorData({ id: this._id });
+      } catch (err) {
+        message.error(err.message);
+        return;
+      }
+      rules = res.data;
+    }
+    const { dataSource } = this.state;
+    const newDataSource = getWithRowColorDataSource(dataSource, rules);
+    this.setState({ dataSource: newDataSource });
+  };
+
   addEventListener = () => {
     this.cb = debounce(this.handleResize, 200);
     window.addEventListener('resize', this.cb);
@@ -1572,7 +1696,7 @@ class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    const { hasRowEdit, isUseBESize } = this.props;
+    const { hasRowEdit, isUseBESize, rowColorConfig } = this.props;
     let newColumns = [...columns];
 
     // 行内编辑
@@ -1609,6 +1733,23 @@ class TableData extends React.Component {
             : newColumn.width;
         }
         return ret;
+      });
+    }
+
+    if (rowColorConfig) {
+      newColumns.forEach(item => {
+        item.render = (text, record, rowIndex) => {
+          const rowColor = record._rowColor;
+          if (rowColor) {
+            const style = {};
+            if (rowColorConfig.position === 'bg') {
+              style.backgroundColor = rowColor;
+            } else {
+              style.color = rowColor;
+            }
+            return <div style={style}>{text}</div>;
+          }
+        };
       });
     }
 
