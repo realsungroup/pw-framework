@@ -147,7 +147,9 @@ class AbsoluteForm extends React.PureComponent {
       operation,
       record,
       beforeSaveFields,
-      dblinkname
+      dblinkname,
+      saveMode,
+      onSingleChange
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -169,6 +171,8 @@ class AbsoluteForm extends React.PureComponent {
             hasBeforeSave={hasBeforeSave}
             beforeSaveFields={hasBeforeSave}
             dblinkname={dblinkname}
+            saveMode={saveMode}
+            onSingleChange={onSingleChange}
           />
         )}
       </FormItem>
@@ -193,7 +197,8 @@ class AbsoluteForm extends React.PureComponent {
       enCancelText,
       enEditText,
       saveNeedConfirm,
-      intl
+      intl,
+      saveMode
     } = this.props;
     let { containerControlArr, labelControllArr } = data;
     const containerHeight =
@@ -225,29 +230,31 @@ class AbsoluteForm extends React.PureComponent {
               labelControllArr,
               data
             )}
-        <div
-          style={{
-            position: 'absolute',
-            top: containerHeight - 80,
-            height: 60,
-            width: '100%'
-          }}
-        >
-          <PwFormFooter
-            hasEdit={hasEdit}
-            hasSave={hasSave}
-            hasCancel={hasCancel}
-            onEdit={onEdit}
-            onSave={onSave}
-            onCancel={onCancel}
-            mode={mode}
-            form={this.props.form}
-            saveText={getIntlVal(intl.locale, enSaveText, saveText)}
-            cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
-            editText={getIntlVal(intl.locale, enEditText, editText)}
-            saveNeedConfirm={saveNeedConfirm}
-          />
-        </div>
+        {saveMode === 'full' && (
+          <div
+            style={{
+              position: 'absolute',
+              top: containerHeight - 80,
+              height: 60,
+              width: '100%'
+            }}
+          >
+            <PwFormFooter
+              hasEdit={hasEdit}
+              hasSave={hasSave}
+              hasCancel={hasCancel}
+              onEdit={onEdit}
+              onSave={onSave}
+              onCancel={onCancel}
+              mode={mode}
+              form={this.props.form}
+              saveText={getIntlVal(intl.locale, enSaveText, saveText)}
+              cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
+              editText={getIntlVal(intl.locale, enEditText, editText)}
+              saveNeedConfirm={saveNeedConfirm}
+            />
+          </div>
+        )}
       </div>
     );
   }
