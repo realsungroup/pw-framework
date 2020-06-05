@@ -3318,6 +3318,7 @@ window[642854462178] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3334,12 +3335,13 @@ window[642854476015] = {
     downloadBaseURL: 'http://10.108.2.66:80',
     hasAdd: true,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3359,9 +3361,12 @@ window[642868834485] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3403,9 +3408,10 @@ window[642854648916] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3428,9 +3434,10 @@ window[642854660698] = {
       hasModify: true,
       hasBackBtn: true,
       hasDelete: true,
-      hasRowModify: true,
+      hasRowModify: false,
       hasRowView: true,
-      hasRowDelete: true,
+      hasRowDelete: false,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -3496,9 +3503,13 @@ window[642854678648] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3518,9 +3529,13 @@ window[642854689917] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    isUseFormDefine:false,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -3540,9 +3555,9 @@ window[642854704644] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -3562,9 +3577,10 @@ window[642854723134] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3584,9 +3600,10 @@ window[642854733765] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3606,9 +3623,10 @@ window[642854743729] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3630,6 +3648,30 @@ window[642854754543] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
+    isUseFormDefine:false,
+    hasRowDelete: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+window[642854868542] = {
+  name: 'TableData', // 组件名称，
+  title: '请假登记导入错误记录', // 功能模块名称
+  props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 425603753670,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    isUseFormDefine:false,
     hasRowDelete: false,
     formProps: {
       // height: 500
@@ -3651,6 +3693,7 @@ window[642854784459] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
+    isUseFormDefine:false,
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
@@ -3674,6 +3717,7 @@ window[642854766667] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
+    isUseFormDefine:false,
     hasRowDelete: false,
     formProps: {
       // height: 500
@@ -3694,6 +3738,7 @@ window[642854803335] = {
     hasModify: false,
     hasBackBtn: true,
     hasDelete: false,
+    isUseFormDefine:false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
@@ -3716,6 +3761,7 @@ window[642854814341] = {
     hasModify: false,
     hasBackBtn: true,
     hasDelete: false,
+    isUseFormDefine:false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
@@ -3738,6 +3784,7 @@ window[642854826219] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
+    isUseFormDefine:false,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
@@ -3813,28 +3860,7 @@ window[642854858872] = {
     subtractH: 240
   }
 };
-window[642854754543] = {
-  name: 'TableData', // 组件名称，
-  title: '请假导入错误记录', // 功能模块名称
-  props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://10.108.2.66:80/',
-    resid: 425603753670,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    formProps: {
-      // height: 500
-    },
-    subtractH: 240
-  }
-};
+
 window[642854885216] = {
   name: 'TableData', // 组件名称，
   title: '加班登记', // 功能模块名称
@@ -3843,14 +3869,16 @@ window[642854885216] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 425248261392,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    
     formProps: {
       // height: 500
     },
@@ -3865,14 +3893,15 @@ window[642854896162] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 430310411405,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasDelete: false,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3881,7 +3910,7 @@ window[642854896162] = {
 };
 window[642865689790] = {
   name: 'TableData', // 组件名称，
-  title: '加班导入错误记录', // 功能模块名称
+  title: '加班登记导入错误记录', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -3895,6 +3924,7 @@ window[642865689790] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3909,14 +3939,15 @@ window[642854917620] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 432051276159,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3947,7 +3978,7 @@ window[642854999190] = {
 };
 window[642865743568] = {
   name: 'TableData', // 组件名称，
-  title: '班组导入错误记录', // 功能模块名称
+  title: '班组调整导入错误记录', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -3961,6 +3992,7 @@ window[642865743568] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -3991,7 +4023,7 @@ window[642855062753] = {
 };
 window[642865760883] = {
   name: 'TableData', // 组件名称，
-  title: '班次导入错误记录', // 功能模块名称
+  title: '班次调整导入错误记录', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -4005,6 +4037,7 @@ window[642865760883] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4027,6 +4060,7 @@ window[642855075847] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4049,6 +4083,7 @@ window[642855085886] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4068,9 +4103,10 @@ window[642855095782] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4093,6 +4129,7 @@ window[642855105931] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4115,6 +4152,7 @@ window[642855115194] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4137,6 +4175,7 @@ window[642868538751] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4238,6 +4277,7 @@ window[642855262376] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -4269,6 +4309,7 @@ window[642855273462] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -4299,6 +4340,7 @@ window[642855707652] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4333,7 +4375,8 @@ window[642855719230] = {
         hasBeBtns: true
       },
       518461643267: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       }
     }
   }
@@ -4351,9 +4394,10 @@ window[642855734719] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4385,7 +4429,8 @@ window[642855746711] = {
     },
     subTablesProps: {
       621522106327: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       }
     }
   }
@@ -4406,6 +4451,7 @@ window[642855760886] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4495,13 +4541,11 @@ window[644083949537] = {
         hasBeBtns:true,
         isUseFormDefine:false,
       },
-      518461643267:{
+      527715777875:{
         isUseFormDefine:false,
         hasBeBtns:true
       },
-      518461643267: {
-        hasBeBtns: true
-      }
+      
     }
   }
 };
@@ -4521,6 +4565,7 @@ window[642856303619] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4545,6 +4590,7 @@ window[642856315965] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -4552,13 +4598,16 @@ window[642856315965] = {
     },
     subTablesProps: {
       561550682069: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       561550544816: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       568398863279: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       }
     }
   }
@@ -4601,6 +4650,7 @@ window[642856338095] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4622,6 +4672,7 @@ window[642856348581] = {
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
+    isUseFormDefine:false,
     hasRowDelete: true,
     formProps: {
       // height: 500
@@ -4645,6 +4696,7 @@ window[642856357054] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4667,6 +4719,7 @@ window[642856366737] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4711,6 +4764,7 @@ window[642856420818] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4733,6 +4787,7 @@ window[642856432739] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4777,6 +4832,7 @@ window[642856451989] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4867,6 +4923,7 @@ window[642856612138] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4889,6 +4946,7 @@ window[642856627631] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4924,7 +4982,7 @@ window[642856652519] = {
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
-    resid: 631981611070,
+    resid: 631902827113,
     mainTableProps: {
       actionBarWidth: 200,
       hasAdd: true,
@@ -4943,94 +5001,304 @@ window[642856652519] = {
     },
     subTablesProps: {
       631908306906: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908278263: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908322536: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908332741: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908345599: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908357382: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908368002: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908380066: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908391826: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908402889: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908414849: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908468437: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908487343: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908500686: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908512015: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908524164: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908535350: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908546056: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908556110: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908578110: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908587861: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908598349: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908607040: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908616827: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908628445: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908639692: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908648936: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908660368: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631908672225: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       },
       631909905356: {
-        hasBeBtns: true
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
       }
     }
   }
@@ -5060,98 +5328,137 @@ window[642856661616] = {
       subtractH: 240
     },
     subTablesProps: {
+      526569913543:{
+        hasBeBtns: true,
+        isUseFormDefine:false
+      },
+      528384647857:{
+        hasBeBtns: true,
+        isUseFormDefine:false
+      },
       483143248907: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       483143269379: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       483143292739: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       483143313607: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490441845783: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490441985369: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442033277: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442082614: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442208450: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442251347: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442311854: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442351603: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442367584: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442379053: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442394231: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       490442407188: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533377990246: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378160861: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378175759: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378198800: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378212840: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378238689: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378256722: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378269639: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378289607: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378309262: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378346468: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378368276: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378381536: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378397713: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       },
       533378418165: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        isUseFormDefine:false
       }
     }
   }
@@ -5172,6 +5479,7 @@ window[642856673827] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5194,6 +5502,7 @@ window[642856682732] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5216,6 +5525,7 @@ window[642856691841] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5238,6 +5548,7 @@ window[642856702868] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5261,6 +5572,7 @@ window[642856714810] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5276,7 +5588,7 @@ window[642856723891] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 537461583719,
     mainTableProps: {
-      actionBarWidth: 200,
+      actionBarWidth: 300,
       hasAdd: true,
       hasBeBtns: true,
       hasModify: true,
@@ -5284,6 +5596,7 @@ window[642856723891] = {
       hasDelete: true,
       hasRowModify: true,
       hasRowView: true,
+      isUseFormDefine:false,
       hasRowDelete: true,
       formProps: {
         // height: 500
@@ -5316,6 +5629,7 @@ window[642856733155] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5335,9 +5649,13 @@ window[642856745730] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -5360,6 +5678,10 @@ window[642856753982] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -5442,9 +5764,13 @@ window[642856782319] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -5464,9 +5790,13 @@ window[642856799479] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },

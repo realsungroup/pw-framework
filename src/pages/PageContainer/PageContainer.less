@@ -3,7 +3,9 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-
+  // https://stackoverflow.com/a/3971577
+  // 修复 DesktopMenu 组件溢出不隐藏的 bug
+  position: relative;
   &__top-bar {
     height: 38px;
     width: 100%;
