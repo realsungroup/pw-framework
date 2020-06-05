@@ -644,4 +644,15 @@ http.createApi('getRedirectUrl', {
   method: 'get',
   url: '/api/Resource/GetRedirectUrl'
 });
+
+/**
+ * 根据表 id 获取
+ * 参数：{ id }
+ * 1. dblink 资源 id
+ */
+http.createApi('getRowColorData', {
+  method: 'get',
+  url: '/api/resource/retrieve'
+});
+
 export default http;
