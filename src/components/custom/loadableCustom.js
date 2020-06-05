@@ -757,3 +757,28 @@ export const DirectlyUnderTarget = Loadable({
     return minLoading;
   }
 });
+export const EvaluateManage = Loadable({
+  loader: () => import('./EvaluateManage'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const WeeklySettlement = Loadable({
+  loader: () => import('./WeeklySettlement'),
+  loading() {
+    return minLoading;
+  }
+});
+export const SubordinateAchievements = Loadable({
+  loader: () => import('./SubordinateAchievements'),
+  loading() {
+    return minLoading;
+  }
+});
+export const AchievementResult = Loadable({
+  loader: () => import('./AchievementResult'),
+  loading() {
+    return minLoading;
+  }
+});
