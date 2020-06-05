@@ -243,12 +243,7 @@ export const withHttpGetBeBtns = WrappedComponent => {
       this.p1 = makeCancelable(
         http(httpParams).getBeBtns({ resid, dblinkname, ...hideBebtns })
       );
-      let res;
-      try {
-        res = await this.p1.promise;
-      } catch (err) {
-        return console.error(err.message);
-      }
+      const res = await this.p1.promise;
       const {
         beBtnsMultiple,
         beBtnsSingle,

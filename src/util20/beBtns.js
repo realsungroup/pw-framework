@@ -42,7 +42,7 @@ export const extractAndDealBackendBtns = btnsData => {
     return { beBtnsMultiple, beBtnsSingle, beBtnsOther };
   }
   btnsData.forEach(btnData => {
-    if (btnData.Code) {
+    if (btnData.Show && btnData.Code) {
       // 只能够操作一条记录的按钮
       if (btnData.RecordSelect === 1) {
         beBtnsSingle.push(btnData);
