@@ -103,11 +103,16 @@ class SoleQuery extends Component {
     }
     // console.log('获取到是否提交信息', res);
     let hasSubmit = false;
+    let str=''
     console.log(res.data)
-    if (res.data[0].hasSubmit === '已提交') {
-      hasSubmit = true;
+    if(res.data.length>0){
+      if (res.data[0].hasSubmit === '已提交') {
+        hasSubmit = true;
+        str=res.data[0].REC_ID;
+      }
     }
-    this.setState({ hasSubmit, subRecid: res.data[0].REC_ID });
+    
+    this.setState({ hasSubmit, subRecid: str });
     return hasSubmit;
   };
   // 获取问卷试题
