@@ -367,6 +367,13 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.actionBarFixed = false;
       tableDataProps.isUseFormDefine = false;
     }
+    if (
+      tableConfig.resid === 558178954112 ||
+      tableConfig.resid === 558638569486
+    ) {
+      tableDataProps.cmswhere = `C3_558098038537 = '${selectedMainData.C3_420148203323}' and C3_558108462803 ='${selectedMainData.C3_420150922019}'`;
+    }
+
     return <TableData key={tableConfig.resid} {...tableDataProps} />;
   };
 
