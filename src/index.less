@@ -3,9 +3,11 @@
   box-sizing: border-box;
 }
 
-html, body {
-  overflow: hidden !important;
-}
+// 解决 ie11 布局问题
+// 暂时先移除该样式，这个样式会影响打印功能
+// html, body {
+//   overflow: hidden !important;
+// }
 
 #root {
   width: 100%;
