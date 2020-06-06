@@ -1,6 +1,6 @@
 import React from 'react';
 import './MyAssessmentTable.less';
-import { Menu, Select, Input, Button, message, Icon } from 'antd';
+import { Menu, Select, Input, Button, message, Icon, Modal } from 'antd';
 import http from 'Util20/api';
 import classnames from 'classnames';
 import TableData from 'Common/data/TableData';
@@ -90,7 +90,10 @@ class MyAssessmentTable extends React.Component {
     selectedMainData: {},
     tableConfig: {},
     isShink: false,
-    fetching: true
+    fetching: true,
+    submitBtnLoading: false,
+    modalVisible: false,
+    selectedInterview: {}
   };
   async componentDidMount() {
     await this.fetchMainData();
@@ -130,7 +133,8 @@ class MyAssessmentTable extends React.Component {
   _formDataObj = {
     员工自评: {},
     员工年末自评: {},
-    财年评语查看: {}
+    财年评语查看: {},
+    default: {}
   };
   /**
    * 获取后台窗体数据
@@ -147,10 +151,15 @@ class MyAssessmentTable extends React.Component {
         resid: mainResid,
         formName: '财年评语查看'
       });
+      pArr[3] = http().getFormData({
+        resid: 558178954112,
+        formName: 'default'
+      });
       const resArr = await Promise.all(pArr);
       this._formDataObj.员工自评 = dealControlArr(resArr[0].data.columns);
       this._formDataObj.员工年末自评 = dealControlArr(resArr[1].data.columns);
       this._formDataObj.财年评语查看 = dealControlArr(resArr[2].data.columns);
+      this._formDataObj.default = dealControlArr(resArr[3].data.columns);
     } catch (error) {
       console.error(error);
       message.error(error.message);
@@ -216,6 +225,113 @@ class MyAssessmentTable extends React.Component {
     this.setState({ fetching: false });
   };
 
+  handleSubmitTarget = async isSubmit => {
+    const { selectedMainData, mainData } = this.state;
+    try {
+      this.setState({
+        submitBtnLoading: true
+      });
+      const res = await http().modifyRecords({
+        resid: mainResid,
+        data: [{ REC_ID: selectedMainData.REC_ID, C3_420953811304: isSubmit }]
+      });
+      const newData = [...mainData];
+      newData[
+        newData.findIndex(item => item.REC_ID === selectedMainData.REC_ID)
+      ] = res.data[0];
+      this.setState({
+        selectedMainData: res.data[0],
+        mainData: newData,
+        submitBtnLoading: false
+      });
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+      this.setState({
+        submitBtnLoading: false
+      });
+    }
+  };
+
+  /**
+   * 提交年中目标
+   */
+  showComfirmSubmitMiddleYear = () => {
+    const { selectedMainData, mainData } = this.state;
+    Modal.confirm({
+      content: '请确定您的目标自评已完成。选择“确定”后您的优缺点将一并提交',
+      onOk: async () => {
+        try {
+          this.setState({
+            submitBtnLoading: true
+          });
+          const res = await http().modifyRecords({
+            resid: mainResid,
+            data: [{ REC_ID: selectedMainData.REC_ID, C3_431169212491: 'Y' }]
+          });
+          const newData = [...mainData];
+          newData[
+            newData.findIndex(item => item.REC_ID === selectedMainData.REC_ID)
+          ] = res.data[0];
+          this.setState({
+            selectedMainData: res.data[0],
+            mainData: newData,
+            submitBtnLoading: false
+          });
+        } catch (error) {
+          console.error(error);
+          message.error(error.message);
+          this.setState({
+            submitBtnLoading: false
+          });
+        }
+      }
+    });
+  };
+  /**
+   * 提交年末目标
+   */
+  showComfirmSubmitEndYear = () => {
+    const { selectedMainData, mainData } = this.state;
+    Modal.confirm({
+      content: '请确定您的目标自评已完成。选择“确定”后您的优缺点将一并提交',
+      onOk: async () => {
+        try {
+          this.setState({
+            submitBtnLoading: true
+          });
+          const res = await http().modifyRecords({
+            resid: mainResid,
+            data: [{ REC_ID: selectedMainData.REC_ID, C3_436734687131: 'Y' }]
+          });
+          const newData = [...mainData];
+          newData[
+            newData.findIndex(item => item.REC_ID === selectedMainData.REC_ID)
+          ] = res.data[0];
+          this.setState({
+            selectedMainData: res.data[0],
+            mainData: newData,
+            submitBtnLoading: false
+          });
+        } catch (error) {
+          console.error(error);
+          message.error(error.message);
+          this.setState({
+            submitBtnLoading: false
+          });
+        }
+      }
+    });
+  };
+  closeModal = () =>
+    this.setState({ modalVisible: false, selectedInterview: {} });
+
+  afterSave = () => {
+    this.setState({ modalVisible: false }, () =>
+      this.tableDataRef.handleRefresh()
+    );
+  };
+
   render() {
     const {
       currentYear,
@@ -223,7 +339,10 @@ class MyAssessmentTable extends React.Component {
       selectedMainData,
       tableConfig,
       isShink,
-      fetching
+      fetching,
+      submitBtnLoading,
+      modalVisible,
+      selectedInterview
     } = this.state;
     return (
       <div className="my-assessment-table">
@@ -312,23 +431,92 @@ class MyAssessmentTable extends React.Component {
           </Menu>
         </div>
         <div className="my-assessment-table__table">
-          <div className="my-assessment-table__table-container">
-            <div className="my-assessment-table__table__top">
-              <Button type="primary" size="small">
-                提交目标
-              </Button>
-              <span className="current-stage">
-                当前阶段：{currentYear.C3_431106800828}
-              </span>
+          {selectedMainData.REC_ID && (
+            <div className="my-assessment-table__table-container">
+              <div className="my-assessment-table__table__top">
+                {tableConfig.parent === '目标' &&
+                  selectedMainData.C3_420949377789 === 'Y' &&
+                  (selectedMainData.C3_420953811304 === 'Y' ? (
+                    <Button
+                      type="danger"
+                      size="small"
+                      onClick={() => this.handleSubmitTarget('N')}
+                      loading={submitBtnLoading}
+                    >
+                      取消提交目标
+                    </Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => this.handleSubmitTarget('Y')}
+                      loading={submitBtnLoading}
+                    >
+                      提交目标
+                    </Button>
+                  ))}
+                {tableConfig.parent === '年中自评' &&
+                  selectedMainData.C3_431169212491 !== 'Y' && (
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={this.showComfirmSubmitMiddleYear}
+                      loading={submitBtnLoading}
+                    >
+                      提交年中自评
+                    </Button>
+                  )}
+                {tableConfig.parent === '年末自评' &&
+                  selectedMainData.C3_436734687131 !== 'Y' && (
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={this.showComfirmSubmitEndYear}
+                      loading={submitBtnLoading}
+                    >
+                      提交年末自评
+                    </Button>
+                  )}
+                <span className="current-stage">
+                  当前阶段：{currentYear.C3_431106800828}
+                </span>
+              </div>
+              <div className="my-assessment-tabledata-container">
+                {tableConfig.mode &&
+                  (tableMode.some(item => item === tableConfig.mode)
+                    ? this.renderTable()
+                    : this.renderForm())}
+              </div>
             </div>
-            <div className="my-assessment-tabledata-container">
-              {tableConfig.mode &&
-                (tableMode.some(item => item === tableConfig.mode)
-                  ? this.renderTable()
-                  : this.renderForm())}
-            </div>
-          </div>
+          )}
         </div>
+        <Modal
+          visible={modalVisible}
+          title="面谈是否完成"
+          width={800}
+          footer={null}
+          onCancel={this.closeModal}
+          destroyOnClose
+        >
+          {modalVisible && (
+            <FormData
+              info={{ dataMode: 'main', resid: 558178954112 }}
+              operation="modify"
+              data={getDataProp(
+                this._formDataObj.default,
+                selectedInterview,
+                true,
+                false,
+                false
+              )}
+              record={selectedInterview}
+              // useAbsolute={true}
+              // formProps={{ width: 500 }}
+              onCancel={this.closeModal}
+              onSuccess={this.afterSave}
+            />
+          )}
+        </Modal>
       </div>
     );
   }
@@ -372,6 +560,31 @@ class MyAssessmentTable extends React.Component {
       tableConfig.resid === 558638569486
     ) {
       tableDataProps.cmswhere = `C3_558098038537 = '${selectedMainData.C3_420148203323}' and C3_558108462803 ='${selectedMainData.C3_420150922019}'`;
+    }
+    if (tableConfig.resid === 558178954112) {
+      tableDataProps.actionBarExtra = ({
+        dataSource = [],
+        selectedRowKeys = []
+      }) => (
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => {
+            if (selectedRowKeys.length !== 1) {
+              return message.info('请选择一条记录');
+            }
+            const record = dataSource.find(data => {
+              return data.REC_ID == selectedRowKeys[0];
+            });
+            this.setState({ modalVisible: true, selectedInterview: record });
+          }}
+        >
+          面谈是否完成
+        </Button>
+      );
+      tableDataProps.wrappedComponentRef = element =>
+        (this.tableDataRef = element);
+      tableDataProps.refTargetComponentName = 'TableData';
     }
 
     return <TableData key={tableConfig.resid} {...tableDataProps} />;
