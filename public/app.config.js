@@ -38,6 +38,16 @@ window.pwConfig = {
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101'
     },
 
+    // 绩效-我的评估表功能用到的子表
+    achievementSubResid: {
+      target: 462402075404, //目标-目标
+      history: 462586715318, //目标-历史记录
+      middleYearTargetSelf: 462553161418, //年中-目标自评
+      endYearTargetSelf: 462583603607, //年中-目标自评
+      targetView: 462622744495, //直评查询-目标查看
+      gradeRate: 462626504489, //直评查询-评级评优记录
+      interview: 462402075404 //面谈记录-面谈记录
+    },
     // 需前端缓存配置的资源
     tablesConfig: [
       {
@@ -218,7 +228,16 @@ window.pwConfig = {
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101'
     },
-
+    // 绩效-我的评估表功能用到的子表
+    achievementSubResid: {
+      target: 462402075404, //目标-目标
+      history: 462586715318, //目标-历史记录
+      middleYearTargetSelf: 462553161418, //年中-目标自评
+      endYearTargetSelf: 462583603607, //年中-目标自评
+      targetView: 462622744495, //直评查询-目标查看
+      gradeRate: 462626504489, //直评查询-评级评优记录
+      interview: 462402075404 //面谈记录-面谈记录
+    },
     // 需前端缓存配置的资源
     tablesConfig: [
       {

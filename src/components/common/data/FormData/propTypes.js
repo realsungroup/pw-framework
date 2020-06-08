@@ -13,7 +13,8 @@ export const defaultProps = {
   subTableArrProps: [],
   subTalbeLayout: 'tab',
   useAbsolute: false,
-  layout: 'grid'
+  layout: 'grid',
+  saveMode: 'full'
 };
 
 export const propTypes = {
@@ -117,5 +118,11 @@ export const propTypes = {
    * 表单布局方式：'grid' 栅格布局 | 'float' 浮动布局（用于文字环绕图片） | 'absolute' 绝对定位布局（和 useAbsolute 参数效果一致）
    * 默认：'grid'
    */
-  layout: PropTypes.oneOf(['grid', 'float', 'absolute'])
+  layout: PropTypes.oneOf(['grid', 'float', 'absolute']),
+
+  /**
+   * 保存模式 'full' 通过保存按钮 | 'single' 输入控件onChange时保存 (暂只适用于operation='modify')
+   * 默认: 'full
+   */
+  saveMode: PropTypes.oneOf(['full', 'single'])
 };

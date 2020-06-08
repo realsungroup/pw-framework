@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
+import debounce from 'lodash/debounce';
 
 const TabPane = Tabs.TabPane;
 
@@ -215,6 +216,31 @@ class FormData extends React.Component {
         );
     });
   };
+
+  handleSingleChange = debounce(async (filed, form) => {
+    const { record, baseURL, resid, dblinkname } = this.props;
+    let httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    console.log(form.getFieldValue(filed));
+    this.p2 = makeCancelable(
+      http(httpParams).modifyRecords({
+        resid,
+        data: [{ REC_ID: record.REC_ID, [filed]: form.getFieldValue(filed) }],
+        dblinkname
+      })
+    );
+    try {
+      const res = await this.p2.promise;
+      console.log(res);
+      record[filed] = form.getFieldValue(filed);
+    } catch (err) {
+      console.error(err);
+      return message.error(err.message);
+    }
+  }, 800);
+
   handleReopenSave = form => {
     const {
       operation,
@@ -545,7 +571,8 @@ class FormData extends React.Component {
       useAbsolute,
       subTalbeLayout,
       style,
-      layout
+      layout,
+      saveMode
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -584,6 +611,8 @@ class FormData extends React.Component {
             beforeSaveFields={beforeSaveFields}
             resid={resid}
             dblinkname={dblinkname}
+            saveMode={saveMode}
+            onSingleChange={this.handleSingleChange}
           />
           {hasSubTables &&
             this.renderSubTablesAbsolute(containerHeight, containerWidth)}
