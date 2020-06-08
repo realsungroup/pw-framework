@@ -2350,6 +2350,7 @@ window[642853703890] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -2438,6 +2439,7 @@ window[642853770096] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5525,7 +5527,7 @@ window[642856691841] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
+    // isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5675,7 +5677,7 @@ window[642856753982] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine:false,
@@ -5816,9 +5818,13 @@ window[642856807541] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5838,9 +5844,13 @@ window[642856817466] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -5910,6 +5920,7 @@ window[642858017774] = {
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
+    isUseFormDefine: false,
     hasRowDelete: true,
     formProps: {
       // height: 500
@@ -6069,6 +6080,7 @@ window[642858265046] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6321,9 +6333,12 @@ window[642858381832] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -6349,6 +6364,7 @@ window[642858651331] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -6388,14 +6404,16 @@ window[642858671562] = {
   name: 'TableData', // 组件名称，
   title: '评价选项', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 420151178050,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify:true,
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
@@ -6408,6 +6426,8 @@ window[642858680954] = {
   name: 'TableData', // 组件名称，
   title: '不参评人员', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 464112827627,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6415,9 +6435,13 @@ window[642858680954] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6428,6 +6452,8 @@ window[642858691148] = {
   name: 'TableData', // 组件名称，
   title: '当前参评人员', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 426074830919,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6435,9 +6461,13 @@ window[642858691148] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6448,6 +6478,8 @@ window[642858700263] = {
   name: 'TableData', // 组件名称，
   title: '部门评级评优设置', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 434932652492,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6458,6 +6490,7 @@ window[642858700263] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6468,6 +6501,8 @@ window[642858711892] = {
   name: 'TableData', // 组件名称，
   title: '下属评级评优设置', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 442065444190,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6488,6 +6523,8 @@ window[642858815692] = {
   name: 'TableData', // 组件名称，
   title: '绩效历史记录查看', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 564509985230,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6495,9 +6532,11 @@ window[642858815692] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowDelete: false,
+
     formProps: {
       // height: 500
     },
@@ -6508,6 +6547,8 @@ window[642858825314] = {
   name: 'TableData', // 组件名称，
   title: '未提交人员', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 612897333692,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6517,6 +6558,7 @@ window[642858825314] = {
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
+    isUseFormDefine:false,
     hasRowDelete: true,
     formProps: {
       // height: 500
@@ -6528,6 +6570,8 @@ window[642864859197] = {
   name: 'TableData', // 组件名称，
   title: '我的安装申请', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 531400067855,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6548,6 +6592,8 @@ window[642864873312] = {
   name: 'TableData', // 组件名称，
   title: '安装申请-部门总监审批', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 531400837731,
     actionBarWidth: 200,
     hasAdd: true,
@@ -6646,6 +6692,7 @@ window[642864915093] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6668,6 +6715,7 @@ window[642864924530] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6682,14 +6730,15 @@ window[642864936700] = {
     downloadBaseURL: 'http://10.108.2.66:80',
     resid: 606994091322,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6712,6 +6761,10 @@ window[642864955816] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    isUseFormDefine:false,
+    // actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -6731,9 +6784,9 @@ window[642864965745] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -6753,9 +6806,9 @@ window[642865093743] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -6778,6 +6831,7 @@ window[642865104085] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6796,10 +6850,10 @@ window[642865117751] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasDelete: false,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -6819,9 +6873,13 @@ window[642865127153] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    isUseFormDefine:false,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -6863,9 +6921,10 @@ window[642865148916] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6888,6 +6947,7 @@ window[642865159694] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6910,6 +6970,7 @@ window[642865168807] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6932,6 +6993,7 @@ window[642865180079] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -6954,6 +7016,7 @@ window[642865189736] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7015,9 +7078,13 @@ window[642865251509] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7038,6 +7105,7 @@ window[642865263466] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7055,9 +7123,13 @@ window[642865468370] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    hasRowEdit:true,
+    hasRowEditAdd:true,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -7070,14 +7142,15 @@ window[642865477980] = {
   props: {
     resid: 506183134562,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasDelete: false,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7090,14 +7163,15 @@ window[642865487428] = {
   props: {
     resid: 506183209943,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasDelete: false,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7118,6 +7192,7 @@ window[642865500060] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7138,6 +7213,7 @@ window[642865508238] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7158,6 +7234,7 @@ window[642865517021] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7178,6 +7255,7 @@ window[642865529507] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7197,6 +7275,7 @@ window[642865539047] = {
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
+    isUseFormDefine:false,
     hasRowDelete: true,
     formProps: {
       // height: 500
@@ -7218,6 +7297,7 @@ window[642865548263] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },

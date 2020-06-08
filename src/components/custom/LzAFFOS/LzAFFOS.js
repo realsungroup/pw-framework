@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import http from '../../../util20/api';
-import { message, Tabs, Button } from 'antd';
+import { message, Tabs, Button, Modal } from 'antd';
 import './LzAFFOS.less';
 // import TableData from '../../../lib/unit-component/TableData';
 import { TableData } from '../../common/loadableCommon';
@@ -40,7 +40,7 @@ export default class LzAFFOS extends React.Component {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '审批中'
+      activeKey: '审批中',
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -141,14 +141,21 @@ export default class LzAFFOS extends React.Component {
  
           <TabPane tab="审批中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
-              <p style ={{textIndent:"2em",color:"red",fontWeight:"bold",fontSize:"28px"}}>您的申请已提交，所有外部人员需检查锡康码及行动轨迹</p>
+             
               <TableData {...inExaminationAndApproval} 
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
               formProps={{
                 saveText: '提交',
                 height: 500,
-                saveNeedConfirm: true
+                saveNeedConfirm: true,
+                saveConfirmTip:'请确认已在右侧添加完访客信息',
+              }}
+              successMessageComponent={{
+                name:'Modal',
+                title:  <div>
+                <p style ={{color:"black",fontWeight:"bold",fontSize:"14px"}}>您的申请已提交，所有外部人员需检查锡康码及行动轨迹</p>
+                </div>
               }}
               />
             </div>
