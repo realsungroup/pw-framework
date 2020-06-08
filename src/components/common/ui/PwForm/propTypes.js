@@ -15,7 +15,8 @@ export const defaultProps = {
   enCancelText: 'Cancel',
   editText: '编辑',
   enEditText: 'Edit',
-  layout: 'grid'
+  layout: 'grid',
+  saveConfirmTip: '您确定要提交吗？'
 };
 
 export const propTypes = {
@@ -179,5 +180,11 @@ export const propTypes = {
    * 字段显示的顺序（每一个元素为字段的名称，索引为序号）
    * 默认：-
    */
-  fieldsOrder: PropTypes.array
+  fieldsOrder: PropTypes.array,
+
+  /**
+   * 保存确认时的提示文案
+   * 默认：'您确定要提交吗？'
+   */
+  saveConfirmTip: PropTypes.string
 };

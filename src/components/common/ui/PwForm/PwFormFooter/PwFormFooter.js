@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
+import PropTypes from 'prop-types';
 import './PwFormFooter.less';
+
 const Fragment = React.Fragment;
 
 const PwFormFooter = React.memo(
@@ -19,7 +21,8 @@ const PwFormFooter = React.memo(
     editText,
     saveNeedConfirm,
     saveReopen,
-    onReopenSave
+    onReopenSave,
+    saveConfirmTip
   }) => {
     return (
       <div className="pw-form__footer">
@@ -30,7 +33,7 @@ const PwFormFooter = React.memo(
                 {hasSave &&
                   (saveNeedConfirm ? (
                     <Popconfirm
-                      title={`确定要提交吗`}
+                      title={saveConfirmTip}
                       onConfirm={() => {
                         onSave && onSave(form);
                       }}
@@ -78,5 +81,17 @@ const PwFormFooter = React.memo(
     );
   }
 );
+
+PwFormFooter.propTypes = {
+  /**
+   * 保存确认时的提示文案
+   * 默认：'您确定要提交吗？'
+   */
+  saveConfirmTip: PropTypes.string
+};
+
+PwFormFooter.defaultProps = {
+  saveConfirmTip: '您确定要提交吗？'
+};
 
 export default PwFormFooter;
