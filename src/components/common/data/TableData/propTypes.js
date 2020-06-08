@@ -79,7 +79,8 @@ export const defaultProps = {
   isUseBESize: false,
   isUseFormDefine: true,
   rowEditAddPosition: 'start',
-  hasRowEditAdd: false
+  hasRowEditAdd: false,
+  successMessageComponent: 'message'
 };
 
 export const propTypes = {
@@ -798,6 +799,7 @@ export const propTypes = {
    *   name: 'Modal',
    *   // ... 其他属性参照：https://3x.ant.design/components/modal-cn/#Modal.method()
    * }
+   * 默认：'message'
    */
   successMessageComponent: PropTypes.oneOfType([
     PropTypes.string,

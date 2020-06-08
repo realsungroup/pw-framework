@@ -1937,7 +1937,7 @@ class TableData extends React.Component {
   };
 
   renderMessage = message => {
-    const { successMessageComponent, intl } = this.props;
+    const { successMessageComponent } = this.props;
     const messageComponent = getSuccessMessageComponent(
       successMessageComponent
     );
