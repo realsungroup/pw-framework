@@ -1,7 +1,7 @@
 import React from 'react';
 import PwTable from '../../ui/PwTable';
 import PwAggird from '../../ui/PwAggrid';
-import { message, Button, Spin } from 'antd';
+import { message, Button, Spin, Modal } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
 import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
@@ -36,6 +36,7 @@ const btnSizeMap = {
 const getResColumns = cmscolumninfo => {
   return cmscolumninfo.map(item => ({ ...item[item.id] }));
 };
+
 const getColor = (record, { cols, conds, vals, color }) => {
   const len = cols.length;
   let flag = true; // 是否符合规则
@@ -136,6 +137,15 @@ const getWithRowColorDataSource = (dataSource, ruleData) => {
   });
 
   return newDataSource;
+};
+
+const getSuccessMessageComponent = successMessageComponent => {
+  if (typeof successMessageComponent === 'string') {
+    return {
+      name: successMessageComponent
+    };
+  }
+  return successMessageComponent;
 };
 
 /**
@@ -1926,13 +1936,30 @@ class TableData extends React.Component {
     });
   };
 
+  renderMessage = message => {
+    const { successMessageComponent, intl } = this.props;
+    const messageComponent = getSuccessMessageComponent(
+      successMessageComponent
+    );
+
+    if (messageComponent.name === 'message') {
+      message.success(message);
+    } else {
+      delete messageComponent.name;
+      Modal.success({
+        title: message,
+        ...messageComponent
+      });
+    }
+  };
+
   handleSuccess = (operation, formData, record, form) => {
     this.props.closeRecordForm();
     const { intl, storeWay } = this.props;
     if (operation === 'add') {
-      message.success(intl.messages['common.addSuccess']);
+      this.renderMessage(intl.messages['common.addSuccess']);
     } else if (operation === 'modify') {
-      message.success(intl.messages['common.modifySuccess']);
+      this.renderMessage(intl.messages['common.modifySuccess']);
     }
     // 后端存储，则刷新表格数据
     if (storeWay === 'be') {
