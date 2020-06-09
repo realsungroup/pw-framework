@@ -1,13 +1,13 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { message, Button, Input, Form, Icon, Radio } from 'antd';
-import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo.png';
-import { resetPassByEmail } from 'Util/api';
-import { FormattedMessage as FM, injectIntl } from 'react-intl';
-import http from 'Util20/api';
-import './Login.less';
-import './Login.css';
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { message, Button, Input, Form, Icon, Radio } from "antd";
+import { getItem, setItem } from "Util20/util";
+import logoImg from "../../assets/logo.jpg";
+import { resetPassByEmail } from "Util/api";
+import { FormattedMessage as FM, injectIntl } from "react-intl";
+import http from "Util20/api";
+import "./Login.less";
+import "./Login.css";
 
 const { loginLogoSize } = window.pwConfig;
 
@@ -15,30 +15,30 @@ const {
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
-  themeColor
+  themeColor,
 } = window.pwConfig;
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    let loginMode = getItem('loginMode');
+    let loginMode = getItem("loginMode");
     if (!loginMode) {
       loginMode = defaultLoginMode;
-      setItem('loginMode', defaultLoginMode);
+      setItem("loginMode", defaultLoginMode);
     }
-    let language = getItem('language');
+    let language = getItem("language");
     if (!language) {
-      language = '中文';
-      setItem('language', '中文');
+      language = "中文";
+      setItem("language", "中文");
     }
     this.state = {
       redirectToReferrer: false,
       loginMode, // 登录模式：'normal' 普通登录 | 'domain' 域登录
       enterprisecode, // 企业编号
       resetPassModalVisible: false, // 重置密码模态框是否显示
-      registerEmail: '', // 注册邮箱
+      registerEmail: "", // 注册邮箱
       language,
-      loading: false
+      loading: false,
     };
   }
 
@@ -46,24 +46,28 @@ class Login extends React.Component {
     this.setThemeColor(themeColor);
   }
 
-  setThemeColor = themeColor => {
+  setThemeColor = (themeColor) => {
     try {
-      window.less
-        .modifyVars(themeColor)
-        .then(() => {})
-        .catch(err => {
-          message.error(err.message);
-        });
+      window &&
+        window.less &&
+        window.less &&
+        window.less.modifyVars &&
+        window.less
+          .modifyVars(themeColor)
+          .then(() => {})
+          .catch((err) => {
+            message.error(err.message);
+          });
     } catch (err) {
       message.error(err.message);
     }
   };
 
-  handleUserNameChange = e => {
+  handleUserNameChange = (e) => {
     this.setState({ userName: e.target.value });
   };
 
-  handlePasswordChange = e => {
+  handlePasswordChange = (e) => {
     this.setState({ password: e.target.value });
   };
 
@@ -85,7 +89,7 @@ class Login extends React.Component {
     }
   };
 
-  handleRegisterEmailChange = e => {
+  handleRegisterEmailChange = (e) => {
     const val = e.target.value;
     this.setState({ registerEmail: val });
   };
@@ -101,11 +105,11 @@ class Login extends React.Component {
       const { userName, password } = values;
       let res;
       // 普通方式登录
-      if (loginMode === 'normal') {
+      if (loginMode === "normal") {
         try {
           res = await http().defaultLogin({
             Code: userName,
-            Password: password
+            Password: password,
           });
         } catch (err) {
           this.setState({ loading: false });
@@ -121,9 +125,9 @@ class Login extends React.Component {
           res = await http().domainLogin({
             code: userName + usernameSuffix,
             password,
-            loginMethod: 'domain',
+            loginMethod: "domain",
             domain,
-            domainUserField
+            domainUserField,
           });
         } catch (err) {
           this.setState({ loading: false });
@@ -132,12 +136,12 @@ class Login extends React.Component {
         }
       }
       const result = res.OpResult;
-      if (result === 'Y') {
-        setItem('userInfo', JSON.stringify(res));
+      if (result === "Y") {
+        setItem("userInfo", JSON.stringify(res));
         // 登录成功
-        const userInfo = JSON.parse(getItem('userInfo'));
+        const userInfo = JSON.parse(getItem("userInfo"));
         const userLanguage = userInfo.UserInfo.EMP_LANGUAGE;
-        const language = getItem('language');
+        const language = getItem("language");
         if (userLanguage !== language) {
           let res;
           try {
@@ -145,17 +149,17 @@ class Login extends React.Component {
           } catch (err) {
             return message.error(err.message);
           }
-          if (res.OpResult !== 'Y') {
+          if (res.OpResult !== "Y") {
             message.error(res.ErrorMsg);
           } else {
             userInfo.UserInfo.EMP_LANGUAGE = language;
-            setItem('userInfo', JSON.stringify(userInfo));
+            setItem("userInfo", JSON.stringify(userInfo));
           }
         }
         this.setState({
-          redirectToReferrer: true
+          redirectToReferrer: true,
         });
-      } else if (result === 'N') {
+      } else if (result === "N") {
         this.setState({ loading: false });
         return message.error(res.ErrorMsg);
       }
@@ -163,23 +167,23 @@ class Login extends React.Component {
   };
 
   loginModeChange = () => {
-    const loginMode = this.state.loginMode === 'normal' ? 'domain' : 'normal';
+    const loginMode = this.state.loginMode === "normal" ? "domain" : "normal";
     this.setState({
       loginMode,
-      loading: false
+      loading: false,
     });
-    setItem('loginMode', loginMode);
+    setItem("loginMode", loginMode);
   };
 
-  handleLanguageSelectChange = value => {
+  handleLanguageSelectChange = (value) => {
     value = value.target.value;
-    setItem('language', value);
-    document.location.href = '/login';
+    setItem("language", value);
+    document.location.href = "/login";
   };
 
   renderAddonAfterNode = () => {
     const { loginMode } = this.state;
-    if (loginMode === 'domain') {
+    if (loginMode === "domain") {
       const usernameSuffix = domainLoginConfig.usernameSuffix;
       return usernameSuffix;
     }
@@ -188,7 +192,7 @@ class Login extends React.Component {
   render() {
     const { redirectToReferrer, loginMode, language, loading } = this.state;
     // 进入登录页的源路由
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
     // 登录成功后，通过 Redirect 组件跳转到源路由
     if (redirectToReferrer) {
       return <Redirect to={from} />;
@@ -209,7 +213,7 @@ class Login extends React.Component {
           <div className="login__options">
             <div className="login__options-login-mode">
               <a href="javascript:;" onClick={this.loginModeChange}>
-                {loginMode === 'normal' ? (
+                {loginMode === "normal" ? (
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
                   <FM id="Login.DomainLogin" defaultMessage="域登录" />
@@ -229,7 +233,7 @@ class Login extends React.Component {
 
           <Form className="login__form">
             <Form.Item>
-              {getFieldDecorator('userName', {
+              {getFieldDecorator("userName", {
                 rules: [
                   {
                     required: true,
@@ -238,35 +242,35 @@ class Login extends React.Component {
                         id="Login.userNameTip"
                         defaultMessage="请输入用户名"
                       />
-                    )
-                  }
-                ]
+                    ),
+                  },
+                ],
               })(
                 <Input
                   prefix={
-                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
-                  placeholder={intl.messages['Login.UsernamePlaceholder']}
+                  placeholder={intl.messages["Login.UsernamePlaceholder"]}
                   addonAfter={this.renderAddonAfterNode()}
                 />
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('password', {
+              {getFieldDecorator("password", {
                 rules: [
                   {
                     required: true,
                     message: (
                       <FM id="Login.passwordTip" defaultMessage="请输入密码" />
-                    )
-                  }
-                ]
+                    ),
+                  },
+                ],
               })(
                 <Input.Password
                   prefix={
-                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
-                  placeholder={intl.messages['Login.PassworkPlaceholder']}
+                  placeholder={intl.messages["Login.PassworkPlaceholder"]}
                 />
               )}
             </Form.Item>

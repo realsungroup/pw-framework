@@ -68,6 +68,7 @@ class PatientInfo extends React.Component {
     });
   };
 
+
   handleQSClick = record => {
     this.setState({
       modalVisible: true,

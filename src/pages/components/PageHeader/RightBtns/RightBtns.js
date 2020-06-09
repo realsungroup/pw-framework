@@ -1,9 +1,9 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { logout, changePassword } from '../../../../util/auth';
-import { clearCache } from '../../../../util/api';
-import { removeItem } from '../../../../util/localCache';
-import HeaderBtn from '../HeaderBtn';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { logout, changePassword } from "../../../../util/auth";
+import { clearCache } from "../../../../util/api";
+import { removeItem } from "../../../../util/localCache";
+import HeaderBtn from "../HeaderBtn";
 import {
   Button,
   Input,
@@ -14,21 +14,21 @@ import {
   Popover,
   Radio,
   Modal,
-  Checkbox
-} from 'antd';
-import './RightBtns.less';
-import ColorPicker from '../../ColorPicker';
-import classNames from 'classnames';
+  Checkbox,
+} from "antd";
+import "./RightBtns.less";
+import ColorPicker from "../../ColorPicker";
+import classNames from "classnames";
 import {
   setThemeColor,
   setLanguage,
   processDailyReportService,
-  getProcessStatus
-} from 'Util/api';
-import { version } from '../../../../../package.json';
-import changelog from '../../../../changelog.md';
-import ReactMarkdown from 'react-markdown';
-import { FormattedMessage as FM, injectIntl } from 'react-intl';
+  getProcessStatus,
+} from "Util/api";
+import { version } from "../../../../../package.json";
+import changelog from "../../../../changelog.md";
+import ReactMarkdown from "react-markdown";
+import { FormattedMessage as FM, injectIntl } from "react-intl";
 
 const FormItem = Form.Item;
 
@@ -37,20 +37,20 @@ class RightBtns extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      oldpass: '',
-      newpass: '',
-      newpass2: '',
+      oldpass: "",
+      newpass: "",
+      newpass2: "",
       confirmDirty: false,
       pickerVisible: false,
-      color: '', // 当前主题色
+      color: "", // 当前主题色
       languageVisible: false,
-      language: localStorage.getItem('language'), // 语言
+      language: localStorage.getItem("language"), // 语言
       isRotate: false,
       aboutModalVisible: false,
       checked: true,
       // 数据分析
       dataAnalyseTaskIds: [], // 数据分析任务 id 列表
-      versionDescVisible: false
+      versionDescVisible: false,
     };
   }
 
@@ -66,10 +66,10 @@ class RightBtns extends React.Component {
     // 没有任务
     if (!res.data.length) {
       return this.setState({
-        dataAnalyseTaskIds: []
+        dataAnalyseTaskIds: [],
       });
     }
-    const pArr = res.data.map(taskId => getProcessStatus(taskId));
+    const pArr = res.data.map((taskId) => getProcessStatus(taskId));
 
     let pArrRes;
     try {
@@ -79,46 +79,48 @@ class RightBtns extends React.Component {
     }
 
     // 有未完成的任务
-    const unFinishedTaskIndex = pArrRes.findIndex(res => !res.data.IsCompleted);
+    const unFinishedTaskIndex = pArrRes.findIndex(
+      (res) => !res.data.IsCompleted
+    );
     if (unFinishedTaskIndex !== -1) {
       this.triggerTaskBtnClick();
 
       const taskId = res.data[unFinishedTaskIndex];
       this.setState({
-        dataAnalyseTaskIds: [...this.state.dataAnalyseTaskIds, taskId]
+        dataAnalyseTaskIds: [...this.state.dataAnalyseTaskIds, taskId],
       });
 
       // 没有未完成的任务
     } else {
       this.setState({
-        dataAnalyseTaskIds: []
+        dataAnalyseTaskIds: [],
       });
     }
   };
 
   triggerTaskBtnClick = () => {
-    const btn = document.querySelector('.page-header-v2-btn-icon.icon-task');
-    btn.dispatchEvent(new Event('click', { bubbles: true, cancelable: false }));
+    const btn = document.querySelector(".page-header-v2-btn-icon.icon-task");
+    btn.dispatchEvent(new Event("click", { bubbles: true, cancelable: false }));
     document.body.dispatchEvent(
-      new Event('click', { bubbles: true, cancelable: false })
+      new Event("click", { bubbles: true, cancelable: false })
     );
   };
 
   handleMessageBtnClick = () => {
-    this.redirectTo('/reminder');
+    this.redirectTo("/reminder");
   };
 
   handleReportTableBtnClick = () => {
-    this.redirectTo('/report-table');
+    this.redirectTo("/report-table");
   };
 
   clearCacheBtnClick = async () => {
     const { intl } = this.props;
     try {
       const response = await clearCache();
-      removeItem('formsData');
-      if (response === 'ok') {
-        message.success(intl.messages['RightBtns.success']);
+      removeItem("formsData");
+      if (response === "ok") {
+        message.success(intl.messages["RightBtns.success"]);
       }
     } catch (err) {
       message.error(err.message);
@@ -126,12 +128,12 @@ class RightBtns extends React.Component {
   };
 
   handleSettingBtnClick = () => {
-    this.redirectTo('/workbench-setting');
+    this.redirectTo("/workbench-setting");
   };
 
   handleModifyPasswordBtnClick = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
@@ -141,63 +143,63 @@ class RightBtns extends React.Component {
 
   handleCancel = () => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   handleLogoutBtnClick = () => {
     logout();
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   handleLockBtnClick = () => {
     this.props.lockScreenRef.current.lockScreen();
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log("Received values of form: ", values);
       }
     });
     if (
-      this.props.form.getFieldValue('password2') !== undefined &&
-      this.props.form.getFieldValue('password2') !== '' &&
-      this.props.form.getFieldValue('password1') ===
-        this.props.form.getFieldValue('password2')
+      this.props.form.getFieldValue("password2") !== undefined &&
+      this.props.form.getFieldValue("password2") !== "" &&
+      this.props.form.getFieldValue("password1") ===
+        this.props.form.getFieldValue("password2")
     ) {
       try {
         const response = await changePassword(
-          this.props.form.getFieldValue('password'),
-          this.props.form.getFieldValue('password1')
+          this.props.form.getFieldValue("password"),
+          this.props.form.getFieldValue("password1")
         );
         const result = response.message;
 
-        if (result === '密码修改成功!') {
-          message.success('密码修改成功!');
+        if (result === "密码修改成功!") {
+          message.success("密码修改成功!");
           this.setState({
-            oldpass: '',
-            newpass: '',
-            newpass2: '',
-            visible: false
+            oldpass: "",
+            newpass: "",
+            newpass2: "",
+            visible: false,
           });
         }
-        if (result === '原密码不正确') {
-          message.error('原密码不正确!');
+        if (result === "原密码不正确") {
+          message.error("原密码不正确!");
           this.setState({
-            visible: true
+            visible: true,
           });
         }
 
         const form = this.props.form;
         if (
-          result === '修改密码失败，修改后的密码不能与原来密码相同。' &&
-          form.getFieldValue('password1') != ''
+          result === "修改密码失败，修改后的密码不能与原来密码相同。" &&
+          form.getFieldValue("password1") != ""
         ) {
-          message.error('修改后的密码不能与原来密码相同!');
+          message.error("修改后的密码不能与原来密码相同!");
           this.setState({
-            visible: true
+            visible: true,
           });
         }
       } catch (err) {
@@ -206,7 +208,7 @@ class RightBtns extends React.Component {
     }
   };
 
-  handleConfirmBlur = e => {
+  handleConfirmBlur = (e) => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
@@ -215,17 +217,17 @@ class RightBtns extends React.Component {
     const form = this.props.form;
 
     if (value && value.length < 6) {
-      callback('输入的长度不能小于6位数！');
+      callback("输入的长度不能小于6位数！");
     }
     if (value && this.state.confirmDirty) {
-      form.validateFields(['password2'], { force: true });
+      form.validateFields(["password2"], { force: true });
     }
     if (
       value &&
-      value !== form.getFieldValue('password1') &&
+      value !== form.getFieldValue("password1") &&
       value.length > 6
     ) {
-      callback('两次输入的密码不一致！');
+      callback("两次输入的密码不一致！");
     } else {
       callback();
     }
@@ -236,26 +238,26 @@ class RightBtns extends React.Component {
     const form = this.props.form;
     if (
       value &&
-      value !== form.getFieldValue('password1') &&
+      value !== form.getFieldValue("password1") &&
       value.length > 6
     ) {
-      callback('两次输入的密码不一致！');
+      callback("两次输入的密码不一致！");
     } else {
       callback();
     }
   };
 
-  redirectTo = url => {
+  redirectTo = (url) => {
     if (this.props.match.url !== url) {
       this.props.history.push(url);
     }
   };
 
-  vars = { '@primary-color': '' };
+  vars = { "@primary-color": "" };
   handleChangeComplete = (val, color) => {
     const rbga = color.rgb;
     this.vars = {
-      '@primary-color': `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`
+      "@primary-color": `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`,
     };
     this.setState({ color: rbga });
   };
@@ -264,29 +266,33 @@ class RightBtns extends React.Component {
     const { intl } = this.props;
     this.setState({ loading: true });
     setTimeout(() => {
-      window.less
-        .modifyVars(this.vars)
-        .then(() => {
-          this.setState({ loading: false, pickerVisible: false });
-          message.success(intl.messages['RightBtns.success']);
-        })
-        .catch(err => {
-          this.setState({ loading: false });
-          console.error(err);
-          return message.error(err.message);
-        });
+      window &&
+        window.less &&
+        window.less &&
+        window.less.modifyVars &&
+        window.less
+          .modifyVars(this.vars)
+          .then(() => {
+            this.setState({ loading: false, pickerVisible: false });
+            message.success(intl.messages["RightBtns.success"]);
+          })
+          .catch((err) => {
+            this.setState({ loading: false });
+            console.error(err);
+            return message.error(err.message);
+          });
     }, 200);
     let res;
     try {
-      res = await setThemeColor(this.vars['@primary-color']);
+      res = await setThemeColor(this.vars["@primary-color"]);
     } catch (err) {
       return message.error(err.message);
     }
-    this.modUserInfoThemColor(this.vars['@primary-color']);
+    this.modUserInfoThemColor(this.vars["@primary-color"]);
   };
 
-  modUserInfoThemColor = color => {
-    let userInfo = localStorage.getItem('userInfo');
+  modUserInfoThemColor = (color) => {
+    let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       try {
         userInfo = JSON.parse(userInfo);
@@ -294,11 +300,11 @@ class RightBtns extends React.Component {
         return;
       }
       userInfo.UserInfo.EMP_Color = color;
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
     }
   };
 
-  handleRadioGroupChange = async e => {
+  handleRadioGroupChange = async (e) => {
     const { intl } = this.props;
     const value = e.target.value;
     let res;
@@ -307,18 +313,18 @@ class RightBtns extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    if (res.OpResult === 'Y') {
+    if (res.OpResult === "Y") {
       this.modLanguage(value);
       this.setState({ language: value });
-      message.success(intl.messages['RightBtns.success']);
+      message.success(intl.messages["RightBtns.success"]);
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     }
   };
 
-  modLanguage = language => {
-    let userInfo = localStorage.getItem('userInfo');
+  modLanguage = (language) => {
+    let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       try {
         userInfo = JSON.parse(userInfo);
@@ -326,14 +332,14 @@ class RightBtns extends React.Component {
         return;
       }
       userInfo.UserInfo.EMP_LANGUAGE = language;
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      localStorage.setItem('language', language);
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      localStorage.setItem("language", language);
     }
   };
 
   handleSeparateBtnClick = () => {
     this.setState({
-      isRotate: !this.state.isRotate
+      isRotate: !this.state.isRotate,
     });
   };
 
@@ -348,23 +354,23 @@ class RightBtns extends React.Component {
       language,
       isRotate,
       aboutModalVisible,
-      versionDescVisible
+      versionDescVisible,
     } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { intl } = this.props;
     return (
       <React.Fragment>
         <div
-          className={classNames('right-btns__left-btns', {
-            'to-more-btns-status': isRotate
+          className={classNames("right-btns__left-btns", {
+            "to-more-btns-status": isRotate,
           })}
         >
-          <HeaderBtn
+          {/* <HeaderBtn
             className="right-btns__header-btn"
             iconClass="icon-report-table"
             onClick={this.handleReportTableBtnClick}
             tip={<FM id="RightBtns.Report" defaultMessage="报表" />}
-          />
+          /> */}
           <Popconfirm
             placement="bottomRight"
             title={
@@ -384,9 +390,9 @@ class RightBtns extends React.Component {
 
           <HeaderBtn
             className="right-btns__header-btn"
-            iconClass="icon-setting"
-            onClick={this.handleSettingBtnClick}
-            tip={<FM id="RightBtns.Settings" defaultMessage="设置" />}
+            iconClass="icon-mod-password"
+            onClick={this.handleModifyPasswordBtnClick}
+            tip={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
           />
           <Popconfirm
             placement="bottomRight"
@@ -407,15 +413,15 @@ class RightBtns extends React.Component {
         </div>
 
         <div
-          className={classNames('right-btns__right-btns', {
-            'to-more-btns-status': isRotate
+          className={classNames("right-btns__right-btns", {
+            "to-more-btns-status": isRotate,
           })}
         >
           <HeaderBtn
             className="right-btns__header-btn"
-            iconClass="icon-mod-password"
-            onClick={this.handleModifyPasswordBtnClick}
-            tip={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
+            iconClass="icon-setting"
+            onClick={this.handleSettingBtnClick}
+            tip={<FM id="RightBtns.Settings" defaultMessage="设置" />}
           />
           <HeaderBtn
             className="right-btns__header-btn"
@@ -427,7 +433,7 @@ class RightBtns extends React.Component {
           <Popover
             placement="bottomRight"
             title={
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: "right" }}>
                 <FM
                   id="RightBtns.SelectThemeColor"
                   defaultMessage="选择主题色"
@@ -470,7 +476,7 @@ class RightBtns extends React.Component {
           <Popover
             placement="bottomRight"
             title={
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: "right" }}>
                 <FM id="RightBtns.SelectLanguage" defaultMessage="选择语言" />
               </div>
             }
@@ -494,19 +500,19 @@ class RightBtns extends React.Component {
               }
             />
           </Popover>
-          <HeaderBtn
+          {/* <HeaderBtn
             className="right-btns__header-btn"
             iconClass="icon-about"
             onClick={this.handleAboutClick}
             tip={<FM id="RightBtns.About" defaultMessage="关于" />}
-          />
+          /> */}
         </div>
 
         <HeaderBtn
           iconClass={classNames(
-            'icon-more-btns right-btns__to-more-btns-icon',
+            "icon-more-btns right-btns__to-more-btns-icon",
             {
-              'right-btns__to-less-btns-icon': isRotate
+              "right-btns__to-less-btns-icon": isRotate,
             }
           )}
           onClick={this.handleSeparateBtnClick}
@@ -514,7 +520,7 @@ class RightBtns extends React.Component {
 
         <Modal
           visible={aboutModalVisible}
-          width={'500px'}
+          width={"500px"}
           title={
             <div className="right-btns__about-modal">
               <i className="iconfont icon-logo" />
@@ -522,12 +528,12 @@ class RightBtns extends React.Component {
             </div>
           }
           closable={false}
-          footer={''}
+          footer={""}
           destroyOnClose={true}
           onCancel={() =>
             this.setState({
               aboutModalVisible: false,
-              versionDescVisible: false
+              versionDescVisible: false,
             })
           }
         >
@@ -569,15 +575,15 @@ class RightBtns extends React.Component {
         <Modal
           visible={visible}
           maskClosable={false}
-          width={'400px'}
+          width={"400px"}
           title={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
-          footer={''}
+          footer={""}
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
           <Form className="input-pass1" onSubmit={this.handleSubmit}>
             <FormItem className="pass1">
-              {getFieldDecorator('password', {
+              {getFieldDecorator("password", {
                 rules: [
                   {
                     required: true,
@@ -586,22 +592,22 @@ class RightBtns extends React.Component {
                         id="RightBtns.OriginalPasswordTip"
                         defaultMessage="请输入原密码"
                       />
-                    )
-                  }
-                ]
+                    ),
+                  },
+                ],
               })(
                 <Input
                   className="input-pass"
                   prefix={
-                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   type="password"
-                  placeholder={intl.messages['RightBtns.OriginalPassword']}
+                  placeholder={intl.messages["RightBtns.OriginalPassword"]}
                 />
               )}
             </FormItem>
             <FormItem className="pass">
-              {getFieldDecorator('password1', {
+              {getFieldDecorator("password1", {
                 rules: [
                   {
                     required: true,
@@ -610,25 +616,25 @@ class RightBtns extends React.Component {
                         id="RightBtns.NewPasswordTip"
                         defaultMessage="请输入新密码"
                       />
-                    )
+                    ),
                   },
                   {
-                    validator: this.validateToNextPassword
-                  }
-                ]
+                    validator: this.validateToNextPassword,
+                  },
+                ],
               })(
                 <Input
                   className="input-pass"
                   prefix={
-                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   type="password"
-                  placeholder={intl.messages['RightBtns.NewPassword']}
+                  placeholder={intl.messages["RightBtns.NewPassword"]}
                 />
               )}
             </FormItem>
             <FormItem className="pass">
-              {getFieldDecorator('password2', {
+              {getFieldDecorator("password2", {
                 rules: [
                   {
                     required: true,
@@ -637,21 +643,21 @@ class RightBtns extends React.Component {
                         id="RightBtns.NewPasswordAgainTip"
                         defaultMessage="请再次输入新密码"
                       />
-                    )
+                    ),
                   },
                   {
-                    validator: this.compareToFirstPassword
-                  }
-                ]
+                    validator: this.compareToFirstPassword,
+                  },
+                ],
               })(
                 <Input
                   className="input-pass"
                   prefix={
-                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   type="password"
                   onChange={this.newpassChange2}
-                  placeholder={intl.messages['RightBtns.NewPassword']}
+                  placeholder={intl.messages["RightBtns.NewPassword"]}
                   onBlur={this.handleConfirmBlur}
                 />
               )}

@@ -1,21 +1,21 @@
-import React from 'react';
-import SearchBox from '../components/SearchBox';
-import PageHeader from '../components/PageHeader';
-import UserInfo from '../components/UserInfo';
-import { Route } from 'react-router-dom';
-import { getItem } from '../../util/localCache';
+import React from "react";
+import SearchBox from "../components/SearchBox";
+import PageHeader from "../components/PageHeader";
+import UserInfo from "../components/UserInfo";
+import { Route } from "react-router-dom";
+import { getItem } from "../../util/localCache";
 import {
   Home,
   PersonCenter,
   WorkbenchSetting,
   GetConfig,
-  Reminder
-} from '../loadablePage';
-import { message, Input, Button, Icon } from 'antd';
-import { defaultLogin, domainLogin } from 'Util/api';
-import LockScreen from '../components/LockScreen';
-import PageBody from '../components/PageBody';
-import './PageContainer.less';
+  Reminder,
+} from "../loadablePage";
+import { message, Input, Button, Icon } from "antd";
+import { defaultLogin, domainLogin } from "Util/api";
+import LockScreen from "../components/LockScreen";
+import PageBody from "../components/PageBody";
+import "./PageContainer.less";
 
 const { domainLoginConfig, lockScreenWaitTime } = window.pwConfig;
 const time = lockScreenWaitTime;
@@ -26,13 +26,13 @@ export default class Container extends React.Component {
 
     this.state = {
       reminderNum: 0,
-      password: ''
+      password: "",
     };
     this.lockScreenRef = React.createRef();
   }
 
   componentDidMount = () => {
-    let userInfo = localStorage.getItem('userInfo');
+    let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       try {
         userInfo = JSON.parse(userInfo);
@@ -41,37 +41,41 @@ export default class Container extends React.Component {
       }
       const themeColor =
         (userInfo.UserInfo.EMP_Color && {
-          '@primary-color': userInfo.UserInfo.EMP_Color
+          "@primary-color": userInfo.UserInfo.EMP_Color,
         }) ||
         window.themeColor;
       this.setThemeColor(themeColor);
     }
   };
 
-  setThemeColor = themeColor => {
+  setThemeColor = (themeColor) => {
     setTimeout(() => {
       try {
-        window.less
-          .modifyVars(themeColor)
-          .then(() => {})
-          .catch(err => {
-            message.error(err.message);
-          });
+        window &&
+          window.less &&
+          window.less &&
+          window.less.modifyVars &&
+          window.less
+            .modifyVars(themeColor)
+            .then(() => {})
+            .catch((err) => {
+              message.error(err.message);
+            });
       } catch (err) {
-        message.error('设置主题色出错，请刷新页面');
+        // message.error("设置主题色出错，请刷新页面");
       }
     }, 0);
   };
 
   unloadCallback = () => {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem("userInfo");
   };
 
   handleMaskShow = () => {
-    window.addEventListener('unload', this.unloadCallback);
+    window.addEventListener("unload", this.unloadCallback);
   };
 
-  handlePassChange = e => {
+  handlePassChange = (e) => {
     this.setState({ password: e.target.value });
   };
 
@@ -79,8 +83,8 @@ export default class Container extends React.Component {
     const { password } = this.state;
     let res;
     // 普通方式登录
-    const loginMode = localStorage.getItem('loginMode');
-    if (loginMode === 'normal') {
+    const loginMode = localStorage.getItem("loginMode");
+    if (loginMode === "normal") {
       try {
         res = await defaultLogin(this.userCode, password);
       } catch (err) {
@@ -105,18 +109,18 @@ export default class Container extends React.Component {
         return message.error(err.message);
       }
     }
-    if (res.OpResult === 'N') {
-      return message.error('密码输入错误');
+    if (res.OpResult === "N") {
+      return message.error("密码输入错误");
     }
-    localStorage.setItem('userInfo', JSON.stringify(res));
+    localStorage.setItem("userInfo", JSON.stringify(res));
     this.lockScreenRef.current.removeLockScreen();
-    this.setState({ password: '' });
-    window.removeEventListener('unload', this.unloadCallback);
+    this.setState({ password: "" });
+    window.removeEventListener("unload", this.unloadCallback);
   };
 
   render() {
     const { reminderNum, password } = this.state;
-    const user = JSON.parse(getItem('userInfo'));
+    const user = JSON.parse(getItem("userInfo"));
     let userData;
 
     // 读取用户信息报错时
@@ -124,10 +128,10 @@ export default class Container extends React.Component {
     // 进入登录页面
     try {
       userData = {
-        userName: user.SysUserInfo.UserName
+        userName: user.SysUserInfo.UserName,
       };
     } catch (err) {
-      document.location.href = '/login';
+      document.location.href = "/login";
     }
 
     const searchBox = <SearchBox placeholder="" />;

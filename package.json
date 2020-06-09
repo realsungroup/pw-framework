@@ -55,6 +55,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
+    "lz-components-and-utils": "^1.6.12",
     "lz-request": "^0.5.6",
     "mini-css-extract-plugin": "0.4.3",
     "moment": "^2.23.0",
@@ -114,7 +115,7 @@
     "start": "node scripts/start.js",
     "build": "run-s run-build add-suffix",
     "test": "node scripts/test.js",
-    "run-build": "node scripts/build.js",
+    "run-build": "node -max_old_space_size=4096 scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js"
   },
   "eslintConfig": {
