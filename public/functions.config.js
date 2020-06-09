@@ -7069,6 +7069,8 @@ window[642865251509] = {
   name: 'TableData', // 组件名称，
   title: '外包人员办卡信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 542290371363,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7093,6 +7095,8 @@ window[642865263466] = {
   name: 'TableData', // 组件名称，
   title: '外包人员清单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 542286020945,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7114,6 +7118,8 @@ window[642865468370] = {
   name: 'TableData', // 组件名称，
   title: '办公用品待确认', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 506183042085,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7138,6 +7144,8 @@ window[642865477980] = {
   name: 'TableData', // 组件名称，
   title: '办公用品待发货', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 506183134562,
     actionBarWidth: 200,
     hasAdd: false,
@@ -7159,6 +7167,8 @@ window[642865487428] = {
   name: 'TableData', // 组件名称，
   title: '办公用品已完成', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 506183209943,
     actionBarWidth: 200,
     hasAdd: false,
@@ -7180,6 +7190,8 @@ window[642865500060] = {
   name: 'TableData', // 组件名称，
   title: '员工乘坐班车信息维护', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 526474795022,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7201,6 +7213,8 @@ window[642865508238] = {
   name: 'TableData', // 组件名称，
   title: '班车线路维护', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 526472168103,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7222,6 +7236,8 @@ window[642865517021] = {
   name: 'TableData', // 组件名称，
   title: '员工排班', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 552594305731,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7243,6 +7259,8 @@ window[642865529507] = {
   name: 'TableData', // 组件名称，
   title: '班次餐别维护', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 549653997867,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7264,6 +7282,8 @@ window[642865539047] = {
   name: 'TableData', // 组件名称，
   title: '班车报餐数据维护清单', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 557491342865,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7285,6 +7305,8 @@ window[642865548263] = {
   name: 'TableData', // 组件名称，
   title: '餐别信息', // 功能模块名称
   props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80',
     resid: 549653969241,
     actionBarWidth: 200,
     hasAdd: true,
