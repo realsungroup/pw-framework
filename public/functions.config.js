@@ -879,7 +879,7 @@ window[606071626403] = {
           hasAdd: true,
           hasModify: false,
           hasDelete: false,
-          height: 300
+          height: 400
         }
 
         // hasRowModify: false,
@@ -7406,6 +7406,33 @@ window[644327624410] = {
   title: '公司选项', // 功能模块名称
   props: {
     resid: 375291923250,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowEdit: true,
+    actionBarFixed: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEditAdd: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[645027658426] = {
+  name: 'TableData', // 组件名称，
+  title: '个人办公用品申请', // 功能模块名称
+  props: {
+    resid: 506094320832,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
