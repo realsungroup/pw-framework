@@ -280,7 +280,8 @@ class PwForm extends React.Component {
       saveReopen,
       onReopenSave,
       saveOpenText,
-      enSaveOpenText
+      enSaveOpenText,
+      saveConfirmTip
     } = this.props;
     const { intl } = this.props;
 
@@ -325,6 +326,7 @@ class PwForm extends React.Component {
           saveNeedConfirm={saveNeedConfirm}
           saveReopen={saveReopen}
           onReopenSave={onReopenSave}
+          saveConfirmTip={saveConfirmTip}
         />
       </div>
     );

@@ -80,6 +80,7 @@ export const defaultProps = {
   isUseFormDefine: true,
   rowEditAddPosition: 'start',
   hasRowEditAdd: false,
+  successMessageComponent: 'message'
 };
 
 export const propTypes = {
@@ -766,17 +767,17 @@ export const propTypes = {
   // 规则示例（按照 RowColorCol1, 2, 3, 4 的顺序匹配颜色，匹配到了，就是用该序号的颜色，否则进行下一组匹配）
   // const ruleData = {
   //   // age >= 18 and sex = 0 时，颜色为 'red'
-  //   RowColorCol1: ['age', 'sex'], // 
+  //   RowColorCol1: ['age', 'sex'], //
   //   RowColorCond1: ['>=', '='],
   //   RowColorCondVal1: [18, 0],
   //   RowColor1: 'red',
-  
+
   //   // age >= 18 and sex = 1 时，颜色为 'green'
   //   RowColorCol2: ['age', 'sex'],
   //   RowColorCond2: ['>=', '='],
   //   RowColorCondVal2: [18, 1],
   //   RowColor2: 'green',
-  
+
   //   // age < 18 and sex = 1 时，颜色为 'green'
   //   RowColorCol3: ['age', 'sex'],
   //   RowColorCond3: ['<', '='],
@@ -784,4 +785,24 @@ export const propTypes = {
   //   RowColor3: 'blue',
   // };
   rowColorRules: PropTypes.object,
+
+  /**
+   * 成功提示使用的组件
+   * 为字符串时：'message' 使用 message 全局提示组件提示 | 'Modal' 使用模态窗提示（带有确认按钮）
+   * 为对象时:
+   * 使用 message 组件时：
+   * {
+   *   name: 'message'
+   * }
+   * 使用 Modal 组件时：
+   * {
+   *   name: 'Modal',
+   *   // ... 其他属性参照：https://3x.ant.design/components/modal-cn/#Modal.method()
+   * }
+   * 默认：'message'
+   */
+  successMessageComponent: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ])
 };
