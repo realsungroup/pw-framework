@@ -1,6 +1,7 @@
 import React from 'react';
 import './GradeAppraising.less';
 import { Select, Button, Table } from 'antd';
+import PWRedirect from 'Common/data/PWRedirect';
 
 const { Option } = Select;
 const columns = [
@@ -67,7 +68,16 @@ const dataSource = [
  */
 class GradeAppraising extends React.Component {
   render() {
-    return <iframe src="" height="100%" width="100%" frameBorder="none" />;
+    const {
+      config: { resid, replaceBaseUrl, baseURL }
+    } = this.props;
+    return (
+      <PWRedirect
+        resid={resid}
+        replaceBaseUrl={replaceBaseUrl}
+        baseURL={baseURL}
+      />
+    );
     return (
       <div className="grade-appraising">
         <div
