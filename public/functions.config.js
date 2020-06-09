@@ -7443,12 +7443,30 @@ window[642858572880] = {
 window[642858605607] = {
   name: 'DirectlyUnderTarget', // 组件名称，
   title: '直属目标管理', // 功能模块名称
-  props: {}
+  props: {
+    residConfig: {
+      财年: 436471186474,
+      待核准目标: 420981341000,
+      目标核准栏: 420981134612,
+      可调整目标: 421244328300,
+      目标调整栏: 421248567987,
+      目标历史记录栏: 421260296132,
+      直属面谈记录: 463156196758,
+      面谈记录: 463159325562,
+      绩效反馈: 558112361032
+    }
+  }
 };
 window[642858615601] = {
   name: 'EvaluateManage', // 组件名称，
   title: '评价管理', // 功能模块名称
-  props: {}
+  props: {
+    gradeAppraisingConfig: {
+      resid: 645010935966,
+      replaceBaseUrl: 'http://ngrok10.realsun.me:6060',
+      baseURL: 'http://ngrok5.realsun.me:6060/'
+    }
+  }
 };
 window[644526445002] = {
   name: 'WeeklySettlement', // 组件名称，

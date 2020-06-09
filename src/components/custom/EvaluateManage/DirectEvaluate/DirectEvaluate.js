@@ -67,12 +67,13 @@ class DirectEvaluate extends React.Component {
 
   componentDidMount() {
     this.fetchFormData();
+    this.fetchMainData();
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.currentYear !== this.props.currentYear) {
-      this.fetchMainData();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.currentYear !== this.props.currentYear) {
+  //     this.fetchMainData();
+  //   }
+  // }
   static getDerivedStateFromProps(props, state) {
     if (!state.selectedYear) {
       return { selectedYear: props.currentYear.C3_420161949106 };
@@ -195,48 +196,6 @@ class DirectEvaluate extends React.Component {
     this.setState({ submitLoading: false });
   };
 
-  middleActionBarExtra = ({ dataSource = [], selectedRowKeys = [] }) => {
-    const { selectedData, submitLoading } = this.state;
-    return (
-      <>
-        <Button
-          type="primary"
-          size="small"
-          onClick={this.submitTarget('end')}
-          disabled={
-            selectedData.C3_420949753683 !== 'Y' ||
-            selectedData.C3_420976746773 !== 'Y' ||
-            selectedData.C3_431106931302 !== '年中' ||
-            selectedData.C3_436733617722 == 'Y'
-          }
-          loading={submitLoading}
-        >
-          年中直评提交
-        </Button>
-      </>
-    );
-  };
-  endActionBarExtra = ({ dataSource = [], selectedRowKeys = [] }) => {
-    const { selectedData, submitLoading } = this.state;
-    return (
-      <>
-        <Button
-          type="primary"
-          size="small"
-          onClick={this.submitTarget('middle')}
-          loading={submitLoading}
-          disabled={
-            selectedData.C3_420949753683 !== 'Y' ||
-            selectedData.C3_420976746773 !== 'Y' ||
-            selectedData.C3_431106931302 !== '年末' ||
-            selectedData.C3_436734710960 == 'Y'
-          }
-        >
-          年末直评提交
-        </Button>
-      </>
-    );
-  };
   handleListItemClick = data => this.setState({ selectedData: data });
   render() {
     const { years, currentYear } = this.props;
@@ -249,7 +208,8 @@ class DirectEvaluate extends React.Component {
       selectedStage,
       fetcinghMainData,
       filterText,
-      mainData
+      mainData,
+      submitLoading
     } = this.state;
     return (
       <div className="direct-evaluate">
@@ -324,39 +284,77 @@ class DirectEvaluate extends React.Component {
           </header>
           <div className="direct-evaluate__right__table">
             <div className="direct-evaluate-table-tab">
-              <Select
-                style={{ width: 120 }}
-                value={selectedStage}
-                size="small"
-                onChange={v => {
-                  this.setState({
-                    selectedStage: v,
-                    tableConfig: this.getTableConfig(selectedTableTab, v)
-                  });
-                }}
-              >
-                <Option value="年中">年中</Option>
-                <Option value="年末">年末</Option>
-              </Select>
-              {tableTab.map(tab => {
-                return (
-                  <div
-                    className={classnames('direct-evaluate-table-tab-item', {
-                      'direct-evaluate-table-tab-item--selected':
-                        tab.key === selectedTableTab
-                    })}
-                    key={tab.key}
-                    onClick={() => {
-                      this.setState({
-                        selectedTableTab: tab.key,
-                        tableConfig: this.getTableConfig(tab.key, selectedStage)
-                      });
-                    }}
+              <div className="direct-evaluate-table-tab__left">
+                <Select
+                  style={{ width: 120 }}
+                  value={selectedStage}
+                  size="small"
+                  onChange={v => {
+                    this.setState({
+                      selectedStage: v,
+                      tableConfig: this.getTableConfig(selectedTableTab, v)
+                    });
+                  }}
+                >
+                  <Option value="年中">年中</Option>
+                  <Option value="年末">年末</Option>
+                </Select>
+                {tableTab.map(tab => {
+                  return (
+                    <div
+                      className={classnames('direct-evaluate-table-tab-item', {
+                        'direct-evaluate-table-tab-item--selected':
+                          tab.key === selectedTableTab
+                      })}
+                      key={tab.key}
+                      onClick={() => {
+                        this.setState({
+                          selectedTableTab: tab.key,
+                          tableConfig: this.getTableConfig(
+                            tab.key,
+                            selectedStage
+                          )
+                        });
+                      }}
+                    >
+                      {tab.title}
+                    </div>
+                  );
+                })}
+              </div>
+              <div>
+                {tableConfig.resid === 462637854501 ? (
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={this.submitTarget('end')}
+                    disabled={
+                      selectedData.C3_420949753683 !== 'Y' ||
+                      selectedData.C3_420976746773 !== 'Y' ||
+                      selectedData.C3_431106931302 !== '年中' ||
+                      selectedData.C3_436733617722 == 'Y'
+                    }
+                    loading={submitLoading}
                   >
-                    {tab.title}
-                  </div>
-                );
-              })}
+                    年中直评提交
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={this.submitTarget('middle')}
+                    loading={submitLoading}
+                    disabled={
+                      selectedData.C3_420949753683 !== 'Y' ||
+                      selectedData.C3_420976746773 !== 'Y' ||
+                      selectedData.C3_431106931302 !== '年末' ||
+                      selectedData.C3_436734710960 == 'Y'
+                    }
+                  >
+                    年末直评提交
+                  </Button>
+                )}
+              </div>
             </div>
             {selectedYear &&
               (selectedYear !== currentYear.C3_420161949106 ||
@@ -413,12 +411,7 @@ class DirectEvaluate extends React.Component {
       tableDataProps.actionBarFixed = false;
       tableDataProps.isUseFormDefine = false;
     }
-    if (tableConfig.resid === 462637854501) {
-      //年中
-      tableDataProps.actionBarExtra = this.middleActionBarExtra;
-    } else {
-      tableDataProps.actionBarExtra = this.endActionBarExtra;
-    }
+
     return <TableData key={tableConfig.resid} {...tableDataProps} />;
   };
 

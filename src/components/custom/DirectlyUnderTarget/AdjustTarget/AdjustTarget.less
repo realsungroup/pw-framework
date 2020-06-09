@@ -6,7 +6,19 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
+    overflow: hidden;
+    .adjust-target-table-tab {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      .adjust-target-table-tab-item {
+        margin-left: 24px;
+        cursor: pointer;
+        &--selected {
+          color: #1890ff;
+        }
+      }
+    }
     &__table {
       flex: 1;
       background: #ffffff;
