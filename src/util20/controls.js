@@ -27,12 +27,12 @@ export const FormItemElementEM = {
   ImageForDirFile: 17,
   ImageForInputform: 15,
   ImageForPageUrl: 13,
-  ImageForUrlCol: 16,
+  ImageForUrlCol: 16, // 添加 url 图片（没有 label，且在编辑和查看模式下都显示图片）
   Label: 2,
   Line: 7,
   LinkButton: 10,
   RadioGroup: 11,
-  ResTable: 8,
+  ResTable: 8, // 记录表单中的子表
   Textbox: 3,
   TextboxInPrint: 14,
   Unknown: 0
@@ -58,7 +58,7 @@ export const ControlCode = {
   Date: 18,
   Time: 19,
   LongText: 20,
-  ImageForUrlCol: 21, // 图片地址 input
+  ImageForUrlCol: 21, // 对应 FormItemElementEM.ImageForUrlCol
 
   ImageSelect: 22, // 上传图片
   FileSelect: 26, // 上传文件
@@ -323,11 +323,12 @@ export const addPropsToControl = controlArr => {
  */
 export default function dealControlArr(controlArr) {
   let containerControlArr = [],
-    labelControllArr = [],
-    canOpControlArr = [],
-    ImgArr = [],
-    takePictureArr = [],
-    subTableArr = [];
+    labelControllArr = [], // label 控件
+    canOpControlArr = [], // 可操作的控件（如：Input、DateTimePicker 等）
+    ImgArr = [], // 上传图片控件
+    takePictureArr = [], // 拍照 控件
+    subTableArr = [], // 记录表单中的子表 控件
+    imageArr = []; // 添加 url 图片 控件
 
   /**
    * 添加属性
@@ -372,6 +373,17 @@ export default function dealControlArr(controlArr) {
     img.ColValType = ControlCode.Image;
   });
 
+  // 添加 url 图片（没有 label，且在编辑和查看模式下都显示图片）
+  imageArr = controlArr.filter(item => {
+    if (item.FrmFieldFormType === FormItemElementEM.ImageForUrlCol) {
+      item.ColValType = ControlCode.ImageForUrlCol;
+      const index = item.FrmColName.indexOf('C3');
+      item.innerFieldName = item.FrmColName.slice(index);
+      return true;
+    }
+    return false;
+  });
+
   // 文件
   const FileArr = controlArr.filter(
     item => item.FrmFieldFormType === FormItemElementEM.ImageForDirFile
@@ -399,11 +411,15 @@ export default function dealControlArr(controlArr) {
     newControl.options = newControl.ColOptionDictData;
     newControl.innerFieldName = newControl.ColName; //  内部字段名
   });
+
+  allControlArr.push(...imageArr);
+
   return {
-    subTableArr, // 子表控件
     allControlArr, // 所有控件
+    subTableArr, // 子表控件
     canOpControlArr, // 可操作的控件（如 input）
     containerControlArr, // 容器控件
-    labelControllArr
+    labelControllArr,
+    imageArr
   };
 }

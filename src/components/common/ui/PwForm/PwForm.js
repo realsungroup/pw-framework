@@ -114,7 +114,8 @@ class PwForm extends React.Component {
   };
 
   renderFormItem = dataItem => {
-    const { id, label, labelCol, wrapperCol } = dataItem;
+    const { id, label, labelCol, wrapperCol, controlData } = dataItem;
+    const { customStyle = {} } = controlData;
     const {
       form,
       mode,
@@ -156,6 +157,7 @@ class PwForm extends React.Component {
             beforeSaveFields={hasBeforeSave}
             dblinkname={dblinkname}
             baseURL={baseURL}
+            customStyle={customStyle}
           />
         )}
       </FormItem>

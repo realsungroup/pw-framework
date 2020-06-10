@@ -117,7 +117,8 @@ class LzBackendBtn extends React.PureComponent {
         try {
           formData = await this.props.httpGetFormData(
             resid,
-            btnInfo.FormName || 'default'
+            btnInfo.FormName || 'default',
+            baseURL,
           );
         } catch (err) {
           return message.error(err.message);
