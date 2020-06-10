@@ -1428,6 +1428,9 @@ class TableData extends React.Component {
   handleRowCancel = () => {
     const { rowEditAddPosition } = this.props;
     const dataSource = [...this.state.dataSource];
+    if (this.triggerRowEditType === 'rowEdit') {
+      return this.setState({ editingKey: null });
+    }
     if (rowEditAddPosition === 'start') {
       dataSource.shift();
     } else {
