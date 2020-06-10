@@ -795,11 +795,17 @@ class DesignPaper extends React.Component {
                             }
                           });
                         } else {
-                          selectedQuestion.ColValConstant = selectedQuestion.ColValConstant.replace(
-                            value[0],
-                            ''
+                          const _rightAnwsers = [...rightAnwsers];
+                          _rightAnwsers.splice(
+                            _rightAnwsers.findIndex(item => item === value[0]),
+                            1
                           );
-                          this.modifyColumn({ ...selectedQuestion });
+                          selectedQuestion.ColValConstant = _rightAnwsers.join(
+                            ','
+                          );
+                          this.modifyColumn({
+                            ...selectedQuestion
+                          });
                           this.setState({
                             selectedQuestion: { ...selectedQuestion }
                           });

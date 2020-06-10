@@ -117,7 +117,10 @@ class EntryTraining extends React.Component {
   openAddModal = () => {
     this._dataProp = getDataProp(
       this._formData,
-      { C3_636218595792: this.state.courses.length + 1 },
+      {
+        C3_636218595792: this.state.courses.length + 1,
+        C3_636485038768: 'DL入职培训'
+      },
       true,
       false,
       false

@@ -1,23 +1,12 @@
 import React from 'react';
 import './TestPaperManager.less';
-import {
-  Input,
-  Icon,
-  Popover,
-  Modal,
-  Select,
-  Form,
-  Divider,
-  Checkbox,
-  message
-} from 'antd';
+import { Input, Icon, Modal, Select, Form, message } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import DesignPaper from './DesignPaper';
 import Spin from 'Common/ui/Spin';
 import classNames from 'classnames';
 
-const { Search, TextArea } = Input;
-const { Option } = Select;
+const { Search } = Input;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -31,7 +20,9 @@ const formItemLayout = {
 
 const resid1 = 636040535718; //专门放试卷表
 const resid2 = 636548884907; //放试卷实例的表
-const templateResid = 636040619243; //模板表id
+const templateResid = 645103874303; //模板表id
+const resid3 = 645120179719; //试卷下拉字典模板
+const resid4 = 645122713731;
 class TestPaperManager extends React.Component {
   state = {
     addPaperVisible: false,
@@ -92,17 +83,17 @@ class TestPaperManager extends React.Component {
       });
       await http(httpParam).addInheritResource({
         parentresid: resid2,
-        sourceresid: res.data,
+        sourceresid: resid4,
         resname: paperName
       });
       await http(httpParam).addUserResouce({
         parentresid: res.data,
-        sourceresid: res.data,
+        sourceresid: resid3,
         resname: '单选-' + paperName
       });
       await http(httpParam).addUserResouce({
         parentresid: res.data,
-        sourceresid: res.data,
+        sourceresid: resid3,
         resname: '多选-' + paperName
       });
       const { papers } = this.state;
@@ -175,17 +166,12 @@ class TestPaperManager extends React.Component {
                   <h4>{paper.RES_NAME}</h4>
                   <p>
                     {chapters.some(chapter => {
-                      console.log(
-                        chapter.testMain,
-                        paper.RES_ID,
-                        chapter.testMain == paper.RES_ID
-                      );
                       return chapter.testMain == paper.RES_ID;
                     })
                       ? '已关联章节'
                       : '未关联章节'}
                   </p>
-                  <Icon type="delete" className="test-paper-delete-btn" />
+                  {/* <Icon type="delete" className="test-paper-delete-btn" /> */}
                 </div>
               );
             })}
