@@ -122,7 +122,8 @@ class PwForm extends React.Component {
       operation,
       record,
       beforeSaveFields,
-      dblinkname
+      dblinkname,
+      baseURL
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -154,6 +155,7 @@ class PwForm extends React.Component {
             hasBeforeSave={hasBeforeSave}
             beforeSaveFields={hasBeforeSave}
             dblinkname={dblinkname}
+            baseURL={baseURL}
           />
         )}
       </FormItem>
@@ -203,7 +205,8 @@ class PwForm extends React.Component {
       record,
       beforeSaveFields,
       dblinkname,
-      labelControllArr
+      labelControllArr,
+      baseURL
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -248,6 +251,7 @@ class PwForm extends React.Component {
                 hasBeforeSave={hasBeforeSave}
                 beforeSaveFields={hasBeforeSave}
                 dblinkname={dblinkname}
+                baseURL={baseURL}
               />
             )}
           </div>

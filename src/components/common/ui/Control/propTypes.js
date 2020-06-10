@@ -38,5 +38,11 @@ export const propTypes = {
   /**
    * 是否能够通过计算公式获取保存之前的记录
    */
-  hasBeforeSave: PropTypes.bool
+  hasBeforeSave: PropTypes.bool,
+
+  /**
+   * 基地址
+   * 默认：-
+   */
+  baseURL: PropTypes.string
 };

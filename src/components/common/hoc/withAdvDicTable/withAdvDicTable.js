@@ -20,6 +20,7 @@ const withAdvDicTable = WrappedComponent => {
 
     /**
      * 显示高级字典表格
+     * @param {string} baseURL 基地址
      * @param {object} form 使用 Form.create()(MyForm) 自动收集 MyForm 组件中的表单值功能暴露出来的 form 对象
      * @param {object} dataItem 描述控件项（打开高级字典的控件为 Search）的数据，如下所示
      * @param {function} afterSelect 选择完一条记录之后的回调函数
@@ -38,7 +39,7 @@ const withAdvDicTable = WrappedComponent => {
     //   },
     //   advDicTableProps: { resid: 666, cmsWhere: 'xxx', cmscolumns: 'yyy' } // 高级字典独有的字段
     // }
-    handleShowAdvDicTable = (form, dataItem, afterSelect) => {
+    handleShowAdvDicTable = (baseURL, form, dataItem, afterSelect) => {
       const state = { visible: true };
 
       if (!this._form || !this._dataItem) {
@@ -49,7 +50,7 @@ const withAdvDicTable = WrappedComponent => {
       }
 
       if (!this.state.advDicTableProps.resid) {
-        state.advDicTableProps = { ...dataItem.advDicTableProps };
+        state.advDicTableProps = { ...dataItem.advDicTableProps, baseURL };
       }
 
       this.setState(state);

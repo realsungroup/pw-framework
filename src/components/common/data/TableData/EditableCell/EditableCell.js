@@ -61,6 +61,7 @@ export default class EditableCell extends React.Component {
       dataItem, // 控件数据
       width,
       height,
+      baseURL,
       ...restProps
     } = this.props;
 
@@ -87,6 +88,7 @@ export default class EditableCell extends React.Component {
                       dataItem={dataItem}
                       form={form}
                       displayMode="edit"
+                      baseURL={baseURL}
                     />
                   )}
                 </FormItem>
