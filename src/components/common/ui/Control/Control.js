@@ -168,8 +168,8 @@ class Control extends React.Component {
   };
 
   handleSearch = () => {
-    const { showAdvDicTable, form, dataItem } = this.props;
-    showAdvDicTable(form, dataItem, this.handleBeforeSave);
+    const { showAdvDicTable, form, dataItem, baseURL } = this.props;
+    showAdvDicTable(baseURL, form, dataItem, this.handleBeforeSave);
   };
 
   /**

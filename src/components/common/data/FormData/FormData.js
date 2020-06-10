@@ -572,7 +572,8 @@ class FormData extends React.Component {
       subTalbeLayout,
       style,
       layout,
-      saveMode
+      saveMode,
+      baseURL
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -648,6 +649,7 @@ class FormData extends React.Component {
               resid={resid}
               dblinkname={dblinkname}
               layout={formProps && formProps.layout ? formProps.layout : layout}
+              baseURL={baseURL}
             />
           </div>
         )}
