@@ -80,6 +80,14 @@ const getControlName = controlData => {
     case ControlCode.ImgCamera: {
       return 'TakePicture';
     }
+    // Image 显示图片
+    case ControlCode.ImageForUrlCol: {
+      return 'Image';
+    }
+    // 没有使用控件
+    default: {
+      return 'Null';
+    }
   }
 };
 
@@ -165,6 +173,10 @@ const getProps = (controlData, name) => {
           label: option.displayColValue,
           value: option.valueColValue
         }));
+        break;
+      }
+      default: {
+        return null;
       }
     }
   }
@@ -205,11 +217,11 @@ const retFilterFieldValues = innerFieldNames => {
   return colValues;
 };
 
-const getData = (canOpControlArr, rulesControl) => {
+const getData = (controlArr, rulesControl) => {
   const data = [];
-  canOpControlArr.forEach(controlData => {
+  controlArr.forEach(controlData => {
     // id 在后端表示内部字段
-    const id = controlData.ColName;
+    const id = controlData.ColName || controlData.innerFieldName;
     const obj = {
       controlData: controlData,
       id,
@@ -342,13 +354,18 @@ export const getDataProp = (
   rulesControl = true
 ) => {
   let data = [];
-  const { canOpControlArr, containerControlArr, labelControllArr } = formData;
+  const {
+    canOpControlArr,
+    containerControlArr,
+    labelControllArr,
+    imageArr = []
+  } = formData;
   // 默认布局
   if (!isClassifyLayout) {
-    data = getData(canOpControlArr, rulesControl);
+    data = getData([...canOpControlArr, ...imageArr], rulesControl);
     // 分类布局
   } else {
-    const klasses = assortFields(canOpControlArr);
+    const klasses = assortFields([...canOpControlArr, ...imageArr]);
     klasses.forEach(klass => {
       const obj = {
         type: klass.title,

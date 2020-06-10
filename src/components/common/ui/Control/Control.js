@@ -411,7 +411,7 @@ class Control extends React.Component {
   };
 
   render() {
-    const { dataItem, value, mode } = this.props;
+    const { dataItem, value, mode, customStyle } = this.props;
     const name = dataItem.name;
     const props = dataItem.props;
     const {
@@ -480,6 +480,16 @@ class Control extends React.Component {
             <span>
               {getSelectViewValue(value, dataItem.controlData, props)}
             </span>
+          );
+        }
+
+        case 'Image': {
+          return (
+            <img
+              src={value}
+              alt={value}
+              style={{ width: customStyle.width, height: customStyle.height }}
+            ></img>
           );
         }
 
@@ -617,8 +627,17 @@ class Control extends React.Component {
             </Fragment>
           );
         }
+        case 'Image': {
+          return (
+            <img
+              src={value}
+              alt={value}
+              style={{ width: customStyle.width, height: customStyle.height }}
+            ></img>
+          );
+        }
         default: {
-          return null;
+          return <div>{value}</div>;
         }
       }
     }

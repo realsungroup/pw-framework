@@ -80,7 +80,8 @@ export const defaultProps = {
   isUseFormDefine: true,
   rowEditAddPosition: 'start',
   hasRowEditAdd: false,
-  successMessageComponent: 'message'
+  successMessageComponent: 'message',
+  isSetColumnWidth: true
 };
 
 export const propTypes = {
@@ -196,6 +197,12 @@ export const propTypes = {
    * 默认：200
    */
   defaultColumnWidth: PropTypes.number,
+
+  /**
+   * 是否设置列的宽度（当选择列与第一列出现空隙时，可以将此属性设置为 false）
+   * 默认：true
+   */
+  isSetColumnWidth: PropTypes.bool,
 
   /**
    * 自定义列宽度
