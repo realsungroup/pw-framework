@@ -81,11 +81,12 @@ class TestPaperManager extends React.Component {
         sourceresid: templateResid,
         resname: paperName
       });
-      await http(httpParam).addInheritResource({
+      const res1 = await http(httpParam).addInheritResource({
         parentresid: resid2,
-        sourceresid: resid4,
+        sourceresid: res.data,
         resname: paperName
       });
+      await this.hideColumns(res1.data);
       await http(httpParam).addUserResouce({
         parentresid: res.data,
         sourceresid: resid3,
@@ -113,6 +114,28 @@ class TestPaperManager extends React.Component {
     }
   };
 
+  hideColumns = async resid => {
+    const { baseURL } = this.props;
+    const columns = [
+      'C3_636040949514',
+      'userId',
+      'C3_636040900146',
+      'score',
+      'pass',
+      'C3_644180138370',
+      'C3_644180155102'
+    ];
+    const pArr = [];
+    columns.forEach(column => {
+      const p = http({ baseURL }).setFieldShow({
+        resid: resid,
+        colname: column,
+        show: false
+      });
+      pArr.push(p);
+    });
+    await Promise.all(pArr);
+  };
   handleSearchChange = e => {
     this.setState({ filterText: e.target.value });
   };
