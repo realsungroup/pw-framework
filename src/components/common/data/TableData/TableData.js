@@ -318,8 +318,13 @@ class TableData extends React.Component {
       rules = rowColorRules;
     } else {
       let res;
+      const { baseURL } = this.props;
+      const httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
       try {
-        res = await http().getRowColorData({ id: this._id });
+        res = await http(httpParams).getRowColorData({ id: this._id });
       } catch (err) {
         message.error(err.message);
         return;
