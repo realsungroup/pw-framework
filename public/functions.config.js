@@ -7503,7 +7503,12 @@ window[644526445002] = {
 window[642858626812] = {
   name: 'SubordinateAchievements', // 组件名称，
   title: '查看下属绩效', // 功能模块名称
-  props: {}
+  props: {
+    residConfig:{
+      财年评级评优:463239758862,
+      人事汇报关系:639856535460
+    }
+  }
 };
 window[642858635809] = {
   name: 'AchievementResult', // 组件名称，
