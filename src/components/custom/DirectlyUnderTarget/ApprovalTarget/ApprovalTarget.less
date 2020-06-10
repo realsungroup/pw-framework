@@ -7,7 +7,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
+    overflow: hidden;
     &__table {
       flex: 1;
       background: #ffffff;
@@ -31,6 +31,8 @@
   padding: 8px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+
   &__header {
     display: flex;
     .header__left {
@@ -54,11 +56,18 @@
     .content__list {
       flex: 1;
       padding-top: 16px;
+      overflow-y: auto;
       &-item {
         display: flex;
         color: #333333;
         border: 1px solid rgba(232, 232, 232, 1);
         padding: 8px;
+        cursor: pointer;
+        margin-bottom: 8px;
+        &--selected,
+        &:hover {
+          border: 1px solid rgba(24, 144, 255, 1);
+        }
         &__checkbox-container {
           margin-right: 8px;
         }

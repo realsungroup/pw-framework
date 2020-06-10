@@ -7,11 +7,35 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
+    overflow: hidden;
     &__table {
       flex: 1;
       background: #ffffff;
       padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .direct-evaluate-table-tab {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        &__left {
+          display: flex;
+          align-items: center;
+        }
+        .direct-evaluate-table-tab-item {
+          margin-left: 24px;
+          cursor: pointer;
+          &--selected {
+            color: #1890ff;
+          }
+        }
+      }
+      .direct-evaluate__tabledata-container {
+        flex: 1;
+        overflow: auto;
+      }
     }
   }
 }
