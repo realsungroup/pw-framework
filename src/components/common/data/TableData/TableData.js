@@ -473,7 +473,7 @@ class TableData extends React.Component {
           : parent.clientHeight * percentString2decimal(height);
     }
 
-    const scrollXY = { x, y: this.boxH - subtractH };
+    const scrollXY = { x: 1000, y: this.boxH - subtractH };
 
     this._x = x;
     this._y = y;
@@ -640,7 +640,8 @@ class TableData extends React.Component {
       fixedColumns,
       hasRowEdit,
       isUseBESize,
-      isUseFormDefine
+      isUseFormDefine,
+      isSetColumnWidth
     } = this.props;
 
     const secondParams = {
@@ -683,7 +684,8 @@ class TableData extends React.Component {
       secondParams,
       cmscolumns,
       hasRowEdit,
-      isUseBESize
+      isUseBESize,
+      isSetColumnWidth
     );
 
     this._dealedColumns = columns;
