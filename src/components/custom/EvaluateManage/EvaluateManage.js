@@ -1,21 +1,52 @@
 import React from 'react';
 import './EvaluateManage.less';
-import { Tabs } from 'antd';
+import { Tabs, message } from 'antd';
 import GradeAppraising from './GradeAppraising';
 import Evaluate from './Evaluate';
 import Invite from './Invite';
 import DirectEvaluate from './DirectEvaluate';
+import http from 'Util20/api';
+
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
+const yearResid = 436471186474;
 
 /**
  * 评价管理
  */
 class EvaluateManage extends React.Component {
+  state = {
+    years: [], //财年
+    currentYear: {} //当前财年
+  };
+
+  componentDidMount() {
+    this.fectchYears();
+  }
+
+  fectchYears = async () => {
+    try {
+      const res = await http().getTable({
+        resid: yearResid
+      });
+      this.setState({
+        years: res.data,
+        currentYear: res.data.find(item => {
+          return item.C3_420162027612 === 'Y';
+        })
+      });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
+    }
+  };
+
   render() {
+    const { years, currentYear } = this.state;
+    const { gradeAppraisingConfig } = this.props;
     return (
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey="3"
         className="evaluate-manage"
         size="small"
         tabBarStyle={tabBarStyle}
@@ -27,10 +58,10 @@ class EvaluateManage extends React.Component {
           <Evaluate />
         </TabPane>
         <TabPane tab="直评管理" key="3">
-          <DirectEvaluate />
+          <DirectEvaluate years={years} currentYear={currentYear} />
         </TabPane>
         <TabPane tab="评级评优" key="4">
-          <GradeAppraising />
+          <GradeAppraising config={gradeAppraisingConfig} />
         </TabPane>
       </Tabs>
     );

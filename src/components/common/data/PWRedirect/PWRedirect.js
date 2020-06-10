@@ -27,12 +27,12 @@ const style = { height: '100%', width: '100%' };
 class PWRedirect extends React.Component {
   state = { url: '' };
   componentDidMount() {
-    const { resid, replaceBaseUrl } = this.props;
-    this.fetchRedirectUrl(resid, replaceBaseUrl);
+    const { resid, replaceBaseUrl, baseURL } = this.props;
+    this.fetchRedirectUrl(resid, replaceBaseUrl, baseURL);
   }
-  fetchRedirectUrl = async (resid, replaceBaseUrl) => {
+  fetchRedirectUrl = async (resid, replaceBaseUrl, baseURL) => {
     try {
-      const res = await http().getRedirectUrl({ resid });
+      const res = await http({ baseURL }).getRedirectUrl({ resid });
       let url = res.data;
       if (replaceBaseUrl) {
         url = url.replace(getDomain(url), replaceBaseUrl);

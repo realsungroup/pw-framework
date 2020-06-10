@@ -318,8 +318,13 @@ class TableData extends React.Component {
       rules = rowColorRules;
     } else {
       let res;
+      const { baseURL } = this.props;
+      const httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
       try {
-        res = await http().getRowColorData({ id: this._id });
+        res = await http(httpParams).getRowColorData({ id: this._id });
       } catch (err) {
         message.error(err.message);
         return;
@@ -1423,6 +1428,9 @@ class TableData extends React.Component {
   handleRowCancel = () => {
     const { rowEditAddPosition } = this.props;
     const dataSource = [...this.state.dataSource];
+    if (this.triggerRowEditType === 'rowEdit') {
+      return this.setState({ editingKey: null });
+    }
     if (rowEditAddPosition === 'start') {
       dataSource.shift();
     } else {
@@ -2061,30 +2069,31 @@ class TableData extends React.Component {
         } = this.props;
         let hasRowSaveCancel,
           hasRowBeBtns = hasBeBtns && !!beBtnsSingle.length,
-          hasCustomRowBtns = !!customRowBtns;
-
+          hasCustomRowBtns = !!customRowBtns,
+          _hasRowEdit = hasRowEdit,
+          _hasRowModify = hasRowModify && this._hasRowModify,
+          _hasRowDelete = hasRowDelete && this._hasRowDelete,
+          _hasRowView = hasRowView && this._hasRowView;
         if (hasRowEdit) {
           hasRowSaveCancel = record.REC_ID === editingKey;
-          hasRowEdit = hasRowEdit && !hasRowSaveCancel;
-          hasRowModify =
-            hasRowModify && !hasRowSaveCancel && this._hasRowModify;
-          hasRowView = hasRowView && !hasRowSaveCancel && this._hasRowView;
-          hasRowDelete =
-            hasRowDelete && !hasRowSaveCancel && this._hasRowDelete;
+          _hasRowEdit = hasRowEdit && !hasRowSaveCancel;
+          _hasRowModify = _hasRowModify && !hasRowSaveCancel;
+          _hasRowView = _hasRowView && !hasRowSaveCancel;
+          _hasRowDelete = _hasRowDelete && !hasRowSaveCancel;
           hasRowBeBtns = hasRowBeBtns && !hasRowSaveCancel;
           hasCustomRowBtns = hasCustomRowBtns && !hasRowSaveCancel;
         }
 
         return (
           <Fragment>
-            {hasRowEdit && this.renderRowEditBtn(record)}
+            {_hasRowEdit && this.renderRowEditBtn(record)}
 
             {hasRowSaveCancel && this.renderRowSaveBtn(record)}
             {hasRowSaveCancel && this.renderRowCancelBtn(record)}
 
-            {hasRowModify && this.renderRowModifyBtn(record)}
-            {hasRowView && this.renderRowViewBtn(record)}
-            {hasRowDelete && this.renderRowDeleteBtn(record)}
+            {_hasRowModify && this.renderRowModifyBtn(record)}
+            {_hasRowView && this.renderRowViewBtn(record)}
+            {_hasRowDelete && this.renderRowDeleteBtn(record)}
 
             {/* 后端按钮 */}
             {hasRowBeBtns && this.renderRowBeBtns(beBtnsSingle, record)}
