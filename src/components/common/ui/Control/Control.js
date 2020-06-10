@@ -550,7 +550,12 @@ class Control extends React.Component {
           const newValue = getSelectValue(value, props);
 
           return (
-            <Select value={newValue} onChange={this.handleChange} {...props}>
+            <Select
+              value={newValue}
+              onChange={this.handleChange}
+              {...props}
+              className="control__select"
+            >
               {options.map(option => (
                 <Option key={option.value} value={option.value}>
                   {option.label}
