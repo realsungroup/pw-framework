@@ -65,32 +65,32 @@ function stopPropagation(e) {
   e.stopPropagation();
 }
 const workNumber = {
-  1: 'A',
-  2: 'B',
-  3: 'C',
-  4: 'D',
-  5: 'E',
-  6: 'F',
-  7: 'G',
-  8: 'H',
-  9: 'I',
-  10: 'J',
-  11: 'K',
-  12: 'L',
-  13: 'M',
-  14: 'N',
-  15: 'O',
-  16: 'P',
-  17: 'Q',
-  18: 'R',
-  19: 'S',
-  20: 'T',
-  21: 'U',
-  22: 'V',
-  23: 'W',
-  24: 'X',
-  25: 'Y',
-  26: 'Z'
+  1: 'A.',
+  2: 'B.',
+  3: 'C.',
+  4: 'D.',
+  5: 'E.',
+  6: 'F.',
+  7: 'G.',
+  8: 'H.',
+  9: 'I.',
+  10: 'J.',
+  11: 'K.',
+  12: 'L.',
+  13: 'M.',
+  14: 'N.',
+  15: 'O.',
+  16: 'P.',
+  17: 'Q.',
+  18: 'R.',
+  19: 'S.',
+  20: 'T.',
+  21: 'U.',
+  22: 'V.',
+  23: 'W.',
+  24: 'X.',
+  25: 'Y.',
+  26: 'Z.'
 };
 function getWordFromNumber(number) {
   return workNumber[number] || 'Z';
@@ -133,20 +133,22 @@ class DesignPaper extends React.Component {
         singleRes,
         mulptiRes
       });
-      const res1 = await http({ baseURL: this.props.baseURL }).getTable({
-        resid: mulptiRes.RES_ID
-      });
-      const res2 = await http({ baseURL: this.props.baseURL }).getTable({
-        resid: singleRes.RES_ID
-      });
-      this.setState({
-        mulptiRecords: res1.data.sort(
-          (a, b) => Date.parse(a.REC_CRTTIME) - Date.parse(b.REC_CRTTIME)
-        ),
-        singleRecords: res2.data.sort(
-          (a, b) => Date.parse(a.REC_CRTTIME) - Date.parse(b.REC_CRTTIME)
-        )
-      });
+      if (singleRes && mulptiRes) {
+        const res1 = await http({ baseURL: this.props.baseURL }).getTable({
+          resid: mulptiRes.RES_ID
+        });
+        const res2 = await http({ baseURL: this.props.baseURL }).getTable({
+          resid: singleRes.RES_ID
+        });
+        this.setState({
+          mulptiRecords: res1.data.sort(
+            (a, b) => Date.parse(a.REC_CRTTIME) - Date.parse(b.REC_CRTTIME)
+          ),
+          singleRecords: res2.data.sort(
+            (a, b) => Date.parse(a.REC_CRTTIME) - Date.parse(b.REC_CRTTIME)
+          )
+        });
+      }
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -291,9 +293,11 @@ class DesignPaper extends React.Component {
   setScore = async data => {
     const { baseURL, paper } = this.props;
     const resid = paper.RES_ID;
+    const { extendRes } = this.state;
     try {
       this.setState({ savingQuestion: true });
       const res = await http({ baseURL }).setColScore({ ...data, resid });
+      await http({ baseURL }).setColScore({ ...data, resid: extendRes.RES_ID });
       this.setState({
         savingQuestion: false,
         columnInfo: res.data.filter(item => item.ColNotes)
@@ -795,11 +799,17 @@ class DesignPaper extends React.Component {
                             }
                           });
                         } else {
-                          selectedQuestion.ColValConstant = selectedQuestion.ColValConstant.replace(
-                            value[0],
-                            ''
+                          const _rightAnwsers = [...rightAnwsers];
+                          _rightAnwsers.splice(
+                            _rightAnwsers.findIndex(item => item === value[0]),
+                            1
                           );
-                          this.modifyColumn({ ...selectedQuestion });
+                          selectedQuestion.ColValConstant = _rightAnwsers.join(
+                            ','
+                          );
+                          this.modifyColumn({
+                            ...selectedQuestion
+                          });
                           this.setState({
                             selectedQuestion: { ...selectedQuestion }
                           });
