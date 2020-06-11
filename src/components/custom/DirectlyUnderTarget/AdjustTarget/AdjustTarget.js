@@ -93,7 +93,7 @@ class AdjustTarget extends React.Component {
     this.setState({ checkedData: e.target.checked ? [...yearMainData] : [] });
   };
   handleSubmit = async () => {
-    const { checkedData } = this.state;
+    const { checkedData, selectedData } = this.state;
     const { residConfig } = this.props;
 
     if (!checkedData.length) {
@@ -108,6 +108,10 @@ class AdjustTarget extends React.Component {
         resid: residConfig.可调整目标,
         data: checkedData
       });
+      const data = { checkedData: [] };
+      if (checkedData.some(item => item.REC_ID === selectedData.REC_ID)) {
+        data.selectedData = {};
+      }
       this.setState({ checkedData: [] }, () => {
         this.fetchMainData();
       });

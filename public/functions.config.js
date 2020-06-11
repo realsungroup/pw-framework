@@ -5598,7 +5598,7 @@ window[642856723891] = {
       hasRowView: true,
       isUseFormDefine: false,
       hasRowDelete: true,
-      isSetColumnWidth:true,
+      isSetColumnWidth: true,
       formProps: {
         // height: 500
       },
@@ -7370,8 +7370,8 @@ window[642854549263] = {
         subTableName: '考勤日报',
         subResid: 375296167687,
         tableProps: {
-          baseURL: "http://ngrok5.realsun.me:6060",
-          actionBarWidth: 200,
+          baseURL: 'http://ngrok5.realsun.me:6060',
+          actionBarWidth: 200
         }
       }
     ],
@@ -7525,6 +7525,10 @@ window[642858615601] = {
       resid: 645010935966,
       replaceBaseUrl: 'http://ngrok10.realsun.me:6060',
       baseURL: 'http://ngrok5.realsun.me:6060/'
+    },
+    residConfig: {
+      年中目标: 462637854501,
+      年末目标: 462643948869
     }
   }
 };
@@ -7537,9 +7541,9 @@ window[642858626812] = {
   name: 'SubordinateAchievements', // 组件名称，
   title: '查看下属绩效', // 功能模块名称
   props: {
-    residConfig:{
-      财年评级评优:463239758862,
-      人事汇报关系:639856535460
+    residConfig: {
+      财年评级评优: 463239758862,
+      人事汇报关系: 639856535460
     }
   }
 };
