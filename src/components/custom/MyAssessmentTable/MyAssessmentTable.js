@@ -543,6 +543,7 @@ class MyAssessmentTable extends React.Component {
     tableDataProps.hasRowDelete = false;
     tableDataProps.hasRowEdit = false;
     tableDataProps.actionBarWidth = 150;
+    tableDataProps.hasRowSelection = true;
     const modifiable = this.modifiableTable(
       selectedMainData,
       tableConfig.resid

@@ -354,19 +354,22 @@ class DesignPaper extends React.Component {
     }
   };
 
-  modifyMulptiRecords = async data => {
+  modifyMulptiRecords = async (data, needLoading = true) => {
     const { baseURL } = this.props;
     const { mulptiRes, mulptiRecords } = this.state;
     const resid = mulptiRes.RES_ID;
     try {
-      this.setState({ savingQuestion: true });
+      needLoading && this.setState({ savingQuestion: true });
       const res = await http({ baseURL }).modifyRecords({
         resid,
-        data: [data]
+        data: data
       });
-      mulptiRecords[
-        mulptiRecords.findIndex(item => item.REC_ID === data.REC_ID)
-      ] = res.data[0];
+      res.data.forEach(item => {
+        mulptiRecords[
+          mulptiRecords.findIndex(i => i.REC_ID === item.REC_ID)
+        ] = item;
+      });
+
       this.setState({
         savingQuestion: false,
         mulptiRecords: [...mulptiRecords]
@@ -399,19 +402,22 @@ class DesignPaper extends React.Component {
     }
   };
 
-  modifySingleRecords = async data => {
+  modifySingleRecords = async (data, needLoading = true) => {
     const { baseURL } = this.props;
     const { singleRes, singleRecords } = this.state;
     const resid = singleRes.RES_ID;
     try {
-      this.setState({ savingQuestion: true });
+      needLoading && this.setState({ savingQuestion: true });
       const res = await http({ baseURL }).modifyRecords({
         resid,
-        data: [data]
+        data: data
       });
-      singleRecords[
-        singleRecords.findIndex(item => item.REC_ID === data.REC_ID)
-      ] = res.data[0];
+
+      res.data.forEach(item => {
+        singleRecords[
+          singleRecords.findIndex(i => i.REC_ID === item.REC_ID)
+        ] = item;
+      });
       this.setState({
         savingQuestion: false,
         singleRecords: [...singleRecords]
@@ -542,6 +548,71 @@ class DesignPaper extends React.Component {
     }
   };
 
+  /**
+   * 删除选项
+   */
+  handleDeleteOption = (isMultiple, record, valueCol) => () => {
+    const { mulptiRecords, singleRecords } = this.state;
+    if (isMultiple) {
+      const index = mulptiRecords.findIndex(
+        item => item.REC_ID === record.REC_ID
+      );
+      const data = [];
+      if (mulptiRecords.length === 1) {
+        data.push({
+          REC_ID: record.REC_ID,
+          [valueCol]: ''
+        });
+      } else {
+        for (let i = 0; i < mulptiRecords.length; i++) {
+          const element = mulptiRecords[i];
+          if (i > index) {
+            data.push({
+              REC_ID: mulptiRecords[i - 1].REC_ID,
+              [valueCol]: element[valueCol].replace(
+                element[valueCol][0],
+                getWordFromNumber(i)[0]
+              )
+            });
+          }
+        }
+        data.push({
+          REC_ID: mulptiRecords[mulptiRecords.length - 1].REC_ID,
+          [valueCol]: ''
+        });
+      }
+      this.modifyMulptiRecords(data);
+    } else {
+      const index = singleRecords.findIndex(
+        item => item.REC_ID === record.REC_ID
+      );
+      const data = [];
+      if (singleRecords.length === 1) {
+        data.push({
+          REC_ID: record.REC_ID,
+          [valueCol]: ''
+        });
+      } else {
+        for (let i = 0; i < singleRecords.length; i++) {
+          const element = singleRecords[i];
+          if (i > index) {
+            data.push({
+              REC_ID: singleRecords[i - 1].REC_ID,
+              [valueCol]: element[valueCol].replace(
+                element[valueCol][0],
+                getWordFromNumber(i)[0]
+              )
+            });
+          }
+        }
+        data.push({
+          REC_ID: singleRecords[singleRecords.length - 1].REC_ID,
+          [valueCol]: ''
+        });
+      }
+      this.modifySingleRecords(data);
+    }
+  };
   renderEditor = () => {
     const {
       selectedQuestion,
@@ -630,9 +701,9 @@ class DesignPaper extends React.Component {
                         value={record[valueCol]}
                         onBlur={() => {
                           if (isMultiple) {
-                            this.modifyMulptiRecords(record);
+                            this.modifyMulptiRecords([record], false);
                           } else {
-                            this.modifySingleRecords(record);
+                            this.modifySingleRecords([record], false);
                           }
                         }}
                         onChange={e => {
@@ -648,19 +719,11 @@ class DesignPaper extends React.Component {
                       <div className="question-option-actions">
                         <Popconfirm
                           title="确认删除吗？"
-                          onConfirm={() => {
-                            if (isMultiple) {
-                              this.modifyMulptiRecords({
-                                ...record,
-                                [valueCol]: ''
-                              });
-                            } else {
-                              this.modifySingleRecords({
-                                ...record,
-                                [valueCol]: ''
-                              });
-                            }
-                          }}
+                          onConfirm={this.handleDeleteOption(
+                            isMultiple,
+                            record,
+                            valueCol
+                          )}
                         >
                           <Icon
                             type="delete"
@@ -720,13 +783,15 @@ class DesignPaper extends React.Component {
                 onClick={() => {
                   if (isMultiple) {
                     if (mulptiRecords[_mulptiRecords.length]) {
-                      this.modifyMulptiRecords({
-                        [selectedQuestion.ColOptionDictData
-                          .valueCol]: getWordFromNumber(
-                          _mulptiRecords.length + 1
-                        ),
-                        REC_ID: mulptiRecords[_mulptiRecords.length].REC_ID
-                      });
+                      this.modifyMulptiRecords([
+                        {
+                          [selectedQuestion.ColOptionDictData
+                            .valueCol]: getWordFromNumber(
+                            _mulptiRecords.length + 1
+                          ),
+                          REC_ID: mulptiRecords[_mulptiRecords.length].REC_ID
+                        }
+                      ]);
                     } else {
                       this.addMulptiRecords({
                         [selectedQuestion.ColOptionDictData
@@ -752,13 +817,15 @@ class DesignPaper extends React.Component {
                       });
                     } else {
                       if (singleRecords[_mulptiRecords.length]) {
-                        this.modifySingleRecords({
-                          [selectedQuestion.ColOptionDictData
-                            .valueCol]: getWordFromNumber(
-                            _mulptiRecords.length + 1
-                          ),
-                          REC_ID: singleRecords[_mulptiRecords.length].REC_ID
-                        });
+                        this.modifySingleRecords([
+                          {
+                            [selectedQuestion.ColOptionDictData
+                              .valueCol]: getWordFromNumber(
+                              _mulptiRecords.length + 1
+                            ),
+                            REC_ID: singleRecords[_mulptiRecords.length].REC_ID
+                          }
+                        ]);
                       } else {
                         this.addSingleRecords({
                           [selectedQuestion.ColOptionDictData
