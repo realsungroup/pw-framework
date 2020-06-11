@@ -1368,7 +1368,7 @@ class TableData extends React.Component {
         return;
       }
 
-      const { dataMode, resid, subresid, baseURL, dblinkname } = this.props;
+      const { dataMode, resid, subresid, baseURL, dblinkname, hostrecid } = this.props;
       const id = getResid(dataMode, resid, subresid);
       const formData = dealFormData(values);
       formData.REC_ID = oldRecord.REC_ID;
@@ -1391,12 +1391,18 @@ class TableData extends React.Component {
 
       // 保存到后端
       // 添加记录
+      let params = {};
+      if (dataMode === 'sub') {
+        params.hostresid = resid;
+        params.hostrecid = hostrecid;
+      }
       if (this.triggerRowEditType === 'add') {
         this.p2 = makeCancelable(
           http(httpParams).addRecords({
             resid: id,
             data: [formData],
-            dblinkname
+            dblinkname,
+            ...params,
           })
         );
       } else {
@@ -1405,7 +1411,8 @@ class TableData extends React.Component {
           http(httpParams).modifyRecords({
             resid: id,
             data: [formData],
-            dblinkname
+            dblinkname,
+            ...params
           })
         );
       }
