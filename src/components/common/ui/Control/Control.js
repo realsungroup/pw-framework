@@ -177,7 +177,13 @@ class Control extends React.Component {
    * @param {string | moment} value 改变后的值
    */
   handleChange = value => {
-    const { dataItem, hasBeforeSave, onSingleChange, form } = this.props;
+    const {
+      dataItem,
+      hasBeforeSave,
+      onSingleChange,
+      form,
+      saveMode
+    } = this.props;
     // Checkbox/Select/DatePicker/DateTimePicker beforeSave
     if (hasBeforeSave) {
       if (beforeSaveOnChangeControls.indexOf(dataItem.name) !== -1) {
@@ -186,9 +192,10 @@ class Control extends React.Component {
         }, 0);
       }
     }
-
     this.triggerChange(value);
-    onSingleChange && onSingleChange(dataItem.id, form);
+    saveMode === 'single' &&
+      onSingleChange &&
+      onSingleChange(dataItem.id, form);
   };
 
   triggerChange = changedValue => {
