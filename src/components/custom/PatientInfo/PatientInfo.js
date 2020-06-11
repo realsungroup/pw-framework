@@ -1,13 +1,13 @@
-import React from 'react';
-import { propTypes, defaultProps } from './propTypes';
-import TableData from 'Common/data/TableData';
-import './PatientInfo.less';
-import { Button, message } from 'antd';
-import { LzModal, LzMenuForms } from '../loadableCustom';
-import http, { makeCancelable } from 'Util20/api';
+import React from "react";
+import { propTypes, defaultProps } from "./propTypes";
+import TableData from "Common/data/TableData";
+import "./PatientInfo.less";
+import { Button, message } from "antd";
+import { LzModal, LzMenuForms } from "../loadableCustom";
+import http, { makeCancelable } from "Util20/api";
 
 const customBtnStyle = {
-  margin: '0 4px'
+  margin: "0 4px",
 };
 
 /**
@@ -21,9 +21,9 @@ class PatientInfo extends React.Component {
     this.state = {
       modalVisible: false,
       record: {},
-      navListResidField: '',
+      navListResidField: "",
       cdLen: {},
-      ucLen: {}
+      ucLen: {},
     };
   }
 
@@ -32,13 +32,17 @@ class PatientInfo extends React.Component {
     this.p1 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_617809531670 = 'UC'`
+        cmswhere: `C3_617809531670 = 'UC'`,
+        pageindex: 0,
+        pagesize: 10,
       })
     );
     this.p2 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_617809531670 = 'CD'`
+        cmswhere: `C3_617809531670 = 'CD'`,
+        pageindex: 0,
+        pagesize: 10,
       })
     );
     const pArr = [this.p1.promise, this.p2.promise];
@@ -60,28 +64,27 @@ class PatientInfo extends React.Component {
     this.p2 && this.p2.cancel();
   };
 
-  handleInputCaseClick = record => {
+  handleInputCaseClick = (record) => {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_620929565473'
+      navListResidField: "C3_620929565473",
     });
   };
 
-
-  handleQSClick = record => {
+  handleQSClick = (record) => {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_620929861096'
+      navListResidField: "C3_620929861096",
     });
   };
 
-  handleHistoryClick = record => {
+  handleHistoryClick = (record) => {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: 'C3_620929845890'
+      navListResidField: "C3_620929845890",
     });
   };
 
@@ -121,7 +124,7 @@ class PatientInfo extends React.Component {
           历史记录
         </Button>
       );
-    }
+    },
   ];
 
   handleModalClose = () => {
@@ -132,8 +135,8 @@ class PatientInfo extends React.Component {
     const { cdLen, ucLen } = this.state;
     return (
       <div>
-        <span style={{ margin: '0 4px' }}>CD：{cdLen}</span>
-        <span style={{ margin: '0 4px' }}>UC：{ucLen}</span>
+        <span style={{ margin: "0 4px" }}>CD：{cdLen}</span>
+        <span style={{ margin: "0 4px" }}>UC：{ucLen}</span>
       </div>
     );
   };
@@ -145,11 +148,11 @@ class PatientInfo extends React.Component {
       record,
       navListResidField,
       ucLen,
-      cdLen
+      cdLen,
     } = this.state;
     return (
       <div className="patient-info">
-        {typeof ucLen === 'number' && typeof cdLen === 'number' && (
+        {typeof ucLen === "number" && typeof cdLen === "number" && (
           <TableData
             {...tableDataProps}
             customRowBtns={this.customRowBtns}
@@ -162,21 +165,21 @@ class PatientInfo extends React.Component {
             <LzMenuForms
               mode="multiple"
               addModalFormProps={{
-                displayMod: 'classify',
-                modalWidth: 1000
+                displayMod: "classify",
+                modalWidth: 1000,
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
               resid={624640053934}
               userInfoFields={[
-                { label: '姓名', innerFieldName: 'C3_617809531835' },
-                { label: '住院号', innerFieldName: 'C3_617809584020' },
-                { label: '性别', innerFieldName: 'C3_617809531996' },
-                { label: '出生年月', innerFieldName: 'C3_617809532320' }
+                { label: "姓名", innerFieldName: "C3_617809531835" },
+                { label: "住院号", innerFieldName: "C3_617809584020" },
+                { label: "性别", innerFieldName: "C3_617809531996" },
+                { label: "出生年月", innerFieldName: "C3_617809532320" },
               ]}
               record={record}
               advSearchConfig={{
-                containerName: 'drawer'
+                containerName: "drawer",
               }}
               displayMod="classify"
             />
