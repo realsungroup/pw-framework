@@ -259,6 +259,9 @@ class InternalTraining extends React.Component {
             }}
             allowClear
           />
+          <div className="add-course-btn" onClick={this.openAddModal}>
+            点击新建入职培训课程
+          </div>
           <div className="course-list">
             {_courses.map(course => {
               return (
@@ -298,10 +301,6 @@ class InternalTraining extends React.Component {
                 </div>
               );
             })}
-
-            <div className="add-course-btn" onClick={this.openAddModal}>
-              点击新建入职培训课程
-            </div>
           </div>
         </div>
         <div className="test-table">

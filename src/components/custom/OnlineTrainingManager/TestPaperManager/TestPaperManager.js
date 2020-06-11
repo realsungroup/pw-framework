@@ -1,23 +1,12 @@
 import React from 'react';
 import './TestPaperManager.less';
-import {
-  Input,
-  Icon,
-  Popover,
-  Modal,
-  Select,
-  Form,
-  Divider,
-  Checkbox,
-  message
-} from 'antd';
+import { Input, Icon, Modal, Select, Form, message } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import DesignPaper from './DesignPaper';
 import Spin from 'Common/ui/Spin';
 import classNames from 'classnames';
 
-const { Search, TextArea } = Input;
-const { Option } = Select;
+const { Search } = Input;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -31,7 +20,9 @@ const formItemLayout = {
 
 const resid1 = 636040535718; //专门放试卷表
 const resid2 = 636548884907; //放试卷实例的表
-const templateResid = 636040619243; //模板表id
+const templateResid = 645103874303; //模板表id
+const resid3 = 645120179719; //试卷下拉字典模板
+const resid4 = 645122713731;
 class TestPaperManager extends React.Component {
   state = {
     addPaperVisible: false,
@@ -90,19 +81,20 @@ class TestPaperManager extends React.Component {
         sourceresid: templateResid,
         resname: paperName
       });
-      await http(httpParam).addInheritResource({
+      const res1 = await http(httpParam).addInheritResource({
         parentresid: resid2,
         sourceresid: res.data,
         resname: paperName
       });
+      await this.hideColumns(res1.data);
       await http(httpParam).addUserResouce({
         parentresid: res.data,
-        sourceresid: res.data,
+        sourceresid: resid3,
         resname: '单选-' + paperName
       });
       await http(httpParam).addUserResouce({
         parentresid: res.data,
-        sourceresid: res.data,
+        sourceresid: resid3,
         resname: '多选-' + paperName
       });
       const { papers } = this.state;
@@ -122,6 +114,28 @@ class TestPaperManager extends React.Component {
     }
   };
 
+  hideColumns = async resid => {
+    const { baseURL } = this.props;
+    const columns = [
+      'C3_636040949514',
+      'userId',
+      'C3_636040900146',
+      'score',
+      'pass',
+      'C3_644180138370',
+      'C3_644180155102'
+    ];
+    const pArr = [];
+    columns.forEach(column => {
+      const p = http({ baseURL }).setFieldShow({
+        resid: resid,
+        colname: column,
+        show: false
+      });
+      pArr.push(p);
+    });
+    await Promise.all(pArr);
+  };
   handleSearchChange = e => {
     this.setState({ filterText: e.target.value });
   };
@@ -175,17 +189,12 @@ class TestPaperManager extends React.Component {
                   <h4>{paper.RES_NAME}</h4>
                   <p>
                     {chapters.some(chapter => {
-                      console.log(
-                        chapter.testMain,
-                        paper.RES_ID,
-                        chapter.testMain == paper.RES_ID
-                      );
                       return chapter.testMain == paper.RES_ID;
                     })
                       ? '已关联章节'
                       : '未关联章节'}
                   </p>
-                  <Icon type="delete" className="test-paper-delete-btn" />
+                  {/* <Icon type="delete" className="test-paper-delete-btn" /> */}
                 </div>
               );
             })}

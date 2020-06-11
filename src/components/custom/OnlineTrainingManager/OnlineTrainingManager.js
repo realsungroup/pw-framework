@@ -52,7 +52,7 @@ class OnlineTrainingManager extends React.Component {
         </TabPane>
         <TabPane tab="考试回答记录" key="5">
           <TableData
-            resid="644009541954"
+            resid="644178448621"
             subtractH={220}
             hasRowView={false}
             hasModify={false}
