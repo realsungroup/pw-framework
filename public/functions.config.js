@@ -5598,6 +5598,7 @@ window[642856723891] = {
       hasRowView: true,
       isUseFormDefine: false,
       hasRowDelete: true,
+      isSetColumnWidth:true,
       formProps: {
         // height: 500
       },
@@ -7364,6 +7365,16 @@ window[642854549263] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    subTableArrProps: [
+      {
+        subTableName: '考勤日报',
+        subResid: 375296167687,
+        tableProps: {
+          baseURL: "http://ngrok5.realsun.me:6060",
+          actionBarWidth: 200,
+        }
+      }
+    ],
     formProps: {
       // height: 500
     },
