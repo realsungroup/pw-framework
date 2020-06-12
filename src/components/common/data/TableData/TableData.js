@@ -201,7 +201,7 @@ class TableData extends React.Component {
       {
         columnWidth: rowSelection.columnWidth,
         columnTitle: rowSelection.columnTitle,
-        fixed: rowSelection.fixed,
+        fixed: typeof rowSelection.fixed === 'undefined' ? true : rowSelection.fixed,
         getCheckboxProps: rowSelection.getCheckboxProps,
         hideDefaultSelections: rowSelection.hideDefaultSelections,
         selectedRowKeys: rowSelection.selectedRowKeys,
@@ -1647,8 +1647,12 @@ class TableData extends React.Component {
   };
 
   _cmsWhere = '';
-  getCmsWhere = cmsWhere => {
-    this._cmsWhere = accurate2fuzzy(cmsWhere);
+  getCmsWhere = (cmsWhere, isAdvSearch) => {
+    if (isAdvSearch) {
+      this._cmsWhere = cmsWhere;
+    } else {
+      this._cmsWhere = accurate2fuzzy(cmsWhere);
+    }
     this.handleRefresh(true);
   };
 
