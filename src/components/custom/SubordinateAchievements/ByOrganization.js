@@ -417,8 +417,9 @@ class ByOrganization extends React.Component {
       <TableData
         key={tableConfig.resid}
         {...tableDataProps}
-        subtractH={160}
+        subtractH={180}
         isUseFormDefine={false}
+        isWrap={true}
       />
     );
   };
