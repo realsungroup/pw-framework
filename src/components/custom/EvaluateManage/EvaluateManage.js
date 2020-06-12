@@ -43,7 +43,7 @@ class EvaluateManage extends React.Component {
 
   render() {
     const { years, currentYear } = this.state;
-    const { gradeAppraisingConfig } = this.props;
+    const { gradeAppraisingConfig, residConfig } = this.props;
     return (
       <Tabs
         defaultActiveKey="3"
@@ -58,7 +58,11 @@ class EvaluateManage extends React.Component {
           <Evaluate />
         </TabPane>
         <TabPane tab="直评管理" key="3">
-          <DirectEvaluate years={years} currentYear={currentYear} />
+          <DirectEvaluate
+            years={years}
+            currentYear={currentYear}
+            residConfig={residConfig}
+          />
         </TabPane>
         <TabPane tab="评级评优" key="4">
           <GradeAppraising config={gradeAppraisingConfig} />

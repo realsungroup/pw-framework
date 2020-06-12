@@ -68,12 +68,12 @@ const _tableConfig = {
     parent: '面谈记录'
   },
   '11': {
-    resid: 558178954112,
+    resid: subresids.员工绩效反馈,
     mode: 'main',
     parent: '员工绩效反馈'
   },
   '12': {
-    resid: 558638569486,
+    resid: subresids.员工绩效反馈历史,
     mode: 'main',
     parent: '员工绩效反馈'
   }
@@ -152,7 +152,7 @@ class MyAssessmentTable extends React.Component {
         formName: '财年评语查看'
       });
       pArr[3] = http().getFormData({
-        resid: 558178954112,
+        resid: subresids.员工绩效反馈,
         formName: 'default'
       });
       const resArr = await Promise.all(pArr);
@@ -500,7 +500,7 @@ class MyAssessmentTable extends React.Component {
         >
           {modalVisible && (
             <FormData
-              info={{ dataMode: 'main', resid: 558178954112 }}
+              info={{ dataMode: 'main', resid: subresids.员工绩效反馈 }}
               operation="modify"
               data={getDataProp(
                 this._formDataObj.default,
@@ -557,12 +557,12 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.isUseFormDefine = false;
     }
     if (
-      tableConfig.resid === 558178954112 ||
-      tableConfig.resid === 558638569486
+      tableConfig.resid === subresids.员工绩效反馈 ||
+      tableConfig.resid === subresids.员工绩效反馈历史
     ) {
       tableDataProps.cmswhere = `C3_558098038537 = '${selectedMainData.C3_420148203323}' and C3_558108462803 ='${selectedMainData.C3_420150922019}'`;
     }
-    if (tableConfig.resid === 558178954112) {
+    if (tableConfig.resid === subresids.员工绩效反馈) {
       tableDataProps.actionBarExtra = ({
         dataSource = [],
         selectedRowKeys = []

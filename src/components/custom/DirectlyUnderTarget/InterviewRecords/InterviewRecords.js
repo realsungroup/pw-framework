@@ -153,7 +153,13 @@ class InterviewRecords extends React.Component {
                 dataMode="sub"
                 hostrecid={selectedData.REC_ID}
                 actionBarWidth={150}
+                hasRowEdit={true}
+                hasRowEditAdd={true}
                 recordFormUseAbsolute={true}
+                actionBarFixed={false}
+                hasRowModify={false}
+                hasModify={false}
+                isUseFormDefine={false}
               />
             )}
           </div>

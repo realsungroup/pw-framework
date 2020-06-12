@@ -53,6 +53,9 @@ class ByYear extends React.Component {
             {...tableDataProps}
             cmswhere={`C3_420150922019 = '${selectedYear}'`}
             subtractH={160}
+            hasRowDelete={false}
+            hasRowModify={false}
+            hasRowView={false}
           />
         </div>
       </div>

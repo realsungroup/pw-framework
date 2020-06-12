@@ -28,42 +28,46 @@ const tableTab = [
   { key: 'advAndDisadv', title: '优缺点' }
   // { key: 'summary', title: '互评总结' }
 ];
-const _tableConfig = {
-  '1': {
-    resid: 462637854501, //子表
-    mode: 'sub'
-  },
-  '2': {
-    mode: 'form',
-    formName: '员工直评'
-  },
-  '3': {
-    resid: 462643948869, //子表
-    mode: 'sub'
-  },
-  '4': {
-    mode: 'form',
-    formName: '员工年末直评'
-  }
-};
 /**
  * 直评管理
  */
 class DirectEvaluate extends React.Component {
-  state = {
-    selectedYear: '', //选中的财年
-    mainData: [],
-    selectedData: {},
-    selectedTableTab: 'target', //选中的tab key
-    selectedStage: '年中', //选中的财年阶段
-    tableConfig: _tableConfig['1'],
-    pagination: {
-      total: 0
-    },
-    fetcinghMainData: true,
-    submitLoading: false,
-    filterText: ''
-  };
+  constructor(props) {
+    super(props);
+    const { residConfig } = props;
+    this._tableConfig = {
+      '1': {
+        resid: residConfig.年中目标, //子表
+        mode: 'sub'
+      },
+      '2': {
+        mode: 'form',
+        formName: '员工直评'
+      },
+      '3': {
+        resid: residConfig.年末目标, //子表
+        mode: 'sub'
+      },
+      '4': {
+        mode: 'form',
+        formName: '员工年末直评'
+      }
+    };
+    this.state = {
+      selectedYear: '', //选中的财年
+      mainData: [],
+      selectedData: {},
+      selectedTableTab: 'target', //选中的tab key
+      selectedStage: '年中', //选中的财年阶段
+      tableConfig: this._tableConfig['1'],
+      pagination: {
+        total: 0
+      },
+      fetcinghMainData: true,
+      submitLoading: false,
+      filterText: ''
+    };
+  }
 
   componentDidMount() {
     this.fetchFormData();
@@ -119,12 +123,13 @@ class DirectEvaluate extends React.Component {
 
   modifiableTable = (record, resid) => {
     let result = false;
+    const { residConfig } = this.props;
     if (!resid || !record.REC_ID) {
       return result;
     }
     switch (resid) {
       //年中自评-目标自评
-      case 462637854501:
+      case residConfig.年中目标:
         if (
           record.C3_420949753683 !== 'Y' ||
           record.C3_420976746773 !== 'Y' ||
@@ -135,7 +140,7 @@ class DirectEvaluate extends React.Component {
         }
         break;
       //年末自评-目标自评
-      case 462643948869:
+      case residConfig.年末目标:
         if (
           record.C3_420949753683 !== 'Y' ||
           record.C3_420976746773 !== 'Y' ||
@@ -155,15 +160,15 @@ class DirectEvaluate extends React.Component {
   getTableConfig = (tabKey, stage) => {
     if (stage === '年中') {
       if (tabKey === 'target') {
-        return _tableConfig['1'];
+        return this._tableConfig['1'];
       } else if (tabKey === 'advAndDisadv') {
-        return _tableConfig['2'];
+        return this._tableConfig['2'];
       }
     } else {
       if (tabKey === 'target') {
-        return _tableConfig['3'];
+        return this._tableConfig['3'];
       } else if (tabKey === 'advAndDisadv') {
-        return _tableConfig['4'];
+        return this._tableConfig['4'];
       }
     }
   };
@@ -189,6 +194,7 @@ class DirectEvaluate extends React.Component {
         selectedData: res.data[0],
         mainData: newData
       });
+      message.success('提交成功');
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -198,7 +204,7 @@ class DirectEvaluate extends React.Component {
 
   handleListItemClick = data => this.setState({ selectedData: data });
   render() {
-    const { years, currentYear } = this.props;
+    const { years, currentYear, residConfig } = this.props;
     const {
       selectedYear,
       pagination,
@@ -323,11 +329,11 @@ class DirectEvaluate extends React.Component {
                 })}
               </div>
               <div>
-                {tableConfig.resid === 462637854501 ? (
+                {tableConfig.resid === residConfig.年中目标 ? (
                   <Button
                     type="primary"
                     size="small"
-                    onClick={this.submitTarget('end')}
+                    onClick={this.submitTarget('middle')}
                     disabled={
                       selectedData.C3_420949753683 !== 'Y' ||
                       selectedData.C3_420976746773 !== 'Y' ||
@@ -342,7 +348,7 @@ class DirectEvaluate extends React.Component {
                   <Button
                     type="primary"
                     size="small"
-                    onClick={this.submitTarget('middle')}
+                    onClick={this.submitTarget('end')}
                     loading={submitLoading}
                     disabled={
                       selectedData.C3_420949753683 !== 'Y' ||
