@@ -81,7 +81,8 @@ export const defaultProps = {
   rowEditAddPosition: 'start',
   hasRowEditAdd: false,
   successMessageComponent: 'message',
-  isSetColumnWidth: true
+  isSetColumnWidth: true,
+  isWrap: false
 };
 
 export const propTypes = {
@@ -811,5 +812,11 @@ export const propTypes = {
   successMessageComponent: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
-  ])
+  ]),
+
+  /**
+   * 文字长度超出单元格宽度时，是否换行：true 表示换行显示 | false 表示不换行，超出单元格宽度时在结尾显示省略号
+   * 默认：false
+   */
+  isWrap: PropTypes.bool
 };

@@ -24,6 +24,7 @@ import { getIntlVal, getItem } from 'Util20/util';
 import dealControlArr, { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
+import classNames from 'classnames';
 
 const { Fragment } = React;
 
@@ -1368,7 +1369,14 @@ class TableData extends React.Component {
         return;
       }
 
-      const { dataMode, resid, subresid, baseURL, dblinkname, hostrecid } = this.props;
+      const {
+        dataMode,
+        resid,
+        subresid,
+        baseURL,
+        dblinkname,
+        hostrecid
+      } = this.props;
       const id = getResid(dataMode, resid, subresid);
       const formData = dealFormData(values);
       formData.REC_ID = oldRecord.REC_ID;
@@ -1402,7 +1410,7 @@ class TableData extends React.Component {
             resid: id,
             data: [formData],
             dblinkname,
-            ...params,
+            ...params
           })
         );
       } else {
@@ -2315,10 +2323,12 @@ class TableData extends React.Component {
         height: '100%'
       };
     }
-    const { style } = this.props;
+    const { style, isWrap } = this.props;
     return (
       <div
-        className="table-data"
+        className={classNames('table-data', {
+          'table-data--no-wrap': !isWrap
+        })}
         style={
           zoomOutStyle.position
             ? { ...zoomOutStyle, ...style }
