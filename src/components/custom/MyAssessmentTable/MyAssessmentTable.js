@@ -588,7 +588,15 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.refTargetComponentName = 'TableData';
     }
 
-    return <TableData key={tableConfig.resid} {...tableDataProps} />;
+    return (
+      <TableData
+        key={tableConfig.resid}
+        {...tableDataProps}
+        isWrap={true}
+        isUseFormDefine={false}
+        subtractH={180}
+      />
+    );
   };
 
   renderForm = () => {
