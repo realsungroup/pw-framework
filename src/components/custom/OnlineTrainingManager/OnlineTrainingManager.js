@@ -29,6 +29,13 @@ class OnlineTrainingManager extends React.Component {
       message.error(error.message);
     }
   };
+
+  handleTabsChange = key => {
+    if (key == '1' || key == '2') {
+      this.fetchCoursePaper();
+    }
+  };
+
   render() {
     const { coursePapers } = this.state;
     return (
@@ -37,6 +44,7 @@ class OnlineTrainingManager extends React.Component {
         size="small"
         tabBarStyle={tabBarStyle}
         className="online-training-manager"
+        onChange={this.handleTabsChange}
       >
         <TabPane tab="入职培训" key="1" style={{ height: '100%' }}>
           <EntryTraining baseURL={baseURL} coursePapers={coursePapers} />
