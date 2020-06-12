@@ -201,7 +201,7 @@ class TableData extends React.Component {
       {
         columnWidth: rowSelection.columnWidth,
         columnTitle: rowSelection.columnTitle,
-        fixed: rowSelection.fixed,
+        fixed: typeof rowSelection.fixed === 'undefined' ? true : rowSelection.fixed,
         getCheckboxProps: rowSelection.getCheckboxProps,
         hideDefaultSelections: rowSelection.hideDefaultSelections,
         selectedRowKeys: rowSelection.selectedRowKeys,
