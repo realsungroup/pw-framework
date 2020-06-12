@@ -46,7 +46,8 @@ class InternalTraining extends React.Component {
       C3_636735383253: '',
       C3_636735399221: '',
       videoId: '',
-      C3_636735464189: ''
+      C3_636735464189: '',
+      directTest: 'N'
     },
     modifyChapterData: {}
   };
@@ -460,6 +461,23 @@ class InternalTraining extends React.Component {
                 })}
               </Select>
             </Form.Item>
+            <Form.Item label="直接考试">
+              <Select
+                showSearch
+                value={addChapterData.directTest}
+                onChange={value => {
+                  this.setState({
+                    addChapterData: {
+                      ...this.state.addChapterData,
+                      directTest: value
+                    }
+                  });
+                }}
+              >
+                <Option value="Y">Y</Option>
+                <Option value="N">N</Option>
+              </Select>
+            </Form.Item>
           </Form>
         </Modal>
         <Modal
@@ -522,6 +540,23 @@ class InternalTraining extends React.Component {
                 {coursePapers.map(paper => {
                   return <Option value={paper.RES_ID}>{paper.RES_NAME}</Option>;
                 })}
+              </Select>
+            </Form.Item>
+            <Form.Item label="直接考试">
+              <Select
+                showSearch
+                value={modifyChapterData.directTest}
+                onChange={value => {
+                  this.setState({
+                    modifyChapterData: {
+                      ...this.state.modifyChapterData,
+                      directTest: value
+                    }
+                  });
+                }}
+              >
+                <Option value="Y">Y</Option>
+                <Option value="N">N</Option>
               </Select>
             </Form.Item>
           </Form>

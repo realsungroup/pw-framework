@@ -41,7 +41,7 @@ class AchievementsGradeAppraising extends React.Component {
     const { iframeResid, replaceBaseUrl, baseURL } = config;
     return (
       <Tabs
-        defaultActiveKey="3"
+        defaultActiveKey="1"
         className="achievements-grade-appraising-tabs"
         size="small"
         tabBarStyle={tabBarStyle}
