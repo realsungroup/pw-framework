@@ -64,6 +64,17 @@ class OnlineTrainingManager extends React.Component {
             baseURL={baseURL}
           />
         </TabPane>
+        <TabPane tab="课程附件管理" key="6">
+          <TableData
+            resid="636485756984"
+            subtractH={220}
+            hasRowView={false}
+            hasModify={true}
+            hasDelete={true}
+            hasAdd={true}
+            baseURL={baseURL}
+          />
+        </TabPane>
       </Tabs>
     );
   }
