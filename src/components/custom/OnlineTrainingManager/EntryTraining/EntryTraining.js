@@ -669,6 +669,7 @@ class EntryTraining extends React.Component {
                 showSearch
                 value={modifyChapterData.C3_636735464189}
                 optionFilterProp="children"
+                allowClear
                 onChange={value => {
                   const paper = coursePapers.find(
                     paper => paper.RES_ID == value
@@ -676,8 +677,8 @@ class EntryTraining extends React.Component {
                   this.setState({
                     modifyChapterData: {
                       ...this.state.modifyChapterData,
-                      C3_636735464189: value,
-                      testMain: paper.RES_INDPID
+                      C3_636735464189: value ? value : '',
+                      testMain: value ? paper.RES_INDPID : ''
                     }
                   });
                 }}
