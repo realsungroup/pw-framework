@@ -162,5 +162,6 @@ export {
   EvaluateManage,
   WeeklySettlement,
   SubordinateAchievements,
-  AchievementResult
+  AchievementResult,
+  AchievementsGradeAppraising
 } from '../components/custom/loadableCustom';

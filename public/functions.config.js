@@ -7523,7 +7523,7 @@ window[642858615601] = {
   props: {
     gradeAppraisingConfig: {
       resid: 645010935966,
-      replaceBaseUrl: 'http://ngrok10.realsun.me:6060',
+      replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
       baseURL: 'http://ngrok5.realsun.me:6060/'
     },
     residConfig: {
@@ -7551,4 +7551,28 @@ window[642858635809] = {
   name: 'AchievementResult', // 组件名称，
   title: '绩效结果', // 功能模块名称
   props: {}
+};
+window[645287046055] = {
+  name: 'AchievementsGradeAppraising', // 组件名称，
+  title: '绩效评级评优', // 功能模块名称
+  props: {
+    mangerConfig: {
+      '12345': {
+        //总经理
+        id: 12345,
+        tableDataResid: 596626311953,
+        iframeResid: 645286591505,
+        replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
+        baseURL: 'http://ngrok5.realsun.me:6060/'
+      },
+      '169': {
+        //总监
+        id: 169,
+        tableDataResid: 596626341706,
+        iframeResid: 645288462780,
+        replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
+        baseURL: 'http://ngrok5.realsun.me:6060/'
+      }
+    }
+  }
 };
