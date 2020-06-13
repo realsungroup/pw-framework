@@ -782,3 +782,9 @@ export const AchievementResult = Loadable({
     return minLoading;
   }
 });
+export const AchievementsGradeAppraising = Loadable({
+  loader: () => import('./AchievementsGradeAppraising'),
+  loading() {
+    return minLoading;
+  }
+});

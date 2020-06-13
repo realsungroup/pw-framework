@@ -19,8 +19,19 @@ const cMap = {
 };
 
 class Search extends React.Component {
+  state = {
+    searchList: []
+  };
+
+  handleAdvConfirm = (cmswhere, searchList) => {
+    this.setState({ searchList });
+    const { onConfirm } = this.props;
+    onConfirm && onConfirm(cmswhere, true);
+  };
+
   render() {
-    const { searchComponent, ...otherProps } = this.props;
+    const { searchList } = this.state;
+    const { searchComponent, onConfirm, ...otherProps } = this.props;
 
     let tabsArr, component;
     if (Array.isArray(searchComponent)) {
@@ -50,7 +61,8 @@ class Search extends React.Component {
             if (tabItem.name === 'AdvSearch') {
               props = {
                 fields,
-                onConfirm,
+                onConfirm: this.handleAdvConfirm,
+                initialSearchList: searchList,
                 confirmText: '搜索',
                 enConfirmText: 'Search'
               };
@@ -68,7 +80,13 @@ class Search extends React.Component {
     } else if (component === 'PwForm') {
       return <PwForm {...otherProps} />;
     } else if (component === 'AdvSearch') {
-      return <AdvSearch {...otherProps} />;
+      return (
+        <AdvSearch
+          {...otherProps}
+          onConfirm={this.handleAdvConfirm}
+          initialSearchList={searchList}
+        />
+      );
     } else {
       return <div>searchComponent 配置有误</div>;
     }
@@ -230,8 +248,8 @@ const withAdvSearch = (options = {}) => {
         });
       };
 
-      handleGetAdvSearchWhere = where => {
-        this._getCmsWhere(where);
+      handleGetAdvSearchWhere = (where, isAdvSearch) => {
+        this._getCmsWhere(where, isAdvSearch);
       };
 
       render() {

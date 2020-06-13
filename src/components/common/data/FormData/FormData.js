@@ -459,7 +459,7 @@ class FormData extends React.Component {
     );
   };
   renderTabPaneAbsolute = (subTable, index, subTableArr) => {
-    const { subTableArrProps, record, info, operation } = this.props;
+    const { subTableArrProps, record, info, operation, baseURL } = this.props;
     const { resid } = info;
 
     const subTableProps = subTableArrProps.find(
@@ -493,6 +493,7 @@ class FormData extends React.Component {
             {...tableProps}
             storeWay={storeWay}
             height={subTableArr[0].FrmHeight}
+            baseURL={baseURL}
           />
         </div>
       </TabPane>

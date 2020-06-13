@@ -60,7 +60,8 @@ class EntryTraining extends React.Component {
       C3_636735383253: '',
       C3_636735399221: '',
       videoId: '',
-      C3_636735464189: ''
+      C3_636735464189: '',
+      directTest: 'N'
     },
     modifyChapterData: {}
   };
@@ -611,6 +612,23 @@ class EntryTraining extends React.Component {
                 })}
               </Select>
             </Form.Item>
+            <Form.Item label="直接考试">
+              <Select
+                showSearch
+                value={addChapterData.directTest}
+                onChange={value => {
+                  this.setState({
+                    addChapterData: {
+                      ...this.state.addChapterData,
+                      directTest: value
+                    }
+                  });
+                }}
+              >
+                <Option value="Y">Y</Option>
+                <Option value="N">N</Option>
+              </Select>
+            </Form.Item>
           </Form>
         </Modal>
         <Modal
@@ -651,6 +669,7 @@ class EntryTraining extends React.Component {
                 showSearch
                 value={modifyChapterData.C3_636735464189}
                 optionFilterProp="children"
+                allowClear
                 onChange={value => {
                   const paper = coursePapers.find(
                     paper => paper.RES_ID == value
@@ -658,8 +677,8 @@ class EntryTraining extends React.Component {
                   this.setState({
                     modifyChapterData: {
                       ...this.state.modifyChapterData,
-                      C3_636735464189: value,
-                      testMain: paper.RES_INDPID
+                      C3_636735464189: value ? value : '',
+                      testMain: value ? paper.RES_INDPID : ''
                     }
                   });
                 }}
@@ -672,6 +691,23 @@ class EntryTraining extends React.Component {
                 {coursePapers.map(paper => {
                   return <Option value={paper.RES_ID}>{paper.RES_NAME}</Option>;
                 })}
+              </Select>
+            </Form.Item>
+            <Form.Item label="直接考试">
+              <Select
+                showSearch
+                value={modifyChapterData.directTest}
+                onChange={value => {
+                  this.setState({
+                    modifyChapterData: {
+                      ...this.state.modifyChapterData,
+                      directTest: value
+                    }
+                  });
+                }}
+              >
+                <Option value="Y">Y</Option>
+                <Option value="N">N</Option>
               </Select>
             </Form.Item>
           </Form>
