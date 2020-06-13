@@ -2017,6 +2017,8 @@ class TableData extends React.Component {
         } else {
           this.handleRefresh();
         }
+      } else {
+        this.handleRefresh();
       }
       // 前端存储，则修改 dataSource
     } else {
