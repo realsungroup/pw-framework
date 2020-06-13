@@ -7454,6 +7454,7 @@ window[644327624410] = {
     hasRowDelete: false,
     isUseFormDefine: false,
     hasRowEditAdd: true,
+    isSetColumnWidth:true,
     formProps: {
       // height: 500
     },
@@ -7523,7 +7524,7 @@ window[642858615601] = {
   props: {
     gradeAppraisingConfig: {
       resid: 645010935966,
-      replaceBaseUrl: 'http://ngrok10.realsun.me:6060',
+      replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
       baseURL: 'http://ngrok5.realsun.me:6060/'
     },
     residConfig: {
