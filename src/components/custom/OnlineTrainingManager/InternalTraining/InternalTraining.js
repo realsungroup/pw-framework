@@ -261,7 +261,7 @@ class InternalTraining extends React.Component {
             allowClear
           />
           <div className="add-course-btn" onClick={this.openAddModal}>
-            点击新建入职培训课程
+            点击新建内训课程
           </div>
           <div className="course-list">
             {_courses.map(course => {
