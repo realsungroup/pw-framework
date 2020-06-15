@@ -1,6 +1,10 @@
 @import '../../../../styles/variables.less';
 
 .table-data {
+  table {
+    // 只有定义了表格的布局算法为fixed，下面td的定义才能起作用
+    table-layout: fixed;
+  }
   // 单元格内容溢出隐藏
   &--no-wrap {
     // 表格中单元格单行溢出隐藏
