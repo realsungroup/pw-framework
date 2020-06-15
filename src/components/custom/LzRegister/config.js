@@ -28,8 +28,8 @@ export const inApplication = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '保安登记记录',
-    subResid: 606058778224,
+    subTableName: '访客进出登记',
+    subResid: 606054433923,
     tableProps: {
       hasAdd: false,
       hasModify: false,
@@ -39,7 +39,9 @@ export const inApplication = {
       hasRowDelete: false,
       height: 500,
     }
-  }]
+  },
+ 
+  ]
 };
 
 // 访问中
@@ -63,8 +65,8 @@ export const applyForAbnormal = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '保安登记记录',
-    subResid: 606058778224,
+    subTableName: '访客进出登记',
+    subResid: 606054433923,
     tableProps: {
       hasAdd: false,
       hasModify: false,
@@ -98,8 +100,8 @@ export const refused = {
     height: 600
   },
   subTableArrProps: [{
-    subTableName: '保安登记记录',
-    subResid: 606058778224,
+    subTableName: '访客进出登记',
+    subResid: 606054433923,
     tableProps: {
       hasAdd: false,
       hasModify: false,

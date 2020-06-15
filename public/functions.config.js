@@ -7454,6 +7454,7 @@ window[644327624410] = {
     hasRowDelete: false,
     isUseFormDefine: false,
     hasRowEditAdd: true,
+    isSetColumnWidth:true,
     formProps: {
       // height: 500
     },

@@ -1,7 +1,9 @@
 import React from 'react';
 import './HeadquartersManage.less';
-import TabsTableData from '../TabsTableData';
+import MainTableSubTables from '../../common/data/MainTableSubTables/';
 import { Modal, Button, message, Tabs, Popconfirm, Input, Form } from 'antd';
+const TabPane = Tabs.TabPane;
+
 class HeadquartersManage extends React.Component {
   constructor(props) {
     super(props);
@@ -11,72 +13,66 @@ class HeadquartersManage extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.headquartersDownloadURL;
   }
   state = {
-    SquareCardArr: [],
-    val: null,
-    showModal: false,
-    EDate: '',
-    BDate: '',
-    dataSource: [],
-    selectRowKeys: []
+    activeKey:1
   };
-
+  handleTabsChange = activeKey => {
+    this.setState({ activeKey });
+  };
   render() {
     return (
-      <div>
-        <TabsTableData
-          arr={[
-            {
-              wrappedComponentRef: element => (this.tableDataRef = element),
-              refTargetComponentName: 'TableData',
-              baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
-              resid: 576924862772,
-              TabsTitle: '招聘人头总部审批',
-              OutHeight: '91vh',
-              recordFormFormWidth: '90%',
-              hasBeBtns: true,
-              hasModify: false,
-              hasDelete: false,
-              hasAdd: false,
-              hasRowDelete: true,
-              hasRowSelection: true,
-              hasRowModify: true,
-              hasRowView: true,
-              subtractH: 220,
-              actionBarWidth: 220,
-              recordFormType: 'drawer',
-              formProps: {
-                height: 650
-              },
-            },
-            {
-              baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
-              resid: 576926312667,
-              TabsTitle: '录用总部审批',
-              OutHeight: '91vh',
-              recordFormFormWidth: '90%',
-              hasBeBtns: true,
-              hasModify: false,
-              hasDelete: false,
-              hasAdd: false,
-              hasRowDelete: true,
-              hasRowModify: true,
-              hasRowView: true,
-              subtractH: 220,
-              actionBarWidth: 220,
-              formProps: {
-                height: 650
-              },
-              recordFormType: 'drawer',
-              recordFormContainerProps: {
-                placement: 'right',
-                height: 700
-              }
+      <div style={{width:'100vw',height:'100vh',background:'#fff'}}>
+        <Tabs onChange={this.handleTabsChange}>
+        <TabPane tab='offer审批流更改' key='1'>
+          <div style={{width:'100vw',height:'100vh'}}>
+          <MainTableSubTables
+        baseURL= {this.baseURL}
+        downloadBaseURL={this.dlEmployDownloadURL}
+          resid={576926312667}
+          style={{
+            // height: 600,
+            overflow: 'auto',
+            margin: '0 auto'
+          }}
+          mainTableProps={{
+            hasAdd: false
+          }}
+          subTablesProps={{
+            576415161967: {
+              hasAdd: true,
+              hasDelete: true
             }
-          ]}
-        />
+          }}
+        ></MainTableSubTables>
+          </div> 
+        
+        </TabPane>
+        <TabPane tab='headcount审批流更改' key='2'>
+          <div style={{width:'100vw',height:'100vh'}}>
+          <MainTableSubTables
+        baseURL= {this.baseURL}
+        downloadBaseURL={this.dlEmployDownloadURL}
+          resid={576924862772}
+          style={{
+            // height: 600,
+            overflow: 'auto',
+            margin: '0 auto'
+          }}
+          mainTableProps={{
+            hasAdd: false
+          }}
+          subTablesProps={{
+            576268771221: {
+              hasAdd: true,
+              hasDelete: true
+            }
+          }}
+        ></MainTableSubTables>
+          </div> 
+        
+        </TabPane>
+        </Tabs>
       </div>
+        
     );
   }
 }

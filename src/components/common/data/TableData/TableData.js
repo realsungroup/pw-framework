@@ -1965,18 +1965,18 @@ class TableData extends React.Component {
     });
   };
 
-  renderMessage = message => {
+  renderMessage = (_message) => {
     const { successMessageComponent } = this.props;
     const messageComponent = getSuccessMessageComponent(
       successMessageComponent
     );
 
     if (messageComponent.name === 'message') {
-      message.success(message);
+      message.success(_message);
     } else {
       delete messageComponent.name;
       Modal.success({
-        title: message,
+        title: _message,
         ...messageComponent
       });
     }
@@ -2017,6 +2017,8 @@ class TableData extends React.Component {
         } else {
           this.handleRefresh();
         }
+      } else {
+        this.handleRefresh();
       }
       // 前端存储，则修改 dataSource
     } else {

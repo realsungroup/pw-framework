@@ -85,7 +85,7 @@ export const inExaminationAndApproval = {
   resid: 605803642531,
   hasSearch: true,
   hasBeBtns: true,
-  hasRowModify: true, //行内修改按钮
+  hasRowModify: false, //行内修改按钮
   hasModify: false,
   hasDelete: false,
   hasRowView: false,

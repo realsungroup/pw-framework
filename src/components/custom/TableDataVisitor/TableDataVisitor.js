@@ -167,7 +167,7 @@ class TableDataVisitor extends React.Component {
         }
       ],
       info: { dataMode: 'sub', resid: this.props.resid },
-      storeWay: 'fe'
+      storeWay: 'be'
     });
   };
 
