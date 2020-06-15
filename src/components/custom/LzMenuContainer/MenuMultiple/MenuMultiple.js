@@ -215,7 +215,7 @@ export default class MenuMultiple extends React.Component {
     let res;
     const pArr = [
       getFormData(subresid, "default"),
-      getFormData(subresid, "title-choose"),
+      getFormData(subresid, "export"),
     ];
     try {
       res = await Promise.all(pArr);
