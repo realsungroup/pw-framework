@@ -131,10 +131,12 @@ class DirectEvaluate extends React.Component {
       //年中自评-目标自评
       case residConfig.年中目标:
         if (
-          record.C3_420949753683 !== 'Y' ||
-          record.C3_420976746773 !== 'Y' ||
-          record.C3_431106931302 !== '年中' ||
-          record.C3_436733617722 == 'Y'
+          !(
+            record.C3_420949753683 !== 'Y' ||
+            record.C3_420976746773 !== 'Y' ||
+            record.C3_431106931302 !== '年中' ||
+            record.C3_436733617722 == 'Y'
+          )
         ) {
           result = true;
         }
@@ -142,10 +144,12 @@ class DirectEvaluate extends React.Component {
       //年末自评-目标自评
       case residConfig.年末目标:
         if (
-          record.C3_420949753683 !== 'Y' ||
-          record.C3_420976746773 !== 'Y' ||
-          record.C3_431106931302 !== '年末' ||
-          record.C3_436734710960 == 'Y'
+          !(
+            record.C3_420949753683 !== 'Y' ||
+            record.C3_420976746773 !== 'Y' ||
+            record.C3_431106931302 !== '年末' ||
+            record.C3_436734710960 == 'Y'
+          )
         ) {
           result = true;
         }
