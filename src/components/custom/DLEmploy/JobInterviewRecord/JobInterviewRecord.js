@@ -29,7 +29,7 @@ class JobInterviewRecord extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-        actionBarWidth ={240}
+        actionBarWidth ={450}
         downloadBaseURL = {this.dlEmployDownloadURL}
         columnsWidth={{
           '面试时间':100,

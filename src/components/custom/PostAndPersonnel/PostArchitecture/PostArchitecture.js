@@ -92,7 +92,7 @@ class PostArchitecture extends React.Component {
               // rootResid="638559408357" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={3}
+              level={2}
               displayFileds={{
                 firstField: 'orgJobEN',
                 secondaryField: 'orgNumber',
@@ -125,7 +125,7 @@ class PostArchitecture extends React.Component {
               // rootResid="627649574324" //根节点
               idField="orgcode" //主表id字段名
               pidField="orgSupCode" //父节点id字段名
-              level={3}
+              level={2}
               hasOpration={false}
               displayFileds={{
                 firstField: 'memberEN',

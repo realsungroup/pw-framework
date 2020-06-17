@@ -19,9 +19,9 @@ class InternalTrainingAuth extends React.Component {
         recordFormFormWidth="90%"
         hasBeBtns={true}
         hasModify={true}
-        hasDelete={false}
+        hasDelete={true}
         hasAdd={true}
-        hasRowDelete={true}
+        hasRowDelete={false}
         hasRowModify={false}
         hasRowView={false}
         subtractH={180}

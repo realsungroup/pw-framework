@@ -16,7 +16,7 @@ class DepartmentManager extends React.Component {
           resid="417643880834"
           idField="DEP_ID" //主表id字段名
           pidField="DEP_PID" //父节点id字段名
-          level={3}
+          level={2}
           hasOpration={true}
           displayFileds={{
             firstField: 'DEP_NAME',

@@ -64,7 +64,8 @@ class OnlineTrainingManager extends React.Component {
             subtractH={220}
             hasRowView={false}
             hasModify={false}
-            hasDelete={false}
+            hasRowDelete={false}
+            hasDelete={true}
             hasAdd={false}
             tableComponent="ag-grid"
             sideBarAg={true}
@@ -77,6 +78,7 @@ class OnlineTrainingManager extends React.Component {
             resid="636485756984"
             subtractH={220}
             hasRowView={false}
+            hasRowDelete={false}
             hasModify={true}
             hasDelete={true}
             hasAdd={true}

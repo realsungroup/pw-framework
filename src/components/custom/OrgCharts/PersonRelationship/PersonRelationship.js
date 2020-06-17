@@ -13,7 +13,8 @@ import {
   Form,
   Button,
   DatePicker,
-  InputNumber
+  InputNumber,
+  Tree
 } from 'antd';
 import './PersonRelationship.less';
 import avatarDef from './svg/avatar.svg';
@@ -37,6 +38,10 @@ import withImport from '../../../common/hoc/withImport';
 import withModalDrawer from '../../../common/hoc/withModalDrawer';
 import PwAggrid from '../../../common/ui/PwAggrid';
 import { getItem, setItem } from 'Util20/util';
+import debounce from 'lodash/debounce';
+
+const { TreeNode } = Tree;
+const { Option } = Select;
 
 function childCount(id, nodes) {
   let count = 0;
@@ -122,7 +127,11 @@ class PersonRelationship extends React.Component {
       selectedResultResid: '638645137963',
       selectedType: 'IDL',
       selectedDepartment: '',
-      departmentTreeVisible: false
+      departmentTreeVisible: false,
+      rootKey: [],
+      parentKeys: [],
+      filtedNodes: [],
+      treeData: []
     };
   }
 
@@ -220,6 +229,65 @@ class PersonRelationship extends React.Component {
     this.chart.on('dbclick', (sender, node) => {
       this.setRootNode(node.id);
     });
+    this.chart.on('expcollclick', (sender, action, id, ids) => {
+      if (action === OrgChart.EXPAND) {
+        this.handleExpcollclick(parseInt(id));
+      }
+    });
+    this.chart.on('exportstart', function(sender, args) {
+      args.content += `
+      <style type="text/css">
+        .created > rect {
+          fill-opacity: 0.4;
+        }
+        .selected > rect {
+          fill: #1890ff;
+        }
+        .selected > text {
+          fill: #ffffff;
+        }
+        .empty > rect {
+          fill: #fa8c16;
+        }
+        .empty > line {
+          stroke: #fa8c16;
+        }
+        .empty > text {
+          fill: #ffffff;
+        }
+        .empty.selected > rect {
+          fill: #ffa940;
+        }
+        .empty.selected > line {
+          stroke: #ffa940;
+        }
+        .empty.selected > text {
+          fill: #ffffff;
+        }
+        .discard > rect {
+          fill: #bbbbbb;
+        }
+        .discard > line {
+          stroke: #bbbbbb;
+        }
+        .discard > text {
+          fill: #999999;
+        }
+        .tartOccupied > line {
+          stroke: #13c2c2;
+        }
+        .tartOccupied.selected > rect {
+          fill: #36cfc9;
+        }
+        .tartOccupied.selected > line {
+          stroke: #36cfc9;
+        }
+        .tartOccupied.selected > text {
+          fill: #ffffff;
+        }
+        </style>
+      `;
+    });
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
@@ -262,7 +330,7 @@ class PersonRelationship extends React.Component {
       role,
       rootId
     } = this.props;
-    const { selectedDate, selectedNode } = this.state;
+    const { selectedDate } = this.state;
     let options = {};
     if (role === 'manager') {
       options = {
@@ -318,16 +386,6 @@ class PersonRelationship extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        // let ImgObj = new Image(); //判断图片是否存在
-        // ImgObj.src = item[displayFileds.imgField];
-        // let url;
-        // //没有图片，则返回-1
-        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-        //   url = item[displayFileds.imgField];
-        // } else {
-        //   url = avatarDef;
-        // }
-
         const node = {
           ...item,
           id: item[idField],
@@ -342,7 +400,12 @@ class PersonRelationship extends React.Component {
         }
         return node;
       });
-      this.setState({ loading: false, selectedNode: newSelectedNode });
+      const treeData = this.getTreeData(res.data);
+      this.setState({
+        loading: false,
+        selectedNode: newSelectedNode,
+        treeData
+      });
       this.chart.load(nodes);
       this._nodes = [...this.chart.config.nodes];
       for (var i = 0; i < nodes.length; i++) {
@@ -424,16 +487,6 @@ class PersonRelationship extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        // let ImgObj = new Image(); //判断图片是否存在
-        // ImgObj.src = item[displayFileds.imgField];
-        // let url;
-        // //没有图片，则返回-1
-        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-        //   url = item[displayFileds.imgField];
-        // } else {
-        //   url = avatarDef;
-        // }
-
         const node = {
           ...item,
           id: item[idField],
@@ -685,26 +738,52 @@ class PersonRelationship extends React.Component {
   /**
    * 设置某个节点为根节点
    */
+
   setRootNode = nodeId => {
     const node =
       this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
-    let nodes = [node]; //计算后的节点，必包含点击的节点
-    this.calcSubNodes([node], nodes, this._nodes);
-    node.tags.push(selected);
-    this.chart.load(nodes);
-    // const { selectedNode } = this.state;
-    // if (selectedNode.id >= 0) {
-    //   this.chart.removeNodeTag(this.state.selectedNode.id, selected);
-    // }
-    // this.chart.config.roots = [nodeId];
-    // this.chart.addNodeTag(nodeId, selected);
-    this.chart.expandCollapseToLevel(nodeId, {
-      level: this.state.currentLevel
-    });
-    this.chart.draw(OrgChart.action.init);
-    this.setState({ selectedNode: node });
+    const root = this.chart.getBGNode(nodeId);
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
+
+    this.chart.config.roots = [root.id];
+    this.chart.expand(root.id, root.childrenIds);
+    this.chart.load(this.chart.config.nodes);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
   };
 
+  handleExpcollclick = nodeId => {
+    const node =
+      this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
+    const root = this.chart.getBGNode(nodeId);
+    this.chart.config.roots = [root.id];
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
+  };
+  getParentKeys = (selectedNode, keys = []) => {
+    if (selectedNode.pid >= 0) {
+      const fooNode = this._nodes.find(item => {
+        return item.id === selectedNode.pid;
+      });
+      if (fooNode) {
+        keys.unshift(selectedNode.id + '');
+        this.getParentKeys(fooNode, keys);
+      } else {
+        keys.unshift(selectedNode.id + '');
+      }
+    }
+  };
   calcSubNodes = (calcNode, subNodes, allNodes) => {
     //仍有要计算子节点的数据
     if (calcNode.length) {
@@ -1023,7 +1102,7 @@ class PersonRelationship extends React.Component {
             </div>
           </div>
         )}
-        {mode === 'chart' && (
+        {/* {mode === 'chart' && (
           <div className="person-relationship_header_icon-button-group">
             <div className="person-relationship_header_icon-button">
               <Icon
@@ -1040,7 +1119,7 @@ class PersonRelationship extends React.Component {
               />
             </div>
           </div>
-        )}
+        )} */}
         {this.props.role === 'hr' && (
           <div className="person-relationship_header_icon-button-group">
             <div
@@ -1095,6 +1174,83 @@ class PersonRelationship extends React.Component {
     );
   };
 
+  renderTree = (data = []) => {
+    const { idField } = this.props;
+    return data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode
+            key={item[idField]}
+            title={item.C3_419343735913 || '无任职人'}
+          >
+            {this.renderTree(item.children)}
+          </TreeNode>
+        );
+      }
+      return (
+        <TreeNode
+          key={item[idField]}
+          title={item.C3_419343735913 || '无任职人'}
+        />
+      );
+    });
+  };
+
+  getTreeData = (data = []) => {
+    let rootNode = [];
+    const { idField, pidField } = this.props;
+
+    rootNode = data.filter(item => {
+      return !data.some(i => i[idField] == item[pidField]);
+    });
+    rootNode.forEach(item => {
+      this.getChildrenNodes(item, data);
+    });
+    return rootNode;
+  };
+
+  getChildrenNodes = (node = {}, allNode = []) => {
+    const { idField, pidField } = this.props;
+    const children = allNode.filter(item => {
+      return item[pidField] === node[idField];
+    });
+    if (children.length) {
+      node.children = children;
+      children.forEach(item => {
+        this.getChildrenNodes(item, allNode);
+      });
+    }
+  };
+
+  onTreeNodeSelect = selectedKeys => {
+    if (selectedKeys.length) {
+      const id = parseInt(selectedKeys[0]);
+      this.setRootNode(parseInt(selectedKeys[0]));
+      const parentKeys = [];
+      this.getParentKeys(this.chart.get(id), parentKeys);
+      this.setState({ rootKey: selectedKeys, parentKeys });
+    }
+  };
+
+  onExpand = expandedKeys => {
+    this.setState({
+      parentKeys: expandedKeys
+    });
+  };
+  filterNodes = debounce(value => {
+    if (value) {
+      this.setState({
+        filtedNodes: this.chart.config.nodes.filter(item => {
+          return (
+            item.C3_419343735913.toLowerCase().indexOf(value.toLowerCase()) >= 0
+          );
+        })
+      });
+    } else {
+      this.setState({ filtedNodes: [] });
+    }
+  }, 800);
+
   render() {
     const {
       selectedNode,
@@ -1108,16 +1264,13 @@ class PersonRelationship extends React.Component {
       selectedDate,
       detaileMin,
       detailVisible,
-      departmentTreeVisible
+      departmentTreeVisible,
+      filtedNodes,
+      rootKey,
+      parentKeys,
+      treeData
     } = this.state;
-    const {
-      resid,
-      baseURL,
-      displayFileds,
-      hasView,
-      idField,
-      hasDepartmentFilter
-    } = this.props;
+    const { baseURL, displayFileds, hasView, hasDepartmentFilter } = this.props;
     return (
       <div className="person-relationship">
         <Spin spinning={loading}>
@@ -1133,7 +1286,7 @@ class PersonRelationship extends React.Component {
               />
             </div>
 
-            {hasDepartmentFilter && (
+            {/* {hasDepartmentFilter && (
               <Button
                 onClick={() => {
                   this.setState({ departmentTreeVisible: true });
@@ -1145,7 +1298,7 @@ class PersonRelationship extends React.Component {
               >
                 筛选部门
               </Button>
-            )}
+            )} */}
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
@@ -1170,6 +1323,53 @@ class PersonRelationship extends React.Component {
                 hidden: mode === 'table'
               })}
             >
+              <div
+                style={{
+                  width: 200,
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ padding: 8 }}>
+                  <Select
+                    showSearch
+                    style={{ width: '100%' }}
+                    filterOption={false}
+                    notFoundContent={null}
+                    onSearch={this.filterNodes}
+                    showArrow={false}
+                    allowClear
+                    defaultActiveFirstOption={false}
+                    onSelect={v => {
+                      this.setRootNode(v);
+                    }}
+                    placeholder="人员英文名搜索"
+                    size="small"
+                  >
+                    {filtedNodes.map(job => {
+                      return (
+                        <Option value={job.id}>{job.C3_419343735913}</Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <Tree
+                    onSelect={this.onTreeNodeSelect}
+                    checkable={false}
+                    defaultExpandAll
+                    size="small"
+                    selectedKeys={rootKey}
+                    expandedKeys={parentKeys}
+                    autoExpandParent={true}
+                    onExpand={this.onExpand}
+                  >
+                    {this.renderTree(treeData)}
+                  </Tree>
+                </div>
+              </div>
               <div className="person-relationship__chart-container">
                 <div id="person-relationship_orgchart"></div>
               </div>
