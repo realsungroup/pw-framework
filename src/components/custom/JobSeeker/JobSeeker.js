@@ -858,14 +858,15 @@ class JobSeeker extends Component {
           </div>
 
           <div>
-          <span>Do you have criminal history or discredit history? If yes,
-                    please give the details.<br/>是否有犯罪记录,如有请作详细的说明</span>
+          <span>Do you have criminal history? If yes,
+                    please give the details.<br/>是否有犯罪记录,如有请作详细的说明。</span>
                     <br/>
                     <span>{obj.Criminal}</span>
           </div>
 
           <div>
-          <span>是否有过失信记录等行为,如有请作详细的说明</span>
+          <span>Do you have discredit history? If yes,
+                please give the details.是否有过失信记录等行为,如有请作详细的说明。</span>
                     <br/>
                     <span>{obj.TrustStatus}</span>
           </div>
@@ -2185,7 +2186,7 @@ class JobSeeker extends Component {
                   )(<Input />)}
               </Form.Item>
               <h3 className="job-seeker__informnation-title" id="其他">
-                Other information 其他
+                Other Information 其他
               </h3>
               <Form.Item label="身高(CM)/Height" {...formItemLayout2}>
                 {getFieldDecorator('Height',{
@@ -2256,10 +2257,10 @@ class JobSeeker extends Component {
                 colon={false}
                 label={
                   <p  >
-                    Do you have criminal history or discredit history? If yes,
+                    Do you have criminal history? If yes,
                     please give the details.
                     <br />
-                    是否有犯罪记录,如有请作详细的说明
+                    是否有犯罪记录,如有请作详细的说明。
                   </p>
                 }
               >
@@ -2286,7 +2287,15 @@ class JobSeeker extends Component {
               </Form.Item>
               <Form.Item
                 colon={false}
-                label="是否有过失信记录等行为,如有请作详细的说明"
+
+                label={
+                  <p  >
+                    Do you have discredit history? If yes,
+                    please give the details.
+                    <br />
+                    是否有过失信记录等行为,如有请作详细的说明。
+                  </p>
+                }
               >
                 {getFieldDecorator('TrustStatus', {
                         rules: [
