@@ -2301,12 +2301,13 @@ window[642853675476] = {
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -2340,7 +2341,7 @@ window[642853703890] = {
   title: '除名信息', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    downloadBaseURL: 'http://ngrok/',
     resid: 547739772004,
     actionBarWidth: 200,
     hasAdd: true,
@@ -3431,13 +3432,14 @@ window[642854660698] = {
       // baseURL: 'http://10.108.2.66:9091',
       baseURL: 'http://ngrok5.realsun.me:6060',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      hasAdd: true,
+      hasAdd: false,
       hasBeBtns: true,
-      hasModify: true,
+      hasModify: false,
       hasBackBtn: true,
-      hasDelete: true,
+      hasDelete: false,
       hasRowModify: false,
-      hasRowView: true,
+      hasRowView: false,
+      hasRowSelection:true,
       hasRowDelete: false,
       isUseFormDefine: false,
       formProps: {
@@ -3552,11 +3554,11 @@ window[642854704644] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423660730564,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
@@ -3574,15 +3576,16 @@ window[642854723134] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 423660885541,
     actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3597,11 +3600,11 @@ window[642854733765] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 425274222825,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
@@ -3620,11 +3623,11 @@ window[642854743729] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 425274253986,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
@@ -3742,8 +3745,10 @@ window[642854803335] = {
     hasDelete: false,
     isUseFormDefine: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
+    actionBarFixed:false,
+    hasRowSelection:true,
     formProps: {
       // height: 500
     },
@@ -3812,6 +3817,7 @@ window[642865344500] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4255,6 +4261,7 @@ window[642855189869] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -4423,6 +4430,7 @@ window[642855746711] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      isUseFormDefine:false,
       formProps: {
         // height: 500
       },
@@ -4731,7 +4739,7 @@ window[642856395014] = {
   title: '月度薪资明细', // 功能模块名称
   props: {
     resid: 438956460750,
-    actionBarWidth: 200,
+    actionBarWidth: 400,
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     hasAdd: true,
@@ -4821,7 +4829,7 @@ window[642856451989] = {
   title: '经济补偿金', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    downloadBaseURL: 'http://ngrok30.realsun.me:6060/',
     resid: 466092254274,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4947,6 +4955,7 @@ window[642856627631] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4984,7 +4993,7 @@ window[642856652519] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 631902827113,
     mainTableProps: {
-      actionBarWidth: 200,
+      actionBarWidth: 250,
       hasAdd: true,
       hasBeBtns: true,
       hasModify: true,
@@ -5525,7 +5534,7 @@ window[642856691841] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    // isUseFormDefine:false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5683,6 +5692,7 @@ window[642856753982] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5772,6 +5782,7 @@ window[642856782319] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5863,7 +5874,7 @@ window[642856836829] = {
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 441282320318,
-    actionBarWidth: 300,
+    actionBarWidth: 400,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -5874,6 +5885,7 @@ window[642856836829] = {
     hasRowDelete: true,
     hasRowEdit: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5888,7 +5900,7 @@ window[642856846560] = {
     downloadBaseURL: 'http://10.108.2.66:80/',
     isUseFormDefine: false,
     resid: 476546200533,
-    actionBarWidth: 200,
+    actionBarWidth: 180,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -5897,6 +5909,7 @@ window[642856846560] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6172,6 +6185,7 @@ window[642858302008] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6312,6 +6326,7 @@ window[642858364531] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6490,6 +6505,7 @@ window[642858700263] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isWrap:true,
     formProps: {
       // height: 500
     },
@@ -7319,6 +7335,7 @@ window[642865548263] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7371,7 +7388,8 @@ window[642854549263] = {
         subResid: 375296167687,
         tableProps: {
           baseURL: 'http://ngrok5.realsun.me:6060',
-          actionBarWidth: 200
+          actionBarWidth: 200,
+          isUseFormDefine:false
         }
       }
     ],
@@ -7575,5 +7593,34 @@ window[645287046055] = {
         baseURL: 'http://ngrok5.realsun.me:6060/'
       }
     }
+  }
+};
+
+
+
+window[645649238968] = {
+  name: 'TableData', // 组件名称，
+  title: '办卡信息导入', // 功能模块名称
+  props: {
+    resid: 424793046971,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
   }
 };
