@@ -23,7 +23,7 @@ class HeadquartersManage extends React.Component {
       <div style={{width:'100vw',height:'100vh',background:'#fff'}}>
         <Tabs onChange={this.handleTabsChange}>
         <TabPane tab='offer审批流更改' key='1'>
-          <div style={{width:'100vw',height:'100vh'}}>
+          <div style={{width:'100vw',height:'calc(100vh - 92px)',overflow:'auto'}}>
           <MainTableSubTables
         baseURL= {this.baseURL}
         downloadBaseURL={this.dlEmployDownloadURL}
@@ -47,7 +47,7 @@ class HeadquartersManage extends React.Component {
         
         </TabPane>
         <TabPane tab='headcount审批流更改' key='2'>
-          <div style={{width:'100vw',height:'100vh'}}>
+          <div style={{width:'100vw',height:'calc(100vh - 92px)',overflow:'auto'}}>
           <MainTableSubTables
         baseURL= {this.baseURL}
         downloadBaseURL={this.dlEmployDownloadURL}

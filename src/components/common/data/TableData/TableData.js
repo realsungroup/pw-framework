@@ -1531,7 +1531,7 @@ class TableData extends React.Component {
       this.setState({ dataSource: newDataSource });
     }
 
-    message.success(intl.messages['TableData.deleteSuccess']);
+    message.success(intl.messages['common.deleteSuccess']);
 
     // 清除 selectedRowKeys
     if (this.state.rowSelection) {
