@@ -308,7 +308,8 @@ class InternalTraining extends React.Component {
           <TableData
             resid={636732588990}
             hasModify={false}
-            hasDelete={false}
+            hasDelete={true}
+            hasRowDelete={false}
             subtractH={190}
             hasRowView={false}
             hasAdd={false}

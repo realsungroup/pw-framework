@@ -458,7 +458,8 @@ class EntryTraining extends React.Component {
           <TableData
             resid={chapterResid}
             hasModify={false}
-            hasDelete={false}
+            hasDelete={true}
+            hasRowDelete={false}
             subtractH={190}
             hasRowView={false}
             hasRowModify={false}
