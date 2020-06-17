@@ -17,7 +17,8 @@ import {
   notification,
   Tabs,
   Checkbox,
-  Popover
+  Popover,
+  Tree
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -42,6 +43,10 @@ import moment from 'moment';
 import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
 import qs from 'qs';
+import debounce from 'lodash/debounce';
+
+const { TreeNode } = Tree;
+const { Option } = Select;
 
 function childCount(id, nodes) {
   let count = 0;
@@ -198,7 +203,10 @@ class ArchitectureDiagram extends React.Component {
       expandedKeys: [],
       searchValue: '',
       autoExpandParent: true,
-      selectedBranch: 'all'
+      selectedBranch: 'all',
+      rootKey: [],
+      parentKeys: [],
+      filtedNodes: []
     };
   }
 
@@ -317,6 +325,11 @@ class ArchitectureDiagram extends React.Component {
     );
     this.chart.on('dbclick', (sender, node) => {
       this.setRootNode(node.id);
+    });
+    this.chart.on('expcollclick', (sender, action, id, ids) => {
+      if (action === OrgChart.EXPAND) {
+        this.handleExpcollclick(parseInt(id));
+      }
     });
     this.chart.on('exportstart', function(sender, args) {
       args.content += `
@@ -481,17 +494,6 @@ class ArchitectureDiagram extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        // let ImgObj = new Image(); //判断图片是否存在
-        // ImgObj.src = item.memberAvatar;
-        // let url;
-        //没有图片，则返回-1
-        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-        //   url = item.memberAvatar;
-        // } else {
-        //   url = avatarDef;
-        // }
-        // url = avatarDef;
-
         const node = {
           ...item,
           id: item[idField],
@@ -511,7 +513,12 @@ class ArchitectureDiagram extends React.Component {
         });
         return node;
       });
-      this.setState({ loading: false, selectedNode: newSelectedNode });
+      const treeData = this.getTreeData(res.data);
+      this.setState({
+        loading: false,
+        selectedNode: newSelectedNode,
+        treeData
+      });
       const { selectedDepartments } = this.state;
       if (selectedDepartments.length) {
         const _nodes = nodes.filter(node => {
@@ -707,6 +714,20 @@ class ArchitectureDiagram extends React.Component {
       }
     } else {
       breadcrumb.unshift(selectedNode);
+    }
+  };
+
+  getParentKeys = (selectedNode, keys = []) => {
+    if (selectedNode.pid >= 0) {
+      const fooNode = this._nodes.find(item => {
+        return item.id === selectedNode.pid;
+      });
+      if (fooNode) {
+        keys.unshift(selectedNode.id + '');
+        this.getParentKeys(fooNode, keys);
+      } else {
+        keys.unshift(selectedNode.id + '');
+      }
     }
   };
 
@@ -1246,23 +1267,34 @@ class ArchitectureDiagram extends React.Component {
   setRootNode = nodeId => {
     const node =
       this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
-    let nodes = [node]; //计算后的节点，必包含点击的节点
-    this.calcSubNodes([node], nodes, this._nodes);
-    node.tags.push(selected);
-    this.chart.load(nodes);
-    this.chart.expandCollapseToLevel(nodeId, {
-      level: this.state.currentLevel
-    });
-    this.chart.draw(OrgChart.action.init);
+    const root = this.chart.getBGNode(nodeId);
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
 
-    // const { selectedNode } = this.state;
-    // if (selectedNode.id >= 0) {
-    //   this.chart.removeNodeTag(this.state.selectedNode.id, selected);
-    // }
-    // this.chart.config.roots = [nodeId];
-    // this.chart.addNodeTag(nodeId, selected);
-    // this.chart.draw(OrgChart.action.init);
-    this.setState({ selectedNode: node });
+    this.chart.config.roots = [root.id];
+    this.chart.expand(root.id, root.childrenIds);
+    this.chart.load(this.chart.config.nodes);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
+  };
+
+  handleExpcollclick = nodeId => {
+    const node =
+      this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
+    const root = this.chart.getBGNode(nodeId);
+    this.chart.config.roots = [root.id];
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
   };
 
   calcSubNodes = (calcNode, subNodes, allNodes) => {
@@ -1701,7 +1733,7 @@ class ArchitectureDiagram extends React.Component {
             </div>
           </div>
         )}
-        {mode === 'chart' && (
+        {/* {mode === 'chart' && (
           <div className="architecture-diagram_header_icon-button-group">
             <div className="architecture-diagram_header_icon-button">
               <Icon
@@ -1718,7 +1750,7 @@ class ArchitectureDiagram extends React.Component {
               />
             </div>
           </div>
-        )}
+        )} */}
         {hasImport && (
           <div className="architecture-diagram_header_icon-button-group">
             <div
@@ -1823,7 +1855,9 @@ class ArchitectureDiagram extends React.Component {
               key={item.id}
             >
               {`${item[firstField]}(${
-                item.memberCN ? item.memberCN : '无任职人'
+                item.memberCN && item.memberCN !== 'N/A'
+                  ? item.memberCN
+                  : '无任职人'
               })`}
             </Breadcrumb.Item>
           );
@@ -2028,6 +2062,78 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
+  renderTree = (data = []) => {
+    const { idField } = this.props;
+    return data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode key={item[idField]} title={item.memberCN || '无任职人'}>
+            {this.renderTree(item.children)}
+          </TreeNode>
+        );
+      }
+      return (
+        <TreeNode key={item[idField]} title={item.memberCN || '无任职人'} />
+      );
+    });
+  };
+
+  getTreeData = (data = []) => {
+    let rootNode = [];
+    const { idField, pidField } = this.props;
+
+    rootNode = data.filter(item => {
+      return !data.some(i => i[idField] == item[pidField]);
+    });
+    rootNode.forEach(item => {
+      this.getChildrenNodes(item, data);
+    });
+    return rootNode;
+  };
+
+  getChildrenNodes = (node = {}, allNode = []) => {
+    const { idField, pidField } = this.props;
+    const children = allNode.filter(item => {
+      return item[pidField] === node[idField];
+    });
+    if (children.length) {
+      node.children = children;
+      children.forEach(item => {
+        this.getChildrenNodes(item, allNode);
+      });
+    }
+  };
+
+  onTreeNodeSelect = selectedKeys => {
+    if (selectedKeys.length) {
+      const id = parseInt(selectedKeys[0]);
+      this.setRootNode(parseInt(selectedKeys[0]));
+      const parentKeys = [];
+      this.getParentKeys(this.chart.get(id), parentKeys);
+      this.setState({ rootKey: selectedKeys, parentKeys });
+    }
+  };
+
+  onExpand = expandedKeys => {
+    this.setState({
+      parentKeys: expandedKeys
+    });
+  };
+  filterNodes = debounce(value => {
+    if (value) {
+      this.setState({
+        filtedNodes: this.chart.config.nodes.filter(item => {
+          return (
+            item.orgName.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.memberCN.toLowerCase().indexOf(value.toLowerCase()) >= 0
+          );
+        })
+      });
+    } else {
+      this.setState({ filtedNodes: [] });
+    }
+  }, 800);
+
   render() {
     const {
       selectedNode,
@@ -2049,9 +2155,13 @@ class ArchitectureDiagram extends React.Component {
       hasDetail,
       hasHistory,
       hasResult,
-      departmentTreeVisible
+      departmentTreeVisible,
+      treeData,
+      parentKeys,
+      rootKey,
+      filtedNodes
     } = this.state;
-    const { resid, baseURL, displayFileds, hasView, idField } = this.props;
+    const { baseURL, displayFileds, hasView } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -2067,7 +2177,7 @@ class ArchitectureDiagram extends React.Component {
                 allowClear={false}
               />
             </div>
-            <Button
+            {/* <Button
               onClick={() => {
                 this.setState({ departmentTreeVisible: true });
               }}
@@ -2077,7 +2187,7 @@ class ArchitectureDiagram extends React.Component {
               icon="filter"
             >
               筛选部门
-            </Button>
+            </Button> */}
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
@@ -2098,6 +2208,51 @@ class ArchitectureDiagram extends React.Component {
             }}
           >
             <div className="architecture-diagram__content__main">
+              <div
+                style={{
+                  width: 200,
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ padding: 8 }}>
+                  <Select
+                    showSearch
+                    style={{ width: '100%' }}
+                    filterOption={false}
+                    notFoundContent={null}
+                    onSearch={this.filterNodes}
+                    showArrow={false}
+                    allowClear
+                    defaultActiveFirstOption={false}
+                    onSelect={v => {
+                      this.setRootNode(v);
+                    }}
+                    placeholder="岗位名、人员姓名搜索"
+                    size="small"
+                  >
+                    {filtedNodes.map(job => {
+                      return <Option value={job.id}>{job.memberCN}</Option>;
+                    })}
+                  </Select>
+                </div>
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <Tree
+                    onSelect={this.onTreeNodeSelect}
+                    checkable={false}
+                    defaultExpandAll
+                    size="small"
+                    selectedKeys={rootKey}
+                    expandedKeys={parentKeys}
+                    autoExpandParent={true}
+                    onExpand={this.onExpand}
+                  >
+                    {this.renderTree(treeData)}
+                  </Tree>
+                </div>
+              </div>
               <div className="architecture-diagram__content__main__container">
                 <div
                   className={classNames({

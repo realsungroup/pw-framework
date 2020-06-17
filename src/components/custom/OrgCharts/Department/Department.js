@@ -13,7 +13,8 @@ import {
   Form,
   Button,
   DatePicker,
-  InputNumber
+  InputNumber,
+  Tree
 } from 'antd';
 import './Department.less';
 import avatarDef from './svg/avatar.svg';
@@ -36,6 +37,10 @@ import moment from 'moment';
 import withImport from '../../../common/hoc/withImport';
 import withModalDrawer from '../../../common/hoc/withModalDrawer';
 import { getItem, setItem } from 'Util20/util';
+import debounce from 'lodash/debounce';
+
+const { TreeNode } = Tree;
+const { Option } = Select;
 
 function childCount(id, nodes) {
   let count = 0;
@@ -118,7 +123,11 @@ class Department extends React.Component {
       selectedResultResid: '638645137963',
       selectedType: 'IDL',
       selectedDepartment: '',
-      departmentTreeVisible: false
+      departmentTreeVisible: false,
+      rootKey: [],
+      parentKeys: [],
+      filtedNodes: [],
+      treeData: []
     };
   }
 
@@ -214,6 +223,11 @@ class Department extends React.Component {
     this.chart.on('dbclick', (sender, node) => {
       this.setRootNode(node.id);
     });
+    this.chart.on('expcollclick', (sender, action, id, ids) => {
+      if (action === OrgChart.EXPAND) {
+        this.handleExpcollclick(parseInt(id));
+      }
+    });
   };
 
   handleDragNode = (sender, oldNode, newNode) => {
@@ -307,15 +321,6 @@ class Department extends React.Component {
         if (item.isCreated === 'Y') {
           tags.push('created');
         }
-        // let ImgObj = new Image(); //判断图片是否存在
-        // ImgObj.src = item[displayFileds.imgField];
-        // let url;
-        // //没有图片，则返回-1
-        // if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
-        //   url = item[displayFileds.imgField];
-        // } else {
-        //   url = avatarDef;
-        // }
 
         const node = {
           ...item,
@@ -330,7 +335,13 @@ class Department extends React.Component {
         }
         return node;
       });
-      this.setState({ loading: false, selectedNode: newSelectedNode });
+      const treeData = this.getTreeData(res.data);
+
+      this.setState({
+        loading: false,
+        selectedNode: newSelectedNode,
+        treeData
+      });
       return nodes;
     } catch (error) {
       console.error(error);
@@ -579,23 +590,48 @@ class Department extends React.Component {
   setRootNode = nodeId => {
     const node =
       this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
-    let nodes = [node]; //计算后的节点，必包含点击的节点
-    this.calcSubNodes([node], nodes, this._nodes);
-    node.tags.push(selected);
-    this.chart.load(nodes);
-    // const { selectedNode } = this.state;
-    // if (selectedNode.id >= 0) {
-    //   this.chart.removeNodeTag(this.state.selectedNode.id, selected);
-    // }
-    // this.chart.config.roots = [nodeId];
-    // this.chart.addNodeTag(nodeId, selected);
-    this.chart.expandCollapseToLevel(nodeId, {
-      level: this.state.currentLevel
-    });
-    this.chart.draw(OrgChart.action.init);
-    this.setState({ selectedNode: node });
+    const root = this.chart.getBGNode(nodeId);
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
+
+    this.chart.config.roots = [root.id];
+    this.chart.expand(root.id, root.childrenIds);
+    this.chart.load(this.chart.config.nodes);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
   };
 
+  handleExpcollclick = nodeId => {
+    const node =
+      this.chart.get(nodeId) || this._nodes.find(item => item.id === nodeId);
+    const root = this.chart.getBGNode(nodeId);
+    this.chart.config.roots = [root.id];
+    const { selectedNode } = this.state;
+    if (selectedNode.id >= 0) {
+      this.chart.removeNodeTag(this.state.selectedNode.id, selected);
+    }
+    this.chart.addNodeTag(nodeId, selected);
+    const parentKeys = [];
+    this.getParentKeys(node, parentKeys);
+    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
+  };
+  getParentKeys = (selectedNode, keys = []) => {
+    if (selectedNode.pid >= 0) {
+      const fooNode = this._nodes.find(item => {
+        return item.id === selectedNode.pid;
+      });
+      if (fooNode) {
+        keys.unshift(selectedNode.id + '');
+        this.getParentKeys(fooNode, keys);
+      } else {
+        keys.unshift(selectedNode.id + '');
+      }
+    }
+  };
   calcSubNodes = (calcNode, subNodes, allNodes) => {
     //仍有要计算子节点的数据
     if (calcNode.length) {
@@ -982,7 +1018,7 @@ class Department extends React.Component {
             </div>
           </div>
         )}
-        {mode === 'chart' && (
+        {/* {mode === 'chart' && (
           <div className="department-chart_header_icon-button-group">
             <div className="department-chart_header_icon-button">
               <Icon
@@ -999,7 +1035,7 @@ class Department extends React.Component {
               />
             </div>
           </div>
-        )}
+        )} */}
       </header>
     );
   };
@@ -1028,6 +1064,73 @@ class Department extends React.Component {
     );
   };
 
+  renderTree = (data = []) => {
+    const { idField } = this.props;
+    return data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode key={item[idField]} title={item.DEP_NAME}>
+            {this.renderTree(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode key={item[idField]} title={item.DEP_NAME} />;
+    });
+  };
+
+  getTreeData = (data = []) => {
+    let rootNode = [];
+    const { idField, pidField } = this.props;
+
+    rootNode = data.filter(item => {
+      return !data.some(i => i[idField] == item[pidField]);
+    });
+    rootNode.forEach(item => {
+      this.getChildrenNodes(item, data);
+    });
+    return rootNode;
+  };
+
+  getChildrenNodes = (node = {}, allNode = []) => {
+    const { idField, pidField } = this.props;
+    const children = allNode.filter(item => {
+      return item[pidField] === node[idField];
+    });
+    if (children.length) {
+      node.children = children;
+      children.forEach(item => {
+        this.getChildrenNodes(item, allNode);
+      });
+    }
+  };
+
+  onTreeNodeSelect = selectedKeys => {
+    if (selectedKeys.length) {
+      const id = parseInt(selectedKeys[0]);
+      this.setRootNode(parseInt(selectedKeys[0]));
+      const parentKeys = [];
+      this.getParentKeys(this.chart.get(id), parentKeys);
+      this.setState({ rootKey: selectedKeys, parentKeys });
+    }
+  };
+
+  onExpand = expandedKeys => {
+    this.setState({
+      parentKeys: expandedKeys
+    });
+  };
+  filterNodes = debounce(value => {
+    if (value) {
+      this.setState({
+        filtedNodes: this.chart.config.nodes.filter(item => {
+          return item.DEP_NAME.toLowerCase().indexOf(value.toLowerCase()) >= 0;
+        })
+      });
+    } else {
+      this.setState({ filtedNodes: [] });
+    }
+  }, 800);
+
   render() {
     const {
       selectedNode,
@@ -1042,7 +1145,11 @@ class Department extends React.Component {
       selectedDate,
       detaileMin,
       detailVisible,
-      departmentTreeVisible
+      departmentTreeVisible,
+      filtedNodes,
+      rootKey,
+      parentKeys,
+      treeData
     } = this.state;
     const {
       resid,
@@ -1067,19 +1174,6 @@ class Department extends React.Component {
               />
             </div>
 
-            {hasDepartmentFilter && (
-              <Button
-                onClick={() => {
-                  this.setState({ departmentTreeVisible: true });
-                }}
-                style={{ margin: '0 8px' }}
-                type="primary"
-                size="small"
-                icon="filter"
-              >
-                筛选部门
-              </Button>
-            )}
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
@@ -1100,6 +1194,51 @@ class Department extends React.Component {
             }}
           >
             <div className="department-chart__content__main">
+              <div
+                style={{
+                  width: 200,
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ padding: 8 }}>
+                  <Select
+                    showSearch
+                    style={{ width: '100%' }}
+                    filterOption={false}
+                    notFoundContent={null}
+                    onSearch={this.filterNodes}
+                    showArrow={false}
+                    allowClear
+                    defaultActiveFirstOption={false}
+                    onSelect={v => {
+                      this.setRootNode(v);
+                    }}
+                    placeholder="部门名搜索"
+                    size="small"
+                  >
+                    {filtedNodes.map(job => {
+                      return <Option value={job.id}>{job.DEP_NAME}</Option>;
+                    })}
+                  </Select>
+                </div>
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <Tree
+                    onSelect={this.onTreeNodeSelect}
+                    checkable={false}
+                    defaultExpandAll
+                    size="small"
+                    selectedKeys={rootKey}
+                    expandedKeys={parentKeys}
+                    autoExpandParent={true}
+                    onExpand={this.onExpand}
+                  >
+                    {this.renderTree(treeData)}
+                  </Tree>
+                </div>
+              </div>
               <div className="department-chart__content__main__container">
                 <div
                   className={classNames({
