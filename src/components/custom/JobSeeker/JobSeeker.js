@@ -2234,7 +2234,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Have you ever been suffering from any severe disease? What
                     are your current health? Are you sick for contagion, or
                     chronic etc. now?
@@ -2255,7 +2255,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Do you have criminal history or discredit history? If yes,
                     please give the details.
                     <br />
@@ -2313,7 +2313,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Do you have any unemployed period of more than 4 months? If
                     yes, please give the details.
                     <br />
@@ -2345,7 +2345,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Do you know any employee of Finisar Inc.? If yes,
                     please give his/her name and relationship.
                     <br />
@@ -2378,7 +2378,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Do you have any unexpired contract or service agreement with
                     your present employer? <br />
                     与现任雇主的合同或服务协议是否到期？
@@ -2405,7 +2405,7 @@ class JobSeeker extends Component {
               <Form.Item
                 colon={false}
                 label={
-                  <p style={{ height: 30 }}>
+                  <p  >
                     Do you have ever signed non-competition agreement or
                     confidentiality agreement? Please explain when does the
                     contract or agreement at term?
