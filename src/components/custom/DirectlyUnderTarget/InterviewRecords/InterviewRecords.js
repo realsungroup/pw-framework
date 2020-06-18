@@ -152,7 +152,7 @@ class InterviewRecords extends React.Component {
                 resid={residConfig.直属面谈记录}
                 dataMode="sub"
                 hostrecid={selectedData.REC_ID}
-                actionBarWidth={150}
+                actionBarWidth={200}
                 hasRowEdit={true}
                 hasRowEditAdd={true}
                 recordFormUseAbsolute={true}
@@ -160,6 +160,7 @@ class InterviewRecords extends React.Component {
                 hasRowModify={false}
                 hasModify={false}
                 isUseFormDefine={false}
+                isSetColumnWidth={false}
               />
             )}
           </div>
