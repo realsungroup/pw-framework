@@ -62,6 +62,7 @@ export default class EditableCell extends React.Component {
       width,
       height,
       baseURL,
+      fieldName,
       ...restProps
     } = this.props;
 
@@ -75,6 +76,11 @@ export default class EditableCell extends React.Component {
       };
     }
 
+    let hasControl = true;
+    if (!Object.keys(dataItem).length) {
+      hasControl = false;
+    }
+
     return (
       <EditableContext.Consumer>
         {form => {
@@ -83,18 +89,22 @@ export default class EditableCell extends React.Component {
             <td {...restProps} style={{ width }}>
               {isRenderControl ? (
                 <FormItem>
-                  {getFieldDecorator(dataIndex, options)(
-                    <Control
-                      dataItem={dataItem}
-                      form={form}
-                      displayMode="edit"
-                      baseURL={baseURL}
-                    />
-                  )}
+                  {hasControl ? (
+                    getFieldDecorator(dataIndex, options)(
+                      <Control
+                        dataItem={dataItem}
+                        form={form}
+                        displayMode="edit"
+                        baseURL={baseURL}
+                      />
+                    )
+                  ) : (
+                      <span>{record[fieldName]}</span>
+                    )}
                 </FormItem>
               ) : (
-                restProps.children
-              )}
+                  restProps.children
+                )}
             </td>
           );
         }}

@@ -1756,6 +1756,7 @@ class TableData extends React.Component {
               dataIndex: newColumn.dataIndex,
               index,
               editing: isEditing,
+              fieldName: newColumn.fieldName,
               dataItem: this.getDataItem(record, newColumn.dataIndex)
             };
             if (isUseBESize && isEditing) {

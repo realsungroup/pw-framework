@@ -74,6 +74,7 @@ export const getColumns = (
       title: item.text,
       dataIndex: item.id,
       key: item.id,
+      fieldName: item.id,
       align: 'center',
       editable: true,
       _editWidth: item[item.id] && item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
