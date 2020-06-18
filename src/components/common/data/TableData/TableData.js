@@ -201,7 +201,8 @@ class TableData extends React.Component {
       {
         columnWidth: rowSelection.columnWidth,
         columnTitle: rowSelection.columnTitle,
-        fixed: typeof rowSelection.fixed === 'undefined' ? true : rowSelection.fixed,
+        fixed:
+          typeof rowSelection.fixed === 'undefined' ? true : rowSelection.fixed,
         getCheckboxProps: rowSelection.getCheckboxProps,
         hideDefaultSelections: rowSelection.hideDefaultSelections,
         selectedRowKeys: rowSelection.selectedRowKeys,
@@ -1670,7 +1671,7 @@ class TableData extends React.Component {
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
-    } else if (type === 4) {
+    } else if (type === 4 || type === 3) {
       this.props.openModalOrDrawer(
         'modal',
         {
@@ -1965,7 +1966,7 @@ class TableData extends React.Component {
     });
   };
 
-  renderMessage = (_message) => {
+  renderMessage = _message => {
     const { successMessageComponent } = this.props;
     const messageComponent = getSuccessMessageComponent(
       successMessageComponent

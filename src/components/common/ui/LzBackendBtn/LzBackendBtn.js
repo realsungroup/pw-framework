@@ -92,7 +92,7 @@ class LzBackendBtn extends React.PureComponent {
       onConfirm && onConfirm(backendBtnType, Type, records);
 
       // 跳转地址的按钮
-    } else if (Type === 4) {
+    } else if (Type === 4 || Type === 3) {
       const { Url } = this.props.btnInfo;
       // window.open(Url, '_blank');
       onConfirm &&
@@ -118,7 +118,7 @@ class LzBackendBtn extends React.PureComponent {
           formData = await this.props.httpGetFormData(
             resid,
             btnInfo.FormName || 'default',
-            baseURL,
+            baseURL
           );
         } catch (err) {
           return message.error(err.message);
@@ -152,9 +152,9 @@ class LzBackendBtn extends React.PureComponent {
   render() {
     const { btnInfo, size } = this.props;
     const { Url, Type } = btnInfo;
-    if (Type !== 4 && Url) {
-      return null;
-    }
+    // if (Type !== 4 && Url) {
+    //   return null;
+    // }
     // 有 Popconfirm 组件
     if (btnInfo.isUsePopconfirm) {
       return (
