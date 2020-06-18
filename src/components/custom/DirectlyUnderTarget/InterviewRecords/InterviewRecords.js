@@ -159,8 +159,9 @@ class InterviewRecords extends React.Component {
                 actionBarFixed={false}
                 hasRowModify={false}
                 hasModify={false}
-                isUseFormDefine={false}
                 isSetColumnWidth={false}
+                isWrap={true}
+                formProps={{ width: 600 }}
               />
             )}
           </div>
