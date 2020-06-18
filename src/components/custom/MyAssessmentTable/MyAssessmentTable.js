@@ -197,7 +197,7 @@ class MyAssessmentTable extends React.Component {
         break;
       // 目标
       case subresids.target:
-        if (record.C3_420949377789 == 'Y') {
+        if (record.C3_420949377789 == 'Y' && record.C3_420953811304 !== 'Y') {
           result = true;
         }
         break;
@@ -544,6 +544,7 @@ class MyAssessmentTable extends React.Component {
     tableDataProps.hasRowEdit = false;
     tableDataProps.actionBarWidth = 150;
     tableDataProps.hasRowSelection = true;
+    tableDataProps.isUseFormDefine = false;
     const modifiable = this.modifiableTable(
       selectedMainData,
       tableConfig.resid
@@ -554,8 +555,13 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
       tableDataProps.actionBarFixed = false;
-      // tableDataProps.isUseFormDefine = false;
-      tableDataProps.rowEditFormName = 'default1';
+      if (
+        tableConfig.resid === subresids.endYearTargetSelf ||
+        tableConfig.resid === subresids.middleYearTargetSelf
+      ) {
+        tableDataProps.isUseFormDefine = true;
+        tableDataProps.rowEditFormName = 'default1';
+      }
     }
     if (
       tableConfig.resid === subresids.员工绩效反馈 ||
