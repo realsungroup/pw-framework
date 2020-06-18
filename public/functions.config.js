@@ -3817,6 +3817,7 @@ window[642865344500] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     isSetColumnWidth:false,
     formProps: {
       // height: 500
@@ -7491,7 +7492,7 @@ window[645027658426] = {
     hasModify: true,
     hasBackBtn: true,
     baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    downloadBaseURL: 'http://ngrok5.realsun.me:6060',
     hasDelete: true,
     hasRowModify: true,
     hasRowEdit: true,
