@@ -51,12 +51,12 @@ class EvaluateManage extends React.Component {
         size="small"
         tabBarStyle={tabBarStyle}
       >
-        <TabPane tab="互评邀请" key="1">
+        {/* <TabPane tab="互评邀请" key="1">
           <Invite />
         </TabPane>
         <TabPane tab="互评评价" key="2">
           <Evaluate />
-        </TabPane>
+        </TabPane> */}
         <TabPane tab="直评管理" key="3">
           <DirectEvaluate
             years={years}

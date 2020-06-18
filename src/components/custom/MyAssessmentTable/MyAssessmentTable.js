@@ -554,7 +554,8 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
       tableDataProps.actionBarFixed = false;
-      tableDataProps.isUseFormDefine = false;
+      // tableDataProps.isUseFormDefine = false;
+      tableDataProps.rowEditFormName = 'default1';
     }
     if (
       tableConfig.resid === subresids.员工绩效反馈 ||
@@ -593,7 +594,6 @@ class MyAssessmentTable extends React.Component {
         key={tableConfig.resid}
         {...tableDataProps}
         isWrap={true}
-        isUseFormDefine={false}
         subtractH={180}
       />
     );
