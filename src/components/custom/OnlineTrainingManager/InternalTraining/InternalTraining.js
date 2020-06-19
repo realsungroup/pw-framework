@@ -17,6 +17,7 @@ import dealControlArr from 'Util20/controls';
 import FormData from 'Common/data/FormData';
 import TableData from 'Common/data/TableData';
 import memoize from 'memoize-one';
+import CourseCompletion from './CourseCompletion';
 
 const { Search } = Input;
 const resid = 640019761153;
@@ -49,7 +50,9 @@ class InternalTraining extends React.Component {
       C3_636735464189: '',
       directTest: 'N'
     },
-    modifyChapterData: {}
+    modifyChapterData: {},
+    courseCompletionVisible: false,
+    chapter: [] //待查看完成情况的章节
   };
   componentDidMount() {
     this.fetchCourse();
@@ -245,7 +248,9 @@ class InternalTraining extends React.Component {
       addChapterVisible,
       modifyChapterVisible,
       addChapterData,
-      modifyChapterData
+      modifyChapterData,
+      courseCompletionVisible,
+      chapter
     } = this.state;
     const { baseURL, coursePapers } = this.props;
     const _courses = this.filterCourses(courses, filterText);
@@ -306,6 +311,7 @@ class InternalTraining extends React.Component {
         </div>
         <div className="test-table">
           <TableData
+            key={selectedCourse.REC_ID}
             resid={636732588990}
             hasModify={false}
             hasDelete={true}
@@ -352,6 +358,25 @@ class InternalTraining extends React.Component {
                       }}
                     >
                       修改
+                    </Button>
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => {
+                        if (selectedRowKeys.length === 0) {
+                          return message.info('请选择记录');
+                        }
+                        const record = dataSource.find(data => {
+                          return data.REC_ID == selectedRowKeys[0];
+                        });
+                        this.setState({
+                          courseCompletionVisible: true,
+                          chapter: record
+                          //modifyChapterData: records
+                        });
+                      }}
+                    >
+                      查看课程完成情况
                     </Button>
                   </div>
                 )
@@ -562,6 +587,22 @@ class InternalTraining extends React.Component {
               </Select>
             </Form.Item>
           </Form>
+        </Modal>
+        <Modal
+          visible={courseCompletionVisible}
+          onCancel={() => {
+            this.setState({ courseCompletionVisible: false });
+          }}
+          width="90vw"
+          destroyOnClose
+          footer={null}
+          title="课程完成情况"
+        >
+          <CourseCompletion
+            course={selectedCourse}
+            baseURL={baseURL}
+            chapter={chapter}
+          />
         </Modal>
       </div>
     );

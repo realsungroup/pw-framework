@@ -677,7 +677,8 @@ class DesignPaper extends React.Component {
                 value={selectedQuestion.ColNotes}
                 onBlur={() => {
                   this.modifyColumn({
-                    ...selectedQuestion
+                    ...selectedQuestion,
+                    ColDispName: selectedQuestion.ColNotes
                   });
                 }}
                 onChange={e => {
