@@ -42,7 +42,7 @@ const withDownloadFile = WrappedComponent => {
       console.log(hostresid);
       console.log(hostrecid);
       this.p1 = makeCancelable(
-        http({ baseURL: downloadBaseURL }).exportTableData({
+        http({ baseURL: requestBaseURL }).exportTableData({
           resid,
           hostresid,
           hostrecid,
