@@ -3,6 +3,7 @@ import './OnlineTrainingManager.less';
 import { Tabs, message } from 'antd';
 import EntryTraining from './EntryTraining';
 import InternalTraining from './InternalTraining';
+import TestCourse from './TestCourse';
 import InternalTrainingAuth from './InternalTrainingAuth';
 import TestPaperManager from './TestPaperManager';
 import http, { makeCancelable } from 'Util20/api';
@@ -52,13 +53,16 @@ class OnlineTrainingManager extends React.Component {
         <TabPane tab="在线内训" key="2">
           <InternalTraining baseURL={baseURL} coursePapers={coursePapers} />
         </TabPane>
-        <TabPane tab="在线内训授权" key="3">
+        <TabPane tab="考试课程" key="3">
+          <TestCourse baseURL={baseURL} coursePapers={coursePapers} />
+        </TabPane>
+        <TabPane tab="在线内训授权" key="4">
           <InternalTrainingAuth baseURL={baseURL} />
         </TabPane>
-        <TabPane tab="在线培训试卷管理" key="4">
+        <TabPane tab="在线培训试卷管理" key="5">
           <TestPaperManager baseURL={baseURL} />
         </TabPane>
-        <TabPane tab="考试回答记录" key="5">
+        <TabPane tab="考试回答记录" key="6">
           <TableData
             resid="644178448621"
             subtractH={220}
@@ -73,7 +77,7 @@ class OnlineTrainingManager extends React.Component {
             baseURL={baseURL}
           />
         </TabPane>
-        <TabPane tab="课程附件管理" key="6">
+        <TabPane tab="课程附件管理" key="7">
           <TableData
             resid="636485756984"
             subtractH={220}
