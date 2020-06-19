@@ -1566,6 +1566,10 @@ class ArchitectureDiagram extends React.Component {
                     hasAdd={false}
                     hasModify={false}
                     hasDelete={false}
+                    hasImport={false}
+                    hasRefresh={false}
+                    hasAdvSearch={false}
+                    hasDownload={false}
                   />
                 </div>
                 <div
