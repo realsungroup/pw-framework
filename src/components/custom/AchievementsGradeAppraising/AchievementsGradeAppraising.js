@@ -37,6 +37,7 @@ class AchievementsGradeAppraising extends React.Component {
     tableDataProps.hasRowEdit = false;
     tableDataProps.hasRowView = true;
     tableDataProps.actionBarWidth = 150;
+    tableDataProps.isUseFormDefine = false;
 
     const { iframeResid, replaceBaseUrl, baseURL } = config;
     return (

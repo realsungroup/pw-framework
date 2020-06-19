@@ -52,7 +52,7 @@ class ByYear extends React.Component {
             resid={resid}
             {...tableDataProps}
             cmswhere={`C3_420150922019 = '${selectedYear}'`}
-            subtractH={160}
+            subtractH={180}
             hasRowDelete={false}
             hasRowModify={false}
             hasRowView={false}

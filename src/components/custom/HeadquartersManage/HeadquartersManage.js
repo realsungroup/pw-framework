@@ -34,8 +34,10 @@ class HeadquartersManage extends React.Component {
             margin: '0 auto'
           }}
           mainTableProps={{
-            hasAdd: false
+            hasAdd: false,
+            isWrap:true
           }}
+         
           subTablesProps={{
             576415161967: {
               hasAdd: true,
@@ -51,6 +53,7 @@ class HeadquartersManage extends React.Component {
           <MainTableSubTables
         baseURL= {this.baseURL}
         downloadBaseURL={this.dlEmployDownloadURL}
+        isWrap={true}
           resid={576924862772}
           style={{
             // height: 600,
@@ -58,7 +61,8 @@ class HeadquartersManage extends React.Component {
             margin: '0 auto'
           }}
           mainTableProps={{
-            hasAdd: false
+            hasAdd: false,
+            isWrap:true
           }}
           subTablesProps={{
             576268771221: {
