@@ -1718,7 +1718,8 @@ class TableData extends React.Component {
         'add',
         defaultRecord,
         controlData,
-        recordFormData
+        recordFormData,
+        title
       );
     }
   };
