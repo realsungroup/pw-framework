@@ -117,7 +117,7 @@ class TestCourse extends React.Component {
   openAddModal = () => {
     this._dataProp = getDataProp(
       this._formData,
-      { C3_636485038768: '内训' },
+      { C3_636485038768: '考试' },
       true,
       false,
       false
@@ -266,7 +266,7 @@ class TestCourse extends React.Component {
             allowClear
           />
           <div className="add-course-btn" onClick={this.openAddModal}>
-            点击新建内训课程
+            添加直接考试的课程
           </div>
           <div className="course-list">
             {_courses.map(course => {
