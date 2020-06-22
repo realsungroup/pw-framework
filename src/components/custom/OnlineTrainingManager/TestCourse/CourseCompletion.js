@@ -94,7 +94,7 @@ class CourseCompletion extends React.Component {
       const p = makeCancelable(
         http({ baseURL: this.props.baseURL }).getTable({
           resid: 640021774020,
-          cmswhere: `courseId = '${courseId}'`
+          cmswhere: `name4Test = '${courseId}'`
         })
       );
       return p.promise;
