@@ -13,6 +13,7 @@ import RecentApps from './RecentApps';
 import Spin from 'Common/ui/Spin';
 import Img from 'Common/ui/Img';
 import html2canvas from 'html2canvas';
+import WorkOvertime from './Kanbans/WorkOvertime';
 import './NewHome.less';
 
 const {
@@ -448,6 +449,12 @@ class Home extends React.Component {
         </aside>
         <main className="new-home__main">
           <div className="new-home__center">
+            <div className="new-home__kanban">
+              <div className="new-home-title">下属加班汇总</div>
+              <div className="new-home__kanban__body">
+                <WorkOvertime onClick={onOpenWindow} />
+              </div>
+            </div>
             <div className="new-home__fixed-functions">
               {loading && <Spin />}
               <FixedApps

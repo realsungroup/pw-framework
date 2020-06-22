@@ -9236,6 +9236,13 @@ progress@^2.0.0:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/progress/download/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
 
+progressbar.js@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/progressbar.js/download/progressbar.js-1.1.0.tgz#300f99be40ba93fb0867f91dff01771236cade70"
+  integrity sha1-MA+ZvkC6k/sIZ/kd/wF3EjbK3nA=
+  dependencies:
+    shifty "^2.1.2"
+
 promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/promise-inflight/download/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
@@ -11137,6 +11144,11 @@ shell-quote@1.6.1, shell-quote@^1.6.1:
 shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.npm.taobao.org/shellwords/download/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
+
+shifty@^2.1.2:
+  version "2.9.0"
+  resolved "https://registry.npm.taobao.org/shifty/download/shifty-2.9.0.tgz#6488fb748e64e5865c8d1d9b8f1762be17e7cc86"
+  integrity sha1-ZIj7dI5k5YZcjR2bjxdivhfnzIY=
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"

@@ -96,6 +96,7 @@
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
     "print-js": "^1.0.54",
+    "progressbar.js": "^1.1.0",
     "promise": "8.0.1",
     "prop-types": "^15.6.2",
     "pure-render-deepcompare-decorator": "^1.0.3",

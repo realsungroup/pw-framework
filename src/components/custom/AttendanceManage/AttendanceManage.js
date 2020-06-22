@@ -16,6 +16,7 @@ import OverdueApprovalRecord from './OverdueApprovalRecord';
 import ManagerAttendanceApprovalAuth from './ManagerAttendanceApprovalAuth';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
+import qs from 'qs';
 
 const { SubMenu } = Menu;
 
@@ -34,6 +35,7 @@ class AttendanceManage extends React.Component {
     collapsed: false, //左侧菜单是否收缩
     desktop: null,
     approvalRecordVisible: false,
+    summaryVisible: false,
     selectRecord: {}, //选中的记录，用于查看审批记录
     loading: false,
     notices: {
@@ -44,10 +46,14 @@ class AttendanceManage extends React.Component {
   };
 
   componentDidMount = () => {
+    const qsObj = qs.parse(this.props.location.search.substring(1));
+    console.log(qsObj);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
     this.setState({
-      desktop
+      desktop,
+      selectKey: qsObj.menuKey,
+      summaryVisible: qsObj.summaryVisible ? true : false
     });
     this.getNotices();
   };
@@ -93,7 +99,7 @@ class AttendanceManage extends React.Component {
     this.setState({ approvalRecordVisible: true, selectRecord });
 
   renderContent = () => {
-    let selectKey = this.state.selectKey;
+    const { summaryVisible, selectKey } = this.state;
     let page = null;
     switch (selectKey) {
       // 我的考勤申请单
@@ -155,6 +161,7 @@ class AttendanceManage extends React.Component {
             setLoading={this.setLoading}
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
             getNotices={this.getNotices}
+            summaryVisible={summaryVisible}
           />
         );
         break;
@@ -200,7 +207,8 @@ class AttendanceManage extends React.Component {
       theme,
       selectRecord,
       loading,
-      notices
+      notices,
+      selectKey
     } = this.state;
     return (
       <Spin spinning={loading}>
@@ -245,6 +253,7 @@ class AttendanceManage extends React.Component {
               theme={theme}
               onSelect={this.onSelect}
               inlineCollapsed={collapsed}
+              selectedKeys={[selectKey]}
               // selectedKeys = {this.selectedKeys}
             >
               <SubMenu

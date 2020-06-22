@@ -12,7 +12,7 @@ import { getItem } from 'Util20/util';
 
 class ManagerAttendanceApproval extends React.Component {
   state = {
-    modalVisible: false
+    modalVisible: this.props.summaryVisible
   };
   constructor(props) {
     super(props);
