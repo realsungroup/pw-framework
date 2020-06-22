@@ -36,6 +36,8 @@ class TargetHistory extends React.Component {
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}
             downloadBaseURL={this.attendanceDownloadURL}
+            isSetColumnWidth={false}
+            isWrap={true}
           />
         </div>
       </div>

@@ -8,6 +8,7 @@ import './PersonnelInformation.less';
 const tabPaneStyle = { height: 'calc(100vh - 60px)' };
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
+  const downloadBaseURL = window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureDownloadBaseURL;
 /**
  * 人事信息
  */
@@ -62,6 +63,7 @@ class PersonnelInformation extends React.Component {
                   hasAdvSearch={false}
                   importConfig={null}
                   actionBarWidth={200}
+                  downloadBaseURL={downloadBaseURL}
                   cmswhere={
                     selectedDepartment
                       ? `HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}'`

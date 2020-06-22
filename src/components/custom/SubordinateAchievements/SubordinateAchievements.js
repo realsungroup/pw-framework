@@ -8,6 +8,7 @@ import http, { makeCancelable } from 'Util20/api';
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 const yearResid = 436471186474;
+const baseURL =   window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
 
 /**
  * 查看下属绩效
@@ -22,7 +23,7 @@ class SubordinateAchievements extends React.Component {
   }
   fectchYears = async () => {
     try {
-      const res = await http().getTable({
+      const res = await http({baseURL}).getTable({
         resid: yearResid
       });
       this.setState({
@@ -58,6 +59,7 @@ class SubordinateAchievements extends React.Component {
             resid={residConfig.人事汇报关系}
             years={years}
             currentYear={currentYear}
+            baseURL={baseURL}
           />
         </TabPane>
         <TabPane tab="按财年查看" key="2">
@@ -65,6 +67,7 @@ class SubordinateAchievements extends React.Component {
             years={years}
             currentYear={currentYear}
             resid={residConfig.财年评级评优}
+            baseURL={baseURL}
           />
         </TabPane>
       </Tabs>

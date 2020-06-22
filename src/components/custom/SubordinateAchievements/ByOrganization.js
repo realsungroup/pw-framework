@@ -180,17 +180,19 @@ class ByOrganization extends React.Component {
   fetchFormData = async () => {
     const mainResid = subresids.myAssessment;
     try {
+      const {baseURL}= this.props
+      const param = { baseURL }
       const pArr = [];
-      pArr[0] = http().getFormData({ resid: mainResid, formName: '员工自评' });
-      pArr[1] = http().getFormData({
+      pArr[0] = http(param).getFormData({ resid: mainResid, formName: '员工自评' });
+      pArr[1] = http(param).getFormData({
         resid: mainResid,
         formName: '员工年末自评'
       });
-      pArr[2] = http().getFormData({
+      pArr[2] = http(param).getFormData({
         resid: mainResid,
         formName: '财年评语查看'
       });
-      pArr[3] = http().getFormData({
+      pArr[3] = http(param).getFormData({
         resid: subresids.员工绩效反馈,
         formName: 'default'
       });
@@ -207,9 +209,11 @@ class ByOrganization extends React.Component {
 
   fetchmyAssessment = async id => {
     const { selectedYear } = this.state;
+    const {baseURL}= this.props
+    const param = { baseURL }
     try {
       this.setState({ fetching: true });
-      const res = await http().getTable({
+      const res = await http(param).getTable({
         resid: subresids.绩效评估表,
         cmswhere: `C3_420148203323 = '${id}'`
       });
@@ -368,6 +372,7 @@ class ByOrganization extends React.Component {
       fetching,
       selectedYear
     } = this.state;
+    const { baseURL } =this.props
     if (fetching) {
       return <Spin />;
     }
@@ -420,6 +425,7 @@ class ByOrganization extends React.Component {
         subtractH={180}
         isUseFormDefine={false}
         isWrap={true}
+        baseURL={baseURL}
       />
     );
   };

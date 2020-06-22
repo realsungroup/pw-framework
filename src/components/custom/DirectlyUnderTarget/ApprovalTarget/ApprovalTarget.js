@@ -43,7 +43,7 @@ class ApprovalTarget extends React.Component {
   fetchMainData = async () => {
     const { residConfig, currentYear } = this.props;
     try {
-      const res = await http().getTable({ resid: residConfig.待核准目标 });
+      const res = await http({baseURL:this.props.baseURL}).getTable({ resid: residConfig.待核准目标 });
       this.setState({
         mainData: res.data,
         yearMainData: res.data.filter(
@@ -89,7 +89,7 @@ class ApprovalTarget extends React.Component {
     });
     try {
       this.setState({ submitLoading: true });
-      await http().modifyRecords({
+      await http({baseURL:this.props.baseURL}).modifyRecords({
         resid: residConfig.待核准目标,
         data: checkedData
       });
@@ -232,7 +232,7 @@ class ApprovalTarget extends React.Component {
   }
   renderTable = () => {
     const { selectedData } = this.state;
-    const { residConfig } = this.props;
+    const { residConfig , baseURL} = this.props;
     const tableDataProps = {};
 
     tableDataProps.hasAdd = false;
@@ -262,6 +262,7 @@ class ApprovalTarget extends React.Component {
         dataMode="sub"
         hostrecid={selectedData.REC_ID}
         {...tableDataProps}
+        baseURL={baseURL}
       />
     );
   };

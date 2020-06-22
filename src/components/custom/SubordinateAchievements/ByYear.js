@@ -25,7 +25,7 @@ class ByYear extends React.Component {
     tableDataProps.hasRowView = true;
     tableDataProps.actionBarWidth = 150;
     const { selectedYear } = this.state;
-    const { years, resid } = this.props;
+    const { years, resid ,baseURL} = this.props;
     return (
       <div className="subordinate-achievements">
         <div className="subordinate-achievements__year-list">
@@ -56,6 +56,7 @@ class ByYear extends React.Component {
             hasRowDelete={false}
             hasRowModify={false}
             hasRowView={false}
+            baseURL={baseURL}
           />
         </div>
       </div>

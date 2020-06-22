@@ -24,7 +24,7 @@ class AchievementsGradeAppraising extends React.Component {
 
   render() {
     const { id } = this.state;
-    const { mangerConfig } = this.props;
+    const { mangerConfig , tableDataBaseURL} = this.props;
     const config = mangerConfig[id];
     const tableDataProps = {};
     tableDataProps.resid = config.tableDataResid;
@@ -39,7 +39,7 @@ class AchievementsGradeAppraising extends React.Component {
     tableDataProps.actionBarWidth = 150;
     tableDataProps.isUseFormDefine = false;
     tableDataProps.downloadBaseURL = config.downloadBaseURL;
-
+    tableDataProps.baseURL = tableDataBaseURL;
 
     const { iframeResid, replaceBaseUrl, baseURL } = config;
     return (

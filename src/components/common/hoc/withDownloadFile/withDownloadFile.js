@@ -69,7 +69,9 @@ const withDownloadFile = WrappedComponent => {
         const index = res.data.lastIndexOf('/');
         name = res.data.slice(index + 1);
       }
-      console.log(downloadBaseURL);
+      if (!/\/$/.test(downloadBaseURL)) {
+        downloadBaseURL += '/';
+      }
       window.open(downloadBaseURL + res.data);
       return;
     };

@@ -8,7 +8,7 @@ import { Button } from 'antd';
  */
 class AchievementsFeedback extends React.Component {
   render() {
-    const { residConfig } = this.props;
+    const { residConfig, baseURL } = this.props;
     return (
       <div className="achievements-feedback">
         <TableData
@@ -21,6 +21,7 @@ class AchievementsFeedback extends React.Component {
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
+          baseURL={baseURL}
         />
       </div>
     );
