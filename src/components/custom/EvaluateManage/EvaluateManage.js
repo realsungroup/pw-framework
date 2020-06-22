@@ -10,6 +10,8 @@ import http from 'Util20/api';
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 const yearResid = 436471186474;
+const baseURL =   window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
+
 
 /**
  * 评价管理
@@ -62,10 +64,14 @@ class EvaluateManage extends React.Component {
             years={years}
             currentYear={currentYear}
             residConfig={residConfig}
+            baseURL={baseURL}
           />
         </TabPane>
         <TabPane tab="评级评优" key="4">
-          <GradeAppraising config={gradeAppraisingConfig} />
+          <GradeAppraising 
+            config={gradeAppraisingConfig} 
+            baseURL={baseURL}
+          />
         </TabPane>
       </Tabs>
     );

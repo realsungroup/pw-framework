@@ -41,7 +41,7 @@ class InterviewRecords extends React.Component {
   fetchMainData = async () => {
     const { residConfig, currentYear } = this.props;
     try {
-      const res = await http().getTable({ resid: residConfig.直属面谈记录 });
+      const res = await http({baseURL:this.props.baseURL}).getTable({ resid: residConfig.直属面谈记录 });
       this.setState({
         mainData: res.data,
         yearMainData: res.data.filter(
@@ -68,7 +68,7 @@ class InterviewRecords extends React.Component {
       yearMainData,
       submitLoading
     } = this.state;
-    const { years, residConfig } = this.props;
+    const { years, residConfig, baseURL } = this.props;
     return (
       <div className="interview-records">
         <div className="target-emlpoyee-list">
@@ -162,6 +162,7 @@ class InterviewRecords extends React.Component {
                 isSetColumnWidth={false}
                 isWrap={true}
                 formProps={{ width: 600 }}
+                baseURL={baseURL}
               />
             )}
           </div>

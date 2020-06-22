@@ -35,6 +35,7 @@ class ViewTarget extends React.Component {
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}
             downloadBaseURL={this.attendanceDownloadURL}
+            isWrap={true}
           />
         </div>
       </div>

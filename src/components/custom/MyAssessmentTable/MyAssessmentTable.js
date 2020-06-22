@@ -12,7 +12,7 @@ import Spin from 'Common/ui/Spin';
 const { SubMenu } = Menu;
 const { Search } = Input;
 const { Option } = Select;
-
+const baseURL =   window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
 const subresids = window.pwConfig[process.env.NODE_ENV].achievementSubResid;
 
 const tableMode = ['sub', 'main'];
@@ -120,7 +120,7 @@ class MyAssessmentTable extends React.Component {
 
   fetchMainData = async () => {
     try {
-      const res = await http().getTable({
+      const res = await http({baseURL}).getTable({
         resid: mainResid
       });
       this.setState({ mainData: res.data });
@@ -140,18 +140,19 @@ class MyAssessmentTable extends React.Component {
    * 获取后台窗体数据
    */
   fetchFormData = async () => {
+    const param = {baseURL}
     try {
       const pArr = [];
-      pArr[0] = http().getFormData({ resid: mainResid, formName: '员工自评' });
-      pArr[1] = http().getFormData({
+      pArr[0] = http(param).getFormData({ resid: mainResid, formName: '员工自评' });
+      pArr[1] = http(param).getFormData({
         resid: mainResid,
         formName: '员工年末自评'
       });
-      pArr[2] = http().getFormData({
+      pArr[2] = http(param).getFormData({
         resid: mainResid,
         formName: '财年评语查看'
       });
-      pArr[3] = http().getFormData({
+      pArr[3] = http(param).getFormData({
         resid: subresids.员工绩效反馈,
         formName: 'default'
       });
@@ -213,7 +214,7 @@ class MyAssessmentTable extends React.Component {
   handleSearch = async v => {
     try {
       this.setState({ fetching: true });
-      const res = await http().getTable({
+      const res = await http({baseURL}).getTable({
         resid: mainResid,
         key: v
       });
@@ -231,7 +232,7 @@ class MyAssessmentTable extends React.Component {
       this.setState({
         submitBtnLoading: true
       });
-      const res = await http().modifyRecords({
+      const res = await http({baseURL}).modifyRecords({
         resid: mainResid,
         data: [{ REC_ID: selectedMainData.REC_ID, C3_420953811304: isSubmit }]
       });
@@ -265,7 +266,7 @@ class MyAssessmentTable extends React.Component {
           this.setState({
             submitBtnLoading: true
           });
-          const res = await http().modifyRecords({
+          const res = await http({baseURL}).modifyRecords({
             resid: mainResid,
             data: [{ REC_ID: selectedMainData.REC_ID, C3_431169212491: 'Y' }]
           });
@@ -300,7 +301,7 @@ class MyAssessmentTable extends React.Component {
           this.setState({
             submitBtnLoading: true
           });
-          const res = await http().modifyRecords({
+          const res = await http({baseURL}).modifyRecords({
             resid: mainResid,
             data: [{ REC_ID: selectedMainData.REC_ID, C3_436734687131: 'Y' }]
           });

@@ -26,6 +26,7 @@ window.pwConfig = {
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureBaseURL: 'http://ngrok5.realsun.me:6060//',
+      PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:6060//',
       comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:6060/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
@@ -35,7 +36,8 @@ window.pwConfig = {
       headquartersDownloadURL: 'http://ngrok5.realsun.me:6060', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
-      OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101'
+      OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
+      AchievementsBaseURL :'http://ngrok4.realsun.me:6060/' //绩效定制页面基地址
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -230,7 +232,8 @@ window.pwConfig = {
       headquartersDownloadURL: 'http://10.108.2.66:80', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
-      OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101'
+      OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
+      AchievementsBaseURL :'http://ngrok4.realsun.me:6060/'
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {

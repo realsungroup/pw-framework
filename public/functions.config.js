@@ -2528,8 +2528,6 @@ window[642853918132] = {
   title: '排班定义', // 功能模块名称
   props: {
     resid: 375292143375,
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     mainTableProps: {
       actionBarWidth: 300,
       hasAdd: true,
@@ -2540,6 +2538,8 @@ window[642853918132] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -2644,6 +2644,7 @@ window[642854056479] = {
     hasRowView: true,
     hasRowDelete: true,
     hasRowEdit: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -2656,8 +2657,6 @@ window[642854067180] = {
   title: '年假台账', // 功能模块名称
   props: {
     resid: 429955296972,
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     mainTableProps: {
       actionBarWidth: 200,
       hasAdd: true,
@@ -2671,6 +2670,8 @@ window[642854067180] = {
       hasRowEditAdd: true,
       hasRowView: true,
       hasRowDelete: true,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -2679,15 +2680,21 @@ window[642854067180] = {
     subTablesProps: {
       441994427244: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       630169827334: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       469288143241: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -2712,6 +2719,7 @@ window[642854077482] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -2749,8 +2757,6 @@ window[642854098292] = {
   title: '哺乳假台账', // 功能模块名称
   props: {
     resid: 435412554124,
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     mainTableProps: {
       actionBarWidth: 200,
       hasAdd: true,
@@ -2764,6 +2770,8 @@ window[642854098292] = {
       isUseFormDefine: false,
       hasRowEdit: true,
       hasRowEditAdd: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -2843,6 +2851,7 @@ window[642854131163] = {
     hasRowEditAdd: true,
     hasRowEdit: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -2932,6 +2941,7 @@ window[642856273477] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -2971,7 +2981,7 @@ window[642856262431] = {
     resid: 527959305537,
     actionBarWidth: 200,
     hasAdd: true,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     hasBeBtns: true,
     hasModify: true,
@@ -2980,6 +2990,7 @@ window[642856262431] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3068,6 +3079,7 @@ window[642855062753] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3113,6 +3125,7 @@ window[642854200143] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     importConfig: {
       mode: 'be',
       saveState: 'editoradd',
@@ -3141,6 +3154,7 @@ window[642854211673] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3186,6 +3200,7 @@ window[642854235003] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3514,6 +3529,7 @@ window[642854678648] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -3540,6 +3556,7 @@ window[642854689917] = {
     hasRowEditAdd: true,
     isUseFormDefine: false,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4070,6 +4087,7 @@ window[642855075847] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4093,6 +4111,7 @@ window[642855085886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4185,6 +4204,7 @@ window[642868538751] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4218,8 +4238,6 @@ window[642855176494] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤审批流程信息', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 449439660450,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4231,6 +4249,8 @@ window[642855176494] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4238,10 +4258,14 @@ window[642855176494] = {
     },
     subTablesProps: {
       449439564546: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       449441441589: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4274,8 +4298,6 @@ window[642855262376] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待审核招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 518463420928,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4288,6 +4310,8 @@ window[642855262376] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4296,7 +4320,9 @@ window[642855262376] = {
     subTablesProps: {
       518464309741: {
         hasBeBtns: true,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4306,8 +4332,6 @@ window[642855273462] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 519213761827,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4320,6 +4344,8 @@ window[642855273462] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4328,7 +4354,9 @@ window[642855273462] = {
     subTablesProps: {
       518464309741: {
         hasBeBtns: true,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4361,8 +4389,7 @@ window[642855719230] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    
     resid: 518447767466,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4374,6 +4401,8 @@ window[642855719230] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4381,11 +4410,15 @@ window[642855719230] = {
     },
     subTablesProps: {
       522692921247: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       518461643267: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4418,8 +4451,6 @@ window[642855746711] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待录用员工工资审批', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 621522035695,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4432,6 +4463,8 @@ window[642855746711] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine:false,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4440,7 +4473,9 @@ window[642855746711] = {
     subTablesProps: {
       621522106327: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4495,8 +4530,6 @@ window[642855780253] = {
   name: 'MainTableSubTables',
   title: '我的招聘审批', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 518442541615,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4508,6 +4541,8 @@ window[642855780253] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4516,7 +4551,9 @@ window[642855780253] = {
     subTablesProps: {
       518461643267: {
         hasBeBtns: true,
-        hasRowModify: false
+        hasRowModify: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4527,8 +4564,6 @@ window[644083949537] = {
   name: 'MainTableSubTables',
   title: 'S1S2生产人员招聘', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 527959305537,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4541,6 +4576,9 @@ window[644083949537] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      isSetColumnWidth:false,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4549,11 +4587,15 @@ window[644083949537] = {
     subTablesProps: {
       518986543520: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       527715777875: {
         isUseFormDefine: false,
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4586,8 +4628,6 @@ window[642856315965] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '财年授予定义', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 561571034816,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4600,6 +4640,9 @@ window[642856315965] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    isSetColumnWidth:false,
       formProps: {
         // height: 500
       },
@@ -4608,15 +4651,21 @@ window[642856315965] = {
     subTablesProps: {
       561550682069: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       561550544816: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       568398863279: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -4979,6 +5028,7 @@ window[642856644144] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4990,8 +5040,6 @@ window[642856652519] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'DL工资审核', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 631902827113,
     mainTableProps: {
       actionBarWidth: 250,
@@ -5004,6 +5052,9 @@ window[642856652519] = {
       hasRowView: true,
       hasRowDelete: true,
       addText: '新建审核',
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      isSetColumnWidth:false,
       formProps: {
         // height: 500
       },
@@ -5018,7 +5069,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908278263: {
         hasAdd: false,
@@ -5028,7 +5081,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908322536: {
         hasAdd: false,
@@ -5038,7 +5093,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908332741: {
         hasAdd: false,
@@ -5048,7 +5105,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908345599: {
         hasAdd: false,
@@ -5058,7 +5117,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908357382: {
         hasAdd: false,
@@ -5068,7 +5129,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908368002: {
         hasAdd: false,
@@ -5078,7 +5141,10 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+
       },
       631908380066: {
         hasAdd: false,
@@ -5088,7 +5154,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908391826: {
         hasAdd: false,
@@ -5098,7 +5166,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908402889: {
         hasAdd: false,
@@ -5108,7 +5178,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908414849: {
         hasAdd: false,
@@ -5118,7 +5190,8 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+
       },
       631908468437: {
         hasAdd: false,
@@ -5128,7 +5201,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908487343: {
         hasAdd: false,
@@ -5138,7 +5213,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908500686: {
         hasAdd: false,
@@ -5148,7 +5225,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908512015: {
         hasAdd: false,
@@ -5158,7 +5237,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908524164: {
         hasAdd: false,
@@ -5168,7 +5249,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908535350: {
         hasAdd: false,
@@ -5178,7 +5261,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908546056: {
         hasAdd: false,
@@ -5188,7 +5273,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908556110: {
         hasAdd: false,
@@ -5198,7 +5285,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908578110: {
         hasAdd: false,
@@ -5208,7 +5297,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908587861: {
         hasAdd: false,
@@ -5218,7 +5309,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908598349: {
         hasAdd: false,
@@ -5228,7 +5321,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908607040: {
         hasAdd: false,
@@ -5238,7 +5333,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908616827: {
         hasAdd: false,
@@ -5248,7 +5345,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908628445: {
         hasAdd: false,
@@ -5258,7 +5357,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908639692: {
         hasAdd: false,
@@ -5268,7 +5369,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908648936: {
         hasAdd: false,
@@ -5278,7 +5381,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908660368: {
         hasAdd: false,
@@ -5288,7 +5393,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631908672225: {
         hasAdd: false,
@@ -5298,7 +5405,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       631909905356: {
         hasAdd: false,
@@ -5308,7 +5417,9 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false
+        hasRowDelete: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -5318,8 +5429,6 @@ window[642856661616] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '工资审核', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 483136878846,
     mainTableProps: {
       actionBarWidth: 200,
@@ -5332,6 +5441,8 @@ window[642856661616] = {
       hasRowView: true,
       hasRowDelete: true,
       addText: '新建审核',
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -5340,135 +5451,201 @@ window[642856661616] = {
     subTablesProps: {
       526569913543: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       528384647857: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       483143248907: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       483143269379: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       483143292739: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       483143313607: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490441845783: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490441985369: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442033277: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442082614: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442208450: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442251347: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442311854: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442351603: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442367584: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442379053: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442394231: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       490442407188: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533377990246: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378160861: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378175759: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378198800: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378212840: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378238689: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378256722: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378269639: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378289607: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378309262: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378346468: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378368276: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378381536: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378397713: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       533378418165: {
         hasBeBtns: true,
-        isUseFormDefine: false
+        isUseFormDefine: false,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -5594,8 +5771,6 @@ window[642856723891] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '十三薪审批', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 537461583719,
     mainTableProps: {
       actionBarWidth: 300,
@@ -5609,6 +5784,9 @@ window[642856723891] = {
       isUseFormDefine: false,
       hasRowDelete: true,
       isSetColumnWidth: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      isSetColumnWidth:false,
       formProps: {
         // height: 500
       },
@@ -5616,10 +5794,14 @@ window[642856723891] = {
     },
     subTablesProps: {
       537453474424: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       438607023678: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -5641,6 +5823,7 @@ window[642856733155] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5667,6 +5850,7 @@ window[642856745730] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5705,8 +5889,6 @@ window[642856763791] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险基数表', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 244154194921,
     mainTableProps: {
       actionBarWidth: 200,
@@ -5718,6 +5900,8 @@ window[642856763791] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -5725,10 +5909,14 @@ window[642856763791] = {
     },
     subTablesProps: {
       244153076250: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       433706772782: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -5738,8 +5926,6 @@ window[642856772119] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险比例表', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 244153076250,
     mainTableProps: {
       actionBarWidth: 200,
@@ -5751,6 +5937,8 @@ window[642856772119] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -5758,7 +5946,9 @@ window[642856772119] = {
     },
     subTablesProps: {
       433706772782: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -5810,6 +6000,7 @@ window[642856799479] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5836,6 +6027,7 @@ window[642856807541] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -5862,6 +6054,7 @@ window[642856817466] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6140,6 +6333,7 @@ window[642858287535] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6280,6 +6474,7 @@ window[642858341571] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6365,9 +6560,6 @@ window[642858651331] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '个人财年评估表', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
-    isUseFormDefine: false,
     resid: 467806334724,
     mainTableProps: {
       actionBarWidth: 200,
@@ -6380,6 +6572,8 @@ window[642858651331] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -6387,7 +6581,9 @@ window[642858651331] = {
     },
     subTableProps: {
       421696601858: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -6431,6 +6627,7 @@ window[642858671562] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6705,9 +6902,9 @@ window[642864915093] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     isUseFormDefine: false,
     formProps: {
       // height: 500
@@ -6728,9 +6925,9 @@ window[642864924530] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     isUseFormDefine: false,
     formProps: {
       // height: 500
@@ -6803,6 +7000,7 @@ window[642864965745] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6870,6 +7068,7 @@ window[642865117751] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7244,6 +7443,7 @@ window[642865508238] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7290,6 +7490,7 @@ window[642865529507] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7313,6 +7514,7 @@ window[642865539047] = {
     hasRowView: true,
     isUseFormDefine: false,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7360,6 +7562,7 @@ window[642854837350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7446,6 +7649,7 @@ window[644335881606] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7576,6 +7780,7 @@ window[645287046055] = {
   name: 'AchievementsGradeAppraising', // 组件名称，
   title: '绩效评级评优', // 功能模块名称
   props: {
+    tableDataBaseURL:'http://ngrok4.realsun.me:6060/',
     mangerConfig: {
       '12345': {
         //总经理
@@ -7584,7 +7789,7 @@ window[645287046055] = {
         iframeResid: 645286591505,
         replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
         baseURL: 'http://ngrok5.realsun.me:6060/',
-        downloadBaseURL:'http://ngrok9.realsun.me:6060/'
+        downloadBaseURL:'http://ngrok9.realsun.me:6060/',
       },
       '169': {
         //总监

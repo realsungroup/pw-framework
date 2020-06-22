@@ -7,6 +7,7 @@ import ApprovalTarget from './ApprovalTarget';
 import InterviewRecords from './InterviewRecords';
 import http from 'Util20/api';
 
+const baseURL =   window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 
@@ -56,6 +57,7 @@ class DirectlyUnderTarget extends React.Component {
             residConfig={residConfig}
             years={years}
             currentYear={currentYear}
+            baseURL={baseURL}
           />
         </TabPane>
         <TabPane tab="调整目标" key="2">
@@ -63,6 +65,7 @@ class DirectlyUnderTarget extends React.Component {
             residConfig={residConfig}
             years={years}
             currentYear={currentYear}
+            baseURL={baseURL}
           />
         </TabPane>
         <TabPane tab="面谈记录" key="3">
@@ -70,10 +73,11 @@ class DirectlyUnderTarget extends React.Component {
             residConfig={residConfig}
             years={years}
             currentYear={currentYear}
+            baseURL={baseURL}
           />
         </TabPane>
         <TabPane tab="绩效反馈" key="4">
-          <AchievementsFeedback residConfig={residConfig} />
+          <AchievementsFeedback residConfig={residConfig} baseURL={baseURL}/>
         </TabPane>
       </Tabs>
     );
