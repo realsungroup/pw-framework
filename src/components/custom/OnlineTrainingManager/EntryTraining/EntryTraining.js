@@ -456,6 +456,7 @@ class EntryTraining extends React.Component {
         </div>
         <div className="test-table">
           <TableData
+            key={chapterResid + selectedCourse.REC_ID}
             resid={chapterResid}
             hasModify={false}
             hasDelete={true}
