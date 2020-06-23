@@ -59,7 +59,7 @@ class VisitorApplyVIP extends React.Component {
     this.info();
   };
 
-   info = ()=> {
+  info = () => {
     Modal.info({
       title: '温馨提示',
       content: (
@@ -67,9 +67,9 @@ class VisitorApplyVIP extends React.Component {
           <p>VIP访客指外部审核人员、政府官员及公司内部VIP</p>
         </div>
       ),
-      onOk() {},
+      onOk() {}
     });
-  }
+  };
   getApprover = async () => {
     let res;
     try {
@@ -232,7 +232,7 @@ class VisitorApplyVIP extends React.Component {
                   取消
                 </Button>
                 <Button
-                type='primary'
+                  type="primary"
                   onClick={() => {
                     this.handleSave();
                   }}
@@ -244,7 +244,7 @@ class VisitorApplyVIP extends React.Component {
           }
           centered
         >
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} className="VisitorApplyVIP-form">
             <Form.Item
               label="来访单位"
               hasFeedback={mode === 'check' ? false : true}
@@ -323,6 +323,7 @@ class VisitorApplyVIP extends React.Component {
 
             <Form.Item
               label="VIP餐"
+              className="fix-form-feedback-bug"
               hasFeedback={mode === 'check' ? false : true}
             >
               {getFieldDecorator('VIPMeal', {
@@ -388,6 +389,7 @@ class VisitorApplyVIP extends React.Component {
 
             <Form.Item
               label="接机/接站"
+              className="fix-form-feedback-bug"
               hasFeedback={mode === 'check' ? false : true}
             >
               {getFieldDecorator('airportOrstation', {
@@ -408,6 +410,7 @@ class VisitorApplyVIP extends React.Component {
 
             <Form.Item
               label="日常用车"
+              className="fix-form-feedback-bug"
               hasFeedback={mode === 'check' ? false : true}
             >
               {getFieldDecorator('everydayCar', {
@@ -457,6 +460,7 @@ class VisitorApplyVIP extends React.Component {
 
             <Form.Item
               label="茶歇"
+              className="fix-form-feedback-bug"
               hasFeedback={mode === 'check' ? false : true}
             >
               {getFieldDecorator('TeaBreak', {
