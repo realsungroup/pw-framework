@@ -87,6 +87,7 @@ class OnlineTrainingManager extends React.Component {
             hasDelete={true}
             hasAdd={true}
             baseURL={baseURL}
+            isSetColumnWidth={false}
           />
         </TabPane>
       </Tabs>
