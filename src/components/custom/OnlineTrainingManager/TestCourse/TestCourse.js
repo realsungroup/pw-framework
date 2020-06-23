@@ -376,7 +376,7 @@ class TestCourse extends React.Component {
                         });
                       }}
                     >
-                      查看课程完成情况
+                      查看考试完成情况
                     </Button>
                   </div>
                 )
