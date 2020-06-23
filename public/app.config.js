@@ -37,7 +37,9 @@ window.pwConfig = {
       WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL :'http://ngrok4.realsun.me:6060/' //绩效定制页面基地址
+      AchievementsBaseURL :'http://ngrok4.realsun.me:6060/', //绩效定制页面基地址
+      RBASchedulingBaseURL:'http://ngrok5.realsun.me:6060',//RBA排班基地址
+      RBASchedulingDownloadBaseURL:'http://ngrok10.realsun.me:6060',//RBA排班下载基地址
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -233,7 +235,9 @@ window.pwConfig = {
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL :'http://ngrok4.realsun.me:6060/'
+      AchievementsBaseURL :'http://10.108.2.66:1001/',
+      RBASchedulingBaseURL:'http://10.108.2.66:9091',//RBA排班基地址
+      RBASchedulingDownloadBaseURL:'http://10.108.2.66:80',//RBA排班下载基地址
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {

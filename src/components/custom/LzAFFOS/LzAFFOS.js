@@ -161,17 +161,17 @@ export default class LzAFFOS extends React.Component {
             </div>
           </TabPane>
           <TabPane tab="已审批" key="已审批">
-            <div style={{ height: 'calc(100vh - 220px)' }}>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData {...approved} />
             </div>
           </TabPane>
           <TabPane tab="已拒绝" key="已拒绝">
-            <div style={{ height: 'calc(100vh - 220px)' }}>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData {...refused} />
             </div>
           </TabPane>
           <TabPane tab="历史记录" key="历史记录">
-            <div style={{ height: 'calc(100vh - 220px)' }}>
+            <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...history}
                 customRowBtns={[
