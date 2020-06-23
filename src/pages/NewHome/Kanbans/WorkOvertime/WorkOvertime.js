@@ -1,79 +1,65 @@
 import React from 'react';
 import './WorkOvertime.less';
-import ProgressBar from 'progressbar.js';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import moment from 'moment';
+import echarts from 'echarts';
 
-const month = moment().format('YYYYMM');
-function getOption({ total }) {
-  const option = {
-    strokeWidth: 6,
-    trailWidth: 8,
-    color: '#e02020',
-    trailColor: '#eee',
-    easing: 'easeInOut',
-    duration: 1400,
-    svgStyle: null,
-    text: {
-      value: total,
-      alignToBottom: false,
-      className: 'work-overtime-kanban__label'
-    },
-    from: { color: '#FFEA82' },
-    to: { color: '#e02020' },
-    // Set default step function for all animate calls
-    step: (state, bar) => {
-      bar.path.setAttribute('stroke', state.color);
-      var value = Math.round(bar.value() * 100);
-      if (value === 0) {
-        bar.setText('');
-      } else {
-        bar.setText(total);
-      }
-      bar.text.style.color = state.color;
-    }
-  };
-  return option;
-}
-const kanbanItems = [
-  { key: 'ProgressBar-headcount', title: 'Headcount', total: 0 },
-  { key: 'ProgressBar-total', title: 'Total OT(hrs)', total: 0 },
-  { key: 'ProgressBar-average', title: 'Average OT(hrs)', total: 0 }
+const months = [
+  moment()
+    .add(-2, 'M')
+    .format('YYYYMM'),
+  moment()
+    .add(-1, 'M')
+    .format('YYYYMM'),
+  moment().format('YYYYMM')
 ];
+
 class WorkOvertime extends React.Component {
   constructor(props) {
     super(props);
     this.UserCode = JSON.parse(getItem('userInfo')).UserCode;
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.state = {
+      kanbanItems: [
+        { key: 'ProgressBar-headcount', title: 'Headcount', data: [] },
+        { key: 'ProgressBar-total', title: 'Total OT(hrs)', data: [] },
+        { key: 'ProgressBar-average', title: 'Average OT(hrs)', data: [] }
+      ]
+    };
   }
+
   componentDidMount() {
     this.getData();
   }
+
   getData = async () => {
-    const res = await http().getTable({
-      resid: '617805070334',
-      cmswhere: `yearmonth = ${month}`
+    const { kanbanItems } = this.state;
+    const pArr = [];
+    months.forEach(month => {
+      pArr.push(
+        http().getTable({
+          resid: '617805070334',
+          cmswhere: `yearmonth = ${month}`
+        })
+      );
     });
-    let headcount = 0,
-      totalOT = 0,
-      averageOT = 0;
-    res.data.forEach(item => {
-      headcount += item.headcount;
-      totalOT += item.ot;
-      averageOT += item.otaverage;
+    const resArr = await Promise.all(pArr);
+    resArr.forEach(res => {
+      let headcount = 0,
+        totalOT = 0,
+        averageOT = 0;
+      res.data.forEach(item => {
+        headcount += item.headcount;
+        totalOT += item.ot;
+        averageOT += item.otaverage;
+      });
+      kanbanItems[0].data.push(headcount.toFixed(2));
+      kanbanItems[1].data.push(totalOT.toFixed(2));
+      kanbanItems[2].data.push(averageOT.toFixed(2));
     });
-
-    kanbanItems[0].total = headcount.toFixed(2);
-    kanbanItems[1].total = totalOT.toFixed(2);
-    kanbanItems[2].total = averageOT.toFixed(2);
-
-    kanbanItems.forEach(item => {
-      const option = getOption({ total: item.total });
-      const bar = new ProgressBar.SemiCircle(`#${item.key}`, option);
-      bar.animate(1); // Number from 0.0 to 1.0
-    });
+    this.setState({ kanbanItems: [...kanbanItems] });
   };
 
   handleClick = () => {
@@ -92,17 +78,17 @@ class WorkOvertime extends React.Component {
       ]);
   };
   render() {
+    const { kanbanItems } = this.state;
     return (
       <div className="work-overtime-kanban">
-        <div className="work-overtime-kanban__date" onClick={this.handleClick}>
+        {/* <div className="work-overtime-kanban__date" onClick={this.handleClick}>
           <div className="work-overtime-kanban__date-card">
-            <div>{month.substring(0, 4)}</div>
+            <div>{months[2].substring(0, 4)}</div>
             <div className="work-overtime-kanban__date-card__month">
-              {month.substring(4, 6)}
+              {months[2].substring(4, 6)}
             </div>
           </div>
-          <div className="work-overtime-kanban__item-title">Time</div>
-        </div>
+        </div> */}
         {kanbanItems.map(item => {
           return (
             <div
@@ -110,10 +96,15 @@ class WorkOvertime extends React.Component {
               key={item.key}
               onClick={this.handleClick}
             >
-              <div id={item.key}></div>
-              <div className="work-overtime-kanban__item-title">
+              <WorkOvertimeChart
+                id={item.key}
+                title={item.title}
+                xAxisData={months}
+                data={item.data}
+              />
+              {/* <div className="work-overtime-kanban__item-title">
                 {item.title}
-              </div>
+              </div> */}
             </div>
           );
         })}
@@ -122,3 +113,57 @@ class WorkOvertime extends React.Component {
   }
 }
 export default WorkOvertime;
+
+class WorkOvertimeChart extends React.Component {
+  componentDidMount() {
+    const { id, title, xAxisData } = this.props;
+
+    this._echarts = echarts.init(document.getElementById(id));
+    this._echarts.setOption({
+      tooltip: {},
+      title: {
+        show: false
+      },
+      legend: {
+        data: [title]
+      },
+      grid: {
+        top: 20,
+        bottom: 20,
+        left: 60
+        // containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: xAxisData
+      },
+      yAxis: {},
+      series: [
+        {
+          name: title,
+          type: 'line',
+          data: []
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'top'
+          //   }
+          // }
+        }
+      ]
+    });
+  }
+  componentDidUpdate() {
+    this._echarts.setOption({
+      series: [
+        {
+          data: this.props.data
+        }
+      ]
+    });
+  }
+  render() {
+    const { id } = this.props;
+    return <div id={id} style={{ height: '100%' }}></div>;
+  }
+}
