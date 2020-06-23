@@ -7,7 +7,7 @@ window[588425594397] = {
       resid: 624640053934,
       subtractH: 170,
       actionBarFixed: false,
-      height: 500,
+      height: 'calc(100vh - 160px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,
@@ -33,7 +33,7 @@ window[645026775225] = {
     tableDataProps: {
       subtractH: 170,
       actionBarFixed: false,
-      height: 500,
+      height: 'calc(100vh - 224px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,
@@ -83,7 +83,7 @@ window[645045274189] = {
     tableDataProps: {
       subtractH: 170,
       actionBarFixed: false,
-      height: 500,
+      height: 'calc(100vh - 224px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,

@@ -1218,15 +1218,15 @@ class TableData extends React.Component {
         style={{ width, height }}
         ref={this.setTableDataRef}
       >
-        <Spin spinning={loading}>
+        <Spin spinning={loading} style={{height:'100%'}}>
           {hasResizeableBox && this.boxW && this.boxH ? (
-            <ResizableBox
-              width={this.boxW}
-              height={this.boxH}
-              onResizeStop={this.handleResizeStop}
-            >
-              {this.renderPwTable()}
-            </ResizableBox>
+            // <ResizableBox
+            //   width={this.boxW}
+            //   height={this.boxH}
+            //   onResizeStop={this.handleResizeStop}
+            // >
+              this.renderPwTable()
+            // </ResizableBox>
           ) : (
             this.renderPwTable()
           )}
