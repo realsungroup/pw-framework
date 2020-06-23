@@ -1,4 +1,5 @@
 import React from 'react';
+import errorPng from './error.png';
 
 function noop() {}
 
@@ -26,7 +27,25 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <h1>发生了一些错误，我们会尽快处理！</h1>;
+      return (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: '#ffffff',
+            flexDirection: 'column'
+          }}
+        >
+          <img
+            src={errorPng}
+            style={{ height: '60vh', width: 'auto', marginBottom: 24 }}
+          />
+          <h2>出现了一个错误，我们将尽快解决</h2>
+        </div>
+      );
     }
 
     return this.props.children;
