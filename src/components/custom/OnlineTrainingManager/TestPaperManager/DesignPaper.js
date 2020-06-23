@@ -259,6 +259,7 @@ class DesignPaper extends React.Component {
 
   deleteColumn = async colname => {
     const { baseURL, paper } = this.props;
+    const { selectedQuestion } = this.state;
     const resid = paper.RES_ID;
     try {
       const res = await http({ baseURL }).setColToShowDisable({
@@ -268,6 +269,9 @@ class DesignPaper extends React.Component {
       this.setState({
         columnInfo: res.data.data.filter(item => item.ColNotes)
       });
+      if (colname == selectedQuestion.ColName) {
+        this.setState({ selectedQuestion: {} });
+      }
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -977,7 +981,8 @@ class DesignPaper extends React.Component {
       createBtnLoading,
       loading,
       scoreCol,
-      filterText
+      filterText,
+      extendColumnInfo
     } = this.state;
     const filteredCol = this.filterColByText(columnInfo, filterText);
     return (
@@ -1078,6 +1083,17 @@ class DesignPaper extends React.Component {
                                   title="确认删除吗？"
                                   onConfirm={e => {
                                     e.stopPropagation();
+                                    if (
+                                      extendColumnInfo.some(
+                                        info =>
+                                          selectedQuestion.ColName ==
+                                          info.ColName
+                                      )
+                                    ) {
+                                      return message.info(
+                                        '题目已启用，无法删除'
+                                      );
+                                    }
                                     this.deleteColumn(info.ColName);
                                   }}
                                 >
