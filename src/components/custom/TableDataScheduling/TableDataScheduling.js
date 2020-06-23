@@ -118,7 +118,6 @@ class TableDataScheduling extends React.Component {
               }}
               baseURL= {baseURL}
               downloadBaseURL={downloadBaseURL}
-              isSetColumnWidth={false}
               // actionBarExtra={({
               //   dataSource: dataSource,
               //   selectedRowKeys: selectedRowKeys
@@ -160,7 +159,6 @@ class TableDataScheduling extends React.Component {
               actionBarFixed={true}
               baseURL= {baseURL}
               downloadBaseURL={downloadBaseURL}
-              isSetColumnWidth={false}
             />
           </TabPane>
           <TabPane tab="排班超标记录" key="3">
