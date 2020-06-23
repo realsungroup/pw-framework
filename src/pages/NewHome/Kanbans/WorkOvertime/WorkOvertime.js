@@ -65,9 +65,9 @@ class WorkOvertime extends React.Component {
       averageOT += item.otaverage;
     });
 
-    kanbanItems[0].total = headcount;
-    kanbanItems[1].total = totalOT;
-    kanbanItems[2].total = averageOT;
+    kanbanItems[0].total = headcount.toFixed(2);
+    kanbanItems[1].total = totalOT.toFixed(2);
+    kanbanItems[2].total = averageOT.toFixed(2);
 
     kanbanItems.forEach(item => {
       const option = getOption({ total: item.total });
