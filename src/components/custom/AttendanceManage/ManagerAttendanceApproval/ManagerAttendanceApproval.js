@@ -28,6 +28,7 @@ class ManagerAttendanceApproval extends React.Component {
         <Button
           type="primary"
           onClick={() => this.setState({ modalVisible: true })}
+          size={record.size}
         >
           下属加班汇总
         </Button>
@@ -48,7 +49,9 @@ class ManagerAttendanceApproval extends React.Component {
             this.isApproval(true, selectedRecords);
           }}
         >
-          <Button type="primary">批准</Button>
+          <Button type="primary" size={record.size}>
+            批准
+          </Button>
         </Popconfirm>
         <Popconfirm
           title="确认拒绝吗？"
@@ -67,10 +70,14 @@ class ManagerAttendanceApproval extends React.Component {
             this.isApproval(false, selectedRecords);
           }}
         >
-          <Button type="danger">拒绝</Button>
+          <Button type="danger" size={record.size}>
+            拒绝
+          </Button>
         </Popconfirm>
         <Popconfirm title="确认一键审批吗？" onConfirm={this.approvalAll}>
-          <Button type="primary">一键审批</Button>
+          <Button type="primary" size={record.size}>
+            一键审批
+          </Button>
         </Popconfirm>
       </div>
     );

@@ -349,7 +349,7 @@ class PersonList extends React.Component {
     try {
       await http().removeRecords({
         resid: groupID,
-        data: [{ REC_ID: tagid ,isDelete:'Y'}]
+        data: [{ REC_ID: tagid, isDelete: 'Y' }]
       });
       this.setState({
         tags: this.state.tags.filter(item => item.REC_ID !== tagid)
@@ -508,13 +508,14 @@ class PersonList extends React.Component {
                 );
               }
             ]}
-            actionBarExtra={({ dataSource, selectedRowKeys, data }) => {
+            actionBarExtra={({ dataSource, selectedRowKeys, data, size }) => {
               return (
                 <React.Fragment>
                   <Button
                     onClick={() => {
                       this.onAddEmployee();
                     }}
+                    size={size}
                   >
                     添加员工
                   </Button>
@@ -529,6 +530,7 @@ class PersonList extends React.Component {
                     onClick={() => {
                       this.onEmployeeWrite(dataSource, selectedRowKeys);
                     }}
+                    size={size}
                   >
                     开启员工填写
                   </Button>
@@ -546,6 +548,7 @@ class PersonList extends React.Component {
                     onClick={() => {
                       this.onCloseWrite(dataSource, selectedRowKeys);
                     }}
+                    size={size}
                   >
                     关闭员工填写
                   </Button>
@@ -554,7 +557,7 @@ class PersonList extends React.Component {
                       title="确定开启全部员工填写？"
                       onConfirm={this.noticeAllEmployee}
                     >
-                      <Button>开启全部员工填写</Button>
+                      <Button size={size}>开启全部员工填写</Button>
                     </Popconfirm>
                   )}
                   {this.props.role === 'Manger' && (
@@ -562,7 +565,7 @@ class PersonList extends React.Component {
                       title="确定开启全体下属填写？"
                       onConfirm={this.noticeEmployee}
                     >
-                      <Button>开启全体下属填写</Button>
+                      <Button size={size}>开启全体下属填写</Button>
                     </Popconfirm>
                   )}
                 </React.Fragment>
