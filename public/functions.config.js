@@ -2117,6 +2117,7 @@ window[628886558788] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -2314,6 +2315,7 @@ window[642853675476] = {
     subtractH: 240
   }
 };
+
 window[642853692520] = {
   name: 'TableData', // 组件名称，
   title: '离职信息', // 功能模块名称
@@ -2330,6 +2332,30 @@ window[642853692520] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
+
+window[646240367975] = {
+  name: 'TableData', // 组件名称，
+  title: '公司黑名单', // 功能模块名称
+  props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    resid: 548327414090,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -2442,6 +2468,7 @@ window[642853770096] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -6880,7 +6907,7 @@ window[642864905946] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
@@ -7117,6 +7144,7 @@ window[642865138428] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
@@ -7282,6 +7310,29 @@ window[642865241049] = {
     subtractH: 240
   }
 };
+window[646235959397] = {
+  name: 'TableData', // 组件名称，
+  title: '设备记录', // 功能模块名称
+  props: {
+    baseURL: 'http://ngrok5.realsun.me:6060',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060',
+    resid: 412433149535,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine:false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 240
+  }
+};
 window[642865251509] = {
   name: 'TableData', // 组件名称，
   title: '外包人员办卡信息', // 功能模块名称
@@ -7394,7 +7445,7 @@ window[642865487428] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
     formProps: {

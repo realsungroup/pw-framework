@@ -6,7 +6,10 @@ import { saveMultipleRecord } from '../../../util/api';
 import http from '../../../util20/api';
 import TableDataWrap from '../TableDataWrap';
 const TabPane = Tabs.TabPane;
-
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.RBASchedulingBaseURL;
+const downloadBaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.RBASchedulingDownloadBaseURL;
 class TableDataScheduling extends React.Component {
   state = { visible: false, date: '', dataSource: [], selectedRowKeys: '' };
 
@@ -31,7 +34,7 @@ class TableDataScheduling extends React.Component {
     });
     try {
       res = await http({
-        baseURL: 'https://finisar.realsun.me:9092/'
+        baseURL:baseURL
       }).modifyRecords({
         resid: 603303655900,
         data: Reldata,
@@ -113,6 +116,8 @@ class TableDataScheduling extends React.Component {
                 saveState: 'editoradd',
                 containerType: 'drawer'
               }}
+              baseURL= {baseURL}
+              downloadBaseURL={downloadBaseURL}
               // actionBarExtra={({
               //   dataSource: dataSource,
               //   selectedRowKeys: selectedRowKeys
@@ -152,6 +157,8 @@ class TableDataScheduling extends React.Component {
               subtractH={240}
               height={500}
               actionBarFixed={true}
+              baseURL= {baseURL}
+              downloadBaseURL={downloadBaseURL}
             />
           </TabPane>
           <TabPane tab="排班超标记录" key="3">
@@ -177,6 +184,8 @@ class TableDataScheduling extends React.Component {
               subtractH={240}
               height={500}
               actionBarFixed={true}
+              baseURL= {baseURL}
+              downloadBaseURL={downloadBaseURL}
               columnsWidth ={{
                 "员工工号":120,
                 "是否超标":120,

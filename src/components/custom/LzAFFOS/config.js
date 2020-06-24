@@ -148,7 +148,7 @@ export const inExaminationAndApproval = {
 export const approved = {
   resid: 605803707282,
   hasSearch: true,
-  subtractH: 196,
+  subtractH: 220,
   hasAdd: false,
   hasBeBtns: true,
   hasModify: false,
@@ -160,9 +160,9 @@ export const approved = {
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
   recordFormType: 'drawer',
-  formProps: {
-    height: 500
-  },
+  // formProps: {
+  //   height: 500
+  // },
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
