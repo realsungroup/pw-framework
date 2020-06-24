@@ -75,6 +75,10 @@ class OnlineTrainingManager extends React.Component {
             sideBarAg={true}
             hasRowSelection={true}
             baseURL={baseURL}
+            advSearch={{
+              formName:"defaultSearch"
+            }
+            }
           />
         </TabPane>
         <TabPane tab="课程附件管理" key="7">
@@ -88,6 +92,10 @@ class OnlineTrainingManager extends React.Component {
             hasAdd={true}
             baseURL={baseURL}
             isSetColumnWidth={false}
+            advSearch={{
+              formName:"defaultSearch"
+            }
+            }
           />
         </TabPane>
       </Tabs>

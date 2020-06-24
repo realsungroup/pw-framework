@@ -645,6 +645,9 @@ this.setState({emergency:emergency})
           hasRowDelete={false}
           hasRowModify={false}
           hasRowView={false}
+          advSearch={{
+            formName:'defaultSearch'
+          }}
           customRowBtns={[
             (record, btnSize) => {
               return (

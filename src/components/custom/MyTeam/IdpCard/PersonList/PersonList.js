@@ -479,6 +479,11 @@ class PersonList extends React.Component {
             actionBarFixed={true}
             hasAdvSearch={true}
             height="100%"
+            advSearch={
+              {
+                formName:'defaultSearch'
+              }
+            }
             cmswhere={
               this.props.role === 'HR'
                 ? `projectId = '${this.props.record &&

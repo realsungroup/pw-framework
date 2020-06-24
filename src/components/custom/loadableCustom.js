@@ -788,3 +788,9 @@ export const AchievementsGradeAppraising = Loadable({
     return minLoading;
   }
 });
+export const WageCardInformation = Loadable({
+  loader: () => import('./WageCardInformation'),
+  loading() {
+    return minLoading;
+  }
+});

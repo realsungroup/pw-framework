@@ -2118,6 +2118,9 @@ window[628886558788] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine:false,
+    advSearch:{
+      formName:'defaultSearch',
+    },
     formProps: {
       // height: 500
     },
@@ -2130,7 +2133,7 @@ window[628886558788] = {
  */
 window[629200936654] = {
   name: 'TableData', // 组件名称，
-  title: '统计管理', // 功能模块名称
+  title: '申请人确认', // 功能模块名称
   props: {
     resid: 631104772748,
     actionBarWidth: 200,
@@ -2142,6 +2145,9 @@ window[629200936654] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    advSearch:{
+      formName: 'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -2293,26 +2299,26 @@ window[641992499902] = {
   // }
 };
 window[642853675476] = {
-  name: 'TableData', // 组件名称，
+  name: 'WageCardInformation', // 组件名称，
   title: '工资卡信息', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
-    resid: 497727888930,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: false,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    isUseFormDefine:false,
-    formProps: {
-      // height: 500
-    },
-    subtractH: 240
+    // baseURL: 'http://ngrok5.realsun.me:6060',
+    // downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    // resid: 497727888930,
+    // actionBarWidth: 200,
+    // hasAdd: true,
+    // hasBeBtns: true,
+    // hasModify: false,
+    // hasBackBtn: true,
+    // hasDelete: true,
+    // hasRowModify: true,
+    // hasRowView: true,
+    // hasRowDelete: true,
+    // isUseFormDefine:false,
+    // formProps: {
+    //   // height: 500
+    // },
+    // subtractH: 240
   }
 };
 
@@ -2379,6 +2385,9 @@ window[642853703890] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -2969,6 +2978,10 @@ window[642856273477] = {
     hasRowView: true,
     hasRowDelete: true,
     isSetColumnWidth:false,
+    isUseFormDefine:false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -2991,6 +3004,10 @@ window[618661462541] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isUseFormDefine:false,
+    advSearch:{
+      formName:"defaultSearch"
+    },
     formProps: {
       // height: 500
     },
@@ -3018,6 +3035,9 @@ window[642856262431] = {
     hasRowView: true,
     hasRowDelete: true,
     isSetColumnWidth:false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -4339,6 +4359,9 @@ window[642855262376] = {
       isUseFormDefine: false,
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    advSearch:{
+      formName:'defaultSearch'
+    },
       formProps: {
         // height: 500
       },
@@ -4373,6 +4396,9 @@ window[642855273462] = {
       isUseFormDefine: false,
       baseURL: 'http://ngrok5.realsun.me:6060',
       downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      advSearch:{
+        formName:'defaultSearch'
+      },
       formProps: {
         // height: 500
       },
@@ -4405,6 +4431,9 @@ window[642855707652] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -4467,6 +4496,9 @@ window[642855734719] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -4491,7 +4523,10 @@ window[642855746711] = {
       hasRowDelete: true,
       isUseFormDefine:false,
       baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      advSearch:{
+      formName:'defaultSearch'
+      },
       formProps: {
         // height: 500
       },
@@ -4524,6 +4559,9 @@ window[642855760886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -4570,6 +4608,9 @@ window[642855780253] = {
       hasRowDelete: true,
       baseURL: 'http://ngrok5.realsun.me:6060',
       downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      advSearch:{
+        formName:'defaultSearch'
+      },
       formProps: {
         // height: 500
       },
@@ -4606,6 +4647,9 @@ window[644083949537] = {
       isSetColumnWidth:false,
       baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    advSearch:{
+      formName:'defaultSearch'
+    },
       formProps: {
         // height: 500
       },
@@ -7004,6 +7048,9 @@ window[642864955816] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     // actionBarFixed:false,
     formProps: {
       // height: 500
@@ -7028,6 +7075,9 @@ window[642864965745] = {
     hasRowView: true,
     hasRowDelete: false,
     isSetColumnWidth:false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -7050,6 +7100,9 @@ window[642865093743] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -7073,6 +7126,9 @@ window[642865104085] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -7096,6 +7152,9 @@ window[642865117751] = {
     hasRowView: true,
     hasRowDelete: false,
     isSetColumnWidth:false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -7122,6 +7181,9 @@ window[642865127153] = {
     hasRowEditAdd: true,
     isUseFormDefine: false,
     actionBarFixed: false,
+    advSearch:{
+      formName:'defaultSearch'
+    },
     formProps: {
       // height: 500
     },
@@ -7883,3 +7945,11 @@ window[645649238968] = {
     subtractH: 240
   }
 };
+
+window[460898301416] = {
+  name:"PersonnelImport",
+  title:'人事信息批量导入',
+  props:{
+
+  }
+}

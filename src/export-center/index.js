@@ -163,5 +163,6 @@ export {
   WeeklySettlement,
   SubordinateAchievements,
   AchievementResult,
-  AchievementsGradeAppraising
+  AchievementsGradeAppraising,
+  WageCardInformation
 } from '../components/custom/loadableCustom';

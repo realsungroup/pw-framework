@@ -190,6 +190,9 @@ class VisitorApplyVIP extends React.Component {
           hasRowDelete={false}
           hasBeBtns={true}
           actionBarWidth={170}
+          advSearch={{
+            formName:'defaultSearch'
+          }}
           customRowBtns={[
             record => {
               return (
