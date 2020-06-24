@@ -13,11 +13,6 @@ import AdvSearch from 'lz-components-and-utils/lib/AdvSearch';
 import 'lz-components-and-utils/lib/AdvSearch/style/index.css';
 const { TabPane } = Tabs;
 
-const cMap = {
-  PwForm: PwForm,
-  AdvSearch: AdvSearch
-};
-
 class Search extends React.Component {
   state = {
     searchList: []
@@ -55,9 +50,20 @@ class Search extends React.Component {
       return (
         <Tabs defaultActiveKey="0">
           {tabsArr.map((tabItem, index) => {
-            const C = cMap[tabItem.name];
+            let C;
+            if (tabItem.name === 'PwForm') {
+              C = PwForm;
+            } else if (tabItem.name === 'AdvSearch') {
+              C = AdvSearch;
+            }
+
+            if (!C) {
+              return null;
+            }
+
             const { fields, onConfirm, ...otherProps } = this.props;
             let props;
+            
             if (tabItem.name === 'AdvSearch') {
               props = {
                 fields,
