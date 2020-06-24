@@ -2309,7 +2309,8 @@ class TableData extends React.Component {
           dataSource,
           selectedRowKeys: (rowSelection && rowSelection.selectedRowKeys) || [],
           data: this._dealedRecordFormData,
-          recordFormData: this._recordFormData
+          recordFormData: this._recordFormData,
+          size
         }}
         headerExtra={headerExtra}
         isShowGrid={isShowGrid}
