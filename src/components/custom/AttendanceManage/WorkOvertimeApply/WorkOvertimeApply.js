@@ -119,28 +119,28 @@ class WorkOvertimeApply extends React.Component {
         dataIndex: 'startTime',
         type: InputType.DataTime,
         editable: true,
-        width: 230
+        width: 200
       },
       {
         title: '结束时间',
         dataIndex: 'endTime',
         type: InputType.DataTime,
         editable: true,
-        width: 230
+        width: 200
       },
       {
         title: '小时数',
         dataIndex: 'hours',
         type: InputType.InputNumber,
         editable: true,
-        width: 120
+        width: 100
       },
       {
         title: '事由',
         dataIndex: 'reason',
         type: InputType.TextArea,
         editable: true,
-        width: 200
+        width: 300
       },
       {
         title: '提示信息',
@@ -149,12 +149,11 @@ class WorkOvertimeApply extends React.Component {
       },
       {
         title: '错误信息',
-        dataIndex: 'error',
-        width: 300
+        dataIndex: 'error'
+        // width: 300
       },
       {
         title: '操作',
-
         dataIndex: 'operation',
         fixed: 'right',
         width: 100,
@@ -514,7 +513,7 @@ class WorkOvertimeApply extends React.Component {
             </Button>
             <Table
               components={components}
-              scroll={{ x: 1200 }}
+              scroll={{ x: 1500 }}
               rowClassName="editable-row"
               bordered
               dataSource={dataSource}
@@ -525,6 +524,7 @@ class WorkOvertimeApply extends React.Component {
               //     this.selectRow(record);
               //   }
               // })}
+              size="small"
               pagination={{
                 onChange: () => this.setState({ editingKey: '' })
               }}

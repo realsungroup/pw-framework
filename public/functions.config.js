@@ -7714,6 +7714,7 @@ window[642854549263] = {
     ],
     formProps: {
       // height: 500
+      width:'100vw'
     },
     subtractH: 240
   }
