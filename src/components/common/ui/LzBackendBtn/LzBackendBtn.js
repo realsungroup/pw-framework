@@ -150,7 +150,7 @@ class LzBackendBtn extends React.PureComponent {
   };
 
   render() {
-    const { btnInfo, size } = this.props;
+    const { btnInfo, size, popConfirmProps } = this.props;
     const { Url, Type } = btnInfo;
     // if (Type !== 4 && Url) {
     //   return null;
@@ -165,6 +165,7 @@ class LzBackendBtn extends React.PureComponent {
           onConfirm={this.onConfirm}
           okText="确定"
           cancelText="取消"
+          {...popConfirmProps}
         >
           <Button
             style={style}
