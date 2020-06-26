@@ -47,14 +47,17 @@ class AttendanceManage extends React.Component {
 
   componentDidMount = () => {
     const qsObj = qs.parse(this.props.location.search.substring(1));
-    console.log(qsObj);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
     this.setState({
-      desktop,
-      selectKey: qsObj.menuKey,
-      summaryVisible: qsObj.summaryVisible ? true : false
+      desktop
     });
+    if (qsObj.menuKey) {
+      this.setState({
+        selectKey: qsObj.menuKey,
+        summaryVisible: qsObj.summaryVisible ? true : false
+      });
+    }
     this.getNotices();
   };
 

@@ -1315,6 +1315,22 @@ export default class PageContainer extends React.Component {
       }
     ]);
   };
+  handleDesktopSwitch = () => {
+    const { activeApps, appsSwitchStatus } = this.state;
+    const newActiveApps = [...activeApps];
+    this.isDesktopShow = !this.isDesktopShow;
+    // 关闭所有 app
+    if (this.isDesktopShow) {
+      newActiveApps.forEach(app => (app.isOpen = false));
+    } else {
+      // 还原所有 app 的打开关闭状态
+      newActiveApps.forEach(
+        (app, index) => (app.isOpen = appsSwitchStatus[index])
+      );
+    }
+    console.log('111');
+    this.setState({ activeApps: newActiveApps });
+  };
 
   render() {
     if (!this.state.desktopStyle) {
@@ -1410,6 +1426,7 @@ export default class PageContainer extends React.Component {
                   onOpenColorPicker={this.handleOpenColorPicker}
                   onOpenDesktopBg={this.handleOpenDesktopBg}
                   selectedBg={selectedBg}
+                  onDesktopSwitch={this.handleDesktopSwitch}
                 ></Component>
               );
             }}
