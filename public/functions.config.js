@@ -7706,12 +7706,13 @@ window[642854549263] = {
         tableProps: {
           baseURL: 'http://ngrok5.realsun.me:6060',
           actionBarWidth: 200,
-          isUseFormDefine:false
+          isUseFormDefine:false,
         }
       }
     ],
     formProps: {
       // height: 500
+      width:'100vw'
     },
     subtractH: 240
   }
