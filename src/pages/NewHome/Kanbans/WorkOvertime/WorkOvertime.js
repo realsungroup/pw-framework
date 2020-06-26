@@ -142,7 +142,11 @@ class WorkOvertimeChart extends React.Component {
         {
           name: title,
           type: 'line',
-          data: []
+          data: [],
+          itemStyle: {
+            color:
+              window.pwConfig[process.env.NODE_ENV].themeColor['@primary-color']
+          }
           // label: {
           //   normal: {
           //     show: true,

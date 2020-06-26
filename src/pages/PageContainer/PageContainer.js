@@ -125,11 +125,15 @@ export default class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
+    let color = themeColor['@primary-color'];
+    if (userInfo && userInfo.UserInfo && userInfo.UserInfo.EMP_Color) {
+      color = userInfo.UserInfo.EMP_Color
+    }
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'image', // 背景模式
       value: defaultDesktopBg // 背景值
     };
+    window.__powerWorkGlobal.themeColor = color;
     this.state = {
       reminderNum: 0,
       password: '',
@@ -175,7 +179,7 @@ export default class PageContainer extends React.Component {
       ) {
         desktopStyle = _desktopStyle;
       }
-    } catch (err) {}
+    } catch (err) { }
 
     this.setState({
       desktopStyle
@@ -843,7 +847,7 @@ export default class PageContainer extends React.Component {
   setThemeColor = themeColor => {
     window.less
       .modifyVars({ '@primary-color': themeColor })
-      .then(() => {})
+      .then(() => { })
       .catch(err => {
         console.log({ err });
         message.error(err.message);
@@ -1130,13 +1134,13 @@ export default class PageContainer extends React.Component {
                 }}
               />
             ) : (
-              <Icon
-                type="shrink"
-                onClick={() => {
-                  this.setState({ headerVisible: true });
-                }}
-              />
-            )}
+                <Icon
+                  type="shrink"
+                  onClick={() => {
+                    this.setState({ headerVisible: true });
+                  }}
+                />
+              )}
           </div>
         </div>
       );
@@ -1312,6 +1316,22 @@ export default class PageContainer extends React.Component {
       }
     ]);
   };
+  handleDesktopSwitch = () => {
+    const { activeApps, appsSwitchStatus } = this.state;
+    const newActiveApps = [...activeApps];
+    this.isDesktopShow = !this.isDesktopShow;
+    // 关闭所有 app
+    if (this.isDesktopShow) {
+      newActiveApps.forEach(app => (app.isOpen = false));
+    } else {
+      // 还原所有 app 的打开关闭状态
+      newActiveApps.forEach(
+        (app, index) => (app.isOpen = appsSwitchStatus[index])
+      );
+    }
+    console.log('111');
+    this.setState({ activeApps: newActiveApps });
+  };
 
   render() {
     if (!this.state.desktopStyle) {
@@ -1407,6 +1427,7 @@ export default class PageContainer extends React.Component {
                   onOpenColorPicker={this.handleOpenColorPicker}
                   onOpenDesktopBg={this.handleOpenDesktopBg}
                   selectedBg={selectedBg}
+                  onDesktopSwitch={this.handleDesktopSwitch}
                 ></Component>
               );
             }}

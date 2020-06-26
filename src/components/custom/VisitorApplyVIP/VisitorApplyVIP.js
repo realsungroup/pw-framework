@@ -191,7 +191,7 @@ class VisitorApplyVIP extends React.Component {
           hasBeBtns={true}
           actionBarWidth={170}
           advSearch={{
-            formName:'defaultSearch'
+            formName: 'defaultSearch'
           }}
           customRowBtns={[
             record => {
@@ -212,6 +212,7 @@ class VisitorApplyVIP extends React.Component {
         />
         <Modal
           visible={addModal}
+          title="添加VIP访客"
           width={600}
           destroyOnClose
           okText={'申请'}

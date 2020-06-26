@@ -63,7 +63,8 @@ export const defaultProps = {
     formName: 'default',
     validationFields: [],
     isUseTableFields: true,
-    fields: []
+    fields: [],
+    isRequestFormData: true,
   },
   hasRowSelection: false,
   importConfig: {
@@ -495,7 +496,13 @@ export const propTypes = {
         value: PropTypes.string, // value
         control: PropTypes.oneOf(['Input']) // 所用控件
       })
-    )
+    ),
+
+    /**
+     * 是否在高级搜索中请求表单控件渲染所需的数据（不请求的话，会使用外部传入的）
+     * 默认：true
+     */
+    isRequestFormData: PropTypes.bool,
   }),
 
   /**

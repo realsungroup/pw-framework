@@ -29,8 +29,7 @@ import logoPng from './assets/logo.png';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
 import { delay } from 'lodash';
-import Img from 'Common/ui/Img'
-
+import Img from 'Common/ui/Img';
 
 import './Desktop.less';
 
@@ -62,13 +61,12 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'image', // 背景模式
       value: defaultDesktopBg // 背景值
     };
     this.state = {
-      forbidChange:false,
+      forbidChange: false,
       folders: [], // 在桌面的文件夹
       activeApps: [], // 打开的 app
       allFolders: [], // 所有的文件夹
@@ -80,7 +78,6 @@ class Desktop extends React.Component {
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
       reminderListLoading: false, // 提醒列表是否显示
-      color, // 主题色
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
       selectedBg, // 背景图片地址
@@ -93,14 +90,14 @@ class Desktop extends React.Component {
   componentDidMount = async () => {
     // 默认打开仪表盘
     var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-      
+
     //判断是否Edge浏览器
-    if (userAgent.indexOf("Edge") > -1) {
-        this.setState({forbidChange:true})
+    if (userAgent.indexOf('Edge') > -1) {
+      this.setState({ forbidChange: true });
     }
-    if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        this.setState({forbidChange:true})
-    }; 
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      this.setState({ forbidChange: true });
+    }
     if (defaultOpenWindow === '仪表盘') {
       // this.handleOpenDashboard();
     }
@@ -472,42 +469,6 @@ class Desktop extends React.Component {
     }
   };
 
-  handleSelectColor = color => {
-    this.setState({ color });
-  };
-
-  handleOpenColorPicker = () => {
-    const { color } = this.state;
-    const children = (
-      <DesktopColorPicker
-        color={color}
-        onColorSelect={this.handleSelectColor}
-      />
-    );
-
-    const node = this[`windowViewRef更换主题色`];
-    const x = this.desktopMainRef.clientWidth / 2 - 115;
-    const y = this.desktopMainRef.clientHeight / 2 - 190;
-
-    this.addAppToBottomBar([
-      {
-        children,
-        title: '更换主题色',
-        activeAppOthersProps: {
-          width: 230,
-          height: 380,
-          x,
-          y,
-          customWidth: 230,
-          customHeight: 380,
-          customX: x,
-          customY: y,
-          zoomStatus: 'custom'
-        }
-      }
-    ]);
-  };
-
   handleResizeStop = (activeApp, dW, dH) => {
     activeApp.width = activeApp.width + dW;
     activeApp.height = activeApp.height + dH;
@@ -778,21 +739,8 @@ class Desktop extends React.Component {
                       >
                         <div className="desktop__folder-category-app-icon">
                           {app.appIconUrl ? (
-                            this.state.forbidChange?
-                            <img
-                            src={app.appIconUrl}
-                            alt={app.appIconUrl}
-                            style={{
-                              display: 'inline-block',
-                              height: 32,
-                              width: 'auto'
-                            }}
-                            onError={this.handleImageError}
-                          />
-                             :
-                             <div className="overlay">
-                               <div className="overlay-inner"></div>
-                               <img
+                            this.state.forbidChange ? (
+                              <img
                                 src={app.appIconUrl}
                                 alt={app.appIconUrl}
                                 style={{
@@ -802,7 +750,21 @@ class Desktop extends React.Component {
                                 }}
                                 onError={this.handleImageError}
                               />
-                             </div>
+                            ) : (
+                              <div className="overlay">
+                                <div className="overlay-inner"></div>
+                                <img
+                                  src={app.appIconUrl}
+                                  alt={app.appIconUrl}
+                                  style={{
+                                    display: 'inline-block',
+                                    height: 32,
+                                    width: 'auto'
+                                  }}
+                                  onError={this.handleImageError}
+                                />
+                              </div>
+                            )
                           ) : (
                             <i
                               className={`iconfont icon-${app.DeskiconCls ||
@@ -970,7 +932,8 @@ class Desktop extends React.Component {
       menus,
       onOpenColorPicker,
       onOpenDesktopBg,
-      selectedBg
+      selectedBg,
+      onDesktopSwitch
     } = this.props;
 
     // 背景样式
@@ -1011,7 +974,7 @@ class Desktop extends React.Component {
           onLockScreen={this.handleLockScreen}
           onOpenPersonCenter={this.handleOpenPersonCenter}
           onCloseApp={onCloseActiveApp}
-          onDesktopSwitch={this.handleDesktopSwitch}
+          onDesktopSwitch={onDesktopSwitch}
           onSearchFocus={this.handleSearchFocus}
           onSearchChange={this.handleSearchChange}
           searchValue={searchValue}

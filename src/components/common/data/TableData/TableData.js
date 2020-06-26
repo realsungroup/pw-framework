@@ -643,7 +643,9 @@ class TableData extends React.Component {
       hasRowEdit,
       isUseBESize,
       isUseFormDefine,
-      isSetColumnWidth
+      isSetColumnWidth,
+      hasAdvSearch,
+      advSearch
     } = this.props;
 
     const secondParams = {
@@ -655,7 +657,7 @@ class TableData extends React.Component {
 
     let dataSource = res.data;
 
-    if (!isUseFormDefine) {
+    if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
       this.dealTableDataFormData(res);
     }
 
@@ -1287,9 +1289,9 @@ class TableData extends React.Component {
       formProps:
         recordFormType === 'modal'
           ? {
-              ...formProps,
-              className
-            }
+            ...formProps,
+            className
+          }
           : formProps,
       data: newData,
       operation: newOperation,
@@ -1561,7 +1563,7 @@ class TableData extends React.Component {
       onClick: () => {
         this.props.onRowClick && this.props.onRowClick(record);
       }, // 点击行
-      onMouseEnter: () => {} // 鼠标移入行
+      onMouseEnter: () => { } // 鼠标移入行
     };
   };
 
@@ -1593,17 +1595,18 @@ class TableData extends React.Component {
   };
 
   handleAdvSearch = () => {
-    const { openAdvSearch, advSearch, baseURL } = this.props;
+    const { openAdvSearch, advSearch, baseURL, dblinkname } = this.props;
     const id = this._id;
     const {
-      searchComponent,
-      containerType,
+      searchComponent = 'both',
+      containerType = 'drawer',
       containerProps,
-      formName,
+      formName = 'default',
       formProps,
-      validationFields,
+      validationFields = [],
       isUseTableFields,
-      fields
+      fields = [],
+      isRequestFormData = true
     } = advSearch;
 
     let newFields = [];
@@ -1618,6 +1621,14 @@ class TableData extends React.Component {
       newFields = [...newFields, ...fields];
     }
 
+    let recordFormData;
+    if (!isRequestFormData) {
+      if (!this._dealedRecordFormData) {
+        return message.error('正在请求数据，请稍后再试');
+      }
+      recordFormData = this._dealedRecordFormData;
+    }
+
     // 打开高级搜索
     openAdvSearch(
       searchComponent,
@@ -1629,7 +1640,9 @@ class TableData extends React.Component {
       containerProps,
       formProps,
       newFields,
-      baseURL
+      baseURL,
+      dblinkname,
+      recordFormData
     );
   };
 
