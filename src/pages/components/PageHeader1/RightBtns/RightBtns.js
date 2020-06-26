@@ -57,7 +57,7 @@ class RightBtns extends React.Component {
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
   getDataAnalyseData = async () => {
     let res;
@@ -168,7 +168,7 @@ class RightBtns extends React.Component {
       this.props.form.getFieldValue('password2') !== undefined &&
       this.props.form.getFieldValue('password2') !== '' &&
       this.props.form.getFieldValue('password1') ===
-        this.props.form.getFieldValue('password2')
+      this.props.form.getFieldValue('password2')
     ) {
       try {
         const response = await changePassword(
@@ -257,10 +257,12 @@ class RightBtns extends React.Component {
   vars = { '@primary-color': '' };
   handleChangeComplete = (val, color) => {
     const rbga = color.rgb;
+    const _rgba = `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`;
     this.vars = {
-      '@primary-color': `rgba(${rbga.r},${rbga.g},${rbga.b},${rbga.a})`
+      '@primary-color': _rgba
     };
     this.setState({ color: rbga });
+    window.__powerWorkGlobal.themeColor = _rgba;
   };
 
   renderSelectedColor = async () => {
