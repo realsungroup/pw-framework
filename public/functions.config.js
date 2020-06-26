@@ -2277,7 +2277,7 @@ window[641992200325] = {
   title: '总部HeadCount',
   props: {
     resid: '578227119902',
-    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+    replaceBaseUrl: 'http://wux-hr03.china.ads.finisar.com:8019'
   }
 };
 //总部-offer
@@ -2286,7 +2286,7 @@ window[641992279531] = {
   title: '总部Offer',
   props: {
     resid: '578236391005',
-    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+    replaceBaseUrl: 'http://wux-hr03.china.ads.finisar.com:8019'
   }
 };
 //总部-管理员
