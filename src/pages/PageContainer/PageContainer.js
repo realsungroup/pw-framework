@@ -125,7 +125,10 @@ export default class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
+    let color = themeColor['@primary-color'];
+    if (userInfo && userInfo.UserInfo && userInfo.UserInfo.EMP_Color) {
+      color = userInfo.UserInfo.EMP_Color
+    }
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'image', // 背景模式
       value: defaultDesktopBg // 背景值

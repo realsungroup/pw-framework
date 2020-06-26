@@ -62,7 +62,6 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     const userInfo = JSON.parse(getItem('userInfo'));
-    const color = userInfo.UserInfo.EMP_Color || themeColor['@primary-color'];
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'image', // 背景模式
       value: defaultDesktopBg // 背景值
@@ -80,7 +79,6 @@ class Desktop extends React.Component {
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
       reminderListLoading: false, // 提醒列表是否显示
-      color, // 主题色
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
       selectedBg, // 背景图片地址
@@ -470,42 +468,6 @@ class Desktop extends React.Component {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  handleSelectColor = color => {
-    this.setState({ color });
-  };
-
-  handleOpenColorPicker = () => {
-    const { color } = this.state;
-    const children = (
-      <DesktopColorPicker
-        color={color}
-        onColorSelect={this.handleSelectColor}
-      />
-    );
-
-    const node = this[`windowViewRef更换主题色`];
-    const x = this.desktopMainRef.clientWidth / 2 - 115;
-    const y = this.desktopMainRef.clientHeight / 2 - 190;
-
-    this.addAppToBottomBar([
-      {
-        children,
-        title: '更换主题色',
-        activeAppOthersProps: {
-          width: 230,
-          height: 380,
-          x,
-          y,
-          customWidth: 230,
-          customHeight: 380,
-          customX: x,
-          customY: y,
-          zoomStatus: 'custom'
-        }
-      }
-    ]);
   };
 
   handleResizeStop = (activeApp, dW, dH) => {
