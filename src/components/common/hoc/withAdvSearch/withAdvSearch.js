@@ -63,7 +63,7 @@ class Search extends React.Component {
 
             const { fields, onConfirm, ...otherProps } = this.props;
             let props;
-            
+
             if (tabItem.name === 'AdvSearch') {
               props = {
                 fields,
@@ -102,7 +102,7 @@ class Search extends React.Component {
 // 显示高级搜索的高阶组件
 const withAdvSearch = (options = {}) => {
   const { type = 'drawer' } = options;
-  return function(WrappedComponent) {
+  return function (WrappedComponent) {
     class withAdvSearch extends React.Component {
       constructor(props) {
         super(props);
@@ -117,25 +117,31 @@ const withAdvSearch = (options = {}) => {
         getCmsWhere,
         validationFields = [],
         baseURL,
-        dblinkname
+        dblinkname,
+        data
       ) => {
-        // 第一次打开高级搜索，还没有获取窗体数据
         if (!this._data) {
-          let formData;
-          try {
-            // 使用 withHttpGetFormData 高阶组件传入的 httpGetFormData 方法获取窗体数据
-            formData = await this.props.httpGetFormData(
-              resid,
-              formName,
-              baseURL,
-              dblinkname
-            );
-          } catch (err) {
-            return message.error(err.message);
+          if (Array.isArray(data)) {
+            this._data = [...data];
+            this._getCmsWhere = getCmsWhere;
+          } else {
+            // 第一次打开高级搜索，还没有获取窗体数据
+            let formData;
+            try {
+              // 使用 withHttpGetFormData 高阶组件传入的 httpGetFormData 方法获取窗体数据
+              formData = await this.props.httpGetFormData(
+                resid,
+                formName,
+                baseURL,
+                dblinkname
+              );
+            } catch (err) {
+              return message.error(err.message);
+            }
+            // 获取 PwFrom 所接收的 data prop
+            this._data = getDataProp(formData, {}, true, false, validationFields);
+            this._getCmsWhere = getCmsWhere;
           }
-          // 获取 PwFrom 所接收的 data prop
-          this._data = getDataProp(formData, {}, true, false, validationFields);
-          this._getCmsWhere = getCmsWhere;
         }
       };
 
@@ -152,6 +158,7 @@ const withAdvSearch = (options = {}) => {
        * @param {array} fields 高级搜索所需的字段列表
        * @param {string} baseURL 基地址
        * @param {string} dblinkname 数据库链接名称
+       * @param {array} recordFormData 记录表单数据
        */
       handleOpenAdvSearch = async (
         searchComponent = 'both',
@@ -164,7 +171,8 @@ const withAdvSearch = (options = {}) => {
         formProps = {},
         fields = [],
         baseURL,
-        dblinkname
+        dblinkname,
+        recordFormData,
       ) => {
         let component;
         if (Array.isArray(searchComponent)) {
@@ -180,7 +188,8 @@ const withAdvSearch = (options = {}) => {
               getCmsWhere,
               validationFields,
               baseURL,
-              dblinkname
+              dblinkname,
+              recordFormData
             );
             break;
           }
@@ -194,7 +203,8 @@ const withAdvSearch = (options = {}) => {
               getCmsWhere,
               validationFields,
               baseURL,
-              dblinkname
+              dblinkname,
+              recordFormData
             );
             break;
           }
