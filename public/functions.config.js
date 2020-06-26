@@ -7704,9 +7704,11 @@ window[642854549263] = {
         subTableName: '考勤日报',
         subResid: 375296167687,
         tableProps: {
+          height: 560,
           baseURL: 'http://ngrok5.realsun.me:6060',
           actionBarWidth: 200,
-          isUseFormDefine:false
+          isUseFormDefine:false,
+          subtractH: 170
         }
       }
     ],

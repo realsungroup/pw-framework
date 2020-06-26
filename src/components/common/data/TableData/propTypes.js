@@ -283,6 +283,7 @@ export const propTypes = {
 
   /**
    * 表格高度 - scroll.y 的值（当横向滚动条被遮住时，需要添加这个参数。其值为 TableData 组件除去中间内容的其他高度）
+   * 注意：当无效时，请检查是否设置了表格的高度。此参数需要表格设置了宽度时，才有效
    * 默认：0
    */
   subtractH: PropTypes.number,
