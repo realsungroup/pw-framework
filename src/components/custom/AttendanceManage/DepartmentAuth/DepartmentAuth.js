@@ -19,7 +19,7 @@ class DepartmentAuth extends React.Component {
   actionBarExtra = record => (
     <div className="">
       <Popconfirm
-        title="禁用独立授权？"
+        title="启用独立授权？"
         onConfirm={() => {
           if (!record.selectedRowKeys.length) {
             return message.error('请选择一条记录');
