@@ -201,7 +201,8 @@ export const propTypes = {
   defaultColumnWidth: PropTypes.number,
 
   /**
-   * 是否设置列的宽度（当选择列与第一列出现空隙时，可以将此属性设置为 false）
+   * 是否设置列的宽度
+   * 适合横向不出现滚动条，且当选择列与第一列出现空隙时，可以将此属性设置为 false
    * 默认：true
    */
   isSetColumnWidth: PropTypes.bool,
@@ -823,6 +824,7 @@ export const propTypes = {
 
   /**
    * 文字长度超出单元格宽度时，是否换行：true 表示换行显示 | false 表示不换行，超出单元格宽度时在结尾显示省略号
+   * 注意：isSetColumnWidth 的值必须为 true。因为单元格没有宽度时，文字长度超出是不会换行的
    * 默认：false
    */
   isWrap: PropTypes.bool
