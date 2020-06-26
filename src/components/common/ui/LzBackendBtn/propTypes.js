@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 
 export const defaultProps = {
-  size: 'middle'
+  size: 'middle',
+  popConfirmProps: {}
 };
 
 export const propTypes = {
@@ -59,5 +60,11 @@ export const propTypes = {
         `在 ${componentName} 中，当 btnInfo.Type 为 4 时，${propName} 必传，且类型为 string`
       );
     }
-  }
+  },
+
+  /**
+   * PopConfirm 组件接收的 props
+   * 默认：{}
+   */
+  popConfirmProps: PropTypes.object,
 };
