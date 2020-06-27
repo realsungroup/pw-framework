@@ -119,6 +119,7 @@ class ApprovalingApplicationForm extends React.Component {
           actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
+          isSetColumnWidth={false}
         />
       </div>
     );

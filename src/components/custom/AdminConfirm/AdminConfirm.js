@@ -566,6 +566,7 @@ console.log("options",options)
     return (
       <Popconfirm
         title="您确定要操作吗？"
+        placement="bottom"
         onConfirm={() => this.handleConfirm(dataSource, selectedRowKeys)}
       >
         <Button>确认</Button>

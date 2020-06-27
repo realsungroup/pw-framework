@@ -83,7 +83,8 @@ export const defaultProps = {
   hasRowEditAdd: false,
   successMessageComponent: 'message',
   isSetColumnWidth: true,
-  isWrap: false
+  isWrap: false,
+  backendButtonPopConfirmProps: {}
 };
 
 export const propTypes = {
@@ -201,7 +202,8 @@ export const propTypes = {
   defaultColumnWidth: PropTypes.number,
 
   /**
-   * 是否设置列的宽度（当选择列与第一列出现空隙时，可以将此属性设置为 false）
+   * 是否设置列的宽度
+   * 适合横向不出现滚动条，且当选择列与第一列出现空隙时，可以将此属性设置为 false
    * 默认：true
    */
   isSetColumnWidth: PropTypes.bool,
@@ -281,6 +283,7 @@ export const propTypes = {
 
   /**
    * 表格高度 - scroll.y 的值（当横向滚动条被遮住时，需要添加这个参数。其值为 TableData 组件除去中间内容的其他高度）
+   * 注意：当无效时，请检查是否设置了表格的高度。此参数需要表格设置了宽度时，才有效
    * 默认：0
    */
   subtractH: PropTypes.number,
@@ -823,7 +826,16 @@ export const propTypes = {
 
   /**
    * 文字长度超出单元格宽度时，是否换行：true 表示换行显示 | false 表示不换行，超出单元格宽度时在结尾显示省略号
+   * 注意：isSetColumnWidth 的值必须为 true。因为单元格没有宽度时，文字长度超出是不会换行的
    * 默认：false
    */
-  isWrap: PropTypes.bool
+  isWrap: PropTypes.bool,
+
+  /**
+   * 表格头部的后端按钮确认弹窗所接收的 props
+   * 可用于修复表格处于屏幕边缘时，点击后端按钮弹出的确认弹窗位置箭头不正确的样式 bug：
+   * backendButtonPopConfirmProps={ placement: 'bottom' }
+   * 默认：{}
+   */
+  backendButtonPopConfirmProps: PropTypes.object,
 };

@@ -2277,7 +2277,7 @@ window[641992200325] = {
   title: '总部HeadCount',
   props: {
     resid: '578227119902',
-    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+    replaceBaseUrl: 'http://wux-hr03.china.ads.finisar.com:8019'
   }
 };
 //总部-offer
@@ -2286,7 +2286,7 @@ window[641992279531] = {
   title: '总部Offer',
   props: {
     resid: '578236391005',
-    replaceBaseUrl: 'http://ngrok17.realsun.me:6060'
+    replaceBaseUrl: 'http://wux-hr03.china.ads.finisar.com:8019'
   }
 };
 //总部-管理员
@@ -7896,14 +7896,17 @@ window[642854549263] = {
         subTableName: '考勤日报',
         subResid: 375296167687,
         tableProps: {
+          height: 560,
           baseURL: 'http://ngrok5.realsun.me:6060',
           actionBarWidth: 200,
-          isUseFormDefine:false
+          isUseFormDefine:false,
+          subtractH: 170
         }
       }
     ],
     formProps: {
       // height: 500
+      width:'100vw'
     },
     subtractH: 200
   }

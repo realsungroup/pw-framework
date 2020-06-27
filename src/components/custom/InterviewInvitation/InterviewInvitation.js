@@ -174,7 +174,7 @@ class InterviewInvitation extends React.Component {
           onCancel={() => this.refreState()}
           title={'人员信息'}
         >
-          <div>
+          <div className='wrap'>
             <span>候选人姓名：</span>
             <Input
               style={{ width: 200 }}
