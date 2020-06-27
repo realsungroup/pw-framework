@@ -706,15 +706,20 @@ class ArchitectureDiagram extends React.Component {
               resid,
               data: [{ REC_ID: selectedNode.REC_ID }]
             });
-            this.chart.removeNode(selectedNode.id);
-            this._nodes.splice(
-              this._nodes.findIndex(node => node.id === selectedNode.id),
-              1
-            );
-            this.setState({ selectedNode: {}, breadcrumb: [] });
+            // this.chart.removeNode(selectedNode.id);
+            // this._nodes.splice(
+            //   this._nodes.findIndex(node => node.id === selectedNode.id),
+            //   1
+            // );
             message.success('删除成功');
-            this.setState({ loading: false });
-            this.clearCache();
+
+            this.setState(
+              { selectedNode: {}, breadcrumb: [], loading: false },
+              async () => {
+                await this.clearCache();
+                this.handleRefresh();
+              }
+            );
           } catch (error) {
             this.setState({ loading: false });
             message.error(error.message);
@@ -885,7 +890,7 @@ class ArchitectureDiagram extends React.Component {
       this.chart.config.tags = { selected };
     }
     this.setState({ isGrouping: checked });
-    this.chart.draw();
+    this.chart.load(this.chart.config.nodes);
   };
 
   closeSelfDefineModal = () => this.setState({ selfDefineVisible: false });
@@ -947,8 +952,9 @@ class ArchitectureDiagram extends React.Component {
         tags
       };
       message.success('添加成功');
-      this.chart.addNode(node);
-      this._nodes.push(node);
+      this.handleRefresh();
+      // this.chart.addNode(node);
+      // this._nodes.push(node);
       this.clearCache();
     } else if (operation === 'modify') {
       // const oldTags = this.chart.get(record[idField]).tags;
@@ -970,7 +976,8 @@ class ArchitectureDiagram extends React.Component {
       this.setState({ selectedNode: node }, () => {
         this.getHistory();
       });
-      this.chart.updateNode(node);
+      // this.chart.updateNode(node);
+      this.handleRefresh();
       this.clearCache();
     }
   };
@@ -1369,12 +1376,20 @@ class ArchitectureDiagram extends React.Component {
     return data.map(item => {
       if (item.children) {
         return (
-          <TreeNode key={item[idField]} title={item.orgName}>
+          <TreeNode
+            key={item[idField]}
+            title={`${item.orgName}(${item[idField]})`}
+          >
             {this.renderTree(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item[idField]} title={item.orgName} />;
+      return (
+        <TreeNode
+          key={item[idField]}
+          title={`${item.orgName}(${item[idField]})`}
+        />
+      );
     });
   };
 
@@ -1455,7 +1470,7 @@ class ArchitectureDiagram extends React.Component {
       parentKeys,
       filtedNodes
     } = this.state;
-    const { baseURL, displayFileds, hasView } = this.props;
+    const { baseURL, displayFileds, hasView, idField } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -1529,7 +1544,11 @@ class ArchitectureDiagram extends React.Component {
                     placeholder="岗位名搜索"
                   >
                     {filtedNodes.map(job => {
-                      return <Option value={job.id}>{job.orgName}</Option>;
+                      return (
+                        <Option
+                          value={job.id}
+                        >{`${job.orgName}(${job[idField]})`}</Option>
+                      );
                     })}
                   </Select>
                 </div>
