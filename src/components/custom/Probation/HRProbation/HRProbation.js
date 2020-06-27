@@ -39,15 +39,15 @@ class HRProbation extends React.Component {
   componentDidMount = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const desktop = userInfo.UserInfo.EMP_MAINPAGE;
-    var baseURL=window.pwConfig[
-      process.env.NODE_ENV
-    ].customURLs.onlineTrainning;
-    var baseURLDownload=window.pwConfig[
-      process.env.NODE_ENV
-    ].customURLs.onlineTrainningDownload;
+    var baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainning;
+    var baseURLDownload =
+      window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
 
     this.setState({
-      desktop,baseURL,baseURLDownload
+      desktop,
+      baseURL,
+      baseURLDownload
     });
   };
 
@@ -83,7 +83,6 @@ class HRProbation extends React.Component {
           }
           data.push(item);
         }
-
       });
       this.setState({ spinning: true });
       try {
@@ -393,13 +392,12 @@ class HRProbation extends React.Component {
             />
           </div>
         );
-        case '5':
+      case '5':
         return (
-          <div style={{ height: '100vh',backgroundColor:'#fff'}}>
-            <Tabs defaultActiveKey="_1" >
+          <div style={{ height: '100vh', backgroundColor: '#fff' }}>
+            <Tabs defaultActiveKey="_1">
               <TabPane tab="在线培训完成情况" key="_1">
-              <div style={{height:'calc(100vh - 60px)'}}>
-
+                <div style={{ height: 'calc(100vh - 60px)' }}>
                   <TableData
                     baseURL={this.state.baseURL}
                     downloadBaseURL={this.state.baseURLDownload}
@@ -416,51 +414,49 @@ class HRProbation extends React.Component {
                     hasRowModify={false}
                     hasRowSelection={false}
                   />
-                  </div>
+                </div>
               </TabPane>
               <TabPane tab="在线培训完成明细" key="_2">
-              <div style={{height:'calc(100vh - 60px)'}}>
-
+                <div style={{ height: 'calc(100vh - 60px)' }}>
                   <TableData
-                  baseURL={this.state.baseURL}
-                  downloadBaseURL={this.state.baseURLDownload}
-                  resid="636217231879"
-                  key="5"
-                  subtractH={240}
-                  hasAdd={false}
-                  tableComponent="ag-grid"
-                  hasRowView={false}
-                  hasRowDelete={false}
-                  hasRowEdit={false}
-                  hasDelete={false}
-                  hasModify={false}
-                  hasRowModify={false}
-                  hasRowSelection={false}
-                />
+                    baseURL={this.state.baseURL}
+                    downloadBaseURL={this.state.baseURLDownload}
+                    resid="636217231879"
+                    key="5"
+                    subtractH={240}
+                    hasAdd={false}
+                    tableComponent="ag-grid"
+                    hasRowView={false}
+                    hasRowDelete={false}
+                    hasRowEdit={false}
+                    hasDelete={false}
+                    hasModify={false}
+                    hasRowModify={false}
+                    hasRowSelection={false}
+                  />
                 </div>
               </TabPane>
-              <TabPane tab="微信推送记录" key="_3" >
-                <div style={{height:'calc(100vh - 60px)'}}>
-                <TableData
-                  baseURL={this.state.baseURL}
-                  downloadBaseURL={this.state.baseURLDownload}
-
-                  resid="637941032529"
-                  key="6"
-                  subtractH={240}
-                  hasAdd={false}
-                  tableComponent="ag-grid"
-                  hasRowView={false}
-                  hasRowDelete={false}
-                  hasRowEdit={false}
-                  hasDelete={false}
-                  hasModify={false}
-                  hasRowModify={false}
-                  hasRowSelection={false}
-                />
+              <TabPane tab="微信推送记录" key="_3">
+                <div style={{ height: 'calc(100vh - 60px)' }}>
+                  <TableData
+                    baseURL={this.state.baseURL}
+                    downloadBaseURL={this.state.baseURLDownload}
+                    resid="637941032529"
+                    key="6"
+                    subtractH={240}
+                    hasAdd={false}
+                    tableComponent="ag-grid"
+                    hasRowView={false}
+                    hasRowDelete={false}
+                    hasRowEdit={false}
+                    hasDelete={false}
+                    hasModify={false}
+                    hasRowModify={false}
+                    hasRowSelection={false}
+                  />
                 </div>
               </TabPane>
-            </Tabs>        
+            </Tabs>
           </div>
         );
       default:
@@ -474,7 +470,7 @@ class HRProbation extends React.Component {
         className="hr-probation"
         style={{
           display: 'flex',
-          height: desktop === 'DESKTOP' ? '100%' : 'calc(100vh - 160px)'
+          height: '100%'
         }}
       >
         <div
