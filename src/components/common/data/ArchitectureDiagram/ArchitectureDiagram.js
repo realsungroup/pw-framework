@@ -1098,7 +1098,7 @@ class ArchitectureDiagram extends React.Component {
         title: '清空岗位人员',
         content: (
           <div>
-            此岗位的兼职人员将被清空，请确认
+            此岗位的任职人员将被清空，请确认
             <div>
               生效日期：
               {this.state.selectedDate.format('YYYY-MM-DD')}
@@ -1148,7 +1148,10 @@ class ArchitectureDiagram extends React.Component {
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
-    if (node.isVirtual !== 'Y' && node.PartOccupiedPnId) {
+    if (
+      node.isVirtual !== 'Y' &&
+      (node.PartOccupiedPnId && node.PartOccupiedPnId !== 'N/A')
+    ) {
       return message.info('IDL岗位，不可添加多人');
     }
     this.props.openModalOrDrawer(
@@ -1211,10 +1214,9 @@ class ArchitectureDiagram extends React.Component {
                         });
                         await this.clearCache();
                         this.setState({ loading: false });
-                        message.success('任职成功');
                         this.props.closeModalOrDrawer();
                         await this.getData();
-
+                        message.success('任职成功');
                         if (node.id) {
                           this.chart.center(node.id);
                         }
