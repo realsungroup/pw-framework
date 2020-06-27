@@ -794,3 +794,9 @@ export const WageCardInformation = Loadable({
     return minLoading;
   }
 });
+export const PersonnelImport = Loadable({
+  loader: () => import('./PersonnelImport'),
+  loading() {
+    return minLoading;
+  }
+});
