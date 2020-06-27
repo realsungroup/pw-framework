@@ -164,5 +164,6 @@ export {
   SubordinateAchievements,
   AchievementResult,
   AchievementsGradeAppraising,
-  WageCardInformation
+  WageCardInformation,
+  PersonnelImport
 } from '../components/custom/loadableCustom';

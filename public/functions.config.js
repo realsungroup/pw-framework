@@ -864,7 +864,7 @@ window[606071626403] = {
     formProps: {
       height: 500
     },
-    subtractH: 240,
+    subtractH: 200,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -2099,7 +2099,7 @@ window[628885904481] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -2124,7 +2124,7 @@ window[628886558788] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -2151,7 +2151,7 @@ window[629200936654] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -2318,7 +2318,7 @@ window[642853675476] = {
     // formProps: {
     //   // height: 500
     // },
-    // subtractH: 240
+    // subtractH: 200
   }
 };
 
@@ -2341,7 +2341,7 @@ window[642853692520] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -2365,7 +2365,7 @@ window[646240367975] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853703890] = {
@@ -2391,7 +2391,7 @@ window[642853703890] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853717153] = {
@@ -2413,7 +2413,7 @@ window[642853717153] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853731843] = {
@@ -2435,7 +2435,7 @@ window[642853731843] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853756410] = {
@@ -2457,7 +2457,7 @@ window[642853756410] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853770096] = {
@@ -2481,7 +2481,7 @@ window[642853770096] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853871961] = {
@@ -2507,7 +2507,7 @@ window[642853871961] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853893908] = {
@@ -2533,7 +2533,7 @@ window[642853893908] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853907777] = {
@@ -2555,7 +2555,7 @@ window[642853907777] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853918132] = {
@@ -2579,7 +2579,7 @@ window[642853918132] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       375292357468: {
@@ -2610,7 +2610,7 @@ window[642853928356] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642853955171] = {
@@ -2635,7 +2635,7 @@ window[642853955171] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854041376] = {
@@ -2660,7 +2660,7 @@ window[642854041376] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854056479] = {
@@ -2684,7 +2684,7 @@ window[642854056479] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854067180] = {
@@ -2711,7 +2711,7 @@ window[642854067180] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       441994427244: {
@@ -2756,10 +2756,14 @@ window[642854077482] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isSetColumnWidth:false,
+    advSearch:{
+      // formName:"defaultSearch"
+      isRequestFormData:false,
+    },
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854088542] = {
@@ -2781,10 +2785,14 @@ window[642854088542] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
+    advSearch:{
+      formName:"defaultSearch"
+    },
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854098292] = {
@@ -2811,7 +2819,7 @@ window[642854098292] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       435419664427: {
@@ -2840,7 +2848,10 @@ window[642854107052] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854117487] = {
@@ -2865,7 +2876,10 @@ window[642854117487] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854131163] = {
@@ -2891,7 +2905,10 @@ window[642854131163] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854141907] = {
@@ -2914,7 +2931,10 @@ window[642854141907] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854704644] = {
@@ -2936,7 +2956,7 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854157717] = {
@@ -2958,7 +2978,7 @@ window[642854157717] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856273477] = {
@@ -2985,7 +3005,7 @@ window[642856273477] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[618661462541] = {
@@ -3011,7 +3031,7 @@ window[618661462541] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855799959] = {
@@ -3041,7 +3061,7 @@ window[642856262431] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856283564] = {
@@ -3063,7 +3083,7 @@ window[642856283564] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854180216] = {
@@ -3085,7 +3105,7 @@ window[642854180216] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854999190] = {
@@ -3107,7 +3127,7 @@ window[642854999190] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855062753] = {
@@ -3130,7 +3150,7 @@ window[642855062753] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854713880] = {
@@ -3152,7 +3172,7 @@ window[642854713880] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854200143] = {
@@ -3181,7 +3201,7 @@ window[642854200143] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854211673] = {
@@ -3205,7 +3225,7 @@ window[642854211673] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854223262] = {
@@ -3227,7 +3247,7 @@ window[642854223262] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854235003] = {
@@ -3251,7 +3271,7 @@ window[642854235003] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854252939] = {
@@ -3273,7 +3293,7 @@ window[642854252939] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854266702] = {
@@ -3295,7 +3315,7 @@ window[642854266702] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854279289] = {
@@ -3318,7 +3338,7 @@ window[642854279289] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854434101] = {
@@ -3341,7 +3361,10 @@ window[642854434101] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854450973] = {
@@ -3364,7 +3387,10 @@ window[642854450973] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854462178] = {
@@ -3387,7 +3413,10 @@ window[642854462178] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854476015] = {
@@ -3410,7 +3439,10 @@ window[642854476015] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642868834485] = {
@@ -3435,7 +3467,10 @@ window[642868834485] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854616358] = {
@@ -3447,6 +3482,8 @@ window[642854616358] = {
     resid: 435842967084,
     actionBarWidth: 200,
     hasAdd: true,
+    addText:'添加离职人员',
+    modifyText:'修改离职日期',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
@@ -3457,7 +3494,7 @@ window[642854616358] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854648916] = {
@@ -3480,7 +3517,10 @@ window[642854648916] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854660698] = {
@@ -3507,7 +3547,7 @@ window[642854660698] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       423574450430: {
@@ -3553,7 +3593,7 @@ window[642854669532] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854678648] = {
@@ -3580,7 +3620,10 @@ window[642854678648] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854689917] = {
@@ -3607,7 +3650,10 @@ window[642854689917] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854704644] = {
@@ -3629,7 +3675,7 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854723134] = {
@@ -3653,7 +3699,7 @@ window[642854723134] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854733765] = {
@@ -3676,7 +3722,10 @@ window[642854733765] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854743729] = {
@@ -3699,7 +3748,10 @@ window[642854743729] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854754543] = {
@@ -3722,7 +3774,10 @@ window[642854754543] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854868542] = {
@@ -3745,7 +3800,10 @@ window[642854868542] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854784459] = {
@@ -3758,9 +3816,9 @@ window[642854784459] = {
     actionBarWidth: 200,
     hasAdd: false,
     hasBeBtns: true,
-    hasModify: false,
+    hasModify: true,
     hasBackBtn: true,
-    hasDelete: false,
+    hasDelete: true,
     hasRowModify: false,
     isUseFormDefine: false,
     hasRowView: true,
@@ -3768,7 +3826,10 @@ window[642854784459] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854766667] = {
@@ -3779,11 +3840,11 @@ window[642854766667] = {
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 429706598519,
     actionBarWidth: 200,
-    hasAdd: false,
+    hasAdd: true,
     hasBeBtns: true,
-    hasModify: false,
+    hasModify: true,
     hasBackBtn: true,
-    hasDelete: false,
+    hasDelete: true,
     hasRowModify: false,
     hasRowView: true,
     isUseFormDefine: false,
@@ -3791,7 +3852,7 @@ window[642854766667] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854803335] = {
@@ -3816,7 +3877,7 @@ window[642854803335] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854814341] = {
@@ -3839,7 +3900,10 @@ window[642854814341] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854826219] = {
@@ -3862,7 +3926,10 @@ window[642854826219] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642865344500] = {
@@ -3886,7 +3953,7 @@ window[642865344500] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854845983] = {
@@ -3908,7 +3975,7 @@ window[642854845983] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854858872] = {
@@ -3930,7 +3997,7 @@ window[642854858872] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -3955,7 +4022,7 @@ window[642854885216] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642854896162] = {
@@ -3978,7 +4045,10 @@ window[642854896162] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642865689790] = {
@@ -4001,7 +4071,10 @@ window[642865689790] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854917620] = {
@@ -4024,7 +4097,10 @@ window[642854917620] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642854999190] = {
@@ -4046,7 +4122,7 @@ window[642854999190] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865743568] = {
@@ -4069,7 +4145,10 @@ window[642865743568] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855062753] = {
@@ -4085,13 +4164,15 @@ window[642855062753] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
+    deleteText:'作废删除',
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865760883] = {
@@ -4114,7 +4195,10 @@ window[642865760883] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855075847] = {
@@ -4138,7 +4222,10 @@ window[642855075847] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855085886] = {
@@ -4162,7 +4249,10 @@ window[642855085886] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855095782] = {
@@ -4185,7 +4275,10 @@ window[642855095782] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855105931] = {
@@ -4208,7 +4301,10 @@ window[642855105931] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855115194] = {
@@ -4231,7 +4327,10 @@ window[642855115194] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642868538751] = {
@@ -4255,7 +4354,10 @@ window[642868538751] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855166893] = {
@@ -4277,7 +4379,7 @@ window[642855166893] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855176494] = {
@@ -4301,7 +4403,7 @@ window[642855176494] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       449439564546: {
@@ -4337,7 +4439,10 @@ window[642855189869] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642855262376] = {
@@ -4365,7 +4470,7 @@ window[642855262376] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       518464309741: {
@@ -4402,7 +4507,7 @@ window[642855273462] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       518464309741: {
@@ -4427,9 +4532,9 @@ window[642855707652] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
     isUseFormDefine: false,
     advSearch:{
       formName:'defaultSearch'
@@ -4437,7 +4542,7 @@ window[642855707652] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855719230] = {
@@ -4462,7 +4567,7 @@ window[642855719230] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       522692921247: {
@@ -4502,7 +4607,7 @@ window[642855734719] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855746711] = {
@@ -4530,7 +4635,7 @@ window[642855746711] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       621522106327: {
@@ -4565,7 +4670,7 @@ window[642855760886] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855770350] = {
@@ -4584,10 +4689,12 @@ window[642855770350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    recordFormUseAbsolute:true,
     formProps: {
       // height: 500
+      width:1250
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642855780253] = {
@@ -4614,7 +4721,7 @@ window[642855780253] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       518461643267: {
@@ -4653,7 +4760,7 @@ window[644083949537] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       518986543520: {
@@ -4691,7 +4798,10 @@ window[642856303619] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856315965] = {
@@ -4717,7 +4827,10 @@ window[642856315965] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      advSearch:{
+        isRequestFormData:false,
+      },
+      subtractH: 200
     },
     subTablesProps: {
       561550682069: {
@@ -4760,7 +4873,7 @@ window[642856328223] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856338095] = {
@@ -4783,7 +4896,10 @@ window[642856338095] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856348581] = {
@@ -4806,7 +4922,10 @@ window[642856348581] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856357054] = {
@@ -4829,7 +4948,10 @@ window[642856357054] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856366737] = {
@@ -4852,7 +4974,10 @@ window[642856366737] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856395014] = {
@@ -4874,7 +4999,7 @@ window[642856395014] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856420818] = {
@@ -4897,7 +5022,7 @@ window[642856420818] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856432739] = {
@@ -4920,7 +5045,10 @@ window[642856432739] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856442104] = {
@@ -4942,7 +5070,7 @@ window[642856442104] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856451989] = {
@@ -4950,7 +5078,7 @@ window[642856451989] = {
   title: '经济补偿金', // 功能模块名称
   props: {
     baseURL: 'http://ngrok5.realsun.me:6060',
-    downloadBaseURL: 'http://ngrok30.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 466092254274,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4965,7 +5093,10 @@ window[642856451989] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856463210] = {
@@ -4987,7 +5118,7 @@ window[642856463210] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856472970] = {
@@ -4998,7 +5129,6 @@ window[642856472970] = {
     actionBarWidth: 200,
     baseURL: 'http://ngrok5.realsun.me:6060',
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
-
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -5010,7 +5140,7 @@ window[642856472970] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856600971] = {
@@ -5032,7 +5162,7 @@ window[642856600971] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856612138] = {
@@ -5056,7 +5186,10 @@ window[642856612138] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856627631] = {
@@ -5080,7 +5213,7 @@ window[642856627631] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856644144] = {
@@ -5100,10 +5233,14 @@ window[642856644144] = {
     hasRowView: true,
     hasRowDelete: true,
     isSetColumnWidth:false,
+    isUseFormDefine:false,
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856652519] = {
@@ -5129,7 +5266,7 @@ window[642856652519] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       631908306906: {
@@ -5517,7 +5654,7 @@ window[642856661616] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       526569913543: {
@@ -5741,7 +5878,10 @@ window[642856673827] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856682732] = {
@@ -5764,7 +5904,7 @@ window[642856682732] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856691841] = {
@@ -5787,7 +5927,7 @@ window[642856691841] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856702868] = {
@@ -5810,7 +5950,10 @@ window[642856702868] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856714810] = {
@@ -5834,7 +5977,10 @@ window[642856714810] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856723891] = {
@@ -5861,7 +6007,10 @@ window[642856723891] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      advSearch:{
+        isRequestFormData:false,
+      },
+      subtractH: 200
     },
     subTablesProps: {
       537453474424: {
@@ -5898,7 +6047,10 @@ window[642856733155] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856745730] = {
@@ -5925,7 +6077,10 @@ window[642856745730] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856753982] = {
@@ -5952,7 +6107,10 @@ window[642856753982] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856763791] = {
@@ -5976,7 +6134,7 @@ window[642856763791] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       244153076250: {
@@ -6013,7 +6171,7 @@ window[642856772119] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      subtractH: 200
     },
     subTablesProps: {
       433706772782: {
@@ -6048,7 +6206,10 @@ window[642856782319] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856799479] = {
@@ -6075,7 +6236,10 @@ window[642856799479] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856807541] = {
@@ -6102,7 +6266,10 @@ window[642856807541] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856817466] = {
@@ -6129,7 +6296,10 @@ window[642856817466] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642856836829] = {
@@ -6154,7 +6324,7 @@ window[642856836829] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642856846560] = {
@@ -6178,7 +6348,7 @@ window[642856846560] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858017774] = {
@@ -6202,7 +6372,7 @@ window[642858017774] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858195015] = {
@@ -6225,7 +6395,7 @@ window[642858195015] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858209225] = {
@@ -6248,7 +6418,7 @@ window[642858209225] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858219205] = {
@@ -6271,7 +6441,7 @@ window[642858219205] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858230550] = {
@@ -6293,7 +6463,7 @@ window[642858230550] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858239772] = {
@@ -6315,7 +6485,7 @@ window[642858239772] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858250217] = {
@@ -6338,7 +6508,7 @@ window[642858250217] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858265046] = {
@@ -6361,7 +6531,7 @@ window[642858265046] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858275747] = {
@@ -6384,7 +6554,7 @@ window[642858275747] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858287535] = {
@@ -6408,7 +6578,7 @@ window[642858287535] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[643038878833] = {
@@ -6431,7 +6601,7 @@ window[643038878833] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858302008] = {
@@ -6455,7 +6625,7 @@ window[642858302008] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -6479,7 +6649,7 @@ window[642858311245] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858321470] = {
@@ -6502,7 +6672,7 @@ window[642858321470] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858331244] = {
@@ -6525,7 +6695,7 @@ window[642858331244] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858341571] = {
@@ -6549,7 +6719,7 @@ window[642858341571] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858355008] = {
@@ -6572,7 +6742,7 @@ window[642858355008] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -6597,7 +6767,7 @@ window[642858364531] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858381832] = {
@@ -6623,7 +6793,7 @@ window[642858381832] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858651331] = {
@@ -6648,7 +6818,10 @@ window[642858651331] = {
       formProps: {
         // height: 500
       },
-      subtractH: 240
+      advSearch:{
+        isRequestFormData:false,
+      },
+      subtractH: 200
     },
     subTableProps: {
       421696601858: {
@@ -6679,7 +6852,10 @@ window[642858661984] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642858671562] = {
@@ -6702,7 +6878,7 @@ window[642858671562] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858680954] = {
@@ -6725,10 +6901,14 @@ window[642858680954] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
+    isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642858691148] = {
@@ -6754,7 +6934,10 @@ window[642858691148] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642858700263] = {
@@ -6778,7 +6961,10 @@ window[642858700263] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642858711892] = {
@@ -6800,7 +6986,7 @@ window[642858711892] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642858815692] = {
@@ -6824,7 +7010,10 @@ window[642858815692] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642858825314] = {
@@ -6847,7 +7036,10 @@ window[642858825314] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
   }
 };
 window[642864859197] = {
@@ -6869,7 +7061,7 @@ window[642864859197] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864873312] = {
@@ -6891,7 +7083,7 @@ window[642864873312] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864883370] = {
@@ -6913,7 +7105,7 @@ window[642864883370] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864894557] = {
@@ -6935,7 +7127,7 @@ window[642864894557] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864905946] = {
@@ -6957,7 +7149,7 @@ window[642864905946] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864915093] = {
@@ -6980,7 +7172,7 @@ window[642864915093] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864924530] = {
@@ -7003,7 +7195,7 @@ window[642864924530] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864936700] = {
@@ -7026,7 +7218,7 @@ window[642864936700] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864955816] = {
@@ -7055,7 +7247,7 @@ window[642864955816] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642864965745] = {
@@ -7081,7 +7273,7 @@ window[642864965745] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865093743] = {
@@ -7106,7 +7298,7 @@ window[642865093743] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865104085] = {
@@ -7132,7 +7324,7 @@ window[642865104085] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865117751] = {
@@ -7158,7 +7350,7 @@ window[642865117751] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865127153] = {
@@ -7187,7 +7379,7 @@ window[642865127153] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865138428] = {
@@ -7210,7 +7402,7 @@ window[642865138428] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865148916] = {
@@ -7233,7 +7425,7 @@ window[642865148916] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865159694] = {
@@ -7256,7 +7448,7 @@ window[642865159694] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865168807] = {
@@ -7279,7 +7471,7 @@ window[642865168807] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865180079] = {
@@ -7302,7 +7494,7 @@ window[642865180079] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865189736] = {
@@ -7325,7 +7517,7 @@ window[642865189736] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865230273] = {
@@ -7347,7 +7539,7 @@ window[642865230273] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865241049] = {
@@ -7369,7 +7561,7 @@ window[642865241049] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[646235959397] = {
@@ -7392,7 +7584,7 @@ window[646235959397] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865251509] = {
@@ -7418,7 +7610,7 @@ window[642865251509] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865263466] = {
@@ -7441,7 +7633,7 @@ window[642865263466] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865468370] = {
@@ -7467,7 +7659,7 @@ window[642865468370] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865477980] = {
@@ -7490,7 +7682,7 @@ window[642865477980] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865487428] = {
@@ -7513,7 +7705,7 @@ window[642865487428] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865500060] = {
@@ -7536,7 +7728,7 @@ window[642865500060] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865508238] = {
@@ -7560,7 +7752,7 @@ window[642865508238] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865517021] = {
@@ -7583,7 +7775,7 @@ window[642865517021] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865529507] = {
@@ -7607,7 +7799,7 @@ window[642865529507] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865539047] = {
@@ -7631,7 +7823,7 @@ window[642865539047] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 window[642865548263] = {
@@ -7655,7 +7847,7 @@ window[642865548263] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7679,7 +7871,7 @@ window[642854837350] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7704,10 +7896,11 @@ window[642854549263] = {
         subTableName: '考勤日报',
         subResid: 375296167687,
         tableProps: {
+          height: 560,
           baseURL: 'http://ngrok5.realsun.me:6060',
           actionBarWidth: 200,
           isUseFormDefine:false,
-          subtractH:300
+          subtractH: 170
         }
       }
     ],
@@ -7715,7 +7908,7 @@ window[642854549263] = {
       // height: 500
       width:'100vw'
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7739,7 +7932,7 @@ window[640366579330] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7768,7 +7961,7 @@ window[644335881606] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7796,7 +7989,7 @@ window[644327624410] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7823,7 +8016,7 @@ window[645027658426] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
@@ -7944,12 +8137,12 @@ window[645649238968] = {
     formProps: {
       // height: 500
     },
-    subtractH: 240
+    subtractH: 200
   }
 };
 
-window[460898301416] = {
-  name:"PersonnelImport",
+window[646330411706] = {
+  name: 'PersonnelImport',
   title:'人事信息批量导入',
   props:{
 

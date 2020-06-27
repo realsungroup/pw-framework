@@ -42,7 +42,7 @@ class PersonnelImport extends React.Component {
               actionBarWidth: 220,
               recordFormType: 'modal',
               isUseFormDefine:false,
-              isSetColumnWidth:false,
+              // isSetColumnWidth:false,
               isWrap:true,
               formProps: {
                 height: 650
@@ -65,7 +65,7 @@ class PersonnelImport extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               isUseFormDefine:false,
-              isSetColumnWidth:false,
+              // isSetColumnWidth:false,
               isWrap:true,
               formProps: {
                 height: 650
@@ -89,7 +89,7 @@ class PersonnelImport extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               isUseFormDefine:false,
-              isSetColumnWidth:false,
+              // isSetColumnWidth:false,
               isWrap:true,
               formProps: {
                 height: 650

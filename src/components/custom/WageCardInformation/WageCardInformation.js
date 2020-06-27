@@ -42,7 +42,6 @@ class WageCardInformation extends React.Component {
               actionBarWidth: 220,
               recordFormType: 'modal',
               isUseFormDefine:false,
-              isSetColumnWidth:false,
               isWrap:true,
               formProps: {
                 height: 650
@@ -65,7 +64,6 @@ class WageCardInformation extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               isUseFormDefine:false,
-              isSetColumnWidth:false,
               isWrap:true,
               formProps: {
                 height: 650
