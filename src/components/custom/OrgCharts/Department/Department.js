@@ -101,9 +101,6 @@ class Department extends React.Component {
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
-      viewHistoryDetailVisible: false,
-      historyData: [], // 选中项的历史记录
-      partHistoryData: [],
       operation: 'add', // FormData用到的prop
       record: {}, // FormData用到的prop
       breadcrumb: [], //面包屑数据
@@ -116,7 +113,6 @@ class Department extends React.Component {
       selectedDate: moment(),
       takeEffectDate: '', //生效日期
       detaileMin: false,
-      historyMin: false,
       resultMin: false,
       hasImportResult: false,
       detailVisible: false,
@@ -260,32 +256,8 @@ class Department extends React.Component {
    * 获取节点数据
    */
   getData = async () => {
-    const {
-      resid,
-      baseURL,
-      idField,
-      pidField,
-      procedureConfig,
-      displayFileds,
-      role
-    } = this.props;
-    const { selectedDate, selectedNode } = this.state;
-    let options = {};
-    if (role === 'manager') {
-      options = {
-        procedure: 'pw_staffs',
-        paranames: 'dates,supPnid,deptcodes,moveup,dept1code',
-        paratypes: 'string,int,string,int,int',
-        resid,
-        paravalues: '20200410,1239,,-1,0'
-      };
-    } else {
-      options = {
-        ...procedureConfig,
-        resid,
-        paravalues: selectedDate.format('YYYYMMDD')
-      };
-    }
+    const { resid, baseURL, idField, pidField } = this.props;
+    const { selectedNode } = this.state;
 
     this.setState({ loading: true });
     try {
@@ -310,18 +282,6 @@ class Department extends React.Component {
           template: 'group_grey'
         };
         const tags = [item.tagsname];
-
-        if (item.isScrap === 'Y') {
-          tags.push('discard');
-        } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
-          tags.push('tartOccupied');
-        } else if (item.isEmpty === 'Y') {
-          tags.push('empty');
-        }
-        if (item.isCreated === 'Y') {
-          tags.push('created');
-        }
-
         const node = {
           ...item,
           id: item[idField],
@@ -347,37 +307,6 @@ class Department extends React.Component {
       console.error(error);
       this.setState({ loading: false });
       return [];
-    }
-  };
-  /**
-   * 获取历史数据
-   */
-  getHistory = async () => {
-    const { resid, baseURL, dblinkname, historyResid } = this.props;
-    const { selectedNode } = this.state;
-    this.p3 && this.p3.cancel();
-    let httpParams = {};
-    // 使用传入的 baseURL
-    if (baseURL) {
-      httpParams.baseURL = baseURL;
-    }
-    this.p3 = makeCancelable(
-      http(httpParams).getTableByHostRecord({
-        resid,
-        subresid: historyResid,
-        hostrecid: selectedNode.REC_ID,
-        dblinkname,
-        getcolumninfo: 1
-      })
-    );
-    try {
-      const res = await this.p3.promise;
-      if (!this._historyColinfo) {
-        this._historyColinfo = res.cmscolumninfo;
-      }
-      this.setState({ historyData: res.data });
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -559,32 +488,6 @@ class Department extends React.Component {
   };
 
   /**
-   * 获取历史表窗体数据
-   */
-  getHistoryFormData = async record => {
-    let res;
-    try {
-      const { historyResid, baseURL } = this.props;
-      this.setState({ loading: true });
-      let httpParams = {};
-      // 使用传入的 baseURL
-      if (baseURL) {
-        httpParams.baseURL = baseURL;
-      }
-      res = await http(httpParams).getFormData({
-        resid: historyResid,
-        formName: 'default'
-      });
-      const formData = dealControlArr(res.data.columns);
-      this._historyDataProp = getDataProp(formData, record, true, false, false);
-    } catch (err) {
-      console.log(err);
-      return message.error(err.message);
-    }
-    this.setState({ loading: false });
-  };
-
-  /**
    * 设置某个节点为根节点
    */
   setRootNode = nodeId => {
@@ -649,13 +552,6 @@ class Department extends React.Component {
 
   closeBroModal = () => this.setState({ addBroVisible: false });
 
-  viewHistoryDetail = () => {
-    this.setState({ viewHistoryDetailVisible: true });
-    this.getHistoryFormData();
-  };
-
-  closeHistoryDetail = () => this.setState({ viewHistoryDetailVisible: false });
-
   handleModeChange = mode => () => this.setState({ mode });
 
   handleSelfDefine = () => this.setState({ selfDefineVisible: true });
@@ -675,7 +571,7 @@ class Department extends React.Component {
       this.chart.config.tags = { selected };
     }
     this.setState({ isGrouping: checked });
-    this.chart.draw();
+    this.chart.load(this.chart.config.nodes);
   };
 
   closeSelfDefineModal = () => this.setState({ selfDefineVisible: false });
@@ -722,43 +618,28 @@ class Department extends React.Component {
     this.closeBroModal();
     if (operation === 'add') {
       const tags = [record.tagsname];
-      if (record.isScrap === 'Y') {
-        tags.push('discard'); //废弃
-      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
-        tags.push('tartOccupied'); //兼任
-      } else if (record.isEmpty === 'Y') {
-        tags.push('empty'); //空缺
-      }
       const node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
         tags
       };
+      this.getData();
       message.success('添加成功');
-      this.chart.addNode(node);
-      this._nodes.push(node);
+      // this.chart.addNode(node);
+      // this._nodes.push(node);
     } else if (operation === 'modify') {
-      // const oldTags = this.chart.get(record[idField]).tags;
-      const tags = [record.tagsname];
-      if (record.isScrap === 'Y') {
-        tags.push('discard'); //废弃
-      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
-        tags.push('tartOccupied'); //兼任
-      } else if (record.isEmpty === 'Y') {
-        tags.push('empty'); //空缺
-      }
       const node = {
         ...record,
         id: record[idField],
         pid: record[pidField],
-        tags: [...tags, selected]
+        tags: [selected]
       };
       message.success('修改成功');
       this.setState({ selectedNode: node }, () => {
-        this.getHistory();
+        this.getData();
       });
-      this.chart.updateNode(node);
+      // this.chart.updateNode(node);
     }
   };
 
@@ -778,73 +659,6 @@ class Department extends React.Component {
       this._nodes = [...this.chart.config.nodes];
       if (selectedNode.id) {
         this.chart.center(selectedNode.id);
-      }
-    });
-  };
-
-  /**
-   *
-   */
-  handleDisableEnable = value => () => {
-    Modal.confirm({
-      title: value === 'disable' ? '停用' : '启用',
-      content: (
-        <div>
-          <div>生效日期：</div>
-          <DatePicker
-            onChange={(date, dateString) => {
-              this.setState({ takeEffectDate: dateString });
-            }}
-            placeholder="请选择生效日期"
-            showToday
-            defaultValue={this.state.selectedDate}
-          />
-        </div>
-      ),
-      onOk: async () => {
-        const { takeEffectDate, selectedNode, selectedDate } = this.state;
-        const { baseURL, resid } = this.props;
-        try {
-          let httpParams = {};
-          // 使用传入的 baseURL
-          if (baseURL) {
-            httpParams.baseURL = baseURL;
-          }
-          const isScrap = value === 'disable' ? 'Y' : 'N';
-          this.setState({ loading: true });
-          const res = await http(httpParams).modifyRecords({
-            resid,
-            data: [
-              {
-                REC_ID: selectedNode.REC_ID,
-                isScrap,
-                isCreated: 'N',
-                updateDate: takeEffectDate || selectedDate
-              }
-            ]
-          });
-          message.info('操作成功');
-          const data = res.data[0];
-          const tags = [selected];
-          if (data.isScrap === 'Y') {
-            tags.push('discard'); //废弃
-          } else if (data.isEmpty === 'Y' && data.PartOccupiedPnId) {
-            tags.push('tartOccupied'); //兼任
-          } else if (data.isEmpty === 'Y') {
-            tags.push('empty'); //空缺
-          }
-          const node = {
-            ...selectedNode,
-            ...data,
-            tags: [...tags]
-          };
-          this.chart.updateNode(node);
-          this.setState({ loading: false, selectedNode: node });
-        } catch (error) {
-          this.setState({ loading: false });
-          console.log(error);
-          message.error(error.message);
-        }
       }
     });
   };
@@ -882,17 +696,9 @@ class Department extends React.Component {
   };
 
   renderHeader = () => {
-    const { mode, isGrouping, selectedNode, currentLevel } = this.state;
+    const { mode, isGrouping } = this.state;
     const { hasOpration, hasGroup } = this.props;
-    const enable = selectedNode.isScrap === '' || selectedNode.isScrap === null;
-    const disable = selectedNode.isScrap === 'N';
-    let opration = '';
-    if (selectedNode.isScrap === '') {
-      opration = 'enable';
-    }
-    if (selectedNode.isScrap === 'N') {
-      opration = 'disable';
-    }
+
     return (
       <header className="department-chart_header">
         {mode === 'chart' && hasGroup && (
@@ -973,34 +779,6 @@ class Department extends React.Component {
               />
               修改
             </div>
-            {selectedNode.REC_ID && (
-              <div
-                className={classNames('department-chart_header_icon-button ', {
-                  'disable-button': disable,
-                  'enable-button': enable
-                })}
-                onClick={this.handleDisableEnable(opration)}
-              >
-                {disable && (
-                  <>
-                    <Icon
-                      type="logout"
-                      className="department-chart_header_icon-button__icon"
-                    />
-                    停用
-                  </>
-                )}
-                {enable && (
-                  <>
-                    <Icon
-                      type="login"
-                      className="department-chart_header_icon-button__icon"
-                    />
-                    启用
-                  </>
-                )}
-              </div>
-            )}
           </div>
         )}
         {mode === 'chart' && (
@@ -1135,8 +913,6 @@ class Department extends React.Component {
     const {
       selectedNode,
       addBroVisible,
-      historyData,
-      viewHistoryDetailVisible,
       operation,
       record,
       loading,
@@ -1144,21 +920,12 @@ class Department extends React.Component {
       selfDefineVisible,
       selectedDate,
       detaileMin,
-      detailVisible,
-      departmentTreeVisible,
       filtedNodes,
       rootKey,
       parentKeys,
       treeData
     } = this.state;
-    const {
-      resid,
-      baseURL,
-      displayFileds,
-      hasView,
-      idField,
-      hasDepartmentFilter
-    } = this.props;
+    const { resid, baseURL, displayFileds, hasView } = this.props;
     return (
       <div className="department-chart">
         <Spin spinning={loading}>
@@ -1463,119 +1230,6 @@ class Department extends React.Component {
               </Select>
             </Form.Item>
           </Form>
-        </Drawer>
-        <Drawer
-          visible={detailVisible}
-          width="70vw"
-          onCancel={this.closeDetaileModal}
-          onOk={this.closeDetaileModal}
-          onClose={this.closeDetaileModal}
-          destroyOnClose
-          title="变动记录"
-          placement="left"
-        >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ marginBottom: 12 }}>
-              <img
-                src={selectedNode[displayFileds.imgField]}
-                style={{ height: 48, width: 48 }}
-                alt="人员照片"
-              />
-              <span
-                style={{
-                  color: '#000',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  marginRight: 24
-                }}
-              >
-                {selectedNode[displayFileds.firstField]}
-              </span>
-              <span>{selectedNode[displayFileds.secondaryField]}</span>
-            </div>
-            <div style={{ height: 500 }}>
-              <TableData
-                baseURL={baseURL}
-                resid={'638643664427'}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                refTargetComponentName="TableData"
-                // subtractH={240}
-                hasAdd={false}
-                // tableComponent="ag-grid"
-                // rowSelectionAg={ 'single' }
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                hasRowSelection={false}
-                cmswhere={`C3_305737857578 = '${selectedNode.memberCode}'`}
-                hasAdvSearch={false}
-                importConfig={null}
-                actionBarWidth={100}
-              />
-            </div>
-          </div>
-        </Drawer>
-        <Drawer
-          visible={viewHistoryDetailVisible}
-          onClose={this.closeHistoryDetail}
-          destroyOnClose
-          width={800}
-        >
-          <FormData
-            info={{ dataMode: 'main', resid: this.props.historyResid }}
-            operation="view"
-            data={this._historyDataProp}
-            // record={}
-            useAbsolute={true}
-            // formProps={{ width: 500 }}
-            baseURL={this.props.baseURL}
-          />
-        </Drawer>
-        <Drawer
-          title="部门筛选"
-          onClose={() => {
-            this.setState({
-              departmentTreeVisible: false
-            });
-          }}
-          width={500}
-          placement="left"
-          visible={departmentTreeVisible}
-        >
-          <TreeData
-            resid="417643880834"
-            baseURL={baseURL}
-            idField="DEP_ID"
-            pidField="DEP_PID"
-            titleField="DEP_NAME"
-            rootNode={{
-              title: 'Enterprise',
-              key: 0
-            }}
-            onCheck={checkedKeys => {
-              if (checkedKeys.length) {
-                const nodes = this._nodes.filter(node => {
-                  return checkedKeys.some(key => {
-                    return node.HRUSER_DEPID == key;
-                  });
-                });
-                this.chart.load(nodes);
-                this.setState({
-                  selectedNode: {},
-                  breadcrumb: []
-                });
-              } else {
-                this.chart.load(this._nodes);
-                this.setState({
-                  selectedNode: {},
-                  breadcrumb: []
-                });
-              }
-            }}
-          />
         </Drawer>
       </div>
     );
