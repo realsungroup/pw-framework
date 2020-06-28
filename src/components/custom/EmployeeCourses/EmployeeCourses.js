@@ -362,8 +362,8 @@ class EmployeeCourses extends React.Component {
         last_result = '审核中';
       }
       approvalRecords.push({
-        name: '韩曌',
-        employeeID: '38029',
+        name: selectedCourse.HRName,
+        employeeID: selectedCourse.HRNum,
         time: selectedCourse.passTime,
         result: last_result
       });
