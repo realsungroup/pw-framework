@@ -8,7 +8,7 @@ import moment from 'moment';
 const baseURLDownload =
   window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
 class CourseCompletion extends React.Component {
-  state = { authData: [], dataSource: [], loading: true, scroll: { x: 500 } };
+  state = { authData: [], dataSource: [], loading: true };
   _column = [
     {
       title: '姓名',
@@ -37,6 +37,12 @@ class CourseCompletion extends React.Component {
       dataIndex: 'C3_644180155102',
       key: 'C3_644180155102',
       width: 100
+    },
+    {
+      title: '答题时间',
+      dataIndex: 'REC_CRTTIME',
+      key: 'REC_CRTTIME'
+      // width: 200
     }
   ];
   componentDidMount() {
@@ -58,9 +64,9 @@ class CourseCompletion extends React.Component {
         return authData.data.some(i => i.ID == item.C3_636040949514);
       });
       dataSource.forEach(item => {
-        item.jobId = authData.data.find(
-          i => i.ID == item.C3_636040949514
-        ).jobId;
+        const data = authData.data.find(i => i.ID == item.C3_636040949514);
+        item.jobId = data.jobId;
+        item.REC_CRTTIME = data.REC_CRTTIME;
       });
       dataSourceData.cmscolumninfo.forEach(item => {
         this._column.push({
@@ -72,12 +78,7 @@ class CourseCompletion extends React.Component {
       });
       this.setState({
         authData: authData.data,
-        dataSource: dataSource,
-        scroll: {
-          x: this._column.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.width;
-          }, 0)
-        }
+        dataSource: dataSource
       });
     } catch (error) {
       console.error(error);
@@ -152,7 +153,7 @@ class CourseCompletion extends React.Component {
     toExcel.saveExcel();
   };
   render() {
-    const { dataSource, loading, scroll } = this.state;
+    const { dataSource, loading } = this.state;
     const { chapter, baseURL, course } = this.props;
     return chapter.C3_636735464189 ? (
       <div>
@@ -170,8 +171,9 @@ class CourseCompletion extends React.Component {
           dataSource={dataSource}
           loading={loading}
           columns={this._column}
-          scroll={scroll}
+          scroll={{ x: 'max-content' }}
           pagination={{ pageSize: 40 }}
+          bordered
         />
       </div>
     ) : (
