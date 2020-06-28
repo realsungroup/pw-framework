@@ -1160,7 +1160,8 @@ class EmployeeCourses extends React.Component {
                   </>
                 )}
                 {courseType === '内训' &&
-                  selectedCourse.isInnerFeedBack === 'ing' && (
+                  selectedCourse.isInnerFeedBack === 'ing' &&
+                  isAfterEnd && (
                     <button
                       onClick={() =>
                         this.setState({
