@@ -596,7 +596,7 @@ class TestCourse extends React.Component {
           width="90vw"
           destroyOnClose
           footer={null}
-          title="课程完成情况"
+          title="考试完成情况"
         >
           <CourseCompletion
             course={selectedCourse}
