@@ -81,12 +81,11 @@ class Authorize extends React.Component {
       const auth = this.state.authData.find(
         item => item.C3_611265257987 === record.C3_609622254861
       );
-      await http().modifyRecords({
+      await http().removeRecords({
         resid: '611318802160',
         data: [
           {
-            REC_ID: auth.REC_ID,
-            C3_611265267987: 'N'
+            REC_ID: auth.REC_ID
           }
         ]
       });
