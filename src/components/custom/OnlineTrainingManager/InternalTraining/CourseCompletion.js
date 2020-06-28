@@ -14,7 +14,7 @@ class CourseCompletion extends React.Component {
       title: '姓名',
       dataIndex: 'C3_636040900146',
       key: 'C3_636040900146',
-      width: 100,
+      
       fixed: 'left'
     },
     {
