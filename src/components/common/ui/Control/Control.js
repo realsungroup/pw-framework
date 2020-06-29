@@ -151,9 +151,9 @@ class Control extends React.Component {
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (
@@ -310,7 +310,7 @@ class Control extends React.Component {
         this.stream.getTracks().forEach(track => track.stop());
         this.stream = null;
         this.canvas = null;
-      } catch (err) {}
+      } catch (err) { }
 
       this.setState({
         takePictureVisible: false,
@@ -491,13 +491,12 @@ class Control extends React.Component {
         }
 
         case 'Image': {
-          return (
-            <img
-              src={value}
-              alt={value}
-              style={{ width: customStyle.width, height: customStyle.height }}
-            ></img>
-          );
+          return value ? <img
+            src={value}
+            alt={value}
+            style={{ width: customStyle.width, height: customStyle.height }}
+          ></img> : ''
+
         }
 
         default: {
@@ -635,13 +634,12 @@ class Control extends React.Component {
           );
         }
         case 'Image': {
-          return (
-            <img
-              src={value}
-              alt={value}
-              style={{ width: customStyle.width, height: customStyle.height }}
-            ></img>
-          );
+          return value ? <img
+            src={value}
+            alt={value}
+            style={{ width: customStyle.width, height: customStyle.height }}
+          ></img> : ''
+
         }
         default: {
           return <div>{value}</div>;
