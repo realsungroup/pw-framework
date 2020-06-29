@@ -84,7 +84,7 @@ class DepartmentAuth extends React.Component {
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={true}
+          hasRowView={false}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}
