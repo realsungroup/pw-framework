@@ -87,7 +87,7 @@ class DirectEvaluate extends React.Component {
   fetchMainData = async () => {
     try {
       this.setState({ fetcinghMainData: true });
-      const res = await http({baseURL:this.props.baseURL}).getTable({
+      const res = await http({ baseURL: this.props.baseURL }).getTable({
         resid
       });
       this.setState({
@@ -110,8 +110,14 @@ class DirectEvaluate extends React.Component {
   fetchFormData = async () => {
     try {
       const pArr = [];
-      pArr[0] = http({baseURL:this.props.baseURL}).getFormData({ resid, formName: '员工直评' });
-      pArr[1] = http({baseURL:this.props.baseURL}).getFormData({ resid, formName: '员工年末直评' });
+      pArr[0] = http({ baseURL: this.props.baseURL }).getFormData({
+        resid,
+        formName: '员工直评'
+      });
+      pArr[1] = http({ baseURL: this.props.baseURL }).getFormData({
+        resid,
+        formName: '员工年末直评'
+      });
       const resArr = await Promise.all(pArr);
       this._formDataObj.员工直评 = dealControlArr(resArr[0].data.columns);
       this._formDataObj.员工年末直评 = dealControlArr(resArr[1].data.columns);
@@ -187,7 +193,7 @@ class DirectEvaluate extends React.Component {
     }
     try {
       this.setState({ submitLoading: true });
-      const res = await http({baseURL:this.props.baseURL}).modifyRecords({
+      const res = await http({ baseURL: this.props.baseURL }).modifyRecords({
         resid,
         data: [modifyData]
       });
@@ -420,10 +426,17 @@ class DirectEvaluate extends React.Component {
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
       tableDataProps.actionBarFixed = false;
-      tableDataProps.isUseFormDefine = false;
+      tableDataProps.isUseFormDefine = true;
+      tableDataProps.rowEditFormName = 'default1';
     }
 
-    return <TableData key={tableConfig.resid} {...tableDataProps} baseURL={baseURL}/>;
+    return (
+      <TableData
+        key={tableConfig.resid}
+        {...tableDataProps}
+        baseURL={baseURL}
+      />
+    );
   };
 
   renderForm = () => {
