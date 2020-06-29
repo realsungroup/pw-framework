@@ -243,7 +243,8 @@ class TableData extends React.Component {
       height,
       gridProps: [],
       originalColumn: [],
-      zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+      zoomStatus: 0, // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+      clickedRowId: -1, // 点击行的 id
     };
   }
 
@@ -1562,11 +1563,20 @@ class TableData extends React.Component {
   handleOnRow = record => {
     return {
       onClick: () => {
+        this.setState({ clickedRowId: record.REC_ID });
         this.props.onRowClick && this.props.onRowClick(record);
       }, // 点击行
       onMouseEnter: () => { } // 鼠标移入行
     };
   };
+
+  handleRowClassName = (record, index) => {
+    const { clickedRowId } = this.state;
+    if (clickedRowId === record.REC_ID) {
+      return 'table-data__row--clicked';
+    }
+    return ''
+  }
 
   /**
    * 刷新表格数据
@@ -2301,6 +2311,7 @@ class TableData extends React.Component {
         renderOtherBtns={this.renderBeBtns}
         rowSelection={rowSelection}
         onRow={this.handleOnRow}
+        rowClassName={this.handleRowClassName}
         onRefresh={this.handleRefresh}
         size={size}
         hasImport={importConfig && this._hasImport}
