@@ -58,7 +58,8 @@ class IdpCard extends React.Component {
     curIndex: 0, // 当前任务进度
     isTaskComplete: false, // 当前任务是否已完成
     isShowModal: false,
-    currentRecord: {} //当前传入的发展计划
+    currentRecord: {}, //当前传入的发展计划
+    subordinatesNumber: undefined //下属人数
   };
 
   //年中回顾
@@ -272,7 +273,7 @@ class IdpCard extends React.Component {
       case 'HR':
         return (
           <span
-          style={{cursor:'pointer'}}
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               this.onCheckTeam(item);
             }}
@@ -283,8 +284,7 @@ class IdpCard extends React.Component {
       case 'Employee':
         return (
           <span
-          style={{cursor:'pointer'}}
-
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               this.onLookPerson(item, 'oneself');
             }}
@@ -296,8 +296,7 @@ class IdpCard extends React.Component {
       default:
         return (
           <span
-          style={{cursor:'pointer'}}
-
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               this.onCheckTeam(item);
             }}
@@ -351,16 +350,12 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span
-                style={{cursor:'pointer'}}
-
-                >发起年中回顾 </span>
+                <span style={{ cursor: 'pointer' }}>发起年中回顾 </span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
 
               <span
-              style={{cursor:'pointer'}}
-
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -378,11 +373,11 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span style={{ cursor:'pointer'}}>发起年末回顾</span>
+                <span style={{ cursor: 'pointer' }}>发起年末回顾</span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
               <span
-                style={{ cursor:'pointer'}}
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -400,11 +395,11 @@ class IdpCard extends React.Component {
                 okText="Yes"
                 cancelText="No"
               >
-                <span style={{cursor:'pointer'}}>结束</span>
+                <span style={{ cursor: 'pointer' }}>结束</span>
               </Popconfirm>
               <span style={{ margin: '0 10px' }}>|</span>
               <span
-                style={{cursor:'pointer'}}
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   this.onCheckTeam(this.state.currentPlan);
                 }}
@@ -429,8 +424,7 @@ class IdpCard extends React.Component {
     } else if (this.props.role === 'Employee') {
       return (
         <span
-        style={{cursor:'pointer'}}
-
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             this.onLookPerson(this.state.currentPlan, 'oneself');
           }}
@@ -441,8 +435,7 @@ class IdpCard extends React.Component {
     } else {
       return (
         <span
-        style={{cursor:'pointer'}}
-
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             this.onCheckTeam(this.state.currentPlan);
           }}
@@ -455,7 +448,7 @@ class IdpCard extends React.Component {
   getCurrentPage = () => {
     let currentPlan = this.state.currentPlan;
     let historyPlan = this.state.historyPlan;
-    console.log('currentPage', this.state.currentPage);
+    const { subordinatesNumber } = this.state;
     switch (this.state.currentPage) {
       case 1:
         return (
@@ -483,8 +476,10 @@ class IdpCard extends React.Component {
                     <div>发起时间: {currentPlan && currentPlan.startTime}</div>
                     <br />
                     <div>
-                      {this.props.role === 'HR' ? '参与人数:' : '下属人数:'}
-                      {currentPlan && currentPlan.num}
+                      {this.props.role === 'HR' ? '参与人数: ' : '下属人数: '}
+                      {this.props.role === 'HR'
+                        ? currentPlan && currentPlan.num
+                        : subordinatesNumber}
                     </div>
                     <br />
                     <div>财年: {currentPlan && currentPlan.year}</div>
@@ -499,72 +494,92 @@ class IdpCard extends React.Component {
                       float: 'right'
                     }}
                   ></div>
-                  <div style={{ marginTop: '152px' }} className='planStatus'>
-                    <div className={currentPlan && currentPlan.status === '初次填写'?'cur':null}>
+                  <div style={{ marginTop: '152px' }} className="planStatus">
+                    <div
+                      className={
+                        currentPlan && currentPlan.status === '初次填写'
+                          ? 'cur'
+                          : null
+                      }
+                    >
                       <p>初次填写</p>
-                      {currentPlan && currentPlan.status === '初次填写'?
-                      <wrap>
-                        <Icon type="exclamation-circle" />
-                        <span>进行中</span>
-                      </wrap>
-                      : <wrap>
-                        <Icon type="check-circle" />
-                      <span>已完成</span>
-                    </wrap>}
+                      {currentPlan && currentPlan.status === '初次填写' ? (
+                        <wrap>
+                          <Icon type="exclamation-circle" />
+                          <span>进行中</span>
+                        </wrap>
+                      ) : (
+                        <wrap>
+                          <Icon type="check-circle" />
+                          <span>已完成</span>
+                        </wrap>
+                      )}
                     </div>
-                    <div className={currentPlan && currentPlan.status === '年中回顾'?'cur':null}>
+                    <div
+                      className={
+                        currentPlan && currentPlan.status === '年中回顾'
+                          ? 'cur'
+                          : null
+                      }
+                    >
                       <p>年中回顾</p>
-                      {currentPlan && currentPlan.status === '初次填写'?
-                      <wrap>
-                        <Icon type="clock-circle" />
-                        <span>未开始</span>
-                      </wrap>
-                      : null}
-                      {currentPlan && currentPlan.status === '年中回顾'?
-                      <wrap>
-                        <Icon type="exclamation-circle" />
-                        <span>进行中</span>
-                      </wrap>
-                      : null}
-                       {currentPlan && currentPlan.status === '年末回顾'?
-                      <wrap>
-                        <Icon type="check-circle" />
-                        <span>已完成</span>
-                      </wrap>
-                      : null}
-                      {currentPlan && currentPlan.status === '已完成'?
-                      <wrap>
-                        <Icon type="check-circle" />
-                        <span>已完成</span>
-                      </wrap>
-                      : null}
+                      {currentPlan && currentPlan.status === '初次填写' ? (
+                        <wrap>
+                          <Icon type="clock-circle" />
+                          <span>未开始</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '年中回顾' ? (
+                        <wrap>
+                          <Icon type="exclamation-circle" />
+                          <span>进行中</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '年末回顾' ? (
+                        <wrap>
+                          <Icon type="check-circle" />
+                          <span>已完成</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '已完成' ? (
+                        <wrap>
+                          <Icon type="check-circle" />
+                          <span>已完成</span>
+                        </wrap>
+                      ) : null}
                     </div>
-                    <div className={currentPlan && currentPlan.status === '年末回顾'?'cur':null}>
+                    <div
+                      className={
+                        currentPlan && currentPlan.status === '年末回顾'
+                          ? 'cur'
+                          : null
+                      }
+                    >
                       <p>年末回顾</p>
-                      {currentPlan && currentPlan.status === '初次填写'?
-                      <wrap>
-                        <Icon type="clock-circle" />
-                        <span>未开始</span>
-                      </wrap>
-                      : null}
-                      {currentPlan && currentPlan.status === '年中回顾'?
-                      <wrap>
-                         <Icon type="clock-circle" />
-                        <span>未开始</span>
-                      </wrap>
-                      : null}
-                       {currentPlan && currentPlan.status === '年末回顾'?
-                      <wrap>
-                       <Icon type="exclamation-circle" />
-                        <span>进行中</span>
-                      </wrap>
-                      : null}
-                      {currentPlan && currentPlan.status === '已完成'?
-                      <wrap>
-                        <Icon type="check-circle" />
-                        <span>已完成</span>
-                      </wrap>
-                      : null}
+                      {currentPlan && currentPlan.status === '初次填写' ? (
+                        <wrap>
+                          <Icon type="clock-circle" />
+                          <span>未开始</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '年中回顾' ? (
+                        <wrap>
+                          <Icon type="clock-circle" />
+                          <span>未开始</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '年末回顾' ? (
+                        <wrap>
+                          <Icon type="exclamation-circle" />
+                          <span>进行中</span>
+                        </wrap>
+                      ) : null}
+                      {currentPlan && currentPlan.status === '已完成' ? (
+                        <wrap>
+                          <Icon type="check-circle" />
+                          <span>已完成</span>
+                        </wrap>
+                      ) : null}
                     </div>
                     {/* <Steps
                       current={
@@ -596,7 +611,6 @@ class IdpCard extends React.Component {
                       this.onAdd();
                     }}
                     style={{
-
                       marginLeft: historyPlan.length > 0 ? '0' : '176px'
                     }}
                   >
@@ -618,7 +632,16 @@ class IdpCard extends React.Component {
                     >
                       添加新的发展计划
                     </span>
-                    <span style={{ display:'block',textAlign:'center',width:'100%',color: '#999' }}>Add a new compentecy</span>
+                    <span
+                      style={{
+                        display: 'block',
+                        textAlign: 'center',
+                        width: '100%',
+                        color: '#999'
+                      }}
+                    >
+                      Add a new compentecy
+                    </span>
                   </Card>
                 ) : null}
                 {this.renderHistory()}
@@ -655,9 +678,14 @@ class IdpCard extends React.Component {
   goBack = () => {
     let currentPage = this.state.currentPage;
     if (currentPage === 2) {
-      this.setState({
-        currentPage: 1
-      });
+      this.setState(
+        {
+          currentPage: 1
+        },
+        () => {
+          this.props.role != 'HR' && this.getSubNumber(this.state.currentPlan);
+        }
+      );
     } else {
       if (this.state.checkType) {
         this.setState({
@@ -690,8 +718,25 @@ class IdpCard extends React.Component {
         currentPlan,
         historyPlan
       });
+      this.props.role !== 'HR' && this.getSubNumber(currentPlan);
     } catch (error) {
       message.error(error.message);
+    }
+  };
+
+  getSubNumber = async record => {
+    if (!record) {
+      return;
+    }
+    try {
+      const res = await http().getTable({
+        resid: 618488751596,
+        cmswhere: `projectId = '${record.projectId}' and directorId = '${record.memberId}' `
+      });
+      this.setState({ subordinatesNumber: res.data.length });
+    } catch (error) {
+      message.error(error.message);
+      console.error(error);
     }
   };
   render() {
@@ -700,8 +745,8 @@ class IdpCard extends React.Component {
       <div
         className="idp-contain"
         style={{
-          height: currentPage !== 2? 'calc(100% - 64px)' : '100%',
-          height:(this.props.role === 'HR')?'100%':null,
+          height: currentPage !== 2 ? 'calc(100% - 64px)' : '100%',
+          height: this.props.role === 'HR' ? '100%' : null,
           width: '100%'
         }}
       >
