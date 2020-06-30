@@ -23,7 +23,7 @@ class ManagerApprovalRecordHistory extends React.Component {
           subtractH={200}
           hasAdvSearch={false}
           hasAdd={false}
-          hasRowView={true}
+          hasRowView={false}
           hasRowDelete={false}
           hasRowEdit={false}
           hasDelete={false}

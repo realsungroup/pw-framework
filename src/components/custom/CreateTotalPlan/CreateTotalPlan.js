@@ -245,6 +245,7 @@ class CreateTotalPlan extends React.Component {
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
+            isSetColumnWidth={false}
             customRowBtns={[
               (record, btnSize) => {
                 if (record.C3_613679305930) {

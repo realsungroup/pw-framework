@@ -35,13 +35,19 @@ class HeadquartersManage extends React.Component {
           }}
           mainTableProps={{
             hasAdd: false,
-            isWrap:true
+            isWrap:true,
+            hasModify:false,
+            hasRowSelection:false,
+            hasDelete: false,
+
           }}
          
           subTablesProps={{
             576415161967: {
               hasAdd: true,
-              hasDelete: true
+              hasDelete: true,
+            hasModify:false
+
             }
           }}
         ></MainTableSubTables>
