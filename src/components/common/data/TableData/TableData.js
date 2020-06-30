@@ -1026,7 +1026,8 @@ class TableData extends React.Component {
       cparm3,
       cparm4,
       cparm5,
-      cparm6
+      cparm6,
+      this._searchValue
     );
     this.setState({ loading: false });
   };
