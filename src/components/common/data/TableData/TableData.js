@@ -646,7 +646,8 @@ class TableData extends React.Component {
       isUseFormDefine,
       isSetColumnWidth,
       hasAdvSearch,
-      advSearch
+      advSearch,
+      noWidthFields
     } = this.props;
 
     const secondParams = {
@@ -684,13 +685,21 @@ class TableData extends React.Component {
       // console.error('该配置未设成数组');
     }
 
+    let _noWidthFields;
+    if (Array.isArray(noWidthFields)) {
+      _noWidthFields = noWidthFields;
+    } else if (typeof noWidthFields === 'string') {
+      _noWidthFields = [noWidthFields];
+    }
+
     const { columns, components } = getColumns(
       res.cmscolumninfo,
       secondParams,
       cmscolumns,
       hasRowEdit,
       isUseBESize,
-      isSetColumnWidth
+      isSetColumnWidth,
+      _noWidthFields
     );
 
     this._dealedColumns = columns;
@@ -1017,7 +1026,8 @@ class TableData extends React.Component {
       cparm3,
       cparm4,
       cparm5,
-      cparm6
+      cparm6,
+      this._searchValue
     );
     this.setState({ loading: false });
   };
