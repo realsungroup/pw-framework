@@ -35,7 +35,8 @@ const withDownloadFile = WrappedComponent => {
       cparm3 = '',
       cparm4 = '',
       cparm5 = '',
-      cparm6 = ''
+      cparm6 = '',
+      key = ''
     ) => {
       this.setState({ loading: true });
       console.log('withDownloadFile');
@@ -46,6 +47,7 @@ const withDownloadFile = WrappedComponent => {
           resid,
           hostresid,
           hostrecid,
+          key,
           cmswhere: cmsWhere,
           filetype: fileType,
           dblinkname,
