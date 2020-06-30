@@ -554,6 +554,7 @@ class PwAggrid extends React.Component {
                     type="primary"
                     loading={saveBtnLoading}
                     onClick={this.handleSaveButtonClick}
+                    size={size}
                   >
                     保存
                   </Button>
