@@ -799,7 +799,7 @@ class IdLindex extends Component {
                   <List.Item.Meta
                     
                     title={item.ChName}
-                    description={<div>{item.appPosition}<br/>{item.appDate?(item.appDate).substring(0,16):'申请时间未知'}</div>}
+                    description={<div>{item.appPosition}<br/>{item.REC_CRTTIME?(item.REC_CRTTIME).substring(0,16):'申请时间未知'}</div>}
                   />
                   </div>
                   <div className={this.state.userChara=='HR'?'':'hidden'}>
