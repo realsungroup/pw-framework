@@ -79,10 +79,10 @@ class PwForm extends React.Component {
           {colCount === 1 ? (
             data.map(dateItem => this.renderFormItem(dateItem))
           ) : (
-            <LzRowCols renderData={data} keyName="id" colCount={colCount}>
-              {dateItem => this.renderFormItem(dateItem)}
-            </LzRowCols>
-          )}
+              <LzRowCols renderData={data} keyName="id" colCount={colCount}>
+                {dateItem => this.renderFormItem(dateItem)}
+              </LzRowCols>
+            )}
         </Fragment>
       );
     }
@@ -308,13 +308,18 @@ class PwForm extends React.Component {
       _height = containerHeight;
     }
 
+    const formBodyStyle = {};
+    if (height) {
+      formBodyStyle.height = height - 40;
+    }
+
     return (
       <div
         className={`pw-form ${className}`}
         style={{ width: _width, height: _height }}
       >
         {/* body */}
-        <Form className="pw-form__body">{this.renderForm()}</Form>
+        <Form className="pw-form__body" style={formBodyStyle}>{this.renderForm()}</Form>
         {/* footer */}
         <PwFormFooter
           hasEdit={hasEdit}
