@@ -689,6 +689,9 @@ class ArchitectureDiagram extends React.Component {
     //     return message.info('请选择一个卡片');
     //   }
     // }
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
     if (selectedNode.isCreated === 'Y') {
       Modal.confirm({
         title: '提示',
@@ -933,7 +936,7 @@ class ArchitectureDiagram extends React.Component {
   /**
    * 保存成功后的回调函数
    */
-  afterSave = (operation, formData, record, form) => {
+  afterSave = async (operation, formData, record, form) => {
     const { pidField, idField } = this.props;
     this.closeBroModal();
     if (operation === 'add') {
@@ -945,17 +948,12 @@ class ArchitectureDiagram extends React.Component {
       } else if (record.isEmpty === 'Y') {
         tags.push('empty'); //空缺
       }
-      const node = {
-        ...record,
-        id: record[idField],
-        pid: record[pidField],
-        tags
-      };
-      message.success('添加成功');
+
+      await this.clearCache();
       this.handleRefresh();
+      message.success('添加成功');
       // this.chart.addNode(node);
       // this._nodes.push(node);
-      this.clearCache();
     } else if (operation === 'modify') {
       // const oldTags = this.chart.get(record[idField]).tags;
       const tags = [record.tagsname];
@@ -1119,7 +1117,7 @@ class ArchitectureDiagram extends React.Component {
     }
     return (
       <header className="architecture-diagram_header">
-        {mode === 'chart' && hasGroup && (
+        {/* {mode === 'chart' && hasGroup && (
           <div className="architecture-diagram_header_icon-button-group">
             <div className="architecture-diagram_header_icon-button">
               分组
@@ -1130,7 +1128,7 @@ class ArchitectureDiagram extends React.Component {
               />
             </div>
           </div>
-        )}
+        )} */}
         <div className="architecture-diagram_header_icon-button-group">
           <div
             className={classNames({
@@ -1302,7 +1300,7 @@ class ArchitectureDiagram extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds } = this.props;
     return (
-      <Breadcrumb separator=">">
+      <Breadcrumb separator=">" style={{ overflow: 'auto' }}>
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item
@@ -1510,7 +1508,8 @@ class ArchitectureDiagram extends React.Component {
             </Button>
           </div>
           <div className="architecture-diagram_breadcrumb">
-            当前位置：{this.renderBreadcrumb()}
+            <div style={{ flexShrink: 0 }}>当前位置：</div>
+            {this.renderBreadcrumb()}
           </div>
           <div
             className="architecture-diagram__content"
