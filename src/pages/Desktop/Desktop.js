@@ -10,9 +10,7 @@ import DesktopModifyPass from './DesktopModifyPass';
 import DesktopBg from './DesktopBg';
 import {
   DesktopReminderList,
-  DesktopColorPicker,
   DesktopDashboard,
-  DesktopPersonCenter
 } from './loadableDesktop';
 import { OrgChartData } from '../../components/common/loadableCommon';
 
@@ -309,34 +307,6 @@ class Desktop extends React.Component {
           minWidth: 330,
           minHeight: 100,
           zoomStatus: 'max'
-        }
-      }
-    ]);
-  };
-
-  handleOpenPersonCenter = () => {
-    const children = <DesktopPersonCenter />;
-    const width = 620;
-    const height = this.desktopMainRef.clientHeight;
-    const x = this.desktopMainRef.clientWidth / 2 - 310;
-    this.setState({ menuVisible: false });
-
-    this.addAppToBottomBar([
-      {
-        children,
-        title: '个人中心',
-        activeAppOthersProps: {
-          width,
-          height,
-          x,
-          y: 0,
-          customWidth: width,
-          customHeight: height,
-          customX: x,
-          customY: 0,
-          minWidth: 330,
-          minHeight: 100,
-          zoomStatus: 'custom'
         }
       }
     ]);
@@ -904,7 +874,8 @@ class Desktop extends React.Component {
       selectedBg,
       onDesktopSwitch,
       onDesktopSearchChange,
-      deskTopSearchValue
+      deskTopSearchValue,
+      onDesktopOpenPersonCenter
     } = this.props;
 
     // 背景样式
@@ -943,7 +914,7 @@ class Desktop extends React.Component {
           onPoweroffClick={this.handlePoweroffClick}
           onOpenModifyPassModal={this.handleOpenModifyPassModal}
           onLockScreen={this.handleLockScreen}
-          onOpenPersonCenter={this.handleOpenPersonCenter}
+          onOpenPersonCenter={onDesktopOpenPersonCenter}
           onCloseApp={onCloseActiveApp}
           onDesktopSwitch={onDesktopSwitch}
           onSearchFocus={this.handleSearchFocus}
