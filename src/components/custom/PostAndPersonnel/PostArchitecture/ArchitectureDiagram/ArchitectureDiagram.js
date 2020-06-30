@@ -38,6 +38,7 @@ import withModalDrawer from '../../../../common/hoc/withModalDrawer';
 import { getItem, setItem } from 'Util20/util';
 import qs from 'qs';
 import debounce from 'lodash/debounce';
+import PWSpin from 'Common/ui/Spin';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
@@ -143,6 +144,7 @@ class ArchitectureDiagram extends React.Component {
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
+      fetchingData: true,
       viewHistoryDetailVisible: false,
       historyData: [], // 选中项的历史记录
       partHistoryData: [],
@@ -380,6 +382,7 @@ class ArchitectureDiagram extends React.Component {
       totallevels: 0
     };
     needLoading && this.setState({ loading: true });
+    this.setState({ fetchingData: true });
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -435,20 +438,11 @@ class ArchitectureDiagram extends React.Component {
       const treeData = this.getTreeData(res.data);
       this.setState({
         loading: false,
+        fetchingData: false,
         selectedNode: newSelectedNode,
         treeData
       });
-      const { selectedDepartments } = this.state;
-      if (selectedDepartments.length) {
-        const _nodes = nodes.filter(node => {
-          return selectedDepartments.some(key => {
-            return node.orgDepCode == key;
-          });
-        });
-        this.chart.load(_nodes);
-      } else {
-        this.chart.load(nodes);
-      }
+      this.chart.load(nodes);
       this._nodes = [...this.chart.config.nodes];
       for (var i = 0; i < nodes.length; i++) {
         nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
@@ -1466,7 +1460,8 @@ class ArchitectureDiagram extends React.Component {
       treeData,
       rootKey,
       parentKeys,
-      filtedNodes
+      filtedNodes,
+      fetchingData
     } = this.state;
     const { baseURL, displayFileds, hasView, idField } = this.props;
     return (
@@ -1530,6 +1525,7 @@ class ArchitectureDiagram extends React.Component {
                 <div style={{ padding: 8 }}>
                   <Select
                     showSearch
+                    disabled={fetchingData}
                     style={{ width: '100%' }}
                     filterOption={false}
                     notFoundContent={null}
@@ -1552,6 +1548,7 @@ class ArchitectureDiagram extends React.Component {
                   </Select>
                 </div>
                 <div style={{ flex: 1, overflow: 'auto' }}>
+                  {fetchingData && <PWSpin />}
                   <Tree
                     onSelect={this.onTreeNodeSelect}
                     checkable={false}
