@@ -39,6 +39,7 @@ import withModalDrawer from '../../../common/hoc/withModalDrawer';
 import PwAggrid from '../../../common/ui/PwAggrid';
 import { getItem, setItem } from 'Util20/util';
 import debounce from 'lodash/debounce';
+import PWSpin from 'Common/ui/Spin';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
@@ -105,6 +106,7 @@ class PersonRelationship extends React.Component {
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
+      fetchingData: true,
       viewHistoryDetailVisible: false,
       historyData: [], // 选中项的历史记录
       partHistoryData: [],
@@ -319,7 +321,7 @@ class PersonRelationship extends React.Component {
   /**
    * 获取节点数据
    */
-  getData = async needLoading => {
+  getData = async (needLoading = true) => {
     const {
       resid,
       baseURL,
@@ -355,6 +357,8 @@ class PersonRelationship extends React.Component {
     }
 
     needLoading && this.setState({ loading: true });
+    this.setState({ fetchingData: true });
+
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -403,6 +407,7 @@ class PersonRelationship extends React.Component {
       const treeData = this.getTreeData(res.data);
       this.setState({
         loading: false,
+        fetchingData: false,
         selectedNode: newSelectedNode,
         treeData
       });
@@ -812,24 +817,6 @@ class PersonRelationship extends React.Component {
 
   handleSelfDefine = () => this.setState({ selfDefineVisible: true });
 
-  handleGroupChange = checked => {
-    if (isEmpty(this._tags)) {
-      message.info('无分组配置');
-      this.setState({ isGrouping: false });
-      return false;
-    }
-    if (checked) {
-      this.chart.config.tags = {
-        selected,
-        ...this._tags
-      };
-    } else {
-      this.chart.config.tags = { selected };
-    }
-    this.setState({ isGrouping: checked });
-    this.chart.draw();
-  };
-
   closeSelfDefineModal = () => this.setState({ selfDefineVisible: false });
   closeDetaileModal = () => this.setState({ detailVisible: false });
 
@@ -866,54 +853,6 @@ class PersonRelationship extends React.Component {
     this.chart.updateNode(newNode);
   };
 
-  /**
-   * 保存成功后的回调函数
-   */
-  afterSave = (operation, formData, record, form) => {
-    const { pidField, idField } = this.props;
-    this.closeBroModal();
-    if (operation === 'add') {
-      const tags = [record.tagsname];
-      if (record.isScrap === 'Y') {
-        tags.push('discard'); //废弃
-      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
-        tags.push('tartOccupied'); //兼任
-      } else if (record.isEmpty === 'Y') {
-        tags.push('empty'); //空缺
-      }
-      const node = {
-        ...record,
-        id: record[idField],
-        pid: record[pidField],
-        tags
-      };
-      message.success('添加成功');
-      this.chart.addNode(node);
-      this._nodes.push(node);
-    } else if (operation === 'modify') {
-      // const oldTags = this.chart.get(record[idField]).tags;
-      const tags = [record.tagsname];
-      if (record.isScrap === 'Y') {
-        tags.push('discard'); //废弃
-      } else if (record.isEmpty === 'Y' && record.PartOccupiedPnId) {
-        tags.push('tartOccupied'); //兼任
-      } else if (record.isEmpty === 'Y') {
-        tags.push('empty'); //空缺
-      }
-      const node = {
-        ...record,
-        id: record[idField],
-        pid: record[pidField],
-        tags: [...tags, selected]
-      };
-      message.success('修改成功');
-      this.setState({ selectedNode: node }, () => {
-        this.getHistory();
-      });
-      this.chart.updateNode(node);
-    }
-  };
-
   onLevelChange = level => {
     this.setState({ currentLevel: level });
     this.chart.expandCollapseToLevel(0, {
@@ -923,89 +862,17 @@ class PersonRelationship extends React.Component {
   };
 
   handleDateChange = (date, dateString) => {
-    this.setState({ selectedDate: date }, async () => {
-      const { selectedNode } = this.state;
-      let data = await this.getData();
-      this.chart.load(data);
-      this._nodes = [...this.chart.config.nodes];
-      if (selectedNode.id) {
-        this.chart.center(selectedNode.id);
+    this.setState(
+      { selectedDate: date, selectedNode: {}, breadcrumb: [] },
+      async () => {
+        this.getData();
       }
-    });
-  };
-
-  /**
-   *
-   */
-  handleDisableEnable = value => () => {
-    Modal.confirm({
-      title: value === 'disable' ? '停用' : '启用',
-      content: (
-        <div>
-          <div>生效日期：</div>
-          <DatePicker
-            onChange={(date, dateString) => {
-              this.setState({ takeEffectDate: dateString });
-            }}
-            placeholder="请选择生效日期"
-            showToday
-            defaultValue={this.state.selectedDate}
-          />
-        </div>
-      ),
-      onOk: async () => {
-        const { takeEffectDate, selectedNode, selectedDate } = this.state;
-        const { baseURL, resid } = this.props;
-        try {
-          let httpParams = {};
-          // 使用传入的 baseURL
-          if (baseURL) {
-            httpParams.baseURL = baseURL;
-          }
-          const isScrap = value === 'disable' ? 'Y' : 'N';
-          this.setState({ loading: true });
-          const res = await http(httpParams).modifyRecords({
-            resid,
-            data: [
-              {
-                REC_ID: selectedNode.REC_ID,
-                isScrap,
-                isCreated: 'N',
-                updateDate: takeEffectDate || selectedDate
-              }
-            ]
-          });
-          message.info('操作成功');
-          const data = res.data[0];
-          const tags = [selected];
-          if (data.isScrap === 'Y') {
-            tags.push('discard'); //废弃
-          } else if (data.isEmpty === 'Y' && data.PartOccupiedPnId) {
-            tags.push('tartOccupied'); //兼任
-          } else if (data.isEmpty === 'Y') {
-            tags.push('empty'); //空缺
-          }
-          const node = {
-            ...selectedNode,
-            ...data,
-            tags: [...tags]
-          };
-          this.chart.updateNode(node);
-          this.setState({ loading: false, selectedNode: node });
-        } catch (error) {
-          this.setState({ loading: false });
-          console.log(error);
-          message.error(error.message);
-        }
-      }
-    });
+    );
   };
 
   handleRefresh = async () => {
     const { selectedNode } = this.state;
-    const data = await this.getData();
-    this.chart.load(data);
-    this._nodes = [...this.chart.config.nodes];
+    await this.getData();
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
@@ -1044,18 +911,6 @@ class PersonRelationship extends React.Component {
     }
     return (
       <header className="person-relationship_header">
-        {mode === 'chart' && hasGroup && (
-          <div className="person-relationship_header_icon-button-group">
-            <div className="person-relationship_header_icon-button">
-              分组
-              <Switch
-                checked={isGrouping}
-                style={{ marginLeft: '8px' }}
-                onChange={this.handleGroupChange}
-              />
-            </div>
-          </div>
-        )}
         <div className="person-relationship_header_icon-button-group">
           <div
             className={classNames({
@@ -1102,24 +957,7 @@ class PersonRelationship extends React.Component {
             </div>
           </div>
         )}
-        {/* {mode === 'chart' && (
-          <div className="person-relationship_header_icon-button-group">
-            <div className="person-relationship_header_icon-button">
-              <Icon
-                type="switcher"
-                className="person-relationship_header_icon-button__icon"
-              />
-              层级
-              <InputNumber
-                size="small"
-                min={1}
-                max={100000}
-                value={currentLevel}
-                onChange={this.onLevelChange}
-              />
-            </div>
-          </div>
-        )} */}
+
         {this.props.role === 'hr' && (
           <div className="person-relationship_header_icon-button-group">
             <div
@@ -1254,23 +1092,18 @@ class PersonRelationship extends React.Component {
   render() {
     const {
       selectedNode,
-      addBroVisible,
-      viewHistoryDetailVisible,
-      operation,
-      record,
       loading,
       mode,
       selfDefineVisible,
       selectedDate,
       detaileMin,
-      detailVisible,
-      departmentTreeVisible,
       filtedNodes,
       rootKey,
       parentKeys,
-      treeData
+      treeData,
+      fetchingData
     } = this.state;
-    const { baseURL, displayFileds, hasView, hasDepartmentFilter } = this.props;
+    const { displayFileds, hasView } = this.props;
     return (
       <div className="person-relationship">
         <Spin spinning={loading}>
@@ -1286,19 +1119,6 @@ class PersonRelationship extends React.Component {
               />
             </div>
 
-            {/* {hasDepartmentFilter && (
-              <Button
-                onClick={() => {
-                  this.setState({ departmentTreeVisible: true });
-                }}
-                style={{ margin: '0 8px' }}
-                type="primary"
-                size="small"
-                icon="filter"
-              >
-                筛选部门
-              </Button>
-            )} */}
             <Button
               onClick={this.handleRefresh}
               style={{ margin: '0 8px' }}
@@ -1337,6 +1157,7 @@ class PersonRelationship extends React.Component {
                     showSearch
                     style={{ width: '100%' }}
                     filterOption={false}
+                    disabled={fetchingData}
                     notFoundContent={null}
                     onSearch={this.filterNodes}
                     showArrow={false}
@@ -1356,6 +1177,7 @@ class PersonRelationship extends React.Component {
                   </Select>
                 </div>
                 <div style={{ flex: 1, overflow: 'auto' }}>
+                  {fetchingData && <PWSpin />}
                   <Tree
                     onSelect={this.onTreeNodeSelect}
                     checkable={false}
@@ -1449,26 +1271,6 @@ class PersonRelationship extends React.Component {
           </div>
         </Spin>
 
-        <Modal
-          visible={addBroVisible}
-          title={operation === 'modify' ? '修改' : '添加'}
-          width={800}
-          footer={null}
-          onCancel={this.closeBroModal}
-          destroyOnClose
-        >
-          <FormData
-            info={{ dataMode: 'main', resid: this.props.resid }}
-            operation={operation}
-            data={this._dataProp}
-            record={record}
-            // useAbsolute={true}
-            // formProps={{ width: 500 }}
-            onCancel={this.closeBroModal}
-            onSuccess={this.afterSave}
-            baseURL={this.props.baseURL}
-          />
-        </Modal>
         <Drawer
           visible={selfDefineVisible}
           title="自定义卡片"
@@ -1579,119 +1381,6 @@ class PersonRelationship extends React.Component {
               </Select>
             </Form.Item>
           </Form>
-        </Drawer>
-        <Drawer
-          visible={detailVisible}
-          width="70vw"
-          onCancel={this.closeDetaileModal}
-          onOk={this.closeDetaileModal}
-          onClose={this.closeDetaileModal}
-          destroyOnClose
-          title="变动记录"
-          placement="left"
-        >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ marginBottom: 12 }}>
-              <img
-                src={selectedNode[displayFileds.imgField]}
-                style={{ height: 48, width: 48 }}
-                alt="人员照片"
-              />
-              <span
-                style={{
-                  color: '#000',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  marginRight: 24
-                }}
-              >
-                {selectedNode[displayFileds.firstField]}
-              </span>
-              <span>{selectedNode[displayFileds.secondaryField]}</span>
-            </div>
-            <div style={{ height: 500 }}>
-              <TableData
-                baseURL={baseURL}
-                resid={'638643664427'}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                refTargetComponentName="TableData"
-                // subtractH={240}
-                hasAdd={false}
-                // tableComponent="ag-grid"
-                // rowSelectionAg={ 'single' }
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                hasRowSelection={false}
-                cmswhere={`C3_305737857578 = '${selectedNode.memberCode}'`}
-                hasAdvSearch={false}
-                importConfig={null}
-                actionBarWidth={100}
-              />
-            </div>
-          </div>
-        </Drawer>
-        <Drawer
-          visible={viewHistoryDetailVisible}
-          onClose={this.closeHistoryDetail}
-          destroyOnClose
-          width={800}
-        >
-          <FormData
-            info={{ dataMode: 'main', resid: this.props.historyResid }}
-            operation="view"
-            data={this._historyDataProp}
-            // record={}
-            useAbsolute={true}
-            // formProps={{ width: 500 }}
-            baseURL={this.props.baseURL}
-          />
-        </Drawer>
-        <Drawer
-          title="部门筛选"
-          onClose={() => {
-            this.setState({
-              departmentTreeVisible: false
-            });
-          }}
-          width={500}
-          placement="left"
-          visible={departmentTreeVisible}
-        >
-          <TreeData
-            resid="417643880834"
-            baseURL={baseURL}
-            idField="DEP_ID"
-            pidField="DEP_PID"
-            titleField="DEP_NAME"
-            rootNode={{
-              title: 'Enterprise',
-              key: 0
-            }}
-            onCheck={checkedKeys => {
-              if (checkedKeys.length) {
-                const nodes = this._nodes.filter(node => {
-                  return checkedKeys.some(key => {
-                    return node.HRUSER_DEPID == key;
-                  });
-                });
-                this.chart.load(nodes);
-                this.setState({
-                  selectedNode: {},
-                  breadcrumb: []
-                });
-              } else {
-                this.chart.load(this._nodes);
-                this.setState({
-                  selectedNode: {},
-                  breadcrumb: []
-                });
-              }
-            }}
-          />
         </Drawer>
       </div>
     );

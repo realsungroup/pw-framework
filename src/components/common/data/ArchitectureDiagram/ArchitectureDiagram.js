@@ -1462,13 +1462,13 @@ class ArchitectureDiagram extends React.Component {
   };
 
   handleDateChange = (date, dateString) => {
-    this.setState({ selectedDate: date }, async () => {
-      const { selectedNode } = this.state;
-      await this.getData();
-      if (selectedNode.id) {
-        this.chart.center(selectedNode.id);
+    this.setState(
+      { selectedDate: date, selectedNode: {}, breadcrumb: [] },
+      async () => {
+        await this.clearCache();
+        await this.getData();
       }
-    });
+    );
   };
 
   /**
@@ -1587,7 +1587,6 @@ class ArchitectureDiagram extends React.Component {
   handleRefresh = async () => {
     const { selectedNode } = this.state;
     await this.getData();
-
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
     }
