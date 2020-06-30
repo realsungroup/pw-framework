@@ -607,7 +607,7 @@ refre=()=>{
               
             </div>
           </TabPane>
-          <TabPane
+          {/* <TabPane
           // forceRender={true}
 
             tab="邮件提醒发送历史"
@@ -630,7 +630,7 @@ refre=()=>{
                 refTargetComponentName="TableData"
                 tableComponent='ag-grid'
               />
-          </TabPane>
+          </TabPane> */}
         </Tabs>
         <Modal
           title="审批节点"

@@ -49,7 +49,8 @@ export const getColumns = (
   cmscolumns,
   hasRowEdit,
   isUseBESize,
-  isSetColumnWidth
+  isSetColumnWidth,
+  noWidthFields = []
 ) => {
   const columns = [];
 
@@ -96,6 +97,11 @@ export const getColumns = (
         column.width = width;
       }
       column.width = columnWidth;
+    }
+
+    // 不需要设置宽度的列
+    if (noWidthFields.includes(item.id)) {
+      delete column.width;
     }
 
     // 开启了后端排序功能

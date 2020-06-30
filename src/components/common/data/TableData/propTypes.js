@@ -664,7 +664,7 @@ export const propTypes = {
   headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
   /**
-   * 是否有 rowSelection
+   * 是否有 rowSelection（当 hasModify 或 hasDelete 为 true 时，rowSelection 也会有：即如果需要不显示 rowSelection，需要将 hasModify 和 hasDelete 都设置为 false）
    * 默认：false
    */
   hasRowSelection: PropTypes.bool,
@@ -838,4 +838,11 @@ export const propTypes = {
    * 默认：{}
    */
   backendButtonPopConfirmProps: PropTypes.object,
+
+  /**
+   * 没有宽度的字段
+   * 当选择列与第一列出现空隙时，可以设置某列没有宽度来修复
+   * 默认：-
+   */
+  noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
 };

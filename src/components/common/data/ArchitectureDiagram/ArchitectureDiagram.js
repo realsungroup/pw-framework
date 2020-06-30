@@ -100,29 +100,29 @@ function exportExcel(data, headerData = [], fileName) {
   link.click();
   document.body.removeChild(link);
 }
-window.imageClick = function(e) {
-  Modal.info({
-    title: '照片',
-    icon: null,
-    width: '100%',
-    okText: '关闭',
-    content: (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: 300
-        }}
-      >
-        <img
-          style={{ height: '100%', width: 'auto' }}
-          src={e.target.href.baseVal}
-        />
-      </div>
-    )
-  });
-};
+// window.imageClick = function(e) {
+//   Modal.info({
+//     title: '照片',
+//     icon: null,
+//     width: '100%',
+//     okText: '关闭',
+//     content: (
+//       <div
+//         style={{
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//           height: 300
+//         }}
+//       >
+//         <img
+//           style={{ height: '100%', width: 'auto' }}
+//           src={e.target.href.baseVal}
+//         />
+//       </div>
+//     )
+//   });
+// };
 const selected = 'selected';
 const OrgChart = window.OrgChart;
 // const BALKANGraph = window.BALKANGraph;
@@ -136,7 +136,7 @@ OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
   '<circle  cx="45" cy="45" r="40"></circle>' +
   '</clipPath>' +
-  '<image onclick="imageClick(evt)" preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
+  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
   '</image>';
 OrgChart.templates.architectureDiagramTemplate.field_0 =
   '<text width="200" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
@@ -975,10 +975,10 @@ class ArchitectureDiagram extends React.Component {
                           isEditOrAdd: 'true'
                         });
                         await this.clearCache();
-                        message.success('兼职成功');
                         this.props.closeModalOrDrawer();
                         this.setState({ loading: false });
                         await this.getData();
+                        message.success('兼职成功');
                         if (node.id) {
                           this.chart.center(node.id);
                         }
@@ -1001,7 +1001,7 @@ class ArchitectureDiagram extends React.Component {
                   (this.addModalTableDataRef = element)
                 }
                 refTargetComponentName="TableData"
-                // subtractH={240}
+                subtractH={180}
                 hasAdd={false}
                 // tableComponent="ag-grid"
                 // rowSelectionAg="single"
@@ -1079,10 +1079,10 @@ class ArchitectureDiagram extends React.Component {
             });
             await this.clearCache();
             this.setState({ loading: false });
-            message.success('清空成功');
             this.props.closeModalOrDrawer();
             // 重新获取数据
             await this.getData();
+            message.success('清空成功');
 
             if (node.id) {
               this.chart.center(node.id);
@@ -1122,6 +1122,7 @@ class ArchitectureDiagram extends React.Component {
                   C3_470524257391: this.state.selectedDate
                 }
               ],
+              uniquecolumns: 'C3_305737857578,C3_470524257391',
               isEditOrAdd: 'true'
             });
             await this.clearCache();
@@ -1595,7 +1596,7 @@ class ArchitectureDiagram extends React.Component {
     }
     return (
       <header className="architecture-diagram_header">
-        {mode === 'chart' && (
+        {/* {mode === 'chart' && (
           <div className="architecture-diagram_header_icon-button-group">
             <div className="architecture-diagram_header_icon-button">
               分组
@@ -1606,7 +1607,7 @@ class ArchitectureDiagram extends React.Component {
               />
             </div>
           </div>
-        )}
+        )} */}
         <div className="architecture-diagram_header_icon-button-group">
           <div
             className={classNames({
@@ -1846,7 +1847,7 @@ class ArchitectureDiagram extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds, name } = this.props;
     return (
-      <Breadcrumb separator=">">
+      <Breadcrumb separator=">" style={{ overflow: 'auto' }}>
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item
@@ -2069,13 +2070,19 @@ class ArchitectureDiagram extends React.Component {
     return data.map(item => {
       if (item.children) {
         return (
-          <TreeNode key={item[idField]} title={item.memberCN || '无任职人'}>
+          <TreeNode
+            key={item[idField]}
+            title={`${item.memberCN || '无任职人'}(${item.orgName})`}
+          >
             {this.renderTree(item.children)}
           </TreeNode>
         );
       }
       return (
-        <TreeNode key={item[idField]} title={item.memberCN || '无任职人'} />
+        <TreeNode
+          key={item[idField]}
+          title={`${item.memberCN || '无任职人'}(${item.orgName})`}
+        />
       );
     });
   };
@@ -2201,7 +2208,8 @@ class ArchitectureDiagram extends React.Component {
             </Button>
           </div>
           <div className="architecture-diagram_breadcrumb">
-            当前位置：{this.renderBreadcrumb()}
+            <div style={{ flexShrink: 0 }}>当前位置：</div>
+            {this.renderBreadcrumb()}
           </div>
           <div
             className="architecture-diagram__content"
@@ -2236,7 +2244,11 @@ class ArchitectureDiagram extends React.Component {
                     size="small"
                   >
                     {filtedNodes.map(job => {
-                      return <Option value={job.id}>{job.memberCN}</Option>;
+                      return (
+                        <Option
+                          value={job.id}
+                        >{`${job.memberCN}(${job.orgName})`}</Option>
+                      );
                     })}
                   </Select>
                 </div>
