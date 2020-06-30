@@ -525,6 +525,7 @@ class PwAggrid extends React.Component {
                 onInput={this.onQuickFilterChanged}
                 id={'quickFilter-' + this.props.resid}
                 width={120}
+                size={size}
                 placeholder="全局筛选"
               />
               {/* <Button onClick={this.handleAddRecord(columnDefs)}>添加</Button> */}
@@ -542,7 +543,7 @@ class PwAggrid extends React.Component {
                   title="确认删除？"
                   onConfirm={this.handleDeleteRecords}
                 >
-                  <Button loading={deleteBtnLoading} type="danger">
+                  <Button size={size} loading={deleteBtnLoading} type="danger">
                     删除
                   </Button>
                 </Popconfirm>
