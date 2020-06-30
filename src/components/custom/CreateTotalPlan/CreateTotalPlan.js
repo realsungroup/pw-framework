@@ -240,7 +240,6 @@ class CreateTotalPlan extends React.Component {
       <Spin spinning={loading}>
         <div style={{ height: '100vh' }}>
           <TableData
-            {...this.props}
             hasBeBtns
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -287,6 +286,7 @@ class CreateTotalPlan extends React.Component {
                 }
               }
             ]}
+            {...this.props}
           />
           <Modal
             title="初始化"

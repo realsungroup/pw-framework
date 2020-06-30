@@ -838,4 +838,11 @@ export const propTypes = {
    * 默认：{}
    */
   backendButtonPopConfirmProps: PropTypes.object,
+
+  /**
+   * 没有宽度的字段
+   * 当选择列与第一列出现空隙时，可以设置某列没有宽度来修复
+   * 默认：-
+   */
+  noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
 };

@@ -1338,11 +1338,13 @@ window[611077057050] = {
     hasRowView: false,
     hasRowSelection: true,
     recordFormType: 'drawer',
-    isSetColumnWidth:false,
+    isSetColumnWidth:true,
+    actionBarFixed: true,
     recordFormContainerProps: {
       placement: 'bottom',
       height: 600
     },
+    noWidthFields: "C3_611070959393",
     subTableArrProps: [
       {
         subTableName: '人员名单',
