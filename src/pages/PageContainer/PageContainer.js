@@ -154,7 +154,8 @@ export default class PageContainer extends React.Component {
       recentApps: [],
       abbreviationDoms: [],
       color, // 主题色
-      selectedBg
+      selectedBg,
+      deskTopSearchValue: ''
     };
     this.lockScreenRef = React.createRef();
   }
@@ -1333,6 +1334,67 @@ export default class PageContainer extends React.Component {
     this.setState({ activeApps: newActiveApps });
   };
 
+
+  filterMenus = () => {
+    const { allFolders, deskTopSearchValue: value } = this.state;
+    const menus = allFolders
+      .map(folder => {
+        // 搜索的值不是分类的值
+        if (folder.title.indexOf(value) === -1) {
+          // 1.1
+          const appLinks = folder.AppLinks.map(appLink => {
+            if (appLink.title.indexOf(value) === -1) {
+              return false;
+            }
+            return appLink;
+          }).filter(Boolean);
+          if (!appLinks.length) {
+            return false;
+          }
+          return { ...folder, AppLinks: appLinks };
+        }
+        // 2 搜索的值是分类的值
+        return folder;
+      })
+      .filter(Boolean);
+
+    this.setState({ menus });
+  };
+
+  handleDesktopSearchChange = (e) => {
+    this.setState({ deskTopSearchValue: e.target.value });
+    delay(this.filterMenus, 200);
+  }
+
+  handleDesktopOpenPersonCenter = () => {
+    const children = <DesktopPersonCenter />;
+    const width = 620;
+    const height = this.desktopMainRef.clientHeight;
+    const x = this.desktopMainRef.clientWidth / 2 - 310;
+    this.setState({ menuVisible: false });
+
+    this.addAppToBottomBar([
+      {
+        children,
+        title: '个人中心',
+        activeAppOthersProps: {
+          width,
+          height,
+          x,
+          y: 0,
+          customWidth: width,
+          customHeight: height,
+          customX: x,
+          customY: 0,
+          minWidth: 330,
+          minHeight: 100,
+          zoomStatus: 'custom'
+        }
+      }
+    ]);
+  }
+
+
   render() {
     if (!this.state.desktopStyle) {
       return null;
@@ -1370,7 +1432,8 @@ export default class PageContainer extends React.Component {
       headerVisible,
       userInfo,
       recentApps,
-      selectedBg
+      selectedBg,
+      deskTopSearchValue
     } = this.state;
 
     return (
@@ -1428,6 +1491,9 @@ export default class PageContainer extends React.Component {
                   onOpenDesktopBg={this.handleOpenDesktopBg}
                   selectedBg={selectedBg}
                   onDesktopSwitch={this.handleDesktopSwitch}
+                  onDesktopSearchChange={this.handleDesktopSearchChange}
+                  deskTopSearchValue={deskTopSearchValue}
+                  onDesktopOpenPersonCenter={this.handleDesktopOpenPersonCenter}
                 ></Component>
               );
             }}

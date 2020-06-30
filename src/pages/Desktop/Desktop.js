@@ -10,9 +10,7 @@ import DesktopModifyPass from './DesktopModifyPass';
 import DesktopBg from './DesktopBg';
 import {
   DesktopReminderList,
-  DesktopColorPicker,
   DesktopDashboard,
-  DesktopPersonCenter
 } from './loadableDesktop';
 import { OrgChartData } from '../../components/common/loadableCommon';
 
@@ -213,37 +211,6 @@ class Desktop extends React.Component {
     this.setState({ menuVisible: true });
   };
 
-  filterMenus = () => {
-    const { allFolders, searchValue: value } = this.state;
-    const menus = allFolders
-      .map(folder => {
-        // 搜索的值不是分类的值
-        if (folder.title.indexOf(value) === -1) {
-          // 1.1
-          const appLinks = folder.AppLinks.map(appLink => {
-            if (appLink.title.indexOf(value) === -1) {
-              return false;
-            }
-            return appLink;
-          }).filter(Boolean);
-          if (!appLinks.length) {
-            return false;
-          }
-          return { ...folder, AppLinks: appLinks };
-        }
-        // 2 搜索的值是分类的值
-        return folder;
-      })
-      .filter(Boolean);
-
-    this.setState({ menus });
-  };
-
-  handleSearchChange = e => {
-    this.setState({ searchValue: e.target.value });
-    delay(this.filterMenus, 200);
-  };
-
   handleRemoveDesktopApp = async appData => {
     try {
       await http().removeRecords({
@@ -340,34 +307,6 @@ class Desktop extends React.Component {
           minWidth: 330,
           minHeight: 100,
           zoomStatus: 'max'
-        }
-      }
-    ]);
-  };
-
-  handleOpenPersonCenter = () => {
-    const children = <DesktopPersonCenter />;
-    const width = 620;
-    const height = this.desktopMainRef.clientHeight;
-    const x = this.desktopMainRef.clientWidth / 2 - 310;
-    this.setState({ menuVisible: false });
-
-    this.addAppToBottomBar([
-      {
-        children,
-        title: '个人中心',
-        activeAppOthersProps: {
-          width,
-          height,
-          x,
-          y: 0,
-          customWidth: width,
-          customHeight: height,
-          customX: x,
-          customY: 0,
-          minWidth: 330,
-          minHeight: 100,
-          zoomStatus: 'custom'
         }
       }
     ]);
@@ -933,7 +872,10 @@ class Desktop extends React.Component {
       onOpenColorPicker,
       onOpenDesktopBg,
       selectedBg,
-      onDesktopSwitch
+      onDesktopSwitch,
+      onDesktopSearchChange,
+      deskTopSearchValue,
+      onDesktopOpenPersonCenter
     } = this.props;
 
     // 背景样式
@@ -972,12 +914,12 @@ class Desktop extends React.Component {
           onPoweroffClick={this.handlePoweroffClick}
           onOpenModifyPassModal={this.handleOpenModifyPassModal}
           onLockScreen={this.handleLockScreen}
-          onOpenPersonCenter={this.handleOpenPersonCenter}
+          onOpenPersonCenter={onDesktopOpenPersonCenter}
           onCloseApp={onCloseActiveApp}
           onDesktopSwitch={onDesktopSwitch}
           onSearchFocus={this.handleSearchFocus}
-          onSearchChange={this.handleSearchChange}
-          searchValue={searchValue}
+          onSearchChange={onDesktopSearchChange}
+          searchValue={deskTopSearchValue}
           orgChartConfig={orgChartConfig}
         />
 
