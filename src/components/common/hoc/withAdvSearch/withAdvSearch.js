@@ -11,6 +11,7 @@ import { FormattedMessage as FM } from 'react-intl';
 import { compose } from 'recompose';
 import AdvSearch from 'lz-components-and-utils/lib/AdvSearch';
 import 'lz-components-and-utils/lib/AdvSearch/style/index.css';
+import { cloneDeep } from 'lodash';
 const { TabPane } = Tabs;
 
 class Search extends React.Component {
@@ -122,7 +123,7 @@ const withAdvSearch = (options = {}) => {
       ) => {
         if (!this._data) {
           if (Array.isArray(data)) {
-            this._data = [...data];
+            this._data = cloneDeep(data);
             this._getCmsWhere = getCmsWhere;
           } else {
             // 第一次打开高级搜索，还没有获取窗体数据
@@ -140,9 +141,17 @@ const withAdvSearch = (options = {}) => {
             }
             // 获取 PwFrom 所接收的 data prop
             this._data = getDataProp(formData, {}, true, false, validationFields);
+            this._data = cloneDeep(this._data);
             this._getCmsWhere = getCmsWhere;
           }
         }
+        // 移除验证规则
+        this._data.forEach(item => {
+          delete item.rules;
+          if (item.props) {
+            delete item.props.disabled;
+          }
+        })
       };
 
       /**
