@@ -44,6 +44,7 @@ import withImport from '../../hoc/withImport';
 import withModalDrawer from '../../hoc/withModalDrawer';
 import qs from 'qs';
 import debounce from 'lodash/debounce';
+import PWSpin from 'Common/ui/Spin';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
@@ -136,8 +137,38 @@ OrgChart.templates.architectureDiagramTemplate.img_0 =
   '<clipPath id="ulaImg">' +
   '<circle  cx="45" cy="45" r="40"></circle>' +
   '</clipPath>' +
-  '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="15" y="15"  width="60" height="60">' +
-  '</image>';
+  `<?xml version="1.0" encoding="UTF-8"?>
+   <svg width="58px" height="58px" x="10" y="10" viewBox="0 0 178 178" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+      <title>用户</title>
+      <desc>Created with Sketch.</desc>
+      <defs>
+          <rect id="path-1" x="0" y="0" width="178" height="178" rx="89"></rect>
+      </defs>
+      <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="补充图标" transform="translate(-103.000000, -627.000000)">
+              <g id="用户" transform="translate(103.000000, 627.000000)">
+                  <mask id="mask-2" fill="white">
+                      <use xlink:href="#path-1"></use>
+                  </mask>
+                  <use id="蒙版" fill="#FFFFFF" xlink:href="#path-1"></use>
+                  <g mask="url(#mask-2)" fill-rule="nonzero">
+                      <g transform="translate(15.000000, 16.000000)">
+                          <path d="M147.996801,154.55819 L147.996801,140.470899 C147.996801,111.580013 111.29702,103.70068 111.29702,103.70068 L37.2130811,103.70068 C37.2130811,103.70068 0,111.580013 0,140.470899 L0,154.55819 C0,154.55819 -0.0855303036,165.18335 11.891088,165.541502 C23.8677064,165.899653 74.340598,165.541502 74.340598,165.541502 C74.340598,165.541502 124.556848,165.899653 136.533466,165.541502 C148.510085,165.18335 147.996801,154.55819 147.996801,154.55819 Z" id="路径" fill="#999999"></path>
+                          <path d="M87.5918367,101.687075 L74.7965611,101.687075 L37.3553519,102.446454 C37.3553519,102.446454 0,108.774613 0,129.193472 L0,139.149775 C0,139.149775 -0.0858572979,146.65919 11.9365493,146.912317 C23.958956,147.165443 24.0448303,146.743566 24.0448303,146.743566 L60.6272962,119.40592 L87.5918367,119.40592 L87.5918367,101.687075 Z" id="路径" fill="#666666"></path>
+                          <polygon id="路径" fill="#C7928E" points="52.3537415 81.5510204 95.6462585 81.5510204 95.6462585 108.734694 52.3537415 108.734694"></polygon>
+                          <path d="M115.768224,43.6346074 C115.768224,43.6346074 121.471716,61.0506258 105.916738,71.4829932 L105.916738,40.2721088 L115.768224,43.6346074 Z M29.5245129,43.6346074 C29.5245129,43.6346074 26.4135173,61.0506258 39.375999,71.4829932 L39.375999,40.2721088 L29.5245129,43.6346074 Z" id="形状" fill="#333333"></path>
+                          <path d="M39.2721263,39.8653288 L39.2721263,71.4485801 C39.2721263,71.4485801 46.6900976,98.6666667 73.1587679,98.6666667 C99.6274382,98.6666667 106.708229,70.9350313 106.708229,70.9350313 L106.708229,42.0907069 C106.708229,42.0907069 108.394132,1.00680272 73.1587679,1.00680272 C37.9234043,1.00680272 39.2721263,39.8653288 39.2721263,39.8653288 Z" id="路径" fill="#FECCCB"></path>
+                          <path d="M74.5034014,98.6666667 C47.9841758,98.6666667 40.2850458,71.4724138 40.2850458,71.4724138 L40.2850458,39.9168186 C40.2850458,39.9168186 38.5741281,1.00680272 74.5034014,1.00680272 L74.5034014,98.6666667 Z" id="路径" fill="#D8AEAF"></path>
+                          <path d="M58.9300912,22.6530612 C58.9300912,22.6530612 64.6710088,45.3061224 117.795918,45.3061224 C117.795918,45.3061224 116.939065,0 73.7536547,0 C30.5682443,0 29.1972789,45.3061224 29.1972789,45.3061224 C29.1972789,45.3061224 47.2768852,40.4700757 58.9300912,22.6530612 Z" id="路径" fill="#2B2B2B"></path>
+                          <polygon id="路径" fill="#B6D5D0" points="50.559304 89.6054422 36.244898 104.036281 59.6684715 120.816327 74.5034014 109.489796"></polygon>
+                          <polygon id="路径" fill="#B6D5D0" points="96.4338933 89.6054422 110.748299 104.036281 87.4114798 120.816327 72.4897959 109.489796"></polygon>
+                      </g>
+                  </g>
+              </g>
+          </g>
+      </g>
+    </svg>`;
 OrgChart.templates.architectureDiagramTemplate.field_0 =
   '<text width="200" class="field_0" style="font-size: 16px;font-weight:bold;" fill="#000000" x="150" y="40" text-anchor="middle">{val}</text>';
 OrgChart.templates.architectureDiagramTemplate.field_1 =
@@ -172,6 +203,7 @@ class ArchitectureDiagram extends React.Component {
       addBroVisible: false,
       selfDefineVisible: false,
       loading: false,
+      fetchingData: true,
       viewHistoryDetailVisible: false,
       historyData: [], // 选中项的历史记录
       partHistoryData: [],
@@ -451,7 +483,7 @@ class ArchitectureDiagram extends React.Component {
       procedureConfig,
       rootId
     } = this.props;
-    const { selectedDate, selectedNode } = this.state;
+    const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
       resid,
@@ -462,6 +494,7 @@ class ArchitectureDiagram extends React.Component {
       totallevels: 0
     };
     needLoading && this.setState({ loading: true });
+    this.setState({ fetchingData: true });
     try {
       const httpParams = {};
       // 使用传入的 baseURL
@@ -516,21 +549,11 @@ class ArchitectureDiagram extends React.Component {
       const treeData = this.getTreeData(res.data);
       this.setState({
         loading: false,
+        fetchingData: false,
         selectedNode: newSelectedNode,
         treeData
       });
-      const { selectedDepartments } = this.state;
-      if (selectedDepartments.length) {
-        const _nodes = nodes.filter(node => {
-          return selectedDepartments.some(key => {
-            return node.orgDepCode == key;
-          });
-        });
-        this.chart.load(_nodes);
-      } else {
-        this.chart.load(nodes);
-      }
-
+      this.chart.load(nodes);
       this._nodes = [...nodes];
       for (var i = 0; i < nodes.length; i++) {
         nodes[i].number_children = childCount(nodes[i].id, nodes) + 1;
@@ -2168,7 +2191,8 @@ class ArchitectureDiagram extends React.Component {
       treeData,
       parentKeys,
       rootKey,
-      filtedNodes
+      filtedNodes,
+      fetchingData
     } = this.state;
     const { baseURL, displayFileds, hasView } = this.props;
     return (
@@ -2230,6 +2254,7 @@ class ArchitectureDiagram extends React.Component {
                 <div style={{ padding: 8 }}>
                   <Select
                     showSearch
+                    disabled={fetchingData}
                     style={{ width: '100%' }}
                     filterOption={false}
                     notFoundContent={null}
@@ -2253,6 +2278,7 @@ class ArchitectureDiagram extends React.Component {
                   </Select>
                 </div>
                 <div style={{ flex: 1, overflow: 'auto' }}>
+                  {fetchingData && <PWSpin />}
                   <Tree
                     onSelect={this.onTreeNodeSelect}
                     checkable={false}
