@@ -9,7 +9,7 @@ import {
   Modal,
   Input,
   Spin,
-  Tabs,
+  Tabs
 } from 'antd';
 import http from '../../../util20/api';
 import PlanProgress from './PlanProgress';
@@ -249,16 +249,17 @@ class CreatePlan extends React.Component {
    */
   onClick(i) {
     let { data, selectedEmployee } = this.state;
-    if (data[i].check === true) {
+    const employee = data.find(item => item.REC_ID == i.REC_ID);
+    if (employee.check === true) {
       //删除选中的员工
       selectedEmployee.splice(
-        selectedEmployee.findIndex(item => item.REC_ID === data[i].REC_ID),
+        selectedEmployee.findIndex(item => item.REC_ID === employee.REC_ID),
         1
       );
     } else {
-      selectedEmployee = [...selectedEmployee, data[i]];
+      selectedEmployee = [...selectedEmployee, employee];
     }
-    data[i].check = !data[i].check;
+    employee.check = !employee.check;
     let indeterminate = false;
     let isAllChecked = false;
     if (selectedEmployee.length && selectedEmployee.length !== data.length) {
@@ -271,7 +272,7 @@ class CreatePlan extends React.Component {
       selectedEmployee,
       indeterminate,
       isAllChecked,
-      selectedLevel: data[i].C3_609622292033
+      selectedLevel: employee.C3_609622292033
     });
   }
 
@@ -550,7 +551,7 @@ class CreatePlan extends React.Component {
                 renderItem={(item, i) => (
                   <List.Item
                     style={{ cursor: 'pointer' }}
-                    onClick={this.onClick.bind(this, i)}
+                    onClick={this.onClick.bind(this, item)}
                     key={item.REC_ID}
                     className="memberCard"
                   >
