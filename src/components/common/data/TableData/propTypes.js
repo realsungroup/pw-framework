@@ -664,7 +664,7 @@ export const propTypes = {
   headerExtra: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 
   /**
-   * 是否有 rowSelection
+   * 是否有 rowSelection（当 hasModify 或 hasDelete 为 true 时，rowSelection 也会有：即如果需要不显示 rowSelection，需要将 hasModify 和 hasDelete 都设置为 false）
    * 默认：false
    */
   hasRowSelection: PropTypes.bool,

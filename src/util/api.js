@@ -1,9 +1,22 @@
 import appConfig, { dataType } from '../util/http.config';
 import http, { dealNextExtractData } from '../util/http';
 
+/**
+ * 处理基地址（基地址尾部没有斜杠时，加上斜杠）
+ * @param {string} baseURL 基地址
+ */
+const dealBaseURL = (baseURL) => {
+  if (/\/$/.test(baseURL)) {
+    return baseURL;
+  }
+  return baseURL + '/';
+}
+
+
 const { path } = appConfig;
 const { baseUrl8055, baseUrlEnterprise } = path;
-const baseUrl = window.pwConfig[process.env.NODE_ENV].baseURL;
+const baseUrl = dealBaseURL(window.pwConfig[process.env.NODE_ENV].baseURL);
+
 const GET = 'GET';
 const POST = 'POST';
 
