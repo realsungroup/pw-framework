@@ -1777,7 +1777,7 @@ class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    const { hasRowEdit, isUseBESize, rowColorConfig } = this.props;
+    const { hasRowEdit, isUseBESize, rowColorConfig, baseURL } = this.props;
     let newColumns = [...columns];
 
     // 行内编辑
@@ -1798,7 +1798,8 @@ class TableData extends React.Component {
               index,
               editing: isEditing,
               fieldName: newColumn.fieldName,
-              dataItem: this.getDataItem(record, newColumn.dataIndex)
+              dataItem: this.getDataItem(record, newColumn.dataIndex),
+              baseURL
             };
             if (isUseBESize && isEditing) {
               ret.height = newColumn._editHeight
