@@ -115,7 +115,7 @@ class SquareCard extends React.Component {
                       <Popover
                         content={
                           <div>
-                            {item.detailOptions &&
+                            {item.detailOptions ?
                               item.detailOptions.map((items, index) => {
                                 let aDeptArr =
                                   items.adept && items.adept.split('.');
@@ -129,34 +129,34 @@ class SquareCard extends React.Component {
                                       <div style={{ padding: '16px' }}>
                                         <h4>擅长</h4>
                                         <ul>
-                                          {aDeptArr &&
+                                          {aDeptArr?
                                             aDeptArr.map(item => {
                                               return <li>{item}</li>;
-                                            })}
+                                            }):'没有相关描述'}
                                         </ul>
                                       </div>
                                       <div style={{ padding: '16px' }}>
                                         <h4>不擅长</h4>
                                         <ul>
-                                          {notAdeptArr &&
+                                          {notAdeptArr ?
                                             notAdeptArr.map(item => {
                                               return <li>{item}</li>;
-                                            })}
+                                            }):'没有相关描述'}
                                         </ul>
                                       </div>
                                       <div style={{ padding: '16px' }}>
                                         <h4>过度使用</h4>
                                         <ul>
-                                          {overUseArr &&
+                                          {overUseArr ?
                                             overUseArr.map(item => {
                                               return <li>{item}</li>;
-                                            })}
+                                            }):'没有相关描述'}
                                         </ul>
                                       </div>
                                     </div>
                                   );
                                 }
-                              })}
+                              }):'没有相关描述'}
                           </div>
                         }
                         title="胜任力描述"

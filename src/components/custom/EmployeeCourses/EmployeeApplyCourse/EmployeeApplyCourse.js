@@ -122,7 +122,7 @@ const form = props => {
           }}
           type="primary"
         >
-          提交
+          保存
         </Button>
       </Form.Item>
     </Form>
@@ -294,7 +294,7 @@ class EmployeeApplyCourse extends React.Component {
           }
         ]
       });
-      message.success('提交成功');
+      message.success('保存成功，请到右侧‘课程管理’分页内提交报销单');
       this.tableDataRef.handleRefresh();
       this.setState({
         applyByCourseVisible: false,
@@ -396,11 +396,11 @@ class EmployeeApplyCourse extends React.Component {
                     返回选择课程
                   </Button>,
                   <Popconfirm
-                    title="确认提交申请？"
+                    title="确认保存申请？"
                     onConfirm={this.submitInternelCourse}
                   >
                     <Button icon="save" type="link">
-                      提交申请
+                      保存申请
                     </Button>
                   </Popconfirm>
                 ]}
