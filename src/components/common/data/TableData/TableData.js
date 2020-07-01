@@ -438,13 +438,17 @@ class TableData extends React.Component {
     if (columnsWidth) {
       columnsWidthKeys = Object.keys(columnsWidth);
       columnsWidthKeys.forEach(key => {
-        customWidth += columnsWidth[key];
+        if (typeof columnsWidth[key] === 'number') {
+          customWidth += columnsWidth[key];
+        }
       });
     }
 
     this._dealedColumns.forEach(item => {
       if (!columnsWidthKeys.find(key => key === item.title)) {
-        customWidth += item.width;
+        if (typeof item.width === 'number') {
+          customWidth += item.width;
+        }
       }
     });
 
@@ -1247,7 +1251,8 @@ class TableData extends React.Component {
       storeWay,
       recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1323,7 +1328,8 @@ class TableData extends React.Component {
       dblinkname,
       useAbsolute: recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     });
   };
 

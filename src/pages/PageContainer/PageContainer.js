@@ -20,7 +20,7 @@ import './PageContainer.less';
 import { cloneDeep } from 'lodash';
 import WindowView from './WindowView';
 import PageHeader from '../components/PageHeader1';
-import { delay } from 'lodash';
+import { debounce } from 'lodash';
 import DesktopLockScreen from '../Desktop/DesktopLockScreen';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -252,10 +252,10 @@ export default class PageContainer extends React.Component {
 
   handleSearchChange = e => {
     this.setState({ searchTextHeader: e.target.value });
-    delay(this.filterMenus, 200);
+    this.workbenchFilterMenus();
   };
 
-  filterMenus = () => {
+  workbenchFilterMenus = debounce(() => {
     const { allFolders, searchTextHeader: value } = this.state;
     const menus = allFolders
       .map(folder => {
@@ -279,7 +279,7 @@ export default class PageContainer extends React.Component {
       .filter(Boolean);
 
     this.setState({ menus });
-  };
+  }, 200);
 
   getWindowViewRef = (node, title) => {
     this[`windowViewRef${title}`] = node;
@@ -1335,7 +1335,7 @@ export default class PageContainer extends React.Component {
   };
 
 
-  filterMenus = () => {
+  filterMenus = debounce(() => {
     const { allFolders, deskTopSearchValue: value } = this.state;
     const menus = allFolders
       .map(folder => {
@@ -1359,11 +1359,11 @@ export default class PageContainer extends React.Component {
       .filter(Boolean);
 
     this.setState({ menus });
-  };
+  }, 200);
 
   handleDesktopSearchChange = (e) => {
     this.setState({ deskTopSearchValue: e.target.value });
-    delay(this.filterMenus, 200);
+    this.filterMenus();
   }
 
   handleDesktopOpenPersonCenter = () => {

@@ -211,7 +211,7 @@ class Control extends React.Component {
   // }
   // fileInfo:文件信心
   handleUploadFile = fileInfo => {
-    const { uploadFile, dblinkname } = this.props;
+    const { uploadFile, dblinkname, uploadConfig } = this.props;
     const file = fileInfo.file;
     try {
       uploadFile(
@@ -226,7 +226,8 @@ class Control extends React.Component {
           console.error(err);
           message.error('上传失败');
         },
-        dblinkname
+        dblinkname,
+        uploadConfig
       );
     } catch (err) {
       return console.error(err);

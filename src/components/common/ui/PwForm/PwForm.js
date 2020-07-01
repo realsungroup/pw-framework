@@ -124,7 +124,8 @@ class PwForm extends React.Component {
       record,
       beforeSaveFields,
       dblinkname,
-      baseURL
+      baseURL,
+      uploadConfig
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -158,6 +159,7 @@ class PwForm extends React.Component {
             dblinkname={dblinkname}
             baseURL={baseURL}
             customStyle={customStyle}
+            uploadConfig={uploadConfig}
           />
         )}
       </FormItem>
@@ -208,7 +210,8 @@ class PwForm extends React.Component {
       beforeSaveFields,
       dblinkname,
       labelControllArr,
-      baseURL
+      baseURL,
+      uploadConfig
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -254,6 +257,7 @@ class PwForm extends React.Component {
                 beforeSaveFields={hasBeforeSave}
                 dblinkname={dblinkname}
                 baseURL={baseURL}
+                uploadConfig={uploadConfig}
               />
             )}
           </div>

@@ -845,4 +845,23 @@ export const propTypes = {
    * 默认：-
    */
   noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
+
+  /**
+   * 上传文件的配置
+   * 默认：-
+   */
+  uploadConfig: PropTypes.shape({
+    /**
+     * 模式：'cloud' 云对象存储；'local' 服务器本地存储
+     */
+    mode: PropTypes.oneOf(['local', 'cloud']).isRequired,
+    /**
+     * 当 mode 为 'cloud' 时，云对象存储的空间名称
+     */
+    bucketname: PropTypes.string,
+    /**
+     * 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+     */
+    url: PropTypes.string.isRequired,
+  }),
 };
