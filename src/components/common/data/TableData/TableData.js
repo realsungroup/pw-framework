@@ -1247,7 +1247,8 @@ class TableData extends React.Component {
       storeWay,
       recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1323,7 +1324,8 @@ class TableData extends React.Component {
       dblinkname,
       useAbsolute: recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     });
   };
 
