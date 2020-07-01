@@ -70,14 +70,20 @@ const withUploadFile = (options = {}) => {
         this.p1 && this.p1.cancel();
       };
 
-      handleUploadFile = (file, success, fail, dblinkname) => {
+      handleUploadFile = (file, success, fail, dblinkname, uploadConfig) => {
         // 为什么不用 async/await：https://github.com/ant-design/ant-design/issues/10122
         let formData = new FormData();
         formData.append('file', file, file.name);
         const type = getFileType(file);
-
-        const { upload } = window.pwConfig[process.env.NODE_ENV];
-        uploadFile(file, getUploadUrl(upload, type, dblinkname), upload.mode)
+        
+        let _uploadConfig;
+        if (uploadConfig) {
+          _uploadConfig = uploadConfig;
+        } else {
+          _uploadConfig = window.pwConfig[process.env.NODE_ENV];
+        }
+        
+        uploadFile(file, getUploadUrl(_uploadConfig, type, dblinkname), _uploadConfig.mode)
           .then(fileUrl => {
             success && success(fileUrl);
           })

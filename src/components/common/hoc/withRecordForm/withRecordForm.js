@@ -69,7 +69,8 @@ export function withRecordForm(options = {}) {
         dblinkname,
         useAbsolute = false,
         baseURL = '',
-        formDataProps = {}
+        formDataProps = {},
+        uploadConfig
       }) => {
         const FormDataProps = {
           data,
@@ -92,6 +93,7 @@ export function withRecordForm(options = {}) {
           dblinkname,
           useAbsolute,
           baseURL,
+          uploadConfig,
           ...formDataProps
         };
         const containerProps = {

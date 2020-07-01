@@ -438,13 +438,17 @@ class TableData extends React.Component {
     if (columnsWidth) {
       columnsWidthKeys = Object.keys(columnsWidth);
       columnsWidthKeys.forEach(key => {
-        customWidth += columnsWidth[key];
+        if (typeof columnsWidth[key] === 'number') {
+          customWidth += columnsWidth[key];
+        }
       });
     }
 
     this._dealedColumns.forEach(item => {
       if (!columnsWidthKeys.find(key => key === item.title)) {
-        customWidth += item.width;
+        if (typeof item.width === 'number') {
+          customWidth += item.width;
+        }
       }
     });
 
@@ -1247,7 +1251,8 @@ class TableData extends React.Component {
       storeWay,
       recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1323,7 +1328,8 @@ class TableData extends React.Component {
       dblinkname,
       useAbsolute: recordFormUseAbsolute,
       baseURL,
-      formDataProps
+      formDataProps,
+      uploadConfig
     });
   };
 
@@ -1771,7 +1777,7 @@ class TableData extends React.Component {
   };
 
   getNewColumns = columns => {
-    const { hasRowEdit, isUseBESize, rowColorConfig } = this.props;
+    const { hasRowEdit, isUseBESize, rowColorConfig, baseURL } = this.props;
     let newColumns = [...columns];
 
     // 行内编辑
@@ -1792,7 +1798,8 @@ class TableData extends React.Component {
               index,
               editing: isEditing,
               fieldName: newColumn.fieldName,
-              dataItem: this.getDataItem(record, newColumn.dataIndex)
+              dataItem: this.getDataItem(record, newColumn.dataIndex),
+              baseURL
             };
             if (isUseBESize && isEditing) {
               ret.height = newColumn._editHeight

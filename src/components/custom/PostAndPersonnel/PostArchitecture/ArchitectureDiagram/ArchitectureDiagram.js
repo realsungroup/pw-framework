@@ -964,13 +964,12 @@ class ArchitectureDiagram extends React.Component {
         pid: record[pidField],
         tags: [...tags, selected]
       };
+      await this.clearCache();
+      await this.handleRefresh();
       message.success('修改成功');
       this.setState({ selectedNode: node }, () => {
         this.getHistory();
       });
-      // this.chart.updateNode(node);
-      this.handleRefresh();
-      this.clearCache();
     }
   };
 

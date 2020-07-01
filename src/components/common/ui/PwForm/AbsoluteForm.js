@@ -150,7 +150,8 @@ class AbsoluteForm extends React.PureComponent {
       dblinkname,
       saveMode,
       onSingleChange,
-      baseURL
+      baseURL,
+      uploadConfig
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -175,6 +176,7 @@ class AbsoluteForm extends React.PureComponent {
             saveMode={saveMode}
             onSingleChange={onSingleChange}
             baseURL={baseURL}
+            uploadConfig={uploadConfig}
           />
         )}
       </FormItem>

@@ -574,7 +574,8 @@ class FormData extends React.Component {
       style,
       layout,
       saveMode,
-      baseURL
+      baseURL,
+      uploadConfig
     } = this.props;
     const { hasSubTables } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -615,6 +616,7 @@ class FormData extends React.Component {
             dblinkname={dblinkname}
             saveMode={saveMode}
             onSingleChange={this.handleSingleChange}
+            uploadConfig={uploadConfig}
           />
           {hasSubTables &&
             this.renderSubTablesAbsolute(containerHeight, containerWidth)}
@@ -651,6 +653,7 @@ class FormData extends React.Component {
               dblinkname={dblinkname}
               layout={formProps && formProps.layout ? formProps.layout : layout}
               baseURL={baseURL}
+              uploadConfig={uploadConfig}
             />
           </div>
         )}

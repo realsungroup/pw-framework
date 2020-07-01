@@ -2,18 +2,13 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
-import debounce from 'lodash.debounce';
 import logoImg from '../../../assets/logo-26.png';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
-import http, { makeCancelable } from 'Util20/api';
 import { Drawer, Menu, Icon, Input, Badge, Popover } from 'antd';
 import qs from 'qs';
 import { connect } from 'react-redux';
-import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
 import HeaderBtn from './HeaderBtn';
-import windowImg from './images/window-icon.png';
-import windowSvg from './images/窗口.svg';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
