@@ -693,7 +693,7 @@ class ArchitectureDiagram extends React.Component {
    * 获取历史兼职数据
    */
   getPartHistory = async () => {
-    const { baseURL, dblinkname, historyResid } = this.props;
+    const { baseURL, dblinkname, resid } = this.props;
     const { selectedNode } = this.state;
     this.p6 && this.p6.cancel();
     let httpParams = {};
@@ -703,8 +703,8 @@ class ArchitectureDiagram extends React.Component {
     }
     this.p6 = makeCancelable(
       http(httpParams).getTableByHostRecord({
-        resid: '639083780814',
-        subresid: historyResid,
+        resid,
+        subresid: 639083780814,
         hostrecid: selectedNode.REC_ID,
         dblinkname,
         getcolumninfo: 1
@@ -1066,7 +1066,7 @@ class ArchitectureDiagram extends React.Component {
     if (node.isEmpty === 'Y' && node.isPartOccupied !== 'Y') {
       return message.info('无任职或兼职人员');
     }
-    const { baseURL } = this.props;
+    const { baseURL, historyResid } = this.props;
     if (node.isPartOccupied === 'Y') {
       //有兼职人员，则清空兼职人员
       Modal.confirm({
@@ -1137,23 +1137,23 @@ class ArchitectureDiagram extends React.Component {
               httpParams.baseURL = baseURL;
             }
             await http(httpParams).modifyRecords({
-              resid: '639230706234',
+              resid: historyResid,
               data: [
                 {
                   C3_305737857578: node.memberCode,
                   C3_465142349966: '',
+                  C3_740524286017: this.state.selectedDate.format('YYYYMMDD'),
                   C3_470524257391: this.state.selectedDate
                 }
               ],
-              uniquecolumns: 'C3_305737857578,C3_470524257391',
+              uniquecolumns: 'C3_305737857578,C3_740524286017',
               isEditOrAdd: 'true'
             });
             await this.clearCache();
             this.setState({ loading: false });
-            message.success('清空成功');
             this.props.closeModalOrDrawer();
             await this.getData();
-
+            message.success('清空成功');
             if (node.id) {
               this.chart.center(node.id);
             }
@@ -1305,7 +1305,16 @@ class ArchitectureDiagram extends React.Component {
     this.chart.load(this.chart.config.nodes);
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
-    this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
+    this.setState(
+      {
+        selectedNode: node,
+        rootKey: [nodeId + ''],
+        parentKeys,
+        partHistoryData: [],
+        historyData: []
+      },
+      this.getHistory
+    );
   };
 
   handleExpcollclick = nodeId => {
@@ -2193,7 +2202,7 @@ class ArchitectureDiagram extends React.Component {
       filtedNodes,
       fetchingData
     } = this.state;
-    const { baseURL, displayFileds, hasView } = this.props;
+    const { baseURL, displayFileds, hasView, historyResid } = this.props;
     return (
       <div className="architecture-diagram">
         <Spin spinning={loading}>
@@ -2783,7 +2792,7 @@ class ArchitectureDiagram extends React.Component {
             <div style={{ height: 500 }}>
               <TableData
                 baseURL={baseURL}
-                resid={'638643664427'}
+                resid={historyResid}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 // subtractH={240}
