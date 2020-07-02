@@ -16,7 +16,8 @@ export const defaultProps = {
   editText: '编辑',
   enEditText: 'Edit',
   layout: 'grid',
-  saveConfirmTip: '您确定要提交吗？'
+  saveConfirmTip: '您确定要提交吗？',
+  confirmLoading: false,
 };
 
 export const propTypes = {
@@ -186,5 +187,11 @@ export const propTypes = {
    * 保存确认时的提示文案
    * 默认：'您确定要提交吗？'
    */
-  saveConfirmTip: PropTypes.string
+  saveConfirmTip: PropTypes.string,
+
+  /**
+   * 确认按钮是否处于 loading 状态（不可点击）
+   * 默认：false
+   */
+  confirmLoading: PropTypes.bool,
 };
