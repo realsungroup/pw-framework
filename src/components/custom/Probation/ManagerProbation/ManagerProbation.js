@@ -27,7 +27,7 @@ class ManagerProbation extends React.Component {
       });
       try {
         res = await http().modifyRecords({
-          resid: 618591396440,
+          resid: 646946907432,
           data
         });
         if (res.Error === 0) {
@@ -78,7 +78,7 @@ class ManagerProbation extends React.Component {
         {this.state.isShowTable ? (
           <div style={{ height: '100vh' }}>
             <TableData
-              resid="618591396440"
+              resid="646946907432"
               subtractH={240}
               hasAdd={false}
               hasRowView={false}
