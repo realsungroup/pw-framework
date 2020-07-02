@@ -28,7 +28,8 @@ class FormData extends React.Component {
     this.state = {
       loading: false,
       defaultActiveKey: '-1',
-      hasSubTables // 是否有子表
+      hasSubTables, // 是否有子表
+      confirmLoading: false,
     };
   }
 
@@ -67,6 +68,7 @@ class FormData extends React.Component {
       if (err) {
         return message.error('表单数据有误');
       }
+      this.setState({ confirmLoading: true });
       let res;
       const formData = dealFormData(values);
       formData.REC_ID = record.REC_ID;
@@ -114,9 +116,9 @@ class FormData extends React.Component {
           );
           try {
             res = await this.p1.promise;
-            console.log({ res });
           } catch (err) {
             message.error(err.message);
+            this.setState({ confirmLoading: false });
             return console.error(err);
           }
 
@@ -135,7 +137,7 @@ class FormData extends React.Component {
           try {
             res = await this.p1.promise;
           } catch (err) {
-            console.error(err);
+            this.setState({ confirmLoading: false });
             return message.error(err.message);
           }
 
@@ -155,6 +157,7 @@ class FormData extends React.Component {
             res = await this.p1.promise;
           } catch (err) {
             console.error(err);
+            this.setState({ confirmLoading: false });
             return message.error(err.message);
           }
         }
@@ -200,8 +203,8 @@ class FormData extends React.Component {
         );
         try {
           res = await this.p1.promise;
-          console.log({ res });
         } catch (err) {
+          this.setState({ confirmLoading: false });
           message.error(err.message);
           return console.error(err);
         }
@@ -214,6 +217,7 @@ class FormData extends React.Component {
           savedRecord ? savedRecord : record,
           form
         );
+      this.setState({ confirmLoading: false });
     });
   };
 
@@ -577,7 +581,7 @@ class FormData extends React.Component {
       baseURL,
       uploadConfig
     } = this.props;
-    const { hasSubTables } = this.state;
+    const { hasSubTables, confirmLoading } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -654,6 +658,7 @@ class FormData extends React.Component {
               layout={formProps && formProps.layout ? formProps.layout : layout}
               baseURL={baseURL}
               uploadConfig={uploadConfig}
+              confirmLoading={confirmLoading}
             />
           </div>
         )}

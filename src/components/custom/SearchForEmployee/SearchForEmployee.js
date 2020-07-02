@@ -319,7 +319,8 @@ class SearchForEmployee extends Component {
 	        n++;
 	      }
 	  // 判别hr角色
-	  var hrCode='623876215000';
+    var hrCode='623876215000';
+    // 646935867605
 	      // var hrCode='demo';
 	      n=0;
 	      this.setState({userChara:'others'});
