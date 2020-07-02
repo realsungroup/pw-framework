@@ -1373,6 +1373,9 @@ class TableData extends React.Component {
       dataSource: newDataSource,
       editingKey: nullRecord.REC_ID
     });
+    setTimeout(() => {
+      this.forceUpdate();
+    })
   };
 
   handleRowEdit = record => {
@@ -1509,7 +1512,7 @@ class TableData extends React.Component {
   handleDelete = async () => {
     const { intl, storeWay, baseURL, dblinkname } = this.props;
     const { selectedRowKeys } = this.state.rowSelection;
-    if (!selectedRowKeys.length) {
+    if (!Array.isArray(selectedRowKeys) || !selectedRowKeys.length) {
       return message.error(intl.messages['TableData.pleaseSelectARecord']);
     }
     const { dataSource } = this.state;
