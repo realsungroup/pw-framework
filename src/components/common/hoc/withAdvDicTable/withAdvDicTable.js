@@ -39,7 +39,7 @@ const withAdvDicTable = WrappedComponent => {
     //   },
     //   advDicTableProps: { resid: 666, cmsWhere: 'xxx', cmscolumns: 'yyy' } // 高级字典独有的字段
     // }
-    handleShowAdvDicTable = (baseURL, form, dataItem, afterSelect) => {
+    handleShowAdvDicTable = (baseURL, form, dataItem, advDicTableProps = {}, afterSelect) => {
       const state = { visible: true };
 
       if (!this._form || !this._dataItem) {
@@ -50,7 +50,7 @@ const withAdvDicTable = WrappedComponent => {
       }
 
       if (!this.state.advDicTableProps.resid) {
-        state.advDicTableProps = { ...dataItem.advDicTableProps, baseURL };
+        state.advDicTableProps = { ...dataItem.advDicTableProps, ...advDicTableProps,  baseURL };
       }
 
       this.setState(state);
