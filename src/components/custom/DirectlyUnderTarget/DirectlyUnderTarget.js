@@ -7,7 +7,8 @@ import ApprovalTarget from './ApprovalTarget';
 import InterviewRecords from './InterviewRecords';
 import http from 'Util20/api';
 
-const baseURL =   window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
 const { TabPane } = Tabs;
 const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 
@@ -19,7 +20,13 @@ class DirectlyUnderTarget extends React.Component {
     years: [], //财年
     currentYear: {} //当前财年
   };
-
+  constructor(props) {
+    super(props);
+    this.ref1 = React.createRef();
+    this.ref2 = React.createRef();
+    this.ref3 = React.createRef();
+    this.ref4 = React.createRef();
+  }
   componentDidMount() {
     this.fectchYears();
   }
@@ -41,6 +48,23 @@ class DirectlyUnderTarget extends React.Component {
       console.error(error);
     }
   };
+
+  handleTabChange = key => {
+    switch (key) {
+      case '1':
+        this.ref1.current && this.ref1.current.fetchMainData();
+        break;
+      case '2':
+        this.ref2.current && this.ref2.current.fetchMainData();
+        break;
+      case '3':
+        this.ref3.current && this.ref3.current.fetchMainData();
+        break;
+
+      default:
+        break;
+    }
+  };
   render() {
     const { residConfig } = this.props;
     const { years, currentYear } = this.state;
@@ -51,6 +75,7 @@ class DirectlyUnderTarget extends React.Component {
         className="directly-under-target"
         size="small"
         tabBarStyle={tabBarStyle}
+        onChange={this.handleTabChange}
       >
         <TabPane tab="核准目标" key="1">
           <ApprovalTarget
@@ -58,6 +83,7 @@ class DirectlyUnderTarget extends React.Component {
             years={years}
             currentYear={currentYear}
             baseURL={baseURL}
+            ref={this.ref1}
           />
         </TabPane>
         <TabPane tab="调整目标" key="2">
@@ -66,6 +92,7 @@ class DirectlyUnderTarget extends React.Component {
             years={years}
             currentYear={currentYear}
             baseURL={baseURL}
+            ref={this.ref2}
           />
         </TabPane>
         <TabPane tab="面谈记录" key="3">
@@ -74,10 +101,15 @@ class DirectlyUnderTarget extends React.Component {
             years={years}
             currentYear={currentYear}
             baseURL={baseURL}
+            ref={this.ref3}
           />
         </TabPane>
         <TabPane tab="绩效反馈" key="4">
-          <AchievementsFeedback residConfig={residConfig} baseURL={baseURL}/>
+          <AchievementsFeedback
+            residConfig={residConfig}
+            baseURL={baseURL}
+            ref={this.ref4}
+          />
         </TabPane>
       </Tabs>
     );
