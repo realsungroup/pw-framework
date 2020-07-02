@@ -4688,7 +4688,7 @@ window[642855770350] = {
     baseURL: 'http://ngrok4.realsun.me:6060',
     downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
     resid: 518460953577,
-    actionBarWidth: 200,
+    actionBarWidth: 300,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
