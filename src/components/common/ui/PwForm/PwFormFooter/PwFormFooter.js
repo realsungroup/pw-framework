@@ -22,7 +22,8 @@ const PwFormFooter = React.memo(
     saveNeedConfirm,
     saveReopen,
     onReopenSave,
-    saveConfirmTip
+    saveConfirmTip,
+    confirmLoading,
   }) => {
     return (
       <div className="pw-form__footer">
@@ -46,6 +47,7 @@ const PwFormFooter = React.memo(
                       onClick={() => {
                         onSave && onSave(form);
                       }}
+                      loading={confirmLoading}
                     >
                       {saveText}
                     </Button>
@@ -87,11 +89,18 @@ PwFormFooter.propTypes = {
    * 保存确认时的提示文案
    * 默认：'您确定要提交吗？'
    */
-  saveConfirmTip: PropTypes.string
+  saveConfirmTip: PropTypes.string,
+
+  /**
+   * 确认按钮是否处于 loading 状态（不可点击）
+   * 默认：false
+   */
+  confirmLoading: PropTypes.bool,
 };
 
 PwFormFooter.defaultProps = {
-  saveConfirmTip: '您确定要提交吗？'
+  saveConfirmTip: '您确定要提交吗？',
+  confirmLoading: false,
 };
 
 export default PwFormFooter;

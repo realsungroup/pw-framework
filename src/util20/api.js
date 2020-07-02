@@ -646,7 +646,7 @@ http.createApi('getRedirectUrl', {
 });
 
 /**
- * 根据表 id 获取
+ * 根据表 id 获取行颜色数据
  * 参数：{ id }
  * 1. dblink 资源 id
  */

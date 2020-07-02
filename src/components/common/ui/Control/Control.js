@@ -167,9 +167,54 @@ class Control extends React.Component {
     return false;
   };
 
+  retFilterFieldValues = innerFieldNames => {
+    const { record } = this.props;
+    const colValues = [];
+    innerFieldNames.forEach(innerFieldName => {
+      colValues.push({
+        col1: innerFieldName.col1,
+        col1Value: record(innerFieldName.col1),
+        col2: innerFieldName.col2
+      });
+    });
+    return colValues;
+  };
+
+  // 获取由过滤字段组合成的 cmswhere 查询语句，来查询高级字典表格的数据
+  getAdvDicCmswhere = advData => {
+    if (!advData) {
+      return '';
+    }
+    const innerFieldNames = advData.DictionaryFilterCol.map(item => {
+      return { col1: item.Column1, col2: item.Column2 };
+    });
+    if (innerFieldNames.length === 0) {
+      return '';
+    }
+    const colValues = this.retFilterFieldValues(innerFieldNames);
+    let where = '';
+    colValues.forEach((colValue, index) => {
+      if (index === colValues.length - 1) {
+        colValue.col1Value &&
+          (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
+      } else {
+        colValue.col1Value &&
+          (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+      }
+    });
+    return where;
+  };
+
   handleSearch = () => {
-    const { showAdvDicTable, form, dataItem, baseURL } = this.props;
-    showAdvDicTable(baseURL, form, dataItem, this.handleBeforeSave);
+    const { showAdvDicTable, form, dataItem, baseURL, record } = this.props;
+    const advDicTableProps = {
+      cmswhere: this.getAdvDicCmswhere(
+        dataItem.controlData &&
+        dataItem.controlData.AdvDictionaryListData &&
+        dataItem.controlData.AdvDictionaryListData[0]
+      )
+    }
+    showAdvDicTable(baseURL, form, dataItem, advDicTableProps, this.handleBeforeSave);
   };
 
   /**
