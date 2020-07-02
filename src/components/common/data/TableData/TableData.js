@@ -1417,6 +1417,7 @@ class TableData extends React.Component {
         // 保存到前端
         return this.setState({ editingKey: null, dataSource });
       }
+      this.setState({ loading: true });
 
       // 保存到后端
       // 添加记录
@@ -1450,15 +1451,17 @@ class TableData extends React.Component {
         await this.p2.promise;
       } catch (err) {
         console.error(err);
+        this.setState({ loading: false });
         return message.error(err.message);
       }
-      if (hasRowEdit) {
+
+      if (hasRowEdit && this.triggerRowEditType === 'add') {
         message.success('添加成功');
       } else {
         message.success('修改成功');
       }
       this.triggerRowEditType = '';
-      this.setState({ editingKey: null });
+      this.setState({ editingKey: null, loading: false });
       this.handleRefresh();
     });
   };
