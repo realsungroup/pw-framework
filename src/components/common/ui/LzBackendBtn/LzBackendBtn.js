@@ -22,7 +22,7 @@ class LzBackendBtn extends React.PureComponent {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
 
-  state = { loading: false };
+  state = { loading: false, getFormDataLoading: false };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -114,6 +114,7 @@ class LzBackendBtn extends React.PureComponent {
 
       // 窗体数据或默认记录值不存在
       if (!formData || !defaultRecord) {
+        this.setState({ getFormDataLoading: true });
         try {
           formData = await this.props.httpGetFormData(
             resid,
@@ -121,6 +122,7 @@ class LzBackendBtn extends React.PureComponent {
             baseURL
           );
         } catch (err) {
+          this.setState({ getFormDataLoading: false });
           return message.error(err.message);
         }
         defaultRecord = this.getDefaultRecord(btnInfo);
@@ -134,6 +136,7 @@ class LzBackendBtn extends React.PureComponent {
           false,
           recordFormDisplayMode === 'classify'
         );
+        this.setState({ getFormDataLoading: false });
       }
       this.setState({ loading: true });
       onConfirm &&
@@ -151,6 +154,7 @@ class LzBackendBtn extends React.PureComponent {
 
   render() {
     const { btnInfo, size, popConfirmProps } = this.props;
+    const { getFormDataLoading } = this.state;
     const { Url, Type } = btnInfo;
     // if (Type !== 4 && Url) {
     //   return null;
@@ -180,7 +184,7 @@ class LzBackendBtn extends React.PureComponent {
       // 无 Popconfirm 组件
     } else {
       return (
-        <Button style={style} size={btnSizeMap[size]} onClick={this.onConfirm}>
+        <Button style={style} size={btnSizeMap[size]} onClick={this.onConfirm} loading={getFormDataLoading}>
           {btnInfo.Name1}
         </Button>
       );
