@@ -98,6 +98,9 @@ export const refused = {
   hasBeBtns: true,
   subtractH:196,
   recordFormType: 'drawer',
+  advSearch:{
+    formName:"defaultSearch",
+  },
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
@@ -134,6 +137,9 @@ export const history = {
   hasBeBtns: true,
   subtractH:196,
   recordFormType: 'drawer',
+  advSearch:{
+    formName:'defaultSearch',
+  },
   recordFormContainerProps: {
     placement: 'bottom',
     height: 600
