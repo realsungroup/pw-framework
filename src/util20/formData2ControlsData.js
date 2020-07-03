@@ -91,28 +91,6 @@ const getControlName = controlData => {
   }
 };
 
-// 获取由过滤字段组合成的 cmswhere 查询语句，来查询高级字典表格的数据
-const getCmswhere = advData => {
-  const innerFieldNames = advData.DictionaryFilterCol.map(item => {
-    return { col1: item.Column1, col2: item.Column2 };
-  });
-  if (!retFilterFieldValues || innerFieldNames.length === 0) {
-    return;
-  }
-  const colValues = retFilterFieldValues(innerFieldNames);
-  let where = '';
-  colValues.forEach((colValue, index) => {
-    if (index === colValues.length - 1) {
-      colValue.col1Value &&
-        (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
-    } else {
-      colValue.col1Value &&
-        (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
-    }
-  });
-  return where;
-};
-
 // 获取 cmscolumns 查询语句
 const getCmscolumns = advData => {
   let str = '';
@@ -203,20 +181,6 @@ const getCmsColumns = advData => {
   return str;
 };
 
-// 返回高级字典中过滤字段的值
-const retFilterFieldValues = innerFieldNames => {
-  const { getFieldValue } = this.props.form;
-  const colValues = [];
-  innerFieldNames.forEach(innerFieldName => {
-    colValues.push({
-      col1: innerFieldName.col1,
-      col1Value: getFieldValue(innerFieldName.col1),
-      col2: innerFieldName.col2
-    });
-  });
-  return colValues;
-};
-
 const getData = (controlArr, rulesControl) => {
   const data = [];
   controlArr.forEach(controlData => {
@@ -255,7 +219,6 @@ const getData = (controlArr, rulesControl) => {
       obj.advDicTableProps = {
         // 匹配字段
         resid: advData.ResID2,
-        cmsWhere: getCmswhere(advData),
         cmscolumns: getCmscolumns(advData),
         matchFields: getMatchFields(advData), // 匹配字段（即高级字典表中的字段对应表单中的字段，如：[{ CDZ2_COL1: 111, CDZ2_COL2: 222 }, { CDZ2_COL1: 111, CDZ2_COL2: 222 }]）
         // 得到匹配字段的话，可以由选择的高级字典表中记录得到表单中字段的值（一一对应）
