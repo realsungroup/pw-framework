@@ -21,6 +21,22 @@ import Spin from 'Common/ui/Spin';
 const { Option } = Select;
 const { Search } = Input;
 
+const getTableConfig = (tabKey, stage) => {
+  if (stage === '年中') {
+    if (tabKey === 'target') {
+      return tableConfig['1'];
+    } else if (tabKey === 'advAndDisadv') {
+      return tableConfig['2'];
+    }
+  } else {
+    if (tabKey === 'target') {
+      return tableConfig['3'];
+    } else if (tabKey === 'advAndDisadv') {
+      return tableConfig['4'];
+    }
+  }
+};
+
 const resid = 462636047259;
 const tableMode = ['sub', 'main'];
 const tableTab = [
@@ -28,6 +44,7 @@ const tableTab = [
   { key: 'advAndDisadv', title: '优缺点' }
   // { key: 'summary', title: '互评总结' }
 ];
+let tableConfig = {};
 /**
  * 直评管理
  */
@@ -35,7 +52,7 @@ class DirectEvaluate extends React.Component {
   constructor(props) {
     super(props);
     const { residConfig } = props;
-    this._tableConfig = {
+    tableConfig = {
       '1': {
         resid: residConfig.年中目标, //子表
         mode: 'sub'
@@ -59,7 +76,7 @@ class DirectEvaluate extends React.Component {
       selectedData: {},
       selectedTableTab: 'target', //选中的tab key
       selectedStage: '年中', //选中的财年阶段
-      tableConfig: this._tableConfig['1'],
+      tableConfig: tableConfig['1'],
       pagination: {
         total: 0
       },
@@ -80,7 +97,14 @@ class DirectEvaluate extends React.Component {
   // }
   static getDerivedStateFromProps(props, state) {
     if (!state.selectedYear) {
-      return { selectedYear: props.currentYear.C3_420161949106 };
+      return {
+        selectedYear: props.currentYear.C3_420161949106,
+        selectedStage: props.currentYear.C3_431106800828,
+        tableConfig: getTableConfig(
+          state.selectedTableTab,
+          props.currentYear.C3_431106800828
+        )
+      };
     }
   }
 
@@ -165,22 +189,6 @@ class DirectEvaluate extends React.Component {
         break;
     }
     return result;
-  };
-
-  getTableConfig = (tabKey, stage) => {
-    if (stage === '年中') {
-      if (tabKey === 'target') {
-        return this._tableConfig['1'];
-      } else if (tabKey === 'advAndDisadv') {
-        return this._tableConfig['2'];
-      }
-    } else {
-      if (tabKey === 'target') {
-        return this._tableConfig['3'];
-      } else if (tabKey === 'advAndDisadv') {
-        return this._tableConfig['4'];
-      }
-    }
   };
 
   submitTarget = stage => async () => {
@@ -308,7 +316,7 @@ class DirectEvaluate extends React.Component {
                   onChange={v => {
                     this.setState({
                       selectedStage: v,
-                      tableConfig: this.getTableConfig(selectedTableTab, v)
+                      tableConfig: getTableConfig(selectedTableTab, v)
                     });
                   }}
                 >
@@ -326,10 +334,7 @@ class DirectEvaluate extends React.Component {
                       onClick={() => {
                         this.setState({
                           selectedTableTab: tab.key,
-                          tableConfig: this.getTableConfig(
-                            tab.key,
-                            selectedStage
-                          )
+                          tableConfig: getTableConfig(tab.key, selectedStage)
                         });
                       }}
                     >
