@@ -942,12 +942,14 @@ class TableData extends React.Component {
 
   // 搜索
   _searchValue = '';
-  handleSearch = value => {
+  handleSearch = async value => {
     this._searchValue = value;
-    this.getTableData({
+    this.setState({ loading: true });
+    await this.getTableData({
       page: 1,
       pageSize: this.state.pagination.pageSize
     });
+    this.setState({ loading: false });
   };
 
   // 搜索的值改变
