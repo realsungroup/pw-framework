@@ -24,7 +24,7 @@ window.pwConfig = {
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
-      HeadCountBaseURL: 'http://10.108.2.66:9091/',
+      HeadCountBaseURL: 'http://ngrok5.realsun.me:6060/',
       PostArchitectureBaseURL: 'http://ngrok5.realsun.me:6060//',
       PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:6060//',
       comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:6060/', //综合查询
