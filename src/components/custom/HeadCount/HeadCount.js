@@ -5,7 +5,7 @@ import NewRecord from './NewRecord';
 import './HeadCount.less';
 
 const baseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.DataProcessBaseURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.HeadCountBaseURL;
 /**
  * HeadCount
  */
@@ -35,6 +35,7 @@ class HeadCount extends React.Component {
             hasBeBtns={true}
             recordFormUseAbsolute={true}
             formProps={{ width: 1150 }}
+            backendButtonPopConfirmProps={{placement: 'bottom' }}
             customRowBtns={[
               (record, btnSize) => {
                 return (

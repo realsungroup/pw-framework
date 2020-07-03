@@ -100,6 +100,7 @@ class WzImportApprove extends React.Component {
               height= '100%'
               actionBarWidth= {240}
               hasDownload ={false}
+              backendButtonPopConfirmProps={{placement: 'bottom' }}
               customRowBtns={[
                 record => (
                   <Button
