@@ -821,9 +821,11 @@ class ArchitectureDiagram extends React.Component {
       this.chart.removeNodeTag(this.state.selectedNode.id, selected);
     }
     this.chart.addNodeTag(nodeId, selected);
-
+    const childrens = this.chart.config.nodes.filter(item => {
+      return item.pid == root.id;
+    });
     this.chart.config.roots = [root.id];
-    this.chart.expand(root.id, root.childrenIds);
+    this.chart.expand(root.id, childrens.map(item => item.id));
     this.chart.load(this.chart.config.nodes);
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
