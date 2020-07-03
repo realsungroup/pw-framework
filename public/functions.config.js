@@ -4502,7 +4502,7 @@ window[642855262376] = {
   props: {
     resid: 518463420928,
     mainTableProps: {
-      actionBarWidth: 200,
+      actionBarWidth: 400,
       hasAdd: true,
       hasBeBtns: true,
       hasModify: true,
