@@ -185,23 +185,31 @@ class Control extends React.Component {
     if (!advData) {
       return '';
     }
-    const innerFieldNames = advData.DictionaryFilterCol.map(item => {
-      return { col1: item.Column1, col2: item.Column2 };
-    });
-    if (innerFieldNames.length === 0) {
-      return '';
-    }
-    const colValues = this.retFilterFieldValues(innerFieldNames);
     let where = '';
-    colValues.forEach((colValue, index) => {
-      if (index === colValues.length - 1) {
-        colValue.col1Value &&
-          (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
-      } else {
-        colValue.col1Value &&
-          (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+    if (advData) {
+      const innerFieldNames = advData.DictionaryFilterCol.map(item => {
+        return { col1: item.Column1, col2: item.Column2 };
+      });
+      if (innerFieldNames.length !== 0) {
+        const colValues = this.retFilterFieldValues(innerFieldNames);
+        colValues.forEach((colValue, index) => {
+          if (index === colValues.length - 1) {
+            colValue.col1Value &&
+              (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
+          } else {
+            colValue.col1Value &&
+              (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+          }
+        });
       }
-    });
+      if (advData.DictWhere) {
+        if (where) {
+          where += ` and ${advData.DictWhere}`;
+        } else {
+          where = advData.DictWhere;
+        }
+      }
+    }
     return where;
   };
 
