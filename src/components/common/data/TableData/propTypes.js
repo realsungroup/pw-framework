@@ -746,7 +746,7 @@ export const propTypes = {
   isUseBESize: PropTypes.bool,
 
   /**
-   * 是否使用窗体定义数据来控制记录表单的控件（为 false 时，不能设置记录为定位模式，因为缺少了位置数据）
+   * 是否使用窗体定义数据来控制记录表单的控件（为 false 时，不能设置记录为绝对定位模式，因为缺少了位置数据）
    * 默认：true
    */
   isUseFormDefine: PropTypes.bool,
@@ -834,7 +834,7 @@ export const propTypes = {
   /**
    * 表格头部的后端按钮确认弹窗所接收的 props
    * 可用于修复表格处于屏幕边缘时，点击后端按钮弹出的确认弹窗位置箭头不正确的样式 bug：
-   * backendButtonPopConfirmProps={ placement: 'bottom' }
+   * backendButtonPopConfirmProps={{ placement: 'bottom' }}
    * 默认：{}
    */
   backendButtonPopConfirmProps: PropTypes.object,
@@ -845,6 +845,13 @@ export const propTypes = {
    * 默认：-
    */
   noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
+
+  /**
+   * 没有宽度的字段的索引，从 1 开始
+   * 当选择列与第一列出现空隙时，可以设置某列没有宽度来修复。如： 1 表示第一列没有宽度；[1, 2] 表示第一列和第二列没有宽度
+   * 默认：-
+   */
+  noWidthFieldsIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
 
   /**
    * 上传文件的配置

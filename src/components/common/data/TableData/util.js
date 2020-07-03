@@ -50,7 +50,8 @@ export const getColumns = (
   hasRowEdit,
   isUseBESize,
   isSetColumnWidth,
-  noWidthFields = []
+  noWidthFields = [],
+  noWidthFieldsIndex = [],
 ) => {
   const columns = [];
 
@@ -70,7 +71,7 @@ export const getColumns = (
     };
   }
 
-  columnsInfo.forEach(item => {
+  columnsInfo.forEach((item, itemIndex) => {
     const column = {
       title: item.text,
       dataIndex: item.id,
@@ -101,6 +102,10 @@ export const getColumns = (
 
     // 不需要设置宽度的列
     if (noWidthFields.includes(item.id)) {
+      delete column.width;
+    }
+    console.log({noWidthFieldsIndex})
+    if (noWidthFieldsIndex.includes(itemIndex + 1)) {
       delete column.width;
     }
 

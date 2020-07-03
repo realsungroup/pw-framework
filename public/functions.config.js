@@ -4491,7 +4491,7 @@ window[642855262376] = {
   props: {
     resid: 518463420928,
     mainTableProps: {
-      actionBarWidth: 200,
+      actionBarWidth: 400,
       hasAdd: true,
       hasBeBtns: true,
       hasModify: true,
@@ -4501,8 +4501,9 @@ window[642855262376] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      noWidthFields:'C3_518381536343',
+      baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       advSearch:{
       formName:'defaultSearch'
     },
@@ -4516,8 +4517,8 @@ window[642855262376] = {
         hasBeBtns: true,
         hasRowDelete: false,
         isSetColumnWidth:false,
-        baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+        baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       }
     }
   }
@@ -4539,8 +4540,8 @@ window[642855273462] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       advSearch:{
         formName:'defaultSearch'
       },
@@ -4565,8 +4566,8 @@ window[642855707652] = {
   name: 'TableData', // 组件名称，
   title: '已拒绝招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    baseURL: 'http://ngrok4.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
     resid: 518448231083,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4604,8 +4605,8 @@ window[642855719230] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      baseURL: 'http://ngrok5.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      baseURL: 'http://ngrok4.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -4615,14 +4616,14 @@ window[642855719230] = {
       522692921247: {
         hasBeBtns: true,
         isSetColumnWidth:false,
-        baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+        baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       },
       518461643267: {
         hasBeBtns: true,
         isUseFormDefine: false,
-        baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+        baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       }
     }
   }
@@ -4631,8 +4632,8 @@ window[642855734719] = {
   name: 'TableData', // 组件名称，
   title: '需总部审批', // 功能模块名称
   props: {
-    baseURL: 'http://ngrok5.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    baseURL: 'http://ngrok4.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
     resid: 578151493683,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4733,7 +4734,7 @@ window[642855770350] = {
     hasRowView: true,
     hasRowDelete: true,
     recordFormUseAbsolute:true,
-    isUseFormDefine:false,
+    // isUseFormDefine:false,
     isSetColumnWidth:false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
@@ -4761,8 +4762,8 @@ window[642855780253] = {
       hasRowDelete: true,
       isUseFormDefine:false,
       // isSetColumnWidth:false,
-      baseURL: 'http://ngrok5.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      baseURL: 'http://ngrok4.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok4.realsun.me:6060/',
       backendButtonPopConfirmProps:{ placement: 'bottom' },
 
       advSearch:{
