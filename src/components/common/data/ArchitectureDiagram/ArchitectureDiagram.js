@@ -937,6 +937,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isPartOccupied === 'Y') {
       return message.info('已有兼职人员，请先清空');
     }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
+    }
     const { baseURL } = this.props;
     this.props.openModalOrDrawer(
       'modal',
@@ -1172,12 +1175,16 @@ class ArchitectureDiagram extends React.Component {
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
+    }
     if (
       node.isVirtual !== 'Y' &&
       (node.PartOccupiedPnId && node.PartOccupiedPnId !== 'N/A')
     ) {
       return message.info('IDL岗位，不可添加多人');
     }
+
     this.props.openModalOrDrawer(
       'modal',
       {
