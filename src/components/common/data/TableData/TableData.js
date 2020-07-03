@@ -373,6 +373,9 @@ class TableData extends React.Component {
     // 缓存已处理的行内编辑窗体数据（行内编辑表单所需的 data）
     this._dealedRowEditFormData = null;
 
+    // 缓存已处理的高级查询中的自定义搜索所需要的窗体数据
+    this._dealedAdvSearchFormData = null;
+
     // scroll = { x, y }
     this._x = 0;
     this._y = 0;
@@ -506,7 +509,10 @@ class TableData extends React.Component {
     this.setState({ scrollXY, rowSelection: newRowSelection });
   };
 
-  dealTableDataFormData = res => {
+  dealTableDataFormData = (
+    res,
+    cachedFormDataKey = ['_dealedRowEditFormData', '_dealedRecordFormData']
+  ) => {
     const { formProps } = this.props;
 
     // 获取和调用获取窗体定义数据（res.data.columns）相同的数据
@@ -518,9 +524,8 @@ class TableData extends React.Component {
 
     // 缓存记录表单和行内编辑表单所接收的 data prop
     const recordFormIsClassifyLayout = formProps.displayMode === 'classify';
-    this._dealedRowEditFormData = this._dealedRecordFormData =
-      formData &&
-      getDataProp(formData, {}, undefined, recordFormIsClassifyLayout);
+    const dealedFormData = formData && getDataProp(formData, {}, undefined, recordFormIsClassifyLayout);
+    cachedFormDataKey.forEach(key => (this[key] = dealedFormData));
   };
 
   getTableData = async ({
@@ -651,7 +656,8 @@ class TableData extends React.Component {
       isSetColumnWidth,
       hasAdvSearch,
       advSearch,
-      noWidthFields
+      noWidthFields,
+      noWidthFieldsIndex
     } = this.props;
 
     const secondParams = {
@@ -663,9 +669,26 @@ class TableData extends React.Component {
 
     let dataSource = res.data;
 
-    if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
-      this.dealTableDataFormData(res);
+    // 是否使用表格字段数据
+    let isUseTableFieldsData = false, cachedKey = [];
+    if (!isUseFormDefine || hasAdvSearch) {
+      isUseTableFieldsData = true;
     }
+    if (isUseTableFieldsData) {
+      if (!isUseFormDefine) {
+        cachedKey.push(...['_dealedRowEditFormData', '_dealedRecordFormData',]);
+      }
+      if (hasAdvSearch) {
+        cachedKey.push(...['_dealedAdvSearchFormData',]);
+      }
+      this.dealTableDataFormData(res, cachedKey);
+    }
+
+
+
+    // if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
+    //   this.dealTableDataFormData(res);
+    // }
 
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
@@ -695,6 +718,12 @@ class TableData extends React.Component {
     } else if (typeof noWidthFields === 'string') {
       _noWidthFields = [noWidthFields];
     }
+    let _noWidthFieldsIndex;
+    if (Array.isArray(noWidthFieldsIndex)) {
+      _noWidthFieldsIndex = noWidthFieldsIndex;
+    } else if (typeof noWidthFieldsIndex === 'number') {
+      _noWidthFieldsIndex = [noWidthFieldsIndex];
+    }
 
     const { columns, components } = getColumns(
       res.cmscolumninfo,
@@ -703,7 +732,8 @@ class TableData extends React.Component {
       hasRowEdit,
       isUseBESize,
       isSetColumnWidth,
-      _noWidthFields
+      _noWidthFields,
+      _noWidthFieldsIndex,
     );
 
     this._dealedColumns = columns;
@@ -1658,10 +1688,10 @@ class TableData extends React.Component {
 
     let recordFormData;
     if (!isRequestFormData) {
-      if (!this._dealedRecordFormData) {
-        return message.error('正在请求数据，请稍后再试');
+      if (!this._dealedAdvSearchFormData) {
+        return message.info('正在请求数据，请稍后再试');
       }
-      recordFormData = this._dealedRecordFormData;
+      recordFormData = this._dealedAdvSearchFormData;
     }
 
     // 打开高级搜索
