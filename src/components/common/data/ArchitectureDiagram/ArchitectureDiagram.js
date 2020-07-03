@@ -361,6 +361,7 @@ class ArchitectureDiagram extends React.Component {
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
         this.setRootNode(parseInt(id));
+        return false;
       }
     });
     this.chart.on('exportstart', function(sender, args) {
@@ -1316,8 +1317,13 @@ class ArchitectureDiagram extends React.Component {
       return item.pid == root.id;
     });
     this.chart.config.roots = [root.id];
-    this.chart.expand(root.id, childrens.map(item => item.id));
     this.chart.load(this.chart.config.nodes);
+    this.chart.expand(root.id, childrens.map(item => item.id));
+    this.chart.center(nodeId, {
+      rippleId: node.id,
+      vertical: true,
+      horizontal: true
+    });
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
     this.setState(
