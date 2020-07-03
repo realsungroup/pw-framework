@@ -621,6 +621,7 @@ class FormData extends React.Component {
             saveMode={saveMode}
             onSingleChange={this.handleSingleChange}
             uploadConfig={uploadConfig}
+            baseURL={baseURL}
           />
           {hasSubTables &&
             this.renderSubTablesAbsolute(containerHeight, containerWidth)}
