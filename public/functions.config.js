@@ -3362,6 +3362,7 @@ window[642854434101] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -3388,6 +3389,7 @@ window[642854450973] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -3440,6 +3442,7 @@ window[642854476015] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -3468,6 +3471,7 @@ window[642868834485] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -3493,6 +3497,7 @@ window[642854616358] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
@@ -3555,25 +3560,39 @@ window[642854660698] = {
     },
     subTablesProps: {
       423574450430: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       423664972378: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       382917623098: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       423662411106: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       425248261392: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       425173186017: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       426438255597: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
     }
   }
@@ -3650,7 +3669,8 @@ window[642854689917] = {
     hasRowEditAdd: true,
     isUseFormDefine: false,
     actionBarFixed: false,
-    isSetColumnWidth:false,
+    // isSetColumnWidth:false,
+    // noWidthFields:"C3_445799498673",
     formProps: {
       // height: 500
     },
@@ -3798,7 +3818,7 @@ window[642854868542] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     isUseFormDefine: false,
     hasRowDelete: false,
     formProps: {
@@ -3873,6 +3893,7 @@ window[642854803335] = {
     hasBackBtn: true,
     hasDelete: false,
     isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
@@ -3899,7 +3920,7 @@ window[642854814341] = {
     hasDelete: false,
     isUseFormDefine: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     formProps: {
       // height: 500
@@ -3936,30 +3957,30 @@ window[642854826219] = {
     subtractH: 200
   }
 };
-window[642865344500] = {
-  name: 'TableData', // 组件名称，
-  title: '刷卡记录', // 功能模块名称
-  props: {
-    baseURL: 'http://ngrok5.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
-    resid: 375296681546,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    isUseFormDefine:false,
-    isSetColumnWidth:false,
-    formProps: {
-      // height: 500
-    },
-    subtractH: 200
-  }
-};
+// window[642865344500] = {
+//   name: 'TableData', // 组件名称，
+//   title: '刷卡记录', // 功能模块名称
+//   props: {
+//     baseURL: 'http://ngrok5.realsun.me:6060/',
+//     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+//     resid: 375296681546,
+//     actionBarWidth: 200,
+//     hasAdd: true,
+//     hasBeBtns: true,
+//     hasModify: true,
+//     hasBackBtn: true,
+//     hasDelete: true,
+//     hasRowModify: true,
+//     hasRowView: true,
+//     hasRowDelete: true,
+//     isUseFormDefine:false,
+//     isSetColumnWidth:false,
+//     formProps: {
+//       // height: 500
+//     },
+//     subtractH: 200
+//   }
+// };
 window[642854845983] = {
   name: 'TableData', // 组件名称，
   title: '刷卡登记', // 功能模块名称
@@ -3970,6 +3991,7 @@ window[642854845983] = {
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
+    addText:"刷卡登记",
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
@@ -4221,8 +4243,9 @@ window[642855075847] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine: false,
+    // isUseFormDefine: false,
     isSetColumnWidth:false,
+    // noWidthFields: "C3_437046231179",
     formProps: {
       // height: 500
     },
@@ -4249,7 +4272,7 @@ window[642855085886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    noWidthFields:"C3_427541796327",
     formProps: {
       // height: 500
     },
@@ -4328,6 +4351,7 @@ window[642855115194] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -4354,7 +4378,7 @@ window[642868538751] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    // isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -4402,6 +4426,7 @@ window[642855176494] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      backendButtonPopConfirmProps:{ placement: 'bottom' },
       baseURL: 'http://ngrok5.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       formProps: {
@@ -4411,12 +4436,16 @@ window[642855176494] = {
     },
     subTablesProps: {
       449439564546: {
-        hasBeBtns: true,
+        hasBeBtns: false,
+        isUseFormDefine:false,
         baseURL: 'http://ngrok5.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       },
       449441441589: {
         hasBeBtns: true,
+        hasRowView:false,
+        hasRowModify:false,
+        hasRowDelete:false,
         baseURL: 'http://ngrok5.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
       }
@@ -4440,6 +4469,7 @@ window[642855189869] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine:false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -4688,7 +4718,7 @@ window[642855770350] = {
     baseURL: 'http://ngrok4.realsun.me:6060',
     downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
     resid: 518460953577,
-    actionBarWidth: 200,
+    actionBarWidth: 300,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -7070,6 +7100,8 @@ window[642864859197] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    addText:'新建申请',
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -7084,14 +7116,15 @@ window[642864873312] = {
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 531400837731,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -7106,14 +7139,15 @@ window[642864883370] = {
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 531400430406,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
+    hasDelete: false,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -7128,14 +7162,15 @@ window[642864894557] = {
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 547116884120,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
-    hasModify: true,
+    hasModify: false,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: true,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -7150,14 +7185,15 @@ window[642864905946] = {
     downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
     resid: 531401843164,
     actionBarWidth: 200,
-    hasAdd: true,
+    hasAdd: false,
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    hasDelete: true,
+    hasDelete: false,
     hasRowModify: false,
-    hasRowView: true,
-    hasRowDelete: true,
+    hasRowView: false,
+    isWrap:true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -7178,9 +7214,10 @@ window[642864915093] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
+    isWrap:true,
     formProps: {
       // height: 500
     },
@@ -7201,9 +7238,10 @@ window[642864924530] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
+    isWrap:true,
     formProps: {
       // height: 500
     },
@@ -7227,6 +7265,7 @@ window[642864936700] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isWrap:true,
     formProps: {
       // height: 500
     },
@@ -7278,6 +7317,7 @@ window[642864965745] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     isSetColumnWidth:false,
     advSearch:{
       formName:'defaultSearch'
@@ -7867,7 +7907,7 @@ window[642854837350] = {
   name: 'TableData', // 组件名称，
   title: '刷卡记录', // 功能模块名称
   props: {
-    resid: 549653969241,
+    resid: 375296681546,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
@@ -7879,7 +7919,7 @@ window[642854837350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    // isSetColumnWidth:false,
     formProps: {
       // height: 500
     },
@@ -7903,6 +7943,10 @@ window[642854549263] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    recordFormContainerProps: {
+      width:'100vw'
+    },
     subTableArrProps: [
       {
         subTableName: '考勤日报',
@@ -7918,7 +7962,6 @@ window[642854549263] = {
     ],
     formProps: {
       // height: 500
-      width:'100vw'
     },
     subtractH: 200
   }
@@ -8024,6 +8067,10 @@ window[645027658426] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
+    advSearch:{
+      isUseTableFields: true,
+    },
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowEditAdd: true,
     formProps: {
       // height: 500
@@ -8068,7 +8115,7 @@ window[642858615601] = {
     gradeAppraisingConfig: {
       resid: 645010935966,
       replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
-      baseURL: 'http://ngrok5.realsun.me:6060/'
+      baseURL: 'http://ngrok14.realsun.me:6060/'
     },
     residConfig: {
       年中目标: 462637854501,
@@ -8150,6 +8197,455 @@ window[645649238968] = {
       // height: 500
     },
     subtractH: 200
+  }
+};
+
+window[647005159900] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤-病假扣款比例', // 功能模块名称
+  props: {
+    resid: 456246260727,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    noWidthFields:'C3_456246283759',
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005183171] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤-请假扣款比例', // 功能模块名称
+  props: {
+    resid: 456246896370,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    noWidthFields:'C3_456246934372',
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005199463] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤可查阅期间', // 功能模块名称
+  props: {
+    resid: 447426327525,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005213957] = {
+  name: 'TableData', // 组件名称，
+  title: '薪资可查阅期间', // 功能模块名称
+  props: {
+    resid: 447426493342,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005261709] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤数据分类锁定', // 功能模块名称
+  props: {
+    resid: 433505169761,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    isWrap:true,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005277545] = {
+  name: 'TableData', // 组件名称，
+  title: '用户组锁定级别', // 功能模块名称
+  props: {
+    resid: 432206096450,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    noWidthFields:'C3_432206151289',
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005294257] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤月度结算表锁定', // 功能模块名称
+  props: {
+    resid: 469045084192,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+
+window[647005579815] = {
+  name: 'TableData', // 组件名称，
+  title: '公出B日报表', // 功能模块名称
+  props: {
+    resid: 432126463288,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005627465] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤人员名单', // 功能模块名称
+  props: {
+    resid: 448558617432,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005644256] = {
+  name: 'TableData', // 组件名称，
+  title: '月度人员名单', // 功能模块名称
+  props: {
+    resid: 447620057756,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: false,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005664728] = {
+  name: 'TableData', // 组件名称，
+  title: '补充当月结算名单', // 功能模块名称
+  props: {
+    resid: 448453101928,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    noWidthFields:"C3_448453177684",
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005696097] = {
+  name: 'TableData', // 组件名称，
+  title: '加班申请额度个人控制', // 功能模块名称
+  props: {
+    resid: 472822081438,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    baseURL: 'http://ngrok5.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    hasRowEdit: true,
+    hasRowEditAdd: true,
+    actionBarFixed: false,
+    noWidthFields:"C3_472822127334",
+    formProps: {
+      // height: 500
+    },
+    subtractH: 200
+  }
+};
+window[647005718255] = {
+  name: 'MainTableSubTables', // 组件名称，
+  title: 'HR专员请假审批', // 功能模块名称
+  props: {
+    resid: 513784214608,
+    mainTableProps: {
+      actionBarWidth: 300,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      isUseFormDefine:false,
+      baseURL: 'http://ngrok5.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      formProps: {
+        // height: 500
+      },
+      subtractH: 200
+    },
+    subTablesProps: {
+      446915608629: {
+        hasBeBtns: true,
+        isUseFormDefine:false,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      }
+    }
+  }
+};
+window[647005738876] = {
+  name: 'MainTableSubTables', // 组件名称，
+  title: 'HR专员请假已审批', // 功能模块名称
+  props: {
+    resid: 516107915085,
+    mainTableProps: {
+      actionBarWidth: 300,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      isUseFormDefine:false,
+      baseURL: 'http://ngrok5.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      formProps: {
+        // height: 500
+      },
+      subtractH: 200
+    },
+    subTablesProps: {
+      446915608629: {
+        hasBeBtns: true,
+        isUseFormDefine:false,
+        baseURL: 'http://ngrok5.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      }
+    }
+  }
+};
+window[647005761923] = {
+  name: 'TableData', // 组件名称，
+  title: 'HR专员已拒绝审批', // 功能模块名称
+  props: {
+    resid: 521636906178,
+      actionBarWidth: 300,
+      hasAdd: false,
+      hasBeBtns: false,
+      hasModify: false,
+      hasBackBtn: false,
+      hasDelete: false,
+      hasRowModify: false,
+      hasRowView: false,
+      hasRowDelete: false,
+      isWrap:true,
+      baseURL: 'http://ngrok5.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      formProps: {
+        // height: 500
+      },
+      subtractH: 200
+  }
+};
+window[647005790386] = {
+  name: 'TableData', // 组件名称，
+  title: '部门平均工资', // 功能模块名称
+  props: {
+    resid: 534182415597,
+      actionBarWidth: 300,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      baseURL: 'http://ngrok5.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      isWrap:true,
+      isUseFormDefine:false,
+      formProps: {
+        // height: 500
+      },
+      subtractH: 200
+  }
+};
+window[647005829686] = {
+  name: 'TableData', // 组件名称，
+  title: '薪资结构', // 功能模块名称
+  props: {
+    resid: 534182253486,
+      actionBarWidth: 300,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      isUseFormDefine:false,
+      noWidthFields:"C3_534182272208",
+      baseURL: 'http://ngrok5.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok10.realsun.me:6060/',
+      formProps: {
+        // height: 500
+      },
+      subtractH: 200
   }
 };
 
