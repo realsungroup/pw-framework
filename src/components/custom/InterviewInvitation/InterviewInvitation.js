@@ -242,7 +242,7 @@ class InterviewInvitation extends React.Component {
                 type='number'
                 value={this.state.C3_629488291308}
                 onChange={(v)=>{this.setState({C3_629488291308:v.target.value})}}
-              />
+              /> 
            */}
           </div>
         </Modal>
@@ -254,6 +254,7 @@ class InterviewInvitation extends React.Component {
             hasModify={false}
             hasRowDelete={true}
             hasRowModify={false}
+            backendButtonPopConfirmProps={{placement:'bottom'}}
             hasRowView={false}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
