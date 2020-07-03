@@ -144,17 +144,15 @@ class ProbationForms extends React.Component {
    */
   agreeApply = async () => {
     this.setState({ loading: true });
-    debugger
 
     try {
-      
       var dept;
       var userID;
       var userMemberId;
       var toAdd;
       var name;
       var memID = this.state.employeeInformation.instructorDirectorId;
-      if(memID){
+      if (memID) {
         let res2 = await http().getTable({
           resid: '609599795438',
           cmswhere: `C3_305737857578 = '${memID}'`
@@ -175,7 +173,7 @@ class ProbationForms extends React.Component {
             name: name
           }
         ];
-  
+
         let res3 = await http().getTable({
           resid: '619281130628',
           cmswhere: `userMemberId = '${memID}'`
@@ -188,7 +186,7 @@ class ProbationForms extends React.Component {
         }
       }
       var memID2 = this.state.employeeInformation.instructorDirectorId2;
-      if(memID2){
+      if (memID2) {
         let res5 = await http().getTable({
           resid: '609599795438',
           cmswhere: `C3_305737857578 = '${memID2}'`
@@ -209,7 +207,7 @@ class ProbationForms extends React.Component {
             name: name
           }
         ];
-  
+
         let res6 = await http().getTable({
           resid: '619281130628',
           cmswhere: `userMemberId = '${memID2}'`
@@ -221,7 +219,7 @@ class ProbationForms extends React.Component {
           });
         }
       }
-      
+
       // 辅导员表ID619281130628
 
       // 辅导员工号C3_227192472953
@@ -239,15 +237,16 @@ class ProbationForms extends React.Component {
       var instructor;
       var instructorDirectorName;
       var instructorDirectorId;
-      if(memID){
-        instructorID= this.state.employeeInformation.instructorDirectorId;
-        instructor=this.state.employeeInformation.instructorDirectorName;
-        instructorDirectorName='';
-        instructorDirectorId='';
+      if (memID) {
+        instructorID = this.state.employeeInformation.instructorDirectorId;
+        instructor = this.state.employeeInformation.instructorDirectorName;
+        instructorDirectorName = '';
+        instructorDirectorId = '';
       }
-      if(memID2){
+      if (memID2) {
         C3_637084526216 = this.state.employeeInformation.instructorDirectorId2;
-        C3_637084539039 = this.state.employeeInformation.instructorDirectorName2;
+        C3_637084539039 = this.state.employeeInformation
+          .instructorDirectorName2;
         instructorDirectorName2 = '';
         instructorDirectorId2 = '';
       }
@@ -269,8 +268,7 @@ class ProbationForms extends React.Component {
         ]
       });
       message.success('成功同意辅导员');
-      this.setState({ loading: false ,flagAlreadyHit: 1});
-
+      this.setState({ loading: false, flagAlreadyHit: 1 });
     } catch (error) {
       this.setState({ loading: false });
       message.error(error.message);
@@ -398,6 +396,15 @@ class ProbationForms extends React.Component {
           }
         ]
       });
+      let memberId;
+      let employedId;
+      if (this.props.roleName === '员工') {
+        memberId = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+      } else {
+        memberId = this.props.memberId;
+        employedId = this.props.employedId;
+      }
+      await this.getRecords(memberId, employedId);
       this.setState({ loading: false });
       if (this.props.roleName !== '员工') {
         this.props.setIsShowTable(true);
@@ -537,20 +544,18 @@ class ProbationForms extends React.Component {
             probationObjectives.push({ [resid9]: subData });
           }
         }
-        if(data){
+        if (data) {
           if (data.instructorDirectorName) {
-            data.isSemi=true;
-            this.setState({flagHitBack:true});
-            console.log(111)
+            data.isSemi = true;
+            this.setState({ flagHitBack: true });
           } else {
-            console.log(222)
-            data.isSemi=false;
+            data.isSemi = false;
           }
           if (data.instructorDirectorName2) {
-            data.isSemi2=true;
-            this.setState({flagHitBack:true});
+            data.isSemi2 = true;
+            this.setState({ flagHitBack: true });
           } else {
-            data.isSemi2=false;
+            data.isSemi2 = false;
           }
           if (data.instructorIsPass == 'Y') {
             this.setState({ flagAlreadyHit: 1 });
@@ -580,8 +585,6 @@ class ProbationForms extends React.Component {
             }
           });
         }
-          
-       
       } else {
         message.info('没有试用期记录');
       }
@@ -610,7 +613,7 @@ class ProbationForms extends React.Component {
    * 获取入职培训表数据
    */
   getOrientationTraining = async (memberId, employedId) => {
-    if (memberId = '0') {
+    if (memberId == '0') {
       try {
         let res = await http().getTable({
           resid: resid3,
@@ -746,21 +749,22 @@ class ProbationForms extends React.Component {
   /**
    * 删除辅导记录
    */
-  removeMentor = index => {
+  removeMentor = async index => {
     let mentorshipRecord = [...this.state.mentorshipRecord];
     if (mentorshipRecord[index].REC_ID) {
       try {
-        http().removeRecords({
+        await http().removeRecords({
           resid: resid6,
           data: [{ REC_ID: mentorshipRecord[index].REC_ID }]
         });
+        message.success('已删除');
+        mentorshipRecord.splice(index, 1);
+        this.setState({ mentorshipRecord });
       } catch (error) {
         message.error(error.message);
         console.log(error);
       }
     }
-    mentorshipRecord.splice(index, 1);
-    this.setState({ mentorshipRecord });
   };
 
   /**
@@ -1498,10 +1502,8 @@ class ProbationForms extends React.Component {
                 ))}
               </Select>
             </Col>
-          
           </Row>
           <Row className="probation-forms_modal_inputrow">
-
             <Col span={4} offset={4}>
               培训师2(选填):
             </Col>

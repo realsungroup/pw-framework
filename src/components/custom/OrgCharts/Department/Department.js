@@ -500,8 +500,11 @@ class Department extends React.Component {
     }
     this.chart.addNodeTag(nodeId, selected);
 
-    this.chart.config.roots = [root.id];
-    this.chart.expand(root.id, root.childrenIds);
+     const childrens = this.chart.config.nodes.filter(item => {
+       return item.pid == root.id;
+     });
+     this.chart.config.roots = [root.id];
+     this.chart.expand(root.id, childrens.map(item => item.id));
     this.chart.load(this.chart.config.nodes);
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
