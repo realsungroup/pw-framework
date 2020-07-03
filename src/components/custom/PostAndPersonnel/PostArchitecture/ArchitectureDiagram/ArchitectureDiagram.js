@@ -226,8 +226,7 @@ class ArchitectureDiagram extends React.Component {
           field_3: 'number_children'
         },
         collapse: {
-          level: this.state.currentLevel,
-          allChildren: true
+          level: this.state.currentLevel
         },
         scaleInitial: 0.5,
         // mouseScrool: OrgChart.action.zoom,
@@ -273,7 +272,7 @@ class ArchitectureDiagram extends React.Component {
     });
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
-        this.handleExpcollclick(parseInt(id));
+        this.setRootNode(parseInt(id));
       }
     });
     this.chart.on('exportstart', function(sender, args) {

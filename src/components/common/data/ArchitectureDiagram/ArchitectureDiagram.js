@@ -360,7 +360,7 @@ class ArchitectureDiagram extends React.Component {
     });
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
-        this.handleExpcollclick(parseInt(id));
+        this.setRootNode(parseInt(id));
       }
     });
     this.chart.on('exportstart', function(sender, args) {
@@ -940,6 +940,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
     }
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
     const { baseURL } = this.props;
     this.props.openModalOrDrawer(
       'modal',
@@ -1177,6 +1180,9 @@ class ArchitectureDiagram extends React.Component {
     }
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
+    }
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
     }
     if (
       node.isVirtual !== 'Y' &&
