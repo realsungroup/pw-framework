@@ -1147,16 +1147,19 @@ class ArchitectureDiagram extends React.Component {
               httpParams.baseURL = baseURL;
             }
             await http(httpParams).modifyRecords({
-              resid: historyResid,
+              resid: 639230706234,
               data: [
                 {
-                  C3_305737857578: node.memberCode,
+                  C3_227192472953: node.memberID,
                   C3_465142349966: '',
+                  orgCode: -1,
                   C3_740524286017: this.state.selectedDate.format('YYYYMMDD'),
-                  C3_470524257391: this.state.selectedDate
+                  C3_470524257391: this.state.selectedDate,
+                  C3_227192484125: node.memberCN,
+                  C3_638469590670: '变动'
                 }
               ],
-              uniquecolumns: 'C3_305737857578,C3_740524286017',
+              uniquecolumns: 'C3_227192472953',
               isEditOrAdd: 'true'
             });
             await this.clearCache();
