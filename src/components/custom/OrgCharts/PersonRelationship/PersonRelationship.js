@@ -1000,7 +1000,10 @@ class PersonRelationship extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     const { displayFileds } = this.props;
     return (
-      <Breadcrumb separator=">">
+      <Breadcrumb
+        separator=">"
+        style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
+      >
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item

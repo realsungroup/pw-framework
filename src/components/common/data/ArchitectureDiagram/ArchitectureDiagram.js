@@ -872,10 +872,13 @@ class ArchitectureDiagram extends React.Component {
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node }, () => {
-      this.getHistory();
-      this.getPartHistory();
-    });
+    this.setState(
+      { selectedNode: node, historyData: [], partHistoryData: [] },
+      () => {
+        this.getHistory();
+        this.getPartHistory();
+      }
+    );
   };
 
   /**
@@ -1899,7 +1902,10 @@ class ArchitectureDiagram extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds, name } = this.props;
     return (
-      <Breadcrumb separator=">" style={{ overflow: 'auto' }}>
+      <Breadcrumb
+        separator=">"
+        style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
+      >
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item
