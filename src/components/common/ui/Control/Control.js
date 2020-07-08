@@ -8,7 +8,8 @@ import {
   Icon,
   Checkbox,
   message,
-  Modal
+  Modal,
+  Radio,
 } from 'antd';
 import DateTimePicker from '../DateTimePicker';
 import withAdvDicTable from '../../hoc/withAdvDicTable';
@@ -19,6 +20,7 @@ import { compose } from 'recompose';
 import moment from 'moment';
 import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
+import { getRadioGroupOptions } from './util'
 import './Control.less';
 
 const { TextArea, Search } = Input;
@@ -185,23 +187,31 @@ class Control extends React.Component {
     if (!advData) {
       return '';
     }
-    const innerFieldNames = advData.DictionaryFilterCol.map(item => {
-      return { col1: item.Column1, col2: item.Column2 };
-    });
-    if (innerFieldNames.length === 0) {
-      return '';
-    }
-    const colValues = this.retFilterFieldValues(innerFieldNames);
     let where = '';
-    colValues.forEach((colValue, index) => {
-      if (index === colValues.length - 1) {
-        colValue.col1Value &&
-          (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
-      } else {
-        colValue.col1Value &&
-          (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+    if (advData) {
+      const innerFieldNames = advData.DictionaryFilterCol.map(item => {
+        return { col1: item.Column1, col2: item.Column2 };
+      });
+      if (innerFieldNames.length !== 0) {
+        const colValues = this.retFilterFieldValues(innerFieldNames);
+        colValues.forEach((colValue, index) => {
+          if (index === colValues.length - 1) {
+            colValue.col1Value &&
+              (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
+          } else {
+            colValue.col1Value &&
+              (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+          }
+        });
       }
-    });
+      if (advData.DictWhere) {
+        if (where) {
+          where += ` and ${advData.DictWhere}`;
+        } else {
+          where = advData.DictWhere;
+        }
+      }
+    }
     return where;
   };
 
@@ -545,6 +555,8 @@ class Control extends React.Component {
 
         }
 
+       
+
         default: {
           return <span>{value}</span>;
         }
@@ -685,8 +697,18 @@ class Control extends React.Component {
             alt={value}
             style={{ width: customStyle.width, height: customStyle.height }}
           ></img> : ''
-
         }
+
+        case 'RadioGroup': {
+          const options = getRadioGroupOptions(dataItem);
+
+          return (
+            <Radio.Group value={value} onChange={this.handleChange}>
+              {options.map(option => <Radio key={option.value} value={option.value}>{option.label}</Radio>)}
+            </Radio.Group>
+          )
+        }
+        
         default: {
           return <div>{value}</div>;
         }

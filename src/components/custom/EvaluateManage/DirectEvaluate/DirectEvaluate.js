@@ -418,6 +418,7 @@ class DirectEvaluate extends React.Component {
     tableDataProps.hasRowAdd = false;
     tableDataProps.hasRowModify = false;
     tableDataProps.hasRowDelete = false;
+    tableDataProps.hasRowView = false;
     tableDataProps.hasRowEdit = false;
     tableDataProps.actionBarWidth = 150;
     tableDataProps.wrappedComponentRef = element =>
