@@ -233,7 +233,8 @@ class PersonRelationship extends React.Component {
     });
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
-        this.handleExpcollclick(parseInt(id));
+        this.setRootNode(parseInt(id));
+        return false;
       }
     });
     this.chart.on('exportstart', function(sender, args) {
@@ -757,8 +758,13 @@ class PersonRelationship extends React.Component {
       return item.pid == root.id;
     });
     this.chart.config.roots = [root.id];
-    this.chart.expand(root.id, childrens.map(item => item.id));
     this.chart.load(this.chart.config.nodes);
+    this.chart.expand(root.id, childrens.map(item => item.id));
+    this.chart.center(nodeId, {
+      rippleId: node.id,
+      vertical: true,
+      horizontal: true
+    });
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
     this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
@@ -994,7 +1000,10 @@ class PersonRelationship extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     const { displayFileds } = this.props;
     return (
-      <Breadcrumb separator=">">
+      <Breadcrumb
+        separator=">"
+        style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
+      >
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item

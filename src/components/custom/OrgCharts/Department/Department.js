@@ -221,7 +221,8 @@ class Department extends React.Component {
     });
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
-        this.handleExpcollclick(parseInt(id));
+        this.setRootNode(parseInt(id));
+        return false;
       }
     });
   };
@@ -500,12 +501,17 @@ class Department extends React.Component {
     }
     this.chart.addNodeTag(nodeId, selected);
 
-     const childrens = this.chart.config.nodes.filter(item => {
-       return item.pid == root.id;
-     });
-     this.chart.config.roots = [root.id];
-     this.chart.expand(root.id, childrens.map(item => item.id));
+    const childrens = this.chart.config.nodes.filter(item => {
+      return item.pid == root.id;
+    });
+    this.chart.config.roots = [root.id];
     this.chart.load(this.chart.config.nodes);
+    this.chart.expand(root.id, childrens.map(item => item.id));
+    this.chart.center(nodeId, {
+      rippleId: node.id,
+      vertical: true,
+      horizontal: true
+    });
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
     this.setState({ selectedNode: node, rootKey: [nodeId + ''], parentKeys });
@@ -825,7 +831,10 @@ class Department extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     const { displayFileds } = this.props;
     return (
-      <Breadcrumb separator=">">
+      <Breadcrumb
+        separator=">"
+        style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
+      >
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item

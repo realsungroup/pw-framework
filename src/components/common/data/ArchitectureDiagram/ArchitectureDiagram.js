@@ -360,7 +360,8 @@ class ArchitectureDiagram extends React.Component {
     });
     this.chart.on('expcollclick', (sender, action, id, ids) => {
       if (action === OrgChart.EXPAND) {
-        this.handleExpcollclick(parseInt(id));
+        this.setRootNode(parseInt(id));
+        return false;
       }
     });
     this.chart.on('exportstart', function(sender, args) {
@@ -871,10 +872,13 @@ class ArchitectureDiagram extends React.Component {
       vertical: true,
       horizontal: true
     });
-    this.setState({ selectedNode: node }, () => {
-      this.getHistory();
-      this.getPartHistory();
-    });
+    this.setState(
+      { selectedNode: node, historyData: [], partHistoryData: [] },
+      () => {
+        this.getHistory();
+        this.getPartHistory();
+      }
+    );
   };
 
   /**
@@ -939,6 +943,9 @@ class ArchitectureDiagram extends React.Component {
     }
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
+    }
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
     }
     const { baseURL } = this.props;
     this.props.openModalOrDrawer(
@@ -1140,16 +1147,19 @@ class ArchitectureDiagram extends React.Component {
               httpParams.baseURL = baseURL;
             }
             await http(httpParams).modifyRecords({
-              resid: historyResid,
+              resid: 639230706234,
               data: [
                 {
-                  C3_305737857578: node.memberCode,
+                  C3_227192472953: node.memberID,
                   C3_465142349966: '',
+                  orgCode: -1,
                   C3_740524286017: this.state.selectedDate.format('YYYYMMDD'),
-                  C3_470524257391: this.state.selectedDate
+                  C3_470524257391: this.state.selectedDate,
+                  C3_227192484125: node.memberCN,
+                  C3_638469590670: '变动'
                 }
               ],
-              uniquecolumns: 'C3_305737857578,C3_740524286017',
+              uniquecolumns: 'C3_227192472953',
               isEditOrAdd: 'true'
             });
             await this.clearCache();
@@ -1177,6 +1187,9 @@ class ArchitectureDiagram extends React.Component {
     }
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
+    }
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
     }
     if (
       node.isVirtual !== 'Y' &&
@@ -1310,8 +1323,13 @@ class ArchitectureDiagram extends React.Component {
       return item.pid == root.id;
     });
     this.chart.config.roots = [root.id];
-    this.chart.expand(root.id, childrens.map(item => item.id));
     this.chart.load(this.chart.config.nodes);
+    this.chart.expand(root.id, childrens.map(item => item.id));
+    this.chart.center(nodeId, {
+      rippleId: node.id,
+      vertical: true,
+      horizontal: true
+    });
     const parentKeys = [];
     this.getParentKeys(node, parentKeys);
     this.setState(
@@ -1887,7 +1905,10 @@ class ArchitectureDiagram extends React.Component {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds, name } = this.props;
     return (
-      <Breadcrumb separator=">" style={{ overflow: 'auto' }}>
+      <Breadcrumb
+        separator=">"
+        style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
+      >
         {breadcrumb.map(item => {
           return (
             <Breadcrumb.Item

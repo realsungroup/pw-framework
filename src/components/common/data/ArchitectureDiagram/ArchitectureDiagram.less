@@ -245,9 +245,8 @@
     left: 0;
     bottom: 0;
     z-index: 1;
-    &.hidden {
-      display: none;
-    }
+    transition: width 0.5s;
+
     &__main {
       height: 100%;
       width: calc(100% - 200px);
@@ -277,6 +276,11 @@
         background: #ffffff;
       }
     }
+  }
+  .hidden.architecture-diagram__import-result {
+    width: 0;
+    height: 0;
+    overflow: hidden;
   }
   .architecture-diagram__import-result-mask {
     position: absolute;
