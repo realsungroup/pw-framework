@@ -104,7 +104,6 @@ export const getColumns = (
     if (noWidthFields.includes(item.id)) {
       delete column.width;
     }
-    console.log({noWidthFieldsIndex})
     if (noWidthFieldsIndex.includes(itemIndex + 1)) {
       delete column.width;
     }
