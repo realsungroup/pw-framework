@@ -71,7 +71,11 @@ class TrainingOrganization extends React.Component {
               height: 880
             },
             recordFormType: 'modal',
-            
+            uploadConfig:{
+              mode:'local',
+              bucketname: 'realsun',
+              url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok5.realsun.me:6060/rispweb/upfiles'
+            }
           }
         ]}
       />

@@ -47,6 +47,9 @@ class PersonnelImport extends React.Component {
               formProps: {
                 height: 650
               },
+              advSearch:{
+                isRequestFormData:false,
+              },
             },
             {
               baseURL: this.baseURL,
@@ -69,6 +72,9 @@ class PersonnelImport extends React.Component {
               isWrap:true,
               formProps: {
                 height: 650
+              },
+              advSearch:{
+                isRequestFormData:false,
               },
               recordFormType: 'modal',
             },
@@ -93,6 +99,9 @@ class PersonnelImport extends React.Component {
               isWrap:true,
               formProps: {
                 height: 650
+              },
+              advSearch:{
+                isRequestFormData:false,
               },
               recordFormType: 'modal',
             },

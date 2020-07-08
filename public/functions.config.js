@@ -211,7 +211,11 @@ window[606493652444] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    subtractH: 166
+    subtractH: 166,
+    advSearch:{
+      isRequestFormData:false,
+    },
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
   }
 };
 
@@ -2344,6 +2348,9 @@ window[642853692520] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2367,6 +2374,9 @@ window[646240367975] = {
     isUseFormDefine:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2416,6 +2426,9 @@ window[642853717153] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2439,6 +2452,9 @@ window[642853731843] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2460,6 +2476,9 @@ window[642853756410] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2485,6 +2504,9 @@ window[642853770096] = {
     noWidthFields:'C3_449335790387',
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2512,6 +2534,9 @@ window[642853871961] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2538,6 +2563,9 @@ window[642853893908] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2560,6 +2588,9 @@ window[642853907777] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2579,16 +2610,25 @@ window[642853918132] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-    baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      baseURL: 'http://ngrok14.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
+      },
+      advSearch:{
+        isRequestFormData:false,
       },
       subtractH: 200
     },
     subTablesProps: {
       375292357468: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        noWidthFields:'RECNO',
+        baseURL: 'http://ngrok14.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -2616,6 +2656,9 @@ window[642853928356] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2641,6 +2684,9 @@ window[642853955171] = {
     noWidthFields:"DEP_ID",
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2668,6 +2714,9 @@ window[642854041376] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2691,6 +2740,9 @@ window[642854056479] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2720,6 +2772,9 @@ window[642854067180] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -2727,19 +2782,28 @@ window[642854067180] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       630169827334: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       469288143241: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -2772,6 +2836,9 @@ window[642854077482] = {
     },
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -2829,11 +2896,19 @@ window[642854098292] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
       435419664427: {
-        hasBeBtns: true
+        hasBeBtns: true,
+        baseURL: 'http://ngrok14.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -2966,6 +3041,9 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -2987,6 +3065,9 @@ window[642854157717] = {
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3095,6 +3176,9 @@ window[642856283564] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3116,6 +3200,9 @@ window[642854180216] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3140,6 +3227,9 @@ window[642854999190] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3163,6 +3253,9 @@ window[642855062753] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3184,6 +3277,9 @@ window[642854713880] = {
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3215,6 +3311,9 @@ window[642854200143] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3240,6 +3339,9 @@ window[642854211673] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3261,6 +3363,9 @@ window[642854223262] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3286,6 +3391,9 @@ window[642854235003] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3308,6 +3416,9 @@ window[642854252939] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3329,6 +3440,9 @@ window[642854266702] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3353,6 +3467,9 @@ window[642854279289] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3515,6 +3632,9 @@ window[642854616358] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3570,6 +3690,9 @@ window[642854660698] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -3577,36 +3700,58 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
+      
       423664972378: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       382917623098: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       423662411106: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       425248261392: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       425173186017: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       426438255597: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -3629,6 +3774,9 @@ window[642854669532] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3684,7 +3832,7 @@ window[642854689917] = {
     isUseFormDefine: false,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    // noWidthFields:"C3_445799498673",
+    noWidthFields:"C3_445799498673",
     formProps: {
       // height: 500
     },
@@ -3713,6 +3861,9 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3736,6 +3887,9 @@ window[642854723134] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -3890,6 +4044,9 @@ window[642854766667] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -3915,6 +4072,9 @@ window[642854803335] = {
     hasRowSelection:true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -4016,6 +4176,9 @@ window[642854845983] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -4038,6 +4201,9 @@ window[642854858872] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -4059,7 +4225,9 @@ window[642854885216] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-
+    advSearch:{
+      isRequestFormData:false,
+    },
     formProps: {
       // height: 500
     },
@@ -4163,6 +4331,9 @@ window[642854999190] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -4212,6 +4383,9 @@ window[642855062753] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -4423,6 +4597,9 @@ window[642855166893] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -4448,6 +4625,9 @@ window[642855176494] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -4455,7 +4635,7 @@ window[642855176494] = {
         hasBeBtns: false,
         isUseFormDefine:false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       },
       449441441589: {
         hasBeBtns: true,
@@ -4463,7 +4643,10 @@ window[642855176494] = {
         hasRowModify:false,
         hasRowDelete:false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4512,6 +4695,8 @@ window[642855262376] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      isSetColumnWidth:false,
+      recordFormUseAbsolute:true,
       baseURL: 'http://ngrok4.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
       backendButtonPopConfirmProps:{ placement: 'bottom' },
@@ -4520,6 +4705,7 @@ window[642855262376] = {
     },
       formProps: {
         // height: 500
+        width:1200,
       },
       subtractH: 200
     },
@@ -4529,7 +4715,10 @@ window[642855262376] = {
         hasRowDelete: false,
         isSetColumnWidth:false,
         baseURL: 'http://ngrok4.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4567,7 +4756,9 @@ window[642855273462] = {
         hasBeBtns: true,
         hasRowDelete: false,
         isSetColumnWidth:false,
-
+        advSearch:{
+          isRequestFormData:false,
+        },
         baseURL: 'http://ngrok4.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
       }
@@ -4618,9 +4809,12 @@ window[642855719230] = {
       hasRowView: true,
       hasRowDelete: true,
       baseURL: 'http://ngrok4.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
       formProps: {
         // height: 500
+      },
+      advSearch:{
+        isRequestFormData:false,
       },
       subtractH: 200
     },
@@ -4631,6 +4825,9 @@ window[642855719230] = {
         noWidthFields:'C3_522692208296',
         baseURL: 'http://ngrok4.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       518461643267: {
         hasBeBtns: true,
@@ -4638,6 +4835,9 @@ window[642855719230] = {
         noWidthFields:'C3_518436882584',
         baseURL: 'http://ngrok4.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4701,7 +4901,10 @@ window[642855746711] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok4.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4749,13 +4952,16 @@ window[642855770350] = {
     hasRowView: true,
     hasRowDelete: true,
     recordFormUseAbsolute:true,
-    isUseFormDefine:false,
+    // isUseFormDefine:false,
     // isSetColumnWidth:false,
     noWidthFields:'C3_518381374532',
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
       width:1250
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -4778,10 +4984,10 @@ window[642855780253] = {
       hasRowDelete: true,
       isUseFormDefine:false,
       // isSetColumnWidth:false,
+      recordFormUseAbsolute:true,
       baseURL: 'http://ngrok4.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
       backendButtonPopConfirmProps:{ placement: 'bottom' },
-
       advSearch:{
         formName:'defaultSearch'
       },
@@ -4794,8 +5000,15 @@ window[642855780253] = {
       518461643267: {
         hasBeBtns: true,
         hasRowModify: false,
+        hasRowView:false,
+        hasRowDelete:false,
+        // isSetColumnWidth:false,
+        noWidthFields:'C3_518436882584',
         baseURL: 'http://ngrok4.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok9.realsun.me:6060/',
+        advSearch:{
+         isRequestFormData:false,
+       },
       }
     }
   }
@@ -4820,10 +5033,10 @@ window[644083949537] = {
       isUseFormDefine: false,
       isSetColumnWidth:false,
       baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
-    advSearch:{
-      formName:'defaultSearch'
-    },
+      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      advSearch:{
+        formName:'defaultSearch'
+      },
       formProps: {
         // height: 500
       },
@@ -4834,13 +5047,19 @@ window[644083949537] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+       advSearch:{
+        isRequestFormData:false,
+      },
       },
       527715777875: {
         isUseFormDefine: false,
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4905,19 +5124,28 @@ window[642856315965] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       561550544816: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       568398863279: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -4940,6 +5168,9 @@ window[642856328223] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -5070,6 +5301,9 @@ window[642856395014] = {
       // height: 500
       width:1200
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -5092,6 +5326,9 @@ window[642856420818] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -5141,6 +5378,9 @@ window[642856442104] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -5189,6 +5429,9 @@ window[642856463210] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -5210,7 +5453,9 @@ window[642856472970] = {
     hasRowDelete: true,
     recordFormUseAbsolute:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
-
+    advSearch:{
+      isRequestFormData:false,
+    },
     formProps: {
       // height: 500
       width:1200
@@ -5236,7 +5481,9 @@ window[642856600971] = {
     hasRowDelete: true,
     recordFormUseAbsolute:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
-
+    advSearch:{
+      isRequestFormData:false,
+    },
     formProps: {
       // height: 500
       width:1200
@@ -5252,7 +5499,9 @@ window[642856612138] = {
     actionBarWidth: 200,
     baseURL: 'http://ngrok14.realsun.me:6060/',
     downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
-
+    advSearch:{
+      isRequestFormData:false,
+    },
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -5292,6 +5541,9 @@ window[642856627631] = {
     noWidthFields:'C3_526570003058',
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -5348,6 +5600,9 @@ window[642856652519] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -5361,7 +5616,10 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       631908278263: {
         hasAdd: false,
@@ -5374,6 +5632,9 @@ window[642856652519] = {
         hasRowDelete: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       631908322536: {
         hasAdd: false,
@@ -5385,7 +5646,10 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       631908332741: {
         hasAdd: false,
@@ -5397,7 +5661,10 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       },
       631908345599: {
         hasAdd: false,
@@ -5737,6 +6004,9 @@ window[642856661616] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -5987,6 +6257,9 @@ window[642856682732] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6009,6 +6282,9 @@ window[642856691841] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6100,11 +6376,17 @@ window[642856723891] = {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      advSearch:{
+        isRequestFormData:false,
+      },
       },
       438607023678: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      advSearch:{
+        isRequestFormData:false,
+      },
       }
     }
   }
@@ -6219,6 +6501,9 @@ window[642856763791] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -6226,11 +6511,17 @@ window[642856763791] = {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      advSearch:{
+        isRequestFormData:false,
+      },
       },
       433706772782: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      advSearch:{
+        isRequestFormData:false,
+      },
       }
     }
   }
@@ -6252,9 +6543,12 @@ window[642856772119] = {
       hasRowView: true,
       hasRowDelete: true,
       baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
+      },
+      advSearch:{
+        isRequestFormData:false,
       },
       subtractH: 200
     },
@@ -6262,7 +6556,10 @@ window[642856772119] = {
       433706772782: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -6317,7 +6614,8 @@ window[642856799479] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    isSetColumnWidth:false,
+    // isSetColumnWidth:false,
+    noWidthFields:'C3_418249954153',
     formProps: {
       // height: 500
     },
@@ -6347,7 +6645,8 @@ window[642856807541] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    // isSetColumnWidth:false,
+    noWidthFields:'C3_433711326578',
     formProps: {
       // height: 500
     },
@@ -6411,6 +6710,9 @@ window[642856836829] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6436,6 +6738,9 @@ window[642856846560] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6460,6 +6765,9 @@ window[642858017774] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6482,6 +6790,9 @@ window[642858195015] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6506,6 +6817,9 @@ window[642858209225] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6529,6 +6843,9 @@ window[642858219205] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6551,6 +6868,9 @@ window[642858230550] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6572,6 +6892,9 @@ window[642858239772] = {
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6596,6 +6919,9 @@ window[642858250217] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6619,6 +6945,9 @@ window[642858265046] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6641,6 +6970,9 @@ window[642858275747] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6666,6 +6998,9 @@ window[642858287535] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6689,6 +7024,9 @@ window[643038878833] = {
     noWidthFields:'C3_548773509926',
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6714,6 +7052,9 @@ window[642858302008] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6738,6 +7079,9 @@ window[642858311245] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6761,6 +7105,9 @@ window[642858321470] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6783,6 +7130,9 @@ window[642858331244] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6808,6 +7158,9 @@ window[642858341571] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6830,6 +7183,9 @@ window[642858355008] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6855,6 +7211,9 @@ window[642858364531] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -6882,6 +7241,9 @@ window[642858381832] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -6903,7 +7265,7 @@ window[642858651331] = {
       hasRowDelete: true,
       isUseFormDefine: false,
       baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
       },
@@ -6916,7 +7278,10 @@ window[642858651331] = {
       421696601858: {
         hasBeBtns: true,
         baseURL: 'http://ngrok14.realsun.me:6060/',
-      downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -6966,6 +7331,9 @@ window[642858671562] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7076,6 +7444,9 @@ window[642858711892] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7153,6 +7524,9 @@ window[642864859197] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7170,11 +7544,15 @@ window[642864873312] = {
     hasBackBtn: false,
     hasDelete: false,
     hasRowModify: false,
+    hasRowSelection:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7193,12 +7571,16 @@ window[642864883370] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
+    hasRowSelection:true,
     hasRowView: true,
     hasRowDelete: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     // noWidthFields:'C3_531398131376',
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7217,11 +7599,15 @@ window[642864894557] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: true,
+    hasRowSelection:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7245,6 +7631,9 @@ window[642864905946] = {
     hasRowDelete: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7270,6 +7659,9 @@ window[642864915093] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7293,6 +7685,9 @@ window[642864924530] = {
     isWrap:true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7318,6 +7713,9 @@ window[642864936700] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7340,7 +7738,7 @@ window[642864955816] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
-    actionBarToFixed:false,
+    actionBarFixed:false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     advSearch:{
       formName:'defaultSearch'
@@ -7393,7 +7791,7 @@ window[642865093743] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     advSearch:{
@@ -7509,6 +7907,9 @@ window[642865138428] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7532,6 +7933,9 @@ window[642865148916] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7554,6 +7958,9 @@ window[642865159694] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7579,6 +7986,9 @@ window[642865168807] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7601,6 +8011,9 @@ window[642865180079] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7625,6 +8038,9 @@ window[642865189736] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7648,6 +8064,9 @@ window[642865230273] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7669,6 +8088,9 @@ window[642865241049] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7692,6 +8114,9 @@ window[646235959397] = {
     isUseFormDefine:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7720,6 +8145,9 @@ window[642865251509] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7742,6 +8170,9 @@ window[642865263466] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7770,6 +8201,9 @@ window[642865468370] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7787,12 +8221,44 @@ window[642865477980] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowSelection:true,
+    hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
+    },
+    subtractH: 200
+  }
+};
+window[647360686387] = {
+  name: 'TableData', // 组件名称，
+  title: '办公用品已发货', // 功能模块名称
+  props: {
+    baseURL: 'http://ngrok14.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+    resid: 506183191878,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowSelection:true,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    formProps: {
+      // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7817,6 +8283,9 @@ window[642865487428] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7839,6 +8308,9 @@ window[642865500060] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7864,6 +8336,9 @@ window[642865508238] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7886,6 +8361,9 @@ window[642865517021] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7912,6 +8390,9 @@ window[642865529507] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7937,6 +8418,9 @@ window[642865539047] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -7960,6 +8444,9 @@ window[642865548263] = {
     isSetColumnWidth:false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -7985,6 +8472,9 @@ window[642854837350] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8007,7 +8497,7 @@ window[642854549263] = {
     hasRowDelete: true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     recordFormContainerProps: {
-      width:'100vw'
+      width:'95vw'
     },
     subTableArrProps: [
       {
@@ -8024,6 +8514,9 @@ window[642854549263] = {
     ],
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -8048,6 +8541,9 @@ window[640366579330] = {
     hasRowDelete: true,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -8078,6 +8574,9 @@ window[644335881606] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8106,6 +8605,9 @@ window[644327624410] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8121,7 +8623,7 @@ window[645027658426] = {
     hasModify: true,
     hasBackBtn: true,
     baseURL: 'http://ngrok14.realsun.me:6060/',
-    downloadBaseURL: 'http://ngrok14.realsun.me:6060/',
+    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
     hasDelete: true,
     hasRowModify: true,
     hasRowEdit: true,
@@ -8177,8 +8679,8 @@ window[642858615601] = {
   props: {
     gradeAppraisingConfig: {
       resid: 645010935966,
-      replaceBaseUrl: 'http://ngrok9.realsun.me:6060',
-      baseURL: 'http://ngrok4.realsun.me:6060/'
+      replaceBaseUrl: 'http://ngrok11.realsun.me:6060/',
+      baseURL: 'http://ngrok14.realsun.me:6060/'
     },
     residConfig: {
       年中目标: 462637854501,
@@ -8260,6 +8762,9 @@ window[645649238968] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8288,6 +8793,9 @@ window[647005159900] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8315,6 +8823,9 @@ window[647005183171] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8341,6 +8852,9 @@ window[647005199463] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8366,6 +8880,9 @@ window[647005213957] = {
     actionBarFixed: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -8394,6 +8911,9 @@ window[647005261709] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8421,6 +8941,9 @@ window[647005277545] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8447,6 +8970,9 @@ window[647005294257] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8470,6 +8996,9 @@ window[647005579815] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -8495,6 +9024,9 @@ window[647005627465] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8517,6 +9049,9 @@ window[647005644256] = {
     isUseFormDefine: false,
     formProps: {
       // height: 500
+    },
+    advSearch:{
+      isRequestFormData:false,
     },
     subtractH: 200
   }
@@ -8545,6 +9080,9 @@ window[647005664728] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8572,6 +9110,9 @@ window[647005696097] = {
     formProps: {
       // height: 500
     },
+    advSearch:{
+      isRequestFormData:false,
+    },
     subtractH: 200
   }
 };
@@ -8596,6 +9137,10 @@ window[647005718255] = {
       formProps: {
         // height: 500
       },
+      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -8604,6 +9149,9 @@ window[647005718255] = {
         isUseFormDefine:false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -8629,6 +9177,9 @@ window[647005738876] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
     },
     subTablesProps: {
@@ -8637,6 +9188,9 @@ window[647005738876] = {
         isUseFormDefine:false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+        advSearch:{
+          isRequestFormData:false,
+        },
       }
     }
   }
@@ -8660,6 +9214,9 @@ window[647005761923] = {
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
+      },
+      advSearch:{
+        isRequestFormData:false,
       },
       subtractH: 200
   }
@@ -8685,6 +9242,9 @@ window[647005790386] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
   }
 };
@@ -8709,6 +9269,9 @@ window[647005829686] = {
       formProps: {
         // height: 500
       },
+      advSearch:{
+        isRequestFormData:false,
+      },
       subtractH: 200
   }
 };
@@ -8732,6 +9295,9 @@ window[647032148938] = {
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
+      },
+      advSearch:{
+        isRequestFormData:false,
       },
       subtractH: 200
   }

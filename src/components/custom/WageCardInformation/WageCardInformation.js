@@ -8,7 +8,7 @@ class WageCardInformation extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
-    this.dlEmployDownloadURL =
+    this.downloadBaseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
   }
   state = {
@@ -25,7 +25,7 @@ class WageCardInformation extends React.Component {
               wrappedComponentRef: element => (this.tableDataRef = element),
               refTargetComponentName: 'TableData',
               baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
+              downloadBaseURL: this.downloadBaseURL,
               resid: 497727888930,
               TabsTitle: '在职',
               OutHeight: '91vh',
@@ -49,7 +49,7 @@ class WageCardInformation extends React.Component {
             },
             {
               baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
+              downloadBaseURL: this.downloadBaseURL,
               resid: 498135595185,
               TabsTitle: '离职',
               OutHeight: '91vh',
