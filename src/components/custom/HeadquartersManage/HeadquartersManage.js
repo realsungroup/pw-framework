@@ -46,7 +46,8 @@ class HeadquartersManage extends React.Component {
             576415161967: {
               hasAdd: true,
               hasDelete: true,
-            hasModify:false
+            hasModify:false,
+            noWidthFields: "C3_576414881819",
 
             }
           }}
@@ -73,7 +74,8 @@ class HeadquartersManage extends React.Component {
           subTablesProps={{
             576268771221: {
               hasAdd: true,
-              hasDelete: true
+              hasDelete: true,
+              noWidthFields: "C3_576414881819",
             }
           }}
         ></MainTableSubTables>
