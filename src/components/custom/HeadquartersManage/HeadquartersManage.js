@@ -39,6 +39,9 @@ class HeadquartersManage extends React.Component {
             hasModify:false,
             hasRowSelection:false,
             hasDelete: false,
+            advSearch:{
+              isRequestFormData:false,
+            },
 
           }}
          
@@ -47,6 +50,9 @@ class HeadquartersManage extends React.Component {
               hasAdd: true,
               hasDelete: true,
             hasModify:false,
+            advSearch:{
+              isRequestFormData:false,
+            },
             noWidthFields: "C3_576414881819",
 
             }
@@ -69,12 +75,18 @@ class HeadquartersManage extends React.Component {
           }}
           mainTableProps={{
             hasAdd: false,
-            isWrap:true
+            isWrap:true,
+            advSearch:{
+              isRequestFormData:false,
+            },
           }}
           subTablesProps={{
             576268771221: {
               hasAdd: true,
               hasDelete: true,
+              advSearch:{
+                isRequestFormData:false,
+              },
               noWidthFields: "C3_576414881819",
             }
           }}
