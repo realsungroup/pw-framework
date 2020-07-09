@@ -4,7 +4,6 @@ import { Button, message, Modal, Spin, Input, DatePicker } from 'antd';
 import http from 'Util20/api';
 import './InterviewInvitation.less';
 import moment from 'moment';
-
 // 6295 4542 3118
 /**
  * 面试邀请
@@ -57,14 +56,15 @@ class InterviewInvitation extends React.Component {
   };
 
   subData = async () => {
+    this.setState({loading:true});
     var email = this.state.C3_629488075916;
     var reg = /@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
     if (reg.test(email)) {
     } else {
       message.error('邮箱格式不正确');
+      this.setState({loading:false});
       return false;
     }
-    this.setState({ loading: true });
     let res;
     try {
       res = await http().addRecords({
@@ -78,17 +78,21 @@ class InterviewInvitation extends React.Component {
     } catch (e) {
       console.log(e);
       message.error(e);
+    this.setState({loading:false});
+
     }
   };
   modiData = async () => {
+    this.setState({loading:true});
+
     var email = this.state.C3_629488075916;
     var reg = /@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
     if (reg.test(email)) {
     } else {
       message.error('邮箱格式不正确');
+      this.setState({loading:false});
       return false;
     }
-    this.setState({ loading: true });
     let res;
     var obj = this.state;
     obj.REC_ID = this.state.toModi;
@@ -104,6 +108,8 @@ class InterviewInvitation extends React.Component {
     } catch (e) {
       console.log(e);
       message.error(e);
+    this.setState({loading:false});
+
     }
   };
   showAdd = async () => {
@@ -170,6 +176,7 @@ class InterviewInvitation extends React.Component {
       <Spin spinning={loading}>
         <Modal
           visible={visible}
+          okButtonProps={{ loading: this.state.loading }}
           onOk={this.state.isAdd ? () => this.subData() : () => this.modiData()}
           onCancel={() => this.refreState()}
           title={'人员信息'}
@@ -264,6 +271,7 @@ class InterviewInvitation extends React.Component {
                   this.showAdd();
                 }}
                 size={records.size}
+               
               >
                 添加
               </Button>

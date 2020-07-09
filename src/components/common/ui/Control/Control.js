@@ -8,7 +8,8 @@ import {
   Icon,
   Checkbox,
   message,
-  Modal
+  Modal,
+  Radio,
 } from 'antd';
 import DateTimePicker from '../DateTimePicker';
 import withAdvDicTable from '../../hoc/withAdvDicTable';
@@ -19,6 +20,7 @@ import { compose } from 'recompose';
 import moment from 'moment';
 import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
+import { getRadioGroupOptions } from './util'
 import './Control.less';
 
 const { TextArea, Search } = Input;
@@ -553,6 +555,8 @@ class Control extends React.Component {
 
         }
 
+       
+
         default: {
           return <span>{value}</span>;
         }
@@ -693,8 +697,18 @@ class Control extends React.Component {
             alt={value}
             style={{ width: customStyle.width, height: customStyle.height }}
           ></img> : ''
-
         }
+
+        case 'RadioGroup': {
+          const options = getRadioGroupOptions(dataItem);
+
+          return (
+            <Radio.Group value={value} onChange={this.handleChange}>
+              {options.map(option => <Radio key={option.value} value={option.value}>{option.label}</Radio>)}
+            </Radio.Group>
+          )
+        }
+        
         default: {
           return <div>{value}</div>;
         }
