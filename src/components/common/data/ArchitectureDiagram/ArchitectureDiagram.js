@@ -244,6 +244,7 @@ class ArchitectureDiagram extends React.Component {
 
   async componentDidMount() {
     this.initializeOrgchart();
+    await this.clearCache();
     let data = await this.getDataById();
     this.chart.load(data);
     this.getData(false);
@@ -484,6 +485,7 @@ class ArchitectureDiagram extends React.Component {
       procedureConfig,
       rootId
     } = this.props;
+    this._emptyJobs = [];
     const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
@@ -521,6 +523,7 @@ class ArchitectureDiagram extends React.Component {
           tags.push('discard');
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
           tags.push('tartOccupied');
+          this._emptyJobs.push(item);
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
           this._emptyJobs.push(item);
@@ -1015,6 +1018,7 @@ class ArchitectureDiagram extends React.Component {
                         message.success('兼职成功');
                         if (node.id) {
                           this.chart.center(node.id);
+                          this.getPartHistory();
                         }
                       } catch (error) {
                         message.error(error.message);
@@ -1030,7 +1034,7 @@ class ArchitectureDiagram extends React.Component {
             <div style={{ height: 600 }}>
               <TableData
                 baseURL={this.props.baseURL}
-                resid="639138610234"
+                resid="647606607473"
                 wrappedComponentRef={element =>
                   (this.addModalTableDataRef = element)
                 }
@@ -1239,10 +1243,10 @@ class ArchitectureDiagram extends React.Component {
                         将任职 【
                         <span style={{ color: '#1890ff' }}>{node.orgName}</span>
                         】
-                        <div>
+                        {/* <div>
                           生效日期：
                           {this.state.selectedDate.format('YYYY-MM-DD')}
-                        </div>
+                        </div> */}
                       </div>
                     ),
                     onOk: async () => {
@@ -1264,6 +1268,7 @@ class ArchitectureDiagram extends React.Component {
                         message.success('任职成功');
                         if (node.id) {
                           this.chart.center(node.id);
+                          this.getHistory();
                         }
                       } catch (error) {
                         message.error(error.message);
