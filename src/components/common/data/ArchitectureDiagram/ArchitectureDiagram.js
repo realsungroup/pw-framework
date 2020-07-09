@@ -707,6 +707,7 @@ class ArchitectureDiagram extends React.Component {
         resid,
         subresid: 639083780814,
         hostrecid: selectedNode.REC_ID,
+        cmswhere: 'pnid != 0',
         dblinkname,
         getcolumninfo: 1
       })
@@ -2393,7 +2394,8 @@ class ArchitectureDiagram extends React.Component {
                               <span>{selectedNode[item.id]}</span>
                               {hasView &&
                                 item.id === displayFileds.firstField &&
-                                selectedNode[item.id] && (
+                                selectedNode[item.id] &&
+                                selectedNode[item.id] !== 'N/A' && (
                                   <span
                                     style={{
                                       color: '#1890FF',
@@ -2409,7 +2411,8 @@ class ArchitectureDiagram extends React.Component {
                                     查看
                                   </span>
                                 )}
-                              {!selectedNode[item.id] &&
+                              {(!selectedNode[item.id] ||
+                                selectedNode[item.id] == 'N/A') &&
                                 item.id === displayFileds.firstField && (
                                   <span
                                     style={{
