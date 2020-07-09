@@ -90,7 +90,8 @@ class ExamArrange extends Component {
               customRowBtns={[
                 (record, btnSize) => {
                   return (
-                    <Button key={record.REC_ID}
+                    <Button
+                      key={record.REC_ID}
                       onClick={() => {
                         console.log('record', record);
                         this.onChoosePeople(record);
@@ -104,10 +105,7 @@ class ExamArrange extends Component {
                   return <Selected record={record} />;
                 }
               ]}
-              actionBarExtra={({
-                dataSource: dataSource,
-                selectedRowKeys: selectedRowKeys
-              }) => {
+              actionBarExtra={({ dataSource, selectedRowKeys, size }) => {
                 return (
                   <Popconfirm
                     title="确认发送邮件"
@@ -115,7 +113,7 @@ class ExamArrange extends Component {
                       this.onHandleMessage(dataSource, selectedRowKeys);
                     }}
                   >
-                    <Button>发送通知邮件</Button>
+                    <Button size={size}>发送通知邮件</Button>
                   </Popconfirm>
                 );
               }}
@@ -128,12 +126,12 @@ class ExamArrange extends Component {
               onCancel={this.handleCancel}
               destroyOnClose
             > */}
-              <SelectPersonFirstK
+            <SelectPersonFirstK
               callback={this.callback}
               visible={this.state.visible}
               record={this.state.record}
             />
-              
+
             {/* </Modal> */}
           </TabPane>
           <TabPane
