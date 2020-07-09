@@ -87,7 +87,7 @@ class HeadquartersManage extends React.Component {
               advSearch:{
                 isRequestFormData:false,
               },
-              noWidthFields: "C3_576414881819",
+              noWidthFields: "C3_576268636456",
             }
           }}
         ></MainTableSubTables>

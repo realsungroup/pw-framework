@@ -58,6 +58,11 @@ window.pwConfig = {
       绩效评估表: 420130498195,
       myAssessment: 462400643808
     },
+    trainingClubUploadConfig:{
+      mode:'local',
+      bucketname: 'realsun',
+      url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
+    },
     // 需前端缓存配置的资源
     tablesConfig: [
       {
@@ -241,6 +246,8 @@ window.pwConfig = {
       RBASchedulingDownloadBaseURL:'http://10.108.2.66:80',//RBA排班下载基地址
       wuxiHr03BaseURL:'http://10.108.2.66:9091',//80端口非定制组件基地址
       wuxiHr03DownloadBaseURL:'http://10.108.2.66:80/',//80端口非定制组件下载基地址
+     
+      
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {
@@ -255,6 +262,11 @@ window.pwConfig = {
       员工绩效反馈历史: 558638569486,
       绩效评估表: 420130498195,
       myAssessment: 462400643808 //我的评估
+    },
+    trainingClubUploadConfig:{
+      mode:'local',
+      bucketname: 'realsun',
+      url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [

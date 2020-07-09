@@ -17,6 +17,7 @@ import CreatePlan from '../CreatePlan';
 import './FiscalYearPlan.less';
 import DefinePlan from '../FiscalYearPlan/DefinePlan';
 import Authorize from './Authorize';
+import { Record } from 'immutable';
 
 const { Step } = Steps;
 
@@ -178,6 +179,36 @@ class FiscalYearPlan extends React.Component {
     }
     this.setState({ loading: false });
   };
+
+  restartPlan = async (record) =>{
+    let res;
+    let resid = 611165813996;
+    let data = [
+      {
+        REC_ID:record.C3_609616660273,
+        C3_609874867626 : '',
+        C3_609874897267 : '',
+        C3_609874909704 : '',
+        C3_619888545010 : '',
+        C3_619888563179 : '',
+      }
+    ];
+    
+    console.log("record",record)
+    await http().modifyRecords({
+      resid,
+      data
+    }).then(res =>{
+      if ( res.Error === 0 ){
+        message.success('重新发起计划成功,请刷新页面');
+      } else {
+        message.error(res.message);
+      }
+    }).catch( error =>{
+      console.log(error);
+      message.error(error.message);
+    })
+  }
 
   render() {
     const { loading, current, selectedPlan } = this.state;
@@ -400,6 +431,11 @@ class FiscalYearPlan extends React.Component {
                 placement: 'bottom',
                 height: '100vh'
               }}
+              customRowBtns={[
+                (record) =>{
+                  return <Button onClick = {()=>{this.restartPlan(record)}}>重新发起</Button>
+                }
+              ]}
               subTableArrProps={[
                 {
                   subTableName: '审批记录',

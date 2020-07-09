@@ -4,6 +4,8 @@ import TabsTableData from '../TabsTableData';
 import TableData from '../../common/data/TableData';
 // import { Modal, Button, message, Tabs, Popconfirm } from 'antd';
 // import http from '../../../../util20/api';
+const uploadConfig =  window.pwConfig[process.env.NODE_ENV].trainingClubUploadConfig;
+
 class TrainingOrganization extends React.Component {
   constructor(props) {
     super(props);
@@ -71,11 +73,7 @@ class TrainingOrganization extends React.Component {
               height: 880
             },
             recordFormType: 'modal',
-            uploadConfig:{
-              mode:'local',
-              bucketname: 'realsun',
-              url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok5.realsun.me:6060/rispweb/upfiles'
-            }
+            uploadConfig:uploadConfig
           }
         ]}
       />

@@ -31,6 +31,7 @@ class TargetTarget extends React.Component {
             hasRowModify={false}
             hasRowSelection={true}
             actionBarWidth={100}
+            noWIdthFields='C3_420297999020'
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}

@@ -25,6 +25,7 @@ class InternalTrainingAuth extends React.Component {
         hasRowModify={false}
         hasRowView={false}
         subtractH={180}
+        noWidthFields='ID'
         isSetColumnWidth={false}
         formProps={{ height: 550 }}
       />
