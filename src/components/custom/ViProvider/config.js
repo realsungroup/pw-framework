@@ -98,7 +98,7 @@ export const inExaminationAndApproval = {
   },
   hasSearch: true,
   hasBeBtns: true,
-  hasAdd: false,
+  hasAdd: true,
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
@@ -114,12 +114,12 @@ export const inExaminationAndApproval = {
   },
   subTableArrProps: [
     {
-      subTableName: '供应商信息',
-      subResid: 606068632909,
+      subTableName: '供应商访客登记',
+      subResid: 647640373205,
       tableProps: {
-        hasAdd: false,
+        hasAdd: true,
         hasModify: false,
-        hasDelete: false,
+        hasDelete: true,
         subtractH: 196,
         hasRowModify: false,
         hasRowView: false,
@@ -166,8 +166,8 @@ export const approved = {
   },
   subTableArrProps: [
     {
-      subTableName: '供应商信息',
-      subResid: 606068632909,
+      subTableName: '供应商访客登记',
+      subResid: 647640373205,
       tableProps: {
         hasAdd: false,
         hasModify: false,
@@ -188,7 +188,8 @@ export const approved = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: false,
+        height:400,
         subtractH: 196,
       }
     }
@@ -221,8 +222,8 @@ export const refused = {
   },
   subTableArrProps: [
     {
-      subTableName: '供应商信息',
-      subResid: 606068632909,
+      subTableName: '供应商访客登记',
+      subResid: 647640373205,
       tableProps: {
         hasAdd: false,
         hasModify: false,
@@ -243,8 +244,9 @@ export const refused = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
-        subtractH: 196,
+        hasRowView: false,
+        subtractH: 220,
+        height:400,
       }
     }
   ]
@@ -276,8 +278,8 @@ export const history = {
   },
   subTableArrProps: [
     {
-      subTableName: '供应商信息',
-      subResid: 606068632909,
+      subTableName: '供应商访客登记',
+      subResid: 647640373205,
       tableProps: {
         hasAdd: false,
         hasModify: false,
@@ -298,8 +300,10 @@ export const history = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true,
+        hasRowView: false,
         subtractH: 196,
+        height:400,
+
       }
     }
   ]

@@ -5035,12 +5035,12 @@ window[642855780253] = {
   }
 };
 
-window[644083949537] = {
+window[647714701722] = {
   // name: 'TableData', // 组件名称，
   name: 'MainTableSubTables',
-  title: 'S1S2生产人员招聘', // 功能模块名称
+  title: 'S1S2招聘审批', // 功能模块名称
   props: {
-    resid: 518992241469,
+    resid: 527744676333,
     mainTableProps: {
       actionBarWidth: 200,
       hasAdd: true,
@@ -5052,8 +5052,9 @@ window[644083949537] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      backendButtonPopConfirmProps:{ placement: 'right' },
       // isSetColumnWidth:false,
-      noWidthFields:'C3_518986456839',
+      // noWidthFields:'C3_518986456839',
       baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
       advSearch:{
@@ -5084,6 +5085,58 @@ window[644083949537] = {
         },
       }
     }
+  }
+};
+
+window[644083949537] = {
+  // name: 'TableData', // 组件名称，
+  name: 'S1S2RecruitApply',
+  title: 'S1S2生产人员招聘', // 功能模块名称
+  props: {
+    // resid: 518992241469,
+    // mainTableProps: {
+    //   actionBarWidth: 200,
+    //   hasAdd: true,
+    //   hasBeBtns: true,
+    //   hasModify: true,
+    //   hasBackBtn: true,
+    //   hasDelete: true,
+    //   hasRowModify: true,
+    //   hasRowView: true,
+    //   hasRowDelete: true,
+    //   isUseFormDefine: false,
+    //   // isSetColumnWidth:false,
+    //   noWidthFields:'C3_518986456839',
+    //   baseURL: 'http://ngrok14.realsun.me:6060/',
+    //   downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+    //   advSearch:{
+    //     formName:'defaultSearch'
+    //   },
+    //   formProps: {
+    //     // height: 500
+    //   },
+    //   subtractH: 200
+    // },
+    // subTablesProps: {
+    //   518986543520: {
+    //     hasBeBtns: true,
+    //     isUseFormDefine: false,
+    //     baseURL: 'http://ngrok14.realsun.me:6060/',
+    //    downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+    //    advSearch:{
+    //     isRequestFormData:false,
+    //   },
+    //   },
+    //   527715777875: {
+    //     isUseFormDefine: false,
+    //     hasBeBtns: true,
+    //     baseURL: 'http://ngrok14.realsun.me:6060/',
+    //     downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+    //     advSearch:{
+    //       isRequestFormData:false,
+    //     },
+    //   }
+    // }
   }
 };
 window[642856303619] = {

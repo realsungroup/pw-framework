@@ -26,7 +26,7 @@ class JobPeopleList extends React.Component {
       <TableData
         baseURL = {this.baseURL}
         resid={618666208275}
-        subtractH={220}
+        subtractH={170}
         hasBeBtns={false}
         hasRowSelection={false}
         hasAdd={true}

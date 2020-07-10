@@ -25,7 +25,7 @@ class TableDataVisitorG extends React.Component {
         let res;
         try {
           res = await http().getTable({
-            resid: 606302353251,
+            resid: 605719206028,
             cmswhere: `C3_605719242955 = ${card.cardno}`
           });
           if (res.data.length>0) {
@@ -87,10 +87,19 @@ class TableDataVisitorG extends React.Component {
                         case '访问事由':
                             item.initialValue = record[0].C3_606843168661;
                             break;
-                            case '申请人姓名':
-                                item.initialValue = record[0].C3_612530147136;
+                            case '申请人工号':
+                                item.initialValue = record[0].C3_612530130740;
                                 break;
-                            
+                                case '申请人姓名':
+                                  item.initialValue = record[0].C3_612530147136;
+                                  break;
+                                    case '申请人二级部门':
+                                       item.initialValue = record[0].C3_612530193173;
+                                       break;
+                                          case '备注':
+                                            item.initialValue = record[0].C3_605719245575;
+                                            break;
+                                  
         }
         // if (item.label === "登记证件号码" && record) {
         //   item.initialValue = record[0].C3_608392189420;
