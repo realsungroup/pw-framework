@@ -550,7 +550,8 @@ class MyAssessmentTable extends React.Component {
     tableDataProps.actionBarWidth = 150;
     tableDataProps.hasRowSelection = true;
     tableDataProps.isUseFormDefine = false;
-    tableDataProps.noWidthFieldsIndex = 1;
+    // tableDataProps.noWidthFieldsIndex = 1;
+    tableDataProps.actionBarWidth = 500;
     const modifiable = this.modifiableTable(
       selectedMainData,
       tableConfig.resid
