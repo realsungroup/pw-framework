@@ -39,7 +39,7 @@ export default class ViProvider extends React.Component {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '申请中'
+      activeKey: '审批中'
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -66,13 +66,13 @@ export default class ViProvider extends React.Component {
       return err.message;
     }
     console.log(res.data);
-    // 向申请中表加数据,主子表同时加
+    // 向审批中表加数据,主子表同时加
     let res2;
     try {
       res2 = await http().saveRecordAndSubTables({
         data: [
           {
-            resid: '605718030245',
+            resid: '605891699222',
             maindata: {
               C3_605718056102: record.C3_605718056102, //访客单位
               C3_605718133807: record.C3_605718133807, //访客类型
@@ -118,13 +118,13 @@ export default class ViProvider extends React.Component {
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="申请中" key="申请中">
+          {/* <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData {...inApplication} 
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData" formProps={{saveText: '提交', height: 480}} />
             </div>
-          </TabPane>
+          </TabPane> */}
 
           <TabPane tab="审批中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>

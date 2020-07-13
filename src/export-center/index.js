@@ -165,5 +165,6 @@ export {
   AchievementResult,
   AchievementsGradeAppraising,
   WageCardInformation,
-  PersonnelImport
+  PersonnelImport,
+  S1S2RecruitApply
 } from '../components/custom/loadableCustom';

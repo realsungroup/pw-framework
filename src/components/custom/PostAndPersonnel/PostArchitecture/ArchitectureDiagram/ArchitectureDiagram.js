@@ -176,6 +176,7 @@ class ArchitectureDiagram extends React.Component {
 
   async componentDidMount() {
     this.initializeOrgchart();
+    await this.clearCache();
     const data = await this.getDataById();
     this.chart.load(data);
     this.getData(false);
@@ -371,6 +372,7 @@ class ArchitectureDiagram extends React.Component {
       procedureConfig,
       rootId
     } = this.props;
+    this._emptyJobs = [];
     const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
@@ -408,6 +410,7 @@ class ArchitectureDiagram extends React.Component {
           tags.push('discard');
         } else if (item.isEmpty === 'Y' && item.isPartOccupied === 'Y') {
           tags.push('tartOccupied');
+          this._emptyJobs.push(item);
         } else if (item.isEmpty === 'Y') {
           tags.push('empty');
           this._emptyJobs.push(item);

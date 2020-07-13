@@ -322,6 +322,7 @@ class InternalTraining extends React.Component {
             baseURL={baseURL}
             actionBarWidth={150}
             hasRowModify={false}
+            noWidthFields='C3_636484839104'
             hasRowSelection={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"

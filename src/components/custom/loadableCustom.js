@@ -800,3 +800,9 @@ export const PersonnelImport = Loadable({
     return minLoading;
   }
 });
+export const S1S2RecruitApply = Loadable({
+  loader: () => import('./S1S2RecruitApply'),
+  loading() {
+    return minLoading;
+  }
+});

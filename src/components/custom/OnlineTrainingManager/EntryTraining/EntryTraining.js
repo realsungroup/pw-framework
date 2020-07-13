@@ -467,6 +467,7 @@ class EntryTraining extends React.Component {
             hasAdd={false}
             baseURL={baseURL}
             actionBarWidth={150}
+            noWidthFields='C3_636484839104'
             hasRowSelection={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
