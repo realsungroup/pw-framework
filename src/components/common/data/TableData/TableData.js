@@ -1669,7 +1669,7 @@ class TableData extends React.Component {
       formName = 'default',
       formProps,
       validationFields = [],
-      isUseTableFields,
+      isUseTableFields = true,
       fields = [],
       isRequestFormData = true
     } = advSearch;
