@@ -30,7 +30,7 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           hasModify={false}
           hasRowModify={true}
           hasRowSelection={true}
-          actionBarWidth={100}
+          actionBarWidth={300}
           hasBeBtns={true}
           dblinkname="ehr"
           baseURL={this.baseURL}

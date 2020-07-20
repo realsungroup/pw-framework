@@ -841,6 +841,7 @@ window[605893340481] = {
   name: 'LzApproval'
 };
 
+
 //打印
 window[603827488844] = {
   name: 'LzStepAflY', // 组件名称，这里为定制组件名称
@@ -901,6 +902,25 @@ window[606071640940] = {
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     resid: 606071814271,
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    height: '80vh',
+    recordFormFormWidth: '90%'
+  } // 组件所接收的 props
+};
+//VIP访客审批
+window[648297903478] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: 'VIP访客审批', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 629223383253,
     recordFormFormWidth: '90%',
     hasAdd: false,
     hasBeBtns: true,
@@ -2152,6 +2172,7 @@ window[629200936654] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    isUseFormDefine:false,
     advSearch:{
       formName: 'defaultSearch'
     },
@@ -4449,7 +4470,7 @@ window[642855075847] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine: false,
+    // isUseFormDefine: false,
     // isSetColumnWidth:false,
     noWidthFields: "C3_437046231179",
     formProps: {
@@ -5374,7 +5395,7 @@ window[642856395014] = {
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
-      width:1200
+      width:1100
     },
     advSearch:{
       isRequestFormData:false,
@@ -5447,9 +5468,9 @@ window[642856442104] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     formProps: {
       // height: 500
     },
@@ -6449,6 +6470,7 @@ window[642856723891] = {
     subTablesProps: {
       537453474424: {
         hasBeBtns: true,
+        isUseFormDefine:false,
         noWidthFields:'C3_537453520631',
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
@@ -6456,8 +6478,9 @@ window[642856723891] = {
         isRequestFormData:false,
       },
       },
-      438607023678: {
+      538589701925: {
         hasBeBtns: true,
+        isUseFormDefine:false,
         noWidthFields:'C3_438607059446',
         baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
@@ -6633,6 +6656,7 @@ window[642856772119] = {
     subTablesProps: {
       433706772782: {
         hasBeBtns: true,
+        isUseFormDefine:false,
         baseURL: 'http://ngrok14.realsun.me:6060/',
         downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
         advSearch:{
@@ -8581,6 +8605,7 @@ window[642854549263] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    // recordFormUseAbsolute:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     recordFormContainerProps: {
       width:'95vw'
@@ -8594,7 +8619,10 @@ window[642854549263] = {
           baseURL: 'http://ngrok14.realsun.me:6060/',
           actionBarWidth: 200,
           isUseFormDefine:false,
-          subtractH: 170
+          subtractH: 180,
+          formProps:{
+            width:1000
+          }
         }
       }
     ],

@@ -21,7 +21,7 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://ngrok5.realsun.me:6060/', //考勤审批
+      attendanceBaseURL: 'http://ngrok14.realsun.me:6060/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
@@ -41,8 +41,8 @@ window.pwConfig = {
       AchievementsBaseURL :'http://ngrok12.realsun.me:6060/', //绩效定制页面基地址
       RBASchedulingBaseURL:'http://ngrok5.realsun.me:6060',//RBA排班基地址
       RBASchedulingDownloadBaseURL:'http://ngrok10.realsun.me:6060',//RBA排班下载基地址
-      WuxiHr03BaseURL:'http://ngrok5.realsun.me:6060',//80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL:'http://ngrok10.realsun.me:6060',//80端口非定制组件下载基地址
+      WuxiHr03BaseURL:'http://ngrok14.realsun.me:6060',//80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL:'http://ngrok13.realsun.me:6060',//80端口非定制组件下载基地址
     },
 
     // 绩效-我的评估表功能用到的子表
