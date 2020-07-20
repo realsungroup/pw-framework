@@ -655,4 +655,18 @@ http.createApi('getRowColorData', {
   url: '/api/resource/retrieve'
 });
 
+/**
+ * 获取多媒体字段中的图片url 相对路径
+ * 参数：{ id }
+ * 1. resid 资源 id
+ * 2. colname 内部字段名称
+ * 3. recid 记录 id
+ * 4. dblinkname 
+ */
+http.createApi('getBinImage', {
+  method: 'get',
+  url: '/api/100/table/RetrieveBinImage'
+});
+
+
 export default http;

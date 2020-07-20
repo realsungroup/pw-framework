@@ -579,7 +579,8 @@ class FormData extends React.Component {
       layout,
       saveMode,
       baseURL,
-      uploadConfig
+      uploadConfig,
+      mediaFieldBaseURL,
     } = this.props;
     const { hasSubTables, confirmLoading } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -621,6 +622,7 @@ class FormData extends React.Component {
             saveMode={saveMode}
             onSingleChange={this.handleSingleChange}
             uploadConfig={uploadConfig}
+            mediaFieldBaseURL={mediaFieldBaseURL}
             baseURL={baseURL}
           />
           {hasSubTables &&
@@ -659,6 +661,7 @@ class FormData extends React.Component {
               layout={formProps && formProps.layout ? formProps.layout : layout}
               baseURL={baseURL}
               uploadConfig={uploadConfig}
+              mediaFieldBaseURL={mediaFieldBaseURL}
               confirmLoading={confirmLoading}
             />
           </div>
