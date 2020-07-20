@@ -9249,6 +9249,7 @@ window[647005718255] = {
       isUseFormDefine:false,
       baseURL: 'http://ngrok14.realsun.me:6060/',
       downloadBaseURL: 'http://ngrok13.realsun.me:6060/',
+      mediaFieldBaseURL: 'http://ngrok13.realsun.me:6060/',
       formProps: {
         // height: 500
       },

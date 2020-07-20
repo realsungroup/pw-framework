@@ -22,6 +22,7 @@ import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
 import { getRadioGroupOptions } from './util'
 import './Control.less';
+import http from 'Util20/api';
 
 const { TextArea, Search } = Input;
 const Option = Select.Option;
@@ -149,11 +150,40 @@ class Control extends React.Component {
       takePictureStatus: 'ing', // 拍照状态：'ing' 表示正在拍（未拍）| 'end' 表示已拍
       imgDataURL: '', // 拍照得到的图片的 base64
       takePictureOkText: '拍照', // 可选值：'拍照' | '上传'
-      takePictureCancelText: '取消' // 可选值：'取消' | '重拍'
+      takePictureCancelText: '取消', // 可选值：'取消' | '重拍'
+      mediaFieldValue: '', // 媒体字段值
+      isMediaField: false, // 是否为多媒体字段
     };
   }
 
-  componentDidMount = () => { };
+  componentDidMount = async () => {
+    const { dataItem, resid, record, dblinkname, baseURL, mediaFieldBaseURL } = this.props;
+    const { id, name, controlData } = dataItem;
+    const { ColType } = controlData;
+    if (name === 'Input' && ColType === 6) {
+      let httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      let res;
+      try {
+        res = await http(httpParams).getBinImage({
+          resid,
+          colname: id,
+          recid: record.REC_ID,
+          dblinkname
+        })
+      } catch (err) {
+        return message.error(err.message);
+      }
+
+      if (res && res.data) {
+        this.setState({ mediaFieldValue: `${mediaFieldBaseURL}${res.data}`, isMediaField: true });
+      } else {
+        this.setState({ mediaFieldValue: '', isMediaField: true, });
+      }
+    }
+  };
 
   componentWillUnmount = () => { };
 
@@ -162,7 +192,9 @@ class Control extends React.Component {
       nextProps.value !== this.props.value ||
       nextProps.mode !== this.props.mode ||
       nextState.takePictureVisible !== this.state.takePictureVisible ||
-      nextState.takePictureStatus !== this.state.takePictureStatus
+      nextState.takePictureStatus !== this.state.takePictureStatus ||
+      nextState.isMediaField !== this.state.isMediaField ||
+      nextState.mediaFieldValue !== this.state.mediaFieldValue
     ) {
       return true;
     }
@@ -485,6 +517,21 @@ class Control extends React.Component {
 
     if (mode === 'view') {
       switch (name) {
+        case 'Input': {
+          const { mediaFieldValue, isMediaField } = this.state
+          if (!isMediaField) {
+            return (
+              <span>{value}</span>
+            );
+          }
+
+          // 多媒体字段
+          if (mediaFieldValue) {
+            return <img src={mediaFieldValue} key={mediaFieldValue} alt={mediaFieldValue}></img>
+          }
+
+          return null;
+        }
         case 'Upload': {
           let urls = [];
           if (value) {
@@ -571,7 +618,7 @@ class Control extends React.Component {
               onBlur={this.handleBeforeSave}
               {...props}
             />
-          );
+          );    
         }
         case 'TextArea': {
           return (

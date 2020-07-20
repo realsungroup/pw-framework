@@ -70,7 +70,8 @@ export function withRecordForm(options = {}) {
         useAbsolute = false,
         baseURL = '',
         formDataProps = {},
-        uploadConfig
+        uploadConfig,
+        mediaFieldBaseURL,
       }) => {
         const FormDataProps = {
           data,
@@ -94,6 +95,7 @@ export function withRecordForm(options = {}) {
           useAbsolute,
           baseURL,
           uploadConfig,
+          mediaFieldBaseURL,
           ...formDataProps
         };
         const containerProps = {

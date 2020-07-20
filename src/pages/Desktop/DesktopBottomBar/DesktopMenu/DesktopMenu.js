@@ -118,6 +118,12 @@ export default class DesktopMenu extends React.PureComponent {
     } = this.props;
     const { hoverFolder, menuVisible, openKeys } = this.state;
     const categoricalApps = [...hoverFolder.categoricalApps.entries()];
+
+    const userName =
+      userInfo && userInfo.SysUserInfo && userInfo.SysUserInfo.UserName
+        ? userInfo && userInfo.SysUserInfo && userInfo.SysUserInfo.UserName
+        : userInfo && userInfo.Data;
+
     const child = (
       <div
         className={classNames('desktop-menu', {
@@ -131,7 +137,7 @@ export default class DesktopMenu extends React.PureComponent {
               <Avatar icon="user" />
             </div>
             <div className="desktop-menu-user-username">
-              {userInfo.UserCode}
+              {userName}
             </div>
           </div>
 

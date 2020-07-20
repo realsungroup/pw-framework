@@ -151,7 +151,8 @@ class AbsoluteForm extends React.PureComponent {
       saveMode,
       onSingleChange,
       baseURL,
-      uploadConfig
+      uploadConfig,
+      mediaFieldBaseURL,
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -177,6 +178,7 @@ class AbsoluteForm extends React.PureComponent {
             onSingleChange={onSingleChange}
             baseURL={baseURL}
             uploadConfig={uploadConfig}
+            mediaFieldBaseURL={mediaFieldBaseURL}
           />
         )}
       </FormItem>
