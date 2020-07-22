@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { Form, Spin, message, Collapse, Row, Col } from 'antd';
+import { Form, Spin, message, Collapse, Row, Col ,Tabs} from 'antd';
 import { getRecord, getResource } from '../../../util/api';
 import LzTabs from '../../LzTabs';
 import PropTypes from 'prop-types';
@@ -14,6 +14,7 @@ import LzRowCols from '../LzRowCols';
 import { beforeSaveAdd, beforeSaveMod } from 'Util/api';
 
 const Panel = Collapse.Panel;
+const Tab = Tabs.TabPane;
 
 class LzForm extends React.Component {
   static propTypes = {
@@ -165,7 +166,7 @@ class LzForm extends React.Component {
       canOpControlArr: [],
       containerControlArr: []
     },
-    viewStatus: 'view',
+    viewStatus: 'edit',
     isGetFormDefaultValues: false
   };
   constructor(props) {
@@ -738,10 +739,12 @@ class LzForm extends React.Component {
       associatedFields
     };
     return (
-      <Collapse activeKey={activeKeys} onChange={this.collapseChange}>
+      // activeKey={activeKeys} 
+      <Tabs defaultActiveKey={1} onChange={this.collapseChange}>
         {!!renderControlArr.length &&
           renderControlArr.map((item, index) => (
-            <Panel header={item.title} key={index + ''}>
+            <Tab  tab={item.title} header={item.title} key={index}>
+
               <LzRowCols
                 renderData={item.renderControlArr}
                 colCount={colCount}
@@ -759,22 +762,32 @@ class LzForm extends React.Component {
                   );
                 }}
               </LzRowCols>
-            </Panel>
+            </Tab>
           ))}
-      </Collapse>
+      </Tabs>
     );
     // return (
     //   <Collapse activeKey={activeKeys} onChange={this.collapseChange}>
     //     {!!renderControlArr.length &&
     //       renderControlArr.map((item, index) => (
     //         <Panel header={item.title} key={index + ''}>
-    //           {item.renderControlArr.map((controlData, index) => (
-    //             <LzFormItem
-    //               key={controlData.FrmColResID + index}
-    //               controlData={controlData}
-    //               {...LzFormItemProps}
-    //             />
-    //           ))}
+    //           <LzRowCols
+    //             renderData={item.renderControlArr}
+    //             colCount={colCount}
+    //             keyName="ColDispName"
+    //           >
+    //             {data => {
+    //               return (
+    //                 <LzFormItem
+    //                   controlData={data}
+    //                   {...LzFormItemProps}
+    //                   advDicTableProps={advDicTableProps}
+    //                   resid={resid}
+    //                   callCFCb={this.setFormValues}
+    //                 />
+    //               );
+    //             }}
+    //           </LzRowCols>
     //         </Panel>
     //       ))}
     //   </Collapse>

@@ -22,6 +22,10 @@ import LzRowCols from "UnitComponent/components/LzRowCols";
 import { LzModal } from "../loadableCustom";
 import LabExaminationChart from "./MenuMultiple/LabExaminationChart";
 
+const patientPeriodID = 648300111771; //周期信息
+const baseInfoID = 648300066963; //基本信息
+const manID = 648300080566; //男方病历
+const womanID = 648300096608; //女方病历
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
 const { TreeNode } = Tree;
@@ -314,6 +318,7 @@ export default class LzMenuContainer extends React.Component {
   };
 
   getFormTitle = (menuList, resid) => {
+    console.log({menuList},this.props)
     let formTitle = "";
     menuList.some(menu => {
       if (menu.subMenuList) {
@@ -328,6 +333,8 @@ export default class LzMenuContainer extends React.Component {
         if (menu.RES_ID === resid) {
           formTitle = menu.RES_NAME;
           return true;
+        }else{
+          formTitle = '周期信息'
         }
       }
     });
@@ -406,7 +413,7 @@ export default class LzMenuContainer extends React.Component {
   };
 
   switchMenuItem = async ({ item, key, selectedKeys }) => {
-    const { record } = this.state;
+    const { record } = this.props;
     if (!record) {
       return message.error("请选择员工");
     }
@@ -624,6 +631,7 @@ export default class LzMenuContainer extends React.Component {
   getRecordList = async (key, subresid) => {
     const { resid } = this.props;
     const { recordList, innerFieldName, record } = this.state;
+    console.log({record})
     const hostrecid = record.REC_ID;
     let res;
     try {
@@ -740,17 +748,18 @@ export default class LzMenuContainer extends React.Component {
               <Button
                 type="primary"
                 onClick={() => {
-                  this.setState({
-                    chooseFieldModalVisible: true
-                  });
-                  const { data } = this.state;
-                  if (data.实验室检查 && !data.实验室检查.treeData) {
-                    this.getFormData("实验室检查", data.实验室检查.RES_ID);
-                    this.getRecordList("实验室检查", data.实验室检查.RES_ID);
-                  }
+                  // this.setState({
+                  //   chooseFieldModalVisible: true
+                  // });
+                  // const { data } = this.state;
+                  // if (data.实验室检查 && !data.实验室检查.treeData) {
+                  //   this.getFormData("实验室检查", data.实验室检查.RES_ID);
+                  //   this.getRecordList("实验室检查", data.实验室检查.RES_ID);
+                  // }
+                  this.switchMenuItem( {item:{}, key:`${patientPeriodID}`, selectedKeys:[patientPeriodID]} )
                 }}
               >
-                数据总览
+                周期信息
               </Button>
             </div>
           </div>

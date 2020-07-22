@@ -1,46 +1,55 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { message, Button, Timeline, Modal, Tree, Tabs, Drawer } from "antd";
-import "./MenuMultiple.less";
-import LzFormWithFooter from "UnitComponent/components/LzFormWithFooter";
-import { getFormData, getSubTableData } from "Util/api";
-import dealControlArr from "Util/controls";
-import LzFormModalContainer from "UnitComponent/components/LzFormModalContainer";
-import LzForm from "UnitComponent/components/LzForm";
-import LzAdvSearch from "UnitComponent/LzTable/LzAdvSearch";
-import HeightWeightChart from "./HeightWeightChart";
-import LabExaminationChart from "./LabExaminationChart";
-import { LzModal } from "../../loadableCustom";
-import ExportJsonExcel from "js-export-excel";
-import AdvSearch from "lz-components-and-utils/lib/AdvSearch";
-import "lz-components-and-utils/lib/AdvSearch/style/index.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import {
+  message,
+  Button,
+  Timeline,
+  Modal,
+  Tree,
+  Tabs,
+  Drawer,
+  Spin
+} from 'antd';
+import './MenuMultiple.less';
+import LzFormWithFooter from 'UnitComponent/components/LzFormWithFooter';
+import { getFormData, getSubTableData } from 'Util/api';
+import dealControlArr from 'Util/controls';
+import LzFormModalContainer from 'UnitComponent/components/LzFormModalContainer';
+import LzForm from 'UnitComponent/components/LzForm';
+import LzAdvSearch from 'UnitComponent/LzTable/LzAdvSearch';
+import HeightWeightChart from './HeightWeightChart';
+import LabExaminationChart from './LabExaminationChart';
+import { LzModal } from '../../loadableCustom';
+import ExportJsonExcel from 'js-export-excel';
+import AdvSearch from 'lz-components-and-utils/lib/AdvSearch';
+import 'lz-components-and-utils/lib/AdvSearch/style/index.css';
 const { TreeNode } = Tree;
 const { TabPane } = Tabs;
 
 // 含有 “生长发育评估” 的表才有身高、体重按钮
-const hasHeightWeightChartBtn = (formTitle) => {
-  return formTitle.indexOf("生长发育评估") !== -1;
+const hasHeightWeightChartBtn = formTitle => {
+  return formTitle.indexOf('生长发育评估') !== -1;
 };
 
 // 实验室检查表才有选择字段按钮
-const hasChooseFieldBtn = (formTitle) => {
+const hasChooseFieldBtn = formTitle => {
   //,CD-评分
   return (
     // formTitle.indexOf("实验室检查") !== -1 ||
-    formTitle.indexOf("CD-评分") !== -1
+    formTitle.indexOf('CD-评分') !== -1
   );
 };
 
-const assortFields = (controlArr) => {
+const assortFields = controlArr => {
   if (!controlArr || !controlArr.length) {
     return [];
   }
   const filteredControlArr = controlArr.filter(
-    (control) => control.ColResDataSort
+    control => control.ColResDataSort
   );
   const klasses = [];
-  filteredControlArr.forEach((control) => {
+  filteredControlArr.forEach(control => {
     let i;
     if (
       !klasses.some((klass, index) => {
@@ -52,7 +61,7 @@ const assortFields = (controlArr) => {
     ) {
       klasses.push({
         title: control.ColResDataSort,
-        renderControlArr: [control],
+        renderControlArr: [control]
       });
     } else {
       klasses[i].renderControlArr.push(control);
@@ -61,18 +70,18 @@ const assortFields = (controlArr) => {
   return klasses;
 };
 
-const getCanChooseFields = (canOpControlArr) => {
+const getCanChooseFields = canOpControlArr => {
   const arr = assortFields(canOpControlArr);
   return arr;
 };
 
-const FormWithValue = React.memo((props) => {
+const FormWithValue = React.memo(props => {
   const { record, formFormData, displayMod, viewStatus, formLayout } = props;
   let _formdata = {
-    ...formFormData,
+    ...formFormData
   };
 
-  _formdata.canOpControlArr = _formdata.canOpControlArr.filter((item) => {
+  _formdata.canOpControlArr = _formdata.canOpControlArr.filter(item => {
     return record[item.innerFieldName];
   });
   return (
@@ -125,10 +134,10 @@ export default class MenuMultiple extends React.Component {
     /**
      * 高级搜索配置
      */
-    advSearchConfig: PropTypes.object,
+    advSearchConfig: PropTypes.object
   };
   static defaultProps = {
-    formTitle: "",
+    formTitle: ''
   };
   constructor(props) {
     super(props);
@@ -138,23 +147,24 @@ export default class MenuMultiple extends React.Component {
         subTableArr: [],
         allControlArr: [],
         canOpControlArr: [],
-        containerControlArr: [],
+        containerControlArr: []
       },
       alreadyModalVisible: false,
-      operation: "check",
-      viewStatus: "view",
+      loading:false,
+      operation: 'check',
+      viewStatus: 'edit',
       recordList: [],
-      innerFieldName: "",
+      innerFieldName: '',
       modalVisible: false,
       advSearchVisible: false, // 高级搜索是否显示
-      chartType: "身高", // 图表类型
+      chartType: '身高', // 图表类型
       chartVisible: false,
       chooseFieldModalVisible: false, // 选择字段的模态窗是否显示
       fields: [], // 已选择的需要在实验室检查中显示的字段
       sortFields: [],
       treeData: [], // 选择字段的树节点数据
       selectedKeys: [], // 已选中的树节点
-      searchList:[]
+      searchList: []
     };
   }
 
@@ -166,14 +176,20 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList();
   };
 
-  getRecordList = async (selectedRecord, wheres = "") => {
+  getRecordList = async (selectedRecord, wheres = '') => {
     const { resid, subresid, hostrecid } = this.props;
+    this.setState({
+      loading: true
+    });
     let res;
     try {
       res = await getSubTableData(resid, subresid, hostrecid, {
-        cmswhere: wheres,
+        cmswhere: wheres
       });
     } catch (err) {
+      this.setState({
+        loading: false
+      });
       return message.error(err.message);
     }
     this.fields = this.getFields(res.cmscolumninfo);
@@ -181,6 +197,7 @@ export default class MenuMultiple extends React.Component {
       recordList: res.data,
       selectedRecord: selectedRecord || res.data[0],
       innerFieldName: res.cmscolumninfo[0].id,
+      loading: false
     });
   };
 
@@ -199,11 +216,11 @@ export default class MenuMultiple extends React.Component {
   //   this.fields = this.getFields(res.cmscolumninfo);
   // };
 
-  getFields = (columnInfo) => {
-    return columnInfo.map((column) => ({
+  getFields = columnInfo => {
+    return columnInfo.map(column => ({
       value: column.id,
       label: column.text,
-      control: "Input",
+      control: 'Input'
     }));
   };
 
@@ -214,8 +231,8 @@ export default class MenuMultiple extends React.Component {
     }
     let res;
     const pArr = [
-      getFormData(subresid, "default"),
-      getFormData(subresid, "export"),
+      getFormData(subresid, 'default'),
+      getFormData(subresid, 'export')
     ];
     try {
       res = await Promise.all(pArr);
@@ -242,7 +259,7 @@ export default class MenuMultiple extends React.Component {
   };
 
   saveCb = () => {
-    message.success("保存成功");
+    message.success('保存成功');
     this.getRecordList(this.state.selectedRecord);
   };
 
@@ -250,11 +267,11 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList();
   };
 
-  conditionChange = (wheres) => {
+  conditionChange = wheres => {
     this.getRecordList(this.state.selectedRecord, wheres);
   };
 
-  handleOpenChart = (chartType = "身高") => {
+  handleOpenChart = (chartType = '身高') => {
     this.setState({ chartType, chartVisible: true });
   };
 
@@ -271,18 +288,18 @@ export default class MenuMultiple extends React.Component {
 
         {hasHeightWeightChartBtn(formTitle) && (
           <Button
-            style={{ margin: "0 4px" }}
+            style={{ margin: '0 4px' }}
             type="primary"
-            onClick={() => this.handleOpenChart("身高")}
+            onClick={() => this.handleOpenChart('身高')}
           >
             身高曲线图
           </Button>
         )}
         {hasHeightWeightChartBtn(formTitle) && (
           <Button
-            style={{ margin: "0 4px" }}
+            style={{ margin: '0 4px' }}
             type="primary"
-            onClick={() => this.handleOpenChart("体重")}
+            onClick={() => this.handleOpenChart('体重')}
           >
             体重曲线图
           </Button>
@@ -290,7 +307,7 @@ export default class MenuMultiple extends React.Component {
 
         {hasChooseFieldBtn(formTitle) && (
           <Button
-            style={{ margin: "0 4px" }}
+            style={{ margin: '0 4px' }}
             type="primary"
             onClick={() => this.handleOpenChooseFieldModal()}
           >
@@ -299,22 +316,7 @@ export default class MenuMultiple extends React.Component {
         )}
 
         <Button
-          type="primary"
-          onClick={() => {
-            this.setState({
-              chooseFieldModalVisible: true,
-            });
-            // const { data } = this.state;
-            // if (data.实验室检查 && !data.实验室检查.treeData) {
-            //   this.getFormData("实验室检查", data.实验室检查.RES_ID);
-            //   this.getRecordList("实验室检查", data.实验室检查.RES_ID);
-            // }
-          }}
-        >
-          导出
-        </Button>
-        <Button
-          style={{ margin: "0 4px" }}
+          style={{ margin: '0 4px' }}
           type="primary"
           onClick={() => {
             this.setState({ alreadyModalVisible: true });
@@ -322,37 +324,29 @@ export default class MenuMultiple extends React.Component {
         >
           查看已填
         </Button>
-
-        <Button
-          style={{ margin: "0 4px" }}
-          type="primary"
-          onClick={this.handleAddClick}
-        >
-          添加
-        </Button>
       </div>
     );
     const { resid, subresid, hostrecid } = this.props;
     const props = {
       displayMod,
-      dataMode: "sub",
+      dataMode: 'sub',
       header,
       key: selectedRecord && selectedRecord.REC_ID,
       record: selectedRecord,
       formFormData,
-      operation: "mod",
+      operation: 'mod',
       cancelBtn: true,
       resid,
       subresid,
       hostrecid,
       viewStatus: this.state.viewStatus,
       saveCb: this.saveCb,
-      delCb: this.delCb,
+      delCb: this.delCb
     };
     return <LzFormWithFooter {...props} />;
   };
 
-  switchRecord = (record) => {
+  switchRecord = record => {
     this.setState({ selectedRecord: record });
   };
 
@@ -361,7 +355,7 @@ export default class MenuMultiple extends React.Component {
   };
 
   addRecordCb = () => {
-    message.success("添加成功");
+    message.success('添加成功');
     this.setState({ modalVisible: false });
     this.getRecordList(this.state.selectedRecord);
   };
@@ -371,8 +365,8 @@ export default class MenuMultiple extends React.Component {
   };
   closeAlreadyModal = () => this.setState({ alreadyModalVisible: false });
 
-  renderTreeNodes = (data) =>
-    data.map((item) => {
+  renderTreeNodes = data =>
+    data.map(item => {
       if (item.renderControlArr) {
         return (
           <TreeNode title={item.title} key={item.title} dataRef={item}>
@@ -385,7 +379,7 @@ export default class MenuMultiple extends React.Component {
       );
     });
 
-  getTreeRef = (element) => {
+  getTreeRef = element => {
     this.treeRef = element;
   };
 
@@ -438,34 +432,34 @@ export default class MenuMultiple extends React.Component {
     // );
 
     if (!selectedKeys.length) {
-      return message.error("您未选择字段");
+      return message.error('您未选择字段');
     }
 
     const fields = [];
     const sortFields = new Map();
-    selectedKeys.forEach((item) => {
-      const curItem = this._canOpControlArr.find((i) => i.ColName === item);
+    selectedKeys.forEach(item => {
+      const curItem = this._canOpControlArr.find(i => i.ColName === item);
       if (curItem) {
         let mapValue = sortFields.get(curItem.ColResDataSort);
         if (mapValue) {
           mapValue.push({
             field: curItem.ColName,
-            title: curItem.ColDispName,
+            title: curItem.ColDispName
           });
         } else {
           sortFields.set(curItem.ColResDataSort, [
-            { field: curItem.ColName, title: curItem.ColDispName },
+            { field: curItem.ColName, title: curItem.ColDispName }
           ]);
         }
       }
     });
 
-    this._canOpControlArr.forEach((item) => {
-      const curItem = selectedKeys.some((key) => key === item.ColName);
+    this._canOpControlArr.forEach(item => {
+      const curItem = selectedKeys.some(key => key === item.ColName);
       if (curItem) {
         fields.push({
           field: item.ColName,
-          title: item.ColDispName,
+          title: item.ColDispName
         });
       }
     });
@@ -474,10 +468,10 @@ export default class MenuMultiple extends React.Component {
     let sheetData = [],
       sheetHeader = [],
       arr = [];
-    recordList.forEach((record) => {
+    recordList.forEach(record => {
       let arr1 = [];
       fields.forEach((item, index) => {
-        arr1.push(record[item.field] ? record[item.field] : "");
+        arr1.push(record[item.field] ? record[item.field] : '');
       });
       arr.push(arr1);
     });
@@ -488,51 +482,51 @@ export default class MenuMultiple extends React.Component {
     sheetData.push(...arr);
     console.log({ sheetData }, recordList);
 
-    let fileName = "数据";
+    let fileName = '数据';
     const option = {
       fileName: fileName,
       columnWidths: [30, 20],
       datas: [
         {
           sheetHeader: sheetHeader,
-          sheetName: "sheet",
-          sheetData: sheetData,
-        },
-      ],
+          sheetName: 'sheet',
+          sheetData: sheetData
+        }
+      ]
     };
     var toExcel = new ExportJsonExcel(option); //new
     toExcel.saveExcel(); //保存
 
     this.setState({
-      chooseFieldModalVisible: false,
+      chooseFieldModalVisible: false
     });
   };
 
-  handleNodeCheck = (selectedKeys) => {
+  handleNodeCheck = selectedKeys => {
     this.setState({ selectedKeys });
   };
   //高级搜索
-  handleFirstColAdvSearchConfirm = (where,searchList) => {
+  handleFirstColAdvSearchConfirm = (where, searchList) => {
     const option = { cmswhere: where };
-    this.getRecordList2( option);
+    this.getRecordList2(option);
     this.setState({
       searchList
-    })
+    });
   };
 
-  getRecordList2 = async (wheres = "") => {
+  getRecordList2 = async (wheres = '') => {
     const { resid, subresid, hostrecid } = this.props;
     let res;
     try {
       res = await getSubTableData(resid, subresid, hostrecid, {
-        cmswhere: wheres.cmswhere,
+        cmswhere: wheres.cmswhere
       });
     } catch (err) {
       return message.error(err.message);
     }
     this.fields = this.getFields(res.cmscolumninfo);
     this.setState({
-      recordList: res.data,
+      recordList: res.data
     });
   };
 
@@ -552,7 +546,8 @@ export default class MenuMultiple extends React.Component {
       selectedKeys,
       alreadyModalVisible,
       sortFields,
-      searchList
+      searchList,
+      loading
     } = this.state;
     const {
       resid,
@@ -560,38 +555,38 @@ export default class MenuMultiple extends React.Component {
       hostrecid,
       advSearchConfig,
       record,
-      formTitle,
+      formTitle
     } = this.props;
     const modalProps = {
-      dataMode: "sub",
-      operation: "add",
+      dataMode: 'sub',
+      operation: 'add',
       resid,
       subresid,
       hostrecid,
       onCancel: this.cancelAddRecord,
       onConfirm: this.addRecordCb,
       formFormData,
-      displayMod: "classify",
-      modalWidth: 1000,
+      displayMod: 'classify',
+      modalWidth: 1000
     };
-    console.log("this", this.props);
     const sortFieldsArray = Array.from(sortFields.entries());
     return (
-      <div className="menu-multiple">
-        <div className="form-wrap">
-          {!!recordList.length ? (
-            this.renderForm()
-          ) : (
-            <div>
-              暂无数据
+      <Spin spinning={loading}>
+        <div className="menu-multiple">
+          <div className="form-wrap">
+            {!!recordList.length ? (
+              this.renderForm()
+            ) : (
+              <div>
+                {/* 暂无数据
               <Button type="primary" onClick={this.handleAddClick}>
                 添加
-              </Button>
-            </div>
-          )}
-        </div>
+              </Button> */}
+              </div>
+            )}
+          </div>
 
-        <Timeline className="record-list">
+          {/* <Timeline className="record-list">
           <div className="record-list-title">
             <i
               className="iconfont icon-adv-search"
@@ -610,29 +605,29 @@ export default class MenuMultiple extends React.Component {
             </Timeline.Item>
           ))}
           {!recordList.length && <div>暂无数据</div>}
-        </Timeline>
-        {modalVisible && <LzFormModalContainer {...modalProps} />}
-        <Drawer
-          title="高级搜索"
-          placement="right"
-          closable={false}
-          className='menu-multiple-drawer'
-          width={500}
-          onClose={() => {
-            this.setState({
-              advSearchVisible: false,
-            });
-          }}
-          visible={advSearchVisible}
-        >
-          <AdvSearch
-            fields={this.fields}
-            onConfirm={this.handleFirstColAdvSearchConfirm}
-            initialSearchList={searchList}
-          />
-        </Drawer>
+        </Timeline> */}
+          {modalVisible && <LzFormModalContainer {...modalProps} />}
+          {/* <Drawer
+            title="高级搜索"
+            placement="right"
+            closable={false}
+            className="menu-multiple-drawer"
+            width={500}
+            onClose={() => {
+              this.setState({
+                advSearchVisible: false
+              });
+            }}
+            visible={advSearchVisible}
+          >
+            <AdvSearch
+              fields={this.fields}
+              onConfirm={this.handleFirstColAdvSearchConfirm}
+              initialSearchList={searchList}
+            />
+          </Drawer> */}
 
-        {/* <LzAdvSearch
+          {/* <LzAdvSearch
           advSearchConfig={advSearchConfig}
           conditionChange={this.conditionChange}
           advSearchVisible={advSearchVisible}
@@ -640,82 +635,83 @@ export default class MenuMultiple extends React.Component {
           cssSelector=".lz-menu-container"
         /> */}
 
-        {chartVisible && (
-          <LzModal
-            defaultScaleStatus="max"
-            onClose={() => this.setState({ chartVisible: false })}
-          >
-            {formTitle === "实验室检查" || formTitle === "CD-评分" ? (
-              <Tabs>
-                {sortFieldsArray.map((item) => {
-                  return (
-                    <TabPane tab={item[0]} key={item[0]}>
-                      <LabExaminationChart
-                        data={recordList}
-                        fields={item[1]}
-                        dateField={innerFieldName}
-                        chartid={item[0]}
-                      />
-                    </TabPane>
-                  );
-                })}
-              </Tabs>
-            ) : (
-              <LabExaminationChart
-                data={recordList}
-                fields={fields}
-                dateField={innerFieldName}
-              />
-              // <HeightWeightChart
-              //   sex={record.C3_589053299408}
-              //   chartType={chartType}
-              //   userData={recordList}
-              //   recordMonthField={
-              //     record.C3_589053299408 === "男"
-              //       ? "C3_603833255097"
-              //       : "C3_603833299862"
-              //   }
-              //   recordHeightField={"C3_586880026948"}
-              //   recordWeightField={"C3_586880035091"}
-              // />
-              //
-            )}
-          </LzModal>
-        )}
+          {chartVisible && (
+            <LzModal
+              defaultScaleStatus="max"
+              onClose={() => this.setState({ chartVisible: false })}
+            >
+              {formTitle === '实验室检查' || formTitle === 'CD-评分' ? (
+                <Tabs>
+                  {sortFieldsArray.map(item => {
+                    return (
+                      <TabPane tab={item[0]} key={item[0]}>
+                        <LabExaminationChart
+                          data={recordList}
+                          fields={item[1]}
+                          dateField={innerFieldName}
+                          chartid={item[0]}
+                        />
+                      </TabPane>
+                    );
+                  })}
+                </Tabs>
+              ) : (
+                <LabExaminationChart
+                  data={recordList}
+                  fields={fields}
+                  dateField={innerFieldName}
+                />
+                // <HeightWeightChart
+                //   sex={record.C3_589053299408}
+                //   chartType={chartType}
+                //   userData={recordList}
+                //   recordMonthField={
+                //     record.C3_589053299408 === "男"
+                //       ? "C3_603833255097"
+                //       : "C3_603833299862"
+                //   }
+                //   recordHeightField={"C3_586880026948"}
+                //   recordWeightField={"C3_586880035091"}
+                // />
+                //
+              )}
+            </LzModal>
+          )}
 
-        <Modal
-          title="已填内容"
-          visible={alreadyModalVisible}
-          onCancel={this.closeAlreadyModal}
-          onOk={this.closeAlreadyModal}
-          width={800}
-          destroyOnClose
-        >
-          <FormWithValue
-            displayMod="default"
-            viewStatus="view"
-            formLayout="default"
-            record={selectedRecord}
-            formFormData={formFormData}
-          />
-        </Modal>
-
-        <Modal
-          title="选择字段"
-          visible={chooseFieldModalVisible}
-          onCancel={() => this.setState({ chooseFieldModalVisible: false })}
-          onOk={this.handleCompleteFieldsChoose}
-        >
-          <Tree
-            checkable
-            ref={this.getTreeRef}
-            selectedKeys={selectedKeys}
-            onCheck={this.handleNodeCheck}
+          <Modal
+            title="已填内容"
+            visible={alreadyModalVisible}
+            onCancel={this.closeAlreadyModal}
+            onOk={this.closeAlreadyModal}
+            width={800}
+            destroyOnClose
           >
-            {this.renderTreeNodes(treeData)}
-          </Tree>
-        </Modal>
-      </div>
+            <FormWithValue
+              displayMod="default"
+              viewStatus="view"
+              formLayout="default"
+              record={selectedRecord}
+              formFormData={formFormData}
+            />
+          </Modal>
+
+          <Modal
+            title="选择字段"
+            visible={chooseFieldModalVisible}
+            onCancel={() => this.setState({ chooseFieldModalVisible: false })}
+            onOk={this.handleCompleteFieldsChoose}
+          >
+            <Tree
+              checkable
+              ref={this.getTreeRef}
+              selectedKeys={selectedKeys}
+              onCheck={this.handleNodeCheck}
+            >
+              {this.renderTreeNodes(treeData)}
+            </Tree>
+          </Modal>
+        </div>
+      </Spin>
     );
   }
 }

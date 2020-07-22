@@ -1,14 +1,21 @@
-import React from "react";
-import { propTypes, defaultProps } from "./propTypes";
-import TableData from "Common/data/TableData";
-import "./PatientPeriod.less";
-import { Button, message, Modal, Form } from "antd";
-import { LzModal, LzMenuForms } from "../loadableCustom";
-import http, { makeCancelable } from "Util20/api";
-import PwForm from "../../common/ui/PwForm";
+import React from 'react';
+import { LzModal, LzMenuForms } from '../loadableCustom';
+import { propTypes, defaultProps } from './propTypes';
+import TableData from 'Common/data/TableData';
+import PwForm from 'Common/ui/PwForm';
+import './PatientPeriod.less';
+import { Button, message, Modal, Form } from 'antd';
+import http, { makeCancelable } from 'Util20/api';
+import { withHttpGetFormData } from 'Common/hoc/withHttp';
+import { compose } from 'recompose';
+import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 
+const patientPeriodID = 648300111771; //周期信息
+const baseInfoID = 648300066963; //基本信息
+const manID = 648300080566; //男方病历
+const womanID = 648300096608; //女方病历
 const customBtnStyle = {
-  margin: "0 4px",
+  margin: '0 4px'
 };
 
 /**
@@ -22,10 +29,13 @@ class PatientPeriod extends React.Component {
     this.state = {
       modalVisible: false,
       record: {},
-      navListResidField: "",
+      navListResidField: '',
       cdLen: {},
       ucLen: {},
-      addPatientVisible:false
+      addPatientVisible: false,
+      data: [], // PwForm 接收的 data props
+      data2: [], // PwForm 接收的 data props
+      period: {} //选择的周期记录
     };
   }
 
@@ -36,7 +46,7 @@ class PatientPeriod extends React.Component {
         resid,
         // cmswhere: `C3_617809531670 = 'UC'`,
         pageindex: 0,
-        pagesize: 10,
+        pagesize: 10
       })
     );
     this.p2 = makeCancelable(
@@ -44,7 +54,7 @@ class PatientPeriod extends React.Component {
         resid,
         // cmswhere: `C3_617809531670 = 'CD'`,
         pageindex: 0,
-        pagesize: 10,
+        pagesize: 10
       })
     );
     const pArr = [this.p1.promise, this.p2.promise];
@@ -59,6 +69,43 @@ class PatientPeriod extends React.Component {
     const ucLen = res[0].total;
     const cdLen = res[1].total;
     this.setState({ ucLen, cdLen });
+    this.getFormData();
+    this.getFormData2();
+  };
+
+  getFormData = async () => {
+    const { httpGetFormData } = this.props;
+    const {
+      resid,
+      recordFormName = 'default2',
+      baseURL,
+      dblinkname
+    } = this.props.tableDataProps;
+    let res;
+    try {
+      res = await httpGetFormData(resid, recordFormName, baseURL, dblinkname);
+    } catch (err) {
+      return message.error(err.message);
+    }
+    const data = getDataProp(res, {});
+    this.setState({ data });
+  };
+  getFormData2 = async () => {
+    const { httpGetFormData } = this.props;
+    const {
+      resid,
+      recordFormName = 'default',
+      baseURL,
+      dblinkname
+    } = this.props.tableDataProps;
+    let res;
+    try {
+      res = await httpGetFormData(resid, recordFormName, baseURL, dblinkname);
+    } catch (err) {
+      return message.error(err.message);
+    }
+    const data = getDataProp(res, {});
+    this.setState({ data2: data });
   };
 
   componentWillUnmount = () => {
@@ -66,31 +113,44 @@ class PatientPeriod extends React.Component {
     this.p2 && this.p2.cancel();
   };
 
-  handleInputCaseClick = (record) => {
+  handleInputCaseClick = record => {
+    console.log({record})
     this.setState({
       modalVisible: true,
-      record: { ...record },
-      navListResidField: "C3_620929565473",
+      record: record,
+      navListResidField: 'C3_620929565473'
     });
   };
 
-  handleQSClick = (record) => {
+  handleQSClick = record => {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: "C3_620929861096",
+      navListResidField: 'C3_620929861096'
     });
   };
 
-  handleHistoryClick = (record) => {
+  handleHistoryClick = record => {
     this.setState({
       modalVisible: true,
       record: { ...record },
-      navListResidField: "C3_620929845890",
+      navListResidField: 'C3_620929845890'
     });
   };
 
   customRowBtns = [
+    (record, size) => {
+      return (
+        <Button
+          key="添加周期"
+          style={customBtnStyle}
+          size={size}
+          onClick={() => this.handleAddPeriod(record)}
+        >
+          添加周期
+        </Button>
+      );
+    },
     (record, size) => {
       return (
         <Button
@@ -102,8 +162,14 @@ class PatientPeriod extends React.Component {
           输入病例
         </Button>
       );
-    },
+    }
   ];
+  handleAddPeriod = period => {
+    this.setState({
+      addPeriodVisible: true,
+      period
+    });
+  };
 
   handleModalClose = () => {
     this.setState({ modalVisible: false });
@@ -113,27 +179,151 @@ class PatientPeriod extends React.Component {
     const { cdLen, ucLen } = this.state;
     return (
       <div>
-       <Button onClick={() => {
-         this.setState({
-          addPatientVisible:true
-         })
-       }
-       }>添加患者</Button>
+        <Button
+          onClick={() => {
+            if (this.state.data && !this.state.data.length) {
+              return message.info('正在请求数据，请稍等');
+            }
+            this.setState({
+              addPatientVisible: true
+            });
+          }}
+        >
+          添加患者
+        </Button>
       </div>
     );
+  };
+  //保存周期
+  handleSavePeriod = form => {
+    const { period } = this.state;
+    let res,
+      data = [];
+    console.log({ period });
+    form.validateFields(async (err, values) => {
+      if (err) {
+        return message.error('表单数据有误');
+      }
+      data = [
+        {
+          resid: patientPeriodID,
+          maindata: {
+            ...values,
+            CurrentPatientID: period.CurrentPatientID,
+            Name_W: period.Name_W,
+            Age_W: period.Age_W,
+            Name_M: period.Name_M,
+            Age_M: period.Age_M,
+            _id: 1,
+            _state: 'added'
+          },
+          subdata: [
+            {
+              resid: manID,
+              maindata: {
+                _id: 1,
+                _state: 'added'
+              }
+            },
+            {
+              resid: womanID,
+              maindata: {
+                _id: 1,
+                _state: 'added'
+              }
+            }
+          ]
+        }
+      ];
+      try {
+        res = await http().saveRecordAndSubTables({
+          data
+        });
+        message.success('添加成功！');
+        this.setState({
+          addPeriodVisible: false
+        });
+        console.log('this.tableDataRef', this.tableDataRef);
+        this.tableDataRef.handleRefresh();
+      } catch (error) {
+        message.error(error.message);
+      }
+    });
+  };
+
+  //保存周期和患者
+  handleSave = form => {
+    let res,
+      data = [];
+
+    form.validateFields(async (err, values) => {
+      if (err) {
+        return message.error('表单数据有误');
+      }
+      data = [
+        {
+          resid: patientPeriodID,
+          maindata: {
+            ...values,
+            _id: 1,
+            _state: 'added'
+          },
+          subdata: [
+            {
+              resid: baseInfoID,
+              maindata: {
+                CurrentPatientID: values.CurrentPatientID,
+                Name_W: values.Name_W,
+                Age_W: values.Age_W,
+                Name_M: values.Name_M,
+                Age_M: values.Age_M,
+                _id: 1,
+                _state: 'added'
+              }
+            },
+            {
+              resid: manID,
+              maindata: {
+                _id: 1,
+                _state: 'added'
+              }
+            },
+            {
+              resid: womanID,
+              maindata: {
+                _id: 1,
+                _state: 'added'
+              }
+            }
+          ]
+        }
+      ];
+      try {
+        res = await http().saveRecordAndSubTables({
+          data
+        });
+        message.success('添加成功！');
+        this.setState({
+          addPatientVisible: false
+        });
+        this.tableDataRef.handleRefresh();
+      } catch (error) {
+        message.error(error.message);
+      }
+    });
   };
 
   render() {
     const { tableDataProps } = this.props;
     const {
       modalVisible,
-      // record,
+      record,
       navListResidField,
       ucLen,
       cdLen,
-      addPatientVisible
+      addPatientVisible,
+      addPeriodVisible
     } = this.state;
-
 
     // const {
     //   formProps,
@@ -145,12 +335,10 @@ class PatientPeriod extends React.Component {
     //   subTableArr
     // } = this.props;
 
-     let type = 'modal',
+    let type = 'modal',
       title = '',
       formProps = {},
-      data = [],
       operation = 'add',
-      record = {},
       info = {
         dataMode: 'main',
         resid: 666,
@@ -165,7 +353,6 @@ class PatientPeriod extends React.Component {
       onConfirm = () => {},
       onCancel = () => {};
 
-
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -179,55 +366,87 @@ class PatientPeriod extends React.Component {
     const hasSubTables =
       Array.isArray(subTableArr) && !!subTableArr.length && operation !== 'add';
 
+    const { data, data2 } = this.state;
     return (
       <div className="patient-info">
-        {typeof ucLen === "number" && typeof cdLen === "number" && (
-          <TableData
-            {...tableDataProps}
-            customRowBtns={this.customRowBtns}
-            actionBarExtra={this.renderActionBarExtra}
+        <TableData
+          {...tableDataProps}
+          customRowBtns={this.customRowBtns}
+          actionBarExtra={this.renderActionBarExtra}
+          refTargetComponentName="TableData"
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+        />
+        <Modal
+          visible={addPatientVisible}
+          destroyOnClose={true}
+          onCancel={() => {
+            this.setState({
+              addPatientVisible: false
+            });
+          }}
+          title="添加患者"
+          footer={null}
+        >
+          <PwForm
+            data={data}
+            mode="edit"
+            onSave={this.handleSave}
+            onCancel={() => this.setState({ addPatientVisible: false })}
+            operation={operation}
+            record={record}
+            beforeSaveFields={beforeSaveFields}
+            resid={resid}
+            // className={classNames({
+            //   'form-data__pwform--left': hasSubTables
+            // })}
           />
-        )}
-        {/* <Modal visible={addPatientVisible} destroyOnClose={true} title='添加患者'>
-          <PwForm 
-          
-          data={data}
-          {...formProps}
-          mode={mode}
-          {...otherProps}
-          onSave={this.handleSave}
-          onCancel={this.props.onCancel}
-          operation={operation}
-          record={record}
-          beforeSaveFields={beforeSaveFields}
-          resid={resid}
-          // className={classNames({
-          //   'form-data__pwform--left': hasSubTables
-          // })}
-          >
-            
-          </PwForm>
-        </Modal> */}
+        </Modal>
+
+        <Modal
+          visible={addPeriodVisible}
+          destroyOnClose={true}
+          onCancel={() => {
+            this.setState({
+              addPeriodVisible: false
+            });
+          }}
+          title="添加周期"
+          footer={null}
+        >
+          <PwForm
+            data={data2}
+            mode="edit"
+            onSave={this.handleSavePeriod}
+            onCancel={() => this.setState({ addPeriodVisible: false })}
+            operation={operation}
+            record={record}
+            beforeSaveFields={beforeSaveFields}
+            resid={resid}
+            // className={classNames({
+            //   'form-data__pwform--left': hasSubTables
+            // })}
+          />
+        </Modal>
         {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
             <LzMenuForms
               mode="multiple"
               addModalFormProps={{
-                displayMod: "classify",
-                modalWidth: 1000,
+                displayMod: 'classify',
+                modalWidth: 1000
               }}
               hasFieldsLabel
-              navListResid={record[navListResidField]}
-              resid={624640053934}
+              navListResid={patientPeriodID}
+              resid={patientPeriodID}
               userInfoFields={[
-                { label: "姓名", innerFieldName: "C3_617809531835" },
-                { label: "住院号", innerFieldName: "C3_617809584020" },
-                { label: "性别", innerFieldName: "C3_617809531996" },
-                { label: "出生年月", innerFieldName: "C3_617809532320" },
+                { label: '病历号', innerFieldName: 'CurrentPatientID' },
+                { label: '女方姓名', innerFieldName: 'Name_W' },
+                { label: '男方姓名', innerFieldName: 'Name_M' },
+                { label: '第几周期', innerFieldName: 'OPSTimes' }
               ]}
               record={record}
               advSearchConfig={{
-                containerName: "drawer",
+                containerName: 'drawer'
               }}
               displayMod="classify"
             />
@@ -238,4 +457,6 @@ class PatientPeriod extends React.Component {
   }
 }
 
-export default PatientPeriod;
+const composedHoc = compose(withHttpGetFormData);
+
+export default composedHoc(PatientPeriod);

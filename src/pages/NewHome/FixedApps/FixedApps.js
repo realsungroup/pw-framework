@@ -194,13 +194,13 @@ class FixedApps extends React.PureComponent {
       <div className="fixed-functions">
         <div className="new-home-title">
           <span>固定</span>
-          <span
+          {/* <span
             className="fixed-functions__setting-btn"
             onClick={this.handleOpenModal}
           >
             设置
             <Icon type="right" />
-          </span>
+          </span> */}
         </div>
         <div className="fixed-functions-list">
           {apps.map(app => {
