@@ -27,11 +27,11 @@ class DevTableData extends Component {
 
   render() {
     return (
-      <div style={{ width: 700 }}>
+      <div style={{ width: 800 }}>
         <TableData
           actionBarWidth={300}
           resid={464705942338}
-          subtractH={162}
+          subtractH={220}
           height={380}
           recordFormName="default"
           formProps={{
@@ -39,6 +39,7 @@ class DevTableData extends Component {
             height: 1971,
             width: 950
           }}
+          defaultColumnWidth={70}
           formDataProps={{
             subTalbeLayout: 'grid',
             useAbsolute: true

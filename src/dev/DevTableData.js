@@ -23,8 +23,31 @@ class DevTableData extends Component {
 
   render() {
     return (
-      <div style={{ width: 700 }}>
+      <div>
         <TableData
+          resid="609868074490"
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          hasRowModify={true}
+          hasRowDelete={true}
+          hasRowView={true}
+          height={600}
+          subtractH={220}
+          hasBeBtns={false}
+          isUseFormDefine={false}
+          hasAdd
+          hasRowEdit
+          hasRowEditAdd={true}
+          actionBarFixed={false}
+          rowEditAddPosition="end"
+          rowColorConfig={{ position: 'text' }}
+          successMessageComponent='Modal'
+          isSetColumnWidth={false}
+          cmscolumns="C3_609868116494"
+          // rowColorRules={rowColorRules}
+          // recordFormName="default3i"
+        />
+        {/* <TableData
           hasRowSelection={false}
           refTargetComponentName="TableData"
           wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -119,7 +142,7 @@ class DevTableData extends Component {
             containerType: 'drawer'
           }}
           dblinkname="me"
-        />
+        /> */}
       </div>
     );
   }
