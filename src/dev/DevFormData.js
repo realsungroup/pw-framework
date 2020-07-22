@@ -16,7 +16,7 @@ const record = {
 };
 
 let data = [];
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 20; i++) {
   data.push({
     id: `name${i}`, // 字段名称
     label: `label${i}`, // label
@@ -36,7 +36,7 @@ data.push({
   id: '图片',
   label: '图片',
   initialValue:
-    'https://www.baidu.com/link?url=tjAuszWiwt5BUUVMws-xiK44OxgTYjf3LssNiXGllewSIkQzErzEP0IPUz1bsHHg75nRxvWpx9jUpBaDihDqOoB6LD3P7-h5JM07HPEqe5oIKRzTpaaAuhAzgs7AMrpUUGtM3xmfPGuJswrZvEtvfsZQ3hA5leiLi6RcV5hcTSGRFOxM10By-8mDc1EUz98btMCUWe2vvpmgWkBXHKMhkeMeJwvElGJeBEpOshS-5hXZj9XcbMVzCvPbyF6eUnggpoZceVfefkhgV-uJpN684FmIpsXcyJRRim1F8-2Jj83RTA1DIYq7dE_WD8w1AsTlK6kbPsKLWmULLdoocvAVVE-zkyDMfeeZhGjZmXyka6wxGVxDurtjBZRrDeKGuryiSmmfLe9nnsKc1TUl2Kexw3ney-f1dFLIA25HljQg4reu_yY5jhjh9dU1yJfcq3q33s_ByMvTE1xhuQ34K46QppJHkjfwfIK4a__H4zzPLyZtjbNF4o5nXeP4Y-IdYc8hUjJx-pXbyrfHjdIgyXDU9to8nYtxBfJnuURFNyzI5sHUooFVqqcXkQVPrCs83iQdWkMhr5MtEdtsqtmoKMklLtWAuTbMJeRX9Ysy79IaU7O&timg=https%3A%2F%2Fss0.bdstatic.com%2F94oJfD_bAAcT8t7mm9GUKT-xh_%2Ftimg%3Fimage%26quality%3D100%26size%3Db4000_4000%26sec%3D1589276622%26di%3D866c91c55f879489e065cfa69afd2bce%26src%3Dhttp%3A%2F%2Fa2.att.hudong.com%2F36%2F48%2F19300001357258133412489354717.jpg&click_t=1589276625047&s_info=1387_766&wd=&eqid=8774040500024cef000000055eba6fce'
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589710805245&di=67fc43ac37aada6b1327e6e0d19fd738&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F36%2F48%2F19300001357258133412489354717.jpg'
 });
 
 class App extends Component {
@@ -60,8 +60,9 @@ class App extends Component {
           data={data}
           record={record}
           style={{ width: 800, background: '#fff' }}
+          layout="float"
+          subTalbeLayout="grid"
           formProps={{
-            width: 800,
             colCount: 3,
             fieldsOrder: [
               '图片',
@@ -81,7 +82,6 @@ class App extends Component {
               subResid: 617195083937
             }
           ]}
-          subTalbeLayout="grid"
           subTableArrProps={[
             {
               subTableName: '物品信息',
