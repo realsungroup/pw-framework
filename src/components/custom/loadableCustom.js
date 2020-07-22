@@ -812,3 +812,16 @@ export const PatientPeriod = Loadable({
     return minLoading;
   }
 });
+export const LzMenuForms = Loadable({
+  loader: () => import('./LzMenuForms'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const LzModal = Loadable({
+  loader: () => import('../../lib/unit-component/components/LzModal'),
+  loading() {
+    return minLoading;
+  }
+});

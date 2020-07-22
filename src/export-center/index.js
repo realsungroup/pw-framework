@@ -168,4 +168,4 @@ export {
   PersonnelImport,
   S1S2RecruitApply
 } from '../components/custom/loadableCustom';
-export { PatientPeriod } from '../components/custom/loadableCustom';
+export { PatientPeriod ,LzMenuForms} from '../components/custom/loadableCustom';

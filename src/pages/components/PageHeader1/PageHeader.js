@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
-import logoImg from '../../../assets/logo-26.png';
+import logoImg from '../../../assets/logo.jpg';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
 import { Drawer, Menu, Icon, Input, Badge, Popover } from 'antd';

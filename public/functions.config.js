@@ -10,7 +10,7 @@ window[648640265023] = {
       height:500,
       // height: 'calc(100vh - 160px)',
       size: "small",
-      actionBarWidth: 490,
+      actionBarWidth: 300,
       hasModify: false,
       hasDelete: false,
       addText: "添加基本信息",

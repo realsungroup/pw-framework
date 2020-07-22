@@ -3,7 +3,7 @@ import { propTypes, defaultProps } from "./propTypes";
 import TableData from "Common/data/TableData";
 import "./PatientPeriod.less";
 import { Button, message, Modal, Form } from "antd";
-// import { LzModal, LzMenuForms } from "../loadableCustom";
+import { LzModal, LzMenuForms } from "../loadableCustom";
 import http, { makeCancelable } from "Util20/api";
 import PwForm from "../../common/ui/PwForm";
 
@@ -100,30 +100,6 @@ class PatientPeriod extends React.Component {
           onClick={() => this.handleInputCaseClick(record)}
         >
           输入病例
-        </Button>
-      );
-    },
-    (record, size) => {
-      return (
-        <Button
-          key="问卷调差"
-          style={customBtnStyle}
-          size={size}
-          onClick={() => this.handleQSClick(record)}
-        >
-          问卷调查
-        </Button>
-      );
-    },
-    (record, size) => {
-      return (
-        <Button
-          key="历史记录"
-          style={customBtnStyle}
-          size={size}
-          onClick={() => this.handleHistoryClick(record)}
-        >
-          历史记录
         </Button>
       );
     },
@@ -232,7 +208,7 @@ class PatientPeriod extends React.Component {
             
           </PwForm>
         </Modal> */}
-        {/* {modalVisible && (
+        {modalVisible && (
           <LzModal defaultScaleStatus="max" onClose={this.handleModalClose}>
             <LzMenuForms
               mode="multiple"
@@ -256,7 +232,7 @@ class PatientPeriod extends React.Component {
               displayMod="classify"
             />
           </LzModal>
-        )} */}
+        )}
       </div>
     );
   }

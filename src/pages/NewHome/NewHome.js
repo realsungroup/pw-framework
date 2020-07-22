@@ -144,7 +144,7 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
-    this.fetchWaitingHandle();
+    // this.fetchWaitingHandle();
     // this.setRecentApps();
   }
 
@@ -449,12 +449,12 @@ class Home extends React.Component {
         </aside>
         <main className="new-home__main">
           <div className="new-home__center">
-            <div className="new-home__kanban">
+            {/* <div className="new-home__kanban">
               <div className="new-home-title">下属加班汇总</div>
               <div className="new-home__kanban__body">
                 <WorkOvertime onClick={onOpenWindow} />
               </div>
-            </div>
+            </div> */}
             <div className="new-home__fixed-functions">
               {loading && <Spin />}
               <FixedApps
@@ -586,7 +586,9 @@ class Home extends React.Component {
   };
 
   render() {
-    return <div className="new-home">{this.renderHome()}</div>;
+    return <div className="new-home">
+      {this.renderHome()}
+    </div>;
   }
 
   toimag = async iframes => {

@@ -190,7 +190,7 @@ export default class PageContainer extends React.Component {
     this.setRecentApps();
 
     if (desktopStyle === 'WORKBENCH') {
-      this.fetchWaitingHandle();
+      // this.fetchWaitingHandle();
     }
   };
 
@@ -288,7 +288,7 @@ export default class PageContainer extends React.Component {
   getData = async (isFirst = false) => {
     this.setState({ loading: true });
     const res = await this.getAndSetUserDesktop(isFirst);
-    await this.getAndSetAllAppLinks(res.userdefined);
+    // await this.getAndSetAllAppLinks(res.userdefined);
     this.setState({ loading: false });
   };
 
