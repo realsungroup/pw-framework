@@ -9426,3 +9426,11 @@ window[646330411706] = {
 
   }
 }
+
+window[648312862539] = {
+  name: 'StaffCommunicationRecord',
+  title:'人事信息批量导入',
+  props:{
+
+  }
+}

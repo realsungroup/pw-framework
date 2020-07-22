@@ -36,7 +36,7 @@ class RelievePerson extends React.Component {
 
     let res;
     try {
-      res = await http(this.baseURL).modifyRecords({
+      res = await http({baseURL:this.baseURL}).modifyRecords({
         resid,
         data
       });

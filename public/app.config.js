@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok12.realsun.me:6060//', // 请求的基地址
+    baseURL: 'http://ngrok4.realsun.me:6060//', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -43,6 +43,8 @@ window.pwConfig = {
       RBASchedulingDownloadBaseURL:'http://ngrok10.realsun.me:6060',//RBA排班下载基地址
       WuxiHr03BaseURL:'http://ngrok14.realsun.me:6060',//80端口非定制组件基地址
       WuxiHr03DownloadBaseURL:'http://ngrok13.realsun.me:6060',//80端口非定制组件下载基地址
+      staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
+      staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
     },
 
     // 绩效-我的评估表功能用到的子表

@@ -166,5 +166,8 @@ export {
   AchievementsGradeAppraising,
   WageCardInformation,
   PersonnelImport,
-  S1S2RecruitApply
+  S1S2RecruitApply,
+  StaffCommunicationRecord,
+  StaffComplain,
 } from '../components/custom/loadableCustom';
+
