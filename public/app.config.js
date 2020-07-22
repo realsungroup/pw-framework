@@ -8,7 +8,7 @@ var pwConfig = {};
  * 地址
  */
 //  请求的基地址
-pwConfig.baseURL = 'http://ivf.dybhealth.com:9001/';
+pwConfig.baseURL = 'http://kingofdinner.realsun.me:4201/';
 // 导出 Excel 文件下载基地址
 pwConfig.fileDownloadUrl = 'http://172.21.2.27:802/';
 

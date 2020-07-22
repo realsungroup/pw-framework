@@ -1,13 +1,14 @@
-// IBD定制
-window[588425594397] = {
-  title: "患者信息",
-  name: "PatientInfo",
+// 患者周期列表
+window[648640265023] = {
+  title: "患者周期列表",
+  name: "PatientPeriod",
   props: {
     tableDataProps: {
-      resid: 624640053934,
+      resid: 648300111771,
       subtractH: 170,
-      actionBarFixed: false,
-      height: 'calc(100vh - 160px)',
+      actionBarFixed: true,
+      height:500,
+      // height: 'calc(100vh - 160px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,
@@ -17,7 +18,7 @@ window[588425594397] = {
       rowModifyText: "修改基本信息",
       enRowModifyText: "Modify basic information",
       formProps: {
-        displayMode: "classify",
+        // displayMode: "classify",
       },
     },
   },
@@ -32,8 +33,9 @@ window[645026775225] = {
 
     tableDataProps: {
       subtractH: 170,
-      actionBarFixed: false,
-      height: 'calc(100vh - 224px)',
+      height:500,
+      actionBarFixed:true,
+      // height: 'calc(100vh - 224px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,
@@ -83,7 +85,8 @@ window[645045274189] = {
     tableDataProps: {
       subtractH: 170,
       actionBarFixed: false,
-      height: 'calc(100vh - 224px)',
+      height:500,
+      // height: 'calc(100vh - 224px)',
       size: "small",
       actionBarWidth: 490,
       hasModify: false,

@@ -30,3 +30,9 @@ export const ExportData = Loadable({
     return minLoading;
   }
 });
+export const PatientPeriod = Loadable({
+  loader: () => import('./PatientPeriod'),
+  loading() {
+    return minLoading;
+  }
+});
