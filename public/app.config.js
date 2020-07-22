@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok12.realsun.me:6060//', // 请求的基地址
+    baseURL: 'http://kingofdinner.realsun.me:4201/',
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -38,11 +38,11 @@ window.pwConfig = {
       WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL :'http://ngrok12.realsun.me:6060/', //绩效定制页面基地址
-      RBASchedulingBaseURL:'http://ngrok5.realsun.me:6060',//RBA排班基地址
-      RBASchedulingDownloadBaseURL:'http://ngrok10.realsun.me:6060',//RBA排班下载基地址
-      WuxiHr03BaseURL:'http://ngrok14.realsun.me:6060',//80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL:'http://ngrok13.realsun.me:6060',//80端口非定制组件下载基地址
+      AchievementsBaseURL: 'http://ngrok12.realsun.me:6060/', //绩效定制页面基地址
+      RBASchedulingBaseURL: 'http://ngrok5.realsun.me:6060', //RBA排班基地址
+      RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:6060', //RBA排班下载基地址
+      WuxiHr03BaseURL: 'http://ngrok14.realsun.me:6060', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:6060' //80端口非定制组件下载基地址
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -59,10 +59,11 @@ window.pwConfig = {
       绩效评估表: 420130498195,
       myAssessment: 462400643808
     },
-    trainingClubUploadConfig:{
-      mode:'local',
+    trainingClubUploadConfig: {
+      mode: 'local',
       bucketname: 'realsun',
-      url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
+      url:
+        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -242,13 +243,11 @@ window.pwConfig = {
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL :'http://10.108.2.66:1001/',
-      RBASchedulingBaseURL:'http://10.108.2.66:9091',//RBA排班基地址
-      RBASchedulingDownloadBaseURL:'http://10.108.2.66:80',//RBA排班下载基地址
-      wuxiHr03BaseURL:'http://10.108.2.66:9091',//80端口非定制组件基地址
-      wuxiHr03DownloadBaseURL:'http://10.108.2.66:80/',//80端口非定制组件下载基地址
-     
-      
+      AchievementsBaseURL: 'http://10.108.2.66:1001/',
+      RBASchedulingBaseURL: 'http://10.108.2.66:9091', //RBA排班基地址
+      RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
+      wuxiHr03BaseURL: 'http://10.108.2.66:9091', //80端口非定制组件基地址
+      wuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/' //80端口非定制组件下载基地址
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {
@@ -264,10 +263,11 @@ window.pwConfig = {
       绩效评估表: 420130498195,
       myAssessment: 462400643808 //我的评估
     },
-    trainingClubUploadConfig:{
-      mode:'local',
+    trainingClubUploadConfig: {
+      mode: 'local',
       bucketname: 'realsun',
-      url:'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
+      url:
+        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [

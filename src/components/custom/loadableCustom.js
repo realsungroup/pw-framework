@@ -806,3 +806,9 @@ export const S1S2RecruitApply = Loadable({
     return minLoading;
   }
 });
+export const PatientPeriod = Loadable({
+  loader: () => import('./PatientPeriod'),
+  loading() {
+    return minLoading;
+  }
+});

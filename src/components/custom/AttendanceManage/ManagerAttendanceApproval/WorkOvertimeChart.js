@@ -166,7 +166,7 @@ class WorkOvertimeChart extends React.Component {
       this.getDetailData(params.data.id, this.state.selectedMonth);
     });
     await this.getYearMonths();
-    await this.getData();
+    // await this.getData();
   }
 
   componentDidUpdate(prevProps, prevState) {
