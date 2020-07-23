@@ -3,16 +3,35 @@ import './ChartCommunication.less';
 import TableData from '../../common/data/TableData';
 import { Tabs, Select, Menu ,Button,Spin,Radio} from 'antd';
 import http from 'Util20/api';
+import html2canvas from 'html2canvas';
+
 
 const { Option } = Select;
 const { TabPane } = Tabs;
-const { SubMenu } = Menu;
+const dataURIToBlob = (dataURI, fileName, callback) => {
+  var binStr = atob(dataURI.split(',')[1]),
+    len = binStr.length,
+    arr = new Uint8Array(len);
 
+  for (var i = 0; i < len; i++) {
+    arr[i] = binStr.charCodeAt(i);
+  }
+
+  callback(new Blob([arr]), fileName + '.png');
+};
+
+const callback = function(blob, fileName) {
+  var a = document.createElement('a');
+  a.setAttribute('download', fileName);
+  a.href = URL.createObjectURL(blob);
+  a.click();
+};
 class ChartCommunication extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainning;
     this.state = {
+      title:'',//报表标题名
       reportType:'月报',//报表种类
       season:1,//当前选择的季度
       month:1,//当前选择月份
@@ -67,6 +86,15 @@ class ChartCommunication extends React.Component {
       c=c-1;
       n++;
     }
+    if(myMonth<4){
+      this.setState({season:1});
+    }else if(myMonth<7){
+      this.setState({season:2});
+    }else if(myMonth<10){
+      this.setState({season:3});
+    }else{
+      this.setState({season:4});
+    }
     this.setState({month:myMonth,year:myYear,yearGroup});
     this.getData('month',myMonth,myYear);
   }
@@ -117,6 +145,7 @@ class ChartCommunication extends React.Component {
       ingQiuzhu:0,//处理中求助
       ingJianyi:0,//处理中建议
     })
+    
     let cms= ``;
     if(type=='month'){
       if(mm){
@@ -133,10 +162,11 @@ class ChartCommunication extends React.Component {
             e=30;
           }
         cms=`REC_CRTTIME > "${yy+'-'+mm+'-01'}" and REC_CRTTIME < "${yy+'-'+mm+'-'+e}"`;
-        this.setState({range:(yy+'年'+mm+'月1日 00:00:00 至 '+(yy+'年'+mm+'月'+e+'日 23:59:59'))});
+        this.setState({title:yy+'年'+mm+'月员工沟通统计报告',range:(yy+'年'+mm+'月1日 00:00:00 至 '+(yy+'年'+mm+'月'+e+'日 23:59:59'))});
       }
     }else if(type=='season'){
       if(ss){
+        this.setState({title:yy+'年第'+ss+'季度员工沟通统计报告'})
         if(ss==1){
           cms=`REC_CRTTIME > "${yy+'-'+'01-01'}" and REC_CRTTIME < "${yy+'-'+'03-31'}"`;
           this.setState({range:yy+'年1月1日 00:00:00 至'+yy+'年3月31日 23:59:59'});
@@ -154,7 +184,7 @@ class ChartCommunication extends React.Component {
     }else if(type=='year'){
       if(yy){
           cms=`REC_CRTTIME > "${yy+'-'+'01-01'}" and REC_CRTTIME < "${yy+'-'+'12-31'}"`;
-          this.setState({range:yy+'年1月1日 00:00:00 至'+yy+'年12月31日 23:59:59'});
+          this.setState({title:yy+'年员工沟通统计报告',range:yy+'年1月1日 00:00:00 至'+yy+'年12月31日 23:59:59'});
       }
     }
     try{
@@ -199,7 +229,7 @@ class ChartCommunication extends React.Component {
             let d2 = t2.replace(/\-/g, "/");
             let date2 = new Date(d2);
             replyTousu = replyTousu + (parseInt(date1 - date2) / 1000)
-          }else if(res.data[n].status=='未阅读'){
+          }else if(res.data[n].mailed=='N'){
             waitTousu=waitTousu+1;
           }else{
             ingTousu=ingTousu+1;
@@ -215,7 +245,7 @@ class ChartCommunication extends React.Component {
             let d2 = t2.replace(/\-/g, "/");
             let date2 = new Date(d2);
             replyQiuzhu = replyQiuzhu + (parseInt(date1 - date2) / 1000)
-          }else if(res.data[n].status=='未阅读'){
+          }else if(res.data[n].mailed=='N'){
             waitQiuzhu=waitQiuzhu+1;
           }else{
             ingQiuzhu=ingQiuzhu+1;
@@ -231,7 +261,7 @@ class ChartCommunication extends React.Component {
             let d2 = t2.replace(/\-/g, "/");
             let date2 = new Date(d2);
             replyJianyi = replyJianyi + (parseInt(date1 - date2) / 1000)
-          }else if(res.data[n].status=='未阅读'){
+          }else if(res.data[n].mailed=='N'){
             waitJianyi=waitJianyi+1;
           }else{
             ingJianyi=ingJianyi+1;
@@ -263,16 +293,37 @@ class ChartCommunication extends React.Component {
         maxTimeAvg=replyQiuzhuAvg;
       }
       this.setState({loading:false,total:res.data.length,app,offline,tousu,qiuzhu,jianyi,qiuzhuCount,jianyiCount,tousuCount,replyQiuzhu,replyJianyi,replyTousu,maxTime,replyJianyiAvg,replyQiuzhuAvg,replyTousuAvg,maxTimeAvg,waitJianyi,waitQiuzhu,waitTousu,ingJianyi,ingQiuzhu,ingTousu})
-      console.log(res)
+     
     }catch(e){console.log(e.message);this.setState({loading:false})}
   }
   componentWillMount(){
     this.getTime();
   }
+    // 导出图片的功能
+  exportPNG = async() => {
+      const { queryName } = this.state;
+      // 下载图片
+      this.refs.toPrint.classList.add('printMode');
+      await function download(src, name) {
+        if (!src) return;
+        const a = document.createElement('a');
+        a.setAttribute('download', this.state.title);
+        a.href = src;
+        a.click();
+      }
+      await html2canvas(document.querySelector('.toPrint')).then(
+        canvas => {
+          const imgDataURL = canvas.toDataURL('image/png', 1.0);
+            dataURIToBlob(imgDataURL, this.state.title, callback);
+        }
+      );
+      
+      await this.refs.toPrint.classList.remove('printMode');
+  };
   render() {
     return (
       <div className='wrap'>
-        <Tabs defaultActiveKey="1" onChange={(v)=>this.callback(v)}>
+        <Tabs defaultActiveKey="1">
           <TabPane tab="月报/季报/年报" key="1">
             <div className='innerWrap'>
               <div className='center'>
@@ -325,11 +376,11 @@ class ChartCommunication extends React.Component {
                           </Select>
                     </div>
                   :null}
-                  <Button>导出PNG</Button>
+                  <Button disabled={this.state.loading} onClick={()=>this.exportPNG()}>导出PNG</Button>
                 </div>
                 
-                <div className='toPrint'>
-                    <h3 style={{textAlign:'center',fontSize:'16px'}}>{this.state.year}年{this.state.month}月员工沟通统计报告</h3>
+                <div ref='toPrint' className='toPrint'>
+                    <h3 style={{textAlign:'center',fontSize:'16px'}}>{this.state.title}</h3>
                     <p style={{fontSize:'14px'}}>公司：菲尼萨（无锡）</p>
                     <p style={{fontSize:'14px'}}>统计时间段：{this.state.range}</p>
                     <Spin spinning={this.state.loading}>
@@ -426,7 +477,25 @@ class ChartCommunication extends React.Component {
             </div>
           </TabPane>
           <TabPane tab="自定义" key="2">
-            
+            <div className='innerWrap'>
+                <TableData
+                  resid={648050843809}
+                  baseURL={this.baseURL}
+                  subtractH={220}
+                  tableComponent="ag-grid"
+                  sideBarAg={true}
+                  hasAdvSearch={true}
+                  hasAdd={true}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={true}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                />
+          </div>
           </TabPane>
         </Tabs>
       </div>
