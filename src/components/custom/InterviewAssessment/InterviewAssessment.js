@@ -1439,7 +1439,104 @@ var hrCode='623876215000';
 
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
+            this.setState({
+              userChara:'',
+        data:[
+        ],
+        name:'',
+        position:'',
+        level:'',
+        hiringManger:'',
+        interviewer:'',
+        interviewName:'',
+        interviewer2:'',
+		secondRoundInterviewerName:'',
+        chara:'T1/T2/T3/T4',
+        eduOther:'',
+        graFrom:'',
+        workExp:'',
+        wkOther:'',
+        groupInter:'',
+        p4r:'',
+        hiOther:'',
+        secRound:'',
+        eduBack:'',
+        wkExp:'',
+        lanSki:'',
+        SRI:'',
+        GHB:'',
 
+        vIT:'',
+        vLA:'',
+        vCF:'',
+        vDR:'',
+
+        // T1
+        vTS:'',
+        vEA:'',
+        vTE:'',
+        vAO:'',
+        vPS:'',
+        vSd:'',
+        vLF:'',
+        // T5
+        vTS2:'',
+        vTO:'',
+        vTD:'',
+        vTE2:'',
+        vCr:'',
+        vSA:'',
+        vPrA:'',
+        // T6
+        vTS3:'',
+        vTO2:'',
+        vTC:'',
+        vTE3:'',
+        vDwA:'',
+        vIM:'',
+        vStrA:'',
+        //S5
+        vTS4:'',
+        vAO2:'',
+        vPS2:'',
+        vSd2:'',
+        vLF2:'',
+        //S6
+        vTS5:'',
+        vAO3:'',
+        vPS3:'',
+        vDO:'',
+        vCDR:'',
+        //S9
+        vTS6:'',
+        vDevO:'',
+        vPlan:'',
+        vOrg:'',
+        vPriS:'',
+        vMMW:'',
+        // S10
+        vTS7:'',
+        vvBET:'',
+        vPM:'',
+        vMoOt:'',
+        vCM:'',
+        //tech
+        vTS8:'',
+        vPreSk:'',
+        vProSol:'',
+        vPeRe:'',
+        vAcOr:'',
+        //Fresh
+        vTS9:'',
+        vcrea:'',
+        vPresentSkill:'',
+        vProblemSol:'',
+        vPeerRel:'',
+        vPersonaLe:'',
+        //复试
+        round2:false
+
+            })
             this.props.clsAss();
         }}>
           <Icon type="close-circle" />
