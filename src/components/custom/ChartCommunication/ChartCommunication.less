@@ -1,0 +1,47 @@
+.wrap{
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  .ant-tabs-bar{
+    margin: 0;
+  }
+  .innerWrap{
+    width:100vw;
+    height:calc(100vh - 45px);
+    background-color: #f1f1fa;
+    padding:40px 0;
+    overflow: auto;
+  }
+  .center{
+     margin-left:calc(50vw - 415px);
+     overflow: hidden;
+    .ctr{
+      padding:8px;
+      background-color: #fff;
+      float: left;
+      margin-right: 16px;
+      border:1px solid #dcdcdc;
+      box-sizing: border-box;
+      border-radius:4px;
+      .ctr-line{
+        margin-bottom: 8px;
+      }
+    }
+    .toPrint{
+      width:595px;
+      min-height:842px;
+      padding:32px 24px;
+      background-color: #fff;
+      float: left;
+      border:1px solid #dcdcdc;
+      box-sizing: border-box;
+      &.printMode{
+        border:1px solid rgba(255,255,255,0);
+      }
+      *{
+        transition: .3s;
+      }
+    }
+  }
+  
+}

@@ -1965,6 +1965,10 @@ window[618665452476] = {
   name: 'DLEmploy',
   title: '员工个人发展管理'
 };
+window[648315132714]={
+  name: 'ChartCommunication',
+  title: '员工沟通记录统计'
+};
 window[619954194724] = {
   name: 'IdpCard',
   title: '我的IDP',
@@ -9421,6 +9425,14 @@ window[647032148938] = {
 
 window[646330411706] = {
   name: 'PersonnelImport',
+  title:'人事信息批量导入',
+  props:{
+
+  }
+}
+
+window[648312862539] = {
+  name: 'StaffCommunicationRecord',
   title:'人事信息批量导入',
   props:{
 
