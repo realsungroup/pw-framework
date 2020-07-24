@@ -11,7 +11,8 @@ import {
   Modal,
   Upload,
   Icon,
-  Button
+  Button,
+  AutoComplete
 } from 'antd';
 import PropTypes from 'prop-types';
 import { ControlCode, FILESEPARATOR } from 'Util/controls';
@@ -279,6 +280,38 @@ export default class LzFormControl extends React.Component {
             />
           );
         }
+        return (
+          <div
+            style={{
+              ...this.getControlStyle(isCustomLayout, style)
+            }}
+            title={value}
+          >
+            {value}
+          </div>
+        );
+      }
+      // AutoComplete
+      // case ControlCode.OptionDictionaryAutoComplete: {
+      case ControlCode.OptionDictionary: {
+        if (viewStatus === 'edit') {
+          const options = controlData.ListOfColOptions.map(item => item.displayColValue);
+
+          return (
+            <AutoComplete
+              dataSource={options}
+              value={value}
+              placeholder={placeholder}
+              // filterOption={(inputValue, option) =>
+              //   option.props.children
+              //     .toUpperCase()
+              //     .indexOf(inputValue.toUpperCase()) !== -1
+              // }
+              onChange={this.handleValueChange}
+            />
+          );
+        }
+
         return (
           <div
             style={{
