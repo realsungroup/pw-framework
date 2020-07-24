@@ -21,11 +21,27 @@ import LzAdvDictionary from '../LzAdvDictionary';
 import './LzFormControl.less';
 import { beforeSaveAdd, beforeSaveMod } from 'Util/api';
 import DateTimePicker from '../../../../pages/components/DateTimePicker';
+import http from 'Util20/api'
 
 const Option = Select.Option;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
+
+const getAutoCompleteDataSource = (res, key) => {
+  let ret = [];
+  if (!res || !key) {
+    return ret;
+  }
+  if (res && Array.isArray(res.cmscolumninfo)) {
+    const item = res.cmscolumninfo.find(cmscolumninfoItem => cmscolumninfoItem.id === key);
+    if (item && item[key]) {
+      const obj = item[key];
+      ret = obj.DisplayOptions;
+    }
+  }
+  return ret;
+}
 
 export default class LzFormControl extends React.Component {
   static propTypes = {
@@ -151,9 +167,36 @@ export default class LzFormControl extends React.Component {
     this.state = {
       value,
       advDicVisible: false, // 高级字典 modal 是否显示
-      imgVisible: false // 放大的图片 modal 是否显示
+      imgVisible: false, // 放大的图片 modal 是否显示
+      dataSource: [], // AutoComplete 的 dataSource 属性
     };
   }
+
+  componentDidMount = async () => {
+    const { controlData } = this.props
+    const type = controlData.ColValType;
+
+    // 获取 AutoComplete dataSource
+    if (type === 17) {
+      const resid = controlData.ColParam3;
+      const key = controlData.ColParam4;
+      if (!resid || !key) {
+        return;
+      }
+      let res;
+      try {
+        res = await http().getTable({
+          resid,
+          getcolumninfo: 1,
+        })
+      } catch (err) {
+        return message.error(err.message);
+      }
+
+      const dataSource = getAutoCompleteDataSource(res, key);
+      this.setState({ dataSource });
+    }
+  };
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
@@ -167,7 +210,8 @@ export default class LzFormControl extends React.Component {
       this.state.imgVisible === nextState.imgVisible &&
       this.state.value === nextState.value &&
       this.state.advDicVisible === nextState.advDicVisible &&
-      this.props.viewStatus === nextProps.viewStatus
+      this.props.viewStatus === nextProps.viewStatus &&
+      this.state.dataSource === nextState.dataSource
     ) {
       return false;
     }
@@ -292,21 +336,15 @@ export default class LzFormControl extends React.Component {
         );
       }
       // AutoComplete
-      // case ControlCode.OptionDictionaryAutoComplete: {
-      case ControlCode.OptionDictionary: {
+      case ControlCode.OptionDictionaryAutoComplete: {
         if (viewStatus === 'edit') {
-          const options = controlData.ListOfColOptions.map(item => item.displayColValue);
+          const { dataSource } = this.state
 
           return (
             <AutoComplete
-              dataSource={options}
+              dataSource={dataSource}
               value={value}
               placeholder={placeholder}
-              // filterOption={(inputValue, option) =>
-              //   option.props.children
-              //     .toUpperCase()
-              //     .indexOf(inputValue.toUpperCase()) !== -1
-              // }
               onChange={this.handleValueChange}
             />
           );
