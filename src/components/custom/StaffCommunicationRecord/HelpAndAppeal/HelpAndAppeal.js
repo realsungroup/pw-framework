@@ -1,5 +1,5 @@
 import React from 'react';
-import './StaffComplain.less';
+import './HelpAndAppeal.less';
 import {
   Modal,
   Button,
@@ -33,7 +33,7 @@ const residEd = 648841245548; //投诉已处理
 const residCancel = 648841262145; //投诉已撤销
 const residall = 648841291439; //投诉全部
 
-class StaffComplain extends React.Component {
+class HelpAndAppeal extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL =
@@ -104,7 +104,6 @@ class StaffComplain extends React.Component {
     this.setState({
       selectKey: e.key
     });
-    console.log(this.state.selectKey)
   };
 
  
@@ -611,7 +610,7 @@ class StaffComplain extends React.Component {
           visible={this.state.showRecord}
           width={777}
           style={{ height: 'auto' }}
-          title={'记录编号:'+ selectRecord.recordID}
+          title={'记录编号'+ selectRecord.recordID}
           onCancel={this.cancelModal}
           destroyOnClose={true}
         >
@@ -754,7 +753,7 @@ class StaffComplain extends React.Component {
               <Button
                 type="primary"
                 onClick={() => {
-                  this.openProofList(this.state.selectRecord);
+                  this.openProofList();
                 }}
               >
                 回复
@@ -877,4 +876,4 @@ class StaffComplain extends React.Component {
   }
 }
 
-export default StaffComplain;
+export default HelpAndAppeal;

@@ -229,7 +229,7 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
-    baseURL: 'http://ngrok14.realsun.me:6060/',
+    baseURL: 'http://ngrok5.realsun.me:6060/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
     searchFields: [
@@ -9429,7 +9429,7 @@ window[646330411706] = {
 
 window[648312862539] = {
   name: 'StaffCommunicationRecord',
-  title:'人事信息批量导入',
+  title:'员工沟通管理',
   props:{
 
   }
