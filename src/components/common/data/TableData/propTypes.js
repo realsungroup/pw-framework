@@ -871,4 +871,10 @@ export const propTypes = {
      */
     url: PropTypes.string.isRequired,
   }),
+
+  /**
+   * 多媒体字段值（值为地址）的基地址
+   * 默认：-
+   */
+  mediaFieldBaseURL: PropTypes.string,
 };

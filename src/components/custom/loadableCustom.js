@@ -800,3 +800,27 @@ export const PersonnelImport = Loadable({
     return minLoading;
   }
 });
+export const S1S2RecruitApply = Loadable({
+  loader: () => import('./S1S2RecruitApply'),
+  loading() {
+    return minLoading;
+  }
+});
+export const StaffCommunicationRecord = Loadable({
+  loader: () => import('./StaffCommunicationRecord'),
+  loading() {
+    return minLoading;
+  }
+});
+export const StaffComplain = Loadable({
+  loader: () => import('./StaffCommunicationRecord/StaffComplain'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ChartCommunication = Loadable({
+  loader: () => import('./ChartCommunication'),
+  loading() {
+    return minLoading;
+  }
+});

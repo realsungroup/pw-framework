@@ -1284,7 +1284,8 @@ class TableData extends React.Component {
       recordFormUseAbsolute,
       baseURL,
       formDataProps,
-      uploadConfig
+      uploadConfig,
+      mediaFieldBaseURL,
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1361,7 +1362,8 @@ class TableData extends React.Component {
       useAbsolute: recordFormUseAbsolute,
       baseURL,
       formDataProps,
-      uploadConfig
+      uploadConfig,
+      mediaFieldBaseURL,
     });
   };
 
@@ -1669,7 +1671,7 @@ class TableData extends React.Component {
       formName = 'default',
       formProps,
       validationFields = [],
-      isUseTableFields,
+      isUseTableFields = true,
       fields = [],
       isRequestFormData = true
     } = advSearch;

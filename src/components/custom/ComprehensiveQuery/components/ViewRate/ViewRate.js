@@ -109,6 +109,7 @@ class ViewRate extends React.Component {
               hasRowModify={false}
               hasRowSelection={true}
               actionBarWidth={100}
+              noWidthFields='C3_420297595131'
               cparm1={id}
               cparm2={selectYear.label}
               dblinkname="ehr"

@@ -9,12 +9,20 @@ import LzTable from '../../../lib/unit-component/LzTable';
  * 奖惩-符合解除人员
  */
 class RelievePerson extends React.Component {
+  constructor(props){
+    super(props)
+    this.baseURL =
+    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
+    this.downloadURL =
+    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
+  }
+
   state = {
     loading: false,
     deleteReason: '',
     sendBackReason: null
   };
-
+ 
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
       return message.error('请选择记录');
@@ -28,7 +36,7 @@ class RelievePerson extends React.Component {
 
     let res;
     try {
-      res = await http().modifyRecords({
+      res = await http({baseURL:this.baseURL}).modifyRecords({
         resid,
         data
       });

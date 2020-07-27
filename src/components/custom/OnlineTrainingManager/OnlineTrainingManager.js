@@ -92,6 +92,7 @@ class OnlineTrainingManager extends React.Component {
             hasAdd={true}
             baseURL={baseURL}
             isSetColumnWidth={false}
+            noWidthFields='C3_636485664255'
             advSearch={{
               formName:"defaultSearch"
             }

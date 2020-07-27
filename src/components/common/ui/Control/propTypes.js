@@ -44,5 +44,11 @@ export const propTypes = {
    * 基地址
    * 默认：-
    */
-  baseURL: PropTypes.string
+  baseURL: PropTypes.string,
+
+  /**
+   * 多媒体字段值（值为地址）的基地址
+   * 默认：-
+   */
+  mediaFieldBaseURL: PropTypes.string,
 };

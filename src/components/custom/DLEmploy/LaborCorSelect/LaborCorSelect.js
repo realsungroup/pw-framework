@@ -102,7 +102,7 @@ class LaborCorSelect extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           resid={620816140260}
-          subtractH={220}
+          subtractH={200}
           hasBeBtns={false}
           hasRowSelection={true}
           hasAdd={true}

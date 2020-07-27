@@ -5,7 +5,8 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok12.realsun.me:6060//', // 请求的基地址
+    baseURL: 'http://ngrok4.realsun.me:6060//', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -20,7 +21,7 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://ngrok5.realsun.me:6060/', //考勤审批
+      attendanceBaseURL: 'http://ngrok14.realsun.me:6060/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
@@ -40,8 +41,10 @@ window.pwConfig = {
       AchievementsBaseURL: 'http://ngrok12.realsun.me:6060/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://ngrok5.realsun.me:6060', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:6060', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://ngrok5.realsun.me:6060', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://ngrok10.realsun.me:6060', //80端口非定制组件下载基地址
+      WuxiHr03BaseURL: 'http://ngrok14.realsun.me:6060', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:6060', //80端口非定制组件下载基地址
+      staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
+      staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
     },
@@ -59,6 +62,12 @@ window.pwConfig = {
       员工绩效反馈历史: 558638569486,
       绩效评估表: 420130498195,
       myAssessment: 462400643808
+    },
+    trainingClubUploadConfig: {
+      mode: 'local',
+      bucketname: 'realsun',
+      url:
+        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -259,6 +268,12 @@ window.pwConfig = {
       员工绩效反馈历史: 558638569486,
       绩效评估表: 420130498195,
       myAssessment: 462400643808 //我的评估
+    },
+    trainingClubUploadConfig: {
+      mode: 'local',
+      bucketname: 'realsun',
+      url:
+        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [

@@ -34,7 +34,9 @@ class SelectPersonFirstP extends Component {
       return {
         C3_613656069698: e.C3_227192472953,
         C3_613656048223: 'Y',
-        C3_613735587559: this.props.record.C3_611070959393
+        C3_613735587559: this.props.record.C3_611070959393,
+        yearPlanNo: this.props.record.C3_611070959893,
+        location: this.props.record.C3_613838452660
       }
     })
     console.log(terminalPerpleList)

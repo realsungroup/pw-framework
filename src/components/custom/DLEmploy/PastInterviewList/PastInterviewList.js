@@ -82,7 +82,7 @@ class PastInterviewList extends React.Component {
               hasRowSelection: true,
               hasRowModify: true,
               hasRowView: true,
-              subtractH: 220,
+              subtractH: 190,
               actionBarWidth: 220,
               recordFormType: 'drawer',
               formProps: {
@@ -146,7 +146,7 @@ class PastInterviewList extends React.Component {
               hasRowDelete: true,
               hasRowModify: true,
               hasRowView: true,
-              subtractH: 220,
+              subtractH: 195,
               actionBarWidth: 220,
               formProps: {
                 height: 650

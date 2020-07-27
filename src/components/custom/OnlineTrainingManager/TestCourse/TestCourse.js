@@ -321,6 +321,7 @@ class TestCourse extends React.Component {
             hasAdd={false}
             baseURL={baseURL}
             actionBarWidth={150}
+            noWidthFields='C3_636484839104'
             hasRowModify={false}
             hasRowSelection={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}

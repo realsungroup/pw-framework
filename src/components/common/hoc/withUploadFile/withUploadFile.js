@@ -80,7 +80,7 @@ const withUploadFile = (options = {}) => {
         if (uploadConfig) {
           _uploadConfig = uploadConfig;
         } else {
-          _uploadConfig = window.pwConfig[process.env.NODE_ENV];
+          _uploadConfig = window.pwConfig[process.env.NODE_ENV].upload;
         }
         
         uploadFile(file, getUploadUrl(_uploadConfig, type, dblinkname), _uploadConfig.mode)

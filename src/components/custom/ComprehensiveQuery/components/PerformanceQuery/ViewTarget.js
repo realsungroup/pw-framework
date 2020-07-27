@@ -31,6 +31,7 @@ class ViewTarget extends React.Component {
             hasRowModify={false}
             hasRowSelection={true}
             actionBarWidth={100}
+            noWidthFields='C3_420297898057'
             dblinkname="ehr"
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}

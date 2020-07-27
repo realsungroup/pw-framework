@@ -275,7 +275,7 @@ var hrCode='623876215000';
     return (
       <div
         className="applay__information"
-        style={{ width:'100%',height: '90vh', overflow: 'scroll',background:'#fff',padding:'0' }}
+        style={{ width:'100%',height: 'auto', overflow: 'auto',background:'#fff',padding:'0' }}
       >
         <rect className='idlEx hidden' id='idlEx'>
           <Icon type="close-circle" style={{cursor:'pointer',position:'fixed',right:'32px',top:'16px'}} onClick={this.printClz}/>
