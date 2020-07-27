@@ -1579,7 +1579,9 @@ class ArchitectureDiagram extends React.Component {
   };
 
   handleDownload = () => {
-    window.open('http://10.108.2.66/rispweb/upfiles/transtem.xls');
+    window.open(
+      window.pwConfig[process.env.NODE_ENV].customURLs.importTemplateDownloadURL
+    );
   };
   // 导入
   handleImport = () => {

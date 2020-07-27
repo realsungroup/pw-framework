@@ -84,6 +84,10 @@ const getControlName = controlData => {
     case ControlCode.ImageForUrlCol: {
       return 'Image';
     }
+    // AutoComplete
+    case ControlCode.OptionDictionaryAutoComplete: {
+      return 'AutoComplete';
+    }
     // 没有使用控件
     default: {
       return 'Null';

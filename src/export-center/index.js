@@ -169,5 +169,6 @@ export {
   S1S2RecruitApply,
   StaffCommunicationRecord,
   StaffComplain,
+  ChartCommunication
 } from '../components/custom/loadableCustom';
 

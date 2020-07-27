@@ -1965,6 +1965,10 @@ window[618665452476] = {
   name: 'DLEmploy',
   title: '员工个人发展管理'
 };
+window[648315132714]={
+  name: 'ChartCommunication',
+  title: '员工沟通记录统计'
+};
 window[619954194724] = {
   name: 'IdpCard',
   title: '我的IDP',

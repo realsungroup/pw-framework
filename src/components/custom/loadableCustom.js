@@ -818,3 +818,9 @@ export const StaffComplain = Loadable({
     return minLoading;
   }
 });
+export const ChartCommunication = Loadable({
+  loader: () => import('./ChartCommunication'),
+  loading() {
+    return minLoading;
+  }
+});

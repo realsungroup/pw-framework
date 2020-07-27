@@ -10,6 +10,7 @@ import {
   message,
   Modal,
   Radio,
+  AutoComplete,
 } from 'antd';
 import DateTimePicker from '../DateTimePicker';
 import withAdvDicTable from '../../hoc/withAdvDicTable';
@@ -135,6 +136,22 @@ const getSelectViewValue = (value, controlData, props) => {
 
 const imageReg = /\.png|\.jpg|\.jpeg$/;
 
+
+const getAutoCompleteDataSource = (res, key) => {
+  let ret = [];
+  if (!res || !key) {
+    return ret;
+  }
+  if (res && Array.isArray(res.cmscolumninfo)) {
+    const item = res.cmscolumninfo.find(cmscolumninfoItem => cmscolumninfoItem.id === key);
+    if (item && item[key]) {
+      const obj = item[key];
+      ret = obj.DisplayOptions;
+    }
+  }
+  return ret;
+}
+
 /**
  * Control
  */
@@ -153,6 +170,7 @@ class Control extends React.Component {
       takePictureCancelText: '取消', // 可选值：'取消' | '重拍'
       mediaFieldValue: '', // 媒体字段值
       isMediaField: false, // 是否为多媒体字段
+      dataSource: [], // AutoComplete 的下拉选项
     };
   }
 
@@ -183,6 +201,31 @@ class Control extends React.Component {
         this.setState({ mediaFieldValue: '', isMediaField: true, });
       }
     }
+
+    if (name === 'AutoComplete') {
+      const resid = controlData.ColParam3;
+      const key = controlData.ColParam4;
+      if (!resid || !key) {
+        return;
+      }
+      // 请求下拉选项
+      let httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      let res;
+      try {
+        res = await http(httpParams).getTable({
+          resid,
+          getcolumninfo: 1,
+        })
+      } catch (err) {
+        return message.error(err.message);
+      }
+
+      const dataSource = getAutoCompleteDataSource(res, key);
+      this.setState({ dataSource });
+    }
   };
 
   componentWillUnmount = () => { };
@@ -194,12 +237,13 @@ class Control extends React.Component {
       nextState.takePictureVisible !== this.state.takePictureVisible ||
       nextState.takePictureStatus !== this.state.takePictureStatus ||
       nextState.isMediaField !== this.state.isMediaField ||
-      nextState.mediaFieldValue !== this.state.mediaFieldValue
+      nextState.mediaFieldValue !== this.state.mediaFieldValue ||
+      nextState.dataSource !== this.state.dataSource
     ) {
       return true;
     }
     return false;
-  };
+  };  
 
   retFilterFieldValues = innerFieldNames => {
     const { record } = this.props;
@@ -619,6 +663,18 @@ class Control extends React.Component {
               {...props}
             />
           );    
+        }
+        case 'AutoComplete': {
+          const { dataSource } = this.state;
+
+          return (
+            <AutoComplete
+              dataSource={dataSource}
+              value={value}
+              onChange={this.handleChange}
+              {...props}
+            />
+          );
         }
         case 'TextArea': {
           return (

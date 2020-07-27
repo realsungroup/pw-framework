@@ -1356,7 +1356,7 @@ var hrCode='623876215000';
      var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
 
-     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}.fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:31px;padding-bottom:31px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:56px!important;}.alter5{padding-top:22px;padding-bottom:23px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
+     var style="<style>.wrap div rect:last-child{border-bottom:none;}ul{padding:0}.hidden{display:none;}h4{margin:0}.wrap{background: #fff;width:842px}h3{text-align:center;margin-top:8px;width:842px;}img{width:120px}ul{list-style: none; overflow: hidden;width:100%;margin-top: 16px;}ul li{width:25%;float:left;overflow: hidden; }ul li b{display: block;float: left;width:50%;}ul li p{width: 50%;float: left;margin:0;} ul li span{font-weight: bold;}rect{display: block;width:842px;border-top:1px solid #000;border-left:1px solid #000;overflow: hidden;box-sizing:border-box;}cell{float:left;display: block;border-right:1px solid #000;padding:10px; min-height:38px;box-sizing: border-box;}cell b{width:100%;font-size: 12px;display: block;}cell:first-child{width:25%;}cell:last-child{width:75%;}input{margin-right:8px;}cell label{margin-right:16px;}cell:last-child b{width:auto;display:inline-block;}.fillText{width:104px;font-size: 12px;outline:none;border:none;border-bottom:1px solid #000;}.byline b{padding-top:5px;padding-bottom:5px;}.uniline{padding-top:16px;padding-bottom:19px;}.triSlice cell:nth-child(3){width:40%;height:38px;}.triSlice cell:nth-child(3) b{position:relative;top:-2px;}.triSlice cell:nth-child(2){width:35%;}.alter1 cell:first-child b{padding-top:10px;padding-bottom:11px;}.alter1 cell:nth-child(2){padding:0; width:35%;}.alter1 cell:nth-child(3){width:40%;padding:0;}.alter1 cell:nth-child(2) b,.alter1 cell:nth-child(3) b{padding:0;line-height:25px;border-bottom:1px solid #000;display:block;width:100%;text-indent:10px;}.alter1 cell b:last-child{border:none;}.alter2 cell:first-child{padding-top:23px;padding-bottom:23px;}.wholeLine{width:100%;padding:10px;border-right:1px solid #000;}textarea{width:100%;border:none;outline:none;height:31px!important;resize:none;}.alter3{padding-top:25px;padding-bottom:26px;}.alterFill{ margin-left: 8px;margin-right: 24px;}h4{text-align: center;}.alter4{padding-top:31px;padding-bottom:31px;}rect:last-child{ border-bottom:1px solid #000;}.GIC{height:68px!important;}.alter5{padding-top:22px; }.alter6 cell:nth-child(1) b{padding:0; } .alter6 cell:nth-child(2) b{ padding-top:15px;padding-bottom:16px;}.alter6 cell:nth-child(3){padding-top:15px; padding-bottom:16px;}.alter7 cell:nth-child(1) b{padding-top:23px;padding-bottom:24px;}</style>"
 
      var headstr = "<html><head><title></title>"+style+"</head><body>";
      document.body.innerHTML = headstr + newstr + footstr;
@@ -1439,7 +1439,104 @@ var hrCode='623876215000';
 
         </div>
         <div className='cls' style={{position:'fixed'}}onClick={()=>{
+            this.setState({
+              userChara:'',
+        data:[
+        ],
+        name:'',
+        position:'',
+        level:'',
+        hiringManger:'',
+        interviewer:'',
+        interviewName:'',
+        interviewer2:'',
+		secondRoundInterviewerName:'',
+        chara:'T1/T2/T3/T4',
+        eduOther:'',
+        graFrom:'',
+        workExp:'',
+        wkOther:'',
+        groupInter:'',
+        p4r:'',
+        hiOther:'',
+        secRound:'',
+        eduBack:'',
+        wkExp:'',
+        lanSki:'',
+        SRI:'',
+        GHB:'',
 
+        vIT:'',
+        vLA:'',
+        vCF:'',
+        vDR:'',
+
+        // T1
+        vTS:'',
+        vEA:'',
+        vTE:'',
+        vAO:'',
+        vPS:'',
+        vSd:'',
+        vLF:'',
+        // T5
+        vTS2:'',
+        vTO:'',
+        vTD:'',
+        vTE2:'',
+        vCr:'',
+        vSA:'',
+        vPrA:'',
+        // T6
+        vTS3:'',
+        vTO2:'',
+        vTC:'',
+        vTE3:'',
+        vDwA:'',
+        vIM:'',
+        vStrA:'',
+        //S5
+        vTS4:'',
+        vAO2:'',
+        vPS2:'',
+        vSd2:'',
+        vLF2:'',
+        //S6
+        vTS5:'',
+        vAO3:'',
+        vPS3:'',
+        vDO:'',
+        vCDR:'',
+        //S9
+        vTS6:'',
+        vDevO:'',
+        vPlan:'',
+        vOrg:'',
+        vPriS:'',
+        vMMW:'',
+        // S10
+        vTS7:'',
+        vvBET:'',
+        vPM:'',
+        vMoOt:'',
+        vCM:'',
+        //tech
+        vTS8:'',
+        vPreSk:'',
+        vProSol:'',
+        vPeRe:'',
+        vAcOr:'',
+        //Fresh
+        vTS9:'',
+        vcrea:'',
+        vPresentSkill:'',
+        vProblemSol:'',
+        vPeerRel:'',
+        vPersonaLe:'',
+        //复试
+        round2:false
+
+            })
             this.props.clsAss();
         }}>
           <Icon type="close-circle" />
