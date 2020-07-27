@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok12.realsun.me:6060//', // 请求的基地址
+    baseURL: 'http://ngrok12.realsun.me:7071//', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -21,28 +21,28 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://ngrok14.realsun.me:6060/', //考勤审批
+      attendanceBaseURL: 'http://ngrok14.realsun.me:7071/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
-      HeadCountBaseURL: 'http://ngrok5.realsun.me:6060/',
-      PostArchitectureBaseURL: 'http://ngrok5.realsun.me:6060//',
-      PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:6060//',
-      comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:6060/', //综合查询
+      HeadCountBaseURL: 'http://ngrok5.realsun.me:7071/',
+      PostArchitectureBaseURL: 'http://ngrok5.realsun.me:7071//',
+      PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:7071//',
+      comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:7071/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
-      headquartersBaseURL: 'http://ngrok4.realsun.me:6060', //总部工作流管理-总部工作流
-      headquartersDownloadURL: 'http://ngrok9.realsun.me:6060', //总部工作流管理-总部工作流下载URl
-      WzBaseURL: 'http://ngrok8.realsun.me:6060', //物资管理
-      WzDownloadURL: 'http://ngrok8.realsun.me:6060', //物资管理
+      headquartersBaseURL: 'http://ngrok4.realsun.me:7071', //总部工作流管理-总部工作流
+      headquartersDownloadURL: 'http://ngrok9.realsun.me:7071', //总部工作流管理-总部工作流下载URl
+      WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
+      WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL: 'http://ngrok12.realsun.me:6060/', //绩效定制页面基地址
-      RBASchedulingBaseURL: 'http://ngrok5.realsun.me:6060', //RBA排班基地址
-      RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:6060', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://ngrok14.realsun.me:6060', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:6060', //80端口非定制组件下载基地址
+      AchievementsBaseURL: 'http://ngrok12.realsun.me:7071/', //绩效定制页面基地址
+      RBASchedulingBaseURL: 'http://ngrok5.realsun.me:7071', //RBA排班基地址
+      RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:7071', //RBA排班下载基地址
+      WuxiHr03BaseURL: 'http://ngrok14.realsun.me:7071', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:7071', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
@@ -67,7 +67,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
+        'http://ngrok9.realsun.me:7071/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -165,11 +165,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://ngrok4.realsun.me:6060/'
+        baseurl: 'http://ngrok4.realsun.me:7071/'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://ngrok5.realsun.me:6060/'
+        baseurl: 'http://ngrok5.realsun.me:7071/'
       }
     ],
 
@@ -273,7 +273,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://ngrok9.realsun.me:6060/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:6060/rispweb/upfiles'
+        'http://ngrok9.realsun.me:7071/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -366,11 +366,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://ngrok4.realsun.me:6060'
+        baseurl: 'http://ngrok4.realsun.me:7071'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://ngrok5.realsun.me:6060'
+        baseurl: 'http://ngrok5.realsun.me:7071'
       }
     ],
 
