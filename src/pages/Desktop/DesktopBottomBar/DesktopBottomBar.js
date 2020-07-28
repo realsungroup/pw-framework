@@ -152,22 +152,22 @@ export default class DesktopBottomBar extends React.Component {
           <DesktopDate className="desktop-bottom-bar__date" />
 
           {/* 仪表盘 */}
-          <div
+          {/* <div
             className="desktop-bottom-bar__right-item"
             onClick={onOpenDashboard}
           >
             <Icon type="dashboard" />
-          </div>
+          </div> */}
 
           {/* 组织架构 */}
-          {orgChartConfig && (
+          {/* {orgChartConfig && (
             <div
               className="desktop-bottom-bar__right-item"
               onClick={onOpenOrgChart}
             >
               <Icon type="apartment" />
             </div>
-          )}
+          )} */}
 
           {/* 提醒 */}
           <div
