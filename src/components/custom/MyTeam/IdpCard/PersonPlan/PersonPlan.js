@@ -370,6 +370,9 @@ class PersonPlan extends React.Component {
   onAdd = type => {
     let SquareCardArr = this.state.SquareCardArr;
     let plans = this.state.plans;
+    if (!emptyAbility.find(item => item.name === '人员编号').value) {
+      return message.info('请稍后...');
+    }
     switch (type) {
       case 'ability':
         emptyAbility.map(item => {
@@ -835,7 +838,7 @@ class PersonPlan extends React.Component {
           if (item.name === '能力测评编号' || item.name === '是否优先发展') {
             return;
           }
-          if (!item.value ||!item.value.trim()) {
+          if (!item.value || !item.value.trim()) {
             throw new Error('请将能力测评内容填写完整');
           }
         });
@@ -848,8 +851,8 @@ class PersonPlan extends React.Component {
         plan.forEach(item => {
           if (item.name === '发展行动计划编号') {
             return;
-          }       
-          if (!item.value||!item.value.trim()) {
+          }
+          if (!item.value || !item.value.trim()) {
             throw new Error('请将职业能力发展计划内容填写完整');
           }
         });
@@ -1163,7 +1166,7 @@ class PersonPlan extends React.Component {
           }
           className="personPlan-contain-info"
           bordered={true}
-          bodyStyle={{width:'95%'}}
+          bodyStyle={{ width: '95%' }}
         >
           <div style={{ display: 'flex', padding: '20px', flexWrap: 'wrap' }}>
             {this.state.SquareCardArr.map((SquareCardArr, index) => {
