@@ -4,7 +4,6 @@ import {
   Modal,
   Button,
   message,
-  Tabs,
   Popconfirm,
   Input,
   Menu,
@@ -17,11 +16,7 @@ import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
 import http, { makeCancelable } from 'Util20/api';
 import download from 'downloadjs';
-import moment from 'moment';
-import DateTimePicker from '../../../../pages/components/DateTimePicker';
 
-
-const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
 const TextArea = Input.TextArea;
@@ -64,56 +59,62 @@ class StaffComplain extends React.Component {
     dataSource: [],
     selectedRowKeys: [],
     leaderProofRecord: [],
-    typeComplaint:[],
-    replyCondition:'全部',//负责人回复情况
-    complainType:'全部',//投诉类型
-    isAms:'全部',//是否实名
-    beginTime:'',//开始时间
-    endTime:'',//结束时间
-    cmswhere:''
+    typeComplaint: [],
+    replyCondition: '全部', //负责人回复情况
+    complainType: '全部', //投诉类型
+    isAms: '全部', //是否实名
+    beginTime: '', //开始时间
+    endTime: '', //结束时间
+    cmswhere: '',
+    targetInfo: {},
+    noticeLoading: false,
+    markReadLoading: false,
+    isBatchReply: false,
+    selectedRecords: [],
+    selectedProofs: []
   };
 
-  componentDidMount = () =>{
-    this.getColumnData()
-  }
+  componentDidMount = () => {
+    this.getColumnData();
+  };
 
-  getColumnData = async() =>{
+  getColumnData = async () => {
     let res;
     let type = [];
-    try{
-      res = await http({baseURL:this.baseURL}).getTableColumnDefine({
-        resid:'648050843809'
-      })
-          res.data.forEach(col =>{
-           if(col.ColName == "typeComplaint"){
-             for(let i = 0;i < col.DisplayOptions.length;i++){
-              if(col.DisplayOptions[i]){
-                type.push(col.DisplayOptions[i])
-               }
-             }
-           }
-          })
+    try {
+      res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
+        resid: '648050843809'
+      });
+      res.data.forEach(col => {
+        if (col.ColName == 'typeComplaint') {
+          for (let i = 0; i < col.DisplayOptions.length; i++) {
+            if (col.DisplayOptions[i]) {
+              type.push(col.DisplayOptions[i]);
+            }
+          }
+        }
+      });
       this.setState({
-        typeComplaint:type
-      })
-    }catch(error){
-      message.error(error.message)
+        typeComplaint: type
+      });
+    } catch (error) {
+      message.error(error.message);
     }
-  }
+  };
   onSelect = e => {
     this.setState({
       selectKey: e.key
     });
-    console.log(this.state.selectKey)
   };
-
- 
 
   viewRecord = async record => {
     this.setState({
       showRecord: true,
       loading: true
     });
+    if (record.status === '未阅读') {
+      await this.markRead(record);
+    }
     let res;
     let img = [],
       audio = [],
@@ -148,28 +149,13 @@ class StaffComplain extends React.Component {
         resid: '609599795438',
         cmswhere: `C3_227192472953 = '${record.targetID}'`
       });
-     if(userInfo.data[0]){
-      user1Info:{}
-     }
-      
+      if (userInfo.data.length) {
+        this.setState({ targetInfo: userInfo.data[0] });
+      }
     } catch (error) {
       message.error(error.message);
     }
-    
-    let leaderNotice;
-    let leaderData = {
-      leaderId:userInfo.C3_429966115761,
-      leaderName:userInfo.C3_417993433650,
-      isSend:"Y"
-    }
-    try{
-      leaderNotice = await http().addRecords({
-          resid:'648849344996',
-          data:leaderData
-      })
-    }catch(error){
-      console.log(error.message)
-    }
+
     //获取主管证据表的的记录
     let resD;
     try {
@@ -177,7 +163,6 @@ class StaffComplain extends React.Component {
         resid: '648055005558',
         cmswhere: `recordID = ${record.recordID}`
       });
-      console.log('resD', resD);
       resD.data.forEach(item => {
         if (item.mediaType == '图片') {
           imgD.push(item);
@@ -202,8 +187,45 @@ class StaffComplain extends React.Component {
       depInfoRecord: userInfo.data[0],
       loading: false
     });
+  };
 
-    console.log('depInfoRecord', this.state.depInfoRecord);
+  markRead = async record => {
+    try {
+      http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: [{ REC_ID: record.REC_ID, status: '已阅读', renew: 'Y' }]
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  noticeLeader = async () => {
+    const { targetInfo, selectRecord } = this.state;
+    let leaderNotice;
+    let leaderData = {
+      leaderId: targetInfo.C3_429966115761,
+      leaderName: targetInfo.C3_417993433650,
+      isSend: 'Y'
+    };
+    try {
+      this.setState({ noticeLoading: true });
+      leaderNotice = await http().addRecords({
+        resid: '648849344996',
+        data: [leaderData]
+      });
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: [{ REC_ID: selectRecord.REC_ID, mailed: 'Y' }]
+      });
+      message.success('已通知部门负责人');
+      this.setState({ showRecord: false });
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      console.log(error);
+      message.error(error.messsage);
+    }
+    this.setState({ noticeLoading: false });
   };
 
   onCancelText = () => {
@@ -224,65 +246,72 @@ class StaffComplain extends React.Component {
   // }
   //648756387329
 
-  reply = (dataSource, selectedRowKeys) => {
+  reply = selectedRecords => {
     this.setState({
       replyTextModal: true,
-      dataSource: dataSource,
-      selectedRowKeys: selectedRowKeys
+      selectedProofs: selectedRecords
     });
   };
 
   submitReply = async () => {
-    console.log(this.state.selectRecord);
-    const { dataSource, selectedRowKeys } = this.state;
-    let now;
-    let addData = [];
-    now = new Date().getTime();
-    dataSource.map(item => {
-      if (selectedRowKeys.includes(item.REC_ID)) {
-        addData.push({ ...item, replyID: now });
-      }
+    const { selectedProofs, isBatchReply, selectedRecords } = this.state;
+    const now = new Date().getTime();
+    const addData = selectedProofs.map(item => {
+      return { ...item, replyID: now };
     });
-    let res;
     try {
-      res = await http({ baseURL: this.baseURL }).addRecords({
+      await http({ baseURL: this.baseURL }).addRecords({
         resid: '648756387329',
         data: addData
       });
-      try {
-        res = await http({ baseURL: this.baseURL }).modifyRecords({
-          resid,
-          data: [
+      const data = isBatchReply
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            replyID: now,
+            replication: this.state.replyContent,
+            replicationHR: 'Y'
+          }))
+        : [
             {
               REC_ID: this.state.selectRecord.recordID,
               replyID: now,
-              replication: this.state.replyContent
+              replication: this.state.replyContent,
+              replicationHR: 'Y'
             }
-          ]
-        });
-        message.success('回复成功');
-        this.setState({
-          proofListModal: false,
-          replyTextModal: false
-        });
-      } catch (error) {
-        message.error(error.message);
-      }
+          ];
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data
+      });
+      message.success('回复成功');
+      this.setState({
+        proofListModal: false,
+        replyTextModal: false,
+        showRecord: false,
+        selectedRecords: [],
+        selectedProofs: [],
+        isBatchReply: false
+      });
+      this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
     }
   };
 
   openProofList = record => {
-    console.log(record);
     this.setState({
       proofListModal: true,
-      selectRecord: record
+      selectRecord: record,
+      isBatchReply: false,
+      showRecord: false
     });
   };
+
   closeProofList = () => {
     this.setState({
-      proofListModal: false
+      proofListModal: false,
+      isBatchReply: false,
+      selectedProofs: []
     });
   };
 
@@ -367,12 +396,12 @@ class StaffComplain extends React.Component {
   openProof = record => {
     this.setState({
       proofModal: true,
-      leaderProofRecord:record
+      leaderProofRecord: record
     });
   };
   cancelProof = () => {
     this.setState({
-      proofModal: false,
+      proofModal: false
     });
   };
   cancelModal = () => {
@@ -380,181 +409,310 @@ class StaffComplain extends React.Component {
       showRecord: false
     });
   };
-  leaderChange = (value)=>{
-      this.setState({
-        replyCondition:value
-      })
-  }
-  typeChange = (value) =>{
+  leaderChange = value => {
     this.setState({
-      complainType:value
-    })
-  }
-  isRealChange =(value) =>{
+      replyCondition: value
+    });
+  };
+  typeChange = value => {
     this.setState({
-      isAms:value
-    })
-
-  }
-  timeChange = (value) =>{
-    console.log(value)
-    if(value.length){
+      complainType: value
+    });
+  };
+  isRealChange = value => {
+    this.setState({
+      isAms: value
+    });
+  };
+  timeChange = value => {
+    if (value.length) {
       this.setState({
-        beginTime:value[0].format("YYYY-MM-DD HH:mm:ss"),
-        endTime:value[1].format("YYYY-MM-DD HH:mm:ss")
-      })
-    }else{
+        beginTime: value[0].format('YYYY-MM-DD HH:mm:ss'),
+        endTime: value[1].format('YYYY-MM-DD HH:mm:ss')
+      });
+    } else {
       this.setState({
-        beginTime:'',
-        endTime:''
-      })
+        beginTime: '',
+        endTime: ''
+      });
     }
-  }
+  };
 
   SearchData = () => {
-    //typeComplaint 
+    //typeComplaint
     let cmsWhere = '';
-    
-    if(this.state.replyCondition !== '全部'){
-      cmsWhere = `leaderRep = '${this.state.replyCondition}'`
+
+    if (this.state.replyCondition !== '全部') {
+      cmsWhere = `leaderRep = '${this.state.replyCondition}'`;
     }
-    if(this.state.complainType !== '全部'){
-      cmsWhere += `${cmsWhere ?' and ':''}typeComplaint = '${this.state.complainType}' `
+    if (this.state.complainType !== '全部') {
+      cmsWhere += `${cmsWhere ? ' and ' : ''}typeComplaint = '${
+        this.state.complainType
+      }' `;
     }
-    if(this.state.isAms !== '全部'){
-      cmsWhere += `${cmsWhere?' and ':''}signed = '${this.state.isAms}' `
+    if (this.state.isAms !== '全部') {
+      cmsWhere += `${cmsWhere ? ' and ' : ''}signed = '${this.state.isAms}' `;
     }
-    if(this.state.beginTime !== ''){
-      cmsWhere += `${cmsWhere?' and ':''}REC_CRTTIME > '${this.state.beginTime}' and REC_CRTTIME < '${this.state.endTime}'`
+    if (this.state.beginTime !== '') {
+      cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
+        this.state.beginTime
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
-    console.log("cmsWhere",cmsWhere)
+    console.log('cmsWhere', cmsWhere);
     this.setState({
-      cmswhere:cmsWhere
-    })
+      cmswhere: cmsWhere
+    });
     // cmsWhere = `${this.state.replyCondition?`typeComplaint ='${replyCondition}'`:null} and ${this.state.complainType}`
   };
 
-  renderContentBody =(resid,hasButton) =>{
-    const {selectKey,typeComplaint ,cmswhere} = this.state;
-    return(
+  noticeLeaders = selectedRecords => async () => {
+    if (!selectedRecords.length) {
+      return message.info('请选择记录');
+    }
+    let idArr = selectedRecords.map(item => item.targetID);
+    const ids = idArr.join(',');
+    try {
+      this.setState({ noticeLoading: true });
+      const res = await http().getTable({
+        resid: '609599795438',
+        cmswhere: `C3_227192472953 in (${ids})`
+      });
+      this.setState({ noticeLoading: true });
+      const leaderData = res.data.map(item => ({
+        leaderId: item.C3_429966115761,
+        leaderName: item.C3_417993433650,
+        isSend: 'Y'
+      }));
+      await http().addRecords({
+        resid: '648849344996',
+        data: leaderData
+      });
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: selectedRecords.map(item => ({
+          ...item,
+          mailed: 'Y'
+        }))
+      });
+      this.tableDataRef.handleRefresh();
+      message.success('已通知部门负责人');
+    } catch (error) {
+      message.error(error.message);
+    }
+    this.setState({ noticeLoading: false });
+  };
+  markAllRead = selectedRecords => async () => {
+    if (!selectedRecords.length) {
+      return message.info('请选择记录');
+    }
+    selectedRecords.forEach(item => {
+      item.status = '已阅读';
+    });
+    try {
+      this.setState({ markReadLoading: true });
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: selectedRecords,
+        renew: 'Y'
+      });
+      this.tableDataRef.handleRefresh();
+      message.success('操作成功');
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+    this.setState({
+      markReadLoading: false
+    });
+  };
+  renderContentBody = (resid, hasButton) => {
+    const {
+      typeComplaint,
+      cmswhere,
+      markReadLoading,
+      noticeLoading,
+      selectKey
+    } = this.state;
+    return (
       <div>
-      <div className="staff-contain_menu">
-        <div className="staff-contain_menu_headerMenu">
-          <span>负责人已回复:</span>
-          <Select
-            defaultValue="全部"
-            style={{ width: 100, height: 24, marginLeft: 3 }}
-            onChange = {this.leaderChange}
+        <div className="staff-contain_menu">
+          <div className="staff-contain_menu_headerMenu">
+            <span>负责人已回复:</span>
+            <Select
+              size="small"
+              defaultValue="全部"
+              style={{ width: 100, height: 24, marginLeft: 3 }}
+              onChange={this.leaderChange}
+            >
+              <Option value="全部">全部</Option>
+              <Option value="N">未回复</Option>
+              <Option value="Y">已回复</Option>
+            </Select>
+          </div>
+          <div className="staff-contain_menu_headerMenu">
+            <span>投诉类型:</span>
+            <Select
+              defaultValue="全部"
+              style={{ width: 200, height: 24, marginLeft: 3 }}
+              onChange={this.typeChange}
+              size="small"
+            >
+              <Option value="全部">全部</Option>
+              {typeComplaint.length
+                ? typeComplaint.map((item, index) => {
+                    return <Option value={item}>{item}</Option>;
+                  })
+                : null}
+            </Select>
+          </div>
+          <div className="staff-contain_menu_headerMenu">
+            <span>是否实名:</span>
+            <Select
+              defaultValue="全部"
+              size="small"
+              style={{ width: 80, height: 24, marginLeft: 3 }}
+              onChange={this.isRealChange}
+            >
+              <Option value="全部">全部</Option>
+              <Option value="Y">是</Option>
+              <Option value="N">否</Option>
+            </Select>
+          </div>
+          <div className="staff-contain_menu_headerMenu">
+            <span>时间起止:</span>
+            <RangePicker
+              size="small"
+              style={{ marginLeft: 5 }}
+              onChange={this.timeChange}
+              showTime={{ format: 'HH:mm:ss' }}
+              format="YYYY-MM-DD HH:mm:ss"
+            />
+          </div>
+          <Button
+            size="small"
+            type="primary"
+            onClick={this.SearchData}
+            className="staff-contain_menu_headerMenu"
           >
-            <Option value="全部">全部</Option>
-            <Option value="N">未回复</Option>
-            <Option value="Y">已回复</Option>
-          </Select>
+            <Icon type="search"></Icon>
+            搜索
+          </Button>
         </div>
-        <div className="staff-contain_menu_headerMenu">
-          <span>投诉类型:</span>
-          <Select
-            defaultValue="全部"
-            style={{ width: 200, height: 24, marginLeft: 3 }}
-            onChange = {this.typeChange}
-          >
-            <Option value="全部">全部</Option>
-            {typeComplaint.length?typeComplaint.map((item,index)=>{
-             return(<Option value = {item}>{item}</Option>) 
-            }):null}
-          </Select>
-        </div>
-        <div className="staff-contain_menu_headerMenu">
-          <span>是否实名:</span>
-          <Select
-            defaultValue="全部"
-            style={{ width: 80, height: 24, marginLeft: 3 }}
-            onChange = {this.isRealChange}
-          >
-            <Option value="全部">全部</Option>
-            <Option value="Y">是</Option>
-            <Option value="N">否</Option>
-          </Select>
-        </div>
-        <div className="staff-contain_menu_headerMenu">
-          <span>时间起止:</span>
-          <RangePicker 
-          style={{ marginLeft: 5 }} 
-          onChange = {this.timeChange}
-          showTime={{ format: 'HH:mm:ss' }}
-          format="YYYY-MM-DD HH:mm:ss"
+        <div style={{ height: 570 }}>
+          <TableData
+            baseURL={this.baseURL}
+            resid={resid}
+            key={resid}
+            wrappedComponentRef={element => (this.tableDataRef = element)}
+            refTargetComponentName="TableData"
+            hasAdd={false}
+            hasBeBtns={false}
+            hasModify={false}
+            hasBackBtn={false}
+            hasDelete={false}
+            hasRowModify={false}
+            hasRowSelection={true}
+            hasRowView={false}
+            hasRowDelete={false}
+            subtractH={200}
+            cmswhere={cmswhere}
+            actionBarWidth={200}
+            actionBarExtra={({
+              dataSource = [],
+              selectedRowKeys = [],
+              data = [],
+              recordFormData,
+              size
+            }) => {
+              const selectedRecords = selectedRowKeys.map(key => {
+                return dataSource.find(item => item.REC_ID === key);
+              });
+              return (
+                <div>
+                  {selectKey === '1' && (
+                    <>
+                      <Popconfirm
+                        title="确认通知负责人吗？"
+                        onConfirm={this.noticeLeaders(selectedRecords)}
+                      >
+                        <Button size="small" loading={noticeLoading}>
+                          通知负责人
+                        </Button>
+                      </Popconfirm>
+                      <Popconfirm
+                        title="确认标记已阅读吗？"
+                        onConfirm={this.markAllRead(selectedRecords)}
+                      >
+                        <Button size="small" loading={markReadLoading}>
+                          标记为已阅读
+                        </Button>
+                      </Popconfirm>
+                    </>
+                  )}
+                  {(selectKey === '1' || selectKey === '2') && (
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        if (!selectedRecords.length) {
+                          return message.info('请选择记录');
+                        }
+                        this.setState({
+                          selectedRecords,
+                          isBatchReply: true,
+                          proofListModal: true
+                        });
+                      }}
+                    >
+                      批量回复
+                    </Button>
+                  )}
+                </div>
+              );
+            }}
+            customRowBtns={[
+              record => {
+                return (
+                  <Button
+                    onClick={() => {
+                      this.viewRecord(record);
+                    }}
+                  >
+                    查看
+                  </Button>
+                );
+              },
+              hasButton &&
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.openProofList(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
+            ]}
           />
         </div>
-        <Button
-          type="primary"
-          onClick={this.SearchData}
-          className="staff-contain_menu_headerMenu"
-        >
-          <Icon type="search"></Icon>
-          搜索
-        </Button>
       </div>
-      <div style={{ height: 570 }}>
-        <TableData
-          baseURL={this.baseURL}
-          resid={resid}
-          hasAdd={false}
-          hasBeBtns={false}
-          hasModify={false}
-          hasBackBtn={false}
-          hasDelete={false}
-          hasRowModify={false}
-          hasRowSelection={true}
-          hasRowView={false}
-          hasRowDelete={false}
-          subtractH={200}
-          cmswhere={cmswhere}
-          actionBarWidth={200}
-          customRowBtns={[
-            record => {
-              return (
-                <Button
-                  onClick={() => {
-                    this.viewRecord(record);
-                  }}
-                >
-                  查看
-                </Button>
-              );
-            },
-            hasButton&&(record => {
-              return (
-                <Button
-                  onClick={() => {
-                    this.openProofList(record);
-                  }}
-                >
-                  回复
-                </Button>
-              );
-            })
-          ]}
-        />
-      </div>
-    </div>
-    )
-  }
+    );
+  };
   renderContent = () => {
-    const {selectKey,typeComplaint ,cmswhere} = this.state;
+    const { selectKey } = this.state;
     switch (selectKey) {
       case '1':
-        return this.renderContentBody(residNo,false);
-        break;
-        case '2':
-        return this.renderContentBody(residIng,true);
-        break;
-        case '3':
-          return this.renderContentBody(residEd,false);
-        case '4':
-          return this.renderContentBody(residCancel,false);
-        case '5':
-          return this.renderContentBody(residall,false);
-
+        return this.renderContentBody(residNo, false);
+      case '2':
+        return this.renderContentBody(residIng, true);
+      case '3':
+        return this.renderContentBody(residEd, false);
+      case '4':
+        return this.renderContentBody(residCancel, false);
+      case '5':
+        return this.renderContentBody(residall, false);
+      default:
     }
   };
   render() {
@@ -568,7 +726,9 @@ class StaffComplain extends React.Component {
       dAudioProof,
       dVideoProof,
       depInfoRecord,
-      leaderProofRecord
+      leaderProofRecord,
+      noticeLoading,
+      isBatchReply
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -611,9 +771,10 @@ class StaffComplain extends React.Component {
           visible={this.state.showRecord}
           width={777}
           style={{ height: 'auto' }}
-          title={'记录编号:'+ selectRecord.recordID}
+          title={'记录编号:' + selectRecord.recordID}
           onCancel={this.cancelModal}
           destroyOnClose={true}
+          footer={null}
         >
           <Spin spinning={this.state.loading}>
             <div className="modalContainer">
@@ -621,7 +782,7 @@ class StaffComplain extends React.Component {
               <div className="recordInfo">
                 <div>姓名：{selectRecord.name}</div>
                 <div>是否实名：{selectRecord.signed}</div>
-                <div>工号：{selectRecord.id}</div>
+                <div>工号：{selectRecord.jobId}</div>
                 <div>联系方式：{selectRecord.phone}</div>
                 <div>投诉类型：{selectRecord.typeComplaint}</div>
                 <div>
@@ -647,7 +808,6 @@ class StaffComplain extends React.Component {
                   audioProof.map((item, index) => {
                     return (
                       <div className="audioProof">
-                        {' '}
                         <span>{index + 1}.</span>
                         <audio controls autoPlay={false}>
                           <source src={item.fileURL}></source>
@@ -675,8 +835,8 @@ class StaffComplain extends React.Component {
                           controls
                           src={item.fileURL}
                           autoPlay={false}
-                          style = {{width:'25%'}}
-                        ></video>
+                          style={{ width: '50%' }}
+                        />
                         <img
                           src={downloadImg}
                           onClick={() => {
@@ -693,11 +853,25 @@ class StaffComplain extends React.Component {
               <hr />
               <p>负责部门信息</p>
               <div className="depInfo">
-                <span>部门:{depInfoRecord.C3_422840508142?depInfoRecord.C3_422840508142:''}</span>
-                <span>部门英文名:{depInfoRecord.C3_422840463535?depInfoRecord.C3_422840463535:''}</span>
-                <span>部门负责人:{depInfoRecord.C3_417993433650?depInfoRecord.C3_417993433650:''}</span>
-                <span>部门负责人英文名:{depInfoRecord.C3_417993433650?depInfoRecord.C3_417993433650:''}</span>
-                <span>部门负责人工号:{depInfoRecord.C3_429966115761?depInfoRecord.C3_429966115761:''}</span>
+                <span>
+                  部门:{depInfoRecord && depInfoRecord.C3_422840508142}
+                </span>
+                <span>
+                  部门英文名:
+                  {depInfoRecord && depInfoRecord.C3_422840463535}
+                </span>
+                <span>
+                  部门负责人:
+                  {depInfoRecord && depInfoRecord.C3_417993433650}
+                </span>
+                <span>
+                  部门负责人英文名:
+                  {depInfoRecord && depInfoRecord.C3_417993433650}
+                </span>
+                <span>
+                  部门负责人工号:
+                  {depInfoRecord && depInfoRecord.C3_429966115761}
+                </span>
                 <span>回复时间：{selectRecord.leaderReplyTime}</span>
               </div>
               <p>回复：{selectRecord.leaderReplyContent}</p>
@@ -705,8 +879,7 @@ class StaffComplain extends React.Component {
                 <p>图片证据：</p>
                 {dImgProofRecord.length ? (
                   dImgProofRecord.map(item => {
-                    console.log('img', item);
-                    return <img src={item.fileURL}></img>;
+                    return <img src={item.fileURL} />;
                   })
                 ) : (
                   <span>暂无图片</span>
@@ -718,15 +891,11 @@ class StaffComplain extends React.Component {
                   dAudioProof.map((item, index) => {
                     return (
                       <div className="audioProof">
-                        {' '}
                         <span>{index + 1}</span>
                         <audio controls autoPlay={false}>
                           <source src={item.fileURL}></source>
                         </audio>
-                        <img
-                          src={downloadImg}
-                          onClick={this.downloadAudio}
-                        ></img>
+                        <img src={downloadImg} onClick={this.downloadAudio} />
                       </div>
                     );
                   })
@@ -743,7 +912,8 @@ class StaffComplain extends React.Component {
                         controls
                         src={item.fileURL}
                         autoPlay={false}
-                      ></video>
+                        style={{ width: '50%' }}
+                      />
                     );
                   })
                 ) : (
@@ -751,14 +921,29 @@ class StaffComplain extends React.Component {
                 )}
               </div>
               <hr />
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.openProofList(this.state.selectRecord);
-                }}
-              >
-                回复
-              </Button>
+              {selectKey === '1' && (
+                <Popconfirm
+                  title="确认通知部门负责人？"
+                  onConfirm={this.noticeLeader}
+                >
+                  <Button
+                    type="primary"
+                    style={{ marginRight: 8 }}
+                    loading={noticeLoading}
+                  >
+                    通知部门负责人
+                  </Button>
+                </Popconfirm>
+              )}
+              {(selectKey === '1' || selectKey === '2') && (
+                <Button
+                  onClick={() => {
+                    this.openProofList(this.state.selectRecord);
+                  }}
+                >
+                  回复
+                </Button>
+              )}
             </div>
           </Spin>
         </Modal>
@@ -769,6 +954,7 @@ class StaffComplain extends React.Component {
           onCancel={this.closeProofList}
           onOk={this.closeProofList}
           destroyOnClose={true}
+          footer={null}
         >
           <div style={{ width: '100%', height: 570 }}>
             <TableData
@@ -784,7 +970,11 @@ class StaffComplain extends React.Component {
               hasRowView={false}
               hasRowDelete={false}
               subtractH={200}
-              cmswhere={`recordID = '${this.state.selectRecord.recordID}'`}
+              cmswhere={
+                isBatchReply
+                  ? ''
+                  : `recordID = '${this.state.selectRecord.recordID}'`
+              }
               customRowBtns={[
                 record => {
                   return (
@@ -799,10 +989,13 @@ class StaffComplain extends React.Component {
                 }
               ]}
               actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                const selectedRecords = selectedRowKeys.map(key => {
+                  return dataSource.find(item => item.REC_ID === key);
+                });
                 return (
                   <Button
                     onClick={() => {
-                      this.reply(dataSource, selectedRowKeys);
+                      this.reply(selectedRecords);
                     }}
                   >
                     回复
@@ -812,26 +1005,22 @@ class StaffComplain extends React.Component {
             />
           </div>
         </Modal>
-
         <Modal
           visible={this.state.proofModal}
           title="证据详情"
-          onCancel= {this.cancelProof}
+          onCancel={this.cancelProof}
           destroyOnClose={true}
           width={600}
           height={500}
+          footer={null}
         >
-          <p>已选人员</p>
-          <span>
-            {selectRecord.name}-{selectRecord.id}
-          </span>
-          {leaderProofRecord.mediaType == '图片' ? (
+          {leaderProofRecord.mediaType == '图片' && (
             <div className="picProof">
               <p>图片证据：</p>
               <img src={leaderProofRecord.fileURL}></img>
             </div>
-          ) : null}
-          {leaderProofRecord.mediaType == '音频' ? (
+          )}
+          {leaderProofRecord.mediaType == '音频' && (
             <div className="audioProofs">
               <p>音频证据：</p>
               <div className="audioProof">
@@ -839,24 +1028,29 @@ class StaffComplain extends React.Component {
                   <source src={leaderProofRecord.fileURL}></source>
                 </audio>
                 <img
-                    src={downloadImg}
-                    onClick={this.downloadFile}
-                    alt = '点击下载证据文件'
-                    ></img>
+                  src={downloadImg}
+                  onClick={this.downloadFile}
+                  alt="点击下载证据文件"
+                ></img>
               </div>
             </div>
-          ) : null}
-          {leaderProofRecord.mediaType == '视频' ? (
+          )}
+          {leaderProofRecord.mediaType == '视频' && (
             <div className="videoProof">
               <p>视频证据：</p>
-              <video controls src={leaderProofRecord.fileURL} autoPlay={false} style = {{width:'50%'}}></video>
+              <video
+                controls
+                src={leaderProofRecord.fileURL}
+                autoPlay={false}
+                style={{ width: '100%' }}
+              ></video>
               <img
-                    src={downloadImg}
-                    onClick={this.downloadFile}
-                    alt = '点击下载证据文件'
-                    ></img>
+                src={downloadImg}
+                onClick={this.downloadFile}
+                alt="点击下载证据文件"
+              ></img>
             </div>
-          ) : null}
+          )}
         </Modal>
         <Modal
           title="回复内容"
