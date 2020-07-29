@@ -255,6 +255,7 @@ class Control extends React.Component {
     const { dataItem, value, mode } = this.props;
     const name = dataItem.name;
     const props = dataItem.props;
+    const disabled = !!(dataItem.controlData.FrmReadonly || dataItem.controlData.ColIsReadOnly);
 
     if (mode === 'view') {
       switch (name) {
@@ -297,6 +298,7 @@ class Control extends React.Component {
               value={value}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              disabled={disabled}
             />
           );
         }
@@ -306,6 +308,7 @@ class Control extends React.Component {
               value={value}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              disabled={disabled}
             />
           );
         }
@@ -315,12 +318,13 @@ class Control extends React.Component {
               onChange={this.handleChange}
               onSearch={this.handleSearch}
               onBlur={this.handleBeforeSave}
+              disabled={disabled}
             />
           );
         }
         case 'DatePicker': {
           const valueProp = getDatePickerValueProp(value);
-          return <DatePicker {...valueProp} onChange={this.handleChange} />;
+          return <DatePicker {...valueProp} onChange={this.handleChange} disabled={disabled} />;
         }
         case 'DateTimePicker': {
           const valueProp = getDatePickerValueProp(value);
@@ -329,19 +333,20 @@ class Control extends React.Component {
               {...valueProp}
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
+              disabled={disabled}
             />
           );
         }
         case 'Checkbox': {
           const checked = getCheckboxChecked(value);
-          return <Checkbox checked={checked} onChange={this.handleChange} />;
+          return <Checkbox checked={checked} onChange={this.handleChange} disabled={disabled} />;
         }
         case 'Select': {
           const { options } = props;
           const newValue = getSelectValue(value, props);
 
           return (
-            <Select value={newValue} onChange={this.handleChange} {...props}>
+            <Select value={newValue} onChange={this.handleChange} {...props} disabled={disabled}>
               {options.map(option => (
                 <Option key={option.value} value={option.value}>
                   {option.label}
@@ -358,6 +363,7 @@ class Control extends React.Component {
               fileList={fileList}
               customRequest={this.handleUploadFile}
               onRemove={this.handleRemoveFile}
+              disabled={disabled}
             >
               <Button>
                 <Icon type="upload" /> 上传
