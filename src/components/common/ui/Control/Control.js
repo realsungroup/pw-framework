@@ -36,7 +36,7 @@ const getDatePickerValueProp = value => {
   return value ? { value: moment(value) } : null;
 };
 
-const trueValues = ['Y'];
+const trueValues = ['Y', '1'];
 // const falseValues = ['', undefined, null, 'N'];
 const getCheckboxChecked = value => {
   if (typeof value === 'boolean') {
@@ -302,6 +302,19 @@ class Control extends React.Component {
     }
     showAdvDicTable(baseURL, form, dataItem, advDicTableProps, this.handleBeforeSave);
   };
+
+  handleCheckboxChange = (e) => {
+    const { dataItem } = this.props;
+    const controlData = dataItem.controlData;
+    if (controlData) {
+      const trueValue = controlData.ColParam3;
+      if (e.target.checked) {
+        this.handleChange(trueValue);
+      } else {
+        this.handleChange('');
+      }
+    }
+  }
 
   /**
    * 控件值发生改变的回调
@@ -720,7 +733,7 @@ class Control extends React.Component {
         }
         case 'Checkbox': {
           const checked = getCheckboxChecked(value);
-          return <Checkbox checked={checked} onChange={this.handleChange} />;
+          return <Checkbox checked={checked} onChange={this.handleCheckboxChange} />;
         }
         case 'Select': {
           const { options } = props;
