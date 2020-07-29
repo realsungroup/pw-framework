@@ -75,7 +75,6 @@ class Desktop extends React.Component {
       zIndexActiveApps: [], // 被激活的 app 的层级
       reminderList: [], // 提醒列表
       reminderListVisible: false, // 提醒列表是否显示
-      reminderListLoading: false, // 提醒列表是否显示
       language: localStorage.getItem('language'), // 语言
       modifyPassModalVisible: false, // 修改密码的模态窗
       selectedBg, // 背景图片地址
@@ -111,15 +110,6 @@ class Desktop extends React.Component {
 
   getDesktopLockScreenRef = node => {
     this.desktopLockScreenRef = node;
-  };
-
-  handleDesktopClick = () => {
-    if (this.state.menuVisible) {
-      this.setState({ menuVisible: false });
-    }
-    if (this.state.reminderListVisible) {
-      this.setState({ reminderListVisible: false });
-    }
   };
 
   handleCloseModifyPassModal = () => {
@@ -201,11 +191,6 @@ class Desktop extends React.Component {
     });
   };
 
-  handleLogoClick = e => {
-    e.stopPropagation();
-    this.setState({ menuVisible: !this.state.menuVisible });
-  };
-
   handleSearchFocus = e => {
     e.stopPropagation();
     this.setState({ menuVisible: true });
@@ -249,17 +234,6 @@ class Desktop extends React.Component {
 
   lockScreen = () => {
     this.desktopLockScreenRef.lockScreenRef.lockScreen();
-  };
-
-  handleOpenReminderList = () => {
-    const reminderListVisible = !this.state.reminderListVisible;
-    this.setState({ reminderListVisible });
-    // 已请求过了提醒列表数据
-    if (this.hasRequestReminderList) {
-      return;
-    }
-
-    this.getReminderData();
   };
 
   handleOpenOrgChart = () => {
@@ -516,21 +490,6 @@ class Desktop extends React.Component {
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       localStorage.setItem('language', language);
     }
-  };
-
-  getReminderData = async () => {
-    this.setState({ reminderListLoading: true, reminderListVisible: true });
-    let res;
-    try {
-      res = await http().getReminderData();
-    } catch (err) {
-      this.setState({ reminderListLoading: false });
-      console.error(err);
-      return message.error(err.message);
-    }
-    const list = [...res.data];
-    this.setState({ reminderList: list, reminderListLoading: false });
-    this.hasRequestReminderList = true;
   };
 
   addAppToDesktop = async appData => {
@@ -848,16 +807,9 @@ class Desktop extends React.Component {
 
   render() {
     const {
-      menuVisible,
       userInfo,
-      allFolders,
       loading,
-      reminderList,
-      reminderListVisible,
-      reminderListLoading,
       modifyPassModalVisible,
-      // activeApps,
-      searchValue
     } = this.state;
 
     const {
@@ -875,7 +827,14 @@ class Desktop extends React.Component {
       onDesktopSwitch,
       onDesktopSearchChange,
       deskTopSearchValue,
-      onDesktopOpenPersonCenter
+      onDesktopOpenPersonCenter,
+      onOpenReminderList,
+      waitingHandleFetching,
+      waitingHandleData,
+      onDesktopClick,
+      reminderListVisible,
+      menuVisible,
+      onLogoClick,
     } = this.props;
 
     // 背景样式
@@ -889,7 +848,7 @@ class Desktop extends React.Component {
     return (
       <div
         className="desktop"
-        onClick={this.handleDesktopClick}
+        onClick={onDesktopClick}
         style={desktopStyle}
       >
         {/* 右键菜单触发区域，即桌面 */}
@@ -902,12 +861,12 @@ class Desktop extends React.Component {
         {/* 桌面底部 bar */}
         <DesktopBottomBar
           activeApps={activeApps}
-          onLogoClick={this.handleLogoClick}
+          onLogoClick={onLogoClick}
           menuVisible={menuVisible}
           userInfo={userInfo}
           menus={menus}
           onOpenDashboard={onOpenDashboard}
-          onOpenReminderList={this.handleOpenReminderList}
+          onOpenReminderList={onOpenReminderList}
           onOpenOrgChart={onOpenOrgChart}
           onMenuClick={onAddToDesktop}
           onAppClick={onBottomBarAppTrigger}
@@ -933,8 +892,8 @@ class Desktop extends React.Component {
         {/* 提醒列表 */}
         <DesktopReminderList
           visible={reminderListVisible}
-          list={reminderList}
-          loading={reminderListLoading}
+          list={waitingHandleData}
+          loading={waitingHandleFetching}
           onItemClick={onReminderClick}
         />
 
