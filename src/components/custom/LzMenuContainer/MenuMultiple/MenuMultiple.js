@@ -91,6 +91,7 @@ const FormWithValue = React.memo(props => {
       formLayout={formLayout}
       record={record}
       formFormData={_formdata}
+      cFFillFormInnerFieldNames={["Med_Avoirdupois"]}
     />
   );
 });
@@ -341,9 +342,9 @@ export default class MenuMultiple extends React.Component {
       hostrecid,
       viewStatus: this.state.viewStatus,
       saveCb: this.saveCb,
-      delCb: this.delCb
+      delCb: this.delCb,
     };
-    return <LzFormWithFooter {...props} />;
+    return <LzFormWithFooter {...props} cFFillFormInnerFieldNames={["Med_Avoirdupois"]} />;
   };
 
   switchRecord = record => {
