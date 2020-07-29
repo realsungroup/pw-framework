@@ -22,7 +22,7 @@ import LzRowCols from "UnitComponent/components/LzRowCols";
 import { LzModal } from "../loadableCustom";
 import LabExaminationChart from "./MenuMultiple/LabExaminationChart";
 
-const patientPeriodID = 648300111771; //周期信息
+const patientPeriodID = 648300111771; //周期方案
 const baseInfoID = 648300066963; //基本信息
 const manID = 648300080566; //男方病历
 const womanID = 648300096608; //女方病历
@@ -334,7 +334,7 @@ export default class LzMenuContainer extends React.Component {
           formTitle = menu.RES_NAME;
           return true;
         }else{
-          formTitle = '周期信息'
+          formTitle = '周期方案'
         }
       }
     });
@@ -759,7 +759,7 @@ export default class LzMenuContainer extends React.Component {
                   this.switchMenuItem( {item:{}, key:`${patientPeriodID}`, selectedKeys:[patientPeriodID]} )
                 }}
               >
-                周期信息
+                周期方案
               </Button>
             </div>
           </div>

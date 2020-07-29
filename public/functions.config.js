@@ -10,9 +10,11 @@ window[648640265023] = {
       height: 500,
       afterSaveRefresh: true,
       hasAdd: false,
+      hasRowView:false,
+      hasRowModify:false,
       // height: 'calc(100vh - 160px)',
       size: 'small',
-      actionBarWidth: 350,
+      actionBarWidth: 250,
       hasModify: false,
       hasDelete: false,
       formProps: {

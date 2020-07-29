@@ -296,7 +296,7 @@ class PwForm extends React.Component {
       saveOpenText,
       enSaveOpenText,
       saveConfirmTip,
-      confirmLoading
+      confirmLoading,
     } = this.props;
     const { intl } = this.props;
 

@@ -10,7 +10,7 @@ import { withHttpGetFormData } from 'Common/hoc/withHttp';
 import { compose } from 'recompose';
 import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
 
-const patientPeriodID = 648300111771; //周期信息
+const patientPeriodID = 648300111771; //周期方案
 const baseInfoID = 648300066963; //基本信息
 const manID = 648300080566; //男方病历
 const womanID = 648300096608; //女方病历
