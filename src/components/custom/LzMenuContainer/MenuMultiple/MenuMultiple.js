@@ -177,7 +177,7 @@ export default class MenuMultiple extends React.Component {
     this.getRecordList();
   };
 
-  getRecordList = async (selectedRecord, wheres = '') => {
+  getRecordList = async (selectedRecord, wheres = '', form) => {
     const { resid, subresid, hostrecid } = this.props;
     this.setState({
       loading: true
@@ -196,10 +196,18 @@ export default class MenuMultiple extends React.Component {
     this.fields = this.getFields(res.cmscolumninfo);
     this.setState({
       recordList: res.data,
-      selectedRecord: selectedRecord || res.data[0],
+      selectedRecord: res.data[0] || selectedRecord,
       innerFieldName: res.cmscolumninfo[0].id,
       loading: false
     });
+
+    if (form && res && Array.isArray(res.data)) {
+      const record = res.data[0];
+      // 更新体重指数
+      if (record.Med_AvoirdupoisExponent) {
+        form.setFieldsValue({ Med_AvoirdupoisExponent: record.Med_AvoirdupoisExponent })
+      }
+    }
   };
 
   // getSubTableField = async () => {
@@ -259,9 +267,9 @@ export default class MenuMultiple extends React.Component {
     this.setState({ advSearchVisible: !this.state.advSearchVisible });
   };
 
-  saveCb = () => {
+  saveCb = (operation, record, form) => {
     message.success('保存成功');
-    this.getRecordList(this.state.selectedRecord);
+    this.getRecordList(this.state.selectedRecord, '', form);
   };
 
   delCb = () => {

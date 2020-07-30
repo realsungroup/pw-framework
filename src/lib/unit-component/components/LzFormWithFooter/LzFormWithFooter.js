@@ -247,7 +247,7 @@ export default class LzFormWithFooter extends React.Component {
               }
               this.setState({ loading: false });
 
-              this.props.saveCb(operation, record);
+              this.props.saveCb(operation, record, this.form);
             }
           });
         }
@@ -274,9 +274,9 @@ export default class LzFormWithFooter extends React.Component {
                 this.setState({ loading: false });
                 return message.error(err.message);
               }
-              this.props.saveCb(operation, record);
+              this.props.saveCb(operation, record, this.form);
               this.setState({ viewStatus: 'view', loading: false });
-              saveCallback && saveCallback();
+              saveCallback && saveCallback(operation, record, this.form);
             }
           });
         }
