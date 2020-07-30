@@ -11,8 +11,34 @@ import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
 import debounce from 'lodash/debounce';
+import { isDateString } from 'Util20/util';
+import moment from 'moment';
 
 const TabPane = Tabs.TabPane;
+
+
+const getNeedFillRecord = (dataArr, returnRecord, fillType = 'systemDefault') => {
+  if (fillType === 'all') {
+    return returnRecord;
+  }
+  let ret = {};
+
+  if (fillType === 'systemDefault') {
+    if (Array.isArray(dataArr) && typeof returnRecord === 'object') {
+      dataArr.forEach(dataItem => {
+        if (dataItem) {
+          const { controlData, id } = dataItem;
+          console.log("ColValDefault:", controlData.ColValDefault)
+          if (controlData && controlData.ColValDefault) {
+            ret[id] = returnRecord[id];
+          }
+        }
+      })
+    }
+  }
+  
+  return ret;
+}
 
 /**
  * 显示记录的表单，且具有增改查功能
@@ -41,7 +67,48 @@ class FormData extends React.Component {
         this.setState({ defaultActiveKey: '0' });
       }, 500);
     }
+    this.getFormData();
   };
+
+  getFormData = async () => {
+    const { info: { resid }, baseURL, operation, beforeSaveConfig, data } = this.props;
+    if (operation === 'add' && beforeSaveConfig && beforeSaveConfig.isUse) {
+      let res;
+      try {
+        const httpParams = {};
+        if (baseURL) {
+          httpParams.baseURL = baseURL;
+        }
+        res = await http(httpParams).beforeSaveAdd({
+          resid,
+          data: JSON.stringify([{
+            _id: 1,
+            _state: 'added'
+          }]),
+          rp: { EnableFormulaVerify: 'false', EnableBitianCheck: false }
+        })
+      } catch (err) {
+        return message.error(err.message);
+      }
+      if (res && res.data) {
+        const { addFillType } = beforeSaveConfig || { addFillType: 'systemDefault' };
+        const resData = getNeedFillRecord(data, res.data, addFillType);
+        
+        const form = this.form;
+        const fields = Object.keys(form.getFieldsValue());
+        const newFormData = {};
+        fields.forEach(fieldName => {
+          const value = resData[fieldName];
+          if (isDateString(value)) {
+            newFormData[fieldName] = moment(value);
+          } else {
+            newFormData[fieldName] = value;
+          }
+        });
+        form.setFieldsValue(newFormData);
+      }
+    }
+  }
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -563,6 +630,11 @@ class FormData extends React.Component {
     );
   };
 
+
+  getForm = (form) => {
+    this.form = form;
+  }
+
   render() {
     const {
       formProps,
@@ -608,6 +680,7 @@ class FormData extends React.Component {
       return (
         <>
           <AbsoluteForm
+            getForm={this.getForm}
             data={data}
             record={record}
             {...formProps}
@@ -646,6 +719,7 @@ class FormData extends React.Component {
             })}
           >
             <PwForm
+              getForm={this.getForm}
               data={data}
               {...formProps}
               mode={mode}

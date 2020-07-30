@@ -4718,7 +4718,8 @@ window[642855189869] = {
     advSearch:{
       isRequestFormData:false,
     },
-    subtractH: 200
+    subtractH: 200,
+    beforeSaveConfig: { isUse: true },
   }
 };
 window[642855262376] = {

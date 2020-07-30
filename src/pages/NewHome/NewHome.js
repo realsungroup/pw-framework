@@ -144,8 +144,6 @@ class Home extends React.Component {
     } catch (err) {
       document.location.href = '/login';
     }
-    this.fetchWaitingHandle();
-    // this.setRecentApps();
   }
 
   setRecentApps = async () => {
@@ -177,33 +175,6 @@ class Home extends React.Component {
       return a.dateString < b.dateString ? 1 : -1;
     });
   });
-
-  fetchWaitingHandle = async () => {
-    try {
-      this.setState({ waitingHandleFetching: true });
-      let linknames = '';
-      reminderDataConfig.forEach(item => {
-        linknames += item.dblinkname + ',';
-      });
-      linknames = linknames.substring(0, linknames.length - 1);
-      const res = await http().getReminderDatas({ linknames });
-      const data = [];
-      reminderDataConfig.forEach(item => {
-        if (res.data[item.dblinkname]) {
-          res.data[item.dblinkname].forEach(_item => {
-            _item.dblinkname = item.dblinkname;
-          });
-          data.push(...res.data[item.dblinkname]);
-        }
-      });
-      this.setState({ waitingHandleData: data });
-    } catch (error) {
-      console.error(error);
-      this.setState({ waitingHandleFetching: false });
-      return message.error(error.message);
-    }
-    this.setState({ waitingHandleFetching: false });
-  };
 
   getData = async (isFirst = false) => {
     this.setState({ appDataFetching: true });
@@ -424,8 +395,6 @@ class Home extends React.Component {
     const {
       selectedModule,
       allFoldersExpandedKeys,
-      waitingHandleFetching,
-      waitingHandleData
     } = this.state;
     const {
       fixedApps,
@@ -434,7 +403,9 @@ class Home extends React.Component {
       getDesktopMainRef,
       onRefresh,
       loading,
-      recentApps
+      recentApps,
+      waitingHandleFetching,
+      waitingHandleData,
       // folders
     } = this.props;
     const folders = this.filterPersonApps([...this.props.folders]);

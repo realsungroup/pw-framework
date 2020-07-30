@@ -84,7 +84,12 @@ export const defaultProps = {
   successMessageComponent: 'message',
   isSetColumnWidth: true,
   isWrap: false,
-  backendButtonPopConfirmProps: {}
+  backendButtonPopConfirmProps: {},
+  beforeSaveConfig: {
+    isUse: false,
+    addFillType: 'systemDefault',
+    modifyFillType: 'systemDefault',
+  }
 };
 
 export const propTypes = {
@@ -877,4 +882,27 @@ export const propTypes = {
    * 默认：-
    */
   mediaFieldBaseURL: PropTypes.string,
+
+  /**
+   * beforeSave 配置
+   * 默认：{ addFillType: 'systemDefault', modifyFillType: 'systemDefault' }
+   */
+  beforeSaveConfig: PropTypes.shape({
+    /**
+     * 是否使用下面的配置
+     * 默认：false
+     */
+    isUse: PropTypes.bool,
+    /**
+     * 添加记录时，获取到的哪些数据需要填充。'all' 表示所有数据；'systemDefault' 表示只要设置了系统默认值属性的字段才填充值
+     * 默认：'systemDefault'
+     */
+    addFillType: PropTypes.oneOf(['all', 'systemDefault']),
+
+    /**
+     * 修改记录时，获取到的哪些数据需要填充。'all' 表示所有数据；'systemDefault' 表示只要设置了系统默认值属性的字段才填充值
+     * 默认：'systemDefault'
+     */
+    modifyFillType: PropTypes.oneOf(['all', 'systemDefault']),
+  })
 };
