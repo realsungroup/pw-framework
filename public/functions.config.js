@@ -2800,6 +2800,7 @@ window[642854067180] = {
       hasRowEditAdd: true,
       hasRowView: true,
       hasRowDelete: true,
+      actionBarFixed:false,
       baseURL: 'http://ngrok14.realsun.me:7071/',
       downloadBaseURL: 'http://ngrok13.realsun.me:7071/',
       backendButtonPopConfirmProps:{ placement: 'bottom' },
@@ -2823,7 +2824,7 @@ window[642854067180] = {
           isRequestFormData:false,
         },
       },
-      630169827334: {
+      433771913157: {
         hasBeBtns: true,
         isUseFormDefine: false,
         noWidthFields:'C3_433771928534',
@@ -2904,7 +2905,8 @@ window[642854088542] = {
     hasRowDelete: true,
     isSetColumnWidth:false,
     advSearch:{
-      formName:"defaultSearch"
+      // formName:"defaultSearch",
+      // isRequest
     },
     formProps: {
       // height: 500
@@ -2931,6 +2933,7 @@ window[642854098292] = {
       isUseFormDefine: false,
       hasRowEdit: true,
       hasRowEditAdd: true,
+      actionBarFixed:false,
       baseURL: 'http://ngrok14.realsun.me:7071/',
     downloadBaseURL: 'http://ngrok13.realsun.me:7071/',
       formProps: {
@@ -2944,6 +2947,7 @@ window[642854098292] = {
     subTablesProps: {
       435419664427: {
         hasBeBtns: true,
+        isUseFormDefine:false,
         baseURL: 'http://ngrok14.realsun.me:7071/',
         downloadBaseURL: 'http://ngrok13.realsun.me:7071/',
         advSearch:{
@@ -2998,6 +3002,7 @@ window[642854117487] = {
     hasRowEditAdd: true,
     hasRowEdit: true,
     isUseFormDefine: false,
+    actionBarFixed:false,
     formProps: {
       // height: 500
     },
@@ -4610,14 +4615,14 @@ window[642868538751] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_541449772876',
+    // noWidthFields:'C3_541449772876',
     formProps: {
       // height: 500
     },
     advSearch:{
       isRequestFormData:false,
     },
-    subtractH: 200
+    subtractH: 180
   }
 };
 window[642855166893] = {
@@ -4739,7 +4744,8 @@ window[642855262376] = {
       hasRowDelete: true,
       isUseFormDefine: false,
       // isSetColumnWidth:false,
-      noWidthFields:'C3_518381536343',
+      // noWidthFields:'C3_518381536343',
+      noWidthFieldsIndex:1,
       recordFormUseAbsolute:true,
       baseURL: 'http://ngrok4.realsun.me:7071/',
       downloadBaseURL: 'http://ngrok9.realsun.me:7071/',
@@ -7657,7 +7663,7 @@ window[642864873312] = {
     hasRowModify: false,
     hasRowSelection:true,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     formProps: {
       // height: 500
@@ -7683,7 +7689,7 @@ window[642864883370] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowSelection:true,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     noWidthFields:'C3_531398131376',
@@ -7875,7 +7881,7 @@ window[642864965745] = {
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     isSetColumnWidth:false,
@@ -7927,9 +7933,9 @@ window[642865104085] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    hasRowModify: true,
+    hasRowModify: false,
     hasRowView: true,
-    hasRowDelete: true,
+    hasRowDelete: false,
     isUseFormDefine: false,
     backendButtonPopConfirmProps:{ placement: 'bottom' },
     advSearch:{
@@ -7955,7 +7961,7 @@ window[642865117751] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowView: true,
+    hasRowView: false,
     hasRowDelete: false,
     // isSetColumnWidth:false,
     noWidthFields:'C3_493728864633',

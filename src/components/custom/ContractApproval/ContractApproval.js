@@ -195,6 +195,7 @@ class ContractApproval extends React.Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
+                isUseFormDefine={false}
               />
             </div>
           </TabPane>
