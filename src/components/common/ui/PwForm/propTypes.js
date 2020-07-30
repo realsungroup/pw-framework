@@ -194,4 +194,10 @@ export const propTypes = {
    * 默认：false
    */
   confirmLoading: PropTypes.bool,
+
+  /**
+   * 获取 form 对象的回调：(form) => void
+   * 默认：-
+   */
+  getForm: PropTypes.func,
 };

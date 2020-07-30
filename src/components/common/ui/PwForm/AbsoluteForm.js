@@ -12,6 +12,12 @@ const FormItem = Form.Item;
 class AbsoluteForm extends React.PureComponent {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
+
+  componentDidMount = () => {
+    const { getForm, form } = this.props;
+    getForm && getForm(form);
+  }
+
   renderView = (containerHeight, containerWidth, labelControllArr, data) => {
     return (
       <>

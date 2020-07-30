@@ -124,5 +124,11 @@ export const propTypes = {
    * 保存模式 'full' 通过保存按钮 | 'single' 输入控件onChange时保存 (暂只适用于operation='modify')
    * 默认: 'full
    */
-  saveMode: PropTypes.oneOf(['full', 'single'])
+  saveMode: PropTypes.oneOf(['full', 'single']),
+
+  /**
+   * 添加时，是否通过计算公式获取表单的值
+   * 默认：false
+   */
+  isAddGetFormByCF: PropTypes.bool,
 };
