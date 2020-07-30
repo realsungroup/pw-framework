@@ -343,6 +343,7 @@ class Advice extends React.Component {
             REC_ID: selectRecord.REC_ID,
             isBack: 'Y',
             status: '已退回',
+            renew: 'Y',
             backReason
           }
         ]
@@ -714,6 +715,7 @@ class Advice extends React.Component {
             onChange={e => {
               this.setState({ backReason: e.target.value });
             }}
+            placeholder="请输入退回理由"
           />
         </Modal>
       </div>
