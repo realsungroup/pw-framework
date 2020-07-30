@@ -101,7 +101,7 @@ window.pwConfig = {
       domain: 'china', // 域名
       domainUserField: 'emp_email' // 域用户字段
     },
-    enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
+    enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
     businessOptionalResIds: [
@@ -307,7 +307,7 @@ window.pwConfig = {
       domain: 'china', // 域名
       domainUserField: 'emp_email' // 域用户字段
     },
-    enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
+    enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
     businessOptionalResIds: [
