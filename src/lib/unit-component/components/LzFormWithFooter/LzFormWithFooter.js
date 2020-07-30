@@ -354,7 +354,7 @@ export default class LzFormWithFooter extends React.Component {
       <div className="lz-form-with-footer">
         <LzForm
           {...this.props}
-          colCount={3}
+          colCount={2}
           footer={this.renderFooter}
           viewStatus={viewStatus}
           Spin={loading}

@@ -73,26 +73,26 @@ export default class FnModule extends React.Component {
     const resid = 459877233554,
       cmswhere = `C3_584903578245 = ${recId}`;
     try {
-      res = await getModuleComponentConfig(resid, cmswhere);
+      // res = await getModuleComponentConfig(resid, cmswhere);
     } catch (err) {
       this.setState({ isRequest: true });
       return message.error(err.message);
     }
     let beConfig;
-    if (!res.data.length) {
-      beConfig = {};
-    } else {
-      record = res.data[0];
-      try {
-        beConfig = record.C3_584902392149
-          ? JSON.parse(record.C3_584902392149)
-          : {};
-      } catch (err) {
-        beConfig = {};
-        message.error('后端 JSON 配置错误');
-      }
-    }
-    this.setState({ beConfig, isRequest: true });
+    // if (!res.data.length) {
+    //   beConfig = {};
+    // } else {
+    //   record = res.data[0];
+    //   try {
+    //     beConfig = record.C3_584902392149
+    //       ? JSON.parse(record.C3_584902392149)
+    //       : {};
+    //   } catch (err) {
+    //     beConfig = {};
+    //     message.error('后端 JSON 配置错误');
+    //   }
+    // }
+    this.setState({ beConfig:{}, isRequest: true });
   };
 
   mergeConfig = () => {

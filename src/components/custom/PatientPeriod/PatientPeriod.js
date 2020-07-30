@@ -154,12 +154,12 @@ class PatientPeriod extends React.Component {
     (record, size) => {
       return (
         <Button
-          key="输入病例"
+          key="输入病历"
           style={customBtnStyle}
           size={size}
           onClick={() => this.handleInputCaseClick(record)}
         >
-          输入病例
+          输入病历
         </Button>
       );
     }
