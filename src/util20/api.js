@@ -3,6 +3,7 @@ import http from 'lz-request/lib/http';
 import { getItem } from './util';
 
 const baseURL = window.pwConfig[process.env.NODE_ENV].baseURL;
+const enterprisecode = window.pwConfig[process.env.NODE_ENV].enterprisecode;
 http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
@@ -16,7 +17,7 @@ http.setRequestInterceptors(
     if (token && userCode) {
       config.headers.accessToken = token;
       config.headers.userCode = userCode;
-      config.headers.enterprisecodes = '9063';
+      config.headers.enterprisecode = enterprisecode;
       config.headers.badgeno = userCode;
     }
     return config;
