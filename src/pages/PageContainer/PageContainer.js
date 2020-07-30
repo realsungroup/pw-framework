@@ -31,7 +31,6 @@ import DesktopBg from './DesktopBg';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 
 import {
-  DesktopReminderList,
   DesktopColorPicker,
   DesktopDashboard,
   DesktopPersonCenter
@@ -155,7 +154,10 @@ export default class PageContainer extends React.Component {
       abbreviationDoms: [],
       color, // 主题色
       selectedBg,
-      deskTopSearchValue: ''
+      deskTopSearchValue: '',
+      waitingHandleData: [], // 待办事项
+      waitingHandleFetching: false,
+      menuVisible: false,
     };
     this.lockScreenRef = React.createRef();
   }
@@ -223,7 +225,7 @@ export default class PageContainer extends React.Component {
   };
 
   fetchWaitingHandle = async () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, waitingHandleFetching: true, });
     let linknames = '';
     reminderDataConfig.forEach(item => {
       linknames += item.dblinkname + ',';
@@ -234,7 +236,7 @@ export default class PageContainer extends React.Component {
       res = await http().getReminderDatas({ linknames });
     } catch (error) {
       console.error(error);
-      this.setState({ loading: false });
+      this.setState({ loading: false, waitingHandleFetching: false, });
       return message.error(error.message);
     }
 
@@ -247,7 +249,7 @@ export default class PageContainer extends React.Component {
         data.push(...res.data[item.dblinkname]);
       }
     });
-    this.setState({ waitingHandleData: data, loading: false });
+    this.setState({ waitingHandleData: data, loading: false, waitingHandleFetching: false });
   };
 
   handleSearchChange = e => {
@@ -1394,6 +1396,24 @@ export default class PageContainer extends React.Component {
     ]);
   }
 
+  handleOpenReminderList = () => {
+    this.setState({ reminderListVisible: true, });
+    this.fetchWaitingHandle();
+  }
+
+  handleDesktopClick = () => {
+    if (this.state.menuVisible) {
+      this.setState({ menuVisible: false });
+    }
+    if (this.state.reminderListVisible) {
+      this.setState({ reminderListVisible: false });
+    }
+  }
+
+  handleLogoClick = e => {
+    e.stopPropagation();
+    this.setState({ menuVisible: !this.state.menuVisible });
+  };
 
   render() {
     if (!this.state.desktopStyle) {
@@ -1433,7 +1453,11 @@ export default class PageContainer extends React.Component {
       userInfo,
       recentApps,
       selectedBg,
-      deskTopSearchValue
+      deskTopSearchValue,
+      waitingHandleFetching,
+      reminderListVisible,
+      waitingHandleData,
+      menuVisible,
     } = this.state;
 
     return (
@@ -1494,6 +1518,13 @@ export default class PageContainer extends React.Component {
                   onDesktopSearchChange={this.handleDesktopSearchChange}
                   deskTopSearchValue={deskTopSearchValue}
                   onDesktopOpenPersonCenter={this.handleDesktopOpenPersonCenter}
+                  onOpenReminderList={this.handleOpenReminderList}
+                  waitingHandleFetching={waitingHandleFetching}
+                  reminderListVisible={reminderListVisible}
+                  waitingHandleData={waitingHandleData}
+                  onDesktopClick={this.handleDesktopClick}
+                  menuVisible={menuVisible}
+                  onLogoClick={this.handleLogoClick}
                 ></Component>
               );
             }}

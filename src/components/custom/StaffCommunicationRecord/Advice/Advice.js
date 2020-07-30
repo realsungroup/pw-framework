@@ -1,5 +1,5 @@
 import React from 'react';
-import './HelpAndAppeal.less';
+import './Advice.less';
 import {
   Modal,
   Button,
@@ -22,12 +22,12 @@ const RangePicker = DatePicker.RangePicker;
 const TextArea = Input.TextArea;
 
 const resid = 648050843809;
-const residNo = 649263815536; //求助或申诉未处理
-const residEd = 649263833028; //求助或申诉已处理
-const residCancel = 649263844037; //求助或申诉已撤销
-const residall = 649263855605; //求助或申诉全部
+const residNo = 649264095834; //合理化建议未处理
+const residEd = 649264125635; //合理化建议已处理
+const residCancel = 649264140777; //合理化建议已撤销
+const residall = 649264153891; //合理化建议全部
 
-class HelpAndAppeal extends React.Component {
+class Advice extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL =
@@ -60,11 +60,33 @@ class HelpAndAppeal extends React.Component {
     isBatchReply: false,
     selectedRecords: [],
     selectedProofs: [],
-    replyButtonLoading: false
+    replyButtonLoading: false,
+    adviceTypes: ['全部'],
+    selectedAdviceType: '全部'
   };
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    this.fetchAdviceTypes();
+  };
 
+  fetchAdviceTypes = async () => {
+    let res;
+    const { adviceTypes } = this.state;
+    try {
+      res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
+        resid: '648050843809'
+      });
+      const column = res.data.find(item => {
+        return item.ColName === 'typeAdvice';
+      });
+      const type = column.DisplayOptions.filter(item => item);
+      this.setState({
+        adviceTypes: [...adviceTypes, ...type]
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   onSelect = e => {
     this.setState({
       selectKey: e.key
@@ -252,16 +274,21 @@ class HelpAndAppeal extends React.Component {
   };
 
   SearchData = () => {
+    const { readFilter, beginTime, endTime, selectedAdviceType } = this.state;
     let cmsWhere = '';
-    if (this.state.readFilter !== '全部') {
-      cmsWhere += `status = '${this.state.readFilter}'`;
+    if (readFilter !== '全部') {
+      cmsWhere += `status = '${readFilter}'`;
     }
-    if (this.state.beginTime !== '') {
-      cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
-        this.state.beginTime
-      }' and REC_CRTTIME < '${this.state.endTime}'`;
+    if (selectedAdviceType !== '全部') {
+      cmsWhere += `${
+        cmsWhere ? ' and ' : ''
+      }typeAdvice = '${selectedAdviceType}'`;
     }
-    console.log('cmsWhere', cmsWhere);
+    if (beginTime !== '') {
+      cmsWhere += `${
+        cmsWhere ? ' and ' : ''
+      }REC_CRTTIME > '${beginTime}' and REC_CRTTIME < '${endTime}'`;
+    }
     this.setState({
       cmswhere: cmsWhere
     });
@@ -293,7 +320,14 @@ class HelpAndAppeal extends React.Component {
   };
 
   renderContentBody = (resid, hasButton) => {
-    const { cmswhere, markReadLoading, selectKey, readFilter } = this.state;
+    const {
+      cmswhere,
+      markReadLoading,
+      selectKey,
+      readFilter,
+      adviceTypes,
+      selectedAdviceType
+    } = this.state;
     return (
       <div>
         <div className="staff-contain_menu">
@@ -311,6 +345,23 @@ class HelpAndAppeal extends React.Component {
               <Option value="全部">全部</Option>
               <Option value="已阅读">已阅读</Option>
               <Option value="未阅读">未阅读</Option>
+            </Select>
+          </div>
+          <div className="staff-contain_menu_headerMenu">
+            <span>建议种类:</span>
+            <Select
+              defaultValue="全部"
+              style={{ width: 200, marginLeft: 3 }}
+              onChange={v => {
+                this.setState({ selectedAdviceType: v });
+              }}
+              size="small"
+              value={selectedAdviceType}
+            >
+              {adviceTypes.length &&
+                adviceTypes.map((item, index) => {
+                  return <Option value={item}>{item}</Option>;
+                })}
             </Select>
           </div>
           <div className="staff-contain_menu_headerMenu">
@@ -589,4 +640,4 @@ class HelpAndAppeal extends React.Component {
   }
 }
 
-export default HelpAndAppeal;
+export default Advice;
