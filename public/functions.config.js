@@ -4719,7 +4719,7 @@ window[642855189869] = {
       isRequestFormData:false,
     },
     subtractH: 200,
-    isAddGetFormByCF: true,
+    beforeSaveConfig: { isUse: true },
   }
 };
 window[642855262376] = {

@@ -85,7 +85,11 @@ export const defaultProps = {
   isSetColumnWidth: true,
   isWrap: false,
   backendButtonPopConfirmProps: {},
-  isAddGetFormByCF: false,
+  beforeSaveConfig: {
+    isUse: false,
+    addFillType: 'systemDefault',
+    modifyFillType: 'systemDefault',
+  }
 };
 
 export const propTypes = {
@@ -880,8 +884,25 @@ export const propTypes = {
   mediaFieldBaseURL: PropTypes.string,
 
   /**
-   * 添加记录时，是否通过计算公式获取表单的值
-   * 默认：false
+   * beforeSave 配置
+   * 默认：{ addFillType: 'systemDefault', modifyFillType: 'systemDefault' }
    */
-  isAddGetFormByCF: PropTypes.bool,
+  beforeSaveConfig: PropTypes.shape({
+    /**
+     * 是否使用下面的配置
+     * 默认：false
+     */
+    isUse: PropTypes.bool,
+    /**
+     * 添加记录时，获取到的哪些数据需要填充。'all' 表示所有数据；'systemDefault' 表示只要设置了系统默认值属性的字段才填充值
+     * 默认：'systemDefault'
+     */
+    addFillType: PropTypes.oneOf(['all', 'systemDefault']),
+
+    /**
+     * 修改记录时，获取到的哪些数据需要填充。'all' 表示所有数据；'systemDefault' 表示只要设置了系统默认值属性的字段才填充值
+     * 默认：'systemDefault'
+     */
+    modifyFillType: PropTypes.oneOf(['all', 'systemDefault']),
+  })
 };
