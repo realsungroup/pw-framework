@@ -16,6 +16,8 @@ http.setRequestInterceptors(
     if (token && userCode) {
       config.headers.accessToken = token;
       config.headers.userCode = userCode;
+      config.headers.enterprisecode = '9063';
+      config.headers.badgeno = userCode;
     }
     return config;
   },
@@ -661,12 +663,11 @@ http.createApi('getRowColorData', {
  * 1. resid 资源 id
  * 2. colname 内部字段名称
  * 3. recid 记录 id
- * 4. dblinkname 
+ * 4. dblinkname
  */
 http.createApi('getBinImage', {
   method: 'get',
   url: '/api/100/table/RetrieveBinImage'
 });
-
 
 export default http;
