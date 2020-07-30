@@ -668,5 +668,16 @@ http.createApi('getBinImage', {
   url: '/api/100/table/RetrieveBinImage'
 });
 
+/**
+ * 在添加记录之前使用计算公式获取将要添加的记录
+ * 参数：{ resid, data, rp: { EnableFormulaVerify: 'false', EnableBitianCheck: false } }
+ * resid:resid
+ * data: "[{ _state: "added", _id: 1 }]"
+ * rp:{ EnableFormulaVerify: 'false', EnableBitianCheck: false }
+ */
+http.createApi('beforeSaveAdd', {
+  method: 'post',
+  url: '/api/100/table/RunInnerTableFormulaBeforeSave'
+});
 
 export default http;

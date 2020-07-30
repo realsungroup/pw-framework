@@ -84,7 +84,8 @@ export const defaultProps = {
   successMessageComponent: 'message',
   isSetColumnWidth: true,
   isWrap: false,
-  backendButtonPopConfirmProps: {}
+  backendButtonPopConfirmProps: {},
+  isAddGetFormByCF: false,
 };
 
 export const propTypes = {
@@ -877,4 +878,10 @@ export const propTypes = {
    * 默认：-
    */
   mediaFieldBaseURL: PropTypes.string,
+
+  /**
+   * 添加记录时，是否通过计算公式获取表单的值
+   * 默认：false
+   */
+  isAddGetFormByCF: PropTypes.bool,
 };

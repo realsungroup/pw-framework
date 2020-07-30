@@ -11,6 +11,8 @@ import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
 import http, { makeCancelable } from 'Util20/api';
 import debounce from 'lodash/debounce';
+import { isDateString } from 'Util20/util';
+import moment from 'moment';
 
 const TabPane = Tabs.TabPane;
 
@@ -41,7 +43,45 @@ class FormData extends React.Component {
         this.setState({ defaultActiveKey: '0' });
       }, 500);
     }
+    this.getFormData();
   };
+
+  getFormData = async () => {
+    const { info: { resid }, baseURL, operation, isAddGetFormByCF } = this.props;
+    if (operation === 'add' && isAddGetFormByCF) {
+      let res;
+      try {
+        const httpParams = {};
+        if (baseURL) {
+          httpParams.baseURL = baseURL;
+        }
+        res = await http(httpParams).beforeSaveAdd({
+          resid,
+          data: JSON.stringify([{
+            _id: 1,
+            _state: 'added'
+          }]),
+          rp: { EnableFormulaVerify: 'false', EnableBitianCheck: false }
+        })
+      } catch (err) {
+        return message.error(err.message);
+      }
+      if (res && res.data) {
+        const form = this.form;
+        const fields = Object.keys(form.getFieldsValue());
+        const newFormData = {};
+        fields.forEach(fieldName => {
+          const value = res.data[fieldName];
+          if (isDateString(value)) {
+            newFormData[fieldName] = moment(value);
+          } else {
+            newFormData[fieldName] = value;
+          }
+        });
+        form.setFieldsValue(newFormData);
+      }
+    }
+  }
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -563,6 +603,11 @@ class FormData extends React.Component {
     );
   };
 
+
+  getForm = (form) => {
+    this.form = form;
+  }
+
   render() {
     const {
       formProps,
@@ -608,6 +653,7 @@ class FormData extends React.Component {
       return (
         <>
           <AbsoluteForm
+            getForm={this.getForm}
             data={data}
             record={record}
             {...formProps}
@@ -646,6 +692,7 @@ class FormData extends React.Component {
             })}
           >
             <PwForm
+              getForm={this.getForm}
               data={data}
               {...formProps}
               mode={mode}

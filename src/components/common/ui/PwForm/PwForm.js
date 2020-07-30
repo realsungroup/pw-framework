@@ -66,6 +66,11 @@ class PwForm extends React.Component {
     data: []
   };
 
+  componentDidMount = () => {
+    const { getForm, form } = this.props;
+    getForm && getForm(form);
+  }
+
   handleCollapseChange = activeKey => {
     this.setState({ activeKey });
   };
@@ -126,7 +131,7 @@ class PwForm extends React.Component {
       dblinkname,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL
+      mediaFieldBaseURL,
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
