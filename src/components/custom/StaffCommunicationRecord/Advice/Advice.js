@@ -10,7 +10,9 @@ import {
   Icon,
   Select,
   DatePicker,
-  Spin
+  Spin,
+  Row,
+  Col
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
@@ -26,6 +28,7 @@ const residNo = 649264095834; //合理化建议未处理
 const residEd = 649264125635; //合理化建议已处理
 const residCancel = 649264140777; //合理化建议已撤销
 const residall = 649264153891; //合理化建议全部
+const residBack = 649441729231; //求助或申诉退回
 
 class Advice extends React.Component {
   constructor(props) {
@@ -62,7 +65,10 @@ class Advice extends React.Component {
     selectedProofs: [],
     replyButtonLoading: false,
     adviceTypes: ['全部'],
-    selectedAdviceType: '全部'
+    selectedAdviceType: '全部',
+    backVisible: false, //退回模态窗是否显示
+    backReason: '', //退回理由
+    backLoading: '' //
   };
 
   componentDidMount = () => {
@@ -170,13 +176,17 @@ class Advice extends React.Component {
         ? selectedRecords.map(item => ({
             REC_ID: item.recordID,
             replication: this.state.replyContent,
-            replicationHR: 'Y'
+            replicationHR: 'Y',
+            status: '已处理',
+            renew: 'Y'
           }))
         : [
             {
               REC_ID: this.state.selectRecord.recordID,
               replication: this.state.replyContent,
-              replicationHR: 'Y'
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
             }
           ];
       this.setState({ replyButtonLoading: true });
@@ -317,6 +327,34 @@ class Advice extends React.Component {
     this.setState({
       markReadLoading: false
     });
+  };
+
+  handleBackComplain = async () => {
+    const { backReason, selectRecord } = this.state;
+    if (!backReason) {
+      return message.info('请输入退回理由');
+    }
+    try {
+      this.setState({ backLoading: true });
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: [
+          {
+            REC_ID: selectRecord.REC_ID,
+            isBack: 'Y',
+            status: '已退回',
+            backReason
+          }
+        ]
+      });
+      this.tableDataRef.handleRefresh();
+      message.success('退回成功');
+      this.setState({ backReason: '', backVisible: false, showRecord: false });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+    this.setState({ backLoading: false });
   };
 
   renderContentBody = (resid, hasButton) => {
@@ -486,6 +524,8 @@ class Advice extends React.Component {
         return this.renderContentBody(residCancel, false);
       case '5':
         return this.renderContentBody(residall, false);
+      case '6':
+        return this.renderContentBody(residBack, false);
       default:
     }
   };
@@ -496,7 +536,10 @@ class Advice extends React.Component {
       imgProofRecord,
       audioProof,
       videoProof,
-      replyButtonLoading
+      replyButtonLoading,
+      backVisible,
+      backReason,
+      backLoading
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -512,6 +555,9 @@ class Advice extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <span> 已退回</span>
             </Menu.Item>
             <Menu.Item key="4">
               <span> 已撤回 </span>
@@ -540,50 +586,63 @@ class Advice extends React.Component {
         >
           <Spin spinning={this.state.loading}>
             <div className="modalContainer">
-              <span>员工信息</span>
-              <div className="recordInfo">
-                <div>姓名：{selectRecord.name}</div>
-                <div>工号：{selectRecord.jobId}</div>
-                <div>联系方式：{selectRecord.phone}</div>
-                <div>发生时间：{selectRecord.time}</div>
-              </div>
-              <p>事件概述：{selectRecord.theme}</p>
-              <p>事件概述：{selectRecord.detail}</p>
+              <Row className="recordInfo">
+                <Col span={12}>
+                  <div>
+                    <label>姓名：</label>
+                    {selectRecord.name}
+                  </div>
+                </Col>
+
+                <Col span={12}>
+                  <div>
+                    <label>工号：</label>
+                    {selectRecord.jobId}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>联系方式：</label>
+                    {selectRecord.phone}
+                  </div>
+                </Col>
+
+                <Col span={12}>
+                  <div>
+                    <label>发生时间：</label>
+                    {selectRecord.time}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>建议类型：</label>
+                    {selectRecord.typeAdvice}
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div>
+                    <label>事件概述：</label>
+                    {selectRecord.theme}
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div>
+                    <label>详细内容：</label> {selectRecord.detail}
+                  </div>
+                </Col>
+              </Row>
               <div className="picProof">
-                <p>图片证据：</p>
+                <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL}></img>;
+                    return <img src={item.fileURL} alt="" />;
                   })
                 ) : (
                   <span>暂无图片</span>
                 )}
               </div>
-              <p>音频证据：</p>
-              <div className="audioProofs">
-                {audioProof.length ? (
-                  audioProof.map((item, index) => {
-                    return (
-                      <div className="audioProof">
-                        <span>{index + 1}.</span>
-                        <audio controls autoPlay={false}>
-                          <source src={item.fileURL}></source>
-                        </audio>
-                        <img
-                          src={downloadImg}
-                          onClick={() => {
-                            this.downloadAudio(index);
-                          }}
-                        ></img>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span>暂无音频</span>
-                )}
-              </div>
               <div className="videoProof">
-                <p>视频证据：</p>
+                <h4>视频证据：</h4>
                 {videoProof.length ? (
                   videoProof.map((item, index) => {
                     return (
@@ -593,12 +652,6 @@ class Advice extends React.Component {
                           src={item.fileURL}
                           autoPlay={false}
                           style={{ width: '50%' }}
-                        />
-                        <img
-                          src={downloadImg}
-                          onClick={() => {
-                            this.downloadVideo(index);
-                          }}
                         />
                       </>
                     );
@@ -613,8 +666,19 @@ class Advice extends React.Component {
                   onClick={() => {
                     this.reply();
                   }}
+                  style={{ marginRight: 8 }}
                 >
                   回复
+                </Button>
+              )}
+              {selectKey === '1' && (
+                <Button
+                  onClick={() => {
+                    this.setState({ backVisible: true });
+                  }}
+                  type="danger"
+                >
+                  退回
                 </Button>
               )}
             </div>
@@ -632,6 +696,23 @@ class Advice extends React.Component {
           <TextArea
             onChange={e => {
               this.replyText(e.target.value);
+            }}
+          />
+        </Modal>
+        <Modal
+          visible={backVisible}
+          title="退回合理化建议"
+          width={500}
+          onCancel={() => {
+            this.setState({ backVisible: false, backReason: '' });
+          }}
+          onOk={this.handleBackComplain}
+          confirmLoading={backLoading}
+        >
+          <TextArea
+            value={backReason}
+            onChange={e => {
+              this.setState({ backReason: e.target.value });
             }}
           />
         </Modal>
