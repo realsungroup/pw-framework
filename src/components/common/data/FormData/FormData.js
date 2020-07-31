@@ -2,7 +2,7 @@ import React from 'react';
 import PwForm from '../../ui/PwForm';
 import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
 
-import { message, Tabs } from 'antd';
+import { message, Tabs, Spin } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
 import { TableData } from '../../loadableCommon';
@@ -16,29 +16,48 @@ import moment from 'moment';
 
 const TabPane = Tabs.TabPane;
 
-
-const getNeedFillRecord = (dataArr, returnRecord, fillType = 'systemDefault') => {
-  if (fillType === 'all') {
-    return returnRecord;
-  }
+const getSystemDefaultRecord = (dataArr, returnRecord) => {
   let ret = {};
-
-  if (fillType === 'systemDefault') {
-    if (Array.isArray(dataArr) && typeof returnRecord === 'object') {
-      dataArr.forEach(dataItem => {
-        if (dataItem) {
-          const { controlData, id } = dataItem;
-          console.log("ColValDefault:", controlData.ColValDefault)
-          if (controlData && controlData.ColValDefault) {
-            ret[id] = returnRecord[id];
-          }
+  if (Array.isArray(dataArr) && typeof returnRecord === 'object') {
+    dataArr.forEach(dataItem => {
+      if (dataItem) {
+        const { controlData, id } = dataItem;
+        if (controlData && controlData.ColValDefault) {
+          ret[id] = returnRecord[id];
         }
-      })
-    }
+      }
+    });
   }
-  
   return ret;
-}
+};
+
+const getConstantRecord = dataArr => {
+  let ret = {};
+  if (Array.isArray(dataArr)) {
+    dataArr.forEach(dataItem => {
+      if (dataItem) {
+        const { controlData, id } = dataItem;
+        if (controlData && controlData.ColValConstant) {
+          ret[id] = controlData.ColValConstant;
+        }
+      }
+    });
+  }
+  return ret;
+};
+
+/**
+ * 是否有设置了系统默认属性的字段
+ * @param {array} dataArr 控件数据
+ */
+const isHasSystemDefaultField = dataArr => {
+  return dataArr.some(dataItem => {
+    if (dataItem) {
+      const { controlData } = dataItem;
+      return !!controlData.ColValDefault;
+    }
+  });
+};
 
 /**
  * 显示记录的表单，且具有增改查功能
@@ -56,6 +75,7 @@ class FormData extends React.Component {
       defaultActiveKey: '-1',
       hasSubTables, // 是否有子表
       confirmLoading: false,
+      loading: false
     };
   }
 
@@ -70,45 +90,82 @@ class FormData extends React.Component {
     this.getFormData();
   };
 
-  getFormData = async () => {
-    const { info: { resid }, baseURL, operation, beforeSaveConfig, data } = this.props;
-    if (operation === 'add' && beforeSaveConfig && beforeSaveConfig.isUse) {
+  getCFFormData = async () => {
+    const {
+      baseURL,
+      info: { resid }
+    } = this.props;
+    const httpParams = {};
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    const res = await http(httpParams).beforeSaveAdd({
+      resid,
+      data: JSON.stringify([
+        {
+          _id: 1,
+          _state: 'added'
+        }
+      ]),
+      rp: { EnableFormulaVerify: 'false', EnableBitianCheck: false }
+    });
+    return res;
+  };
+
+  getFormData = () => {
+    const { operation, beforeSaveConfig } = this.props;
+
+    if (
+      operation === 'add' &&
+      beforeSaveConfig &&
+      beforeSaveConfig.operation === 'add'
+    ) {
+      this.handleBeforeSaveAdd();
+    }
+  };
+
+  handleBeforeSaveAdd = async () => {
+    const { data } = this.props;
+    const hasSystemDefault = isHasSystemDefaultField(data);
+    let calcedFormData = {};
+    // 系统默认值
+    if (hasSystemDefault) {
+      this.setState({ loading: true });
       let res;
       try {
-        const httpParams = {};
-        if (baseURL) {
-          httpParams.baseURL = baseURL;
-        }
-        res = await http(httpParams).beforeSaveAdd({
-          resid,
-          data: JSON.stringify([{
-            _id: 1,
-            _state: 'added'
-          }]),
-          rp: { EnableFormulaVerify: 'false', EnableBitianCheck: false }
-        })
+        res = await this.getCFFormData();
       } catch (err) {
+        this.setState({ loading: false });
         return message.error(err.message);
       }
+
+      this.setState({ loading: false });
+
       if (res && res.data) {
-        const { addFillType } = beforeSaveConfig || { addFillType: 'systemDefault' };
-        const resData = getNeedFillRecord(data, res.data, addFillType);
-        
-        const form = this.form;
-        const fields = Object.keys(form.getFieldsValue());
-        const newFormData = {};
-        fields.forEach(fieldName => {
-          const value = resData[fieldName];
-          if (isDateString(value)) {
-            newFormData[fieldName] = moment(value);
-          } else {
-            newFormData[fieldName] = value;
-          }
-        });
-        form.setFieldsValue(newFormData);
+        calcedFormData = getSystemDefaultRecord(data, res.data);
       }
     }
-  }
+    // 常量
+    calcedFormData = { ...calcedFormData, ...getConstantRecord(data) };
+
+    // 设置表单值
+    this.setFieldsValue(calcedFormData);
+  };
+
+  setFieldsValue = calcedFormData => {
+    const form = this.form;
+    const fields = Object.keys(form.getFieldsValue());
+    const newFormData = {};
+    fields.forEach(fieldName => {
+      const value = calcedFormData[fieldName];
+      if (isDateString(value)) {
+        newFormData[fieldName] = moment(value);
+      } else {
+        newFormData[fieldName] = value;
+      }
+    });
+    form.setFieldsValue(newFormData);
+  };
 
   componentWillUnmount = () => {
     this.p1 && this.p1.cancel();
@@ -630,10 +687,9 @@ class FormData extends React.Component {
     );
   };
 
-
-  getForm = (form) => {
+  getForm = form => {
     this.form = form;
-  }
+  };
 
   render() {
     const {
@@ -652,9 +708,9 @@ class FormData extends React.Component {
       saveMode,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL,
+      mediaFieldBaseURL
     } = this.props;
-    const { hasSubTables, confirmLoading } = this.state;
+    const { hasSubTables, confirmLoading, loading } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -678,7 +734,7 @@ class FormData extends React.Component {
 
     if (_useAbsolute) {
       return (
-        <>
+        <Spin spinning={loading}>
           <AbsoluteForm
             getForm={this.getForm}
             data={data}
@@ -700,50 +756,54 @@ class FormData extends React.Component {
           />
           {hasSubTables &&
             this.renderSubTablesAbsolute(containerHeight, containerWidth)}
-        </>
+        </Spin>
       );
     }
 
     return (
-      <div className="form-data" style={style}>
-        {!!data.length && (
-          <div
-            style={{
-              width:
-                hasSubTables && subTalbeLayout === 'tab'
-                  ? width.formWidth
-                  : '100%'
-            }}
-            className={classNames({
-              'form-data__form-wrap': subTalbeLayout === 'tab'
-            })}
-          >
-            <PwForm
-              getForm={this.getForm}
-              data={data}
-              {...formProps}
-              mode={mode}
-              {...otherProps}
-              onSave={this.handleSave}
-              onReopenSave={this.handleReopenSave}
-              onCancel={this.props.onCancel}
-              operation={operation}
-              record={record}
-              beforeSaveFields={beforeSaveFields}
-              resid={resid}
-              dblinkname={dblinkname}
-              layout={formProps && formProps.layout ? formProps.layout : layout}
-              baseURL={baseURL}
-              uploadConfig={uploadConfig}
-              mediaFieldBaseURL={mediaFieldBaseURL}
-              confirmLoading={confirmLoading}
-            />
+      <Spin spinning={loading}>
+        <div className="form-data" style={style}>
+          {!!data.length && (
+            <div
+              style={{
+                width:
+                  hasSubTables && subTalbeLayout === 'tab'
+                    ? width.formWidth
+                    : '100%'
+              }}
+              className={classNames({
+                'form-data__form-wrap': subTalbeLayout === 'tab'
+              })}
+            >
+              <PwForm
+                getForm={this.getForm}
+                data={data}
+                {...formProps}
+                mode={mode}
+                {...otherProps}
+                onSave={this.handleSave}
+                onReopenSave={this.handleReopenSave}
+                onCancel={this.props.onCancel}
+                operation={operation}
+                record={record}
+                beforeSaveFields={beforeSaveFields}
+                resid={resid}
+                dblinkname={dblinkname}
+                layout={
+                  formProps && formProps.layout ? formProps.layout : layout
+                }
+                baseURL={baseURL}
+                uploadConfig={uploadConfig}
+                mediaFieldBaseURL={mediaFieldBaseURL}
+                confirmLoading={confirmLoading}
+              />
+            </div>
+          )}
+          <div style={{ width: '100%' }}>
+            {hasSubTables && this.renderSubTables()}
           </div>
-        )}
-        <div style={{ width: '100%' }}>
-          {hasSubTables && this.renderSubTables()}
         </div>
-      </div>
+      </Spin>
     );
   }
 }

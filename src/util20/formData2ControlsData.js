@@ -200,8 +200,9 @@ const getData = (controlArr, rulesControl) => {
     };
     // 所有控件都加上验证规则
     if (typeof rulesControl === 'boolean') {
-      obj.rules = getRules(controlData);
-
+      if (obj.name !== 'Checkbox') {
+        obj.rules = getRules(controlData);
+      }
       // 指定的字段加上验证规则
     } else if (Array.isArray(rulesControl)) {
       let result = rulesControl.some(innerFieldName => innerFieldName === id);
