@@ -5,7 +5,7 @@ window[648640265023] = {
   props: {
     tableDataProps: {
       resid: 648300111771,
-      subtractH: 170,
+      subtractH: 200,
       actionBarFixed: true,
       hasDownload:false,
       hasZoomInOut:true,
@@ -21,7 +21,8 @@ window[648640265023] = {
       hasDelete: false,
       formProps: {
         // displayMode: "classify",
-      }
+      },
+      zoomStatus: 'max'
     }
   }
 };
