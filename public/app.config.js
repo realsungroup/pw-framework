@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok12.realsun.me:7071//', // 请求的基地址
+    baseURL: 'http://ngrok4.realsun.me:7071//', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -101,7 +101,7 @@ window.pwConfig = {
       domain: 'china', // 域名
       domainUserField: 'emp_email' // 域用户字段
     },
-    enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
+    enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
     businessOptionalResIds: [
@@ -307,7 +307,7 @@ window.pwConfig = {
       domain: 'china', // 域名
       domainUserField: 'emp_email' // 域用户字段
     },
-    enterprisecode: '???', // 忘记密码 api 传给后端的企业编号
+    enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
     // 业务功能配置
     businessOptionalResIds: [

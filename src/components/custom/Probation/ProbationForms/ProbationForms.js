@@ -233,12 +233,12 @@ class ProbationForms extends React.Component {
       var C3_637084539039;
       var instructorDirectorName2;
       var instructorDirectorId2;
-      var instructorID;
+      var C3_627646976501;
       var instructor;
       var instructorDirectorName;
       var instructorDirectorId;
       if (memID) {
-        instructorID = this.state.employeeInformation.instructorDirectorId;
+        C3_627646976501 = this.state.employeeInformation.instructorDirectorId;
         instructor = this.state.employeeInformation.instructorDirectorName;
         instructorDirectorName = '';
         instructorDirectorId = '';
@@ -260,7 +260,7 @@ class ProbationForms extends React.Component {
             C3_637084539039,
             instructorDirectorName2,
             instructorDirectorId2,
-            instructorID,
+            C3_627646976501,
             instructor,
             instructorDirectorName,
             instructorDirectorId

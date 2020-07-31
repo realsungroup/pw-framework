@@ -10,7 +10,9 @@ import {
   Icon,
   Select,
   DatePicker,
-  Spin
+  Spin,
+  Row,
+  Col
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
@@ -25,6 +27,7 @@ const resid = 648050843809;
 const residIng = 648669826228; //投诉处理中
 const residNo = 648841220130; //投诉未处理
 const residEd = 648841245548; //投诉已处理
+const residBack = 649441695337; //投诉已处理
 const residCancel = 648841262145; //投诉已撤销
 const residall = 648841291439; //投诉全部
 
@@ -71,7 +74,10 @@ class StaffComplain extends React.Component {
     markReadLoading: false,
     isBatchReply: false,
     selectedRecords: [],
-    selectedProofs: []
+    selectedProofs: [],
+    backVisible: false, //退回模态窗是否显示
+    backReason: '', //退回理由
+    backLoading: '' //
   };
 
   componentDidMount = () => {
@@ -216,7 +222,14 @@ class StaffComplain extends React.Component {
       });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
-        data: [{ REC_ID: selectRecord.REC_ID, mailed: 'Y' }]
+        data: [
+          {
+            REC_ID: selectRecord.REC_ID,
+            mailed: 'Y',
+            leaderID: leaderData.leaderId,
+            leaderName: leaderData.leaderName
+          }
+        ]
       });
       message.success('已通知部门负责人');
       this.setState({ showRecord: false });
@@ -238,13 +251,6 @@ class StaffComplain extends React.Component {
       replyContent: value
     });
   };
-  // replyTextModal = (e) =>{
-  //   console.log("e",e)
-  //   // this.setState({
-  //   //    replyContent:e.
-  //   // })
-  // }
-  //648756387329
 
   reply = selectedRecords => {
     this.setState({
@@ -269,14 +275,18 @@ class StaffComplain extends React.Component {
             REC_ID: item.recordID,
             replyID: now,
             replication: this.state.replyContent,
-            replicationHR: 'Y'
+            replicationHR: 'Y',
+            status: '已处理',
+            renew: 'Y'
           }))
         : [
             {
               REC_ID: this.state.selectRecord.recordID,
               replyID: now,
               replication: this.state.replyContent,
-              replicationHR: 'Y'
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
             }
           ];
       await http({ baseURL: this.baseURL }).modifyRecords({
@@ -525,6 +535,34 @@ class StaffComplain extends React.Component {
       markReadLoading: false
     });
   };
+  handleBackComplain = async () => {
+    const { backReason, selectRecord } = this.state;
+    if (!backReason) {
+      return message.info('请输入退回理由');
+    }
+    try {
+      this.setState({ backLoading: true });
+      await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: [
+          {
+            REC_ID: selectRecord.REC_ID,
+            isBack: 'Y',
+            status: '已退回',
+            renew: 'Y',
+            backReason
+          }
+        ]
+      });
+      this.tableDataRef.handleRefresh();
+      message.success('退回成功');
+      this.setState({ backReason: '', backVisible: false, showRecord: false });
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+    this.setState({ backLoading: false });
+  };
   renderContentBody = (resid, hasButton) => {
     const {
       typeComplaint,
@@ -712,6 +750,8 @@ class StaffComplain extends React.Component {
         return this.renderContentBody(residCancel, false);
       case '5':
         return this.renderContentBody(residall, false);
+      case '6':
+        return this.renderContentBody(residBack, false);
       default:
     }
   };
@@ -728,7 +768,10 @@ class StaffComplain extends React.Component {
       depInfoRecord,
       leaderProofRecord,
       noticeLoading,
-      isBatchReply
+      isBatchReply,
+      backVisible,
+      backReason,
+      backLoading
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -750,6 +793,9 @@ class StaffComplain extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <span> 已退回</span>
             </Menu.Item>
             <Menu.Item key="4">
               <span> 已撤回 </span>
@@ -778,55 +824,75 @@ class StaffComplain extends React.Component {
         >
           <Spin spinning={this.state.loading}>
             <div className="modalContainer">
-              <span>员工信息</span>
-              <div className="recordInfo">
-                <div>姓名：{selectRecord.name}</div>
-                <div>是否实名：{selectRecord.signed}</div>
-                <div>工号：{selectRecord.jobId}</div>
-                <div>联系方式：{selectRecord.phone}</div>
-                <div>投诉类型：{selectRecord.typeComplaint}</div>
-                <div>
-                  投诉对象：{selectRecord.target}-{selectRecord.targetID}
-                </div>
-                <div>发生时间：{selectRecord.time}</div>
-              </div>
-              <p>事件概述：{selectRecord.theme}</p>
-              <p>事件概述：{selectRecord.detail}</p>
+              <h3>员工信息</h3>
+              <Row className="recordInfo">
+                <Col span={12}>
+                  <div>
+                    <label>姓名：</label>
+                    {selectRecord.name}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>是否实名：</label>
+                    {selectRecord.signed}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>工号：</label>
+                    {selectRecord.jobId}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>联系方式：</label>
+                    {selectRecord.phone}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>投诉类型：</label>
+                    {selectRecord.typeComplaint}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>投诉对象：</label>
+                    {selectRecord.target}-{selectRecord.targetID}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div>
+                    <label>发生时间：</label>
+                    {selectRecord.time}
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div>
+                    <label>事件概述：</label>
+                    {selectRecord.theme}
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div>
+                    <label>详细内容：</label> {selectRecord.detail}
+                  </div>
+                </Col>
+              </Row>
+
               <div className="picProof">
-                <p>图片证据：</p>
+                <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL}></img>;
+                    return <img src={item.fileURL} alt="" />;
                   })
                 ) : (
                   <span>暂无图片</span>
                 )}
               </div>
-              <p>音频证据：</p>
-              <div className="audioProofs">
-                {audioProof.length ? (
-                  audioProof.map((item, index) => {
-                    return (
-                      <div className="audioProof">
-                        <span>{index + 1}.</span>
-                        <audio controls autoPlay={false}>
-                          <source src={item.fileURL}></source>
-                        </audio>
-                        <img
-                          src={downloadImg}
-                          onClick={() => {
-                            this.downloadAudio(index);
-                          }}
-                        ></img>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span>暂无音频</span>
-                )}
-              </div>
               <div className="videoProof">
-                <p>视频证据：</p>
+                <h4>视频证据：</h4>
                 {videoProof.length ? (
                   videoProof.map((item, index) => {
                     return (
@@ -842,6 +908,7 @@ class StaffComplain extends React.Component {
                           onClick={() => {
                             this.downloadVideo(index);
                           }}
+                          alt=""
                         />
                       </>
                     );
@@ -851,32 +918,53 @@ class StaffComplain extends React.Component {
                 )}
               </div>
               <hr />
-              <p>负责部门信息</p>
-              <div className="depInfo">
-                <span>
-                  部门:{depInfoRecord && depInfoRecord.C3_422840508142}
-                </span>
-                <span>
-                  部门英文名:
-                  {depInfoRecord && depInfoRecord.C3_422840463535}
-                </span>
-                <span>
-                  部门负责人:
-                  {depInfoRecord && depInfoRecord.C3_417993433650}
-                </span>
-                <span>
-                  部门负责人英文名:
-                  {depInfoRecord && depInfoRecord.C3_417993433650}
-                </span>
-                <span>
-                  部门负责人工号:
-                  {depInfoRecord && depInfoRecord.C3_429966115761}
-                </span>
-                <span>回复时间：{selectRecord.leaderReplyTime}</span>
-              </div>
-              <p>回复：{selectRecord.leaderReplyContent}</p>
+              <h3>负责部门信息</h3>
+              <Row className="depInfo">
+                <Col span={12}>
+                  <span>
+                    <label>部门：</label>
+                    {depInfoRecord && depInfoRecord.C3_422840508142}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <span>
+                    <label>部门英文名：</label>
+                    {depInfoRecord && depInfoRecord.C3_422840463535}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <span>
+                    <label>部门负责人：</label>
+                    {depInfoRecord && depInfoRecord.C3_417993433650}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <span>
+                    <label>部门负责人英文名：</label>
+                    {depInfoRecord && depInfoRecord.C3_417993433650}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <span>
+                    <label>部门负责人工号：</label>
+                    {depInfoRecord && depInfoRecord.C3_429966115761}
+                  </span>
+                </Col>
+                <Col span={12}>
+                  <span>
+                    <label>回复时间：</label>
+                    {selectRecord.leaderReplyTime}
+                  </span>
+                </Col>
+                <Col span={24}>
+                  <p>
+                    <label>回复内容：</label>
+                    {selectRecord.leaderReplyContent}
+                  </p>
+                </Col>
+              </Row>
               <div className="picProof">
-                <p>图片证据：</p>
+                <h4>图片证据：</h4>
                 {dImgProofRecord.length ? (
                   dImgProofRecord.map(item => {
                     return <img src={item.fileURL} />;
@@ -885,26 +973,9 @@ class StaffComplain extends React.Component {
                   <span>暂无图片</span>
                 )}
               </div>
-              <p>音频证据：</p>
-              <div className="audioProofs">
-                {dAudioProof.length ? (
-                  dAudioProof.map((item, index) => {
-                    return (
-                      <div className="audioProof">
-                        <span>{index + 1}</span>
-                        <audio controls autoPlay={false}>
-                          <source src={item.fileURL}></source>
-                        </audio>
-                        <img src={downloadImg} onClick={this.downloadAudio} />
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span>暂无音频</span>
-                )}
-              </div>
+
               <div className="videoProof">
-                <p>视频证据：</p>
+                <h4>视频证据：</h4>
                 {dVideoProof.length ? (
                   dVideoProof.map((item, index) => {
                     return (
@@ -940,8 +1011,19 @@ class StaffComplain extends React.Component {
                   onClick={() => {
                     this.openProofList(this.state.selectRecord);
                   }}
+                  style={{ marginRight: 8 }}
                 >
                   回复
+                </Button>
+              )}
+              {(selectKey === '1' || selectKey === '2') && (
+                <Button
+                  onClick={() => {
+                    this.setState({ backVisible: true });
+                  }}
+                  type="danger"
+                >
+                  退回
                 </Button>
               )}
             </div>
@@ -1061,9 +1143,28 @@ class StaffComplain extends React.Component {
           destroyOnClose={true}
         >
           <TextArea
+            value={this.replyText}
             onChange={e => {
               this.replyText(e.target.value);
             }}
+          />
+        </Modal>
+        <Modal
+          visible={backVisible}
+          title="退回投诉"
+          width={500}
+          onCancel={() => {
+            this.setState({ backVisible: false, backReason: '' });
+          }}
+          onOk={this.handleBackComplain}
+          confirmLoading={backLoading}
+        >
+          <TextArea
+            value={backReason}
+            onChange={e => {
+              this.setState({ backReason: e.target.value });
+            }}
+            placeholder="请输入退回理由"
           />
         </Modal>
       </div>

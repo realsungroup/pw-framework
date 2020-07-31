@@ -824,3 +824,9 @@ export const ChartCommunication = Loadable({
     return minLoading;
   }
 });
+export const ReplyComplain = Loadable({
+  loader: () => import('./ReplyComplain'),
+  loading() {
+    return minLoading;
+  }
+});
