@@ -5,8 +5,8 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:4201/',
-    // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
+    // baseURL: 'http://kingofdinner.realsun.me:4201/',
+    baseURL: 'http://xbsz.sxivf.com:30013/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -213,7 +213,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:4201/', // 请求的基地址
+    baseURL: 'http://xbsz.sxivf.com:30013/', // 请求的基地址
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址

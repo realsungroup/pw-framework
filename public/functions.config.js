@@ -7,6 +7,8 @@ window[648640265023] = {
       resid: 648300111771,
       subtractH: 170,
       actionBarFixed: true,
+      hasDownload:false,
+      hasZoomInOut:true,
       height: 500,
       afterSaveRefresh: true,
       hasAdd: false,
