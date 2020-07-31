@@ -2626,7 +2626,10 @@ window[642853907777] = {
     advSearch:{
       isRequestFormData:false,
     },
-    subtractH: 200
+    subtractH: 200,
+    beforeSaveConfig: {
+      operation: 'add'
+    }
   }
 };
 window[642853918132] = {
@@ -4725,7 +4728,7 @@ window[642855189869] = {
       isRequestFormData:false,
     },
     subtractH: 200,
-    beforeSaveConfig: { isUse: true },
+    beforeSaveConfig: { operation: 'add' },
   }
 };
 window[642855262376] = {
