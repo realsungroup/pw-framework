@@ -84,7 +84,8 @@ export const defaultProps = {
   successMessageComponent: 'message',
   isSetColumnWidth: true,
   isWrap: false,
-  backendButtonPopConfirmProps: {}
+  backendButtonPopConfirmProps: {},
+  zoomStatus: 'normal'
 };
 
 export const propTypes = {
@@ -877,4 +878,10 @@ export const propTypes = {
    * 默认：-
    */
   mediaFieldBaseURL: PropTypes.string,
+
+  /**
+   * 缩放状态。'normal' 正常大小；'max' 最大化
+   * 默认：'normal'
+   */
+  zoomStatus: PropTypes.oneOf(['normal', 'max']),
 };

@@ -168,6 +168,11 @@ const accurate2fuzzy = cmsWhere => {
   return a1.join(' and ');
 };
 
+const zoomStatusMap = {
+  normal: 0,
+  max: 1,
+}
+
 /**
  * TableData
  */
@@ -187,7 +192,8 @@ class TableData extends React.Component {
       width,
       height,
       hasRowSelection,
-      rowSelection
+      rowSelection,
+      zoomStatus,
     } = props;
     const pagination = getPagination(
       defaultPagination,
@@ -243,7 +249,7 @@ class TableData extends React.Component {
       height,
       gridProps: [],
       originalColumn: [],
-      zoomStatus: 0, // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+      zoomStatus: zoomStatusMap[zoomStatus], // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
       clickedRowId: -1, // 点击行的 id
     };
   }
