@@ -1699,6 +1699,7 @@ class PersonPlan extends React.Component {
             {this.renderSaveBtn()}
             {this.state.checkType === 'oneself' &&
             this.state.personInfo.isMangerSubmit === 'Y' &&
+            this.state.personInfo.status === '初次填写' &&
             this.state.personInfo.isAffirm !== 'Y' ? (
               <Popconfirm
                 title="你要确认吗"
@@ -1712,6 +1713,7 @@ class PersonPlan extends React.Component {
               </Popconfirm>
             ) : this.state.checkType !== 'oneself' &&
               this.state.personInfo.isPersonSubmit === 'Y' &&
+            this.state.personInfo.status === '初次填写' &&
               this.state.personInfo.isAffirm !== 'Y' ? (
               <Popconfirm
                 title="你要确认吗"
@@ -1728,6 +1730,7 @@ class PersonPlan extends React.Component {
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearMidSubmit === 'Y' &&
             this.state.personInfo.midManageApply !== 'Y' &&
+            this.state.personInfo.status === '年中回顾' &&
             this.state.personInfo.midManageApply !== 'N' ? (
               <Popconfirm
                 title="你要确认吗"
@@ -1744,6 +1747,7 @@ class PersonPlan extends React.Component {
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearMidSubmit === 'Y' &&
             this.state.personInfo.midManageApply !== 'Y' &&
+            this.state.personInfo.status === '年中回顾' &&
             this.state.personInfo.midManageApply !== 'N' ? (
               <Popconfirm
                 title="你确定要退回吗"
@@ -1765,6 +1769,7 @@ class PersonPlan extends React.Component {
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearTailSubmit === 'Y' &&
             this.state.personInfo.tailManageApply !== 'Y' &&
+            this.state.personInfo.status === '年末回顾' &&
             this.state.personInfo.tailManageApply !== 'N' ? (
               <Popconfirm
                 title="你确定要退回吗"
@@ -1785,6 +1790,7 @@ class PersonPlan extends React.Component {
             {this.state.checkType !== 'oneself' &&
             this.state.personInfo.yearTailSubmit === 'Y' &&
             this.state.personInfo.tailManageApply !== 'Y' &&
+            this.state.personInfo.status === '年末回顾' &&
             this.state.personInfo.tailManageApply !== 'N' ? (
               <Popconfirm
                 title="你要确认吗"

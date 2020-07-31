@@ -80,7 +80,7 @@ class DirectorProbation extends React.Component {
         {this.state.isShowTable ? (
           <div style={{ height: '100vh' }}>
             <TableData
-              resid="618591396440"
+              resid="649518535132"
               subtractH={240}
               hasAdd={false}
               hasRowView={false}

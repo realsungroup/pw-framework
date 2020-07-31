@@ -930,7 +930,8 @@ window[648297903478] = {
     hasRowView: true,
     hasRowDelete: false,
     height: '80vh',
-    recordFormFormWidth: '90%'
+    recordFormFormWidth: '90%',
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
   } // 组件所接收的 props
 };
 //供应商审批
@@ -7476,7 +7477,8 @@ window[642858680954] = {
     actionBarFixed: false,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_464112860425',
+    // noWidthFields:'C3_464112860425',
+    // noWidthFieldsIndex:1,
     formProps: {
       // height: 500
     },
