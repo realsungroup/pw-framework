@@ -270,6 +270,17 @@ class ReplyComplain extends React.Component {
       await http({ baseURL }).saveRecordAndSubTables({
         data
       });
+      // 负责人处理完通知HR
+      http().modifyRecords({
+        resid: 648849344996,
+        data: [
+          {
+            REC_ID: selectRecord.leaderNoticeID,
+            leaderIsReply: 'Y',
+            targetName: selectRecord.target
+          }
+        ]
+      });
       this.tableDataRef.handleRefresh();
       this.setState({
         replyVisible: false,
@@ -350,6 +361,16 @@ class ReplyComplain extends React.Component {
       this.setState({ submitLoading: true });
       await http({ baseURL }).saveRecordAndSubTables({
         data
+      });
+      // 负责人处理完通知HR
+      http().modifyRecords({
+        resid: 648849344996,
+        data: selectedRecords.map(item => {
+          return {
+            REC_ID: item.leaderNoticeID,
+            leaderIsReply: 'Y'
+          };
+        })
       });
       this.tableDataRef.handleRefresh();
       this.setState({

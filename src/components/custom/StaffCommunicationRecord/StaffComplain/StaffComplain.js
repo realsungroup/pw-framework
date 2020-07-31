@@ -208,15 +208,16 @@ class StaffComplain extends React.Component {
 
   noticeLeader = async () => {
     const { targetInfo, selectRecord } = this.state;
-    let leaderNotice;
     let leaderData = {
       leaderId: targetInfo.C3_429966115761,
       leaderName: targetInfo.C3_417993433650,
-      isSend: 'Y'
+      isSend: 'Y',
+      recordID: selectRecord.REC_ID
     };
     try {
       this.setState({ noticeLoading: true });
-      leaderNotice = await http().addRecords({
+      // 通知负责人
+      const res = await http().addRecords({
         resid: '648849344996',
         data: [leaderData]
       });
@@ -227,7 +228,8 @@ class StaffComplain extends React.Component {
             REC_ID: selectRecord.REC_ID,
             mailed: 'Y',
             leaderID: leaderData.leaderId,
-            leaderName: leaderData.leaderName
+            leaderName: leaderData.leaderName,
+            leaderNoticeID: res.data[0].REC_ID
           }
         ]
       });
@@ -488,21 +490,36 @@ class StaffComplain extends React.Component {
         cmswhere: `C3_227192472953 in (${ids})`
       });
       this.setState({ noticeLoading: true });
-      const leaderData = res.data.map(item => ({
-        leaderId: item.C3_429966115761,
-        leaderName: item.C3_417993433650,
-        isSend: 'Y'
-      }));
-      await http().addRecords({
+      const leaderData = selectedRecords.map(item => {
+        const record = res.data.find(
+          data => item.targetID == data.C3_227192472953
+        );
+        return {
+          leaderId: record.C3_429966115761,
+          leaderName: record.C3_417993433650,
+          isSend: 'Y',
+          recordID: item.REC_ID,
+          targetName: item.target
+        };
+      });
+      const res1 = await http().addRecords({
         resid: '648849344996',
         data: leaderData
       });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
-        data: selectedRecords.map(item => ({
-          ...item,
-          mailed: 'Y'
-        }))
+        data: selectedRecords.map(item => {
+          const notice = res1.data.find(it => {
+            return it.recordID == item.REC_ID;
+          });
+          return {
+            ...item,
+            mailed: 'Y',
+            leaderNoticeID: notice.REC_ID,
+            leaderID: notice.leaderId,
+            leaderName: notice.leaderName
+          };
+        })
       });
       this.tableDataRef.handleRefresh();
       message.success('已通知部门负责人');
