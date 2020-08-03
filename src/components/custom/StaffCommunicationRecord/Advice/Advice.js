@@ -631,6 +631,11 @@ class Advice extends React.Component {
                     <label>详细内容：</label> {selectRecord.detail}
                   </div>
                 </Col>
+                <Col span={24}>
+                  <div>
+                    <label>HR回复内容：</label> {selectRecord.replication}
+                  </div>
+                </Col>
               </Row>
               <div className="picProof">
                 <h4>图片证据：</h4>
