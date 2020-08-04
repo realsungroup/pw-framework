@@ -573,6 +573,11 @@ class HelpAndAppeal extends React.Component {
                     <label>详细内容：</label> {selectRecord.detail}
                   </div>
                 </Col>
+                <Col span={24}>
+                  <div>
+                    <label>HR回复内容：</label> {selectRecord.replication}
+                  </div>
+                </Col>
               </Row>
 
               <div className="picProof">
@@ -612,7 +617,6 @@ class HelpAndAppeal extends React.Component {
                   <span style={{ textAlign: 'center' }}>暂无视频</span>
                 )}
               </div>
-              <hr />
               {selectKey === '1' && (
                 <Button
                   onClick={() => {

@@ -77,7 +77,9 @@ class StaffComplain extends React.Component {
     selectedProofs: [],
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
-    backLoading: '' //
+    backLoading: '', //
+    hrReplyImgs: [],
+    hrReplyVideos: []
   };
 
   componentDidMount = () => {
@@ -116,10 +118,13 @@ class StaffComplain extends React.Component {
   viewRecord = async record => {
     this.setState({
       showRecord: true,
-      loading: true
+      loading: true,
+      selectRecord: record,
+      hrReplyImgs: [],
+      hrReplyVideos: []
     });
     if (record.status === '未阅读') {
-      await this.markRead(record);
+      this.markRead(record);
     }
     let res;
     let img = [],
@@ -135,7 +140,6 @@ class StaffComplain extends React.Component {
         resid: '648054096833',
         cmswhere: `recordID = ${record.recordID}`
       });
-      console.log('res', res);
       res.data.forEach(item => {
         if (item.mediaType == '图片') {
           img.push(item);
@@ -181,9 +185,24 @@ class StaffComplain extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
+    if (record.replyID) {
+      const res = await http({ baseURL: this.baseURL }).getTable({
+        resid: '648756387329',
+        cmswhere: `replyID = '${record.replyID}'`
+      });
+      const hrvideos = [],
+        hrimgs = [];
+      res.data.forEach(item => {
+        if (item.mediaType == '图片') {
+          hrimgs.push(item);
+        } else if (item.mediaType == '视频') {
+          hrvideos.push(item);
+        }
+      });
+      this.setState({ hrReplyImgs: hrimgs, hrReplyVideos: hrvideos });
+    }
 
     this.setState({
-      selectRecord: record,
       imgProofRecord: img,
       audioProof: audio,
       videoProof: video,
@@ -208,15 +227,16 @@ class StaffComplain extends React.Component {
 
   noticeLeader = async () => {
     const { targetInfo, selectRecord } = this.state;
-    let leaderNotice;
     let leaderData = {
       leaderId: targetInfo.C3_429966115761,
       leaderName: targetInfo.C3_417993433650,
-      isSend: 'Y'
+      isSend: 'Y',
+      recordID: selectRecord.REC_ID
     };
     try {
       this.setState({ noticeLoading: true });
-      leaderNotice = await http().addRecords({
+      // 通知负责人
+      const res = await http().addRecords({
         resid: '648849344996',
         data: [leaderData]
       });
@@ -227,7 +247,8 @@ class StaffComplain extends React.Component {
             REC_ID: selectRecord.REC_ID,
             mailed: 'Y',
             leaderID: leaderData.leaderId,
-            leaderName: leaderData.leaderName
+            leaderName: leaderData.leaderName,
+            leaderNoticeID: res.data[0].REC_ID
           }
         ]
       });
@@ -488,21 +509,36 @@ class StaffComplain extends React.Component {
         cmswhere: `C3_227192472953 in (${ids})`
       });
       this.setState({ noticeLoading: true });
-      const leaderData = res.data.map(item => ({
-        leaderId: item.C3_429966115761,
-        leaderName: item.C3_417993433650,
-        isSend: 'Y'
-      }));
-      await http().addRecords({
+      const leaderData = selectedRecords.map(item => {
+        const record = res.data.find(
+          data => item.targetID == data.C3_227192472953
+        );
+        return {
+          leaderId: record.C3_429966115761,
+          leaderName: record.C3_417993433650,
+          isSend: 'Y',
+          recordID: item.REC_ID,
+          targetName: item.target
+        };
+      });
+      const res1 = await http().addRecords({
         resid: '648849344996',
         data: leaderData
       });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
-        data: selectedRecords.map(item => ({
-          ...item,
-          mailed: 'Y'
-        }))
+        data: selectedRecords.map(item => {
+          const notice = res1.data.find(it => {
+            return it.recordID == item.REC_ID;
+          });
+          return {
+            ...item,
+            mailed: 'Y',
+            leaderNoticeID: notice.REC_ID,
+            leaderID: notice.leaderId,
+            leaderName: notice.leaderName
+          };
+        })
       });
       this.tableDataRef.handleRefresh();
       message.success('已通知部门负责人');
@@ -771,7 +807,9 @@ class StaffComplain extends React.Component {
       isBatchReply,
       backVisible,
       backReason,
-      backLoading
+      backLoading,
+      hrReplyImgs,
+      hrReplyVideos
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -992,6 +1030,40 @@ class StaffComplain extends React.Component {
                 )}
               </div>
               <hr />
+              <h3>HR回复</h3>
+              <div>
+                <div>
+                  <label style={{ color: '#000000' }}>HR回复内容：</label>
+                  {selectRecord.replication}
+                </div>
+                <div className="picProof">
+                  <h4>图片证据：</h4>
+                  {hrReplyImgs.length ? (
+                    hrReplyImgs.map(item => {
+                      return <img src={item.fileURL} alt="" />;
+                    })
+                  ) : (
+                    <span>暂无图片</span>
+                  )}
+                </div>
+                <div className="videoProof">
+                  <h4>视频证据：</h4>
+                  {hrReplyVideos.length ? (
+                    hrReplyVideos.map((item, index) => {
+                      return (
+                        <video
+                          controls
+                          src={item.fileURL}
+                          autoPlay={false}
+                          style={{ width: '50%' }}
+                        />
+                      );
+                    })
+                  ) : (
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
+                </div>
+              </div>
               {selectKey === '1' && (
                 <Popconfirm
                   title="确认通知部门负责人？"
