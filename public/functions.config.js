@@ -4249,6 +4249,7 @@ window[642854858872] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
+    backendButtonPopConfirmProps:{ placement: 'bottom' },
     formProps: {
       // height: 500
     },
@@ -5395,7 +5396,7 @@ window[642856395014] = {
   title: '月度薪资明细', // 功能模块名称
   props: {
     resid: 438956460750,
-    actionBarWidth: 400,
+    actionBarWidth: 500,
     baseURL: 'http://ngrok14.realsun.me:7071/',
     downloadBaseURL: 'http://ngrok13.realsun.me:7071/',
     hasAdd: true,
