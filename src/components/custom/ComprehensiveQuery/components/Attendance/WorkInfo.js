@@ -61,11 +61,12 @@ class WorkInfo extends React.Component {
     return (
       <Select
         placeholder="月份"
-        style={{ width: 120, marginBottom: 8 }}
+        style={{ width: 120 }}
         value={this.state.selectMonth}
         onSelect={selectValue => {
           this.setState({ selectMonth: selectValue });
         }}
+        size="small"
         showSearch
         filterOption={(input, option) => {
           return (
@@ -133,24 +134,27 @@ class WorkInfo extends React.Component {
         <div className="WorkInfoQuery">
           <div className="" style={{ height: '100%' }}>
             <nav className="performance-query_nav">
-              <span
-                className={`performance-query_nav_item ${currentNav ===
-                  'monthDetail' && activeClasssName}`}
-                onClick={this.handleNavChange('monthDetail')}
-              >
-                月报明细
-              </span>
-              <span
-                className={`performance-query_nav_item ${currentNav ===
-                  'dayDetail' && activeClasssName}`}
-                onClick={this.handleNavChange('dayDetail')}
-              >
-                日报明细
-              </span>
+              <div>
+                <span
+                  className={`performance-query_nav_item ${currentNav ===
+                    'monthDetail' && activeClasssName}`}
+                  onClick={this.handleNavChange('monthDetail')}
+                >
+                  月报明细
+                </span>
+                <span
+                  className={`performance-query_nav_item ${currentNav ===
+                    'dayDetail' && activeClasssName}`}
+                  onClick={this.handleNavChange('dayDetail')}
+                >
+                  日报明细
+                </span>
+              </div>
+
+              {this.renderSelect()}
             </nav>
-            {this.renderSelect()}
             <Skeleton loading={!person.C3_305737857578 || !selectMonth}>
-              <div style={{ height: 'calc(100% - 89px)' }}>
+              <div style={{ height: 'calc(100% - 28px)' }}>
                 {currentNav === 'monthDetail' && (
                   <TableData
                     resid="460481857607"

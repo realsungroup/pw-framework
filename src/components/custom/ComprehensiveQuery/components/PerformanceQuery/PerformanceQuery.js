@@ -113,13 +113,14 @@ class PerformanceQuery extends React.Component {
   renderSelect = () => {
     return (
       <Select
-        style={{ width: 120, marginBottom: 16 }}
+        style={{ width: 120 }}
         placeholder="选择财年"
         value={this.state.selectYear}
         onSelect={selectValue => {
           this.setState({ selectYear: selectValue });
         }}
         labelInValue
+        size="small"
       >
         {this.state.years.map(target => (
           <Option value={target.C3_420297595131}>
@@ -142,34 +143,37 @@ class PerformanceQuery extends React.Component {
     return (
       <div className="performance-query">
         <nav className="performance-query_nav">
-          <span
-            className={`performance-query_nav_item ${currentNav === 'target' &&
-              activeClasssName}`}
-            onClick={this.handleNavChange('target')}
-          >
-            目标
-          </span>
-          <span
-            className={`performance-query_nav_item ${currentNav ===
-              'middleOfYear' && activeClasssName}`}
-            onClick={this.handleNavChange('middleOfYear')}
-          >
-            年中自评
-          </span>
-          <span
-            className={`performance-query_nav_item ${currentNav ===
-              'endOfYear' && activeClasssName}`}
-            onClick={this.handleNavChange('endOfYear')}
-          >
-            年末自评
-          </span>
-          <span
-            className={`performance-query_nav_item ${currentNav ===
-              'directly' && activeClasssName}`}
-            onClick={this.handleNavChange('directly')}
-          >
-            直评查询
-          </span>
+          <div>
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'target' && activeClasssName}`}
+              onClick={this.handleNavChange('target')}
+            >
+              目标
+            </span>
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'middleOfYear' && activeClasssName}`}
+              onClick={this.handleNavChange('middleOfYear')}
+            >
+              年中自评
+            </span>
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'endOfYear' && activeClasssName}`}
+              onClick={this.handleNavChange('endOfYear')}
+            >
+              年末自评
+            </span>
+            <span
+              className={`performance-query_nav_item ${currentNav ===
+                'directly' && activeClasssName}`}
+              onClick={this.handleNavChange('directly')}
+            >
+              直评查询
+            </span>
+          </div>
+          {this.renderSelect()}
         </nav>
         <section className="performance-query_content-wrap">
           {/* 目标 */}
@@ -193,14 +197,16 @@ class PerformanceQuery extends React.Component {
               </div>
               <div className="performance-query_item_content_wrap">
                 {targetSelectItem === 'target' && (
-                  <TargetTarget person={person} selectYear={selectYear}>
-                    {this.renderSelect()}
-                  </TargetTarget>
+                  <TargetTarget
+                    person={person}
+                    selectYear={selectYear}
+                  ></TargetTarget>
                 )}
                 {targetSelectItem === 'history' && (
-                  <TargetHistory person={person} selectYear={selectYear}>
-                    {this.renderSelect()}
-                  </TargetHistory>
+                  <TargetHistory
+                    person={person}
+                    selectYear={selectYear}
+                  ></TargetHistory>
                 )}
               </div>
             </div>
@@ -234,14 +240,13 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     selectYear={selectYear}
                     type="年中"
-                  >
-                    {this.renderSelect()}
-                  </TargetSelfAppraise>
+                  ></TargetSelfAppraise>
                 )}
                 {middleOfYearSelectItem === 'advantageShortcoming' && (
                   <AdvantageShortcoming
                     person={person}
                     type="年中"
+                    selectYear={selectYear}
                   ></AdvantageShortcoming>
                 )}
               </div>
@@ -274,14 +279,13 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     type="年末"
                     selectYear={selectYear}
-                  >
-                    {this.renderSelect()}
-                  </TargetSelfAppraise>
+                  ></TargetSelfAppraise>
                 )}
                 {endOfYearSelectItem === 'advantageShortcoming' && (
                   <AdvantageShortcoming
                     person={person}
                     type="年末"
+                    selectYear={selectYear}
                   ></AdvantageShortcoming>
                 )}
               </div>
@@ -308,12 +312,13 @@ class PerformanceQuery extends React.Component {
               </div>
               <div className="performance-query_item_content_wrap">
                 {directlySelectItem === 'viewTarget' && (
-                  <ViewTarget person={person} selectYear={selectYear}>
-                    {this.renderSelect()}
-                  </ViewTarget>
+                  <ViewTarget
+                    person={person}
+                    selectYear={selectYear}
+                  ></ViewTarget>
                 )}
                 {directlySelectItem === 'viewComments' && (
-                  <ViewComments person={person} />
+                  <ViewComments person={person} selectYear={selectYear} />
                 )}
               </div>
             </div>

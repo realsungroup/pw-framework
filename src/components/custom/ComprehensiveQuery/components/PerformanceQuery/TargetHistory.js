@@ -23,7 +23,7 @@ class TargetHistory extends React.Component {
             subtractH={180}
             hasAdvSearch={false}
             hasAdd={false}
-            hasRowView={true}
+            hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
@@ -36,7 +36,7 @@ class TargetHistory extends React.Component {
             cparm1={this.props.selectYear.key}
             baseURL={this.baseURL}
             downloadBaseURL={this.attendanceDownloadURL}
-            isSetColumnWidth={false}
+            // isSetColumnWidth={false}
             isWrap={true}
           />
         </div>
