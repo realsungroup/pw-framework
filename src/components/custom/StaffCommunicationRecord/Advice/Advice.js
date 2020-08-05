@@ -670,7 +670,9 @@ class Advice extends React.Component {
               {selectKey === '1' && (
                 <Button
                   onClick={() => {
-                    this.reply();
+                    this.setState({
+                      replyTextModal: true
+                    });
                   }}
                   style={{ marginRight: 8 }}
                 >
