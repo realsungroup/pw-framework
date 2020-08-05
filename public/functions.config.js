@@ -55,3 +55,9 @@ window[649780482266] = {
     zoomStatus: 'max'
   }
 };
+
+// onePage
+window[649851135290] = {
+  title: 'onepage',
+  name: 'OnePage',
+};

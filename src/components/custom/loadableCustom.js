@@ -825,3 +825,10 @@ export const LzModal = Loadable({
     return minLoading;
   }
 });
+
+export const OnePage = Loadable({
+  loader: () => import('./OnePage'),
+  loading() {
+    return minLoading;
+  }
+});
