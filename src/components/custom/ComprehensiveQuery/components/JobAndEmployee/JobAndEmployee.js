@@ -56,6 +56,7 @@ class JobAndEmployee extends React.Component {
     selectedNode: {}
   };
   componentDidMount() {
+    return;
     this.chart = new OrgChart(document.getElementById('nodes'), {
       template: 'myTemplate',
       nodeBinding: {

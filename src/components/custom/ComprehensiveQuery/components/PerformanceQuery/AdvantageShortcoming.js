@@ -54,8 +54,28 @@ class AdvantageShortcoming extends React.Component {
         spinning: false
       });
     }
+    if (prevProps.selectYear.key !== this.props.selectYear.key) {
+      this.setState(
+        {
+          advantageShortcoming: this.state.advantageShortcomings.find(
+            item => item.C3_420150922019 === this.props.selectYear.label
+          )
+        },
+        () => {
+          const dataProp = getDataProp(
+            this.formData,
+            this.state.advantageShortcoming,
+            true,
+            false,
+            false
+          );
+          this.setState({ dataProp });
+        }
+      );
+    }
   }
 
+  formData = {};
   getFormData = async record => {
     let res;
     try {
@@ -64,8 +84,8 @@ class AdvantageShortcoming extends React.Component {
         formName: this.state.formName,
         dblinkname: 'ehr'
       });
-      const formData = dealControlArr(res.data.columns);
-      const dataProp = getDataProp(formData, record, true, false, false);
+      this.formData = dealControlArr(res.data.columns);
+      const dataProp = getDataProp(this.formData, record, true, false, false);
       this.setState({ dataProp });
     } catch (err) {
       console.log(err);
@@ -100,40 +120,10 @@ class AdvantageShortcoming extends React.Component {
     }
   };
 
-  renderSelect = () => {
-    return (
-      <Select
-        style={{ width: 120 }}
-        placeholder="选择财年"
-        value={this.state.selectYear}
-        onSelect={selectValue => {
-          this.setState(
-            {
-              selectYear: selectValue,
-              advantageShortcoming: this.state.advantageShortcomings.find(
-                item => item.C3_420150922019 === selectValue
-              )
-            },
-            () => this.getFormData(this.state.advantageShortcoming)
-          );
-        }}
-      >
-        {this.state.years.map(target => (
-          <Option value={target.C3_420150922019}>
-            {target.C3_420150922019}
-          </Option>
-        ))}
-      </Select>
-    );
-  };
-
   render() {
     const { spinning } = this.state;
     return (
       <div id="advantage-shortcoming">
-        <div className="advantage-shortcoming_select-year">
-          {this.renderSelect()}
-        </div>
         <div className="advantage-shortcoming_content">
           <Spin spinning={spinning}>
             <FormData

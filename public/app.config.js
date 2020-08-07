@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://ngrok4.realsun.me:7071//', // 请求的基地址
+    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -28,7 +28,7 @@ window.pwConfig = {
       HeadCountBaseURL: 'http://ngrok5.realsun.me:7071/',
       PostArchitectureBaseURL: 'http://ngrok5.realsun.me:7071//',
       PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:7071//',
-      comprehensiveQueryBaseURL: 'http://ngrok5.realsun.me:7071/', //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询

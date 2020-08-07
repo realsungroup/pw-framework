@@ -809,7 +809,8 @@ class StaffComplain extends React.Component {
       backReason,
       backLoading,
       hrReplyImgs,
-      hrReplyVideos
+      hrReplyVideos,
+      replyContent
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -1149,6 +1150,9 @@ class StaffComplain extends React.Component {
                 return (
                   <Button
                     onClick={() => {
+                      this.setState({
+                        replyContent: selectRecord.leaderReplyContent
+                      });
                       this.reply(selectedRecords);
                     }}
                   >
@@ -1215,7 +1219,7 @@ class StaffComplain extends React.Component {
           destroyOnClose={true}
         >
           <TextArea
-            value={this.replyText}
+            value={replyContent}
             onChange={e => {
               this.replyText(e.target.value);
             }}

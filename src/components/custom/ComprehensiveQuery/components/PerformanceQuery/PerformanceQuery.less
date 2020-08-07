@@ -1,5 +1,5 @@
 .performance-query {
-  height: calc(100vh - 91px);
+  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -8,9 +8,10 @@
     margin-bottom: 4px;
     display: flex;
     align-items: center;
-    padding: 12px 0;
+    justify-content: space-between;
+    // padding: 12px 0;
     &_item {
-      padding: 0 16px;
+      padding: 4px 16px;
       // margin-left: 32px;
       border-radius: 4px;
       cursor: pointer;
@@ -21,9 +22,9 @@
     }
   }
   &_content-wrap {
-    // flex: 1;
+    flex: 1;
+    overflow: scroll;
     // display: flex;
-    height: calc(100% - 49px);
     background: #fff;
   }
   &_item {
@@ -33,7 +34,7 @@
     flex-direction: column;
     flex: 1;
     &_nav {
-      padding: 12px 0px;
+      padding: 8px 0px;
       &_item {
         cursor: pointer;
         &:nth-of-type(1) {
@@ -51,7 +52,7 @@
       }
     }
     &_content_wrap {
-      height: calc(100% - 45px);
+      height: calc(100% - 38px);
       display: flex;
       // padding: 0px 2.78% 0;
     }
@@ -69,7 +70,6 @@
       overflow: scroll;
       padding: 16px;
       height: 100%;
-      max-height: calc(100vh - 260px);
     }
   }
   #target-self-appraise,
@@ -81,7 +81,7 @@
     display: flex;
     flex-direction: column;
     .table-data-wrapper {
-      height: calc(100% - 48px);
+      height: 100%;
     }
   }
 }
