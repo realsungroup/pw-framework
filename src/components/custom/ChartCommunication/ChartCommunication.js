@@ -4,7 +4,7 @@ import TableData from '../../common/data/TableData';
 import { Tabs, Select, Menu, Button, Spin, Radio } from 'antd';
 import http from 'Util20/api';
 import html2canvas from 'html2canvas';
-
+import echarts from 'echarts';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -213,14 +213,38 @@ class ChartCommunication extends React.Component {
       let ingTousu = 0;
       let ingQiuzhu = 0;
       let ingJianyi = 0;
+      
       const complainTypeData = {};
       const adviceTypeData = {};
       res.cmscolumninfo.find((item) => item.id === 'typeComplaint').typeComplaint.DisplayOptions.filter(item => item).forEach((item) => {
-        complainTypeData[item] = { count: 0, pending: 0, processing: 0, processed: 0 }
+        complainTypeData[item] = { brid:item,count: 0, pending: 0, processing: 0, processed: 0 }
       })
       res.cmscolumninfo.find((item) => item.id === 'typeAdvice').typeAdvice.DisplayOptions.filter(item => item).forEach((item) => {
         adviceTypeData[item] = { count: 0, pending: 0, processed: 0 }
       })
+
+let tousuBrid=Object.keys(complainTypeData);
+let jianyiBrid=Object.keys(adviceTypeData);
+let bridC=0;
+let psdTousu=[];
+let psgTousu=[];
+let pdgTousu=[];
+let psdJianyi=[];
+let psgJianyi=[];
+let pdgJianyi=[];
+while(bridC<tousuBrid.length){
+psdTousu.push(0);
+psgTousu.push(0);
+pdgTousu.push(0);
+bridC++;
+}
+bridC=0;
+while(bridC<tousuBrid.length){
+psdJianyi.push(0);
+psgJianyi.push(0);
+pdgJianyi.push(0);
+bridC++;
+}
       while (n < res.data.length) {
         const item = res.data[n]
         if (res.data[n].offline == 'Y') {
@@ -233,6 +257,13 @@ class ChartCommunication extends React.Component {
           complainTypeData[item.typeComplaint].count++;
           if (res.data[n].HRReplyTime) {
             tousuCount = tousuCount + 1;
+            bridC=0;
+		while(bridC<tousuBrid.length){
+			if(res.data[n].typeComplaint==tousuBrid[bridC]){
+				psdTousu[bridC]=psdTousu[bridC]+1;
+			}
+			bridC++;
+		}
             complainTypeData[item.typeComplaint].processed++;
             let t1 = res.data[n].HRReplyTime;
             let d1 = t1.replace(/\-/g, "/");
@@ -244,8 +275,22 @@ class ChartCommunication extends React.Component {
           } else if (res.data[n].mailed == 'N') {
             waitTousu = waitTousu + 1;
             complainTypeData[item.typeComplaint].pending++;
+		bridC=0;
+		while(bridC<tousuBrid.length){
+			if(res.data[n].typeComplaint==tousuBrid[bridC]){
+				pdgTousu[bridC]=pdgTousu[bridC]+1;
+			}
+			bridC++;
+		}
           } else {
             ingTousu = ingTousu + 1;
+		bridC=0;
+		while(bridC<tousuBrid.length){
+			if(res.data[n].typeComplaint==tousuBrid[bridC]){
+				psgTousu[bridC]=psgTousu[bridC]+1;
+			}
+			bridC++;
+		}
             complainTypeData[item.typeComplaint].processing++;
           }
         } else if (res.data[n].type == '求助/申诉') {
@@ -268,6 +313,15 @@ class ChartCommunication extends React.Component {
           jianyi = jianyi + 1;
           if (res.data[n].HRReplyTime) {
             jianyiCount = jianyiCount + 1;
+
+		bridC=0;
+		while(bridC<jianyiBrid.length){
+			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
+				psdJianyi[bridC]=psdJianyi[bridC]+1;
+			}
+			bridC++;
+		}
+
             let t1 = res.data[n].HRReplyTime;
             let d1 = t1.replace(/\-/g, "/");
             let date1 = new Date(d1);
@@ -277,13 +331,26 @@ class ChartCommunication extends React.Component {
             replyJianyi = replyJianyi + (parseInt(date1 - date2) / 1000)
           } else if (res.data[n].mailed == 'N') {
             waitJianyi = waitJianyi + 1;
+		bridC=0;
+		while(bridC<jianyiBrid.length){
+			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
+				pdgJianyi[bridC]=pdgJianyi[bridC]+1;
+			}
+			bridC++;
+		}
           } else {
             ingJianyi = ingJianyi + 1;
+		bridC=0;
+		while(bridC<jianyiBrid.length){
+			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
+				psgJianyi[bridC]=psgJianyi[bridC]+1;
+			}
+			bridC++;
+		}
           }
         }
         n++;
       }
-      console.log(Object.keys(complainTypeData))
       let maxTime = 0;
       if (maxTime < replyJianyi) {
         maxTime = replyJianyi;
@@ -334,7 +401,133 @@ class ChartCommunication extends React.Component {
         ingTousu,
         complainTypeData
       })
-
+	let myChart = echarts.init(document.getElementById('mycharts'));
+	let myChart2 = echarts.init(document.getElementById('mycharts2'));
+	let option = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data: ['未处理', '处理中', '已处理']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    yAxis: [
+        {
+            type: 'category',
+            data: tousuBrid
+        }
+    ],
+    xAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '未处理',
+            type: 'bar',
+            barWidth: 16,
+            stack: 'default',
+            data: pdgTousu,
+label: {
+                show: true,
+                position: 'inside'
+            },
+        },
+        {
+            name: '处理中',
+            type: 'bar',
+            stack: 'default',
+            data: psgTousu,
+label: {
+                show: true,
+                position: 'inside'
+            },
+        },
+        {
+            name: '已处理',
+            type: 'bar',
+            stack: 'default',
+            data: psdTousu,
+label: {
+                show: true,
+                position: 'inside'
+            },
+        }
+    ]
+};
+ let option2 = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data: ['未处理', '处理中', '已处理']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    yAxis: [
+        {
+            type: 'category',
+            data: jianyiBrid
+        }
+    ],
+    xAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '未处理',
+            type: 'bar',
+            barWidth: 16,
+            stack: 'default2',
+	label: {
+                show: true,
+                position: 'inside'
+            },
+            data: pdgJianyi
+        },
+        {
+            name: '处理中',
+            type: 'bar',
+            stack: 'default2',
+            data: psgJianyi,
+label: {
+                show: true,
+                position: 'inside'
+            },
+        },
+        {
+            name: '已处理',
+            type: 'bar',
+            stack: 'default2',
+            data: psdJianyi,
+label: {
+                show: true,
+                position: 'inside'
+            },
+        }
+    ]
+};
+ 	myChart.setOption(option);
+myChart2.setOption(option2);
+	
     } catch (e) { console.log(e.message); this.setState({ loading: false }) }
   }
   componentWillMount() {
@@ -485,7 +678,6 @@ class ChartCommunication extends React.Component {
                         <div style={{ float: 'left', height: '0.8rem', marginTop: '0.1rem', background: '#52C41A', width: (this.state.tousu == 0) ? 0 : (this.state.tousuCount / this.state.tousu * 100) + '%' }}></div>
                       </div>
 
-
                       <div style={{ marginTop: '.5rem' }}>
                         <span>求助/申诉：</span>
                         <i style={{ display: 'inline-block', width: '0.8rem', height: '0.8rem', marginTop: '0.1rem', verticalAlign: 'middle', marginRight: '4px', background: '#EB2F96' }}></i><span>未处理：{this.state.waitQiuzhu}次</span>
@@ -513,24 +705,15 @@ class ChartCommunication extends React.Component {
 
                     </div>
                     <div style={{ overflow: 'hidden', marginTop: "24px" }}>
-                      <p style={{ width: '88px', fontWeight: 'bold' }}>投诉类型：</p>
-                      <div id="comlainTypeChart">
-                        {Object.keys(complainTypeData).map(item => {
-                          return <div>
-                            <div style={{ marginTop: 16 }}>
-                              <span>{complainTypeData[item].count}：</span>
-                              <i style={{ display: 'inline-block', width: '0.8rem', height: '0.8rem', marginTop: '0.1rem', verticalAlign: 'middle', marginRight: '4px', background: '#EB2F96' }}></i><span>未处理：{this.state.waitJianyi}次</span>
-                              <i style={{ display: 'inline-block', width: '0.8rem', height: '0.8rem', marginTop: '0.1rem', verticalAlign: 'middle', marginLeft: '1.5rem', marginRight: '4px', background: '#722ED1' }}></i><span>处理中：{this.state.ingJianyi}次</span>
-                              <i style={{ display: 'inline-block', width: '0.8rem', height: '0.8rem', marginTop: '0.1rem', verticalAlign: 'middle', marginLeft: '1.5rem', marginRight: '4px', background: '#52C41A' }}></i><span>已处理：{this.state.jianyiCount}次</span>
-                            </div>
-                          </div>
-                        })}
-                      </div>
+                      <p style={{fontWeight: 'bold' }}>投诉类型：</p>
+			<div id='mycharts' style={{width:'571px',height:'264px'}}></div>
+                    </div>
+		    <div style={{ overflow: 'hidden', marginTop: "24px" }}>
+                      <p style={{fontWeight: 'bold' }}>合理化建议类型：</p>
+			<div id='mycharts2' style={{width:'571px',height:'264px'}}></div>
                     </div>
                   </Spin>
                 </div>
-
-
               </div>
             </div>
           </TabPane>
