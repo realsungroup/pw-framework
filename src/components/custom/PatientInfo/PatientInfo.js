@@ -143,6 +143,7 @@ class PatientInfo extends React.Component {
 
   render() {
     const { tableDataProps } = this.props;
+    const {resid} = tableDataProps;
     const {
       modalVisible,
       record,
@@ -170,7 +171,7 @@ class PatientInfo extends React.Component {
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
-              resid={624640053934}
+              resid={resid}
               userInfoFields={[
                 { label: "姓名", innerFieldName: "C3_617809531835" },
                 { label: "身份证号", innerFieldName: "C3_617809531480" },

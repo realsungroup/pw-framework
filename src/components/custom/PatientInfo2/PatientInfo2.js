@@ -1,7 +1,7 @@
 import React from "react";
 import { propTypes, defaultProps } from "./propTypes";
 import TableData from "Common/data/TableData";
-import "./PatientInfo.less";
+import "./PatientInfo2.less";
 import { Button, message } from "antd";
 import { LzModal, LzMenuForms } from "../loadableCustom";
 import http, { makeCancelable } from "Util20/api";
@@ -13,7 +13,7 @@ const customBtnStyle = {
 /**
  * 患者信息
  */
-class PatientInfo extends React.Component {
+class PatientInfo2 extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
   constructor(props) {
@@ -143,6 +143,7 @@ class PatientInfo extends React.Component {
 
   render() {
     const { tableDataProps } = this.props;
+    const {resid} = tableDataProps;
     const {
       modalVisible,
       record,
@@ -170,7 +171,7 @@ class PatientInfo extends React.Component {
               }}
               hasFieldsLabel
               navListResid={record[navListResidField]}
-              resid={624640053934}
+              resid={resid}
               userInfoFields={[
                 { label: "姓名", innerFieldName: "C3_617809531835" },
                 { label: "身份证号", innerFieldName: "C3_617809531480" },
@@ -190,4 +191,4 @@ class PatientInfo extends React.Component {
   }
 }
 
-export default PatientInfo;
+export default PatientInfo2;

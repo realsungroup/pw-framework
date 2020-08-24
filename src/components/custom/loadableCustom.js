@@ -11,7 +11,7 @@ export const PatientInfo = Loadable({
 });
 
 export const PatientInfo2 = Loadable({
-  loader: () => import('./PatientInfo'),
+  loader: () => import('./PatientInfo2'),
   loading() {
     return minLoading;
   }
