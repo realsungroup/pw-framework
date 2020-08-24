@@ -32,7 +32,7 @@ class PatientInfo extends React.Component {
     this.p1 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_617809531670 = 'UC'`,
+        cmswhere: `C3_625578283326 = '肠白塞'`,
         pageindex: 0,
         pagesize: 10,
       })
@@ -40,7 +40,7 @@ class PatientInfo extends React.Component {
     this.p2 = makeCancelable(
       http().getTable({
         resid,
-        cmswhere: `C3_617809531670 = 'CD'`,
+        cmswhere: `C3_625578283326 = 'CMUSE'`,
         pageindex: 0,
         pagesize: 10,
       })
@@ -174,7 +174,7 @@ class PatientInfo extends React.Component {
               userInfoFields={[
                 { label: "姓名", innerFieldName: "C3_617809531835" },
                 { label: "身份证号", innerFieldName: "C3_617809531480" },
-                { label: "性别", innerFieldName: "C3_617809531996" },
+                { label: "性别", innerFieldName: "C3_625580138015" },
                 { label: "出生年月", innerFieldName: "C3_617809532320" },
               ]}
               record={record}

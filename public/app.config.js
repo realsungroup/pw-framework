@@ -89,7 +89,7 @@ pwConfig.bucketname = 'realsun';
  * 工作台配置
  */
 // 在本页面打开功能页面的功能 resid
-pwConfig.openFuncInSelfResids = [588425594397,645026775225,645045274189];
+pwConfig.openFuncInSelfResids = [588425594397,645026775225,645045274189,650564690949];
 
 // 挂载到 window 对象下
 window.pwConfig = pwConfig;

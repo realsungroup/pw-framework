@@ -23,6 +23,32 @@ window[588425594397] = {
   },
 };
 
+// IBD定制-其他病种
+window[650564690949] = {
+  title: "患者信息",
+  name: "PatientInfo2",
+  props: {
+    tableDataProps: {
+      resid: 650624761209,
+      subtractH: 170,
+      actionBarFixed: false,
+      height: 'calc(100vh - 160px)',
+      size: "small",
+      actionBarWidth: 490,
+      hasModify: false,
+      hasDelete: false,
+      addText: "添加基本信息",
+      enAddText: "Add basic information",
+      rowModifyText: "修改基本信息",
+      enRowModifyText: "Modify basic information",
+      formProps: {
+        displayMode: "classify",
+      },
+    },
+  },
+};
+
+
 window[645026775225] = {
   title: "UC数据导出",
   name: "ExportData",

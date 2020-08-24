@@ -10,6 +10,13 @@ export const PatientInfo = Loadable({
   }
 });
 
+export const PatientInfo2 = Loadable({
+  loader: () => import('./PatientInfo'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const LzModal = Loadable({
   loader: () => import('../../lib/unit-component/components/LzModal'),
   loading() {
