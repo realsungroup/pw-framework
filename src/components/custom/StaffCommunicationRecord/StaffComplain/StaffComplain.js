@@ -231,8 +231,11 @@ class StaffComplain extends React.Component {
       leaderId: targetInfo.C3_429966115761,
       leaderName: targetInfo.C3_417993433650,
       isSend: 'Y',
-      recordID: selectRecord.REC_ID
+      recordID: selectRecord.REC_ID,
+	status:'处理中'
     };
+
+
     try {
       this.setState({ noticeLoading: true });
       // 通知负责人
