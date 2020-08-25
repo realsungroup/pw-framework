@@ -443,7 +443,7 @@ class ReviewEmployee extends React.Component {
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           subtractH={240}
-          hasBeBtns={true}
+          hasBeBtns={false}
           hasAdd={false}
           hasRowView={true}
           customRowBtns={[

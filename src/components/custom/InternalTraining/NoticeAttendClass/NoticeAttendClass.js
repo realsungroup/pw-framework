@@ -663,7 +663,9 @@ class NoticeAttendClass extends React.Component {
                     hasAdd={false}
                     hasRowDelete={false}
                     hasRowVModify={false}
+                    hasRowSelection={true}
                     hasRowView={false}
+                    hasBeBtns={true}
                     subtractH={240}
                     height="100%"
                     tableComponent="ag-grid"
@@ -892,6 +894,8 @@ class NoticeAttendClass extends React.Component {
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}
+                hasRowSelection={true}
+                hasBeBtns={true}
                 hasRowDelete={false}
                 hasRowModify={false}
                 hasRowView={true}
