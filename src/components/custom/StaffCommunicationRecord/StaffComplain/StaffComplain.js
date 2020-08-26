@@ -251,7 +251,8 @@ class StaffComplain extends React.Component {
             mailed: 'Y',
             leaderID: leaderData.leaderId,
             leaderName: leaderData.leaderName,
-            leaderNoticeID: res.data[0].REC_ID
+            leaderNoticeID: res.data[0].REC_ID,
+		status:'处理中'
           }
         ]
       });
@@ -442,6 +443,7 @@ class StaffComplain extends React.Component {
     this.setState({
       showRecord: false
     });
+this.tableDataRef.handleRefresh();
   };
   leaderChange = value => {
     this.setState({
