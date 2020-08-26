@@ -267,6 +267,7 @@ class Advice extends React.Component {
     this.setState({
       showRecord: false
     });
+this.tableDataRef.handleRefresh();
   };
 
   timeChange = value => {
