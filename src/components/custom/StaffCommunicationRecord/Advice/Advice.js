@@ -104,7 +104,7 @@ class Advice extends React.Component {
       showRecord: true,
       loading: true
     });
-    if (record.status === '未阅读') {
+    if (record.status === '未处理') {
       await this.markRead(record);
     }
     let res;
@@ -383,7 +383,7 @@ class Advice extends React.Component {
             >
               <Option value="全部">全部</Option>
               <Option value="已阅读">已阅读</Option>
-              <Option value="未阅读">未阅读</Option>
+              <Option value="未处理">未阅读</Option>
             </Select>
           </div>
           <div className="staff-contain_menu_headerMenu">

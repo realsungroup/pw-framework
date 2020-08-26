@@ -123,7 +123,7 @@ class StaffComplain extends React.Component {
       hrReplyImgs: [],
       hrReplyVideos: []
     });
-    if (record.status === '未阅读') {
+    if (record.status === '未处理') {
       this.markRead(record);
     }
     let res;
