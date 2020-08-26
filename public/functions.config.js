@@ -212,10 +212,10 @@ window[606493652444] = {
     hasRowView: true,
     hasRowDelete: false,
     subtractH: 166,
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
   }
 };
 
@@ -931,7 +931,7 @@ window[648297903478] = {
     hasRowDelete: false,
     height: '80vh',
     recordFormFormWidth: '90%',
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
   } // 组件所接收的 props
 };
 //供应商审批
@@ -1363,7 +1363,7 @@ window[611077057050] = {
     hasRowView: false,
     hasRowSelection: true,
     recordFormType: 'drawer',
-    isSetColumnWidth:true,
+    isSetColumnWidth: true,
     actionBarFixed: true,
     recordFormContainerProps: {
       placement: 'bottom',
@@ -1966,7 +1966,7 @@ window[618665452476] = {
   name: 'DLEmploy',
   title: '员工个人发展管理'
 };
-window[648315132714]={
+window[648315132714] = {
   name: 'ChartCommunication',
   title: '员工沟通记录统计'
 };
@@ -2149,9 +2149,9 @@ window[628886558788] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    isUseFormDefine:false,
-    advSearch:{
-      formName:'defaultSearch',
+    isUseFormDefine: false,
+    advSearch: {
+      formName: 'defaultSearch',
     },
     formProps: {
       // height: 500
@@ -2177,8 +2177,8 @@ window[629200936654] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    isUseFormDefine:false,
-    advSearch:{
+    isUseFormDefine: false,
+    advSearch: {
       formName: 'defaultSearch'
     },
     formProps: {
@@ -2245,7 +2245,7 @@ window[641990842014] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL:'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001',
   }
 };
 window[641992029202] = {
@@ -2254,7 +2254,7 @@ window[641992029202] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL:'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001',
 
   }
 };
@@ -2264,7 +2264,7 @@ window[641992076936] = {
   props: {
     resid: '534957565681',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL:'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001',
 
   }
 };
@@ -2274,7 +2274,7 @@ window[641992112255] = {
   props: {
     resid: '537391112338',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL:'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001',
 
   }
 };
@@ -2285,7 +2285,7 @@ window[641992135890] = {
   props: {
     resid: '537532977680',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL:'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001',
 
   }
 };
@@ -2383,8 +2383,8 @@ window[642853692520] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2406,12 +2406,12 @@ window[646240367975] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
+    isUseFormDefine: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2433,8 +2433,8 @@ window[642853703890] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    advSearch:{
-      formName:'defaultSearch'
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -2461,8 +2461,8 @@ window[642853717153] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2483,12 +2483,12 @@ window[642853731843] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2512,8 +2512,8 @@ window[642853756410] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2536,12 +2536,12 @@ window[642853770096] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_449335790387',
+    noWidthFields: 'C3_449335790387',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2569,8 +2569,8 @@ window[642853871961] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2598,8 +2598,8 @@ window[642853893908] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2623,8 +2623,8 @@ window[642853907777] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200,
     beforeSaveConfig: {
@@ -2653,19 +2653,19 @@ window[642853918132] = {
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       375292357468: {
         hasBeBtns: true,
-        noWidthFields:'RECNO',
+        noWidthFields: 'RECNO',
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -2690,12 +2690,12 @@ window[642853928356] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
-    noWidthFields:'C3_432205211132',
+    noWidthFields: 'C3_432205211132',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2719,12 +2719,12 @@ window[642853955171] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
-    noWidthFields:"DEP_ID",
+    noWidthFields: "DEP_ID",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2748,12 +2748,12 @@ window[642854041376] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2775,12 +2775,12 @@ window[642854056479] = {
     hasRowView: true,
     hasRowDelete: true,
     hasRowEdit: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2804,15 +2804,15 @@ window[642854067180] = {
       hasRowEditAdd: true,
       hasRowView: true,
       hasRowDelete: true,
-      actionBarFixed:false,
+      actionBarFixed: false,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -2821,33 +2821,33 @@ window[642854067180] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         // noWidthFields:'C3_441994473858',
-        noWidthFieldsIndex:1,
+        noWidthFieldsIndex: 1,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       433771913157: {
         hasBeBtns: true,
         isUseFormDefine: false,
-        noWidthFields:'C3_433771928534',
+        noWidthFields: 'C3_433771928534',
         // noWidthFieldsIndex:1,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       469288143241: {
         hasBeBtns: true,
         isUseFormDefine: false,
         // noWidthFields:'C3_472218217714',
-        noWidthFieldsIndex:1,
+        noWidthFieldsIndex: 1,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -2873,17 +2873,17 @@ window[642854077482] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
-    isSetColumnWidth:false,
-    noWidthFields:'C3_441994473858',
-    advSearch:{
+    isSetColumnWidth: false,
+    noWidthFields: 'C3_441994473858',
+    advSearch: {
       // formName:"defaultSearch"
-      isRequestFormData:false,
+      isRequestFormData: false,
     },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -2907,8 +2907,8 @@ window[642854088542] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
-    advSearch:{
+    isSetColumnWidth: false,
+    advSearch: {
       // formName:"defaultSearch",
       // isRequest
     },
@@ -2937,25 +2937,25 @@ window[642854098292] = {
       isUseFormDefine: false,
       hasRowEdit: true,
       hasRowEditAdd: true,
-      actionBarFixed:false,
+      actionBarFixed: false,
       baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       435419664427: {
         hasBeBtns: true,
-        isUseFormDefine:false,
+        isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -2981,8 +2981,8 @@ window[642854107052] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3006,12 +3006,12 @@ window[642854117487] = {
     hasRowEditAdd: true,
     hasRowEdit: true,
     isUseFormDefine: false,
-    actionBarFixed:false,
+    actionBarFixed: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3035,12 +3035,12 @@ window[642854131163] = {
     hasRowEditAdd: true,
     hasRowEdit: true,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3065,8 +3065,8 @@ window[642854141907] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3090,8 +3090,8 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3115,8 +3115,8 @@ window[642854157717] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3138,10 +3138,10 @@ window[642856273477] = {
     hasRowView: true,
     hasRowDelete: true,
     // isSetColumnWidth:false,
-    isUseFormDefine:false,
-    noWidthFields:'C3_518986364145',
-    advSearch:{
-      formName:'defaultSearch'
+    isUseFormDefine: false,
+    noWidthFields: 'C3_518986364145',
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -3165,9 +3165,9 @@ window[618661462541] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
-    advSearch:{
-      formName:"defaultSearch"
+    isUseFormDefine: false,
+    advSearch: {
+      formName: "defaultSearch"
     },
     formProps: {
       // height: 500
@@ -3195,11 +3195,11 @@ window[642856262431] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
+    isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_518986364887',
-    advSearch:{
-      formName:'defaultSearch'
+    noWidthFields: 'C3_518986364887',
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -3226,8 +3226,8 @@ window[642856283564] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3251,8 +3251,8 @@ window[642854180216] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3273,12 +3273,12 @@ window[642854999190] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    noWidthFields:'C3_423708411442',
+    noWidthFields: 'C3_423708411442',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3299,12 +3299,12 @@ window[642855062753] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3328,8 +3328,8 @@ window[642854713880] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3352,7 +3352,7 @@ window[642854200143] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_525642553303',
+    noWidthFields: 'C3_525642553303',
     importConfig: {
       mode: 'be',
       saveState: 'editoradd',
@@ -3361,8 +3361,8 @@ window[642854200143] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3385,12 +3385,12 @@ window[642854211673] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_619177547239',
+    noWidthFields: 'C3_619177547239',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3414,8 +3414,8 @@ window[642854223262] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3438,12 +3438,12 @@ window[642854235003] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_619177792975',
+    noWidthFields: 'C3_619177792975',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3467,8 +3467,8 @@ window[642854252939] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3492,8 +3492,8 @@ window[642854266702] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3514,13 +3514,13 @@ window[642854279289] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     isUseFormDefine: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3542,12 +3542,12 @@ window[642854434101] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3569,12 +3569,12 @@ window[642854450973] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3599,8 +3599,8 @@ window[642854462178] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3622,12 +3622,12 @@ window[642854476015] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3651,12 +3651,12 @@ window[642868834485] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    actionBarFixed:false,
+    actionBarFixed: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3670,21 +3670,21 @@ window[642854616358] = {
     resid: 435842967084,
     actionBarWidth: 200,
     hasAdd: true,
-    addText:'添加离职人员',
-    modifyText:'修改离职日期',
+    addText: '添加离职人员',
+    modifyText: '修改离职日期',
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowView: true,
     hasRowDelete: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3706,12 +3706,12 @@ window[642854648916] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3734,15 +3734,15 @@ window[642854660698] = {
       hasDelete: false,
       hasRowModify: false,
       hasRowView: false,
-      hasRowSelection:true,
+      hasRowSelection: true,
       hasRowDelete: false,
       isUseFormDefine: false,
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -3751,57 +3751,57 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
-      
+
       423664972378: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       382917623098: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       423662411106: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       425248261392: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       425173186017: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       426438255597: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -3826,8 +3826,8 @@ window[642854669532] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3852,12 +3852,12 @@ window[642854678648] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3883,12 +3883,12 @@ window[642854689917] = {
     isUseFormDefine: false,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields:"C3_445799498673",
+    noWidthFields: "C3_445799498673",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3912,8 +3912,8 @@ window[642854704644] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3935,12 +3935,12 @@ window[642854723134] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3965,8 +3965,8 @@ window[642854733765] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -3991,8 +3991,8 @@ window[642854743729] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4017,8 +4017,8 @@ window[642854754543] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4043,8 +4043,8 @@ window[642854868542] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4069,8 +4069,8 @@ window[642854784459] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4095,8 +4095,8 @@ window[642854766667] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4115,17 +4115,17 @@ window[642854803335] = {
     hasBackBtn: true,
     hasDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    actionBarFixed:false,
-    hasRowSelection:true,
+    actionBarFixed: false,
+    hasRowSelection: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4150,8 +4150,8 @@ window[642854814341] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4176,8 +4176,8 @@ window[642854826219] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4216,19 +4216,19 @@ window[642854845983] = {
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
-    addText:"刷卡登记",
+    addText: "刷卡登记",
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    noWidthFields:"C3_383046867442",
+    noWidthFields: "C3_383046867442",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4249,12 +4249,12 @@ window[642854858872] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4277,8 +4277,8 @@ window[642854885216] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     formProps: {
       // height: 500
@@ -4306,8 +4306,8 @@ window[642854896162] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4332,8 +4332,8 @@ window[642865689790] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4358,8 +4358,8 @@ window[642854917620] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4383,8 +4383,8 @@ window[642854999190] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4409,8 +4409,8 @@ window[642865743568] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4428,16 +4428,16 @@ window[642855062753] = {
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
-    deleteText:'作废删除',
+    deleteText: '作废删除',
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4462,8 +4462,8 @@ window[642865760883] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4490,8 +4490,8 @@ window[642855075847] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4513,12 +4513,12 @@ window[642855085886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    noWidthFields:"C3_427541796327",
+    noWidthFields: "C3_427541796327",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4543,8 +4543,8 @@ window[642855095782] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4569,8 +4569,8 @@ window[642855105931] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4592,12 +4592,12 @@ window[642855115194] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4624,8 +4624,8 @@ window[642868538751] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 180
   }
@@ -4649,8 +4649,8 @@ window[642855166893] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -4671,34 +4671,34 @@ window[642855176494] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      backendButtonPopConfirmProps: { placement: 'bottom' },
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       449439564546: {
         hasBeBtns: false,
-        isUseFormDefine:false,
+        isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
       },
       449441441589: {
         hasBeBtns: true,
-        hasRowView:false,
-        hasRowModify:false,
-        hasRowDelete:false,
-        noWidthFields:'C3_446938797056',
+        hasRowView: false,
+        hasRowModify: false,
+        hasRowDelete: false,
+        noWidthFields: 'C3_446938797056',
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -4720,13 +4720,13 @@ window[642855189869] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    isUseFormDefine: false,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200,
     beforeSaveConfig: { operation: 'add' },
@@ -4751,17 +4751,17 @@ window[642855262376] = {
       isUseFormDefine: false,
       // isSetColumnWidth:false,
       // noWidthFields:'C3_518381536343',
-      noWidthFieldsIndex:1,
-      recordFormUseAbsolute:true,
+      noWidthFieldsIndex: 1,
+      recordFormUseAbsolute: true,
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
-      advSearch:{
-      formName:'defaultSearch'
-    },
+      backendButtonPopConfirmProps: { placement: 'bottom' },
+      advSearch: {
+        formName: 'defaultSearch'
+      },
       formProps: {
         // height: 500
-        width:1200,
+        width: 1200,
       },
       subtractH: 200
     },
@@ -4769,11 +4769,11 @@ window[642855262376] = {
       518464309741: {
         hasBeBtns: true,
         hasRowDelete: false,
-        isSetColumnWidth:false,
+        isSetColumnWidth: false,
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -4798,9 +4798,9 @@ window[642855273462] = {
       isUseFormDefine: false,
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
-      advSearch:{
-        formName:'defaultSearch'
+      backendButtonPopConfirmProps: { placement: 'bottom' },
+      advSearch: {
+        formName: 'defaultSearch'
       },
       formProps: {
         // height: 500
@@ -4812,9 +4812,9 @@ window[642855273462] = {
         hasBeBtns: true,
         hasRowDelete: false,
         // isSetColumnWidth:false,
-        noWidthFields:'C3_518985388229',
-        advSearch:{
-          isRequestFormData:false,
+        noWidthFields: 'C3_518985388229',
+        advSearch: {
+          isRequestFormData: false,
         },
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
@@ -4839,8 +4839,8 @@ window[642855707652] = {
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    advSearch:{
-      formName:'defaultSearch'
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -4853,7 +4853,7 @@ window[642855719230] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
-    
+
     resid: 518447767466,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4870,8 +4870,8 @@ window[642855719230] = {
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -4879,21 +4879,21 @@ window[642855719230] = {
       522692921247: {
         hasBeBtns: true,
         // isSetColumnWidth:false,
-        noWidthFields:'C3_522692208296',
+        noWidthFields: 'C3_522692208296',
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       518461643267: {
         hasBeBtns: true,
         // isUseFormDefine: false,   
-        noWidthFields:'C3_518436882584',
+        noWidthFields: 'C3_518436882584',
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -4916,9 +4916,9 @@ window[642855734719] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      formName:'defaultSearch'
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -4942,11 +4942,11 @@ window[642855746711] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      isUseFormDefine:false,
-      baseURL: 'http://10.108.2.66:1001/',
-      downloadBaseURL: 'http://10.108.2.66:1000/',
-      advSearch:{
-      formName:'defaultSearch'
+      isUseFormDefine: false,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      advSearch: {
+        formName: 'defaultSearch'
       },
       formProps: {
         // height: 500
@@ -4957,10 +4957,10 @@ window[642855746711] = {
       621522106327: {
         hasBeBtns: true,
         isUseFormDefine: false,
-        baseURL: 'http://10.108.2.66:1001/',
-        downloadBaseURL: 'http://10.108.2.66:1000/',
-        advSearch:{
-          isRequestFormData:false,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -4970,8 +4970,8 @@ window[642855760886] = {
   name: 'TableData', // 组件名称，
   title: '待录用员工薪资信息表', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
-    downloadBaseURL: 'http://10.108.2.66:1000/',
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 621522106327,
     actionBarWidth: 200,
     hasAdd: true,
@@ -4983,8 +4983,8 @@ window[642855760886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    advSearch:{
-      formName:'defaultSearch'
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -5008,17 +5008,17 @@ window[642855770350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    recordFormUseAbsolute:true,
+    // recordFormUseAbsolute:true,
     // isUseFormDefine:false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_518381374532',
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    noWidthFields: 'C3_518381374532',
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
-      width:1250
+      width: 850
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5039,18 +5039,18 @@ window[642855780253] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      isUseFormDefine:false,
+      isUseFormDefine: false,
       // isSetColumnWidth:false,
-      recordFormUseAbsolute:true,
+      recordFormUseAbsolute: true,
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
-      advSearch:{
-        formName:'defaultSearch'
+      backendButtonPopConfirmProps: { placement: 'bottom' },
+      advSearch: {
+        formName: 'defaultSearch'
       },
       formProps: {
         // height: 500
-        width:1250
+        width: 1250
       },
       subtractH: 200
     },
@@ -5058,15 +5058,15 @@ window[642855780253] = {
       518461643267: {
         hasBeBtns: true,
         hasRowModify: false,
-        hasRowView:false,
-        hasRowDelete:false,
+        hasRowView: false,
+        hasRowDelete: false,
         // isSetColumnWidth:false,
-        noWidthFields:'C3_518436882584',
+        noWidthFields: 'C3_518436882584',
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
-        advSearch:{
-         isRequestFormData:false,
-       },
+        advSearch: {
+          isRequestFormData: false,
+        },
       }
     }
   }
@@ -5089,13 +5089,13 @@ window[647714701722] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      backendButtonPopConfirmProps:{ placement: 'right' },
+      backendButtonPopConfirmProps: { placement: 'right' },
       // isSetColumnWidth:false,
       // noWidthFields:'C3_518986456839',
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      advSearch:{
-        formName:'defaultSearch'
+      advSearch: {
+        formName: 'defaultSearch'
       },
       formProps: {
         // height: 500
@@ -5107,18 +5107,18 @@ window[647714701722] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-       downloadBaseURL: 'http://10.108.2.66:80/',
-       advSearch:{
-        isRequestFormData:false,
-      },
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
       },
       527715777875: {
         isUseFormDefine: false,
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -5196,8 +5196,8 @@ window[642856303619] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5222,12 +5222,12 @@ window[642856315965] = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
       // isSetColumnWidth:false,
-      noWidthFields:'C3_561550586204',
+      noWidthFields: 'C3_561550586204',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -5237,8 +5237,8 @@ window[642856315965] = {
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       561550544816: {
@@ -5246,8 +5246,8 @@ window[642856315965] = {
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       568398863279: {
@@ -5255,8 +5255,8 @@ window[642856315965] = {
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -5281,8 +5281,8 @@ window[642856328223] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5307,8 +5307,8 @@ window[642856338095] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5333,8 +5333,8 @@ window[642856348581] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5359,8 +5359,8 @@ window[642856357054] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5385,8 +5385,8 @@ window[642856366737] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5407,14 +5407,14 @@ window[642856395014] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    recordFormUseAbsolute:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    recordFormUseAbsolute: true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
-      width:1100
+      width: 1100
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5439,8 +5439,8 @@ window[642856420818] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5465,8 +5465,8 @@ window[642856432739] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5490,8 +5490,8 @@ window[642856442104] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5516,8 +5516,8 @@ window[642856451989] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5541,8 +5541,8 @@ window[642856463210] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5563,14 +5563,14 @@ window[642856472970] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    recordFormUseAbsolute:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      isRequestFormData:false,
+    recordFormUseAbsolute: true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      isRequestFormData: false,
     },
     formProps: {
       // height: 500
-      width:1200
+      width: 1200
     },
     subtractH: 200
   }
@@ -5591,14 +5591,14 @@ window[642856600971] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    recordFormUseAbsolute:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      isRequestFormData:false,
+    recordFormUseAbsolute: true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      isRequestFormData: false,
     },
     formProps: {
       // height: 500
-      width:1200
+      width: 1200
     },
     subtractH: 200
   }
@@ -5611,8 +5611,8 @@ window[642856612138] = {
     actionBarWidth: 200,
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     hasAdd: true,
     hasBeBtns: true,
@@ -5626,8 +5626,8 @@ window[642856612138] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5650,12 +5650,12 @@ window[642856627631] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_526570003058',
+    noWidthFields: 'C3_526570003058',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5676,13 +5676,13 @@ window[642856644144] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
-    isUseFormDefine:false,
+    isSetColumnWidth: false,
+    isUseFormDefine: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -5707,13 +5707,13 @@ window[642856652519] = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
       // isSetColumnWidth:false,
-      noWidthFields:'C3_631902905457',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      noWidthFields: 'C3_631902905457',
+      backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -5729,8 +5729,8 @@ window[642856652519] = {
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       631908278263: {
@@ -5744,8 +5744,8 @@ window[642856652519] = {
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       631908322536: {
@@ -5759,8 +5759,8 @@ window[642856652519] = {
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       631908332741: {
@@ -5774,8 +5774,8 @@ window[642856652519] = {
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       },
       631908345599: {
@@ -5788,7 +5788,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908357382: {
         hasAdd: false,
@@ -5800,7 +5800,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908368002: {
         hasAdd: false,
@@ -5812,7 +5812,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
 
       },
       631908380066: {
@@ -5825,7 +5825,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908391826: {
         hasAdd: false,
@@ -5837,7 +5837,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908402889: {
         hasAdd: false,
@@ -5849,7 +5849,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908414849: {
         hasAdd: false,
@@ -5872,7 +5872,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908487343: {
         hasAdd: false,
@@ -5884,7 +5884,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908500686: {
         hasAdd: false,
@@ -5896,7 +5896,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908512015: {
         hasAdd: false,
@@ -5908,7 +5908,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908524164: {
         hasAdd: false,
@@ -5920,7 +5920,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908535350: {
         hasAdd: false,
@@ -5932,7 +5932,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908546056: {
         hasAdd: false,
@@ -5944,7 +5944,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908556110: {
         hasAdd: false,
@@ -5956,7 +5956,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908578110: {
         hasAdd: false,
@@ -5968,7 +5968,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908587861: {
         hasAdd: false,
@@ -5980,7 +5980,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908598349: {
         hasAdd: false,
@@ -5992,7 +5992,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908607040: {
         hasAdd: false,
@@ -6004,7 +6004,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908616827: {
         hasAdd: false,
@@ -6016,7 +6016,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908628445: {
         hasAdd: false,
@@ -6028,7 +6028,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908639692: {
         hasAdd: false,
@@ -6040,7 +6040,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908648936: {
         hasAdd: false,
@@ -6052,7 +6052,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908660368: {
         hasAdd: false,
@@ -6064,7 +6064,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631908672225: {
         hasAdd: false,
@@ -6076,7 +6076,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       631909905356: {
         hasAdd: false,
@@ -6088,7 +6088,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       }
     }
   }
@@ -6112,12 +6112,12 @@ window[642856661616] = {
       addText: '新建审核',
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
+      backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -6126,199 +6126,199 @@ window[642856661616] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       528384647857: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       483143248907: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       483143269379: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       483143292739: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       483143313607: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490441845783: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490441985369: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442033277: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442082614: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442208450: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442251347: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442311854: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442351603: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442367584: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442379053: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442394231: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       490442407188: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533377990246: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378160861: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378175759: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378198800: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378212840: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378238689: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378256722: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378269639: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378289607: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378309262: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378346468: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378368276: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378381536: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378397713: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       },
       533378418165: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
       }
     }
   }
@@ -6343,8 +6343,8 @@ window[642856673827] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6369,8 +6369,8 @@ window[642856682732] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6391,12 +6391,12 @@ window[642856691841] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6421,8 +6421,8 @@ window[642856702868] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6448,8 +6448,8 @@ window[642856714810] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6473,36 +6473,36 @@ window[642856723891] = {
       isUseFormDefine: false,
       hasRowDelete: false,
       // isSetColumnWidth:false,
-      noWidthFields:'C3_537453411556',
+      noWidthFields: 'C3_537453411556',
       downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       537453474424: {
         hasBeBtns: true,
-        isUseFormDefine:false,
-        noWidthFields:'C3_537453520631',
+        isUseFormDefine: false,
+        noWidthFields: 'C3_537453520631',
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      advSearch:{
-        isRequestFormData:false,
-      },
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
       },
       538589701925: {
         hasBeBtns: true,
-        isUseFormDefine:false,
-        noWidthFields:'C3_438607059446',
+        isUseFormDefine: false,
+        noWidthFields: 'C3_438607059446',
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      advSearch:{
-        isRequestFormData:false,
-      },
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
       }
     }
   }
@@ -6525,12 +6525,12 @@ window[642856733155] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_537453520631',
+    noWidthFields: 'C3_537453520631',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6556,12 +6556,12 @@ window[642856745730] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_244152053796',
+    noWidthFields: 'C3_244152053796',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6587,12 +6587,12 @@ window[642856753982] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_244152510109',
+    noWidthFields: 'C3_244152510109',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6614,12 +6614,12 @@ window[642856763791] = {
       hasRowView: true,
       hasRowDelete: true,
       baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
@@ -6627,18 +6627,18 @@ window[642856763791] = {
       244153076250: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      advSearch:{
-        isRequestFormData:false,
-      },
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
       },
       433706772782: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      advSearch:{
-        isRequestFormData:false,
-      },
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
       }
     }
   }
@@ -6664,19 +6664,19 @@ window[642856772119] = {
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       433706772782: {
         hasBeBtns: true,
-        isUseFormDefine:false,
+        isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -6703,12 +6703,12 @@ window[642856782319] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_438600233276',
+    noWidthFields: 'C3_438600233276',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6734,12 +6734,12 @@ window[642856799479] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_418249954153',
+    noWidthFields: 'C3_418249954153',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6765,12 +6765,12 @@ window[642856807541] = {
     actionBarFixed: false,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_433711326578',
+    noWidthFields: 'C3_433711326578',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6796,12 +6796,12 @@ window[642856817466] = {
     actionBarFixed: false,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_438600233276',
+    noWidthFields: 'C3_438600233276',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6825,12 +6825,12 @@ window[642856836829] = {
     hasRowEdit: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_441282857879',
+    noWidthFields: 'C3_441282857879',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6853,13 +6853,13 @@ window[642856846560] = {
     hasRowView: true,
     hasRowDelete: true,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_476546231596',
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    noWidthFields: 'C3_476546231596',
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6885,8 +6885,8 @@ window[642858017774] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6911,8 +6911,8 @@ window[642858195015] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6937,8 +6937,8 @@ window[642858209225] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6963,8 +6963,8 @@ window[642858219205] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -6988,8 +6988,8 @@ window[642858230550] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7013,8 +7013,8 @@ window[642858239772] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7039,8 +7039,8 @@ window[642858250217] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7065,8 +7065,8 @@ window[642858265046] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7091,8 +7091,8 @@ window[642858275747] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7114,12 +7114,12 @@ window[642858287535] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7141,12 +7141,12 @@ window[643038878833] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    noWidthFields:'C3_548773509926',
+    noWidthFields: 'C3_548773509926',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7168,12 +7168,12 @@ window[642858302008] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7199,8 +7199,8 @@ window[642858311245] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7225,8 +7225,8 @@ window[642858321470] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7251,8 +7251,8 @@ window[642858331244] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7274,12 +7274,12 @@ window[642858341571] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7304,8 +7304,8 @@ window[642858355008] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7329,12 +7329,12 @@ window[642858364531] = {
     hasRowView: true,
     hasRowDelete: true,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_549316971194',
+    noWidthFields: 'C3_549316971194',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7362,8 +7362,8 @@ window[642858381832] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7390,19 +7390,19 @@ window[642858651331] = {
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTableProps: {
       421696601858: {
         hasBeBtns: true,
-        noWidthFields:'DOC2_NAME',
+        noWidthFields: 'DOC2_NAME',
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -7428,8 +7428,8 @@ window[642858661984] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7450,12 +7450,12 @@ window[642858671562] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7486,8 +7486,8 @@ window[642858680954] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7515,8 +7515,8 @@ window[642858691148] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7538,12 +7538,12 @@ window[642858700263] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    isWrap:true,
+    isWrap: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7564,12 +7564,12 @@ window[642858711892] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7595,8 +7595,8 @@ window[642858815692] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7621,8 +7621,8 @@ window[642858825314] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7643,13 +7643,13 @@ window[642864859197] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    addText:'新建申请',
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    addText: '新建申请',
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7668,15 +7668,15 @@ window[642864873312] = {
     hasBackBtn: false,
     hasDelete: false,
     hasRowModify: false,
-    hasRowSelection:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    hasRowSelection: true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowView: false,
     hasRowDelete: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7695,16 +7695,16 @@ window[642864883370] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowSelection:true,
+    hasRowSelection: true,
     hasRowView: false,
     hasRowDelete: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    noWidthFields:'C3_531398131376',
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    noWidthFields: 'C3_531398131376',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7723,15 +7723,15 @@ window[642864894557] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: true,
-    hasRowSelection:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    hasRowSelection: true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowView: true,
     hasRowDelete: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7751,13 +7751,13 @@ window[642864905946] = {
     hasDelete: false,
     hasRowModify: false,
     hasRowView: false,
-    isWrap:true,
+    isWrap: true,
     hasRowDelete: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7779,12 +7779,12 @@ window[642864915093] = {
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    isWrap:true,
+    isWrap: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7806,12 +7806,12 @@ window[642864924530] = {
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    isWrap:true,
+    isWrap: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7833,12 +7833,12 @@ window[642864936700] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    isWrap:true,
+    isWrap: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -7862,10 +7862,10 @@ window[642864955816] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
-    actionBarFixed:false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      formName:'defaultSearch'
+    actionBarFixed: false,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      formName: 'defaultSearch'
     },
     // actionBarFixed:false,
     formProps: {
@@ -7890,10 +7890,10 @@ window[642864965745] = {
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    isSetColumnWidth:false,
-    advSearch:{
-      formName:'defaultSearch'
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    isSetColumnWidth: false,
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -7917,9 +7917,9 @@ window[642865093743] = {
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      formName:'defaultSearch'
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -7944,9 +7944,9 @@ window[642865104085] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      formName:'defaultSearch'
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -7971,10 +7971,10 @@ window[642865117751] = {
     hasRowView: false,
     hasRowDelete: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_493728864633',
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
-    advSearch:{
-      formName:'defaultSearch'
+    noWidthFields: 'C3_493728864633',
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -8002,8 +8002,8 @@ window[642865127153] = {
     hasRowEditAdd: true,
     isUseFormDefine: false,
     actionBarFixed: false,
-    advSearch:{
-      formName:'defaultSearch'
+    advSearch: {
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -8027,13 +8027,13 @@ window[642865138428] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    isUseFormDefine:false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    isUseFormDefine: false,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8058,8 +8058,8 @@ window[642865148916] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8084,8 +8084,8 @@ window[642865159694] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8107,12 +8107,12 @@ window[642865168807] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8137,8 +8137,8 @@ window[642865180079] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8163,8 +8163,8 @@ window[642865189736] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8185,12 +8185,12 @@ window[642865230273] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8214,8 +8214,8 @@ window[642865241049] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8236,12 +8236,12 @@ window[646235959397] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    isUseFormDefine:false,
+    isUseFormDefine: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8266,12 +8266,12 @@ window[642865251509] = {
     hasRowEditAdd: true,
     actionBarFixed: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8296,8 +8296,8 @@ window[642865263466] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8322,12 +8322,12 @@ window[642865468370] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8346,16 +8346,16 @@ window[642865477980] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowSelection:true,
+    hasRowSelection: true,
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8374,16 +8374,16 @@ window[647360686387] = {
     hasBackBtn: true,
     hasDelete: false,
     hasRowModify: false,
-    hasRowSelection:true,
+    hasRowSelection: true,
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8408,8 +8408,8 @@ window[642865487428] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8434,8 +8434,8 @@ window[642865500060] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8458,12 +8458,12 @@ window[642865508238] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_526474938140',
+    noWidthFields: 'C3_526474938140',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8488,8 +8488,8 @@ window[642865517021] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8511,13 +8511,13 @@ window[642865529507] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    isSetColumnWidth:false,
-    noWidthFields:'C3_549654705843',
+    isSetColumnWidth: false,
+    noWidthFields: 'C3_549654705843',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8540,12 +8540,12 @@ window[642865539047] = {
     isUseFormDefine: false,
     hasRowDelete: true,
     // isSetColumnWidth:false,
-    noWidthFields:'C3_557491373753',
+    noWidthFields: 'C3_557491373753',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8571,9 +8571,9 @@ window[642865548263] = {
     formProps: {
       // height: 500
     },
-    noWidthFields:'C3_549654039380',
-    advSearch:{
-      isRequestFormData:false,
+    noWidthFields: 'C3_549654039380',
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8599,8 +8599,8 @@ window[642854837350] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8623,9 +8623,9 @@ window[642854549263] = {
     hasRowView: true,
     hasRowDelete: true,
     // recordFormUseAbsolute:true,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     recordFormContainerProps: {
-      width:'95vw'
+      width: '95vw'
     },
     subTableArrProps: [
       {
@@ -8635,10 +8635,10 @@ window[642854549263] = {
           height: 560,
           baseURL: 'http://10.108.2.66:9091/',
           actionBarWidth: 200,
-          isUseFormDefine:false,
+          isUseFormDefine: false,
           subtractH: 180,
-          formProps:{
-            width:1000
+          formProps: {
+            width: 1000
           }
         }
       }
@@ -8646,8 +8646,8 @@ window[642854549263] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8665,7 +8665,7 @@ window[640366579330] = {
     hasBackBtn: true,
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
-    backendButtonPopConfirmProps:{placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
@@ -8673,8 +8673,8 @@ window[640366579330] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8701,12 +8701,12 @@ window[644335881606] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8732,12 +8732,12 @@ window[644327624410] = {
     hasRowDelete: false,
     isUseFormDefine: false,
     hasRowEditAdd: true,
-    isSetColumnWidth:true,
+    isSetColumnWidth: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8762,11 +8762,11 @@ window[645027658426] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
-    noWidthFields:'C3_506093177840',
-    advSearch:{
+    noWidthFields: 'C3_506093177840',
+    advSearch: {
       isUseTableFields: true,
     },
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowEditAdd: true,
     formProps: {
       // height: 500
@@ -8843,7 +8843,7 @@ window[645287046055] = {
   name: 'AchievementsGradeAppraising', // 组件名称，
   title: '绩效评级评优', // 功能模块名称
   props: {
-    tableDataBaseURL:'http://10.108.2.66:1001/',
+    tableDataBaseURL: 'http://10.108.2.66:1001/',
     mangerConfig: {
       '12345': {
         //总经理
@@ -8852,7 +8852,7 @@ window[645287046055] = {
         iframeResid: 645286591505,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL:'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1001/',
       },
       '169': {
         //总监
@@ -8861,7 +8861,7 @@ window[645287046055] = {
         iframeResid: 645288462780,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL:'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1001/',
       }
     }
   }
@@ -8889,12 +8889,12 @@ window[645649238968] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8920,12 +8920,12 @@ window[647005159900] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields:'C3_456246283759',
+    noWidthFields: 'C3_456246283759',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8950,12 +8950,12 @@ window[647005183171] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields:'C3_456246934372',
+    noWidthFields: 'C3_456246934372',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -8983,8 +8983,8 @@ window[647005199463] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9012,8 +9012,8 @@ window[647005213957] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9037,14 +9037,14 @@ window[647005261709] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
-    noWidthFields:'C3_433505203981',
+    noWidthFields: 'C3_433505203981',
     actionBarFixed: false,
-    isWrap:true,
+    isWrap: true,
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9069,12 +9069,12 @@ window[647005277545] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields:'C3_432206151289',
+    noWidthFields: 'C3_432206151289',
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9102,8 +9102,8 @@ window[647005294257] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9129,8 +9129,8 @@ window[647005579815] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9152,12 +9152,12 @@ window[647005627465] = {
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
-    backendButtonPopConfirmProps:{ placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9182,8 +9182,8 @@ window[647005644256] = {
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9208,12 +9208,12 @@ window[647005664728] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields:"C3_448453177684",
+    noWidthFields: "C3_448453177684",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9238,12 +9238,12 @@ window[647005696097] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields:"C3_472822127334",
+    noWidthFields: "C3_472822127334",
     formProps: {
       // height: 500
     },
-    advSearch:{
-      isRequestFormData:false,
+    advSearch: {
+      isRequestFormData: false,
     },
     subtractH: 200
   }
@@ -9263,27 +9263,27 @@ window[647005718255] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      isUseFormDefine:false,
+      isUseFormDefine: false,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
       mediaFieldBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      backendButtonPopConfirmProps:{ placement: 'bottom' },
-      advSearch:{
-        isRequestFormData:false,
+      backendButtonPopConfirmProps: { placement: 'bottom' },
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       446915608629: {
         hasBeBtns: true,
-        isUseFormDefine:false,
+        isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -9304,25 +9304,25 @@ window[647005738876] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      isUseFormDefine:false,
+      isUseFormDefine: false,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
-      advSearch:{
-        isRequestFormData:false,
+      advSearch: {
+        isRequestFormData: false,
       },
       subtractH: 200
     },
     subTablesProps: {
       446915608629: {
         hasBeBtns: true,
-        isUseFormDefine:false,
+        isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch:{
-          isRequestFormData:false,
+        advSearch: {
+          isRequestFormData: false,
         },
       }
     }
@@ -9333,25 +9333,25 @@ window[647005761923] = {
   title: 'HR专员已拒绝审批', // 功能模块名称
   props: {
     resid: 521636906178,
-      actionBarWidth: 300,
-      hasAdd: false,
-      hasBeBtns: false,
-      hasModify: false,
-      hasBackBtn: false,
-      hasDelete: false,
-      hasRowModify: false,
-      hasRowView: false,
-      hasRowDelete: false,
-      isWrap:true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      formProps: {
-        // height: 500
-      },
-      advSearch:{
-        isRequestFormData:false,
-      },
-      subtractH: 200
+    actionBarWidth: 300,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isWrap: true,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
   }
 };
 window[647005790386] = {
@@ -9359,26 +9359,26 @@ window[647005790386] = {
   title: '部门平均工资', // 功能模块名称
   props: {
     resid: 534182415597,
-      actionBarWidth: 300,
-      hasAdd: true,
-      hasBeBtns: true,
-      hasModify: true,
-      hasBackBtn: true,
-      hasDelete: true,
-      hasRowModify: true,
-      hasRowView: true,
-      hasRowDelete: true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      isWrap:true,
-      isUseFormDefine:false,
-      formProps: {
-        // height: 500
-      },
-      advSearch:{
-        isRequestFormData:false,
-      },
-      subtractH: 200
+    actionBarWidth: 300,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    isWrap: true,
+    isUseFormDefine: false,
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
   }
 };
 window[647005829686] = {
@@ -9386,26 +9386,26 @@ window[647005829686] = {
   title: '薪资结构', // 功能模块名称
   props: {
     resid: 534182253486,
-      actionBarWidth: 300,
-      hasAdd: true,
-      hasBeBtns: true,
-      hasModify: true,
-      hasBackBtn: true,
-      hasDelete: true,
-      hasRowModify: true,
-      hasRowView: true,
-      hasRowDelete: true,
-      isUseFormDefine:false,
-      noWidthFields:"C3_534182272208",
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      formProps: {
-        // height: 500
-      },
-      advSearch:{
-        isRequestFormData:false,
-      },
-      subtractH: 200
+    actionBarWidth: 300,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: false,
+    noWidthFields: "C3_534182272208",
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
   }
 };
 window[647032148938] = {
@@ -9413,41 +9413,41 @@ window[647032148938] = {
   title: '银行报表', // 功能模块名称
   props: {
     resid: 518191900070,
-      actionBarWidth: 300,
-      hasAdd: true,
-      hasBeBtns: true,
-      hasModify: true,
-      hasBackBtn: true,
-      hasDelete: true,
-      hasRowModify: true,
-      hasRowView: true,
-      hasRowDelete: true,
-      isUseFormDefine:false,
-      noWidthFields:"C3_534182272208",
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-      formProps: {
-        // height: 500
-      },
-      advSearch:{
-        isRequestFormData:false,
-      },
-      subtractH: 200
+    actionBarWidth: 300,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: false,
+    noWidthFields: "C3_534182272208",
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
   }
 };
 
 window[646330411706] = {
   name: 'PersonnelImport',
-  title:'人事信息批量导入',
-  props:{
+  title: '人事信息批量导入',
+  props: {
 
   }
 }
 
 window[648312862539] = {
   name: 'StaffCommunicationRecord',
-  title:'员工沟通管理',
-  props:{
+  title: '员工沟通管理',
+  props: {
 
   }
 }

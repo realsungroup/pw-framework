@@ -21,11 +21,11 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://ngrok14.realsun.me:7071/', //考勤审批
+      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
-      HeadCountBaseURL: 'http://ngrok5.realsun.me:7071/',
+      HeadCountBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureBaseURL: 'http://ngrok5.realsun.me:7071//',
       PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:7071//',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
@@ -38,7 +38,7 @@ window.pwConfig = {
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL: 'http://ngrok12.realsun.me:7071/', //绩效定制页面基地址
+      AchievementsBaseURL: 'http://10.108.2.66:5002/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://ngrok5.realsun.me:7071', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:7071', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://ngrok14.realsun.me:7071', //80端口非定制组件基地址
