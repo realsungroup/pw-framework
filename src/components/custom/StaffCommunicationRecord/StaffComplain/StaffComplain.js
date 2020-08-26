@@ -79,13 +79,35 @@ class StaffComplain extends React.Component {
     backReason: '', //退回理由
     backLoading: '', //
     hrReplyImgs: [],
-    hrReplyVideos: []
+    hrReplyVideos: [],
+	noNo:0,//未处理数量
+	ingNo:0,//处理中数量
   };
 
   componentDidMount = () => {
+	this.getNo();
     this.getColumnData();
   };
-
+getNo=async()=>{
+	let res;
+	let res2;
+	let noNo=0;
+	let ingNo=0;
+		try {
+      			res2 = await http({ baseURL: this.baseURL }).getTable({
+       				 resid: residIng
+      			});
+			res = await http({ baseURL: this.baseURL }).getTable({
+       				 resid: residNo
+      			});
+      this.setState({
+        noNo:res.data.length,
+	ingNo:res2.data.length
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+}
   getColumnData = async () => {
     let res;
     let type = [];
@@ -259,6 +281,7 @@ class StaffComplain extends React.Component {
       message.success('已通知部门负责人');
       this.setState({ showRecord: false });
       this.tableDataRef.handleRefresh();
+this.getNo();
     } catch (error) {
       console.log(error);
       message.error(error.messsage);
@@ -328,6 +351,7 @@ class StaffComplain extends React.Component {
         isBatchReply: false
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
     } catch (error) {
       message.error(error.message);
     }
@@ -444,6 +468,7 @@ class StaffComplain extends React.Component {
       showRecord: false
     });
 this.tableDataRef.handleRefresh();
+this.getNo();
   };
   leaderChange = value => {
     this.setState({
@@ -546,6 +571,7 @@ this.tableDataRef.handleRefresh();
         })
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
       message.success('已通知部门负责人');
     } catch (error) {
       message.error(error.message);
@@ -567,6 +593,7 @@ this.tableDataRef.handleRefresh();
         renew: 'Y'
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
       message.success('操作成功');
     } catch (error) {
       message.error(error.message);
@@ -596,6 +623,7 @@ this.tableDataRef.handleRefresh();
         ]
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
       message.success('退回成功');
       this.setState({ backReason: '', backVisible: false, showRecord: false });
     } catch (error) {
@@ -696,6 +724,7 @@ this.tableDataRef.handleRefresh();
             subtractH={200}
             cmswhere={cmswhere}
             actionBarWidth={200}
+	    columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知了负责人':20,'负责人是否回复完毕':20,'HR是否回复了员工':20,'同意HR将投诉内容分享给上级领导':20}}
             actionBarExtra={({
               dataSource = [],
               selectedRowKeys = [],
@@ -819,7 +848,7 @@ this.tableDataRef.handleRefresh();
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: '100px' }}>
+        <div style={{ width:((this.state.noNo>0)||(this.state.ingNo>0)?'160px':'100px')  }}>
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
@@ -830,10 +859,10 @@ this.tableDataRef.handleRefresh();
             // selectedKeys = {selectKeys}
           >
             <Menu.Item key="1">
-              <span> 未处理 </span>
+              <span> 未处理{this.state.noNo>0?'（'+this.state.noNo+'）':null}</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <span> 处理中 </span>
+              <span> 处理中{this.state.ingNo>0?'（'+this.state.ingNo+'）':null}</span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
@@ -1130,6 +1159,7 @@ this.tableDataRef.handleRefresh();
               hasRowView={false}
               hasRowDelete={false}
               subtractH={200}
+		
               cmswhere={
                 isBatchReply
                   ? ''

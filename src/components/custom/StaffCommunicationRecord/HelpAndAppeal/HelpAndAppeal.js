@@ -66,11 +66,26 @@ class HelpAndAppeal extends React.Component {
     replyButtonLoading: false,
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
-    backLoading: '' //
+    backLoading: '', //
+	noNo:0,//未处理数量
   };
 
-  componentDidMount = () => {};
-
+  componentDidMount = () => {
+this.getNo();
+};
+getNo=async()=>{
+	let res;
+		try {
+			res = await http({ baseURL: this.baseURL }).getTable({
+       				 resid: residNo
+      			});
+      this.setState({
+        noNo:res.data.length
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+}
   onSelect = e => {
     this.setState({
       selectKey: e.key
@@ -180,6 +195,7 @@ class HelpAndAppeal extends React.Component {
         isBatchReply: false
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
     } catch (error) {
       message.error(error.message);
     }
@@ -246,6 +262,7 @@ class HelpAndAppeal extends React.Component {
       showRecord: false
     });
 this.tableDataRef.handleRefresh();
+this.getNo();
   };
 
   timeChange = value => {
@@ -293,6 +310,7 @@ this.tableDataRef.handleRefresh();
         renew: 'Y'
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
       message.success('操作成功');
     } catch (error) {
       message.error(error.message);
@@ -323,6 +341,7 @@ this.tableDataRef.handleRefresh();
         ]
       });
       this.tableDataRef.handleRefresh();
+this.getNo();
       message.success('退回成功');
       this.setState({ backReason: '', backVisible: false, showRecord: false });
     } catch (error) {
@@ -390,6 +409,7 @@ this.tableDataRef.handleRefresh();
             hasRowDelete={false}
             subtractH={200}
             cmswhere={cmswhere}
+columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知了负责人':20,'负责人是否回复完毕':20,'HR是否回复了员工':20,'同意HR将投诉内容分享给上级领导':20}}
             actionBarWidth={200}
             actionBarExtra={({
               dataSource = [],
@@ -493,7 +513,7 @@ this.tableDataRef.handleRefresh();
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: '100px' }}>
+        <div style={{ width: (this.state.noNo>0?'160px':'100px') }}>
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
@@ -501,7 +521,7 @@ this.tableDataRef.handleRefresh();
             onSelect={this.onSelect}
           >
             <Menu.Item key="1">
-              <span> 未处理 </span>
+              <span> 未处理{this.state.noNo>0?'（'+this.state.noNo+'）':null} </span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
