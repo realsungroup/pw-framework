@@ -1,63 +1,207 @@
-// 患者周期列表
-window[648640265023] = {
-  title: '患者周期列表',
-  name: 'PatientPeriod',
+window[651665064549] = {
+  name: 'TabsTableData', // 组件名称，
+  title: '店铺审核', // 功能模块名称
   props: {
-    tableDataProps: {
-      resid: 648300111771,
-      isUseBESize: true,
-      subtractH: 200,
-      actionBarFixed: true,
-      hasDownload: false,
-      hasZoomInOut: true,
-      height: 500,
-      afterSaveRefresh: true,
-      hasAdd: false,
-      hasRowView: false,
-      hasRowModify: false,
-      // height: 'calc(100vh - 160px)',
-      size: 'small',
-      actionBarWidth: 250,
-      hasModify: false,
-      hasDelete: false,
-      formProps: {
-        // displayMode: "classify",
+    arr:[
+      {
+        TabsTitle:'未审核',
+        resid: 651671989093,
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
       },
-      zoomStatus: 'max'
-    }
-  }
-};
-// 当日转诊名单
-window[651771355546] = {
-  title: '当日转诊名单',
-  name: 'TableData',
-  props: {
-    resid: 651771216518,
-    isUseBESize: true,
-    subtractH: 200,
-    actionBarFixed: true,
-    hasDownload: false,
-    hasRowDelete: false,
-    hasZoomInOut: true,
-    height: 500,
-    afterSaveRefresh: true,
-    hasAdd: false,
-    hasRowView: false,
-    hasRowModify: false,
-    // height: 'calc(100vh - 160px)',
-    size: 'small',
-    actionBarWidth: 250,
-    hasModify: false,
-    hasDelete: false,
-    formProps: {
-      // displayMode: "classify",
-    },
-    zoomStatus: 'max'
+      {
+        TabsTitle:'已通过',
+        resid: 651678065129,
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      {
+        TabsTitle:'已拒绝',
+        resid: 651678095421,
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      }
+    ]
+    
   }
 };
 
-// onePage
-window[651771371879] = {
-  title: 'onepage',
-  name: 'OnePage',
+
+
+window[651665457853] = {
+  name: 'TabsTableData', // 组件名称，
+  title: '上架商品审核', // 功能模块名称
+  props: {
+    arr:[
+      {
+        subtractH: 170,
+        height: 'calc(100vh - 224px)',
+        TabsTitle:'未审核',
+        resid: 651686596490,
+        actionBarWidth: 200,
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+      },
+      {
+        TabsTitle:'已通过',
+        resid: 651686583220,
+        actionBarWidth: 200,
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 170,
+        height: 'calc(100vh - 224px)',
+      },
+      {
+        TabsTitle:'已拒绝',
+        resid: 651686574137,
+        actionBarWidth: 200,
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 170,
+        height: 'calc(100vh - 224px)',
+      }
+    ]
+    
+  }
+};
+
+window[651665036799] = {
+  name: 'TableData', // 组件名称，
+  title: '店铺合同', // 功能模块名称
+  props: {
+      
+        tabsTitle:'未审核',
+        subtractH: 170,
+        height: 'calc(100vh - 170px)',
+        resid: 651693093660,
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+      },
+};
+
+
+
+
+window[651665098429] = {
+  name: 'TableData', // 组件名称，
+  title: '商品类型维护', // 功能模块名称
+  props: {
+        subtractH: 170,
+        height: 'calc(100vh - 170px)',
+        resid: 651694462535,
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+      },
 };

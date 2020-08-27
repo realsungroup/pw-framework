@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:4201/',
+    baseURL: 'http://kingofdinner.realsun.me:5201/',
     // baseURL: 'http://xbsz.sxivf.com:30013/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
