@@ -28,11 +28,11 @@ window[648640265023] = {
   }
 };
 // 当日转诊名单
-window[649780482266] = {
+window[651771355546] = {
   title: '当日转诊名单',
   name: 'TableData',
   props: {
-    resid: 649780568488,
+    resid: 651771216518,
     isUseBESize: true,
     subtractH: 200,
     actionBarFixed: true,
@@ -57,7 +57,7 @@ window[649780482266] = {
 };
 
 // onePage
-window[649851135290] = {
+window[651771371879] = {
   title: 'onepage',
   name: 'OnePage',
 };
