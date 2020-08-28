@@ -3,6 +3,7 @@
   "version": "21.3.0",
   "private": true,
   "dependencies": {
+    "@ant-design/colors": "^4.0.5",
     "@ant-design/icons-react": "^2.0.1",
     "@babel/core": "7.1.0",
     "@babel/plugin-proposal-decorators": "^7.2.3",
@@ -63,7 +64,7 @@
     "hoist-non-react-statics": "^3.2.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "html2canvas": "^1.0.0-rc.5",
-    "ic-components": "1.0.0",
+    "ic-components": "^1.0.0",
     "identity-obj-proxy": "3.0.0",
     "immutable": "^4.0.0-rc.12",
     "is-mobile": "^2.2.2",
