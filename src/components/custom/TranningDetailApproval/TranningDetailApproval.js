@@ -13,7 +13,14 @@ const { TextArea } = Input;
 class TranningDetailApproval extends React.Component {
   state = {
     currentYear: '',
-    approvalRecord: {},
+    approvalRecord: {
+      isApprove: '',
+      year: '',
+      triggerName: '',
+      triggerTime: '',
+      triggerRemark: '',
+      remark: ''
+    },
     approveButtonLoading: false,
     rejectButtonLoading: false
   };
@@ -48,10 +55,14 @@ class TranningDetailApproval extends React.Component {
         resid: approvalresid,
         cmswhere: `year = '${year}'`
       });
-      const data = res.data[0];
-      this.setState({
-        approvalRecord: data
-      });
+
+      if (res.data.length > 0) {
+        const data = res.data[0];
+        this.setState({
+          approvalRecord: data
+        });
+      }
+
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -82,7 +93,7 @@ class TranningDetailApproval extends React.Component {
       this.setState({
         approvalRecord: res.data[0]
       });
-     
+
     } catch (error) {
       message.error(error.message);
       console.log(error);

@@ -3209,6 +3209,7 @@ window[642856262431] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    columnsWidth: { '申请人': 120 },
     // isSetColumnWidth:false,
     noWidthFields: 'C3_518986364887',
     advSearch: {
@@ -9053,6 +9054,7 @@ window[647005261709] = {
     noWidthFields: 'C3_433505203981',
     actionBarFixed: false,
     isWrap: true,
+    columnsWidth: { '分公司': 120 },
     formProps: {
       // height: 500
     },
