@@ -6265,13 +6265,9 @@ is-keyword-js@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/is-keyword-js/download/is-keyword-js-1.0.3.tgz#ac30dcf35b671f4b27b17f5cb57235126021132d"
 
-is-mobile@^2.1.0:
+is-mobile@^2.1.0, is-mobile@^2.2.2:
   version "2.2.2"
   resolved "https://registry.npm.taobao.org/is-mobile/download/is-mobile-2.2.2.tgz?cache=0&sync_timestamp=1592980541204&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fis-mobile%2Fdownload%2Fis-mobile-2.2.2.tgz#f6c9c5d50ee01254ce05e739bdd835f1ed4e9954"
-
-is-mobile@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.npmjs.org/is-mobile/-/is-mobile-2.2.2.tgz#f6c9c5d50ee01254ce05e739bdd835f1ed4e9954"
 
 is-npm@^1.0.0:
   version "1.0.0"
