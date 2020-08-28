@@ -584,7 +584,7 @@ class Control extends React.Component {
 
           // 多媒体字段
           if (mediaFieldValue) {
-            return <img src={mediaFieldValue} key={mediaFieldValue} alt={mediaFieldValue}></img>
+            return <img src={mediaFieldValue} key={mediaFieldValue} alt={mediaFieldValue} className="control__media-field-img"></img>
           }
 
           return null;
