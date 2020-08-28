@@ -29,8 +29,8 @@ const customDot = (dot, { status, index }) => (
         {status === 'finish'
           ? '已结束'
           : status === 'wait'
-          ? '等待中'
-          : '进行中'}{' '}
+            ? '等待中'
+            : '进行中'}{' '}
       </span>
     }
   >
@@ -1587,8 +1587,8 @@ class PersonPlan extends React.Component {
               record && record.status === '初次填写'
                 ? 0
                 : record && record.status === '年中回顾'
-                ? 1
-                : 3
+                  ? 1
+                  : 3
             }
             progressDot={customDot}
           >
@@ -1698,111 +1698,111 @@ class PersonPlan extends React.Component {
           <div className="personPlan-contain-bottom-btns">
             {this.renderSaveBtn()}
             {this.state.checkType === 'oneself' &&
-            this.state.personInfo.isMangerSubmit === 'Y' &&
-            this.state.personInfo.status === '初次填写' &&
-            this.state.personInfo.isAffirm !== 'Y' ? (
-              <Popconfirm
-                title="你要确认吗"
-                onConfirm={this.onAffirm}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="personPlan-contain-bottom-leftbtn">
-                  确认
-                </Button>
-              </Popconfirm>
-            ) : this.state.checkType !== 'oneself' &&
-              this.state.personInfo.isPersonSubmit === 'Y' &&
-            this.state.personInfo.status === '初次填写' &&
+              this.state.personInfo.isMangerSubmit === 'Y' &&
+              this.state.personInfo.status === '初次填写' &&
               this.state.personInfo.isAffirm !== 'Y' ? (
-              <Popconfirm
-                title="你要确认吗"
-                onConfirm={this.onAffirm}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="personPlan-contain-bottom-leftbtn">
-                  确认
-                </Button>
-              </Popconfirm>
-            ) : null}
-
-            {this.state.checkType !== 'oneself' &&
-            this.state.personInfo.yearMidSubmit === 'Y' &&
-            this.state.personInfo.midManageApply !== 'Y' &&
-            this.state.personInfo.status === '年中回顾' &&
-            this.state.personInfo.midManageApply !== 'N' ? (
-              <Popconfirm
-                title="你要确认吗"
-                onConfirm={this.onAffirmMid}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="personPlan-contain-bottom-leftbtn">
-                  确认年中回顾
-                </Button>
-              </Popconfirm>
-            ) : null}
-
-            {this.state.checkType !== 'oneself' &&
-            this.state.personInfo.yearMidSubmit === 'Y' &&
-            this.state.personInfo.midManageApply !== 'Y' &&
-            this.state.personInfo.status === '年中回顾' &&
-            this.state.personInfo.midManageApply !== 'N' ? (
-              <Popconfirm
-                title="你确定要退回吗"
-                onConfirm={() => {
-                  this.onReject('mid');
-                }}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  className="personPlan-contain-bottom-leftbtn"
-                  type="danger"
+                <Popconfirm
+                  title="你要确认吗"
+                  onConfirm={this.onAffirm}
+                  okText="Yes"
+                  cancelText="No"
                 >
-                  退回年中回顾
+                  <Button className="personPlan-contain-bottom-leftbtn">
+                    确认
                 </Button>
-              </Popconfirm>
-            ) : null}
+                </Popconfirm>
+              ) : this.state.checkType !== 'oneself' &&
+                this.state.personInfo.isPersonSubmit === 'Y' &&
+                this.state.personInfo.status === '初次填写' &&
+                this.state.personInfo.isAffirm !== 'Y' ? (
+                  <Popconfirm
+                    title="你要确认吗"
+                    onConfirm={this.onAffirm}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button className="personPlan-contain-bottom-leftbtn">
+                      确认
+                </Button>
+                  </Popconfirm>
+                ) : null}
 
             {this.state.checkType !== 'oneself' &&
-            this.state.personInfo.yearTailSubmit === 'Y' &&
-            this.state.personInfo.tailManageApply !== 'Y' &&
-            this.state.personInfo.status === '年末回顾' &&
-            this.state.personInfo.tailManageApply !== 'N' ? (
-              <Popconfirm
-                title="你确定要退回吗"
-                onConfirm={() => {
-                  this.onReject('tail');
-                }}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  className="personPlan-contain-bottom-leftbtn"
-                  type="danger"
+              this.state.personInfo.yearMidSubmit === 'Y' &&
+              this.state.personInfo.midManageApply !== 'Y' &&
+              this.state.personInfo.status === '年中回顾' &&
+              this.state.personInfo.midManageApply !== 'N' ? (
+                <Popconfirm
+                  title="你要确认吗"
+                  onConfirm={this.onAffirmMid}
+                  okText="Yes"
+                  cancelText="No"
                 >
-                  退回年末回顾
+                  <Button className="personPlan-contain-bottom-leftbtn">
+                    确认年中回顾
                 </Button>
-              </Popconfirm>
-            ) : null}
+                </Popconfirm>
+              ) : null}
+
             {this.state.checkType !== 'oneself' &&
-            this.state.personInfo.yearTailSubmit === 'Y' &&
-            this.state.personInfo.tailManageApply !== 'Y' &&
-            this.state.personInfo.status === '年末回顾' &&
-            this.state.personInfo.tailManageApply !== 'N' ? (
-              <Popconfirm
-                title="你要确认吗"
-                onConfirm={this.onAffirmTail}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button className="personPlan-contain-bottom-leftbtn">
-                  确认年末回顾
+              this.state.personInfo.yearMidSubmit === 'Y' &&
+              this.state.personInfo.midManageApply !== 'Y' &&
+              this.state.personInfo.status === '年中回顾' &&
+              this.state.personInfo.midManageApply !== 'N' ? (
+                <Popconfirm
+                  title="你确定要退回吗"
+                  onConfirm={() => {
+                    this.onReject('mid');
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button
+                    className="personPlan-contain-bottom-leftbtn"
+                    type="danger"
+                  >
+                    退回年中回顾
                 </Button>
-              </Popconfirm>
-            ) : null}
+                </Popconfirm>
+              ) : null}
+
+            {this.state.checkType !== 'oneself' &&
+              this.state.personInfo.yearTailSubmit === 'Y' &&
+              this.state.personInfo.tailManageApply !== 'Y' &&
+              this.state.personInfo.status === '年末回顾' &&
+              this.state.personInfo.tailManageApply !== 'N' ? (
+                <Popconfirm
+                  title="你确定要退回吗"
+                  onConfirm={() => {
+                    this.onReject('tail');
+                  }}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button
+                    className="personPlan-contain-bottom-leftbtn"
+                    type="danger"
+                  >
+                    退回年末回顾
+                </Button>
+                </Popconfirm>
+              ) : null}
+            {this.state.checkType !== 'oneself' &&
+              this.state.personInfo.yearTailSubmit === 'Y' &&
+              this.state.personInfo.tailManageApply !== 'Y' &&
+              this.state.personInfo.status === '年末回顾' &&
+              this.state.personInfo.tailManageApply !== 'N' ? (
+                <Popconfirm
+                  title="你要确认吗"
+                  onConfirm={this.onAffirmTail}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className="personPlan-contain-bottom-leftbtn">
+                    确认年末回顾
+                </Button>
+                </Popconfirm>
+              ) : null}
 
             {this.renderSubmitBtn()}
           </div>
