@@ -42,22 +42,35 @@ const withDownloadFile = WrappedComponent => {
       console.log('withDownloadFile');
       console.log(hostresid);
       console.log(hostrecid);
+      const queryParams = {
+        resid,
+        hostresid,
+        hostrecid,
+        key,
+        cmswhere: cmsWhere,
+        filetype: fileType,
+        dblinkname,
+      }
+      if(cparm1) {
+        queryParams.cparm1 = cparm1;
+      }
+      if(cparm2) {
+        queryParams.cparm2 = cparm2;
+      }
+      if(cparm3) {
+        queryParams.cparm3 = cparm3;
+      }
+      if(cparm4) {
+        queryParams.cparm4 = cparm4;
+      }
+      if(cparm5) {
+        queryParams.cparm5 = cparm5;
+      }
+      if(cparm6) {
+        queryParams.cparm1 = cparm6;
+      }
       this.p1 = makeCancelable(
-        http({ baseURL: requestBaseURL }).exportTableData({
-          resid,
-          hostresid,
-          hostrecid,
-          key,
-          cmswhere: cmsWhere,
-          filetype: fileType,
-          dblinkname,
-          cparm1,
-          cparm2,
-          cparm3,
-          cparm4,
-          cparm5,
-          cparm6
-        })
+        http({ baseURL: requestBaseURL }).exportTableData(queryParams)
       );
       let res;
       try {
