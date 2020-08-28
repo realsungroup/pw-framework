@@ -50,25 +50,18 @@ const withDownloadFile = WrappedComponent => {
         cmswhere: cmsWhere,
         filetype: fileType,
         dblinkname,
+        cparm1,
+        cparm2,
+        cparm3,
+        cparm4,
+        cparm5,
+        cparm6,
       }
-      if(cparm1) {
-        queryParams.cparm1 = cparm1;
-      }
-      if(cparm2) {
-        queryParams.cparm2 = cparm2;
-      }
-      if(cparm3) {
-        queryParams.cparm3 = cparm3;
-      }
-      if(cparm4) {
-        queryParams.cparm4 = cparm4;
-      }
-      if(cparm5) {
-        queryParams.cparm5 = cparm5;
-      }
-      if(cparm6) {
-        queryParams.cparm1 = cparm6;
-      }
+      Object.keys(queryParams).forEach(key => {
+        if (!queryParams[key]) {
+          delete queryParams[key];
+        }
+      })
       this.p1 = makeCancelable(
         http({ baseURL: requestBaseURL }).exportTableData(queryParams)
       );
