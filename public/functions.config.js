@@ -1944,7 +1944,8 @@ window[619553176367] = {
 //试用期————主管
 window[619553156237] = {
   name: 'DirectorProbation',
-  title: '试用期管理'
+  title: '试用期管理',
+  props: { function: true }
 };
 
 // 616081514704

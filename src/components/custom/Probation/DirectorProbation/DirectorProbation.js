@@ -11,12 +11,19 @@ import http from 'Util20/api';
 class DirectorProbation extends React.Component {
   state = {
     isShowTable: true, //控制页面显示内容
-    selectedRecord: {}
+    selectedRecord: {},
+    resid: 649518535132
   };
 
   /**
    * 点击同意转正
    */
+  componentWillMount = (props) => {
+    console.log(this.props)
+    if (this.props.function != true) {
+      this.setState({ resid: 618591396440 })
+    }
+  }
   handleAgreed = async record => {
     if (record.selectedRowKeys.length) {
       let res;
@@ -29,7 +36,7 @@ class DirectorProbation extends React.Component {
       });
       try {
         res = await http().modifyRecords({
-          resid: 618591396440,
+          resid: this.state.resid,
           data
         });
         if (res.Error === 0) {
@@ -80,7 +87,7 @@ class DirectorProbation extends React.Component {
         {this.state.isShowTable ? (
           <div style={{ height: '100vh' }}>
             <TableData
-              resid="649518535132"
+              resid={this.state.resid}
               subtractH={240}
               hasAdd={false}
               hasRowView={false}
@@ -104,14 +111,14 @@ class DirectorProbation extends React.Component {
             />
           </div>
         ) : (
-          <ProbationForms
-            memberId={this.state.selectedRecord.memberId}
-            employedId={this.state.selectedRecord.C3_625051545181}
-            goBack={this.goBack}
-            roleName="主管"
-            setIsShowTable={this.setIsShowTable}
-          />
-        )}
+            <ProbationForms
+              memberId={this.state.selectedRecord.memberId}
+              employedId={this.state.selectedRecord.C3_625051545181}
+              goBack={this.goBack}
+              roleName="主管"
+              setIsShowTable={this.setIsShowTable}
+            />
+          )}
       </div>
     );
   }

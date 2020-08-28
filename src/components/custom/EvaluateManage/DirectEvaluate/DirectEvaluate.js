@@ -433,6 +433,7 @@ class DirectEvaluate extends React.Component {
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
       tableDataProps.actionBarFixed = false;
+      tableDataProps.actionBarWidth = 150;
       tableDataProps.isUseFormDefine = true;
       tableDataProps.rowEditFormName = 'default1';
     }
