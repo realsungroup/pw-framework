@@ -24,7 +24,8 @@ class DevTableData extends Component {
   render() {
     return (
       <div>
-        <TableData
+        <TableData resid="609868074490" />
+        {/* <TableData
           resid="609868074490"
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
@@ -41,12 +42,12 @@ class DevTableData extends Component {
           actionBarFixed={false}
           rowEditAddPosition="end"
           rowColorConfig={{ position: 'text' }}
-          successMessageComponent='Modal'
+          successMessageComponent="Modal"
           isSetColumnWidth={false}
-          cmscolumns="C3_609868116494"
+          // cmscolumns="C3_609868116494"
           // rowColorRules={rowColorRules}
           // recordFormName="default3i"
-        />
+        /> */}
         {/* <TableData
           hasRowSelection={false}
           refTargetComponentName="TableData"
