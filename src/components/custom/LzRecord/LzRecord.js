@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { message, Tabs } from 'antd';
 import './LzRecord.less';
 import classNames from 'classnames';
-import {TableData} from '../../common/loadableCommon'
+import { TableData } from '../../common/loadableCommon'
 import EventEmitter from 'wolfy87-eventemitter';
 import {
   inApplication,
@@ -83,25 +83,25 @@ export default class LzRecord extends React.Component {
           onChange={this.handleTabsChange}
         >
           <TabPane tab="待处理" key="待处理">
-          <div style={{height:'calc(100vh - 220px)'}}>
-            <TableData
-              {...inApplication}
-              // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
-              // wrappedComponentRef={form => (this.inApplicationRef = form)}
-              ref={this.inApplicationRef}
-            />
-          </div>
+            <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
+              <TableData
+                {...inApplication}
+                // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
+                // wrappedComponentRef={form => (this.inApplicationRef = form)}
+                ref={this.inApplicationRef}
+              />
+            </div>
           </TabPane>
           <TabPane tab="已处理" key="已处理" forceRender={true}>
-          <div style={{height:'calc(100vh - 220px)'}}>
-            <TableData
-              {...applyForAbnormal}
-              getTableData={this.getTableData}
-              // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
-              // wrappedComponentRef={form => (this.abnormalRef = form)}
-              ref={this.abnormalRef}
-            />
-          </div>  
+            <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
+              <TableData
+                {...applyForAbnormal}
+                getTableData={this.getTableData}
+                // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
+                // wrappedComponentRef={form => (this.abnormalRef = form)}
+                ref={this.abnormalRef}
+              />
+            </div>
           </TabPane>
         </Tabs>
         {!!abnormalNum && (

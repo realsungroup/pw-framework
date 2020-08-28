@@ -828,12 +828,18 @@ window[601728701208] = {
 // 保安登记
 window[605900163561] = {
   title: '保安查询',
-  name: 'LzRegister'
+  name: 'LzRegister',
+  props: {
+    height: 'calc(100vh - 60px)'
+  }
 };
 // 前台记录
 window[605871880758] = {
   title: '前台查询',
-  name: 'LzRecord'
+  name: 'LzRecord',
+  props: {
+    height: 'calc(100vh - 60px)'
+  },
 };
 // 访客审批
 window[605893340481] = {
@@ -910,7 +916,7 @@ window[606071640940] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    height: '80vh',
+    height: '100vh',
     recordFormFormWidth: '90%'
   } // 组件所接收的 props
 };
@@ -938,6 +944,9 @@ window[648297903478] = {
 window[606249673489] = {
   name: 'LzProApp', // 组件名称
   title: '供应商审批', // 功能模块名称
+  props: {
+    height: 'calc(100vh - 60px)'
+  },
   hasBackBtn: true // 是否有返回上一页的按钮，默认为 true
 };
 //606242031630供应商保安登记
@@ -1088,7 +1097,10 @@ window[607459194551] = {
 //考试培训
 window[611243928651] = {
   name: 'Training',
-  title: '考试培训'
+  title: '考试培训',
+  props: {
+    height: 'calc(100vh - 60px)'
+  }
 };
 //我的考试
 window[607168416937] = {
