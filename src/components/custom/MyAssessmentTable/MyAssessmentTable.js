@@ -561,6 +561,7 @@ class MyAssessmentTable extends React.Component {
       tableDataProps.hasDelete = true;
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
+      tableDataProps.actionBarWidth = 150;
       tableDataProps.actionBarFixed = false;
       if (
         tableConfig.resid === subresids.endYearTargetSelf ||
