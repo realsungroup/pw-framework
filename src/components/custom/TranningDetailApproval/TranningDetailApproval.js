@@ -21,6 +21,7 @@ class TranningDetailApproval extends React.Component {
       triggerRemark: '',
       remark: ''
     },
+    active: false,
     approveButtonLoading: false,
     rejectButtonLoading: false
   };
@@ -59,8 +60,11 @@ class TranningDetailApproval extends React.Component {
       if (res.data.length > 0) {
         const data = res.data[0];
         this.setState({
-          approvalRecord: data
+          approvalRecord: data,
+          active: true
         });
+      } else {
+        this.setState({ active: false });
       }
 
     } catch (error) {
@@ -166,7 +170,7 @@ class TranningDetailApproval extends React.Component {
               disabled={disabled}
             />
           </Form.Item>
-          {!disabled && (
+          {!disabled && this.state.active && (
             <div>
               <Popconfirm title="确认同意吗？" onConfirm={this.approval('Y')}>
                 <Button
