@@ -6716,8 +6716,8 @@ window[642856782319] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    // isSetColumnWidth:false,
-    noWidthFields: 'C3_438600233276',
+    isSetColumnWidth: false,
+    // noWidthFields: 'C3_438600233276',
     formProps: {
       // height: 500
     },
@@ -7984,8 +7984,8 @@ window[642865117751] = {
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    // isSetColumnWidth:false,
-    noWidthFields: 'C3_493728864633',
+    isSetColumnWidth: false,
+    // noWidthFields: 'C3_493728864633',
     backendButtonPopConfirmProps: { placement: 'bottom' },
     advSearch: {
       formName: 'defaultSearch'
