@@ -953,7 +953,8 @@ class TableData extends React.Component {
       hasRowModify,
       hasRowView,
       renderRowBtns,
-      customRowBtns
+      customRowBtns,
+      hasRowEdit
     } = this.props;
     return !!(
       hasRowDelete ||
@@ -961,7 +962,8 @@ class TableData extends React.Component {
       hasRowView ||
       beBtnsSingle.length ||
       renderRowBtns ||
-      !!customRowBtns
+      !!customRowBtns ||
+      hasRowEdit
     );
   };
 
@@ -1815,7 +1817,8 @@ class TableData extends React.Component {
       return {};
     }
     const data = setDataInitialValue(this._dealedRowEditFormData, record, true);
-    return data.find(dataItem => dataItem.id === dataIndex);
+    const ret = data.find(dataItem => dataItem.id === dataIndex);
+    return ret;
   };
 
   getNewColumns = columns => {

@@ -8,10 +8,7 @@ import classNames from 'classnames';
 import DesktopLockScreen from './DesktopLockScreen';
 import DesktopModifyPass from './DesktopModifyPass';
 import DesktopBg from './DesktopBg';
-import {
-  DesktopReminderList,
-  DesktopDashboard,
-} from './loadableDesktop';
+import { DesktopReminderList, DesktopDashboard } from './loadableDesktop';
 import { OrgChartData } from '../../components/common/loadableCommon';
 
 import {
@@ -806,11 +803,7 @@ class Desktop extends React.Component {
   };
 
   render() {
-    const {
-      userInfo,
-      loading,
-      modifyPassModalVisible,
-    } = this.state;
+    const { userInfo, loading, modifyPassModalVisible } = this.state;
 
     const {
       activeApps,
@@ -835,6 +828,9 @@ class Desktop extends React.Component {
       reminderListVisible,
       menuVisible,
       onLogoClick,
+      attendanceMonthList,
+      currentAttendanceMonth,
+      onAttendanceChange,
     } = this.props;
 
     // 背景样式
@@ -846,11 +842,7 @@ class Desktop extends React.Component {
     }
 
     return (
-      <div
-        className="desktop"
-        onClick={onDesktopClick}
-        style={desktopStyle}
-      >
+      <div className="desktop" onClick={onDesktopClick} style={desktopStyle}>
         {/* 右键菜单触发区域，即桌面 */}
         <ContextMenuTrigger id="desktop__trigger-area">
           <div className="desktop__main" ref={this.getDesktopMainRef}>
@@ -880,6 +872,9 @@ class Desktop extends React.Component {
           onSearchChange={onDesktopSearchChange}
           searchValue={deskTopSearchValue}
           orgChartConfig={orgChartConfig}
+          attendanceMonthList={attendanceMonthList}
+          currentAttendanceMonth={currentAttendanceMonth}
+          onAttendanceChange={onAttendanceChange}
         />
 
         <Icon

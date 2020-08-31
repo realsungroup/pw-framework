@@ -11,6 +11,24 @@
   justify-content: space-between;
   position: relative;
   z-index: 1001;
+
+  &__attendance-month {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #fff;
+    height: 100%;
+  }
+
+  &__attendance-month-select {
+    width: 120px;
+    margin-right: 8px;
+  }
+
+  &__attendance-title {
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
   &__logo {
     cursor: pointer;
     i {
@@ -28,7 +46,7 @@
 
   &__active-apps {
     display: flex;
-    width: ~'calc(100vw - 500px)';
+    width: ~'calc(100vw - 690px)';
     height: 40px;
   }
   &__active-app {

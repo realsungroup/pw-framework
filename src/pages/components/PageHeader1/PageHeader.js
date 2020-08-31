@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import logoImg from '../../../assets/logo-26.png';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
-import { Drawer, Menu, Icon, Input, Badge, Popover } from 'antd';
+import { Drawer, Menu, Icon, Input, Badge, Popover, Select } from 'antd';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import HeaderBtn from './HeaderBtn';
@@ -15,6 +15,8 @@ const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
   process.env.NODE_ENV
 ];
 const { Search } = Input;
+
+const { Option } = Select;
 
 const getTarget = resid => {
   // 在新 tab 中打开功能页面
@@ -108,7 +110,10 @@ class PageHeader extends React.Component {
       activeApps,
       onOpenWindow,
       onCloseActiveApp,
-      visible
+      visible,
+      attendanceMonthList,
+      currentAttendanceMonth,
+      onAttendanceChange
     } = this.props;
 
     const { isInTop, drawerVisible, rightDrawerVisible } = this.state;
@@ -132,7 +137,7 @@ class PageHeader extends React.Component {
             onClick={onPwlogoClick}
             className="iconfont icon-logo"
           />
-          <div style={{ float: 'right' }}>
+          <div style={{ float: 'right', marginTop: 4 }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Icon
                 type="unordered-list"
@@ -151,6 +156,21 @@ class PageHeader extends React.Component {
               />
             </div>
           </div>
+        </div>
+
+        <div className="page-header__attendance-month">
+          <span className="page-header__attendance-title">考勤月份</span>
+          <Select
+            value={currentAttendanceMonth}
+            className="page-header__attendance-month-select"
+            onChange={onAttendanceChange}
+          >
+            {attendanceMonthList.map(attendanceMonth => (
+              <Option value={attendanceMonth.value} style={{ width: 100 }}>
+                {attendanceMonth.label}
+              </Option>
+            ))}
+          </Select>
         </div>
 
         <div className="page-header__client-logo">
