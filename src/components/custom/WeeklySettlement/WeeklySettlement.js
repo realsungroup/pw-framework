@@ -8,6 +8,10 @@ import MainTableSubTables from 'Common/data/MainTableSubTables';
  */
 class WeeklySettlement extends React.Component {
   constructor(props) {
+    this.baseURL =
+    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
+    this.downloadURL =
+    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
     super(props);
     const date = moment();
     this.state = {
@@ -29,7 +33,7 @@ class WeeklySettlement extends React.Component {
         </header>
         <main style={{ height: 800 }}>
           <MainTableSubTables
-            resid={644512352963}
+            resid={652186736465}
             mainTableProps={{
               cmswhere: `C3_644512413647 = '${week}'`,
               hasAdd: false,
@@ -37,7 +41,10 @@ class WeeklySettlement extends React.Component {
               hasDelete: false,
               hasRowSelection: false,
               hasRowModify: false,
-              hasRowDelete: false
+              hasRowDelete: false,
+              baseURL:this.baseURL,
+              downloadBaseURL:this.downloadURL,
+
             }}
             subTablesProps={{
               644525987356: {
@@ -46,7 +53,9 @@ class WeeklySettlement extends React.Component {
                 hasDelete: false,
                 hasRowSelection: false,
                 hasRowModify: false,
-                hasRowDelete: false
+                hasRowDelete: false,
+                baseURL:this.baseURL,
+              downloadBaseURL:this.downloadURL,
               }
             }}
           />
