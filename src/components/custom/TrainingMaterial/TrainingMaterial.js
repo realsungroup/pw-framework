@@ -20,7 +20,7 @@ class TrainingMaterial extends React.Component {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: 'calc(100vh - 220px)' }}
+        style={{ height: '100vh' }}
       >
         <TableData
           resid={607189025758}

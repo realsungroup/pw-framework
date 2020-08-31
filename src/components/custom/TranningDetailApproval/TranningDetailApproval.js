@@ -13,7 +13,15 @@ const { TextArea } = Input;
 class TranningDetailApproval extends React.Component {
   state = {
     currentYear: '',
-    approvalRecord: {},
+    approvalRecord: {
+      isApprove: '',
+      year: '',
+      triggerName: '',
+      triggerTime: '',
+      triggerRemark: '',
+      remark: ''
+    },
+    active: false,
     approveButtonLoading: false,
     rejectButtonLoading: false
   };
@@ -48,10 +56,17 @@ class TranningDetailApproval extends React.Component {
         resid: approvalresid,
         cmswhere: `year = '${year}'`
       });
-      const data = res.data[0];
-      this.setState({
-        approvalRecord: data
-      });
+
+      if (res.data.length > 0) {
+        const data = res.data[0];
+        this.setState({
+          approvalRecord: data,
+          active: true
+        });
+      } else {
+        this.setState({ active: false });
+      }
+
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -82,7 +97,7 @@ class TranningDetailApproval extends React.Component {
       this.setState({
         approvalRecord: res.data[0]
       });
-     
+
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -155,7 +170,7 @@ class TranningDetailApproval extends React.Component {
               disabled={disabled}
             />
           </Form.Item>
-          {!disabled && (
+          {!disabled && this.state.active && (
             <div>
               <Popconfirm title="确认同意吗？" onConfirm={this.approval('Y')}>
                 <Button

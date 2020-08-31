@@ -38,13 +38,13 @@ class AdminConfirm extends React.Component {
       key: '', // 模糊搜索的 key 值
       sortOrder: '', // 后端排序规则：'desc' 降序 | 'asc' 升序
       sortField: '', // 后端排序字段
-      record : [],
-      cmswhere:''
+      record: [],
+      cmswhere: ''
     };
   }
 
   componentDidMount = () => {
-    console.log('this.props',this.props)
+    console.log('this.props', this.props)
   }
 
 
@@ -221,7 +221,7 @@ class AdminConfirm extends React.Component {
     let res;
     record.C3_591556634215 = 'Y';
     record.C3_617205061601 = this.state.deleteReason;
-    if(!this.state.deleteReason){
+    if (!this.state.deleteReason) {
       return message.error("请填写删除原因！")
     }
     try {
@@ -282,18 +282,18 @@ class AdminConfirm extends React.Component {
   };
 
 
-  getRecord = async (wheres) =>{
+  getRecord = async (wheres) => {
     let options = {
       key: '',
       sortOrder: '',
       sortField: '',
-      pageindex:0,
-      pageSize:10,
-      cmswhere:wheres
+      pageindex: 0,
+      pageSize: 10,
+      cmswhere: wheres
     }
     let res;
-      const { resid,mtsid } = this.props;
-console.log("options",options)
+    const { resid, mtsid } = this.props;
+    console.log("options", options)
     try {
       res = await getMainTableData(
         resid,
@@ -304,12 +304,12 @@ console.log("options",options)
       message.error(error.message);
     }
     this.setState({
-      record:res.data,
-      cmswhere:wheres
+      record: res.data,
+      cmswhere: wheres
     })
     this.forceUpdate()
   };
-  
+
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
       return message.error('请选择记录');
@@ -378,7 +378,7 @@ console.log("options",options)
       if (this.props.cmswhere) {
         cmswhere = `${cmswhere ? cmswhere + ' and ' : ''} ${
           this.props.cmswhere
-        }`;
+          }`;
       }
       try {
         res = await getMainTableData(
@@ -397,7 +397,7 @@ console.log("options",options)
       if (this.props.cmswhere) {
         cmswhere = `${cmswhere ? cmswhere + ' and ' : ''} ${
           this.props.cmswhere
-        }`;
+          }`;
       }
       if (operation === 'add') {
         res = await getColumnsDefine(subresid);
@@ -551,7 +551,7 @@ console.log("options",options)
         style={{
           position: 'absolute',
           zIndex: '99',
-          right: '155px',
+          right: '125px',
           top: '18px'
         }}
         onClick={() => {
@@ -580,12 +580,12 @@ console.log("options",options)
 
 
   render() {
-    const { loading ,advSearchVisible } = this.state;
+    const { loading, advSearchVisible } = this.state;
     const { advSearchConfig, lzAdvSearchStyle } = this.props;
     return (
       <Spin spinning={loading}>
         <div style={{ height: '100vh' }}>
-        {advSearchConfig && this.renderAdvSearchBtn()}
+          {advSearchConfig && this.renderAdvSearchBtn()}
           <TableData
             {...this.props}
             actionBarExtra={this.renderActionBarExtra}
@@ -596,7 +596,7 @@ console.log("options",options)
                 return (
                   <Button
                     onClick={() => {
-                      this.handleDownMaterial(record.C3_590515131157||record.C3_590516276367);
+                      this.handleDownMaterial(record.C3_590515131157 || record.C3_590516276367);
                     }}
                   >
                     下载查阅
@@ -643,8 +643,8 @@ console.log("options",options)
                 );
               }
             ]}
-            dataSource = {this.state.record}
-            cmswhere= {this.state.cmswhere}
+            dataSource={this.state.record}
+            cmswhere={this.state.cmswhere}
           />
           {advSearchConfig && (
             <LzAdvSearch

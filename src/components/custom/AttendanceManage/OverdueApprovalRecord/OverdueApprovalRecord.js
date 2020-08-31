@@ -34,8 +34,8 @@ class OverdueApprovalRecord extends React.Component {
           downloadBaseURL={this.attendanceDownloadURL}
           dblinkname="ehr"
           baseURL={this.baseURL}
-          // isSetColumnWidth={false}
-          noWidthFields='C3_447031495725'
+          isSetColumnWidth={false}
+        // noWidthFields='C3_447031495725'
         />
       </div>
     );
