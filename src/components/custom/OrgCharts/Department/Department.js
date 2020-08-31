@@ -232,10 +232,10 @@ class Department extends React.Component {
     const newParentNode = this.chart.get(newNode.pid);
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-    } 下面吗？`;
+      } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-    } under ${newParentNode[displayFileds.firstField]}`;
+      } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -358,7 +358,45 @@ class Department extends React.Component {
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
   };
-
+  // 节点作废
+  handleVoid = () => {
+    // const { pidField, idField, createWindowName } = this.props;
+    const { selectedNode, selectedDate } = this.state;
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
+    Modal.confirm({
+      title: '提示',
+      content: '确认作废？',
+      onOk: async () => {
+        try {
+          const { resid, baseURL } = this.props;
+          this.setState({ loading: true });
+          let httpParams = {};
+          // 使用传入的 baseURL
+          if (baseURL) {
+            httpParams.baseURL = baseURL;
+          }
+          const res = await http(httpParams).modifyRecords({
+            resid,
+            data: [{ REC_ID: selectedNode.REC_ID, C3_417731575935: 'Y' }]
+          });
+          this.chart.removeNode(selectedNode.id);
+          this._nodes.splice(
+            this._nodes.findIndex(node => node.id === selectedNode.id),
+            1
+          );
+          this.setState({ selectedNode: {}, breadcrumb: [] });
+          message.success('作废成功');
+          this.setState({ loading: false });
+        } catch (error) {
+          this.setState({ loading: false });
+          message.error(error.message);
+          console.log(error);
+        }
+      }
+    });
+  }
   /**
    * 修改节点
    */
@@ -776,8 +814,19 @@ class Department extends React.Component {
                   />
                   添加同级
                 </div>
+
               </>
             )}
+            <div
+              className="department-chart_header_icon-button"
+              onClick={() => this.handleVoid()}
+            >
+              <Icon
+                type="dropbox"
+                className="department-chart_header_icon-button__icon"
+              />
+                  作废
+                </div>
             <div
               className="department-chart_header_icon-button"
               onClick={this.handleModify}
@@ -846,7 +895,7 @@ class Department extends React.Component {
             >
               {`${item[firstField]}(${
                 item[secondaryField] ? item[secondaryField] : 'N/A'
-              })`}
+                })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1097,14 +1146,14 @@ class Department extends React.Component {
                         })}
                       </div>
                     ) : (
-                      <div className="department-chart_unselect-tip">
-                        <Alert
-                          message="尚未选中任何卡片！"
-                          type="info"
-                          showIcon
-                        />
-                      </div>
-                    )}
+                        <div className="department-chart_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                   </div>
                 )}
               </div>

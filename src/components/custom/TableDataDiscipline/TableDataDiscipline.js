@@ -7,9 +7,9 @@ class TableDataDiscipline extends React.Component {
     record: null,
     readOnly: true
   };
- 
+
   //奖惩-查看个人违纪
-  
+
 
   handleOk = () => {
     this.setState({
@@ -24,14 +24,14 @@ class TableDataDiscipline extends React.Component {
   };
 
   render() {
-    
+
     return (
       <div
         className="table-data-wrap"
         style={{ height: '100vh' }}
       >
         <TableData
-        baseURL= 'http://ngrok5.realsun.me:6060'
+          baseURL='http://10.108.2.66:6060'
           resid={622206065690}
           subtractH={220}
           hasBeBtns={false}
@@ -44,7 +44,7 @@ class TableDataDiscipline extends React.Component {
           hasRowModify={false}
           height="100%"
         />
-       
+
       </div>
     );
   }
