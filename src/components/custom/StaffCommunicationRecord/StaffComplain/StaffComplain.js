@@ -36,7 +36,7 @@ class StaffComplain extends React.Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
-    this.dlEmployDownloadURL =
+    this.downloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
   }
   state = {
@@ -708,6 +708,7 @@ this.getNo();
         <div style={{ height: 570 }}>
           <TableData
             baseURL={this.baseURL}
+            downloadBaseURL={this.downloadURL}
             resid={resid}
             key={resid}
             wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -1148,6 +1149,7 @@ this.getNo();
           <div style={{ width: '100%', height: 570 }}>
             <TableData
               baseURL={this.baseURL}
+              downloadBaseURL={this.downloadURL}
               resid="648055005558"
               hasAdd={false}
               hasBeBtns={false}

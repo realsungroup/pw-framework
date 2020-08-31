@@ -9580,3 +9580,30 @@ window[652189809837] = {
     }
   }
 };
+
+window[644526459974] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤周锁定', // 功能模块名称
+  props: {
+    resid: 644831568531,
+    actionBarWidth: 300,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: false,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
+  }
+};
