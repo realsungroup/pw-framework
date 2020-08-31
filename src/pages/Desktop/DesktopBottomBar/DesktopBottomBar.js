@@ -125,7 +125,10 @@ export default class DesktopBottomBar extends React.Component {
       onSearchFocus,
       onSearchChange,
       searchValue,
-      orgChartConfig
+      orgChartConfig,
+      attendanceMonthList,
+      currentAttendanceMonth,
+      onAttendanceChange
     } = this.props;
 
     const child = (
@@ -149,6 +152,25 @@ export default class DesktopBottomBar extends React.Component {
           </div>
         </div>
         <div className="desktop-bottom-bar__right">
+          {/* 考勤月份选择 */}
+          <div className="desktop-bottom-bar__attendance-month">
+            <span className="desktop-bottom-bar__attendance-title">
+              考勤月份
+            </span>
+            <Select
+              value={currentAttendanceMonth}
+              className="desktop-bottom-bar__attendance-month-select"
+              onChange={onAttendanceChange}
+              size='small'
+            >
+              {attendanceMonthList.map(attendanceMonth => (
+                <Option value={attendanceMonth.value} style={{ width: 100 }}>
+                  {attendanceMonth.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
+
           <DesktopDate className="desktop-bottom-bar__date" />
 
           {/* 仪表盘 */}

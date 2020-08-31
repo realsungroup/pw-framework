@@ -126,7 +126,7 @@ export default class PageContainer extends React.Component {
     const userInfo = JSON.parse(getItem('userInfo'));
     let color = themeColor['@primary-color'];
     if (userInfo && userInfo.UserInfo && userInfo.UserInfo.EMP_Color) {
-      color = userInfo.UserInfo.EMP_Color
+      color = userInfo.UserInfo.EMP_Color;
     }
     const selectedBg = JSON.parse(getItem('selectedBg')) || {
       bgMode: 'image', // 背景模式
@@ -158,6 +158,8 @@ export default class PageContainer extends React.Component {
       waitingHandleData: [], // 待办事项
       waitingHandleFetching: false,
       menuVisible: false,
+      attendanceMonthList: [], // 考勤月份列表
+      currentAttendanceMonth: null // 当前考勤月份
     };
     this.lockScreenRef = React.createRef();
   }
@@ -182,7 +184,7 @@ export default class PageContainer extends React.Component {
       ) {
         desktopStyle = _desktopStyle;
       }
-    } catch (err) { }
+    } catch (err) {}
 
     this.setState({
       desktopStyle
@@ -193,6 +195,30 @@ export default class PageContainer extends React.Component {
 
     if (desktopStyle === 'WORKBENCH') {
       this.fetchWaitingHandle();
+    }
+
+    this.getAttendanceMonthList();
+  };
+
+  // 获取考勤月份列表
+  getAttendanceMonthList = async () => {
+    const res = await http().getTable({
+      resid: 424358078333
+    });
+    if (res && Array.isArray(res.data)) {
+      console.log({ res });
+      res.data.sort((a, b) => a.C3_424358155202 - b.C3_424358155202);
+      res.data.forEach(item => {
+        item.label = `${item.C3_424358155202}`.splice(4, 0, '-');
+        item.value = item.C3_424358155202;
+      });
+      const currentAttendanceMonth = res.data.find(
+        item => item.C3_424358188666 === 'Y'
+      );
+      this.setState({
+        attendanceMonthList: res.data,
+        currentAttendanceMonth: currentAttendanceMonth.value
+      });
     }
   };
 
@@ -225,7 +251,7 @@ export default class PageContainer extends React.Component {
   };
 
   fetchWaitingHandle = async () => {
-    this.setState({ loading: true, waitingHandleFetching: true, });
+    this.setState({ loading: true, waitingHandleFetching: true });
     let linknames = '';
     reminderDataConfig.forEach(item => {
       linknames += item.dblinkname + ',';
@@ -236,7 +262,7 @@ export default class PageContainer extends React.Component {
       res = await http().getReminderDatas({ linknames });
     } catch (error) {
       console.error(error);
-      this.setState({ loading: false, waitingHandleFetching: false, });
+      this.setState({ loading: false, waitingHandleFetching: false });
       return message.error(error.message);
     }
 
@@ -249,7 +275,11 @@ export default class PageContainer extends React.Component {
         data.push(...res.data[item.dblinkname]);
       }
     });
-    this.setState({ waitingHandleData: data, loading: false, waitingHandleFetching: false });
+    this.setState({
+      waitingHandleData: data,
+      loading: false,
+      waitingHandleFetching: false
+    });
   };
 
   handleSearchChange = e => {
@@ -755,6 +785,10 @@ export default class PageContainer extends React.Component {
     }
   };
 
+  handleAttendanceChange = value => {
+    this.setState({ currentAttendanceMonth: value });
+  };
+
   getSortRecentApps = memoizeone((apps = []) => {
     return apps.sort((a, b) => {
       return a.dateString < b.dateString ? 1 : -1;
@@ -850,7 +884,7 @@ export default class PageContainer extends React.Component {
   setThemeColor = themeColor => {
     window.less
       .modifyVars({ '@primary-color': themeColor })
-      .then(() => { })
+      .then(() => {})
       .catch(err => {
         console.log({ err });
         message.error(err.message);
@@ -1137,13 +1171,13 @@ export default class PageContainer extends React.Component {
                 }}
               />
             ) : (
-                <Icon
-                  type="shrink"
-                  onClick={() => {
-                    this.setState({ headerVisible: true });
-                  }}
-                />
-              )}
+              <Icon
+                type="shrink"
+                onClick={() => {
+                  this.setState({ headerVisible: true });
+                }}
+              />
+            )}
           </div>
         </div>
       );
@@ -1336,7 +1370,6 @@ export default class PageContainer extends React.Component {
     this.setState({ activeApps: newActiveApps });
   };
 
-
   filterMenus = debounce(() => {
     const { allFolders, deskTopSearchValue: value } = this.state;
     const menus = allFolders
@@ -1363,10 +1396,10 @@ export default class PageContainer extends React.Component {
     this.setState({ menus });
   }, 200);
 
-  handleDesktopSearchChange = (e) => {
+  handleDesktopSearchChange = e => {
     this.setState({ deskTopSearchValue: e.target.value });
     this.filterMenus();
-  }
+  };
 
   handleDesktopOpenPersonCenter = () => {
     const children = <DesktopPersonCenter />;
@@ -1394,12 +1427,12 @@ export default class PageContainer extends React.Component {
         }
       }
     ]);
-  }
+  };
 
   handleOpenReminderList = () => {
-    this.setState({ reminderListVisible: true, });
+    this.setState({ reminderListVisible: true });
     this.fetchWaitingHandle();
-  }
+  };
 
   handleDesktopClick = () => {
     if (this.state.menuVisible) {
@@ -1408,7 +1441,7 @@ export default class PageContainer extends React.Component {
     if (this.state.reminderListVisible) {
       this.setState({ reminderListVisible: false });
     }
-  }
+  };
 
   handleLogoClick = e => {
     e.stopPropagation();
@@ -1458,6 +1491,8 @@ export default class PageContainer extends React.Component {
       reminderListVisible,
       waitingHandleData,
       menuVisible,
+      attendanceMonthList,
+      currentAttendanceMonth
     } = this.state;
 
     return (
@@ -1480,6 +1515,9 @@ export default class PageContainer extends React.Component {
             onOpenWindow={this.handleOpenWindow}
             onCloseActiveApp={this.handleCloseActiveApp}
             visible={headerVisible}
+            attendanceMonthList={attendanceMonthList}
+            currentAttendanceMonth={currentAttendanceMonth}
+            onAttendanceChange={this.handleAttendanceChange}
           />
         )}
         {desktopStyle === 'WORKBENCH' && this.renderTopBar(activeApps)}
@@ -1525,6 +1563,9 @@ export default class PageContainer extends React.Component {
                   onDesktopClick={this.handleDesktopClick}
                   menuVisible={menuVisible}
                   onLogoClick={this.handleLogoClick}
+                  attendanceMonthList={attendanceMonthList}
+                  currentAttendanceMonth={currentAttendanceMonth}
+                  onAttendanceChange={this.handleAttendanceChange}
                 ></Component>
               );
             }}
