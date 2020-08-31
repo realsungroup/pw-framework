@@ -1827,8 +1827,10 @@ window['个人表格'] = {
 //符合解除人员
 window[614706766207] = {
   name: 'RelievePerson',
-  title: '符合解除人员'
-  // props: {
+  title: '符合解除人员',
+  props: {
+        baseURL:'http://10.108.2.66:9091',
+        downloadBaseURL:'http://10.108.2.66:80',
   //   resid: 614709186509,
   //   recordFormFormWidth: '90%',
   //   hasBeBtns: false,
@@ -1845,7 +1847,7 @@ window[614706766207] = {
   //     placement: 'right',
   //     height: 600
   //   }
-  // }
+  }
 };
 
 //违纪未审批记录
@@ -9051,7 +9053,8 @@ window[647005261709] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
-    noWidthFields: 'C3_433505203981',
+    isSetColumnWidth:false,
+    // noWidthFields: 'C3_433505203981',
     actionBarFixed: false,
     isWrap: true,
     columnsWidth: { '分公司': 120 },
@@ -9281,7 +9284,7 @@ window[647005718255] = {
       isUseFormDefine: false,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      mediaFieldBaseURL: 'http://10.108.2.66:80/',
+      mediaFieldBaseURL: 'http://wux-hr03/',
       formProps: {
         // height: 500
       },
@@ -9322,6 +9325,7 @@ window[647005738876] = {
       isUseFormDefine: false,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
+      mediaFieldBaseURL: 'http://wux-hr03/',
       formProps: {
         // height: 500
       },
@@ -9360,6 +9364,7 @@ window[647005761923] = {
     isWrap: true,
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
+    mediaFieldBaseURL: 'http://wux-hr03/',
     formProps: {
       // height: 500
     },
@@ -9470,4 +9475,135 @@ window[649329486527] = {
   name: 'ReplyComplain',
   title: '员工投诉回复',
   props: {}
+};
+
+window[652189809837] = {
+  name: 'MainTableSubTables', // 组件名称，
+  title: '考勤审核', // 功能模块名称
+  props: {
+    resid: 537117187059,
+    mainTableProps: {
+      actionBarWidth: 300,
+      hasAdd: true,
+      hasBeBtns: true,
+      hasModify: true,
+      hasBackBtn: true,
+      hasDelete: true,
+      hasRowModify: true,
+      hasRowView: true,
+      hasRowDelete: true,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      formProps: {
+        // height: 500
+      },
+      advSearch: {
+        isRequestFormData: false,
+      },
+      subtractH: 200
+    },
+    subTablesProps: {
+      537128786284: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537126727126: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537126763380: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537125710346: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537125804210: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537126636974: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537126688079: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537128298384: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      537128341955: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      
+
+    }
+  }
+};
+
+window[644526459974] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤周锁定', // 功能模块名称
+  props: {
+    resid: 644831568531,
+    actionBarWidth: 300,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: false,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false,
+    },
+    subtractH: 200
+  }
 };

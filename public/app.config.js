@@ -252,6 +252,8 @@ window.pwConfig = {
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
       wuxiHr03BaseURL: 'http://10.108.2.66:9091', //80端口非定制组件基地址
       wuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
+      staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
     },

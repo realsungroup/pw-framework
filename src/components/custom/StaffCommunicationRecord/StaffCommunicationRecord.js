@@ -11,10 +11,7 @@ const TabPane = Tabs.TabPane;
 class StaffCommunicationRecord extends React.Component {
   constructor(props) {
     super(props);
-    this.baseURL =
-      window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
-    this.dlEmployDownloadURL =
-      window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
+   
   }
   state = {
     SquareCardArr: [],
