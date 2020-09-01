@@ -14,7 +14,7 @@ class App extends Component {
           <div style={{ width: 600, background: '#fff' }}>
             <TreeData
               resid="417643880834"
-              baseURL="http://ngrok5.realsun.me:6060//"
+              baseURL="http://10.108.2.66:6060//"
               idField="DEP_ID"
               pidField="DEP_PID"
               titleField="DEP_NAME"

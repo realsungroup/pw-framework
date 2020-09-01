@@ -1446,7 +1446,7 @@ window[611339874157] = {
         recordFormType: 'drawer',
         recordFormContainerProps: {
           placement: 'bottom',
-          height: 600
+          height: '80vh'
         },
         subTableArrProps: [
           {
@@ -1588,7 +1588,7 @@ window[611339890532] = {
         recordFormType: 'drawer',
         recordFormContainerProps: {
           placement: 'bottom',
-          height: 600
+          height: '80vh'
         },
         subTableArrProps: [
           {

@@ -26,20 +26,20 @@ window.pwConfig = {
       DataProcessBaseURL: 'http://10.108.2.66:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
-      PostArchitectureBaseURL: 'http://ngrok5.realsun.me:7071//',
-      PostArchitectureDownloadBaseURL: 'http://ngrok5.realsun.me:7071//',
+      PostArchitectureBaseURL: 'http://10.108.2.66:7001//',
+      PostArchitectureDownloadBaseURL: 'http://10.108.2.66:7001//',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
-      headquartersBaseURL: 'http://ngrok4.realsun.me:7071', //总部工作流管理-总部工作流
+      headquartersBaseURL: 'http://.realsun.me:7071', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://ngrok9.realsun.me:7071', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
       AchievementsBaseURL: 'http://10.108.2.66:5002/', //绩效定制页面基地址
-      RBASchedulingBaseURL: 'http://ngrok5.realsun.me:7071', //RBA排班基地址
+      RBASchedulingBaseURL: 'http://10.108.2.66:7001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:7071', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://ngrok14.realsun.me:7071', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:7071', //80端口非定制组件下载基地址
@@ -165,11 +165,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://ngrok4.realsun.me:7071/'
+        baseurl: 'http://10.108.2.66:7001/'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://ngrok5.realsun.me:7071/'
+        baseurl: 'http://10.108.2.66:7001/'
       }
     ],
 
@@ -368,11 +368,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://ngrok4.realsun.me:7071'
+        baseurl: 'http://10.108.2.66:7001'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://ngrok5.realsun.me:7071'
+        baseurl: 'http://10.108.2.66:7001'
       }
     ],
 
