@@ -785,8 +785,16 @@ export default class PageContainer extends React.Component {
     }
   };
 
-  handleAttendanceChange = value => {
+  handleAttendanceChange = async value => {
     this.setState({ currentAttendanceMonth: value });
+    try {
+      await http().saveUserAttMonth({
+        yearmonth: value
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    message.success('切换考勤月份成功');
   };
 
   getSortRecentApps = memoizeone((apps = []) => {

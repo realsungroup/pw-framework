@@ -683,4 +683,15 @@ http.createApi('beforeSaveAdd', {
   url: '/api/100/table/RunInnerTableFormulaBeforeSave'
 });
 
+/**
+ * 设置用户考勤月份
+ * 参数:{ yearmonth: string, dblinkname: string }
+ * yearmonth:年月。如 '202009'
+ * dblinkname:数据源名称
+ */
+http.createApi('saveUserAttMonth', {
+  method: 'get',
+  url: '/api/Account/SaveUserAttMonth'
+});
+
 export default http;
