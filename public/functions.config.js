@@ -5024,10 +5024,10 @@ window[642855770350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    // recordFormUseAbsolute:true,
+    recordFormUseAbsolute:true,
     // isUseFormDefine:false,
-    // isSetColumnWidth:false,
-    noWidthFields: 'C3_518381374532',
+    isSetColumnWidth:false,
+    // noWidthFields: 'C3_518381374532',
     backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
       // height: 500
