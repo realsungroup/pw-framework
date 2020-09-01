@@ -884,5 +884,11 @@ export const propTypes = {
    */
   beforeSaveConfig: PropTypes.shape({
     operaction: PropTypes.oneOf(['add', 'modify']),
-  })
+  }),
+
+  /**
+   * label 能够显示必填项的样式的 label 数组（一般用绝对定位表单上，用于解决有的 label 因为后台的限制，导致不会显示必填项样式的问题）
+   * 默认：-
+   */
+  labelRequiredList: PropTypes.array,
 };

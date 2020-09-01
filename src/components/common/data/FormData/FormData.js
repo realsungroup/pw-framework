@@ -708,7 +708,8 @@ class FormData extends React.Component {
       saveMode,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL
+      mediaFieldBaseURL,
+      labelRequiredList
     } = this.props;
     const { hasSubTables, confirmLoading, loading } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -753,6 +754,7 @@ class FormData extends React.Component {
             uploadConfig={uploadConfig}
             mediaFieldBaseURL={mediaFieldBaseURL}
             baseURL={baseURL}
+            labelRequiredList={labelRequiredList}
           />
           {hasSubTables &&
             this.renderSubTablesAbsolute(containerHeight, containerWidth)}
